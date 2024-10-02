@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC0598D5EE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA2098D912
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EBFE1C210ED
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F1D91C22DFE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97E31D0791;
-	Wed,  2 Oct 2024 13:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C5E1D0951;
+	Wed,  2 Oct 2024 14:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIByOZEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJzzwAEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62B51D0788;
-	Wed,  2 Oct 2024 13:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B031D174E;
+	Wed,  2 Oct 2024 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876080; cv=none; b=hx4sTW1leqKZqBAstgi1i/bA7pso5YcyUhMNSv0CkdvIT5sZZla3bLyWiV9o1GoEohFYHtL94A81OcVpomV5UVZdMjALTylYZ6+n8nmUXqUDHmX0aDYdlg66RuqTCosDzKM9w+M026cZsf7ZI6G+Yrz4SZHn9pX4QRAy9PER2Wo=
+	t=1727877773; cv=none; b=Ihu00ddhXXUIqsXW7rXsfsiXmy00GdTG6dFjRjeR+XKwzCzHMMErruB4iT1KYcoyLuoDnuMhiUYu9I2cD9JjzwKk7UeeWttwj+4V21k6XxSbG6sRA+9AWoOTBsvmmet8HEstgl8hW95GloCgAypkBLXOm4ELvpXs316sek+FeOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876080; c=relaxed/simple;
-	bh=zhsHDZLAPv1Foyc+yFDh7985Pc3VAG42QOE0PFzumzs=;
+	s=arc-20240116; t=1727877773; c=relaxed/simple;
+	bh=6xMBYMY9RoWNq6F+p0F7aqQo+zZqDMYUBVgBNCwd2eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bj5/4n1LxjL3Xd9Mz2gSXiKeX5gnAtS/MmgUMcjRKXRhtKKNsLrq7SwgXQwbP9Ea4aiSk3UD94/kyYMU3BFYEZr9AMuGCTmbKvU1q0dQcaWCgou5JYD8RFLfI+CEbpyE07IWSFDUcKrrFv6eNQ7uAEI8SeEyb7koB0stHx0b9mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIByOZEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256DFC4CEC5;
-	Wed,  2 Oct 2024 13:34:39 +0000 (UTC)
+	 MIME-Version; b=AAnNXlw54THi7ZTEtRgf+Ac76hyZRFBga8chRnr3GVTZMbVoEOb4GTwe9VCqwF6XVS5J+YSLHoOBz/YSn+fpJxQzQxUtVO+VaxIwIDX2kk3S0PVSqhJXDu8QCthmgr+CVM9gg4S/8NCYry1nEpQrFBpRcsT5O7r5mgptBcdctGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJzzwAEH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D626C4CEC2;
+	Wed,  2 Oct 2024 14:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876080;
-	bh=zhsHDZLAPv1Foyc+yFDh7985Pc3VAG42QOE0PFzumzs=;
+	s=korg; t=1727877773;
+	bh=6xMBYMY9RoWNq6F+p0F7aqQo+zZqDMYUBVgBNCwd2eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIByOZEILnKVbyqWjR/tevdP0emwg4oraSiQMSmo1MQV8KPFDpROPsYknAyEZDpeF
-	 wJkmqUpu3+iEUgg9nwDzhwPeb8xxK1eEFyrj3FNmt0j+WY1wWZ5F7yk3bjnH8UfzHD
-	 yWIHcMHFHlV86h4eyO3DbNc4Z4CruaFj1wEpTM10=
+	b=uJzzwAEHrT0B1rxaSwvix82oC63/EnMgArY1mi64zI2IH6m4SAeRBxy8vVxC9bUfl
+	 ZHnnQ6w8oRZv1LHBiaaXgg4hU2Hg2MEQozXEzIUj9ZqAYRbVoea/45149O6nzp9Fe6
+	 VcZQJqFkY1Ip1Z2YiRgYPPWQ5xFKwa9Sor0UtTqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiangshan Yi <yijiangshan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Qiang Wang <wangqiang1@kylinos.cn>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 291/695] samples/bpf: Fix compilation errors with cf-protection option
+Subject: [PATCH 6.10 189/634] drm/radeon/evergreen_cs: fix int overflow errors in cs track offsets
 Date: Wed,  2 Oct 2024 14:54:49 +0200
-Message-ID: <20241002125834.055681229@linuxfoundation.org>
+Message-ID: <20241002125818.566065835@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiangshan Yi <yijiangshan@kylinos.cn>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit fdf1c728fac541891ef1aa773bfd42728626769c ]
+[ Upstream commit 3fbaf475a5b8361ebee7da18964db809e37518b7 ]
 
-Currently, compiling the bpf programs will result the compilation errors
-with the cf-protection option as follows in arm64 and loongarch64 machine
-when using gcc 12.3.1 and clang 17.0.6. This commit fixes the compilation
-errors by limited the cf-protection option only used in x86 platform.
+Several cs track offsets (such as 'track->db_s_read_offset')
+either are initialized with or plainly take big enough values that,
+once shifted 8 bits left, may be hit with integer overflow if the
+resulting values end up going over u32 limit.
 
-[root@localhost linux]# make M=samples/bpf
-	......
-  CLANG-bpf  samples/bpf/xdp2skb_meta_kern.o
-error: option 'cf-protection=return' cannot be specified on this target
-error: option 'cf-protection=branch' cannot be specified on this target
-2 errors generated.
-  CLANG-bpf  samples/bpf/syscall_tp_kern.o
-error: option 'cf-protection=return' cannot be specified on this target
-error: option 'cf-protection=branch' cannot be specified on this target
-2 errors generated.
-	......
+Same goes for a few instances of 'surf.layer_size * mslice'
+multiplications that are added to 'offset' variable - they may
+potentially overflow as well and need to be validated properly.
 
-Fixes: 34f6e38f58db ("samples/bpf: fix warning with ignored-attributes")
-Reported-by: Jiangshan Yi <yijiangshan@kylinos.cn>
-Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Qiang Wang <wangqiang1@kylinos.cn>
-Link: https://lore.kernel.org/bpf/20240815135524.140675-1-13667453960@163.com
+While some debug prints in this code section take possible overflow
+issues into account, simply casting to (unsigned long) may be
+erroneous in its own way, as depending on CPU architecture one is
+liable to get different results.
+
+Fix said problems by:
+ - casting 'offset' to fixed u64 data type instead of
+ ambiguous unsigned long.
+ - casting one of the operands in vulnerable to integer
+ overflow cases to u64.
+ - adjust format specifiers in debug prints to properly
+ represent 'offset' values.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 285484e2d55e ("drm/radeon: add support for evergreen/ni tiling informations v11")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/evergreen_cs.c | 62 +++++++++++++--------------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
 
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index 3e003dd6bea09..dca56aa360ff3 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -169,6 +169,10 @@ BPF_EXTRA_CFLAGS += -I$(srctree)/arch/mips/include/asm/mach-generic
- endif
- endif
+diff --git a/drivers/gpu/drm/radeon/evergreen_cs.c b/drivers/gpu/drm/radeon/evergreen_cs.c
+index 1fe6e0d883c79..675a649fa7ab5 100644
+--- a/drivers/gpu/drm/radeon/evergreen_cs.c
++++ b/drivers/gpu/drm/radeon/evergreen_cs.c
+@@ -395,7 +395,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 	struct evergreen_cs_track *track = p->track;
+ 	struct eg_surface surf;
+ 	unsigned pitch, slice, mslice;
+-	unsigned long offset;
++	u64 offset;
+ 	int r;
  
-+ifeq ($(ARCH), x86)
-+BPF_EXTRA_CFLAGS += -fcf-protection
-+endif
-+
- TPROGS_CFLAGS += -Wall -O2
- TPROGS_CFLAGS += -Wmissing-prototypes
- TPROGS_CFLAGS += -Wstrict-prototypes
-@@ -405,7 +409,7 @@ $(obj)/%.o: $(src)/%.c
- 		-Wno-gnu-variable-sized-type-not-at-end \
- 		-Wno-address-of-packed-member -Wno-tautological-compare \
- 		-Wno-unknown-warning-option $(CLANG_ARCH_ARGS) \
--		-fno-asynchronous-unwind-tables -fcf-protection \
-+		-fno-asynchronous-unwind-tables \
- 		-I$(srctree)/samples/bpf/ -include asm_goto_workaround.h \
- 		-O2 -emit-llvm -Xclang -disable-llvm-passes -c $< -o - | \
- 		$(OPT) -O2 -mtriple=bpf-pc-linux | $(LLVM_DIS) | \
+ 	mslice = G_028C6C_SLICE_MAX(track->cb_color_view[id]) + 1;
+@@ -433,14 +433,14 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 		return r;
+ 	}
+ 
+-	offset = track->cb_color_bo_offset[id] << 8;
++	offset = (u64)track->cb_color_bo_offset[id] << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d cb[%d] bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d cb[%d] bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, id, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+ 
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->cb_color_bo[id])) {
+ 		/* old ddx are broken they allocate bo with w*h*bpp but
+ 		 * program slice with ALIGN(h, 8), catch this and patch
+@@ -448,14 +448,14 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 		 */
+ 		if (!surf.mode) {
+ 			uint32_t *ib = p->ib.ptr;
+-			unsigned long tmp, nby, bsize, size, min = 0;
++			u64 tmp, nby, bsize, size, min = 0;
+ 
+ 			/* find the height the ddx wants */
+ 			if (surf.nby > 8) {
+ 				min = surf.nby - 8;
+ 			}
+ 			bsize = radeon_bo_size(track->cb_color_bo[id]);
+-			tmp = track->cb_color_bo_offset[id] << 8;
++			tmp = (u64)track->cb_color_bo_offset[id] << 8;
+ 			for (nby = surf.nby; nby > min; nby--) {
+ 				size = nby * surf.nbx * surf.bpe * surf.nsamples;
+ 				if ((tmp + size * mslice) <= bsize) {
+@@ -467,7 +467,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 				slice = ((nby * surf.nbx) / 64) - 1;
+ 				if (!evergreen_surface_check(p, &surf, "cb")) {
+ 					/* check if this one works */
+-					tmp += surf.layer_size * mslice;
++					tmp += (u64)surf.layer_size * mslice;
+ 					if (tmp <= bsize) {
+ 						ib[track->cb_color_slice_idx[id]] = slice;
+ 						goto old_ddx_ok;
+@@ -476,9 +476,9 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 			}
+ 		}
+ 		dev_warn(p->dev, "%s:%d cb[%d] bo too small (layer size %d, "
+-			 "offset %d, max layer %d, bo size %ld, slice %d)\n",
++			 "offset %llu, max layer %d, bo size %ld, slice %d)\n",
+ 			 __func__, __LINE__, id, surf.layer_size,
+-			track->cb_color_bo_offset[id] << 8, mslice,
++			(u64)track->cb_color_bo_offset[id] << 8, mslice,
+ 			radeon_bo_size(track->cb_color_bo[id]), slice);
+ 		dev_warn(p->dev, "%s:%d problematic surf: (%d %d) (%d %d %d %d %d %d %d)\n",
+ 			 __func__, __LINE__, surf.nbx, surf.nby,
+@@ -562,7 +562,7 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 	struct evergreen_cs_track *track = p->track;
+ 	struct eg_surface surf;
+ 	unsigned pitch, slice, mslice;
+-	unsigned long offset;
++	u64 offset;
+ 	int r;
+ 
+ 	mslice = G_028008_SLICE_MAX(track->db_depth_view) + 1;
+@@ -608,18 +608,18 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 		return r;
+ 	}
+ 
+-	offset = track->db_s_read_offset << 8;
++	offset = (u64)track->db_s_read_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil read bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_s_read_bo)) {
+ 		dev_warn(p->dev, "%s:%d stencil read bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_s_read_offset << 8, mslice,
++			(u64)track->db_s_read_offset << 8, mslice,
+ 			radeon_bo_size(track->db_s_read_bo));
+ 		dev_warn(p->dev, "%s:%d stencil invalid (0x%08x 0x%08x 0x%08x 0x%08x)\n",
+ 			 __func__, __LINE__, track->db_depth_size,
+@@ -627,18 +627,18 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 		return -EINVAL;
+ 	}
+ 
+-	offset = track->db_s_write_offset << 8;
++	offset = (u64)track->db_s_write_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil write bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_s_write_bo)) {
+ 		dev_warn(p->dev, "%s:%d stencil write bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_s_write_offset << 8, mslice,
++			(u64)track->db_s_write_offset << 8, mslice,
+ 			radeon_bo_size(track->db_s_write_bo));
+ 		return -EINVAL;
+ 	}
+@@ -659,7 +659,7 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+ 	struct evergreen_cs_track *track = p->track;
+ 	struct eg_surface surf;
+ 	unsigned pitch, slice, mslice;
+-	unsigned long offset;
++	u64 offset;
+ 	int r;
+ 
+ 	mslice = G_028008_SLICE_MAX(track->db_depth_view) + 1;
+@@ -706,34 +706,34 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+ 		return r;
+ 	}
+ 
+-	offset = track->db_z_read_offset << 8;
++	offset = (u64)track->db_z_read_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil read bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_z_read_bo)) {
+ 		dev_warn(p->dev, "%s:%d depth read bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_z_read_offset << 8, mslice,
++			(u64)track->db_z_read_offset << 8, mslice,
+ 			radeon_bo_size(track->db_z_read_bo));
+ 		return -EINVAL;
+ 	}
+ 
+-	offset = track->db_z_write_offset << 8;
++	offset = (u64)track->db_z_write_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil write bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_z_write_bo)) {
+ 		dev_warn(p->dev, "%s:%d depth write bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_z_write_offset << 8, mslice,
++			(u64)track->db_z_write_offset << 8, mslice,
+ 			radeon_bo_size(track->db_z_write_bo));
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
