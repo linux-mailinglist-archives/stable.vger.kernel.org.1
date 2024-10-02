@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-80443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD5398DD73
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7892298DB04
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7653E1F229B2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EFA71F24E02
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7031D0977;
-	Wed,  2 Oct 2024 14:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883DF1D0F64;
+	Wed,  2 Oct 2024 14:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEjpt158"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfHAwihn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC501D096B;
-	Wed,  2 Oct 2024 14:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A9F1D07BC;
+	Wed,  2 Oct 2024 14:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880390; cv=none; b=Rl7sYTWzS0GH2tlk4beEr0UUFL5/jiDz8oMftb1d+DxBBRtpmgaTusw/HM+HPDYWgSDfKcAqHbEL0szjWW43BGfqiE/q4gQREQZklWJkWDtLO7c+V5NZmu73s+237XOSBGfTDMZUqwE8X2ZMwTOHbLefaM9SFtnrJFa+48URmjM=
+	t=1727878932; cv=none; b=mwA1YiO1L/zbatOMDseRNevVCNobFvrsEQAbvBE0xbxSXZv9w+reZc6dtTSFVTliA04G0egU3UFQD6IZBa/HxYFdzx6EfMRlZd9Kz2eN9O/oXxXoR33YweSIC998/VP1IO/Yr4Qtlhsts2njqjBqH94BNCQUCa/Ih7UFXvL+INE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880390; c=relaxed/simple;
-	bh=9mIvHmxda1j/4oOqn83C16RYwoy8sXze5RE/4OAJOQQ=;
+	s=arc-20240116; t=1727878932; c=relaxed/simple;
+	bh=MEDSQ86bp9MAW7CT+UXtLYPKFLcsu57+ADct6DWvx4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjlwySPH3EpbpyDsZLh1/v6yN5SIduTN4hS9Phs65DG2a/Ds4BpgMBt4NEU49Vh0zOK3z3ir7qqC306IgMchtGZEt++ajAmQcDA8phk5Nt6HNvlnkNmwYSDNddioq0QpKVetSfOHKHx8UaavZZHQNap8GKDidwyE3x2u5/WTa1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEjpt158; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF441C4CEC2;
-	Wed,  2 Oct 2024 14:46:29 +0000 (UTC)
+	 MIME-Version; b=TCCVI/E2BLwiNx/9hNBPTjlGv6ylOF8Kzcic8VaIkI2UtbLy/a5/JkFFqSOmy4uLyZzrA30EgKD2Nm/2vxTCNuvGYJDD7SoEYpxjasGf9LtrUoYOc7Ff6D07eIcAcP5v3526t+GL61cOwt6OXo6PO8orN3h+MHflKhRrMRoA670=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfHAwihn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6103C4CEC2;
+	Wed,  2 Oct 2024 14:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880390;
-	bh=9mIvHmxda1j/4oOqn83C16RYwoy8sXze5RE/4OAJOQQ=;
+	s=korg; t=1727878932;
+	bh=MEDSQ86bp9MAW7CT+UXtLYPKFLcsu57+ADct6DWvx4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEjpt1585GFY6+qVBDvh5CYTMXn3P9A44InKwtW6MuBLYM3ZGuGKpYxSY1rwt8Z8G
-	 aFcQBVd4M56kVDTB9aDUak/cXAfPrr/+oWd0NZIcZhV01C+rPZf03Q2kV1dWAQJUAZ
-	 6N6pbPv2fTMmJx7AI3MbDKKDBAw4ySBU+lISP+6k=
+	b=gfHAwihnMH3mRlhb/C+eSf1/eCHWuD3mT91erGaCK44/oOkKfq/g6Mgp2yeL2OPeY
+	 hBVvJ2ku0ijGI8JRsKfi3geSdDzWZNgAq+iLYm5EhUn0AGcdWuOnu1sFPVuB1xm3D/
+	 yAIi6emxDagYsPxec+tSYqHNX5SgTkNv6nDsQkGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 443/538] xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and freeing them.
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.10 582/634] md: Dont flush sync_work in md_write_start()
 Date: Wed,  2 Oct 2024 15:01:22 +0200
-Message-ID: <20241002125809.926995043@linuxfoundation.org>
+Message-ID: <20241002125834.089572956@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit f81dfa3b57c624c56f2bff171c431bc7f5b558f2 upstream.
+commit 86ad4cda79e0dade87d4bb0d32e1fe541d4a63e8 upstream.
 
-PCI xHC host should be stopped and xhci driver memory freed before putting
-host to PCI D3 state during PCI remove callback.
+Because flush sync_work may trigger mddev_suspend() if there are spares,
+and this should never be done in IO path because mddev_suspend() is used
+to wait for IO.
 
-Hosts with XHCI_SPURIOUS_WAKEUP quirk did this the wrong way around
-and set the host to D3 before calling usb_hcd_pci_remove(dev), which will
-access the host to stop it, and then free xhci.
+This problem is found by code review.
 
-Fixes: f1f6d9a8b540 ("xhci: don't dereference a xhci member after removing xhci")
+Fixes: bc08041b32ab ("md: suspend array in md_start_sync() if array need reconfiguration")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240905143300.1959279-12-mathias.nyman@linux.intel.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240801124746.242558-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/md/md.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -721,8 +721,10 @@ put_runtime_pm:
- static void xhci_pci_remove(struct pci_dev *dev)
- {
- 	struct xhci_hcd *xhci;
-+	bool set_power_d3;
- 
- 	xhci = hcd_to_xhci(pci_get_drvdata(dev));
-+	set_power_d3 = xhci->quirks & XHCI_SPURIOUS_WAKEUP;
- 
- 	xhci->xhc_state |= XHCI_STATE_REMOVING;
- 
-@@ -735,11 +737,11 @@ static void xhci_pci_remove(struct pci_d
- 		xhci->shared_hcd = NULL;
- 	}
- 
-+	usb_hcd_pci_remove(dev);
-+
- 	/* Workaround for spurious wakeups at shutdown with HSW */
--	if (xhci->quirks & XHCI_SPURIOUS_WAKEUP)
-+	if (set_power_d3)
- 		pci_set_power_state(dev, PCI_D3hot);
--
--	usb_hcd_pci_remove(dev);
- }
- 
- /*
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8648,7 +8648,6 @@ void md_write_start(struct mddev *mddev,
+ 	BUG_ON(mddev->ro == MD_RDONLY);
+ 	if (mddev->ro == MD_AUTO_READ) {
+ 		/* need to switch to read/write */
+-		flush_work(&mddev->sync_work);
+ 		mddev->ro = MD_RDWR;
+ 		set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
+ 		md_wakeup_thread(mddev->thread);
 
 
 
