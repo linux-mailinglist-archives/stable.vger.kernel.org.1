@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1272C98D5A2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B037A98D8E1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39D3288D6B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA84E1C23077
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDB41D0BAE;
-	Wed,  2 Oct 2024 13:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2051D042F;
+	Wed,  2 Oct 2024 14:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSnHBg7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcETLDMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCDC1D04A3;
-	Wed,  2 Oct 2024 13:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9BF1D0DDC;
+	Wed,  2 Oct 2024 14:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875914; cv=none; b=nURGCJVmytJIyOKEHbjzzNhgu2r8uB1RY1+sUc9nKzUVDKlzgW86HKMnEazUofHoMSFDGDoZptSG4GPb71DBfnb9/6FiHrIv6xfpqg3DnGL6a+l4uiI45FH2ONEtkJPxs8PGHSh7TiQF/AgWmatEu9gVLqkdEnNlEgQLpJjPeGc=
+	t=1727877704; cv=none; b=kv6+lXKATj7fAydKVd9pw33+dqAYx/g4eLUpAdAwjYcgIKoFvLV969mGmxal79dX3GpuMF6nZArmjDq7QX52A9OWBleSJclnQm4aBDBRZbfYs6JXhvGpl3vh1M23dr0ukhQEUkNhn4p57yfkV/Q6aG7K3FmonSlUaDPThcGIXUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875914; c=relaxed/simple;
-	bh=eGM9e+i8BwsW/xldjvNOYHDr0f5Y0xhDhHnL5tXGipo=;
+	s=arc-20240116; t=1727877704; c=relaxed/simple;
+	bh=TGkk7gB+pi/IxWbDb6qGLjGiIf33QLFPgdYMT948H5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcruoh3ApR8BB6herrzQHhBq1bnrf011XmFQ4bF0u5uYDcpOzHawJgL2aS34Golh2YotLemE9NbJxknjNwS/tUSa8JZGr21/HDp1yIy9kOlU0dKvQUBzxnhO8HlhT/AO/93HlZ4P6w0Lsl1EvfZKPa32xeC+y3m4UbDbI4LA5i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSnHBg7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14743C4CECD;
-	Wed,  2 Oct 2024 13:31:53 +0000 (UTC)
+	 MIME-Version; b=kgrk7pY+ymZG6d+N/ugB0H5O1suvyS6bWH2zSBU00osjTnsawAzgtdFMOWzHvuy0I8/p9zRFD02ZdZUrss3Uw/t/qMiKyisV0P+Db+7LXyxPYvMbfE9qw4rGMih7Mgl37+nULTzyl2uHsbepSFbgBRfbp0VtTegMETSP9Gys2fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcETLDMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EEDC4CEC2;
+	Wed,  2 Oct 2024 14:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875914;
-	bh=eGM9e+i8BwsW/xldjvNOYHDr0f5Y0xhDhHnL5tXGipo=;
+	s=korg; t=1727877703;
+	bh=TGkk7gB+pi/IxWbDb6qGLjGiIf33QLFPgdYMT948H5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSnHBg7Ss1cLVYhfLvhrYn+kWRyR6W5SqqEaG6ikg3aFjN0TMZlv5UlcJtOCqoVmn
-	 coElZzubAgBkpznbsZ/UIYIJwzEIm09vpSXG/z5JOgtf0A2JFHUUf9zEkHd/KTzkE4
-	 YTUZvuA4nlMe9sPkz6OJvy22EnSPWA8vaDvHNur4=
+	b=bcETLDMdyNQRJs6bno5UTgCbuV++u12cb1orAHxKQUQK9myuyLssgpmB1DgcCCuA+
+	 qhx+XVTY+spfAOi99EkcVsoZ84BXLvMklpBfmliV4Srh2eTr+2cb+/iOiDocpon8LY
+	 dhUBspXQ2SG1WtjtU/GgYuqCq3YYObPxjmfwq0Og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 265/695] selftests/bpf: Fix compile error from rlim_t in sk_storage_map.c
-Date: Wed,  2 Oct 2024 14:54:23 +0200
-Message-ID: <20241002125833.025932598@linuxfoundation.org>
+Subject: [PATCH 6.10 164/634] iommu/amd: Handle error path in amd_iommu_probe_device()
+Date: Wed,  2 Oct 2024 14:54:24 +0200
+Message-ID: <20241002125817.584597521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit d393f9479d4aaab0fa4c3caf513f28685e831f13 ]
+[ Upstream commit 293aa9ec694e633bff83ab93715a2684e15fe214 ]
 
-Cast 'rlim_t' argument to match expected type of printf() format and avoid
-compile errors seen building for mips64el/musl-libc:
+Do not try to set max_pasids in error path as dev_data is not allocated.
 
-  In file included from map_tests/sk_storage_map.c:20:
-  map_tests/sk_storage_map.c: In function 'test_sk_storage_map_stress_free':
-  map_tests/sk_storage_map.c:414:56: error: format '%lu' expects argument of type 'long unsigned int', but argument 2 has type 'rlim_t' {aka 'long long unsigned int'} [-Werror=format=]
-    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
-        |                                                        ^~~~~~~~~~~~~~~~~~~~~~~
-    415 |                       rlim_new.rlim_cur, errno);
-        |                       ~~~~~~~~~~~~~~~~~
-        |                               |
-        |                               rlim_t {aka long long unsigned int}
-  ./test_maps.h:12:24: note: in definition of macro 'CHECK'
-     12 |                 printf(format);                                         \
-        |                        ^~~~~~
-  map_tests/sk_storage_map.c:414:68: note: format string is defined here
-    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
-        |                                                                  ~~^
-        |                                                                    |
-        |                                                                    long unsigned int
-        |                                                                  %llu
-  cc1: all warnings being treated as errors
-
-Fixes: 51a0e301a563 ("bpf: Add BPF_MAP_TYPE_SK_STORAGE test to test_maps")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/1e00a1fa7acf91b4ca135c4102dc796d518bad86.1721713597.git.tony.ambardar@gmail.com
+Fixes: a0c47f233e68 ("iommu/amd: Introduce iommu_dev_data.max_pasids")
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20240828111029.5429-5-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/map_tests/sk_storage_map.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/iommu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-index 18405c3b7cee9..af10c309359a7 100644
---- a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-+++ b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-@@ -412,7 +412,7 @@ static void test_sk_storage_map_stress_free(void)
- 		rlim_new.rlim_max = rlim_new.rlim_cur + 128;
- 		err = setrlimit(RLIMIT_NOFILE, &rlim_new);
- 		CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
--		      rlim_new.rlim_cur, errno);
-+		      (unsigned long) rlim_new.rlim_cur, errno);
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index b19e8c0f48fa2..fc660d4b10ac8 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2185,11 +2185,12 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
+ 		dev_err(dev, "Failed to initialize - trying to proceed anyway\n");
+ 		iommu_dev = ERR_PTR(ret);
+ 		iommu_ignore_device(iommu, dev);
+-	} else {
+-		amd_iommu_set_pci_msi_domain(dev, iommu);
+-		iommu_dev = &iommu->iommu;
++		goto out_err;
  	}
  
- 	err = do_sk_storage_map_stress_free();
++	amd_iommu_set_pci_msi_domain(dev, iommu);
++	iommu_dev = &iommu->iommu;
++
+ 	/*
+ 	 * If IOMMU and device supports PASID then it will contain max
+ 	 * supported PASIDs, else it will be zero.
+@@ -2201,6 +2202,7 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
+ 					     pci_max_pasids(to_pci_dev(dev)));
+ 	}
+ 
++out_err:
+ 	iommu_completion_wait(iommu);
+ 
+ 	return iommu_dev;
 -- 
 2.43.0
 
