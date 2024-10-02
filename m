@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B11F98DD72
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A7498DB02
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E729283009
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47A321C2308A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DAE1D07B0;
-	Wed,  2 Oct 2024 14:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F021D0F5B;
+	Wed,  2 Oct 2024 14:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnO+tBZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/VtM1D5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875411E892;
-	Wed,  2 Oct 2024 14:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583431D07BC;
+	Wed,  2 Oct 2024 14:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880387; cv=none; b=NKbBSgR+kR5UzeGBk/VudFsMNtZR1+XJVqZaYZFiE5mTc9SrkGx/cEKlpQNyJDTRMz3fVm+17rOoxgL9qcMRZnUI7m52lgJzRulYOt1gevsKTn9c0pMyVM4ig0enTgTQIEkmj8ZqIDxeeiG/FrnxD5oFIECwqdmg/ze5pFAxV14=
+	t=1727878929; cv=none; b=T6m3IVtBvj3xeHp2Mv+J7+W+aBapb6k4e65azvgeOLG8KS8bSJ4SebZ9KCoQw8SW+Cf8+uelx7R6cC66OvhZLdA+5usczSN30aSPcAGenZNZ0aPHquWi47A/kqjnsTAzFl+2yaLl1mPM9GLdYERUEgiaIHVUoW0I+OOlBaUr1yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880387; c=relaxed/simple;
-	bh=3mmgyYLQd395U1kfO02TzOn1LIfzTUI0gEq4kQ421yI=;
+	s=arc-20240116; t=1727878929; c=relaxed/simple;
+	bh=8K+sl8h0yWRTy8U/t4iCP7//WBbRT+HVRTXpOxjFDLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3iAmq8OEf2eft/5xe523Yorq448i89gWParVdYmDoGqS0r6FJp3K0zICETooKUWz6s4gSLs7wqxMqSWM9ocr7vTgWl/mANCMwi4bcQ7OtV1pUd7iQJc0yAk/0gvvO+Am9yK+15zBNUw01Bjmi7JodjzOLEyC1+liCz2GFnL8dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnO+tBZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113D5C4CEC2;
-	Wed,  2 Oct 2024 14:46:26 +0000 (UTC)
+	 MIME-Version; b=aq3GNuzos6EJ1QA34JIgQBxzO0W8t+N6auYsKs8nphTk8GrxWx35+ZSDc0Beuf/egnt/sztkS8ppOQcPW9G5H2tpFpzckQVb/htuHI5xi9nY+j2bjllb684C3O5oHA8Avlo2sxONAXJyEZlQW3BBZWKJ0RLRjSYsdePD/D3UtRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/VtM1D5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71A5C4CEC2;
+	Wed,  2 Oct 2024 14:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880387;
-	bh=3mmgyYLQd395U1kfO02TzOn1LIfzTUI0gEq4kQ421yI=;
+	s=korg; t=1727878929;
+	bh=8K+sl8h0yWRTy8U/t4iCP7//WBbRT+HVRTXpOxjFDLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnO+tBZBFxY1w539fW2MG7FPnJfle3F4PbH8hbaj7IvS2mEMIwREzzimMmRxRed8g
-	 0rD+sBE3IHmcKpZGKXHLTHsVkzzcC6zDeOd4udbZ2LN8kH+16sx07LfQd1qhs1bVyj
-	 c8JZL0N1d/FyqhwvWTHrrNz376ClqsdiFJD4vzKw=
+	b=S/VtM1D5RV45/XJP6XIFKp7K7PM3gY3gB40Xsu0a//gzG7lrx2TPJNWJdt4x3f04h
+	 3L+mBPTbUjylfH+l3dmyIak2IDFt1Mz8TGxE0d3kxRdscx8hW4Z9sKr8vuMh9BMTiP
+	 RDeg+DlZRI7J0P95Gmio8lLeWKWu3c5nTOtiwjt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 6.6 442/538] tty: rp2: Fix reset with non forgiving PCIe host bridges
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	Joe Damato <jdamato@fastly.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.10 581/634] eventpoll: Annotate data-race of busy_poll_usecs
 Date: Wed,  2 Oct 2024 15:01:21 +0200
-Message-ID: <20241002125809.887588386@linuxfoundation.org>
+Message-ID: <20241002125834.049870160@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Martin Karsten <mkarsten@uwaterloo.ca>
 
-commit f16dd10ba342c429b1e36ada545fb36d4d1f0e63 upstream.
+commit b9ca079dd6b09e08863aa998edf5c47597806c05 upstream.
 
-The write to RP2_GLOBAL_CMD followed by an immediate read of
-RP2_GLOBAL_CMD in rp2_reset_asic() is intented to flush out the write,
-however by then the device is already in reset and cannot respond to a
-memory cycle access.
+A struct eventpoll's busy_poll_usecs field can be modified via a user
+ioctl at any time. All reads of this field should be annotated with
+READ_ONCE.
 
-On platforms such as the Raspberry Pi 4 and others using the
-pcie-brcmstb.c driver, any memory access to a device that cannot respond
-is met with a fatal system error, rather than being substituted with all
-1s as is usually the case on PC platforms.
-
-Swapping the delay and the read ensures that the device has finished
-resetting before we attempt to read from it.
-
-Fixes: 7d9f49afa451 ("serial: rp2: New driver for Comtrol RocketPort 2 cards")
-Cc: stable <stable@kernel.org>
-Suggested-by: Jim Quinlan <james.quinlan@broadcom.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240906225435.707837-1-florian.fainelli@broadcom.com
+Fixes: 85455c795c07 ("eventpoll: support busy poll per epoll instance")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Karsten <mkarsten@uwaterloo.ca>
+Link: https://lore.kernel.org/r/20240806123301.167557-1-jdamato@fastly.com
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/rp2.c |    2 +-
+ fs/eventpoll.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/rp2.c
-+++ b/drivers/tty/serial/rp2.c
-@@ -578,8 +578,8 @@ static void rp2_reset_asic(struct rp2_ca
- 	u32 clk_cfg;
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 6c0a1e9715ea..145f5349c612 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -420,7 +420,7 @@ static bool busy_loop_ep_timeout(unsigned long start_time,
  
- 	writew(1, base + RP2_GLOBAL_CMD);
--	readw(base + RP2_GLOBAL_CMD);
- 	msleep(100);
-+	readw(base + RP2_GLOBAL_CMD);
- 	writel(0, base + RP2_CLK_PRESCALER);
+ static bool ep_busy_loop_on(struct eventpoll *ep)
+ {
+-	return !!ep->busy_poll_usecs || net_busy_loop_on();
++	return !!READ_ONCE(ep->busy_poll_usecs) || net_busy_loop_on();
+ }
  
- 	/* TDM clock configuration */
+ static bool ep_busy_loop_end(void *p, unsigned long start_time)
+-- 
+2.46.2
+
 
 
 
