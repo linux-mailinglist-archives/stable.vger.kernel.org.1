@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FDB98D63E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5216898D644
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88F27286033
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:38:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189C5281D54
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C851D0965;
-	Wed,  2 Oct 2024 13:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B211D0791;
+	Wed,  2 Oct 2024 13:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEOmOloA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I89ujQrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320D11D0956;
-	Wed,  2 Oct 2024 13:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961301D0789;
+	Wed,  2 Oct 2024 13:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876261; cv=none; b=sezKXWzzy1H0q4qVwVT2VLWm8bHkaSOE6eTKTSU1BuvntpqBFxJHDGj/pNteuyhcqQwrr7CeePTfumW2gJlwiOuVvosrd4mqwCrvrS5iJLoxde7rUulpP/ADKweXdUE3Abkn2u5Ke4qWFiP6ymhmH9t5yxVsSx3xyPuNT8TvriM=
+	t=1727876275; cv=none; b=EJcVjMSxrxxUwfVkmd5uXmDwu/nM9RD5v3I7sKZ5Sdo39SRQPCHtQTuWLjwUYcCqfVRod9pRTDun1kb5GeSya8brHJdjXO6gCIG3S48gUSDrRrTyCCnmzMoBWOUUNCwAdUTxcxLkGDCgumow5oEoLDMRW81OiZJamYlQ/fSMBdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876261; c=relaxed/simple;
-	bh=OsUN2y/GXP5eFCbcljJUnBUhFewvjK3NoxozVrDbV28=;
+	s=arc-20240116; t=1727876275; c=relaxed/simple;
+	bh=qC0qacO9b/IbczpszvGAqOYeu/+5Nngl5yI5LKYDrc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+W6spUFchCr3pZARsFm3F8J5vnb13VKYfli5CgkTGKVDPKJ1fcGZA2d6VeaU0YHh10notOr2j7eAJ4IDnWAiLWCVeEawBvh5gofguwHI2c7v4Ap6gglq93K0Z/f1wi5Fh664FAtSDZpDmVG798Ovd2hgFdn1zs66xLQec7rbfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEOmOloA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB89BC4CED2;
-	Wed,  2 Oct 2024 13:37:40 +0000 (UTC)
+	 MIME-Version; b=NeRYkykRIWwug310cyKzsWpAzsVwnDTYiYLf2ipHgiOxWj5ig1d2c1E/MmaULQFiReOrOmwH+tQo5BmLiEFs0VXbKJ5CBeeVvQ7UnghOsUprTXccUhz/fm9mZXGgju+rGcb4yyroE2DlX+KpvcRIq19pYetfEWjNGMICwazWRm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I89ujQrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF77C4CECD;
+	Wed,  2 Oct 2024 13:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876261;
-	bh=OsUN2y/GXP5eFCbcljJUnBUhFewvjK3NoxozVrDbV28=;
+	s=korg; t=1727876275;
+	bh=qC0qacO9b/IbczpszvGAqOYeu/+5Nngl5yI5LKYDrc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEOmOloAVemTjmP4hFHLZgR7uxoXyj9KxJKtcFRyjmFCnRp6TwmTWKXQ6tkCah4iE
-	 XUZhnTV2qAQTM2DYhkkZLZfBhJQ/s1GHBlhEvhdQgrrP8wUd64gyyzH2sO6nI8Usu8
-	 EiQsZXDFwxX+iK212hgsNVLVuY71qqdWs31Ztzt4=
+	b=I89ujQrSkeXSAnqgWLcKp4Ru3yMJ20sbQorpEhBwK981SumuBhv0XW94ndFbii2HP
+	 C7F+8vdOJMMDcA6nlBPKSvxAbuImhWvAu7Haxanikbc1PLkgZEJyh5JbgrvI68kkf6
+	 igS5Bl+DDeBQ8bQxrRwVWoWDtTgB2jTiWFQfiohg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 356/695] clk: qcom: dispcc-sm8550: use rcg2_ops for mdss_dptx1_aux_clk_src
-Date: Wed,  2 Oct 2024 14:55:54 +0200
-Message-ID: <20241002125836.655248041@linuxfoundation.org>
+Subject: [PATCH 6.11 357/695] clk: qcom: dispcc-sm8650: Update the GDSC flags
+Date: Wed,  2 Oct 2024 14:55:55 +0200
+Message-ID: <20241002125836.694383010@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -69,34 +69,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit cb4c00698f2f27d99a69adcce659370ca286cf2a ]
+[ Upstream commit 7de10ddbdb9d03651cff5fbdc8cf01837c698526 ]
 
-clk_dp_ops should only be used for DisplayPort pixel clocks. Use
-clk_rcg2_ops for disp_cc_mdss_dptx1_aux_clk_src.
+Add missing POLL_CFG_GDSCR to the MDSS GDSC flags.
 
 Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-2-5c4a3128c40b@linaro.org
+Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-4-5c4a3128c40b@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8550.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sm8550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
-index 954b0f6fcea28..a98230540782c 100644
+index a98230540782c..eb7e432d9eeed 100644
 --- a/drivers/clk/qcom/dispcc-sm8550.c
 +++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -400,7 +400,7 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
- 		.parent_data = disp_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_dp_ops,
-+		.ops = &clk_rcg2_ops,
+@@ -1611,7 +1611,7 @@ static struct gdsc mdss_gdsc = {
+ 		.name = "mdss_gdsc",
  	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL | RETAIN_FF_ENABLE,
++	.flags = POLL_CFG_GDSCR | HW_CTRL | RETAIN_FF_ENABLE,
  };
  
+ static struct gdsc mdss_int2_gdsc = {
+@@ -1620,7 +1620,7 @@ static struct gdsc mdss_int2_gdsc = {
+ 		.name = "mdss_int2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL | RETAIN_FF_ENABLE,
++	.flags = POLL_CFG_GDSCR | HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct clk_regmap *disp_cc_sm8550_clocks[] = {
 -- 
 2.43.0
 
