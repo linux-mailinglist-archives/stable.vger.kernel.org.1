@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-79260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968DB98D75D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:48:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1BD98D75E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BEC22829F2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:48:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4B2A1C20F72
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3004A1D049A;
-	Wed,  2 Oct 2024 13:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D31A1D04B4;
+	Wed,  2 Oct 2024 13:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOp7s0qQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjvapyIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E245F1CF5FB;
-	Wed,  2 Oct 2024 13:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B681CF5FB;
+	Wed,  2 Oct 2024 13:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876919; cv=none; b=ilz61u78r5UZO4cmLsLzAH0Tbr5H13D8ZKxWQNJH6DVQHCX+c37uLfH6dGOy2D2L8p/8DmHIRjHZf3QXIWga9xY/Ju5GgUvpzA9RwgyT3IrPw2h9/nOmEFyufF70amAbTbLL/sfDeJqXpY+LjzTYfc7IYrBJqWcO0Cg+YGoljC0=
+	t=1727876921; cv=none; b=aLBnNrqaRzL27Pj9WAjKr6THpIXd4/ZkOqq7iG/IdpmcRMaEIVlnIJu/GQgSP7VpspaK2K+kfaXHi0RJC96gZA2XnN28LqxzJzGWKV5ThmeFUja6I6SzVft6AD+AUC+9hVpwE0scFrdy9HzCbdicmW1i0rERKv8oG3ddQBSBg+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876919; c=relaxed/simple;
-	bh=yF/IMAZDYwzcnaUt+ZKdfB1OF2Wei3eAL24a952FNGs=;
+	s=arc-20240116; t=1727876921; c=relaxed/simple;
+	bh=Gzi+sNbXPO/m1BPg7lb4MAAuX4g9uZfjzFzTtRXMv8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eg6JtEbO+RvgqAwMkCpLmVsqGnzCDt+Yjqd/GeCEBsbFZA/tKZ9Pi3zJwyZyfU10kOqBUvcVu3OPVWhnus0lpw6JE0wYOzfqA530zISmzZmS2Kp/iBfUqxsj4CtGmOPDHc7PXMnHag2WfnhCytHdnA3l7dc4CmPntatQ6WCoiEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOp7s0qQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62ACDC4CEC2;
-	Wed,  2 Oct 2024 13:48:38 +0000 (UTC)
+	 MIME-Version; b=suSMrD3bKQV8WtHeOgyKKBKSh8niOLI4XDQ7KOM8jZ6IPt+sqxsPpQZjPv3BgTF6Dpz8CboKMwHX+rOzkIdSWEJEwN7htCtsq3iUFynP8Sb/Hp/g+Tx91Z1QvuntpzVnEgMPo2O3xieyB/H+qXmBTjqsYcFnppLbwkL76iESKkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjvapyIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49ECBC4CEC2;
+	Wed,  2 Oct 2024 13:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876918;
-	bh=yF/IMAZDYwzcnaUt+ZKdfB1OF2Wei3eAL24a952FNGs=;
+	s=korg; t=1727876921;
+	bh=Gzi+sNbXPO/m1BPg7lb4MAAuX4g9uZfjzFzTtRXMv8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOp7s0qQe6eGtUkLkrlXk7IS1TP1HYoxiiK8k4OC8wFnRypLYTcxDC0KC4A+5f7aG
-	 fxCyaw/5HtW3i/BDGg2SoYqysvTPnMKHBKezrEgXpZRl+mplKR5BIukTJn6GS3nKNP
-	 nbNEgvRR31xVmVcXcbRZdSZ2eUBziY4rOsGwsYbM=
+	b=xjvapyItOuv1Z45NDWXru81VtVYODYZfRw0BFsfX31sHA4nBLBM3C8PDN28b4jyS2
+	 vLgkVCQIBldxWwtdXLeAm++1fX5TIkwYHmGYmwlB3VbwRrRgSmt6y3TEgT301N3OX2
+	 Acu7wvDEWH/+gp9gdPPVbNOLSEsFgpvYRhHWbjJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <me@linux.beauty>,
+	Werner Sembach <wse@tuxedocomputers.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 605/695] ACPI: resource: Do IRQ override on MECHREV GM7XG0M
-Date: Wed,  2 Oct 2024 15:00:03 +0200
-Message-ID: <20241002125846.664040475@linuxfoundation.org>
+Subject: [PATCH 6.11 606/695] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
+Date: Wed,  2 Oct 2024 15:00:04 +0200
+Message-ID: <20241002125846.703570291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -65,16 +65,18 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Chen <me@linux.beauty>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit b53f09ecd602d7b8b7da83b0890cbac500b6a9b9 upstream.
+commit a98cfe6ff15b62f94a44d565607a16771c847bc6 upstream.
 
-Listed device need the override for the keyboard to work.
+Internal documentation suggest that the TUXEDO Polaris 15 Gen5 AMD might
+have GMxXGxX as the board name instead of GMxXGxx.
 
-Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platforms")
+Adding both to be on the safe side.
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Li Chen <me@linux.beauty>
-Link: https://patch.msgid.link/87y15e6n35.wl-me@linux.beauty
+Link: https://patch.msgid.link/20240910094008.1601230-1-wse@tuxedocomputers.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -83,19 +85,19 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/acpi/resource.c
 +++ b/drivers/acpi/resource.c
-@@ -555,6 +555,12 @@ static const struct dmi_system_id irq1_l
-  */
- static const struct dmi_system_id irq1_edge_low_force_override[] = {
+@@ -579,6 +579,12 @@ static const struct dmi_system_id irq1_e
+ 		},
+ 	},
  	{
-+		/* MECHREV Jiaolong17KS Series GM7XG0M */
++		/* TongFang GMxXGxX/TUXEDO Polaris 15 Gen5 AMD */
 +		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM7XG0M"),
++			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
 +		},
 +	},
 +	{
- 		/* XMG APEX 17 (M23) */
+ 		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
  		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxBGxx"),
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
 
 
 
