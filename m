@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BBC98D9C0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8C698DC5C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F89C2897D6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76D3B286782
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983181D278A;
-	Wed,  2 Oct 2024 14:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBFE1D12FF;
+	Wed,  2 Oct 2024 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdkqNlHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwv8VP1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5467F1D1E71;
-	Wed,  2 Oct 2024 14:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BD11D12F0;
+	Wed,  2 Oct 2024 14:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878193; cv=none; b=gp7fP3vdhg0f2MfEP8yQv2HjOovTEpgYvKXuX0UIhOaAiCjS6s12nWzg/i8tqyPR5KMsEegcbOc/nNxCDpxo0n07QPgaL0dMfNrnPF5F9SRqySzwAvxktMb05WiMtPGbul9EwpH+WGt33F28zxt3EINq7E5sMkubxdui2K6MXmY=
+	t=1727879656; cv=none; b=BChliYqw/nq4miNP35bZwzCQEKjqJzOmd4OZqWYa42W7F8HwkZq9bz2p7/MFaJNMSK8kwnAu9cyDQ3BueLUptVGHyNalAmUYnTKu7kijInl4PsmY3YklbDrZxNqvGrh/LxQD0wkOL9dZ9YJOdt70oom450K6AEXPMBnZJ+QX5kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878193; c=relaxed/simple;
-	bh=BA4DRMB9tdZQgpx8DL7QFIt1dfZ3oVDoCbSaIXOmeLc=;
+	s=arc-20240116; t=1727879656; c=relaxed/simple;
+	bh=+KFuDCn7F+kt1/DSPeobm0e9bgj15RD/K5W+XShCpzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjEGwI0R4qbsIKMYSEVaZ93gs8hEJl+8u9X0TNecvKd8R/iQQK+9eAU394z2/JCLgaVeHNDDnMoTGgviQQvm97j3Ijfvf2NLCtKssB53uDAq26b8i7EEZl4sUAgcgMxHExc0HJcmgWbEng6D8prIqIIYsE27e+L8/4i1MIXu4Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdkqNlHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D177BC4CEC5;
-	Wed,  2 Oct 2024 14:09:52 +0000 (UTC)
+	 MIME-Version; b=kSy42fXYi8P/KIHyN70p+cA0JPYLQalaHsr8mOdBB9mT+FrfqtZ4Z8EJixkDeUAA2fKfCMTsMr4e277DuMKeW0Yi8BKE1hC8oFfYoFGa7ZlKNbEgfUFkosi6TxIOr0/oDauZEnWbFzeQlB6mELim7ai0GicQGqB6KbDnRRuQjUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwv8VP1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606A1C4CEC2;
+	Wed,  2 Oct 2024 14:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878193;
-	bh=BA4DRMB9tdZQgpx8DL7QFIt1dfZ3oVDoCbSaIXOmeLc=;
+	s=korg; t=1727879655;
+	bh=+KFuDCn7F+kt1/DSPeobm0e9bgj15RD/K5W+XShCpzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdkqNlHMS2sb3Cj+Nzu5LOrxMjodFh9yVkCSi9uwiFvRopbU6YVSrQz9Azq/N9Ys2
-	 RLdWP0msiAqniad1GhETY9STlYVsXbEXZq7jjQwu4kgZExEoOTHltHcNhLEZqsYzbJ
-	 JLRseLjKuYT2e54U/rI9uh3i6llPE2iXK40yv0b8=
+	b=hwv8VP1OIGay9eR4/FYzjxgkkgeoHR4XkN/CChDNGl9iYWmK9WF22uksPaG0FZaZd
+	 L6BZv3Lgs56ioZXST11XDdtzkhHJin5qPdghssDepCCeD32grAVt/TODSzOOOLHtUZ
+	 mpCSBkVQZdsjsLI6QGi6hVTOEAT47o8Olscxa9pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 330/634] Input: ilitek_ts_i2c - add report id message validation
-Date: Wed,  2 Oct 2024 14:57:10 +0200
-Message-ID: <20241002125824.130777551@linuxfoundation.org>
+Subject: [PATCH 6.6 192/538] selftests/bpf: Drop unneeded error.h includes
+Date: Wed,  2 Oct 2024 14:57:11 +0200
+Message-ID: <20241002125759.835768963@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 208989744a6f01bed86968473312d4e650e600b3 ]
+[ Upstream commit 69f409469c9b1515a5db40d5a36fda372376fa2d ]
 
-Ensure that the touchscreen response has correct "report id" byte
-before processing the touch data and discard other messages.
+The addition of general support for unprivileged tests in test_loader.c
+breaks building test_verifier on non-glibc (e.g. musl) systems, due to the
+inclusion of glibc extension '<error.h>' in 'unpriv_helpers.c'. However,
+the header is actually not needed, so remove it to restore building.
 
-Fixes: 42370681bd46 ("Input: Add support for ILITEK Lego Series")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240805085511.43955-3-francesco@dolcini.it
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Similarly for sk_lookup.c and flow_dissector.c, error.h is not necessary
+and causes problems, so drop them.
+
+Fixes: 1d56ade032a4 ("selftests/bpf: Unprivileged tests for test_loader.c")
+Fixes: 0ab5539f8584 ("selftests/bpf: Tests for BPF_SK_LOOKUP attach point")
+Fixes: 0905beec9f52 ("selftests/bpf: run flow dissector tests in skb-less mode")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/5664367edf5fea4f3f4b4aec3b182bcfc6edff9c.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ilitek_ts_i2c.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 -
+ tools/testing/selftests/bpf/prog_tests/sk_lookup.c      | 1 -
+ tools/testing/selftests/bpf/unpriv_helpers.c            | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/drivers/input/touchscreen/ilitek_ts_i2c.c b/drivers/input/touchscreen/ilitek_ts_i2c.c
-index e1849185e18c7..5a807ad723190 100644
---- a/drivers/input/touchscreen/ilitek_ts_i2c.c
-+++ b/drivers/input/touchscreen/ilitek_ts_i2c.c
-@@ -37,6 +37,8 @@
- #define ILITEK_TP_CMD_GET_MCU_VER			0x61
- #define ILITEK_TP_CMD_GET_IC_MODE			0xC0
+diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+index 9e5f38739104b..9625e6d217913 100644
+--- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
++++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+@@ -1,7 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <test_progs.h>
+ #include <network_helpers.h>
+-#include <error.h>
+ #include <linux/if_tun.h>
+ #include <sys/uio.h>
  
-+#define ILITEK_TP_I2C_REPORT_ID				0x48
-+
- #define REPORT_COUNT_ADDRESS				61
- #define ILITEK_SUPPORT_MAX_POINT			40
+diff --git a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
+index de2466547efe0..a1ab0af004549 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
++++ b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
+@@ -18,7 +18,6 @@
+ #include <arpa/inet.h>
+ #include <assert.h>
+ #include <errno.h>
+-#include <error.h>
+ #include <fcntl.h>
+ #include <sched.h>
+ #include <stdio.h>
+diff --git a/tools/testing/selftests/bpf/unpriv_helpers.c b/tools/testing/selftests/bpf/unpriv_helpers.c
+index 2a6efbd0401e5..762e4b5ec9557 100644
+--- a/tools/testing/selftests/bpf/unpriv_helpers.c
++++ b/tools/testing/selftests/bpf/unpriv_helpers.c
+@@ -2,7 +2,6 @@
  
-@@ -163,6 +165,11 @@ static int ilitek_process_and_report_v6(struct ilitek_ts_data *ts)
- 		return error;
- 	}
+ #include <stdbool.h>
+ #include <stdlib.h>
+-#include <error.h>
+ #include <stdio.h>
  
-+	if (buf[0] != ILITEK_TP_I2C_REPORT_ID) {
-+		dev_err(dev, "get touch info failed. Wrong id: 0x%02X\n", buf[0]);
-+		return -EINVAL;
-+	}
-+
- 	report_max_point = buf[REPORT_COUNT_ADDRESS];
- 	if (report_max_point > ts->max_tp) {
- 		dev_err(dev, "FW report max point:%d > panel info. max:%d\n",
+ #include "unpriv_helpers.h"
 -- 
 2.43.0
 
