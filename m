@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-80554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649EF98DE61
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:06:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F4598DE6D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 285592822CF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:06:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D3CAB28807
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650841CFEA3;
-	Wed,  2 Oct 2024 15:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAB71D0792;
+	Wed,  2 Oct 2024 15:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="AgcnX01I"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="QADBWvk5"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D18E1D0426
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4246B1D014A
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727881612; cv=none; b=eWbZcYgqXmrVOTBLvcoC9/E5L0fky67Ya15JVkA0V6kuhZzax+Xs/UpKGM+C55uRTthZ0Aj1nLQ+c/WhACcjSHScUz4xIlzmofmkXsEYYDZ42lP5zQxXVZQ5lUNp5SYUxzfqEwZvrTpN1/f7v4EfpoiK+NqmqQ8BxfU2WGSqZ2c=
+	t=1727881620; cv=none; b=V9te227FaZBMTiJwT17TP2jc7WNWY5nZmGjTnTua9RSiykX4hqL5hI/DzCr0O9HwF/5n6MfgW5C//FR7ANo6dSpuzJ1o4Vfrz1S9qJU1oSHwku7JrX8QOaPrHNdxpwJQuYHOSY614mJ8HLZBZQBabaONlfzpZEm6aA/7mACUljc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727881612; c=relaxed/simple;
-	bh=siBJaIU5Nc4qgnUvmYIn4FFF4G4G7s/F/D/6Z3AdLwY=;
+	s=arc-20240116; t=1727881620; c=relaxed/simple;
+	bh=XrwlWeNI78go6xh3nJDpH8lxzFJNagk80F9Bdh/Eqls=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YrdA9+J4XJhVGdF2Iw9/bK7LKH4PXFcO2pAKlGivGmHfV94Om2NmZgsdptL1uiccy/4AIwBTHWz4tN8mPVtcfUqQaAX8FW+8RhhCSF2tSWeRghGDi3HW3U4gIaYuEdrHnDwxsG8KTPO3BJ5n+wrjA0LOu9T6hIe4nvx8OV5UxI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=AgcnX01I; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version; b=cn4Zhd84rUAcgDvK5q21uMGa+ln3dWq2ImA9tic0fQ4LkPZnlKl3MinBTLMEr16MKO4x2uDymVu1XZRbpXZ+1QbIPSDdxX1dJr7xzfqnxCkGySgG57iZ53IUa7zPUEXTiocqcRiETnoJi739l2vNtBkov7BsRymezcD6kVlmrNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=QADBWvk5; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Cd46p025609;
-	Wed, 2 Oct 2024 15:06:41 GMT
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Cd4Ur011625;
+	Wed, 2 Oct 2024 15:06:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=F
-	v4cZciKaW9hxb+smnzTDoCy6bntTvQ4wPVGoKaLCAE=; b=AgcnX01IU6TNiDUQR
-	5UJOfUG0wm4HtcfvJJn9kj38M4zDlDMLPqMcvY1qTJ05hFy6EQ33wud5WuQjmrvI
-	oG/qoeeQKSNGX4V3m7UTeS67QNj+bR8LpFWjs/z2GRyKWSwtVlWgCct9rqiSizuG
-	8M/ZybcYwrUOa6gxSTMZRKpy6mvlwisbHQFnSzMvYeIetdyBRVL6NhH5gjpjHhT2
-	00AB+YyAOrcqejnm7x5fSiLVyKcofzexiiYgnixJ8m/UbkiBhKYZPVcpmh19mfr7
-	cmxsEYLiTYOUKtK5HLm8QsvFhCKuJI2IcKc00lg/Im/P1SblLN540wy6gEZgcSlz
-	BsXxg==
+	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=e
+	RsyE80CLkIP8kqa9r3Sp+xqAIBF5dlfczOBcKg69Y0=; b=QADBWvk5wtOwA/VoV
+	nlkZ684TDsth9+tEwc0068o9rcFftiOlPR+DtIiioDjthIy0oae7Gc7N+4hJxeOw
+	in+OdCK8wTHvUJAEyq63dy/PM3GZwScK8eMPPfANvvIVSlizwzgU4uuVopx6gzYp
+	E4ALe6QaOO8EHK4cEveCdCXpBg0EHsfuZy5VSxqCr6XP/ibGl+wElt0uJ9pXYHIo
+	BCMc17SDVyqwJe8Gamm2oU66Tsuila21kQY6A38JHDl05xl0SmEfPCs8gKQy3ctN
+	BteJo9YWCXPTp3ODlqIYM36BlTS48WN6zU7L1bIf+R0zr82cK7SfLq6jq3OTk44e
+	pmyuA==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x9ucss7c-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8k39p5n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:06:40 +0000 (GMT)
+	Wed, 02 Oct 2024 15:06:45 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492Er2lw017460;
-	Wed, 2 Oct 2024 15:06:39 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492Dmn1M017489;
+	Wed, 2 Oct 2024 15:06:44 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x888y098-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x888y0d0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:06:39 +0000
+	Wed, 02 Oct 2024 15:06:44 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492F1lZI012831;
-	Wed, 2 Oct 2024 15:06:38 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492F1lZK012831;
+	Wed, 2 Oct 2024 15:06:43 GMT
 Received: from localhost.localdomain (dhcp-10-175-43-118.vpn.oracle.com [10.175.43.118])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x888xyse-4;
-	Wed, 02 Oct 2024 15:06:38 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x888xyse-5;
+	Wed, 02 Oct 2024 15:06:43 +0000
 From: Vegard Nossum <vegard.nossum@oracle.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, pavel@denx.de, cengiz.can@canonical.com,
@@ -68,10 +68,11 @@ Cc: stable@vger.kernel.org, pavel@denx.de, cengiz.can@canonical.com,
         ajay.kaher@broadcom.com, zsm@chromium.org, dan.carpenter@linaro.org,
         shivani.agarwal@broadcom.com,
         Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Eric Dumazet <edumazet@google.com>,
         Vegard Nossum <vegard.nossum@oracle.com>
-Subject: [PATCH RFC 6.6.y 03/15] Bluetooth: hci_sock: Fix not validating setsockopt user input
-Date: Wed,  2 Oct 2024 17:05:54 +0200
-Message-Id: <20241002150606.11385-4-vegard.nossum@oracle.com>
+Subject: [PATCH RFC 6.6.y 04/15] Bluetooth: ISO: Fix not validating setsockopt user input
+Date: Wed,  2 Oct 2024 17:05:55 +0200
+Message-Id: <20241002150606.11385-5-vegard.nossum@oracle.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241002150606.11385-1-vegard.nossum@oracle.com>
 References: <20241002150606.11385-1-vegard.nossum@oracle.com>
@@ -89,81 +90,110 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spam
  bulkscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
  definitions=main-2410020109
-X-Proofpoint-GUID: 6h_-YWUBNkV0t508rZUKIEIOuf0HVAsf
-X-Proofpoint-ORIG-GUID: 6h_-YWUBNkV0t508rZUKIEIOuf0HVAsf
+X-Proofpoint-GUID: fTCpCdZl0uGtFRKzsU89zjrQDWLSGce7
+X-Proofpoint-ORIG-GUID: fTCpCdZl0uGtFRKzsU89zjrQDWLSGce7
 
 From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit b2186061d6043d6345a97100460363e990af0d46 ]
+[ Upstream commit 9e8742cdfc4b0e65266bb4a901a19462bda9285e ]
 
 Check user input length before copying data.
 
-Fixes: 09572fca7223 ("Bluetooth: hci_sock: Add support for BT_{SND,RCV}BUF")
+Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Fixes: 0731c5ab4d51 ("Bluetooth: ISO: Add support for BT_PKT_STATUS")
+Fixes: f764a6c2c1e4 ("Bluetooth: ISO: Add broadcast support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-(cherry picked from commit b2186061d6043d6345a97100460363e990af0d46)
-[Vegard: CVE-2024-35963; no conflicts]
+(cherry picked from commit 9e8742cdfc4b0e65266bb4a901a19462bda9285e)
+[Vegard: CVE-2024-35964; no conflicts.]
 Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 ---
- net/bluetooth/hci_sock.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ net/bluetooth/iso.c | 36 ++++++++++++------------------------
+ 1 file changed, 12 insertions(+), 24 deletions(-)
 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 3d904ca92e9e8..69c2ba1e843eb 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -1943,10 +1943,9 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 3ccba592f7349..c46d123c30e14 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -1349,7 +1349,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			       sockptr_t optval, unsigned int optlen)
+ {
+ 	struct sock *sk = sock->sk;
+-	int len, err = 0;
++	int err = 0;
+ 	struct bt_iso_qos qos = default_qos;
+ 	u32 opt;
  
- 	switch (optname) {
- 	case HCI_DATA_DIR:
--		if (copy_from_sockptr(&opt, optval, sizeof(opt))) {
+@@ -1364,10 +1364,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
 -			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
 +		if (err)
  			break;
 -		}
  
  		if (opt)
- 			hci_pi(sk)->cmsg_mask |= HCI_CMSG_DIR;
-@@ -1955,10 +1954,9 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+@@ -1376,10 +1375,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
  		break;
  
- 	case HCI_TIME_STAMP:
--		if (copy_from_sockptr(&opt, optval, sizeof(opt))) {
+ 	case BT_PKT_STATUS:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
 -			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
 +		if (err)
  			break;
 -		}
  
  		if (opt)
- 			hci_pi(sk)->cmsg_mask |= HCI_CMSG_TSTAMP;
-@@ -1976,11 +1974,9 @@ static int hci_sock_setsockopt_old(struct socket *sock, int level, int optname,
- 			uf.event_mask[1] = *((u32 *) f->event_mask + 1);
+ 			set_bit(BT_SK_PKT_STATUS, &bt_sk(sk)->flags);
+@@ -1394,17 +1392,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
  		}
  
--		len = min_t(unsigned int, len, sizeof(uf));
--		if (copy_from_sockptr(&uf, optval, len)) {
+-		len = min_t(unsigned int, sizeof(qos), optlen);
+-
+-		if (copy_from_sockptr(&qos, optval, len)) {
 -			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&uf, sizeof(uf), optval, len);
+-			break;
+-		}
+-
+-		if (len == sizeof(qos.ucast) && !check_ucast_qos(&qos)) {
+-			err = -EINVAL;
++		err = bt_copy_from_sockptr(&qos, sizeof(qos), optval, optlen);
 +		if (err)
  			break;
 -		}
  
- 		if (!capable(CAP_NET_RAW)) {
- 			uf.type_mask &= hci_sec_filter.type_mask;
-@@ -2039,10 +2035,9 @@ static int hci_sock_setsockopt(struct socket *sock, int level, int optname,
- 			goto done;
+ 		iso_pi(sk)->qos = qos;
+ 		iso_pi(sk)->qos_user_set = true;
+@@ -1419,18 +1409,16 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
  		}
  
--		if (copy_from_sockptr(&opt, optval, sizeof(opt))) {
+ 		if (optlen > sizeof(iso_pi(sk)->base)) {
+-			err = -EOVERFLOW;
++			err = -EINVAL;
+ 			break;
+ 		}
+ 
+-		len = min_t(unsigned int, sizeof(iso_pi(sk)->base), optlen);
+-
+-		if (copy_from_sockptr(iso_pi(sk)->base, optval, len)) {
 -			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, len);
++		err = bt_copy_from_sockptr(iso_pi(sk)->base, optlen, optval,
++					   optlen);
 +		if (err)
  			break;
 -		}
  
- 		hci_pi(sk)->mtu = opt;
+-		iso_pi(sk)->base_len = len;
++		iso_pi(sk)->base_len = optlen;
+ 
  		break;
+ 
 -- 
 2.34.1
 
