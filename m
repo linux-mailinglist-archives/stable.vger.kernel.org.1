@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B318F98D93F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02EC98DBBD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B9F31F223BF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635F51F21F82
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D611D1F4D;
-	Wed,  2 Oct 2024 14:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF1C1D1F7F;
+	Wed,  2 Oct 2024 14:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5tbRNZi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVlJKdxD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB7E1D1E9D;
-	Wed,  2 Oct 2024 14:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193671D14E4;
+	Wed,  2 Oct 2024 14:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877872; cv=none; b=RzkCwmH4FpfrQJJXTErQuHdx7Bdd4tqdN8tMSjxtT5UujNxNGU7l4DoVdUCSJ+/Mi87t31lHl6l4nRPQnyac9APs/2NfyVevA25FTvRcoAbff0VNbBMlXqxlERqdnsqHLngaWxjZdG1n1ctYX1X7nvXUjFNTaTHKim/vG0+By0o=
+	t=1727879341; cv=none; b=stMo4vuk9Y6OdymKLr0Edm7912h6bT1ZXh528kZYzhLZ0Xm9NzSmrPpJWElGAHTPVKLxkueIaHp9sFu2fRmq9+ammBUirVpf2LFyoeu5btLlKlnrlMvvNvuQJf2n4IAfSUIrXGmaAsC5/ec5nLjNs1emm59FC3dizPHfYwNyLwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877872; c=relaxed/simple;
-	bh=tzCx+U0DNyDWOEXXSl/aQfAC5eUU3JTxtP269siRKaw=;
+	s=arc-20240116; t=1727879341; c=relaxed/simple;
+	bh=COJ6NTSN5Bll5eHR6U5XU5erXFDUeqK8BXyTTMXrhss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bfr/FPqFpqoRalauVlRoEGJVXeemD2th4MnA8uVd2Zuq9gA3n9SkXYcnjONCWtrMWjXtkg15pfVQfxRuhlWx3Xk8w7/8d7XZTYJmZubkogxQmu4QbtEHAnjEM9gFhm8EtJrwDDXMLLF53N7hvRh1qEzegzApxy1fhM1xbJ9L2IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5tbRNZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96E4C4CEC2;
-	Wed,  2 Oct 2024 14:04:31 +0000 (UTC)
+	 MIME-Version; b=j2edEr3kGyvyjl+7Ze5CH5Vbd9UGnhlubfezO9D3roDCQStT24H8+xVTZ5TN/nEsu644ryZFd20eOZUCB5YCF8TsyrYqLtlhdqPPNfTw0NZWK+NAYtwm72fvRDjenWv6DOlUyF9f4QMLqucwy5z0CwGe7Hi9bWC1FtKocKU9N7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVlJKdxD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9697DC4CEC2;
+	Wed,  2 Oct 2024 14:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877872;
-	bh=tzCx+U0DNyDWOEXXSl/aQfAC5eUU3JTxtP269siRKaw=;
+	s=korg; t=1727879341;
+	bh=COJ6NTSN5Bll5eHR6U5XU5erXFDUeqK8BXyTTMXrhss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5tbRNZiHJkiuefNowx5lhHFH8m5tFxwBEonJGyEUc8UyCR7hWcB6jS6NcgQyercF
-	 80QxMsv3hIUZ4LHGr08urxD5e2TQqwYgFbMS8nWiTPyj+iWgJSSQeb9/vS6P6FxKRE
-	 eCjbvNW4twrjQMmqoHP0dBxXmhqn/T0Onh5mt/yk=
+	b=GVlJKdxD0GUCx4DG9P7TnWqvGXTo+mg9LfRjxKWfFhLWM5aaubSlhq4/6BIxAAlMD
+	 /xtNK9pzJjee8ADuTUUPPiIsZazpO46RDRcr1nDpPYAu0rA3KeSq6XMLWLa3dojjhX
+	 D8hWq4qhgZNE9otsmGj8LS0UEzUMc4zvqs2TMNAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 223/634] xen: tolerate ACPI NVS memory overlapping with Xen allocated memory
-Date: Wed,  2 Oct 2024 14:55:23 +0200
-Message-ID: <20241002125819.902260037@linuxfoundation.org>
+Subject: [PATCH 6.6 085/538] io_uring/io-wq: do not allow pinning outside of cpuset
+Date: Wed,  2 Oct 2024 14:55:24 +0200
+Message-ID: <20241002125755.577082180@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,163 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
 
-[ Upstream commit be35d91c8880650404f3bf813573222dfb106935 ]
+[ Upstream commit 0997aa5497c714edbb349ca366d28bd550ba3408 ]
 
-In order to minimize required special handling for running as Xen PV
-dom0, the memory layout is modified to match that of the host. This
-requires to have only RAM at the locations where Xen allocated memory
-is living. Unfortunately there seem to be some machines, where ACPI
-NVS is located at 64 MB, resulting in a conflict with the loaded
-kernel or the initial page tables built by Xen.
+The io worker threads are userland threads that just never exit to the
+userland. By that, they are also assigned to a cgroup (the group of the
+creating task).
 
-Avoid this conflict by swapping the ACPI NVS area in the memory map
-with unused RAM. This is possible via modification of the dom0 P2M map.
-Accesses to the ACPI NVS area are done either for saving and restoring
-it across suspend operations (this will work the same way as before),
-or by ACPI code when NVS memory is referenced from other ACPI tables.
-The latter case is handled by a Xen specific indirection of
-acpi_os_ioremap().
+When changing the affinity of the io_wq thread via syscall, we must only
+allow cpumasks within the limits defined by the cpuset controller of the
+cgroup (if enabled).
 
-While the E820 map can (and should) be modified right away, the P2M
-map can be updated only after memory allocation is working, as the P2M
-map might need to be extended.
-
-Fixes: 808fdb71936c ("xen: check for kernel memory conflicting with memory layout")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: da64d6db3bd3 ("io_uring: One wqe per wq")
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Link: https://lore.kernel.org/r/20240910171157.166423-2-felix.moessbauer@siemens.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/setup.c | 92 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 91 insertions(+), 1 deletion(-)
+ io_uring/io-wq.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 112b071bac9d4..989c14b1ff6c8 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -496,6 +496,8 @@ void __init xen_remap_memory(void)
- 	set_pte_mfn(buf, mfn_save, PAGE_KERNEL);
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 98c9cfb983062..2df8d98738498 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -13,6 +13,7 @@
+ #include <linux/slab.h>
+ #include <linux/rculist_nulls.h>
+ #include <linux/cpu.h>
++#include <linux/cpuset.h>
+ #include <linux/task_work.h>
+ #include <linux/audit.h>
+ #include <linux/mmu_context.h>
+@@ -1324,17 +1325,29 @@ static int io_wq_cpu_offline(unsigned int cpu, struct hlist_node *node)
  
- 	pr_info("Remapped %ld page(s)\n", remapped);
-+
-+	xen_do_remap_nonram();
- }
- 
- static unsigned long __init xen_get_pages_limit(void)
-@@ -626,14 +628,102 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size)
- 	return 0;
- }
- 
-+/*
-+ * Swap a non-RAM E820 map entry with RAM above ini_nr_pages.
-+ * Note that the E820 map is modified accordingly, but the P2M map isn't yet.
-+ * The adaption of the P2M must be deferred until page allocation is possible.
-+ */
-+static void __init xen_e820_swap_entry_with_ram(struct e820_entry *swap_entry)
-+{
-+	struct e820_entry *entry;
-+	unsigned int mapcnt;
-+	phys_addr_t mem_end = PFN_PHYS(ini_nr_pages);
-+	phys_addr_t swap_addr, swap_size, entry_end;
-+
-+	swap_addr = PAGE_ALIGN_DOWN(swap_entry->addr);
-+	swap_size = PAGE_ALIGN(swap_entry->addr - swap_addr + swap_entry->size);
-+	entry = xen_e820_table.entries;
-+
-+	for (mapcnt = 0; mapcnt < xen_e820_table.nr_entries; mapcnt++) {
-+		entry_end = entry->addr + entry->size;
-+		if (entry->type == E820_TYPE_RAM && entry->size >= swap_size &&
-+		    entry_end - swap_size >= mem_end) {
-+			/* Reduce RAM entry by needed space (whole pages). */
-+			entry->size -= swap_size;
-+
-+			/* Add new entry at the end of E820 map. */
-+			entry = xen_e820_table.entries +
-+				xen_e820_table.nr_entries;
-+			xen_e820_table.nr_entries++;
-+
-+			/* Fill new entry (keep size and page offset). */
-+			entry->type = swap_entry->type;
-+			entry->addr = entry_end - swap_size +
-+				      swap_addr - swap_entry->addr;
-+			entry->size = swap_entry->size;
-+
-+			/* Convert old entry to RAM, align to pages. */
-+			swap_entry->type = E820_TYPE_RAM;
-+			swap_entry->addr = swap_addr;
-+			swap_entry->size = swap_size;
-+
-+			/* Remember PFN<->MFN relation for P2M update. */
-+			xen_add_remap_nonram(swap_addr, entry_end - swap_size,
-+					     swap_size);
-+
-+			/* Order E820 table and merge entries. */
-+			e820__update_table(&xen_e820_table);
-+
-+			return;
-+		}
-+
-+		entry++;
-+	}
-+
-+	xen_raw_console_write("No suitable area found for required E820 entry remapping action\n");
-+	BUG();
-+}
-+
-+/*
-+ * Look for non-RAM memory types in a specific guest physical area and move
-+ * those away if possible (ACPI NVS only for now).
-+ */
-+static void __init xen_e820_resolve_conflicts(phys_addr_t start,
-+					      phys_addr_t size)
-+{
-+	struct e820_entry *entry;
-+	unsigned int mapcnt;
-+	phys_addr_t end;
-+
-+	if (!size)
-+		return;
-+
-+	end = start + size;
-+	entry = xen_e820_table.entries;
-+
-+	for (mapcnt = 0; mapcnt < xen_e820_table.nr_entries; mapcnt++) {
-+		if (entry->addr >= end)
-+			return;
-+
-+		if (entry->addr + entry->size > start &&
-+		    entry->type == E820_TYPE_NVS)
-+			xen_e820_swap_entry_with_ram(entry);
-+
-+		entry++;
-+	}
-+}
-+
- /*
-  * Check for an area in physical memory to be usable for non-movable purposes.
-- * An area is considered to usable if the used E820 map lists it to be RAM.
-+ * An area is considered to usable if the used E820 map lists it to be RAM or
-+ * some other type which can be moved to higher PFNs while keeping the MFNs.
-  * In case the area is not usable, crash the system with an error message.
-  */
- void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
- 				   const char *component)
+ int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask)
  {
-+	xen_e820_resolve_conflicts(start, size);
++	cpumask_var_t allowed_mask;
++	int ret = 0;
 +
- 	if (!xen_is_e820_reserved(start, size))
- 		return;
+ 	if (!tctx || !tctx->io_wq)
+ 		return -EINVAL;
  
++	if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
++		return -ENOMEM;
++
+ 	rcu_read_lock();
+-	if (mask)
+-		cpumask_copy(tctx->io_wq->cpu_mask, mask);
+-	else
+-		cpumask_copy(tctx->io_wq->cpu_mask, cpu_possible_mask);
++	cpuset_cpus_allowed(tctx->io_wq->task, allowed_mask);
++	if (mask) {
++		if (cpumask_subset(mask, allowed_mask))
++			cpumask_copy(tctx->io_wq->cpu_mask, mask);
++		else
++			ret = -EINVAL;
++	} else {
++		cpumask_copy(tctx->io_wq->cpu_mask, allowed_mask);
++	}
+ 	rcu_read_unlock();
+ 
+-	return 0;
++	free_cpumask_var(allowed_mask);
++	return ret;
+ }
+ 
+ /*
 -- 
 2.43.0
 
