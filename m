@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19A898D893
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:02:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9810A98D582
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B7BC1F214FE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:02:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B512E1C21E7B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A381D0794;
-	Wed,  2 Oct 2024 13:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262741D0174;
+	Wed,  2 Oct 2024 13:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/1bulW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slRpU5Xs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946771D0491;
-	Wed,  2 Oct 2024 13:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71CB29CE7;
+	Wed,  2 Oct 2024 13:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877569; cv=none; b=pJEea5G90dPJKP3kCH+Qu7cthyE6yRa/8m5NCza6i9OqfHMlB5/GhC+JwcD+iPO9iBCXznQH8+0Akg8MmgphkuwmYwUl5e8obV59LlFUZ+fqH3pSFXuwR7WlsTfRsdeAgZVSmiEz/MjmB5wCBOLITSGW8p8scp+6taeR1XqVahs=
+	t=1727875870; cv=none; b=jnimagPLzLTPygIhRKGhNrb75seG0Jh165NlGtRUKKp0yn+AEPUTrLEh1BZucBW7AZ40oEscJ+cmUF0paWPJqqyLYoc4VcSdZkGiWcENLcjw/UTkiFpx93xA1RrhCNXOay9DiaUTtJCZJOn6rWJv28yCWtuhiLbuoxbicOfdv8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877569; c=relaxed/simple;
-	bh=2NcVqtH+oVH+qHlGWboEMvOiUNEjZsizC2fw4qV+7hw=;
+	s=arc-20240116; t=1727875870; c=relaxed/simple;
+	bh=RqEMeUhb/k37Bf2xXxD/LhJUKboGVtPKldI0KlXcdzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mB1U2QHoO4v1dt4fmaGb4iuAZSN7GyDrA7FkmUh6SRxaGmeeC5C73G68G/fv6+nWjiVAgaZlewWNx8YaGzmmspPbe/5ztULoAurguA2ubdIZ+CriT3Se9v8w07Lx4/k9nHkOiDycp6RyITPcTbvPqzT+4u0cy1HxEMayEE3N970=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/1bulW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5BDC4CEC5;
-	Wed,  2 Oct 2024 13:59:28 +0000 (UTC)
+	 MIME-Version; b=bdSYebBrf5vTbf6dywA0cE8yVAthb3WZmJe69/f9/S70jjSjtCztl6NY9eJ9X9oQkILTXoSGzm5qtwTfZKpRywYMDJN31ca+wISbgleyg+jIVEPSckKi3kXoE9H5Vea78mU2/1wmO6Lp7NccLkLTrZ8Jh7BrYkPj200+7/S0pB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slRpU5Xs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8AAC4CEC5;
+	Wed,  2 Oct 2024 13:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877569;
-	bh=2NcVqtH+oVH+qHlGWboEMvOiUNEjZsizC2fw4qV+7hw=;
+	s=korg; t=1727875870;
+	bh=RqEMeUhb/k37Bf2xXxD/LhJUKboGVtPKldI0KlXcdzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/1bulW4xFIPwFnXfuqZVFFqSzP8WII2Iuom72PBg+dtDzrN/qVMrP3rdOerxzZ90
-	 MPSOEBA9Ak/Vm7lWRAqnX14BYhbB/wFDvMSE/Iug2X0pvonLqMSceS1/N6augJXTnE
-	 L91KhAbZZBfqn7kcT6mByxl8qPWfbeDPhpBbXpCk=
+	b=slRpU5XsCWQ+Nj1QydEBBOqWCfgjvJeWc0T8DirRZGSbBzjyPMxCyNf2arCZ4Y8XK
+	 J2kf/bXrMDWXen9I+vPT2LhmK+wiSk7gudUr+uv9YNm8UM+sFSEVdEvrLDAxJqyGZj
+	 eiuJllDL3R6W/Oj+miaMlolP5cIH2iqSAegWagQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Fei Shao <fshao@chromium.org>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 119/634] arm64: dts: mediatek: mt8186: Fix supported-hw mask for GPU OPPs
-Date: Wed,  2 Oct 2024 14:53:39 +0200
-Message-ID: <20241002125815.809240777@linuxfoundation.org>
+Subject: [PATCH 6.11 222/695] drm/mediatek: Use spin_lock_irqsave() for CRTC event lock
+Date: Wed,  2 Oct 2024 14:53:40 +0200
+Message-ID: <20241002125831.319504294@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Fei Shao <fshao@chromium.org>
 
-[ Upstream commit 2317d018b835842df0501d8f9e9efa843068a101 ]
+[ Upstream commit be03b30b7aa99aca876fbc7c1c1b73b2d0339321 ]
 
-The speedbin eFuse reads a value 'x' from 0 to 7 and, in order to
-make that compatible with opp-supported-hw, it gets post processed
-as BIT(x).
+Use the state-aware spin_lock_irqsave() and spin_unlock_irqrestore()
+to avoid unconditionally re-enabling the local interrupts.
 
-Change all of the 0x30 supported-hw to 0x20 to avoid getting
-duplicate OPPs for speedbin 4, and also change all of the 0x8 to
-0xcf because speedbins different from 4 and 5 do support 900MHz,
-950MHz, 1000MHz with the higher voltage of 850mV, 900mV, 950mV
-respectively.
-
-Fixes: f38ea593ad0d ("arm64: dts: mediatek: mt8186: Wire up GPU voltage/frequency scaling")
-Link: https://lore.kernel.org/r/20240725072243.173104-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 411f5c1eacfe ("drm/mediatek: handle events when enabling/disabling crtc")
+Signed-off-by: Fei Shao <fshao@chromium.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240828101511.3269822-1-fshao@chromium.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_crtc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-index 4763ed5dc86cf..d63a9defe73e1 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-@@ -731,7 +731,7 @@
- 		opp-900000000-3 {
- 			opp-hz = /bits/ 64 <900000000>;
- 			opp-microvolt = <850000>;
--			opp-supported-hw = <0x8>;
-+			opp-supported-hw = <0xcf>;
- 		};
+diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
+index d7f0926f896d6..a90504359e8d2 100644
+--- a/drivers/gpu/drm/mediatek/mtk_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
+@@ -467,6 +467,7 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
+ {
+ 	struct drm_device *drm = mtk_crtc->base.dev;
+ 	struct drm_crtc *crtc = &mtk_crtc->base;
++	unsigned long flags;
+ 	int i;
  
- 		opp-900000000-4 {
-@@ -743,13 +743,13 @@
- 		opp-900000000-5 {
- 			opp-hz = /bits/ 64 <900000000>;
- 			opp-microvolt = <825000>;
--			opp-supported-hw = <0x30>;
-+			opp-supported-hw = <0x20>;
- 		};
+ 	for (i = 0; i < mtk_crtc->ddp_comp_nr; i++) {
+@@ -498,10 +499,10 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
+ 	pm_runtime_put(drm->dev);
  
- 		opp-950000000-3 {
- 			opp-hz = /bits/ 64 <950000000>;
- 			opp-microvolt = <900000>;
--			opp-supported-hw = <0x8>;
-+			opp-supported-hw = <0xcf>;
- 		};
- 
- 		opp-950000000-4 {
-@@ -761,13 +761,13 @@
- 		opp-950000000-5 {
- 			opp-hz = /bits/ 64 <950000000>;
- 			opp-microvolt = <850000>;
--			opp-supported-hw = <0x30>;
-+			opp-supported-hw = <0x20>;
- 		};
- 
- 		opp-1000000000-3 {
- 			opp-hz = /bits/ 64 <1000000000>;
- 			opp-microvolt = <950000>;
--			opp-supported-hw = <0x8>;
-+			opp-supported-hw = <0xcf>;
- 		};
- 
- 		opp-1000000000-4 {
-@@ -779,7 +779,7 @@
- 		opp-1000000000-5 {
- 			opp-hz = /bits/ 64 <1000000000>;
- 			opp-microvolt = <875000>;
--			opp-supported-hw = <0x30>;
-+			opp-supported-hw = <0x20>;
- 		};
- 	};
+ 	if (crtc->state->event && !crtc->state->active) {
+-		spin_lock_irq(&crtc->dev->event_lock);
++		spin_lock_irqsave(&crtc->dev->event_lock, flags);
+ 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
+ 		crtc->state->event = NULL;
+-		spin_unlock_irq(&crtc->dev->event_lock);
++		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
+ 	}
+ }
  
 -- 
 2.43.0
