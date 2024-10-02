@@ -1,71 +1,58 @@
-Return-Path: <stable+bounces-79654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A70298D98E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5162098DC2E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F202F1F24F1F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C28B31F25954
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BE61D1732;
-	Wed,  2 Oct 2024 14:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9AC1D094A;
+	Wed,  2 Oct 2024 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vg51lpdY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDbqLKAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25321D172E;
-	Wed,  2 Oct 2024 14:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A7C1474BC;
+	Wed,  2 Oct 2024 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878074; cv=none; b=EQ9vCnhaaZr5WI6Sos/GcdNVtt+eYGSA+rZbA74kBn3jBjD+6Jr8Mz0I47XLe0jCZ9kvpc6biq4kk4//aJET/QBmme2aUauqywrmgqhPwFts6GmfHNxFlQeaM7OePsyiu/mvpSwuti2CXKY4eF5SppFp8Y2yi9ueBxfDxjfM0uQ=
+	t=1727879538; cv=none; b=PGB4vC5NN0uLyq7PI2n35FvaUm7idFMID9B6UHPqQNj1ABVUcqmYqd4siHKX3l2pcqIw/6ycHAR3RejdtMNF8lnbMbZeid02P90hIyz+kyCReTZsHHwDsnpC+OZ/AaRCsOhfMwPl+43cMTMGO5apoIVdbKz6ThFqFRSegaVV2uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878074; c=relaxed/simple;
-	bh=KoTFAteWV4sheTpo66zy0nbw5WnXODK+k8kv77BM0XE=;
+	s=arc-20240116; t=1727879538; c=relaxed/simple;
+	bh=TkMIcmk0x2VvvwXc89ZOt5wIWBKTVEF/xy1OhgMenvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m94zApXaH+0n5kJYIVCrLYVbZI4EvGJCZl8imIzyw/gSvEtUww5w6jKL0UzUWikh1FFwEX1TiIbx+BX+gyRWcG0LsED5Q/ZFsplHOV+PpLkkO3vn7zOKJUpAaU/68zCpxznLm6fx5xJFhbe3hDE2lJ4VFmP+gZLa15dfPLj3B+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vg51lpdY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA15C4CEC2;
-	Wed,  2 Oct 2024 14:07:53 +0000 (UTC)
+	 MIME-Version; b=Y06Aajown0jggR2L4P1EZCOzBmymoW+IRWjJXqm3XSLtQpxKnoFWZkCsDwlTurvSMOLQ+AppraBPUm7uDCALpKvd7vj6xXZkydk99iFExjDdM0rbhkqvxIedPauFjIUNS+KYkfHtmXco7Muqdm7XgBsTE+QPoaLExJDXVExPIHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDbqLKAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADF9C4CEC2;
+	Wed,  2 Oct 2024 14:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878073;
-	bh=KoTFAteWV4sheTpo66zy0nbw5WnXODK+k8kv77BM0XE=;
+	s=korg; t=1727879538;
+	bh=TkMIcmk0x2VvvwXc89ZOt5wIWBKTVEF/xy1OhgMenvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vg51lpdYlaDoxxDxsrVRCgGKRtago7OZUGTkH3GQeAwuSCs6F/Gv2gbVwkDPytkZB
-	 j4CQvIxkC8+l1mptdU8rfGiQBgpA3hwH90xTO0HbttdPNZxUdgXHabmaaNePxG64Ck
-	 FG5+gr6AxH7wtpuyV2Iak4mBThJwi1kDrFHHvHg8=
+	b=sDbqLKAKoB408bFTW7J/WaE3+relY4XLXucnNvAvYpUVCGpYUg9F4LmnbpzJTmT2b
+	 +1nmPp12+3zPLE22MfydyII9t+u9p8xm7bm0PAtlNXsLuUMZCATfJqlMfMCbC8TcKQ
+	 bCmi1KACCzlrjnYlhoKEJrxeDVsTFLUwKoUXXm5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	coresight@lists.linaro.org,
-	gankulkarni@os.amperecomputing.com,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ruidong Tian <tianruidong@linux.alibaba.com>,
-	Suzuki Poulouse <suzuki.poulose@arm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Fei Shao <fshao@chromium.org>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 292/634] perf scripts python cs-etm: Restore first sample log in verbose mode
+Subject: [PATCH 6.6 153/538] drm/mediatek: Fix missing configuration flags in mtk_crtc_ddp_config()
 Date: Wed,  2 Oct 2024 14:56:32 +0200
-Message-ID: <20241002125822.637226547@linuxfoundation.org>
+Message-ID: <20241002125758.293110224@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,68 +64,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit ae8e4f4048b839c1cb333d9e3d20e634b430139e ]
+[ Upstream commit fe30bae552ce27b9fefe0b12db1544e73d07325f ]
 
-The linked commit moved the early return on the first sample to before
-the verbose log, so move the log earlier too. Now the first sample is
-also logged and not skipped.
+In mtk_crtc_ddp_config(), mtk_crtc will use some configuration flags to
+generate instructions to cmdq_handle, such as:
+  state->pending_config
+  mtk_crtc->pending_planes
+  plane_state->pending.config
+  mtk_crtc->pending_async_planes
+  plane_state->pending.async_config
 
-Fixes: 2d98dbb4c9c5b09c ("perf scripts python arm-cs-trace-disasm.py: Do not ignore disam first sample")
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Benjamin Gray <bgray@linux.ibm.com>
-Cc: coresight@lists.linaro.org
-Cc: gankulkarni@os.amperecomputing.com
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: Suzuki Poulouse <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240723132858.12747-1-james.clark@linaro.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+These configuration flags may be set to false when a GCE IRQ comes calling
+ddp_cmdq_cb(). This may result in missing prepare instructions,
+especially if mtk_crtc_update_config() with the flase need_vblank (no need
+to wait for vblank) cases.
+
+Therefore, the mtk_crtc->config_updating flag is set at the beginning of
+mtk_crtc_update_config() to ensure that these configuration flags won't be
+changed when the mtk_crtc_ddp_config() is preparing instructions.
+But somehow the ddp_cmdq_cb() didn't use the mtk_crtc->config_updating
+flag to prevent those pending config flags from being cleared.
+
+To avoid missing the configuration when generating the config instruction,
+the config_updating flag should be added into ddp_cmdq_cb() and be
+protected with spin_lock.
+
+Fixes: 7f82d9c43879 ("drm/mediatek: Clear pending flag when cmdq packet is done")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240827-drm-fixup-0819-v3-1-4761005211ec@mediatek.com/
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240827-drm-fixup-0819-v3-2-4761005211ec@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/scripts/python/arm-cs-trace-disasm.py | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 27 +++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tools/perf/scripts/python/arm-cs-trace-disasm.py b/tools/perf/scripts/python/arm-cs-trace-disasm.py
-index d973c2baed1c8..7aff02d84ffb3 100755
---- a/tools/perf/scripts/python/arm-cs-trace-disasm.py
-+++ b/tools/perf/scripts/python/arm-cs-trace-disasm.py
-@@ -192,17 +192,16 @@ def process_event(param_dict):
- 	ip = sample["ip"]
- 	addr = sample["addr"]
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index 29e021ec6901c..5a1c8b26f1bb1 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -67,6 +67,8 @@ struct mtk_drm_crtc {
+ 	/* lock for display hardware access */
+ 	struct mutex			hw_lock;
+ 	bool				config_updating;
++	/* lock for config_updating to cmd buffer */
++	spinlock_t			config_lock;
+ };
  
-+	if (options.verbose == True):
-+		print("Event type: %s" % name)
-+		print_sample(sample)
+ struct mtk_crtc_state {
+@@ -104,11 +106,16 @@ static void mtk_drm_crtc_finish_page_flip(struct mtk_drm_crtc *mtk_crtc)
+ 
+ static void mtk_drm_finish_page_flip(struct mtk_drm_crtc *mtk_crtc)
+ {
++	unsigned long flags;
 +
- 	# Initialize CPU data if it's empty, and directly return back
- 	# if this is the first tracing event for this CPU.
- 	if (cpu_data.get(str(cpu) + 'addr') == None):
- 		cpu_data[str(cpu) + 'addr'] = addr
- 		return
+ 	drm_crtc_handle_vblank(&mtk_crtc->base);
++
++	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+ 	if (!mtk_crtc->config_updating && mtk_crtc->pending_needs_vblank) {
+ 		mtk_drm_crtc_finish_page_flip(mtk_crtc);
+ 		mtk_crtc->pending_needs_vblank = false;
+ 	}
++	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
+ }
  
--
--	if (options.verbose == True):
--		print("Event type: %s" % name)
--		print_sample(sample)
--
- 	# If cannot find dso so cannot dump assembler, bail out
- 	if (dso == '[unknown]'):
- 		return
+ #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+@@ -291,12 +298,19 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
+ 	struct mtk_drm_crtc *mtk_crtc = container_of(cmdq_cl, struct mtk_drm_crtc, cmdq_client);
+ 	struct mtk_crtc_state *state;
+ 	unsigned int i;
++	unsigned long flags;
+ 
+ 	if (data->sta < 0)
+ 		return;
+ 
+ 	state = to_mtk_crtc_state(mtk_crtc->base.state);
+ 
++	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
++	if (mtk_crtc->config_updating) {
++		spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
++		goto ddp_cmdq_cb_out;
++	}
++
+ 	state->pending_config = false;
+ 
+ 	if (mtk_crtc->pending_planes) {
+@@ -323,6 +337,10 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
+ 		mtk_crtc->pending_async_planes = false;
+ 	}
+ 
++	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
++
++ddp_cmdq_cb_out:
++
+ 	mtk_crtc->cmdq_vblank_cnt = 0;
+ 	wake_up(&mtk_crtc->cb_blocking_queue);
+ }
+@@ -555,9 +573,14 @@ static void mtk_drm_crtc_update_config(struct mtk_drm_crtc *mtk_crtc,
+ 	struct mtk_drm_private *priv = crtc->dev->dev_private;
+ 	unsigned int pending_planes = 0, pending_async_planes = 0;
+ 	int i;
++	unsigned long flags;
+ 
+ 	mutex_lock(&mtk_crtc->hw_lock);
++
++	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+ 	mtk_crtc->config_updating = true;
++	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
++
+ 	if (needs_vblank)
+ 		mtk_crtc->pending_needs_vblank = true;
+ 
+@@ -611,7 +634,10 @@ static void mtk_drm_crtc_update_config(struct mtk_drm_crtc *mtk_crtc,
+ 		mbox_client_txdone(mtk_crtc->cmdq_client.chan, 0);
+ 	}
+ #endif
++	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
+ 	mtk_crtc->config_updating = false;
++	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
++
+ 	mutex_unlock(&mtk_crtc->hw_lock);
+ }
+ 
+@@ -1014,6 +1040,7 @@ int mtk_drm_crtc_create(struct drm_device *drm_dev,
+ 		drm_mode_crtc_set_gamma_size(&mtk_crtc->base, gamma_lut_size);
+ 	drm_crtc_enable_color_mgmt(&mtk_crtc->base, 0, has_ctm, gamma_lut_size);
+ 	mutex_init(&mtk_crtc->hw_lock);
++	spin_lock_init(&mtk_crtc->config_lock);
+ 
+ #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	i = priv->mbox_index++;
 -- 
 2.43.0
 
