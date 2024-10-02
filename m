@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A2A98DC86
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:42:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8585998D9E5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2BC61C203D5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47378283536
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE941D27A2;
-	Wed,  2 Oct 2024 14:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7C61D0E2C;
+	Wed,  2 Oct 2024 14:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBK8PnVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSzYVsDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A971D279C;
-	Wed,  2 Oct 2024 14:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9181D094C;
+	Wed,  2 Oct 2024 14:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879749; cv=none; b=Eyt/hHoehx4YehnbSkiZRH54V/7I09MOlbnpS014kAcABN5WO5b70cKpY+22LkQ64TALzLbq5rZCLtEdfJNkaQ/jrP6v1VtflDQ3yFXwtJJ/qSYLpoEjU4N7cedxDnO8dDxNX9oGHDicTHEvD7C2Brms8xxIynGTmiuAj+LoM6I=
+	t=1727878291; cv=none; b=D1BGkm/1+mDjlXRilGBn77Jgdxr6fJsmTCzESBxQpbZ89g+1mxl7XXA0TSta829nAek+zHU1h6xOVvKxlPqc53dR1m5HvT36t4bi/gYEf/zGEL4lxkBPHl4DnxOkBsmFE9HrUKHEzTD1PmKWpjKXwOX9RQC3Ecvw8pTHhiswB74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879749; c=relaxed/simple;
-	bh=1jkGWx35kJFxThBDYbptibBNC20k5PgS4RDRMpDL4gE=;
+	s=arc-20240116; t=1727878291; c=relaxed/simple;
+	bh=J48q6aa0fIEyoHNkpgTSEUiGgZNh0QmVgxKAi0y2wzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4tcZPmxkntfIO+nUAgeaxYgljPV1wcV8AvuJcdoArqt1iV73IbmDAd+SngBVb2uRQ678QWTI7I/KO0nnsJr1S8M0KfFaB9eZm1Xco0cjee7PuRyOFxg0h5YoyHNrktzI4UiMin7Uyce3Ej/X72ieQk9p/QvGSZxcBgCBpMic1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBK8PnVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AD7C4CEC2;
-	Wed,  2 Oct 2024 14:35:48 +0000 (UTC)
+	 MIME-Version; b=PrvQQIL9nEML4q2s/MqcH/z2wPNWNTUqDcER1Fzsjk8kq3J8NPvacf4I6nKC4HxXR/D86cN2s6baeQLZgI9UQf3qumtyibK+fR7e6UypzyGDEBY+Tk7ajMgX/4RdbnmpopTYPXEmZ999nUXvHIIABlrdXJEarOgqLU6xj21G1A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSzYVsDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A0FC4CECD;
+	Wed,  2 Oct 2024 14:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879749;
-	bh=1jkGWx35kJFxThBDYbptibBNC20k5PgS4RDRMpDL4gE=;
+	s=korg; t=1727878291;
+	bh=J48q6aa0fIEyoHNkpgTSEUiGgZNh0QmVgxKAi0y2wzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OBK8PnVDkFfY/C2GbO0fOTBOJTdJLp+gyIRJuCHdJosaNhLsTzUK6hSYlQPVesR43
-	 0ylj2L7Vh4SH2bFmn8rXz0KB4n+70Ttr8s+LMJ8F+3Dj47bz9DT4vUAIz9gdQF9dPV
-	 2HiHKBoIDjk6Cyz8g/0Y51UZWP70ELth0ikKcZuU=
+	b=BSzYVsDw9ceZ8CVElXWmeh7u0FF1YTcP4+Ox/c+LCJM2ygQIUy/w13hWtsUULISKB
+	 h4OJo1pNn5uh1vHw1HyhFA9sEMGNtSpFFn6fvi3ezodfrKgrGHU0YbR+XvW9Zr27NA
+	 y6NLFV/rSwR4Q6Nh8yFMJU49pwed04GTB4Va2nzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangerkun <yangerkun@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/538] ext4: clear EXT4_GROUP_INFO_WAS_TRIMMED_BIT even mount with discard
+Subject: [PATCH 6.10 363/634] IB/core: Fix ib_cache_setup_one error flow cleanup
 Date: Wed,  2 Oct 2024 14:57:43 +0200
-Message-ID: <20241002125801.096039267@linuxfoundation.org>
+Message-ID: <20241002125825.424873364@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yangerkun <yangerkun@huawei.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 20cee68f5b44fdc2942d20f3172a262ec247b117 ]
+[ Upstream commit 1403c8b14765eab805377dd3b75e96ace8747aed ]
 
-Commit 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in
-ext4_group_info") speed up fstrim by skipping trim trimmed group. We
-also has the chance to clear trimmed once there exists some block free
-for this group(mount without discard), and the next trim for this group
-will work well too.
+When ib_cache_update return an error, we exit ib_cache_setup_one
+instantly with no proper cleanup, even though before this we had
+already successfully done gid_table_setup_one, that results in
+the kernel WARN below.
 
-For mount with discard, we will issue dicard when we free blocks, so
-leave trimmed flag keep alive to skip useless trim trigger from
-userspace seems reasonable. But for some case like ext4 build on
-dm-thinpool(ext4 blocksize 4K, pool blocksize 128K), discard from ext4
-maybe unaligned for dm thinpool, and thinpool will just finish this
-discard(see process_discard_bio when begein equals to end) without
-actually process discard. For this case, trim from userspace can really
-help us to free some thinpool block.
+Do proper cleanup using gid_table_cleanup_one before returning
+the err in order to fix the issue.
 
-So convert to clear trimmed flag for all case no matter mounted with
-discard or not.
+WARNING: CPU: 4 PID: 922 at drivers/infiniband/core/cache.c:806 gid_table_release_one+0x181/0x1a0
+Modules linked in:
+CPU: 4 UID: 0 PID: 922 Comm: c_repro Not tainted 6.11.0-rc1+ #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:gid_table_release_one+0x181/0x1a0
+Code: 44 8b 38 75 0c e8 2f cb 34 ff 4d 8b b5 28 05 00 00 e8 23 cb 34 ff 44 89 f9 89 da 4c 89 f6 48 c7 c7 d0 58 14 83 e8 4f de 21 ff <0f> 0b 4c 8b 75 30 e9 54 ff ff ff 48 8    3 c4 10 5b 5d 41 5c 41 5d 41
+RSP: 0018:ffffc90002b835b0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff811c8527
+RDX: 0000000000000000 RSI: ffffffff811c8534 RDI: 0000000000000001
+RBP: ffff8881011b3d00 R08: ffff88810b3abe00 R09: 205d303839303631
+R10: 666572207972746e R11: 72746e6520444947 R12: 0000000000000001
+R13: ffff888106390000 R14: ffff8881011f2110 R15: 0000000000000001
+FS:  00007fecc3b70800(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000340 CR3: 000000010435a001 CR4: 00000000003706b0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? show_regs+0x94/0xa0
+ ? __warn+0x9e/0x1c0
+ ? gid_table_release_one+0x181/0x1a0
+ ? report_bug+0x1f9/0x340
+ ? gid_table_release_one+0x181/0x1a0
+ ? handle_bug+0xa2/0x110
+ ? exc_invalid_op+0x31/0xa0
+ ? asm_exc_invalid_op+0x16/0x20
+ ? __warn_printk+0xc7/0x180
+ ? __warn_printk+0xd4/0x180
+ ? gid_table_release_one+0x181/0x1a0
+ ib_device_release+0x71/0xe0
+ ? __pfx_ib_device_release+0x10/0x10
+ device_release+0x44/0xd0
+ kobject_put+0x135/0x3d0
+ put_device+0x20/0x30
+ rxe_net_add+0x7d/0xa0
+ rxe_newlink+0xd7/0x190
+ nldev_newlink+0x1b0/0x2a0
+ ? __pfx_nldev_newlink+0x10/0x10
+ rdma_nl_rcv_msg+0x1ad/0x2e0
+ rdma_nl_rcv_skb.constprop.0+0x176/0x210
+ netlink_unicast+0x2de/0x400
+ netlink_sendmsg+0x306/0x660
+ __sock_sendmsg+0x110/0x120
+ ____sys_sendmsg+0x30e/0x390
+ ___sys_sendmsg+0x9b/0xf0
+ ? kstrtouint+0x6e/0xa0
+ ? kstrtouint_from_user+0x7c/0xb0
+ ? get_pid_task+0xb0/0xd0
+ ? proc_fail_nth_write+0x5b/0x140
+ ? __fget_light+0x9a/0x200
+ ? preempt_count_add+0x47/0xa0
+ __sys_sendmsg+0x61/0xd0
+ do_syscall_64+0x50/0x110
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in ext4_group_info")
-Signed-off-by: yangerkun <yangerkun@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240817085510.2084444-1-yangerkun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 1901b91f9982 ("IB/core: Fix potential NULL pointer dereference in pkey cache")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
+Link: https://patch.msgid.link/79137687d829899b0b1c9835fcb4b258004c439a.1725273354.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/infiniband/core/cache.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 870397f3de559..87ba7f58216f7 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3886,11 +3886,8 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
- 	/*
- 	 * Clear the trimmed flag for the group so that the next
- 	 * ext4_trim_fs can trim it.
--	 * If the volume is mounted with -o discard, online discard
--	 * is supported and the free blocks will be trimmed online.
- 	 */
--	if (!test_opt(sb, DISCARD))
--		EXT4_MB_GRP_CLEAR_TRIMMED(db);
-+	EXT4_MB_GRP_CLEAR_TRIMMED(db);
+diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
+index 6791df64a5fe0..b7c078b7f7cfd 100644
+--- a/drivers/infiniband/core/cache.c
++++ b/drivers/infiniband/core/cache.c
+@@ -1640,8 +1640,10 @@ int ib_cache_setup_one(struct ib_device *device)
  
- 	if (!db->bb_free_root.rb_node) {
- 		/* No more items in the per group rb tree
-@@ -6586,8 +6583,9 @@ static void ext4_mb_clear_bb(handle_t *handle, struct inode *inode,
- 					 " group:%u block:%d count:%lu failed"
- 					 " with %d", block_group, bit, count,
- 					 err);
--		} else
--			EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
+ 	rdma_for_each_port (device, p) {
+ 		err = ib_cache_update(device, p, true, true, true);
+-		if (err)
++		if (err) {
++			gid_table_cleanup_one(device);
+ 			return err;
 +		}
-+
-+		EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
+ 	}
  
- 		ext4_lock_group(sb, block_group);
- 		mb_clear_bits(bitmap_bh->b_data, bit, count_clusters);
+ 	return 0;
 -- 
 2.43.0
 
