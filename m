@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8E698D62F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:37:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FDB98D63E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2F71C21B27
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88F27286033
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CA81D04B8;
-	Wed,  2 Oct 2024 13:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C851D0965;
+	Wed,  2 Oct 2024 13:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8ofaosT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEOmOloA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4710E1CDFBC;
-	Wed,  2 Oct 2024 13:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320D11D0956;
+	Wed,  2 Oct 2024 13:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876229; cv=none; b=emiDyxbSF9HUCjzmQRp36u1KnJJzEHtIYrkrDt/xW1vfWfRRn7VzEt0n6f1oH08FZBXJ8i7OhCXI7PuBJzhoPjt2D5W524ddr4LjVgRtbdcdxtaqZppkzPa88Sj2Wq2mE8mrqyHNsDKoofnc7ecpXOaDx8UrYWw78p+4dFVouMk=
+	t=1727876261; cv=none; b=sezKXWzzy1H0q4qVwVT2VLWm8bHkaSOE6eTKTSU1BuvntpqBFxJHDGj/pNteuyhcqQwrr7CeePTfumW2gJlwiOuVvosrd4mqwCrvrS5iJLoxde7rUulpP/ADKweXdUE3Abkn2u5Ke4qWFiP6ymhmH9t5yxVsSx3xyPuNT8TvriM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876229; c=relaxed/simple;
-	bh=Lr70Itl92O03qM/9WsmBNuQTsr1c4owjE434DY1tqW0=;
+	s=arc-20240116; t=1727876261; c=relaxed/simple;
+	bh=OsUN2y/GXP5eFCbcljJUnBUhFewvjK3NoxozVrDbV28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nu7VTYoT5TrCAIXH5AypSSRkxBHVHhN5bCqi9Fgu9UliPNbQrkylRwoGN2sHgwSijbWpr9945ZyYLvULzH3hCJmHxnfY6zwH0L/q9CT26ZaFigZuFZyqcMV63H73h28w09BaAu55ZrzAZ8e5k+sshW+ICGJJ2OtckVPMzYAC4VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8ofaosT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2255C4CECD;
-	Wed,  2 Oct 2024 13:37:08 +0000 (UTC)
+	 MIME-Version; b=e+W6spUFchCr3pZARsFm3F8J5vnb13VKYfli5CgkTGKVDPKJ1fcGZA2d6VeaU0YHh10notOr2j7eAJ4IDnWAiLWCVeEawBvh5gofguwHI2c7v4Ap6gglq93K0Z/f1wi5Fh664FAtSDZpDmVG798Ovd2hgFdn1zs66xLQec7rbfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEOmOloA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB89BC4CED2;
+	Wed,  2 Oct 2024 13:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876229;
-	bh=Lr70Itl92O03qM/9WsmBNuQTsr1c4owjE434DY1tqW0=;
+	s=korg; t=1727876261;
+	bh=OsUN2y/GXP5eFCbcljJUnBUhFewvjK3NoxozVrDbV28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8ofaosTbCzB652z5bAQ+YOBeB6gHWXiPP5KcBU0X5bjJQ82YU+HBv8i1ma/Eh2eP
-	 77FE9BW+pzhhgp1T67238ryYFZBpPaCkZJoBhNQkSPAQLjDvP/gO+4VUYJmjt2ATF4
-	 6NN0i+i37uhUY9Yc9haYDTp+36P+ZZNwZfUQbDlQ=
+	b=PEOmOloAVemTjmP4hFHLZgR7uxoXyj9KxJKtcFRyjmFCnRp6TwmTWKXQ6tkCah4iE
+	 XUZhnTV2qAQTM2DYhkkZLZfBhJQ/s1GHBlhEvhdQgrrP8wUd64gyyzH2sO6nI8Usu8
+	 EiQsZXDFwxX+iK212hgsNVLVuY71qqdWs31Ztzt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 355/695] clk: qcom: dispcc-sm8550: fix several supposed typos
-Date: Wed,  2 Oct 2024 14:55:53 +0200
-Message-ID: <20241002125836.615666364@linuxfoundation.org>
+Subject: [PATCH 6.11 356/695] clk: qcom: dispcc-sm8550: use rcg2_ops for mdss_dptx1_aux_clk_src
+Date: Wed,  2 Oct 2024 14:55:54 +0200
+Message-ID: <20241002125836.655248041@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -69,46 +69,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 7b6a4b907297b28727933493b9e0c95494504634 ]
+[ Upstream commit cb4c00698f2f27d99a69adcce659370ca286cf2a ]
 
-Fix seveal odd-looking places in SM8550's dispcc driver:
-
-- duplicate entries in disp_cc_parent_map_4 and disp_cc_parent_map_5
-- using &disp_cc_mdss_dptx0_link_div_clk_src as a source for
-  disp_cc_mdss_dptx1_usb_router_link_intf_clk
-
-The SM8650 driver has been used as a reference.
+clk_dp_ops should only be used for DisplayPort pixel clocks. Use
+clk_rcg2_ops for disp_cc_mdss_dptx1_aux_clk_src.
 
 Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-1-5c4a3128c40b@linaro.org
+Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-2-5c4a3128c40b@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8550.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/dispcc-sm8550.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
-index 31ae46f180a5c..954b0f6fcea28 100644
+index 954b0f6fcea28..a98230540782c 100644
 --- a/drivers/clk/qcom/dispcc-sm8550.c
 +++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -196,7 +196,7 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
- static const struct parent_map disp_cc_parent_map_4[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_DP0_PHY_PLL_LINK_CLK, 1 },
--	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 2 },
-+	{ P_DP0_PHY_PLL_VCO_DIV_CLK, 2 },
- 	{ P_DP3_PHY_PLL_VCO_DIV_CLK, 3 },
- 	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 4 },
- 	{ P_DP2_PHY_PLL_VCO_DIV_CLK, 6 },
-@@ -213,7 +213,7 @@ static const struct clk_parent_data disp_cc_parent_data_4[] = {
- 
- static const struct parent_map disp_cc_parent_map_5[] = {
- 	{ P_BI_TCXO, 0 },
--	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 4 },
-+	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 2 },
- 	{ P_DSI1_PHY_PLL_OUT_BYTECLK, 4 },
+@@ -400,7 +400,7 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
+ 		.parent_data = disp_cc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_dp_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
  };
  
 -- 
