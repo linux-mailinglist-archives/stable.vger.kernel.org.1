@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-78772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9775C98D4E8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC5798D7E3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 596CA28170E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0F081C21196
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61441D043D;
-	Wed,  2 Oct 2024 13:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D201D0499;
+	Wed,  2 Oct 2024 13:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/+3MbNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqRM8u89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A991D043E;
-	Wed,  2 Oct 2024 13:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332C61D0427;
+	Wed,  2 Oct 2024 13:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875486; cv=none; b=ThhAIgRSf2cQrN0+/jN7TBh0D1Pg8ZZZwavflC9LH/RF59onw7t8h3ZgOGkvgJJTImSIRorQPqMFXf/Z6JYnkFOtcmC84UbsPGddvckUq8I7r5eilVzOclBq8Ed/vVVzByrot8DestQZnV3SOp0tjIqFvlSmoxVqO3kjuCfBFNo=
+	t=1727877236; cv=none; b=AI0ITJHTdU7HA2nizFGdAKciLSPPDLVKPTA6i9v1QCsqwOqlNm4tjdFqYXKRgamO/STafAhRR93HUYQ+v1/mUyz7vLb96gZmWJySIMIZo0IrZG2qbvoKkLWMgh4uqVYYumoLEsr1t/vEwAkWi5DfaSv3dCwj83kRmMu8SOrowhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875486; c=relaxed/simple;
-	bh=PJIjmgiV8OeOuSG+X15ZDTMLlrWoYOV8iXUNt5Rqx2k=;
+	s=arc-20240116; t=1727877236; c=relaxed/simple;
+	bh=QmhftXYamL44kwM9xXYyJih8XF2l+iRAWRJsxW2tEN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dstvzHVQNLZYerWieZwtZHYcUYpnixwS0OzbY2xmgE+Vo7Lx7WJWCnPaNmqJUO/4aOQdqUoUGk8hShf8Z6f9ehyktiiZz+XVXjFOv0yEVTORCheBxPL+cwoZTn5afDVXfHXcv0S6yzwqvETXQD/bAB9rqYg0x8fE2H9fTgi7NXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/+3MbNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE345C4CEC5;
-	Wed,  2 Oct 2024 13:24:45 +0000 (UTC)
+	 MIME-Version; b=TQ86PbcyVb8Q17xWoJKN1ZklhVx6bjk9U2rV6faiOPR8VrAmH5y4Y1IkRmTR7xkD5x0NfQhUgX0YRHZQBZkW2N/d+ibuagj5jdXJA4FVSTmSzO+V/0cDjD7VRgCEhojoIUYF1Lz8pX01ZyTzWuzhl0xBnJIxscFWrKaJ9l+seEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqRM8u89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11A4C4CED5;
+	Wed,  2 Oct 2024 13:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875486;
-	bh=PJIjmgiV8OeOuSG+X15ZDTMLlrWoYOV8iXUNt5Rqx2k=;
+	s=korg; t=1727877236;
+	bh=QmhftXYamL44kwM9xXYyJih8XF2l+iRAWRJsxW2tEN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/+3MbNAsD/2lbHK08687VVJt8mr1VEzNg5ebkMWn1bZ6elSPh3kUVPeFBy4GPnCb
-	 YmPXuA4ryGAVlFJqLhT//8FJyXtuCjP9ONRdIubzI5ssidrfGuNoStah2liJdcJ3lT
-	 triqhEDvJ+lYenK93FGLiTPIaRszTZbXOUjdzyC4=
+	b=yqRM8u89QKmqGTIyfJs2ndS8SergWGLXBFTYn8sV1CNjw5csb3K/5sO+PmPlvEL75
+	 ngulIC3jfE4D9/98fToy8xgKRDk5MdRQ7gRwAeVQmaRDethAk4mA8EClzqMuBu9lZB
+	 UfI5HOSVfYfClkZ76m3t/MHUcqC0TSPkLb5f/yx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Feiyang Chen <chenfeiyang@loongson.cn>,
+	Yinggang Gu <guyinggang@loongson.cn>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 116/695] net: tipc: avoid possible garbage value
-Date: Wed,  2 Oct 2024 14:51:54 +0200
-Message-ID: <20241002125827.104174244@linuxfoundation.org>
+Subject: [PATCH 6.10 015/634] net: stmmac: dwmac-loongson: Init ref and PTP clocks rate
+Date: Wed,  2 Oct 2024 14:51:55 +0200
+Message-ID: <20241002125811.696024020@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +66,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Yanteng Si <siyanteng@loongson.cn>
 
-[ Upstream commit 99655a304e450baaae6b396cb942b9e47659d644 ]
+[ Upstream commit c70f3163681381c15686bdd2fe56bf4af9b8aaaa ]
 
-Clang static checker (scan-build) warning:
-net/tipc/bcast.c:305:4:
-The expression is an uninitialized value. The computed value will also
-be garbage [core.uninitialized.Assign]
-  305 |                         (*cong_link_cnt)++;
-      |                         ^~~~~~~~~~~~~~~~~~
+Reference and PTP clocks rate of the Loongson GMAC devices is 125MHz.
+(So is in the GNET devices which support is about to be added.) Set
+the respective plat_stmmacenet_data field up in accordance with that
+so to have the coalesce command and timestamping work correctly.
 
-tipc_rcast_xmit() will increase cong_link_cnt's value, but cong_link_cnt
-is uninitialized. Although it won't really cause a problem, it's better
-to fix it.
-
-Fixes: dca4a17d24ee ("tipc: fix potential hanging after b/rcast changing")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Link: https://patch.msgid.link/20240912110119.2025503-1-suhui@nfschina.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
+Signed-off-by: Feiyang Chen <chenfeiyang@loongson.cn>
+Signed-off-by: Yinggang Gu <guyinggang@loongson.cn>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/bcast.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/tipc/bcast.c b/net/tipc/bcast.c
-index 593846d252143..114fef65f92ea 100644
---- a/net/tipc/bcast.c
-+++ b/net/tipc/bcast.c
-@@ -320,8 +320,8 @@ static int tipc_mcast_send_sync(struct net *net, struct sk_buff *skb,
- {
- 	struct tipc_msg *hdr, *_hdr;
- 	struct sk_buff_head tmpq;
-+	u16 cong_link_cnt = 0;
- 	struct sk_buff *_skb;
--	u16 cong_link_cnt;
- 	int rc = 0;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index 9e40c28d453ab..ee3604f58def5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -35,6 +35,9 @@ static int loongson_default_data(struct plat_stmmacenet_data *plat)
+ 	/* Disable RX queues routing by default */
+ 	plat->rx_queues_cfg[0].pkt_route = 0x0;
  
- 	/* Is a cluster supporting with new capabilities ? */
++	plat->clk_ref_rate = 125000000;
++	plat->clk_ptp_rate = 125000000;
++
+ 	/* Default to phy auto-detection */
+ 	plat->phy_addr = -1;
+ 
 -- 
 2.43.0
 
