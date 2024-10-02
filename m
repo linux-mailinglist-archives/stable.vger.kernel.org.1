@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C2B98D0D8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:09:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66A898D0DA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC17D1C21848
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:09:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91EA1F2372E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338631E493F;
-	Wed,  2 Oct 2024 10:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F451E493F;
+	Wed,  2 Oct 2024 10:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ciYpPwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTYB7AcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CF91FA5
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DA41FA5
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727863757; cv=none; b=QYsfUVy8WatpdtmRAqUFRJahZqCkNZ7uSzghZwKeQz3i0RcOdMP3w8YcwKAJ0+NePRqbUPkrgpys3zowOt/NMJ363RoiZ3LwBRQcszX3dEkcLytMUY2MJdPd/hEv1AIDiZhoz7Nl9itu9LNQlUT0QI5dSCLIbeQTc/bEHsUAH3s=
+	t=1727863762; cv=none; b=HeZNz96Ny/TBY3idL3dKaLuwlVSIByw8YG7i+HaYSUHNsLsjnb2/EDaSOAdnq99w5mZMTRscmcdstrzED58TMJWzHdEeCuFW5jrKD3gc8127AuCStzfV7POqMIhBE2jTQz/S0lxHuoq8p5HUVMDedCpinn2umwgjIz0h8Jte7A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727863757; c=relaxed/simple;
-	bh=OOaJbhvvnCb4lpQfp5DGxMK489Rr0VhrvjrhtBOxBXQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j9PsuCMe1F5mgbex2gFZI7wbpKImNzLfyCPGVS92J7c9Tvs7kOfBbRT3MJhhvG6340AiYU0+7ZedHGEQxqEiJ+h1oB0MtiS7ujztnHhomned1IlZkMqzV9lvNB5QAqEtWAlBSQjWcseMmw7ke87z2qkpjvSfEBVYhOY3jdPnabs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ciYpPwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F42C4CEC5;
-	Wed,  2 Oct 2024 10:09:15 +0000 (UTC)
+	s=arc-20240116; t=1727863762; c=relaxed/simple;
+	bh=bYitA5dYRMUcg7dcPgJzks7RO31y2OdV6p8fnnMgAFs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DDnc4IoiTrHWaGrSM2knHh14BVEGtGczicFXQ4E2GhUgqwIt7tajKghkVgk4FMi6sWm3gRZnQ5Nd68RTlaxrDy4xBhDOmhSMG3hRP1LySbt3qzOGa57EfRez7QQXqHXxCveX8uLYUKQCRrFqn8g6olmQYd7LvPk3cseRyVYAUgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTYB7AcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0099C4CECD;
+	Wed,  2 Oct 2024 10:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727863756;
-	bh=OOaJbhvvnCb4lpQfp5DGxMK489Rr0VhrvjrhtBOxBXQ=;
+	s=korg; t=1727863762;
+	bh=bYitA5dYRMUcg7dcPgJzks7RO31y2OdV6p8fnnMgAFs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1ciYpPwiUeWb/egt3b2wqlxt6CwtW9CcXQR9HtATRI0gjclLVFli/bsVOahkLtGBs
-	 9ekPGzSNxuVOg1m2P0eiRnhutpGOyd3XY/vemkpvfRFRs31IXdSHNqdgmA0sc6Fg5r
-	 f1rPY5jR8Au7xM2db92XfOkWMJkOjdwVrUNGF6YE=
-Subject: FAILED: patch "[PATCH] mm/codetag: add pgalloc_tag_copy()" failed to apply to 6.11-stable tree
+	b=kTYB7AcKNfFDIwcfXVE/aqaBq3TpeBVs5b5QXhlbUxuRp0O9GwS3e5l2Pnt/XO01F
+	 WTSmajl6VZUP2cNfr0K9f0mVfLeoqqwJUwboHRq/EGJCW6QQHoAriW2MoEjxWooCqg
+	 +Q3BcifhoxLHIunjLlKvQIpN/8tYw3WCz7FPio6M=
+Subject: FAILED: patch "[PATCH] mm/codetag: add pgalloc_tag_copy()" failed to apply to 6.10-stable tree
 To: yuzhao@google.com,akpm@linux-foundation.org,kent.overstreet@linux.dev,muchun.song@linux.dev,stable@vger.kernel.org,surenb@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 12:09:10 +0200
-Message-ID: <2024100210-untie-oven-64d6@gregkh>
+Date: Wed, 02 Oct 2024 12:09:11 +0200
+Message-ID: <2024100211-petticoat-unnerving-003c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.11-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x e0a955bf7f61cb034d228736d81c1ab3a47a3dca
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100210-untie-oven-64d6@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100211-petticoat-unnerving-003c@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,7 @@ e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
 95599ef684d0 ("mm/codetag: fix pgalloc_tag_split()")
 cf54f310d0d3 ("mm/hugetlb: use __GFP_COMP for gigantic folios")
 c0f398c3b2cf ("mm/hugetlb_vmemmap: batch HVO work when demoting")
+fbc90c042cd1 ("Merge tag 'mm-stable-2024-07-21-14-50' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
 
 thanks,
 
