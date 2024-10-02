@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-80503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F1F98DDD0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:52:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17DA98DB4C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56359B299F4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:52:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 317DEB2750F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEC21D0F5E;
-	Wed,  2 Oct 2024 14:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1914D1D0BBB;
+	Wed,  2 Oct 2024 14:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0pgibR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhzDpYL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B10198A1A;
-	Wed,  2 Oct 2024 14:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDE51D0493;
+	Wed,  2 Oct 2024 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880562; cv=none; b=VhJ/kEd2PPOxkgjX+1UhAsYR0zTC8TCsDHV7hKTLrt6BGEcl4QnOlrd7D1nnOqnLOVloXzLUUAab+1Kz9S2oZHkVaXezbTHWJBJr3RohFwxsSqJXgS4i1ieiM4AOpDQCc6g+NYwGsAZZyb8EWwHHD9wyoruD6+Egqn5qbCqeDyQ=
+	t=1727879098; cv=none; b=cgOMJhzkrK4jd18g8loKbq0su37NkKw6oAgIqrXNA2UW0fiWlG+2Quw4OvyEplHOX3VJetKF3Oavj9LilKGQOtUoVbIIImKkFOuzULIyGBH/v73+Jvyg8y8IRyfBgYkSeW+sjuh4u5fobJ3Y+5v5YRFbNFIAPWrB+xuggIwVHrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880562; c=relaxed/simple;
-	bh=8xbtJLtZjXgZc6PoNCrVk1P6vwMp39Ku1KFLojV+DRg=;
+	s=arc-20240116; t=1727879098; c=relaxed/simple;
+	bh=fWn9gL+u1KSYKEquw0j6Y5Apj/kMYVFErSyV04s7Oaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GOM8V7lYaftpNeSxbqs81qJSzCKYWSdP15EifIhgGCqHl1reHYpsW47sNF+Jtgz77rUbmNQnRoWCo9MeCuCVNv+Gtwt02yEZE52kto4mR5ZeJcFL4SWIwJuJvC9PGgKqUK0K/sDcUcO3JOTThQFUREtGgHYLWRg7vnQHaDTTyfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0pgibR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E2CC4CECD;
-	Wed,  2 Oct 2024 14:49:21 +0000 (UTC)
+	 MIME-Version; b=upH5KDPTL6tQOTqZu4sQQexnlYJCy1J2xNcyxE8F/42i8lMWKRqQnREZpfXO7pS594x9CLFFzGcotX98kA9guKRSYnuzJG7M/kcuw9FW37YSWlOinv7hrdOS5NQpRnscGNqkVjKjN595ldq3GPNg3mimpXshPTwpXTNpt/bh0L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhzDpYL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E383C4CEC2;
+	Wed,  2 Oct 2024 14:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880562;
-	bh=8xbtJLtZjXgZc6PoNCrVk1P6vwMp39Ku1KFLojV+DRg=;
+	s=korg; t=1727879098;
+	bh=fWn9gL+u1KSYKEquw0j6Y5Apj/kMYVFErSyV04s7Oaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0pgibR9tVSitOH3aOEgSwp2MUcAD7EcPx5T+YNIWyk35K7QXrX9XOBZ3qa/GOtJd
-	 b+wK+Srxm8F3up9NlqT8SPMjAudJe0+8NQUT8+H/qH5vmUzS7nGUgIETEZDtXCRiIw
-	 OISnsF/nqD58HXL7ZY12n0bwo/tbu9jwSVHkk6Ik=
+	b=YhzDpYL4dnchwb2YdyAN+Wgd0hL7H5kJVRiGUSePwl8aiarn1vdFV8UBOHOC9ijGS
+	 DbSMqIzcYcmH5WxXw8L2RnjoXuy7MjmFpYbO1j9fbHr2UtrxtJylMx3TNclqomziFo
+	 Kiy2A0vDUf/IEEMjoUuoIG6U5h6mD+inOae4uWvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikola Radojevic <nikola@radojevic.rs>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.6 471/538] arm64: dts: rockchip: Raise Pinebook Pros panel backlight PWM frequency
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 610/634] idpf: fix netdev Tx queue stop/wake
 Date: Wed,  2 Oct 2024 15:01:50 +0200
-Message-ID: <20241002125811.034392254@linuxfoundation.org>
+Message-ID: <20241002125835.195558081@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-commit 8c51521de18755d4112a77a598a348b38d0af370 upstream.
+[ Upstream commit e4b398dd82f5d5867bc5f442c43abc8fba30ed2c ]
 
-Increase the frequency of the PWM signal that drives the LED backlight of
-the Pinebook Pro's panel, from about 1.35 KHz (which equals to the PWM
-period of 740,740 ns), to exactly 8 kHz (which equals to the PWM period of
-125,000 ns).  Using a higher PWM frequency for the panel backlight, which
-reduces the flicker, can only be beneficial to the end users' eyes.
+netif_txq_maybe_stop() returns -1, 0, or 1, while
+idpf_tx_maybe_stop_common() says it returns 0 or -EBUSY. As a result,
+there sometimes are Tx queue timeout warnings despite that the queue
+is empty or there is at least enough space to restart it.
+Make idpf_tx_maybe_stop_common() inline and returning true or false,
+handling the return of netif_txq_maybe_stop() properly. Use a correct
+goto in idpf_tx_maybe_stop_splitq() to avoid stopping the queue or
+incrementing the stops counter twice.
 
-On top of that, increasing the backlight PWM signal frequency reportedly
-eliminates the buzzing emitted from the Pinebook Pro's built-in speakers
-when certain backlight levels are set, which cause some weird interference
-with some of the components of the Pinebook Pro's audio chain.
-
-The old value for the backlight PWM period, i.e. 740,740 ns, is pretty much
-an arbitrary value that was selected during the very early bring-up of the
-Pinebook Pro, only because that value seemed to minimize horizontal line
-distortion on the display, which resulted from the old X.org drivers causing
-screen tearing when dragging windows around.  That's no longer an issue, so
-there are no reasons to stick with the old PWM period value.
-
-The lower and the upper backlight PWM frequency limits for the Pinebook Pro's
-panel, according to its datasheet, are 200 Hz and 10 kHz, respectively. [1]
-These changes still leave some headroom, which may have some positive effects
-on the lifetime expectancy of the panel's backlight LEDs.
-
-[1] https://files.pine64.org/doc/datasheet/PinebookPro/NV140FHM-N49_Rev.P0_20160804_201710235838.pdf
-
-Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Cc: stable@vger.kernel.org
-Reported-by: Nikola Radojevic <nikola@radojevic.rs>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Tested-by: Nikola Radojević <nikola@radojevic.rs>
-Link: https://lore.kernel.org/r/2a23b6cfd8c0513e5b233b4006ee3d3ed09b824f.1722805655.git.dsimic@manjaro.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6818c4d5b3c2 ("idpf: add splitq start_xmit")
+Fixes: a5ab9ee0df0b ("idpf: add singleq start_xmit and napi poll")
+Cc: stable@vger.kernel.org # 6.7+
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  4 +++
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 35 +++++--------------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  9 ++++-
+ 3 files changed, 21 insertions(+), 27 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -32,7 +32,7 @@
- 	backlight: edp-backlight {
- 		compatible = "pwm-backlight";
- 		power-supply = <&vcc_12v>;
--		pwms = <&pwm0 0 740740 0>;
-+		pwms = <&pwm0 0 125000 0>;
- 	};
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+index 8630db24f63a7..5e5fa2d0aa4d1 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+@@ -369,6 +369,10 @@ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
+ 				      IDPF_TX_DESCS_FOR_CTX)) {
+ 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
  
- 	bat: battery {
++		u64_stats_update_begin(&tx_q->stats_sync);
++		u64_stats_inc(&tx_q->q_stats.q_busy);
++		u64_stats_update_end(&tx_q->stats_sync);
++
+ 		return NETDEV_TX_BUSY;
+ 	}
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 7b06ca7b9732a..9b7e67d0f38be 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -2149,29 +2149,6 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
+ 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
+ }
+ 
+-/**
+- * idpf_tx_maybe_stop_common - 1st level check for common Tx stop conditions
+- * @tx_q: the queue to be checked
+- * @size: number of descriptors we want to assure is available
+- *
+- * Returns 0 if stop is not needed
+- */
+-int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size)
+-{
+-	struct netdev_queue *nq;
+-
+-	if (likely(IDPF_DESC_UNUSED(tx_q) >= size))
+-		return 0;
+-
+-	u64_stats_update_begin(&tx_q->stats_sync);
+-	u64_stats_inc(&tx_q->q_stats.q_busy);
+-	u64_stats_update_end(&tx_q->stats_sync);
+-
+-	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
+-
+-	return netif_txq_maybe_stop(nq, IDPF_DESC_UNUSED(tx_q), size, size);
+-}
+-
+ /**
+  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
+  * @tx_q: the queue to be checked
+@@ -2183,7 +2160,7 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
+ 				     unsigned int descs_needed)
+ {
+ 	if (idpf_tx_maybe_stop_common(tx_q, descs_needed))
+-		goto splitq_stop;
++		goto out;
+ 
+ 	/* If there are too many outstanding completions expected on the
+ 	 * completion queue, stop the TX queue to give the device some time to
+@@ -2202,10 +2179,12 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
+ 	return 0;
+ 
+ splitq_stop:
++	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
++
++out:
+ 	u64_stats_update_begin(&tx_q->stats_sync);
+ 	u64_stats_inc(&tx_q->q_stats.q_busy);
+ 	u64_stats_update_end(&tx_q->stats_sync);
+-	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
+ 
+ 	return -EBUSY;
+ }
+@@ -2228,7 +2207,11 @@ void idpf_tx_buf_hw_update(struct idpf_tx_queue *tx_q, u32 val,
+ 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
+ 	tx_q->next_to_use = val;
+ 
+-	idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED);
++	if (idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED)) {
++		u64_stats_update_begin(&tx_q->stats_sync);
++		u64_stats_inc(&tx_q->q_stats.q_busy);
++		u64_stats_update_end(&tx_q->stats_sync);
++	}
+ 
+ 	/* Force memory writes to complete before letting h/w
+ 	 * know there are new descriptors to fetch.  (Only
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index 5b3f19200255a..214a24e684634 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -1148,7 +1148,6 @@ void idpf_tx_dma_map_error(struct idpf_tx_queue *txq, struct sk_buff *skb,
+ 			   struct idpf_tx_buf *first, u16 ring_idx);
+ unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
+ 					 struct sk_buff *skb);
+-int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size);
+ void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue);
+ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
+ 				  struct idpf_tx_queue *tx_q);
+@@ -1157,4 +1156,12 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
+ 				      u16 cleaned_count);
+ int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
+ 
++static inline bool idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q,
++					     u32 needed)
++{
++	return !netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
++					  IDPF_DESC_UNUSED(tx_q),
++					  needed, needed);
++}
++
+ #endif /* !_IDPF_TXRX_H_ */
+-- 
+2.43.0
+
 
 
 
