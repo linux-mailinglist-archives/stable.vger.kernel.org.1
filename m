@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FD898D570
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B76998D8F3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BBEC1C215C9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EABC31F2475E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C0F1D0487;
-	Wed,  2 Oct 2024 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8A31D151E;
+	Wed,  2 Oct 2024 14:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sg/B+Hqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMNdctyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D0719753F;
-	Wed,  2 Oct 2024 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3901D1518;
+	Wed,  2 Oct 2024 14:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875821; cv=none; b=thM6VaNnNQWZJI2HC8q0daHzH90BP9LBmGuGWqDH1LiZSyOudOFcMzE2TkERq8xhkYLRnwLy4oGj459g0WUNC7oR/YflBBbWsfwlvzHH9KOqK2ZkdnpAhMj1I+z1/J0bGWkI8aNejJp+YB/tRanRVKk0TRCD727XjirqUAT+Dc8=
+	t=1727877724; cv=none; b=fzXH8asuFoozIuMYn3Xb/293CDJwwSXKZKICu6h79D6tmAi439ciO57tR0G+k2TAX65wQQ5JMtWSb5Bno9ZcvKPDgg2BOuf2frOOOp4dDRoGjn2Cv0aASbHFZhNTVvj5hr9ONI5Q4al/I/RHon1t0+XhYzf6HwoSC30ev8fWWvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875821; c=relaxed/simple;
-	bh=y5TsWEq3F1jHQjlBkiANuvIb6JdklkEghvI8h93y7bs=;
+	s=arc-20240116; t=1727877724; c=relaxed/simple;
+	bh=OZCO6dnXpEAGkyflTwr80v3W1BSNjSN8xS5vOqJU0do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8uluruIk+qk6CVqt6MxBt78Xit4KVDeZZ8050MuEOp1okZmTMH44QZiPJxbpylNv3qbd88CWAZxaGvIhxhzbkbN6zQd+yKtJMlGueICgc5O5RCIwk6+otIb/N/ptWC3mAr1RcW+3jDPDX/Ul1+bvWRMVYclKCmCtmdh3uNJnSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sg/B+Hqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F22C4CEC5;
-	Wed,  2 Oct 2024 13:30:20 +0000 (UTC)
+	 MIME-Version; b=FEdFOdQW25m/bBUeA70UrVl2+NDiL+cp6orE95/4mcVdvEIzrtxAMLVtpsbro40In9Re6Igyjvx7+zL3LXIWWtFmMu1bZk9Q04CWxSdH3px/lxEwKKfK2NbyTNp1x2rr6422ljJJFZroBtsg2b7EGhvhDKUxepbY2shqaWD0mqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMNdctyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088A0C4CEC2;
+	Wed,  2 Oct 2024 14:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875821;
-	bh=y5TsWEq3F1jHQjlBkiANuvIb6JdklkEghvI8h93y7bs=;
+	s=korg; t=1727877724;
+	bh=OZCO6dnXpEAGkyflTwr80v3W1BSNjSN8xS5vOqJU0do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sg/B+HqjOKsUCoAAI1MeBunHDkCN3U95Ade4JUIhJcya6qa+w495MPMOIizAWXec4
-	 Tc20+qr6kMcHQAwi/xT0HYVxUgaaZZ1HjwAl0QHTmlX7l4a6KPJdy8Sy2XTTJCPEVH
-	 tHLy0obpprZOrWPii0+tu8Ol+vc5eNUJnrbeavBI=
+	b=xMNdctyKik4WjduzhpoeP+HUVmzk0gxsooTWGl+4ALzu/S4RBW29CU0ad1cxIBaOr
+	 LLIv1Sbkq9OzaN0CT7OMg6sKbq6LThn6EyT+oQKVi5LbYgExhd4X61LFu2SLdCXrBq
+	 +M1JJ9Dk65RmEFy19X0UHOqsMnV+vETG9BgsJV60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	Rob Clark <robdclark@chromium.org>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 233/695] drm/msm/a5xx: workaround early ring-buffer emptiness check
+Subject: [PATCH 6.10 131/634] arm64: dts: ti: k3-j721e-sk: Fix reversed C6x carveout locations
 Date: Wed,  2 Oct 2024 14:53:51 +0200
-Message-ID: <20241002125831.751215000@linuxfoundation.org>
+Message-ID: <20241002125816.281220713@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit a30f9f65b5ac82d4390548c32ed9c7f05de7ddf5 ]
+[ Upstream commit 9f3814a7c06b7c7296cf8c1622078ad71820454b ]
 
-There is another cause for soft lock-up of GPU in empty ring-buffer:
-race between GPU executing last commands and CPU checking ring for
-emptiness. On GPU side IRQ for retire is triggered by CACHE_FLUSH_TS
-event and RPTR shadow (which is used to check ring emptiness) is updated
-a bit later from CP_CONTEXT_SWITCH_YIELD. Thus if GPU is executing its
-last commands slow enough or we check that ring too fast we will miss a
-chance to trigger switch to lower priority ring because current ring isn't
-empty just yet. This can escalate to lock-up situation described in
-previous patch.
-To work-around this issue we keep track of last submit sequence number
-for each ring and compare it with one written to memptrs from GPU during
-execution of CACHE_FLUSH_TS event.
+The DMA carveout for the C6x core 0 is at 0xa6000000 and core 1 is at
+0xa7000000. These are reversed in DT. While both C6x can access either
+region, so this is not normally a problem, but if we start restricting
+the memory each core can access (such as with firewalls) the cores
+accessing the regions for the wrong core will not work. Fix this here.
 
-Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/612047/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: f46d16cf5b43 ("arm64: dts: ti: k3-j721e-sk: Add DDR carveout memory nodes")
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240801181232.55027-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c     | 4 ++++
- drivers/gpu/drm/msm/adreno/a5xx_gpu.h     | 1 +
- drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 4 ++++
- 3 files changed, 9 insertions(+)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index 6c80d3003966b..7cfefb5e62218 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -65,6 +65,8 @@ void a5xx_flush(struct msm_gpu *gpu, struct msm_ringbuffer *ring,
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+index 0c4575ad8d7cb..53156b71e4796 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -119,7 +119,7 @@
+ 			no-map;
+ 		};
  
- static void a5xx_submit_in_rb(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- {
-+	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-+	struct a5xx_gpu *a5xx_gpu = to_a5xx_gpu(adreno_gpu);
- 	struct msm_ringbuffer *ring = submit->ring;
- 	struct drm_gem_object *obj;
- 	uint32_t *ptr, dwords;
-@@ -109,6 +111,7 @@ static void a5xx_submit_in_rb(struct msm_gpu *gpu, struct msm_gem_submit *submit
- 		}
- 	}
+-		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
++		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+@@ -131,7 +131,7 @@
+ 			no-map;
+ 		};
  
-+	a5xx_gpu->last_seqno[ring->id] = submit->seqno;
- 	a5xx_flush(gpu, ring, true);
- 	a5xx_preempt_trigger(gpu);
- 
-@@ -210,6 +213,7 @@ static void a5xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	/* Write the fence to the scratch register */
- 	OUT_PKT4(ring, REG_A5XX_CP_SCRATCH_REG(2), 1);
- 	OUT_RING(ring, submit->seqno);
-+	a5xx_gpu->last_seqno[ring->id] = submit->seqno;
- 
- 	/*
- 	 * Execute a CACHE_FLUSH_TS event. This will ensure that the
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.h b/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
-index b4d06ca3e499d..9c0d701fe4b85 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
-@@ -34,6 +34,7 @@ struct a5xx_gpu {
- 	struct drm_gem_object *preempt_counters_bo[MSM_GPU_MAX_RINGS];
- 	struct a5xx_preempt_record *preempt[MSM_GPU_MAX_RINGS];
- 	uint64_t preempt_iova[MSM_GPU_MAX_RINGS];
-+	uint32_t last_seqno[MSM_GPU_MAX_RINGS];
- 
- 	atomic_t preempt_state;
- 	spinlock_t preempt_start_lock;
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-index c65b34a4a8cc2..0469fea550108 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-@@ -55,6 +55,8 @@ static inline void update_wptr(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
- /* Return the highest priority ringbuffer with something in it */
- static struct msm_ringbuffer *get_next_ring(struct msm_gpu *gpu)
- {
-+	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-+	struct a5xx_gpu *a5xx_gpu = to_a5xx_gpu(adreno_gpu);
- 	unsigned long flags;
- 	int i;
- 
-@@ -64,6 +66,8 @@ static struct msm_ringbuffer *get_next_ring(struct msm_gpu *gpu)
- 
- 		spin_lock_irqsave(&ring->preempt_lock, flags);
- 		empty = (get_wptr(ring) == gpu->funcs->get_rptr(gpu, ring));
-+		if (!empty && ring == a5xx_gpu->cur_ring)
-+			empty = ring->memptrs->fence == a5xx_gpu->last_seqno[i];
- 		spin_unlock_irqrestore(&ring->preempt_lock, flags);
- 
- 		if (!empty)
+-		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
++		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
 -- 
 2.43.0
 
