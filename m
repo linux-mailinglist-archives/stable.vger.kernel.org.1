@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-78758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21ACE98D4C9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6C298D7D7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEC542844FB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB6382835A1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AAA1D0484;
-	Wed,  2 Oct 2024 13:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7381B1D0493;
+	Wed,  2 Oct 2024 13:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiVO7Ofv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxC8Hna5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4401D0412;
-	Wed,  2 Oct 2024 13:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325331D0438;
+	Wed,  2 Oct 2024 13:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875444; cv=none; b=b0laNsJ7ZqM0qTvd/tcThY0tng/ep9IsAlrRvy8gpN0JV2THE+pXjWnWvSonKyNx/4XfNO4oofD7A77VC6SZk5swoK1EoSgQ+PAt2J4CPLgVEFU+KglU5STiiMostj6EfKK0rILSW8aCW9lmMPCp61irODLmu7OpjcO+xiMr+9Q=
+	t=1727877218; cv=none; b=NhNa4WNLfLcQB0XJJhFzwn7StO/ahwTAO/NOmurqzssQPOJyavqjRN/3ubtqUhvDIdFk44CLrhp97f+1PlapBGV3yUIvXLKgfprR8EHstFCHdZsHRqBYehJddZ8Z9MWjIyZqFrqSBGraJI8qtEJeoLLbkUIiYge54CaDsyHpk04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875444; c=relaxed/simple;
-	bh=lO+ESrjerRHInqmMqGxLG4usQR2XvISkCm5twtZa2mE=;
+	s=arc-20240116; t=1727877218; c=relaxed/simple;
+	bh=FVVogudkkw9VJRSYyZKUGrwPdCsLMvqXSIxNiFA0e2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2z/XBXmQ5NLFm/cyld6USpmAwtfgOcfOI7T6afGEqRWD+m2MX4Qm9ArTLqPscivjKKYHxWWx1vKygseRTaKlps6kbte1C/QC+vLePCHu5CuIpvdmmGbHjtEXVqKNfj50NAO+APXow5o3oitfFFqVRdz8okih6PS1sbUcij1Uk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiVO7Ofv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D441C4CEC5;
-	Wed,  2 Oct 2024 13:24:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WQPmGYnUWBO3ytkQcRns7es5Q7O/DTzvKXQjdfJY1tuYgdv5eqfrADnNcm0AsQdKAUaaAQ8eokexc+s3YbpiMKwLjV383pdwZm9fvOFCnwmacnQZkdLD308USyV86lEXv7+W+YgnucTR2Q5bQKoPMFewAwnVh2iiuoTwqaTbdpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxC8Hna5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0275C4CEC2;
+	Wed,  2 Oct 2024 13:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875443;
-	bh=lO+ESrjerRHInqmMqGxLG4usQR2XvISkCm5twtZa2mE=;
+	s=korg; t=1727877218;
+	bh=FVVogudkkw9VJRSYyZKUGrwPdCsLMvqXSIxNiFA0e2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiVO7OfvCdEZ22Whf6fT/j4VvIl9VAlq3tuexMOCmuKrhn7iM0Hh7AH2TQk/sY504
-	 Lbz7rRXXy+CuBz62UoEd60bYJajmHDONFhJjSsr/4TxyFIu8zJtoWRewPmao54cpLs
-	 wNZEiwUgqWxpUfx2l+Ih98qnuoufoAf0rMekJ17w=
+	b=RxC8Hna51JR/N9c++Rpebe4Q9TZaoPSIJMFVzw0bj2aBGqtFtjxxShLtkP0IhkJTb
+	 1g2ANEBnenlUxPBh4pdwtFoYHHiO9bkODNY7JQo9B+L5pOaI5lu1jL8PtZiFN2dpzu
+	 eKmEVQ8SE0AvIk5PS0V853NFpGV9oCj/tgO5QwSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0532ac7a06fb1a03187e@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kang Yang <quic_kangyang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 103/695] can: bcm: Clear bo->bcm_proc_read after remove_proc_entry().
+Subject: [PATCH 6.10 001/634] wifi: ath11k: use work queue to process beacon tx event
 Date: Wed,  2 Oct 2024 14:51:41 +0200
-Message-ID: <20241002125826.586046716@linuxfoundation.org>
+Message-ID: <20241002125811.138111377@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-[ Upstream commit 94b0818fa63555a65f6ba107080659ea6bcca63e ]
+[ Upstream commit 177b49dbf9c1d8f9f25a22ffafa416fc2c8aa6a3 ]
 
-syzbot reported a warning in bcm_release(). [0]
+Commit 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
+from Feb 28, 2024 (linux-next), leads to the following Smatch static
+checker warning:
 
-The blamed change fixed another warning that is triggered when
-connect() is issued again for a socket whose connect()ed device has
-been unregistered.
+drivers/net/wireless/ath/ath11k/wmi.c:1742 ath11k_wmi_p2p_go_bcn_ie()
+warn: sleeping in atomic context
 
-However, if the socket is just close()d without the 2nd connect(), the
-remaining bo->bcm_proc_read triggers unnecessary remove_proc_entry()
-in bcm_release().
+The reason is that ath11k_bcn_tx_status_event() will directly call might
+sleep function ath11k_wmi_cmd_send() during RCU read-side critical
+sections. The call trace is like:
 
-Let's clear bo->bcm_proc_read after remove_proc_entry() in bcm_notify().
+ath11k_bcn_tx_status_event()
+-> rcu_read_lock()
+-> ath11k_mac_bcn_tx_event()
+	-> ath11k_mac_setup_bcn_tmpl()
+	……
+		-> ath11k_wmi_bcn_tmpl()
+			-> ath11k_wmi_cmd_send()
+-> rcu_read_unlock()
 
-[0]
-name '4986'
-WARNING: CPU: 0 PID: 5234 at fs/proc/generic.c:711 remove_proc_entry+0x2e7/0x5d0 fs/proc/generic.c:711
-Modules linked in:
-CPU: 0 UID: 0 PID: 5234 Comm: syz-executor606 Not tainted 6.11.0-rc5-syzkaller-00178-g5517ae241919 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-RIP: 0010:remove_proc_entry+0x2e7/0x5d0 fs/proc/generic.c:711
-Code: ff eb 05 e8 cb 1e 5e ff 48 8b 5c 24 10 48 c7 c7 e0 f7 aa 8e e8 2a 38 8e 09 90 48 c7 c7 60 3a 1b 8c 48 89 de e8 da 42 20 ff 90 <0f> 0b 90 90 48 8b 44 24 18 48 c7 44 24 40 0e 36 e0 45 49 c7 04 07
-RSP: 0018:ffffc9000345fa20 EFLAGS: 00010246
-RAX: 2a2d0aee2eb64600 RBX: ffff888032f1f548 RCX: ffff888029431e00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc9000345fb08 R08: ffffffff8155b2f2 R09: 1ffff1101710519a
-R10: dffffc0000000000 R11: ffffed101710519b R12: ffff888011d38640
-R13: 0000000000000004 R14: 0000000000000000 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8880b8800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fcfb52722f0 CR3: 000000000e734000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- bcm_release+0x250/0x880 net/can/bcm.c:1578
- __sock_release net/socket.c:659 [inline]
- sock_close+0xbc/0x240 net/socket.c:1421
- __fput+0x24a/0x8a0 fs/file_table.c:422
- task_work_run+0x24f/0x310 kernel/task_work.c:228
- exit_task_work include/linux/task_work.h:40 [inline]
- do_exit+0xa2f/0x27f0 kernel/exit.c:882
- do_group_exit+0x207/0x2c0 kernel/exit.c:1031
- __do_sys_exit_group kernel/exit.c:1042 [inline]
- __se_sys_exit_group kernel/exit.c:1040 [inline]
- __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1040
- x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fcfb51ee969
-Code: Unable to access opcode bytes at 0x7fcfb51ee93f.
-RSP: 002b:00007ffce0109ca8 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007fcfb51ee969
-RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000001
-RBP: 00007fcfb526f3b0 R08: ffffffffffffffb8 R09: 0000555500000000
-R10: 0000555500000000 R11: 0000000000000246 R12: 00007fcfb526f3b0
-R13: 0000000000000000 R14: 00007fcfb5271ee0 R15: 00007fcfb51bf160
- </TASK>
+Commit 886433a98425 ("ath11k: add support for BSS color change") added the
+ath11k_mac_bcn_tx_event(), commit 01e782c89108 ("ath11k: fix warning
+of RCU usage for ath11k_mac_get_arvif_by_vdev_id()") added the RCU lock
+to avoid warning but also introduced this BUG.
 
-Fixes: 76fe372ccb81 ("can: bcm: Remove proc entry when dev is unregistered.")
-Reported-by: syzbot+0532ac7a06fb1a03187e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0532ac7a06fb1a03187e
-Tested-by: syzbot+0532ac7a06fb1a03187e@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20240905012237.79683-1-kuniyu@amazon.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Use work queue to avoid directly calling ath11k_mac_bcn_tx_event()
+during RCU critical sections. No need to worry about the deletion of vif
+because cancel_work_sync() will drop the work if it doesn't start or
+block vif deletion until the running work is done.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+
+Fixes: 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/2d277abd-5e7b-4da0-80e0-52bd96337f6e@moroto.mountain/
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240626053543.1946-1-quic_kangyang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/core.h |  1 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 12 ++++++++++++
+ drivers/net/wireless/ath/ath11k/wmi.c  |  4 +++-
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 46d3ec3aa44b4..217049fa496e9 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1471,8 +1471,10 @@ static void bcm_notify(struct bcm_sock *bo, unsigned long msg,
- 		/* remove device reference, if this is our bound device */
- 		if (bo->bound && bo->ifindex == dev->ifindex) {
- #if IS_ENABLED(CONFIG_PROC_FS)
--			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read)
-+			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read) {
- 				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
-+				bo->bcm_proc_read = NULL;
-+			}
- #endif
- 			bo->bound   = 0;
- 			bo->ifindex = 0;
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 141ba4487cb42..9d2d3a86abf17 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -396,6 +396,7 @@ struct ath11k_vif {
+ 	u8 bssid[ETH_ALEN];
+ 	struct cfg80211_bitrate_mask bitrate_mask;
+ 	struct delayed_work connection_loss_work;
++	struct work_struct bcn_tx_work;
+ 	int num_legacy_stations;
+ 	int rtscts_prot_mode;
+ 	int txpower;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index eaa53bc39ab2c..74719cb78888b 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -6599,6 +6599,16 @@ static int ath11k_mac_vdev_delete(struct ath11k *ar, struct ath11k_vif *arvif)
+ 	return ret;
+ }
+ 
++static void ath11k_mac_bcn_tx_work(struct work_struct *work)
++{
++	struct ath11k_vif *arvif = container_of(work, struct ath11k_vif,
++						bcn_tx_work);
++
++	mutex_lock(&arvif->ar->conf_mutex);
++	ath11k_mac_bcn_tx_event(arvif);
++	mutex_unlock(&arvif->ar->conf_mutex);
++}
++
+ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
+ 				       struct ieee80211_vif *vif)
+ {
+@@ -6637,6 +6647,7 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
+ 	arvif->vif = vif;
+ 
+ 	INIT_LIST_HEAD(&arvif->list);
++	INIT_WORK(&arvif->bcn_tx_work, ath11k_mac_bcn_tx_work);
+ 	INIT_DELAYED_WORK(&arvif->connection_loss_work,
+ 			  ath11k_mac_vif_sta_connection_loss_work);
+ 
+@@ -6879,6 +6890,7 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
+ 	int i;
+ 
+ 	cancel_delayed_work_sync(&arvif->connection_loss_work);
++	cancel_work_sync(&arvif->bcn_tx_work);
+ 
+ 	mutex_lock(&ar->conf_mutex);
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index 6ff01c45f1659..f50a4c0d4b2ba 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -7404,7 +7404,9 @@ static void ath11k_bcn_tx_status_event(struct ath11k_base *ab, struct sk_buff *s
+ 		rcu_read_unlock();
+ 		return;
+ 	}
+-	ath11k_mac_bcn_tx_event(arvif);
++
++	queue_work(ab->workqueue, &arvif->bcn_tx_work);
++
+ 	rcu_read_unlock();
+ }
+ 
 -- 
 2.43.0
 
