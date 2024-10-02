@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-80122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D647098DBF2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B2698DBF7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88EAB1F24ABA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77A9284D99
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8321D0E12;
-	Wed,  2 Oct 2024 14:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604831D1E61;
+	Wed,  2 Oct 2024 14:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fifQM3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rq5Zjmkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891361D014D;
-	Wed,  2 Oct 2024 14:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0CA1D175B;
+	Wed,  2 Oct 2024 14:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879448; cv=none; b=D36Hvi6Pb5xsM0Y7G9mnRL0trLsljy9QoIbDDEx7ZkHUUyBcDh9y+7QRfD4WhDNQxdUaSpQwOVsR+sSwTeULGcihTblTNCjViy4bHEHSVekfMSWs/vmv/uAaHUgiA4SO47YmSTctzODbbTa3VqwesslQ7rEvlkKcapMyJ8LuzOc=
+	t=1727879463; cv=none; b=X8iE3t07ny4yI1N00bdANXMs3TeI0uJKl6eNXP9rv4Lx79L7a6NmBhFabE/r9oQ1uNbQZ+O9R4extgH4mo/ent8sykpuKR7T6Alb1DmUDz2ItaIZ7QWGiBN8J+qn9M1ft2iJr2SGEpDYtNbsQ9QrSPCOJrdWfF+mr1euIIVdFd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879448; c=relaxed/simple;
-	bh=jZdkfwoe1X/maDUUyyNT5/iT+Kgh75a58asOm0kmYmY=;
+	s=arc-20240116; t=1727879463; c=relaxed/simple;
+	bh=hIM1teF/NmEPDM12UyteVrF5k8Ur3dlBDpiOoW9Fm24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kocEZ4+4Jcr/QliO3qja0M4N/zDDP+24rtAtuP70W6KfKxzZePwGJ7ToXHB84To+dsf0D46bqo3M37m+RXXS1I2lgpPjqUka1C0jmCJ4lx+M7iYweXX87ixda1/XlnTSWfTY9EmpNltQqp0KgF51p/bIh/SpiHi0SBLDK9q0gc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fifQM3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B235C4CEC5;
-	Wed,  2 Oct 2024 14:30:47 +0000 (UTC)
+	 MIME-Version; b=uuNlCtWaJhonEGYxmCRD5+qtG0O3yafDRduhSoCdgPZlRXWeA1S/Az+6iL2U7TxXNBYs+FTE/e/itNLvR9vilaEmmIQHV0mNb2gxpP1b7vYghp6nSuKbm5pMZphr/vOG8B8Yr6B5MR77e23jUvFppIT4d9ItB4Wq8aClzseY4gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rq5Zjmkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B693C4CEC2;
+	Wed,  2 Oct 2024 14:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879448;
-	bh=jZdkfwoe1X/maDUUyyNT5/iT+Kgh75a58asOm0kmYmY=;
+	s=korg; t=1727879462;
+	bh=hIM1teF/NmEPDM12UyteVrF5k8Ur3dlBDpiOoW9Fm24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fifQM3lCrPJdTntjV9fgfbEK10ii1UR3WQ2vJXpmDS1GnnhZDK+HSlsffZNiAgZh
-	 kQZJttseCCW7EDZ8wiaaO8rPHKW3QPfHQqYljBsolp9LCHRFZBEi9WCBOnpu0g+rB1
-	 /PGj2yp6e0ioPmkb12iNKbiIyV5n5pKlnYij4euE=
+	b=Rq5Zjmkq74+eBOVcYBHD9dji6lXPuGAZajCtHYI8DpDOrTIDwcsUheolBH3AOva0t
+	 UsjaZ61KLFmqAF1zpm8y/WnVHrtQY7GuioNNJP9NKx1XRpO6IarYP0SxXBY4bLe9X4
+	 pNjzIpuXlzvi5j8fx6vS+uDn8/gqQLy4kRvjXh6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/538] arm64: dts: renesas: r9a07g043u: Correct GICD and GICR sizes
-Date: Wed,  2 Oct 2024 14:55:34 +0200
-Message-ID: <20241002125755.978854022@linuxfoundation.org>
+Subject: [PATCH 6.6 096/538] arm64: dts: renesas: r9a07g054: Correct GICD and GICR sizes
+Date: Wed,  2 Oct 2024 14:55:35 +0200
+Message-ID: <20241002125756.018594997@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -68,37 +68,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit ab39547f739236e7f16b8b0a51fdca95cc9cadd3 ]
+[ Upstream commit 45afa9eacb59b258d2e53c7f63430ea1e8344803 ]
 
-The RZ/G2UL SoC is equipped with the GIC-600. The GICD is 64KiB + 64KiB
+The RZ/V2L SoC is equipped with the GIC-600. The GICD is 64KiB + 64KiB
 for the MBI alias (in total 128KiB), and the GICR is 128KiB per CPU.
 
-Despite the RZ/G2UL SoC being single-core, it has two instances of GICR.
-
-Fixes: cf40c9689e510 ("arm64: dts: renesas: Add initial DTSI for RZ/G2UL SoC")
+Fixes: 7c2b8198f4f32 ("arm64: dts: renesas: Add initial DTSI for RZ/V2L SoC")
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/20240730122436.350013-3-prabhakar.mahadev-lad.rj@bp.renesas.com
+Link: https://lore.kernel.org/20240730122436.350013-4-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r9a07g043u.dtsi | 4 ++--
+ arch/arm64/boot/dts/renesas/r9a07g054.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
-index 4b72de43b71cc..71d51febabc1e 100644
---- a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
-@@ -145,8 +145,8 @@ gic: interrupt-controller@11900000 {
- 		#interrupt-cells = <3>;
- 		#address-cells = <0>;
- 		interrupt-controller;
--		reg = <0x0 0x11900000 0 0x40000>,
--		      <0x0 0x11940000 0 0x60000>;
-+		reg = <0x0 0x11900000 0 0x20000>,
-+		      <0x0 0x11940000 0 0x40000>;
- 		interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
- 	};
- };
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
+index 3f01b096cfb71..d61f7894e55cd 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
+@@ -1004,8 +1004,8 @@ gic: interrupt-controller@11900000 {
+ 			#interrupt-cells = <3>;
+ 			#address-cells = <0>;
+ 			interrupt-controller;
+-			reg = <0x0 0x11900000 0 0x40000>,
+-			      <0x0 0x11940000 0 0x60000>;
++			reg = <0x0 0x11900000 0 0x20000>,
++			      <0x0 0x11940000 0 0x40000>;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 
 -- 
 2.43.0
 
