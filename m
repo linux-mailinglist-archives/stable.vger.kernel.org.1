@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886ED98D94B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0261F98DBE6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5133B288BBB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34F381C23D48
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F951D221C;
-	Wed,  2 Oct 2024 14:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14AA1D0B84;
+	Wed,  2 Oct 2024 14:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwZ+G/Jv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z26g1lL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C2E1D1F7F;
-	Wed,  2 Oct 2024 14:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3DD1D07AC;
+	Wed,  2 Oct 2024 14:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877901; cv=none; b=LnQMHaVmp0JnRVSZJfexvMn49Nuh9IETH2J5dvv4DmiYdMvLMFiCiFSpNJynO/lWjktQHrR4zRulihpp5aFRNHjogOrr8miYpSlaef04WHpdTwO40MBwl/ruaVbNeMz5fAMy0/kNnHbDfUkqLUSQm6op234/oz+ADXDQ641yIT4=
+	t=1727879416; cv=none; b=QmWYoMA5HpeXvTguO4hzGzkKPK7V+bsCKR8gyTLgewaQ5HWYUjPMf2/ZgTITmpvC1QGwTU4mUjJHDH0CskqPMzCHd09NIojExKc9MnIfdKQV0+8MhA8uCl4DuqVH0mUqRr2zaKVykPJMgEg3OruJmQg/JU5X330mQYt0usvkdsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877901; c=relaxed/simple;
-	bh=VL/2akMimO0ynW83oVFIw7mt8KH4QW+KZEdP2eClMk0=;
+	s=arc-20240116; t=1727879416; c=relaxed/simple;
+	bh=MPbYbn9j3W+u8z/9LrPk8h5Zt8wcapLb+VZe0EMNm9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZj6BwdPHD6oS9x8xoEILoIL55UzzlUsxP38CUxNy9oobSXemDhv8+Jiw9RT55gQA7xKpI5/P2LnrbsE8Wvi1V4EHr3t7o7yk1+clzlcL/fAziMmfSe6h0V32AT5zpzFhT5r/vv6944kRTVtUXATmr+VuFWlRCX0/ojvPQvxdmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwZ+G/Jv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7FEC4CEC2;
-	Wed,  2 Oct 2024 14:05:01 +0000 (UTC)
+	 MIME-Version; b=bQ7UtQSL2BG1o/WhZo6iJ3BmyD6Tbra8gBIY/J6d0buaSaKsx2c1CJFRKZRt78hYQ99fdtFbzTe+zCanczoU5FilMoIFNUFcxZVqBuFrQcBZXu3TUyXG58xuoTJTjqIoFM++F3RTY9eFTtpeJd6FEydwTePFJvH6HMjTYGsQoXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z26g1lL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31176C4CECE;
+	Wed,  2 Oct 2024 14:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877901;
-	bh=VL/2akMimO0ynW83oVFIw7mt8KH4QW+KZEdP2eClMk0=;
+	s=korg; t=1727879416;
+	bh=MPbYbn9j3W+u8z/9LrPk8h5Zt8wcapLb+VZe0EMNm9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwZ+G/Jv2pwDt1RuYvkwf+zunGR4iI+iHa2rUmU6zRnlnlAnmHKNrlrML8YvW2qjZ
-	 8r4mUPQftXAXjVY9hecYd2hb1xQqgd6PyMjIC35clXL6F61dQUZvRc4GESB/ba0IkK
-	 7z/dEiFLXQCGWUlDES1tIsjN68QaC41462M5qp1Q=
+	b=Z26g1lL1CSLiJw2KHERsvryOb14dxW555pv/hURf3joTt2q2EmAMbVqiV1MydW0Dt
+	 UICbMTxQM3WLnavjc8uBF0XfEkCPih/SkDzjpbknSifglzetJfpOr2mrExIncUT3v6
+	 XoyNx2DZGr49GMv/XqgvxmnrZhPfDUyOBwATc8ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 232/634] selftests/bpf: Workaround strict bpf_lsm return value check.
-Date: Wed,  2 Oct 2024 14:55:32 +0200
-Message-ID: <20241002125820.256411368@linuxfoundation.org>
+Subject: [PATCH 6.6 094/538] regulator: Return actual error in of_regulator_bulk_get_all()
+Date: Wed,  2 Oct 2024 14:55:33 +0200
+Message-ID: <20241002125755.939436593@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit aa8ebb270c66cea1f56a25d0f938036e91ad085a ]
+[ Upstream commit 395a41a1d3e377462f3eea8a205ee72be8885ff6 ]
 
-test_progs-no_alu32 -t libbpf_get_fd_by_id_opts
-is being rejected by the verifier with the following error
-due to compiler optimization:
+If regulator_get() in of_regulator_bulk_get_all() returns an error, that
+error gets overridden and -EINVAL is always passed out. This masks probe
+deferral requests and likely won't work properly in all cases.
 
-6: (67) r0 <<= 62                     ; R0_w=scalar(smax=0x4000000000000000,umax=0xc000000000000000,smin32=0,smax32=umax32=0,var_off=(0x0; 0xc000000000000000))
-7: (c7) r0 s>>= 63                    ; R0_w=scalar(smin=smin32=-1,smax=smax32=0)
-;  @ test_libbpf_get_fd_by_id_opts.c:0
-8: (57) r0 &= -13                     ; R0_w=scalar(smax=0x7ffffffffffffff3,umax=0xfffffffffffffff3,smax32=0x7ffffff3,umax32=0xfffffff3,var_off=(0x0; 0xfffffffffffffff3))
-; int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode) @ test_libbpf_get_fd_by_id_opts.c:27
-9: (95) exit
-At program exit the register R0 has smax=9223372036854775795 should have been in [-4095, 0]
+Fix this by letting of_regulator_bulk_get_all() return the original
+error code.
 
-Workaround by adding barrier().
-Eventually the verifier will be able to recognize it.
-
-Fixes: 5d99e198be27 ("bpf, lsm: Add check for BPF LSM return value")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Fixes: 27b9ecc7a9ba ("regulator: Add of_regulator_bulk_get_all")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20240822072047.3097740-3-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c  | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/regulator/of_regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-index f5ac5f3e89196..568816307f712 100644
---- a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-+++ b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-@@ -31,6 +31,7 @@ int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode)
- 
- 	if (fmode & FMODE_WRITE)
- 		return -EACCES;
-+	barrier();
- 
- 	return 0;
- }
+diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+index 1b65e5e4e40ff..59e71fd0db439 100644
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -768,7 +768,7 @@ int of_regulator_bulk_get_all(struct device *dev, struct device_node *np,
+ 			name[i] = '\0';
+ 			tmp = regulator_get(dev, name);
+ 			if (IS_ERR(tmp)) {
+-				ret = -EINVAL;
++				ret = PTR_ERR(tmp);
+ 				goto error;
+ 			}
+ 			(*consumers)[n].consumer = tmp;
 -- 
 2.43.0
 
