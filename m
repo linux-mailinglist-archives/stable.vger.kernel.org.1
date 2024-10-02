@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-80488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E99E98DDA5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FB498DB3D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B95711F2415C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80AD928163A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2121D07B7;
-	Wed,  2 Oct 2024 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9E11D1502;
+	Wed,  2 Oct 2024 14:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oomI6qSz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMQD5iHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960BE2F44;
-	Wed,  2 Oct 2024 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29E91D0940;
+	Wed,  2 Oct 2024 14:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880518; cv=none; b=L2+b14TJIPlQetDsBjNhr7gaoh1dU/DenIhUgHs61f6v7z8wsoJyrpslHxbzSERgkesx1Rbb6tciN9bQbywC1IzvaO5ZFiTe1i1W1BTSFH9XaCSE0/VizQfhqcUjXvjRsX+eckW80kzXxG2TZJgfDqr1U571qd4Fjq4EPtHaA7g=
+	t=1727879065; cv=none; b=q+cyEDYOPSBiOm+3ySQdK0aw3H3f2TzN3X55O9SzZCmh2C7uTje99nGIfEoEw/KUfaIlcaTFDHxtv7Ds9XXzf6uYdxJiGhgRoujOiVrftAYicMp2DdNbYMnP/0iiLcLzZ1K3F+9+8rUdLS3vS5xg3v/QEAej3DkFOYiRHnQE6qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880518; c=relaxed/simple;
-	bh=BABd0vStzH3wkQXX5Q9v3tAD04WjjCefaz4HkwzG9Ck=;
+	s=arc-20240116; t=1727879065; c=relaxed/simple;
+	bh=flgrD24pWeuoAntMIUJy0i8CcBV5wW3DRU3O0qpbbSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFHeY8VXHJne1tHPTHawRTBhwD7dPYZJy81a2wgbprmWSvaZG993K/NQXrz427lZ2wkDaa/oSJIZUJEcW9Lds1qBrRcsQPUncrRBulX0nuajZz+wFnOyfq1FiFa93LN+8zvt+648AWoUYU9iqLujLbuppgo0IasATwWxmU+a69k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oomI6qSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B734C4CEC2;
-	Wed,  2 Oct 2024 14:48:37 +0000 (UTC)
+	 MIME-Version; b=BIvDgj4vTEZ1Sfb9WyU5vbtA51nQk9A+tQgsr5x6f+N1XlqlDWFfRC2g2L+ZSj7+sszzvY5zoFK/i0/hXeDO8ijYC1ZTQ9bd7OQc+chYxlA4rcFEEzDdvG2tGCxV11Y8wCezoA4CDmxy+bLSpMTiUHHF+S+/w5YBox59qHh10xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMQD5iHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55998C4CEC2;
+	Wed,  2 Oct 2024 14:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880518;
-	bh=BABd0vStzH3wkQXX5Q9v3tAD04WjjCefaz4HkwzG9Ck=;
+	s=korg; t=1727879065;
+	bh=flgrD24pWeuoAntMIUJy0i8CcBV5wW3DRU3O0qpbbSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oomI6qSzQbTli3lwVRP+dCy9JpAJuMykJA/Jh/roOqIokcGl7peiwukIx300st1uC
-	 VZ7uPC8J7p+29kygk9BKXq7THF0xEbor3rZERaDX9yLrniLaH3gzaEhCHIN1i2CXvm
-	 pqdxeIsxD93ssQ4DkAA8k6WdgnSAEsr2W3DFiug0=
+	b=mMQD5iHM8PsbjGLxs4ygSNp9e9kLxtRu5D/HJbRgF9vWi38Z3eM4XRiR42hfT6a+x
+	 6T7ZgqAWI8Zmb+K8S6x64/XwLd/3qBqa11CV1cwKU2hl6sATn3zvZWmwLhVp6QP6sn
+	 AdMu9scUdjY4xBSFplubMjLEYmcAtWyBpIIU+Vi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 486/538] USB: misc: yurex: fix race between read and write
-Date: Wed,  2 Oct 2024 15:02:05 +0200
-Message-ID: <20241002125811.625631976@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Kexy Biscuit <kexybiscuit@aosc.io>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.10 626/634] tpm: export tpm2_sessions_init() to fix ibmvtpm building
+Date: Wed,  2 Oct 2024 15:02:06 +0200
+Message-ID: <20241002125835.833759959@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Kexy Biscuit <kexybiscuit@aosc.io>
 
-[ Upstream commit 93907620b308609c72ba4b95b09a6aa2658bb553 ]
+commit f168c000d27f8134160d4a52dfc474a948a3d7e9 upstream.
 
-The write code path touches the bbu member in a non atomic manner
-without taking the spinlock. Fix it.
+Commit 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to
+initialize session support") adds call to tpm2_sessions_init() in ibmvtpm,
+which could be built as a module. However, tpm2_sessions_init() wasn't
+exported, causing libmvtpm to fail to build as a module:
 
-The bug is as old as the driver.
+ERROR: modpost: "tpm2_sessions_init" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240912132126.1034743-1-oneukum@suse.com
+Export tpm2_sessions_init() to resolve the issue.
+
+Cc: stable@vger.kernel.org # v6.10+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408051735.ZJkAPQ3b-lkp@intel.com/
+Fixes: 08d08e2e9f0a ("tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support")
+Signed-off-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/yurex.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/char/tpm/tpm2-sessions.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
-index 5a13cddace0e6..44136989f6c6a 100644
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -404,7 +404,6 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
- 	struct usb_yurex *dev;
- 	int len = 0;
- 	char in_buffer[MAX_S64_STRLEN];
--	unsigned long flags;
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index d3521aadd43e..44f60730cff4 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1362,4 +1362,5 @@ int tpm2_sessions_init(struct tpm_chip *chip)
  
- 	dev = file->private_data;
- 
-@@ -417,9 +416,9 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
- 	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
- 		return -EIO;
- 
--	spin_lock_irqsave(&dev->lock, flags);
-+	spin_lock_irq(&dev->lock);
- 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
--	spin_unlock_irqrestore(&dev->lock, flags);
-+	spin_unlock_irq(&dev->lock);
- 	mutex_unlock(&dev->io_mutex);
- 
- 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
-@@ -509,8 +508,11 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
- 			__func__, retval);
- 		goto error;
- 	}
--	if (set && timeout)
-+	if (set && timeout) {
-+		spin_lock_irq(&dev->lock);
- 		dev->bbu = c2;
-+		spin_unlock_irq(&dev->lock);
-+	}
- 	return timeout ? count : -EIO;
- 
- error:
+ 	return rc;
+ }
++EXPORT_SYMBOL(tpm2_sessions_init);
+ #endif /* CONFIG_TCG_TPM2_HMAC */
 -- 
-2.43.0
+2.46.2
 
 
 
