@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102D298D806
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1DC98D509
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A56931F218D9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:55:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8854C1F229EE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6667A1D097D;
-	Wed,  2 Oct 2024 13:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B03B1D0488;
+	Wed,  2 Oct 2024 13:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YZW3Zeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUP9Swrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259821D096B;
-	Wed,  2 Oct 2024 13:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01C31D0433;
+	Wed,  2 Oct 2024 13:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877318; cv=none; b=OganWS/WnoRKkw2roOO3pGMp4b6aA+GAx/Ue2XG3ntyL6A61ezBlkLX3YcZHLlPb/iosP6KYNblCI3cMl0Bap5vwPRleIHCec63aeaMx1eyUV+zGfdOzCSGp5ECUOida0rED5nEs4ZqwQAYt/Ze7Q7nZRSzscR5aLQQgWwYwUvI=
+	t=1727875562; cv=none; b=CBGw5113AcWKvEu9IO3t/nhUGrtBPxvaGFDFVfUypCC35ZDIDxwT7x0OOa8IlRkIT2FBd/S0/Rr53r0jR5jEehxTOYoNQDQV686JpAWk2AMH0DnpxB2VDviFI2XXEv8rH0rEmcx7h1SJZuzBdPx65svQRoCcqJY+oWxe3NpHU8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877318; c=relaxed/simple;
-	bh=FRIxKg1k2H6MdATd/Kv60dK3c4FgtV1bBeR3fqPPunU=;
+	s=arc-20240116; t=1727875562; c=relaxed/simple;
+	bh=zl8rehc5BhD6akZShSUKqH19C2n7psojoSDGfF5PU4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZaxwrlXuETjnU95d9PIca8Urkve2EQSay+ruUlzRhka66t5OcXk3U/y9qDeKoXdhjf2bBM9+kZQEAI6bv6jhZ/lrOkqQsyX8iWEEd/AuiWI8Mq/biR681yI128GQ3mE5OUERoS77I0WKoc4xD9uOtyZQnIb8eFRlMlMk92TLTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YZW3Zeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E364C4DDE2;
-	Wed,  2 Oct 2024 13:55:17 +0000 (UTC)
+	 MIME-Version; b=fF+9CzdzQupsqNxuIf6rxeYHsMAFCIzfBLjX2qNfDM37xNsADeroauOeOm6eM6FxBexm9e+f9g7t4xsBzHEbqxzTQjyBQuy0z2cCmleRLHIzhV/WGvp8VpRXQhRvkT5+ueeyWr2gHlWmSzmCDaHhcurl2H7djw6DMSgzTrU+nco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUP9Swrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B7EC4CEC5;
+	Wed,  2 Oct 2024 13:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877317;
-	bh=FRIxKg1k2H6MdATd/Kv60dK3c4FgtV1bBeR3fqPPunU=;
+	s=korg; t=1727875561;
+	bh=zl8rehc5BhD6akZShSUKqH19C2n7psojoSDGfF5PU4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YZW3Zeov/8W7sfwa5cL/UQIeXUWrmyyD49oZh4RZhafVk+iqyJrARTNFKxB7+dnt
-	 EWJSLmwlFWNVDh4igSf7pWdoWQ6bBqf+9fUcbX5AfCUrEHHiKoXCZEnf1n5Ory6jxB
-	 FQalVPi8rG3vxpLqydKlzTz9fLOTYxfluEwtVs+U=
+	b=BUP9SwrhlA7uQjrD9FE0D18EelRZ3MVpEU59tKwOY492dg37OOc13lCV4DsZ3480Y
+	 MvXmnozZH/zcsAyUBlKI2rubymDSQr36mbCtaRxN2l2glm60cJ6Mg1mjtksc/kccw4
+	 XXAXOrfw7lFJCW1NgT2KRTkBX2VDAtvZNl+RV9yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hhorace <hhoracehsu@gmail.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 041/634] wifi: cfg80211: fix bug of mapping AF3x to incorrect User Priority
+Subject: [PATCH 6.11 143/695] arm64: dts: renesas: r9a07g044: Correct GICD and GICR sizes
 Date: Wed,  2 Oct 2024 14:52:21 +0200
-Message-ID: <20241002125812.721996675@linuxfoundation.org>
+Message-ID: <20241002125828.193246765@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hhorace <hhoracehsu@gmail.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit a68b22e2905b04f376e2fa116be5e48b948f81c8 ]
+[ Upstream commit 833948fb2b63155847ab691a54800f801555429b ]
 
-According to RFC8325 4.3, Multimedia Streaming: AF31(011010, 26),
-AF32(011100, 28), AF33(011110, 30) maps to User Priority = 4
-and AC_VI (Video).
+The RZ/G2L(C) SoC is equipped with the GIC-600. The GICD is 64KiB +
+64KiB for the MBI alias (in total 128KiB), and the GICR is 128KiB per
+CPU.
 
-However, the original code remain the default three Most Significant
-Bits (MSBs) of the DSCP, which makes AF3x map to User Priority = 3
-and AC_BE (Best Effort).
-
-Fixes: 6fdb8b8781d5 ("wifi: cfg80211: Update the default DSCP-to-UP mapping")
-Signed-off-by: hhorace <hhoracehsu@gmail.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20240807082205.1369-1-hhoracehsu@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 68a45525297b2 ("arm64: dts: renesas: Add initial DTSI for RZ/G2{L,LC} SoC's")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/20240730122436.350013-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/renesas/r9a07g044.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index af6ec719567fc..f1193aca79bae 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -998,10 +998,10 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
- 	 * Diffserv Service Classes no update is needed:
- 	 * - Standard: DF
- 	 * - Low Priority Data: CS1
--	 * - Multimedia Streaming: AF31, AF32, AF33
- 	 * - Multimedia Conferencing: AF41, AF42, AF43
- 	 * - Network Control Traffic: CS7
- 	 * - Real-Time Interactive: CS4
-+	 * - Signaling: CS5
- 	 */
- 	switch (dscp >> 2) {
- 	case 10:
-@@ -1026,9 +1026,11 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
- 		/* Broadcasting video: CS3 */
- 		ret = 4;
- 		break;
--	case 40:
--		/* Signaling: CS5 */
--		ret = 5;
-+	case 26:
-+	case 28:
-+	case 30:
-+		/* Multimedia Streaming: AF31, AF32, AF33 */
-+		ret = 4;
- 		break;
- 	case 44:
- 		/* Voice Admit: VA */
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
+index d3838e5820fca..c9b9b60a3a36e 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
+@@ -1043,8 +1043,8 @@
+ 			#interrupt-cells = <3>;
+ 			#address-cells = <0>;
+ 			interrupt-controller;
+-			reg = <0x0 0x11900000 0 0x40000>,
+-			      <0x0 0x11940000 0 0x60000>;
++			reg = <0x0 0x11900000 0 0x20000>,
++			      <0x0 0x11940000 0 0x40000>;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 
 -- 
 2.43.0
 
