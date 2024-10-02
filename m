@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-80282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211CB98DCE1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324E998DA33
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FDE9B28F93
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE4BB1F28123
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60DF1D1F41;
-	Wed,  2 Oct 2024 14:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FC91D1730;
+	Wed,  2 Oct 2024 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTtJNDeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tD/BMA2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BDE1D095D;
-	Wed,  2 Oct 2024 14:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FA11D0B8C;
+	Wed,  2 Oct 2024 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879914; cv=none; b=mUEwe0KiRfI+hCeQU6QI4Z2xCz77iOp2JYvaQ+JLFfV5jrigld5v8fI4Hsi4tn9q2w9egzJhzYjcIpdO8sWkrP5xXpEfV8TBv8YIz2mTp+S1NuemdDNLZbAkHt1t1ZDgybEpFwYG0owVZ2rpBfzhD4odDZk/5W/XIWYaI36ThmU=
+	t=1727878461; cv=none; b=gLaDq+wZuu/JErRf7tfRkGqafeqwqkiZKsZSwTj7COQ0wnxFoLubVOBUbTGTXz+9yKYpONad6Pukg2jEGyasV5qxYfxjVp7eIeyrUhliGQgtyUE7ufbj5Pbyda5dm90+YLumg9APl72fg5AOQa/e2Bp7MsHiemw925W5qPzSRRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879914; c=relaxed/simple;
-	bh=ExgJvtpHvUyj+rt+1Dc+EKFFAb4Z2pZOjHHc13kMbvQ=;
+	s=arc-20240116; t=1727878461; c=relaxed/simple;
+	bh=py4dtkTG4pkCS8n/231UO7iqb4Ahz2DYTHFQp480uas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1xjxwjTh+zxtlQluynG3Caajo1Hs3TZgroOFZKMAAe+7QtDNLUaZMx7mU9qhGqmaeqtFHkP1W5TNijrN2z3i4s6evNqMSAgVVyMfzT+EbCYkUhVKdbZ7/hzqMcFnHFdJqIePRFn0xq/nVWbuXxkm4NYeJsVfwbVdoYN6sXGcz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTtJNDeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220C6C4CEC2;
-	Wed,  2 Oct 2024 14:38:33 +0000 (UTC)
+	 MIME-Version; b=gqrx/TCPx178Vyg5nYd6EMHbvNlyvBJ4nD2sKwzV2t3IC5xv/mVj1M/nX0dcSfxDEgYPO+9jGtsRslyivUAo0HWJulhqzQC/67OjgjRoFmlSXli3zosqQoWGJ8LIumWoSFD/Fjqx5kxSGW/UYwsf1bvDYP6YBB+w9HGrli/kuGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tD/BMA2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63D4C4CEC5;
+	Wed,  2 Oct 2024 14:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879914;
-	bh=ExgJvtpHvUyj+rt+1Dc+EKFFAb4Z2pZOjHHc13kMbvQ=;
+	s=korg; t=1727878461;
+	bh=py4dtkTG4pkCS8n/231UO7iqb4Ahz2DYTHFQp480uas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTtJNDeYOlqnCN0N5TRv+N1ZqI2gIPCola78uenipfMAOS8ajxVP5KaIvujFbQM38
-	 VrxDTbTKgyUKOQPIhAkIHgtjatpL1JxkL4DPNyS01N5728hgFi+oEPFh2jN6mnBEGl
-	 cQgBgo9eYBRgpTJKMVqovlE5GyDr4oWaiuEhKAwI=
+	b=tD/BMA2+EBCj85pYROXxTi1nQJw1VD/15z0INUFcVf7gbsHTkD0E/6fkjDbC6aDio
+	 Lq/tqXnf+wBZhTlEx45FjdoEaKK1afrIuRrDz93cecAcp/xFt82N4T44AXM9GZH9YH
+	 c9l72bAn1iBq4zDmZ5oTnaT7pK6N7EKfH6ORSbNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/538] clk: imx: imx8mp: fix clock tree update of TF-A managed clocks
-Date: Wed,  2 Oct 2024 14:58:23 +0200
-Message-ID: <20241002125802.677527628@linuxfoundation.org>
+Subject: [PATCH 6.10 404/634] f2fs: prevent atomic file from being dirtied before commit
+Date: Wed,  2 Oct 2024 14:58:24 +0200
+Message-ID: <20241002125827.055250543@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit 3d29036853b9cb07ac49e8261fca82a940be5c41 ]
+[ Upstream commit fccaa81de87e80b1809906f7e438e5766fbdc172 ]
 
-On the i.MX8M*, the TF-A exposes a SiP (Silicon Provider) service
-for DDR frequency scaling. The imx8m-ddrc-devfreq driver calls the
-SiP and then does clk_set_parent on the DDR muxes to synchronize
-the clock tree.
+Keep atomic file clean while updating and make it dirtied during commit
+in order to avoid unnecessary and excessive inode updates in the previous
+fix.
 
-since commit 936c383673b9 ("clk: imx: fix composite peripheral flags"),
-these TF-A managed muxes have SET_PARENT_GATE set, which results
-in imx8m-ddrc-devfreq's clk_set_parent after SiP failing with -EBUSY:
-
-clk_set_parent(dram_apb_src, sys1_pll_40m);(busfreq-imx8mq.c)
-
-commit 926bf91248dd
-("clk: imx8m: fix clock tree update of TF-A managed clocks") adds this
-method and enables 8mm, 8mn and 8mq. i.MX8MP also needs it.
-
-This is safe to do, because updating the Linux clock tree to reflect
-reality will always be glitch-free.
-
-Another reason to this patch is that powersave image BT music
-requires dram to be 400MTS, so clk_set_parent(dram_alt_src,
-sys1_pll_800m); is required. Without this patch, it will not succeed.
-
-Fixes: 936c383673b9 ("clk: imx: fix composite peripheral flags")
-Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-7-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: 4bf78322346f ("f2fs: mark inode dirty for FI_ATOMIC_COMMITTED flag")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/f2fs.h    | 2 +-
+ fs/f2fs/inode.c   | 5 +++++
+ fs/f2fs/segment.c | 8 ++++++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 670aa2bab3017..e561ff7b135fb 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -551,8 +551,8 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index dbae5d4417910..88ca80afffd3d 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -803,6 +803,7 @@ enum {
+ 	FI_ALIGNED_WRITE,	/* enable aligned write */
+ 	FI_COW_FILE,		/* indicate COW file */
+ 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
++	FI_ATOMIC_DIRTIED,	/* indicate atomic file is dirtied */
+ 	FI_ATOMIC_REPLACE,	/* indicate atomic replace */
+ 	FI_OPENED_FILE,		/* indicate file has been opened */
+ 	FI_MAX,			/* max flag, never be used */
+@@ -3049,7 +3050,6 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
+ 	case FI_INLINE_DOTS:
+ 	case FI_PIN_FILE:
+ 	case FI_COMPRESS_RELEASED:
+-	case FI_ATOMIC_COMMITTED:
+ 		f2fs_mark_inode_dirty_sync(inode, true);
+ 	}
+ }
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 57da02bfa823e..0b23a0cb438fd 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -35,6 +35,11 @@ void f2fs_mark_inode_dirty_sync(struct inode *inode, bool sync)
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
  
- 	hws[IMX8MP_CLK_IPG_ROOT] = imx_clk_hw_divider2("ipg_root", "ahb_root", ccm_base + 0x9080, 0, 1);
++	if (f2fs_is_atomic_file(inode)) {
++		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
++		return;
++	}
++
+ 	mark_inode_dirty_sync(inode);
+ }
  
--	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
--	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
-+	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_fw_managed_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
-+	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_fw_managed_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
- 	hws[IMX8MP_CLK_VPU_G1] = imx8m_clk_hw_composite("vpu_g1", imx8mp_vpu_g1_sels, ccm_base + 0xa100);
- 	hws[IMX8MP_CLK_VPU_G2] = imx8m_clk_hw_composite("vpu_g2", imx8mp_vpu_g2_sels, ccm_base + 0xa180);
- 	hws[IMX8MP_CLK_CAN1] = imx8m_clk_hw_composite("can1", imx8mp_can1_sels, ccm_base + 0xa200);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 601825785226d..06ddc80aa5e0d 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -199,6 +199,10 @@ void f2fs_abort_atomic_write(struct inode *inode, bool clean)
+ 	clear_inode_flag(inode, FI_ATOMIC_COMMITTED);
+ 	clear_inode_flag(inode, FI_ATOMIC_REPLACE);
+ 	clear_inode_flag(inode, FI_ATOMIC_FILE);
++	if (is_inode_flag_set(inode, FI_ATOMIC_DIRTIED)) {
++		clear_inode_flag(inode, FI_ATOMIC_DIRTIED);
++		f2fs_mark_inode_dirty_sync(inode, true);
++	}
+ 	stat_dec_atomic_inode(inode);
+ 
+ 	F2FS_I(inode)->atomic_write_task = NULL;
+@@ -366,6 +370,10 @@ static int __f2fs_commit_atomic_write(struct inode *inode)
+ 	} else {
+ 		sbi->committed_atomic_block += fi->atomic_write_cnt;
+ 		set_inode_flag(inode, FI_ATOMIC_COMMITTED);
++		if (is_inode_flag_set(inode, FI_ATOMIC_DIRTIED)) {
++			clear_inode_flag(inode, FI_ATOMIC_DIRTIED);
++			f2fs_mark_inode_dirty_sync(inode, true);
++		}
+ 	}
+ 
+ 	__complete_revoke_list(inode, &revoke_list, ret ? true : false);
 -- 
 2.43.0
 
