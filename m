@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-78762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C4298D4CD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B027798D7F8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:55:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EF3A1F22E1E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2AF21C22AC3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F421D0437;
-	Wed,  2 Oct 2024 13:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530BE1D0491;
+	Wed,  2 Oct 2024 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXxR5lnD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEyAvYJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E2B1D0434;
-	Wed,  2 Oct 2024 13:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EF4198837;
+	Wed,  2 Oct 2024 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875455; cv=none; b=rqZZYcrZIKpadREGX5nIp+KN58i0Zkl5VYODyZvo7WGuLbrqUIgVncOlFuh/ZgL34R18I8TijJOt2qAPo/iOvvZlYqc3FfEBogDtXH5YpLUnCjbLhPGtKjfTt5hpW8+04Aa+e/LT1zkUmrNfjlKOGsqlWks79OMMdV55rQguRKw=
+	t=1727877294; cv=none; b=Y+xsLNQwVYO4VTlrsk9+AgwAB+LgLZBzEotNJlBXKRpFC0a1+nqS1j8Q506laLIZyzLqNJJRyN1nyGk9iG83DXzkwRwnK2K1jBxJhs17cKHXC7Rv6xmYa4Gl2BrLToNMLNnDA7xiC1WwYa1j3iDkUD/qydkKKok7oxt4m+Pn+bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875455; c=relaxed/simple;
-	bh=DMBdgjRnhdSleSkfjwLmcGU7KQTekDG6GVMReTYiS/8=;
+	s=arc-20240116; t=1727877294; c=relaxed/simple;
+	bh=V78L07ICWDgBdIWxMGj/4X3Tj6tuIReOBlWewhtCcWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEBqYg+BU2hEwhtr/S49XY5mT4yqjO5cGoRXAdCaVflB7DT7isFGfEQtuhMF3pmS6Gcd94OTnnNoEj9Nw4ffiN8qjyPlPZvNnpjKHNmy8eS0Pqg6T3xE1aLvbChW4er5AcMpiMvrAx8NdO8XpNpUUSbj65vcMAYw/syJ2vKwKQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXxR5lnD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFE0C4CEC5;
-	Wed,  2 Oct 2024 13:24:15 +0000 (UTC)
+	 MIME-Version; b=MwwsYlzkRSAM2IdZvzeWXW0C/ibw6+4C9u4Sr8BCgCELNUQk/7MqvVZRCxyDOSM99pQUNA/8l//WUcGBle6RNWwtxOorExrMtNLSZ61/3oMV3T88VZkQsrcGspFLDLryfgcOCTR/l1h+yw0T329wYnILwjmrqinPHjCNJQ26dNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEyAvYJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4B7C4CED2;
+	Wed,  2 Oct 2024 13:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875455;
-	bh=DMBdgjRnhdSleSkfjwLmcGU7KQTekDG6GVMReTYiS/8=;
+	s=korg; t=1727877294;
+	bh=V78L07ICWDgBdIWxMGj/4X3Tj6tuIReOBlWewhtCcWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rXxR5lnDFZjsQxHQfRuzuP8kW0lgKPrcrVr4vH1T28kcZgBqnHNBL2l4dYHA7vIb3
-	 oX+7I5F2K1xhTMg7auVtp+9w+UprWm+iaMKizVSmQFOCq5ZxXK69L6xIlvCUwDVfU5
-	 UZNZglBXf2ANQkViM3jE3yuPx8jQDpcXRnXlUEro=
+	b=FEyAvYJ5GfWrtVIY18FUZ87RXohtsh2eJM++QjwU52C/jX1esm7Wd6pK8S63XDiH5
+	 OweXL9v1NsL5fTs5vIMQFbx5xb3K3Yme65p3jeP5Zi8PCqFKywYb+LTQKND2ejTv+M
+	 pf/icDU9vEFjo7bmjE3bg90vlOXgbptR0zj2vr74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Witwicki <michal.witwicki@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 107/695] bareudp: Pull inner IP header in bareudp_udp_encap_recv().
-Date: Wed,  2 Oct 2024 14:51:45 +0200
-Message-ID: <20241002125826.744729749@linuxfoundation.org>
+Subject: [PATCH 6.10 006/634] crypto: qat - fix recovery flow for VFs
+Date: Wed,  2 Oct 2024 14:51:46 +0200
+Message-ID: <20241002125811.339538274@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Michal Witwicki <michal.witwicki@intel.com>
 
-[ Upstream commit 45fa29c85117170b0508790f878b13ec6593c888 ]
+[ Upstream commit 6f1b5236348fced7e7691a933327694b4106bc39 ]
 
-Bareudp reads the inner IP header to get the ECN value. Therefore, it
-needs to ensure that it's part of the skb's linear data.
+When the PFVF protocol was updated to support version 5, i.e.
+ADF_PFVF_COMPAT_FALLBACK, the compatibility version for the VF was
+updated without supporting the message RESTARTING_COMPLETE required for
+such version.
 
-This is similar to the vxlan and geneve fixes for that same problem:
-  * commit f7789419137b ("vxlan: Pull inner IP header in vxlan_rcv().")
-  * commit 1ca1ba465e55 ("geneve: make sure to pull inner header in
-    geneve_rx()")
+Add support for the ADF_VF2PF_MSGTYPE_RESTARTING_COMPLETE message in the
+VF drivers. This message is sent by the VF driver to the PF to notify
+the completion of the shutdown flow.
 
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/5205940067c40218a70fbb888080466b2fc288db.1726046181.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ec26f8e6c784 ("crypto: qat - update PFVF protocol for recovery")
+Signed-off-by: Michal Witwicki <michal.witwicki@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ .../crypto/intel/qat/qat_common/adf_pfvf_vf_msg.c  | 14 ++++++++++++++
+ .../crypto/intel/qat/qat_common/adf_pfvf_vf_msg.h  |  1 +
+ drivers/crypto/intel/qat/qat_common/adf_vf_isr.c   |  2 ++
+ 3 files changed, 17 insertions(+)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 7aca0544fb29c..b4e820a123caf 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -68,6 +68,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	__be16 proto;
- 	void *oiph;
- 	int err;
-+	int nh;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.c b/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.c
+index 1141258db4b65..10c91e56d6be3 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.c
+@@ -48,6 +48,20 @@ void adf_vf2pf_notify_shutdown(struct adf_accel_dev *accel_dev)
+ }
+ EXPORT_SYMBOL_GPL(adf_vf2pf_notify_shutdown);
  
- 	bareudp = rcu_dereference_sk_user_data(sk);
- 	if (!bareudp)
-@@ -148,10 +149,25 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	}
- 	skb_dst_set(skb, &tun_dst->dst);
- 	skb->dev = bareudp->dev;
--	oiph = skb_network_header(skb);
--	skb_reset_network_header(skb);
- 	skb_reset_mac_header(skb);
++void adf_vf2pf_notify_restart_complete(struct adf_accel_dev *accel_dev)
++{
++	struct pfvf_message msg = { .type = ADF_VF2PF_MSGTYPE_RESTARTING_COMPLETE };
++
++	/* Check compatibility version */
++	if (accel_dev->vf.pf_compat_ver < ADF_PFVF_COMPAT_FALLBACK)
++		return;
++
++	if (adf_send_vf2pf_msg(accel_dev, msg))
++		dev_err(&GET_DEV(accel_dev),
++			"Failed to send Restarting complete event to PF\n");
++}
++EXPORT_SYMBOL_GPL(adf_vf2pf_notify_restart_complete);
++
+ int adf_vf2pf_request_version(struct adf_accel_dev *accel_dev)
+ {
+ 	u8 pf_version;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.h b/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.h
+index 71bc0e3f1d933..d79340ab3134f 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_pfvf_vf_msg.h
+@@ -6,6 +6,7 @@
+ #if defined(CONFIG_PCI_IOV)
+ int adf_vf2pf_notify_init(struct adf_accel_dev *accel_dev);
+ void adf_vf2pf_notify_shutdown(struct adf_accel_dev *accel_dev);
++void adf_vf2pf_notify_restart_complete(struct adf_accel_dev *accel_dev);
+ int adf_vf2pf_request_version(struct adf_accel_dev *accel_dev);
+ int adf_vf2pf_get_capabilities(struct adf_accel_dev *accel_dev);
+ int adf_vf2pf_get_ring_to_svc(struct adf_accel_dev *accel_dev);
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_vf_isr.c b/drivers/crypto/intel/qat/qat_common/adf_vf_isr.c
+index cdbb2d687b1b0..4ab9ac3315195 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_vf_isr.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_vf_isr.c
+@@ -13,6 +13,7 @@
+ #include "adf_cfg.h"
+ #include "adf_cfg_strings.h"
+ #include "adf_cfg_common.h"
++#include "adf_pfvf_vf_msg.h"
+ #include "adf_transport_access_macros.h"
+ #include "adf_transport_internal.h"
  
-+	/* Save offset of outer header relative to skb->head,
-+	 * because we are going to reset the network header to the inner header
-+	 * and might change skb->head.
-+	 */
-+	nh = skb_network_header(skb) - skb->head;
-+
-+	skb_reset_network_header(skb);
-+
-+	if (!pskb_inet_may_pull(skb)) {
-+		DEV_STATS_INC(bareudp->dev, rx_length_errors);
-+		DEV_STATS_INC(bareudp->dev, rx_errors);
-+		goto drop;
-+	}
-+
-+	/* Get the outer header. */
-+	oiph = skb->head + nh;
-+
- 	if (!ipv6_mod_enabled() || family == AF_INET)
- 		err = IP_ECN_decapsulate(oiph, skb);
- 	else
+@@ -75,6 +76,7 @@ static void adf_dev_stop_async(struct work_struct *work)
+ 
+ 	/* Re-enable PF2VF interrupts */
+ 	adf_enable_pf2vf_interrupts(accel_dev);
++	adf_vf2pf_notify_restart_complete(accel_dev);
+ 	kfree(stop_data);
+ }
+ 
 -- 
 2.43.0
 
