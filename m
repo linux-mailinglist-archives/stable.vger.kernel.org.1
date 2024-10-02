@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D69098D88C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:02:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AE898D562
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 005BEB239B4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:02:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CA828853D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339951D0BAC;
-	Wed,  2 Oct 2024 13:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9B41D043B;
+	Wed,  2 Oct 2024 13:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afeZqJry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjCKnL4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29802BAF9;
-	Wed,  2 Oct 2024 13:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02AA16F84F;
+	Wed,  2 Oct 2024 13:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877553; cv=none; b=qrg8PlTgf4wZS4ShiCuYxWomNGaOFNb3XSJUMTSglRvlX8zekeRPmzpcchcGcrHftDtpfkhF9p3xGWqhYsz2pDIPiSN7UHZv7e4cl8lo4nD7UJvlkd/3vzhS1dw8Zg0HLiH2qKWY4P+5IJFokO4iyUxLICV74O4W7Pay85tDP4M=
+	t=1727875784; cv=none; b=rbkaounEfWGVdKJ8TmmKcLNljOsI6XGf7PhSl749LZC3jL8iuPNxGRaVLKuEsMsXPHOm8ysyUa4ukuQF91szS7On17nh6jtk1aOHlmJsiN7vABxi+IY9wC1eClmPavCJ/3QHI/zwT0ht8i2ku1LgzY9dgghIA0r5vcT9s0mjP6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877553; c=relaxed/simple;
-	bh=CXrOykS0jJ03LGSDvTiZCkfdzUn1slgvaSSB8OYaGdw=;
+	s=arc-20240116; t=1727875784; c=relaxed/simple;
+	bh=71R5oilGVpzuACevIIyf3CCLCdSM5im5f0qjvRpAVmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBCgL1ATNUuNrB/mdweyfm0Y0kM51i3Qn5bYtfwDRlmCb8HRoR+x4BJFog/2lh9akN+DJvtmkxrQyQnb1cHzgO9zqKHMGu2y9u1z1sLZBv8NhRRoJPNkEZjvoovq8crIGbYShbivm3++Br209ioGpIBA0Ik0cfCh8Qk2GGwINS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afeZqJry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60803C4CED4;
-	Wed,  2 Oct 2024 13:59:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G/SPZ2UY7VbWhDI54XJagNwtbX7ZYMx/QVXRihqq32u+fOosFdmdeBjWtv8ehxBZ39MSdaRIV9iypouv8Y9fMt9CPmUhFk6BZ5tjbBTwTbfx8emwGHicGtz9s2xDGqSVKOFKUsOuTCRZuJ15XJK4JAi4ppa+v3JbPqiU11A2nps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjCKnL4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17996C4CEC5;
+	Wed,  2 Oct 2024 13:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877552;
-	bh=CXrOykS0jJ03LGSDvTiZCkfdzUn1slgvaSSB8OYaGdw=;
+	s=korg; t=1727875783;
+	bh=71R5oilGVpzuACevIIyf3CCLCdSM5im5f0qjvRpAVmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afeZqJryjQHp5uEk3/c0kYJX50QxatUoLHV+oifqvtwBCrZTvj/fJ+UngNwa5SO3g
-	 lJS9SORm057ZXKZnBkW9L19Ey3mko8CClqOqPJwrC6a5F72+QZ8/N2+jGo4WyMywQK
-	 8LsvpKgLeUOobx+dYgIiHPbXijQjHNpcBzNuYuvE=
+	b=jjCKnL4Zx80ue9Gyi1Q3dqpiGj5v7H5mwpti0E22c0ytnYSXrlRV0pCxtgNasnWcq
+	 6IY8Pi7XHoB3YpeqppZHU3yixXjzhcnYoAdmqNVOntS98FI29dFirYGwHc+SKcSpYm
+	 RSwJIQSLs2gHWNVgESKCQEl9IggBvT15fns3ZScs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Riyan Dhiman <riyandhiman14@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 116/634] block: fix potential invalid pointer dereference in blk_add_partition
+Subject: [PATCH 6.11 218/695] drm/vc4: hdmi: Handle error case of pm_runtime_resume_and_get
 Date: Wed,  2 Oct 2024 14:53:36 +0200
-Message-ID: <20241002125815.691270163@linuxfoundation.org>
+Message-ID: <20241002125831.163407313@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Riyan Dhiman <riyandhiman14@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 26e197b7f9240a4ac301dd0ad520c0c697c2ea7d ]
+[ Upstream commit f1a54e860b1bc8d824925b5a77f510913880e8d6 ]
 
-The blk_add_partition() function initially used a single if-condition
-(IS_ERR(part)) to check for errors when adding a partition. This was
-modified to handle the specific case of -ENXIO separately, allowing the
-function to proceed without logging the error in this case. However,
-this change unintentionally left a path where md_autodetect_dev()
-could be called without confirming that part is a valid pointer.
+The commit 0f5251339eda ("drm/vc4: hdmi: Make sure the controller is
+powered in detect") introduced the necessary power management handling
+to avoid register access while controller is powered down.
+Unfortunately it just print a warning if pm_runtime_resume_and_get()
+fails and proceed anyway.
 
-This commit separates the error handling logic by splitting the
-initial if-condition, improving code readability and handling specific
-error scenarios explicitly. The function now distinguishes the general
-error case from -ENXIO without altering the existing behavior of
-md_autodetect_dev() calls.
+This could happen during suspend to idle. So we must assume it is unsafe
+to access the HDMI register. So bail out properly.
 
-Fixes: b72053072c0b (block: allow partitions on host aware zone devices)
-Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240911132954.5874-1-riyandhiman14@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 0f5251339eda ("drm/vc4: hdmi: Make sure the controller is powered in detect")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240821214052.6800-3-wahrenst@gmx.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index ab76e64f0f6c3..5bd7a603092ea 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -555,9 +555,11 @@ static bool blk_add_partition(struct gendisk *disk,
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index d57c4a5948c89..cb424604484f1 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -429,6 +429,7 @@ static int vc4_hdmi_connector_detect_ctx(struct drm_connector *connector,
+ {
+ 	struct vc4_hdmi *vc4_hdmi = connector_to_vc4_hdmi(connector);
+ 	enum drm_connector_status status = connector_status_disconnected;
++	int ret;
  
- 	part = add_partition(disk, p, from, size, state->parts[p].flags,
- 			     &state->parts[p].info);
--	if (IS_ERR(part) && PTR_ERR(part) != -ENXIO) {
--		printk(KERN_ERR " %s: p%d could not be added: %pe\n",
--		       disk->disk_name, p, part);
-+	if (IS_ERR(part)) {
-+		if (PTR_ERR(part) != -ENXIO) {
-+			printk(KERN_ERR " %s: p%d could not be added: %pe\n",
-+			       disk->disk_name, p, part);
-+		}
- 		return true;
- 	}
+ 	/*
+ 	 * NOTE: This function should really take vc4_hdmi->mutex, but
+@@ -441,7 +442,12 @@ static int vc4_hdmi_connector_detect_ctx(struct drm_connector *connector,
+ 	 * the lock for now.
+ 	 */
  
+-	WARN_ON(pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev));
++	ret = pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev);
++	if (ret) {
++		drm_err_once(connector->dev, "Failed to retain HDMI power domain: %d\n",
++			     ret);
++		return connector_status_unknown;
++	}
+ 
+ 	if (vc4_hdmi->hpd_gpio) {
+ 		if (gpiod_get_value_cansleep(vc4_hdmi->hpd_gpio))
 -- 
 2.43.0
 
