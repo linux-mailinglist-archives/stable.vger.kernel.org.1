@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-78848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5D698D542
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8554198D518
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94D551C21D92
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B732C1C2171E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A421D0437;
-	Wed,  2 Oct 2024 13:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6271D049D;
+	Wed,  2 Oct 2024 13:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rksKG647"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TufrGEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802E11CF284;
-	Wed,  2 Oct 2024 13:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1991D014A;
+	Wed,  2 Oct 2024 13:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875704; cv=none; b=ksdC/SLxQXmmLdImwa/c8wNXrd926wfEeTySIGqxwY8JEo7n5h5meEffPjixt4D9S99jkAFykXXjMv8OKm0fANsJQvINumuaT4WRy19MK/Fd6ko5/9vkzLKTHLn8wQu8mJ5siZPuYUGk4WkjasQMVlQ83b8ECbTCyzt9vM/lIXQ=
+	t=1727875608; cv=none; b=n5L/DFo9xuSy2NRL1Edb77b+d04AYzQUM4KHs+COq4/dcWmMzidjzqn52tmcZMm/mp3JnPvyXjbt6lzVwvIgTWeanOBoyItBlIg2HiB0p/sPM7ggwD70KDRgIvYBs9OlCd82b9ZD7etUS8FSaWOM2S69erIshJdCddsqZWlrho4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875704; c=relaxed/simple;
-	bh=mFJ0NM1l+ks7fk4Scw79OVtQhPzTgrryLGogdEjEO0U=;
+	s=arc-20240116; t=1727875608; c=relaxed/simple;
+	bh=DgXJFb/nc4G6YyGxbekQ36oWxKVjjMJMctkpL5tMinU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPqsq8+Zaxr2WkFAd5855YQ9OOa3lPmzlcsJzEN7vTC3am4H2bkTpgs0FX4MDsOLoJGXG1P/TlT/dMwWWBBCusek7k/hjVEZClS0NK6eKmmZYuG5CxsMdJb9reede6WRGE8CdNhOjKVqYxgPbY4F42CeTp67oExy2DdRQtT3xs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rksKG647; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0FEC4CEC5;
-	Wed,  2 Oct 2024 13:28:23 +0000 (UTC)
+	 MIME-Version; b=pbV03LrHbq5L9ofvPXyYsnzLwafOVwMU0ZwcI8/yKneWktZAol1uUknWL9a5xo1lB16xbViLTHpZL/DmT2cCQcVYBAOwY1Ty0Rk/tOGIrSWCdw6TSgx9DCIruLs0JEoj3+BGhemsUktwQg6/yZA0kvk7f8qZqd1RZf5MKwxQ5YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TufrGEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9476C4CECD;
+	Wed,  2 Oct 2024 13:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875704;
-	bh=mFJ0NM1l+ks7fk4Scw79OVtQhPzTgrryLGogdEjEO0U=;
+	s=korg; t=1727875608;
+	bh=DgXJFb/nc4G6YyGxbekQ36oWxKVjjMJMctkpL5tMinU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rksKG647CgvpiikfH0r5cM6WGFmVo35yRyYhzBbrghKTLP1yirxteujmlgmCHWIJD
-	 kx5FhkcIP0ayUnoVEic8cybJuDFIOFoEiy0E9XdSiPw6A57PbKHKe0WXyacfWGOFMO
-	 yi3FvLPAZpg2lBK/CICcTdwdUrvyXSPrxB3usfG0=
+	b=2TufrGEqXgfCnzbS5GSXS5ry+owcVgZhypygkY9YgnJvZ6EWGq10rwgxcrMKRvoo+
+	 7g32gAxd1I2EW/+7KLolfVboasUqlsLTcugJase7U5dnCNPn5Y704vHMTtaak0Spit
+	 jLMTpzSLTR2MrCV6xeuJpNNHAYNMLwipW2U1nXbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 151/695] ARM: dts: microchip: sama7g5: Fix RTT clock
-Date: Wed,  2 Oct 2024 14:52:29 +0200
-Message-ID: <20241002125828.508703494@linuxfoundation.org>
+Subject: [PATCH 6.11 152/695] ARM: dts: imx7d-zii-rmu2: fix Ethernet PHY pinctrl property
+Date: Wed,  2 Oct 2024 14:52:30 +0200
+Message-ID: <20241002125828.548019543@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -65,35 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 867bf1923200e6ad82bad0289f43bf20b4ac7ff9 ]
+[ Upstream commit 0e49cfe364dea4345551516eb2fe53135a10432b ]
 
-According to datasheet, Chapter 34. Clock Generator, section 34.2,
-Embedded characteristics, source clock for RTT is the TD_SLCK, registered
-with ID 1 by the slow clock controller driver. Fix RTT clock.
+There is no "fsl,phy" property in pin controller pincfg nodes:
 
-Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
-Link: https://lore.kernel.org/r/20240826165320.3068359-1-claudiu.beznea@tuxon.dev
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,pins' is a required property
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,phy' does not match any of the regexes: 'pinctrl-[0-9]+'
+
+Fixes: f496e6750083 ("ARM: dts: Add ZII support for ZII i.MX7 RMU2 board")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/sama7g5.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/microchip/sama7g5.dtsi b/arch/arm/boot/dts/microchip/sama7g5.dtsi
-index 75778be126a3d..17bcdcf0cf4a0 100644
---- a/arch/arm/boot/dts/microchip/sama7g5.dtsi
-+++ b/arch/arm/boot/dts/microchip/sama7g5.dtsi
-@@ -272,7 +272,7 @@
- 			compatible = "microchip,sama7g5-rtt", "microchip,sam9x60-rtt", "atmel,at91sam9260-rtt";
- 			reg = <0xe001d020 0x30>;
- 			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
--			clocks = <&clk32k 0>;
-+			clocks = <&clk32k 1>;
- 		};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
+index 521493342fe97..8f5566027c25a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
+@@ -350,7 +350,7 @@
  
- 		clk32k: clock-controller@e001d050 {
+ &iomuxc_lpsr {
+ 	pinctrl_enet1_phy_interrupt: enet1phyinterruptgrp {
+-		fsl,phy = <
++		fsl,pins = <
+ 			MX7D_PAD_LPSR_GPIO1_IO02__GPIO1_IO2	0x08
+ 		>;
+ 	};
 -- 
 2.43.0
 
