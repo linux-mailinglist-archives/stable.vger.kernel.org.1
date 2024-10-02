@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB8998DB37
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 168A598DDA0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF0EB1C234C4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C151E28219D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EA71D27AD;
-	Wed,  2 Oct 2024 14:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398081D014A;
+	Wed,  2 Oct 2024 14:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNLG5uuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnG3aYAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF8A1D12E4;
-	Wed,  2 Oct 2024 14:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB922F44;
+	Wed,  2 Oct 2024 14:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879048; cv=none; b=SJ7DVezJPHx14gAcC0VH5FEtGkKnlkwHBdbrOujrv8+YnR+3Y6bOIBcVDnY9Xm20RCePFFDGxRNkF9Ef3BXWsDieBuP6WM3CHMTmOcrXCZcklhW3SYqKTxmGQZavEYdK34QJ9dldm8xaGbRuCSVynmA144+U+FUGopvbvZDS810=
+	t=1727880504; cv=none; b=Z317nAKR8rGfvhgYYtWiaMNHCCWBRP3ch/2oUFG2H9FgZkXxIDDd35aWdLvqvyqLHm8kbrpMygdCiPbsYxyZyjmtAMq+OwtbY5BJtcdSLEd5ATkHCmyIfNq58xqyNG8XEDKulInx8OBsV4UFWkLfLFPpcxGbJaK3ulSWoSShRgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879048; c=relaxed/simple;
-	bh=UdaVEj2VSMAo4o+go8Z/gP6j1Zw2vKIC7b/jCDuMKz8=;
+	s=arc-20240116; t=1727880504; c=relaxed/simple;
+	bh=sEhVGrWJ7do3RbB1VfqcBpUuDBXoFJMbFqnkYkSUkGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rysM3iyqj5J3FVmS63ZyQ00JioasULVLMDsGNo+0xy34GAz1gYEtm5cXVClrfjNIZO11K+t7fa1udN9gLLo4HKFa1oJ6gJC1THj66/maMz1qeZL8OxxlmvLdzb7l7KUsKR5bVQN+Jn/zSEjOj1phjqTdryySpkG+Q9ZRyZSfxLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNLG5uuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71CCC4CEC2;
-	Wed,  2 Oct 2024 14:24:07 +0000 (UTC)
+	 MIME-Version; b=GIOxsVhRURI/CCaHuy3Tw1jFEJZIIACzcnOY2k8xpSdOz9Awl6KXoGsjX5AFFz+vtUFAE7NZ8Kgt7xrz/ZSAa2oLnS/U0g+45AvBicOzpBW2mVdRfBQWLXQ/B+k/UI5EICTy4PsSEyTuTiAF4gpCvAxdzYyTasQ3fdJAu3r+nwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnG3aYAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CDBC4CEC2;
+	Wed,  2 Oct 2024 14:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879048;
-	bh=UdaVEj2VSMAo4o+go8Z/gP6j1Zw2vKIC7b/jCDuMKz8=;
+	s=korg; t=1727880503;
+	bh=sEhVGrWJ7do3RbB1VfqcBpUuDBXoFJMbFqnkYkSUkGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNLG5uuZLlWMClCGYTK0GNRy4NLGl6wv3rgMo4mkSildfFrqTzpRrUeiBLnMxVDzI
-	 1S3ZKMlcKQA4iY3NS93eZDpuh/xyAFaTZmO/rL6ikldW4CpcOnWIKOaZDAkjg6Swjz
-	 c1kDI6TGpu9y5vu815NqNnphLXI4GPYYdnsKjRB4=
+	b=XnG3aYAvcVdbaOiaJ5szgmf2SxRlnVB1nq5F7h1eX9lVjO0TvS6hl05/p+4LUyWb5
+	 UHIssuO9pIYLTVxc43KqabfZhF9QnG0xhfx5/w692Fjs9pDWTRErCWHpFr2h/tL10f
+	 GOYpdlKWSWbGCCohYF7o8U19uNtI6+vqjMUfUpLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.10 621/634] s390/ftrace: Avoid calling unwinder in ftrace_return_address()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.6 482/538] ARM: dts: imx6ul-geam: fix fsl,pins property in tscgrp pinctrl
 Date: Wed,  2 Oct 2024 15:02:01 +0200
-Message-ID: <20241002125835.639217644@linuxfoundation.org>
+Message-ID: <20241002125811.469418156@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a84dd0d8ae24bdc6da341187fc4c1a0adfce2ccc upstream.
+commit 1b0e32753d8550908dff8982410357b5114be78c upstream.
 
-ftrace_return_address() is called extremely often from
-performance-critical code paths when debugging features like
-CONFIG_TRACE_IRQFLAGS are enabled. For example, with debug_defconfig,
-ftrace selftests on my LPAR currently execute ftrace_return_address()
-as follows:
+The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+configuration was not applied.  Fixes dtbs_check warnings:
 
-ftrace_return_address(0) - 0 times (common code uses __builtin_return_address(0) instead)
-ftrace_return_address(1) - 2,986,805,401 times (with this patch applied)
-ftrace_return_address(2) - 140 times
-ftrace_return_address(>2) - 0 times
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pins' is a required property
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-The use of __builtin_return_address(n) was replaced by return_address()
-with an unwinder call by commit cae74ba8c295 ("s390/ftrace:
-Use unwinder instead of __builtin_return_address()") because
-__builtin_return_address(n) simply walks the stack backchain and doesn't
-check for reaching the stack top. For shallow stacks with fewer than
-"n" frames, this results in reads at low addresses and random
-memory accesses.
-
-While calling the fully functional unwinder "works", it is very slow
-for this purpose. Moreover, potentially following stack switches and
-walking past IRQ context is simply wrong thing to do for
-ftrace_return_address().
-
-Reimplement return_address() to essentially be __builtin_return_address(n)
-with checks for reaching the stack top. Since the ftrace_return_address(n)
-argument is always a constant, keep the implementation in the header,
-allowing both GCC and Clang to unroll the loop and optimize it to the
-bare minimum.
-
-Fixes: cae74ba8c295 ("s390/ftrace: Use unwinder instead of __builtin_return_address()")
 Cc: stable@vger.kernel.org
-Reported-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: a58e4e608bc8 ("ARM: dts: imx6ul-geam: Add Engicam IMX6UL GEA M6UL initial support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/include/asm/ftrace.h |   17 ++++++++++++++++-
- arch/s390/kernel/stacktrace.c  |   19 -------------------
- 2 files changed, 16 insertions(+), 20 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/include/asm/ftrace.h
-+++ b/arch/s390/include/asm/ftrace.h
-@@ -7,8 +7,23 @@
- #define MCOUNT_INSN_SIZE	6
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+@@ -366,7 +366,7 @@
+ 	};
  
- #ifndef __ASSEMBLY__
-+#include <asm/stacktrace.h>
- 
--unsigned long return_address(unsigned int n);
-+static __always_inline unsigned long return_address(unsigned int n)
-+{
-+	struct stack_frame *sf;
-+
-+	if (!n)
-+		return (unsigned long)__builtin_return_address(0);
-+
-+	sf = (struct stack_frame *)current_frame_address();
-+	do {
-+		sf = (struct stack_frame *)sf->back_chain;
-+		if (!sf)
-+			return 0;
-+	} while (--n);
-+	return sf->gprs[8];
-+}
- #define ftrace_return_address(n) return_address(n)
- 
- void ftrace_caller(void);
---- a/arch/s390/kernel/stacktrace.c
-+++ b/arch/s390/kernel/stacktrace.c
-@@ -162,22 +162,3 @@ void arch_stack_walk_user(stack_trace_co
- {
- 	arch_stack_walk_user_common(consume_entry, cookie, NULL, regs, false);
- }
--
--unsigned long return_address(unsigned int n)
--{
--	struct unwind_state state;
--	unsigned long addr;
--
--	/* Increment to skip current stack entry */
--	n++;
--
--	unwind_for_each_frame(&state, NULL, NULL, 0) {
--		addr = unwind_get_return_address(&state);
--		if (!addr)
--			break;
--		if (!n--)
--			return addr;
--	}
--	return 0;
--}
--EXPORT_SYMBOL_GPL(return_address);
+ 	pinctrl_tsc: tscgrp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
+ 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
+ 			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
 
 
 
