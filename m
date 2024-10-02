@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC4D98D923
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100BB98D5C9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A70B1C20940
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD399288E94
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB551D2F6B;
-	Wed,  2 Oct 2024 14:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BF71D07A0;
+	Wed,  2 Oct 2024 13:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjYhAf0a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMGQeahB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1A41D1E69;
-	Wed,  2 Oct 2024 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8B01C9B7E;
+	Wed,  2 Oct 2024 13:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877796; cv=none; b=dF+50W217bCFjMMcXfyZgaGP+YRwQ4o+JEd221gs+dDAQmqYQ88mkrAbxabSMnl+aNjH7Z0dQUqUR9T4xfbJ1abFnE93wwTK9Xq1Rd4/qtk0+xcyzP7+m9vOIiwo/Xi1tfPw/6ud5BAwxrXJs5Pq5vVp6oBxe+pwEga5+KGvHUM=
+	t=1727876010; cv=none; b=GwqCttC+2pIBjB3AClRNrCrD2FlbLxpEoVWyahg6ANxyNv4A+/xAJNPiZDHMFz+8bP09wcC7NXhQKFEKh5BLdzkcSTJ1oZ1UTFOgZHZJt8ckyuNy+lecyJsrGcAGFJnGUOn6ai7XHQQHIt9OZNOOjKCcppZkwe4ZDC5D4yD9aF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877796; c=relaxed/simple;
-	bh=a3zxu2RdaTORcVwm8qhPT2zKsrv1jAgohChnpPDbyiQ=;
+	s=arc-20240116; t=1727876010; c=relaxed/simple;
+	bh=9gQYmkmgZVXIhz9PyKURx7Y9AK67/DLhRwlPrfp7MUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vu6y+ZhKnhzg+gePl1MBjW0I47kgNA3zfSUcBUOKzhZMCgXX7vOrOtTIwhg6hoM1yP+OKacj6IhtzvqOY19Zf78L1+NS/hVu8fDgSOXLTv/SYrTE5ymznr2FpLesJ2d1edVR5CIXemgF5uliIt5Den76vadX3NJIVu/BHDdCBl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjYhAf0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56828C4CEC2;
-	Wed,  2 Oct 2024 14:03:16 +0000 (UTC)
+	 MIME-Version; b=GXO/gmqVcXKU18pkKUJj+PnOjKAM3Jvvrrx/rXK1SbOxK9nPIeYc0Sn+/m3J2J11RtD++afYLDe06d0hAM1BLhUC+jPZNosif6b5us2Gzlx5qSThkIQvsDYpdExejJ2ao8slxPTVtST2aDMwQngYywTb9Sd9EidFXM66YH685lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMGQeahB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8F9C4CEC5;
+	Wed,  2 Oct 2024 13:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877796;
-	bh=a3zxu2RdaTORcVwm8qhPT2zKsrv1jAgohChnpPDbyiQ=;
+	s=korg; t=1727876009;
+	bh=9gQYmkmgZVXIhz9PyKURx7Y9AK67/DLhRwlPrfp7MUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjYhAf0akWdBrLY89O8Yn7/yiVKqI0vMYAoPAx5fxhXTKuxXQ6wkOzcLeA+opKUs2
-	 3LWYG1NOxiLsM2AXA0abZ0C79L7hHXuFDvs0168d5Sb9J4/wlehcZfST7FvVUaTddJ
-	 vLcdoMBWmsTuBC83GnJWWX55AuZVjqStZnHy4LzQ=
+	b=BMGQeahBJwWztppf7zKsa2DARFZt7YiAb6TRD6vjfty/PcTb1+Ti5FlpOZaMFsiYe
+	 i+EsJAFPYcq+hylopbzAaymw6LSVdCLvEPZ0pn+RcSZ50hQYLrCxWIjilsMq2lReGG
+	 H01lHuJwaaSe/r2+5/OZhN7iBYdbPbM91435hj6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hao Ge <gehao@kylinos.cn>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 196/634] powerpc/8xx: Fix initial memory mapping
+Subject: [PATCH 6.11 298/695] selftests/bpf: Fix incorrect parameters in NULL pointer checking
 Date: Wed,  2 Oct 2024 14:54:56 +0200
-Message-ID: <20241002125818.841359422@linuxfoundation.org>
+Message-ID: <20241002125834.336149621@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Hao Ge <gehao@kylinos.cn>
 
-[ Upstream commit f9f2bff64c2f0dbee57be3d8c2741357ad3d05e6 ]
+[ Upstream commit c264487e5410e5a72db8a414566ab7d144223e6c ]
 
-Commit cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-introduced an initial mapping of kernel TEXT using PAGE_KERNEL_TEXT,
-but the pages that contain kernel TEXT may also contain kernel RODATA,
-and depending on selected debug options PAGE_KERNEL_TEXT may be either
-RWX or ROX. RODATA must be writable during init because it also
-contains ro_after_init data.
+Smatch reported the following warning:
+    ./tools/testing/selftests/bpf/testing_helpers.c:455 get_xlated_program()
+    warn: variable dereferenced before check 'buf' (see line 454)
 
-So use PAGE_KERNEL_X instead to be sure it is RWX.
+It seems correct,so let's modify it based on it's suggestion.
 
-Fixes: cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/dac7a828d8497c4548c91840575a706657baa4f1.1724173828.git.christophe.leroy@csgroup.eu
+Actually,commit b23ed4d74c4d ("selftests/bpf: Fix invalid pointer
+check in get_xlated_program()") fixed an issue in the test_verifier.c
+once,but it was reverted this time.
+
+Let's solve this issue with the minimal changes possible.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/1eb3732f-605a-479d-ba64-cd14250cbf91@stanley.mountain/
+Fixes: b4b7a4099b8c ("selftests/bpf: Factor out get_xlated_program() helper")
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240820023622.29190-1-hao.ge@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/nohash/8xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/testing_helpers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index d93433e26dedb..e5cc3b3a259f9 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -154,11 +154,11 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+diff --git a/tools/testing/selftests/bpf/testing_helpers.c b/tools/testing/selftests/bpf/testing_helpers.c
+index 4230420ef2940..680e452583a78 100644
+--- a/tools/testing/selftests/bpf/testing_helpers.c
++++ b/tools/testing/selftests/bpf/testing_helpers.c
+@@ -451,7 +451,7 @@ int get_xlated_program(int fd_prog, struct bpf_insn **buf, __u32 *cnt)
  
- 	mmu_mapin_immr();
- 
--	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_TEXT, true);
-+	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_X, true);
- 	if (debug_pagealloc_enabled_or_kfence()) {
- 		top = boundary;
- 	} else {
--		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_TEXT, true);
-+		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_X, true);
- 		mmu_mapin_ram_chunk(einittext8, top, PAGE_KERNEL, true);
+ 	*cnt = xlated_prog_len / buf_element_size;
+ 	*buf = calloc(*cnt, buf_element_size);
+-	if (!buf) {
++	if (!*buf) {
+ 		perror("can't allocate xlated program buffer");
+ 		return -ENOMEM;
  	}
- 
 -- 
 2.43.0
 
