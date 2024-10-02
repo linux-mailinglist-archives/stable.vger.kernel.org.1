@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-79635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1317E98D979
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8702D98DBD5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2CC3B2099E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B745B27DC4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7641D130C;
-	Wed,  2 Oct 2024 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD39D1D0B91;
+	Wed,  2 Oct 2024 14:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtugO22U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2gNR9nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786B21D07BA;
-	Wed,  2 Oct 2024 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1061D0438;
+	Wed,  2 Oct 2024 14:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878018; cv=none; b=Qc3OMD+EeV18hKTKiKjgsGqvKWAeJo7zFpT+TlpoUnaFDMq43zjHEw2ZZzBaQaVocAREV935cpHCT/eQ/74Bw+1LE1J7C7isqdGet1JeeADSYhrpzToEDL5a8ZR7i0aCzFPbYt5ZnoU89npkBqA3GjgmNwifRl0MsRC/jtScPwM=
+	t=1727879390; cv=none; b=gdaPxa0MlYLy5Dwxx7V332igG8DYOwiSidVpeGP3FUccMTU+csZ2Z3N0YeHARikXyq+63mWCUol/YXb6Hm+rhTTmBEWlNR0yvK3hIFILoxuynEvXuiTqTlMx6pwO5CcL513PnChRUQpjOrO/QMCPE6swxyRyeyFsb3PWJo/0Nek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878018; c=relaxed/simple;
-	bh=/F9XEFYkYZh40ShTC+oyP/ppXEkp9bXstotJUt0HxRM=;
+	s=arc-20240116; t=1727879390; c=relaxed/simple;
+	bh=Bcokgovt8tTgEydAYxEEIDqWxH85byZEA91ms/L2yiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAERDd2ZDUlA/C9Bl/JpW+JN7dAnr4fe2Dyq+ziTiJRgnFFYzIOl3Rdm+I2Nk9R+X8gysZh6xbHVfVk6cQmo1CN2J9gfqUvp2/3aAabikR+94l8QLFM7mL4jrConG2XBMmsvKYWXYqLpGpBuXWye4F408g4TR1PmAYJm75HjJak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtugO22U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055D4C4CEC5;
-	Wed,  2 Oct 2024 14:06:57 +0000 (UTC)
+	 MIME-Version; b=qiz++SGQ5zradUkObYa649ueAcs41qBP2Zr+wPNv8LNT6xZaWg56bEAzlXNrdGSPaFtXf65xRPViy2ROQKB2p/254WQ+wRNTJ6hPtmpVczlBgk2Kun5m2JIjoIORbEOt17q1sySyW5+MQ4BUTL2qw9+HZLDczZtrl/jeFhsADQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2gNR9nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA06DC4CEC2;
+	Wed,  2 Oct 2024 14:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878018;
-	bh=/F9XEFYkYZh40ShTC+oyP/ppXEkp9bXstotJUt0HxRM=;
+	s=korg; t=1727879390;
+	bh=Bcokgovt8tTgEydAYxEEIDqWxH85byZEA91ms/L2yiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtugO22UXDBD7eOGqrGnOE+EMInv9ZfdZfqtcKE0xWEYwPA+8VqbuzEJ7tatYeK8r
-	 Cqu/Wz07grr8IhY3vvnV70O9K4ZL+7+eKByg2ugyOzIsJjksSvQ61yz61DUiPLWHZi
-	 TxLLf5Q4jjN2Hvl76IQGnH9U7vhON/T/eB1662SY=
+	b=n2gNR9nx6LLSnIrlqqbMb3114o785ZrUdQfy+MsBZg5oQXP4oF4hpE/Za5ai2KpiE
+	 3F4Ba6GqvE1em9+T2jX1ivuiPbZ0/ebI8r7OAaPhj2hneq6lyzOYQcSJBuM58rGyMo
+	 Nxg29Poe3/7Nh0pbHeR2SwncwQn76qAZLcBBvpF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 242/634] selftests/bpf: Fix missing UINT_MAX definitions in benchmarks
+Subject: [PATCH 6.6 103/538] ARM: dts: microchip: sama7g5: Fix RTT clock
 Date: Wed,  2 Oct 2024 14:55:42 +0200
-Message-ID: <20241002125820.651845954@linuxfoundation.org>
+Message-ID: <20241002125756.297526047@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-[ Upstream commit a2c155131b710959beb508ca6a54769b6b1bd488 ]
+[ Upstream commit 867bf1923200e6ad82bad0289f43bf20b4ac7ff9 ]
 
-Include <limits.h> in 'bench.h' to provide a UINT_MAX definition and avoid
-multiple compile errors against mips64el/musl-libc like:
+According to datasheet, Chapter 34. Clock Generator, section 34.2,
+Embedded characteristics, source clock for RTT is the TD_SLCK, registered
+with ID 1 by the slow clock controller driver. Fix RTT clock.
 
-  benchs/bench_local_storage.c: In function 'parse_arg':
-  benchs/bench_local_storage.c:40:38: error: 'UINT_MAX' undeclared (first use in this function)
-     40 |                 if (ret < 1 || ret > UINT_MAX) {
-        |                                      ^~~~~~~~
-  benchs/bench_local_storage.c:11:1: note: 'UINT_MAX' is defined in header '<limits.h>'; did you forget to '#include <limits.h>'?
-     10 | #include <test_btf.h>
-    +++ |+#include <limits.h>
-     11 |
-
-seen with bench_local_storage.c, bench_local_storage_rcu_tasks_trace.c, and
-bench_bpf_hashmap_lookup.c.
-
-Fixes: 73087489250d ("selftests/bpf: Add benchmark for local_storage get")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/8f64a9d9fcff40a7fca090a65a68a9b62a468e16.1721713597.git.tony.ambardar@gmail.com
+Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
+Link: https://lore.kernel.org/r/20240826165320.3068359-1-claudiu.beznea@tuxon.dev
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/bench.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/microchip/sama7g5.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/bench.h b/tools/testing/selftests/bpf/bench.h
-index 68180d8f8558e..005c401b3e227 100644
---- a/tools/testing/selftests/bpf/bench.h
-+++ b/tools/testing/selftests/bpf/bench.h
-@@ -10,6 +10,7 @@
- #include <math.h>
- #include <time.h>
- #include <sys/syscall.h>
-+#include <limits.h>
+diff --git a/arch/arm/boot/dts/microchip/sama7g5.dtsi b/arch/arm/boot/dts/microchip/sama7g5.dtsi
+index 269e0a3ca269c..7a95464bb78d8 100644
+--- a/arch/arm/boot/dts/microchip/sama7g5.dtsi
++++ b/arch/arm/boot/dts/microchip/sama7g5.dtsi
+@@ -272,7 +272,7 @@ rtt: rtc@e001d020 {
+ 			compatible = "microchip,sama7g5-rtt", "microchip,sam9x60-rtt", "atmel,at91sam9260-rtt";
+ 			reg = <0xe001d020 0x30>;
+ 			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&clk32k 0>;
++			clocks = <&clk32k 1>;
+ 		};
  
- struct cpu_set {
- 	bool *cpus;
+ 		clk32k: clock-controller@e001d050 {
 -- 
 2.43.0
 
