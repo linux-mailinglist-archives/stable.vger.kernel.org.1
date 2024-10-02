@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-80547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3336398DDFD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:55:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05EC598D9FE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ED031C23FBA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:55:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87E50B234BF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B071E1D0BB1;
-	Wed,  2 Oct 2024 14:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBD91D12E3;
+	Wed,  2 Oct 2024 14:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdZ6cQBE"
+	dkim=temperror (0-bit key) header.d=collabora.co.uk header.i=@collabora.co.uk header.b="P+qUQ4/k"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8341D0798;
-	Wed,  2 Oct 2024 14:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452E31D0B8F;
+	Wed,  2 Oct 2024 14:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880691; cv=none; b=ZHnleS18/ERYCySJYwRLhjN+lPZXO05mHtzSJ06Tdgkdigjflw1bIOmPK7G78xT7cH4vn+Pp3/xtB+htU/ZAjxV3cOCggeiq+pzRycprFkDQaD7YHaMd2BO0dGQi5l0PlAnescRiVLPrI4sB+gpgioaxBAPshBaiEocc6Fvd1OE=
+	t=1727878343; cv=none; b=A3INKPKJ4gHg38qR2Gq0uwipVLELWdEb2sIic2dxeeSexcW9nS6gxqlertuqKqj0mv4WW6LcdBwkiLolgGG2CH8mnjA8aJkUPuQU9r55zDdi9SqCW09Q1sr6xbBBis2/08aqVKCy3VfSvfJNtiv4NWAF6CP23yRUZhdwMNw2+YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880691; c=relaxed/simple;
-	bh=TG1XoBvBfYlElvHE6XyJK5gm7E0FXnNP4wVb1Z3rtf4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGZurxOhUjoU/bLyYfHJPqqDgBLnAzBZGZkKMf3pECW5n2lvCcDyEj0kAxTzx5nr1sP2zzfZnmiTLMn/yGMjnhelQ9ceSs3d0F57y47yd09wVUqR0vMEhew9ex+ZFp1m8pyq044weeeXMf/oqIITKZB6RTuLMgE5dRno1gujarA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdZ6cQBE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E370DC4CEE1;
-	Wed,  2 Oct 2024 14:51:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880691;
-	bh=TG1XoBvBfYlElvHE6XyJK5gm7E0FXnNP4wVb1Z3rtf4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdZ6cQBEly+ku2qv5CCdCnUcftp45ow7/M7wR5RqxqAUhSu+AzspWT9P10BIrIFSY
-	 oVkO7TzjSmti4N4o52RIxRCsBI/RQiHJsDPR7L/F7AGFhhuDQPy5ddoSMx7r2rFUtG
-	 P2hhlS/+/qMOWI+WbO3iSK1A253Hgd2PNDZNXdvo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"Alexey Gladkov (Intel)" <legion@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 6.6 538/538] x86/tdx: Fix "in-kernel MMIO" check
-Date: Wed,  2 Oct 2024 15:02:57 +0200
-Message-ID: <20241002125813.679386044@linuxfoundation.org>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1727878343; c=relaxed/simple;
+	bh=F8QQ1CRP1srRVS+/RcTww80KFPP6Z9TA1vUUI8Xjp5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fIVnjz0AaG/1Bx1P6kXm0cT3RhMaUdV2ZpEoltnp+aVhSNlgGbSafu50bPEa6OXliLVYwOABZu2ZPd/5gKZ+++upgedtgHUKy1ac8QzaaAlO89D+6YrHVlRwgJvHdK4/oy9LfzccSwNfA+gowK4jSlphFZSHIlkRhOpbuGq44iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk; spf=pass smtp.mailfrom=collabora.co.uk; dkim=temperror (0-bit key) header.d=collabora.co.uk header.i=@collabora.co.uk header.b=P+qUQ4/k; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.co.uk;
+	s=mail; t=1727878339;
+	bh=F8QQ1CRP1srRVS+/RcTww80KFPP6Z9TA1vUUI8Xjp5w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=P+qUQ4/kbxMeIsue8fx7CiSR7C3QvKQRO0dkj6UC1F7qYjsmydp7xO9OchEBwPVeo
+	 q3qEGi3wmiZVDfmpr57KnqdROObLmc8qt2jtT4ezP3jJ1mtrF+eFPb8J/l3uYEF+dM
+	 Ki2gPkp5JLeUuxReY8mZglrJhLIrnMDnF/LGfNqxfGTJ7O+j9abWKqv3OqJ0u65bMa
+	 TiW8Di0nsRKMaIreJaFEJHosdfSzaPMKwRHJluOl5VJm97pldkg6BKbJBqiQ9UV/wU
+	 5VvQlDXGPrQjCw+KCK53evIy5cZiClMXd8lgZ1xSNg7Uf+fTpcfNkxKvBJ78qxDdmN
+	 1qYyXBR4ZnVQg==
+Received: from localhost (unknown [84.245.120.24])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: andrewsh)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3957E17E35F6;
+	Wed,  2 Oct 2024 16:12:19 +0200 (CEST)
+From: Andrej Shadura <andrew.shadura@collabora.co.uk>
+To: linux-bluetooth@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Justin Stitt <justinstitt@google.com>,
+	llvm@lists.linux.dev,
+	kernel@collabora.com,
+	George Burgess <gbiv@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: Fix type of len in rfcomm_sock_{bind,getsockopt_old}()
+Date: Wed,  2 Oct 2024 16:12:17 +0200
+Message-ID: <20241002141217.663070-1-andrew.shadura@collabora.co.uk>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,61 +67,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+Commit 9bf4e919ccad worked around an issue introduced after an innocuous
+optimisation change in LLVM main:
 
-------------------
+> len is defined as an 'int' because it is assigned from
+> '__user int *optlen'. However, it is clamped against the result of
+> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
+> platforms). This is done with min_t() because min() requires compatible
+> types, which results in both len and the result of sizeof() being casted
+> to 'unsigned int', meaning len changes signs and the result of sizeof()
+> is truncated. From there, len is passed to copy_to_user(), which has a
+> third parameter type of 'unsigned long', so it is widened and changes
+> signs again. This excessive casting in combination with the KCSAN
+> instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
+> call, failing the build.
 
-From: Alexey Gladkov (Intel) <legion@kernel.org>
+The same issue occurs in rfcomm in functions rfcomm_sock_bind and
+rfcomm_sock_getsockopt_old.
 
-commit d4fc4d01471528da8a9797a065982e05090e1d81 upstream.
+Change the type of len to size_t in both rfcomm_sock_bind and
+rfcomm_sock_getsockopt_old and replace min_t() with min().
 
-TDX only supports kernel-initiated MMIO operations. The handle_mmio()
-function checks if the #VE exception occurred in the kernel and rejects
-the operation if it did not.
-
-However, userspace can deceive the kernel into performing MMIO on its
-behalf. For example, if userspace can point a syscall to an MMIO address,
-syscall does get_user() or put_user() on it, triggering MMIO #VE. The
-kernel will treat the #VE as in-kernel MMIO.
-
-Ensure that the target MMIO address is within the kernel before decoding
-instruction.
-
-Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion%40kernel.org
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()")
+Link: https://github.com/ClangBuiltLinux/linux/issues/2007
+Link: https://github.com/llvm/llvm-project/issues/85647
+Signed-off-by: Andrej Shadura <andrew.shadura@collabora.co.uk>
 ---
- arch/x86/coco/tdx/tdx.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/bluetooth/rfcomm/sock.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,6 +14,7 @@
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
-+#include <asm/traps.h>
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index 37d63d768afb..c0fe96673b3c 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -328,14 +328,15 @@ static int rfcomm_sock_bind(struct socket *sock, struct sockaddr *addr, int addr
+ {
+ 	struct sockaddr_rc sa;
+ 	struct sock *sk = sock->sk;
+-	int len, err = 0;
++	int err = 0;
++	size_t len;
  
- /* MMIO direction */
- #define EPT_READ	0
-@@ -405,6 +406,11 @@ static int handle_mmio(struct pt_regs *r
- 			return -EINVAL;
- 	}
+ 	if (!addr || addr_len < offsetofend(struct sockaddr, sa_family) ||
+ 	    addr->sa_family != AF_BLUETOOTH)
+ 		return -EINVAL;
  
-+	if (!fault_in_kernel_space(ve->gla)) {
-+		WARN_ONCE(1, "Access to userspace address is not supported");
-+		return -EINVAL;
-+	}
-+
- 	/*
- 	 * Reject EPT violation #VEs that split pages.
- 	 *
-
+ 	memset(&sa, 0, sizeof(sa));
+-	len = min_t(unsigned int, sizeof(sa), addr_len);
++	len = min(sizeof(sa), addr_len);
+ 	memcpy(&sa, addr, len);
+ 
+ 	BT_DBG("sk %p %pMR", sk, &sa.rc_bdaddr);
+@@ -729,7 +730,8 @@ static int rfcomm_sock_getsockopt_old(struct socket *sock, int optname, char __u
+ 	struct sock *l2cap_sk;
+ 	struct l2cap_conn *conn;
+ 	struct rfcomm_conninfo cinfo;
+-	int len, err = 0;
++	int err = 0;
++	size_t len;
+ 	u32 opt;
+ 
+ 	BT_DBG("sk %p", sk);
+@@ -783,7 +785,7 @@ static int rfcomm_sock_getsockopt_old(struct socket *sock, int optname, char __u
+ 		cinfo.hci_handle = conn->hcon->handle;
+ 		memcpy(cinfo.dev_class, conn->hcon->dev_class, 3);
+ 
+-		len = min_t(unsigned int, len, sizeof(cinfo));
++		len = min(len, sizeof(cinfo));
+ 		if (copy_to_user(optval, (char *) &cinfo, len))
+ 			err = -EFAULT;
+ 
+-- 
+2.43.0
 
 
