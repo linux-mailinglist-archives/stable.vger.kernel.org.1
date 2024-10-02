@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-80386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC49A98DD31
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5469F98DAC5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AF9282091
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0730B1F252D4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754011D1747;
-	Wed,  2 Oct 2024 14:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6601D1E61;
+	Wed,  2 Oct 2024 14:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy8JCGBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQRBuJqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E3C1EA80;
-	Wed,  2 Oct 2024 14:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272C41D07BD;
+	Wed,  2 Oct 2024 14:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880223; cv=none; b=hu05kyIJCfBTtNd8ebLN0ea+/sSu4FGn5oE5zV3zF0ZqfXEo/oqIvz9n8THSI9hmGkexokvk4A+q/A0vIV/rVKVVmp5qdnZrbkvUtG7GECXAxG1oSC48qdT2d7E6LQ9/8oRdMdqGQI+yqJ/A5Yxyk3H+d2UADSOHQxv6JcS/1ag=
+	t=1727878764; cv=none; b=QPCIZBdXB9MKlBXeHJW3gR1gp0LDzDfsge1qVxTQN2BUX4pRbnRfoPAM/YNazXEcOqwqJnUdutInDL+4IFh9iN5kGeqkXk8mUnhWjCNlmPJ135zMMvwo0IBV7Jin30jEpvlD4IAhjEnwkCzsR6ghA7tBBpbfoaTgABY2lwaGxRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880223; c=relaxed/simple;
-	bh=I6nD897YVk+TqwEHNp2nkvL2YmXuXlnEigfk+dflyWo=;
+	s=arc-20240116; t=1727878764; c=relaxed/simple;
+	bh=BbLPYrXzGI3llzLphcLAUbIvWJOOcxb9K4aBcCoSMtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFcL8ELSch0yC1zvysRqHTJoK+KFWRI/h4gX3aJLozi2f6zHz0GKd0tj374dVI/L/oPHfZgUGK9b0ATOGN9U+84O4ce7ycPJ1WOIzwRV6oXMuvzOrr57v+xg8K9GgJFLjW7vgGu0OoEaYZParO2QnXEPt+KkmyrGD3szCOjzl0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy8JCGBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF186C4CEC2;
-	Wed,  2 Oct 2024 14:43:42 +0000 (UTC)
+	 MIME-Version; b=dC0FdjIVi9HnMwLhn+eyFOGmW/xDXi+ew8cpHNFqGAB5yPbC1DB4qLAlpc95oTwbtfC6bS3u59t5P3aBkX4mzSfC9+Z6HgZrlAx5kerUcUAa2fTHwlCKIJbmg7vvmKEfouQQjN5C4vs1YMfTj9CLStN5A34itGXtiurV7yS4OkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQRBuJqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53AFC4CEC2;
+	Wed,  2 Oct 2024 14:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880223;
-	bh=I6nD897YVk+TqwEHNp2nkvL2YmXuXlnEigfk+dflyWo=;
+	s=korg; t=1727878764;
+	bh=BbLPYrXzGI3llzLphcLAUbIvWJOOcxb9K4aBcCoSMtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zy8JCGBVMt8Or4IdiwyPtqqIy9rqADeG3vcHkaf000HcWIS4cu0wehRA62Iy4IJJK
-	 wWVqwD3syXjnFG8uqXhzTx4H4zzAHLte+UgYvsteD4zNH2BgL8o6e/iTnoNnzCdNdq
-	 vV38r6+91kqsAAT9x3QxojdwHKxd2o+4q9Fz+Cas=
+	b=iQRBuJqsCkGmVtpfUltj5AqJy16a066MwJd92eeqJJwnAWbnwSaFiSHw1H8ce7v8N
+	 FmRaXfnOESy2rJdKYEXl0hqCYgzc2zmVgqCgHmXX5/tXB4RdaAkELJ87Dwqprva8XQ
+	 gX9BVW9lxGtv9vFsms5ZBrS4RQuIUuzmng4k3BJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <superm1@kernel.org>
-Subject: [PATCH 6.6 385/538] drm/amd/display: Fix Synaptics Cascaded Panamera DSC Determination
+	Chen Baozi <chenbaozi@phytium.com.cn>,
+	Wang Zhimin <wangzhimin1179@phytium.com.cn>,
+	Chen Zhenhua <chenzhenhua@phytium.com.cn>,
+	Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+	Jiakun Shuai <shuaijiakun1288@phytium.com.cn>,
+	WangYuli <wangyuli@uniontech.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.10 524/634] usb: xHCI: add XHCI_RESET_ON_RESUME quirk for Phytium xHCI host
 Date: Wed,  2 Oct 2024 15:00:24 +0200
-Message-ID: <20241002125807.628069782@linuxfoundation.org>
+Message-ID: <20241002125831.788516021@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,39 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 4437936c6b696b98f3fe1d8679a2788c41b4df77 upstream.
+commit 118ecef16cc221a23f96617016f7a205b070109f upstream.
 
-Synaptics Cascaded Panamera topology needs to unconditionally
-acquire root aux for dsc decoding.
+The resume operation of Phytium Px210 xHCI host would failed
+to restore state. Use the XHCI_RESET_ON_RESUME quirk to skip
+it and reset the controller after resume.
 
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Mario Limonciello <superm1@kernel.org>
+Co-developed-by: Chen Baozi <chenbaozi@phytium.com.cn>
+Signed-off-by: Chen Baozi <chenbaozi@phytium.com.cn>
+Co-developed-by: Wang Zhimin <wangzhimin1179@phytium.com.cn>
+Signed-off-by: Wang Zhimin <wangzhimin1179@phytium.com.cn>
+Co-developed-by: Chen Zhenhua <chenzhenhua@phytium.com.cn>
+Signed-off-by: Chen Zhenhua <chenzhenhua@phytium.com.cn>
+Co-developed-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
+Signed-off-by: Wang Yinfeng <wangyinfeng@phytium.com.cn>
+Co-developed-by: Jiakun Shuai <shuaijiakun1288@phytium.com.cn>
+Signed-off-by: Jiakun Shuai <shuaijiakun1288@phytium.com.cn>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/2C1FDC3BB34715BE+20240905040916.63199-1-wangyuli@uniontech.com
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -246,7 +246,7 @@ static bool validate_dsc_caps_on_connect
- 		aconnector->dsc_aux = &aconnector->mst_root->dm_dp_aux.aux;
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -55,6 +55,9 @@
+ #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI		0x51ed
+ #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_N_PCH_XHCI	0x54ed
  
- 	/* synaptics cascaded MST hub case */
--	if (!aconnector->dsc_aux && is_synaptics_cascaded_panamera(aconnector->dc_link, port))
-+	if (is_synaptics_cascaded_panamera(aconnector->dc_link, port))
- 		aconnector->dsc_aux = port->mgr->aux;
++#define PCI_VENDOR_ID_PHYTIUM		0x1db7
++#define PCI_DEVICE_ID_PHYTIUM_XHCI			0xdc27
++
+ /* Thunderbolt */
+ #define PCI_DEVICE_ID_INTEL_MAPLE_RIDGE_XHCI		0x1138
+ #define PCI_DEVICE_ID_INTEL_ALPINE_RIDGE_2C_XHCI	0x15b5
+@@ -416,6 +419,10 @@ static void xhci_pci_quirks(struct devic
+ 	if (pdev->vendor == PCI_VENDOR_ID_VIA)
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
  
- 	if (!aconnector->dsc_aux)
++	if (pdev->vendor == PCI_VENDOR_ID_PHYTIUM &&
++	    pdev->device == PCI_DEVICE_ID_PHYTIUM_XHCI)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
++
+ 	/* See https://bugzilla.kernel.org/show_bug.cgi?id=79511 */
+ 	if (pdev->vendor == PCI_VENDOR_ID_VIA &&
+ 			pdev->device == 0x3432)
 
 
 
