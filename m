@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E39D98DD59
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DA498DAED
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07737281E1E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EAC61C238D0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CF91D07B9;
-	Wed,  2 Oct 2024 14:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910261D2784;
+	Wed,  2 Oct 2024 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmDl0TFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6ATBgcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F75F1D078B;
-	Wed,  2 Oct 2024 14:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EABB1E52C;
+	Wed,  2 Oct 2024 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880328; cv=none; b=DwlPZ7vrTyJ4+xBQ+Jb+VeJysCSkHPNPXRBCVvASYIwlyXLvXvBjCGFn9Rhij0OZX4Dt1KNwFR213kZ7j7UqwLW4ZLvD9NjEHZG86q9yGk8sF32qbhI3risg+SCGR7dX3b2+QvifVDX8oFeA1S1DtQNssofFWIP/p5E4txqM4d4=
+	t=1727878870; cv=none; b=EZCRV2yLZXCsKYLwCp7Txf31XR69fVEbqQA6udjJWKCqMLudIC1d+sFCNOPg1JQTJC3YDiLKyaCGhCJozHiuRs7ABMihDDcaPDV2VLDy81yFJOOJYJGVyTaH78FMytNTbgXtZdupuI7APlPDipjV7W0X7mT5Ive9k/m+rB7aTEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880328; c=relaxed/simple;
-	bh=57tgiWm7xkDuVzreGimbJINN2vlh7498vR54Nkk3V9o=;
+	s=arc-20240116; t=1727878870; c=relaxed/simple;
+	bh=FTh0B8XLXd8fn2tzzmbupMphsy4vqIKdJRaZVsAPegE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Buenvg+e4bHv7frUfHFKe7KGFD3u/8uScVHi9QXkwfY4+OGkdV1rXjacZJQJAcT7fBxWAGeRa2vZQVPDVw+TDkQxiMgoMaWWkAawe3mRNUTrZMfu6uM1tY0gmzCXxGFLbR88RxxdvwNJ6tQtyJWHtSWS3tARXhd0xaq6948JzuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmDl0TFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C21C4CEC2;
-	Wed,  2 Oct 2024 14:45:27 +0000 (UTC)
+	 MIME-Version; b=gwPzCJKiKar4b8xdHdZGyx8h11CO/Y4X8xUSdfVKQ2d8fsgz50EWKQqcEBvAWJXgQcdGN1MfnFqhSBTjLKo60I5fz3wxQ7ECOTZ4bYBvXasrKVAS/obKzHcQhjHs6Vj8KROf0FWU2LnbsfjfPiuqIo3MLEUuZ1aW56Eh770DtsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6ATBgcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB47FC4CEC5;
+	Wed,  2 Oct 2024 14:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880328;
-	bh=57tgiWm7xkDuVzreGimbJINN2vlh7498vR54Nkk3V9o=;
+	s=korg; t=1727878870;
+	bh=FTh0B8XLXd8fn2tzzmbupMphsy4vqIKdJRaZVsAPegE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmDl0TFvRZ/mtpEa12Cy9z1/aFTi4UG8mecu+bo3LhlN22/4VDcxwKtmEmfdflXn7
-	 e14cNzF8GCR6/gwQCr1w5sN0jkSB7uLj2H2UWkbM4OQDVQZAcvgArfAKNDomkhkTnV
-	 1KBfl+ZWi6IMDK+1T3dnQpEn9XlB9pJ2j8/Ne/Sg=
+	b=H6ATBgcMEyyWCJ6K9SgiPFIsJRhYv9gpw2VgqMw5u+nL1R4xIyXudzwJ0lTSQzol4
+	 JguBHorAnHrw8m8e0/mFPVKInRFs+BziaZtwJ6eV/3eXG+7c8XU0JQSOQZLrc1OtzT
+	 CeqDw+NNpfsIToMObN+y8sc0E3+72JlsmfEGTFf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hobin Woo <hobin.woo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 421/538] ksmbd: make __dir_empty() compatible with POSIX
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.10 560/634] f2fs: fix several potential integer overflows in file offsets
 Date: Wed,  2 Oct 2024 15:01:00 +0200
-Message-ID: <20241002125809.051918534@linuxfoundation.org>
+Message-ID: <20241002125833.219717568@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hobin Woo <hobin.woo@samsung.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit ca4974ca954561e79f8871d220bb08f14f64f57c upstream.
+commit 1cade98cf6415897bf9342ee451cc5b40b58c638 upstream.
 
-Some file systems may not provide dot (.) and dot-dot (..) as they are
-optional in POSIX. ksmbd can misjudge emptiness of a directory in those
-file systems, since it assumes there are always at least two entries:
-dot and dot-dot.
-Just don't count dot and dot-dot.
+When dealing with large extents and calculating file offsets by
+summing up according extent offsets and lengths of unsigned int type,
+one may encounter possible integer overflow if the values are
+big enough.
 
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Prevent this from happening by expanding one of the addends to
+(pgoff_t) type.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: d323d005ac4a ("f2fs: support file defragment")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/f2fs/extent_cache.c |    4 ++--
+ fs/f2fs/file.c         |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1110,9 +1110,10 @@ static bool __dir_empty(struct dir_conte
- 	struct ksmbd_readdir_data *buf;
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -366,7 +366,7 @@ static unsigned int __free_extent_tree(s
+ static void __drop_largest_extent(struct extent_tree *et,
+ 					pgoff_t fofs, unsigned int len)
+ {
+-	if (fofs < et->largest.fofs + et->largest.len &&
++	if (fofs < (pgoff_t)et->largest.fofs + et->largest.len &&
+ 			fofs + len > et->largest.fofs) {
+ 		et->largest.len = 0;
+ 		et->largest_updated = true;
+@@ -456,7 +456,7 @@ static bool __lookup_extent_tree(struct
  
- 	buf = container_of(ctx, struct ksmbd_readdir_data, ctx);
--	buf->dirent_count++;
-+	if (!is_dot_dotdot(name, namlen))
-+		buf->dirent_count++;
+ 	if (type == EX_READ &&
+ 			et->largest.fofs <= pgofs &&
+-			et->largest.fofs + et->largest.len > pgofs) {
++			(pgoff_t)et->largest.fofs + et->largest.len > pgofs) {
+ 		*ei = et->largest;
+ 		ret = true;
+ 		stat_inc_largest_node_hit(sbi);
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2719,7 +2719,7 @@ static int f2fs_defragment_range(struct
+ 	 * block addresses are continuous.
+ 	 */
+ 	if (f2fs_lookup_read_extent_cache(inode, pg_start, &ei)) {
+-		if (ei.fofs + ei.len >= pg_end)
++		if ((pgoff_t)ei.fofs + ei.len >= pg_end)
+ 			goto out;
+ 	}
  
--	return buf->dirent_count <= 2;
-+	return !buf->dirent_count;
- }
- 
- /**
-@@ -1132,7 +1133,7 @@ int ksmbd_vfs_empty_dir(struct ksmbd_fil
- 	readdir_data.dirent_count = 0;
- 
- 	err = iterate_dir(fp->filp, &readdir_data.ctx);
--	if (readdir_data.dirent_count > 2)
-+	if (readdir_data.dirent_count)
- 		err = -ENOTEMPTY;
- 	else
- 		err = 0;
 
 
 
