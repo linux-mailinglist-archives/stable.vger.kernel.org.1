@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8428598DD63
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AD498DAF6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B69DE1C22B7D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4390A1F22683
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607D71D0DEB;
-	Wed,  2 Oct 2024 14:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396FA1D0E2B;
+	Wed,  2 Oct 2024 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcVu2JTy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4tbgRag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA821D0786;
-	Wed,  2 Oct 2024 14:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC9A1D0E1C;
+	Wed,  2 Oct 2024 14:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880346; cv=none; b=BEdJaUjBJCxuDB+NyBaczN27Sa0lMdAFe7/IRs8Q4IBR7lWMRQ+Z+idK00stGV1/9Dp5T4mlENAd+A9XQ0NjkY7g1O40VGA4fSuB3mLk87Za+8hfw651OmdMxJrgtuc0hKOd0gJoRGNzONHlDvBX2tRCD1hVkte+YwZrk+ArJ/4=
+	t=1727878891; cv=none; b=oWdl4dIox/78CZ60dsnC/si+DVKU1T0L4YG5v4LhTdkGqqWLcspEXARPXOv8ipOS7TBK796DpHtJaPk0K/OlTuzsJ4f0hu7Am1m6z5mThca/9F4SacrfyUNHww1vnxcRBKIJZcv2EM4n4qsYzKpbefDkDFcCoIAYFI2dPgWY62Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880346; c=relaxed/simple;
-	bh=VXCG2c71jhwpDWMlIP+FG1TM83U8ZHRzMGadoYqCLMg=;
+	s=arc-20240116; t=1727878891; c=relaxed/simple;
+	bh=QaW/ebcYO1wT+nz50cTmAacXIQPWkbV7SKrdzftsNNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNk+UMy7Rfcpn11MgJLg1rrQiNfvF4JyWQQJzdTO66RYmZ5K5YzVWtW7EzLilUaufnftNGH9kE9HMaSFWQvFegRKRtHuENh+uGPcsqyHW6pqRHgP5B4IqaiUhLJt5Rodv6Kj6Gv4FazTIpgPBXjNIDb7hZVA+FkerIXWa06b+e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcVu2JTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEDDC4CEC2;
-	Wed,  2 Oct 2024 14:45:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N2BHy1S216WUW0xPkZaLHdiVnzZe+PandaK5XYc641j+d0psQyRmAxo0mQiNpkdyRy6kiocOXT3Ezd7LTwgg34GCcZTzgvdOY3fEF5EMw2posjvt3gr85KR5kwwVnL2rd6KkaXTyVSd/urakKBWtgTo9ZvNWbR79fimSabCsvsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4tbgRag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728F4C4CEC5;
+	Wed,  2 Oct 2024 14:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880346;
-	bh=VXCG2c71jhwpDWMlIP+FG1TM83U8ZHRzMGadoYqCLMg=;
+	s=korg; t=1727878890;
+	bh=QaW/ebcYO1wT+nz50cTmAacXIQPWkbV7SKrdzftsNNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TcVu2JTyiKYCMYg02S+ITbol4AC1d0IXnwgKghJELbKU0jwUHIdd19Huww+7Ry/Ev
-	 g5r5xE6O/ahDJK7MUTs+BmRzLUkG6NmeBKwriUIdGHJHImUIgV5RIILusKp8Xz5y+B
-	 MRGa+EdEKUNvb8Js5P8AlGR5I2/7uyuylWOJL1ck=
+	b=a4tbgRagrhZK6rM2Kl0gawFz62UTOFb95Mmi74grbp5LaFumg9oAR/PgsNwXwBxnm
+	 7fEkblUxzDynmhaSrlT4C8UbbMoEJvKNOi1n68DRvnemyXjQPFwq3R+JF2UfDRQusS
+	 37/Ixa6SKTB3wu0iCTwturUqb8dfaDuMYTzjxRa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 400/538] Revert "soc: qcom: smd-rpm: Match rpmsg channel instead of compatible"
-Date: Wed,  2 Oct 2024 15:00:39 +0200
-Message-ID: <20241002125808.227384977@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 540/634] ACPI: sysfs: validate return type of _STR method
+Date: Wed,  2 Oct 2024 15:00:40 +0200
+Message-ID: <20241002125832.424244107@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,95 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit b17155133391d7f6dd18d3fb94a7d492fdec18fa upstream.
+commit 4bb1e7d027413835b086aed35bc3f0713bc0f72b upstream.
 
-The rpm_requests device nodes have the compatible node. As such the
-rpmsg core uses OF modalias instead of a native rpmsg modalias. Thus if
-smd-rpm is built as a module, it doesn't get autoloaded for the device.
+Only buffer objects are valid return values of _STR.
 
-Revert the commit bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel
-instead of compatible")
+If something else is returned description_show() will access invalid
+memory.
 
-Fixes: bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel instead of compatible")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240729-fix-smd-rpm-v2-1-0776408a94c5@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20240709-acpi-sysfs-groups-v2-1-058ab0667fa8@weissschuh.net
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/smd-rpm.c | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+ drivers/acpi/device_sysfs.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/smd-rpm.c b/drivers/soc/qcom/smd-rpm.c
-index b7056aed4c7d..9d64283d2125 100644
---- a/drivers/soc/qcom/smd-rpm.c
-+++ b/drivers/soc/qcom/smd-rpm.c
-@@ -196,9 +196,6 @@ static int qcom_smd_rpm_probe(struct rpmsg_device *rpdev)
- {
- 	struct qcom_smd_rpm *rpm;
- 
--	if (!rpdev->dev.of_node)
--		return -EINVAL;
--
- 	rpm = devm_kzalloc(&rpdev->dev, sizeof(*rpm), GFP_KERNEL);
- 	if (!rpm)
- 		return -ENOMEM;
-@@ -218,18 +215,38 @@ static void qcom_smd_rpm_remove(struct rpmsg_device *rpdev)
- 	of_platform_depopulate(&rpdev->dev);
- }
- 
--static const struct rpmsg_device_id qcom_smd_rpm_id_table[] = {
--	{ .name = "rpm_requests", },
--	{ /* sentinel */ }
-+static const struct of_device_id qcom_smd_rpm_of_match[] = {
-+	{ .compatible = "qcom,rpm-apq8084" },
-+	{ .compatible = "qcom,rpm-ipq6018" },
-+	{ .compatible = "qcom,rpm-ipq9574" },
-+	{ .compatible = "qcom,rpm-msm8226" },
-+	{ .compatible = "qcom,rpm-msm8909" },
-+	{ .compatible = "qcom,rpm-msm8916" },
-+	{ .compatible = "qcom,rpm-msm8936" },
-+	{ .compatible = "qcom,rpm-msm8953" },
-+	{ .compatible = "qcom,rpm-msm8974" },
-+	{ .compatible = "qcom,rpm-msm8976" },
-+	{ .compatible = "qcom,rpm-msm8994" },
-+	{ .compatible = "qcom,rpm-msm8996" },
-+	{ .compatible = "qcom,rpm-msm8998" },
-+	{ .compatible = "qcom,rpm-sdm660" },
-+	{ .compatible = "qcom,rpm-sm6115" },
-+	{ .compatible = "qcom,rpm-sm6125" },
-+	{ .compatible = "qcom,rpm-sm6375" },
-+	{ .compatible = "qcom,rpm-qcm2290" },
-+	{ .compatible = "qcom,rpm-qcs404" },
-+	{}
- };
--MODULE_DEVICE_TABLE(rpmsg, qcom_smd_rpm_id_table);
-+MODULE_DEVICE_TABLE(of, qcom_smd_rpm_of_match);
- 
- static struct rpmsg_driver qcom_smd_rpm_driver = {
- 	.probe = qcom_smd_rpm_probe,
- 	.remove = qcom_smd_rpm_remove,
- 	.callback = qcom_smd_rpm_callback,
--	.id_table = qcom_smd_rpm_id_table,
--	.drv.name = "qcom_smd_rpm",
-+	.drv  = {
-+		.name  = "qcom_smd_rpm",
-+		.of_match_table = qcom_smd_rpm_of_match,
-+	},
- };
- 
- static int __init qcom_smd_rpm_init(void)
--- 
-2.46.2
-
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -540,8 +540,9 @@ int acpi_device_setup_files(struct acpi_
+ 	 * If device has _STR, 'description' file is created
+ 	 */
+ 	if (acpi_has_method(dev->handle, "_STR")) {
+-		status = acpi_evaluate_object(dev->handle, "_STR",
+-					NULL, &buffer);
++		status = acpi_evaluate_object_typed(dev->handle, "_STR",
++						    NULL, &buffer,
++						    ACPI_TYPE_BUFFER);
+ 		if (ACPI_FAILURE(status))
+ 			buffer.pointer = NULL;
+ 		dev->pnp.str_obj = buffer.pointer;
 
 
 
