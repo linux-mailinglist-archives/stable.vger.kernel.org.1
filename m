@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A2998DAFE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4EB98DD6E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FA651C23814
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E9821C22B7D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFF61D0F4C;
-	Wed,  2 Oct 2024 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFF71D12E3;
+	Wed,  2 Oct 2024 14:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6EkyCGZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdy+Ssh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAD91D07BC;
-	Wed,  2 Oct 2024 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685501D0E04;
+	Wed,  2 Oct 2024 14:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878914; cv=none; b=FVePrqnobVbMnxII5elszjmGkFapNlAm4rLeACAgWDABq8y/t4HxMe4YOF3At98kYKDiCAFvrqEPT7/WhPEQxuNWq9cdbjLTlpFxjESCe2BdZf39pC3EvSkLkF0TdiL/PIHDAy6wViCYz35mjZAJwXpGk6e1eEJ5reEWFK2Ce5c=
+	t=1727880372; cv=none; b=ab2XrdIEjS2qDpI8diSIc3vnbbccPI0AiNpLwVNvdHWOFw5yGQpc0wAcihwnz8N6P0VEyDVvpey8reDZe5+KIt7fza711EpDyrwZ38kQChUut35qXMMv1/ErNatJlHb4IdqQtiiVxlnDswB+Fmf85Y6wt3p9kEa1fjkaz79SdV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878914; c=relaxed/simple;
-	bh=aB/E+dh0CZ2m+HEmMuk0FaKPieCeY/ik+Bsy9KdjKxs=;
+	s=arc-20240116; t=1727880372; c=relaxed/simple;
+	bh=6NgQjIadXEBCHh7LQjcdlyzJ3fu7Zec5I1PxamLuf9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWQ3QgWY+elQtjTZNxMULnRI5sxQ6WMYkI224l5cRvebBmkkfslcKL//uD/dImTpID+qzOzNRP1f0NoHO0b7c9daKotxsioAs8vUkap4cIQr1l479q+x1LpRF8g2zg8tNGk03R6WY3GP7Pyq+vXGQoHFc11Uru6C6hmHcrx2Mco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6EkyCGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15664C4CECD;
-	Wed,  2 Oct 2024 14:21:53 +0000 (UTC)
+	 MIME-Version; b=M6xNnI5Kh7vqy+T1kPD5EYCFiA7mK0/PzyWhCe0zXqnp8TWN/PhsG9hFF8l1WuVSx46EYrAdym74lNivgUua/ygVfq+gqVEjENMfCV8zMB56DJvEnbC305gCmpK7C8JUbgqnNYqhPhGY+ie1ejjsQRIBD6iw3FfUS9hdsHG7mCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdy+Ssh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4328C4CEC2;
+	Wed,  2 Oct 2024 14:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878914;
-	bh=aB/E+dh0CZ2m+HEmMuk0FaKPieCeY/ik+Bsy9KdjKxs=;
+	s=korg; t=1727880372;
+	bh=6NgQjIadXEBCHh7LQjcdlyzJ3fu7Zec5I1PxamLuf9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6EkyCGZtfpjR6ifo7bpP0IuqCLUcVJ1UlP8rSb6E2pmFrYgpyPwg3z5ORJ3/S9rb
-	 dY7B/unaydWGfX9YppMs61LdhnIJWKgW233vcqqXc966zsfoujkpNWtwaN7x7N3/Cn
-	 6Y3LfV9rD7lhi9InJy0A4t2pMVioo5Q8u4e9GucI=
+	b=vdy+Ssh17NmZdp45/3CpyQe+G87RwW6crK3kwYnCKhZb5iCu0PZn+8K2PM+AP1Ku7
+	 MQFOKI8Y6JxfTr/YI75mQO1ReRxoebKeeBAXwAKIevBodOiODtMqZNjHN+HipLGO30
+	 VppnUTczBBgPO7qTPvrx9z2WvPiTaNhL3K/r107c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alexander Potapenko <glider@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.10 544/634] x86/entry: Remove unwanted instrumentation in common_interrupt()
+	Nicolin Chen <nicolinc@nvidia.com>,
+	syzbot+16073ebbc4c64b819b47@syzkaller.appspotmail.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.6 405/538] iommufd: Protect against overflow of ALIGN() during iova allocation
 Date: Wed,  2 Oct 2024 15:00:44 +0200
-Message-ID: <20241002125832.582442204@linuxfoundation.org>
+Message-ID: <20241002125808.423018693@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Vyukov <dvyukov@google.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 477d81a1c47a1b79b9c08fc92b5dea3c5143800b upstream.
+commit 8f6887349b2f829a4121c518aeb064fc922714e4 upstream.
 
-common_interrupt() and related variants call kvm_set_cpu_l1tf_flush_l1d(),
-which is neither marked noinstr nor __always_inline.
+Userspace can supply an iova and uptr such that the target iova alignment
+becomes really big and ALIGN() overflows which corrupts the selected area
+range during allocation. CONFIG_IOMMUFD_TEST can detect this:
 
-So compiler puts it out of line and adds instrumentation to it.  Since the
-call is inside of instrumentation_begin/end(), objtool does not warn about
-it.
+   WARNING: CPU: 1 PID: 5092 at drivers/iommu/iommufd/io_pagetable.c:268 iopt_alloc_area_pages drivers/iommu/iommufd/io_pagetable.c:268 [inline]
+   WARNING: CPU: 1 PID: 5092 at drivers/iommu/iommufd/io_pagetable.c:268 iopt_map_pages+0xf95/0x1050 drivers/iommu/iommufd/io_pagetable.c:352
+   Modules linked in:
+   CPU: 1 PID: 5092 Comm: syz-executor294 Not tainted 6.10.0-rc5-syzkaller-00294-g3ffea9a7a6f7 #0
+   Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+   RIP: 0010:iopt_alloc_area_pages drivers/iommu/iommufd/io_pagetable.c:268 [inline]
+   RIP: 0010:iopt_map_pages+0xf95/0x1050 drivers/iommu/iommufd/io_pagetable.c:352
+   Code: fc e9 a4 f3 ff ff e8 1a 8b 4c fc 41 be e4 ff ff ff e9 8a f3 ff ff e8 0a 8b 4c fc 90 0f 0b 90 e9 37 f5 ff ff e8 fc 8a 4c fc 90 <0f> 0b 90 e9 68 f3 ff ff 48 c7 c1 ec 82 ad 8f 80 e1 07 80 c1 03 38
+   RSP: 0018:ffffc90003ebf9e0 EFLAGS: 00010293
+   RAX: ffffffff85499fa4 RBX: 00000000ffffffef RCX: ffff888079b49e00
+   RDX: 0000000000000000 RSI: 00000000ffffffef RDI: 0000000000000000
+   RBP: ffffc90003ebfc50 R08: ffffffff85499b30 R09: ffffffff85499942
+   R10: 0000000000000002 R11: ffff888079b49e00 R12: ffff8880228e0010
+   R13: 0000000000000000 R14: 1ffff920007d7f68 R15: ffffc90003ebfd00
+   FS:  000055557d760380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   CR2: 00000000005fdeb8 CR3: 000000007404a000 CR4: 00000000003506f0
+   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+   Call Trace:
+    <TASK>
+    iommufd_ioas_copy+0x610/0x7b0 drivers/iommu/iommufd/ioas.c:274
+    iommufd_fops_ioctl+0x4d9/0x5a0 drivers/iommu/iommufd/main.c:421
+    vfs_ioctl fs/ioctl.c:51 [inline]
+    __do_sys_ioctl fs/ioctl.c:907 [inline]
+    __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+    do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-The manifestation is that KCOV produces spurious coverage in
-kvm_set_cpu_l1tf_flush_l1d() in random places because the call happens when
-preempt count is not yet updated to say that the kernel is in an interrupt.
+Cap the automatic alignment to the huge page size, which is probably a
+better idea overall. Huge automatic alignments can fragment and chew up
+the available IOVA space without any reason.
 
-Mark kvm_set_cpu_l1tf_flush_l1d() as __always_inline and move it out of the
-instrumentation_begin/end() section.  It only calls __this_cpu_write()
-which is already safe to call in noinstr contexts.
-
-Fixes: 6368558c3710 ("x86/entry: Provide IDTENTRY_SYSVEC")
-Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/r/0-v1-8009738b9891+1f7-iommufd_align_overflow_jgg@nvidia.com
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/3f9a1de9e415fcb53d07dc9e19fa8481bb021b1b.1718092070.git.dvyukov@google.com
+Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reported-by: syzbot+16073ebbc4c64b819b47@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/000000000000388410061a74f014@google.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/hardirq.h  |    8 ++++++--
- arch/x86/include/asm/idtentry.h |    6 +++---
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/iommu/iommufd/io_pagetable.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/x86/include/asm/hardirq.h
-+++ b/arch/x86/include/asm/hardirq.h
-@@ -69,7 +69,11 @@ extern u64 arch_irq_stat(void);
- #define local_softirq_pending_ref       pcpu_hot.softirq_pending
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -111,6 +111,7 @@ static int iopt_alloc_iova(struct io_pag
+ 	unsigned long page_offset = uptr % PAGE_SIZE;
+ 	struct interval_tree_double_span_iter used_span;
+ 	struct interval_tree_span_iter allowed_span;
++	unsigned long max_alignment = PAGE_SIZE;
+ 	unsigned long iova_alignment;
  
- #if IS_ENABLED(CONFIG_KVM_INTEL)
--static inline void kvm_set_cpu_l1tf_flush_l1d(void)
-+/*
-+ * This function is called from noinstr interrupt contexts
-+ * and must be inlined to not get instrumentation.
-+ */
-+static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void)
- {
- 	__this_cpu_write(irq_stat.kvm_cpu_l1tf_flush_l1d, 1);
- }
-@@ -84,7 +88,7 @@ static __always_inline bool kvm_get_cpu_
- 	return __this_cpu_read(irq_stat.kvm_cpu_l1tf_flush_l1d);
- }
- #else /* !IS_ENABLED(CONFIG_KVM_INTEL) */
--static inline void kvm_set_cpu_l1tf_flush_l1d(void) { }
-+static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void) { }
- #endif /* IS_ENABLED(CONFIG_KVM_INTEL) */
+ 	lockdep_assert_held(&iopt->iova_rwsem);
+@@ -130,6 +131,13 @@ static int iopt_alloc_iova(struct io_pag
+ 				       roundup_pow_of_two(length),
+ 				       1UL << __ffs64(uptr));
  
- #endif /* _ASM_X86_HARDIRQ_H */
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -212,8 +212,8 @@ __visible noinstr void func(struct pt_re
- 	irqentry_state_t state = irqentry_enter(regs);			\
- 	u32 vector = (u32)(u8)error_code;				\
- 									\
-+	kvm_set_cpu_l1tf_flush_l1d();                                   \
- 	instrumentation_begin();					\
--	kvm_set_cpu_l1tf_flush_l1d();					\
- 	run_irq_on_irqstack_cond(__##func, regs, vector);		\
- 	instrumentation_end();						\
- 	irqentry_exit(regs, state);					\
-@@ -250,7 +250,6 @@ static void __##func(struct pt_regs *reg
- 									\
- static __always_inline void instr_##func(struct pt_regs *regs)		\
- {									\
--	kvm_set_cpu_l1tf_flush_l1d();					\
- 	run_sysvec_on_irqstack_cond(__##func, regs);			\
- }									\
- 									\
-@@ -258,6 +257,7 @@ __visible noinstr void func(struct pt_re
- {									\
- 	irqentry_state_t state = irqentry_enter(regs);			\
- 									\
-+	kvm_set_cpu_l1tf_flush_l1d();                                   \
- 	instrumentation_begin();					\
- 	instr_##func (regs);						\
- 	instrumentation_end();						\
-@@ -288,7 +288,6 @@ static __always_inline void __##func(str
- static __always_inline void instr_##func(struct pt_regs *regs)		\
- {									\
- 	__irq_enter_raw();						\
--	kvm_set_cpu_l1tf_flush_l1d();					\
- 	__##func (regs);						\
- 	__irq_exit_raw();						\
- }									\
-@@ -297,6 +296,7 @@ __visible noinstr void func(struct pt_re
- {									\
- 	irqentry_state_t state = irqentry_enter(regs);			\
- 									\
-+	kvm_set_cpu_l1tf_flush_l1d();                                   \
- 	instrumentation_begin();					\
- 	instr_##func (regs);						\
- 	instrumentation_end();						\
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	max_alignment = HPAGE_SIZE;
++#endif
++	/* Protect against ALIGN() overflow */
++	if (iova_alignment >= max_alignment)
++		iova_alignment = max_alignment;
++
+ 	if (iova_alignment < iopt->iova_alignment)
+ 		return -EINVAL;
+ 
 
 
 
