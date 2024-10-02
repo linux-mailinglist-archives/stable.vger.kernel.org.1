@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E4D98DBE2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0957298D95A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C552B1C23D36
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B512B1F2165C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475A31D172F;
-	Wed,  2 Oct 2024 14:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0A11D0E31;
+	Wed,  2 Oct 2024 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi2vNDz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzWgLgBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F8F1D0E1F;
-	Wed,  2 Oct 2024 14:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB9D1D094A;
+	Wed,  2 Oct 2024 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879405; cv=none; b=LW8M81KK/w2N9PkMGO5Yy23Z2zn6xcAOynSRhsjOK4QJa52P9g8kpYG242TDWVrqyeFfnEf3yWoaNSqLtRTxikXD7j53/0zWzz80bIYYHgQumbrF1S4YCi5iwYkiY+LKzZ2qyKgII2AWIkRBfFMFaZK43gQNJ8W6J9UYSmKBYoc=
+	t=1727877942; cv=none; b=NdMHpY2K6G2N2FijO0c6JkzrZQ5Pi5aF+DEz2bWikSEy9M/rcpk+8wWGk5hCVEQzUlaYyu9sKw4xE1iirJ1QEJCS8wG1XPN13BIlxe5LeIAs1o0xiSF5XSpawL3zFA9p1T884vkrk3EJxcowByTrbxDeBIybuGzRWV62GMBwCmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879405; c=relaxed/simple;
-	bh=XOomanUaMhFy1A8d++BV1CrDShflPnI1oNEFo6dFb/A=;
+	s=arc-20240116; t=1727877942; c=relaxed/simple;
+	bh=TeVGkDiBVR+SO6Mbgh+1/3xxDDzqN+vJlGd8cvIEY2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6narMfLtnmkBaA8EjQQbSD30NKlgP0rLPPVGdGHfLfxz5943bMkXxtbdkeNlsA7TJ47/3zUTjbscRNsxo26+j3sApaJIHxPXTOvmnRAHHUppAhd9xdL5Es8jkXWHN7yiSHGapz6tIIbAz2Gol2GbsAZPXUEJLdfqr/Xm6nmzR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi2vNDz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744DEC4CEC2;
-	Wed,  2 Oct 2024 14:30:04 +0000 (UTC)
+	 MIME-Version; b=u4qW7e8+g2oFqK0selCoV+vOdwVa9iwRLGhmtHiSwDzamMdMXsTbVxtlLO7mGG+evod72/6odvta/+h98SPOGvGfihNp9yBN1jCvK/Z6CwF9ohUlYu/bXCJO7VNADdkzQOGGU79JkxWGOZuaLFY2se/2eEEz/NErreglqvwcGVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzWgLgBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B85C4CEC2;
+	Wed,  2 Oct 2024 14:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879404;
-	bh=XOomanUaMhFy1A8d++BV1CrDShflPnI1oNEFo6dFb/A=;
+	s=korg; t=1727877942;
+	bh=TeVGkDiBVR+SO6Mbgh+1/3xxDDzqN+vJlGd8cvIEY2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pi2vNDz1dWxXyvJIHEp2TrzsnUfgIoyV3xnHVkf+Jd79ZrSQ9Krfn2Zv6ih51/wme
-	 AnGJKLRuTomj5wDG72bi8HSObZmaKjx33Rov+c39yl4XYfry/TQ7X/tYr4c1akjkvf
-	 wwEEIkBf37BhkNFKtNk1JUyNoiUpxuDN1quyepfE=
+	b=pzWgLgBu4vI9OWG4HwbIjqF9sQiNX4pw2DAMZXbOYdiBeq1LmRufktaO1AYVoYmFJ
+	 HK/FlJeJI9w2IjdqPdYHUYxlu12dq3ESe7IUBY39MTxlwgZVt5Lo6JB0DDKBlWOCO8
+	 W2dEJYZPhYR6jFpsfhevDF8HeU1NGlWf6xJhCYkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Agrawal <agrawal.ag.ankit@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/538] clocksource/drivers/qcom: Add missing iounmap() on errors in msm_dt_timer_init()
-Date: Wed,  2 Oct 2024 14:55:47 +0200
-Message-ID: <20241002125756.494520334@linuxfoundation.org>
+Subject: [PATCH 6.10 248/634] selftests/bpf: Fix compiling tcp_rtt.c with musl-libc
+Date: Wed,  2 Oct 2024 14:55:48 +0200
+Message-ID: <20241002125820.887048818@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit ca140a0dc0a18acd4653b56db211fec9b2339986 ]
+[ Upstream commit 18826fb0b79c3c3cd1fe765d85f9c6f1a902c722 ]
 
-Add the missing iounmap() when clock frequency fails to get read by the
-of_property_read_u32() call, or if the call to msm_timer_init() fails.
+The GNU version of 'struct tcp_info' in 'netinet/tcp.h' is not exposed by
+musl headers unless _GNU_SOURCE is defined.
 
-Fixes: 6e3321631ac2 ("ARM: msm: Add DT support to msm_timer")
-Signed-off-by: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240713095713.GA430091@bnew-VirtualBox
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Add this definition to fix errors seen compiling for mips64el/musl-libc:
+
+  tcp_rtt.c: In function 'wait_for_ack':
+  tcp_rtt.c:24:25: error: storage size of 'info' isn't known
+     24 |         struct tcp_info info;
+        |                         ^~~~
+  tcp_rtt.c:24:25: error: unused variable 'info' [-Werror=unused-variable]
+  cc1: all warnings being treated as errors
+
+Fixes: 1f4f80fed217 ("selftests/bpf: test_progs: convert test_tcp_rtt")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/f2329767b15df206f08a5776d35a47c37da855ae.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-qcom.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/tcp_rtt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clocksource/timer-qcom.c b/drivers/clocksource/timer-qcom.c
-index b4afe3a675835..eac4c95c6127f 100644
---- a/drivers/clocksource/timer-qcom.c
-+++ b/drivers/clocksource/timer-qcom.c
-@@ -233,6 +233,7 @@ static int __init msm_dt_timer_init(struct device_node *np)
- 	}
- 
- 	if (of_property_read_u32(np, "clock-frequency", &freq)) {
-+		iounmap(cpu0_base);
- 		pr_err("Unknown frequency\n");
- 		return -EINVAL;
- 	}
-@@ -243,7 +244,11 @@ static int __init msm_dt_timer_init(struct device_node *np)
- 	freq /= 4;
- 	writel_relaxed(DGT_CLK_CTL_DIV_4, source_base + DGT_CLK_CTL);
- 
--	return msm_timer_init(freq, 32, irq, !!percpu_offset);
-+	ret = msm_timer_init(freq, 32, irq, !!percpu_offset);
-+	if (ret)
-+		iounmap(cpu0_base);
-+
-+	return ret;
- }
- TIMER_OF_DECLARE(kpss_timer, "qcom,kpss-timer", msm_dt_timer_init);
- TIMER_OF_DECLARE(scss_timer, "qcom,scss-timer", msm_dt_timer_init);
+diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
+index f2b99d95d9160..c38784c1c066e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
++++ b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include "cgroup_helpers.h"
+ #include "network_helpers.h"
 -- 
 2.43.0
 
