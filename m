@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2A398D9FA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D548598DC98
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F4612866C1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808E31F27C9D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457BD1D0DDF;
-	Wed,  2 Oct 2024 14:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE331D0DC8;
+	Wed,  2 Oct 2024 14:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6H0BixU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFgqsSBb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16DE1D0412;
-	Wed,  2 Oct 2024 14:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFDD1CF7D4;
+	Wed,  2 Oct 2024 14:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878335; cv=none; b=mCtHIsHfjs9mrM8aQ1a5VtZVohYGQH4r5sVb71btnHcezzgWuZqKCF2KWBnDn5MREQnu57qE1BMpViiIizJwnI4iGjtcmmbGG3SGSFVQotcokm3TYJyzed4AnV19nIRqw9vzoYTewlSNQ+VimEySYEEtNNgAPjd7VppCDvmh8Gs=
+	t=1727879790; cv=none; b=JAJtBEg8kECOrJXztXpNEA3U+0ceSWLOgtzo4bfOOSTwG7W20oBwKbi/Kng3dP1jnvRxku9fZdyOXJSWDpvlNh8zsyGjLABFhCgwKHSZCeFop53+m5RwySFpBjxRoDhzoKx2dWaOt+bAtPjuweFEFL6TtarQcDn2pfNjHmT7NOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878335; c=relaxed/simple;
-	bh=ccK/WnBL5HMxknVm6j1RWdird7K9sUi7hF3ifhsVxiQ=;
+	s=arc-20240116; t=1727879790; c=relaxed/simple;
+	bh=8N9lYnrJ1+uuN2kzeZrnqzT9yop7NMCBdH8uS0jTCdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSMDcQJPE7MKMk8Q//vv3gciiQbfh7yfHqGcKoj2hhYrP7XTAXplHd+FVgdOob5+RW+CTxkLcUJA/PbBPs6A20PcfUMrj1Fm2sL6YWRUJF1sG/Ep35tZ3q70tR1bemknANJ5a2wFNAqwImYNFtu0GlpzhlkgaKE/CPN9KbffbXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6H0BixU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D69AC4CEC2;
-	Wed,  2 Oct 2024 14:12:13 +0000 (UTC)
+	 MIME-Version; b=GgGoIhk5XsL98pHsvysrP0QnpifowXLbo1mBzSTRwjr4IVHIZVR7P8/zLQHA8YajnmuZE358b3Tsjk34J98/KhW7F1ASym0m0xGuJMhsKkTkTKH1CouUqcxjnTeduWwhVLfKuJ8kqb9Zt5VDMxh8LKlfGqlOwLMc+aXv8/p7DAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFgqsSBb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26596C4CEC2;
+	Wed,  2 Oct 2024 14:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878334;
-	bh=ccK/WnBL5HMxknVm6j1RWdird7K9sUi7hF3ifhsVxiQ=;
+	s=korg; t=1727879790;
+	bh=8N9lYnrJ1+uuN2kzeZrnqzT9yop7NMCBdH8uS0jTCdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6H0BixUwnS850795UU8IcTriQvC98RjMMpFfYN9R6mzv2BdFPmebT9bQT+BLaaXX
-	 pMUBi5dXNMaDS8TlAAm418txukpDn1sTaT+PK/OhY722pTYZr+bntxZY8pCnXlUjvC
-	 Brya8taDBA6lCybxGE9W3V9ZKAbMEoxetyd3MXsc=
+	b=VFgqsSBbm8djIL8fL34pUPDBt6eQy3CWzG1UmroWTEH7Un/VpFUgQ9DzutnUrLZeI
+	 Hd0fdEEqWUKRCWUYeC2CsvZIJOtVgNi4m6KxnrEbfmW1gfZw2xBcLb6fk9CB+pbi5f
+	 XClBU4yNEAqNqDTO7y9ZEMEAtmfc8gc7lEodPYVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 379/634] RDMA/hns: Optimize hem allocation performance
+Subject: [PATCH 6.6 240/538] nilfs2: determine empty node blocks as corrupted
 Date: Wed,  2 Oct 2024 14:57:59 +0200
-Message-ID: <20241002125826.058540633@linuxfoundation.org>
+Message-ID: <20241002125801.723944354@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit fe51f6254d81f5a69c31df16353d6539b2b51630 ]
+[ Upstream commit 111b812d3662f3a1b831d19208f83aa711583fe6 ]
 
-When allocating MTT hem, for each hop level of each hem that is being
-allocated, the driver iterates the hem list to find out whether the
-bt page has been allocated in this hop level. If not, allocate a new
-one and splice it to the list. The time complexity is O(n^2) in worst
-cases.
+Due to the nature of b-trees, nilfs2 itself and admin tools such as
+mkfs.nilfs2 will never create an intermediate b-tree node block with 0
+child nodes, nor will they delete (key, pointer)-entries that would result
+in such a state.  However, it is possible that a b-tree node block is
+corrupted on the backing device and is read with 0 child nodes.
 
-Currently the allocation for-loop uses 'unit' as the step size. This
-actually has taken into account the reuse of last-hop-level MTT bt
-pages by multiple buffer pages. Thus pages of last hop level will
-never have been allocated, so there is no need to iterate the hem list
-in last hop level.
+Because operation is not guaranteed if the number of child nodes is 0 for
+intermediate node blocks other than the root node, modify
+nilfs_btree_node_broken(), which performs sanity checks when reading a
+b-tree node block, so that such cases will be judged as metadata
+corruption.
 
-Removing this unnecessary iteration can reduce the time complexity to
-O(n).
-
-Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20240906093444.3571619-9-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://lkml.kernel.org/r/20240904081401.16682-3-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/nilfs2/btree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index 42111f31b3715..c7c167e2a0451 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -1134,10 +1134,12 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
- 
- 	/* config L1 bt to last bt and link them to corresponding parent */
- 	for (level = 1; level < hopnum; level++) {
--		cur = hem_list_search_item(&mid_bt[level], offset);
--		if (cur) {
--			hem_ptrs[level] = cur;
--			continue;
-+		if (!hem_list_is_bottom_bt(hopnum, level)) {
-+			cur = hem_list_search_item(&mid_bt[level], offset);
-+			if (cur) {
-+				hem_ptrs[level] = cur;
-+				continue;
-+			}
- 		}
- 
- 		step = hem_list_calc_ba_range(hopnum, level, unit);
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index fa51ed649968e..dac090c162a7a 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -350,7 +350,7 @@ static int nilfs_btree_node_broken(const struct nilfs_btree_node *node,
+ 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
+ 		     level >= NILFS_BTREE_LEVEL_MAX ||
+ 		     (flags & NILFS_BTREE_NODE_ROOT) ||
+-		     nchildren < 0 ||
++		     nchildren <= 0 ||
+ 		     nchildren > NILFS_BTREE_NODE_NCHILDREN_MAX(size))) {
+ 		nilfs_crit(inode->i_sb,
+ 			   "bad btree node (ino=%lu, blocknr=%llu): level = %d, flags = 0x%x, nchildren = %d",
 -- 
 2.43.0
 
