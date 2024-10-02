@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6DD598D589
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A678798D89A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96BB6288D73
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9531F24AC0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C651D0412;
-	Wed,  2 Oct 2024 13:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841721D095B;
+	Wed,  2 Oct 2024 13:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDK++Yi5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUjVd1QG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B9829CE7;
-	Wed,  2 Oct 2024 13:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EA21D0420;
+	Wed,  2 Oct 2024 13:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875885; cv=none; b=STzdHG6lTeH+Qq/CSpDaxdGDBWnxBZ+mMSVYMXH8SQodwl6l+fYwroh1Ezez16iVSWjmH+LNtoKkfkff+TB+nmb2khWQJrcg9kXHV5rt+IrDqNxbVuzlIlyTIZ7mKg9A52xoPDBKQOCx03ZW3+wEi+isDIEDmyRglwK6gX7tzYE=
+	t=1727877578; cv=none; b=Z28lH0YKISpuXwSmPAmvsOCgaeJI2Hzfd6dja5RcOyi1JVl5/bbOS4SOsJb6FLqBSUjSm3XQjS+ERAoyqrsP6lvuu+ZulwDIKBx3nnSe/hCIdXl3yDuWGsv6W2MRTtt3TRRd1ejgd3t94j/JBZwPMCypnjPmWMoCuZigRvqUGb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875885; c=relaxed/simple;
-	bh=KKiLTEID2XNUwJInraLyZw2yV+YLKSoozWy6Fk1RbF4=;
+	s=arc-20240116; t=1727877578; c=relaxed/simple;
+	bh=KVcNBarLARJgAqVLTeKt55QRiGUj6OV1ihvGyrjoLDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbLZ2a7zKJtBYd32bPiFw8W+8Yb7O/h4vT+rnYWUYE+yPbpAYkjQdy0QHkiRpEib1sfcEnXivFFWj0528SY4vZczSeylah5Fnlkw5csN5jGO3nCgcS93je5cWJRG+jmmTEf0bi92ZFOmyI1l1U8WtqrnbHb3VMQMQbNLYkjk+74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDK++Yi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91F4C4CEC5;
-	Wed,  2 Oct 2024 13:31:24 +0000 (UTC)
+	 MIME-Version; b=AVzxSJvob82f+aHwPusdiZYOonRmnplJ7l51Dg9NPRY5PYJtHUSvpq7GgkoySC/dAgL+PTdKj0zE1XTTgKT55sQisfSdAqeqBH8WQI3kiZ0bl1Fwn8Xho5BGJLirgPWpT32CT8zMBteiyziUHfUlS1JkifpJhdTJat6m0sq0/ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUjVd1QG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0200C4CEC2;
+	Wed,  2 Oct 2024 13:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875885;
-	bh=KKiLTEID2XNUwJInraLyZw2yV+YLKSoozWy6Fk1RbF4=;
+	s=korg; t=1727877578;
+	bh=KVcNBarLARJgAqVLTeKt55QRiGUj6OV1ihvGyrjoLDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDK++Yi59F9Jsr2z/X/vuaGY970FkdrddXv5ymD3ySYPXIo0Yehlm+sHP8CXaEQMK
-	 0cimEU+/4fdh2zUkShgCGa0WmeBgiQO3osrQnhO0GN5QErG5+a64Lj3d5LtLvOse2S
-	 vHLYVQJcxhyYB971F8DdmmA3rUfhOr+vSRwHXp20=
+	b=zUjVd1QGELpaRi86n+DJuTMmU8UBWxM88WIr2lxC3kO0R6a9LXIZRfdDm7AONVCFD
+	 hjCFvfDAZ/ZX0wOkL8jGG5RSIdWjS4SSN8zuBrD2R3sxedtn4Iy6EKV6jrRzI0iFFM
+	 fmOkrhK2d1zFHO7EoQxpFpp8qJuascAE9vrMwobA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 223/695] powerpc/8xx: Fix initial memory mapping
-Date: Wed,  2 Oct 2024 14:53:41 +0200
-Message-ID: <20241002125831.358698513@linuxfoundation.org>
+Subject: [PATCH 6.10 122/634] firmware: qcom: scm: Disable SDI and write no dump to dump mode
+Date: Wed,  2 Oct 2024 14:53:42 +0200
+Message-ID: <20241002125815.928262014@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit f9f2bff64c2f0dbee57be3d8c2741357ad3d05e6 ]
+[ Upstream commit 79cb2cb8d89b7eca87e8dac031dadea4aeafeaa7 ]
 
-Commit cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-introduced an initial mapping of kernel TEXT using PAGE_KERNEL_TEXT,
-but the pages that contain kernel TEXT may also contain kernel RODATA,
-and depending on selected debug options PAGE_KERNEL_TEXT may be either
-RWX or ROX. RODATA must be writable during init because it also
-contains ro_after_init data.
+SDI is enabled for most of the Qualcomm SoCs and as per commit
+ff4aa3bc9825 ("firmware: qcom_scm: disable SDI if required")
+it was recommended to disable SDI by mentioning it in device tree
+to avoid hang during watchdog or during reboot.
 
-So use PAGE_KERNEL_X instead to be sure it is RWX.
+However, for some cases if download mode tcsr register already
+configured from boot firmware to collect dumps and if SDI is
+disabled via means of mentioning it in device tree we could
+still end up with dump collection. Disabling SDI alone is
+not completely enough to disable dump mode and we also need to
+zero out the bits download bits from tcsr register.
 
-Fixes: cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/dac7a828d8497c4548c91840575a706657baa4f1.1724173828.git.christophe.leroy@csgroup.eu
+Current commit now, unconditionally call qcom_scm_set_download_mode()
+based on download_mode flag, at max if TCSR register is not mentioned
+or available for a SoC it will fallback to legacy way of setting
+download mode through command which may be no-ops or return error
+in case current firmware does not implements QCOM_SCM_INFO_IS_CALL_AVAIL
+so, at worst it does nothing if it fails.
+
+It also does to call SDI disable call if dload mode is disabled, which
+looks fine to do as intention is to disable dump collection even if
+system crashes.
+
+Fixes: ff4aa3bc9825 ("firmware: qcom_scm: disable SDI if required")
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Link: https://lore.kernel.org/r/20240708155332.4056479-1-quic_mojha@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/nohash/8xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/qcom/qcom_scm.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 388bba0ab3e7d..15d918dce27d0 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -150,11 +150,11 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index 68f4df7e6c3c7..77dd831febf5b 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1875,14 +1875,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	 * will cause the boot stages to enter download mode, unless
+ 	 * disabled below by a clean shutdown/reboot.
+ 	 */
+-	if (download_mode)
+-		qcom_scm_set_download_mode(true);
+-
++	qcom_scm_set_download_mode(download_mode);
  
- 	mmu_mapin_immr();
+ 	/*
+ 	 * Disable SDI if indicated by DT that it is enabled by default.
+ 	 */
+-	if (of_property_read_bool(pdev->dev.of_node, "qcom,sdi-enabled"))
++	if (of_property_read_bool(pdev->dev.of_node, "qcom,sdi-enabled") || !download_mode)
+ 		qcom_scm_disable_sdi();
  
--	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_TEXT, true);
-+	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_X, true);
- 	if (debug_pagealloc_enabled_or_kfence()) {
- 		top = boundary;
- 	} else {
--		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_TEXT, true);
-+		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_X, true);
- 		mmu_mapin_ram_chunk(einittext8, top, PAGE_KERNEL, true);
- 	}
- 
+ 	/*
 -- 
 2.43.0
 
