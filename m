@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DAA798D8DB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BD098D5C1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17F28B243DC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282BC1F232CF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1ADC1D0DCB;
-	Wed,  2 Oct 2024 14:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38241D0794;
+	Wed,  2 Oct 2024 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyqDOr1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv3lQwEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D54A1D0DE2;
-	Wed,  2 Oct 2024 14:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9285A1D0781;
+	Wed,  2 Oct 2024 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877683; cv=none; b=daiVap9Rp3L80qJBvQsSctjMoGtRe0ZPQz+qKu06zhUgCvKEWCzbCb2ZCViH72Z+i4eo/Exb7MDmGgawpTU/Lt8dE6cGFi8Sjwis2Y+mMPDl/uiuA/dUDAkFaVSeT+QrbV8B5HUisIf+X9fE5O9ZY6Ayufn4UhkFVHawW3zNGlc=
+	t=1727875992; cv=none; b=SrVbGJMAZqDej/8mImrTzaIDJOjT6lUBGhyNiYA/VPo4qvgjKhvCWCVT9HRuWckiObKIrwOa163KfS1JJ5Lk5rV2bo6D7xOuM0RahSLVymg1O15Cq+jeB5YeyI4EpQUfNL/vUXt3vGKmi+NauoH1IaHbKp8qxD9SvSITLQhitzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877683; c=relaxed/simple;
-	bh=pax0gG+FV3xWHRw0tgtq9R2lhfUG2ayk2rNPfckLku0=;
+	s=arc-20240116; t=1727875992; c=relaxed/simple;
+	bh=o+4m1pdeA637yuRNRjKPLi9Pc9swH8APsZBL++Cxzw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqUhzUlf5NIVd7ycDErlg9qaIxTHyZYOMGMPQKgX1I8gtOAOg91fODN14+RFyL6ludB4Xya2V7bOa8oCt8wMVLQIz5dT8DGqe7NxxuyZCyFev+G2S0thuVJmSBxyVRSybi0UX6aWVI69o3R9lx/i3lA3rKhT3gcKpgyXrScyBqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyqDOr1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE4CC4CECD;
-	Wed,  2 Oct 2024 14:01:22 +0000 (UTC)
+	 MIME-Version; b=laiHDrpti/LaLqybVRcX1Q2xHSBMhnQnTHnFBmcJoydBsHpbCvL8xYUtLxz09o8H4H0XupFfCKUXMU0rhY+7/A5gwOqHbxpgfyWzDsflOH0TaKbI5woRAjM16BbRa71/E0UHSjGXUOmtqLgeiAYtd148By7YbN71CTASzlzc6qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv3lQwEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F82C4CEC5;
+	Wed,  2 Oct 2024 13:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877683;
-	bh=pax0gG+FV3xWHRw0tgtq9R2lhfUG2ayk2rNPfckLku0=;
+	s=korg; t=1727875992;
+	bh=o+4m1pdeA637yuRNRjKPLi9Pc9swH8APsZBL++Cxzw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyqDOr1SUE/ig4atWhrTzn5BqPjf6l9EbrXmLu6jjBtOcLkKKMim7WPkeYSSTrqbx
-	 ae6xnvm+oQVI6eNTKLodgoJazX163SOOiYBPDVHLRbQ+vpNFyCjjWrufiWv2Wsz6DN
-	 UYkijioNuDpLe2hmbtr76po+Kk35Bo5xbqcrtAIU=
+	b=Dv3lQwEz9MGbiRlbxbrY7FAHSKGy2MM7fJ1WYxq6csr/aBReEgVYM9TGhH0eyufw/
+	 9WJnWmimRNxkBf+SbcNvSyqpiRGp3syh/Woc4FvS5ZZNNyYHyaX5kRsecEKaIpDSD3
+	 DbpuBj2Sus+2N7mDA3wd1uD8a1T5EVzh1Uu0y9TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 158/634] hwmon: (max16065) Fix alarm attributes
+Subject: [PATCH 6.11 260/695] selftests/bpf: Fix error linking uprobe_multi on mips
 Date: Wed,  2 Oct 2024 14:54:18 +0200
-Message-ID: <20241002125817.346942914@linuxfoundation.org>
+Message-ID: <20241002125832.825935170@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 119abf7d1815f098f7f91ae7abc84324a19943d7 ]
+[ Upstream commit a5f40d596bff182b4b47547712f540885e8fb17b ]
 
-Chips reporting overcurrent alarms report it in the second alarm register.
-That means the second alarm register has to be read, even if the chip only
-supports 8 or fewer ADC channels.
+Linking uprobe_multi.c on mips64el fails due to relocation overflows, when
+the GOT entries required exceeds the default maximum. Add a specific CFLAGS
+(-mxgot) for uprobe_multi.c on MIPS that allows using a larger GOT and
+avoids errors such as:
 
-MAX16067 and MAX16068 report undervoltage and overvoltage alarms in
-separate registers. Fold register contents together to report both with
-the existing alarm attribute. This requires actually storing the chip type
-in struct max16065_data. Rename the variable 'chip' to match the variable
-name used in the probe function.
+  /tmp/ccBTNQzv.o: in function `bench':
+  uprobe_multi.c:49:(.text+0x1d7720): relocation truncated to fit: R_MIPS_GOT_DISP against `uprobe_multi_func_08188'
+  uprobe_multi.c:49:(.text+0x1d7730): relocation truncated to fit: R_MIPS_GOT_DISP against `uprobe_multi_func_08189'
+  ...
+  collect2: error: ld returned 1 exit status
 
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 519dfeaf5119 ("selftests/bpf: Add uprobe_multi test program")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/14eb7b70f8ccef9834874d75eb373cb9292129da.1721692479.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max16065.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index 5b2a174c6bad3..0ccb5eb596fc4 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -79,7 +79,7 @@ static const bool max16065_have_current[] = {
- };
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index 81d4757ecd4c6..9351f37b720cf 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -762,6 +762,8 @@ $(OUTPUT)/veristat: $(OUTPUT)/veristat.o
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) $(LDFLAGS) $(filter %.a %.o,$^) $(LDLIBS) -o $@
  
- struct max16065_data {
--	enum chips type;
-+	enum chips chip;
- 	struct i2c_client *client;
- 	const struct attribute_group *groups[4];
- 	struct mutex update_lock;
-@@ -162,10 +162,17 @@ static struct max16065_data *max16065_update_device(struct device *dev)
- 						     MAX16065_CURR_SENSE);
- 		}
- 
--		for (i = 0; i < DIV_ROUND_UP(data->num_adc, 8); i++)
-+		for (i = 0; i < 2; i++)
- 			data->fault[i]
- 			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
- 
-+		/*
-+		 * MAX16067 and MAX16068 have separate undervoltage and
-+		 * overvoltage alarm bits. Squash them together.
-+		 */
-+		if (data->chip == max16067 || data->chip == max16068)
-+			data->fault[0] |= data->fault[1];
-+
- 		data->last_updated = jiffies;
- 		data->valid = true;
- 	}
-@@ -514,6 +521,7 @@ static int max16065_probe(struct i2c_client *client)
- 	if (unlikely(!data))
- 		return -ENOMEM;
- 
-+	data->chip = chip;
- 	data->client = client;
- 	mutex_init(&data->update_lock);
- 
++# Linking uprobe_multi can fail due to relocation overflows on mips.
++$(OUTPUT)/uprobe_multi: CFLAGS += $(if $(filter mips, $(ARCH)),-mxgot)
+ $(OUTPUT)/uprobe_multi: uprobe_multi.c
+ 	$(call msg,BINARY,,$@)
+ 	$(Q)$(CC) $(CFLAGS) -O0 $(LDFLAGS) $^ $(LDLIBS) -o $@
 -- 
 2.43.0
 
