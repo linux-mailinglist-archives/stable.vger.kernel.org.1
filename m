@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F66C98DD9B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA61698DB2E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA6C1F264C7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDE291C2300E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4A31D1732;
-	Wed,  2 Oct 2024 14:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC42C1D2228;
+	Wed,  2 Oct 2024 14:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdQ1TiL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkyHv1uE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4681D07B5;
-	Wed,  2 Oct 2024 14:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0511D0E06;
+	Wed,  2 Oct 2024 14:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880489; cv=none; b=jGf2BfqqN+QZXN/RksuyhE5SdmO8PmnlvMZbuVAOFuLe+OhxmUJvR5ZYiyAn+jVrykzX8ijpur+664ZCaW9v+28cwv7/1pg5O7aX3X0pQxSZLeIT+W6IhYYzfnKK3lEjRDkPZA7e7SLbyQHhB+H2VV/Ekoda4W99xEcvODA68H8=
+	t=1727879033; cv=none; b=sB+pQ3q+GGBmyHBsA9PeIdLkoASr6tKQRLXwlXJjdeMR9nFMitqtKQRMNKbQZkJKwXayTXdpVvb1O5SY4dKHn8GVC3+jumoLOUT0NZlONoHyNZhxxdzQvkSBRGWdfmQMRnq46hwsBVhUZ6BRsYTmE7Kpqnfy1R+l0/AZiNMH0HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880489; c=relaxed/simple;
-	bh=IeNhZHrfDqCHML5tBfkyZmMu2cX+hoIbuHa8Vhm1IKw=;
+	s=arc-20240116; t=1727879033; c=relaxed/simple;
+	bh=daR342MpUYwhea1dJqPH97hmYrFAQY6JEdyD2F43bgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJ9Li+hY1dY9Fqw742LRG8b1u69jiG90GkVT19GOiLihpFpFdfevJjDNl4YT5ElHo59Z8qdGOhz2/5y/Y1ozpmL/LvAScfh55ze+GosbAJc4AHYB7iKWCG7NC/eHmf6WgxdIc3/kZ8gmHxFBJCCTqa+broQXxSJrDblaV6Pt3ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdQ1TiL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029D6C4CEC2;
-	Wed,  2 Oct 2024 14:48:08 +0000 (UTC)
+	 MIME-Version; b=bG+zrKBSVzR0J4I+I7XylwIcusn2SdyPMuxdB0BUD6Rv2XnU9FZkiFcnqN/Q2QAAlckJIX/V9RliRZytcFjffg3vqb7fWoacstObFqIcdFAVnHQ+2UJRtvpbIotoGQnnbw9HNfuAdB2CCQGEjo/T6rOB5WF/7XkBn6vsDbOIuvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkyHv1uE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D29C4CEC2;
+	Wed,  2 Oct 2024 14:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880489;
-	bh=IeNhZHrfDqCHML5tBfkyZmMu2cX+hoIbuHa8Vhm1IKw=;
+	s=korg; t=1727879033;
+	bh=daR342MpUYwhea1dJqPH97hmYrFAQY6JEdyD2F43bgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdQ1TiL8gPJCFwLv+xQK69+QYmmbZVT1sJmX83v7M1Q1f6qHaEzvBOyggDn2JUMEx
-	 2Zir5cfBPQu2eJojfO5XTA/8fB4sM1rrcdqhATtOdGt0xFrQxlVRcEb4oa2ro0u0eu
-	 DTl634lqqqwRa4/buzrNc8W/PCOFYhD0Ykr/17VA=
+	b=tkyHv1uEqyK8Nt8vjfS3RJ3rvmBv3ncHxZ2p7A02BLQ+/j5Jgb7Ez+cnn/3nL9BvI
+	 cSuaGHcNwfsD61qZYOBh2ZkEjZSVNzgFt4/TmF7ydBjiPIr+Wym0VD+6E8cUGjUq+r
+	 0CTNEzjcvIYErUAKkQli5u0SJYi9IlIGKB3dKhRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH 6.6 477/538] EDAC/igen6: Fix conversion of system address to physical memory address
+	Maxim Suhanov <dfirblog@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.10 616/634] dm-verity: restart or panic on an I/O error
 Date: Wed,  2 Oct 2024 15:01:56 +0200
-Message-ID: <20241002125811.274431325@linuxfoundation.org>
+Message-ID: <20241002125835.432465893@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 0ad875f442e95d69a1145a38aabac2fd29984fe3 upstream.
+commit e6a3531dd542cb127c8de32ab1e54a48ae19962b upstream.
 
-The conversion of system address to physical memory address (as viewed by
-the memory controller) by igen6_edac is incorrect when the system address
-is above the TOM (Total amount Of populated physical Memory) for Elkhart
-Lake and Ice Lake (Neural Network Processor). Fix this conversion.
+Maxim Suhanov reported that dm-verity doesn't crash if an I/O error
+happens. In theory, this could be used to subvert security, because an
+attacker can create sectors that return error with the Write Uncorrectable
+command. Some programs may misbehave if they have to deal with EIO.
 
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+This commit fixes dm-verity, so that if "panic_on_corruption" or
+"restart_on_corruption" was specified and an I/O error happens, the
+machine will panic or restart.
+
+This commit also changes kernel_restart to emergency_restart -
+kernel_restart calls reboot notifiers and these reboot notifiers may wait
+for the bio that failed. emergency_restart doesn't call the notifiers.
+
+Reported-by: Maxim Suhanov <dfirblog@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/stable/20240814061011.43545-1-qiuxu.zhuo%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/igen6_edac.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-verity-target.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -245,7 +245,7 @@ static u64 ehl_err_addr_to_imc_addr(u64
- 	if (igen6_tom <= _4GB)
- 		return eaddr + igen6_tolud - _4GB;
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -265,8 +265,10 @@ out:
+ 	if (v->mode == DM_VERITY_MODE_LOGGING)
+ 		return 0;
  
--	if (eaddr < _4GB)
-+	if (eaddr >= igen6_tom)
- 		return eaddr + igen6_tolud - igen6_tom;
+-	if (v->mode == DM_VERITY_MODE_RESTART)
+-		kernel_restart("dm-verity device corrupted");
++	if (v->mode == DM_VERITY_MODE_RESTART) {
++		pr_emerg("dm-verity device corrupted\n");
++		emergency_restart();
++	}
  
- 	return eaddr;
+ 	if (v->mode == DM_VERITY_MODE_PANIC)
+ 		panic("dm-verity device corrupted");
+@@ -691,6 +693,23 @@ static void verity_finish_io(struct dm_v
+ 	if (!static_branch_unlikely(&use_bh_wq_enabled) || !io->in_bh)
+ 		verity_fec_finish_io(io);
+ 
++	if (unlikely(status != BLK_STS_OK) &&
++	    unlikely(!(bio->bi_opf & REQ_RAHEAD)) &&
++	    !verity_is_system_shutting_down()) {
++		if (v->mode == DM_VERITY_MODE_RESTART ||
++		    v->mode == DM_VERITY_MODE_PANIC)
++			DMERR_LIMIT("%s has error: %s", v->data_dev->name,
++					blk_status_to_str(status));
++
++		if (v->mode == DM_VERITY_MODE_RESTART) {
++			pr_emerg("dm-verity device corrupted\n");
++			emergency_restart();
++		}
++
++		if (v->mode == DM_VERITY_MODE_PANIC)
++			panic("dm-verity device corrupted");
++	}
++
+ 	bio_endio(bio);
+ }
+ 
 
 
 
