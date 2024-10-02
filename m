@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA8698D7FE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:55:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93DA98D4FD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5059A1C22B5F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:55:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8147E285242
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E1A1D04BE;
-	Wed,  2 Oct 2024 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDCF1D07A2;
+	Wed,  2 Oct 2024 13:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiIHZmAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFIlklzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B01D0499;
-	Wed,  2 Oct 2024 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2151D0954;
+	Wed,  2 Oct 2024 13:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877309; cv=none; b=U+mKmvbpF0VI3y8quj4aKKfO7VdW4NjtJhDteN0Um7u8zUq4Zrtjup7iVGS7ZdF5XTtoQGjfF8t6iLSVu8h2i5hnUuD6WvUusG3nsZg6zgRUYQZjmADQQd6igVD0nv3ZlyBxUUGc1SHdbuEug6VEBIUYzRgeYOWRjLohYVweMQc=
+	t=1727875529; cv=none; b=RfzZQIHiiGuGk1TzmU7CQWAYpeqogpBTCdSCsTUN7viyTrc4iSgZr72MZr5T9JKfVtzVf0Q/DBO7cbTSdoukCo4M+Toht8G95kD8ZDzLViu0HDuTBtj7Vh7XwN1b7ewUlyVwz3olrEDp1XTewOgAffWBUbX7QFOo6IzPcHF1mE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877309; c=relaxed/simple;
-	bh=UYmcXzp8B2aPWu6cUpJGKIvbFoS3E7oxHeUI9yFWwPQ=;
+	s=arc-20240116; t=1727875529; c=relaxed/simple;
+	bh=EKHzJ+RdPXj0HwPffFi8KU47Pu1c2MqDBMJsst+Gkxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQhWzBa2nJhpXevyomkN6GA8lXjIEGkvIuQprIDmuWvZgpB61/zWCG00KFgLGrFdYJVbNBW3weNX3LX7oSu608toFSA2jd/ht4dtnoxT/bxY5MxU1gr/QK/jP4A5tNN7+H830T7HpXWvjOj6twH9LmH8YLLK7uBUblzUva37iko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiIHZmAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E936C4AF1D;
-	Wed,  2 Oct 2024 13:55:08 +0000 (UTC)
+	 MIME-Version; b=uY5tZciaGcK6gWprmKpTjua97Cym5XPjypifPN97VBLnbr5KCmFoHJakfy5eTPQzT15diESRykrcC7n2nbEvqbvVA6BvcWE9cgSkpk2SMvbLJVmRa3fRGeiCOgXjVGe+ST0D6cH7+4IR/qcc1JREjV1TL348mQHV6+GHsQWaOpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFIlklzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602DCC4CEC5;
+	Wed,  2 Oct 2024 13:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877309;
-	bh=UYmcXzp8B2aPWu6cUpJGKIvbFoS3E7oxHeUI9yFWwPQ=;
+	s=korg; t=1727875529;
+	bh=EKHzJ+RdPXj0HwPffFi8KU47Pu1c2MqDBMJsst+Gkxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiIHZmAyDgjN5CVotT6Gzae2fACVIk919Y3idZy6tSO6TwESyVB4syUjfQe6yvije
-	 Bu/Kdjx09FztFkrmHzKQxSuzMr6EsdFw7YkePtTL1mAl1mpaADhB295MDZSIlhnT3N
-	 dLdCvCJHh+T6qs4Hy9fXsJDZHU2GFUF8+9mytuxY=
+	b=ZFIlklzRft+tiY3SyRgPfQHZ4KHbhNuEOOIGBqIZA1iua5I6PIZdULONtJrfpC9D+
+	 VIp3Fh0zK1qaE0uBF05tJUSuXcgk1UlRQnFeDHcIx+r9Ie/8QPpdrayK2lvMC5dLoU
+	 Vo7sD7EJo5mZRnWuFiV5avZo4wNZaHoeYuyXxiiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 030/634] thermal: core: Fix rounding of delay jiffies
-Date: Wed,  2 Oct 2024 14:52:10 +0200
-Message-ID: <20241002125812.286065359@linuxfoundation.org>
+Subject: [PATCH 6.11 133/695] spi: ppc4xx: handle irq_of_parse_and_map() errors
+Date: Wed,  2 Oct 2024 14:52:11 +0200
+Message-ID: <20241002125827.790406591@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 8144dbe68c493baa412d78f41a57e90a6461f6c3 ]
+[ Upstream commit 0f245463b01ea254ae90e1d0389e90b0e7d8dc75 ]
 
-Using round_jiffies() in thermal_set_delay_jiffies() is invalid because
-its argument should be time in the future in absolute jiffies and it
-computes the result with respect to the current jiffies value at the
-invocation time.  Fortunately, in the majority of cases it does not
-make any difference due to the time_is_after_jiffies() check in
-round_jiffies_common().
+Zero and negative number is not a valid IRQ for in-kernel code and the
+irq_of_parse_and_map() function returns zero on error.  So this check for
+valid IRQs should only accept values > 0.
 
-While using round_jiffies_relative() instead of round_jiffies() might
-reflect the intent a bit better, it still would not be defensible
-because that function should be called when the timer is about to be
-set and it is not suitable for pre-computation of delay values.
-
-Accordingly, drop thermal_set_delay_jiffies() altogether, simply
-convert polling_delay and passive_delay to jiffies during thermal
-zone initialization and make thermal_zone_device_set_polling() call
-round_jiffies_relative() on the delay if it is greather than 1 second.
-
-Fixes: 17d399cd9c89 ("thermal/core: Precompute the delays from msecs to jiffies")
-Fixes: e5f2cda61d06 ("thermal/core: Move thermal_set_delay_jiffies to static")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/1994438.PYKUYFuaPT@rjwysocki.net
+Fixes: 44dab88e7cc9 ("spi: add spi_ppc4xx driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20240724084047.1506084-1-make24@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/spi/spi-ppc4xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 99a8c06f6964d..d0e71698b3562 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -323,11 +323,15 @@ static void thermal_zone_broken_disable(struct thermal_zone_device *tz)
- static void thermal_zone_device_set_polling(struct thermal_zone_device *tz,
- 					    unsigned long delay)
- {
--	if (delay)
--		mod_delayed_work(system_freezable_power_efficient_wq,
--				 &tz->poll_queue, delay);
--	else
-+	if (!delay) {
- 		cancel_delayed_work(&tz->poll_queue);
-+		return;
-+	}
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 942c3117ab3a9..01fdecbf132d6 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -413,6 +413,9 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 
+ 	/* Request IRQ */
+ 	hw->irqnum = irq_of_parse_and_map(np, 0);
++	if (hw->irqnum <= 0)
++		goto free_host;
 +
-+	if (delay > HZ)
-+		delay = round_jiffies_relative(delay);
-+
-+	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, delay);
- }
- 
- static void thermal_zone_recheck(struct thermal_zone_device *tz, int error)
-@@ -1327,13 +1331,6 @@ void thermal_cooling_device_unregister(struct thermal_cooling_device *cdev)
- }
- EXPORT_SYMBOL_GPL(thermal_cooling_device_unregister);
- 
--static void thermal_set_delay_jiffies(unsigned long *delay_jiffies, int delay_ms)
--{
--	*delay_jiffies = msecs_to_jiffies(delay_ms);
--	if (delay_ms > 1000)
--		*delay_jiffies = round_jiffies(*delay_jiffies);
--}
--
- int thermal_zone_get_crit_temp(struct thermal_zone_device *tz, int *temp)
- {
- 	const struct thermal_trip_desc *td;
-@@ -1470,8 +1467,8 @@ thermal_zone_device_register_with_trips(const char *type,
- 		td->threshold = INT_MAX;
- 	}
- 
--	thermal_set_delay_jiffies(&tz->passive_delay_jiffies, passive_delay);
--	thermal_set_delay_jiffies(&tz->polling_delay_jiffies, polling_delay);
-+	tz->polling_delay_jiffies = msecs_to_jiffies(polling_delay);
-+	tz->passive_delay_jiffies = msecs_to_jiffies(passive_delay);
- 	tz->recheck_delay_jiffies = THERMAL_RECHECK_DELAY;
- 
- 	/* sys I/F */
+ 	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
+ 			  0, "spi_ppc4xx_of", (void *)hw);
+ 	if (ret) {
 -- 
 2.43.0
 
