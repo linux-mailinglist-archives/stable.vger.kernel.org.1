@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0CD98D83A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E7498D538
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADCF71F23B95
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAC021C20E5C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384391D0782;
-	Wed,  2 Oct 2024 13:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38931D0434;
+	Wed,  2 Oct 2024 13:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zs86X5Vb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nw+dpUdr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8971D016E;
-	Wed,  2 Oct 2024 13:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A3A16F84F;
+	Wed,  2 Oct 2024 13:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877442; cv=none; b=LAcMKFXO8sQl77iAfMNOV8SVIjn7Y5Db4Ow4whMDfH95e8Uu1ZWB78clq/kkII9vyl3vx6YV3FucQZ3QZZNIdfgMCI3q/HGHGMxlnsN9aZxHuOWUxJ25lEg7JxXDVfqgWQzvVcpYfDF1vJDdHTCh20vEMTdF+rT3Osqu5SOBFuA=
+	t=1727875681; cv=none; b=a4CkhaD4YwJwZmbLwqNgVMQRMvsg7zRSuw9Lqld3heMmXz7eOyCEXtoVCm8oa3ALMUv5QihgI0z2scH8OO0B0h6a4osXqWHXuRh4SAtBk7qX02T4M3C3qXg5nAOEO+BTRBACr9FFpzXVV7Rb90I0iJjBxJmuET9ZZRdV93Ae7JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877442; c=relaxed/simple;
-	bh=t0zQRryQr7lV7gX/QMwkBBlLytaOsjqQ/oTO5YXL+/Y=;
+	s=arc-20240116; t=1727875681; c=relaxed/simple;
+	bh=h4cTSABUZFcyDiF9hRRc4WBTDI55i9A4bLsyQTPuvns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfmHaM7aIooHeRyAO+aTx3g8MT/NllXpDev8jgssjWb0df3uPVmx4grafTCxOvBC4gH+P/d8Fsm1w8VYThA+r+NpauR6xjzX1tG8hRSM8SqwpIzxF867joCTbcaLqI04VMNU1tE/2T1K1zTVzm4JGADa+UVoOjlPU0AIRMbeJkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zs86X5Vb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727F9C4CECF;
-	Wed,  2 Oct 2024 13:57:21 +0000 (UTC)
+	 MIME-Version; b=Qhn7UlzRiqUQpMT8xdFfsFUFiOR7eFPhip2dQM/xZDU3WvlRP1UyG3TtzThxPCH+uR5ZAOs7CDZHqGqg0Gci9mXpwcocJ3lshR85TKiGZKWB5iHhl7T6r07+t1LojZNk03cHiC03LQjnxSqH6QnwraPHEkdgjUDAob6vQQNhUOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nw+dpUdr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04DCC4CEC5;
+	Wed,  2 Oct 2024 13:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877441;
-	bh=t0zQRryQr7lV7gX/QMwkBBlLytaOsjqQ/oTO5YXL+/Y=;
+	s=korg; t=1727875681;
+	bh=h4cTSABUZFcyDiF9hRRc4WBTDI55i9A4bLsyQTPuvns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zs86X5VbYNCeRIW0luPCrYVNB8ikxyKpHHrscgc4uybMYVcNzPzEDflb4dLUBNjMD
-	 Qik1VCzzMv+aA+0A12EfmN6EPozk+FYaD50HP/9vs4pvcXYiK2FOJPP6kk1BxCIcsr
-	 tADhIykzRIVs7VKlH1QMTmCItAiwqKtXPpjmCJKw=
+	b=Nw+dpUdry59GX2RPOdQWhy3fv06eFGoZWvX/hu3Pa4CHu2Nj7oK4amdr4P7XrUhWA
+	 a0WdgfK2FadujOMgRPLCzCBJcc6SEavQ9l61h3APoro67qgV2cszBaWSEmBuuBbgEx
+	 bIq6Jytw4NHBuY3loQx50OMLJHCf6dC6LKiGLhpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 080/634] wifi: mt76: mt7915: fix rx filter setting for bfee functionality
-Date: Wed,  2 Oct 2024 14:53:00 +0200
-Message-ID: <20241002125814.269084797@linuxfoundation.org>
+Subject: [PATCH 6.11 183/695] iommu/amd: Handle error path in amd_iommu_probe_device()
+Date: Wed,  2 Oct 2024 14:53:01 +0200
+Message-ID: <20241002125829.775480057@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit 6ac80fce713e875a316a58975b830720a3e27721 ]
+[ Upstream commit 293aa9ec694e633bff83ab93715a2684e15fe214 ]
 
-Fix rx filter setting to prevent dropping NDPA frames. Without this
-change, bfee functionality may behave abnormally.
+Do not try to set max_pasids in error path as dev_data is not allocated.
 
-Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Link: https://patch.msgid.link/20240827093011.18621-21-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: a0c47f233e68 ("iommu/amd: Introduce iommu_dev_data.max_pasids")
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20240828111029.5429-5-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iommu/amd/iommu.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 2624edbb59a1a..eea41b29f0967 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -564,8 +564,7 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index b19e8c0f48fa2..fc660d4b10ac8 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2185,11 +2185,12 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
+ 		dev_err(dev, "Failed to initialize - trying to proceed anyway\n");
+ 		iommu_dev = ERR_PTR(ret);
+ 		iommu_ignore_device(iommu, dev);
+-	} else {
+-		amd_iommu_set_pci_msi_domain(dev, iommu);
+-		iommu_dev = &iommu->iommu;
++		goto out_err;
+ 	}
  
- 	MT76_FILTER(CONTROL, MT_WF_RFCR_DROP_CTS |
- 			     MT_WF_RFCR_DROP_RTS |
--			     MT_WF_RFCR_DROP_CTL_RSV |
--			     MT_WF_RFCR_DROP_NDPA);
-+			     MT_WF_RFCR_DROP_CTL_RSV);
++	amd_iommu_set_pci_msi_domain(dev, iommu);
++	iommu_dev = &iommu->iommu;
++
+ 	/*
+ 	 * If IOMMU and device supports PASID then it will contain max
+ 	 * supported PASIDs, else it will be zero.
+@@ -2201,6 +2202,7 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
+ 					     pci_max_pasids(to_pci_dev(dev)));
+ 	}
  
- 	*total_flags = flags;
- 	rxfilter = phy->rxfilter;
++out_err:
+ 	iommu_completion_wait(iommu);
+ 
+ 	return iommu_dev;
 -- 
 2.43.0
 
