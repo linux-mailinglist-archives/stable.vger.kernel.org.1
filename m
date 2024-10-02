@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA0B98D907
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8162B98D5BD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 612101F23B59
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A962288F05
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053DA1D0E09;
-	Wed,  2 Oct 2024 14:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61EA41D016B;
+	Wed,  2 Oct 2024 13:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlrM81fM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg1wCBvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AB61D0DF4;
-	Wed,  2 Oct 2024 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD531D078D;
+	Wed,  2 Oct 2024 13:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877753; cv=none; b=lIGGa4hgspGCnNRXEip+kHa6IH3lkON+NqtPP8urkHhAUerwe9q6ahW7lYqIBvR6FAlgqpeEd9TBexO/U3qr1KfRWAJiKrhol8YI/WHpzdZS+BcywZih8Up2NNgiZDYq1ICZatLmIRFbR/LKlcH3sMPdUZhttl1GRVcWuNqp1AI=
+	t=1727875978; cv=none; b=IEcpQfDnZoqt9L/FNj5jGlEdJHk7CqFp9oYv41MW7keyXitIHaGEJRlSZtftgoLOkE1/WCdRXmFX+xQOjnmFCPWb0YrIDHY8XIC/Zg04Ny4bZKrVxCUqdnLT2ADUTTajjAUuDCuFjiCnAKeJl9icny1aaa3mHmG/Hz2Wu50m0w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877753; c=relaxed/simple;
-	bh=SxvkEtB6aBrzUKcqxwQLDJVbgFhnuZkxXvz9Xbwd8q8=;
+	s=arc-20240116; t=1727875978; c=relaxed/simple;
+	bh=tQmcOJ8jtt36lmlaZm7Ao1d4E4KWsMSddl7Tyxcc8aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KL7t4fpLvcZmn5bBUtPYNbWgzg24naflJhZSrCG01LGdkAlSjdftVFaTk1YyRAaeeLwe/3jfUE3H/NWiHF/4+T+OZQXBghzrcTI67o3WAOb/IDp0hjRi0Gl2pz4p6NXZn67nV+7FyvXDoaliJjL6efaMGuqKcNelLaGB5GHoQGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlrM81fM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05A9C4CEC5;
-	Wed,  2 Oct 2024 14:02:32 +0000 (UTC)
+	 MIME-Version; b=HYmjXlJtyMUZqd9PtU8LkQGBiHV2kUZB6svreJi+U9iGJ2nIR5mNxm/8O4VU5H3BobHSZG2s0QMEOxdtKUHx/MPAbWoTslIm6LjlSN3AgBFZ7JIfoWMWyqfHTXIatewxmH8n5e4zWN8mHu3lVZlLv2wt6m5UIQH45SWz16szFYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xg1wCBvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E330C4CEC5;
+	Wed,  2 Oct 2024 13:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877753;
-	bh=SxvkEtB6aBrzUKcqxwQLDJVbgFhnuZkxXvz9Xbwd8q8=;
+	s=korg; t=1727875978;
+	bh=tQmcOJ8jtt36lmlaZm7Ao1d4E4KWsMSddl7Tyxcc8aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TlrM81fMWSThq5ON3Pe8LuugEBczY6ulPD8JkhDsv/lQYeE6/pAyQ/duan2GtNfVL
-	 oVV1lT6BMLQUYYZ8eq5TDt45CJvArKaxPqX1i+hJhURhFf8SlffH528/KAjtQxFXjO
-	 e02pgAp9UHoFYEUNMF9q1eT/OmCgfEkg3RqIhXfk=
+	b=Xg1wCBvMatKrb/8klinvrhSAmBXvkfkDIPAWPd0EI3o5hfsaolzr2KaHZeSR70mFr
+	 /6F2oDHx1CKcvW4pIqdBqpViOo0JRRaQdb786ZZ0yysrF6PEEaNVYXIIzz/PXXEy4d
+	 vN88BHPOMTb2OBoiVUA3p/ztu4NabIwZ9BiMEGs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 183/634] drm/radeon: properly handle vbios fake edid sizing
+Subject: [PATCH 6.11 285/695] selftests/bpf: Fix redefinition errors compiling lwt_reroute.c
 Date: Wed,  2 Oct 2024 14:54:43 +0200
-Message-ID: <20241002125818.331222278@linuxfoundation.org>
+Message-ID: <20241002125833.820429766@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 17c6baff3d5f65c8da164137a58742541a060b2f ]
+[ Upstream commit 16b795cc59528cf280abc79af3c70bda42f715b9 ]
 
-The comment in the vbios structure says:
-// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
+Compiling lwt_reroute.c with GCC 12.3 for mips64el/musl-libc yields errors:
 
-This fake edid struct has not been used in a long time, so I'm
-not sure if there were actually any boards out there with a non-128 byte
-EDID, but align the code with the comment.
+In file included from .../include/arpa/inet.h:9,
+                 from ./test_progs.h:18,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_helpers.h:11,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_reroute.c:52:
+.../include/netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+   23 | struct in6_addr {
+      |        ^~~~~~~~
+In file included from .../include/linux/icmp.h:24,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_helpers.h:9:
+.../include/linux/in6.h:33:8: note: originally defined here
+   33 | struct in6_addr {
+      |        ^~~~~~~~
+.../include/netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+   34 | struct sockaddr_in6 {
+      |        ^~~~~~~~~~~~
+.../include/linux/in6.h:50:8: note: originally defined here
+   50 | struct sockaddr_in6 {
+      |        ^~~~~~~~~~~~
+.../include/netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+   42 | struct ipv6_mreq {
+      |        ^~~~~~~~~
+.../include/linux/in6.h:60:8: note: originally defined here
+   60 | struct ipv6_mreq {
+      |        ^~~~~~~~~
 
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
-Fixes: c324acd5032f ("drm/radeon/kms: parse the extended LCD info block")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+These errors occur because <linux/in6.h> is included before <netinet/in.h>,
+bypassing the Linux uapi/libc compat mechanism's partial musl support. As
+described in [1] and [2], fix these errors by including <netinet/in.h> in
+lwt_reroute.c before any uapi headers.
+
+[1]: commit c0bace798436 ("uapi libc compat: add fallback for unsupported libcs")
+[2]: https://git.musl-libc.org/cgit/musl/commit/?id=04983f227238
+
+Fixes: 6c77997bc639 ("selftests/bpf: Add lwt_xmit tests for BPF_REROUTE")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/bd2908aec0755ba8b75f5dc41848b00585f5c73e.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_atombios.c | 29 +++++++++++++-----------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/lwt_reroute.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
-index 10793a433bf58..d698a899eaf4c 100644
---- a/drivers/gpu/drm/radeon/radeon_atombios.c
-+++ b/drivers/gpu/drm/radeon/radeon_atombios.c
-@@ -1717,26 +1717,29 @@ struct radeon_encoder_atom_dig *radeon_atombios_get_lvds_info(struct
- 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
- 					if (fake_edid_record->ucFakeEDIDLength) {
- 						struct edid *edid;
--						int edid_size =
--							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
--						edid = kmalloc(edid_size, GFP_KERNEL);
-+						int edid_size;
-+
-+						if (fake_edid_record->ucFakeEDIDLength == 128)
-+							edid_size = fake_edid_record->ucFakeEDIDLength;
-+						else
-+							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
-+						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
-+							       edid_size, GFP_KERNEL);
- 						if (edid) {
--							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
--							       fake_edid_record->ucFakeEDIDLength);
--
- 							if (drm_edid_is_valid(edid)) {
- 								rdev->mode_info.bios_hardcoded_edid = edid;
- 								rdev->mode_info.bios_hardcoded_edid_size = edid_size;
--							} else
-+							} else {
- 								kfree(edid);
-+							}
- 						}
-+						record += struct_size(fake_edid_record,
-+								      ucFakeEDIDString,
-+								      edid_size);
-+					} else {
-+						/* empty fake edid record must be 3 bytes long */
-+						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					}
--					record += fake_edid_record->ucFakeEDIDLength ?
--						  struct_size(fake_edid_record,
--							      ucFakeEDIDString,
--							      fake_edid_record->ucFakeEDIDLength) :
--						  /* empty fake edid record must be 3 bytes long */
--						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					break;
- 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
- 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
+diff --git a/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c b/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
+index 03825d2b45a8b..6c50c0f63f436 100644
+--- a/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
++++ b/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
+@@ -49,6 +49,7 @@
+  *  is not crashed, it is considered successful.
+  */
+ #define NETNS "ns_lwt_reroute"
++#include <netinet/in.h>
+ #include "lwt_helpers.h"
+ #include "network_helpers.h"
+ #include <linux/net_tstamp.h>
 -- 
 2.43.0
 
