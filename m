@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DA698D97E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D8998DC1C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8CD1F2132C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E78071F256C2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E9A1D0964;
-	Wed,  2 Oct 2024 14:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9501D357C;
+	Wed,  2 Oct 2024 14:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EG4JECq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yn0XANdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B011D07B7;
-	Wed,  2 Oct 2024 14:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4D51D1E99;
+	Wed,  2 Oct 2024 14:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878036; cv=none; b=nmAI7/7sXMfCz+QJ4B3Kj7UjjET5nMoxX/m+DChcOud0ac8OiiczoYaZF8wE+KeWGmM24nFmeFt1qeZrAcuGSb8F753YLRYZ9Pm+t/Y6A7mx25/l1BjtV1SXJMjad26N40/J+/tBjZtP+FKRS7vXjGCNvoIWAxKSbRV7z36K18c=
+	t=1727879500; cv=none; b=KS1f67vuIk9OBm3YOFNEDNrDwBkbF+eSRdXG7kGWDe8MT7e36+YtgB3S6TQK28f/0aFv6iUvFbACroLAzqLCtGyIMxbV99Qbt0qOyz8HrufnZeR3zzQ2sZI+9EGxRdA3qwBhhbqS2pRaiVkc3q55ncaQ4Aexwwj6cfLKAnCBVdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878036; c=relaxed/simple;
-	bh=ldLwIBt+8YM+7cmzwcZ11G5jDiVf8QBmfy/xTbJqTgI=;
+	s=arc-20240116; t=1727879500; c=relaxed/simple;
+	bh=9PMzG0BVuTJypTloBCqNaFPX+lbIOwHaJpTz/G+iLmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXePbXhpXzlAAQLdcHRyAkX6fPV/96h6aQuZD49jMPCpzbgzG9hA7gfQUPs9rI+uKZnCAN52Twv7DG99bCJvJfnCPIjHX8yRqyqDxZ76Dkv+PwKGExkqB0HKbkvn90u/ldjz9+yTK9VGWpF16tLD9qI5V5LnYO17h+nuI0F4Cnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EG4JECq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAA5C4CEC2;
-	Wed,  2 Oct 2024 14:07:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XTSzF+C5H8Bfv9aTzilf0/5L0Z1GqbF0Jj17MWIw0gprD8yCnNbJQ/hj3pp43+ZzSYp8SGMrIRVc1i+8GAB0A89ya5qiMSeX6MiPSZaHe7Ig8wHRfUMryx4wWIl0B8oAY970K9r+EbEGunkt92YVq8u9quWbO17L1k/ZqG+9rCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yn0XANdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264BBC4CEC2;
+	Wed,  2 Oct 2024 14:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878035;
-	bh=ldLwIBt+8YM+7cmzwcZ11G5jDiVf8QBmfy/xTbJqTgI=;
+	s=korg; t=1727879500;
+	bh=9PMzG0BVuTJypTloBCqNaFPX+lbIOwHaJpTz/G+iLmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EG4JECq4h4y5GS8F6FzP1SamwN/xcgugFS7iESKe8+c6KzmURAv7ZWscaN5cnjnho
-	 quttLbl2tvl9Vv3YcH9ZN7cgsHT2a7tEJihyA6L8Kl8xwOAWZnXw7vkPO9uXMFyi6I
-	 rDn1tJ5bU05dx7QpxIXu271ft2MCnb+RB/H+VK+I=
+	b=yn0XANdPgA1Hjldbo/UaVag2UQH3/bypz/Flm/CW8TntS6AHhtOMszpNWo6HqQhpy
+	 dOs4ZWDsFs5dpzrzu/ynHE9QpEqvREbLclBA5OBh3rTLLAzb7VRlLz1BfaNTRhMLSx
+	 Of1g2IBrJdnfzdRAzdsMxp/PA2IUKYEX/NknzZ94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 280/634] ext4: return error on ext4_find_inline_entry
+Subject: [PATCH 6.6 141/538] drm/amdgpu: properly handle vbios fake edid sizing
 Date: Wed,  2 Oct 2024 14:56:20 +0200
-Message-ID: <20241002125822.163804120@linuxfoundation.org>
+Message-ID: <20241002125757.806652128@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 4d231b91a944f3cab355fce65af5871fb5d7735b ]
+[ Upstream commit 8155566a26b8d6c1dd914f06a0c652e4e2f2adf1 ]
 
-In case of errors when reading an inode from disk or traversing inline
-directory entries, return an error-encoded ERR_PTR instead of returning
-NULL. ext4_find_inline_entry only caller, __ext4_find_entry already returns
-such encoded errors.
+The comment in the vbios structure says:
+// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://patch.msgid.link/20240821152324.3621860-3-cascardo@igalia.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: c6b72f5d82b1 ("ext4: avoid OOB when system.data xattr changes underneath the filesystem")
+This fake edid struct has not been used in a long time, so I'm
+not sure if there were actually any boards out there with a non-128 byte
+EDID, but align the code with the comment.
+
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
+Fixes: d38ceaf99ed0 ("drm/amdgpu: add core driver (v4)")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/amdgpu/atombios_encoders.c    | 29 ++++++++++---------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index e7a09a99837b9..7b98b1bf1dc94 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -1669,8 +1669,9 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
- 	void *inline_start;
- 	int inline_size;
- 
--	if (ext4_get_inode_loc(dir, &iloc))
--		return NULL;
-+	ret = ext4_get_inode_loc(dir, &iloc);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
- 	down_read(&EXT4_I(dir)->xattr_sem);
- 	if (!ext4_has_inline_data(dir)) {
-@@ -1701,7 +1702,10 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
- 
- out:
- 	brelse(iloc.bh);
--	iloc.bh = NULL;
-+	if (ret < 0)
-+		iloc.bh = ERR_PTR(ret);
-+	else
-+		iloc.bh = NULL;
- out_find:
- 	up_read(&EXT4_I(dir)->xattr_sem);
- 	return iloc.bh;
+diff --git a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+index d95b2dc780634..157e898dc3820 100644
+--- a/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
++++ b/drivers/gpu/drm/amd/amdgpu/atombios_encoders.c
+@@ -2065,26 +2065,29 @@ amdgpu_atombios_encoder_get_lcd_info(struct amdgpu_encoder *encoder)
+ 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
+ 					if (fake_edid_record->ucFakeEDIDLength) {
+ 						struct edid *edid;
+-						int edid_size =
+-							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
+-						edid = kmalloc(edid_size, GFP_KERNEL);
++						int edid_size;
++
++						if (fake_edid_record->ucFakeEDIDLength == 128)
++							edid_size = fake_edid_record->ucFakeEDIDLength;
++						else
++							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
++						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
++							       edid_size, GFP_KERNEL);
+ 						if (edid) {
+-							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
+-							       fake_edid_record->ucFakeEDIDLength);
+-
+ 							if (drm_edid_is_valid(edid)) {
+ 								adev->mode_info.bios_hardcoded_edid = edid;
+ 								adev->mode_info.bios_hardcoded_edid_size = edid_size;
+-							} else
++							} else {
+ 								kfree(edid);
++							}
+ 						}
++						record += struct_size(fake_edid_record,
++								      ucFakeEDIDString,
++								      edid_size);
++					} else {
++						/* empty fake edid record must be 3 bytes long */
++						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+ 					}
+-					record += fake_edid_record->ucFakeEDIDLength ?
+-						  struct_size(fake_edid_record,
+-							      ucFakeEDIDString,
+-							      fake_edid_record->ucFakeEDIDLength) :
+-						  /* empty fake edid record must be 3 bytes long */
+-						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
+ 					break;
+ 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
+ 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
 -- 
 2.43.0
 
