@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-80565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD9C98DE94
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:14:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F7D98DE95
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902F81C22B4F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAD128394F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B921D0B93;
-	Wed,  2 Oct 2024 15:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A261D07B1;
+	Wed,  2 Oct 2024 15:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aNFB676W"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="WSflk7SX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0491D0B97
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BD01D0B9E
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727882020; cv=none; b=g1lMcndA67ZnlRdXX3QdxD546BIDPCDHvrw0rMm6WNu3ZzOnGnsQeZss3O47S3DgkMk4q1qkTGUZOcmc9BrVctY44KI9jHavAn5P8OfzJ/Ufqgimq5qMA3S2S9MlrnRik5kR8Cb8IKW/P6OPtttk9zztGPmLfdY0uV0OBwZdSos=
+	t=1727882030; cv=none; b=LXpK2+s0e/QIoWRAjaJ69V+L26YcLTWCXU9QE8rlwCKmMhWFISvNdeJ0qGhzDHtQq3e+F6oT3BZorJB3IeAQbPN6g5Mx2qQHT4LBoEOPdYbOYfZbFTuVOlokqefEjX6cnyIvY37JVtE/jwPpX/5mavqAXqBwCdehfhJDoyxPKXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727882020; c=relaxed/simple;
-	bh=Bq2isIoUKS0rDsCDCe6SujXKyZlu0uAedmAiTpvh96Q=;
+	s=arc-20240116; t=1727882030; c=relaxed/simple;
+	bh=3FGk5ek3QCNiObVzkJBAdyRC+waJ0j8R2Adkb8IIwMQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RlgHh4FsG8lQ4a0b9D1x4YKaPuyptNljP3wp7QIS+PkvVixeS0r77qopdWuWs3iifuzp1T5cogelT+HWW5k4duiT0aiN0YfbQhn/Ls0FUftDOnmCK9tnge1euvpdbMHY6eoxg5AQFBQPAHVs/WcFCjPw11igqGtqn+wZPn/JfEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aNFB676W; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version; b=Z9dXf9oaCBS0LRHro2PzAzOEoJ857QVhhxFsjtlYOsAyLyrGZshRs3BWKHj9tLY9MBcf21ZlDleQAeS0Ej1ke35INay1ubm++wnSxLDLg7LlM4oPTgcFTgsjwoq4GW68pNWV52VYyeLJa39zQFl0oKTNQUCeXojHunAscBkdcE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=WSflk7SX; arc=none smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Cd4FE011655;
-	Wed, 2 Oct 2024 15:13:29 GMT
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492CdCc4003096;
+	Wed, 2 Oct 2024 15:13:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=
-	corp-2023-11-20; bh=GLg5ev2maIfh8+m+PapeyWJ9Qdey8XbXVVyEhSC0iA4=; b=
-	aNFB676WpUzl2j3Z0Et88Yx3azme67uSLCNZXXvQEyMrpUOscMS/TilWLMfgF4fI
-	ddeH7nwWk8Cn10yuobxhM5Zmgx+ZFZ/x1J9yWsF165wppKrmiOxS3qWtUHwRyu4a
-	P5cjfDtFJ0YQtSg3++ihSRy1WtsK2Amtt3VASs1MElpUaFdtmDzSN++J23dE3/LC
-	yl60YuhdLTu5eUnq745clPMrkqkpPfIEeG5wvqWcR5GMKohs8xy4CRVw1VNjtROm
-	5W1Nk9wc2vzfz59uDl1odq5OSuW74LZ46VEiLkaG52paQ5ETLwdAz1Fj5w7MYpBb
-	h3KWVv9Db95U8w755SgwSw==
+	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=v
+	otGSwVOY8EclyzkDnSwCRB/31YwzzUbxH/dtKt86yY=; b=WSflk7SXbNAoE25fR
+	8pjO2bguuNwSCd/zk3VV/bZA4jnrkzinNrBD0L2S08idu4j0s9RednuvnZbL6xw3
+	YVWu4SmcWmdTeCKuQ2PCOblcqM7Dfx9Wbb/WnL5nDxVM8OspVD/J7Otx28b0Iqap
+	QUC1Q8CsRUlctcT3YKcHKbPhMmovWXkS2+6A4ev1C6AGlUgbPoDBeYlYxQDQToug
+	cfqTFx2WYcLzkDach3s3WB4LA7UEx5DX2eeAMwdUGhtC5ab3sTraLxG4txZdhJx1
+	sWBe7Va4l2a/Si/MOBgzrQRXMvmcNj/2HrjHrsovdN5v1jzRZEOwenIwRCvxW/Hm
+	VaoGw==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8k39psg-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8qb9h7g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:13:29 +0000 (GMT)
+	Wed, 02 Oct 2024 15:13:38 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492EYo7g028438;
-	Wed, 2 Oct 2024 15:13:28 GMT
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492EhTDu028497;
+	Wed, 2 Oct 2024 15:13:37 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x8897a99-1
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x8897asw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:13:02 +0000
+	Wed, 02 Oct 2024 15:13:37 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492FCqrV028673;
-	Wed, 2 Oct 2024 15:13:02 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492FCqrX028673;
+	Wed, 2 Oct 2024 15:13:36 GMT
 Received: from localhost.localdomain (dhcp-10-175-43-118.vpn.oracle.com [10.175.43.118])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x88979xb-2;
-	Wed, 02 Oct 2024 15:13:01 +0000
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x88979xb-3;
+	Wed, 02 Oct 2024 15:13:36 +0000
 From: Vegard Nossum <vegard.nossum@oracle.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, pavel@denx.de, cengiz.can@canonical.com,
         mheyne@amazon.de, mngyadam@amazon.com, kuntal.nayak@broadcom.com,
         ajay.kaher@broadcom.com, zsm@chromium.org, dan.carpenter@linaro.org,
-        shivani.agarwal@broadcom.com, Mark Pearson <mpearson-lenovo@squebb.ca>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        shivani.agarwal@broadcom.com,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jens Axboe <axboe@kernel.dk>,
         Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
         Vegard Nossum <vegard.nossum@oracle.com>
-Subject: [PATCH RFC 6.6.y 12/15] platform/x86: think-lmi: Fix password opcode ordering for workstations
-Date: Wed,  2 Oct 2024 17:12:33 +0200
-Message-Id: <20241002151236.11787-2-vegard.nossum@oracle.com>
+Subject: [PATCH RFC 6.6.y 13/15] null_blk: Remove usage of the deprecated ida_simple_xx() API
+Date: Wed,  2 Oct 2024 17:12:34 +0200
+Message-Id: <20241002151236.11787-3-vegard.nossum@oracle.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241002151236.11787-1-vegard.nossum@oracle.com>
 References: <20241002150606.11385-1-vegard.nossum@oracle.com>
@@ -84,7 +84,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
@@ -93,69 +92,51 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxs
  mlxlogscore=999 phishscore=0 suspectscore=0 spamscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
  definitions=main-2410020111
-X-Proofpoint-GUID: bQLn5R5l-TQHYdcDqfdTSLY6pxbaBNOQ
-X-Proofpoint-ORIG-GUID: bQLn5R5l-TQHYdcDqfdTSLY6pxbaBNOQ
+X-Proofpoint-GUID: 2thZe7-qCndLS5tnLsXz1nrSZgoyVOKr
+X-Proofpoint-ORIG-GUID: 2thZe7-qCndLS5tnLsXz1nrSZgoyVOKr
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 6f7d0f5fd8e440c3446560100ac4ff9a55eec340 ]
+[ Upstream commit 95931a245b44ee04f3359ec432e73614d44d8b38 ]
 
-The Lenovo workstations require the password opcode to be run before
-the attribute value is changed (if Admin password is enabled).
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-Tested on some Thinkpads to confirm they are OK with this order too.
+This is less verbose.
 
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Fixes: 640a5fa50a42 ("platform/x86: think-lmi: Opcode support")
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240209152359.528919-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-(cherry picked from commit 6f7d0f5fd8e440c3446560100ac4ff9a55eec340)
-[Harshit: CVE-2024-26836; Resolve conflicts due to missing commit:
- 318d97849fc2 ("platform/x86: think-lmi: Add bulk save feature") which is
- not in 6.6.y]
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/bf257b1078475a415cdc3344c6a750842946e367.1705222845.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+(cherry picked from commit 95931a245b44ee04f3359ec432e73614d44d8b38)
+[Harshit: backport to 6.6.y]
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 ---
- drivers/platform/x86/think-lmi.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/block/null_blk/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
-index aee869769843f..2396decdb3cb3 100644
---- a/drivers/platform/x86/think-lmi.c
-+++ b/drivers/platform/x86/think-lmi.c
-@@ -1021,7 +1021,16 @@ static ssize_t current_value_store(struct kobject *kobj,
- 		 * Note - this sets the variable and then the password as separate
- 		 * WMI calls. Function tlmi_save_bios_settings will error if the
- 		 * password is incorrect.
-+		 * Workstation's require the opcode to be set before changing the
-+		 * attribute.
- 		 */
-+		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
-+			ret = tlmi_opcode_setting("WmiOpcodePasswordAdmin",
-+						  tlmi_priv.pwd_admin->password);
-+			if (ret)
-+				goto out;
-+		}
-+
- 		set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->display_name,
- 				    new_setting);
- 		if (!set_str) {
-@@ -1033,13 +1042,6 @@ static ssize_t current_value_store(struct kobject *kobj,
- 		if (ret)
- 			goto out;
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index f1b7d7fdffec8..85ab763184b31 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1819,7 +1819,7 @@ static void null_del_dev(struct nullb *nullb)
  
--		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
--			ret = tlmi_opcode_setting("WmiOpcodePasswordAdmin",
--						  tlmi_priv.pwd_admin->password);
--			if (ret)
--				goto out;
--		}
--
- 		ret = tlmi_save_bios_settings("");
- 	} else { /* old non-opcode based authentication method (deprecated) */
- 		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
+ 	dev = nullb->dev;
+ 
+-	ida_simple_remove(&nullb_indexes, nullb->index);
++	ida_free(&nullb_indexes, nullb->index);
+ 
+ 	list_del_init(&nullb->list);
+ 
+@@ -2154,7 +2154,7 @@ static int null_add_dev(struct nullb_device *dev)
+ 	blk_queue_flag_set(QUEUE_FLAG_NONROT, nullb->q);
+ 
+ 	mutex_lock(&lock);
+-	rv = ida_simple_get(&nullb_indexes, 0, 0, GFP_KERNEL);
++	rv = ida_alloc(&nullb_indexes, GFP_KERNEL);
+ 	if (rv < 0) {
+ 		mutex_unlock(&lock);
+ 		goto out_cleanup_zone;
 -- 
 2.34.1
 
