@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-78859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4759C98D552
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01AF98D8BB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1192228820E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552021F21248
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607861D04A8;
-	Wed,  2 Oct 2024 13:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB3E1D278C;
+	Wed,  2 Oct 2024 14:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1dScOxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz0kQOQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACC016F84F;
-	Wed,  2 Oct 2024 13:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC4D1D271A;
+	Wed,  2 Oct 2024 14:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875737; cv=none; b=hULXnkHtGwDPA0YAnWlKCFFfZRLlKJ8fifaDtQMmgfWywqO6vBtMjnov0P+WbsDAexZc9T1KY/+mmoF2sbUuBZDPzJ2EG1PN1UUn8V8LNY+LS7ywgAICPJIQ2ExrY8TFNfWdpaYszYSa4xPub1fS9TUQb6l0wsvgOxC3e92dm1Q=
+	t=1727877611; cv=none; b=CQrMrfQubjJbo2FJAZ88Y+kQ2WKKlav2nQnH09ZMUBwC7f359MZ7DD3QaQwEyj3FQ7HQ5AcruY1GnhpMuDjRD2nSDgwD1w1vqTuLkq7yPDc8GjZzu+E7tDA2S1sErMs8wVg0qvSa8CjAv/BGmbNp4L6dU2qshm0vBwA6UjH0tXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875737; c=relaxed/simple;
-	bh=Q7uowK1HxbrN0Ike6mdcACCSWM9SQwGDCL8cOGlQSDA=;
+	s=arc-20240116; t=1727877611; c=relaxed/simple;
+	bh=Mi5toyebAKWBAWahijWNv0hMQRUbmiBXfotPNUZg/dM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rDS94rSs4gunhRiM3IfvlTtv3OjxJ4gDOTKuaRWYmkwPM3x0ib8mkfHrbib4Ri70CMHMhP9slAVyZqXOshFOAufBm88S8Cq9HoGxEgAc7y0mqsfHsWMBm0UrfQPo/sSi/4QQ3xRqlC3S5RQCDQNmKwFVc9PfrZ2UxVxseicF3Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1dScOxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5961FC4CEC5;
-	Wed,  2 Oct 2024 13:28:56 +0000 (UTC)
+	 MIME-Version; b=Sqd8Z3zi8go9CCAyyZTypcEkmwweigqoqsgybKxeWyuLvKibpcHpQrEg5am791JTmm4O24k8Z1ykwsbJUCsAkLqQ8RP3cP5uMRCB3bwpvwBhyZKL2td6aIwU5gWX/xIUdjHY3gMg5UBJarqZBIg3z91wqCOhYQqDT2YTp+hHZ4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz0kQOQ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3113BC4CEC2;
+	Wed,  2 Oct 2024 14:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875736;
-	bh=Q7uowK1HxbrN0Ike6mdcACCSWM9SQwGDCL8cOGlQSDA=;
+	s=korg; t=1727877610;
+	bh=Mi5toyebAKWBAWahijWNv0hMQRUbmiBXfotPNUZg/dM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1dScOxpq0Be6Lqju+q/LxTWi1RbW2Z4B9l/9+dh1ubt0lnvGCwwtKZyUk930mlCK
-	 PHltDAxRwXvZ84RY3FPn9LLfJpMkgzIYr71uqdppvoqyFn457Ka8Cj2pfYpuqkZpVz
-	 eQEU/K5GZFqkwetQAFhsmjaq8gfphuuaYaz33IdA=
+	b=iz0kQOQ/oqslB8EgXBWpeSXWu2E6i2qKo1a2Id7wV/cZUNG40QeMd7fd1eA8KG2HP
+	 aXJtH00EY2KMdS3QG+CpnAPSQkI6T223Mk+qvbUc9kW5c2FjvkWGHYyQAVwR5j4Zwy
+	 4ZIJ2PWjoRzZwJhyZuBw8pocv7Z9qt2e/Vl1hUiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 204/695] drm/radeon: properly handle vbios fake edid sizing
+Subject: [PATCH 6.10 102/634] ublk: move zone report data out of request pdu
 Date: Wed,  2 Oct 2024 14:53:22 +0200
-Message-ID: <20241002125830.605173301@linuxfoundation.org>
+Message-ID: <20241002125815.141032907@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +62,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 17c6baff3d5f65c8da164137a58742541a060b2f ]
+[ Upstream commit 9327b51c9a9c864f5177127e09851da9d78b4943 ]
 
-The comment in the vbios structure says:
-// = 128 means EDID length is 128 bytes, otherwise the EDID length = ucFakeEDIDLength*128
+ublk zoned takes 16 bytes in each request pdu just for handling REPORT_ZONE
+operation, this way does waste memory since request pdu is allocated
+statically.
 
-This fake edid struct has not been used in a long time, so I'm
-not sure if there were actually any boards out there with a non-128 byte
-EDID, but align the code with the comment.
+Store the transient zone report data into one global xarray, and remove
+it after the report zone request is completed. This way is reasonable
+since report zone is run in slow code path.
 
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lists.freedesktop.org/archives/amd-gfx/2024-June/109964.html
-Fixes: c324acd5032f ("drm/radeon/kms: parse the extended LCD info block")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 29802d7ca33b ("ublk: enable zoned storage support")
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240812013624.587587-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_atombios.c | 29 +++++++++++++-----------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/block/ublk_drv.c | 62 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 46 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_atombios.c b/drivers/gpu/drm/radeon/radeon_atombios.c
-index 10793a433bf58..d698a899eaf4c 100644
---- a/drivers/gpu/drm/radeon/radeon_atombios.c
-+++ b/drivers/gpu/drm/radeon/radeon_atombios.c
-@@ -1717,26 +1717,29 @@ struct radeon_encoder_atom_dig *radeon_atombios_get_lvds_info(struct
- 					fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
- 					if (fake_edid_record->ucFakeEDIDLength) {
- 						struct edid *edid;
--						int edid_size =
--							max((int)EDID_LENGTH, (int)fake_edid_record->ucFakeEDIDLength);
--						edid = kmalloc(edid_size, GFP_KERNEL);
-+						int edid_size;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index fc001e9f95f61..d06c8ed29620b 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -71,9 +71,6 @@ struct ublk_rq_data {
+ 	struct llist_node node;
+ 
+ 	struct kref ref;
+-	__u64 sector;
+-	__u32 operation;
+-	__u32 nr_zones;
+ };
+ 
+ struct ublk_uring_cmd_pdu {
+@@ -214,6 +211,33 @@ static inline bool ublk_queue_is_zoned(struct ublk_queue *ubq)
+ 
+ #ifdef CONFIG_BLK_DEV_ZONED
+ 
++struct ublk_zoned_report_desc {
++	__u64 sector;
++	__u32 operation;
++	__u32 nr_zones;
++};
 +
-+						if (fake_edid_record->ucFakeEDIDLength == 128)
-+							edid_size = fake_edid_record->ucFakeEDIDLength;
-+						else
-+							edid_size = fake_edid_record->ucFakeEDIDLength * 128;
-+						edid = kmemdup(&fake_edid_record->ucFakeEDIDString[0],
-+							       edid_size, GFP_KERNEL);
- 						if (edid) {
--							memcpy((u8 *)edid, (u8 *)&fake_edid_record->ucFakeEDIDString[0],
--							       fake_edid_record->ucFakeEDIDLength);
--
- 							if (drm_edid_is_valid(edid)) {
- 								rdev->mode_info.bios_hardcoded_edid = edid;
- 								rdev->mode_info.bios_hardcoded_edid_size = edid_size;
--							} else
-+							} else {
- 								kfree(edid);
-+							}
- 						}
-+						record += struct_size(fake_edid_record,
-+								      ucFakeEDIDString,
-+								      edid_size);
-+					} else {
-+						/* empty fake edid record must be 3 bytes long */
-+						record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					}
--					record += fake_edid_record->ucFakeEDIDLength ?
--						  struct_size(fake_edid_record,
--							      ucFakeEDIDString,
--							      fake_edid_record->ucFakeEDIDLength) :
--						  /* empty fake edid record must be 3 bytes long */
--						  sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
- 					break;
- 				case LCD_PANEL_RESOLUTION_RECORD_TYPE:
- 					panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
++static DEFINE_XARRAY(ublk_zoned_report_descs);
++
++static int ublk_zoned_insert_report_desc(const struct request *req,
++		struct ublk_zoned_report_desc *desc)
++{
++	return xa_insert(&ublk_zoned_report_descs, (unsigned long)req,
++			    desc, GFP_KERNEL);
++}
++
++static struct ublk_zoned_report_desc *ublk_zoned_erase_report_desc(
++		const struct request *req)
++{
++	return xa_erase(&ublk_zoned_report_descs, (unsigned long)req);
++}
++
++static struct ublk_zoned_report_desc *ublk_zoned_get_report_desc(
++		const struct request *req)
++{
++	return xa_load(&ublk_zoned_report_descs, (unsigned long)req);
++}
++
+ static int ublk_get_nr_zones(const struct ublk_device *ub)
+ {
+ 	const struct ublk_param_basic *p = &ub->params.basic;
+@@ -310,7 +334,7 @@ static int ublk_report_zones(struct gendisk *disk, sector_t sector,
+ 		unsigned int zones_in_request =
+ 			min_t(unsigned int, remaining_zones, max_zones_per_request);
+ 		struct request *req;
+-		struct ublk_rq_data *pdu;
++		struct ublk_zoned_report_desc desc;
+ 		blk_status_t status;
+ 
+ 		memset(buffer, 0, buffer_length);
+@@ -321,20 +345,23 @@ static int ublk_report_zones(struct gendisk *disk, sector_t sector,
+ 			goto out;
+ 		}
+ 
+-		pdu = blk_mq_rq_to_pdu(req);
+-		pdu->operation = UBLK_IO_OP_REPORT_ZONES;
+-		pdu->sector = sector;
+-		pdu->nr_zones = zones_in_request;
++		desc.operation = UBLK_IO_OP_REPORT_ZONES;
++		desc.sector = sector;
++		desc.nr_zones = zones_in_request;
++		ret = ublk_zoned_insert_report_desc(req, &desc);
++		if (ret)
++			goto free_req;
+ 
+ 		ret = blk_rq_map_kern(disk->queue, req, buffer, buffer_length,
+ 					GFP_KERNEL);
+-		if (ret) {
+-			blk_mq_free_request(req);
+-			goto out;
+-		}
++		if (ret)
++			goto erase_desc;
+ 
+ 		status = blk_execute_rq(req, 0);
+ 		ret = blk_status_to_errno(status);
++erase_desc:
++		ublk_zoned_erase_report_desc(req);
++free_req:
+ 		blk_mq_free_request(req);
+ 		if (ret)
+ 			goto out;
+@@ -368,7 +395,7 @@ static blk_status_t ublk_setup_iod_zoned(struct ublk_queue *ubq,
+ {
+ 	struct ublksrv_io_desc *iod = ublk_get_iod(ubq, req->tag);
+ 	struct ublk_io *io = &ubq->ios[req->tag];
+-	struct ublk_rq_data *pdu = blk_mq_rq_to_pdu(req);
++	struct ublk_zoned_report_desc *desc;
+ 	u32 ublk_op;
+ 
+ 	switch (req_op(req)) {
+@@ -391,12 +418,15 @@ static blk_status_t ublk_setup_iod_zoned(struct ublk_queue *ubq,
+ 		ublk_op = UBLK_IO_OP_ZONE_RESET_ALL;
+ 		break;
+ 	case REQ_OP_DRV_IN:
+-		ublk_op = pdu->operation;
++		desc = ublk_zoned_get_report_desc(req);
++		if (!desc)
++			return BLK_STS_IOERR;
++		ublk_op = desc->operation;
+ 		switch (ublk_op) {
+ 		case UBLK_IO_OP_REPORT_ZONES:
+ 			iod->op_flags = ublk_op | ublk_req_build_flags(req);
+-			iod->nr_zones = pdu->nr_zones;
+-			iod->start_sector = pdu->sector;
++			iod->nr_zones = desc->nr_zones;
++			iod->start_sector = desc->sector;
+ 			return BLK_STS_OK;
+ 		default:
+ 			return BLK_STS_IOERR;
 -- 
 2.43.0
 
