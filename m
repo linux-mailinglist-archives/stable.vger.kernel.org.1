@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C8E98DD3C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6039F98DAD1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01C0B1C22065
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130F71F21695
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EC51D1E77;
-	Wed,  2 Oct 2024 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D9C1D1E8A;
+	Wed,  2 Oct 2024 14:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpihXCQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/kB/3Op"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288021D1E65;
-	Wed,  2 Oct 2024 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15431D0E1A;
+	Wed,  2 Oct 2024 14:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880258; cv=none; b=CqSDBmsXvXjvTUZenT00th1A+QnGbU+igXcPTKaZTTx6AAoskM/r3mdftI52Ty0QpfY+WRC3dYWYbcZKYS4UlARLCStIVlMavw4BIhiyHQd4yO0ulMKKb5/HqYRFhVEHENNJ8BTR5lt4Ket7sc4/fbE/qVz+CZwvMREHIn5vDEE=
+	t=1727878800; cv=none; b=U+TosbwUa3LDlpwTk4VchNEr92ucB+6URV7Ns8U0cQh5IjQuyBrglEi46FMMW+X1pTUONzVBVUgjFtPq+k0wrxzH6uzZAZLdSD5D4YUDoAmsElJGbKYyKyF4ymPXC5lnzfxFcOUwk2B8IkNPQjKK7BxinHDR5Pz1obSUnEdH2bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880258; c=relaxed/simple;
-	bh=JpCYMIVt+rC7Hnr5zYSih3CJs6cH5XjX4mgJTKrMHn8=;
+	s=arc-20240116; t=1727878800; c=relaxed/simple;
+	bh=TJJW2x6/lw4nlrCMiW4ttHXDIOpP56yKBHu0WZInxcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oA7+jV0FUfEyWGxQHekY1vCdbFxWX70VkXpadfgjeYwFywsI1mFQrze1VA+1KHNX/VEYr0Z9lmGdTKo0RtyCDemQgROQA8ZkdSImwUd0FlnjSI4jgrT1bi0T9xBAs68NJUBXKqEWhRq2tJNbRNQ2bKcy9fe8mlD9VoVf0xzY1HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpihXCQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A154FC4CECD;
-	Wed,  2 Oct 2024 14:44:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f6daHc9RJqRLh7OmtwxcePB8N9h9tOhMHJUEroLlzNQ1aM5nOkZk1wqik12ipXoR7bFA5aU+35EF5qBmUBLbAGOOUFi9pF6Nmc0OFWA2zPQhiVb3ZcVBjk3X/z4Etym8e4gEcGyHIorVBoUHfk69vpcq/dU/3NPHR6o+Facbefw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/kB/3Op; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DE3C4CEC2;
+	Wed,  2 Oct 2024 14:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880258;
-	bh=JpCYMIVt+rC7Hnr5zYSih3CJs6cH5XjX4mgJTKrMHn8=;
+	s=korg; t=1727878799;
+	bh=TJJW2x6/lw4nlrCMiW4ttHXDIOpP56yKBHu0WZInxcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HpihXCQvzhsAh63Bt8WJGiBfqJYfQ1lKmnUqIh1lhzV5us+aHTB+jYz9YU+bcXjA2
-	 Ekj79vLAmRAEBlLLtWJErX/jCCNL0huh+MfLvQNTUDuvmgBtg/D4SfiM19NrzZbz/H
-	 bJ8Sb2E0GQfrcYLdQjLQCPdoW01jXu3V5vAFvQJs=
+	b=r/kB/3Op+gIKM/31Va6OnSprP7w2XKXEuPc3F+kF7VY4oM4yJVBO6Ib5ptRlZ/PEi
+	 z9pta2N/R6JD6oBemvlI7oAEspoMza4zGKF191QsrU9bkVPQX2W0Zvddp8VvZdfq1I
+	 OPGqSe2w4LAI1ji8hoFRZ6we/aMCLTwPh+Eml918=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 396/538] PCI: imx6: Fix missing call to phy_power_off() in error handling
+	Douglas Anderson <dianders@chromium.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.10 535/634] serial: qcom-geni: fix false console tx restart
 Date: Wed,  2 Oct 2024 15:00:35 +0200
-Message-ID: <20241002125808.065790304@linuxfoundation.org>
+Message-ID: <20241002125832.225795579@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,96 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 5b04d44d5c74e4d8aab1678496b84700b4b343fe upstream.
+commit f97cdbbf187fefcf1fe19689cd9fdca11fe9c3eb upstream.
 
-Fix missing call to phy_power_off() in the error path of
-imx6_pcie_host_init(). Remove unnecessary check for imx6_pcie->phy
-as the PHY API already handles NULL pointers.
+Commit 663abb1a7a7f ("tty: serial: qcom_geni_serial: Fix UART hang")
+addressed an issue with stalled tx after the console code interrupted
+the last bytes of a tx command by reenabling the watermark interrupt if
+there is data in write buffer. This can however break software flow
+control by re-enabling tx after the user has stopped it.
 
-Fixes: cbcf8722b523 ("phy: freescale: imx8m-pcie: Fix the wrong order of phy_init() and phy_power_on()")
-Link: https://lore.kernel.org/linux-pci/20240729-pci2_upstream-v8-3-b68ee5ef2b4d@nxp.com
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org> # 6.1+
+Address the original issue by not clearing the CMD_DONE flag after
+polling for command completion. This allows the interrupt handler to
+start another transfer when the CMD_DONE interrupt has not been disabled
+due to flow control.
+
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
+Fixes: 663abb1a7a7f ("tty: serial: qcom_geni_serial: Fix UART hang")
+Cc: stable@vger.kernel.org	# 4.17
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240906131336.23625-3-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |   13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -997,7 +997,7 @@ static int imx6_pcie_host_init(struct dw
- 		ret = phy_power_on(imx6_pcie->phy);
- 		if (ret) {
- 			dev_err(dev, "waiting for PHY ready timeout!\n");
--			goto err_phy_off;
-+			goto err_phy_exit;
- 		}
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -306,18 +306,16 @@ static void qcom_geni_serial_setup_tx(st
+ static void qcom_geni_serial_poll_tx_done(struct uart_port *uport)
+ {
+ 	int done;
+-	u32 irq_clear = M_CMD_DONE_EN;
+ 
+ 	done = qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
+ 						M_CMD_DONE_EN, true);
+ 	if (!done) {
+ 		writel(M_GENI_CMD_ABORT, uport->membase +
+ 						SE_GENI_M_CMD_CTRL_REG);
+-		irq_clear |= M_CMD_ABORT_EN;
+ 		qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
+ 							M_CMD_ABORT_EN, true);
++		writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ 	}
+-	writel(irq_clear, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ }
+ 
+ static void qcom_geni_serial_abort_rx(struct uart_port *uport)
+@@ -378,6 +376,7 @@ static void qcom_geni_serial_poll_put_ch
+ 							unsigned char c)
+ {
+ 	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
++	writel(M_CMD_DONE_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ 	qcom_geni_serial_setup_tx(uport, 1);
+ 	WARN_ON(!qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
+ 						M_TX_FIFO_WATERMARK_EN, true));
+@@ -422,6 +421,7 @@ __qcom_geni_serial_console_write(struct
  	}
  
-@@ -1012,8 +1012,9 @@ static int imx6_pcie_host_init(struct dw
- 	return 0;
+ 	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
++	writel(M_CMD_DONE_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ 	qcom_geni_serial_setup_tx(uport, bytes_to_send);
+ 	for (i = 0; i < count; ) {
+ 		size_t chars_to_write = 0;
+@@ -463,7 +463,6 @@ static void qcom_geni_serial_console_wri
+ 	bool locked = true;
+ 	unsigned long flags;
+ 	u32 geni_status;
+-	u32 irq_en;
  
- err_phy_off:
--	if (imx6_pcie->phy)
--		phy_exit(imx6_pcie->phy);
-+	phy_power_off(imx6_pcie->phy);
-+err_phy_exit:
-+	phy_exit(imx6_pcie->phy);
- err_clk_disable:
- 	imx6_pcie_clk_disable(imx6_pcie);
- err_reg_disable:
+ 	WARN_ON(co->index < 0 || co->index >= GENI_UART_CONS_PORTS);
+ 
+@@ -495,12 +494,6 @@ static void qcom_geni_serial_console_wri
+ 		 * has been sent, in which case we need to look for done first.
+ 		 */
+ 		qcom_geni_serial_poll_tx_done(uport);
+-
+-		if (!kfifo_is_empty(&uport->state->port.xmit_fifo)) {
+-			irq_en = readl(uport->membase + SE_GENI_M_IRQ_EN);
+-			writel(irq_en | M_TX_FIFO_WATERMARK_EN,
+-					uport->membase + SE_GENI_M_IRQ_EN);
+-		}
+ 	}
+ 
+ 	__qcom_geni_serial_console_write(uport, s, count);
 
 
 
