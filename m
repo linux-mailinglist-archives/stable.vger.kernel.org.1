@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-78894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A368098D576
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A19A898D893
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 583FB288AAD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B7BC1F214FE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0E91D0174;
-	Wed,  2 Oct 2024 13:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A381D0794;
+	Wed,  2 Oct 2024 13:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J65pBJo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/1bulW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA131CFECF;
-	Wed,  2 Oct 2024 13:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946771D0491;
+	Wed,  2 Oct 2024 13:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875838; cv=none; b=IPAbHDAAj1WddiEJJmjVDQZw86HtZB9xU1BFlhOdLjc3k7g6j6sWFKgGC7/+D5tfhbuaMW3e+NrDVSRHSmIh0ffkGDKMbO+7Z3Yf3yIDTM0eCSwwl/XPUi2gnc8F+OntG1A4XyqAJ61xJoQdIFu7fXy27PeFwgom5ImODJ2WlUg=
+	t=1727877569; cv=none; b=pJEea5G90dPJKP3kCH+Qu7cthyE6yRa/8m5NCza6i9OqfHMlB5/GhC+JwcD+iPO9iBCXznQH8+0Akg8MmgphkuwmYwUl5e8obV59LlFUZ+fqH3pSFXuwR7WlsTfRsdeAgZVSmiEz/MjmB5wCBOLITSGW8p8scp+6taeR1XqVahs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875838; c=relaxed/simple;
-	bh=XhOzhJ7Xq7zQ/Srly2qIp7kY5cUKn4NWV6nchL6cFPo=;
+	s=arc-20240116; t=1727877569; c=relaxed/simple;
+	bh=2NcVqtH+oVH+qHlGWboEMvOiUNEjZsizC2fw4qV+7hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mM4Oz6UZe9Q5LK7jjnjND+aImp5xm0Km6xDkFhQwLl9YQHnOg3Ece5ast1cujidevedZ/NyhxBlFvF1kiEY2DVKLWaoOBzg9QT/YNshaI/4Rbe/uZH5HXz34Dg69rIlJaSyF+76qhTJSOFD4ctI0Vx/rexY1BFBT1twz873xB8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J65pBJo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40ED4C4CEC5;
-	Wed,  2 Oct 2024 13:30:38 +0000 (UTC)
+	 MIME-Version; b=mB1U2QHoO4v1dt4fmaGb4iuAZSN7GyDrA7FkmUh6SRxaGmeeC5C73G68G/fv6+nWjiVAgaZlewWNx8YaGzmmspPbe/5ztULoAurguA2ubdIZ+CriT3Se9v8w07Lx4/k9nHkOiDycp6RyITPcTbvPqzT+4u0cy1HxEMayEE3N970=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/1bulW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5BDC4CEC5;
+	Wed,  2 Oct 2024 13:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875838;
-	bh=XhOzhJ7Xq7zQ/Srly2qIp7kY5cUKn4NWV6nchL6cFPo=;
+	s=korg; t=1727877569;
+	bh=2NcVqtH+oVH+qHlGWboEMvOiUNEjZsizC2fw4qV+7hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J65pBJo+aW0PaNUCRy58DGT7RbQ4BxHRKpP4MZ3GMiUdoxR/NqJQziJVU1JkIoSlc
-	 02j8IY7MsSY6KsHPMpwnQOOp3vqsVaH81lG4S3AoHHhfkt19wcRMVKg8wBBgCYd6f5
-	 KgoDurzd01kv/M3ovb6I7RXuXbiylM8p+zGKh5Kk=
+	b=Y/1bulW4xFIPwFnXfuqZVFFqSzP8WII2Iuom72PBg+dtDzrN/qVMrP3rdOerxzZ90
+	 MPSOEBA9Ak/Vm7lWRAqnX14BYhbB/wFDvMSE/Iug2X0pvonLqMSceS1/N6augJXTnE
+	 L91KhAbZZBfqn7kcT6mByxl8qPWfbeDPhpBbXpCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Fei Shao <fshao@chromium.org>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 221/695] drm/mediatek: Fix missing configuration flags in mtk_crtc_ddp_config()
+Subject: [PATCH 6.10 119/634] arm64: dts: mediatek: mt8186: Fix supported-hw mask for GPU OPPs
 Date: Wed,  2 Oct 2024 14:53:39 +0200
-Message-ID: <20241002125831.280888141@linuxfoundation.org>
+Message-ID: <20241002125815.809240777@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit fe30bae552ce27b9fefe0b12db1544e73d07325f ]
+[ Upstream commit 2317d018b835842df0501d8f9e9efa843068a101 ]
 
-In mtk_crtc_ddp_config(), mtk_crtc will use some configuration flags to
-generate instructions to cmdq_handle, such as:
-  state->pending_config
-  mtk_crtc->pending_planes
-  plane_state->pending.config
-  mtk_crtc->pending_async_planes
-  plane_state->pending.async_config
+The speedbin eFuse reads a value 'x' from 0 to 7 and, in order to
+make that compatible with opp-supported-hw, it gets post processed
+as BIT(x).
 
-These configuration flags may be set to false when a GCE IRQ comes calling
-ddp_cmdq_cb(). This may result in missing prepare instructions,
-especially if mtk_crtc_update_config() with the flase need_vblank (no need
-to wait for vblank) cases.
+Change all of the 0x30 supported-hw to 0x20 to avoid getting
+duplicate OPPs for speedbin 4, and also change all of the 0x8 to
+0xcf because speedbins different from 4 and 5 do support 900MHz,
+950MHz, 1000MHz with the higher voltage of 850mV, 900mV, 950mV
+respectively.
 
-Therefore, the mtk_crtc->config_updating flag is set at the beginning of
-mtk_crtc_update_config() to ensure that these configuration flags won't be
-changed when the mtk_crtc_ddp_config() is preparing instructions.
-But somehow the ddp_cmdq_cb() didn't use the mtk_crtc->config_updating
-flag to prevent those pending config flags from being cleared.
-
-To avoid missing the configuration when generating the config instruction,
-the config_updating flag should be added into ddp_cmdq_cb() and be
-protected with spin_lock.
-
-Fixes: 7f82d9c43879 ("drm/mediatek: Clear pending flag when cmdq packet is done")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240827-drm-fixup-0819-v3-1-4761005211ec@mediatek.com/
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240827-drm-fixup-0819-v3-2-4761005211ec@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: f38ea593ad0d ("arm64: dts: mediatek: mt8186: Wire up GPU voltage/frequency scaling")
+Link: https://lore.kernel.org/r/20240725072243.173104-1-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_crtc.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8186.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
-index 6f34f573e127e..d7f0926f896d6 100644
---- a/drivers/gpu/drm/mediatek/mtk_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
-@@ -69,6 +69,8 @@ struct mtk_crtc {
- 	/* lock for display hardware access */
- 	struct mutex			hw_lock;
- 	bool				config_updating;
-+	/* lock for config_updating to cmd buffer */
-+	spinlock_t			config_lock;
- };
+diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
+index 4763ed5dc86cf..d63a9defe73e1 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
+@@ -731,7 +731,7 @@
+ 		opp-900000000-3 {
+ 			opp-hz = /bits/ 64 <900000000>;
+ 			opp-microvolt = <850000>;
+-			opp-supported-hw = <0x8>;
++			opp-supported-hw = <0xcf>;
+ 		};
  
- struct mtk_crtc_state {
-@@ -106,11 +108,16 @@ static void mtk_crtc_finish_page_flip(struct mtk_crtc *mtk_crtc)
+ 		opp-900000000-4 {
+@@ -743,13 +743,13 @@
+ 		opp-900000000-5 {
+ 			opp-hz = /bits/ 64 <900000000>;
+ 			opp-microvolt = <825000>;
+-			opp-supported-hw = <0x30>;
++			opp-supported-hw = <0x20>;
+ 		};
  
- static void mtk_drm_finish_page_flip(struct mtk_crtc *mtk_crtc)
- {
-+	unsigned long flags;
-+
- 	drm_crtc_handle_vblank(&mtk_crtc->base);
-+
-+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
- 	if (!mtk_crtc->config_updating && mtk_crtc->pending_needs_vblank) {
- 		mtk_crtc_finish_page_flip(mtk_crtc);
- 		mtk_crtc->pending_needs_vblank = false;
- 	}
-+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
- }
+ 		opp-950000000-3 {
+ 			opp-hz = /bits/ 64 <950000000>;
+ 			opp-microvolt = <900000>;
+-			opp-supported-hw = <0x8>;
++			opp-supported-hw = <0xcf>;
+ 		};
  
- #if IS_REACHABLE(CONFIG_MTK_CMDQ)
-@@ -308,12 +315,19 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
- 	struct mtk_crtc *mtk_crtc = container_of(cmdq_cl, struct mtk_crtc, cmdq_client);
- 	struct mtk_crtc_state *state;
- 	unsigned int i;
-+	unsigned long flags;
+ 		opp-950000000-4 {
+@@ -761,13 +761,13 @@
+ 		opp-950000000-5 {
+ 			opp-hz = /bits/ 64 <950000000>;
+ 			opp-microvolt = <850000>;
+-			opp-supported-hw = <0x30>;
++			opp-supported-hw = <0x20>;
+ 		};
  
- 	if (data->sta < 0)
- 		return;
+ 		opp-1000000000-3 {
+ 			opp-hz = /bits/ 64 <1000000000>;
+ 			opp-microvolt = <950000>;
+-			opp-supported-hw = <0x8>;
++			opp-supported-hw = <0xcf>;
+ 		};
  
- 	state = to_mtk_crtc_state(mtk_crtc->base.state);
+ 		opp-1000000000-4 {
+@@ -779,7 +779,7 @@
+ 		opp-1000000000-5 {
+ 			opp-hz = /bits/ 64 <1000000000>;
+ 			opp-microvolt = <875000>;
+-			opp-supported-hw = <0x30>;
++			opp-supported-hw = <0x20>;
+ 		};
+ 	};
  
-+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
-+	if (mtk_crtc->config_updating) {
-+		spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
-+		goto ddp_cmdq_cb_out;
-+	}
-+
- 	state->pending_config = false;
- 
- 	if (mtk_crtc->pending_planes) {
-@@ -340,6 +354,10 @@ static void ddp_cmdq_cb(struct mbox_client *cl, void *mssg)
- 		mtk_crtc->pending_async_planes = false;
- 	}
- 
-+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
-+
-+ddp_cmdq_cb_out:
-+
- 	mtk_crtc->cmdq_vblank_cnt = 0;
- 	wake_up(&mtk_crtc->cb_blocking_queue);
- }
-@@ -569,9 +587,14 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
- 	struct mtk_drm_private *priv = crtc->dev->dev_private;
- 	unsigned int pending_planes = 0, pending_async_planes = 0;
- 	int i;
-+	unsigned long flags;
- 
- 	mutex_lock(&mtk_crtc->hw_lock);
-+
-+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
- 	mtk_crtc->config_updating = true;
-+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
-+
- 	if (needs_vblank)
- 		mtk_crtc->pending_needs_vblank = true;
- 
-@@ -625,7 +648,10 @@ static void mtk_crtc_update_config(struct mtk_crtc *mtk_crtc, bool needs_vblank)
- 		mbox_client_txdone(mtk_crtc->cmdq_client.chan, 0);
- 	}
- #endif
-+	spin_lock_irqsave(&mtk_crtc->config_lock, flags);
- 	mtk_crtc->config_updating = false;
-+	spin_unlock_irqrestore(&mtk_crtc->config_lock, flags);
-+
- 	mutex_unlock(&mtk_crtc->hw_lock);
- }
- 
-@@ -1068,6 +1094,7 @@ int mtk_crtc_create(struct drm_device *drm_dev, const unsigned int *path,
- 		drm_mode_crtc_set_gamma_size(&mtk_crtc->base, gamma_lut_size);
- 	drm_crtc_enable_color_mgmt(&mtk_crtc->base, 0, has_ctm, gamma_lut_size);
- 	mutex_init(&mtk_crtc->hw_lock);
-+	spin_lock_init(&mtk_crtc->config_lock);
- 
- #if IS_REACHABLE(CONFIG_MTK_CMDQ)
- 	i = priv->mbox_index++;
 -- 
 2.43.0
 
