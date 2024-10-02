@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F42A98D5B0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0B198D92A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF30FB226B8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EC2A1F218F6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14981D0403;
-	Wed,  2 Oct 2024 13:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C4C1D0B8B;
+	Wed,  2 Oct 2024 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+OENlmh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8Tacbio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1EB19D8A3;
-	Wed,  2 Oct 2024 13:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6436C198837;
+	Wed,  2 Oct 2024 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875943; cv=none; b=huZLMoY+1olt+ydUexL0iamx/32GhyII/GuYi+nYvORcOyHXRWZD3rdcUAi3N+5ZI9zr+PfQsm7lnmNy9v5DEcnGZlV+ip85Yzve77SUvEFcAx16CVU5YcAt/k5TBHFudlwk89M8LQtuoqtbdqI72c2kUW8SAtlmq0f0v/LWBAI=
+	t=1727877814; cv=none; b=eiKkyzIeRZ9/ldbkH14/ILmfImid6LIdAj0kPVxbyGLvzd9Dcw9EiRkR1p+NGwX1wBFMq2j3Q4XGomWL+OgTDT97vUvG2nO+WxxyCOgL5RNkHrSXTLg4jfUlgOSk4bRRP9LASuXgmBPNCo6OLDyCHEIVULcNVKcf9z8X0hcNx9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875943; c=relaxed/simple;
-	bh=QpcYFVa+XW8NhyW6mYaMMMhcavMq8odxaD7F07DpDyU=;
+	s=arc-20240116; t=1727877814; c=relaxed/simple;
+	bh=i72cZpsdgiMw9HddKA9HIvshlAei4wENccCCi/JfJzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DG+ODatIVMNTxLlnygpitzJt21GokLBrTSi0ZC6reP49nuYevRfVQTsN02ItdQ3jBR375cFQp6hm9WlIXaygN/GP9vbb9fMgTtOlkBby3YBBNjqTDocBmfn2MqTFjrkv4Rca6Hx/90+qkxnKMqyRuv2Epai3ZaYxpn0XMnto3BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+OENlmh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD18C4CEC5;
-	Wed,  2 Oct 2024 13:32:22 +0000 (UTC)
+	 MIME-Version; b=fP4V5ihcZrWgcd4/IxY+RRZslUpauaKuZ2Jnyr6QI/8kYt7KCL5qfbhiohUe0EzMAzY3XBs3/cTDYbuiYpWu636GWdZKwY151POKZYjw/7SiGy18R/OrhEPtPCQTa1zRS4PggLDUuHdL8OL9S7zAtgf4kMm1GWwPxYoQAF0wO70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8Tacbio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDEBC4CEC2;
+	Wed,  2 Oct 2024 14:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875943;
-	bh=QpcYFVa+XW8NhyW6mYaMMMhcavMq8odxaD7F07DpDyU=;
+	s=korg; t=1727877814;
+	bh=i72cZpsdgiMw9HddKA9HIvshlAei4wENccCCi/JfJzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+OENlmhNqzjKxxVQM4LJDPFGI6z2DL0dFYQzqcXQNpU6nTHU5WfGaIuQ6uleHl01
-	 5lJo7dZaaWsbMH2/GzZnCGwdpn1a9rs4JhrZNl5ALZKuxgzCUtyiYCcOmfF2/Gs1Wb
-	 bEAWIPXX8mZMiQQ7UolvSKmrB6F4IL+f8rF7Hz4s=
+	b=R8TacbiorXYvkSoWB0lAHPuzr96bMCakvIsEhJ/sNFyd7taOpIlOd3NOoBpm7ofvZ
+	 fWFyTdmrRzCzjf0EBQxUvGZT+9bABUdZCSzdzXCQDKzpV12GjVRnodyfM+QbUMJgnU
+	 xeDY9b9oVWjinmK1w2g9cJFft9/PR9bgTkoaan88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 274/695] selftests/bpf: Fix compiling flow_dissector.c with musl-libc
+Subject: [PATCH 6.10 172/634] mtd: rawnand: mtk: Use for_each_child_of_node_scoped()
 Date: Wed,  2 Oct 2024 14:54:32 +0200
-Message-ID: <20241002125833.383138889@linuxfoundation.org>
+Message-ID: <20241002125817.898300663@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 5e4c43bcb85973243d7274e0058b6e8f5810e4f7 ]
+[ Upstream commit 8795952679494b111b7b2ba08bb54ac408daca3b ]
 
-The GNU version of 'struct tcphdr' has members 'doff', 'source' and 'dest',
-which are not exposed by musl libc headers unless _GNU_SOURCE is defined.
+Avoids the need for manual cleanup of_node_put() in early exits
+from the loop.
 
-Add this definition to fix errors seen compiling for mips64el/musl-libc:
-
-  flow_dissector.c:118:30: error: 'struct tcphdr' has no member named 'doff'
-    118 |                         .tcp.doff = 5,
-        |                              ^~~~
-  flow_dissector.c:119:30: error: 'struct tcphdr' has no member named 'source'
-    119 |                         .tcp.source = 80,
-        |                              ^~~~~~
-  flow_dissector.c:120:30: error: 'struct tcphdr' has no member named 'dest'
-    120 |                         .tcp.dest = 8080,
-        |                              ^~~~
-
-Fixes: ae173a915785 ("selftests/bpf: support BPF_FLOW_DISSECTOR_F_PARSE_1ST_FRAG")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/8f7ab21a73f678f9cebd32b26c444a686e57414d.1721713597.git.tony.ambardar@gmail.com
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240826094328.2991664-8-ruanjinjie@huawei.com
+Stable-dep-of: 2073ae37d550 ("mtd: rawnand: mtk: Fix init error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/raw/mtk_nand.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-index 9625e6d217913..3171047414a7d 100644
---- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-+++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
- #include <test_progs.h>
- #include <network_helpers.h>
- #include <linux/if_tun.h>
+diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
+index 17477bb2d48ff..d65e6371675bb 100644
+--- a/drivers/mtd/nand/raw/mtk_nand.c
++++ b/drivers/mtd/nand/raw/mtk_nand.c
+@@ -1432,15 +1432,12 @@ static int mtk_nfc_nand_chip_init(struct device *dev, struct mtk_nfc *nfc,
+ static int mtk_nfc_nand_chips_init(struct device *dev, struct mtk_nfc *nfc)
+ {
+ 	struct device_node *np = dev->of_node;
+-	struct device_node *nand_np;
+ 	int ret;
+ 
+-	for_each_child_of_node(np, nand_np) {
++	for_each_child_of_node_scoped(np, nand_np) {
+ 		ret = mtk_nfc_nand_chip_init(dev, nfc, nand_np);
+-		if (ret) {
+-			of_node_put(nand_np);
++		if (ret)
+ 			return ret;
+-		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
