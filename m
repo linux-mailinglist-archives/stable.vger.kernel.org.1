@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-78847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4437898D541
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E74CF98D81E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A321C21771
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14E541C2205F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7801D0412;
-	Wed,  2 Oct 2024 13:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7CB1D0B80;
+	Wed,  2 Oct 2024 13:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwyZ6Zh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E75Ua7B4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC25E1CF284;
-	Wed,  2 Oct 2024 13:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CEF1D04BE;
+	Wed,  2 Oct 2024 13:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875701; cv=none; b=WG8R+WiY7fosSe1RYUczXYhCsigdebdinl28WqpzthWPRe8Kct5D95srqomcsoALkPJO4dk7kpt2f39Sc1cpRwW98GDl/w4DaqdhK0W3iC1b0mj+HHeSS/9j4SIBIRYfOKOSqs5kgHT/MNHp/36J6yrqnbd1gztq7H7z22PUdms=
+	t=1727877370; cv=none; b=ilKiaXnw/N+XdihplflNhtKC7tnbmFH62XhDCQbCj2VGOUvtqXU8480rBgSTPoz27cRKUBx+T1MKIDijGz8OX9cg1eT5r51UzVxzTQcfUS2C31NRK63XcUuRKS73bJKrwS0AO3qjlNtItaqdOSeBMtWPi4l7Bh9nT9NR1DJT+hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875701; c=relaxed/simple;
-	bh=ve8ksDnY3/3Yv84XKcyqpjMD+PegQBCf4J4tgxY4OOE=;
+	s=arc-20240116; t=1727877370; c=relaxed/simple;
+	bh=cWzqcJziINh5dOuyGFpa8G4uNrcHiaCWrcpnOGA+AjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kO1VYn0kho0APZEk13Ad/3pVAyN+pdTqD47kJyaPpE9nd5ehM9miHxamCXtaUbPqop9+IILZ8Ow9+lKpk5apz9ntWwB3JdwX7iG1AkA27zyfsld+A33sl1LpJwdKfe9M+3Y2GYwIkymlEPAhne7w5PrNa40orYmyR6yTUqsZb7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwyZ6Zh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D3EC4CEC5;
-	Wed,  2 Oct 2024 13:28:21 +0000 (UTC)
+	 MIME-Version; b=XGH1ov4QUe291ADhL1po4TAplvkzskEXmu8cGFVOkHOi9wuYeUhQawwCzuugoDOSOGjoReb6OzVKS73Noy04xwEaq30Wb0aRHpIS8GyzUO6dWvIYvnDFoZ4zabXA382r173neQzBuRCr/x303FLXAh60mWm5Gb+eKlwbEOdhejQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E75Ua7B4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EACFC4CECD;
+	Wed,  2 Oct 2024 13:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875701;
-	bh=ve8ksDnY3/3Yv84XKcyqpjMD+PegQBCf4J4tgxY4OOE=;
+	s=korg; t=1727877370;
+	bh=cWzqcJziINh5dOuyGFpa8G4uNrcHiaCWrcpnOGA+AjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwyZ6Zh696ypShyyeZTfpphdZuGpsJPf+ib/0KQ0BUkDUyV/AUvOJKjrU9iCuY6Pp
-	 WPkV9P+pyfPU6cwTY/XNUdEgzbWd0M2RMFI2q0vtLqlIGxGIWzMjUpVg6d97WY9odc
-	 RujJooWrTaU6s2JH8mSzpKxOYsnFJDgLHJ3vuFbU=
+	b=E75Ua7B4eVM5/PMsYJi0FWT3evaOXySYqLMT+ndnS+xTrMpba9KZ5gzbPMgQla+B6
+	 ok4mz3AoJzVnp/Z8HYor3Txo9NEgSGrJKaAmrp1PiF+AIK3D1DhNP3035QD0vsywpz
+	 2J/nFK9JJSGoF8RNTH4UzkW2EUUf9uyw6fjkL7oQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Lutomirski <luto@kernel.org>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 160/695] x86/mm: Use IPIs to synchronize LAM enablement
+Subject: [PATCH 6.10 058/634] perf/arm-cmn: Refactor node ID handling. Again.
 Date: Wed,  2 Oct 2024 14:52:38 +0200
-Message-ID: <20241002125828.863332963@linuxfoundation.org>
+Message-ID: <20241002125813.397038927@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +63,263 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosryahmed@google.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 3b299b99556c1753923f8d9bbd9304bcd139282f ]
+[ Upstream commit e79634b53e398966c49f803c49701bc74dc3ccf8 ]
 
-LAM can only be enabled when a process is single-threaded.  But _kernel_
-threads can temporarily use a single-threaded process's mm.
+The scope of the "extra device ports" configuration is not made clear by
+the CMN documentation - so far we've assumed it applies globally, based
+on the sole example which suggests as much. However it transpires that
+this is incorrect, and the format does in fact vary based on each
+individual XP's port configuration. As a consequence, we're currenly
+liable to decode the port/device indices from a node ID incorrectly,
+thus program the wrong event source in the DTM leading to bogus event
+counts, and also show device topology on the wrong ports in debugfs.
 
-If LAM is enabled by a userspace process while a kthread is using its
-mm, the kthread will not observe LAM enablement (i.e.  LAM will be
-disabled in CR3). This could be fine for the kthread itself, as LAM only
-affects userspace addresses. However, if the kthread context switches to
-a thread in the same userspace process, CR3 may or may not be updated
-because the mm_struct doesn't change (based on pending TLB flushes). If
-CR3 is not updated, the userspace thread will run incorrectly with LAM
-disabled, which may cause page faults when using tagged addresses.
-Example scenario:
+To put this right, rework node IDs yet again to carry around the
+additional data necessary to decode them properly per-XP. At this point
+the notion of fully decomposing an ID becomes more impractical than it's
+worth, so unabstracting the XY mesh coordinates (where 2/3 users were
+just debug anyway) ends up leaving things a bit simpler overall.
 
-CPU 1                                   CPU 2
-/* kthread */
-kthread_use_mm()
-                                        /* user thread */
-                                        prctl_enable_tagged_addr()
-                                        /* LAM enabled on CPU 2 */
-/* LAM disabled on CPU 1 */
-                                        context_switch() /* to CPU 1 */
-/* Switching to user thread */
-switch_mm_irqs_off()
-/* CR3 not updated */
-/* LAM is still disabled on CPU 1 */
-
-Synchronize LAM enablement by sending an IPI to all CPUs running with
-the mm_struct to enable LAM. This makes sure LAM is enabled on CPU 1
-in the above scenario before prctl_enable_tagged_addr() returns and
-userspace starts using tagged addresses, and before it's possible to
-run the userspace process on CPU 1.
-
-In switch_mm_irqs_off(), move reading the LAM mask until after
-mm_cpumask() is updated. This ensures that if an outdated LAM mask is
-written to CR3, an IPI is received to update it right after IRQs are
-re-enabled.
-
-[ dhansen: Add a LAM enabling helper and comment it ]
-
-Fixes: 82721d8b25d7 ("x86/mm: Handle LAM on context switch")
-Suggested-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/all/20240702132139.3332013-2-yosryahmed%40google.com
+Fixes: 60d1504070c2 ("perf/arm-cmn: Support new IP features")
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/5195f990152fc37adba5fbf5929a6b11063d9f09.1725296395.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process_64.c | 29 ++++++++++++++++++++++++++---
- arch/x86/mm/tlb.c            |  7 +++----
- 2 files changed, 29 insertions(+), 7 deletions(-)
+ drivers/perf/arm-cmn.c | 94 ++++++++++++++++++------------------------
+ 1 file changed, 40 insertions(+), 54 deletions(-)
 
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 6d3d20e3e43a9..d8d582b750d4f 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -798,6 +798,27 @@ static long prctl_map_vdso(const struct vdso_image *image, unsigned long addr)
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index e26ad1d3ed0bb..6cd4fd9667aa6 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -24,14 +24,6 @@
+ #define CMN_NI_NODE_ID			GENMASK_ULL(31, 16)
+ #define CMN_NI_LOGICAL_ID		GENMASK_ULL(47, 32)
  
- #define LAM_U57_BITS 6
+-#define CMN_NODEID_DEVID(reg)		((reg) & 3)
+-#define CMN_NODEID_EXT_DEVID(reg)	((reg) & 1)
+-#define CMN_NODEID_PID(reg)		(((reg) >> 2) & 1)
+-#define CMN_NODEID_EXT_PID(reg)		(((reg) >> 1) & 3)
+-#define CMN_NODEID_1x1_PID(reg)		(((reg) >> 2) & 7)
+-#define CMN_NODEID_X(reg, bits)		((reg) >> (3 + (bits)))
+-#define CMN_NODEID_Y(reg, bits)		(((reg) >> 3) & ((1U << (bits)) - 1))
+-
+ #define CMN_CHILD_INFO			0x0080
+ #define CMN_CI_CHILD_COUNT		GENMASK_ULL(15, 0)
+ #define CMN_CI_CHILD_PTR_OFFSET		GENMASK_ULL(31, 16)
+@@ -281,8 +273,11 @@ struct arm_cmn_node {
+ 	u16 id, logid;
+ 	enum cmn_node_type type;
  
-+static void enable_lam_func(void *__mm)
-+{
-+	struct mm_struct *mm = __mm;
-+
-+	if (this_cpu_read(cpu_tlbstate.loaded_mm) == mm) {
-+		write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
-+		set_tlbstate_lam_mode(mm);
-+	}
-+}
-+
-+static void mm_enable_lam(struct mm_struct *mm)
-+{
-+	/*
-+	 * Even though the process must still be single-threaded at this
-+	 * point, kernel threads may be using the mm.  IPI those kernel
-+	 * threads if they exist.
-+	 */
-+	on_each_cpu_mask(mm_cpumask(mm), enable_lam_func, mm, true);
-+	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-+}
-+
- static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
++	/* XP properties really, but replicated to children for convenience */
+ 	u8 dtm;
+ 	s8 dtc;
++	u8 portid_bits:4;
++	u8 deviceid_bits:4;
+ 	/* DN/HN-F/CXHA */
+ 	struct {
+ 		u8 val : 4;
+@@ -358,49 +353,33 @@ struct arm_cmn {
+ static int arm_cmn_hp_state;
+ 
+ struct arm_cmn_nodeid {
+-	u8 x;
+-	u8 y;
+ 	u8 port;
+ 	u8 dev;
+ };
+ 
+ static int arm_cmn_xyidbits(const struct arm_cmn *cmn)
  {
- 	if (!cpu_feature_enabled(X86_FEATURE_LAM))
-@@ -814,6 +835,10 @@ static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
- 	if (mmap_write_lock_killable(mm))
- 		return -EINTR;
+-	return fls((cmn->mesh_x - 1) | (cmn->mesh_y - 1) | 2);
++	return fls((cmn->mesh_x - 1) | (cmn->mesh_y - 1));
+ }
  
-+	/*
-+	 * MM_CONTEXT_LOCK_LAM is set on clone.  Prevent LAM from
-+	 * being enabled unless the process is single threaded:
-+	 */
- 	if (test_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags)) {
- 		mmap_write_unlock(mm);
- 		return -EBUSY;
-@@ -830,9 +855,7 @@ static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
+-static struct arm_cmn_nodeid arm_cmn_nid(const struct arm_cmn *cmn, u16 id)
++static struct arm_cmn_nodeid arm_cmn_nid(const struct arm_cmn_node *dn)
+ {
+ 	struct arm_cmn_nodeid nid;
+ 
+-	if (cmn->num_xps == 1) {
+-		nid.x = 0;
+-		nid.y = 0;
+-		nid.port = CMN_NODEID_1x1_PID(id);
+-		nid.dev = CMN_NODEID_DEVID(id);
+-	} else {
+-		int bits = arm_cmn_xyidbits(cmn);
+-
+-		nid.x = CMN_NODEID_X(id, bits);
+-		nid.y = CMN_NODEID_Y(id, bits);
+-		if (cmn->ports_used & 0xc) {
+-			nid.port = CMN_NODEID_EXT_PID(id);
+-			nid.dev = CMN_NODEID_EXT_DEVID(id);
+-		} else {
+-			nid.port = CMN_NODEID_PID(id);
+-			nid.dev = CMN_NODEID_DEVID(id);
+-		}
+-	}
++	nid.dev = dn->id & ((1U << dn->deviceid_bits) - 1);
++	nid.port = (dn->id >> dn->deviceid_bits) & ((1U << dn->portid_bits) - 1);
+ 	return nid;
+ }
+ 
+ static struct arm_cmn_node *arm_cmn_node_to_xp(const struct arm_cmn *cmn,
+ 					       const struct arm_cmn_node *dn)
+ {
+-	struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, dn->id);
+-	int xp_idx = cmn->mesh_x * nid.y + nid.x;
++	int id = dn->id >> (dn->portid_bits + dn->deviceid_bits);
++	int bits = arm_cmn_xyidbits(cmn);
++	int x = id >> bits;
++	int y = id & ((1U << bits) - 1);
+ 
+-	return cmn->xps + xp_idx;
++	return cmn->xps + cmn->mesh_x * y + x;
+ }
+ static struct arm_cmn_node *arm_cmn_node(const struct arm_cmn *cmn,
+ 					 enum cmn_node_type type)
+@@ -486,13 +465,13 @@ static const char *arm_cmn_device_type(u8 type)
+ 	}
+ }
+ 
+-static void arm_cmn_show_logid(struct seq_file *s, int x, int y, int p, int d)
++static void arm_cmn_show_logid(struct seq_file *s, const struct arm_cmn_node *xp, int p, int d)
+ {
+ 	struct arm_cmn *cmn = s->private;
+ 	struct arm_cmn_node *dn;
++	u16 id = xp->id | d | (p << xp->deviceid_bits);
+ 
+ 	for (dn = cmn->dns; dn->type; dn++) {
+-		struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, dn->id);
+ 		int pad = dn->logid < 10;
+ 
+ 		if (dn->type == CMN_TYPE_XP)
+@@ -501,7 +480,7 @@ static void arm_cmn_show_logid(struct seq_file *s, int x, int y, int p, int d)
+ 		if (dn->type < CMN_TYPE_HNI)
+ 			continue;
+ 
+-		if (nid.x != x || nid.y != y || nid.port != p || nid.dev != d)
++		if (dn->id != id)
+ 			continue;
+ 
+ 		seq_printf(s, " %*c#%-*d  |", pad + 1, ' ', 3 - pad, dn->logid);
+@@ -522,6 +501,7 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
+ 	y = cmn->mesh_y;
+ 	while (y--) {
+ 		int xp_base = cmn->mesh_x * y;
++		struct arm_cmn_node *xp = cmn->xps + xp_base;
+ 		u8 port[CMN_MAX_PORTS][CMN_MAX_DIMENSION];
+ 
+ 		for (x = 0; x < cmn->mesh_x; x++)
+@@ -529,16 +509,14 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
+ 
+ 		seq_printf(s, "\n%-2d   |", y);
+ 		for (x = 0; x < cmn->mesh_x; x++) {
+-			struct arm_cmn_node *xp = cmn->xps + xp_base + x;
+-
+ 			for (p = 0; p < CMN_MAX_PORTS; p++)
+-				port[p][x] = arm_cmn_device_connect_info(cmn, xp, p);
++				port[p][x] = arm_cmn_device_connect_info(cmn, xp + x, p);
+ 			seq_printf(s, " XP #%-3d|", xp_base + x);
+ 		}
+ 
+ 		seq_puts(s, "\n     |");
+ 		for (x = 0; x < cmn->mesh_x; x++) {
+-			s8 dtc = cmn->xps[xp_base + x].dtc;
++			s8 dtc = xp[x].dtc;
+ 
+ 			if (dtc < 0)
+ 				seq_puts(s, " DTC ?? |");
+@@ -555,10 +533,10 @@ static int arm_cmn_map_show(struct seq_file *s, void *data)
+ 				seq_puts(s, arm_cmn_device_type(port[p][x]));
+ 			seq_puts(s, "\n    0|");
+ 			for (x = 0; x < cmn->mesh_x; x++)
+-				arm_cmn_show_logid(s, x, y, p, 0);
++				arm_cmn_show_logid(s, xp + x, p, 0);
+ 			seq_puts(s, "\n    1|");
+ 			for (x = 0; x < cmn->mesh_x; x++)
+-				arm_cmn_show_logid(s, x, y, p, 1);
++				arm_cmn_show_logid(s, xp + x, p, 1);
+ 		}
+ 		seq_puts(s, "\n-----+");
+ 	}
+@@ -1753,10 +1731,7 @@ static int arm_cmn_event_init(struct perf_event *event)
+ 	}
+ 
+ 	if (!hw->num_dns) {
+-		struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, nodeid);
+-
+-		dev_dbg(cmn->dev, "invalid node 0x%x (%d,%d,%d,%d) type 0x%x\n",
+-			nodeid, nid.x, nid.y, nid.port, nid.dev, type);
++		dev_dbg(cmn->dev, "invalid node 0x%x type 0x%x\n", nodeid, type);
  		return -EINVAL;
  	}
  
--	write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
--	set_tlbstate_lam_mode(mm);
--	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-+	mm_enable_lam(mm);
+@@ -1851,7 +1826,7 @@ static int arm_cmn_event_add(struct perf_event *event, int flags)
+ 			dtm->wp_event[wp_idx] = hw->dtc_idx[d];
+ 			writel_relaxed(cfg, dtm->base + CMN_DTM_WPn_CONFIG(wp_idx));
+ 		} else {
+-			struct arm_cmn_nodeid nid = arm_cmn_nid(cmn, dn->id);
++			struct arm_cmn_nodeid nid = arm_cmn_nid(dn);
  
- 	mmap_write_unlock(mm);
+ 			if (cmn->multi_dtm)
+ 				nid.port %= 2;
+@@ -2098,10 +2073,12 @@ static int arm_cmn_init_dtcs(struct arm_cmn *cmn)
+ 			continue;
  
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 44ac64f3a047c..a041d2ecd8380 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -503,9 +503,9 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- {
- 	struct mm_struct *prev = this_cpu_read(cpu_tlbstate.loaded_mm);
- 	u16 prev_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
--	unsigned long new_lam = mm_lam_cr3_mask(next);
- 	bool was_lazy = this_cpu_read(cpu_tlbstate_shared.is_lazy);
- 	unsigned cpu = smp_processor_id();
-+	unsigned long new_lam;
- 	u64 next_tlb_gen;
- 	bool need_flush;
- 	u16 new_asid;
-@@ -619,9 +619,7 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- 			cpumask_clear_cpu(cpu, mm_cpumask(prev));
- 		}
+ 		xp = arm_cmn_node_to_xp(cmn, dn);
++		dn->portid_bits = xp->portid_bits;
++		dn->deviceid_bits = xp->deviceid_bits;
+ 		dn->dtc = xp->dtc;
+ 		dn->dtm = xp->dtm;
+ 		if (cmn->multi_dtm)
+-			dn->dtm += arm_cmn_nid(cmn, dn->id).port / 2;
++			dn->dtm += arm_cmn_nid(dn).port / 2;
  
--		/*
--		 * Start remote flushes and then read tlb_gen.
--		 */
-+		/* Start receiving IPIs and then read tlb_gen (and LAM below) */
- 		if (next != &init_mm)
- 			cpumask_set_cpu(cpu, mm_cpumask(next));
- 		next_tlb_gen = atomic64_read(&next->context.tlb_gen);
-@@ -633,6 +631,7 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- 		barrier();
- 	}
+ 		if (dn->type == CMN_TYPE_DTC) {
+ 			int err = arm_cmn_init_dtc(cmn, dn, dtc_idx++);
+@@ -2271,18 +2248,27 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 		arm_cmn_init_dtm(dtm++, xp, 0);
+ 		/*
+ 		 * Keeping track of connected ports will let us filter out
+-		 * unnecessary XP events easily. We can also reliably infer the
+-		 * "extra device ports" configuration for the node ID format
+-		 * from this, since in that case we will see at least one XP
+-		 * with port 2 connected, for the HN-D.
++		 * unnecessary XP events easily, and also infer the per-XP
++		 * part of the node ID format.
+ 		 */
+ 		for (int p = 0; p < CMN_MAX_PORTS; p++)
+ 			if (arm_cmn_device_connect_info(cmn, xp, p))
+ 				xp_ports |= BIT(p);
  
-+	new_lam = mm_lam_cr3_mask(next);
- 	set_tlbstate_lam_mode(next);
- 	if (need_flush) {
- 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].ctx_id, next->context.ctx_id);
+-		if (cmn->multi_dtm && (xp_ports & 0xc))
++		if (cmn->num_xps == 1) {
++			xp->portid_bits = 3;
++			xp->deviceid_bits = 2;
++		} else if (xp_ports > 0x3) {
++			xp->portid_bits = 2;
++			xp->deviceid_bits = 1;
++		} else {
++			xp->portid_bits = 1;
++			xp->deviceid_bits = 2;
++		}
++
++		if (cmn->multi_dtm && (xp_ports > 0x3))
+ 			arm_cmn_init_dtm(dtm++, xp, 1);
+-		if (cmn->multi_dtm && (xp_ports & 0x30))
++		if (cmn->multi_dtm && (xp_ports > 0xf))
+ 			arm_cmn_init_dtm(dtm++, xp, 2);
+ 
+ 		cmn->ports_used |= xp_ports;
 -- 
 2.43.0
 
