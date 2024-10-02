@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-78744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51DA98D4B8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479D498D494
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E70928458D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:23:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A3D281959
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A911D0416;
-	Wed,  2 Oct 2024 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256E816F84F;
+	Wed,  2 Oct 2024 13:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4jGUzUm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjhvOz6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1068316F84F;
-	Wed,  2 Oct 2024 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AE01D0433;
+	Wed,  2 Oct 2024 13:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875402; cv=none; b=YV2FfAGiCIm3m2gQWT4yFRYhgvKR9KmJOgGLZm4aAU+3qJeyM8OGZnbBrzDw/jlSUq5HEvvBEVS4/mY9feiyKdnNJQeB4F3qUdovOfzzgrs6LzJ51E8SDmToLJYQBoxMnbqpzx8PM+O1+zlAj571kdD3bSmz/XycAzzl8ewU1Ak=
+	t=1727875303; cv=none; b=mo8wQYhy2zYTptG9Dm17BbxyRgwgvehaiTownhngkOwFOWTYDD5YoXI/NTY0h/faoDqbosgbn+6hAa8o3JkRyuBlSUVUDIau7vqv/91Sx+gBUa40doSpAGrrSs2M+9n0sM+ync6sId5lvpMuXNlFr3QumOqhDpPCqHBJGddAgRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875402; c=relaxed/simple;
-	bh=4MNlHYDsspHFJNFl1nNOrVRpLKNY/Zyg0bGtKB42Z0g=;
+	s=arc-20240116; t=1727875303; c=relaxed/simple;
+	bh=d/lTFQPFTnBaLHpfYevSwPzUjwKVAU6KxvCld86iaZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrXX/OYTwJ1yUh02nMyEWFFHjslynVaRxeNwkB+N/+1+dWuCGOMnVO8LFjP21B9XrJwaovt+X0UJimLE+2boli9RLup208hGXwAfkl2s8JMvEj1bTXqcwrJOmmF0JzFHcxCYk30tthb4z9uAoOlqrYQot+44to4uTSHZHi8kQKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4jGUzUm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674CEC4CEC5;
-	Wed,  2 Oct 2024 13:23:20 +0000 (UTC)
+	 MIME-Version; b=cOmYyolDouu5h8zJGKIdQDo0N2RH3n8gZTQpgnMamgmg/H3MTrEitOyjPJtlNvLzDudClIyx2b0EATIuWHT7IMYhk4ck5uhasb918HV0+tIkakIQo9RbQqV1Y62mT2d2lvO422RMM5i4ObZR7+H+H8VqwzEM2337sACFfemlswk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjhvOz6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59720C4CECD;
+	Wed,  2 Oct 2024 13:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875401;
-	bh=4MNlHYDsspHFJNFl1nNOrVRpLKNY/Zyg0bGtKB42Z0g=;
+	s=korg; t=1727875303;
+	bh=d/lTFQPFTnBaLHpfYevSwPzUjwKVAU6KxvCld86iaZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4jGUzUm4rxo3NSxE2be7QG7nrc41/el+jw0ABzIAAet+8Ibpg57a7AqWodjJjlt2
-	 8P//Jyte7EXXmJfOGevPe0iJWMcQf4FjVdJb7sKZfbUdWMejqS4OQmPLUCQcN2eypr
-	 MgxES3AghMBJ9Y9Rxf1UYkOAjPe6LKnY9AJOs6aI=
+	b=TjhvOz6btzIrj08Nov8cI4A52fAI+dRSRZqo1wr+iEMKuOW8kH6rPXXHorEyRsG44
+	 cagdibfuRv6noJz9r1xBSCryLjHNFCDTnEntpw1DhLHKk1KPd/QwADx7/LEZaQhLMM
+	 6+YEaZkZa5LhQO5jEm5rzRW2gizn6wEmdiFVONws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 048/695] wifi: iwlwifi: mvm: set the cipher for secured NDP ranging
-Date: Wed,  2 Oct 2024 14:50:46 +0200
-Message-ID: <20241002125824.406775272@linuxfoundation.org>
+Subject: [PATCH 6.11 049/695] wifi: iwlwifi: mvm: increase the time between ranging measurements
+Date: Wed,  2 Oct 2024 14:50:47 +0200
+Message-ID: <20241002125824.446091020@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -69,34 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit a949075d4bbf1ca83ccdeaa6ef4ac2ce7526c5f4 ]
+[ Upstream commit 3a7ee94559dfd640604d0265739e86dec73b64e8 ]
 
-The cipher pointer is not set, but is derefereced trying to set its
-content, which leads to a NULL pointer dereference.
-Fix it by pointing to the cipher parameter before dereferencing.
+The algo running in fw may take a little longer than 5 milliseconds,
+(e.g. measurement on 80MHz while associated). Increase the minimum
+time between measurements to 7 milliseconds.
 
-Fixes: 626be4bf99f6 ("wifi: iwlwifi: mvm: modify iwl_mvm_ftm_set_secured_ranging() parameters")
+Fixes: 830aa3e7d1ca ("iwlwifi: mvm: add support for range request command version 13")
 Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240729201718.24e83369f136.I80501ddcb82920561f450d00020d860e7a3f90c6@changeid
+Link: https://patch.msgid.link/20240729201718.d3f3c26e00d9.I09e951290e8a3d73f147b88166fd9a678d1d69ed@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/constants.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index afd90a52d4ecb..55245f913286b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -772,6 +772,7 @@ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			struct iwl_mvm_ftm_iter_data target;
- 
- 			target.bssid = bssid;
-+			target.cipher = cipher;
- 			ieee80211_iter_keys(mvm->hw, vif, iter, &target);
- 		} else {
- 			memcpy(tk, entry->tk, sizeof(entry->tk));
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+index c4c1e67b9ac76..8f63cbe9e50da 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+@@ -109,7 +109,7 @@
+ #define IWL_MVM_FTM_INITIATOR_SECURE_LTF	false
+ #define IWL_MVM_FTM_RESP_NDP_SUPPORT		true
+ #define IWL_MVM_FTM_RESP_LMR_FEEDBACK_SUPPORT	true
+-#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	5
++#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	7
+ #define IWL_MVM_FTM_NON_TB_MAX_TIME_BETWEEN_MSR	1000
+ #define IWL_MVM_D3_DEBUG			false
+ #define IWL_MVM_USE_TWT				true
 -- 
 2.43.0
 
