@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-80406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3AB98DD43
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5888C98DD52
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 781261F2304D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F371C22602
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B7A1D1E85;
-	Wed,  2 Oct 2024 14:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686F18BEA;
+	Wed,  2 Oct 2024 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGYpd+nM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY8GRaXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F6819752C;
-	Wed,  2 Oct 2024 14:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2631C8F5E;
+	Wed,  2 Oct 2024 14:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880281; cv=none; b=iXvAq9ZrNLwMTdJCQ1Vu7XkCCGaTpXf0l14DG0S/Sfln+pjW34NBvUh7IslgZn4e9VGdr8TRxWsYQOwtuAzFB1o65NqcOMOa7xROMFBByY3x8YA8x5OkTCvL1/jc4OBB/YHyeKxZ51xiMkchffRuR6p4ptxGnPcNgAcKhWTeQjc=
+	t=1727880314; cv=none; b=qEpDKqB1rnWgoNhtvj1RA9ys6ZNOXJOznUqfhzgnoCEbhlGNdTPCq9jQ5wjVSSUArxXdrWNe9FqXfLywxFmiy7dyyBuJE1cKK5PLjoEyTUM+j3US243hiuVgQI1U5INdlWmlv6a8HzSZjg46AoMaJRZ6rZ+FpL5af7prG469m+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880281; c=relaxed/simple;
-	bh=YipQxIsvPs5Ie6sRIuON1WjnApoiRgSasgWMLh9Mj60=;
+	s=arc-20240116; t=1727880314; c=relaxed/simple;
+	bh=dZJVhubBSFYqSGP6sZA9k1EFvi7HFqFapHMlg9wasi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cygiIgDxO1kxO8IGznUbm3tbR68zOJIRRM0L0apYSW8cFmHIjVOkmngglyybhJ8wpctMc9HEcVNvgIevDhDIhJ6vODopV5JaU6uyhR/I4Vy6Ja2cPjleLL5I/gOcgzxZEYa+0TURja/l8tB2hBwrcUg0OECzEO4mRH200iP2GMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGYpd+nM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01430C4CEC2;
-	Wed,  2 Oct 2024 14:44:40 +0000 (UTC)
+	 MIME-Version; b=Cd1Hrlp2q3sexud/POJO3T3kS2juoyjZPv+r36sD+byLwAIYkHpipoR+Pwu7ko1u9v539ngfHGDOnatsbEGAJ/NiaCGM2wWXAZaFMNsVyhCmhhM65iEPyirOjKBjWtgC8En6cFaPc7/jcMkAZhyU3tXqIlDNhB2Tz5zGGrDlXgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY8GRaXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531DAC4CEC5;
+	Wed,  2 Oct 2024 14:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880281;
-	bh=YipQxIsvPs5Ie6sRIuON1WjnApoiRgSasgWMLh9Mj60=;
+	s=korg; t=1727880313;
+	bh=dZJVhubBSFYqSGP6sZA9k1EFvi7HFqFapHMlg9wasi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGYpd+nMK+v2Wb+HtDs7YPg1R9inypSYkQ1X0brt4WFQfCx7kU8yKU9DKzfHOtPn7
-	 cLhKNm9j+XodQrdoOM9D3Yi/ZHvwPU2Sb+dzQvDihm0Hi6yT8kLD7W4ldHSg37ix47
-	 x26QMShsRk8ZB1fBT5L40NH5mcRYnS+mpbtGWhcc=
+	b=tY8GRaXRg5Mc5dc+DbOK1zAaV/I5Ee5GIXLpxefnGouuqgyrp2k4VAK762nt9wP8k
+	 QNu58K7tiom7bQX4XlvEhRnt7debO9Wn38HHDKUHOiSOOYGS7ZZKomCf48W4RqgXLT
+	 vBlHKhuLWyHY2xgZG/H9ohEg8EbPxWq8kzrJRb2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.6 398/538] PCI: Use an error code with PCIe failed link retraining
-Date: Wed,  2 Oct 2024 15:00:37 +0200
-Message-ID: <20241002125808.147340219@linuxfoundation.org>
+	Sean Anderson <sean.anderson@linux.dev>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.6 399/538] PCI: xilinx-nwl: Fix off-by-one in INTx IRQ handler
+Date: Wed,  2 Oct 2024 15:00:38 +0200
+Message-ID: <20241002125808.188227898@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -61,132 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit 59100eb248c0b15585affa546c7f6834b30eb5a4 upstream.
+commit 0199d2f2bd8cd97b310f7ed82a067247d7456029 upstream.
 
-Given how the call place in pcie_wait_for_link_delay() got structured now,
-and that pcie_retrain_link() returns a potentially useful error code,
-convert pcie_failed_link_retrain() to return an error code rather than a
-boolean status, fixing handling at the call site mentioned.  Update the
-other call site accordingly.
+MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit 2,
+and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
+PCI_NUM_INTX IRQs. So to enable INTA (aka hwirq 0) we should set bit 0.
+Remove the subtraction of one.
 
-Fixes: 1abb47390350 ("Merge branch 'pci/enumeration'")
-Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091156530.61955@angie.orcam.me.uk
-Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/aa2d1c4e-9961-d54a-00c7-ddf8e858a9b0@linux.intel.com/
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+This bug would cause INTx interrupts not to be delivered, as enabling INTB
+would actually enable INTA, and enabling INTA wouldn't enable anything at
+all. It is likely that this got overlooked for so long since most PCIe
+hardware uses MSIs. This fixes the following UBSAN error:
+
+  UBSAN: shift-out-of-bounds in ../drivers/pci/controller/pcie-xilinx-nwl.c:389:11
+  shift exponent 18446744073709551615 is too large for 32-bit type 'int'
+  CPU: 1 PID: 61 Comm: kworker/u10:1 Not tainted 6.6.20+ #268
+  Hardware name: xlnx,zynqmp (DT)
+  Workqueue: events_unbound deferred_probe_work_func
+  Call trace:
+  dump_backtrace (arch/arm64/kernel/stacktrace.c:235)
+  show_stack (arch/arm64/kernel/stacktrace.c:242)
+  dump_stack_lvl (lib/dump_stack.c:107)
+  dump_stack (lib/dump_stack.c:114)
+  __ubsan_handle_shift_out_of_bounds (lib/ubsan.c:218 lib/ubsan.c:387)
+  nwl_unmask_leg_irq (drivers/pci/controller/pcie-xilinx-nwl.c:389 (discriminator 1))
+  irq_enable (kernel/irq/internals.h:234 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
+  __irq_startup (kernel/irq/internals.h:239 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
+  irq_startup (kernel/irq/chip.c:270)
+  __setup_irq (kernel/irq/manage.c:1800)
+  request_threaded_irq (kernel/irq/manage.c:2206)
+  pcie_pme_probe (include/linux/interrupt.h:168 drivers/pci/pcie/pme.c:348)
+
+Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
+Link: https://lore.kernel.org/r/20240531161337.864994-3-sean.anderson@linux.dev
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.5+
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c    |    2 +-
- drivers/pci/pci.h    |    6 +++---
- drivers/pci/quirks.c |   20 ++++++++++----------
- 3 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/pci/controller/pcie-xilinx-nwl.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1208,7 +1208,7 @@ static int pci_dev_wait(struct pci_dev *
- 		if (delay > PCI_RESET_WAIT) {
- 			if (retrain) {
- 				retrain = false;
--				if (pcie_failed_link_retrain(bridge)) {
-+				if (pcie_failed_link_retrain(bridge) == 0) {
- 					delay = 1;
- 					continue;
- 				}
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -530,7 +530,7 @@ void pci_acs_init(struct pci_dev *dev);
- int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
- int pci_dev_specific_enable_acs(struct pci_dev *dev);
- int pci_dev_specific_disable_acs_redir(struct pci_dev *dev);
--bool pcie_failed_link_retrain(struct pci_dev *dev);
-+int pcie_failed_link_retrain(struct pci_dev *dev);
- #else
- static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
- 					       u16 acs_flags)
-@@ -545,9 +545,9 @@ static inline int pci_dev_specific_disab
- {
- 	return -ENOTTY;
- }
--static inline bool pcie_failed_link_retrain(struct pci_dev *dev)
-+static inline int pcie_failed_link_retrain(struct pci_dev *dev)
- {
--	return false;
-+	return -ENOTTY;
- }
- #endif
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -373,7 +373,7 @@ static void nwl_mask_leg_irq(struct irq_
+ 	u32 mask;
+ 	u32 val;
  
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -78,21 +78,21 @@
-  * again to remove any residual state, ignoring the result as it's supposed
-  * to fail anyway.
-  *
-- * Return TRUE if the link has been successfully retrained.  Return FALSE
-+ * Return 0 if the link has been successfully retrained.  Return an error
-  * if retraining was not needed or we attempted a retrain and it failed.
-  */
--bool pcie_failed_link_retrain(struct pci_dev *dev)
-+int pcie_failed_link_retrain(struct pci_dev *dev)
- {
- 	static const struct pci_device_id ids[] = {
- 		{ PCI_VDEVICE(ASMEDIA, 0x2824) }, /* ASMedia ASM2824 */
- 		{}
- 	};
- 	u16 lnksta, lnkctl2;
--	bool ret = false;
-+	int ret = -ENOTTY;
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
+@@ -387,7 +387,7 @@ static void nwl_unmask_leg_irq(struct ir
+ 	u32 mask;
+ 	u32 val;
  
- 	if (!pci_is_pcie(dev) || !pcie_downstream_port(dev) ||
- 	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
--		return false;
-+		return ret;
- 
- 	pcie_capability_read_word(dev, PCI_EXP_LNKCTL2, &lnkctl2);
- 	pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
-@@ -106,13 +106,13 @@ bool pcie_failed_link_retrain(struct pci
- 		lnkctl2 |= PCI_EXP_LNKCTL2_TLS_2_5GT;
- 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
- 
--		ret = pcie_retrain_link(dev, false) == 0;
--		if (!ret) {
-+		ret = pcie_retrain_link(dev, false);
-+		if (ret) {
- 			pci_info(dev, "retraining failed\n");
- 			pcie_capability_write_word(dev, PCI_EXP_LNKCTL2,
- 						   oldlnkctl2);
- 			pcie_retrain_link(dev, true);
--			return false;
-+			return ret;
- 		}
- 
- 		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
-@@ -129,10 +129,10 @@ bool pcie_failed_link_retrain(struct pci
- 		lnkctl2 |= lnkcap & PCI_EXP_LNKCAP_SLS;
- 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
- 
--		ret = pcie_retrain_link(dev, false) == 0;
--		if (!ret) {
-+		ret = pcie_retrain_link(dev, false);
-+		if (ret) {
- 			pci_info(dev, "retraining failed\n");
--			return false;
-+			return ret;
- 		}
- 	}
- 
+-	mask = 1 << (data->hwirq - 1);
++	mask = 1 << data->hwirq;
+ 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
+ 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
+ 	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
 
 
 
