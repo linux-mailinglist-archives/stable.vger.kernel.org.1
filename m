@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D290098DCD8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC08A98DA5D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ADA22835F1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ACF21F2132C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1F61D0965;
-	Wed,  2 Oct 2024 14:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAE71D0B86;
+	Wed,  2 Oct 2024 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eekZLKeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBzCYP0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEECF1D0414;
-	Wed,  2 Oct 2024 14:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E201D094A;
+	Wed,  2 Oct 2024 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879990; cv=none; b=p00emL9e0oVMqUnf+beVQOzyelTSGt817HkaXu+Nk82YXrzCDmPLMzgV3SaHWqEIc5ONfkKhp+7ay+fil1gzYJiqB3vgokYuWHvs89SeLskmnrPXht4jxy7mWtzUgzxbqrNcCjvm0YdDTzbVF+WHNwfvaMn8R68pRWbgjt1XYlI=
+	t=1727878531; cv=none; b=UZRtte4pxFHc5PQgncxmWofw5oAKGyOrFSB2ScnxnjsITFY61ZTEwtEMHba6f1Yjg9I+CU/vFJSw4gCNj9bVgEXa8gho3SsDyu+iiXY53RlbLeCjLcffs80/hNJtp5h1nS5EdtvIxPdk7WFPpjfbamb8U2mvhaBIKH6ELEunqiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879990; c=relaxed/simple;
-	bh=T6YB9E01xqAkaCWptIAJSCSw+kPosTqbkJeS8vDKOxE=;
+	s=arc-20240116; t=1727878531; c=relaxed/simple;
+	bh=ditRNFRNKD6Rbb/lbzO8IESHHLOn4bebQ7IeTVNslt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfPLtZfEajW4fM/9UUSHRASI70bz2courgBM0LB9YBMxrnJs16qft3x88bT+yXQcK1dSUOzG8K8fcdPs2EFRDNL7qIbiLbTj8qvyM/1zxXW7nenLLQdnp3L4hHAsFWX46UD9/wPT0ogkS/Mjk52pWIHsJ0Mpnvcaol2AMlD25+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eekZLKeL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D0CC4CEC2;
-	Wed,  2 Oct 2024 14:39:49 +0000 (UTC)
+	 MIME-Version; b=F/WRzcgLKilXH3yk9oyN5m90DiVuR1WcQsFyrWl0fqDJZemtpVrr/QzsOSfGLV2ZG+bfpYDqAhI0BBLFKnvSla0bMiPuqqIbySV3Bbi54nTyYW2mI+CnHYJ0s5jMiTz9hltme2xPISL8ReTc5LSsWOiyW8PnxqufFqJ78f+y6qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBzCYP0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E416CC4CEC2;
+	Wed,  2 Oct 2024 14:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879989;
-	bh=T6YB9E01xqAkaCWptIAJSCSw+kPosTqbkJeS8vDKOxE=;
+	s=korg; t=1727878531;
+	bh=ditRNFRNKD6Rbb/lbzO8IESHHLOn4bebQ7IeTVNslt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eekZLKeL1Eq6m3BmejRLhyWlyjsf3f39O97JG7zM0TC8uyjqexG3H8VTpObUDe7gs
-	 0LArw9+pPNg1N95kefiZinBmaGhVQsnp4kf2pJ3ZmyFbFdz9zR1Gyd0VjsAnlCs/jA
-	 A1r1UIsA38vfVPz7hj7WGhiAU8I4/rTxeQLvI7/4=
+	b=nBzCYP0NBOi92/yNQ626onqXhS2unGhTRZzFrmpzm83EHdUtGIICICTrXUsyBR+Gk
+	 BIhYiUHTuOUtGwRzH97mW4u/DgGHs0s624AfSz6btNnBymhi+F2z5ZZntgyOCFDkBC
+	 PmMXIn6fI+P8eAwJpxN56BxjaxYxJAsqM3x6t7Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Youzhong Yang <youzhong@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/538] nfsd: remove unneeded EEXIST error check in nfsd_do_file_acquire
+Subject: [PATCH 6.10 446/634] netfilter: ctnetlink: compile ctnetlink_label_size with CONFIG_NF_CONNTRACK_EVENTS
 Date: Wed,  2 Oct 2024 14:59:06 +0200
-Message-ID: <20241002125804.536023745@linuxfoundation.org>
+Message-ID: <20241002125828.704937559@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 81a95c2b1d605743220f28db04b8da13a65c4059 ]
+[ Upstream commit e1f1ee0e9ad8cbe660f5c104e791c5f1a7cf4c31 ]
 
-Given that we do the search and insertion while holding the i_lock, I
-don't think it's possible for us to get EEXIST here. Remove this case.
+Only provide ctnetlink_label_size when it is used,
+which is when CONFIG_NF_CONNTRACK_EVENTS is configured.
 
-Fixes: c6593366c0bf ("nfsd: don't kill nfsd_files because of lease break error")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Youzhong Yang <youzhong@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Flagged by clang-18 W=1 builds as:
+
+.../nf_conntrack_netlink.c:385:19: warning: unused function 'ctnetlink_label_size' [-Wunused-function]
+  385 | static inline int ctnetlink_label_size(const struct nf_conn *ct)
+      |                   ^~~~~~~~~~~~~~~~~~~~
+
+The condition on CONFIG_NF_CONNTRACK_LABELS being removed by
+this patch guards compilation of non-trivial implementations
+of ctnetlink_dump_labels() and ctnetlink_label_size().
+
+However, this is not necessary as each of these functions
+will always return 0 if CONFIG_NF_CONNTRACK_LABELS is not defined
+as each function starts with the equivalent of:
+
+	struct nf_conn_labels *labels = nf_ct_labels_find(ct);
+
+	if (!labels)
+		return 0;
+
+And nf_ct_labels_find always returns NULL if CONFIG_NF_CONNTRACK_LABELS
+is not enabled.  So I believe that the compiler optimises the code away
+in such cases anyway.
+
+Found by inspection.
+Compile tested only.
+
+Originally splitted in two patches, Pablo Neira Ayuso collapsed them and
+added Fixes: tag.
+
+Fixes: 0ceabd83875b ("netfilter: ctnetlink: deliver labels to userspace")
+Link: https://lore.kernel.org/netfilter-devel/20240909151712.GZ2097826@kernel.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 07bf219f9ae48..88cefb630e171 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -1040,8 +1040,6 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (likely(ret == 0))
- 		goto open_file;
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 4cbf71d0786b0..c55cf5bc36b2f 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -382,7 +382,7 @@ static int ctnetlink_dump_secctx(struct sk_buff *skb, const struct nf_conn *ct)
+ #define ctnetlink_dump_secctx(a, b) (0)
+ #endif
  
--	if (ret == -EEXIST)
--		goto retry;
- 	trace_nfsd_file_insert_err(rqstp, inode, may_flags, ret);
- 	status = nfserr_jukebox;
- 	goto construction_err;
+-#ifdef CONFIG_NF_CONNTRACK_LABELS
++#ifdef CONFIG_NF_CONNTRACK_EVENTS
+ static inline int ctnetlink_label_size(const struct nf_conn *ct)
+ {
+ 	struct nf_conn_labels *labels = nf_ct_labels_find(ct);
+@@ -391,6 +391,7 @@ static inline int ctnetlink_label_size(const struct nf_conn *ct)
+ 		return 0;
+ 	return nla_total_size(sizeof(labels->bits));
+ }
++#endif
+ 
+ static int
+ ctnetlink_dump_labels(struct sk_buff *skb, const struct nf_conn *ct)
+@@ -411,10 +412,6 @@ ctnetlink_dump_labels(struct sk_buff *skb, const struct nf_conn *ct)
+ 
+ 	return 0;
+ }
+-#else
+-#define ctnetlink_dump_labels(a, b) (0)
+-#define ctnetlink_label_size(a)	(0)
+-#endif
+ 
+ #define master_tuple(ct) &(ct->master->tuplehash[IP_CT_DIR_ORIGINAL].tuple)
+ 
 -- 
 2.43.0
 
