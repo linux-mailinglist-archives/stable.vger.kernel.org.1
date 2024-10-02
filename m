@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-80355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B34D98DD5D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1295298DAA6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED392B27428
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3989B2377A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5611D14F7;
-	Wed,  2 Oct 2024 14:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3671D151F;
+	Wed,  2 Oct 2024 14:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqriVk1L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBMkU/m6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C3E1D14F8;
-	Wed,  2 Oct 2024 14:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089821D1517;
+	Wed,  2 Oct 2024 14:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880132; cv=none; b=akDqxLP8KHcvCqBRgW46aJ05pZtLLrBDURqNhl8y1DklqYcIiJoSzNy5G5Xu3FU8cuZ7mChydIsjeUIx50F+EyhIE8T1g6ctIxotcJxhSfq5DJjXspnxGCQNplC2jvYD0r807DkVOUkVFzE0+nGM90ubYYxJuNNyR547mM9Q5KY=
+	t=1727878673; cv=none; b=FCk8SZDPLBurj71enY4Co7qJYy9Im5WBZtlfHUPBxBWVDsWl9LW7KQ76Nr9x8gyMSFY4FIhPXXP1Dln/umqAIB+Gf96gharAxp5p/rJsCDfaPe0LXZ5amuWMSukoi9CQXuzOn1yv6wRK2YoA7cCDRYlSi99b9TuvTy9r0HyrCHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880132; c=relaxed/simple;
-	bh=aNUfL5iJ20FvS6+iZohuwFWRq7wWyYLhwq1un2MZfwc=;
+	s=arc-20240116; t=1727878673; c=relaxed/simple;
+	bh=tY+rFKoEx31Sfe5nu5REuiQ9tulJrn3tRBsSSUOpZtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u16BWr2B2IcUpK9PqKtTf9dakNYsNP98TZhnqGVFekWJdvzWO/zulX71UdMlzTEJaw0vd3OQtDn6xmk8MQlK4KSL75dJYkANp1KI2zkSwJmk96pOgV8ejNBhe8VQPTdXEZVIoySwmfYj+oYHf+GAfi8phnMsUu7rlCOK8xSFOco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqriVk1L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B389CC4CEC2;
-	Wed,  2 Oct 2024 14:42:11 +0000 (UTC)
+	 MIME-Version; b=U8oDlR8Ilmp0wNbGfhECeLYJRw9wKOepVL2G+ORW4yVMSA2Drg7W/nc3k+qpgfMBdTmr2NPgADkMzygwKue1GGX+qcy1NcJZavIqIFVFR1c5nsx2zLkf47YPpp1XqQ/j9SOsr+0ccDjZjZmCrn4NiVDyaqn3CQWmyYqTX4YsEXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBMkU/m6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83160C4CEC2;
+	Wed,  2 Oct 2024 14:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880132;
-	bh=aNUfL5iJ20FvS6+iZohuwFWRq7wWyYLhwq1un2MZfwc=;
+	s=korg; t=1727878672;
+	bh=tY+rFKoEx31Sfe5nu5REuiQ9tulJrn3tRBsSSUOpZtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqriVk1LeOulyS5WG0dtHOcJxTTuQVz3fSSIlYBcRcyPAPWSx91yBUh4tsYJgD2f3
-	 Iwu6Kogw73hgMoz7Xp8fJdHK0QdpK/iEuqKlI2DEgcZscTjqp2tea3ZHac+aF1kN3l
-	 ooHY9xRwz3nf7M1hPLFNomkUYxjuMC6qFJ348eLA=
+	b=CBMkU/m6hL7PEtZLkOQHzqorZ1sfQmjsgOpthEh488QmdpheAgPYnFU2ZwuosuJck
+	 n9tIgwH/bRim7byUnLmP8C9HUCksB1nxNXdgXchtR8aNuRpfXh7hdWXntul+r/J6f1
+	 fJgMClHz7POdvlEaiXeRhVFVrCwLPXHEHFov2Jgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Stols <gstols@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 354/538] iio: adc: ad7606: fix standby gpio state to match the documentation
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Anthony Koo <anthony.koo@amd.com>,
+	Robin Chen <robin.chen@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.10 493/634] drm/amd/display: Round calculated vtotal
 Date: Wed,  2 Oct 2024 14:59:53 +0200
-Message-ID: <20241002125806.400978117@linuxfoundation.org>
+Message-ID: <20241002125830.559637016@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Stols <gstols@baylibre.com>
+From: Robin Chen <robin.chen@amd.com>
 
-[ Upstream commit 059fe4f8bbdf5cad212e1aeeb3e8968c80b9ff3b ]
+commit c03fca619fc687338a3b6511fdbed94096abdf79 upstream.
 
-The binding's documentation specifies that "As the line is active low, it
-should be marked GPIO_ACTIVE_LOW". However, in the driver, it was handled
-the opposite way. This commit sets the driver's behaviour in sync with the
-documentation
+[WHY]
+The calculated vtotal may has 1 line deviation. To get precisely
+vtotal number, round the vtotal result.
 
-Fixes: 722407a4e8c0 ("staging:iio:ad7606: Use GPIO descriptor API")
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
+Signed-off-by: Robin Chen <robin.chen@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7606.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/modules/freesync/freesync.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 8c66b1e364014..4d755ffc3f414 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -422,7 +422,7 @@ static int ad7606_request_gpios(struct ad7606_state *st)
- 		return PTR_ERR(st->gpio_range);
+--- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
++++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+@@ -134,7 +134,7 @@ unsigned int mod_freesync_calc_v_total_f
  
- 	st->gpio_standby = devm_gpiod_get_optional(dev, "standby",
--						   GPIOD_OUT_HIGH);
-+						   GPIOD_OUT_LOW);
- 	if (IS_ERR(st->gpio_standby))
- 		return PTR_ERR(st->gpio_standby);
+ 	v_total = div64_u64(div64_u64(((unsigned long long)(
+ 			frame_duration_in_ns) * (stream->timing.pix_clk_100hz / 10)),
+-			stream->timing.h_total), 1000000);
++			stream->timing.h_total) + 500000, 1000000);
  
-@@ -665,7 +665,7 @@ static int ad7606_suspend(struct device *dev)
- 
- 	if (st->gpio_standby) {
- 		gpiod_set_value(st->gpio_range, 1);
--		gpiod_set_value(st->gpio_standby, 0);
-+		gpiod_set_value(st->gpio_standby, 1);
- 	}
- 
- 	return 0;
--- 
-2.43.0
-
+ 	/* v_total cannot be less than nominal */
+ 	if (v_total < stream->timing.v_total) {
 
 
 
