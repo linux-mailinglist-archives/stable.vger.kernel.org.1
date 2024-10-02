@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-78840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E7498D538
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFE098D83B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAC021C20E5C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02FC31C22CE3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38931D0434;
-	Wed,  2 Oct 2024 13:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EF31D0491;
+	Wed,  2 Oct 2024 13:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nw+dpUdr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYHCj6j+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A3A16F84F;
-	Wed,  2 Oct 2024 13:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67F3198837;
+	Wed,  2 Oct 2024 13:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875681; cv=none; b=a4CkhaD4YwJwZmbLwqNgVMQRMvsg7zRSuw9Lqld3heMmXz7eOyCEXtoVCm8oa3ALMUv5QihgI0z2scH8OO0B0h6a4osXqWHXuRh4SAtBk7qX02T4M3C3qXg5nAOEO+BTRBACr9FFpzXVV7Rb90I0iJjBxJmuET9ZZRdV93Ae7JM=
+	t=1727877444; cv=none; b=Z0K8BuQok10BR7yFG5d9IASiTyat+ybUSCB2eGrbMIeWtgJrXYQ6IFgZrqlkeSuuzyzbRUf4I8H3W75c8QjIehy1ifyFs+A5tmGFIk2EjkduTCR4KJhmJ6oSXjByWnqLDB0qgMW89qRm1OMQs8rcMo7sys1PTiFbgf9PYl4w+mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875681; c=relaxed/simple;
-	bh=h4cTSABUZFcyDiF9hRRc4WBTDI55i9A4bLsyQTPuvns=;
+	s=arc-20240116; t=1727877444; c=relaxed/simple;
+	bh=bNxKkdsRD4ZRgZ4aTizsiw9PMAk0eCi/Nuqd+0gdBRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qhn7UlzRiqUQpMT8xdFfsFUFiOR7eFPhip2dQM/xZDU3WvlRP1UyG3TtzThxPCH+uR5ZAOs7CDZHqGqg0Gci9mXpwcocJ3lshR85TKiGZKWB5iHhl7T6r07+t1LojZNk03cHiC03LQjnxSqH6QnwraPHEkdgjUDAob6vQQNhUOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nw+dpUdr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04DCC4CEC5;
-	Wed,  2 Oct 2024 13:28:00 +0000 (UTC)
+	 MIME-Version; b=mjiwf+iPP6irChRcXWxceMP9+vARMcurUNQxKpJfoxfUqT0DilSNlhiaIYFPsgLMLlwvem4OIc5k9K5HwO7BSMiIU0/PRGFufgB9DuE9oucIEWdC0hdBYArc6mtqFdvRNXB2dKMT0qfBDZotDgavqgGu2GchFEj99Slf5IyvbXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYHCj6j+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D6FC4CEEE;
+	Wed,  2 Oct 2024 13:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875681;
-	bh=h4cTSABUZFcyDiF9hRRc4WBTDI55i9A4bLsyQTPuvns=;
+	s=korg; t=1727877444;
+	bh=bNxKkdsRD4ZRgZ4aTizsiw9PMAk0eCi/Nuqd+0gdBRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nw+dpUdry59GX2RPOdQWhy3fv06eFGoZWvX/hu3Pa4CHu2Nj7oK4amdr4P7XrUhWA
-	 a0WdgfK2FadujOMgRPLCzCBJcc6SEavQ9l61h3APoro67qgV2cszBaWSEmBuuBbgEx
-	 bIq6Jytw4NHBuY3loQx50OMLJHCf6dC6LKiGLhpI=
+	b=yYHCj6j+LT7Ubu9upCFd4rjwWkIdii6sbWePqJHKg5OkOI3BDc8M2FstSULoawtji
+	 ya0FR/x1I2xcxKHkXwACCMjO+2fPhg17vdz3VafB3M0SIDxeZ5eTQWzKutQqoX0/Yx
+	 ycv7P55SpEx3vTlO07iWIjwq+AHIITUcTnZqXdTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 183/695] iommu/amd: Handle error path in amd_iommu_probe_device()
+Subject: [PATCH 6.10 081/634] wifi: mt76: mt7996: fix uninitialized TLV data
 Date: Wed,  2 Oct 2024 14:53:01 +0200
-Message-ID: <20241002125829.775480057@linuxfoundation.org>
+Message-ID: <20241002125814.309160140@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 293aa9ec694e633bff83ab93715a2684e15fe214 ]
+[ Upstream commit 9e461f4a2329109571f4b10f9bcad28d07e6ebb3 ]
 
-Do not try to set max_pasids in error path as dev_data is not allocated.
+Use skb_put_zero instead of skb_put
 
-Fixes: a0c47f233e68 ("iommu/amd: Introduce iommu_dev_data.max_pasids")
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/20240828111029.5429-5-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Link: https://patch.msgid.link/20240827093011.18621-23-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index b19e8c0f48fa2..fc660d4b10ac8 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2185,11 +2185,12 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
- 		dev_err(dev, "Failed to initialize - trying to proceed anyway\n");
- 		iommu_dev = ERR_PTR(ret);
- 		iommu_ignore_device(iommu, dev);
--	} else {
--		amd_iommu_set_pci_msi_domain(dev, iommu);
--		iommu_dev = &iommu->iommu;
-+		goto out_err;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 161ebf54a46e3..9176905451b50 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -735,7 +735,7 @@ void mt7996_mcu_rx_event(struct mt7996_dev *dev, struct sk_buff *skb)
+ static struct tlv *
+ mt7996_mcu_add_uni_tlv(struct sk_buff *skb, u16 tag, u16 len)
+ {
+-	struct tlv *ptlv = skb_put(skb, len);
++	struct tlv *ptlv = skb_put_zero(skb, len);
  
-+	amd_iommu_set_pci_msi_domain(dev, iommu);
-+	iommu_dev = &iommu->iommu;
-+
- 	/*
- 	 * If IOMMU and device supports PASID then it will contain max
- 	 * supported PASIDs, else it will be zero.
-@@ -2201,6 +2202,7 @@ static struct iommu_device *amd_iommu_probe_device(struct device *dev)
- 					     pci_max_pasids(to_pci_dev(dev)));
- 	}
- 
-+out_err:
- 	iommu_completion_wait(iommu);
- 
- 	return iommu_dev;
+ 	ptlv->tag = cpu_to_le16(tag);
+ 	ptlv->len = cpu_to_le16(len);
 -- 
 2.43.0
 
