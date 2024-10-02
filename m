@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-80414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0207298DD4F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BF198DAE4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28F21F22CFC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58F851C2336C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FF21D0DE1;
-	Wed,  2 Oct 2024 14:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4361CFEC0;
+	Wed,  2 Oct 2024 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INccJpCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqxUW0j0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E576E9475;
-	Wed,  2 Oct 2024 14:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7943232;
+	Wed,  2 Oct 2024 14:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880305; cv=none; b=nAXTkjNJPVk8jPNn8nEp8SKK4cQYv+tcz8BwEKhwCguITJNGC79POOvzVOPuIUHiRLI1fwrw5nG34YgQEN6CoSmwHedL32p3hY2d4Vsh+JcZbaAXzlvvjDY5gFLEkZQcbGBZLJ66UJTlAx6raRbllouWvnCQGpfKwGJdcPsXIFw=
+	t=1727878850; cv=none; b=vGrlzaW5BlrZ5yeY6aURX0WgEPdmzRi+86FpmSFOv2Q6wshwdfh+I3rtkHB9T7v8fK6c16e5vtakhDELWFLKo6qk7CGIXJo3NlaDrxKK/ccR6+ynuC+wutz8yHS2hpiF4PvRNBH6TTreQ8+GmktFSbulkJeLm7QKVx1QCoeesCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880305; c=relaxed/simple;
-	bh=C9GkLqwTdaRHMLoXr4bVrvCFG5CIejomy+UOnLTqmQI=;
+	s=arc-20240116; t=1727878850; c=relaxed/simple;
+	bh=uuRDCimW1atwgO281iUCuT/PoGDiE2ikmi3ZsemqhmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhyXRfqqUYM4VTE+EVudsyWkpcs8KlMbJisBBqmdSzHkASFkgYlg7/EJdYdhPiIpBiOD8n5CAhQ5U1xUlSfkSIGWtOjtY7IlEH/rLMqM9IP/BdkWdcPqT9O7dqpm4ncy70HHsHhzrUKp6kva92EZzzd/Ox8qGWvu8S9hQssxos0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INccJpCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E67AC4CEC2;
-	Wed,  2 Oct 2024 14:45:04 +0000 (UTC)
+	 MIME-Version; b=HH7wBoMxptxcUxbzTr+NAoJcfojuwQQWFSGCk1bXAS0lA7rVhdApl7TS6EiS7aVq32MbaFBqo0QHWoNHIrp+DpLCwoGpQGSToHPEbDRUbcMrgDw6BgUMyeM/r6HxsB58EnavniVAC+jRGt9+3Pa9Sx6B94VkI/ZbacxRtBgL4hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqxUW0j0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612A3C4CEC5;
+	Wed,  2 Oct 2024 14:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880304;
-	bh=C9GkLqwTdaRHMLoXr4bVrvCFG5CIejomy+UOnLTqmQI=;
+	s=korg; t=1727878849;
+	bh=uuRDCimW1atwgO281iUCuT/PoGDiE2ikmi3ZsemqhmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INccJpCdEzgE9KFMlX5/ia+uUlcEOtCv1TDyU5wKCpjOBTXRFTBMtwgGukd0Gs4yN
-	 LYEcKE3xDoxZGxToy5tayvEZWHKYkMcfInrFSkslORPkvsjYXELCNoNuGdiZVE33oy
-	 G1WCqaDMSga7zHyWzqxpqRJJUrb1ZvP01WPMkH10=
+	b=iqxUW0j0SSLs+a4dPNe7/0UtpFMATvZf0ko2zI1cXkW89ZtkDFUga2PLsRw2djxBL
+	 8GFWiic9JrPIE0Bvj8ep05+O61P8IXLg0ZHu0UxAnerD9KL4IuI1s83CpeW45OPtXR
+	 YyHnluSsBRpJjNjZOdDFg5JHolfv5Yl8vc6zmqUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Fangzhi Zuo <Jerry.Zuo@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 414/538] drm/amd/display: Skip Recompute DSC Params if no Stream on Link
-Date: Wed,  2 Oct 2024 15:00:53 +0200
-Message-ID: <20241002125808.775019329@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Fiona Klute <fiona.klute@gmx.de>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.10 554/634] wifi: rtw88: 8703b: Fix reported RX band width
+Date: Wed,  2 Oct 2024 15:00:54 +0200
+Message-ID: <20241002125832.979891636@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 8151a6c13111b465dbabe07c19f572f7cbd16fef upstream.
+commit 0129e5ff2842450f1426e312b5e580c0814e0de3 upstream.
 
-[why]
-Encounter NULL pointer dereference uner mst + dsc setup.
+The definition of GET_RX_DESC_BW is incorrect. Fix it according to the
+GET_RX_STATUS_DESC_BW_8703B macro from the official driver.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000008
-    PGD 0 P4D 0
-    Oops: 0000 [#1] PREEMPT SMP NOPTI
-    CPU: 4 PID: 917 Comm: sway Not tainted 6.3.9-arch1-1 #1 124dc55df4f5272ccb409f39ef4872fc2b3376a2
-    Hardware name: LENOVO 20NKS01Y00/20NKS01Y00, BIOS R12ET61W(1.31 ) 07/28/2022
-    RIP: 0010:drm_dp_atomic_find_time_slots+0x5e/0x260 [drm_display_helper]
-    Code: 01 00 00 48 8b 85 60 05 00 00 48 63 80 88 00 00 00 3b 43 28 0f 8d 2e 01 00 00 48 8b 53 30 48 8d 04 80 48 8d 04 c2 48 8b 40 18 <48> 8>
-    RSP: 0018:ffff960cc2df77d8 EFLAGS: 00010293
-    RAX: 0000000000000000 RBX: ffff8afb87e81280 RCX: 0000000000000224
-    RDX: ffff8afb9ee37c00 RSI: ffff8afb8da1a578 RDI: ffff8afb87e81280
-    RBP: ffff8afb83d67000 R08: 0000000000000001 R09: ffff8afb9652f850
-    R10: ffff960cc2df7908 R11: 0000000000000002 R12: 0000000000000000
-    R13: ffff8afb8d7688a0 R14: ffff8afb8da1a578 R15: 0000000000000224
-    FS:  00007f4dac35ce00(0000) GS:ffff8afe30b00000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: 0000000000000008 CR3: 000000010ddc6000 CR4: 00000000003506e0
-    Call Trace:
-<TASK>
-     ? __die+0x23/0x70
-     ? page_fault_oops+0x171/0x4e0
-     ? plist_add+0xbe/0x100
-     ? exc_page_fault+0x7c/0x180
-     ? asm_exc_page_fault+0x26/0x30
-     ? drm_dp_atomic_find_time_slots+0x5e/0x260 [drm_display_helper 0e67723696438d8e02b741593dd50d80b44c2026]
-     ? drm_dp_atomic_find_time_slots+0x28/0x260 [drm_display_helper 0e67723696438d8e02b741593dd50d80b44c2026]
-     compute_mst_dsc_configs_for_link+0x2ff/0xa40 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
-     ? fill_plane_buffer_attributes+0x419/0x510 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
-     compute_mst_dsc_configs_for_state+0x1e1/0x250 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
-     amdgpu_dm_atomic_check+0xecd/0x1190 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
-     drm_atomic_check_only+0x5c5/0xa40
-     drm_mode_atomic_ioctl+0x76e/0xbc0
+Tested only with RTL8812AU, which uses the same bits.
 
-[how]
-dsc recompute should be skipped if no mode change detected on the new
-request. If detected, keep checking whether the stream is already on
-current state or not.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Tested-by: Fiona Klute <fiona.klute@gmx.de>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/1cfed9d5-4304-4b96-84c5-c347f59fedb9@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/realtek/rtw88/rx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1269,6 +1269,9 @@ static bool is_dsc_need_re_compute(
- 	if (new_stream_on_link_num == 0)
- 		return false;
+diff --git a/drivers/net/wireless/realtek/rtw88/rx.h b/drivers/net/wireless/realtek/rtw88/rx.h
+index d3668c4efc24..8a072dd3d73c 100644
+--- a/drivers/net/wireless/realtek/rtw88/rx.h
++++ b/drivers/net/wireless/realtek/rtw88/rx.h
+@@ -41,7 +41,7 @@ enum rtw_rx_desc_enc {
+ #define GET_RX_DESC_TSFL(rxdesc)                                               \
+ 	le32_get_bits(*((__le32 *)(rxdesc) + 0x05), GENMASK(31, 0))
+ #define GET_RX_DESC_BW(rxdesc)                                                 \
+-	(le32_get_bits(*((__le32 *)(rxdesc) + 0x04), GENMASK(31, 24)))
++	(le32_get_bits(*((__le32 *)(rxdesc) + 0x04), GENMASK(5, 4)))
  
-+	if (new_stream_on_link_num == 0)
-+		return false;
-+
- 	/* check current_state if there stream on link but it is not in
- 	 * new request state
- 	 */
+ void rtw_rx_stats(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
+ 		  struct sk_buff *skb);
+-- 
+2.46.2
+
 
 
 
