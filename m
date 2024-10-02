@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-80370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4EC98DD1F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5142198DAB5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADCDB1C240A7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD94DB24E83
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E85B1D1516;
-	Wed,  2 Oct 2024 14:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE931D1730;
+	Wed,  2 Oct 2024 14:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxyuOHuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aE1xpbd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC62405FB;
-	Wed,  2 Oct 2024 14:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073C81D0BBB;
+	Wed,  2 Oct 2024 14:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880176; cv=none; b=cTXYUhQVVIPRa6Iz4S23UzjEDd7SKvHFpApbQ8y2VLK/TLvP7k8nwlG33pNoNAcf45dGVJ8wus2oMHHpaJCJMuw5/1bnFPxKmXL/GxN+H97Hb+GAdm/LqVVjRdW9w3RkABi78zh/SYodUcbZ8GOhm/5Lkz94DrBL471/eyYZRdA=
+	t=1727878711; cv=none; b=WPLEsJ35i717No44kmLhp6LxDhnUC27K+kru02FPaPilze4BrvMryeNg5EsxG9rBf4jzBchw6ElkfumNo+5hiFernrxwbk1uPrP0kZ3Oeq+aeF/ZQ4DuSTdiALMjmt7/+7Wf8XVpbIeIGfrAQc6EE+bWqoVs52Ws8ylXoolQ6yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880176; c=relaxed/simple;
-	bh=Z57eygbhfcLWqXvT+EBDa7uRz+xbduYDHnc4KOVYEDk=;
+	s=arc-20240116; t=1727878711; c=relaxed/simple;
+	bh=etkAVL2bUxA7jXkgQ3rFh663seFk4s0fjeM+wvtpLOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eafi+NVBV36oJnBijLC9CVxuxM2/rGLnVktocdNAIMW59ZDkyO6al+HKc+/tjRe7a33sMu6go7EpWVBY+jfwZOl0WjyZ/2Enj/CaB3qBu3aU0W3/PzvH7o9hyMzGQu/gxfHpp7n2QY6jJyCEocCfkOvd2iAdeM5T74Ctpsg0Oe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxyuOHuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CBFC4CEC2;
-	Wed,  2 Oct 2024 14:42:55 +0000 (UTC)
+	 MIME-Version; b=Fx/WON71or9m7TCR+VLaMY+Ql8hfCnHtlp0dBs6ZT/cdb0D+h6hlYAetz3A1E8f6ufFPKoondXfvoOd5WygLzBfuy6QDFg9Vbjoz3rhre14OBAtdYqZQNdO/52JwRuqoHcsWKwOJf8WyoMOnpYXrETIg7GWtOysYrpGSzwjtkcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aE1xpbd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D43C4CECD;
+	Wed,  2 Oct 2024 14:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880175;
-	bh=Z57eygbhfcLWqXvT+EBDa7uRz+xbduYDHnc4KOVYEDk=;
+	s=korg; t=1727878710;
+	bh=etkAVL2bUxA7jXkgQ3rFh663seFk4s0fjeM+wvtpLOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxyuOHuuUma+9YaomgeLOCP0FORhddHWeNc5JV9nGb35myXsR2w3zdYPXCbtKFOGM
-	 QGT9Jm75NbCmWYTaf9VwDaT7Qoo8VaGZapGJZGkrIQc+4e9PbvOTCJZN1uXqEELT5N
-	 A+V0fNZCvPH0qj9dL5ekAr28n9e8MrI9yUYe7W3Y=
+	b=aE1xpbd0iZqP3v0lTDYKmkLp6xBTpXfZdKCuIumRCIOcIiilj0fEQV5VEwPVAhvAG
+	 I2suWmGSFwtHujveJBJ9A/SDhh74zq8KdlAjY634Dq4IUHQO79577ebuO3J6Dl16Mz
+	 LQZT92yF1lrsZOCQB+FK+v3gns5L9xA/2fRDjKeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Sunmin Jeong <s_min.jeong@samsung.com>,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 337/538] f2fs: Create COW inode from parent dentry for atomic write
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.10 476/634] soc: fsl: cpm1: tsa: Fix tsa_write8()
 Date: Wed,  2 Oct 2024 14:59:36 +0200
-Message-ID: <20241002125805.733843931@linuxfoundation.org>
+Message-ID: <20241002125829.895135340@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeongjin Gil <youngjin.gil@samsung.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 8c1b787938fd86bab27a1492fa887408c75fec2b ]
+commit 47a347bae9a491b467ab3543e4725a3e4fbe30f5 upstream.
 
-The i_pino in f2fs_inode_info has the previous parent's i_ino when inode
-was renamed, which may cause f2fs_ioc_start_atomic_write to fail.
-If file_wrong_pino is true and i_nlink is 1, then to find a valid pino,
-we should refer to the dentry from inode.
+The tsa_write8() parameter is an u32 value. This is not consistent with
+the function itself. Indeed, tsa_write8() writes an 8bits value.
 
-To resolve this issue, let's get parent inode using parent dentry
-directly.
+Be consistent and use an u8 parameter value.
 
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Sunmin Jeong <s_min.jeong@samsung.com>
-Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20240808071132.149251-4-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/soc/fsl/qe/tsa.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 8c4c5c6c1ac64..a0d2e180f0ed7 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2097,7 +2097,6 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
- 	struct mnt_idmap *idmap = file_mnt_idmap(filp);
- 	struct f2fs_inode_info *fi = F2FS_I(inode);
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--	struct inode *pinode;
- 	loff_t isize;
- 	int ret;
+--- a/drivers/soc/fsl/qe/tsa.c
++++ b/drivers/soc/fsl/qe/tsa.c
+@@ -140,7 +140,7 @@ static inline void tsa_write32(void __io
+ 	iowrite32be(val, addr);
+ }
  
-@@ -2146,15 +2145,10 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
- 	/* Check if the inode already has a COW inode */
- 	if (fi->cow_inode == NULL) {
- 		/* Create a COW inode for atomic write */
--		pinode = f2fs_iget(inode->i_sb, fi->i_pino);
--		if (IS_ERR(pinode)) {
--			f2fs_up_write(&fi->i_gc_rwsem[WRITE]);
--			ret = PTR_ERR(pinode);
--			goto out;
--		}
-+		struct dentry *dentry = file_dentry(filp);
-+		struct inode *dir = d_inode(dentry->d_parent);
- 
--		ret = f2fs_get_tmpfile(idmap, pinode, &fi->cow_inode);
--		iput(pinode);
-+		ret = f2fs_get_tmpfile(idmap, dir, &fi->cow_inode);
- 		if (ret) {
- 			f2fs_up_write(&fi->i_gc_rwsem[WRITE]);
- 			goto out;
--- 
-2.43.0
-
+-static inline void tsa_write8(void __iomem *addr, u32 val)
++static inline void tsa_write8(void __iomem *addr, u8 val)
+ {
+ 	iowrite8(val, addr);
+ }
 
 
 
