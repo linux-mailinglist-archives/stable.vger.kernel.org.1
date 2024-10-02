@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-79308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8001598D799
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:51:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790F698D79B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 342061F21BF6
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 396682826FE
 	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF33417B421;
-	Wed,  2 Oct 2024 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9197A1D0493;
+	Wed,  2 Oct 2024 13:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYoxEgCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdhDVN5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4991CF5C6;
-	Wed,  2 Oct 2024 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB831D04B4;
+	Wed,  2 Oct 2024 13:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877062; cv=none; b=JTsR8sq2iVe7g0ovOfRley0ixYcn3t+wkVBJ7OpoT3HCuLyyKP4CQsAhNtUFpKjBWW83toXkvXaP+Oku11oH7H1ReVf4nPpspvLtzrqtlv+dtVjt1W6y6/Bfi/PvGe+hapjEK06m8zSAsZsJY1m8V+EDI2Nb3wsGR3h2zbbdg9I=
+	t=1727877065; cv=none; b=oYbsGPI3iW857R0DluUohwbwAFOUVNUb5vM62EcRLTn3c34aOQNcYMmmJCtpXTdRNIaGM/tXSTpylVoLVcnWvfOlK3EmAcm7JAmEKZu6xSKBBzAlZHopY3lLvqFZXFEMDc+HPWn2mRgTBqqz2W44cILvNX2NvVHERAa1syo82Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877062; c=relaxed/simple;
-	bh=DY3nRYjgibTO2ilP0o/Bta3AlJqaf5jSR5lK4+n8qMQ=;
+	s=arc-20240116; t=1727877065; c=relaxed/simple;
+	bh=IIiY1fneqRkwvbNqRO8oODhUYkT5v+oRQhqAdz4hiKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RS5c+/G+SsL2EMJ7rgBciBCLdOLPuilHaxeAZL2vYAQBfEOdckz1DZAyOq9KAbTXGFnHzbpXrhoK05IojPU0K66bfJfiQc+d5dP9VqIcJvFcaQ8EJu+v8Rmj0LFm4BIWUe3I2FDJhjaTdFTXpR/QUcgh2scEW7YhdzRqaNUVpSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYoxEgCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8732C4CEC2;
-	Wed,  2 Oct 2024 13:51:01 +0000 (UTC)
+	 MIME-Version; b=EBnsLHeCy6M9d1DLX1etVzXE8m36YXdgYMRrX05vuKvToj52irwnwZroIC8Y74E36kPyKj+8piedGU8lZQWjreBGGzDEAAyc+axWz+7Q6SlYScXG/uvwcFHJWQkm9it3Z9T12ReLiANKboAL5jJW5EYZCRoRoIHGvApNDUPXTLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdhDVN5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD42C4CEC2;
+	Wed,  2 Oct 2024 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877062;
-	bh=DY3nRYjgibTO2ilP0o/Bta3AlJqaf5jSR5lK4+n8qMQ=;
+	s=korg; t=1727877065;
+	bh=IIiY1fneqRkwvbNqRO8oODhUYkT5v+oRQhqAdz4hiKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYoxEgCJw+0knJ8IfrpKC+BSMvMk3PBkt80HFER4mkNNv8yiaMBMW0QnZG6TPWjNp
-	 yl3sfXyly4HleYmAa/iGM8t97KBLytsLacLTWD6Tfcq7WAP0d9Oy4mfHI4tAK9GKZp
-	 owPKMRZKWAfHT9e9tuR/W3YkNJ7m1BCmLX/uNL6s=
+	b=IdhDVN5Ju3cIeUSXgSU+vVf1mhpetCpCUPWFk2AuwaXyIgyVI2/hTvrEj05WTtrz7
+	 9c9C0Y7qj5Ro0vZaynTkcgpB5+gmy1ZkNgomafCMryzofQeVkgXra86rexJO6L5iyx
+	 k7+IhIF3+VCI5H6FfYvToao3DpraR+1GrSsm/HUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Joe Damato <jdamato@fastly.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.11 651/695] eventpoll: Annotate data-race of busy_poll_usecs
-Date: Wed,  2 Oct 2024 15:00:49 +0200
-Message-ID: <20241002125848.497838622@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.11 652/695] md: Dont flush sync_work in md_write_start()
+Date: Wed,  2 Oct 2024 15:00:50 +0200
+Message-ID: <20241002125848.536831252@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,36 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Martin Karsten <mkarsten@uwaterloo.ca>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit b9ca079dd6b09e08863aa998edf5c47597806c05 upstream.
+commit 86ad4cda79e0dade87d4bb0d32e1fe541d4a63e8 upstream.
 
-A struct eventpoll's busy_poll_usecs field can be modified via a user
-ioctl at any time. All reads of this field should be annotated with
-READ_ONCE.
+Because flush sync_work may trigger mddev_suspend() if there are spares,
+and this should never be done in IO path because mddev_suspend() is used
+to wait for IO.
 
-Fixes: 85455c795c07 ("eventpoll: support busy poll per epoll instance")
+This problem is found by code review.
+
+Fixes: bc08041b32ab ("md: suspend array in md_start_sync() if array need reconfiguration")
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Karsten <mkarsten@uwaterloo.ca>
-Link: https://lore.kernel.org/r/20240806123301.167557-1-jdamato@fastly.com
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240801124746.242558-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/eventpoll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/md.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -420,7 +420,7 @@ static bool busy_loop_ep_timeout(unsigne
- 
- static bool ep_busy_loop_on(struct eventpoll *ep)
- {
--	return !!ep->busy_poll_usecs || net_busy_loop_on();
-+	return !!READ_ONCE(ep->busy_poll_usecs) || net_busy_loop_on();
- }
- 
- static bool ep_busy_loop_end(void *p, unsigned long start_time)
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8668,7 +8668,6 @@ void md_write_start(struct mddev *mddev,
+ 	BUG_ON(mddev->ro == MD_RDONLY);
+ 	if (mddev->ro == MD_AUTO_READ) {
+ 		/* need to switch to read/write */
+-		flush_work(&mddev->sync_work);
+ 		mddev->ro = MD_RDWR;
+ 		set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
+ 		md_wakeup_thread(mddev->thread);
 
 
 
