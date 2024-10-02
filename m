@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-80452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A190598DD7D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 919E998DD8C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5CB2846ED
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413321F264AC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64B71D130B;
-	Wed,  2 Oct 2024 14:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20821D0E1F;
+	Wed,  2 Oct 2024 14:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTp4ulbs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRf0vjVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27B91D1308;
-	Wed,  2 Oct 2024 14:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAFD1D043E;
+	Wed,  2 Oct 2024 14:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880413; cv=none; b=TqEGfZ5y7ECvvLjVi4PRqk8qOnk3fQ612mDUTxItMuTnSKgsWwmkuHgcSFNP6XJkBEWXfX53muGsLoqy3oLhpghOk5g8bbUD3cFmzADUIMGDf2/A7gR/jrtbz408PtDuMi42mL5o4GSOTDyCXLcFU5SByOujW0UL4IQU3h3x+1o=
+	t=1727880445; cv=none; b=G5Y/8CWQAe0Ee4+M690AvbmoPbGLpDBHhe4NFWEAzn2pyg5yX++BVgjlUA8qzJ1G6WvJux0KWeqTgfT9GRDt3vP7vrW+z79730W4O9hjVFlnxjqRGv/UwJUcBoqyX+ibbl1iumuR+iSo1WcjrI2GD3BF0qLImSBkVMp1/ME/bBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880413; c=relaxed/simple;
-	bh=yJCakv226MQv8O9UmI4HPCy+drutU7/VmNsKxAhtlR8=;
+	s=arc-20240116; t=1727880445; c=relaxed/simple;
+	bh=OZKdYKCY0PIg6WfZ1hziwoFyQqPdhPkCtylq7bUL4v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PjVMfcRtZazP5KdghR48ZjoxF9LTHEquZOyLK+HbFRt5EYnBqEPb/n8S52rFgsGS5134/APDXZQvLRZuCi7A+MptIzdSlXszM6nAozD1EIzRgXKY6xC1pCkB6qtpZOrMm6tAs+OVRIoHd6yotTQ8gCbFX+lXuNhDYGEj4flSxFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTp4ulbs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFFAC4CEC5;
-	Wed,  2 Oct 2024 14:46:53 +0000 (UTC)
+	 MIME-Version; b=By55ESss+foFwN4Ln/IhMpXvMRrgLZ8G56/Ipf054d9GiUmhH6ic9ZdgiBnrKsgbsbm3VFdWzz8lKVUGNw2uFpTW3Nm0IH7v8xKRIpAiqJqnfaQRA9j7Xe5/Jcf9n+d4dILXO1SE+aPVXIgKOhkDUroZpESwv49TnuV+Bmt+VBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRf0vjVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D73C4CEC2;
+	Wed,  2 Oct 2024 14:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880413;
-	bh=yJCakv226MQv8O9UmI4HPCy+drutU7/VmNsKxAhtlR8=;
+	s=korg; t=1727880445;
+	bh=OZKdYKCY0PIg6WfZ1hziwoFyQqPdhPkCtylq7bUL4v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTp4ulbsWZynDOn+PAWgi17+PzpQ05ImStRwkgBpwkL8dyUXJ8rye8S/BxnJrouGq
-	 JuLUWhsR9eA9yjfxFV478FobiwZPzdWdi1JEoBmpx3KYipOi2KQWErATWGUMtVzjnC
-	 meZAr/obHBWxgLtr/ZhIenEuYQsWMxOxBBsFH0KE=
+	b=WRf0vjVOS5phKZxiOHCwdspLgHJ40Vxon0ROp+2sYvgR9ULoBADFO2hUi5WVxkMQa
+	 j3IxAXgOOxZ0rQWpGm44BQJJAdtaLNW6mFKrrpYgbxt7VVFeCNQD72AX55DVn7rNGB
+	 sTUKMOIbfIpW8tqoUgbnbJcAqtEwt5JG1SX0VAIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>
-Subject: [PATCH 6.6 433/538] arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled
-Date: Wed,  2 Oct 2024 15:01:12 +0200
-Message-ID: <20241002125809.530901902@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.6 434/538] USB: appledisplay: close race between probe and completion handler
+Date: Wed,  2 Oct 2024 15:01:13 +0200
+Message-ID: <20241002125809.571395952@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -60,46 +58,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 09d385679487c58f0859c1ad4f404ba3df2f8830 upstream.
+commit 8265d06b7794493d82c5c21a12d7ba43eccc30cb upstream.
 
-USB 3.0 on xhci1 is not used, as the controller shares the same PHY as
-pcie1. The latter is enabled to support the M.2 PCIe WLAN card on this
-design.
+There is a small window during probing when IO is running
+but the backlight is not registered. Processing events
+during that time will crash. The completion handler
+needs to check for a backlight before scheduling work.
 
-Mark USB 3.0 as disabled on this controller using the
-"mediatek,u3p-dis-msk" property.
+The bug is as old as the driver.
 
-Reported-by: Nícolas F. R. A. Prado <nfraprado@collabora.com> #KernelCI
-Closes: https://lore.kernel.org/all/9fce9838-ef87-4d1b-b3df-63e1ddb0ec51@notapiano/
-Fixes: b6267a396e1c ("arm64: dts: mediatek: cherry: Enable T-PHYs and USB XHCI controllers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240731034411.371178-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240912123317.1026049-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/misc/appledisplay.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -1312,6 +1312,7 @@
- 	usb2-lpm-disable;
- 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
- 	vbus-supply = <&usb_vbus>;
-+	mediatek,u3p-dis-msk = <1>;
- };
+--- a/drivers/usb/misc/appledisplay.c
++++ b/drivers/usb/misc/appledisplay.c
+@@ -107,7 +107,12 @@ static void appledisplay_complete(struct
+ 	case ACD_BTN_BRIGHT_UP:
+ 	case ACD_BTN_BRIGHT_DOWN:
+ 		pdata->button_pressed = 1;
+-		schedule_delayed_work(&pdata->work, 0);
++		/*
++		 * there is a window during which no device
++		 * is registered
++		 */
++		if (pdata->bd )
++			schedule_delayed_work(&pdata->work, 0);
+ 		break;
+ 	case ACD_BTN_NONE:
+ 	default:
+@@ -202,6 +207,7 @@ static int appledisplay_probe(struct usb
+ 	const struct usb_device_id *id)
+ {
+ 	struct backlight_properties props;
++	struct backlight_device *backlight;
+ 	struct appledisplay *pdata;
+ 	struct usb_device *udev = interface_to_usbdev(iface);
+ 	struct usb_endpoint_descriptor *endpoint;
+@@ -272,13 +278,14 @@ static int appledisplay_probe(struct usb
+ 	memset(&props, 0, sizeof(struct backlight_properties));
+ 	props.type = BACKLIGHT_RAW;
+ 	props.max_brightness = 0xff;
+-	pdata->bd = backlight_device_register(bl_name, NULL, pdata,
++	backlight = backlight_device_register(bl_name, NULL, pdata,
+ 					      &appledisplay_bl_data, &props);
+-	if (IS_ERR(pdata->bd)) {
++	if (IS_ERR(backlight)) {
+ 		dev_err(&iface->dev, "Backlight registration failed\n");
+-		retval = PTR_ERR(pdata->bd);
++		retval = PTR_ERR(backlight);
+ 		goto error;
+ 	}
++	pdata->bd = backlight;
  
- #include <arm/cros-ec-keyboard.dtsi>
+ 	/* Try to get brightness */
+ 	brightness = appledisplay_bl_get_brightness(pdata->bd);
 
 
 
