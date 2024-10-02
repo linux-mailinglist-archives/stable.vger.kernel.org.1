@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-80157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF4498DC32
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B648898D991
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034661C24192
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82B81C223E3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4435E1D2719;
-	Wed,  2 Oct 2024 14:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B545D1D0BAC;
+	Wed,  2 Oct 2024 14:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t92wYsa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OllS4116"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023371474BC;
-	Wed,  2 Oct 2024 14:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725A31D0956;
+	Wed,  2 Oct 2024 14:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879550; cv=none; b=t6HyfzV53bVvbmx8JqIhrU+bUSJMkFV5JfzV4kSLTyIb+xFZswUz9ymbL6U/OwlfhwyvcMUVrHA2WBbIamxlR3Zcnt2TSsEzd6WDhv5RdiqCASLWEhZFpsNbYSTrXY/HxOKRwvqiMuCnXHbhQOTsSvXhtyyMcYmH1bnv+Y1t/w4=
+	t=1727878082; cv=none; b=AHpWxs7qWXGwtAbfchMq/26/+e6zqHwExGMVTyWthmJfmZdzdwWoghUsAPUGZjPGGBVozsy3BU6qAVedMinLKsJSZ6Q8qSB+/RosYsLSnnhu4ivVnNCPw097t/Qw7FBwoCWye6Mmq3kug4dm9RFLoqYkxPl2OJtNDCbAsMxyONc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879550; c=relaxed/simple;
-	bh=09ZlixNu90ICKNllqvRemGJNnFd0Hj6cCbCxxo7A/mw=;
+	s=arc-20240116; t=1727878082; c=relaxed/simple;
+	bh=ar8OiwV6/4JkkXnDI0OaYIrASnDElHa3Y5dCi9T1KMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5zi8AP6p7t5eJ14lHpVc5vtqx/Rn3qJJljdkRhookeq5qPXzGAtaU1xda2bzy/tK+JssJd6cXNlOwKt7pbqfLmQwRPCWh1R/smePsWXiJt8B2eFPlgN76pJm5X190wdvOMl+dIU1bO+7o+j10qrXcOoGyi7GpnJjHep6aMM51k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t92wYsa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D68C4CEC2;
-	Wed,  2 Oct 2024 14:32:29 +0000 (UTC)
+	 MIME-Version; b=saWx2ceWMu9fmgPm3AFd4qtW4UGxN/P35Mgx+Jcd6SgGT1a8GG7o9i6qUUWdVvgnotFqPjxQdVxANumJbiyRd07uyRNZolshxGmUy/QNhRM74l4h5GuJ59QWbRGQHxsc73MuG4tWjjJff+3OlSZi4e1efgYvUyToJmRC1K/uFL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OllS4116; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF39CC4CEC5;
+	Wed,  2 Oct 2024 14:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879549;
-	bh=09ZlixNu90ICKNllqvRemGJNnFd0Hj6cCbCxxo7A/mw=;
+	s=korg; t=1727878082;
+	bh=ar8OiwV6/4JkkXnDI0OaYIrASnDElHa3Y5dCi9T1KMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t92wYsa/PBgs84y0vslwQXV040WUHQfeo/ie0p5rXAoF2ADpvRRTGATnrIOU+Iwg5
-	 DbaRaQzGI1hMk8v6QqBBKCwPBAwPELHciEm6lxlCDUxjy9qY0npgSF1EMQvvSpX0Zl
-	 FrV/CxgYTUK2HksVPGdEglSRqu4+OwQnSUDQ+nEM=
+	b=OllS4116Q7v8lA0rtKAzG45AuVPC4bhuy9aC7cGrP7dA6YcDpX2ufqkPaGGg6uYOM
+	 rOIHgsSKYjTpw37BR+xgdnjmCZVBvkH/C8Z8D+XDNk3Ra94hiE6fZ98/crt04KldcS
+	 FhwUt+bezyuF66S93+x/WlSQaGx7/SHlmQRWYGs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/538] powerpc/8xx: Fix kernel vs user address comparison
+Subject: [PATCH 6.10 295/634] perf lock contention: Change stack_id type to s32
 Date: Wed,  2 Oct 2024 14:56:35 +0200
-Message-ID: <20241002125758.411278896@linuxfoundation.org>
+Message-ID: <20241002125822.756512082@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +69,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 65a82e117ffeeab0baf6f871a1cab11a28ace183 ]
+[ Upstream commit 040c0f887fdcfe747a3f63c94e9cd29e9ed0b872 ]
 
-Since commit 9132a2e82adc ("powerpc/8xx: Define a MODULE area below
-kernel text"), module exec space is below PAGE_OFFSET so not only
-space above PAGE_OFFSET, but space above TASK_SIZE need to be seen
-as kernel space.
+The bpf_get_stackid() helper returns a signed type to check whether it
+failed to get a stacktrace or not.  But it saved the result in u32 and
+checked if the value is negative.
 
-Until now the problem went undetected because by default TASK_SIZE
-is 0x8000000 which means address space is determined by just
-checking upper address bit. But when TASK_SIZE is over 0x80000000,
-PAGE_OFFSET is used for comparison, leading to thinking module
-addresses are part of user space.
+      376         if (needs_callstack) {
+      377                 pelem->stack_id = bpf_get_stackid(ctx, &stacks,
+      378                                                   BPF_F_FAST_STACK_CMP | stack_skip);
+  --> 379                 if (pelem->stack_id < 0)
 
-Fix it by using TASK_SIZE instead of PAGE_OFFSET for address
-comparison.
+  ./tools/perf/util/bpf_skel/lock_contention.bpf.c:379 contention_begin()
+  warn: unsigned 'pelem->stack_id' is never less than zero.
 
-Fixes: 9132a2e82adc ("powerpc/8xx: Define a MODULE area below kernel text")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/3f574c9845ff0a023b46cb4f38d2c45aecd769bd.1724173828.git.christophe.leroy@csgroup.eu
+Let's change the type to s32 instead.
+
+Fixes: 6d499a6b3d90277d ("perf lock: Print the number of lost entries for BPF")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240812172533.2015291-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_8xx.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/util/bpf_skel/lock_data.h       | 4 ++--
+ tools/perf/util/bpf_skel/vmlinux/vmlinux.h | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 647b0b445e89d..0c94db8e2bded 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -41,12 +41,12 @@
- #include "head_32.h"
+diff --git a/tools/perf/util/bpf_skel/lock_data.h b/tools/perf/util/bpf_skel/lock_data.h
+index 36af11faad03c..de12892f992f8 100644
+--- a/tools/perf/util/bpf_skel/lock_data.h
++++ b/tools/perf/util/bpf_skel/lock_data.h
+@@ -7,11 +7,11 @@ struct tstamp_data {
+ 	u64 timestamp;
+ 	u64 lock;
+ 	u32 flags;
+-	u32 stack_id;
++	s32 stack_id;
+ };
  
- .macro compare_to_kernel_boundary scratch, addr
--#if CONFIG_TASK_SIZE <= 0x80000000 && CONFIG_PAGE_OFFSET >= 0x80000000
-+#if CONFIG_TASK_SIZE <= 0x80000000 && MODULES_VADDR >= 0x80000000
- /* By simply checking Address >= 0x80000000, we know if its a kernel address */
- 	not.	\scratch, \addr
- #else
- 	rlwinm	\scratch, \addr, 16, 0xfff8
--	cmpli	cr0, \scratch, PAGE_OFFSET@h
-+	cmpli	cr0, \scratch, TASK_SIZE@h
- #endif
- .endm
+ struct contention_key {
+-	u32 stack_id;
++	s32 stack_id;
+ 	u32 pid;
+ 	u64 lock_addr_or_cgroup;
+ };
+diff --git a/tools/perf/util/bpf_skel/vmlinux/vmlinux.h b/tools/perf/util/bpf_skel/vmlinux/vmlinux.h
+index e9028235d7717..d818e30c54571 100644
+--- a/tools/perf/util/bpf_skel/vmlinux/vmlinux.h
++++ b/tools/perf/util/bpf_skel/vmlinux/vmlinux.h
+@@ -15,6 +15,7 @@
  
-@@ -404,7 +404,7 @@ FixupDAR:/* Entry point for dcbx workaround. */
- 	mfspr	r10, SPRN_SRR0
- 	mtspr	SPRN_MD_EPN, r10
- 	rlwinm	r11, r10, 16, 0xfff8
--	cmpli	cr1, r11, PAGE_OFFSET@h
-+	cmpli	cr1, r11, TASK_SIZE@h
- 	mfspr	r11, SPRN_M_TWB	/* Get level 1 table */
- 	blt+	cr1, 3f
+ typedef __u8 u8;
+ typedef __u32 u32;
++typedef __s32 s32;
+ typedef __u64 u64;
+ typedef __s64 s64;
  
 -- 
 2.43.0
