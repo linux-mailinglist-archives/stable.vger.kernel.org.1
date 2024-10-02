@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-80259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCEC98DCAE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF0298DA05
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 223EA1F282AD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FF601F27603
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989A41D27BC;
-	Wed,  2 Oct 2024 14:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9486E1D07BA;
+	Wed,  2 Oct 2024 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aiELsACb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNua77rV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564771D0BBE;
-	Wed,  2 Oct 2024 14:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529021D0414;
+	Wed,  2 Oct 2024 14:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879846; cv=none; b=HdDzTkfxYVVyRWRV7MkCkZ08o4m2LnQ32LxiFq+IHKozHJHa1ye6BK+9egDi7R1+jLClnv/Md9Gd1rL6Wqb4nsoxrWpTMKR7BPQYSgXdHfN4tPsz/K90rNV6sq1AykSuYQuOf5DfolMG5x7r06U7kCMqxEjgm68Md50GVrWQNk4=
+	t=1727878361; cv=none; b=WPB5m+mep6QCGidaISxx64zdutre83Roz8lWY804GUoU9HCgY6P3VFVWl/CWR4uXy2bx9D7OOhCpRMmJDdYPGlzVacYIGi/znBjVUAiGs61H2DQuFGJ4f3r/cGEyGBf3rie10ghNNCHzNb2YooAzKnsFIBVK2iBs0FLqU98ZV6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879846; c=relaxed/simple;
-	bh=8taHwNiWtetngj0ssQ7HJhaK9xk4xxThTv8EE6LVLb4=;
+	s=arc-20240116; t=1727878361; c=relaxed/simple;
+	bh=xPy/4wr9dze7gcPA45YFxNKEluRy5zZNlpmLOTBXZG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuUJYICPffV9/Yy16M/cqxmUYnnuOrmnLGu1XHYyv//qRzTcIppmI15VG8ubgOANUHqyPWfmhSxn5v2qBX9TUVVvRCmA1+HUTTwVwVy2SoiZLpvmrYVu04JUodDt8aB63gZcVcR+6cGUNE9zSy7wlTxWEp9eKtIFSlYJs0F4bfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiELsACb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E70C4CEC2;
-	Wed,  2 Oct 2024 14:37:25 +0000 (UTC)
+	 MIME-Version; b=p7Y9ipHWC3Ah+VkD+wl9W24quI9UDAVez5xRM9bS1vCVfq/5uTZDQS73IPm1LdNPUiMm4R+fmAEBYrLejiWvUoFXzoszgYclsoBAximPH0/qC0pafBPAiKQ0aMNt+hk105ugHkrR+EtHMmakZb6Aw7R+NJMFKffize+PuOf/D+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNua77rV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18DFC4CEC2;
+	Wed,  2 Oct 2024 14:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879846;
-	bh=8taHwNiWtetngj0ssQ7HJhaK9xk4xxThTv8EE6LVLb4=;
+	s=korg; t=1727878361;
+	bh=xPy/4wr9dze7gcPA45YFxNKEluRy5zZNlpmLOTBXZG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aiELsACbV0GKKhyuWqYS6oFCHSMeHuAzvR+SjxPRT0gggazUh5QvJ9HwCn/iTyH18
-	 KogOQ1z+h5fCkdjB/8ZeY/T+7ZZqZPzAiT8ANG+aln3ff2V28O0z70OaSi4XFLtKiM
-	 HRyXtRmr8HTwMdxlq1xlnv5xME5ehIV8eP7S7wPg=
+	b=SNua77rV4dy/5AJADEXD0L8PSd+j3X97J4b6WnO+1bq8cHUE+jR2ZvzpIGXSZkkR0
+	 5S8sjV2AZP+99oxqGKXNNtNdUo0XX9QheXRW2NE0QYKpf+v1IqwKtje88loSmZnlpY
+	 IxokD5QLImAtaH0ormMkOJGvWuzn4jLYdbnAp7Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/538] ext4: check stripe size compatibility on remount as well
+Subject: [PATCH 6.10 370/634] RDMA/mlx5: Drop redundant work canceling from clean_keys()
 Date: Wed,  2 Oct 2024 14:57:50 +0200
-Message-ID: <20241002125801.370454549@linuxfoundation.org>
+Message-ID: <20241002125825.702836192@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit ee85e0938aa8f9846d21e4d302c3cf6a2a75110d ]
+[ Upstream commit 30e6bd8d3b5639f8f4261e5e6c0917ce264b8dc2 ]
 
-We disable stripe size in __ext4_fill_super if it is not a multiple of
-the cluster ratio however this check is missed when trying to remount.
-This can leave us with cases where stripe < cluster_ratio after
-remount:set making EXT4_B2C(sbi->s_stripe) become 0 that can cause some
-unforeseen bugs like divide by 0.
+The canceling of dealyed work in clean_keys() is a leftover from years
+back and was added to prevent races in the cleanup process of MR cache.
+The cleanup process was rewritten a few years ago and the canceling of
+delayed work and flushing of workqueue was added before the call to
+clean_keys().
 
-Fix that by adding the check in remount path as well.
-
-Reported-by: syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com
-Tested-by: syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Fixes: c3defd99d58c ("ext4: treat stripe in block unit")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/3a493bb503c3598e25dcfbed2936bb2dff3fece7.1725002410.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/943d21f5a9dba7b98a3e1d531e3561ffe9745d71.1725362530.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 7ebb00cea49d ("RDMA/mlx5: Fix MR cache temp entries cleanup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 5baacb3058abd..46c4f75049791 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5205,6 +5205,18 @@ static int ext4_block_group_meta_init(struct super_block *sb, int silent)
- 	return 0;
- }
- 
-+/*
-+ * It's hard to get stripe aligned blocks if stripe is not aligned with
-+ * cluster, just disable stripe and alert user to simplify code and avoid
-+ * stripe aligned allocation which will rarely succeed.
-+ */
-+static bool ext4_is_stripe_incompatible(struct super_block *sb, unsigned long stripe)
-+{
-+	struct ext4_sb_info *sbi = EXT4_SB(sb);
-+	return (stripe > 0 && sbi->s_cluster_ratio > 1 &&
-+		stripe % sbi->s_cluster_ratio != 0);
-+}
-+
- static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index b3a8dc9465c04..842e218cd0b5e 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -779,7 +779,6 @@ static void clean_keys(struct mlx5_ib_dev *dev, struct mlx5_cache_ent *ent)
  {
- 	struct ext4_super_block *es = NULL;
-@@ -5312,13 +5324,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 		goto failed_mount3;
+ 	u32 mkey;
  
- 	sbi->s_stripe = ext4_get_stripe_size(sbi);
--	/*
--	 * It's hard to get stripe aligned blocks if stripe is not aligned with
--	 * cluster, just disable stripe and alert user to simpfy code and avoid
--	 * stripe aligned allocation which will rarely successes.
--	 */
--	if (sbi->s_stripe > 0 && sbi->s_cluster_ratio > 1 &&
--	    sbi->s_stripe % sbi->s_cluster_ratio != 0) {
-+	if (ext4_is_stripe_incompatible(sb, sbi->s_stripe)) {
- 		ext4_msg(sb, KERN_WARNING,
- 			 "stripe (%lu) is not aligned with cluster size (%u), "
- 			 "stripe is disabled",
-@@ -6482,6 +6488,15 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
- 
- 	}
- 
-+	if ((ctx->spec & EXT4_SPEC_s_stripe) &&
-+	    ext4_is_stripe_incompatible(sb, ctx->s_stripe)) {
-+		ext4_msg(sb, KERN_WARNING,
-+			 "stripe (%lu) is not aligned with cluster size (%u), "
-+			 "stripe is disabled",
-+			 ctx->s_stripe, sbi->s_cluster_ratio);
-+		ctx->s_stripe = 0;
-+	}
-+
- 	/*
- 	 * Changing the DIOREAD_NOLOCK or DELALLOC mount options may cause
- 	 * two calls to ext4_should_dioread_nolock() to return inconsistent
+-	cancel_delayed_work(&ent->dwork);
+ 	spin_lock_irq(&ent->mkeys_queue.lock);
+ 	while (ent->mkeys_queue.ci) {
+ 		mkey = pop_mkey_locked(ent);
 -- 
 2.43.0
 
