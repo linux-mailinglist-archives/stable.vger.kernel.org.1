@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-79043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EB498D642
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A37AB98D681
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20A6C1F22FA6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:38:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52FCE1F23567
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA90E1D04B8;
-	Wed,  2 Oct 2024 13:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6961D0DD7;
+	Wed,  2 Oct 2024 13:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqSzCGgY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lm4PTpK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92891CF5C6;
-	Wed,  2 Oct 2024 13:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CA11D097B;
+	Wed,  2 Oct 2024 13:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876272; cv=none; b=NVtlH6zcTPuEfnecX+TZuauF+ja+mrkUDvo+upAndUBbHT/dDjLEcEAR8GRgE+Firv1Q0JfgAeqLxgYdG9p7oyXIz/cC/Xg0t0EAE6XqbFSFoDbh2N7i0RKWJbjS0N353kSG6qfeJMgPKTszqB3onPtaaPr/GqUpsUrV6Pu+27o=
+	t=1727876392; cv=none; b=EWt8t/znGESugSS3l5XqJUnoaOpjmXuybImp+Pv46xvvaGLzhZHIywLAum3AHVZGVUQlrts+Gvf88l+cZMKf2a/7xP5u4qRQ9QPsptq/MmghJJ2BiviuIHLuVQCFehHEZt4kIvoyOWa1CQVdzLFXJtiwo/PbWRcBg7PQa6tlTUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876272; c=relaxed/simple;
-	bh=xvmWxeO+8O4XXzAVODBVdMdZq05c7hg5FbxT6GYdDYE=;
+	s=arc-20240116; t=1727876392; c=relaxed/simple;
+	bh=vGNvC1yQhhLvcNtXJ+b9q+YyG1a1Rt2vt2vLUp9IVN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SI7Sz7DmPaTKq0a8btan0Z4mC77RIYLXatfpfP1xjBo2jCK0iT6eCLhvS4j6SJmoKPaC/CX6OtairIUG0BTS7A7drE84Gam1lnkgZ8Wyq76VeeAYNuOG8szSRJWIxUIv6XgdV5VkoWxNVQFY3FKnIracmDe0jcCSa/d5LRvMd20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqSzCGgY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336CCC4CECD;
-	Wed,  2 Oct 2024 13:37:52 +0000 (UTC)
+	 MIME-Version; b=LzhLlPHa8wpq4YP/1M+9C5lI/uFjUQJmIuXrEC9z8J2u4I5s4Nuf+QAT75UvWDXS/eJStFFzKXP+ZoMUi5lL7+cpUpRuHicdWgco7wDJVSKb9zhQKQuTRQFDtUdcDaD/B9BBwZFN3ln+0a6w54+dkt/R9m39kzNwouViTBpNZaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lm4PTpK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B96C4CEC5;
+	Wed,  2 Oct 2024 13:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876272;
-	bh=xvmWxeO+8O4XXzAVODBVdMdZq05c7hg5FbxT6GYdDYE=;
+	s=korg; t=1727876392;
+	bh=vGNvC1yQhhLvcNtXJ+b9q+YyG1a1Rt2vt2vLUp9IVN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqSzCGgYh7WNTWx98oecR/coNPNNYgfCP4qHAT2elVdjXUVEeL7v7k+6pamhY2+Kn
-	 rUidmTKP5ukIcK5yvjUX8KNQ8jHIAOAudIf2LFUO5vsal+MhypmjdtR/mNOh35GSW4
-	 Nasex9p+kXoc8eHSR2T2UiKzg0L8Bx0YgneWG4oU=
+	b=Lm4PTpK6BY+OZUnwYwG+2cYHP918fhOzb33UThDXFhd6nGhksuHygAXzpjqQGgh+f
+	 KdQiuIQoSri83n9qaTDigwD4wakTQQCU8xJhx84AbMVZ29fU5LxhpKOaGf6L9RM4Wd
+	 +r59n6q1U5TQHQ0tnryj1FN6I5kp86PtjN6hCX8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 386/695] RDMA/bnxt_re: Fix the table size for PSN/MSN entries
-Date: Wed,  2 Oct 2024 14:56:24 +0200
-Message-ID: <20241002125837.864320114@linuxfoundation.org>
+Subject: [PATCH 6.11 387/695] media: mediatek: vcodec: Fix H264 multi stateless decoder smatch warning
+Date: Wed,  2 Oct 2024 14:56:25 +0200
+Message-ID: <20241002125837.902987456@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,36 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit b930d0bac9c671c053dd66229010ca9298e84aab ]
+[ Upstream commit 9be85491619f1953b8a29590ca630be571941ffa ]
 
-HW MSN table size is always a power of 2. So the pages should be mapped
-accordingly.
+Fix a smatch static checker warning on vdec_h264_req_multi_if.c.
+Which leads to a kernel crash when fb is NULL.
 
-Use the power of two calculation while get the number of PSN/MSN entries.
-
-Fixes: 6f6bfbc595fb ("RDMA/bnxt_re: Expose the MSN table capability for user library")
-Link: https://patch.msgid.link/r/1724042847-1481-4-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 397edc703a10 ("media: mediatek: vcodec: add h264 decoder driver for mt8186")
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../vcodec/decoder/vdec/vdec_h264_req_multi_if.c         | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 7c757351a0166..982e85ba211bc 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -1042,6 +1042,8 @@ static int bnxt_re_init_user_qp(struct bnxt_re_dev *rdev, struct bnxt_re_pd *pd,
- 			    qplib_qp->sq.max_wqe :
- 			    ((qplib_qp->sq.max_wqe * qplib_qp->sq.wqe_size) /
- 			      sizeof(struct bnxt_qplib_sge));
-+		if (_is_host_msn_table(rdev->qplib_res.dattr->dev_cap_flags2))
-+			psn_nume = roundup_pow_of_two(psn_nume);
- 		bytes += (psn_nume * psn_sz);
- 	}
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
+index 2d4611e7fa0b2..1ed0ccec56655 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
+@@ -724,11 +724,16 @@ static int vdec_h264_slice_single_decode(void *h_vdec, struct mtk_vcodec_mem *bs
+ 		return vpu_dec_reset(vpu);
+ 
+ 	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
++	if (!fb) {
++		mtk_vdec_err(inst->ctx, "fb buffer is NULL");
++		return -ENOMEM;
++	}
++
+ 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
+ 	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
+ 
+-	y_fb_dma = fb ? (u64)fb->base_y.dma_addr : 0;
+-	c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
++	y_fb_dma = fb->base_y.dma_addr;
++	c_fb_dma = fb->base_c.dma_addr;
+ 	mtk_vdec_debug(inst->ctx, "[h264-dec] [%d] y_dma=%llx c_dma=%llx",
+ 		       inst->ctx->decoded_frame_cnt, y_fb_dma, c_fb_dma);
  
 -- 
 2.43.0
