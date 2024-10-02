@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7B098DCB5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE78F98DA1C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAF5E1F28296
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40E6C1F27B6E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B81A1D26EC;
-	Wed,  2 Oct 2024 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A711D0BAA;
+	Wed,  2 Oct 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RO0pPdJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRSvbQyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBAC1D0E25;
-	Wed,  2 Oct 2024 14:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA0C1D04A8;
+	Wed,  2 Oct 2024 14:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879873; cv=none; b=AUPj99hM2he9I8EXl57OZ41aTbXbIBkUQ4QaaBcQevaQDVtF+fcS3zLHDYtJT0iO7gpXaqPc8M/EnKN+CZ+OkRfIxsf+j3d+g8m9Y/n+age1Fm2KRJpCJfFnxNZ8BYlSA6MTEX98LaL8bffQl9898Yf9dNuZxAwXiKejfpNi9LA=
+	t=1727878417; cv=none; b=io5oisO9MQOUE03qgfjtmLDJVXP1ez8Jyeyxfzmx1H1O/UEq21r2GAMGr/lnClgaZVIOlOG1n6MPMYuPcO3Lg9jZFDlKDhoYA0SvTi9IB1oElCt4KC1uYoHAyZ4yX5ag6l3Mg5E5NBWfDIhC96pbU7wF9kvKbaiBURGyGnI92W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879873; c=relaxed/simple;
-	bh=QRCGzpKBW4bqJcf9N5iBCWJHfFTSEMhJiep/KGUyCVA=;
+	s=arc-20240116; t=1727878417; c=relaxed/simple;
+	bh=AwjPcd9cyrbZLX5cE1rqRvFYYlnERK6vcs+QpzeiwV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QuaAQwutFwYfHYROEczt0CJCCBphtfyYAxi1nI/IOpNslymU8LIyVuYnfwr3JxOGtoK8XFG3PcWjoKPpTZ2SP8U85LBRlJmzjdChzt5ZyrkyeaVLQSSNDiDjQSebAq+Pm1LhxxrqrckDEm02I194HciyZDrS4rKwlMMJA99kYws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RO0pPdJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD27C4CEC5;
-	Wed,  2 Oct 2024 14:37:52 +0000 (UTC)
+	 MIME-Version; b=DwoRIAo6F8vpGbLgP0sowmTwVK20mb/vFyYoqFyQ5IO9OZw4J6VRMxTzUfl0lRC5q07T7FtkEmNbR9MqNnH12mypkJQAxpWThP0ft99SreHDzqGkhcTFC6hO+NbdVNZKYClnGPstniEWARxqfmN3f/7qxEK2AUshVpPOvUDzJ5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRSvbQyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA08C4CEC2;
+	Wed,  2 Oct 2024 14:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879872;
-	bh=QRCGzpKBW4bqJcf9N5iBCWJHfFTSEMhJiep/KGUyCVA=;
+	s=korg; t=1727878417;
+	bh=AwjPcd9cyrbZLX5cE1rqRvFYYlnERK6vcs+QpzeiwV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RO0pPdJn5jpnVsoMASUfc+jHGOuTmVja/s84BxKCW4+QN9Yjeyj1sR2MVYYxRlWsO
-	 y5igQ1lz2Ic/znVJmlG7nnME5BpO1f1D+Bqwese5ybOyqNaY8rxWH+dklqQALgfPQp
-	 tHr4+6pByw7bGFbS2qkfnZrMOPZ84ObTHz5/vx7o=
+	b=WRSvbQytBFE/cs39W6uLa5Wg02ef9c5GJ3uMfdukQwA5n1Wmro76DhdATy++LXcl2
+	 CQXPkk7tTCi1kDVv2EkYPnJgGjXmuXlI/ax7JFMx7iO0MJz5LIWKeKbCtdf13nE7Zt
+	 mJMo6J8Wz+gHPdKizvB0US0/j7Jnj5TwJcWv4DsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Ingo Molnar <mingo@kernel.org>,
-	Raghavendra K T <raghavendra.kt@amd.com>,
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/538] sched/numa: Complete scanning of partial VMAs regardless of PID activity
+Subject: [PATCH 6.10 375/634] RDMA/hns: Fix the overflow risk of hem_list_calc_ba_range()
 Date: Wed,  2 Oct 2024 14:57:55 +0200
-Message-ID: <20241002125801.567313337@linuxfoundation.org>
+Message-ID: <20241002125825.900250347@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mel Gorman <mgorman@techsingularity.net>
+From: wenglianfa <wenglianfa@huawei.com>
 
-[ Upstream commit b7a5b537c55c088d891ae554103d1b281abef781 ]
+[ Upstream commit d586628b169d14bbf36be64d2b3ec9d9d2fe0432 ]
 
-NUMA Balancing skips VMAs when the current task has not trapped a NUMA
-fault within the VMA. If the VMA is skipped then mm->numa_scan_offset
-advances and a task that is trapping faults within the VMA may never
-fully update PTEs within the VMA.
+The max value of 'unit' and 'hop_num' is 2^24 and 2, so the value of
+'step' may exceed the range of u32. Change the type of 'step' to u64.
 
-Force tasks to update PTEs for partially scanned PTEs. The VMA will
-be tagged for NUMA hints by some task but this removes some of the
-benefit of tracking PID activity within a VMA. A follow-on patch
-will mitigate this problem.
-
-The test cases and machines evaluated did not trigger the corner case so
-the performance results are neutral with only small changes within the
-noise from normal test-to-test variance. However, the next patch makes
-the corner case easier to trigger.
-
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
-Link: https://lore.kernel.org/r/20231010083143.19593-6-mgorman@techsingularity.net
-Stable-dep-of: f22cde4371f3 ("sched/numa: Fix the vma scan starving issue")
+Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20240906093444.3571619-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/numa_balancing.h |  1 +
- include/trace/events/sched.h         |  3 ++-
- kernel/sched/fair.c                  | 18 +++++++++++++++---
- 3 files changed, 18 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
-index c127a1509e2fa..7dcc0bdfddbbf 100644
---- a/include/linux/sched/numa_balancing.h
-+++ b/include/linux/sched/numa_balancing.h
-@@ -21,6 +21,7 @@ enum numa_vmaskip_reason {
- 	NUMAB_SKIP_INACCESSIBLE,
- 	NUMAB_SKIP_SCAN_DELAY,
- 	NUMAB_SKIP_PID_INACTIVE,
-+	NUMAB_SKIP_IGNORE_PID,
- };
- 
- #ifdef CONFIG_NUMA_BALANCING
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index b0d0dbf491ea6..27b51c81b1067 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -670,7 +670,8 @@ DEFINE_EVENT(sched_numa_pair_template, sched_swap_numa,
- 	EM( NUMAB_SKIP_SHARED_RO,		"shared_ro" )	\
- 	EM( NUMAB_SKIP_INACCESSIBLE,		"inaccessible" )	\
- 	EM( NUMAB_SKIP_SCAN_DELAY,		"scan_delay" )	\
--	EMe(NUMAB_SKIP_PID_INACTIVE,		"pid_inactive" )
-+	EM( NUMAB_SKIP_PID_INACTIVE,		"pid_inactive" )	\
-+	EMe(NUMAB_SKIP_IGNORE_PID,		"ignore_pid_inactive" )
- 
- /* Redefine for export. */
- #undef EM
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 07363b73ccdcc..03eb1cab320d8 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3188,7 +3188,7 @@ static void reset_ptenuma_scan(struct task_struct *p)
- 	p->mm->numa_scan_offset = 0;
- }
- 
--static bool vma_is_accessed(struct vm_area_struct *vma)
-+static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index 02baa853a76c9..42111f31b3715 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -1041,9 +1041,9 @@ static bool hem_list_is_bottom_bt(int hopnum, int bt_level)
+  * @bt_level: base address table level
+  * @unit: ba entries per bt page
+  */
+-static u32 hem_list_calc_ba_range(int hopnum, int bt_level, int unit)
++static u64 hem_list_calc_ba_range(int hopnum, int bt_level, int unit)
  {
- 	unsigned long pids;
- 	/*
-@@ -3201,7 +3201,19 @@ static bool vma_is_accessed(struct vm_area_struct *vma)
- 		return true;
+-	u32 step;
++	u64 step;
+ 	int max;
+ 	int i;
  
- 	pids = vma->numab_state->pids_active[0] | vma->numab_state->pids_active[1];
--	return test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids);
-+	if (test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids))
-+		return true;
-+
-+	/*
-+	 * Complete a scan that has already started regardless of PID access, or
-+	 * some VMAs may never be scanned in multi-threaded applications:
-+	 */
-+	if (mm->numa_scan_offset > vma->vm_start) {
-+		trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_IGNORE_PID);
-+		return true;
-+	}
-+
-+	return false;
- }
+@@ -1079,7 +1079,7 @@ int hns_roce_hem_list_calc_root_ba(const struct hns_roce_buf_region *regions,
+ {
+ 	struct hns_roce_buf_region *r;
+ 	int total = 0;
+-	int step;
++	u64 step;
+ 	int i;
  
- #define VMA_PID_RESET_PERIOD (4 * sysctl_numa_balancing_scan_delay)
-@@ -3345,7 +3357,7 @@ static void task_numa_work(struct callback_head *work)
+ 	for (i = 0; i < region_cnt; i++) {
+@@ -1110,7 +1110,7 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
+ 	int ret = 0;
+ 	int max_ofs;
+ 	int level;
+-	u32 step;
++	u64 step;
+ 	int end;
+ 
+ 	if (hopnum <= 1)
+@@ -1147,7 +1147,7 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
  		}
  
- 		/* Do not scan the VMA if task has not accessed */
--		if (!vma_is_accessed(vma)) {
-+		if (!vma_is_accessed(mm, vma)) {
- 			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_PID_INACTIVE);
- 			continue;
- 		}
+ 		start_aligned = (distance / step) * step + r->offset;
+-		end = min_t(int, start_aligned + step - 1, max_ofs);
++		end = min_t(u64, start_aligned + step - 1, max_ofs);
+ 		cur = hem_list_alloc_item(hr_dev, start_aligned, end, unit,
+ 					  true);
+ 		if (!cur) {
+@@ -1235,7 +1235,7 @@ static int setup_middle_bt(struct hns_roce_dev *hr_dev, void *cpu_base,
+ 	struct hns_roce_hem_item *hem, *temp_hem;
+ 	int total = 0;
+ 	int offset;
+-	int step;
++	u64 step;
+ 
+ 	step = hem_list_calc_ba_range(r->hopnum, 1, unit);
+ 	if (step < 1)
 -- 
 2.43.0
 
