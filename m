@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615B998D83E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B750E98D568
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B3CF28119A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D26151C21EF8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE9C1D0940;
-	Wed,  2 Oct 2024 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34EE1CB32E;
+	Wed,  2 Oct 2024 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwaqX6S9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcyCboa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C25F1D0793;
-	Wed,  2 Oct 2024 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BDF1D0437;
+	Wed,  2 Oct 2024 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877453; cv=none; b=b8CQOp6gX3Tc5Gkr/R8x4f/+1Piw7xRCt343JsDNtLke3MGfyV2msM5vGD7l/rq0YwZ+0YOyIIGhX5mVT7jpjoeu9yrkckezCqVVRneVOfcTOKTzr5oC4wg2S5slA1dSUFyxUmj7tY+aF2Wp61bgUtB9+J0z/VakAXVWc4uLEw0=
+	t=1727875803; cv=none; b=h2+uJOoDhlyQ8+cIC55Q17bhnZw5pI9gf/L+9tGyYPaMnAYiLbQoqTMbKC0S8ynlW/tbPB/d0nwVY+ediekxyvZvcjLiUQ2F7klOv2ACrYdU67pGK6nqhNsIimbOyw94ZDzEqbl9qfWYWpEPzVhNhP6VxKVM/x0TPuCAvtGaFCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877453; c=relaxed/simple;
-	bh=oEgJHIo3FCVezkir5A0bEsPUsfVU9m9qCsa4dSFL8Fc=;
+	s=arc-20240116; t=1727875803; c=relaxed/simple;
+	bh=6s3+IlaAqOMR8AO5FiDiV88jyzdhqCKwZPnlGtngMIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxVOywxZjOX3+GrWrI4dT86+M9mReZFLqBpM758p495mRiWrsMaAfxkGc4H5JXP0dbKDPNy+z/62+baGn0jKxic0MnsnoM9nQRMm5t5LhOgZ0lq/sC0fhzaWuRdNdXE7gTkxOAN8St/xtimSpQ3Jj02H+Xmbqdh9mmJNzjZI0tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwaqX6S9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12477C4AF0E;
-	Wed,  2 Oct 2024 13:57:32 +0000 (UTC)
+	 MIME-Version; b=m/4obumQcbX+D3SwAKkXH16jrAGpMz5m4a52ba9evPQbs0ddxtRvDJJ5LjluZ3oCqZovCBXP/Uk0QQXJ+S0Q2GiXUJzaDPSNeGBH+clvsLolKY/8ztCT7Z0MYUkZMhG8HKl9XEi8GS3uwhLxEcnSRN4HsDuHLM3Qf6ZzAHYtPos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcyCboa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37224C4CEC5;
+	Wed,  2 Oct 2024 13:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877453;
-	bh=oEgJHIo3FCVezkir5A0bEsPUsfVU9m9qCsa4dSFL8Fc=;
+	s=korg; t=1727875803;
+	bh=6s3+IlaAqOMR8AO5FiDiV88jyzdhqCKwZPnlGtngMIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwaqX6S9hDkgztgAhN1A5xTz+2GZFhA25iujAurp7fYPrmj97u+5UyTr8wuEby7Xj
-	 j8v5x+zbMvtpZg/qwyAKUwjO3PMEutOF741xUcfD78wUhqGE1tyWd2+ORpRRIXMHxD
-	 o+07HmnnyeJySsx4nt5yhxWGojL+/dr/IUG/SMVA=
+	b=BcyCboa164F4wy20yrbUmR8Rkpn59BiojvVxRjy6vYamiHcPruhdhA0FQMiBBSJFO
+	 SkGH/q863F8RKKlAtzwXFtivcVsAofjuJ4VDcV7XNd9FEEP2bI6NwI+0n0IKdGjPxi
+	 jq+DaywL9ez+hSQva1qzhycEDvuZ11ro7Zz3oalI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 083/634] wifi: mac80211: use two-phase skb reclamation in ieee80211_do_stop()
+Subject: [PATCH 6.11 185/695] iommu/amd: Move allocation of the top table into v1_alloc_pgtable
 Date: Wed,  2 Oct 2024 14:53:03 +0200
-Message-ID: <20241002125814.388045664@linuxfoundation.org>
+Message-ID: <20241002125829.855552744@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 9d301de12da6e1bb069a9835c38359b8e8135121 ]
+[ Upstream commit 8d00b77a52ef4b2091696ca25753d0ab95e4d839 ]
 
-Since '__dev_queue_xmit()' should be called with interrupts enabled,
-the following backtrace:
+All the page table memory should be allocated/free within the io_pgtable
+struct. The v2 path is already doing this, make it consistent.
 
-ieee80211_do_stop()
- ...
- spin_lock_irqsave(&local->queue_stop_reason_lock, flags)
- ...
- ieee80211_free_txskb()
-  ieee80211_report_used_skb()
-   ieee80211_report_ack_skb()
-    cfg80211_mgmt_tx_status_ext()
-     nl80211_frame_tx_status()
-      genlmsg_multicast_netns()
-       genlmsg_multicast_netns_filtered()
-        nlmsg_multicast_filtered()
-	 netlink_broadcast_filtered()
-	  do_one_broadcast()
-	   netlink_broadcast_deliver()
-	    __netlink_sendskb()
-	     netlink_deliver_tap()
-	      __netlink_deliver_tap_skb()
-	       dev_queue_xmit()
-	        __dev_queue_xmit() ; with IRQS disabled
- ...
- spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags)
+It is hard to see but the free of the root in protection_domain_free() is
+a NOP on the success path because v1_free_pgtable() does
+amd_iommu_domain_clr_pt_root().
 
-issues the warning (as reported by syzbot reproducer):
+The root memory is already freed because free_sub_pt() put it on the
+freelist. The free path in protection_domain_free() is only used during
+error unwind of protection_domain_alloc().
 
-WARNING: CPU: 2 PID: 5128 at kernel/softirq.c:362 __local_bh_enable_ip+0xc3/0x120
-
-Fix this by implementing a two-phase skb reclamation in
-'ieee80211_do_stop()', where actual work is performed
-outside of a section with interrupts disabled.
-
-Fixes: 5061b0c2b906 ("mac80211: cooperate more with network namespaces")
-Reported-by: syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20240906123151.351647-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/1-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: 7a41dcb52f9d ("iommu/amd: Set the pgsize_bitmap correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/iommu/amd/io_pgtable.c |  8 ++++++--
+ drivers/iommu/amd/iommu.c      | 21 ++-------------------
+ 2 files changed, 8 insertions(+), 21 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index b935bb5d8ed1f..3e3814076006e 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -462,6 +462,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
+index 1074ee25064d0..05aed3cb46f1b 100644
+--- a/drivers/iommu/amd/io_pgtable.c
++++ b/drivers/iommu/amd/io_pgtable.c
+@@ -574,20 +574,24 @@ static void v1_free_pgtable(struct io_pgtable *iop)
+ 	       pgtable->mode > PAGE_MODE_6_LEVEL);
+ 
+ 	free_sub_pt(pgtable->root, pgtable->mode, &freelist);
++	iommu_put_pages_list(&freelist);
+ 
+ 	/* Update data structure */
+ 	amd_iommu_domain_clr_pt_root(dom);
+ 
+ 	/* Make changes visible to IOMMUs */
+ 	amd_iommu_domain_update(dom);
+-
+-	iommu_put_pages_list(&freelist);
+ }
+ 
+ static struct io_pgtable *v1_alloc_pgtable(struct io_pgtable_cfg *cfg, void *cookie)
  {
- 	struct ieee80211_local *local = sdata->local;
- 	unsigned long flags;
-+	struct sk_buff_head freeq;
- 	struct sk_buff *skb, *tmp;
- 	u32 hw_reconf_flags = 0;
- 	int i, flushed;
-@@ -641,18 +642,32 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		skb_queue_purge(&sdata->status_queue);
- 	}
+ 	struct amd_io_pgtable *pgtable = io_pgtable_cfg_to_data(cfg);
  
-+	/*
-+	 * Since ieee80211_free_txskb() may issue __dev_queue_xmit()
-+	 * which should be called with interrupts enabled, reclamation
-+	 * is done in two phases:
-+	 */
-+	__skb_queue_head_init(&freeq);
++	pgtable->root = iommu_alloc_page(GFP_KERNEL);
++	if (!pgtable->root)
++		return NULL;
++	pgtable->mode = PAGE_MODE_3_LEVEL;
 +
-+	/* unlink from local queues... */
- 	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
- 	for (i = 0; i < IEEE80211_MAX_QUEUES; i++) {
- 		skb_queue_walk_safe(&local->pending[i], skb, tmp) {
- 			struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 			if (info->control.vif == &sdata->vif) {
- 				__skb_unlink(skb, &local->pending[i]);
--				ieee80211_free_txskb(&local->hw, skb);
-+				__skb_queue_tail(&freeq, skb);
- 			}
- 		}
- 	}
- 	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
+ 	cfg->pgsize_bitmap  = AMD_IOMMU_PGSIZES;
+ 	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE;
+ 	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE;
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index fc660d4b10ac8..edbd4ca1451a8 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -52,8 +52,6 @@
+ #define HT_RANGE_START		(0xfd00000000ULL)
+ #define HT_RANGE_END		(0xffffffffffULL)
  
-+	/* ... and perform actual reclamation with interrupts enabled. */
-+	skb_queue_walk_safe(&freeq, skb, tmp) {
-+		__skb_unlink(skb, &freeq);
-+		ieee80211_free_txskb(&local->hw, skb);
-+	}
-+
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		ieee80211_txq_remove_vlan(local, sdata);
+-#define DEFAULT_PGTABLE_LEVEL	PAGE_MODE_3_LEVEL
+-
+ static DEFINE_SPINLOCK(pd_bitmap_lock);
  
+ LIST_HEAD(ioapic_map);
+@@ -2267,30 +2265,15 @@ void protection_domain_free(struct protection_domain *domain)
+ 	if (domain->iop.pgtbl_cfg.tlb)
+ 		free_io_pgtable_ops(&domain->iop.iop.ops);
+ 
+-	if (domain->iop.root)
+-		iommu_free_page(domain->iop.root);
+-
+ 	if (domain->id)
+ 		domain_id_free(domain->id);
+ 
+ 	kfree(domain);
+ }
+ 
+-static int protection_domain_init_v1(struct protection_domain *domain, int mode)
++static int protection_domain_init_v1(struct protection_domain *domain)
+ {
+-	u64 *pt_root = NULL;
+-
+-	BUG_ON(mode < PAGE_MODE_NONE || mode > PAGE_MODE_6_LEVEL);
+-
+-	if (mode != PAGE_MODE_NONE) {
+-		pt_root = iommu_alloc_page(GFP_KERNEL);
+-		if (!pt_root)
+-			return -ENOMEM;
+-	}
+-
+ 	domain->pd_mode = PD_MODE_V1;
+-	amd_iommu_domain_set_pgtable(domain, pt_root, mode);
+-
+ 	return 0;
+ }
+ 
+@@ -2343,7 +2326,7 @@ struct protection_domain *protection_domain_alloc(unsigned int type)
+ 
+ 	switch (pgtable) {
+ 	case AMD_IOMMU_V1:
+-		ret = protection_domain_init_v1(domain, DEFAULT_PGTABLE_LEVEL);
++		ret = protection_domain_init_v1(domain);
+ 		break;
+ 	case AMD_IOMMU_V2:
+ 		ret = protection_domain_init_v2(domain);
 -- 
 2.43.0
 
