@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA81198DBBC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FE598D93D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E4B2B241F9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754651F21F10
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FF41D1F7A;
-	Wed,  2 Oct 2024 14:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35B91D1E9F;
+	Wed,  2 Oct 2024 14:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/Dc2Wik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCPNHE00"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB211D14EF;
-	Wed,  2 Oct 2024 14:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9231D0DC3;
+	Wed,  2 Oct 2024 14:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879332; cv=none; b=O7qz2jFtfu8gZahQw+Ln+SOSw+Q8vVlqcHpdftoyXZYDR3WEe0+/EpJ7snhLEC9nQh2wIZarbrEcYb90BjSKD3l7FG43t7UBqNIrr6gl/79b919Jo8OY8dPTCYr7GhcQ7dkqnjVXwXF7WBAU+bGCELX4898HCQ5lkgnkWMVHhAw=
+	t=1727877866; cv=none; b=UQueXkx7/JyqnKr0Kx6WsF5xOMjQFOjoE2I+PeYN5R05zoOuLicUjlJEEN4rQn4nhKhl+a32xC8nAoBg9C9wpQWdcuY7kDMQhqZi/1S0C1mmdgh4eedHeVxNcLEJPJzi4nmxwpeQ8b/hQ5rf/xvBMKkCFBXjURw4YYgHU0QBtKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879332; c=relaxed/simple;
-	bh=qdLJSzjifFvNmi9dxOu1vfOMqM00xPPihZBPRU3YReg=;
+	s=arc-20240116; t=1727877866; c=relaxed/simple;
+	bh=mIW8Ub1mOyw/5QFU/i80+/BBLGqDGdj9OaqCnadM5nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lohSwywedH+imSlTVtkrFsuNQOL5+SC94tpYslrNlY8Q34gK8NWdBlMb5Mbu5PBwzsvknd6WfEg/zywubJ6bUho8aCMrEzUiMFG4kLXCLS2r8DB+NXyrwisfCLpJUghHEAjY//+Jm7wJQLpLKD6lOzYnL/2Kf21qDs3zVTkICcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/Dc2Wik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C34C4CEC2;
-	Wed,  2 Oct 2024 14:28:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MnDxm6zhpI97CBG1bOt+aZvKVKJKTS1DLkyeYrdIAxRpyD9XysB5THLNMhy7OhApyXhqyWymN0Qr/lo5S+N5SFMHjDUYgOq5vRsU0W9v7DSrAAmeyban5htKsVaBI9pXHh6b1Mi/ciAkW99jtkRoh0N1WOgEDQbLpprHczc5Kbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCPNHE00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C7CC4CEC2;
+	Wed,  2 Oct 2024 14:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879332;
-	bh=qdLJSzjifFvNmi9dxOu1vfOMqM00xPPihZBPRU3YReg=;
+	s=korg; t=1727877866;
+	bh=mIW8Ub1mOyw/5QFU/i80+/BBLGqDGdj9OaqCnadM5nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/Dc2WikcWoQk3k9uyTrEzGD12x3ZQKaQ1oGVmP3wns+cFdmvzFRmvAcH7wTXHa8Z
-	 gSNTvk7iK5ULODnqsFBkTDdPEp8RmDWpH7rxCmIUOOnT7z/H3u9FkJT7xZRmIqaY/W
-	 LfVyJ57St5rZlPjRzzSXyZ/Sbl/Qqxk2fUEBOLVE=
+	b=LCPNHE00WOpiySyd7zWGSrYLcwk8RT7XwuPwHMxNK7U473kl6JK7pPa5kqecCP3dM
+	 9Tpltzy5sX0cX+alWbf3/vm3CjXdwc/BXN0iNXu33JOIoH3nPcDUwDSR/WgQYLRUBe
+	 36b9ZkTmsfc2Frf7R9UOvTHBfYeUYaTSn4bkbKiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Walters <walters@verbum.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Jan Beulich <jbeulich@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/538] erofs: fix incorrect symlink detection in fast symlink
+Subject: [PATCH 6.10 221/634] xen: move max_pfn in xen_memory_setup() out of function scope
 Date: Wed,  2 Oct 2024 14:55:21 +0200
-Message-ID: <20241002125755.456640594@linuxfoundation.org>
+Message-ID: <20241002125819.824543823@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +64,193 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 9ed50b8231e37b1ae863f5dec8153b98d9f389b4 ]
+[ Upstream commit 43dc2a0f479b9cd30f6674986d7a40517e999d31 ]
 
-Fast symlink can be used if the on-disk symlink data is stored
-in the same block as the on-disk inode, so we don’t need to trigger
-another I/O for symlink data.  However, currently fs correction could be
-reported _incorrectly_ if inode xattrs are too large.
+Instead of having max_pfn as a local variable of xen_memory_setup(),
+make it a static variable in setup.c instead. This avoids having to
+pass it to subfunctions, which will be needed in more cases in future.
 
-In fact, these should be valid images although they cannot be handled as
-fast symlinks.
+Rename it to ini_nr_pages, as the value denotes the currently usable
+number of memory pages as passed from the hypervisor at boot time.
 
-Many thanks to Colin for reporting this!
-
-Reported-by: Colin Walters <walters@verbum.org>
-Reported-by: https://honggfuzz.dev/
-Link: https://lore.kernel.org/r/bb2dd430-7de0-47da-ae5b-82ab2dd4d945@app.fastmail.com
-Fixes: 431339ba9042 ("staging: erofs: add inode operations")
-[ Note that it's a runtime misbehavior instead of a security issue. ]
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240909031911.1174718-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/inode.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ arch/x86/xen/setup.c | 52 ++++++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
-index edc8ec7581b8f..9e40bee3682f7 100644
---- a/fs/erofs/inode.c
-+++ b/fs/erofs/inode.c
-@@ -205,12 +205,14 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
- 			      unsigned int m_pofs)
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index 84cbc7ec55811..112b071bac9d4 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -47,6 +47,9 @@ bool xen_pv_pci_possible;
+ /* E820 map used during setting up memory. */
+ static struct e820_table xen_e820_table __initdata;
+ 
++/* Number of initially usable memory pages. */
++static unsigned long ini_nr_pages __initdata;
++
+ /*
+  * Buffer used to remap identity mapped pages. We only need the virtual space.
+  * The physical page behind this address is remapped as needed to different
+@@ -213,7 +216,7 @@ static int __init xen_free_mfn(unsigned long mfn)
+  * as a fallback if the remapping fails.
+  */
+ static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
+-			unsigned long end_pfn, unsigned long nr_pages)
++						      unsigned long end_pfn)
  {
- 	struct erofs_inode *vi = EROFS_I(inode);
--	unsigned int bsz = i_blocksize(inode);
-+	loff_t off;
- 	char *lnk;
+ 	unsigned long pfn, end;
+ 	int ret;
+@@ -221,7 +224,7 @@ static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
+ 	WARN_ON(start_pfn > end_pfn);
  
--	/* if it cannot be handled with fast symlink scheme */
--	if (vi->datalayout != EROFS_INODE_FLAT_INLINE ||
--	    inode->i_size >= bsz || inode->i_size < 0) {
-+	m_pofs += vi->xattr_isize;
-+	/* check if it cannot be handled with fast symlink scheme */
-+	if (vi->datalayout != EROFS_INODE_FLAT_INLINE || inode->i_size < 0 ||
-+	    check_add_overflow(m_pofs, inode->i_size, &off) ||
-+	    off > i_blocksize(inode)) {
- 		inode->i_op = &erofs_symlink_iops;
- 		return 0;
+ 	/* Release pages first. */
+-	end = min(end_pfn, nr_pages);
++	end = min(end_pfn, ini_nr_pages);
+ 	for (pfn = start_pfn; pfn < end; pfn++) {
+ 		unsigned long mfn = pfn_to_mfn(pfn);
+ 
+@@ -342,15 +345,14 @@ static void __init xen_do_set_identity_and_remap_chunk(
+  * to Xen and not remapped.
+  */
+ static unsigned long __init xen_set_identity_and_remap_chunk(
+-	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
+-	unsigned long remap_pfn)
++	unsigned long start_pfn, unsigned long end_pfn, unsigned long remap_pfn)
+ {
+ 	unsigned long pfn;
+ 	unsigned long i = 0;
+ 	unsigned long n = end_pfn - start_pfn;
+ 
+ 	if (remap_pfn == 0)
+-		remap_pfn = nr_pages;
++		remap_pfn = ini_nr_pages;
+ 
+ 	while (i < n) {
+ 		unsigned long cur_pfn = start_pfn + i;
+@@ -359,19 +361,19 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
+ 		unsigned long remap_range_size;
+ 
+ 		/* Do not remap pages beyond the current allocation */
+-		if (cur_pfn >= nr_pages) {
++		if (cur_pfn >= ini_nr_pages) {
+ 			/* Identity map remaining pages */
+ 			set_phys_range_identity(cur_pfn, cur_pfn + size);
+ 			break;
+ 		}
+-		if (cur_pfn + size > nr_pages)
+-			size = nr_pages - cur_pfn;
++		if (cur_pfn + size > ini_nr_pages)
++			size = ini_nr_pages - cur_pfn;
+ 
+ 		remap_range_size = xen_find_pfn_range(&remap_pfn);
+ 		if (!remap_range_size) {
+ 			pr_warn("Unable to find available pfn range, not remapping identity pages\n");
+ 			xen_set_identity_and_release_chunk(cur_pfn,
+-						cur_pfn + left, nr_pages);
++							   cur_pfn + left);
+ 			break;
+ 		}
+ 		/* Adjust size to fit in current e820 RAM region */
+@@ -398,18 +400,18 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
+ }
+ 
+ static unsigned long __init xen_count_remap_pages(
+-	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
++	unsigned long start_pfn, unsigned long end_pfn,
+ 	unsigned long remap_pages)
+ {
+-	if (start_pfn >= nr_pages)
++	if (start_pfn >= ini_nr_pages)
+ 		return remap_pages;
+ 
+-	return remap_pages + min(end_pfn, nr_pages) - start_pfn;
++	return remap_pages + min(end_pfn, ini_nr_pages) - start_pfn;
+ }
+ 
+-static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
++static unsigned long __init xen_foreach_remap_area(
+ 	unsigned long (*func)(unsigned long start_pfn, unsigned long end_pfn,
+-			      unsigned long nr_pages, unsigned long last_val))
++			      unsigned long last_val))
+ {
+ 	phys_addr_t start = 0;
+ 	unsigned long ret_val = 0;
+@@ -437,8 +439,7 @@ static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
+ 				end_pfn = PFN_UP(entry->addr);
+ 
+ 			if (start_pfn < end_pfn)
+-				ret_val = func(start_pfn, end_pfn, nr_pages,
+-					       ret_val);
++				ret_val = func(start_pfn, end_pfn, ret_val);
+ 			start = end;
+ 		}
  	}
-@@ -219,16 +221,6 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
- 	if (!lnk)
- 		return -ENOMEM;
+@@ -701,7 +702,7 @@ static void __init xen_reserve_xen_mfnlist(void)
+  **/
+ char * __init xen_memory_setup(void)
+ {
+-	unsigned long max_pfn, pfn_s, n_pfns;
++	unsigned long pfn_s, n_pfns;
+ 	phys_addr_t mem_end, addr, size, chunk_size;
+ 	u32 type;
+ 	int rc;
+@@ -713,9 +714,8 @@ char * __init xen_memory_setup(void)
+ 	int op;
  
--	m_pofs += vi->xattr_isize;
--	/* inline symlink data shouldn't cross block boundary */
--	if (m_pofs + inode->i_size > bsz) {
--		kfree(lnk);
--		erofs_err(inode->i_sb,
--			  "inline data cross block boundary @ nid %llu",
--			  vi->nid);
--		DBG_BUGON(1);
--		return -EFSCORRUPTED;
--	}
- 	memcpy(lnk, kaddr + m_pofs, inode->i_size);
- 	lnk[inode->i_size] = '\0';
+ 	xen_parse_512gb();
+-	max_pfn = xen_get_pages_limit();
+-	max_pfn = min(max_pfn, xen_start_info->nr_pages);
+-	mem_end = PFN_PHYS(max_pfn);
++	ini_nr_pages = min(xen_get_pages_limit(), xen_start_info->nr_pages);
++	mem_end = PFN_PHYS(ini_nr_pages);
+ 
+ 	memmap.nr_entries = ARRAY_SIZE(xen_e820_table.entries);
+ 	set_xen_guest_handle(memmap.buffer, xen_e820_table.entries);
+@@ -768,10 +768,10 @@ char * __init xen_memory_setup(void)
+ 	max_pages = xen_get_max_pages();
+ 
+ 	/* How many extra pages do we need due to remapping? */
+-	max_pages += xen_foreach_remap_area(max_pfn, xen_count_remap_pages);
++	max_pages += xen_foreach_remap_area(xen_count_remap_pages);
+ 
+-	if (max_pages > max_pfn)
+-		extra_pages += max_pages - max_pfn;
++	if (max_pages > ini_nr_pages)
++		extra_pages += max_pages - ini_nr_pages;
+ 
+ 	/*
+ 	 * Clamp the amount of extra memory to a EXTRA_MEM_RATIO
+@@ -780,8 +780,8 @@ char * __init xen_memory_setup(void)
+ 	 * Make sure we have no memory above max_pages, as this area
+ 	 * isn't handled by the p2m management.
+ 	 */
+-	maxmem_pages = EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM));
+-	extra_pages = min3(maxmem_pages, extra_pages, max_pages - max_pfn);
++	maxmem_pages = EXTRA_MEM_RATIO * min(ini_nr_pages, PFN_DOWN(MAXMEM));
++	extra_pages = min3(maxmem_pages, extra_pages, max_pages - ini_nr_pages);
+ 	i = 0;
+ 	addr = xen_e820_table.entries[0].addr;
+ 	size = xen_e820_table.entries[0].size;
+@@ -886,7 +886,7 @@ char * __init xen_memory_setup(void)
+ 	 * Set identity map on non-RAM pages and prepare remapping the
+ 	 * underlying RAM.
+ 	 */
+-	xen_foreach_remap_area(max_pfn, xen_set_identity_and_remap_chunk);
++	xen_foreach_remap_area(xen_set_identity_and_remap_chunk);
+ 
+ 	pr_info("Released %ld page(s)\n", xen_released_pages);
  
 -- 
 2.43.0
