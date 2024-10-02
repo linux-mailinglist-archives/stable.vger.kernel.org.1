@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A19C98DD58
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC2098DAEC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A3F282E8E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6143B269BA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0348B1D0DE0;
-	Wed,  2 Oct 2024 14:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9941D07B5;
+	Wed,  2 Oct 2024 14:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loytPz1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+KKkvCH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B415D1D078B;
-	Wed,  2 Oct 2024 14:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FA41D1F5B;
+	Wed,  2 Oct 2024 14:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880325; cv=none; b=pyTLGCjY2jEM/56MofKnKZkEX5iA7hJwcX4hSXVYlErsd0Yqt8IiaMJeYjn3CX9wukOQw1rPbRbum/QDLgxmGtpkUkH6IFyA1ozYC+7EJl4jqbGRLuiYdnJImzpF3aUt4LzsB+OO6mXT7NC1/tPpYvJBO9aJJH4MK3KFAq5ziRw=
+	t=1727878867; cv=none; b=O+/UD6d7/F2MC7HXIXMN82OxCiap2WX7gPcLME5S+9HmrDqUYmxDZ9pQDdgfAnD+3eYuXZfhAlwoK4rHAomd8MP/b13FhWLsRcGzXRjwzvZqBJw82TAWUDsOXiCJ4Jw5QvOwbypomNPkm8do+Xsdez0KD+TGEp4sXwdS2uZi5No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880325; c=relaxed/simple;
-	bh=nYRiTQYeD6dtM2qducOEIjnJaf5RbnK7LhPz2wRIfC0=;
+	s=arc-20240116; t=1727878867; c=relaxed/simple;
+	bh=0M4LpSr5GY/htaqR7t6M7rXSXma9alViVEn8c8n52L0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGtjPL/Dbl3OXn3vH4wPq3u4Vqm1ssodrbgx5ng8Zhu0M3eCWH8m/jIvSWQrLjzihaL7tnhvmKfT9K7VFW+J37dcYERusYFe5eDIJN6xVARz9PmrgW1zsG/jMPsKiU6ZDFw3m10m1uvqtW2u5hGRQujSPK8pkzWz+NLNqkxxOCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loytPz1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B321C4CEC2;
-	Wed,  2 Oct 2024 14:45:25 +0000 (UTC)
+	 MIME-Version; b=Uwjjkj6R4fHOybCMP6v1fOMWb41RsKHDIawcbHWWeWadvv0wCa68RwwgJBIeYEpPDrzhJQVMoEuYJUtyN4i8M0nEIEdNaB0TJu7MafK8ay63RgKldBzy6t8XI34MrCAIB3rQKuwStM4GK2sdIoIjRyJOzN/oN+DTp6NGLfWywl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+KKkvCH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3609C4CEC5;
+	Wed,  2 Oct 2024 14:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880325;
-	bh=nYRiTQYeD6dtM2qducOEIjnJaf5RbnK7LhPz2wRIfC0=;
+	s=korg; t=1727878867;
+	bh=0M4LpSr5GY/htaqR7t6M7rXSXma9alViVEn8c8n52L0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=loytPz1w9MzcPljk3j16uBKxn054kY9DYPCVc3W9EVczrkW5FW7Jm0buBdrotbdEg
-	 +Q+IwrvSaL1ir9uWfChTKN9lHRQq/B/UC6sFAhtXD98jV6gUZG6HHv+hVQ8xj7U/an
-	 A1pvdjtrPy5htykiu4R5agb+0RrI1xI0vZNcuw6s=
+	b=E+KKkvCHzRX+YdA9wYSLWkVZIfC52LzB5X5NXN3/0346CzvQjeBtbuQaZ9ADkzTvd
+	 2/lDrCqDoD5qYyja1Ywxakk/Df9jL1oO0Hn0UJIrK7FPz+NkCbJiWJUBpWM7NqhSIv
+	 tWUNmMocshIofQ5MLqUCFj/BjFNVVjqALSrWlGzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 420/538] fs: Create a generic is_dot_dotdot() utility
+	Qu Wenruo <wqu@suse.com>,
+	Luca Stefani <luca.stefani.ge1@gmail.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 559/634] btrfs: always update fstrim_range on failure in FITRIM ioctl
 Date: Wed,  2 Oct 2024 15:00:59 +0200
-Message-ID: <20241002125809.012870214@linuxfoundation.org>
+Message-ID: <20241002125833.177929256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Luca Stefani <luca.stefani.ge1@gmail.com>
 
-commit 42c3732fa8073717dd7d924472f1c0bc5b452fdc upstream.
+commit 3368597206dc3c6c3c2247ee146beada14c67380 upstream.
 
-De-duplicate the same functionality in several places by hoisting
-the is_dot_dotdot() utility function into linux/fs.h.
+Even in case of failure we could've discarded some data and userspace
+should be made aware of it, so copy fstrim_range to userspace
+regardless.
 
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Also make sure to update the trimmed bytes amount even if
+btrfs_trim_free_extents fails.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/crypto/fname.c    |    8 +-------
- fs/ecryptfs/crypto.c |   10 ----------
- fs/f2fs/f2fs.h       |   11 -----------
- fs/namei.c           |    6 ++----
- include/linux/fs.h   |   11 +++++++++++
- 5 files changed, 14 insertions(+), 32 deletions(-)
+ fs/btrfs/extent-tree.c |    4 ++--
+ fs/btrfs/ioctl.c       |    4 +---
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
---- a/fs/crypto/fname.c
-+++ b/fs/crypto/fname.c
-@@ -74,13 +74,7 @@ struct fscrypt_nokey_name {
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -6426,13 +6426,13 @@ int btrfs_trim_fs(struct btrfs_fs_info *
+ 			continue;
  
- static inline bool fscrypt_is_dot_dotdot(const struct qstr *str)
- {
--	if (str->len == 1 && str->name[0] == '.')
--		return true;
--
--	if (str->len == 2 && str->name[0] == '.' && str->name[1] == '.')
--		return true;
--
--	return false;
-+	return is_dot_dotdot(str->name, str->len);
- }
- 
- /**
---- a/fs/ecryptfs/crypto.c
-+++ b/fs/ecryptfs/crypto.c
-@@ -1949,16 +1949,6 @@ out:
- 	return rc;
- }
- 
--static bool is_dot_dotdot(const char *name, size_t name_size)
--{
--	if (name_size == 1 && name[0] == '.')
--		return true;
--	else if (name_size == 2 && name[0] == '.' && name[1] == '.')
--		return true;
--
--	return false;
--}
--
- /**
-  * ecryptfs_decode_and_decrypt_filename - converts the encoded cipher text name to decoded plaintext
-  * @plaintext_name: The plaintext name
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3370,17 +3370,6 @@ static inline bool f2fs_cp_error(struct
- 	return is_set_ckpt_flags(sbi, CP_ERROR_FLAG);
- }
- 
--static inline bool is_dot_dotdot(const u8 *name, size_t len)
--{
--	if (len == 1 && name[0] == '.')
--		return true;
--
--	if (len == 2 && name[0] == '.' && name[1] == '.')
--		return true;
--
--	return false;
--}
--
- static inline void *f2fs_kmalloc(struct f2fs_sb_info *sbi,
- 					size_t size, gfp_t flags)
- {
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -2667,10 +2667,8 @@ static int lookup_one_common(struct mnt_
- 	if (!len)
- 		return -EACCES;
- 
--	if (unlikely(name[0] == '.')) {
--		if (len < 2 || (len == 2 && name[1] == '.'))
--			return -EACCES;
--	}
-+	if (is_dot_dotdot(name, len))
-+		return -EACCES;
- 
- 	while (len--) {
- 		unsigned int c = *(const unsigned char *)name++;
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2844,6 +2844,17 @@ extern bool path_is_under(const struct p
- 
- extern char *file_path(struct file *, char *, int);
- 
-+/**
-+ * is_dot_dotdot - returns true only if @name is "." or ".."
-+ * @name: file name to check
-+ * @len: length of file name, in bytes
-+ */
-+static inline bool is_dot_dotdot(const char *name, size_t len)
-+{
-+	return len && unlikely(name[0] == '.') &&
-+		(len == 1 || (len == 2 && name[1] == '.'));
-+}
+ 		ret = btrfs_trim_free_extents(device, &group_trimmed);
 +
- #include <linux/err.h>
++		trimmed += group_trimmed;
+ 		if (ret) {
+ 			dev_failed++;
+ 			dev_ret = ret;
+ 			break;
+ 		}
+-
+-		trimmed += group_trimmed;
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
  
- /* needed for stackable file system support */
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -543,13 +543,11 @@ static noinline int btrfs_ioctl_fitrim(s
+ 
+ 	range.minlen = max(range.minlen, minlen);
+ 	ret = btrfs_trim_fs(fs_info, &range);
+-	if (ret < 0)
+-		return ret;
+ 
+ 	if (copy_to_user(arg, &range, sizeof(range)))
+ 		return -EFAULT;
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ int __pure btrfs_is_empty_uuid(u8 *uuid)
 
 
 
