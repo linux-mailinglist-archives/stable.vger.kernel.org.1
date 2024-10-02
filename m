@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B2098D598
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:32:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48BE98D8A3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E1AD1C2189F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A346228513C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8F71D0949;
-	Wed,  2 Oct 2024 13:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3753F1D1F4F;
+	Wed,  2 Oct 2024 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUEWXKLg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8VjHK/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7CA1D0488;
-	Wed,  2 Oct 2024 13:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5381D1F46;
+	Wed,  2 Oct 2024 13:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875900; cv=none; b=uwBZjrgSjJkLvz16egmoY/T2F8jRxrmx5r5lj4+Ku3+6XAJ0Jf13HSVf9xTVeoe5Ybj3SCYJ1v+eZGNYky/2M2Hkq3+SdtNsOqmPQjO/suNmXnL2LRU/8+Gy+t/1hBVUWMSQfOkvms8Y3wKWh57hiFNOro9JnV6az2eVE+E1rF8=
+	t=1727877590; cv=none; b=eb1t8tKnoti5kjykWBZKS4B6ii/ya4rIDlVqjNB9N4bUmiQ3ZBSqBw0cXHo7+F8lHWSDuS/f2iKA2BhU46DxMIZ+OiRwMOAcG1SeCzhDsSmUw/y3e+JFzTW3N1Oo0EbTjjpm4pYUKXkeNUrRIQXXcdpjLrqgG0bda/GJUKqR7jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875900; c=relaxed/simple;
-	bh=Bkypj7dvNGKw4o52qFSH8aixWBBWusziH0q8BpWKEQg=;
+	s=arc-20240116; t=1727877590; c=relaxed/simple;
+	bh=bSph/C7GR8DvRIQYKnaRlPxwyZfmcSKXi8Qe+8RSOt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Br5SXR2bs5wjFsWkXtoHy/avczOGM0HbAwTjQJR63Jg3mi8iS8LdQozha5mhvZW6Pi0VL3yIrDkuDCTOUq0gYYIW+N+QDure/RPwuTdOJMfTux2L35BvmqIKQV1K18FaFu7/o3xbejvvbAj4Kl2PRBsdX4OCAVt4uzQutlDpZGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUEWXKLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD2CC4CEC5;
-	Wed,  2 Oct 2024 13:31:39 +0000 (UTC)
+	 MIME-Version; b=Qqx+7LG61PD9wSUqC9PyCwPgoXV7HgQJnpgOUGGbVqxrKlcxn0LxjiYKkWYqcfgnpZZgwWeylio9GyCEljPmHc2na0L3KCyZg0d3iAihQkPUCguxzJHqg6OXFtvTc5XhCY1AVI9kujnhg/qQwFrZkeC1eQigb/SUTpvEDKyVDE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8VjHK/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722ECC4CEC2;
+	Wed,  2 Oct 2024 13:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875899;
-	bh=Bkypj7dvNGKw4o52qFSH8aixWBBWusziH0q8BpWKEQg=;
+	s=korg; t=1727877589;
+	bh=bSph/C7GR8DvRIQYKnaRlPxwyZfmcSKXi8Qe+8RSOt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUEWXKLgzcJg/k0sO6nva8Y3zXFFKshaggqrkEmBgErpLO6L/YUTEKPiogfOEP/yL
-	 PL0J87kcM5K4NDDDgb/WZ5rV1W5ZviJ2G/rxgqJh9CwD5v+R5S6ZaD15vXdU+nDBNm
-	 WvBo/nl2JI1pgrIE4Xn03f9HsIiBh3b6tWrzygYc=
+	b=z8VjHK/5pwT5qAQUhb/0ACEjqhoKWSEK/aZYAf70u+0UcJqPSwWR1zvqgxMx1OxJd
+	 1o/lCGK/AgX55wVm6N3CvaCma6VYYZojzGnIhUL9u9u3z6WiSSG3cKO1ejqWb5IPV4
+	 bMSFi1gARWE5cj7KzG3qZA3ODR/fh4RanStB7xyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
-	Rob Clark <robdclark@chromium.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 228/695] drm/msm: Fix CP_BV_DRAW_STATE_ADDR name
+Subject: [PATCH 6.10 126/634] arm64: dts: renesas: r9a07g054: Correct GICD and GICR sizes
 Date: Wed,  2 Oct 2024 14:53:46 +0200
-Message-ID: <20241002125831.555176455@linuxfoundation.org>
+Message-ID: <20241002125816.086275691@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Connor Abbott <cwabbott0@gmail.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit a47cfb688d78217983c4a0051449aa88e2ff5ebb ]
+[ Upstream commit 45afa9eacb59b258d2e53c7f63430ea1e8344803 ]
 
-This was missed because we weren't using the a750-specific indexed regs.
+The RZ/V2L SoC is equipped with the GIC-600. The GICD is 64KiB + 64KiB
+for the MBI alias (in total 128KiB), and the GICR is 128KiB per CPU.
 
-Fixes: f3f8207d8aed ("drm/msm: Add devcoredump support for a750")
-Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/607394/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 7c2b8198f4f32 ("arm64: dts: renesas: Add initial DTSI for RZ/V2L SoC")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/20240730122436.350013-4-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r9a07g054.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h b/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h
-index 260d66eccfecb..9a327d543f27d 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h
-@@ -1303,7 +1303,7 @@ static struct a6xx_indexed_registers gen7_9_0_cp_indexed_reg_list[] = {
- 		REG_A6XX_CP_ROQ_DBG_DATA, 0x00800},
- 	{ "CP_UCODE_DBG_DATA", REG_A6XX_CP_SQE_UCODE_DBG_ADDR,
- 		REG_A6XX_CP_SQE_UCODE_DBG_DATA, 0x08000},
--	{ "CP_BV_SQE_STAT_ADDR", REG_A7XX_CP_BV_DRAW_STATE_ADDR,
-+	{ "CP_BV_DRAW_STATE_ADDR", REG_A7XX_CP_BV_DRAW_STATE_ADDR,
- 		REG_A7XX_CP_BV_DRAW_STATE_DATA, 0x00200},
- 	{ "CP_BV_ROQ_DBG_ADDR", REG_A7XX_CP_BV_ROQ_DBG_ADDR,
- 		REG_A7XX_CP_BV_ROQ_DBG_DATA, 0x00800},
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
+index a2318478a66ba..66894b676c01e 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
+@@ -1051,8 +1051,8 @@
+ 			#interrupt-cells = <3>;
+ 			#address-cells = <0>;
+ 			interrupt-controller;
+-			reg = <0x0 0x11900000 0 0x40000>,
+-			      <0x0 0x11940000 0 0x60000>;
++			reg = <0x0 0x11900000 0 0x20000>,
++			      <0x0 0x11940000 0 0x40000>;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 
 -- 
 2.43.0
 
