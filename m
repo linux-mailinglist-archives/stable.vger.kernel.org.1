@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5142198DAB5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C891C98DD21
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD94DB24E83
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05C5B1C240EE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE931D1730;
-	Wed,  2 Oct 2024 14:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ACD1D151B;
+	Wed,  2 Oct 2024 14:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aE1xpbd0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxrkJ1xX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073C81D0BBB;
-	Wed,  2 Oct 2024 14:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331BE405FB;
+	Wed,  2 Oct 2024 14:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878711; cv=none; b=WPLEsJ35i717No44kmLhp6LxDhnUC27K+kru02FPaPilze4BrvMryeNg5EsxG9rBf4jzBchw6ElkfumNo+5hiFernrxwbk1uPrP0kZ3Oeq+aeF/ZQ4DuSTdiALMjmt7/+7Wf8XVpbIeIGfrAQc6EE+bWqoVs52Ws8ylXoolQ6yQ=
+	t=1727880179; cv=none; b=tWGHNMihg/Wfq/oFYfHLm/J+Ix3FJ4mWruXcxvgKKGB5PhjNPzt+ELZth7Ny2TtAKA+0POCSPR57b3JrvyQeUfasGL5DT8iXyHDkSHLxjQ1cAHSQ9wpR+JvmHwuY0u2UZml6DKgT0jHx0ZAmuNd7GttXjgpfGQcQG+saCXOSq/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878711; c=relaxed/simple;
-	bh=etkAVL2bUxA7jXkgQ3rFh663seFk4s0fjeM+wvtpLOY=;
+	s=arc-20240116; t=1727880179; c=relaxed/simple;
+	bh=lnDJC3Rhry1Dg6t4lFeLVwhQ4jGdHE0ry7RD1xWEaQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fx/WON71or9m7TCR+VLaMY+Ql8hfCnHtlp0dBs6ZT/cdb0D+h6hlYAetz3A1E8f6ufFPKoondXfvoOd5WygLzBfuy6QDFg9Vbjoz3rhre14OBAtdYqZQNdO/52JwRuqoHcsWKwOJf8WyoMOnpYXrETIg7GWtOysYrpGSzwjtkcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aE1xpbd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D43C4CECD;
-	Wed,  2 Oct 2024 14:18:30 +0000 (UTC)
+	 MIME-Version; b=gnhs5axBy4MXYKqr784oEznugLFvCtz6xxRVF6qOZeeuwWIIATocC4921OIwRxHYLpE1Q7lKBb8tAGv0THt2EXcL8iCr016QG7f9rB1nj00pcWPCW3yrZ5JxD2WejNX2bwIF8j0/tu0989BqZq0K/vyJm38lRhCj1RxVmjWBPVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxrkJ1xX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FDDC4CEC2;
+	Wed,  2 Oct 2024 14:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878710;
-	bh=etkAVL2bUxA7jXkgQ3rFh663seFk4s0fjeM+wvtpLOY=;
+	s=korg; t=1727880178;
+	bh=lnDJC3Rhry1Dg6t4lFeLVwhQ4jGdHE0ry7RD1xWEaQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aE1xpbd0iZqP3v0lTDYKmkLp6xBTpXfZdKCuIumRCIOcIiilj0fEQV5VEwPVAhvAG
-	 I2suWmGSFwtHujveJBJ9A/SDhh74zq8KdlAjY634Dq4IUHQO79577ebuO3J6Dl16Mz
-	 LQZT92yF1lrsZOCQB+FK+v3gns5L9xA/2fRDjKeM=
+	b=gxrkJ1xXlmkOQjdUIiY2eFL48Yd0ErSNR/j7KOM4lPUv2c7e95ACUT4NEgG7dsyXw
+	 BOzEcCjtA6bEGzocwSRuYX+E5t2HTvtt6IhZUcZCdOKgPgjlyE/Sqv7fWvi4xlBtqP
+	 WLc5MV7hPFQZcp0MUP6vd9CdcRh0JoLnKEjor+fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.10 476/634] soc: fsl: cpm1: tsa: Fix tsa_write8()
-Date: Wed,  2 Oct 2024 14:59:36 +0200
-Message-ID: <20241002125829.895135340@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 338/538] f2fs: fix to wait page writeback before setting gcing flag
+Date: Wed,  2 Oct 2024 14:59:37 +0200
+Message-ID: <20241002125805.773505127@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 47a347bae9a491b467ab3543e4725a3e4fbe30f5 upstream.
+[ Upstream commit a4d7f2b3238fd5f76b9e6434a0bd5d2e29049cff ]
 
-The tsa_write8() parameter is an u32 value. This is not consistent with
-the function itself. Indeed, tsa_write8() writes an 8bits value.
+Soft IRQ				Thread
+- f2fs_write_end_io
+					- f2fs_defragment_range
+					 - set_page_private_gcing
+ - type = WB_DATA_TYPE(page, false);
+ : assign type w/ F2FS_WB_CP_DATA
+ due to page_private_gcing() is true
+  - dec_page_count() w/ wrong type
+  - end_page_writeback()
 
-Be consistent and use an u8 parameter value.
+Value of F2FS_WB_CP_DATA reference count may become negative under above
+race condition, the root cause is we missed to wait page writeback before
+setting gcing page private flag, let's fix it.
 
-Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20240808071132.149251-4-herve.codina@bootlin.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2d1fe8a86bf5 ("f2fs: fix to tag gcing flag on page during file defragment")
+Fixes: 4961acdd65c9 ("f2fs: fix to tag gcing flag on page during block migration")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/tsa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/file.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/soc/fsl/qe/tsa.c
-+++ b/drivers/soc/fsl/qe/tsa.c
-@@ -140,7 +140,7 @@ static inline void tsa_write32(void __io
- 	iowrite32be(val, addr);
- }
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index a0d2e180f0ed7..e04f4dcb76d1f 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2743,6 +2743,8 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
+ 				goto clear_out;
+ 			}
  
--static inline void tsa_write8(void __iomem *addr, u32 val)
-+static inline void tsa_write8(void __iomem *addr, u8 val)
- {
- 	iowrite8(val, addr);
- }
++			f2fs_wait_on_page_writeback(page, DATA, true, true);
++
+ 			set_page_dirty(page);
+ 			set_page_private_gcing(page);
+ 			f2fs_put_page(page, 1);
+@@ -4137,6 +4139,8 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
+ 		/* It will never fail, when page has pinned above */
+ 		f2fs_bug_on(F2FS_I_SB(inode), !page);
+ 
++		f2fs_wait_on_page_writeback(page, DATA, true, true);
++
+ 		set_page_dirty(page);
+ 		set_page_private_gcing(page);
+ 		f2fs_put_page(page, 1);
+-- 
+2.43.0
+
 
 
 
