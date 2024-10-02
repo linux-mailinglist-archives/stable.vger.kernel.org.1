@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1560198D937
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F30498D5EA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2AF1B240FF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C191F242D8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45981D1E85;
-	Wed,  2 Oct 2024 14:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4841D0787;
+	Wed,  2 Oct 2024 13:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WV4Tk4br"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXjHd4a2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AF21D0797;
-	Wed,  2 Oct 2024 14:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB861D04AD;
+	Wed,  2 Oct 2024 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877846; cv=none; b=RKoBSQDj9lFLbZOekFEu8zNWyO3fGK0ofT06sct3hkxmh49U88DsIkz9siZfNMbVKyZ60M2n/4nWijWMybEfqr+/tcvs0Uujr5wz/XdYv6zQeet/3+hRNLLs+3+5sesE58Z4yVq6BxOetAxvOGR73GpWbR7Ay/5/LnTC+rmpsHk=
+	t=1727876072; cv=none; b=UTaw/25OTkWdhIHnpi5MuwUOXU2J0cIwNOJUpG9/1sLpbeFvV6WlEMYxLwEwojxYNJV+02gmlBhyqKaK4TIRCauqSdZFIWRA3ftp9tw7aModCkHVr9/SkoYUXdxaTPbReqZ7vgUnWACGB0Us4NtDpDuD/qIeI5kQe1NH5PhhME0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877846; c=relaxed/simple;
-	bh=70UQ1teakVrJTe2QjfufTEB52foDeCHtVvkG/sBxjQY=;
+	s=arc-20240116; t=1727876072; c=relaxed/simple;
+	bh=PC7Bdr0U4HGu7JDasjQc9p/EAmqoxjgu9wmKJtFmIJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IxtVa6QsyVll6L1rabeqJEwtv1PZwFD+DLHnJcXJskkyFp0gEB8edJFI4wsleFTk9SjlqLX/2sgqNFpO7Ja2rUzaGGzRiIiXVxa4dnwxl6ZKCS5aHBo4ibP4x4Fg1oxvvBIO8+s8hHid1HZmsz+v2xXO1hA6WWO9PMLfL4yw6dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WV4Tk4br; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCA2C4CEC2;
-	Wed,  2 Oct 2024 14:04:05 +0000 (UTC)
+	 MIME-Version; b=ib5h4vZgJw77HP9qKy40ReInDzxca/5sUvs+xAZQI/faOhgNdkQPafIauNcPly9kp2FeeNtIv4FVWafqoL3nRNS8E7fXwiuwSjuaWQyFWlJsog1mZl295i9HadCf7kJRXJMGgA3uKmCa9RLDzTKRvUfiBl9vnErS3eAQ2qJOTRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXjHd4a2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79344C4CECD;
+	Wed,  2 Oct 2024 13:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877846;
-	bh=70UQ1teakVrJTe2QjfufTEB52foDeCHtVvkG/sBxjQY=;
+	s=korg; t=1727876071;
+	bh=PC7Bdr0U4HGu7JDasjQc9p/EAmqoxjgu9wmKJtFmIJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WV4Tk4bry7qxhsPiLpN6GUqMxzU6N5FTJpAvgPGt8rcppL+M1pKlE+2YOjsMxwEs5
-	 bjJu8d3kBMC/KbcQXnXBcO5EEmyMXnuqVuuFznIU7/sRvfWTCO0jgotLVTAHHrkn9N
-	 82P9am7vCtJbX+9asiBSrC9rxYX5xdaqGJNrdUgg=
+	b=tXjHd4a2cVK2B1JmTOsVugDXgm/+p7xNvGPmnuPNCfY+Xy7cDMyfXSMDnfDRoOtE1
+	 rE28uhMrVBI1lxQQOpM3FYRyM4UmfXXg98CvocJhYeOLPwFmM3j7GjmiqV7fI6XnQ1
+	 8szzH5v9wKBr/sI/O7LnfInT13JYtVNdwN6MFhjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 215/634] xen: use correct end address of kernel for conflict checking
+Subject: [PATCH 6.11 317/695] nilfs2: fix potential oob read in nilfs_btree_check_delete()
 Date: Wed,  2 Oct 2024 14:55:15 +0200
-Message-ID: <20241002125819.590036295@linuxfoundation.org>
+Message-ID: <20241002125835.105707821@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit fac1bceeeb04886fc2ee952672e6e6c85ce41dca ]
+[ Upstream commit f9c96351aa6718b42a9f42eaf7adce0356bdb5e8 ]
 
-When running as a Xen PV dom0 the kernel is loaded by the hypervisor
-using a different memory map than that of the host. In order to
-minimize the required changes in the kernel, the kernel adapts its
-memory map to that of the host. In order to do that it is checking
-for conflicts of its load address with the host memory map.
+The function nilfs_btree_check_delete(), which checks whether degeneration
+to direct mapping occurs before deleting a b-tree entry, causes memory
+access outside the block buffer when retrieving the maximum key if the
+root node has no entries.
 
-Unfortunately the tested memory range does not include the .brk
-area, which might result in crashes or memory corruption when this
-area does conflict with the memory map of the host.
+This does not usually happen because b-tree mappings with 0 child nodes
+are never created by mkfs.nilfs2 or nilfs2 itself.  However, it can happen
+if the b-tree root node read from a device is configured that way, so fix
+this potential issue by adding a check for that case.
 
-Fix the test by using the _end label instead of __bss_stop.
-
-Fixes: 808fdb71936c ("xen: check for kernel memory conflicting with memory layout")
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Link: https://lkml.kernel.org/r/20240904081401.16682-4-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/btree.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 380591028cb8f..d44d6d8b33195 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -825,7 +825,7 @@ char * __init xen_memory_setup(void)
- 	 * to relocating (and even reusing) pages with kernel text or data.
- 	 */
- 	if (xen_is_e820_reserved(__pa_symbol(_text),
--			__pa_symbol(__bss_stop) - __pa_symbol(_text))) {
-+				 __pa_symbol(_end) - __pa_symbol(_text))) {
- 		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
- 		BUG();
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index dedd3c4808423..ef5061bb56da1 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -1659,13 +1659,16 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
+ 	int nchildren, ret;
+ 
+ 	root = nilfs_btree_get_root(btree);
++	nchildren = nilfs_btree_node_get_nchildren(root);
++	if (unlikely(nchildren == 0))
++		return 0;
++
+ 	switch (nilfs_btree_height(btree)) {
+ 	case 2:
+ 		bh = NULL;
+ 		node = root;
+ 		break;
+ 	case 3:
+-		nchildren = nilfs_btree_node_get_nchildren(root);
+ 		if (nchildren > 1)
+ 			return 0;
+ 		ptr = nilfs_btree_node_get_ptr(root, nchildren - 1,
+@@ -1674,12 +1677,12 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
+ 		if (ret < 0)
+ 			return ret;
+ 		node = (struct nilfs_btree_node *)bh->b_data;
++		nchildren = nilfs_btree_node_get_nchildren(node);
+ 		break;
+ 	default:
+ 		return 0;
  	}
+ 
+-	nchildren = nilfs_btree_node_get_nchildren(node);
+ 	maxkey = nilfs_btree_node_get_key(node, nchildren - 1);
+ 	nextmaxkey = (nchildren > 1) ?
+ 		nilfs_btree_node_get_key(node, nchildren - 2) : 0;
 -- 
 2.43.0
 
