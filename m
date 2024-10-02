@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C39298D57B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D93C98D8F1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 246FA1F22124
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B059C1F2492F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB0E1D0174;
-	Wed,  2 Oct 2024 13:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7D71D151B;
+	Wed,  2 Oct 2024 14:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yODv759X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW0yHPQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A31429CE7;
-	Wed,  2 Oct 2024 13:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3A81D14F5;
+	Wed,  2 Oct 2024 14:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875850; cv=none; b=NFI+CHEMYJDB3qrwOzg8JKf3Xu9O5yJ3wE0N5Jv0PPSQLtizb0uKuFYaXFDoKxMdxJOOMj60Ry1h4LIQX9LDu5yzN2qdvL35zNXR6s+0tks30DExfKjGlK1M2D2b3GbMvYpmVxvgHu3pgGuHqpLSBEQhkmhgpAdK3SParTXh02g=
+	t=1727877721; cv=none; b=RB8K9GEw7v/9sxWl0qYZd9XiYcREEJhOoZ6pH74uDb8chmqWDb58SP5UiavRnQrjKvgw1h4oFBOP/tZSXS07XR02scLYkRRk3P3x/r/ba5Vnj0kKkikxO4U8a5Ab5OgMtipv79f8e7e/u/L1N1vywSaqzrKmsQcLcscWeFPdGEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875850; c=relaxed/simple;
-	bh=ZbcTdAlR8Bo8uYj9fDmB+OOO5XalK7yr6j5P0XB2m7s=;
+	s=arc-20240116; t=1727877721; c=relaxed/simple;
+	bh=AveDACVDP6SeBeBWjvWhjg/RyktFIhmuVXJ58ztPOT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DQIVDxecWOMHo0Ek6YuZqpvuK8JUN6tn+QKg6UJyBUBgBZSm6Fm2ecZ7UmW70l6bcr4TRZlhX9tP7q4Czdh9uV7s9BEuLT9Y9VL1k2lOzfp+6vkGggaKMkrb/wfaYgNouFTzst7gUNtHJWW0ziGwqdcVsJXwV/WILzOkxzJVniY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yODv759X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98C6C4CEC5;
-	Wed,  2 Oct 2024 13:30:49 +0000 (UTC)
+	 MIME-Version; b=UxEV05SDAqEkZkcuyg+/E1Pyv4/FsPwexYDBDYqScLsb/QAX+MeLhuFwHtkwfThGznCOtKjsndOmQObquZIZqiPFHVLmka0QAx8W/2F1ndiWIkc0xa/pX3Tj5Kem8oCH+A3ZxwZxMwhbmJ3bkP+6Btjne0exUd+dIhSUyFv7EOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW0yHPQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159EAC4CEC2;
+	Wed,  2 Oct 2024 14:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875850;
-	bh=ZbcTdAlR8Bo8uYj9fDmB+OOO5XalK7yr6j5P0XB2m7s=;
+	s=korg; t=1727877721;
+	bh=AveDACVDP6SeBeBWjvWhjg/RyktFIhmuVXJ58ztPOT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yODv759XeJfslcWqZ9U9BozvmGSz/pc75+iTJinyfGFNI6nG0gUYbcDAie/2Jkwcm
-	 4r30EEnRShi5rKZstwAolPeAqApho63Ng1SFxu5vEUY+4GQD4XwlRoKI65WzvOXeet
-	 liv59DrEErVPd22buoosFhCswUGl4LsYwFxuAcIo=
+	b=gW0yHPQgowrhhJgQivqy/RvDZPKiBEV3QarMZMDhwQPqAdqnlk1lx2kKR6ErY+y20
+	 y+f/DiZV2WgM7iDxG8i8EpLGf8L++CescWuY2xMFR/tUoKZGlUERz/1a8qtBgEMjYR
+	 XkHOBk9n6zvGR6fhLdaqlEjreDau7Tp2355cv4bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 242/695] xen: use correct end address of kernel for conflict checking
+Subject: [PATCH 6.10 140/634] reset: k210: fix OF node leak in probe() error path
 Date: Wed,  2 Oct 2024 14:54:00 +0200
-Message-ID: <20241002125832.113058258@linuxfoundation.org>
+Message-ID: <20241002125816.632900162@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit fac1bceeeb04886fc2ee952672e6e6c85ce41dca ]
+[ Upstream commit b14e40f5dc7cd0dd7e958010e6ca9ad32ff2ddad ]
 
-When running as a Xen PV dom0 the kernel is loaded by the hypervisor
-using a different memory map than that of the host. In order to
-minimize the required changes in the kernel, the kernel adapts its
-memory map to that of the host. In order to do that it is checking
-for conflicts of its load address with the host memory map.
+Driver is leaking OF node reference on memory allocation failure.
+Acquire the OF node reference after memory allocation to fix this and
+keep it simple.
 
-Unfortunately the tested memory range does not include the .brk
-area, which might result in crashes or memory corruption when this
-area does conflict with the memory map of the host.
-
-Fix the test by using the _end label instead of __bss_stop.
-
-Fixes: 808fdb71936c ("xen: check for kernel memory conflicting with memory layout")
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 5a2308da9f60 ("riscv: Add Canaan Kendryte K210 reset controller")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-2-03f6d834f8c0@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/reset/reset-k210.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 806ddb2391d9b..4bcc70a71b7d4 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -825,7 +825,7 @@ char * __init xen_memory_setup(void)
- 	 * to relocating (and even reusing) pages with kernel text or data.
- 	 */
- 	if (xen_is_e820_reserved(__pa_symbol(_text),
--			__pa_symbol(__bss_stop) - __pa_symbol(_text))) {
-+				 __pa_symbol(_end) - __pa_symbol(_text))) {
- 		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
- 		BUG();
- 	}
+diff --git a/drivers/reset/reset-k210.c b/drivers/reset/reset-k210.c
+index b62a2fd44e4e4..e77e4cca377dc 100644
+--- a/drivers/reset/reset-k210.c
++++ b/drivers/reset/reset-k210.c
+@@ -90,7 +90,7 @@ static const struct reset_control_ops k210_rst_ops = {
+ static int k210_rst_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *parent_np = of_get_parent(dev->of_node);
++	struct device_node *parent_np;
+ 	struct k210_rst *ksr;
+ 
+ 	dev_info(dev, "K210 reset controller\n");
+@@ -99,6 +99,7 @@ static int k210_rst_probe(struct platform_device *pdev)
+ 	if (!ksr)
+ 		return -ENOMEM;
+ 
++	parent_np = of_get_parent(dev->of_node);
+ 	ksr->map = syscon_node_to_regmap(parent_np);
+ 	of_node_put(parent_np);
+ 	if (IS_ERR(ksr->map))
 -- 
 2.43.0
 
