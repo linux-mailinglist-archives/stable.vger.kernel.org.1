@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AC698D0EB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:13:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF3B98D0EC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A16C5B20FCF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:12:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD90283421
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2041E7646;
-	Wed,  2 Oct 2024 10:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558EE1E633C;
+	Wed,  2 Oct 2024 10:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grMI7QDa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Cs/aKHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17E71E7641
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126B51E501B
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727863942; cv=none; b=PjJByOEnaIq3HQx+Vn9/lbP8T1VF+lrfUc1I4CXdDE07Ch0opZJ9QbuX/zwTUVVA6/aVC71FhbkHjTuzER70ABlcrDKd9La2yhzxjuQDX2YnH+2jDOsUePYm7k5Du1iPROs+iQMNsCQw4D91DyZGDVUrWoaV4ratwMkrWP2y5uA=
+	t=1727863945; cv=none; b=Cs6Kjq7Aj+Bj3Am41vt99/fUkD3rK31gD7jCkzBppYHNkfIjdoD9MBKl0wOSmaldyL2Vt0DXCQ3+0qwIDjYfc+O4La96U/gJFOm2CgOUe8gRVrLi68gLU+b+i9Z1b6UKdYNwfOqNSXDr0XYEKbjyVwhYCdWBCt+cNJyFQBHHqgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727863942; c=relaxed/simple;
-	bh=cWwC95A366IcM2SeADSKPOtgpbGgggfXaZ+071XpdIU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cJbW7ZrC7UK+ZYHMeeN1QvUOvkRQZzDTSoKmiklHvudvbry0xmMR1ObGvJwu2DdWyH9JiP1h48O3FRjl7C++UuX640Rl87uNoz284LZm+hAX+2y3uR1TOGJUhcb03uV5Y9ySgYa6p1RuzxvXZ+EnbOEpDQnCVIfsbImqhUZLPv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grMI7QDa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE58C4CECD;
-	Wed,  2 Oct 2024 10:12:21 +0000 (UTC)
+	s=arc-20240116; t=1727863945; c=relaxed/simple;
+	bh=pbjjZJBOnXSxZHz2/5rvSmO3D39GlarIyH3VKuwjFow=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Q8WpagY5AH01ZMS0yUXnE4vf1BEdRgl/V+reYxvTSUBoQwg/8nJymWWxoR3v7jiPuFcg0I0dgYntUvbOxeMqnLs6bYfJpQVwY+BGt9+oTeEv69pFTABaRhMm98vCaTLyzKEh9YFBVpAq0upWUQ2g4L+EvbuWVa576gEeQiCrV6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Cs/aKHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B16FC4CEC5;
+	Wed,  2 Oct 2024 10:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727863941;
-	bh=cWwC95A366IcM2SeADSKPOtgpbGgggfXaZ+071XpdIU=;
+	s=korg; t=1727863944;
+	bh=pbjjZJBOnXSxZHz2/5rvSmO3D39GlarIyH3VKuwjFow=;
 	h=Subject:To:Cc:From:Date:From;
-	b=grMI7QDa8qKzhjsdh1UOyAfc83Ffbhn9VCijpkU2aRLe4Xf+XJDSVR8NrpxlK3CDQ
-	 WTKRBXCkCy21zNABv6wk25JTbM35krsXV/MU76tOVUU2F8zRWKbACwni9Vwiq31h5H
-	 2BpqNPX/Ng9jDpjJH1z5CUJJI9JpdSBdrsczoFu8=
-Subject: FAILED: patch "[PATCH] i2c: xiic: Try re-initialization on bus busy timeout" failed to apply to 6.6-stable tree
+	b=2Cs/aKHXh/tn4RM0MsSUeSeTXDK38raYP8X5VqMOv09v2nwhmmsHU/r2svt6wfh7F
+	 sE1LahVC9sLWKeWiVu4pwaOY9MFjEsa8Gck9XzI7vsC58mdhExzkNgRW/xA9V1YngT
+	 u7AXkONiBRRaFSK+LJTXj3Zx1R0s/G5X+KfPeuz4=
+Subject: FAILED: patch "[PATCH] i2c: xiic: Try re-initialization on bus busy timeout" failed to apply to 6.1-stable tree
 To: robert.hancock@calian.com,andi.shyti@kernel.org,manikanta.guntupalli@amd.com,michal.simek@amd.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 12:12:16 +0200
-Message-ID: <2024100216-tingling-finicky-658f@gregkh>
+Date: Wed, 02 Oct 2024 12:12:17 +0200
+Message-ID: <2024100216-baboon-arson-e49d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1d4a1adbed2582444aaf97671858b7d12915bd05
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100216-tingling-finicky-658f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100216-baboon-arson-e49d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 1d4a1adbed25 ("i2c: xiic: Try re-initialization on bus busy timeout")
 ee1691d0ae10 ("i2c: xiic: improve error message when transfer fails to start")
+d663d93bb47e ("i2c: xiic: xiic_xfer(): Fix runtime PM leak on error path")
 
 thanks,
 
