@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-80295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B90D98DCCF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E71E698DA4D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:20:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB0451F24B5E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 922FD1F2558A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954311D270E;
-	Wed,  2 Oct 2024 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87AF1D2B1B;
+	Wed,  2 Oct 2024 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9JfAwZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2b1h0WGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505CE1D26F9;
-	Wed,  2 Oct 2024 14:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870C41D2B1A;
+	Wed,  2 Oct 2024 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879954; cv=none; b=usORysxm9loiwJBEE8QlZIj52xOtd3b02oBMcisg1K3IeYC94GwtEftDpc2S7/4sDf8GorzjhaLb1HghNUiaQ9kuVyO585MzM8nQUUWOkqYzkoul0v7CT6jaii8h1RnRVqcVu8lGpBuWXk6EUH+uesk73CXldiYQ6OtXpfhFkOU=
+	t=1727878496; cv=none; b=ZEEKMoTkpX/WDcOqFQDVn5m90XXpu5v6s1Db9FIesro0KCwPAO0XqYIb0+1iy3dNAWtMY+zWuhACXRS9CRlUgoin4KSdw6eNq3U23/ubkmDARXuaf1Aqp7jrYfAw033dI9t2u210b0pXdYyJIRXRinQ+PJCAeCzBe7AKKZNz+Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879954; c=relaxed/simple;
-	bh=RIZ4eXFo734jjH6u5r7qtJfoNGnKcKjRF+684pLAs8c=;
+	s=arc-20240116; t=1727878496; c=relaxed/simple;
+	bh=llkE6TyvZfhjC5vhnIrC8UFYmN5MZcybhc+rBdfr4Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0bFcMy2xo/iEzNUu18h961SLV3KzwLp8Wd6NLYKSGBv6VfXrAF7cDXmmbIpAgLKlN5wZ9frsCpLAPeJrNJKuF2xiM1cKq7lCSdJonz7GG9J79WKCUBE/Ksl58508GlFp/ixXkYE/zmTJYIU1uhiSTUMrA9XU5VACbVcOkZsXD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9JfAwZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F22C4CEC2;
-	Wed,  2 Oct 2024 14:39:13 +0000 (UTC)
+	 MIME-Version; b=MxpiwommXZviOcaRX4Vol5kSV2xhsyS/9JSDrGK+7GFWGYLBT9To7+HCIF2CCEr2fqxF1grflgLo1mMebADyIJAX9iPeJkWHbZBwu+UCYmrGiUPukP7fPZ53a6tm1+WYxibLobfoXywAXY6teRgL9eDg49Fwi/bLcSm5+EHWOJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2b1h0WGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8C6C4CEC5;
+	Wed,  2 Oct 2024 14:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879954;
-	bh=RIZ4eXFo734jjH6u5r7qtJfoNGnKcKjRF+684pLAs8c=;
+	s=korg; t=1727878496;
+	bh=llkE6TyvZfhjC5vhnIrC8UFYmN5MZcybhc+rBdfr4Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9JfAwZHjamJP8smtGV68SIDaq7OolBrBfH1TDwpByNTmBpvad8ol+IGeun0nRKww
-	 Kfnyh5pGbjcMNFaslbCaHqW8nrFP2uw8sEAJYQbdy5sPM6gRQlSySAftl6Z4UtlsAA
-	 9rNXAiMq6lGL76ItYqGqTQhkQc0O1PNKQsPapXRg=
+	b=2b1h0WGXddRtmrb/y6+jDF4bDDUgVDGY4auFTPmfXx8awrKzp9p5LDdCTcie0OCor
+	 FUboM68p4qT3ZNgZeNAJ8nQPSIfhqZKyVWMwNQaKM8KKZNSDyhiCpLl5CuCCKKG2Ls
+	 qZwx05MIgYS0E0FtdGC6N12RKf4xFgcC7c5EOnU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Nikita Shubin <nikita.shubin@maquefel.me>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/538] PCI: xilinx-nwl: Fix register misspelling
+Subject: [PATCH 6.10 432/634] ep93xx: clock: Fix off by one in ep93xx_div_recalc_rate()
 Date: Wed,  2 Oct 2024 14:58:52 +0200
-Message-ID: <20241002125803.823411973@linuxfoundation.org>
+Message-ID: <20241002125828.153425521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Dan Carpenter <alexander.sverdlin@gmail.com>
 
-[ Upstream commit a437027ae1730b8dc379c75fa0dd7d3036917400 ]
+[ Upstream commit c7f06284a6427475e3df742215535ec3f6cd9662 ]
 
-MSIC -> MISC
+The psc->div[] array has psc->num_div elements.  These values come from
+when we call clk_hw_register_div().  It's adc_divisors and
+ARRAY_SIZE(adc_divisors)) and so on.  So this condition needs to be >=
+instead of > to prevent an out of bounds read.
 
-Fixes: c2a7ff18edcd ("PCI: xilinx-nwl: Expand error logging")
-Link: https://lore.kernel.org/r/20240531161337.864994-4-sean.anderson@linux.dev
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 9645ccc7bd7a ("ep93xx: clock: convert in-place to COMMON_CLK")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Reviewed-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/1caf01ad4c0a8069535813c26c7f0b8ea011155e.camel@linaro.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-xilinx-nwl.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/mach-ep93xx/clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
-index 176686bdb15c1..7cf05431d54bc 100644
---- a/drivers/pci/controller/pcie-xilinx-nwl.c
-+++ b/drivers/pci/controller/pcie-xilinx-nwl.c
-@@ -80,8 +80,8 @@
- #define MSGF_MISC_SR_NON_FATAL_DEV	BIT(22)
- #define MSGF_MISC_SR_FATAL_DEV		BIT(23)
- #define MSGF_MISC_SR_LINK_DOWN		BIT(24)
--#define MSGF_MSIC_SR_LINK_AUTO_BWIDTH	BIT(25)
--#define MSGF_MSIC_SR_LINK_BWIDTH	BIT(26)
-+#define MSGF_MISC_SR_LINK_AUTO_BWIDTH	BIT(25)
-+#define MSGF_MISC_SR_LINK_BWIDTH	BIT(26)
+diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
+index 85a496ddc6197..e9f72a529b508 100644
+--- a/arch/arm/mach-ep93xx/clock.c
++++ b/arch/arm/mach-ep93xx/clock.c
+@@ -359,7 +359,7 @@ static unsigned long ep93xx_div_recalc_rate(struct clk_hw *hw,
+ 	u32 val = __raw_readl(psc->reg);
+ 	u8 index = (val & psc->mask) >> psc->shift;
  
- #define MSGF_MISC_SR_MASKALL		(MSGF_MISC_SR_RXMSG_AVAIL | \
- 					MSGF_MISC_SR_RXMSG_OVER | \
-@@ -96,8 +96,8 @@
- 					MSGF_MISC_SR_NON_FATAL_DEV | \
- 					MSGF_MISC_SR_FATAL_DEV | \
- 					MSGF_MISC_SR_LINK_DOWN | \
--					MSGF_MSIC_SR_LINK_AUTO_BWIDTH | \
--					MSGF_MSIC_SR_LINK_BWIDTH)
-+					MSGF_MISC_SR_LINK_AUTO_BWIDTH | \
-+					MSGF_MISC_SR_LINK_BWIDTH)
+-	if (index > psc->num_div)
++	if (index >= psc->num_div)
+ 		return 0;
  
- /* Legacy interrupt status mask bits */
- #define MSGF_LEG_SR_INTA		BIT(0)
-@@ -301,10 +301,10 @@ static irqreturn_t nwl_pcie_misc_handler(int irq, void *data)
- 	if (misc_stat & MSGF_MISC_SR_FATAL_DEV)
- 		dev_err(dev, "Fatal Error Detected\n");
- 
--	if (misc_stat & MSGF_MSIC_SR_LINK_AUTO_BWIDTH)
-+	if (misc_stat & MSGF_MISC_SR_LINK_AUTO_BWIDTH)
- 		dev_info(dev, "Link Autonomous Bandwidth Management Status bit set\n");
- 
--	if (misc_stat & MSGF_MSIC_SR_LINK_BWIDTH)
-+	if (misc_stat & MSGF_MISC_SR_LINK_BWIDTH)
- 		dev_info(dev, "Link Bandwidth Management Status bit set\n");
- 
- 	/* Clear misc interrupt status */
+ 	return DIV_ROUND_UP_ULL(parent_rate, psc->div[index]);
 -- 
 2.43.0
 
