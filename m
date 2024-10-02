@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-80144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F7F98DC22
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5FB98D982
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 727B71F25A0E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:38:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F4811F21748
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F791D0B93;
-	Wed,  2 Oct 2024 14:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E940C1D14F2;
+	Wed,  2 Oct 2024 14:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OB5yDMPc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrNcrWEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E6619409E;
-	Wed,  2 Oct 2024 14:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62BA1D14E3;
+	Wed,  2 Oct 2024 14:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879512; cv=none; b=Sg826oMRdGS4+/L2yRlooIEM56sCsp18IR4fFfJFLQJ+e2bdNnGxi05yFWvONf4JS/BtPwnUDtMZZNdfelpnaJY+46L5jx4dayAatOp+V2hcixpuepjfR6KLwy6v6yHXg4xmNkcTJhCqows0F+UXCh1PNB+mmdON7X1mZJeP5QA=
+	t=1727878047; cv=none; b=WQ2LBHtVTRxYvo1zLpoqvAUvvjZnSqFkvfaRg3VqEuDf39RUIDs3lD8vJ1cQIdZV3HNhwxWBWFWQIb4bB/vLktk3BjaWHKLzXCTVJbfhybellFu+Uye2vKTgUJYzRu/Jozp7xGQDJNJ3HHkrF2gRJUk5UymTWTspcVg6ordNsh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879512; c=relaxed/simple;
-	bh=4Zqv8FnpupVrit6xb4x5JqH/OEIeNNIeM1OFMFOCqr8=;
+	s=arc-20240116; t=1727878047; c=relaxed/simple;
+	bh=CA5XHJZFHtifi0HT6niwhQWCLMiZb4ygox/SpbyH7/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hu+Pn1W17Euw8Mwk84o/yRWUas87WGz7RuZrag7hNEr79PVBuDFCg7gNxDynUpHmfHpMlcpIUy5Atdq4XXZQGfzpduKqdP9wul1cz/rNNBQa57BJ0kypEQmz8yj6Y/dJer/i4qDctFvITXuGMSIUr8kE9wpb5OGrKNgbqnA46s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OB5yDMPc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFEEC4CEC2;
-	Wed,  2 Oct 2024 14:31:51 +0000 (UTC)
+	 MIME-Version; b=fvw7EFg3eWZvTb9pyUM4dTpS+iLHpxMz3FLxeifYR+lBH/R7mdFvhkJlbjzz3fJEjh7a41ItsKb/E0gmYNu2OPkAtXLaOLCY34Re4jd0tztPgZxpRv+MRO04H7YSWYNEnsWWgMpIYxm5r7RECM/51s4k7gyLvN0jQdAkOCiHpFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrNcrWEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC46C4CEC2;
+	Wed,  2 Oct 2024 14:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879512;
-	bh=4Zqv8FnpupVrit6xb4x5JqH/OEIeNNIeM1OFMFOCqr8=;
+	s=korg; t=1727878047;
+	bh=CA5XHJZFHtifi0HT6niwhQWCLMiZb4ygox/SpbyH7/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OB5yDMPcdN9rh2PT7TZsV8vygsyzxoFUdVnXFqsn04FLn2B2TSsWanGOarFjrcOv8
-	 ZjPyqYhEuyFB1JiJp07MvYWcGocZRRZDv41pLcdMKpULhCOjMvyg8weboOuOeHevql
-	 1jNJzQE8Q12KFLXF0iZaI+JxlpYdj/pIupbwgNKY=
+	b=mrNcrWEG1YLXiTWj7rmHp/BrZ5EU0GiqKqkj/ohZ3cymsVUWsXolCdMJIw5s/OIjG
+	 SRZGoq1gcl63Xg21jH3fcX/ntTy7ntCKuAH00xXlkUk0Gg45hW19D9xyIVMmu/frtC
+	 JDj2uGuNpY0L+VIw+d5N0X5WbYoBRuvHbHruUaLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	wenlunpeng <wenlunpeng@uniontech.com>,
-	Su Hui <suhui@nfschina.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/538] drm/amd/amdgpu: Properly tune the size of struct
+Subject: [PATCH 6.10 284/634] nilfs2: fix potential null-ptr-deref in nilfs_btree_insert()
 Date: Wed,  2 Oct 2024 14:56:24 +0200
-Message-ID: <20241002125757.964374177@linuxfoundation.org>
+Message-ID: <20241002125822.320613305@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 0cee47cde41e22712c034ae961076067d4ac13a0 ]
+[ Upstream commit 9403001ad65ae4f4c5de368bdda3a0636b51d51a ]
 
-The struct assertion is failed because sparse cannot parse
-`#pragma pack(push, 1)` and `#pragma pack(pop)` correctly.
-GCC's output is still 1-byte-aligned. No harm to memory layout.
+Patch series "nilfs2: fix potential issues with empty b-tree nodes".
 
-The error can be filtered out by sparse-diff, but sometimes
-multiple lines queezed into one, making the sparse-diff thinks
-its a new error. I'm trying to aviod this by fixing errors.
+This series addresses three potential issues with empty b-tree nodes that
+can occur with corrupted filesystem images, including one recently
+discovered by syzbot.
 
-Link: https://lore.kernel.org/all/20230620045919.492128-1-suhui@nfschina.com/
-Link: https://lore.kernel.org/all/93d10611-9fbb-4242-87b8-5860b2606042@suswa.mountain/
-Fixes: 1721bc1b2afa ("drm/amdgpu: Update VF2PF interface")
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: wenlunpeng <wenlunpeng@uniontech.com>
-Reported-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This patch (of 3):
+
+If a b-tree is broken on the device, and the b-tree height is greater than
+2 (the level of the root node is greater than 1) even if the number of
+child nodes of the b-tree root is 0, a NULL pointer dereference occurs in
+nilfs_btree_prepare_insert(), which is called from nilfs_btree_insert().
+
+This is because, when the number of child nodes of the b-tree root is 0,
+nilfs_btree_do_lookup() does not set the block buffer head in any of
+path[x].bp_bh, leaving it as the initial value of NULL, but if the level
+of the b-tree root node is greater than 1, nilfs_btree_get_nonroot_node(),
+which accesses the buffer memory of path[x].bp_bh, is called.
+
+Fix this issue by adding a check to nilfs_btree_root_broken(), which
+performs sanity checks when reading the root node from the device, to
+detect this inconsistency.
+
+Thanks to Lizhi Xu for trying to solve the bug and clarifying the cause
+early on.
+
+Link: https://lkml.kernel.org/r/20240904081401.16682-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240902084101.138971-1-lizhi.xu@windriver.com
+Link: https://lkml.kernel.org/r/20240904081401.16682-2-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9bff4c7b992038a7409f
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgv_sriovmsg.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nilfs2/btree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgv_sriovmsg.h b/drivers/gpu/drm/amd/amdgpu/amdgv_sriovmsg.h
-index 104a5ad8397da..198687545407e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgv_sriovmsg.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgv_sriovmsg.h
-@@ -209,7 +209,7 @@ struct amd_sriov_msg_pf2vf_info {
- 	uint32_t pcie_atomic_ops_support_flags;
- 	/* reserved */
- 	uint32_t reserved[256 - AMD_SRIOV_MSG_PF2VF_INFO_FILLED_SIZE];
--};
-+} __packed;
- 
- struct amd_sriov_msg_vf2pf_info_header {
- 	/* the total structure size in byte */
-@@ -267,7 +267,7 @@ struct amd_sriov_msg_vf2pf_info {
- 
- 	/* reserved */
- 	uint32_t reserved[256 - AMD_SRIOV_MSG_VF2PF_INFO_FILLED_SIZE];
--};
-+} __packed;
- 
- /* mailbox message send from guest to host  */
- enum amd_sriov_mailbox_request_message {
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 862bdf23120e8..d390b8ba00d45 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -381,7 +381,8 @@ static int nilfs_btree_root_broken(const struct nilfs_btree_node *node,
+ 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
+ 		     level >= NILFS_BTREE_LEVEL_MAX ||
+ 		     nchildren < 0 ||
+-		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX)) {
++		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX ||
++		     (nchildren == 0 && level > NILFS_BTREE_LEVEL_NODE_MIN))) {
+ 		nilfs_crit(inode->i_sb,
+ 			   "bad btree root (ino=%lu): level = %d, flags = 0x%x, nchildren = %d",
+ 			   inode->i_ino, level, flags, nchildren);
 -- 
 2.43.0
 
