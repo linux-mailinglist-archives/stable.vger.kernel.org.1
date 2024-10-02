@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-79906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134FC98DAD7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B359498DD3F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B099EB263B3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76C67281468
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F551D0E0F;
-	Wed,  2 Oct 2024 14:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A96D1D1E78;
+	Wed,  2 Oct 2024 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGWsEAj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPtS1qX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5911D1E90;
-	Wed,  2 Oct 2024 14:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2521EA80;
+	Wed,  2 Oct 2024 14:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878814; cv=none; b=fWbu/g6MxH81jo3CPdpTmygHSsXNHRkO1cXOiY1zwqDs+j3cB+eWuP06pmjp9/xa7wPAgyHtmdX98/QJGqIwSVi4HTHokdvinzBmqxBIOE05FA4wbNWgDVqz+fHRjiaY8PC6CwYp/W5yEymHFuWT7KijsOqydtcLL20/aBe5T0E=
+	t=1727880269; cv=none; b=T4s4z9AKkryM/Y8q2lIwHAZQWyozTewXFB2Vk15Z4XXsDXK8VyC0og1pgBCNuVCdJxB3yZLlI7lKjKRhRc++ttGFoK5D8Vd9hgPrXwE7sQlLuRtLSQ6cfdnNWr2haSisYxmUELmYLyXgqk+dP7QBafzTPmm2a8RtPINoR/tqiFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878814; c=relaxed/simple;
-	bh=JW6d69BIapuXLWCBUeXbDpH9k/bMZKdakfpFDG7lHw0=;
+	s=arc-20240116; t=1727880269; c=relaxed/simple;
+	bh=GC+ZFzu/wk/e4lsraOJSXPdaB0+e2vxpYinOL4EXxLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eB5K3tyUSEak33kFRuGoQHEUVPOyfTUnf5sS6wr7Cep27x3RZOeBpobUpUb/jhA5gbYbyWNCd7i7MkjvRLUcI1uXRvhRJ8KteLJw7Rt0kKNhMBm+zIsuM4tUJXHNo8lN/zODc+yvo/WBLRVCFRY9PLhhlX/33oTt6TeJT8WiLzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGWsEAj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18ECFC4CEC5;
-	Wed,  2 Oct 2024 14:20:13 +0000 (UTC)
+	 MIME-Version; b=YHr33Chd1TZ972EGgFK6Zp7rhFxJr9EnhXmFn2uj/7HCPd27E4IuUScsDowL6V1L69QYEUJD7XKzF/yZzUqUe9mCzOze65KlVmkYGBwoRD3OxbYTMiy5QFkDQKGF5wT7GniBVVeanx8uoYzF7Zfg4f9djaTEriff2BhIRJeDZnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPtS1qX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45481C4CEC2;
+	Wed,  2 Oct 2024 14:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878814;
-	bh=JW6d69BIapuXLWCBUeXbDpH9k/bMZKdakfpFDG7lHw0=;
+	s=korg; t=1727880269;
+	bh=GC+ZFzu/wk/e4lsraOJSXPdaB0+e2vxpYinOL4EXxLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGWsEAj/UMl9mTAXIa9N5LwvlCR76KmeOgE/zrx6m8o33h6oUrABNuB7mJIaTNNOK
-	 iTS0Lm72qj79fprdO3YdMQqpFAr2XvNHo/acOjpIJ1fGIcYQEYA5ZZXBCtOTxBbU4d
-	 ZdtdlsP9ptLtIe/w55NjxpqQ2Rtt2QlDoNtLQBZc=
+	b=RPtS1qX45gEzW1RavDwxNbxlll2flzDRPK2xTP3A6JnS9/wzkdX8hQlWN1kEXl7C7
+	 ZFjnMmd8WlVct7NuPkwBG2OoYKH0tSpgCO6nWoh1adGPLNCQ9R5mlV4peGvkO7ixaV
+	 1oflVVPrhBV3T5ecc0BejvLdv3HUKjM60v2FZp6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 510/634] scsi: lpfc: Restrict support for 32 byte CDBs to specific HBAs
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 371/538] netfilter: nf_reject_ipv6: fix nf_reject_ip6_tcphdr_put()
 Date: Wed,  2 Oct 2024 15:00:10 +0200
-Message-ID: <20241002125831.235696743@linuxfoundation.org>
+Message-ID: <20241002125807.074083322@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +65,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 05ab4e7846f1103377133c00295a9a910cc6dfc2 upstream.
+[ Upstream commit 9c778fe48d20ef362047e3376dee56d77f8500d4 ]
 
-An older generation of HBAs are failing FCP discovery due to usage of an
-outdated field in FCP command WQEs.
+syzbot reported that nf_reject_ip6_tcphdr_put() was possibly sending
+garbage on the four reserved tcp bits (th->res1)
 
-Fix by checking the SLI Interface Type register for applicable support of
-32 Byte CDB commands, and restore a setting for a WQE path using normal 16
-byte CDBs.
+Use skb_put_zero() to clear the whole TCP header,
+as done in nf_reject_ip_tcphdr_put()
 
-Fixes: af20bb73ac25 ("scsi: lpfc: Add support for 32 byte CDBs")
-Cc: stable@vger.kernel.org # v6.10+
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240912232447.45607-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KMSAN: uninit-value in nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255
+  nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255
+  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
+  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
+  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
+  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
+  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
+  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
+  __napi_poll+0xe7/0x980 net/core/dev.c:6772
+  napi_poll net/core/dev.c:6841 [inline]
+  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
+  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
+  __do_softirq+0x14/0x1a kernel/softirq.c:588
+  do_softirq+0x9a/0x100 kernel/softirq.c:455
+  __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:382
+  local_bh_enable include/linux/bottom_half.h:33 [inline]
+  rcu_read_unlock_bh include/linux/rcupdate.h:908 [inline]
+  __dev_queue_xmit+0x2692/0x5610 net/core/dev.c:4450
+  dev_queue_xmit include/linux/netdevice.h:3105 [inline]
+  neigh_resolve_output+0x9ca/0xae0 net/core/neighbour.c:1565
+  neigh_output include/net/neighbour.h:542 [inline]
+  ip6_finish_output2+0x2347/0x2ba0 net/ipv6/ip6_output.c:141
+  __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
+  ip6_finish_output+0xbb8/0x14b0 net/ipv6/ip6_output.c:226
+  NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+  ip6_output+0x356/0x620 net/ipv6/ip6_output.c:247
+  dst_output include/net/dst.h:450 [inline]
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_xmit+0x1ba6/0x25d0 net/ipv6/ip6_output.c:366
+  inet6_csk_xmit+0x442/0x530 net/ipv6/inet6_connection_sock.c:135
+  __tcp_transmit_skb+0x3b07/0x4880 net/ipv4/tcp_output.c:1466
+  tcp_transmit_skb net/ipv4/tcp_output.c:1484 [inline]
+  tcp_connect+0x35b6/0x7130 net/ipv4/tcp_output.c:4143
+  tcp_v6_connect+0x1bcc/0x1e40 net/ipv6/tcp_ipv6.c:333
+  __inet_stream_connect+0x2ef/0x1730 net/ipv4/af_inet.c:679
+  inet_stream_connect+0x6a/0xd0 net/ipv4/af_inet.c:750
+  __sys_connect_file net/socket.c:2061 [inline]
+  __sys_connect+0x606/0x690 net/socket.c:2078
+  __do_sys_connect net/socket.c:2088 [inline]
+  __se_sys_connect net/socket.c:2085 [inline]
+  __x64_sys_connect+0x91/0xe0 net/socket.c:2085
+  x64_sys_call+0x27a5/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:43
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was stored to memory at:
+  nf_reject_ip6_tcphdr_put+0x60c/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:249
+  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
+  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
+  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
+  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
+  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
+  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
+  __napi_poll+0xe7/0x980 net/core/dev.c:6772
+  napi_poll net/core/dev.c:6841 [inline]
+  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
+  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
+  __do_softirq+0x14/0x1a kernel/softirq.c:588
+
+Uninit was stored to memory at:
+  nf_reject_ip6_tcphdr_put+0x2ca/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:231
+  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
+  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
+  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
+  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
+  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
+  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
+  __napi_poll+0xe7/0x980 net/core/dev.c:6772
+  napi_poll net/core/dev.c:6841 [inline]
+  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
+  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
+  __do_softirq+0x14/0x1a kernel/softirq.c:588
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:3998 [inline]
+  slab_alloc_node mm/slub.c:4041 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4084
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:583
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:674
+  alloc_skb include/linux/skbuff.h:1320 [inline]
+  nf_send_reset6+0x98d/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:327
+  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
+  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
+  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
+  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+  nf_hook include/linux/netfilter.h:269 [inline]
+  NF_HOOK include/linux/netfilter.h:312 [inline]
+  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
+  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
+  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
+  __napi_poll+0xe7/0x980 net/core/dev.c:6772
+  napi_poll net/core/dev.c:6841 [inline]
+  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
+  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
+  __do_softirq+0x14/0x1a kernel/softirq.c:588
+
+Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20240913170615.3670897-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hw4.h  |    3 +++
- drivers/scsi/lpfc/lpfc_init.c |   21 ++++++++++++++++++---
- drivers/scsi/lpfc/lpfc_scsi.c |    2 +-
- 3 files changed, 22 insertions(+), 4 deletions(-)
+ net/ipv6/netfilter/nf_reject_ipv6.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/drivers/scsi/lpfc/lpfc_hw4.h
-+++ b/drivers/scsi/lpfc/lpfc_hw4.h
-@@ -4847,6 +4847,7 @@ struct fcp_iwrite64_wqe {
- #define	cmd_buff_len_SHIFT  16
- #define	cmd_buff_len_MASK  0x00000ffff
- #define	cmd_buff_len_WORD  word3
-+/* Note: payload_offset_len field depends on ASIC support */
- #define payload_offset_len_SHIFT 0
- #define payload_offset_len_MASK 0x0000ffff
- #define payload_offset_len_WORD word3
-@@ -4863,6 +4864,7 @@ struct fcp_iread64_wqe {
- #define	cmd_buff_len_SHIFT  16
- #define	cmd_buff_len_MASK  0x00000ffff
- #define	cmd_buff_len_WORD  word3
-+/* Note: payload_offset_len field depends on ASIC support */
- #define payload_offset_len_SHIFT 0
- #define payload_offset_len_MASK 0x0000ffff
- #define payload_offset_len_WORD word3
-@@ -4879,6 +4881,7 @@ struct fcp_icmnd64_wqe {
- #define	cmd_buff_len_SHIFT  16
- #define	cmd_buff_len_MASK  0x00000ffff
- #define	cmd_buff_len_WORD  word3
-+/* Note: payload_offset_len field depends on ASIC support */
- #define payload_offset_len_SHIFT 0
- #define payload_offset_len_MASK 0x0000ffff
- #define payload_offset_len_WORD word3
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -4699,6 +4699,7 @@ lpfc_create_port(struct lpfc_hba *phba,
- 	uint64_t wwn;
- 	bool use_no_reset_hba = false;
- 	int rc;
-+	u8 if_type;
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index 71d692728230e..690d1c0476913 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -223,33 +223,23 @@ void nf_reject_ip6_tcphdr_put(struct sk_buff *nskb,
+ 			      const struct tcphdr *oth, unsigned int otcplen)
+ {
+ 	struct tcphdr *tcph;
+-	int needs_ack;
  
- 	if (lpfc_no_hba_reset_cnt) {
- 		if (phba->sli_rev < LPFC_SLI_REV4 &&
-@@ -4773,10 +4774,24 @@ lpfc_create_port(struct lpfc_hba *phba,
- 	shost->max_id = LPFC_MAX_TARGET;
- 	shost->max_lun = vport->cfg_max_luns;
- 	shost->this_id = -1;
--	if (phba->sli_rev == LPFC_SLI_REV4)
--		shost->max_cmd_len = LPFC_FCP_CDB_LEN_32;
--	else
-+
-+	/* Set max_cmd_len applicable to ASIC support */
-+	if (phba->sli_rev == LPFC_SLI_REV4) {
-+		if_type = bf_get(lpfc_sli_intf_if_type,
-+				 &phba->sli4_hba.sli_intf);
-+		switch (if_type) {
-+		case LPFC_SLI_INTF_IF_TYPE_2:
-+			fallthrough;
-+		case LPFC_SLI_INTF_IF_TYPE_6:
-+			shost->max_cmd_len = LPFC_FCP_CDB_LEN_32;
-+			break;
-+		default:
-+			shost->max_cmd_len = LPFC_FCP_CDB_LEN;
-+			break;
-+		}
-+	} else {
- 		shost->max_cmd_len = LPFC_FCP_CDB_LEN;
-+	}
+ 	skb_reset_transport_header(nskb);
+-	tcph = skb_put(nskb, sizeof(struct tcphdr));
++	tcph = skb_put_zero(nskb, sizeof(struct tcphdr));
+ 	/* Truncate to length (no data) */
+ 	tcph->doff = sizeof(struct tcphdr)/4;
+ 	tcph->source = oth->dest;
+ 	tcph->dest = oth->source;
  
- 	if (phba->sli_rev == LPFC_SLI_REV4) {
- 		if (!phba->cfg_fcp_mq_threshold ||
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -4760,7 +4760,7 @@ static int lpfc_scsi_prep_cmnd_buf_s4(st
+ 	if (oth->ack) {
+-		needs_ack = 0;
+ 		tcph->seq = oth->ack_seq;
+-		tcph->ack_seq = 0;
+ 	} else {
+-		needs_ack = 1;
+ 		tcph->ack_seq = htonl(ntohl(oth->seq) + oth->syn + oth->fin +
+ 				      otcplen - (oth->doff<<2));
+-		tcph->seq = 0;
++		tcph->ack = 1;
+ 	}
  
- 	 /* Word 3 */
- 	bf_set(payload_offset_len, &wqe->fcp_icmd,
--	       sizeof(struct fcp_cmnd32) + sizeof(struct fcp_rsp));
-+	       sizeof(struct fcp_cmnd) + sizeof(struct fcp_rsp));
+-	/* Reset flags */
+-	((u_int8_t *)tcph)[13] = 0;
+ 	tcph->rst = 1;
+-	tcph->ack = needs_ack;
+-	tcph->window = 0;
+-	tcph->urg_ptr = 0;
+-	tcph->check = 0;
  
- 	/* Word 6 */
- 	bf_set(wqe_ctxt_tag, &wqe->generic.wqe_com,
+ 	/* Adjust TCP checksum */
+ 	tcph->check = csum_ipv6_magic(&ipv6_hdr(nskb)->saddr,
+-- 
+2.43.0
+
 
 
 
