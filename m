@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-79220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCE998D72B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:46:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD3A98D701
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 734341F24803
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE3DA2844A6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1D91D016E;
-	Wed,  2 Oct 2024 13:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A491D0B8E;
+	Wed,  2 Oct 2024 13:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s626GSzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VedPq4N1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471301CFEB3;
-	Wed,  2 Oct 2024 13:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83F51D07B8;
+	Wed,  2 Oct 2024 13:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876797; cv=none; b=NW1cSlWKbWXhMXVnR/dAM+moY3b0RfIfv1/IbPNke2YpvIJFAqw9L+SQi6bT26Z9u4Ki4RGvmzayL4NOa63/LoAI3seiVZmkZUVVYqM18AWj3S2qPRH1qrutfM8+jzHcaU4NUlPEou7v149/koAgERUKWhOQLp1vl8dlu8AoINo=
+	t=1727876695; cv=none; b=d5/8/Dsjjb7zPXDcKAWPTL6FX/tLSlcJetdgwQ2VKcgnm0oTmSLZ5yRYdmSrqm335SksjFfQeOTNySieaRLBHebXPl7I7akcOPgcJ45LXrUrr4Pw+Awv+ocYkT7CKQZzqlishWNri8q3ZcxyMYg2LTH1aKaS0bdTdS7F4+IccGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876797; c=relaxed/simple;
-	bh=hmLgh7O2zyf2Cnyg14k+LmkDuBs8oOj1ook2TFc9RuQ=;
+	s=arc-20240116; t=1727876695; c=relaxed/simple;
+	bh=p7i+sRGHxG/9uMgTtfAclRHvlnZRNCmqOjmCz9lN6I4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+mw+xZpxuzx+uJZluP6LRjSr2wIsthBR/Ri2J6IsGvYNoRMoXQbvs1KZb/Uw+wCKwd6intIOfaINFAkfnM3+CSl33Co9jGqg5OEiuPH5G4XfEJpEtLkKUin7utWQM6BpY1iCW1ebp1TkZ4fI5jOUrKGTjA707FW1FyuQlaa4Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s626GSzD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E25AC4CEC2;
-	Wed,  2 Oct 2024 13:46:36 +0000 (UTC)
+	 MIME-Version; b=rBrmfyxH1DYj1ZBogRK7BJPQrj/oyOk65EkyyZrsFjR99+DLNfUaRVzf6hLOBQhcwivib0FoZNYuIYRQPGmt2A5dZ+FyjYBjLImoCoXxh4wASPCK3W7Ia5f6cj4lHwA1yfQaMhQP4A/1YpGDGa2LaI3UVJzqyJ/gB3r9UMFNDRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VedPq4N1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72038C4CECD;
+	Wed,  2 Oct 2024 13:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876796;
-	bh=hmLgh7O2zyf2Cnyg14k+LmkDuBs8oOj1ook2TFc9RuQ=;
+	s=korg; t=1727876694;
+	bh=p7i+sRGHxG/9uMgTtfAclRHvlnZRNCmqOjmCz9lN6I4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s626GSzDTb1O+unXnaDlNXv/7/Em4VYHpcOPvar1OjvE/a9ylP3pjtVlwD689iymz
-	 iWAnLJmlIcJ/NcRGLjeQmU2XImoDVUox2dAqS8aYeAIZh1pwBT3PiE/npd75TsGSP9
-	 Hno2WsHXVt4c6xvFxjwZNjefWQIHOFgorZfpq/7E=
+	b=VedPq4N1pWTH4+88sYz4JGIzeAbwTcLdP5PKOfd2V8L2gZbz7sWzKIrwfchTVJB8a
+	 1L19jCvqn1Uu+s8j3ynYgkwliwIT+pJnWF7Xi8OJZxb7C5nn3XrQMq9mSviEdAwfX+
+	 6HXRYmDPqAPAt8OS/ReNR62S8/hwWF5iLsBp66hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.11 523/695] ASoC: rt5682: Return devm_of_clk_add_hw_provider to transfer the error
-Date: Wed,  2 Oct 2024 14:58:41 +0200
-Message-ID: <20241002125843.360646965@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.11 524/695] soc: fsl: cpm1: qmc: Update TRNSYNC only in transparent mode
+Date: Wed,  2 Oct 2024 14:58:42 +0200
+Message-ID: <20241002125843.402479456@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -65,38 +65,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit fcca6d05ef49d5650514ea1dcfd12e4ae3ff2be6 upstream.
+commit c3cc3e69b33fee3d276895e0e2d1a8fb37ea5d0e upstream.
 
-Return devm_of_clk_add_hw_provider() in order to transfer the error, if it
-fails due to resource allocation failure or device tree clock provider
-registration failure.
+The TRNSYNC feature is available (and enabled) only in transparent mode.
 
+Since commit 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries
+at channel start() and stop()") TRNSYNC register is updated in
+transparent and hdlc mode. In hdlc mode, the address of the TRNSYNC
+register is used by the QMC for other internal purpose. Even if no weird
+results were observed in hdlc mode, touching this register in this mode
+is wrong.
+
+Update TRNSYNC only in transparent mode.
+
+Fixes: 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries at channel start() and stop()")
 Cc: stable@vger.kernel.org
-Fixes: ebbfabc16d23 ("ASoC: rt5682: Add CCF usage for providing I2S clks")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20240830143154.3448004-1-make24@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20240808071132.149251-2-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5682.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soc/fsl/qe/qmc.c |   24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
---- a/sound/soc/codecs/rt5682.c
-+++ b/sound/soc/codecs/rt5682.c
-@@ -2903,8 +2903,10 @@ int rt5682_register_dai_clks(struct rt56
- 		}
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -940,11 +940,13 @@ static int qmc_chan_start_rx(struct qmc_
+ 		goto end;
+ 	}
  
- 		if (dev->of_node) {
--			devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
-+			ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
- 						    dai_clk_hw);
-+			if (ret)
-+				return ret;
- 		} else {
- 			ret = devm_clk_hw_register_clkdev(dev, dai_clk_hw,
- 							  init.name,
+-	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
+-	if (ret) {
+-		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
+-			chan->id, ret);
+-		goto end;
++	if (chan->mode == QMC_TRANSPARENT) {
++		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
++		if (ret) {
++			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
++				chan->id, ret);
++			goto end;
++		}
+ 	}
+ 
+ 	/* Restart the receiver */
+@@ -982,11 +984,13 @@ static int qmc_chan_start_tx(struct qmc_
+ 		goto end;
+ 	}
+ 
+-	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
+-	if (ret) {
+-		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
+-			chan->id, ret);
+-		goto end;
++	if (chan->mode == QMC_TRANSPARENT) {
++		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
++		if (ret) {
++			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
++				chan->id, ret);
++			goto end;
++		}
+ 	}
+ 
+ 	/*
 
 
 
