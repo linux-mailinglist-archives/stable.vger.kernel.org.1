@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A583998D965
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6704D98DBED
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11884B246DC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CE251F24BE3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D791D0F4B;
-	Wed,  2 Oct 2024 14:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637721D1731;
+	Wed,  2 Oct 2024 14:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+HC5GUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1GAZsNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A163A1D07B8;
-	Wed,  2 Oct 2024 14:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2122F1D173F;
+	Wed,  2 Oct 2024 14:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877968; cv=none; b=HcPpU9FOGnVtG2H1CEpjW2ZeGVENBFfX0uBEhQu3ktEcgxvWInrKNF4k68wcJJemfCBqkEjNbgib4G98W44P4p92TvD0/eeidTXZNjGHYIgolsxWRUozlQ1gfJAyUXFFY3IjmUcAnsJInwXSdLe9x9L5u8COKyddnIMLiBYisYI=
+	t=1727879434; cv=none; b=JS1vsUD7c7YV04+6yzcPxb7Ob/iKNi8ojc/WfyWlDb0Zm0MrhJ18jtez5/KYxVsCp7epK/OmE3WVAvrzY+rObWgpwK8qeZGIeSDo2ONsp3SGWXFh0WsTGfX1Ba2jW1fdSqC7IjmGvldIz5ar3zTNy5OOdTGxULEEG0AV+YmCz9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877968; c=relaxed/simple;
-	bh=TiyaweSHWFD2/cylcHyVIjW4u45108vbuY2pO4oDta4=;
+	s=arc-20240116; t=1727879434; c=relaxed/simple;
+	bh=astyGdODtYBNQrnr0PJ2K8kCCUjpXgYc4Z4QwPk2iSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbD8PFjTpmRhGW3wZ399UJ8gZ5RpYzvBKZEJ9IpDpz91P1j9a08Sz0TiKoxIDmWfS/8BDYmLgkrZSBhmtq9LmErOQfV+Cd78pObJqrP4z14k/sYzowe83miarYQmYe5Rpphv8Pen+Wb1o46yhRcmysZ/Z+W3z3AdmsX4O+geLs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+HC5GUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29280C4CEC2;
-	Wed,  2 Oct 2024 14:06:07 +0000 (UTC)
+	 MIME-Version; b=iWwmNREO64Y0lBmdl3qU1QnZVDmfZkCTsPSparwuc054EtNsfPAp1Y56yH6s+Ny4YJ2VclRGWWy1ViMeVJ9P1v3EHii9gyI4M1YuopgIel3BsSxTDnVQkzlEGvzBDwWMVOnYtPTiEKXF1uQeLOFu7KR4h0PIBc5ygvw1CAHx4t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1GAZsNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF72C4CEC2;
+	Wed,  2 Oct 2024 14:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877968;
-	bh=TiyaweSHWFD2/cylcHyVIjW4u45108vbuY2pO4oDta4=;
+	s=korg; t=1727879434;
+	bh=astyGdODtYBNQrnr0PJ2K8kCCUjpXgYc4Z4QwPk2iSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+HC5GUTGWiE9nuLak/zJ+AVBC6iEFfeehGeZeYXQFfXEqsYMkR6eh9aJwy2266LG
-	 WxnMcHa1HetlyZPCVXKQqDwzU79sGB1sY7LbjX2RTK2G59dfiLlnvfK4Jlk6CPzJIB
-	 iV5oizAH02lhbr7ptv8ibwPIkKthUe4wUEtaumLM=
+	b=Y1GAZsNuUU7EeO0BT/FWOsX2k57GgVJuG0GA0fACNc8azuWcxeGpcqWWf7gJywVBf
+	 tpXgdYW1KNN+j9Ig3K46IqcwDDChK8rpV+H+aj2b4ICfoRqfI9jjZg8CkVMJNmEBRM
+	 /pQ6RMTTHqN8dbCiWWQ6AU9gYbk2WSgqZkxolPsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Yuntao Liu <liuyuntao12@huawei.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 256/634] selftests/bpf: Fix error compiling test_lru_map.c
+Subject: [PATCH 6.6 117/538] ALSA: hda: cs35l41: fix module autoloading
 Date: Wed,  2 Oct 2024 14:55:56 +0200
-Message-ID: <20241002125821.204369483@linuxfoundation.org>
+Message-ID: <20241002125756.864761464@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Yuntao Liu <liuyuntao12@huawei.com>
 
-[ Upstream commit cacf2a5a78cd1f5f616eae043ebc6f024104b721 ]
+[ Upstream commit 48f1434a4632c7da1a6a94e159512ebddbe13392 ]
 
-Although the post-increment in macro 'CPU_SET(next++, &cpuset)' seems safe,
-the sequencing can raise compile errors, so move the increment outside the
-macro. This avoids an error seen using gcc 12.3.0 for mips64el/musl-libc:
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from spi_device_id table.
 
-  In file included from test_lru_map.c:11:
-  test_lru_map.c: In function 'sched_next_online':
-  test_lru_map.c:129:29: error: operation on 'next' may be undefined [-Werror=sequence-point]
-    129 |                 CPU_SET(next++, &cpuset);
-        |                             ^
-  cc1: all warnings being treated as errors
-
-Fixes: 3fbfadce6012 ("bpf: Fix test_lru_sanity5() in test_lru_map.c")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/22993dfb11ccf27925a626b32672fd3324cb76c4.1722244708.git.tony.ambardar@gmail.com
+Fixes: 7b2f3eb492da ("ALSA: hda: cs35l41: Add support for CS35L41 in HDA systems")
+Signed-off-by: Yuntao Liu <liuyuntao12@huawei.com>
+Link: https://patch.msgid.link/20240815091312.757139-1-liuyuntao12@huawei.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_lru_map.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/cs35l41_hda_spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/test_lru_map.c b/tools/testing/selftests/bpf/test_lru_map.c
-index 4d0650cfb5cd8..fda7589c50236 100644
---- a/tools/testing/selftests/bpf/test_lru_map.c
-+++ b/tools/testing/selftests/bpf/test_lru_map.c
-@@ -126,7 +126,8 @@ static int sched_next_online(int pid, int *next_to_try)
+diff --git a/sound/pci/hda/cs35l41_hda_spi.c b/sound/pci/hda/cs35l41_hda_spi.c
+index eb287aa5f7825..d95954ce55d81 100644
+--- a/sound/pci/hda/cs35l41_hda_spi.c
++++ b/sound/pci/hda/cs35l41_hda_spi.c
+@@ -38,6 +38,7 @@ static const struct spi_device_id cs35l41_hda_spi_id[] = {
+ 	{ "cs35l41-hda", 0 },
+ 	{}
+ };
++MODULE_DEVICE_TABLE(spi, cs35l41_hda_spi_id);
  
- 	while (next < nr_cpus) {
- 		CPU_ZERO(&cpuset);
--		CPU_SET(next++, &cpuset);
-+		CPU_SET(next, &cpuset);
-+		next++;
- 		if (!sched_setaffinity(pid, sizeof(cpuset), &cpuset)) {
- 			ret = 0;
- 			break;
+ static const struct acpi_device_id cs35l41_acpi_hda_match[] = {
+ 	{ "CSC3551", 0 },
 -- 
 2.43.0
 
