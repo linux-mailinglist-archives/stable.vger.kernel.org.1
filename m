@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C0598D80C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4CC98D50E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 180CD1F23286
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:56:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4337F1C2169E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D801D0B91;
-	Wed,  2 Oct 2024 13:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0F91D043C;
+	Wed,  2 Oct 2024 13:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+Z7p4y7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/bndJdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34DE1D0B8A;
-	Wed,  2 Oct 2024 13:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0AA16F84F;
+	Wed,  2 Oct 2024 13:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877329; cv=none; b=QRX/4IwfeH5vCPlD+Hnkm84wXihCXYqqT8VVPSO0+ovm4hu9gjpdL/6T9QSQIrimIUT5GambzrGu/OFT3tDNGA6/fhHHugor43uWKLXpOcxup1zg2atmxz0jKZPvhmKXfcSI/eHWnYuq9GYR7zuNgOKnXZRlvCG1TAgZNLXUSpI=
+	t=1727875576; cv=none; b=VfnOL2u4Tf45oc6m3hCjmX3xqo4mUWoaj6rZWN1h5DVXGnkyz/I/Tc3o1vNd2HMmfFRVRK6fvt0DQ7nXpcMumK5iKOLR7GPzhv7sKylAYYYfhLGgejGbPhNS2Nz+pm2R5A4sChK5EtSavg22RZ93G6CvBHfpkbLXVbH9W0Oq9e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877329; c=relaxed/simple;
-	bh=/zXMkF6+ywu7APOMuxg49zYH+5eIZaxBk3ipeCMfpO0=;
+	s=arc-20240116; t=1727875576; c=relaxed/simple;
+	bh=Dig//kOnpeCTXvDP3PS6jQqoJw0Q0irWuy1rjkcGDY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bn4DoGACC2crXvWdzgxAKWF0QtNmDEPSe068TUL1VdVoImNbHAuDtatqFr7LoIvSmQpajU/seSyrVhh45SBPKJoSzecSlNwE/lRquYt3mV3XbzZLv+zauOpPS1RiaZ++aitSE6kyIomZ+57DgWjg9lzlX907bFQX2t/85nIL90k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+Z7p4y7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040BCC4CECE;
-	Wed,  2 Oct 2024 13:55:28 +0000 (UTC)
+	 MIME-Version; b=r7IjGtvZdyH3hit4u2i+lOy6w5kb1dUqOdUm1D/I0pXu/EGZHEXR+EoSiekvtiU+6EKJT0OjPIMvUTJXt+gHtV1npYNOVTE9oniqIdihDGHYRSotc4OHaSe1PyjWW5nhqPdbYSodmT8o8bHpM+9wW40jgSU1Gv1lmiqDkBLwR5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/bndJdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BD5C4CEC5;
+	Wed,  2 Oct 2024 13:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877329;
-	bh=/zXMkF6+ywu7APOMuxg49zYH+5eIZaxBk3ipeCMfpO0=;
+	s=korg; t=1727875576;
+	bh=Dig//kOnpeCTXvDP3PS6jQqoJw0Q0irWuy1rjkcGDY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+Z7p4y7FFkEdiKVQMEk1+0lDObJtnEVNQ5NZMUVHQhJ2siiavN7+31lU8S/QnJT3
-	 Xd515glOz5+cxVDw7v4IkvHucF3Z/LqA+AMHQKUE4CKz2lCLvPiLiqY7LLXRKwK/Lo
-	 ltxEpNS0yvVtTfsEukmrUBMAEksZ1n6q/ip0MNXY=
+	b=P/bndJdjUuDR187897qdIaqEeH1Lp3DFO73URaAeTs3ZXJZXI29goALgSFjUGLe1P
+	 9/5oEWJMT73vV7Xd8vMf0BQzRexNoyAqGMWWjYE5odM8Hegyo+p25G5nfHzPY4FssX
+	 F75eVgt7tPLOMxtwbGU8xjRRGVuFEIiHM4lqbklY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 045/634] ACPICA: Implement ACPI_WARNING_ONCE and ACPI_ERROR_ONCE
+Subject: [PATCH 6.11 147/695] arm64: dts: ti: k3-j721e-sk: Fix reversed C6x carveout locations
 Date: Wed,  2 Oct 2024 14:52:25 +0200
-Message-ID: <20241002125812.881758569@linuxfoundation.org>
+Message-ID: <20241002125828.351556671@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 632b746b108e3c62e0795072d00ed597371c738a ]
+[ Upstream commit 9f3814a7c06b7c7296cf8c1622078ad71820454b ]
 
-ACPICA commit 2ad4e6e7c4118f4cdfcad321c930b836cec77406
+The DMA carveout for the C6x core 0 is at 0xa6000000 and core 1 is at
+0xa7000000. These are reversed in DT. While both C6x can access either
+region, so this is not normally a problem, but if we start restricting
+the memory each core can access (such as with firewalls) the cores
+accessing the regions for the wrong core will not work. Fix this here.
 
-In some cases it is not practical nor useful to nag user about some
-firmware errors that they cannot fix. Add a macro that will print a
-warning or error only once to be used in these cases.
-
-Link: https://github.com/acpica/acpica/commit/2ad4e6e7
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: c82c507126c9 ("ACPICA: executer/exsystem: Don't nag user about every Stall() violating the spec")
+Fixes: f46d16cf5b43 ("arm64: dts: ti: k3-j721e-sk: Add DDR carveout memory nodes")
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240801181232.55027-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/acpi/acoutput.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/acpi/acoutput.h b/include/acpi/acoutput.h
-index b1571dd96310a..5e0346142f983 100644
---- a/include/acpi/acoutput.h
-+++ b/include/acpi/acoutput.h
-@@ -193,6 +193,7 @@
-  */
- #ifndef ACPI_NO_ERROR_MESSAGES
- #define AE_INFO                         _acpi_module_name, __LINE__
-+#define ACPI_ONCE(_fn, _plist)                  { static char _done; if (!_done) { _done = 1; _fn _plist; } }
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+index 89fbfb21e5d3b..e709edeb95cf7 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -120,7 +120,7 @@
+ 			no-map;
+ 		};
  
- /*
-  * Error reporting. Callers module and line number are inserted by AE_INFO,
-@@ -201,8 +202,10 @@
-  */
- #define ACPI_INFO(plist)                acpi_info plist
- #define ACPI_WARNING(plist)             acpi_warning plist
-+#define ACPI_WARNING_ONCE(plist)        ACPI_ONCE(acpi_warning, plist)
- #define ACPI_EXCEPTION(plist)           acpi_exception plist
- #define ACPI_ERROR(plist)               acpi_error plist
-+#define ACPI_ERROR_ONCE(plist)          ACPI_ONCE(acpi_error, plist)
- #define ACPI_BIOS_WARNING(plist)        acpi_bios_warning plist
- #define ACPI_BIOS_EXCEPTION(plist)      acpi_bios_exception plist
- #define ACPI_BIOS_ERROR(plist)          acpi_bios_error plist
-@@ -214,8 +217,10 @@
+-		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
++		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+@@ -132,7 +132,7 @@
+ 			no-map;
+ 		};
  
- #define ACPI_INFO(plist)
- #define ACPI_WARNING(plist)
-+#define ACPI_WARNING_ONCE(plist)
- #define ACPI_EXCEPTION(plist)
- #define ACPI_ERROR(plist)
-+#define ACPI_ERROR_ONCE(plist)
- #define ACPI_BIOS_WARNING(plist)
- #define ACPI_BIOS_EXCEPTION(plist)
- #define ACPI_BIOS_ERROR(plist)
+-		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
++		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
 -- 
 2.43.0
 
