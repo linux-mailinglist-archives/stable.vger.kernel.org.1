@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-79918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BF198DAE4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AAC98DD50
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58F851C2336C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CBA51C21E72
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4361CFEC0;
-	Wed,  2 Oct 2024 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D38198822;
+	Wed,  2 Oct 2024 14:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqxUW0j0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqP4vzvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7943232;
-	Wed,  2 Oct 2024 14:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C687A1D048E;
+	Wed,  2 Oct 2024 14:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878850; cv=none; b=vGrlzaW5BlrZ5yeY6aURX0WgEPdmzRi+86FpmSFOv2Q6wshwdfh+I3rtkHB9T7v8fK6c16e5vtakhDELWFLKo6qk7CGIXJo3NlaDrxKK/ccR6+ynuC+wutz8yHS2hpiF4PvRNBH6TTreQ8+GmktFSbulkJeLm7QKVx1QCoeesCc=
+	t=1727880307; cv=none; b=DRGaGpzgsMj6p3RJsLZNbbuC5ovToQIMUuvLH1hsAL7/K95v8zqkvSVlwAMRaDDyLPrgNVIW9vOGjKpT0m6RTazDZzmeNIInD3V5xdY6JrO4v5pWfafMS0uz6SGsqdP+cbNTCR2LuYE50RIaXegr+DCrp8TF6L0gjgq+bHBA2fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878850; c=relaxed/simple;
-	bh=uuRDCimW1atwgO281iUCuT/PoGDiE2ikmi3ZsemqhmI=;
+	s=arc-20240116; t=1727880307; c=relaxed/simple;
+	bh=1agiDmJHCqQ+X7qTu/c+IWf8H5LKs/xxqgLtNZkTipk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HH7wBoMxptxcUxbzTr+NAoJcfojuwQQWFSGCk1bXAS0lA7rVhdApl7TS6EiS7aVq32MbaFBqo0QHWoNHIrp+DpLCwoGpQGSToHPEbDRUbcMrgDw6BgUMyeM/r6HxsB58EnavniVAC+jRGt9+3Pa9Sx6B94VkI/ZbacxRtBgL4hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqxUW0j0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612A3C4CEC5;
-	Wed,  2 Oct 2024 14:20:49 +0000 (UTC)
+	 MIME-Version; b=GY2VNDZgNQUGd257o9MvdnCODLiCUcPOXxIDzpeG50lb/HgNTQQ118fCrrps12r8WBeslytCUqM/Wv7/UEr3Nil5OjyKmUenJH6tBba24xVerckBEMWAy5b17Z+JTv63QM22KM5ez/zUnMR1xBluMnJeBrh53fzsIAvaaFsTcbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqP4vzvA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B6EC4CED2;
+	Wed,  2 Oct 2024 14:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878849;
-	bh=uuRDCimW1atwgO281iUCuT/PoGDiE2ikmi3ZsemqhmI=;
+	s=korg; t=1727880307;
+	bh=1agiDmJHCqQ+X7qTu/c+IWf8H5LKs/xxqgLtNZkTipk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqxUW0j0SSLs+a4dPNe7/0UtpFMATvZf0ko2zI1cXkW89ZtkDFUga2PLsRw2djxBL
-	 8GFWiic9JrPIE0Bvj8ep05+O61P8IXLg0ZHu0UxAnerD9KL4IuI1s83CpeW45OPtXR
-	 YyHnluSsBRpJjNjZOdDFg5JHolfv5Yl8vc6zmqUM=
+	b=eqP4vzvA5+IY4MmUjHEm3VggLlc+Pmbnl65RdXI4TzPztny+u8Zaok4jTIzlDKYfh
+	 KSdfYJqYQ310gr3n3IBOtk5bCymw/2gEGO+phX2VTTAR8TpnWb5fvdLqI/awInulQl
+	 skacBDLqPmg6IJrvEtC/85aoxsuFWo2CLoU0Mr/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Fiona Klute <fiona.klute@gmx.de>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.10 554/634] wifi: rtw88: 8703b: Fix reported RX band width
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Chris Park <chris.park@amd.com>,
+	Leo Ma <hanghong.ma@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 415/538] drm/amd/display: Add HDMI DSC native YCbCr422 support
 Date: Wed,  2 Oct 2024 15:00:54 +0200
-Message-ID: <20241002125832.979891636@linuxfoundation.org>
+Message-ID: <20241002125808.813886950@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Leo Ma <hanghong.ma@amd.com>
 
-commit 0129e5ff2842450f1426e312b5e580c0814e0de3 upstream.
+commit 07bfa9cdbf3cd2daadfaaba0601f126f45951ffa upstream.
 
-The definition of GET_RX_DESC_BW is incorrect. Fix it according to the
-GET_RX_STATUS_DESC_BW_8703B macro from the official driver.
+[WHY && HOW]
+For some HDMI OVT timing, YCbCr422 encoding fails at the DSC
+bandwidth check. The root cause is our DSC policy for timing
+doesn't account for HDMI YCbCr422 native support.
 
-Tested only with RTL8812AU, which uses the same bits.
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Tested-by: Fiona Klute <fiona.klute@gmx.de>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/1cfed9d5-4304-4b96-84c5-c347f59fedb9@gmail.com
+Reviewed-by: Chris Park <chris.park@amd.com>
+Signed-off-by: Leo Ma <hanghong.ma@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/rx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    4 ++--
+ drivers/gpu/drm/amd/display/dc/dc_dsc.h                     |    3 ++-
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c                 |    5 +++--
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rx.h b/drivers/net/wireless/realtek/rtw88/rx.h
-index d3668c4efc24..8a072dd3d73c 100644
---- a/drivers/net/wireless/realtek/rtw88/rx.h
-+++ b/drivers/net/wireless/realtek/rtw88/rx.h
-@@ -41,7 +41,7 @@ enum rtw_rx_desc_enc {
- #define GET_RX_DESC_TSFL(rxdesc)                                               \
- 	le32_get_bits(*((__le32 *)(rxdesc) + 0x05), GENMASK(31, 0))
- #define GET_RX_DESC_BW(rxdesc)                                                 \
--	(le32_get_bits(*((__le32 *)(rxdesc) + 0x04), GENMASK(31, 24)))
-+	(le32_get_bits(*((__le32 *)(rxdesc) + 0x04), GENMASK(5, 4)))
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1115,7 +1115,7 @@ static int compute_mst_dsc_configs_for_l
+ 		params[count].num_slices_v = aconnector->dsc_settings.dsc_num_slices_v;
+ 		params[count].bpp_overwrite = aconnector->dsc_settings.dsc_bits_per_pixel;
+ 		params[count].compression_possible = stream->sink->dsc_caps.dsc_dec_caps.is_dsc_supported;
+-		dc_dsc_get_policy_for_timing(params[count].timing, 0, &dsc_policy);
++		dc_dsc_get_policy_for_timing(params[count].timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
+ 		if (!dc_dsc_compute_bandwidth_range(
+ 				stream->sink->ctx->dc->res_pool->dscs[0],
+ 				stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
+@@ -1586,7 +1586,7 @@ static bool is_dsc_common_config_possibl
+ {
+ 	struct dc_dsc_policy dsc_policy = {0};
  
- void rtw_rx_stats(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 		  struct sk_buff *skb);
--- 
-2.46.2
-
+-	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy);
++	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
+ 	dc_dsc_compute_bandwidth_range(stream->sink->ctx->dc->res_pool->dscs[0],
+ 				       stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
+ 				       dsc_policy.min_target_bpp * 16,
+--- a/drivers/gpu/drm/amd/display/dc/dc_dsc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dsc.h
+@@ -100,7 +100,8 @@ uint32_t dc_dsc_stream_bandwidth_overhea
+  */
+ void dc_dsc_get_policy_for_timing(const struct dc_crtc_timing *timing,
+ 		uint32_t max_target_bpp_limit_override_x16,
+-		struct dc_dsc_policy *policy);
++		struct dc_dsc_policy *policy,
++		const enum dc_link_encoding_format link_encoding);
+ 
+ void dc_dsc_policy_set_max_target_bpp_limit(uint32_t limit);
+ 
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+@@ -861,7 +861,7 @@ static bool setup_dsc_config(
+ 
+ 	memset(dsc_cfg, 0, sizeof(struct dc_dsc_config));
+ 
+-	dc_dsc_get_policy_for_timing(timing, options->max_target_bpp_limit_override_x16, &policy);
++	dc_dsc_get_policy_for_timing(timing, options->max_target_bpp_limit_override_x16, &policy, link_encoding);
+ 	pic_width = timing->h_addressable + timing->h_border_left + timing->h_border_right;
+ 	pic_height = timing->v_addressable + timing->v_border_top + timing->v_border_bottom;
+ 
+@@ -1134,7 +1134,8 @@ uint32_t dc_dsc_stream_bandwidth_overhea
+ 
+ void dc_dsc_get_policy_for_timing(const struct dc_crtc_timing *timing,
+ 		uint32_t max_target_bpp_limit_override_x16,
+-		struct dc_dsc_policy *policy)
++		struct dc_dsc_policy *policy,
++		const enum dc_link_encoding_format link_encoding)
+ {
+ 	uint32_t bpc = 0;
+ 
 
 
 
