@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-79561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9000F98D926
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D645498D5CB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E0B328787B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3AF288DF3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017861D097B;
-	Wed,  2 Oct 2024 14:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB491D0412;
+	Wed,  2 Oct 2024 13:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFqSPQB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJC8p3Qn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44051D095B;
-	Wed,  2 Oct 2024 14:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282B51D0173;
+	Wed,  2 Oct 2024 13:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877802; cv=none; b=IJ8BDX1M0uG6XGgbc/6atZmAfm7HfoTGhNNvmA5pX6+vU7QHiDX2aTEWZzp7u+4mKuFbGhDnJH8w/TShXu7pdVVspdICbas4i3tSHUemxsWHI50zh2hJKA+T2+Pqv+vBui5S38UJb0Eh6jnaS5+vWlxo5xZzHkZ0me4f2I2WHuk=
+	t=1727876019; cv=none; b=tPzlqMtXOb13tQVJl9VyOA/Ye1pnk/CTz8z68zGD864dCc/9O0FjlWp9o4naKsvzAKn/vu5FBcCAAkZHbHxyACo+risC9gTQQW84ZJso3HDf7hJwJxBAF0uYtFjKfTmvdXH56DUvp0ODY4hO8iF9vNmIGaO4gYblPjDrPqbdCI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877802; c=relaxed/simple;
-	bh=v2ptf4IUxkaQU3DMZXupv7gAvBqeaYmtCKItosnjs08=;
+	s=arc-20240116; t=1727876019; c=relaxed/simple;
+	bh=7Pk5eozPeidyJSYW9d9SsB34IClgTqGgB4vo1US+GKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgoZfqvOIa5fbe3bSz7g+7hSJ+Rp9gvC1NdTGHopf8D+8VpPyX9uYVKLxFPQ/6PpGC7XhlTO/F66CGRarAnImRWSUy4WuglVY24ibGPvm03maaoQaXTcJS+142V1IRwflC4y6ErOdBpXqrcWx7kbocKkmDhzot3pTMzUVy1g5IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFqSPQB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B623C4CEC2;
-	Wed,  2 Oct 2024 14:03:22 +0000 (UTC)
+	 MIME-Version; b=r5k5I9b+9u2aRlFRFdecrzjYOpL82ucqIRgRHnbFIX/rbafQ0puhnWHDC/SoK/hzTiL+mxkci9x8MILkvTLmvekxI/WLeA2KSApcgD+aBkdDYEk5IdG9vkAaO2HTaMAFKqLaM7hWeiaJVRbyzE/57k+34liEJJpGJ4QKMP6FjQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJC8p3Qn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DB0C4CECD;
+	Wed,  2 Oct 2024 13:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877802;
-	bh=v2ptf4IUxkaQU3DMZXupv7gAvBqeaYmtCKItosnjs08=;
+	s=korg; t=1727876018;
+	bh=7Pk5eozPeidyJSYW9d9SsB34IClgTqGgB4vo1US+GKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFqSPQB4sj3+3kkwKAtIH0Cq3AlTQFI2phclkD9eu7TcpyshLfnDNC1haogz1YIUK
-	 PerkKLL+QeqNEnLOtkgmlLinQLj8uAS9NnnqPPjyflC5luyt61wa917wwVieDyyG6d
-	 gK5DJw6WyRbmaW6ROcJx1fnNwvkg7p3KAM4+QTH0=
+	b=qJC8p3QntXkHJqyLEchY5bRrnqED4h5HZ5IZdVwXpLZvWw+MiJ9MthXGEAKFnK4jP
+	 VVc98MPpFCyNyVNm8+d5B9qNdanpZ2H8urCmapKII375AxZ9F+81iVSXku2zsYmees
+	 WHeYclu2gn1Xy1rMOgt8pn4NwTRj9CmeRzMdO1ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Song Liu <song@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 198/634] powerpc/vdso: Inconditionally use CFUNC macro
-Date: Wed,  2 Oct 2024 14:54:58 +0200
-Message-ID: <20241002125818.921011121@linuxfoundation.org>
+Subject: [PATCH 6.11 301/695] libbpf: Ensure new BTF objects inherit input endianness
+Date: Wed,  2 Oct 2024 14:54:59 +0200
+Message-ID: <20241002125834.454437394@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 65948b0e716a47382731889ee6bbb18642b8b003 ]
+[ Upstream commit da18bfa59d403040d8bcba1284285916fe9e4425 ]
 
-During merge of commit 4e991e3c16a3 ("powerpc: add CFUNC assembly
-label annotation") a fallback version of CFUNC macro was added at
-the last minute, so it can be used inconditionally.
+New split BTF needs to preserve base's endianness. Similarly, when
+creating a distilled BTF, we need to preserve original endianness.
 
-Fixes: 4e991e3c16a3 ("powerpc: add CFUNC assembly label annotation")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/0fa863f2f69b2ca4094ae066fcf1430fb31110c9.1724313540.git.christophe.leroy@csgroup.eu
+Fix by updating libbpf's btf__distill_base() and btf_new_empty() to retain
+the byte order of any source BTF objects when creating new ones.
+
+Fixes: ba451366bf44 ("libbpf: Implement basic split BTF support")
+Fixes: 58e185a0dc35 ("libbpf: Add btf__distill_base() creating split BTF with distilled base BTF")
+Reported-by: Song Liu <song@kernel.org>
+Reported-by: Eduard Zingerman <eddyz87@gmail.com>
+Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Alan Maguire <alan.maguire@oracle.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/bpf/6358db36c5f68b07873a0a5be2d062b1af5ea5f8.camel@gmail.com/
+Link: https://lore.kernel.org/bpf/20240830095150.278881-1-tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vdso/gettimeofday.S | 4 ----
- 1 file changed, 4 deletions(-)
+ tools/lib/bpf/btf.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
-index 48fc6658053aa..894cb939cd2b3 100644
---- a/arch/powerpc/kernel/vdso/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso/gettimeofday.S
-@@ -38,11 +38,7 @@
- 	.else
- 	addi		r4, r5, VDSO_DATA_OFFSET
- 	.endif
--#ifdef __powerpc64__
- 	bl		CFUNC(DOTSYM(\funct))
--#else
--	bl		\funct
--#endif
- 	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
- #ifdef __powerpc64__
- 	PPC_LL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
+diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
+index 32c00db3b91b9..40aae244e35f7 100644
+--- a/tools/lib/bpf/btf.c
++++ b/tools/lib/bpf/btf.c
+@@ -996,6 +996,7 @@ static struct btf *btf_new_empty(struct btf *base_btf)
+ 		btf->base_btf = base_btf;
+ 		btf->start_id = btf__type_cnt(base_btf);
+ 		btf->start_str_off = base_btf->hdr->str_len;
++		btf->swapped_endian = base_btf->swapped_endian;
+ 	}
+ 
+ 	/* +1 for empty string at offset 0 */
+@@ -5394,6 +5395,9 @@ int btf__distill_base(const struct btf *src_btf, struct btf **new_base_btf,
+ 	new_base = btf__new_empty();
+ 	if (!new_base)
+ 		return libbpf_err(-ENOMEM);
++
++	btf__set_endianness(new_base, btf__endianness(src_btf));
++
+ 	dist.id_map = calloc(n, sizeof(*dist.id_map));
+ 	if (!dist.id_map) {
+ 		err = -ENOMEM;
 -- 
 2.43.0
 
