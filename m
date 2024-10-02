@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-80423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0728A98DD5A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC21B98DAEE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A93571F23548
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9305A2829CA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC01E1D0E28;
-	Wed,  2 Oct 2024 14:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD9C1D094C;
+	Wed,  2 Oct 2024 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLJ4aGGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW2Gf10T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850B81D0DE6;
-	Wed,  2 Oct 2024 14:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396081E52C;
+	Wed,  2 Oct 2024 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880331; cv=none; b=h1tv3RntR5Yb3/3xuF8oa0xaBHev99cVZwPFQt6C20PsGjjQ0zmgiV1oq6AmnKgs+pdV8BJiYhTr+gAntmb46pk+EtwW6yvZdXVhKSah1Gx9La+SYpS8oYDQMjjsrNio8a3GmHi3MnQ31ULjVEILnqeMze3z5a1ew2vQ1KRLIEw=
+	t=1727878873; cv=none; b=KRYmRBGK0E2DCXdZ/yfy6/XBA71C9NKr/FP70I7l4o3MpMV5r2vXu5ajcwOyHmq27QlVoyQ3FfwYAZz52bEirUWHTdQ8iC4fxnu/mLdSou1YGTJXsaaRk0Q/NmvD0GCdZ2vJq+ODx0dCb4yQFo8NExmx2dMZdEEGNIut1WlCOC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880331; c=relaxed/simple;
-	bh=WClZB9lNiRQRrDqlpCZX0IATQsR8ZtPDmT5nOEm9vDo=;
+	s=arc-20240116; t=1727878873; c=relaxed/simple;
+	bh=ZwdnOgtHoSgFBnQHF1yRMtXtCQnVQrwFuPXzlH/6OcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjkOvJXC0LNffr40guJSocQncj9Fb4+o3nu1V21qIhJZ3MiBsCguvDGSWFa5NOUF05ERyy2KKqGoHd8mj0Qy8palqVgtH5lOCSVLyCmmh472w5BqNJQpTWuA1/GQbhAiJWxP1KATHHLo8ZnTxLeQv+RnvMFeaFl/ER6dqLNSua0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLJ4aGGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F919C4CEC5;
-	Wed,  2 Oct 2024 14:45:30 +0000 (UTC)
+	 MIME-Version; b=InXUNFnvaYKki+9R/UCm3oKzFgd0LMzGA8nJMUXex05CBvBhfAG6uREqmdo/IMlUcUrbI5dHHpXFknradb1gWtEuO4AHfWXNiI1YSajqtaYZ0HCFnEej8Atm6tPBGFLSHiMYe6GrBxlmgoeeWdoVcw5l/bZkgiL6TIX6rBBcNPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW2Gf10T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B585AC4CEC5;
+	Wed,  2 Oct 2024 14:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880331;
-	bh=WClZB9lNiRQRrDqlpCZX0IATQsR8ZtPDmT5nOEm9vDo=;
+	s=korg; t=1727878873;
+	bh=ZwdnOgtHoSgFBnQHF1yRMtXtCQnVQrwFuPXzlH/6OcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLJ4aGGt6wU1Ngse0zDfIdVGiBrmXjLfP+dsnNWnBgOVJV1XrE6p1Fpp5DpG9kMsa
-	 1YByMCexwKXo/D5HJS0WhXz71g2ktx3z0QtX8B8lNZOI4YFBAv2OKF+G8reL845lGu
-	 WhOsD/HTkS6cOD80hm0UoBs2y+hEE5s5Lbz0Gz7I=
+	b=xW2Gf10TFldfdyy1c/DPjEqsmbk+j0WPnFcKYQ71xksNd923BYo6bs+s9pujLkA/g
+	 J/DXYtm6zMnz6NSFNtDIQw5Li6SE+Q+w1PglOLImJ8CK3wbd8Ey5C7lsI1MgDGrGSa
+	 9HB6XwVDk42a6LG5x5EqZ6qZEegUV9HLYSdYeNXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 422/538] ksmbd: allow write with FILE_APPEND_DATA
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.10 561/634] f2fs: prevent possible int overflow in dir_block_index()
 Date: Wed,  2 Oct 2024 15:01:01 +0200
-Message-ID: <20241002125809.091842038@linuxfoundation.org>
+Message-ID: <20241002125833.259972760@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 2fb9b5dc80cabcee636a6ccd020740dd925b4580 upstream.
+commit 47f268f33dff4a5e31541a990dc09f116f80e61c upstream.
 
-Windows client write with FILE_APPEND_DATA when using git.
-ksmbd should allow write it with this flags.
+The result of multiplication between values derived from functions
+dir_buckets() and bucket_blocks() *could* technically reach
+2^30 * 2^2 = 2^32.
 
-Z:\test>git commit -m "test"
-fatal: cannot update the ref 'HEAD': unable to append to
- '.git/logs/HEAD': Bad file descriptor
+While unlikely to happen, it is prudent to ensure that it will not
+lead to integer overflow. Thus, use mul_u32_u32() as it's more
+appropriate to mitigate the issue.
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 3843154598a0 ("f2fs: introduce large directory support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/dir.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -496,7 +496,7 @@ int ksmbd_vfs_write(struct ksmbd_work *w
- 	int err = 0;
+--- a/fs/f2fs/dir.c
++++ b/fs/f2fs/dir.c
+@@ -157,7 +157,8 @@ static unsigned long dir_block_index(uns
+ 	unsigned long bidx = 0;
  
- 	if (work->conn->connection_type) {
--		if (!(fp->daccess & FILE_WRITE_DATA_LE)) {
-+		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE))) {
- 			pr_err("no right to write(%pD)\n", fp->filp);
- 			err = -EACCES;
- 			goto out;
+ 	for (i = 0; i < level; i++)
+-		bidx += dir_buckets(i, dir_level) * bucket_blocks(i);
++		bidx += mul_u32_u32(dir_buckets(i, dir_level),
++				    bucket_blocks(i));
+ 	bidx += idx * bucket_blocks(level);
+ 	return bidx;
+ }
 
 
 
