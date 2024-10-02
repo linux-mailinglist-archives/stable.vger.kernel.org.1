@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-79626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262E098D96E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A5A98DBF6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE61D28985C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D54041C23DCC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C63F1D12F5;
-	Wed,  2 Oct 2024 14:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C10D1D175A;
+	Wed,  2 Oct 2024 14:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYYuH9+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXGPd1dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1541D12F0;
-	Wed,  2 Oct 2024 14:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CCB1D175D;
+	Wed,  2 Oct 2024 14:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877992; cv=none; b=abk5OEsvWdebwm8RNR0GYXGB8hPuRaxD4qRMOZtui+jkz8gqeFNJwOfuvb3Diq5PQJQFHzIDq8o6MAehSmhkQ8LauxbIAqvBp55ERPxPApOG1OVytcYoMnXb49HruOaqcfn++mmQcX1IurAdrBWfnGox38m3cGrCKjrMhK6O3GU=
+	t=1727879460; cv=none; b=XsM0SD6B+XT0zp8DJUwKZ1M/lEfFmRMVkiwbCEhF7VkTVbJ0NJaBYFQ7C4naU3siVSCLp/98oOjSB2wQV8e6jEuBFO/TI4pze7e/KhBjDmc1qKBryUH10gDVqBRbnT0kUutkoVWp6quiSUCLZ4iWax90vBSy5ZJ0qo+7loaOgJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877992; c=relaxed/simple;
-	bh=G9Lc6Cvh+auonFM5S9zRWsBSAS0S9TElQf/OYGziVig=;
+	s=arc-20240116; t=1727879460; c=relaxed/simple;
+	bh=/rXLgI4vTCogAqmwLMxi7DB+POjGX9bWkOn5zh67tz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdpoWAfBF7HxYP3/A+8VNGxe0+OVdnsrM15CbK8SnoAi9AKdsJEV1BQVSSPanp1j37JSRTXZKdcA522pfG2c5a6fwQZix0rzE32scUa+uiWCDQtS3beL+KOvwIG3QeIkBqTkXuDDdmks6j49Um2oqOG7UBtl65B3CiANKp2pogo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYYuH9+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C87C4CEC2;
-	Wed,  2 Oct 2024 14:06:31 +0000 (UTC)
+	 MIME-Version; b=H7PnAGhcMjnUQ7NcziE1JHCJeD/uCw1STwvP8ECeYuGfcbKaxQjIHLHgobmlryO1YmkfBefrp0L66XPNFdKkF9EBNH1AQmn2rUWB++jseAaz0qfLukG+oocV6wS4GMn/JrX5wfVjHc3Gs0Hyi0jrjFSlwcyHlbHj7DjFNeUeVRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXGPd1dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8918CC4CEC5;
+	Wed,  2 Oct 2024 14:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877992;
-	bh=G9Lc6Cvh+auonFM5S9zRWsBSAS0S9TElQf/OYGziVig=;
+	s=korg; t=1727879459;
+	bh=/rXLgI4vTCogAqmwLMxi7DB+POjGX9bWkOn5zh67tz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYYuH9+4wesXJkjK7rRRtmiJ9fGYcLLKne/q/PTCC9VR1mIBFZorvPcoThV2RP6Hw
-	 KNGf5uXSgC0ITB/us/kdvu+27rR859rhC+g5c1mORRvYQgTVHwtDKfN3+k6q0DeYfV
-	 QpyfZwbv0LYHCWmQ3gZtYZdJCTlnpIVDOqgyyNfo=
+	b=HXGPd1dnv3P7fTJjwTFubVnVpa82VIE//SGXBy2yeavCM9Cl5qQFr55bokLK9v9uf
+	 JC9NzfXSbU1ThCbbTIvm9cSqT0Oq3qo2Hw5LdKHON0pekX0YSkhS5Lcul992ulBR9p
+	 ofiEX0ANSec1Z8Va4qlPKO4WvqimMAklnkLVPBB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 263/634] selftests/bpf: no need to track next_match_pos in struct test_loader
-Date: Wed,  2 Oct 2024 14:56:03 +0200
-Message-ID: <20241002125821.482137433@linuxfoundation.org>
+Subject: [PATCH 6.6 125/538] power: supply: axp20x_battery: Remove design from min and max voltage
+Date: Wed,  2 Oct 2024 14:56:04 +0200
+Message-ID: <20241002125757.179005899@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 4ef5d6af493558124b7a6c13cace58b938fe27d4 ]
+[ Upstream commit 61978807b00f8a1817b0e5580981af1cd2f428a5 ]
 
-The call stack for validate_case() function looks as follows:
-- test_loader__run_subtests()
-  - process_subtest()
-    - run_subtest()
-      - prepare_case(), which does 'tester->next_match_pos = 0';
-      - validate_case(), which increments tester->next_match_pos.
+The POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN and
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN values should be immutable
+properties of the battery, but for this driver they are writable values
+and used as the minimum and maximum values for charging. Remove the
+DESIGN designation from these values.
 
-Hence, each subtest is run with next_match_pos freshly set to zero.
-Meaning that there is no need to persist this variable in the
-struct test_loader, use local variable instead.
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240722233844.1406874-7-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Stable-dep-of: f00bb757ed63 ("selftests/bpf: fix to avoid __msg tag de-duplication by clang")
+Fixes: 46c202b5f25f ("power: supply: add battery driver for AXP20X and AXP22X PMICs")
+Suggested-by: Chen-Yu Tsai <wens@kernel.org>
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240821215456.962564-3-macroalpha82@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_loader.c | 19 ++++++++-----------
- tools/testing/selftests/bpf/test_progs.h  |  1 -
- 2 files changed, 8 insertions(+), 12 deletions(-)
+ drivers/power/supply/axp20x_battery.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
-index f14e10b0de96e..47508cf66e896 100644
---- a/tools/testing/selftests/bpf/test_loader.c
-+++ b/tools/testing/selftests/bpf/test_loader.c
-@@ -434,7 +434,6 @@ static void prepare_case(struct test_loader *tester,
- 	bpf_program__set_flags(prog, prog_flags | spec->prog_flags);
+diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
+index 6ac5c80cfda21..7520b599eb3d1 100644
+--- a/drivers/power/supply/axp20x_battery.c
++++ b/drivers/power/supply/axp20x_battery.c
+@@ -303,11 +303,11 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
+ 		val->intval = reg & AXP209_FG_PERCENT;
+ 		break;
  
- 	tester->log_buf[0] = '\0';
--	tester->next_match_pos = 0;
- }
+-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+ 		return axp20x_batt->data->get_max_voltage(axp20x_batt,
+ 							  &val->intval);
  
- static void emit_verifier_log(const char *log_buf, bool force)
-@@ -450,25 +449,23 @@ static void validate_case(struct test_loader *tester,
- 			  struct bpf_program *prog,
- 			  int load_err)
+-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+ 		ret = regmap_read(axp20x_batt->regmap, AXP20X_V_OFF, &reg);
+ 		if (ret)
+ 			return ret;
+@@ -455,10 +455,10 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
+ 	struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
+ 
+ 	switch (psp) {
+-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+ 		return axp20x_set_voltage_min_design(axp20x_batt, val->intval);
+ 
+-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
++	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+ 		return axp20x_batt->data->set_max_voltage(axp20x_batt, val->intval);
+ 
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+@@ -493,8 +493,8 @@ static enum power_supply_property axp20x_battery_props[] = {
+ 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+ 	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+ 	POWER_SUPPLY_PROP_HEALTH,
+-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
++	POWER_SUPPLY_PROP_VOLTAGE_MAX,
++	POWER_SUPPLY_PROP_VOLTAGE_MIN,
+ 	POWER_SUPPLY_PROP_CAPACITY,
+ };
+ 
+@@ -502,8 +502,8 @@ static int axp20x_battery_prop_writeable(struct power_supply *psy,
+ 					 enum power_supply_property psp)
  {
--	int i, j, err;
--	char *match;
- 	regmatch_t reg_match[1];
-+	const char *log = tester->log_buf;
-+	int i, j, err;
- 
- 	for (i = 0; i < subspec->expect_msg_cnt; i++) {
- 		struct expect_msg *msg = &subspec->expect_msgs[i];
-+		const char *match = NULL;
- 
- 		if (msg->substr) {
--			match = strstr(tester->log_buf + tester->next_match_pos, msg->substr);
-+			match = strstr(log, msg->substr);
- 			if (match)
--				tester->next_match_pos = match - tester->log_buf + strlen(msg->substr);
-+				log += strlen(msg->substr);
- 		} else {
--			err = regexec(&msg->regex,
--				      tester->log_buf + tester->next_match_pos, 1, reg_match, 0);
-+			err = regexec(&msg->regex, log, 1, reg_match, 0);
- 			if (err == 0) {
--				match = tester->log_buf + tester->next_match_pos + reg_match[0].rm_so;
--				tester->next_match_pos += reg_match[0].rm_eo;
--			} else {
--				match = NULL;
-+				match = log + reg_match[0].rm_so;
-+				log += reg_match[0].rm_eo;
- 			}
- 		}
- 
-diff --git a/tools/testing/selftests/bpf/test_progs.h b/tools/testing/selftests/bpf/test_progs.h
-index 0ba5a20b19ba8..8e997de596db0 100644
---- a/tools/testing/selftests/bpf/test_progs.h
-+++ b/tools/testing/selftests/bpf/test_progs.h
-@@ -438,7 +438,6 @@ typedef int (*pre_execution_cb)(struct bpf_object *obj);
- struct test_loader {
- 	char *log_buf;
- 	size_t log_buf_sz;
--	size_t next_match_pos;
- 	pre_execution_cb pre_execution_cb;
- 
- 	struct bpf_object *obj;
+ 	return psp == POWER_SUPPLY_PROP_STATUS ||
+-	       psp == POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN ||
+-	       psp == POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN ||
++	       psp == POWER_SUPPLY_PROP_VOLTAGE_MIN ||
++	       psp == POWER_SUPPLY_PROP_VOLTAGE_MAX ||
+ 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT ||
+ 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
+ }
 -- 
 2.43.0
 
