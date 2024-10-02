@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC2098DAEC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E39D98DD59
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6143B269BA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07737281E1E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9941D07B5;
-	Wed,  2 Oct 2024 14:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CF91D07B9;
+	Wed,  2 Oct 2024 14:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+KKkvCH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmDl0TFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FA41D1F5B;
-	Wed,  2 Oct 2024 14:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F75F1D078B;
+	Wed,  2 Oct 2024 14:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878867; cv=none; b=O+/UD6d7/F2MC7HXIXMN82OxCiap2WX7gPcLME5S+9HmrDqUYmxDZ9pQDdgfAnD+3eYuXZfhAlwoK4rHAomd8MP/b13FhWLsRcGzXRjwzvZqBJw82TAWUDsOXiCJ4Jw5QvOwbypomNPkm8do+Xsdez0KD+TGEp4sXwdS2uZi5No=
+	t=1727880328; cv=none; b=DwlPZ7vrTyJ4+xBQ+Jb+VeJysCSkHPNPXRBCVvASYIwlyXLvXvBjCGFn9Rhij0OZX4Dt1KNwFR213kZ7j7UqwLW4ZLvD9NjEHZG86q9yGk8sF32qbhI3risg+SCGR7dX3b2+QvifVDX8oFeA1S1DtQNssofFWIP/p5E4txqM4d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878867; c=relaxed/simple;
-	bh=0M4LpSr5GY/htaqR7t6M7rXSXma9alViVEn8c8n52L0=;
+	s=arc-20240116; t=1727880328; c=relaxed/simple;
+	bh=57tgiWm7xkDuVzreGimbJINN2vlh7498vR54Nkk3V9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uwjjkj6R4fHOybCMP6v1fOMWb41RsKHDIawcbHWWeWadvv0wCa68RwwgJBIeYEpPDrzhJQVMoEuYJUtyN4i8M0nEIEdNaB0TJu7MafK8ay63RgKldBzy6t8XI34MrCAIB3rQKuwStM4GK2sdIoIjRyJOzN/oN+DTp6NGLfWywl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+KKkvCH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3609C4CEC5;
-	Wed,  2 Oct 2024 14:21:06 +0000 (UTC)
+	 MIME-Version; b=Buenvg+e4bHv7frUfHFKe7KGFD3u/8uScVHi9QXkwfY4+OGkdV1rXjacZJQJAcT7fBxWAGeRa2vZQVPDVw+TDkQxiMgoMaWWkAawe3mRNUTrZMfu6uM1tY0gmzCXxGFLbR88RxxdvwNJ6tQtyJWHtSWS3tARXhd0xaq6948JzuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmDl0TFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C21C4CEC2;
+	Wed,  2 Oct 2024 14:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878867;
-	bh=0M4LpSr5GY/htaqR7t6M7rXSXma9alViVEn8c8n52L0=;
+	s=korg; t=1727880328;
+	bh=57tgiWm7xkDuVzreGimbJINN2vlh7498vR54Nkk3V9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+KKkvCHzRX+YdA9wYSLWkVZIfC52LzB5X5NXN3/0346CzvQjeBtbuQaZ9ADkzTvd
-	 2/lDrCqDoD5qYyja1Ywxakk/Df9jL1oO0Hn0UJIrK7FPz+NkCbJiWJUBpWM7NqhSIv
-	 tWUNmMocshIofQ5MLqUCFj/BjFNVVjqALSrWlGzs=
+	b=CmDl0TFvRZ/mtpEa12Cy9z1/aFTi4UG8mecu+bo3LhlN22/4VDcxwKtmEmfdflXn7
+	 e14cNzF8GCR6/gwQCr1w5sN0jkSB7uLj2H2UWkbM4OQDVQZAcvgArfAKNDomkhkTnV
+	 1KBfl+ZWi6IMDK+1T3dnQpEn9XlB9pJ2j8/Ne/Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Luca Stefani <luca.stefani.ge1@gmail.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 559/634] btrfs: always update fstrim_range on failure in FITRIM ioctl
-Date: Wed,  2 Oct 2024 15:00:59 +0200
-Message-ID: <20241002125833.177929256@linuxfoundation.org>
+	Hobin Woo <hobin.woo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 421/538] ksmbd: make __dir_empty() compatible with POSIX
+Date: Wed,  2 Oct 2024 15:01:00 +0200
+Message-ID: <20241002125809.051918534@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Stefani <luca.stefani.ge1@gmail.com>
+From: Hobin Woo <hobin.woo@samsung.com>
 
-commit 3368597206dc3c6c3c2247ee146beada14c67380 upstream.
+commit ca4974ca954561e79f8871d220bb08f14f64f57c upstream.
 
-Even in case of failure we could've discarded some data and userspace
-should be made aware of it, so copy fstrim_range to userspace
-regardless.
+Some file systems may not provide dot (.) and dot-dot (..) as they are
+optional in POSIX. ksmbd can misjudge emptiness of a directory in those
+file systems, since it assumes there are always at least two entries:
+dot and dot-dot.
+Just don't count dot and dot-dot.
 
-Also make sure to update the trimmed bytes amount even if
-btrfs_trim_free_extents fails.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |    4 ++--
- fs/btrfs/ioctl.c       |    4 +---
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ fs/smb/server/vfs.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -6426,13 +6426,13 @@ int btrfs_trim_fs(struct btrfs_fs_info *
- 			continue;
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1110,9 +1110,10 @@ static bool __dir_empty(struct dir_conte
+ 	struct ksmbd_readdir_data *buf;
  
- 		ret = btrfs_trim_free_extents(device, &group_trimmed);
-+
-+		trimmed += group_trimmed;
- 		if (ret) {
- 			dev_failed++;
- 			dev_ret = ret;
- 			break;
- 		}
--
--		trimmed += group_trimmed;
- 	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
+ 	buf = container_of(ctx, struct ksmbd_readdir_data, ctx);
+-	buf->dirent_count++;
++	if (!is_dot_dotdot(name, namlen))
++		buf->dirent_count++;
  
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -543,13 +543,11 @@ static noinline int btrfs_ioctl_fitrim(s
- 
- 	range.minlen = max(range.minlen, minlen);
- 	ret = btrfs_trim_fs(fs_info, &range);
--	if (ret < 0)
--		return ret;
- 
- 	if (copy_to_user(arg, &range, sizeof(range)))
- 		return -EFAULT;
- 
--	return 0;
-+	return ret;
+-	return buf->dirent_count <= 2;
++	return !buf->dirent_count;
  }
  
- int __pure btrfs_is_empty_uuid(u8 *uuid)
+ /**
+@@ -1132,7 +1133,7 @@ int ksmbd_vfs_empty_dir(struct ksmbd_fil
+ 	readdir_data.dirent_count = 0;
+ 
+ 	err = iterate_dir(fp->filp, &readdir_data.ctx);
+-	if (readdir_data.dirent_count > 2)
++	if (readdir_data.dirent_count)
+ 		err = -ENOTEMPTY;
+ 	else
+ 		err = 0;
 
 
 
