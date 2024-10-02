@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3346498DA31
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6920298DCC5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5CF2837A1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0BC1F22C92
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAD21D1732;
-	Wed,  2 Oct 2024 14:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015F51D1E99;
+	Wed,  2 Oct 2024 14:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/pZeUXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb3DSd75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB511D0B8C;
-	Wed,  2 Oct 2024 14:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14E71D0434;
+	Wed,  2 Oct 2024 14:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878455; cv=none; b=NulfvBewyYGH/gny1Z/pBLN17rWCcNtaiu71HEeXxIJdH+hOPgGJ0QOLlgjJgtSkFZhmGX9cJf74sgv2bv5G5BEcZZ//P9sCaucHmyJANq1fagvOkr7CnUfFnhBaYORM6pUaXqGGxPbUPjgWK31UHzZO0mt2yrSzwKDbEIOb4m4=
+	t=1727879911; cv=none; b=NoNpBc/Q4M+ytTW7X2yliGZ6ByGs5cwPcGuZ3ZJ0e0a7bvmua9jR1r/z6BTQGlP8QdPCxJgAKL6BwcW2LlclNHOiIuPHoOdgjobHy7QCJwLPGUK1uBa5RFR1Ohb7gf3yxVE8htGHWMJjT7Z5vVXT/EjzL7SQjoJJV1E7m/C7dvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878455; c=relaxed/simple;
-	bh=oZTYDCsutgOItnwIW7tsiJYfmg4FJrhljbqSHsjJ314=;
+	s=arc-20240116; t=1727879911; c=relaxed/simple;
+	bh=JvIXgDaaD7uVEVQKKICDFOKdiIPo10LgkWVspCUp1GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jI8B3rbzMAI7Z3PZCL6jSiCTxaGpvGnJOdv/bUd58Xb1hw68sz7xrriQFOkVwtLM4Yg6URL/UW26gDvM1vWAjOOPQyYErQtWH94zACgWYUvCYp3ve/hnbbPCe5+Gksr1b7jFK9w4f3222FJ6uPRWQ9UyCLyhtpK7oQ7gwu5DCNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/pZeUXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1492CC4CEC2;
-	Wed,  2 Oct 2024 14:14:14 +0000 (UTC)
+	 MIME-Version; b=kZtaPNRw6jx0u+FvqGykxmZ4gBjMOcyfYz5KQ/kAF1W0BPTz23iKr8DC0VYUhBtrU9HP+R5Qfy4jfvC7qvUFo7k9uKXq5yK219tJ9q3J6+s+ubpxs+Gm0UEiG84zqmeQyU5zmpBEF0CntJCeV3o2guSO3ktZ0jucl2yEIk3n570=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb3DSd75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B886C4CEC5;
+	Wed,  2 Oct 2024 14:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878455;
-	bh=oZTYDCsutgOItnwIW7tsiJYfmg4FJrhljbqSHsjJ314=;
+	s=korg; t=1727879911;
+	bh=JvIXgDaaD7uVEVQKKICDFOKdiIPo10LgkWVspCUp1GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/pZeUXZ2+DiDWXdtkm3D5x33Hik8ojkwAVlFoSqrlstrYqtEdjQEmdP+pOH+wFI+
-	 enAABoa8ml9/pX1B8NA4UOanIafQFIMaoxTyG5cbt9n7y/7wVgUBjCcQ6cGlx3zNSQ
-	 dPejpkwSqtvqGwIltxIYT3ixLuiPMtaAHdUG3Nyw=
+	b=Fb3DSd75mEh/L/hZ2IBC7JeMFmTR61vtoRN5/1wKGkYUdS5WqxnbFBSlktS/u6Ubw
+	 izamrh5252ingJsBmx0j6qjAnambHfj6HG/hSJkBVg22aBhti8Bo2dAoc8jsdLlPoa
+	 KaTRgYsXp2crLasnGFFWg3YrJzomYAbR8vvLukOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Junlin Li <make24@iscas.ac.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 420/634] iio: magnetometer: ak8975: drop incorrect AK09116 compatible
+Subject: [PATCH 6.6 281/538] drivers: media: dvb-frontends/rtl2832: fix an out-of-bounds write error
 Date: Wed,  2 Oct 2024 14:58:40 +0200
-Message-ID: <20241002125827.681258804@linuxfoundation.org>
+Message-ID: <20241002125803.347456365@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Junlin Li <make24@iscas.ac.cn>
 
-[ Upstream commit da6e3160df230692bbd48a6d52318035f19595e2 ]
+[ Upstream commit 8ae06f360cfaca2b88b98ca89144548b3186aab1 ]
 
-All compatibles in this binding without prefixes were deprecated, so
-adding a new deprecated one after some time is not allowed, because it
-defies the core logic of deprecating things.
+Ensure index in rtl2832_pid_filter does not exceed 31 to prevent
+out-of-bounds access.
 
-Drop the AK09916 vendorless compatible.
+dev->filters is a 32-bit value, so set_bit and clear_bit functions should
+only operate on indices from 0 to 31. If index is 32, it will attempt to
+access a non-existent 33rd bit, leading to out-of-bounds access.
+Change the boundary check from index > 32 to index >= 32 to resolve this
+issue.
 
-Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240806053016.6401-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Junlin Li <make24@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 4b01e01a81b6 ("[media] rtl2832: implement PID filter")
+[hverkuil: added fixes tag, rtl2830_pid_filter -> rtl2832_pid_filter in logmsg]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/magnetometer/ak8975.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/dvb-frontends/rtl2832.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index dd466c5fa6214..ccbebe5b66cde 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -1081,7 +1081,6 @@ static const struct of_device_id ak8975_of_match[] = {
- 	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
- 	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
- 	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
--	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ak8975_of_match);
+diff --git a/drivers/media/dvb-frontends/rtl2832.c b/drivers/media/dvb-frontends/rtl2832.c
+index 601cf45c39358..e6a7877a98541 100644
+--- a/drivers/media/dvb-frontends/rtl2832.c
++++ b/drivers/media/dvb-frontends/rtl2832.c
+@@ -983,7 +983,7 @@ static int rtl2832_pid_filter(struct dvb_frontend *fe, u8 index, u16 pid,
+ 		index, pid, onoff, dev->slave_ts);
+ 
+ 	/* skip invalid PIDs (0x2000) */
+-	if (pid > 0x1fff || index > 32)
++	if (pid > 0x1fff || index >= 32)
+ 		return 0;
+ 
+ 	if (onoff)
 -- 
 2.43.0
 
