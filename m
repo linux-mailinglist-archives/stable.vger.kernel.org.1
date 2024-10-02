@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E1A98D9D4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C01998DC71
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FCF51F26776
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E18B1C241C7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FD31D1F57;
-	Wed,  2 Oct 2024 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D501D0E03;
+	Wed,  2 Oct 2024 14:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPgu/UYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmKSUHoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8328C1D0E16;
-	Wed,  2 Oct 2024 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25851D07A0;
+	Wed,  2 Oct 2024 14:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878250; cv=none; b=pbNCcLnjFoXcRjJTn5ncI3AB254HG+XGDZnzfOu3V2VHVhP82+5OvByMo9LvrDlp6SD04L3/9KH0zG+B/LbltfjOyvfmeasZ8JJkpbb6VIxnK/U/ZjyGiwgS39h8kqD/+9S7V1N5KqsUtnUAWlG7cXY+a69LHBvU3RwsTjXMsuw=
+	t=1727879705; cv=none; b=i2zYxN4DpgEo7QzsBY1dbG/9eIz+kBXdU0C4+pAiJ/xI7guoxVfCUmwGiLGZRAUfWw8EzEM7VPlx1HBCaDxwN42yxh3Wca/B5GMwkye5CtcLAarCG9Hoq/91VKZUJFULIf52TTMsHWO31LOGvRW2uOMrWRbmXQ3PCwkSSZPO6og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878250; c=relaxed/simple;
-	bh=E7RbdtDAl7A5ddyHn9ZgpKcYBx40eM/QPi9SAsoBwZc=;
+	s=arc-20240116; t=1727879705; c=relaxed/simple;
+	bh=oYYn3LPF1zVtuxgJ18TqvyE/r8vwKsOsp5T4LbGJgNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbhBtngS+s50vDpclxN0HhVHe58bNPJGtJ6cnSyZDiUxV++GmbhMopaK45PrQzu0BGdHigAMJwEubhGEb0/peMfwqpSqnMV1xFbYc7C6vAKfVaJOd+HyH3QtNdSDdEdTUpJqyjw2ISmA97c36S2ACq130T6ESpywX1MdGpSX61Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPgu/UYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF23C4CEC2;
-	Wed,  2 Oct 2024 14:10:49 +0000 (UTC)
+	 MIME-Version; b=LiUcPNdBtZnf8VFl6Ah5IlfMoAWr6UaRJk+gwrK8j9U+6njZVh8X8vFTiHAb1kAv6NQ9L8qVoib3CM6YA+bOR/e10S7N3FlrWRBMcK4X32/bIX0X3xmJOsvZxJhDxYiVzeB2rWa9DOfrCqFLVhfuA95JYxyiSv0OWlPS456VU5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmKSUHoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CF9C4CEC2;
+	Wed,  2 Oct 2024 14:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878250;
-	bh=E7RbdtDAl7A5ddyHn9ZgpKcYBx40eM/QPi9SAsoBwZc=;
+	s=korg; t=1727879705;
+	bh=oYYn3LPF1zVtuxgJ18TqvyE/r8vwKsOsp5T4LbGJgNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPgu/UYf2eseWumAMESEBZNrIdNRK4JQTjD6ipT92OE9zQEZuK8EtsE9PCExw9fm5
-	 ODNoDKVmS/BOzeVPjzVOwCdOK9clC/kzVV2bjQM7tQM44PLPJC/tKlKPh6kQfbYlx2
-	 OFmHW+aC/7CiB2bEhI9wUcHVYEEy2qO0/R4UlZxU=
+	b=GmKSUHoKSf/R1nhM/NTtzPvbI+BWa0wWtbECRYyHqxk2QMIVjTDPfyjD+OF3dCfsi
+	 GGBBzOTBntlATldflQZctj7EqGCGSkT4+A9zUdKZQXESMbcCbfyH+9QKyLzBsqG9uL
+	 ClrswtBjL0Lf1LzIk4Zi0oLeQmdQAWQNYq6F6uwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <sboyd@kernel.org>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 350/634] clk: at91: sama7g5: Allocate only the needed amount of memory for PLLs
+Subject: [PATCH 6.6 211/538] libbpf: Sync progs autoload with maps autocreate for struct_ops maps
 Date: Wed,  2 Oct 2024 14:57:30 +0200
-Message-ID: <20241002125824.914703731@linuxfoundation.org>
+Message-ID: <20241002125800.587092087@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 2d6e9ee7cb3e79b1713783c633b13af9aeffc90c ]
+[ Upstream commit fe9d049c3da06373a1a35914b7f695509e4cb1fe ]
 
-The maximum number of PLL components on SAMA7G5 is 3 (one fractional
-part and 2 dividers). Allocate the needed amount of memory for
-sama7g5_plls 2d array. Previous code used to allocate 7 array entries for
-each PLL. While at it, replace 3 with PLL_COMPID_MAX in the loop which
-parses the sama7g5_plls 2d array.
+Automatically select which struct_ops programs to load depending on
+which struct_ops maps are selected for automatic creation.
+E.g. for the BPF code below:
 
-Fixes: cb783bbbcf54 ("clk: at91: sama7g5: add clock support for sama7g5")
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20240714141315.19480-1-claudiu.beznea@tuxon.dev
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+    SEC("struct_ops/test_1") int BPF_PROG(foo) { ... }
+    SEC("struct_ops/test_2") int BPF_PROG(bar) { ... }
+
+    SEC(".struct_ops.link")
+    struct test_ops___v1 A = {
+        .foo = (void *)foo
+    };
+
+    SEC(".struct_ops.link")
+    struct test_ops___v2 B = {
+        .foo = (void *)foo,
+        .bar = (void *)bar,
+    };
+
+And the following libbpf API calls:
+
+    bpf_map__set_autocreate(skel->maps.A, true);
+    bpf_map__set_autocreate(skel->maps.B, false);
+
+The autoload would be enabled for program 'foo' and disabled for
+program 'bar'.
+
+During load, for each struct_ops program P, referenced from some
+struct_ops map M:
+- set P.autoload = true if M.autocreate is true for some M;
+- set P.autoload = false if M.autocreate is false for all M;
+- don't change P.autoload, if P is not referenced from any map.
+
+Do this after bpf_object__init_kern_struct_ops_maps()
+to make sure that shadow vars assignment is done.
+
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240306104529.6453-9-eddyz87@gmail.com
+Stable-dep-of: 04a94133f1b3 ("libbpf: Don't take direct pointers into BTF data from st_ops")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/sama7g5.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/lib/bpf/libbpf.c | 43 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/drivers/clk/at91/sama7g5.c b/drivers/clk/at91/sama7g5.c
-index 91b5c6f148196..4e9594714b142 100644
---- a/drivers/clk/at91/sama7g5.c
-+++ b/drivers/clk/at91/sama7g5.c
-@@ -66,6 +66,7 @@ enum pll_component_id {
- 	PLL_COMPID_FRAC,
- 	PLL_COMPID_DIV0,
- 	PLL_COMPID_DIV1,
-+	PLL_COMPID_MAX,
- };
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index c91917868b557..aeed9bc44247b 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -1007,6 +1007,48 @@ static bool is_valid_st_ops_program(struct bpf_object *obj,
+ 	return false;
+ }
  
- /*
-@@ -165,7 +166,7 @@ static struct sama7g5_pll {
- 	u8 t;
- 	u8 eid;
- 	u8 safe_div;
--} sama7g5_plls[][PLL_ID_MAX] = {
-+} sama7g5_plls[][PLL_COMPID_MAX] = {
- 	[PLL_ID_CPU] = {
- 		[PLL_COMPID_FRAC] = {
- 			.n = "cpupll_fracck",
-@@ -1038,7 +1039,7 @@ static void __init sama7g5_pmc_setup(struct device_node *np)
- 	sama7g5_pmc->chws[PMC_MAIN] = hw;
- 
- 	for (i = 0; i < PLL_ID_MAX; i++) {
--		for (j = 0; j < 3; j++) {
-+		for (j = 0; j < PLL_COMPID_MAX; j++) {
- 			struct clk_hw *parent_hw;
- 
- 			if (!sama7g5_plls[i][j].n)
++/* For each struct_ops program P, referenced from some struct_ops map M,
++ * enable P.autoload if there are Ms for which M.autocreate is true,
++ * disable P.autoload if for all Ms M.autocreate is false.
++ * Don't change P.autoload for programs that are not referenced from any maps.
++ */
++static int bpf_object_adjust_struct_ops_autoload(struct bpf_object *obj)
++{
++	struct bpf_program *prog, *slot_prog;
++	struct bpf_map *map;
++	int i, j, k, vlen;
++
++	for (i = 0; i < obj->nr_programs; ++i) {
++		int should_load = false;
++		int use_cnt = 0;
++
++		prog = &obj->programs[i];
++		if (prog->type != BPF_PROG_TYPE_STRUCT_OPS)
++			continue;
++
++		for (j = 0; j < obj->nr_maps; ++j) {
++			map = &obj->maps[j];
++			if (!bpf_map__is_struct_ops(map))
++				continue;
++
++			vlen = btf_vlen(map->st_ops->type);
++			for (k = 0; k < vlen; ++k) {
++				slot_prog = map->st_ops->progs[k];
++				if (prog != slot_prog)
++					continue;
++
++				use_cnt++;
++				if (map->autocreate)
++					should_load = true;
++			}
++		}
++		if (use_cnt)
++			prog->autoload = should_load;
++	}
++
++	return 0;
++}
++
+ /* Init the map's fields that depend on kern_btf */
+ static int bpf_map__init_kern_struct_ops(struct bpf_map *map)
+ {
+@@ -8003,6 +8045,7 @@ static int bpf_object_load(struct bpf_object *obj, int extra_log_level, const ch
+ 	err = err ? : bpf_object__sanitize_and_load_btf(obj);
+ 	err = err ? : bpf_object__sanitize_maps(obj);
+ 	err = err ? : bpf_object__init_kern_struct_ops_maps(obj);
++	err = err ? : bpf_object_adjust_struct_ops_autoload(obj);
+ 	err = err ? : bpf_object__relocate(obj, obj->btf_custom_path ? : target_btf_path);
+ 	err = err ? : bpf_object__create_maps(obj);
+ 	err = err ? : bpf_object__load_progs(obj, extra_log_level);
 -- 
 2.43.0
 
