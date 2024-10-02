@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869A898DAF3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB5E98DD62
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42285283464
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BAB9281B1E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619B51D0DE0;
-	Wed,  2 Oct 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9221D0951;
+	Wed,  2 Oct 2024 14:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeXkL+Xt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6fg0DVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFAF1CFEB3;
-	Wed,  2 Oct 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3833D9475;
+	Wed,  2 Oct 2024 14:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878885; cv=none; b=P78NtYOLT8/3qhyaoc3tBB3mxKt533mldeuWooicLcp/y1m5LFUZ/LcV2BtxxjzZ3PetTYjZgWZFketyuesPtWSOkvejiHyVV0FOTvDQadeJcVHHcmuBySgVZQF8FKW2P7rwxpGbeAdJFw87EmxC5k+6LTvm7DijH1nnFnZTx8E=
+	t=1727880343; cv=none; b=u9BT145Go8X04BeceHczpxTAYtsWvr0zdcW/fIEXVd2oHYgfXRjYyUrc5ewC2LBVVzULlgKBPNnsRXI6LmWdXcSGRwCLJ7sAURHBxtj4V+obVKyaNl7ChBD/6nFnhI74F443/1Qh8WTxWCgbqApY/nnT+mCVq3uSgQdl5tRGI44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878885; c=relaxed/simple;
-	bh=Lx/muTC264hC1OWk8xVExKOsLoKpb0R+tVdyVLikRa4=;
+	s=arc-20240116; t=1727880343; c=relaxed/simple;
+	bh=DqCEFDxWwKAcCeoPmCN2wM6SucyBg5pu/Dnq+LshsiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRQI/OJ7jlMHm2djuYlXZBD5sa7y+ZXji1KKa5HVy3zMLqYj4Kl8XTAqry0Pytxz7TYJsv8vYjzVAVckep/JNxKdWA6Ua7vzzH85pTml9U+hupo8I5YMPTbuRzJ//FYfyNImCZxc2K2EentGRiqVmpOaEJ7EPlbRhKgrBxsJHeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeXkL+Xt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA2DC4CEC5;
-	Wed,  2 Oct 2024 14:21:24 +0000 (UTC)
+	 MIME-Version; b=ooJLcjO8yP4UZqXmCMc6A1uuUJG1XlFryNk+zfD1oCyRvvbZhaDinG+KGre6JDU0WC1HqdLVfVmPTXu3lTVIpvfniJ9aSRogZmq4rDEDX6kUJVm6ELW3BIMtjkYV7rlw+YWTflAZNE/C1vs55ODohB0eQjYfzKx82zN+gW3LlIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6fg0DVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB76C4CEC2;
+	Wed,  2 Oct 2024 14:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878885;
-	bh=Lx/muTC264hC1OWk8xVExKOsLoKpb0R+tVdyVLikRa4=;
+	s=korg; t=1727880343;
+	bh=DqCEFDxWwKAcCeoPmCN2wM6SucyBg5pu/Dnq+LshsiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VeXkL+XtCHnLZGdocyz4GyEYtOLu5mEzv1XNSt6dtTo4ySLvZfzTFINlXzQTMN5oc
-	 syoxlmt2ZJI9OXTyAufbmaz1D+6FxeHM9qNskCPcOtQPxOcF9pINcV/Afx5s9W5aki
-	 gvkAyZYaF7XW+W5bcamMeFSYljHDCAquItCB6Z8I=
+	b=B6fg0DVkyy/QpO3Jpnic8JGpdfJmHEf5sX6InBdmo9CDAkC0C5gbt/gBUBnH9jz0w
+	 3EU0UIthw8XlvOVLymoicVFiu62gTpo63tgvvL9naVQnPT/tYI/bgJTRIYrilFKaht
+	 kv81XBCvcM47L+15zK4odUqNsqc/hh00K2oIoRao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.10 565/634] f2fs: fix to check atomic_file in f2fs ioctl interfaces
+	Manish Pandey <quic_mapa@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 426/538] scsi: ufs: qcom: Update MODE_MAX cfg_bw value
 Date: Wed,  2 Oct 2024 15:01:05 +0200
-Message-ID: <20241002125833.417519660@linuxfoundation.org>
+Message-ID: <20241002125809.251549683@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Manish Pandey <quic_mapa@quicinc.com>
 
-commit bfe5c02654261bfb8bd9cb174a67f3279ea99e58 upstream.
+commit 0c40f079f1c808e7e480c795a79009f200366eb1 upstream.
 
-Some f2fs ioctl interfaces like f2fs_ioc_set_pin_file(),
-f2fs_move_file_range(), and f2fs_defragment_range() missed to
-check atomic_write status, which may cause potential race issue,
-fix it.
+Commit 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect bandwidth
+values for Gear 5") updated the ufs_qcom_bw_table for Gear 5. However, it
+missed updating the cfg_bw value for the max mode.
 
+Hence update the cfg_bw value for the max mode for UFS 4.x devices.
+
+Fixes: 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect bandwidth values for Gear 5")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Manish Pandey <quic_mapa@quicinc.com>
+Link: https://lore.kernel.org/r/20240903063709.4335-1-quic_mapa@quicinc.com
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/ufs/host/ufs-qcom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2704,7 +2704,8 @@ static int f2fs_defragment_range(struct
- 				(range->start + range->len) >> PAGE_SHIFT,
- 				DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE));
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -93,7 +93,7 @@ static const struct __ufs_qcom_bw_table
+ 	[MODE_HS_RB][UFS_HS_G3][UFS_LANE_2] = { 1492582,	204800 },
+ 	[MODE_HS_RB][UFS_HS_G4][UFS_LANE_2] = { 2915200,	409600 },
+ 	[MODE_HS_RB][UFS_HS_G5][UFS_LANE_2] = { 5836800,	819200 },
+-	[MODE_MAX][0][0]		    = { 7643136,	307200 },
++	[MODE_MAX][0][0]		    = { 7643136,	819200 },
+ };
  
--	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
-+	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED) ||
-+		f2fs_is_atomic_file(inode)) {
- 		err = -EINVAL;
- 		goto unlock_out;
- 	}
-@@ -2937,6 +2938,11 @@ static int f2fs_move_file_range(struct f
- 		goto out_unlock;
- 	}
- 
-+	if (f2fs_is_atomic_file(src) || f2fs_is_atomic_file(dst)) {
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
-+
- 	ret = -EINVAL;
- 	if (pos_in + len > src->i_size || pos_in + len < pos_in)
- 		goto out_unlock;
-@@ -3320,6 +3326,11 @@ static int f2fs_ioc_set_pin_file(struct
- 
- 	inode_lock(inode);
- 
-+	if (f2fs_is_atomic_file(inode)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!pin) {
- 		clear_inode_flag(inode, FI_PIN_FILE);
- 		f2fs_i_gc_failures_write(inode, 0);
+ static struct ufs_qcom_host *ufs_qcom_hosts[MAX_UFS_QCOM_HOSTS];
 
 
 
