@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37AB98D681
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:42:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 015E798D650
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52FCE1F23567
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:42:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C8321F21575
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6961D0DD7;
-	Wed,  2 Oct 2024 13:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFB11D07BC;
+	Wed,  2 Oct 2024 13:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lm4PTpK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5xXtNSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CA11D097B;
-	Wed,  2 Oct 2024 13:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9CE1D04AD;
+	Wed,  2 Oct 2024 13:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876392; cv=none; b=EWt8t/znGESugSS3l5XqJUnoaOpjmXuybImp+Pv46xvvaGLzhZHIywLAum3AHVZGVUQlrts+Gvf88l+cZMKf2a/7xP5u4qRQ9QPsptq/MmghJJ2BiviuIHLuVQCFehHEZt4kIvoyOWa1CQVdzLFXJtiwo/PbWRcBg7PQa6tlTUc=
+	t=1727876295; cv=none; b=Uqe9QTLEJb5nOzUUH5tPE8iafAfnXiUa7tDUA32aYZCYPTnKeDRNEtaaK8VFcvuyEyr+sV+e5MbvTHy5YzAHkBxaSPJ9NooEFWwLlQJq8Z06kqs6yrgK68dpgH3qwrvYcXHkwsQi8Z/IoWhf/AgMHNE9DeI9BvRv27+TpR9Cr14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876392; c=relaxed/simple;
-	bh=vGNvC1yQhhLvcNtXJ+b9q+YyG1a1Rt2vt2vLUp9IVN4=;
+	s=arc-20240116; t=1727876295; c=relaxed/simple;
+	bh=AKRkH7563Ozcqx/Y8F7FvcHM52hzOwjyOduQs/19X94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzhLlPHa8wpq4YP/1M+9C5lI/uFjUQJmIuXrEC9z8J2u4I5s4Nuf+QAT75UvWDXS/eJStFFzKXP+ZoMUi5lL7+cpUpRuHicdWgco7wDJVSKb9zhQKQuTRQFDtUdcDaD/B9BBwZFN3ln+0a6w54+dkt/R9m39kzNwouViTBpNZaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lm4PTpK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B96C4CEC5;
-	Wed,  2 Oct 2024 13:39:51 +0000 (UTC)
+	 MIME-Version; b=TDBvNa3b/d/3b07zmolnJIhjSX8lZdfcdTDm8Xhyhlhn+shtD+w8DDIq9sWXYbPd7VGx7giNl+iYEqkYbl1qBdrEQ7maWYx7zr2n9DZr9kgx5b41toVO7z82HQmEn2oGjiJxW7Qsq56bDVbcPUNjkipw+aBe+H9Wu6UCs9kDPOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5xXtNSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5893AC4CEC5;
+	Wed,  2 Oct 2024 13:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876392;
-	bh=vGNvC1yQhhLvcNtXJ+b9q+YyG1a1Rt2vt2vLUp9IVN4=;
+	s=korg; t=1727876295;
+	bh=AKRkH7563Ozcqx/Y8F7FvcHM52hzOwjyOduQs/19X94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lm4PTpK6BY+OZUnwYwG+2cYHP918fhOzb33UThDXFhd6nGhksuHygAXzpjqQGgh+f
-	 KdQiuIQoSri83n9qaTDigwD4wakTQQCU8xJhx84AbMVZ29fU5LxhpKOaGf6L9RM4Wd
-	 +r59n6q1U5TQHQ0tnryj1FN6I5kp86PtjN6hCX8Q=
+	b=B5xXtNSC0lmtzMXztd1iHhRTOCnsGNO6c9peib1qkPwiF4sv6YI0JGk0oxqe9L6gz
+	 mrdcCn5ayyItmx0v0ZrmOc7RnN/m8hBK68eLUiurfz/+A5BJEc9VKpp31iG/Z4C8ku
+	 WvbctU20vmXDuW8AhmVLYlS36lY33FD6eedx+Jkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sebastian Fricke <sebastian.fricke@collabora.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 387/695] media: mediatek: vcodec: Fix H264 multi stateless decoder smatch warning
-Date: Wed,  2 Oct 2024 14:56:25 +0200
-Message-ID: <20241002125837.902987456@linuxfoundation.org>
+Subject: [PATCH 6.11 388/695] media: mediatek: vcodec: Fix VP8 stateless decoder smatch warning
+Date: Wed,  2 Oct 2024 14:56:26 +0200
+Message-ID: <20241002125837.941246771@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -70,44 +70,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit 9be85491619f1953b8a29590ca630be571941ffa ]
+[ Upstream commit b113bc7c0e83b32f4dd2d291a2b6c4803e0a2c44 ]
 
-Fix a smatch static checker warning on vdec_h264_req_multi_if.c.
+Fix a smatch static checker warning on vdec_vp8_req_if.c.
 Which leads to a kernel crash when fb is NULL.
 
-Fixes: 397edc703a10 ("media: mediatek: vcodec: add h264 decoder driver for mt8186")
+Fixes: 7a7ae26fd458 ("media: mediatek: vcodec: support stateless VP8 decoding")
 Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vcodec/decoder/vdec/vdec_h264_req_multi_if.c         | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ .../mediatek/vcodec/decoder/vdec/vdec_vp8_req_if.c     | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
-index 2d4611e7fa0b2..1ed0ccec56655 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
-@@ -724,11 +724,16 @@ static int vdec_h264_slice_single_decode(void *h_vdec, struct mtk_vcodec_mem *bs
- 		return vpu_dec_reset(vpu);
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_req_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_req_if.c
+index e27e728f392e6..232ef3bd246a3 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_req_if.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_req_if.c
+@@ -334,14 +334,18 @@ static int vdec_vp8_slice_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
+ 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
  
  	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
+-	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
 +	if (!fb) {
 +		mtk_vdec_err(inst->ctx, "fb buffer is NULL");
 +		return -ENOMEM;
 +	}
-+
- 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
- 	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
  
 -	y_fb_dma = fb ? (u64)fb->base_y.dma_addr : 0;
--	c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
++	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
 +	y_fb_dma = fb->base_y.dma_addr;
-+	c_fb_dma = fb->base_c.dma_addr;
- 	mtk_vdec_debug(inst->ctx, "[h264-dec] [%d] y_dma=%llx c_dma=%llx",
- 		       inst->ctx->decoded_frame_cnt, y_fb_dma, c_fb_dma);
+ 	if (inst->ctx->q_data[MTK_Q_DATA_DST].fmt->num_planes == 1)
+ 		c_fb_dma = y_fb_dma +
+ 			inst->ctx->picinfo.buf_w * inst->ctx->picinfo.buf_h;
+ 	else
+-		c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
++		c_fb_dma = fb->base_c.dma_addr;
  
+ 	inst->vsi->dec.bs_dma = (u64)bs->dma_addr;
+ 	inst->vsi->dec.bs_sz = bs->size;
 -- 
 2.43.0
 
