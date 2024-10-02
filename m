@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-80263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311FD98DCB0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEE498DA17
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF536281C6A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FEA9286E65
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427E31D26E6;
-	Wed,  2 Oct 2024 14:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560821D0E00;
+	Wed,  2 Oct 2024 14:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzed92rv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvBm0xxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E561D223D;
-	Wed,  2 Oct 2024 14:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116041D0BB0;
+	Wed,  2 Oct 2024 14:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879858; cv=none; b=K0pG+BvEy6umo2byUr5LDb7ZvCVYD1zR+yn4oyQTrNsbT+g2zD7UE+aL5C9m3rHhsoWsYExKKCd1+PzWCG2aLSsHbm04ngSFYd9t3IbsA8pBDsD1wFn/E+SDW/1loJ6UU4GdJ++GnUwqJaJp4zP4CuV+VBsSp1JRhsLD/Nj0TIw=
+	t=1727878403; cv=none; b=HOBi9P0bp/xTPgFd9XVDdcyowkwx1KyZ5QOxU9buyKSIM2ddYIJkFRJJuANzlxudl2p62InXbhlSJRiNG7KCFuN9j7RLJrJuccaBDE3/O0eKVgqR02lhUByMtru/mpth43JWtSGhVwfy4crKTeOaDMyX5s6qyhYtvWm8PLHQsPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879858; c=relaxed/simple;
-	bh=HN9iO5YZGq4qjXWbPCPlC3NfUry2lC7aU6IjvCT1/TE=;
+	s=arc-20240116; t=1727878403; c=relaxed/simple;
+	bh=+nEmX/7jTFcd0gG0AGGeZSOSDyR6F74DZypHu7pw4/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPuZGIxV/H7IGtc8aD1S10lpRI6wtse+UUrhDxT+iRnQUzNvtMQ9cDdo+Q4KMF10vDvBx6W6LqVnwPtMlTtAPKDJZd4j0n7WIRMbbPLRKDS0RGV2CZ93jbvakkq+3LMljvXb+y0dbSZceHqz2xAvpbZho2qU45Ann4iEDu8cDpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzed92rv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7429DC4CEC2;
-	Wed,  2 Oct 2024 14:37:37 +0000 (UTC)
+	 MIME-Version; b=j1a4bE6JG6hdvNpb8rPV+UdXDJydb6W/DZjJXpddjO8hqd4WttlQveoDbZ3EBbAgZWxdwZvOl12lRsvpn6YiB458Lp7xnoR4euNf3JX17sMKhJlOR9bX5rhZCL8EltUSF+FtfG3sAQ2qd8Lnh+VoY94uSBp6TY8F8ls6m9dmM7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvBm0xxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F6DC4CEC2;
+	Wed,  2 Oct 2024 14:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879857;
-	bh=HN9iO5YZGq4qjXWbPCPlC3NfUry2lC7aU6IjvCT1/TE=;
+	s=korg; t=1727878402;
+	bh=+nEmX/7jTFcd0gG0AGGeZSOSDyR6F74DZypHu7pw4/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzed92rvQmN5AYTCBR8DUHjTQ3zWavyEP4bLP+3ik3H3jq3w50aoL0HxZBWFJwngP
-	 X+ihUjQLGnFPCfVmEdvS6j9/Il6pVsMpF+VkMLNeWhQrvxZU+CoCqxV/or+GeiF9gH
-	 05ezoih4A+lsgl7lHCKZcRS0IaQTGSICNNehU15M=
+	b=pvBm0xxqIeeHc4Iew9I4n/PbQ8gBULMXoQp2/EHtQk5uCTEtnb0D6osY8MDPDY7fZ
+	 CRlbnJPKidyfkOrn4FKBjNWp2nTSGyqCliQ6j+39tDich28o0DiT7XeDX7N0kJXE6L
+	 95gdzkpgY/FNXZa78QDpClx7VgeetkRgf5vBI/nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Chancel Liu <chancel.liu@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/538] clk: imx: composite-93: keep root clock on when mcore enabled
+Subject: [PATCH 6.10 400/634] f2fs: fix to wait page writeback before setting gcing flag
 Date: Wed,  2 Oct 2024 14:58:20 +0200
-Message-ID: <20241002125802.560078871@linuxfoundation.org>
+Message-ID: <20241002125826.898849784@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit d342df11726bfac9c3a9d2037afa508ac0e9e44e ]
+[ Upstream commit a4d7f2b3238fd5f76b9e6434a0bd5d2e29049cff ]
 
-Previously we assumed that the root clock slice is enabled
-by default when kernel boot up. But the bootloader may disable
-the clocks before jump into kernel. The gate ops should be registered
-rather than NULL to make sure the disabled clock can be enabled
-when kernel boot up.  Refine the code to skip disable the clock
-if mcore booted.
+Soft IRQ				Thread
+- f2fs_write_end_io
+					- f2fs_defragment_range
+					 - set_page_private_gcing
+ - type = WB_DATA_TYPE(page, false);
+ : assign type w/ F2FS_WB_CP_DATA
+ due to page_private_gcing() is true
+  - dec_page_count() w/ wrong type
+  - end_page_writeback()
 
-Fixes: a740d7350ff7 ("clk: imx: imx93: add mcore_booted module paratemter")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Tested-by: Chancel Liu <chancel.liu@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-3-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Value of F2FS_WB_CP_DATA reference count may become negative under above
+race condition, the root cause is we missed to wait page writeback before
+setting gcing page private flag, let's fix it.
+
+Fixes: 2d1fe8a86bf5 ("f2fs: fix to tag gcing flag on page during file defragment")
+Fixes: 4961acdd65c9 ("f2fs: fix to tag gcing flag on page during block migration")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-composite-93.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ fs/f2fs/file.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-composite-93.c b/drivers/clk/imx/clk-composite-93.c
-index 81164bdcd6cc9..6c6c5a30f3282 100644
---- a/drivers/clk/imx/clk-composite-93.c
-+++ b/drivers/clk/imx/clk-composite-93.c
-@@ -76,6 +76,13 @@ static int imx93_clk_composite_gate_enable(struct clk_hw *hw)
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 19da00ab31aeb..8425fc33ea403 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2791,6 +2791,8 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
+ 				goto clear_out;
+ 			}
  
- static void imx93_clk_composite_gate_disable(struct clk_hw *hw)
- {
-+	/*
-+	 * Skip disable the root clock gate if mcore enabled.
-+	 * The root clock may be used by the mcore.
-+	 */
-+	if (mcore_booted)
-+		return;
++			f2fs_wait_on_page_writeback(page, DATA, true, true);
 +
- 	imx93_clk_composite_gate_endisable(hw, 0);
- }
+ 			set_page_dirty(page);
+ 			set_page_private_gcing(page);
+ 			f2fs_put_page(page, 1);
+@@ -4184,6 +4186,8 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
+ 		/* It will never fail, when page has pinned above */
+ 		f2fs_bug_on(F2FS_I_SB(inode), !page);
  
-@@ -222,7 +229,7 @@ struct clk_hw *imx93_clk_composite_flags(const char *name, const char * const *p
- 		hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
- 					       mux_hw, &clk_mux_ro_ops, div_hw,
- 					       &clk_divider_ro_ops, NULL, NULL, flags);
--	} else if (!mcore_booted) {
-+	} else {
- 		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
- 		if (!gate)
- 			goto fail;
-@@ -238,12 +245,6 @@ struct clk_hw *imx93_clk_composite_flags(const char *name, const char * const *p
- 					       &imx93_clk_composite_divider_ops, gate_hw,
- 					       &imx93_clk_composite_gate_ops,
- 					       flags | CLK_SET_RATE_NO_REPARENT);
--	} else {
--		hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
--					       mux_hw, &imx93_clk_composite_mux_ops, div_hw,
--					       &imx93_clk_composite_divider_ops, NULL,
--					       &imx93_clk_composite_gate_ops,
--					       flags | CLK_SET_RATE_NO_REPARENT);
- 	}
- 
- 	if (IS_ERR(hw))
++		f2fs_wait_on_page_writeback(page, DATA, true, true);
++
+ 		set_page_dirty(page);
+ 		set_page_private_gcing(page);
+ 		f2fs_put_page(page, 1);
 -- 
 2.43.0
 
