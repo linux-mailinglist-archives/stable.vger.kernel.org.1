@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-78650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2AC98D337
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFAD98D339
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE14EB2090A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:27:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514131C2042A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D3E1D07A9;
-	Wed,  2 Oct 2024 12:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF311CF7CC;
+	Wed,  2 Oct 2024 12:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qOihqfzn"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="XnZf1xvj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38551CF7AD
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 12:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060A329CE7;
+	Wed,  2 Oct 2024 12:26:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727871885; cv=none; b=A+1zUOOAm8mxvUQiIEAe5hREJGU4qja+o6N65fKps7ENwVgHYax4qyyLOtNc5rEegZ5u0K3VJPKs/ydGxOK00QNaFv6k/wR/OVE+6XsrVX7L3684duz6+dBDJnJaPs7wORD+IVPKe4L32wbVIExrmkIuOxA5UBDQVzZMcm2SFVg=
+	t=1727872016; cv=none; b=Ab9r85RleW3snqjUX2GpOWUMdY6dnNaPzMgCoFNDSsAL2Mb94VYVnbQnMbnb5Zql76WPSt3o5sggLjHQEiaddE1nuwnRWKHvnydxnnSTpmoIkr33ATcPpJDz/ub/ubxrTHxTGTNzfatIpB96+L0VArCVp8kWNdOXWG6FAI2sREc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727871885; c=relaxed/simple;
-	bh=X3e9kRULRjZb9TGN3ZNhhoFjOUtuHwcyScRt2yxCU0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpS24G1nx3zh+HfUfZO9cb0alqSnutse4lbCD+JeSF4EjpNYRMptBLe8U7yBj+eo767B/58hX+wBWHdPydGo/jwNy8UCkDx5NRX7ZRDF+RR0Wf92awqPyHBAYUrsBH8lkZkUyNCsM+Ja0CiXaVLeqp/gyaPeygsn5x4Dv491w7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qOihqfzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE21C4CED4;
-	Wed,  2 Oct 2024 12:24:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727871885;
-	bh=X3e9kRULRjZb9TGN3ZNhhoFjOUtuHwcyScRt2yxCU0s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOihqfznBKgQlavQ2mQ3heVvU/sWBs+ZhFrJHxsQI3G8uJV8XqLzVB6kllqMYC+cx
-	 HcmgQeYCHKcwUAjdiPgo0H/tqhhby/qUP51qZQJxx8k76sXfs0lzotnCA7b9i5WIZg
-	 zafy2bU6zovI/aTu2kOUShbNGNKeZll4vbyDxg5z7qk69VM6moV3jzqRCbtz/ouaFW
-	 pyLe+OSZxz0HUjqWdgY6+Q2BgsHwz0J1qKOmXkE6YKQhQHjXmwVvK0UlauvVJGQIxW
-	 fWPFTHeRRrLYKmAuULALKRR6OX8WXxPO+H/v7jfHh/l17qKlMtP4P5wobramJnACwZ
-	 sDuOLrvUSwvlA==
-From: "Alexey Gladkov (Intel)" <legion@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Alexey Gladkov (Intel)" <legion@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 6.6.y] x86/tdx: Fix "in-kernel MMIO" check
-Date: Wed,  2 Oct 2024 14:23:59 +0200
-Message-ID: <20241002122359.83485-1-legion@kernel.org>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <2024100100-emperor-thespian-397f@gregkh>
-References: <2024100100-emperor-thespian-397f@gregkh>
+	s=arc-20240116; t=1727872016; c=relaxed/simple;
+	bh=Z3iGhP84Y3QCg9GHA/1Ymr+4r2pvOQzH06K7BVvfNfE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jqa4vFTXpC3pf2q5ZW0ZwOrlRqp/D19M1oKg9VcD0cnfI1OzB9B0ko4BCSmHMNK1cMhRhJMZ0ljAvglRJ9OH7jpR8NjGnUY+o7kBAFGWcSd4TDbxFot6BouOgxzDsJXvd+npp4x1jg1VwslSvVr1XzeiXiD6B8XdTjN0yBuVegg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=XnZf1xvj; arc=none smtp.client-ip=178.154.239.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:4a24:0:640:9413:0])
+	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 742476003B;
+	Wed,  2 Oct 2024 15:26:41 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:6413::1:3])
+	by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id ZQa8h82Ig0U0-XCZIZoN5;
+	Wed, 02 Oct 2024 15:26:40 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1727872000;
+	bh=BS9mL8Bw7Lo0Kw6QmoUghvwWGovppnMzZ0k0iicLcEc=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=XnZf1xvj3wgg172N1x5xR4EUX2UkEDvDhCsvHEXiHPWAaXDYVRWaGkhZQOyT2JfEe
+	 hh2VBbHRH2LppJlmf+nb4/ibytdqBjlZ2x58Dp4h9M6+sjMThBIRlR1gh9gYQ2dKga
+	 kJD5uogUSdKAGdwaojwzP9roPu2zAXg3Arp36/yY=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: linux-kernel@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	bcm-kernel-feedback-list@broadcom.com,
+	Sinclair Yeh <syeh@vmware.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Thomas Hellstrom <thellstrom@vmware.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH] drm/vmwgfx: Handle surface check failure correctly
+Date: Wed,  2 Oct 2024 15:24:29 +0300
+Message-Id: <20241002122429.1981822-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,57 +67,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Yandex-Filter: 1
 
-TDX only supports kernel-initiated MMIO operations. The handle_mmio()
-function checks if the #VE exception occurred in the kernel and rejects
-the operation if it did not.
+Currently if condition (!bo and !vmw_kms_srf_ok()) was met
+we go to err_out with ret == 0.
+err_out dereferences vfb if ret == 0, but in our case vfb is still NULL.
 
-However, userspace can deceive the kernel into performing MMIO on its
-behalf. For example, if userspace can point a syscall to an MMIO address,
-syscall does get_user() or put_user() on it, triggering MMIO #VE. The
-kernel will treat the #VE as in-kernel MMIO.
+Fix this by assigning sensible error to ret.
 
-Ensure that the target MMIO address is within the kernel before decoding
-instruction.
+Found by Linux Verification Center (linuxtesting.org) with SVACE
 
-Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion%40kernel.org
-(cherry picked from commit d4fc4d01471528da8a9797a065982e05090e1d81)
-Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: stable@vger.kernel.org
+Fixes: 810b3e1683d0 ("drm/vmwgfx: Support topology greater than texture size")
 ---
- arch/x86/coco/tdx/tdx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 006041fbb65f..905ac8a3f716 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,6 +14,7 @@
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
-+#include <asm/traps.h>
- 
- /* MMIO direction */
- #define EPT_READ	0
-@@ -405,6 +406,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
- 			return -EINVAL;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 288ed0bb75cb..752510a11e1b 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -1539,6 +1539,7 @@ static struct drm_framebuffer *vmw_kms_fb_create(struct drm_device *dev,
+ 		DRM_ERROR("Surface size cannot exceed %dx%d\n",
+ 			dev_priv->texture_max_width,
+ 			dev_priv->texture_max_height);
++		ret = -EINVAL;
+ 		goto err_out;
  	}
  
-+	if (!fault_in_kernel_space(ve->gla)) {
-+		WARN_ONCE(1, "Access to userspace address is not supported");
-+		return -EINVAL;
-+	}
-+
- 	/*
- 	 * Reject EPT violation #VEs that split pages.
- 	 *
 -- 
-2.46.2
+2.34.1
 
 
