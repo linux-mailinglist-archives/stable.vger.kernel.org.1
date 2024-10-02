@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038F298D88A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:02:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0088698D561
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0368283B75
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:02:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3273D1C21B33
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3841D07B2;
-	Wed,  2 Oct 2024 13:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46021CF284;
+	Wed,  2 Oct 2024 13:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RjvITRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCaZHs0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E782BAF9;
-	Wed,  2 Oct 2024 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FDC1D0426;
+	Wed,  2 Oct 2024 13:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877550; cv=none; b=ovbC0z3XBLAGeQMrruwR7b71NuzD40G8J6IaTsJGF2pzK7JdZ7TzOEq3d9bA8c59BAIHvaXesnwLbFLix5oCsRzSu1qy8sQIuE4VL52tkysLP8P+RdZddf3eqSByKvfMXjP1f3ZGGMu4r6pyXsL5hhWBM/0U6kaflFLVTqA0nKs=
+	t=1727875780; cv=none; b=A6gsj2SZpf+Kf/wgO1HiCSjJZGSVaWbVPA7munYrFBr0zakCk5wmE0ApUGHFIg7jVaZmONsNkNdRkEtNlEBGjherWjQevUBinHenRLF4B4orAQ902osCJ0XfhC4QsccsnoadiXOrCJruMB3fdsxxJHP88baxpGpGcoc3TjI7jdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877550; c=relaxed/simple;
-	bh=pdxB6Qng8osDVFLwjA2RWbeTtgKpNGZ41t9563qVmHw=;
+	s=arc-20240116; t=1727875780; c=relaxed/simple;
+	bh=qEl1vmYTS6NsO7UM3+ZgY9l6foU2X3b7TY72RwR4HFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2p+UoxTPRbsdSB8UyvNCvROLMQMlKfoaBoajbquTquC2Wbjx7H26viXext/mBrljJMOQIrZYyf0a4lVQ0+dHhFbvtzVj84y9GZZNScHDToEAB26qocs5boh3j9D5wqSDMVKP5Vukpzg+2Yw3QhPiiBKnbHlXf0kxM0RYMOiCuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RjvITRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70287C4CEC2;
-	Wed,  2 Oct 2024 13:59:09 +0000 (UTC)
+	 MIME-Version; b=YGV4nBtG7BWme8zve9bVP0aTdol5ojhu/s2OXW+c1yhk1/wxDQIHkXxLaDMXAz8dND7EHdOy3RxklnnXsm9JY7tk68192gT4ddgtVg+PC6xxNCI0rz0vg7iRu8CSXIPVF48OSD8bFkTzOpZ+OJd2ELc6KF4XUek8Q9JNTwZDSCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCaZHs0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A25C4CEC5;
+	Wed,  2 Oct 2024 13:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877549;
-	bh=pdxB6Qng8osDVFLwjA2RWbeTtgKpNGZ41t9563qVmHw=;
+	s=korg; t=1727875780;
+	bh=qEl1vmYTS6NsO7UM3+ZgY9l6foU2X3b7TY72RwR4HFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RjvITRbNZywpeeF4WVMiwhFCpujBsTk7mZFE72Km8Clgzn8i02nncgztfEPVcSFk
-	 8QLtWJO2Xzudf5RaF1cvsdC4gGbU44bMwwtQyUEtImtZj/SE4CSCLcIlMCv8ma3WG4
-	 YXNXSgeVlWEbPahJOK0HVHLxL7k+QdD8X1mebCo8=
+	b=LCaZHs0egujgo1d4ISNJJ32TVtsGplV1ObovJfnToHIDREhymxX4A+gpYJiJ6A46G
+	 865RLMdF6ARoKLkl0ePZN16LBvGootTwuuV1xpxku4/PndTTo0KjNTLRBw8439dGSN
+	 CM4bVMI35Drrj2TIDPtJRuCWwxFF6nD/2fx9SJ5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Liu Ying <victor.liu@nxp.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 115/634] io_uring/io-wq: inherit cpuset of cgroup in io worker
+Subject: [PATCH 6.11 217/695] drm/bridge: lontium-lt8912b: Validate mode in drm_bridge_funcs::mode_valid()
 Date: Wed,  2 Oct 2024 14:53:35 +0200
-Message-ID: <20241002125815.651940765@linuxfoundation.org>
+Message-ID: <20241002125831.124216143@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
+From: Liu Ying <victor.liu@nxp.com>
 
-[ Upstream commit 84eacf177faa605853c58e5b1c0d9544b88c16fd ]
+[ Upstream commit fe828fbd87786238b30f44cafd698d975d956c97 ]
 
-The io worker threads are userland threads that just never exit to the
-userland. By that, they are also assigned to a cgroup (the group of the
-creating task).
+If the bridge is attached with the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag set,
+this driver won't initialize a connector and hence display mode won't be
+validated in drm_connector_helper_funcs::mode_valid().  So, move the mode
+validation from drm_connector_helper_funcs::mode_valid() to
+drm_bridge_funcs::mode_valid(), because the mode validation is always done
+for the bridge.
 
-When creating a new io worker, this worker should inherit the cpuset
-of the cgroup.
-
-Fixes: da64d6db3bd3 ("io_uring: One wqe per wq")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240910171157.166423-3-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240813091637.1054586-1-victor.liu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 35 ++++++++++++------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index e38bbd07563ee..b59a1bf844cf9 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1167,7 +1167,7 @@ struct io_wq *io_wq_create(unsigned bounded, struct io_wq_data *data)
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index 1a9defa15663c..e265ab3c8c929 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -422,22 +422,6 @@ static const struct drm_connector_funcs lt8912_connector_funcs = {
+ 	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
+ };
  
- 	if (!alloc_cpumask_var(&wq->cpu_mask, GFP_KERNEL))
- 		goto err;
--	cpumask_copy(wq->cpu_mask, cpu_possible_mask);
-+	cpuset_cpus_allowed(data->task, wq->cpu_mask);
- 	wq->acct[IO_WQ_ACCT_BOUND].max_workers = bounded;
- 	wq->acct[IO_WQ_ACCT_UNBOUND].max_workers =
- 				task_rlimit(current, RLIMIT_NPROC);
+-static enum drm_mode_status
+-lt8912_connector_mode_valid(struct drm_connector *connector,
+-			    struct drm_display_mode *mode)
+-{
+-	if (mode->clock > 150000)
+-		return MODE_CLOCK_HIGH;
+-
+-	if (mode->hdisplay > 1920)
+-		return MODE_BAD_HVALUE;
+-
+-	if (mode->vdisplay > 1080)
+-		return MODE_BAD_VVALUE;
+-
+-	return MODE_OK;
+-}
+-
+ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ {
+ 	const struct drm_edid *drm_edid;
+@@ -463,7 +447,6 @@ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ 
+ static const struct drm_connector_helper_funcs lt8912_connector_helper_funcs = {
+ 	.get_modes = lt8912_connector_get_modes,
+-	.mode_valid = lt8912_connector_mode_valid,
+ };
+ 
+ static void lt8912_bridge_mode_set(struct drm_bridge *bridge,
+@@ -605,6 +588,23 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
+ 		drm_bridge_hpd_disable(lt->hdmi_port);
+ }
+ 
++static enum drm_mode_status
++lt8912_bridge_mode_valid(struct drm_bridge *bridge,
++			 const struct drm_display_info *info,
++			 const struct drm_display_mode *mode)
++{
++	if (mode->clock > 150000)
++		return MODE_CLOCK_HIGH;
++
++	if (mode->hdisplay > 1920)
++		return MODE_BAD_HVALUE;
++
++	if (mode->vdisplay > 1080)
++		return MODE_BAD_VVALUE;
++
++	return MODE_OK;
++}
++
+ static enum drm_connector_status
+ lt8912_bridge_detect(struct drm_bridge *bridge)
+ {
+@@ -635,6 +635,7 @@ static const struct drm_edid *lt8912_bridge_edid_read(struct drm_bridge *bridge,
+ static const struct drm_bridge_funcs lt8912_bridge_funcs = {
+ 	.attach = lt8912_bridge_attach,
+ 	.detach = lt8912_bridge_detach,
++	.mode_valid = lt8912_bridge_mode_valid,
+ 	.mode_set = lt8912_bridge_mode_set,
+ 	.enable = lt8912_bridge_enable,
+ 	.detect = lt8912_bridge_detect,
 -- 
 2.43.0
 
