@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-80509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E455798DDC5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:52:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF5098DDE4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911DB1F26221
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:52:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57E1CB25AEC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03681D0940;
-	Wed,  2 Oct 2024 14:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F7819CD16;
+	Wed,  2 Oct 2024 14:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/izECPd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlgtvkSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECCB1D040D;
-	Wed,  2 Oct 2024 14:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3EA1D0B87;
+	Wed,  2 Oct 2024 14:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880580; cv=none; b=olSIDYZilbD7zhWy61oKoMUEXUsMJksbolCIpIYpLb40BwvN5GYkef77OePz0cN1K4fXOZFMdNioHuKBYaKNKhVVyYT/nnJ9OliGLrCM/IyAFll21TIHWqr3JVk+jd/Rzw+nm0IXpLRrlXR28cAPR41z/bcjtMWXOYPmoC1mtA0=
+	t=1727880612; cv=none; b=PJ7D9Hgs2f1YRMPCGw1vSqTwW7Fsupp67lPmE60wpsDeLiG55Uq0uUv7bVCNm6eyvDpar0EFuuUuQp/WL63+cjgW8xR1+kLAXj3n95s+Gfijb4mfax0OYvY+8maVCQCXmbn7V8H3aoaCXVilZ5QL3ea4k2jCESYaHodQ4Ws8Wwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880580; c=relaxed/simple;
-	bh=kIjRvqnnEC3kETJPKb6N7L9Qk/ohn6YIUcjmuqS2gOY=;
+	s=arc-20240116; t=1727880612; c=relaxed/simple;
+	bh=58ouqHDrfp3olj8EuRaXwfzkmZtwEreN6CcGNxlxPa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PliiWo7A3XePu619sbaTiLtHDBSCsdwW/zFoPFSP+mE/88ziQxvBtLxh8tkzLZafJfQTRp3zGHkO2er2JIS7uwqZgSJmf2Bi9xBjt3u3/7dTByT6+H3iVRVqi7KLOlp+XHvMg0hkYZFjRKND8y2p1dP24rsQDYbKE/6fLyacd4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/izECPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15F9C4CEC2;
-	Wed,  2 Oct 2024 14:49:39 +0000 (UTC)
+	 MIME-Version; b=mqBW3USygHDMNBpkPL/r4xHhYVccMLcEcceywi1RInX29+tOOFcQJ9b1sZcGNWVsbJOzX/qbu6eDW0t8XE/sldmtNQy4kR0ICiRswhcKrzPqF0accfXtXflbVyY4z/zxaknu7SaGsBzcXNS+KvjxkR9EvVLT0VE1Ij8Iox1VUNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlgtvkSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BE1C4CEC2;
+	Wed,  2 Oct 2024 14:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880580;
-	bh=kIjRvqnnEC3kETJPKb6N7L9Qk/ohn6YIUcjmuqS2gOY=;
+	s=korg; t=1727880612;
+	bh=58ouqHDrfp3olj8EuRaXwfzkmZtwEreN6CcGNxlxPa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/izECPdhKrrOZJ6DSela++rcgHoHr8moTo+eiKSIm4P73FUxZ0tRC4+LsWbIz7yu
-	 FJ/stNhEh1ZkYRpjESCsZ34ONvOgkRnDU6ofJlnB+qbvTSm3z61PIVGmeFqthKhu7L
-	 GL4Qi4vTZpnnoQiCB9URpKNeVgXC+WyemyezfjAE=
+	b=zlgtvkSiCiSmZV+4oH84MeiQhT/jteHet+L+yNeLv+DdIAk4SYe33BQGnCy2W91eZ
+	 86SORfCE9BkwMb4HL+OjNQuFiqJ2csl7aid2UUto5tNLfdywXcoEIFCjyztnyCHeZC
+	 o/xftGiHuwl6aW7RWTxY20TQuhOO4qGoYeIA6tuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Han Xu <han.xu@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	stable@kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 500/538] dt-bindings: spi: nxp-fspi: support i.MX93 and i.MX95
-Date: Wed,  2 Oct 2024 15:02:19 +0200
-Message-ID: <20241002125812.177119782@linuxfoundation.org>
+Subject: [PATCH 6.6 501/538] dt-bindings: spi: nxp-fspi: add imx8ulp support
+Date: Wed,  2 Oct 2024 15:02:20 +0200
+Message-ID: <20241002125812.216318142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -68,53 +69,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 18ab9e9e8889ecba23a5e8b7f8924f09284e33d8 ]
+[ Upstream commit 12736adc43b7cd5cb83f274f8f37b0f89d107c97 ]
 
-Add i.MX93/95 flexspi compatible strings, which are compatible with
-i.MX8MM
+The flexspi on imx8ulp only has 16 number of LUTs, it is different
+with flexspi on other imx SoC which has 32 number of LUTs.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Han Xu <han.xu@nxp.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://msgid.link/r/20240122091510.2077498-2-peng.fan@oss.nxp.com
+Fixes: ef89fd56bdfc ("arm64: dts: imx8ulp: add flexspi node")
+Cc: stable@kernel.org
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240905094338.1986871-2-haibo.chen@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 12736adc43b7 ("dt-bindings: spi: nxp-fspi: add imx8ulp support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/spi/spi-nxp-fspi.yaml  | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-index 7fd5911454800..4a5f41bde00f3 100644
+index 4a5f41bde00f3..902db92da8320 100644
 --- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
 +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-@@ -15,12 +15,18 @@ allOf:
- 
- properties:
-   compatible:
--    enum:
--      - nxp,imx8dxl-fspi
--      - nxp,imx8mm-fspi
--      - nxp,imx8mp-fspi
--      - nxp,imx8qxp-fspi
--      - nxp,lx2160a-fspi
-+    oneOf:
-+      - enum:
-+          - nxp,imx8dxl-fspi
-+          - nxp,imx8mm-fspi
-+          - nxp,imx8mp-fspi
-+          - nxp,imx8qxp-fspi
-+          - nxp,lx2160a-fspi
-+      - items:
-+          - enum:
-+              - nxp,imx93-fspi
-+              - nxp,imx95-fspi
-+          - const: nxp,imx8mm-fspi
- 
-   reg:
-     items:
+@@ -21,6 +21,7 @@ properties:
+           - nxp,imx8mm-fspi
+           - nxp,imx8mp-fspi
+           - nxp,imx8qxp-fspi
++          - nxp,imx8ulp-fspi
+           - nxp,lx2160a-fspi
+       - items:
+           - enum:
 -- 
 2.43.0
 
