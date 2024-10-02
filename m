@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0998498D5F2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4623298D91A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EFF8B21779
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 074EE287A0B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AF61D0788;
-	Wed,  2 Oct 2024 13:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F251D2F60;
+	Wed,  2 Oct 2024 14:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9Pluzxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="No2TwwGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7620B1D0403;
-	Wed,  2 Oct 2024 13:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636D21D1E66;
+	Wed,  2 Oct 2024 14:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876086; cv=none; b=L/JZlL5Lhw5MgmIa8Tuz/BR+hFllmWQaxH4F4lInL6HuEoPGDNio0IMt+E+cJxO33FFqLWzzawTNF+aT9Q7fHfIx4XxbiMEqNjkmvDxJ6c3xntu+uXDpvkcvn66zRF13x9EuMHMbIu3TsHg4Tau75lKoC1xSjVc14jec+Vop4L4=
+	t=1727877782; cv=none; b=TW81D2z7M+XzvI4RDlZMNePWOOrgl9tCeu3hpsyXHEUMUqSvZD1HQhKcPk/1Pl/Bt17QcIsXsHNEcU4PTXU/zsAlLweAwTT0qeKZxixrQjJ7nxlOPYboT5Q1OwWpC+LRiSwHYShvRsGXi+T4LuKKnqu4IVbm2N2BLzEfF/Ya2uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876086; c=relaxed/simple;
-	bh=UvpBE6z+ViKDwI2UAB6JtaeTdr4Mw7B7dUqGp//m1o8=;
+	s=arc-20240116; t=1727877782; c=relaxed/simple;
+	bh=EEwXYWXMWpjmbRkaVsEmwC2gTCR5N/x4WTP+2ANGVfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAW2wzcEdPsTbwwG2wJgamy9NEU7+cHbPvgEiHGp7wJfePQJM2BZeN0MqXUJQcFjfeq0k4xB+AtvmJ9S8sRnHqwDDf01w/9D7apfXip8/V2snzKWrov03n/8BZ6ivoXRLxlhMaFtq/6Gx2Tn/5UaEEmJa2uhNOInT+wMSJmmCRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9Pluzxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E57C4CEC5;
-	Wed,  2 Oct 2024 13:34:45 +0000 (UTC)
+	 MIME-Version; b=rbG0jX7i4ARG46e8cM1j/KJ5gY7RIVojNx/UPHc9Ni0WQbmhoNI++63EmRNOR8pAbr9qAyLBSXOCh4YL6dJ2Wa7Vpwjq3KBPP1vRKXN6w/A/vnTp2XknnwDkUBzUT4fhpzM1fr+Sa/qwl8g3XPQfriAWj2mNVc3SsudkNXIhGo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=No2TwwGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5D5C4CECD;
+	Wed,  2 Oct 2024 14:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876086;
-	bh=UvpBE6z+ViKDwI2UAB6JtaeTdr4Mw7B7dUqGp//m1o8=;
+	s=korg; t=1727877782;
+	bh=EEwXYWXMWpjmbRkaVsEmwC2gTCR5N/x4WTP+2ANGVfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9Pluzxa4uZlqJlU1a2Tyxg36mauttxokgCyby78OzIHTb+n28nbqCnDSPjBA6Ll7
-	 YDu137qaRfKqX1gJLWnxRtzA+K4QUbXvtKrUrQsvUjWiChPvNXqJfTmJXbI3Hz5H67
-	 RLllr/2byvBPY9uUeXMw9hklLNT1mJFEJhLt3SQI=
+	b=No2TwwGaYZk2wldLBvwmE6Ug6b3RLdwhsujviDcmSdWU1/F0uoM7PYlGhEvk+9Bc3
+	 4ZtDCArBRRIRoWsiH6tB1t+R6nBQQYmQFgqK1JrrzkF6L7So/zKJaGFEYzrZOm53w/
+	 uNAX/t1SC4K46Lnpgeb86+Uc1N24tC/Qwlfa6/pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 293/695] selftests/bpf: extract test_loader->expect_msgs as a data structure
-Date: Wed,  2 Oct 2024 14:54:51 +0200
-Message-ID: <20241002125834.137930991@linuxfoundation.org>
+Subject: [PATCH 6.10 192/634] scsi: elx: libefc: Fix potential use after free in efc_nport_vport_del()
+Date: Wed,  2 Oct 2024 14:54:52 +0200
+Message-ID: <20241002125818.683518863@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,217 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 64f01e935ddb26f48baec71883c27878ac4231dc ]
+[ Upstream commit 2e4b02fad094976763af08fec2c620f4f8edd9ae ]
 
-Non-functional change: use a separate data structure to represented
-expected messages in test_loader.
-This would allow to use the same functionality for expected set of
-disassembled instructions in the follow-up commit.
+The kref_put() function will call nport->release if the refcount drops to
+zero.  The nport->release release function is _efc_nport_free() which frees
+"nport".  But then we dereference "nport" on the next line which is a use
+after free.  Re-order these lines to avoid the use after free.
 
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240722233844.1406874-8-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Stable-dep-of: f00bb757ed63 ("selftests/bpf: fix to avoid __msg tag de-duplication by clang")
+Fixes: fcd427303eb9 ("scsi: elx: libefc: SLI and FC PORT state machine interfaces")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/b666ab26-6581-4213-9a3d-32a9147f0399@stanley.mountain
+Reviewed-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_loader.c | 81 ++++++++++++-----------
- 1 file changed, 41 insertions(+), 40 deletions(-)
+ drivers/scsi/elx/libefc/efc_nport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
-index 47508cf66e896..3f84903558dd8 100644
---- a/tools/testing/selftests/bpf/test_loader.c
-+++ b/tools/testing/selftests/bpf/test_loader.c
-@@ -55,11 +55,15 @@ struct expect_msg {
- 	regex_t regex;
- };
- 
-+struct expected_msgs {
-+	struct expect_msg *patterns;
-+	size_t cnt;
-+};
-+
- struct test_subspec {
- 	char *name;
- 	bool expect_failure;
--	struct expect_msg *expect_msgs;
--	size_t expect_msg_cnt;
-+	struct expected_msgs expect_msgs;
- 	int retval;
- 	bool execute;
- };
-@@ -96,44 +100,45 @@ void test_loader_fini(struct test_loader *tester)
- 	free(tester->log_buf);
- }
- 
--static void free_test_spec(struct test_spec *spec)
-+static void free_msgs(struct expected_msgs *msgs)
- {
- 	int i;
- 
-+	for (i = 0; i < msgs->cnt; i++)
-+		if (msgs->patterns[i].regex_str)
-+			regfree(&msgs->patterns[i].regex);
-+	free(msgs->patterns);
-+	msgs->patterns = NULL;
-+	msgs->cnt = 0;
-+}
-+
-+static void free_test_spec(struct test_spec *spec)
-+{
- 	/* Deallocate expect_msgs arrays. */
--	for (i = 0; i < spec->priv.expect_msg_cnt; i++)
--		if (spec->priv.expect_msgs[i].regex_str)
--			regfree(&spec->priv.expect_msgs[i].regex);
--	for (i = 0; i < spec->unpriv.expect_msg_cnt; i++)
--		if (spec->unpriv.expect_msgs[i].regex_str)
--			regfree(&spec->unpriv.expect_msgs[i].regex);
-+	free_msgs(&spec->priv.expect_msgs);
-+	free_msgs(&spec->unpriv.expect_msgs);
- 
- 	free(spec->priv.name);
- 	free(spec->unpriv.name);
--	free(spec->priv.expect_msgs);
--	free(spec->unpriv.expect_msgs);
--
- 	spec->priv.name = NULL;
- 	spec->unpriv.name = NULL;
--	spec->priv.expect_msgs = NULL;
--	spec->unpriv.expect_msgs = NULL;
- }
- 
--static int push_msg(const char *substr, const char *regex_str, struct test_subspec *subspec)
-+static int push_msg(const char *substr, const char *regex_str, struct expected_msgs *msgs)
- {
- 	void *tmp;
- 	int regcomp_res;
- 	char error_msg[100];
- 	struct expect_msg *msg;
- 
--	tmp = realloc(subspec->expect_msgs,
--		      (1 + subspec->expect_msg_cnt) * sizeof(struct expect_msg));
-+	tmp = realloc(msgs->patterns,
-+		      (1 + msgs->cnt) * sizeof(struct expect_msg));
- 	if (!tmp) {
- 		ASSERT_FAIL("failed to realloc memory for messages\n");
- 		return -ENOMEM;
- 	}
--	subspec->expect_msgs = tmp;
--	msg = &subspec->expect_msgs[subspec->expect_msg_cnt];
-+	msgs->patterns = tmp;
-+	msg = &msgs->patterns[msgs->cnt];
- 
- 	if (substr) {
- 		msg->substr = substr;
-@@ -150,7 +155,7 @@ static int push_msg(const char *substr, const char *regex_str, struct test_subsp
+diff --git a/drivers/scsi/elx/libefc/efc_nport.c b/drivers/scsi/elx/libefc/efc_nport.c
+index 2e83a667901fe..1a7437f4328e8 100644
+--- a/drivers/scsi/elx/libefc/efc_nport.c
++++ b/drivers/scsi/elx/libefc/efc_nport.c
+@@ -705,9 +705,9 @@ efc_nport_vport_del(struct efc *efc, struct efc_domain *domain,
+ 	spin_lock_irqsave(&efc->lock, flags);
+ 	list_for_each_entry(nport, &domain->nport_list, list_entry) {
+ 		if (nport->wwpn == wwpn && nport->wwnn == wwnn) {
+-			kref_put(&nport->ref, nport->release);
+ 			/* Shutdown this NPORT */
+ 			efc_sm_post_event(&nport->sm, EFC_EVT_SHUTDOWN, NULL);
++			kref_put(&nport->ref, nport->release);
+ 			break;
  		}
  	}
- 
--	subspec->expect_msg_cnt += 1;
-+	msgs->cnt += 1;
- 	return 0;
- }
- 
-@@ -272,25 +277,25 @@ static int parse_test_spec(struct test_loader *tester,
- 			spec->mode_mask |= UNPRIV;
- 		} else if (str_has_pfx(s, TEST_TAG_EXPECT_MSG_PFX)) {
- 			msg = s + sizeof(TEST_TAG_EXPECT_MSG_PFX) - 1;
--			err = push_msg(msg, NULL, &spec->priv);
-+			err = push_msg(msg, NULL, &spec->priv.expect_msgs);
- 			if (err)
- 				goto cleanup;
- 			spec->mode_mask |= PRIV;
- 		} else if (str_has_pfx(s, TEST_TAG_EXPECT_MSG_PFX_UNPRIV)) {
- 			msg = s + sizeof(TEST_TAG_EXPECT_MSG_PFX_UNPRIV) - 1;
--			err = push_msg(msg, NULL, &spec->unpriv);
-+			err = push_msg(msg, NULL, &spec->unpriv.expect_msgs);
- 			if (err)
- 				goto cleanup;
- 			spec->mode_mask |= UNPRIV;
- 		} else if (str_has_pfx(s, TEST_TAG_EXPECT_REGEX_PFX)) {
- 			msg = s + sizeof(TEST_TAG_EXPECT_REGEX_PFX) - 1;
--			err = push_msg(NULL, msg, &spec->priv);
-+			err = push_msg(NULL, msg, &spec->priv.expect_msgs);
- 			if (err)
- 				goto cleanup;
- 			spec->mode_mask |= PRIV;
- 		} else if (str_has_pfx(s, TEST_TAG_EXPECT_REGEX_PFX_UNPRIV)) {
- 			msg = s + sizeof(TEST_TAG_EXPECT_REGEX_PFX_UNPRIV) - 1;
--			err = push_msg(NULL, msg, &spec->unpriv);
-+			err = push_msg(NULL, msg, &spec->unpriv.expect_msgs);
- 			if (err)
- 				goto cleanup;
- 			spec->mode_mask |= UNPRIV;
-@@ -387,11 +392,12 @@ static int parse_test_spec(struct test_loader *tester,
- 			spec->unpriv.execute = spec->priv.execute;
- 		}
- 
--		if (!spec->unpriv.expect_msgs) {
--			for (i = 0; i < spec->priv.expect_msg_cnt; i++) {
--				struct expect_msg *msg = &spec->priv.expect_msgs[i];
-+		if (spec->unpriv.expect_msgs.cnt == 0) {
-+			for (i = 0; i < spec->priv.expect_msgs.cnt; i++) {
-+				struct expect_msg *msg = &spec->priv.expect_msgs.patterns[i];
- 
--				err = push_msg(msg->substr, msg->regex_str, &spec->unpriv);
-+				err = push_msg(msg->substr, msg->regex_str,
-+					       &spec->unpriv.expect_msgs);
- 				if (err)
- 					goto cleanup;
- 			}
-@@ -443,18 +449,14 @@ static void emit_verifier_log(const char *log_buf, bool force)
- 	fprintf(stdout, "VERIFIER LOG:\n=============\n%s=============\n", log_buf);
- }
- 
--static void validate_case(struct test_loader *tester,
--			  struct test_subspec *subspec,
--			  struct bpf_object *obj,
--			  struct bpf_program *prog,
--			  int load_err)
-+static void validate_msgs(char *log_buf, struct expected_msgs *msgs)
- {
- 	regmatch_t reg_match[1];
--	const char *log = tester->log_buf;
-+	const char *log = log_buf;
- 	int i, j, err;
- 
--	for (i = 0; i < subspec->expect_msg_cnt; i++) {
--		struct expect_msg *msg = &subspec->expect_msgs[i];
-+	for (i = 0; i < msgs->cnt; i++) {
-+		struct expect_msg *msg = &msgs->patterns[i];
- 		const char *match = NULL;
- 
- 		if (msg->substr) {
-@@ -471,9 +473,9 @@ static void validate_case(struct test_loader *tester,
- 
- 		if (!ASSERT_OK_PTR(match, "expect_msg")) {
- 			if (env.verbosity == VERBOSE_NONE)
--				emit_verifier_log(tester->log_buf, true /*force*/);
-+				emit_verifier_log(log_buf, true /*force*/);
- 			for (j = 0; j <= i; j++) {
--				msg = &subspec->expect_msgs[j];
-+				msg = &msgs->patterns[j];
- 				fprintf(stderr, "%s %s: '%s'\n",
- 					j < i ? "MATCHED " : "EXPECTED",
- 					msg->substr ? "SUBSTR" : " REGEX",
-@@ -692,9 +694,8 @@ void run_subtest(struct test_loader *tester,
- 			goto tobj_cleanup;
- 		}
- 	}
--
- 	emit_verifier_log(tester->log_buf, false /*force*/);
--	validate_case(tester, subspec, tobj, tprog, err);
-+	validate_msgs(tester->log_buf, &subspec->expect_msgs);
- 
- 	if (should_do_test_run(spec, subspec)) {
- 		/* For some reason test_verifier executes programs
 -- 
 2.43.0
 
