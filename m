@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70E398D8E4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0FD98D575
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45D52B24517
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA9B6B2129B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E091D131F;
-	Wed,  2 Oct 2024 14:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309D41D0426;
+	Wed,  2 Oct 2024 13:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzZtyPsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL1dXSEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441DE19F411;
-	Wed,  2 Oct 2024 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02631D0174;
+	Wed,  2 Oct 2024 13:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877710; cv=none; b=bwiNjTWSOVrhZcLamglf2p5YWyMOPwFTStVsP/kl7P1vx3m3hqp0Ynkreo9SVZIJSj5crchBrqQGhoAlvrZgojPD6sZ6fGNMTMsJXG+tS/ku9YhCOv3god+mx1hgW9+yFLOGNAv4CDY+dEkONvKIq4ljIRHRVP2hTm6BMSuVPt8=
+	t=1727875836; cv=none; b=l6WMqawaBk7FHLTb/cvz7W09Z7cAzjFD218iAfgVhGoEBQNxfwQQTv/wgwBWGbgwnEsqsdiZdYPa8/Sn3vQ3zIe4cWKbziwq4qxl3+kWYE6FrKkShS0sQRkHN1g+gkN4j2dfrsQLY7TCKj9KwOR6qqOPhnlZtmfdFq0ouVnwM4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877710; c=relaxed/simple;
-	bh=jaF8KKF7PBOP7axcJCrDSZ7ur3LX/bxhqwshOW5tF0k=;
+	s=arc-20240116; t=1727875836; c=relaxed/simple;
+	bh=6w/xPfWL8ZxysWCjJJuAN1Vg2IfcfjpmQMBIMCtbrFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLuK+qcMM1SYYB1LNWiN4ZxoOYpaBnR3iWAk3N111QOMDFFkFE/yOeYvhP7Nk4VpMwZF+Pi0D/7F5X4LaRhnAvr/oo5EDJuCSpWRK6E0VwipblJ48pXZrWK1b7+qAFMr7ZLoyY7h21NMogm4acHiPnU+j0VPd2Hu9xeMOdyJ/ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzZtyPsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52443C4CEC2;
-	Wed,  2 Oct 2024 14:01:49 +0000 (UTC)
+	 MIME-Version; b=nz8w+ifkJs5W9a8nj1UfBh5x4LQru6mGRxaoh6huTmPeTdXoek6OnKaAgdRuIK2X498fRE74R8FRt3oDjKkIPndm+2aw5HnESkKT3BjRTJmJy1cdreciBLDqclnrmiJ4v/5joOqh3dQTL7LICfY9Xb4PS++jRrV/nBy26jzJ5B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL1dXSEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC17C4CEC5;
+	Wed,  2 Oct 2024 13:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877709;
-	bh=jaF8KKF7PBOP7axcJCrDSZ7ur3LX/bxhqwshOW5tF0k=;
+	s=korg; t=1727875835;
+	bh=6w/xPfWL8ZxysWCjJJuAN1Vg2IfcfjpmQMBIMCtbrFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LzZtyPsJh1hyUk++MW3v974GDqLckebOXT1jl+Rw94DzeyzFFm6yFrmptSN8pEUdq
-	 eBe6AxxUYKm1cmfAbBr9uWDTM2nAuxZH3I7w3+oI3u2fbZ+o450iiDQPo592q4PTqG
-	 Spol6xmN76zMQSWUvjG3Mrg0k/dy1Dm9fcfT32wA=
+	b=mL1dXSEKhJMh2EpC2C974R7PJVHlezj7dRD1v7xnMMJdNjeLY63B/M3U2YxsEkzU8
+	 sH/+mIXWAtR5FLjP9TrykWgeoDRbgiahVak58YUI4pEBmH/AhOAXxAeo9H1T4cWu8G
+	 srObCsxxm2NSMlaJ3ZASuBHefo0/Hx3Y9OXppeKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 136/634] ARM: dts: imx7d-zii-rmu2: fix Ethernet PHY pinctrl property
+Subject: [PATCH 6.11 238/695] platform/x86: ideapad-laptop: Make the scope_guard() clear of its scope
 Date: Wed,  2 Oct 2024 14:53:56 +0200
-Message-ID: <20241002125816.477067699@linuxfoundation.org>
+Message-ID: <20241002125831.949755617@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 0e49cfe364dea4345551516eb2fe53135a10432b ]
+[ Upstream commit a093cb667c3ff5eadd4b23ddf996d9ccae9b7ac6 ]
 
-There is no "fsl,phy" property in pin controller pincfg nodes:
+First of all, it's a bit counterintuitive to have something like
 
-  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,pins' is a required property
-  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,phy' does not match any of the regexes: 'pinctrl-[0-9]+'
+	int err;
+	...
+	scoped_guard(...)
+		err = foo(...);
+	if (err)
+		return err;
 
-Fixes: f496e6750083 ("ARM: dts: Add ZII support for ZII i.MX7 RMU2 board")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Second, with a particular kernel configuration and compiler version in
+one of such cases the objtool is not happy:
+
+  ideapad-laptop.o: warning: objtool: .text.fan_mode_show: unexpected end of section
+
+I'm not an expert on all this, but the theory is that compiler and
+linker in this case can't understand that 'result' variable will be
+always initialized as long as no error has been returned. Assigning
+'result' to a dummy value helps with this. Note, that fixing the
+scoped_guard() scope (as per above) does not make issue gone.
+
+That said, assign dummy value and make the scope_guard() clear of its scope.
+For the sake of consistency do it in the entire file.
+
+Fixes: 7cc06e729460 ("platform/x86: ideapad-laptop: add a mutex to synchronize VPC commands")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408290219.BrPO8twi-lkp@intel.com/
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240829165105.1609180-1-andriy.shevchenko@linux.intel.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/ideapad-laptop.c | 48 +++++++++++++++------------
+ 1 file changed, 27 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
-index 521493342fe97..8f5566027c25a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
-@@ -350,7 +350,7 @@
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index 98ec30fce9fdd..b58df617d4fda 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -419,13 +419,14 @@ static ssize_t camera_power_show(struct device *dev,
+ 				 char *buf)
+ {
+ 	struct ideapad_private *priv = dev_get_drvdata(dev);
+-	unsigned long result;
++	unsigned long result = 0;
+ 	int err;
  
- &iomuxc_lpsr {
- 	pinctrl_enet1_phy_interrupt: enet1phyinterruptgrp {
--		fsl,phy = <
-+		fsl,pins = <
- 			MX7D_PAD_LPSR_GPIO1_IO02__GPIO1_IO2	0x08
- 		>;
- 	};
+-	scoped_guard(mutex, &priv->vpc_mutex)
++	scoped_guard(mutex, &priv->vpc_mutex) {
+ 		err = read_ec_data(priv->adev->handle, VPCCMD_R_CAMERA, &result);
+-	if (err)
+-		return err;
++		if (err)
++			return err;
++	}
+ 
+ 	return sysfs_emit(buf, "%d\n", !!result);
+ }
+@@ -442,10 +443,11 @@ static ssize_t camera_power_store(struct device *dev,
+ 	if (err)
+ 		return err;
+ 
+-	scoped_guard(mutex, &priv->vpc_mutex)
++	scoped_guard(mutex, &priv->vpc_mutex) {
+ 		err = write_ec_cmd(priv->adev->handle, VPCCMD_W_CAMERA, state);
+-	if (err)
+-		return err;
++		if (err)
++			return err;
++	}
+ 
+ 	return count;
+ }
+@@ -493,13 +495,14 @@ static ssize_t fan_mode_show(struct device *dev,
+ 			     char *buf)
+ {
+ 	struct ideapad_private *priv = dev_get_drvdata(dev);
+-	unsigned long result;
++	unsigned long result = 0;
+ 	int err;
+ 
+-	scoped_guard(mutex, &priv->vpc_mutex)
++	scoped_guard(mutex, &priv->vpc_mutex) {
+ 		err = read_ec_data(priv->adev->handle, VPCCMD_R_FAN, &result);
+-	if (err)
+-		return err;
++		if (err)
++			return err;
++	}
+ 
+ 	return sysfs_emit(buf, "%lu\n", result);
+ }
+@@ -519,10 +522,11 @@ static ssize_t fan_mode_store(struct device *dev,
+ 	if (state > 4 || state == 3)
+ 		return -EINVAL;
+ 
+-	scoped_guard(mutex, &priv->vpc_mutex)
++	scoped_guard(mutex, &priv->vpc_mutex) {
+ 		err = write_ec_cmd(priv->adev->handle, VPCCMD_W_FAN, state);
+-	if (err)
+-		return err;
++		if (err)
++			return err;
++	}
+ 
+ 	return count;
+ }
+@@ -602,13 +606,14 @@ static ssize_t touchpad_show(struct device *dev,
+ 			     char *buf)
+ {
+ 	struct ideapad_private *priv = dev_get_drvdata(dev);
+-	unsigned long result;
++	unsigned long result = 0;
+ 	int err;
+ 
+-	scoped_guard(mutex, &priv->vpc_mutex)
++	scoped_guard(mutex, &priv->vpc_mutex) {
+ 		err = read_ec_data(priv->adev->handle, VPCCMD_R_TOUCHPAD, &result);
+-	if (err)
+-		return err;
++		if (err)
++			return err;
++	}
+ 
+ 	priv->r_touchpad_val = result;
+ 
+@@ -627,10 +632,11 @@ static ssize_t touchpad_store(struct device *dev,
+ 	if (err)
+ 		return err;
+ 
+-	scoped_guard(mutex, &priv->vpc_mutex)
++	scoped_guard(mutex, &priv->vpc_mutex) {
+ 		err = write_ec_cmd(priv->adev->handle, VPCCMD_W_TOUCHPAD, state);
+-	if (err)
+-		return err;
++		if (err)
++			return err;
++	}
+ 
+ 	priv->r_touchpad_val = state;
+ 
 -- 
 2.43.0
 
