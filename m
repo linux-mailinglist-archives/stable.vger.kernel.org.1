@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-80334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0590798DCF8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1518698DA85
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D59B1C21A23
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9DD528650D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2AA1D12E3;
-	Wed,  2 Oct 2024 14:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8081D0975;
+	Wed,  2 Oct 2024 14:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFFpLwA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjWUpRvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391091D0DE9;
-	Wed,  2 Oct 2024 14:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F187E19F411;
+	Wed,  2 Oct 2024 14:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880070; cv=none; b=WYKoLT123+LELtyjPf8vczGrsxtoH4P5sMHwiI3WM9bqnXJunvB7/7OglKkDc1ZF9mu1a5k08AHZjTJ8QP9GssIzUQSx4yUn7HOUp59S9yj2Qm4oyqaTTT8TBKjJyXjvBCFRhyopcuOSXgAiLdytJv0XTjVwWYkYBx/26rCbZB0=
+	t=1727878613; cv=none; b=ku4PYLywGvRC87tkC/25oyK7QKGKZX/5eOPjkVszmk4QB3ljQuyPIqK/dnxKdck36f1ZtXczpqr7sAu3pe8zPe6yCqhAH0VUJHN8wjRLbLTO2wmSsqpsh8/QM79CI4hniknUcpUxSrqwvB8zjGlvdNlc3uWx4cpBJlEYHfz25FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880070; c=relaxed/simple;
-	bh=88qp9JKaxJWa6pQ5ru4iaVFv5/wPmupTWvkpxfZvmMA=;
+	s=arc-20240116; t=1727878613; c=relaxed/simple;
+	bh=7zTLQCx/9wqOoxPeESIlV5iTnPyzkIuKj5xOn5oUEq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKotBcqz5041VPI856SLHklf1czr9YLQultBJ1E3hGisiVil5DrlmloGplU9GC7vKecRL+1nJjmzAWaW17mz4w02CvvFm5hSL5bS8w41S/NC50Dk9N2qjBICXjal7dN7GvmXRsbVlseOAvCoBYmWhtmNQka797yLstSzfAaREwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFFpLwA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FD0C4CEC2;
-	Wed,  2 Oct 2024 14:41:09 +0000 (UTC)
+	 MIME-Version; b=FDRBUbKrDJer+owY9VGr6VrjDalgjn9ccO2yZ48thddl7S6D+T+UYFHu2aCZhR5UzozAsbdzsW2Y8H++L9JoO9rADUrMzUKZA4Djbs1v02HPk8xOEdqWWjVpOo0HBiuirS9sYNgF6dkjEyyMP/ecqFKPqS2eaGvIKRG2nwqnlSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjWUpRvz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA49C4CEC2;
+	Wed,  2 Oct 2024 14:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880070;
-	bh=88qp9JKaxJWa6pQ5ru4iaVFv5/wPmupTWvkpxfZvmMA=;
+	s=korg; t=1727878612;
+	bh=7zTLQCx/9wqOoxPeESIlV5iTnPyzkIuKj5xOn5oUEq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFFpLwA8IzUuGGR4VrxSWigiAl7Sm+eDkkvfc9pk1psG0JNJD5vOXUX2BJgdPMyVm
-	 EpYOpYbCqwft0J7iDPZX3XZ48MHIH5vQg4XGtaK9Gxcis33xBUBTEbXszM6KoJAe/Q
-	 baCeZrs2lgc6RL7P9nnFoiKuQvXboWA1L3txyFjg=
+	b=cjWUpRvzXVx/+f1oshzC5spIhE3x4GDH4MuFCGHAnZGw/OPDozHCsLW7mDywrmEPw
+	 DnBLT/cf150H5mIkbwkftv8s9u8mkrWP4+phIzw4J/CrsJifvf233e1iTVa1yekcKq
+	 iuOOBAiF3gY/05AIAJI+BXNSaKIYyYHUO76DzdmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+c187823a52ed505b2257@syzkaller.appspotmail.com,
+	Jiwon Kim <jiwonaid0@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 303/538] RDMA/rtrs-clt: Reset cid to con_num - 1 to stay in bounds
+Subject: [PATCH 6.10 442/634] bonding: Fix unnecessary warnings and logs from bond_xdp_get_xmit_slave()
 Date: Wed,  2 Oct 2024 14:59:02 +0200
-Message-ID: <20241002125804.376956355@linuxfoundation.org>
+Message-ID: <20241002125828.548153272@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Jiwon Kim <jiwonaid0@gmail.com>
 
-[ Upstream commit 3e4289b29e216a55d08a89e126bc0b37cbad9f38 ]
+[ Upstream commit 0cbfd45fbcf0cb26d85c981b91c62fe73cdee01c ]
 
-In the function init_conns(), after the create_con() and create_cm() for
-loop if something fails. In the cleanup for loop after the destroy tag, we
-access out of bound memory because cid is set to clt_path->s.con_num.
+syzbot reported a WARNING in bond_xdp_get_xmit_slave. To reproduce
+this[1], one bond device (bond1) has xdpdrv, which increases
+bpf_master_redirect_enabled_key. Another bond device (bond0) which is
+unsupported by XDP but its slave (veth3) has xdpgeneric that returns
+XDP_TX. This triggers WARN_ON_ONCE() from the xdp_master_redirect().
+To reduce unnecessary warnings and improve log management, we need to
+delete the WARN_ON_ONCE() and add ratelimit to the netdev_err().
 
-This commits resets the cid to clt_path->s.con_num - 1, to stay in bounds
-in the cleanup loop later.
+[1] Steps to reproduce:
+    # Needs tx_xdp with return XDP_TX;
+    ip l add veth0 type veth peer veth1
+    ip l add veth3 type veth peer veth4
+    ip l add bond0 type bond mode 6 # BOND_MODE_ALB, unsupported by XDP
+    ip l add bond1 type bond # BOND_MODE_ROUNDROBIN by default
+    ip l set veth0 master bond1
+    ip l set bond1 up
+    # Increases bpf_master_redirect_enabled_key
+    ip l set dev bond1 xdpdrv object tx_xdp.o section xdp_tx
+    ip l set veth3 master bond0
+    ip l set bond0 up
+    ip l set veth4 up
+    # Triggers WARN_ON_ONCE() from the xdp_master_redirect()
+    ip l set veth3 xdpgeneric object tx_xdp.o section xdp_tx
 
-Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://patch.msgid.link/20240821112217.41827-7-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: syzbot+c187823a52ed505b2257@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c187823a52ed505b2257
+Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
+Signed-off-by: Jiwon Kim <jiwonaid0@gmail.com>
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20240918140602.18644-1-jiwonaid0@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/bonding/bond_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index 75d3a27dea9a0..82aa47efb8078 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -2342,6 +2342,12 @@ static int init_conns(struct rtrs_clt_path *clt_path)
- 		if (err)
- 			goto destroy;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 60db34095a255..3c61f5fbe6b7f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -5536,9 +5536,9 @@ bond_xdp_get_xmit_slave(struct net_device *bond_dev, struct xdp_buff *xdp)
+ 		break;
+ 
+ 	default:
+-		/* Should never happen. Mode guarded by bond_xdp_check() */
+-		netdev_err(bond_dev, "Unknown bonding mode %d for xdp xmit\n", BOND_MODE(bond));
+-		WARN_ON_ONCE(1);
++		if (net_ratelimit())
++			netdev_err(bond_dev, "Unknown bonding mode %d for xdp xmit\n",
++				   BOND_MODE(bond));
+ 		return NULL;
  	}
-+
-+	/*
-+	 * Set the cid to con_num - 1, since if we fail later, we want to stay in bounds.
-+	 */
-+	cid = clt_path->s.con_num - 1;
-+
- 	err = alloc_path_reqs(clt_path);
- 	if (err)
- 		goto destroy;
+ 
 -- 
 2.43.0
 
