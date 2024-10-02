@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D4798D92C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2200598D5AE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A64B2B23E09
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9E6D288DD3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097C01D1E6B;
-	Wed,  2 Oct 2024 14:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963641D043E;
+	Wed,  2 Oct 2024 13:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esA6VbIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKJ4EKpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72021D0499;
-	Wed,  2 Oct 2024 14:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5416719D8A3;
+	Wed,  2 Oct 2024 13:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877817; cv=none; b=N5Bf9JC3agwutPoh9wf321FD3+KOWQx9doHaKvjuQFicp2PLvHlfpZ3fYydq68VcoaA1Cgzs+2PIdfRU9oQ0XPUvDF5OdZhofsnb+Xn8OmzKCHkXKSsnnEYwNJqbCc8QntNcksFZRNVL9E5bCIOBOOU0jooZGCXP2GQbU+K8NLw=
+	t=1727875946; cv=none; b=MFZIqTc05Ynv/XirO62nudjzB4KIysKUiUExuRBnHnDsBDoGh66dKwnje/MeXreJeoROXixutlZDlfRwEOlvm1MzwWfwdyH0rafnwaULJl52V4JV8PbLwUnClgBgsaCR6vrM9BH5KcfxGK7E7d7ZbVWlm/e9xd/MepLdyw4RcOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877817; c=relaxed/simple;
-	bh=+sYrEVzxcEfp9P0Kw2SmYRqBamrkweCyBBSwCp9YBcE=;
+	s=arc-20240116; t=1727875946; c=relaxed/simple;
+	bh=59B4+2oKGe1DgBCLsUPyEHgRz49VbrgiztbtjrhsBto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8Vivn6IXzBGthFI6R/cR60toL0/45aUyooklPA2mnAWko1gBenzVZ3ivnrZxwxCWVD1RzEJCCzEbEj7sJOLNyLgQ6w19xw3UQClplsH6g85zO9wzPASkDtXMpZDnY9L+MWJijgvgh/N+CpcDEmt9WNCja5MZCcT7qxFr+3ykmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esA6VbIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96C5C4CEC2;
-	Wed,  2 Oct 2024 14:03:36 +0000 (UTC)
+	 MIME-Version; b=W0bbFaS2GMItyhtDFMwgHrygs/fkFr1nKVnJQ7nxZJl+cTrjnKn2oGX87JE3C1svar6LR10QyzZILwvR8eBpVDr+FeQYV5o+Ow4OGUNJ13qSGk08VuEKXoFld+KIqFL9N8O/7HsmTu5EOw3PgbG3aMg7xjkmqoyS9S+XvsYvlX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKJ4EKpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBB2C4CEC5;
+	Wed,  2 Oct 2024 13:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877817;
-	bh=+sYrEVzxcEfp9P0Kw2SmYRqBamrkweCyBBSwCp9YBcE=;
+	s=korg; t=1727875946;
+	bh=59B4+2oKGe1DgBCLsUPyEHgRz49VbrgiztbtjrhsBto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esA6VbIHO4yVE6jw8HyJJBb3mEBbclBhsjyI24LyP3/VsH1WIVc37N3T9Ze+JVMc4
-	 dKOY0FgIp929Z61K7dEtnUNwBAhglcujy2QOPWPOr2Fz6ghE52/hKKSdAMazaMzwhZ
-	 jb08XqGF8teDvndVXCv4/0Z0cyF+2oj2BDsmxS4w=
+	b=QKJ4EKpKK8HrMbDgOJg40LawoQqUwNmuX6gopJpBpWanOtYmcSK1GaA+tb/fu3/NW
+	 Vw24cXNUOg4huZT823UmueUkV64L5IEwzCaH5DBWv4wt6sQ2D9bIjXKuwhrdgvhV+a
+	 9pKYjgLMRDXgJo+kv+M37reTgKkAAkw+zyoNZGik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Matthias Brugger <matthias.bgg@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 173/634] mtd: rawnand: mtk: Factorize out the logic cleaning mtk chips
+Subject: [PATCH 6.11 275/695] selftests/bpf: Fix compiling tcp_rtt.c with musl-libc
 Date: Wed,  2 Oct 2024 14:54:33 +0200
-Message-ID: <20241002125817.937708490@linuxfoundation.org>
+Message-ID: <20241002125833.422041190@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 81cb3be3261e766a1f8efab9e3154a4f4fd9d03d ]
+[ Upstream commit 18826fb0b79c3c3cd1fe765d85f9c6f1a902c722 ]
 
-There are some un-freed resources in one of the error path which would
-benefit from a helper going through all the registered mtk chips one by
-one and perform all the necessary cleanup. This is precisely what the
-remove path does, so let's extract the logic in a helper.
+The GNU version of 'struct tcp_info' in 'netinet/tcp.h' is not exposed by
+musl headers unless _GNU_SOURCE is defined.
 
-There is no functional change.
+Add this definition to fix errors seen compiling for mips64el/musl-libc:
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@kernel.org>
-Link: https://lore.kernel.org/linux-mtd/20240826153019.67106-1-miquel.raynal@bootlin.com
-Stable-dep-of: 2073ae37d550 ("mtd: rawnand: mtk: Fix init error path")
+  tcp_rtt.c: In function 'wait_for_ack':
+  tcp_rtt.c:24:25: error: storage size of 'info' isn't known
+     24 |         struct tcp_info info;
+        |                         ^~~~
+  tcp_rtt.c:24:25: error: unused variable 'info' [-Werror=unused-variable]
+  cc1: all warnings being treated as errors
+
+Fixes: 1f4f80fed217 ("selftests/bpf: test_progs: convert test_tcp_rtt")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/f2329767b15df206f08a5776d35a47c37da855ae.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/mtk_nand.c | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/tcp_rtt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
-index d65e6371675bb..bf845dd167374 100644
---- a/drivers/mtd/nand/raw/mtk_nand.c
-+++ b/drivers/mtd/nand/raw/mtk_nand.c
-@@ -1429,6 +1429,23 @@ static int mtk_nfc_nand_chip_init(struct device *dev, struct mtk_nfc *nfc,
- 	return 0;
- }
- 
-+static void mtk_nfc_nand_chips_cleanup(struct mtk_nfc *nfc)
-+{
-+	struct mtk_nfc_nand_chip *mtk_chip;
-+	struct nand_chip *chip;
-+	int ret;
-+
-+	while (!list_empty(&nfc->chips)) {
-+		mtk_chip = list_first_entry(&nfc->chips,
-+					    struct mtk_nfc_nand_chip, node);
-+		chip = &mtk_chip->nand;
-+		ret = mtd_device_unregister(nand_to_mtd(chip));
-+		WARN_ON(ret);
-+		nand_cleanup(chip);
-+		list_del(&mtk_chip->node);
-+	}
-+}
-+
- static int mtk_nfc_nand_chips_init(struct device *dev, struct mtk_nfc *nfc)
- {
- 	struct device_node *np = dev->of_node;
-@@ -1567,20 +1584,8 @@ static int mtk_nfc_probe(struct platform_device *pdev)
- static void mtk_nfc_remove(struct platform_device *pdev)
- {
- 	struct mtk_nfc *nfc = platform_get_drvdata(pdev);
--	struct mtk_nfc_nand_chip *mtk_chip;
--	struct nand_chip *chip;
--	int ret;
--
--	while (!list_empty(&nfc->chips)) {
--		mtk_chip = list_first_entry(&nfc->chips,
--					    struct mtk_nfc_nand_chip, node);
--		chip = &mtk_chip->nand;
--		ret = mtd_device_unregister(nand_to_mtd(chip));
--		WARN_ON(ret);
--		nand_cleanup(chip);
--		list_del(&mtk_chip->node);
--	}
- 
-+	mtk_nfc_nand_chips_cleanup(nfc);
- 	mtk_ecc_release(nfc->ecc);
- }
- 
+diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
+index f2b99d95d9160..c38784c1c066e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
++++ b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include "cgroup_helpers.h"
+ #include "network_helpers.h"
 -- 
 2.43.0
 
