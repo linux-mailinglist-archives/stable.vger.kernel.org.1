@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A1698D9D0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4A898DC6E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3111F2673C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAF5DB2694B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BEB1D1F4A;
-	Wed,  2 Oct 2024 14:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564101D222B;
+	Wed,  2 Oct 2024 14:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouL3iI00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWcJwQfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71571D1F4B;
-	Wed,  2 Oct 2024 14:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0866D1D0E0A;
+	Wed,  2 Oct 2024 14:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878239; cv=none; b=Y8twbnBzZXfhjAWcJ0OELh9vPQo/+afvqXn9AWw74Gi6WkbdiABTSbofjQBWaO7B/21hVh8sKCbBIPzEXe6VwRxACZIFR6WF9G/aNxStPvs+lDmPoY9eiU6iOhml76mlCPdqCIEshiKhm9lvJbvwVmoqRPB4Cq13OnNnQ/FJ9MI=
+	t=1727879694; cv=none; b=WvBE0fMLUS0K1rwrRUza3OMueagw/6wqhVShH2frYpY3EYEEZalYXVKKlg8L6rjLGsTk3GMNsOIQ/Xxhv+h/QxedvG2ljQrWq+kdtzbEgOEg13cB6cSeqXDcVjaSkZHMF4RhEvb6IWalpTnL6ADyEhaUi3CmHobmOGsaojqY/jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878239; c=relaxed/simple;
-	bh=eumoM3OCXP9gWmh2gf1DDkVch5JAA50czBJ70ziETXg=;
+	s=arc-20240116; t=1727879694; c=relaxed/simple;
+	bh=RwCIiJmBV2DKzOY0GcMgkTu0AZIq1+xzr0B6IEwdhpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZI3T1Or846+2XRINn7jfOXq0OVS4aQP6m/lPohCYBcHefm4RR05bwKeUAVeOvscd8PCOGDHSO6oDrnTL99ghfqHC6fXpu20bDnR7Tc9NSHWDl9ocCDAx4n0emRaGWbLqqNdtl2g6q5mishPO5iAX9yQ9FfEQ2ML+yvHMgfP24gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouL3iI00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F863C4CED4;
-	Wed,  2 Oct 2024 14:10:38 +0000 (UTC)
+	 MIME-Version; b=TaCL6upiaQs9JrFciYk3K8sMz6E/2cIUcD+cZXiWhz7hxDZTmUzlfS9pipOpTpV9/A/FDsu5AqqDUYjkt1vrfUUKro9r++LKO5M73Lj+1ptvt6av1789zPqdU20kRMMuF2toppR3t+Gz+Az4EgJVpDWqbm1IBOYuWA5Gaw48Yw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWcJwQfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8258CC4CEC2;
+	Wed,  2 Oct 2024 14:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878238;
-	bh=eumoM3OCXP9gWmh2gf1DDkVch5JAA50czBJ70ziETXg=;
+	s=korg; t=1727879693;
+	bh=RwCIiJmBV2DKzOY0GcMgkTu0AZIq1+xzr0B6IEwdhpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouL3iI00bd18xnTWtKa8Z0DGx7eIYxK/EdaGMowRp14jyuR0gUJhyO+13RllN0rCL
-	 iwi2xscD3wfyIxEAw7//x7WYyfaclSJnKNbJnSyBuE2rGd4LwwnEmkW/+jhYgQQY23
-	 xsYHGyv7DyD0I1Y2GxN9Cd4UMAKav2uU79mr/Bzs=
+	b=WWcJwQfsWiiEcAGlrgI/RkazclCIpLm39dPNrhogCdwsLsdoFPEqESdNsARoHHZs3
+	 GmjMKjVjQeSdGMYnGu1k6C1Yx/GThRp4bXNYW9VOH7E368MHzqvnYFWb3DzxKRSE2e
+	 GccT8PytCc/ycaEglN0VcxvDYQzxZCxjwdHqRlbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 346/634] leds: gpio: Set num_leds after allocation
+Subject: [PATCH 6.6 207/538] selftests/bpf: Fix errors compiling cg_storage_multi.h with musl libc
 Date: Wed,  2 Oct 2024 14:57:26 +0200
-Message-ID: <20241002125824.757325269@linuxfoundation.org>
+Message-ID: <20241002125800.425494335@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 045391a02bd971d431c83ad03f7cc51b6e2fe331 ]
+[ Upstream commit 730561d3c08d4a327cceaabf11365958a1c00cec ]
 
-With the new __counted_by annotation, the "num_leds" variable needs to
-valid for accesses to the "leds" array. This requirement is not met in
-gpio_leds_create(), since "num_leds" starts at "0", so "leds" index "0"
-will not be considered valid (num_leds would need to be "1" to access
-index "0").
+Remove a redundant include of '<asm/types.h>', whose needed definitions are
+already included (via '<linux/types.h>') in cg_storage_multi_egress_only.c,
+cg_storage_multi_isolated.c, and cg_storage_multi_shared.c. This avoids
+redefinition errors seen compiling for mips64el/musl-libc like:
 
-Fix this by setting the allocation size after allocation, and then update
-the final count based on how many were actually added to the array.
+  In file included from progs/cg_storage_multi_egress_only.c:13:
+  In file included from progs/cg_storage_multi.h:6:
+  In file included from /usr/mips64el-linux-gnuabi64/include/asm/types.h:23:
+  /usr/include/asm-generic/int-l64.h:29:25: error: typedef redefinition with different types ('long' vs 'long long')
+     29 | typedef __signed__ long __s64;
+        |                         ^
+  /usr/include/asm-generic/int-ll64.h:30:44: note: previous definition is here
+     30 | __extension__ typedef __signed__ long long __s64;
+        |                                            ^
 
-Fixes: 52cd75108a42 ("leds: gpio: Annotate struct gpio_leds_priv with __counted_by")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20240716212455.work.809-kees@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 9e5bd1f7633b ("selftests/bpf: Test CGROUP_STORAGE map can't be used by multiple progs")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/4f4702e9f6115b7f84fea01b2326ca24c6df7ba8.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-gpio.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/progs/cg_storage_multi.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/leds/leds-gpio.c b/drivers/leds/leds-gpio.c
-index 83fcd7b6afff7..4d1612d557c84 100644
---- a/drivers/leds/leds-gpio.c
-+++ b/drivers/leds/leds-gpio.c
-@@ -150,7 +150,7 @@ static struct gpio_leds_priv *gpio_leds_create(struct device *dev)
- {
- 	struct fwnode_handle *child;
- 	struct gpio_leds_priv *priv;
--	int count, ret;
-+	int count, used, ret;
+diff --git a/tools/testing/selftests/bpf/progs/cg_storage_multi.h b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
+index a0778fe7857a1..41d59f0ee606c 100644
+--- a/tools/testing/selftests/bpf/progs/cg_storage_multi.h
++++ b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
+@@ -3,8 +3,6 @@
+ #ifndef __PROGS_CG_STORAGE_MULTI_H
+ #define __PROGS_CG_STORAGE_MULTI_H
  
- 	count = device_get_child_node_count(dev);
- 	if (!count)
-@@ -159,9 +159,11 @@ static struct gpio_leds_priv *gpio_leds_create(struct device *dev)
- 	priv = devm_kzalloc(dev, struct_size(priv, leds, count), GFP_KERNEL);
- 	if (!priv)
- 		return ERR_PTR(-ENOMEM);
-+	priv->num_leds = count;
-+	used = 0;
- 
- 	device_for_each_child_node(dev, child) {
--		struct gpio_led_data *led_dat = &priv->leds[priv->num_leds];
-+		struct gpio_led_data *led_dat = &priv->leds[used];
- 		struct gpio_led led = {};
- 
- 		/*
-@@ -197,8 +199,9 @@ static struct gpio_leds_priv *gpio_leds_create(struct device *dev)
- 		/* Set gpiod label to match the corresponding LED name. */
- 		gpiod_set_consumer_name(led_dat->gpiod,
- 					led_dat->cdev.dev->kobj.name);
--		priv->num_leds++;
-+		used++;
- 	}
-+	priv->num_leds = used;
- 
- 	return priv;
- }
+-#include <asm/types.h>
+-
+ struct cgroup_value {
+ 	__u32 egress_pkts;
+ 	__u32 ingress_pkts;
 -- 
 2.43.0
 
