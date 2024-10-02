@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46DF98D93B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D2798DBB8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 121BD1C22E69
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60189283DC5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1341D0E19;
-	Wed,  2 Oct 2024 14:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933721D131E;
+	Wed,  2 Oct 2024 14:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9iy40Qe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1cugmqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FBE1D0BAD;
-	Wed,  2 Oct 2024 14:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513AF1D1317;
+	Wed,  2 Oct 2024 14:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877861; cv=none; b=uiLBko//yVYsbvEHTp+WcjsWP9N1BXghPIAmEvXJO1f17gudXAEhbtxeeaL5TAZVP53MJkDXP1/KqzJjbHBcFnhxsq/rkN+NlERssRO5vPvftXoZf2PHXcPQYWKo92GApgJuOtItUGjDdzEmvjprUN1CK2hjDeo07NvagJdRut4=
+	t=1727879326; cv=none; b=uvBTYS2UU3+OA6a1DmyBeUQxRZmIV1iAcy3MiLgVOlXkwT/sPuJS3SYg6m+0/scp652TbWvz2qDw5HqLhYZRwGaQUK5I4ACxATtv9rEp9jgWgzeCMR2+a8A4wObVH/mZTHXHf4v04avZlF0aNoi1Eg930SVSdqLHwZpguuNPNl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877861; c=relaxed/simple;
-	bh=aaSanO8HtZOYp8JNsaSJciOgi8e18u6RaYmzbn+jYDA=;
+	s=arc-20240116; t=1727879326; c=relaxed/simple;
+	bh=cFYZR0kbZzUm2s9ArhRmuPeLff1KbO46eAvNh3s/c5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbUEmuvMb1HlNoVcvTUZEFHKKcJOJ1GLq9HsHZSL4oqm0XzcxCb+4pHRS4mcE3oOTbPTlsh0YDoVN0QsbgkVPKa/dwATtnEbI3BskHb2V0bjKOJZF3FFEVGqIkBZrvCp6RJqiFZKSIs9OrBxn9VCRV9DXAeUDzEGazs20tNIbEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9iy40Qe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5D8C4CEC2;
-	Wed,  2 Oct 2024 14:04:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F2c7ss22PTYl8KfiQDfp6zKWT8svem64J9dZxgpNlnUva77xh1uMbXLcdkXU0OJxRUVeafmJobddpkg40/6kYRbLeEF9jwf8Czc0poMnkOADRgAqqEygaAx6LwNqbQ1+bb5PCPuPNjVPWUsgRldgFw0LghHkY2ob9mx6takJuSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1cugmqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15CFC4CED3;
+	Wed,  2 Oct 2024 14:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877860;
-	bh=aaSanO8HtZOYp8JNsaSJciOgi8e18u6RaYmzbn+jYDA=;
+	s=korg; t=1727879326;
+	bh=cFYZR0kbZzUm2s9ArhRmuPeLff1KbO46eAvNh3s/c5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9iy40QeFattsJN7doDrCX5AeGFa4NNP8xqUzY0xWSbEFTojddklNfgm2mhhnGm6e
-	 2fD0gFVz2HywNsQ3PeEFeogKMQp0jca6dM/tcgdlrw0f2Zw14KWXOAq5WUxSFTKJsy
-	 0drDy6eGbBHOCPmC4aRC7bzBv3P6fnrWi5P54+yI=
+	b=J1cugmqoRk7OzMCVi5aRDh1nRcT8d8wsbgjXDId7//Jklx5Slm98xJODsL2do60IK
+	 eL8IdB+yN2+5fBgJtHjuE/ZNTTyHUNdhBUgFBaVUZiyoGGhePGpcnjstkDMaxcGHXW
+	 /JgSND+GCPnFET1Jy6rjfWL+oLhhni6G5Ul5HjLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 6.10 219/634] minmax: avoid overly complex min()/max() macro arguments in xen
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 080/538] block, bfq: dont break merge chain in bfq_split_bfqq()
 Date: Wed,  2 Oct 2024 14:55:19 +0200
-Message-ID: <20241002125819.746272085@linuxfoundation.org>
+Message-ID: <20241002125755.376926695@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit e8432ac802a028eaee6b1e86383d7cd8e9fb8431 ]
+[ Upstream commit 42c306ed723321af4003b2a41bb73728cab54f85 ]
 
-We have some very fancy min/max macros that have tons of sanity checking
-to warn about mixed signedness etc.
+Consider the following scenario:
 
-This is all things that a sane compiler should warn about, but there are
-no sane compiler interfaces for this, and '-Wsign-compare' is broken [1]
-and not useful.
+    Process 1       Process 2       Process 3       Process 4
+     (BIC1)          (BIC2)          (BIC3)          (BIC4)
+      Λ               |               |                |
+       \-------------\ \-------------\ \--------------\|
+                      V               V                V
+      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+ref    0              1               2                4
 
-So then we compensate (some would say over-compensate) by doing the
-checks manually with some truly horrid macro games.
+If Process 1 issue a new IO and bfqq2 is found, and then bfq_init_rq()
+decide to spilt bfqq2 by bfq_split_bfqq(). Howerver, procress reference
+of bfqq2 is 1 and bfq_split_bfqq() just clear the coop flag, which will
+break the merge chain.
 
-And no, we can't just use __builtin_types_compatible_p(), because the
-whole question of "does it make sense to compare these two values" is a
-lot more complicated than that.
+Expected result: caller will allocate a new bfqq for BIC1
 
-For example, it makes a ton of sense to compare unsigned values with
-simple constants like "5", even if that is indeed a signed type.  So we
-have these very strange macros to try to make sensible type checking
-decisions on the arguments to 'min()' and 'max()'.
+    Process 1       Process 2       Process 3       Process 4
+     (BIC1)          (BIC2)          (BIC3)          (BIC4)
+                      |               |                |
+                       \-------------\ \--------------\|
+                                      V                V
+      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+ref    0              0               1                3
 
-But that can cause enormous code expansion if the min()/max() macros are
-used with complicated expressions, and particularly if you nest these
-things so that you get the first big expansion then expanded again.
+Since the condition is only used for the last bfqq4 when the previous
+bfqq2 and bfqq3 are already splited. Fix the problem by checking if
+bfqq is the last one in the merge chain as well.
 
-The xen setup.c file ended up ballooning to over 50MB of preprocessed
-noise that takes 15s to compile (obviously depending on the build host),
-largely due to one single line.
-
-So let's split that one single line to just be simpler.  I think it ends
-up being more legible to humans too at the same time.  Now that single
-file compiles in under a second.
-
-Reported-and-reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Link: https://lore.kernel.org/all/c83c17bb-be75-4c67-979d-54eee38774c6@lucifer.local/
-Link: https://staticthinking.wordpress.com/2023/07/25/wsign-compare-is-garbage/ [1]
-Cc: David Laight <David.Laight@aculab.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Fixes: 36eca8948323 ("block, bfq: add Early Queue Merge (EQM)")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240902130329.3787024-4-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/setup.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ block/bfq-iosched.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index d44d6d8b33195..d2073df5c5624 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -691,6 +691,7 @@ char * __init xen_memory_setup(void)
- 	struct xen_memory_map memmap;
- 	unsigned long max_pages;
- 	unsigned long extra_pages = 0;
-+	unsigned long maxmem_pages;
- 	int i;
- 	int op;
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index bdb7ceb680890..2c09c298d8940 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -6725,7 +6725,7 @@ bfq_split_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq)
+ {
+ 	bfq_log_bfqq(bfqq->bfqd, bfqq, "splitting queue");
  
-@@ -762,8 +763,8 @@ char * __init xen_memory_setup(void)
- 	 * Make sure we have no memory above max_pages, as this area
- 	 * isn't handled by the p2m management.
- 	 */
--	extra_pages = min3(EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM)),
--			   extra_pages, max_pages - max_pfn);
-+	maxmem_pages = EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM));
-+	extra_pages = min3(maxmem_pages, extra_pages, max_pages - max_pfn);
- 	i = 0;
- 	addr = xen_e820_table.entries[0].addr;
- 	size = xen_e820_table.entries[0].size;
+-	if (bfqq_process_refs(bfqq) == 1) {
++	if (bfqq_process_refs(bfqq) == 1 && !bfqq->new_bfqq) {
+ 		bfqq->pid = current->pid;
+ 		bfq_clear_bfqq_coop(bfqq);
+ 		bfq_clear_bfqq_split_coop(bfqq);
 -- 
 2.43.0
 
