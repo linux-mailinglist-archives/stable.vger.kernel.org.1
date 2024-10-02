@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FE598D93D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B27398DBBB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754651F21F10
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B234C1F229EF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35B91D1E9F;
-	Wed,  2 Oct 2024 14:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A651D1E8A;
+	Wed,  2 Oct 2024 14:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCPNHE00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QV5Oh7TY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9231D0DC3;
-	Wed,  2 Oct 2024 14:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A66B1D1312;
+	Wed,  2 Oct 2024 14:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877866; cv=none; b=UQueXkx7/JyqnKr0Kx6WsF5xOMjQFOjoE2I+PeYN5R05zoOuLicUjlJEEN4rQn4nhKhl+a32xC8nAoBg9C9wpQWdcuY7kDMQhqZi/1S0C1mmdgh4eedHeVxNcLEJPJzi4nmxwpeQ8b/hQ5rf/xvBMKkCFBXjURw4YYgHU0QBtKE=
+	t=1727879335; cv=none; b=g9gBKgC1LS1M1KjPTT3RhEcAnw2vL1J54j59zEEwkurGyUy2sJJykcKkLvn7A1lBp+jPyrm4Agq0i4WHHVkwqsOA3arPdNweJqpZNXYR6uSO5pDnFEKHIReg4Of6upmvhVW1NEEecE3cyCiVVo2g2GOjqDqPyCGvp4cXkaDJhhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877866; c=relaxed/simple;
-	bh=mIW8Ub1mOyw/5QFU/i80+/BBLGqDGdj9OaqCnadM5nA=;
+	s=arc-20240116; t=1727879335; c=relaxed/simple;
+	bh=+K/p6UnmWcZuTLRSY0eucDraE2WoQowu55EyAVkDiLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MnDxm6zhpI97CBG1bOt+aZvKVKJKTS1DLkyeYrdIAxRpyD9XysB5THLNMhy7OhApyXhqyWymN0Qr/lo5S+N5SFMHjDUYgOq5vRsU0W9v7DSrAAmeyban5htKsVaBI9pXHh6b1Mi/ciAkW99jtkRoh0N1WOgEDQbLpprHczc5Kbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCPNHE00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C7CC4CEC2;
-	Wed,  2 Oct 2024 14:04:25 +0000 (UTC)
+	 MIME-Version; b=RQqEcV/ECsJIa31/RN82DUrJg+o5H2wA+2Hizg+H6Ej9GNVckLzTWupprjUgoTx3Du9L3dtzsD/QiTVBsFVqZ3xRPECONLU0i9Ig+aaT6Oi6PbW7+dWli+jD4Q+kDfsvUTis6mHZ40hA2xIMD4IouU/DYcUXda/P5LrYEeYb0Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QV5Oh7TY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6193C4CECD;
+	Wed,  2 Oct 2024 14:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877866;
-	bh=mIW8Ub1mOyw/5QFU/i80+/BBLGqDGdj9OaqCnadM5nA=;
+	s=korg; t=1727879335;
+	bh=+K/p6UnmWcZuTLRSY0eucDraE2WoQowu55EyAVkDiLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCPNHE00WOpiySyd7zWGSrYLcwk8RT7XwuPwHMxNK7U473kl6JK7pPa5kqecCP3dM
-	 9Tpltzy5sX0cX+alWbf3/vm3CjXdwc/BXN0iNXu33JOIoH3nPcDUwDSR/WgQYLRUBe
-	 36b9ZkTmsfc2Frf7R9UOvTHBfYeUYaTSn4bkbKiQ=
+	b=QV5Oh7TYxRZIdCehMfpwNyDcq/GY6jafd+7ON1q7H2TnPLZ8uJq1JP+f/zwGrZYrr
+	 kT+QlMWsiZ39MdPJs/gyncNWXAfcVgTxeS9Tbm5U+CQKGht18NAPLQV8Y8nn8TpxCo
+	 YtuY8KOmY6LEhJKBgpSo0g+C/TyO4pCDBfTvfw68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 221/634] xen: move max_pfn in xen_memory_setup() out of function scope
-Date: Wed,  2 Oct 2024 14:55:21 +0200
-Message-ID: <20241002125819.824543823@linuxfoundation.org>
+Subject: [PATCH 6.6 083/538] block, bfq: fix uaf for accessing waker_bfqq after splitting
+Date: Wed,  2 Oct 2024 14:55:22 +0200
+Message-ID: <20241002125755.497215603@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,197 +60,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 43dc2a0f479b9cd30f6674986d7a40517e999d31 ]
+[ Upstream commit 1ba0403ac6447f2d63914fb760c44a3b19c44eaf ]
 
-Instead of having max_pfn as a local variable of xen_memory_setup(),
-make it a static variable in setup.c instead. This avoids having to
-pass it to subfunctions, which will be needed in more cases in future.
+After commit 42c306ed7233 ("block, bfq: don't break merge chain in
+bfq_split_bfqq()"), if the current procress is the last holder of bfqq,
+the bfqq can be freed after bfq_split_bfqq(). Hence recored the bfqq and
+then access bfqq->waker_bfqq may trigger UAF. What's more, the waker_bfqq
+may in the merge chain of bfqq, hence just recored waker_bfqq is still
+not safe.
 
-Rename it to ini_nr_pages, as the value denotes the currently usable
-number of memory pages as passed from the hypervisor at boot time.
+Fix the problem by adding a helper bfq_waker_bfqq() to check if
+bfqq->waker_bfqq is in the merge chain, and current procress is the only
+holder.
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Fixes: 42c306ed7233 ("block, bfq: don't break merge chain in bfq_split_bfqq()")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240909134154.954924-2-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/setup.c | 52 ++++++++++++++++++++++----------------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+ block/bfq-iosched.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 84cbc7ec55811..112b071bac9d4 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -47,6 +47,9 @@ bool xen_pv_pci_possible;
- /* E820 map used during setting up memory. */
- static struct e820_table xen_e820_table __initdata;
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 2c09c298d8940..055ba1f98009d 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -6823,6 +6823,31 @@ static void bfq_prepare_request(struct request *rq)
+ 	rq->elv.priv[0] = rq->elv.priv[1] = NULL;
+ }
  
-+/* Number of initially usable memory pages. */
-+static unsigned long ini_nr_pages __initdata;
++static struct bfq_queue *bfq_waker_bfqq(struct bfq_queue *bfqq)
++{
++	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
++	struct bfq_queue *waker_bfqq = bfqq->waker_bfqq;
++
++	if (!waker_bfqq)
++		return NULL;
++
++	while (new_bfqq) {
++		if (new_bfqq == waker_bfqq) {
++			/*
++			 * If waker_bfqq is in the merge chain, and current
++			 * is the only procress.
++			 */
++			if (bfqq_process_refs(waker_bfqq) == 1)
++				return NULL;
++			break;
++		}
++
++		new_bfqq = new_bfqq->new_bfqq;
++	}
++
++	return waker_bfqq;
++}
 +
  /*
-  * Buffer used to remap identity mapped pages. We only need the virtual space.
-  * The physical page behind this address is remapped as needed to different
-@@ -213,7 +216,7 @@ static int __init xen_free_mfn(unsigned long mfn)
-  * as a fallback if the remapping fails.
-  */
- static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
--			unsigned long end_pfn, unsigned long nr_pages)
-+						      unsigned long end_pfn)
- {
- 	unsigned long pfn, end;
- 	int ret;
-@@ -221,7 +224,7 @@ static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
- 	WARN_ON(start_pfn > end_pfn);
+  * If needed, init rq, allocate bfq data structures associated with
+  * rq, and increment reference counters in the destination bfq_queue
+@@ -6884,7 +6909,7 @@ static struct bfq_queue *bfq_init_rq(struct request *rq)
+ 		/* If the queue was seeky for too long, break it apart. */
+ 		if (bfq_bfqq_coop(bfqq) && bfq_bfqq_split_coop(bfqq) &&
+ 			!bic->bfqq_data[a_idx].stably_merged) {
+-			struct bfq_queue *old_bfqq = bfqq;
++			struct bfq_queue *waker_bfqq = bfq_waker_bfqq(bfqq);
  
- 	/* Release pages first. */
--	end = min(end_pfn, nr_pages);
-+	end = min(end_pfn, ini_nr_pages);
- 	for (pfn = start_pfn; pfn < end; pfn++) {
- 		unsigned long mfn = pfn_to_mfn(pfn);
+ 			/* Update bic before losing reference to bfqq */
+ 			if (bfq_bfqq_in_large_burst(bfqq))
+@@ -6904,7 +6929,7 @@ static struct bfq_queue *bfq_init_rq(struct request *rq)
+ 				bfqq_already_existing = true;
  
-@@ -342,15 +345,14 @@ static void __init xen_do_set_identity_and_remap_chunk(
-  * to Xen and not remapped.
-  */
- static unsigned long __init xen_set_identity_and_remap_chunk(
--	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
--	unsigned long remap_pfn)
-+	unsigned long start_pfn, unsigned long end_pfn, unsigned long remap_pfn)
- {
- 	unsigned long pfn;
- 	unsigned long i = 0;
- 	unsigned long n = end_pfn - start_pfn;
+ 			if (!bfqq_already_existing) {
+-				bfqq->waker_bfqq = old_bfqq->waker_bfqq;
++				bfqq->waker_bfqq = waker_bfqq;
+ 				bfqq->tentative_waker_bfqq = NULL;
  
- 	if (remap_pfn == 0)
--		remap_pfn = nr_pages;
-+		remap_pfn = ini_nr_pages;
- 
- 	while (i < n) {
- 		unsigned long cur_pfn = start_pfn + i;
-@@ -359,19 +361,19 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
- 		unsigned long remap_range_size;
- 
- 		/* Do not remap pages beyond the current allocation */
--		if (cur_pfn >= nr_pages) {
-+		if (cur_pfn >= ini_nr_pages) {
- 			/* Identity map remaining pages */
- 			set_phys_range_identity(cur_pfn, cur_pfn + size);
- 			break;
- 		}
--		if (cur_pfn + size > nr_pages)
--			size = nr_pages - cur_pfn;
-+		if (cur_pfn + size > ini_nr_pages)
-+			size = ini_nr_pages - cur_pfn;
- 
- 		remap_range_size = xen_find_pfn_range(&remap_pfn);
- 		if (!remap_range_size) {
- 			pr_warn("Unable to find available pfn range, not remapping identity pages\n");
- 			xen_set_identity_and_release_chunk(cur_pfn,
--						cur_pfn + left, nr_pages);
-+							   cur_pfn + left);
- 			break;
- 		}
- 		/* Adjust size to fit in current e820 RAM region */
-@@ -398,18 +400,18 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
- }
- 
- static unsigned long __init xen_count_remap_pages(
--	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
-+	unsigned long start_pfn, unsigned long end_pfn,
- 	unsigned long remap_pages)
- {
--	if (start_pfn >= nr_pages)
-+	if (start_pfn >= ini_nr_pages)
- 		return remap_pages;
- 
--	return remap_pages + min(end_pfn, nr_pages) - start_pfn;
-+	return remap_pages + min(end_pfn, ini_nr_pages) - start_pfn;
- }
- 
--static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
-+static unsigned long __init xen_foreach_remap_area(
- 	unsigned long (*func)(unsigned long start_pfn, unsigned long end_pfn,
--			      unsigned long nr_pages, unsigned long last_val))
-+			      unsigned long last_val))
- {
- 	phys_addr_t start = 0;
- 	unsigned long ret_val = 0;
-@@ -437,8 +439,7 @@ static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
- 				end_pfn = PFN_UP(entry->addr);
- 
- 			if (start_pfn < end_pfn)
--				ret_val = func(start_pfn, end_pfn, nr_pages,
--					       ret_val);
-+				ret_val = func(start_pfn, end_pfn, ret_val);
- 			start = end;
- 		}
- 	}
-@@ -701,7 +702,7 @@ static void __init xen_reserve_xen_mfnlist(void)
-  **/
- char * __init xen_memory_setup(void)
- {
--	unsigned long max_pfn, pfn_s, n_pfns;
-+	unsigned long pfn_s, n_pfns;
- 	phys_addr_t mem_end, addr, size, chunk_size;
- 	u32 type;
- 	int rc;
-@@ -713,9 +714,8 @@ char * __init xen_memory_setup(void)
- 	int op;
- 
- 	xen_parse_512gb();
--	max_pfn = xen_get_pages_limit();
--	max_pfn = min(max_pfn, xen_start_info->nr_pages);
--	mem_end = PFN_PHYS(max_pfn);
-+	ini_nr_pages = min(xen_get_pages_limit(), xen_start_info->nr_pages);
-+	mem_end = PFN_PHYS(ini_nr_pages);
- 
- 	memmap.nr_entries = ARRAY_SIZE(xen_e820_table.entries);
- 	set_xen_guest_handle(memmap.buffer, xen_e820_table.entries);
-@@ -768,10 +768,10 @@ char * __init xen_memory_setup(void)
- 	max_pages = xen_get_max_pages();
- 
- 	/* How many extra pages do we need due to remapping? */
--	max_pages += xen_foreach_remap_area(max_pfn, xen_count_remap_pages);
-+	max_pages += xen_foreach_remap_area(xen_count_remap_pages);
- 
--	if (max_pages > max_pfn)
--		extra_pages += max_pages - max_pfn;
-+	if (max_pages > ini_nr_pages)
-+		extra_pages += max_pages - ini_nr_pages;
- 
- 	/*
- 	 * Clamp the amount of extra memory to a EXTRA_MEM_RATIO
-@@ -780,8 +780,8 @@ char * __init xen_memory_setup(void)
- 	 * Make sure we have no memory above max_pages, as this area
- 	 * isn't handled by the p2m management.
- 	 */
--	maxmem_pages = EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM));
--	extra_pages = min3(maxmem_pages, extra_pages, max_pages - max_pfn);
-+	maxmem_pages = EXTRA_MEM_RATIO * min(ini_nr_pages, PFN_DOWN(MAXMEM));
-+	extra_pages = min3(maxmem_pages, extra_pages, max_pages - ini_nr_pages);
- 	i = 0;
- 	addr = xen_e820_table.entries[0].addr;
- 	size = xen_e820_table.entries[0].size;
-@@ -886,7 +886,7 @@ char * __init xen_memory_setup(void)
- 	 * Set identity map on non-RAM pages and prepare remapping the
- 	 * underlying RAM.
- 	 */
--	xen_foreach_remap_area(max_pfn, xen_set_identity_and_remap_chunk);
-+	xen_foreach_remap_area(xen_set_identity_and_remap_chunk);
- 
- 	pr_info("Released %ld page(s)\n", xen_released_pages);
- 
+ 				/*
+@@ -6914,7 +6939,7 @@ static struct bfq_queue *bfq_init_rq(struct request *rq)
+ 				 * woken_list of the waker. See
+ 				 * bfq_check_waker for details.
+ 				 */
+-				if (bfqq->waker_bfqq)
++				if (waker_bfqq)
+ 					hlist_add_head(&bfqq->woken_list_node,
+ 						       &bfqq->waker_bfqq->woken_list);
+ 			}
 -- 
 2.43.0
 
