@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB5998D57F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F8398D8C7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E404A1F2206B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9027D28528D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652851CFECF;
-	Wed,  2 Oct 2024 13:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B81D0F4F;
+	Wed,  2 Oct 2024 14:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbwGknVh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGfhMCKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228F329CE7;
-	Wed,  2 Oct 2024 13:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E4E1D0E3A;
+	Wed,  2 Oct 2024 14:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875862; cv=none; b=cYQnoOWd/Cbk9TEEnYLL0G2dIAql/vWhRolI+dSaiLU+blQ2rNArdef471vomYVTGVOdRU3JQ0yOUokfZkgFAlK452UReZ+XdlXXbb/Uy5Ig+iyT7qHnRq+tRNJiqryhfPqb9QKKxaN2h6DqljvP26dRm57WrDpPikW6wGFboYE=
+	t=1727877640; cv=none; b=ZmaUIHP0bwrRNcfAai3KQVjpBFP1JZRd4x3C+g84dfOxn0FCmQ2f92O8sK9LSY3dsmKcroH2P7Hw3khne8CS6KZ6pRy0k/EtOg1JChFqWtCZv9n48lRlkG4tI6SbjI1plPWm6PFiI+Twv9A6JxAXzGI06OSOlE1zxZktIsxtJJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875862; c=relaxed/simple;
-	bh=hq1afBe5nFwfJq6+3Rzyg5u3UfxtOMT6N8AqLthl0BU=;
+	s=arc-20240116; t=1727877640; c=relaxed/simple;
+	bh=d8sAm0dNBHGaDRWdnsuWN31E2ZKH8ejg9RzGlFgflOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o/lr79zDumjMBFuuZZPs14OqWDZuzxosQ5rNa4jYZt9WL0YPjC6XgVlzcU9eCSKDWX07jkNpj1n4sH5S1JOu03Nqh13DxshrfrlWPhEzUxORe6w8qb2k+HNgG2HavGG0ymj7U8pavXd5+M2WuYFew3DKhzb50YHgAOm3VoAYDMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbwGknVh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECCCC4CEC5;
-	Wed,  2 Oct 2024 13:31:01 +0000 (UTC)
+	 MIME-Version; b=h+QM2Fy8UUQZwmyobwg5JHLj4RbgiEmCKteNzk192dyv0wj9NhiCWSDpxw4IsZF/I5CADEuuuJ9rBv4FcFHtw65GF8+xVVfqeHQjZYtMITjQGzzNQraQqCEa7dx1GeoO8qZL5s8LPtPQ3jceHLSCT2WW62KEaZ+a9cHe4mH8uR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGfhMCKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8887C4CEC2;
+	Wed,  2 Oct 2024 14:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875862;
-	bh=hq1afBe5nFwfJq6+3Rzyg5u3UfxtOMT6N8AqLthl0BU=;
+	s=korg; t=1727877640;
+	bh=d8sAm0dNBHGaDRWdnsuWN31E2ZKH8ejg9RzGlFgflOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbwGknVhjn8XUFEwaryv9bbr1JiIhyJjfXKiF+8AFy0tpiYSKgThTpAAZCUOXBwl6
-	 /2INtsuPZXwpAxlg8ejwfZXIeN90YXh+37MgQBrDD2yDRoxG8ApP0o1rhsO9gT6DZ3
-	 cesQPPaaPnWy9t58HHS6LfU0gagOZ5RpKQGsRhzI=
+	b=HGfhMCKsL2fV0ZII5dok4/5OxYs/I83NKqcwfi20kKWAo65nshlgcvQkuwWJAyLdN
+	 uWg0Kjy9at+Pyc9+ohhdqpffSvISeW+8/+1EjA5RGYq3kmwNGGCUFXfrJpHA2mKM/Z
+	 HvTlDLm4awBBo4JOG83FDnaCwO65A6pEP9hY7Jlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 246/695] xen: introduce generic helper checking for memory map conflicts
+Subject: [PATCH 6.10 144/634] ASoC: rt5682s: Return devm_of_clk_add_hw_provider to transfer the error
 Date: Wed,  2 Oct 2024 14:54:04 +0200
-Message-ID: <20241002125832.271056226@linuxfoundation.org>
+Message-ID: <20241002125816.789827606@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit ba88829706e2c5b7238638fc2b0713edf596495e ]
+[ Upstream commit 3ff810b9bebe5578a245cfa97c252ab602e703f1 ]
 
-When booting as a Xen PV dom0 the memory layout of the dom0 is
-modified to match that of the host, as this requires less changes in
-the kernel for supporting Xen.
+Return devm_of_clk_add_hw_provider() in order to transfer the error, if it
+fails due to resource allocation failure or device tree clock provider
+registration failure.
 
-There are some cases, though, which are problematic, as it is the Xen
-hypervisor selecting the kernel's load address plus some other data,
-which might conflict with the host's memory map.
-
-These conflicts are detected at boot time and result in a boot error.
-In order to support handling at least some of these conflicts in
-future, introduce a generic helper function which will later gain the
-ability to adapt the memory layout when possible.
-
-Add the missing check for the xen_start_info area.
-
-Note that possible p2m map and initrd memory conflicts are handled
-already by copying the data to memory areas not conflicting with the
-memory map. The initial stack allocated by Xen doesn't need to be
-checked, as early boot code is switching to the statically allocated
-initial kernel stack. Initial page tables and the kernel itself will
-be handled later.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Fixes: bdd229ab26be ("ASoC: rt5682s: Add driver for ALC5682I-VS codec")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20240717115436.3449492-1-make24@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/mmu_pv.c  |  5 +----
- arch/x86/xen/setup.c   | 34 ++++++++++++++++++++++++++++------
- arch/x86/xen/xen-ops.h |  3 ++-
- 3 files changed, 31 insertions(+), 11 deletions(-)
+ sound/soc/codecs/rt5682s.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index f1ce39d6d32cb..839e6613753dd 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -2018,10 +2018,7 @@ void __init xen_reserve_special_pages(void)
+diff --git a/sound/soc/codecs/rt5682s.c b/sound/soc/codecs/rt5682s.c
+index f50f196d700d7..ce2e88e066f3e 100644
+--- a/sound/soc/codecs/rt5682s.c
++++ b/sound/soc/codecs/rt5682s.c
+@@ -2828,7 +2828,9 @@ static int rt5682s_register_dai_clks(struct snd_soc_component *component)
+ 		}
  
- void __init xen_pt_check_e820(void)
- {
--	if (xen_is_e820_reserved(xen_pt_base, xen_pt_size)) {
--		xen_raw_console_write("Xen hypervisor allocated page table memory conflicts with E820 map\n");
--		BUG();
--	}
-+	xen_chk_is_e820_usable(xen_pt_base, xen_pt_size, "page table");
- }
- 
- static unsigned char dummy_mapping[PAGE_SIZE] __page_aligned_bss;
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index 4bcc70a71b7d4..96765180514bd 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -567,7 +567,7 @@ static void __init xen_ignore_unusable(void)
- 	}
- }
- 
--bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
-+static bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
- {
- 	struct e820_entry *entry;
- 	unsigned mapcnt;
-@@ -624,6 +624,23 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size)
- 	return 0;
- }
- 
-+/*
-+ * Check for an area in physical memory to be usable for non-movable purposes.
-+ * An area is considered to usable if the used E820 map lists it to be RAM.
-+ * In case the area is not usable, crash the system with an error message.
-+ */
-+void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
-+				   const char *component)
-+{
-+	if (!xen_is_e820_reserved(start, size))
-+		return;
-+
-+	xen_raw_console_write("Xen hypervisor allocated ");
-+	xen_raw_console_write(component);
-+	xen_raw_console_write(" memory conflicts with E820 map\n");
-+	BUG();
-+}
-+
- /*
-  * Like memcpy, but with physical addresses for dest and src.
-  */
-@@ -824,11 +841,16 @@ char * __init xen_memory_setup(void)
- 	 * Failing now is better than running into weird problems later due
- 	 * to relocating (and even reusing) pages with kernel text or data.
- 	 */
--	if (xen_is_e820_reserved(__pa_symbol(_text),
--				 __pa_symbol(_end) - __pa_symbol(_text))) {
--		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
--		BUG();
--	}
-+	xen_chk_is_e820_usable(__pa_symbol(_text),
-+			       __pa_symbol(_end) - __pa_symbol(_text),
-+			       "kernel");
-+
-+	/*
-+	 * Check for a conflict of the xen_start_info memory with the target
-+	 * E820 map.
-+	 */
-+	xen_chk_is_e820_usable(__pa(xen_start_info), sizeof(*xen_start_info),
-+			       "xen_start_info");
- 
- 	/*
- 	 * Check for a conflict of the hypervisor supplied page tables with
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index 0cf16fc79e0bf..9a27d1d653d3d 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -48,7 +48,8 @@ void xen_mm_unpin_all(void);
- void __init xen_relocate_p2m(void);
- #endif
- 
--bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size);
-+void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
-+				   const char *component);
- unsigned long __ref xen_chk_extra_mem(unsigned long pfn);
- void __init xen_inv_extra_mem(void);
- void __init xen_remap_memory(void);
+ 		if (dev->of_node) {
+-			devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, dai_clk_hw);
++			ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, dai_clk_hw);
++			if (ret)
++				return ret;
+ 		} else {
+ 			ret = devm_clk_hw_register_clkdev(dev, dai_clk_hw,
+ 							  init.name, dev_name(dev));
 -- 
 2.43.0
 
