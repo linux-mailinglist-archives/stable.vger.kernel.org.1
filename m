@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E8398D521
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BAE98D85B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784C51F22FE0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274F31C22D91
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8731D0437;
-	Wed,  2 Oct 2024 13:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08FA1D078B;
+	Wed,  2 Oct 2024 13:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkjKeAOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3OWTprS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C0016F84F;
-	Wed,  2 Oct 2024 13:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F90D1D04BE;
+	Wed,  2 Oct 2024 13:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875631; cv=none; b=H7wv851H8qTEcnXz7oUvb3+VXeK/W4oJ1Y6QpVkBHwrcPMGROLWxArIoZ/DToW5F1HwHceQvu7Ejdebrv7wZDjx8qOZntAHSVznH3Oa/QlU2olkcoGRSXbT8A0jhs3kvvtL3XNmdQfhTjznvZNJmSXlojLYur4U2uC3lST3DEU4=
+	t=1727877497; cv=none; b=q/7ructnr5a7HO4QcLQvUDkdMqWuNAO1AQG0hvoW6MViY3Ku5Rv2ncSvob30X+XluPtk5pnB0XQpAxK1GCmtzVDDEcWLUc99pnYcHilfuBCFzd7pHwlgvokav/NYpzIesgGPdrgCur3O/X6cRe+9KIg2bKtsLHhq0YVuaJYDMA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875631; c=relaxed/simple;
-	bh=U+HPV/CYbN2+tp5JPUe2n1RgAz857NBjsShAsdSRYD4=;
+	s=arc-20240116; t=1727877497; c=relaxed/simple;
+	bh=98cl1fIcAdQjQEpUQmUUUYM2cjGZqqBDD1ab9YMph54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7b2LO69Opi1gqZ6WrdBFjLbSw/HQLIEpJSbXTEtQvXvnOVlx4J/LCigj8LNNwb4kQOYIWlwUU50YO2O4Dgp2oSN/zP+5+r4C7QO52SZzWbPnoKaPqY7KSYJswy6mjTtQ0ktdflSaUFdkQvidUmP2rTYyReb+vE9WV6Uw2m42uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkjKeAOQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33897C4CEC5;
-	Wed,  2 Oct 2024 13:27:11 +0000 (UTC)
+	 MIME-Version; b=en56J4MLcP3ukOH6wgtveSwQY31qpqehLvbkZmkQWGSOni8mmaREDBpLwkUGls+l2CVlCObAn9NdPUZp6HWLqpJkkCX4Vs71HZ3iUWHCxgHjYfdET1tj8JSiNdJWC6ChzyUGZ9/CgS++Ak4JwOEfc4ymEW6+XO/9f8J6hsoTmR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3OWTprS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08741C4CEC2;
+	Wed,  2 Oct 2024 13:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875631;
-	bh=U+HPV/CYbN2+tp5JPUe2n1RgAz857NBjsShAsdSRYD4=;
+	s=korg; t=1727877497;
+	bh=98cl1fIcAdQjQEpUQmUUUYM2cjGZqqBDD1ab9YMph54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkjKeAOQ9PG+XIpSVFTjKvggx5CIUsPwPpPGrP8uGGG4pDla8iA9l+sMWNCqViQOE
-	 NSuV/G0TG+nX7otRCCn7ZY13WMTpEOrCJzP8/eHkLXHWH8L2QzMq8+rE+/mfWTdLul
-	 r/gKB6kAIWxXVkzsgVUFC95AXzkc+JUGxcIXEbdk=
+	b=O3OWTprS2ShmgERwZcCSI9Xhp0PQ2GPD9aE3klTHK0RuLgDA3ES/wybF6A8GJ4zem
+	 g+m5817JQn4oThbl6BubjvoQAM+FQR0K8mcdtG2vEwDcMyrP4Rbr+eem+N/OoJ9d2j
+	 mhfJkbjyokn/C+rhhZOOP9IC560u0SYNs8xWozLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 168/695] x86/boot/64: Strip percpu address space when setting up GDT descriptors
-Date: Wed,  2 Oct 2024 14:52:46 +0200
-Message-ID: <20241002125829.180979378@linuxfoundation.org>
+Subject: [PATCH 6.10 067/634] wifi: mt76: mt7996: fix wmm set of station interface to 3
+Date: Wed,  2 Oct 2024 14:52:47 +0200
+Message-ID: <20241002125813.751520685@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit b51207dc02ec3aeaa849e419f79055d7334845b6 ]
+[ Upstream commit 9265397caacf5c0c2d10c40b2958a474664ebd9e ]
 
-init_per_cpu_var() returns a pointer in the percpu address space while
-rip_rel_ptr() expects a pointer in the generic address space.
+According to connac3 HW design, the WMM index of AP and STA interface
+should be 0 and 3, respectively.
 
-When strict address space checks are enabled, GCC's named address space
-checks fail:
-
-  asm.h:124:63: error: passing argument 1 of 'rip_rel_ptr' from
-                       pointer to non-enclosed address space
-
-Add a explicit cast to remove address space of the returned pointer.
-
-Fixes: 11e36b0f7c21 ("x86/boot/64: Load the final kernel GDT during early boot directly, remove startup_gdt[]")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240819083334.148536-1-ubizjak@gmail.com
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20240816094635.2391-3-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/head64.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index a817ed0724d1e..4b9d4557fc94a 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -559,10 +559,11 @@ void early_setup_idt(void)
-  */
- void __head startup_64_setup_gdt_idt(void)
- {
-+	struct desc_struct *gdt = (void *)(__force unsigned long)init_per_cpu_var(gdt_page.gdt);
- 	void *handler = NULL;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 15d880ef0d922..2b094b33ba31a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -206,7 +206,7 @@ static int mt7996_add_interface(struct ieee80211_hw *hw,
+ 	mvif->mt76.omac_idx = idx;
+ 	mvif->phy = phy;
+ 	mvif->mt76.band_idx = band_idx;
+-	mvif->mt76.wmm_idx = vif->type != NL80211_IFTYPE_AP;
++	mvif->mt76.wmm_idx = vif->type == NL80211_IFTYPE_AP ? 0 : 3;
  
- 	struct desc_ptr startup_gdt_descr = {
--		.address = (unsigned long)&RIP_REL_REF(init_per_cpu_var(gdt_page.gdt)),
-+		.address = (unsigned long)&RIP_REL_REF(*gdt),
- 		.size    = GDT_SIZE - 1,
- 	};
- 
+ 	ret = mt7996_mcu_add_dev_info(phy, vif, true);
+ 	if (ret)
 -- 
 2.43.0
 
