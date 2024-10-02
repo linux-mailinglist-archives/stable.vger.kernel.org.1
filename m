@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BA698DAF0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321F398DD5E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA8812830F8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0BA01F23351
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7DA1D0DC4;
-	Wed,  2 Oct 2024 14:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041AD1D0E3F;
+	Wed,  2 Oct 2024 14:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0a4v4hX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOjphti0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494811E52C;
-	Wed,  2 Oct 2024 14:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B478D1D0DFE;
+	Wed,  2 Oct 2024 14:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878876; cv=none; b=dZVdq2irYIE/SQjIoKD6i70LMovRC7tXUzKGQf7+oqXAJovW5vEh8rvhZwpHudcmuW9QdH5otNodOCsSYDSvffIzpXUCLxK8oZA3lZUvVlErStSnwEB2WBvQ7uMPnvOJfEiScKm/qSgI+s8XxCVZ9VggDz44AAeDkODjo8E8BfE=
+	t=1727880334; cv=none; b=CSNblPUfv6QRusMKHbdyQ9oayRZmTTjJ5eXjga7roOSV/PlXHn6oFKxMG7R32Mngf4bEYHJTO0LUN3zjkhItmmw6b3tkLvhavQDMbsWd6GjKYZGR76c0lna2cx3v6Qc2/sn9DJOk+/k/ikafTToUbx1HljU3qi8n6p/sWIt5yQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878876; c=relaxed/simple;
-	bh=iYVpp+ZGtTkqmvBeW/EsUNA1tvF/3bbbBfkwQjUOHS8=;
+	s=arc-20240116; t=1727880334; c=relaxed/simple;
+	bh=BjoVYjr3c/V2EYoSRb6fi/TOHnEkn+WHFA7s3Iw2In0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUkDBssu8q5Ds835lmNPOs7lzuNCR3ZAaG+RlNWLbOYnCmq+3SJnNDpJn3H4jAq+TNzjPzFZZmyMEMRlaJ0xE2tIXo9xxebcLi0kU+GpfoMfWgu/RAn8Y96T18rZYjSW7fs9cHDylvmOctX+DtJCDiTQsQLFXeJ306AqqsDPrvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0a4v4hX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B72C4CEC5;
-	Wed,  2 Oct 2024 14:21:15 +0000 (UTC)
+	 MIME-Version; b=SdV6ztziWVkcdncnXi6oVc71NJu8DAZuS1llcJpuuO8YylYZEhB0VEuOAYZaByahTZ16IymU3y2suWzrKfzw2G70nz+xFbyk57hVHAi3sZS7LJeWwXLWbMpA4lI7wnDYB1tC/2KhFCYe4fzTEh/TxLob/b50if0oIdpNggmQzFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOjphti0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6C3C4CEC2;
+	Wed,  2 Oct 2024 14:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878876;
-	bh=iYVpp+ZGtTkqmvBeW/EsUNA1tvF/3bbbBfkwQjUOHS8=;
+	s=korg; t=1727880334;
+	bh=BjoVYjr3c/V2EYoSRb6fi/TOHnEkn+WHFA7s3Iw2In0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0a4v4hXRMi7gcPdX+hHgjGb+sd7AhqzGL5YQaz4y7kGRWBLCseg0HYJpwpGTnkg/
-	 P2clAQnfN1xVblP2q8nSQIZry71uryz4TqdAkNd9c/cbwHVNhucCW2ogcUVhfuGA+7
-	 YePuWpNnRAUDab7oEAvnfOMXm4Xm18LRiRiOJJPo=
+	b=nOjphti0oohyF06neOFYtlX11t2a1j5p+M+9Kgf91L5Je/dvanoDU47dKItoy4dt2
+	 5feALut/cg2uMnZXt9oyM1GPJylpCyfGWgc2TkmSbrCNQnqm9Zkuj95leEuAj/+TBN
+	 1SRZudwDrpvZ8iXPMS/E878y25zWy8mkPM9Jw6Tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.10 562/634] f2fs: avoid potential int overflow in sanity_check_area_boundary()
+	Ray Zhang <zhanglei002@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 423/538] ksmbd: handle caseless file creation
 Date: Wed,  2 Oct 2024 15:01:02 +0200
-Message-ID: <20241002125833.299014000@linuxfoundation.org>
+Message-ID: <20241002125809.132176859@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 50438dbc483ca6a133d2bce9d5d6747bcee38371 upstream.
+commit c5a709f08d40b1a082e44ffcde1aea4d2822ddd5 upstream.
 
-While calculating the end addresses of main area and segment 0, u32
-may be not enough to hold the result without the danger of int
-overflow.
+Ray Zhang reported ksmbd can not create file if parent filename is
+caseless.
 
-Just in case, play it safe and cast one of the operands to a
-wider type (u64).
+Y:\>mkdir A
+Y:\>echo 123 >a\b.txt
+The system cannot find the path specified.
+Y:\>echo 123 >A\b.txt
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+This patch convert name obtained by caseless lookup to parent name.
 
-Fixes: fd694733d523 ("f2fs: cover large section in sanity check of super")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Ray Zhang <zhanglei002@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/vfs.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3366,9 +3366,9 @@ static inline bool sanity_check_area_bou
- 	u32 segment_count = le32_to_cpu(raw_super->segment_count);
- 	u32 log_blocks_per_seg = le32_to_cpu(raw_super->log_blocks_per_seg);
- 	u64 main_end_blkaddr = main_blkaddr +
--				(segment_count_main << log_blocks_per_seg);
-+				((u64)segment_count_main << log_blocks_per_seg);
- 	u64 seg_end_blkaddr = segment0_blkaddr +
--				(segment_count << log_blocks_per_seg);
-+				((u64)segment_count << log_blocks_per_seg);
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1162,7 +1162,7 @@ static bool __caseless_lookup(struct dir
+ 	if (cmp < 0)
+ 		cmp = strncasecmp((char *)buf->private, name, namlen);
+ 	if (!cmp) {
+-		memcpy((char *)buf->private, name, namlen);
++		memcpy((char *)buf->private, name, buf->used);
+ 		buf->dirent_count = 1;
+ 		return false;
+ 	}
+@@ -1230,10 +1230,7 @@ int ksmbd_vfs_kern_path_locked(struct ks
+ 		char *filepath;
+ 		size_t path_len, remain_len;
  
- 	if (segment0_blkaddr != cp_blkaddr) {
- 		f2fs_info(sbi, "Mismatch start address, segment0(%u) cp_blkaddr(%u)",
+-		filepath = kstrdup(name, GFP_KERNEL);
+-		if (!filepath)
+-			return -ENOMEM;
+-
++		filepath = name;
+ 		path_len = strlen(filepath);
+ 		remain_len = path_len;
+ 
+@@ -1276,10 +1273,9 @@ int ksmbd_vfs_kern_path_locked(struct ks
+ 		err = -EINVAL;
+ out2:
+ 		path_put(parent_path);
+-out1:
+-		kfree(filepath);
+ 	}
+ 
++out1:
+ 	if (!err) {
+ 		err = mnt_want_write(parent_path->mnt);
+ 		if (err) {
 
 
 
