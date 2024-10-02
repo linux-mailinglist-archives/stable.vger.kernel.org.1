@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3813398D936
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6AD98D5EC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F531F23299
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF04F1C2225C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F641D0E0F;
-	Wed,  2 Oct 2024 14:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF25C1D078A;
+	Wed,  2 Oct 2024 13:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYaC4Ewf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/GlDTyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6441D0DC3;
-	Wed,  2 Oct 2024 14:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF831D04BE;
+	Wed,  2 Oct 2024 13:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877849; cv=none; b=eMFVmTN7E+8GKLq3aaDOuJbPPgqHV+72mGhgJgJHfh2Vd61RCmXkiXm3spmrHn22McGo/ISh0DFGaiCr0IUi0lOijKeBE9bpynZFNVbKyQs7orMGM23ceztSbGPpybsB6W/k+2D3YJnxQXGdg5TXhYa3KEzqD2LuD67O3iyxuZg=
+	t=1727876077; cv=none; b=GSDl3+4vOebyWVN6ws3DvhqGMJV2Vz6v/krFAeJXGQYCME18oTxxFzH5LkjuQrnlcjKrnZEpliDnG6AaqnoaapUgJJL8U45aPGAp2S4cmuA5cuweOt9R0WNmGOKfqnfT3GCynYZ5yt88+JUC9uk87dZ9d+ZbUuMRa6vthu+2m14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877849; c=relaxed/simple;
-	bh=kJPzDIsOyPavXjf1wluvBuWrqc4BmOwhf424WRrNSos=;
+	s=arc-20240116; t=1727876077; c=relaxed/simple;
+	bh=7XL1LcibaZWlbdBUgdAQcbPnn/L5dgrnbOp0iBy+Z5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfWhCVdVEaWhUqemikt5H6Mw8W520Sj25q08igLBIm7Z31h6VdVk2t1dJogVRTh9r84jhEogw0EziJ4lzoDdWOrjVdkteiiS97o4BnYjiam2HBy6z3lH4QXSmGWVgwYIPmyTcnT8arEPfiGIG8oihUATfk7PLruc4rqQJfFA6sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYaC4Ewf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA39C4CEC2;
-	Wed,  2 Oct 2024 14:04:08 +0000 (UTC)
+	 MIME-Version; b=ZBcp/W+3qSZnc9eLRyEShqDtXWxvCEtsfFlVZkdmwVyrky/XEsgm3Pd6pDEfZqXH4mnqHr7sKNkuxMJLFMb9a93KXSP1yYszvW/cBbywsTt0EydbwM+wyVwbzjcFdNIsGfMLLbBov8gUbWJgPsa871HaoIEKl5RFRa7enZ/OoNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/GlDTyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36548C4CEC5;
+	Wed,  2 Oct 2024 13:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877849;
-	bh=kJPzDIsOyPavXjf1wluvBuWrqc4BmOwhf424WRrNSos=;
+	s=korg; t=1727876077;
+	bh=7XL1LcibaZWlbdBUgdAQcbPnn/L5dgrnbOp0iBy+Z5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYaC4EwfTzUFtLir3ktjAGYZm9OS5/SybR4YK3/wjITVBYLMWe7iBFAooa8G0hNqv
-	 dGM8h05omBurF4oPZsSn40H/S38prKp7nc/P95jKgoZmZljCBRseExfutm+cQlH5Bm
-	 PoJTGs6+6DCwdKpAkN3Bp1lBSh7tmGE1iouZJZgs=
+	b=D/GlDTyoczhfjxvHo0qKglpCoHxCPe2+Vh4bfbATUh7Z8uXoam3e2zY2P+QA80JDa
+	 7MiqAsmqfhYhI0t0oBtr3lctFhsy/FnAbFM+3egz9nKC/wW3Y8s8onc0Uax2nJIft8
+	 UgwYZvxC1KZVE+7nQIpHH6NkPCEYnNYkt6vKSSKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Joshua Dickens <joshua.dickens@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 216/634] HID: wacom: Support sequence numbers smaller than 16-bit
-Date: Wed,  2 Oct 2024 14:55:16 +0200
-Message-ID: <20241002125819.628938506@linuxfoundation.org>
+Subject: [PATCH 6.11 319/695] bpf: Fix bpf_strtol and bpf_strtoul helpers for 32bit
+Date: Wed,  2 Oct 2024 14:55:17 +0200
+Message-ID: <20241002125835.184617727@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 359673ea3a203611b4f6d0f28922a4b9d2cfbcc8 ]
+[ Upstream commit cfe69c50b05510b24e26ccb427c7cc70beafd6c1 ]
 
-The current dropped packet reporting assumes that all sequence numbers
-are 16 bits in length. This results in misleading "Dropped" messages if
-the hardware uses fewer bits. For example, if a tablet uses only 8 bits
-to store its sequence number, once it rolls over from 255 -> 0, the
-driver will still be expecting a packet "256". This patch adjusts the
-logic to reset the next expected packet to logical_minimum whenever
-it overflows beyond logical_maximum.
+The bpf_strtol() and bpf_strtoul() helpers are currently broken on 32bit:
 
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Joshua Dickens <joshua.dickens@wacom.com>
-Fixes: 6d09085b38e5 ("HID: wacom: Adding Support for new usages")
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+The argument type ARG_PTR_TO_LONG is BPF-side "long", not kernel-side "long"
+and therefore always considered fixed 64bit no matter if 64 or 32bit underlying
+architecture.
+
+This contract breaks in case of the two mentioned helpers since their BPF_CALL
+definition for the helpers was added with {unsigned,}long *res. Meaning, the
+transition from BPF-side "long" (BPF program) to kernel-side "long" (BPF helper)
+breaks here.
+
+Both helpers call __bpf_strtoll() with "long long" correctly, but later assigning
+the result into 32-bit "*(long *)" on 32bit architectures. From a BPF program
+point of view, this means upper bits will be seen as uninitialised.
+
+Therefore, fix both BPF_CALL signatures to {s,u}64 types to fix this situation.
+
+Now, changing also uapi/bpf.h helper documentation which generates bpf_helper_defs.h
+for BPF programs is tricky: Changing signatures there to __{s,u}64 would trigger
+compiler warnings (incompatible pointer types passing 'long *' to parameter of type
+'__s64 *' (aka 'long long *')) for existing BPF programs.
+
+Leaving the signatures as-is would be fine as from BPF program point of view it is
+still BPF-side "long" and thus equivalent to __{s,u}64 on 64 or 32bit underlying
+architectures.
+
+Note that bpf_strtol() and bpf_strtoul() are the only helpers with this issue.
+
+Fixes: d7a4cb9b6705 ("bpf: Introduce bpf_strtol and bpf_strtoul helpers")
+Reported-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/481fcec8-c12c-9abb-8ecb-76c71c009959@iogearbox.net
+Link: https://lore.kernel.org/r/20240913191754.13290-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/bpf/helpers.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index d84740be96426..8cf82a5f3a5bf 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2492,9 +2492,14 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
- 		wacom_wac->hid_data.barrelswitch3 = value;
- 		return;
- 	case WACOM_HID_WD_SEQUENCENUMBER:
--		if (wacom_wac->hid_data.sequence_number != value)
--			hid_warn(hdev, "Dropped %hu packets", (unsigned short)(value - wacom_wac->hid_data.sequence_number));
-+		if (wacom_wac->hid_data.sequence_number != value) {
-+			int sequence_size = field->logical_maximum - field->logical_minimum + 1;
-+			int drop_count = (value - wacom_wac->hid_data.sequence_number) % sequence_size;
-+			hid_warn(hdev, "Dropped %d packets", drop_count);
-+		}
- 		wacom_wac->hid_data.sequence_number = value + 1;
-+		if (wacom_wac->hid_data.sequence_number > field->logical_maximum)
-+			wacom_wac->hid_data.sequence_number = field->logical_minimum;
- 		return;
- 	}
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index b5f0adae82933..17a757c78b488 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -517,7 +517,7 @@ static int __bpf_strtoll(const char *buf, size_t buf_len, u64 flags,
+ }
  
+ BPF_CALL_4(bpf_strtol, const char *, buf, size_t, buf_len, u64, flags,
+-	   long *, res)
++	   s64 *, res)
+ {
+ 	long long _res;
+ 	int err;
+@@ -542,7 +542,7 @@ const struct bpf_func_proto bpf_strtol_proto = {
+ };
+ 
+ BPF_CALL_4(bpf_strtoul, const char *, buf, size_t, buf_len, u64, flags,
+-	   unsigned long *, res)
++	   u64 *, res)
+ {
+ 	unsigned long long _res;
+ 	bool is_negative;
 -- 
 2.43.0
 
