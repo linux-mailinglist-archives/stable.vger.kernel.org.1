@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0340C98DD6A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF09A98DAFD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357B51C23052
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68141B20B20
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45DE1D0F48;
-	Wed,  2 Oct 2024 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E3D1D0F48;
+	Wed,  2 Oct 2024 14:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9W2sIi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krJKfUjF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F52C198A1A;
-	Wed,  2 Oct 2024 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E501D0F43;
+	Wed,  2 Oct 2024 14:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880366; cv=none; b=tSj062koQ8S12jzkcswJycIBV4FVJI/ioOebvkmFZxOpjt71m/4PatvV8Yzv2AvAs7LZtZZgld0Cox75UVYLrBBApjfwBi79vE72TXdhUE6SR8i3SKUXBI3awSMV+eqCMDGJTzogMs/+ZNPld5THUCOPmuqTTz55Wf10z2uBmY0=
+	t=1727878908; cv=none; b=d4pCuoii823P020w3cfeIjOQAu3yCwRJrabU9f1N9XS/7Q5jVrZdMnKACUVXgcdp/pZs0W0aG8624ihcuJDRT0LalnBFAacDVNNvBIW6cxix/KabGV/s0JYjrO9dLJ6+Mf8SVYxjAPgc2XERjsUk4/OVnAooZgfcQTWNFepTusI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880366; c=relaxed/simple;
-	bh=niZcw9usDgJ8ltLhvTvhFGEAUgbw5rFilsJJHKAcQBM=;
+	s=arc-20240116; t=1727878908; c=relaxed/simple;
+	bh=7ybcVWlgJsfJrADgHWb0zDS2EWaoXJPB8g8p50rnYkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiX4URIwtbXvcc1hM3TkTxsptD3p1oBkbLlU5/wlFLzrJZkwJ5PX1tklTkpw3OpI7CXMfvZCO4nIb4cl7YdG9wgk1DQrmEApNs74EOG/Sgj/ANuIUM9s4YQR+WDBoDJOS665PUjYiFte5JjoMd9faOEsH3YTahFlnUc0uJfgh+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9W2sIi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2471AC4CEC2;
-	Wed,  2 Oct 2024 14:46:05 +0000 (UTC)
+	 MIME-Version; b=bWpL2MMOxMeVAOhuK7sJoC6cd2mRzMf7WlimkibOq5fbcm0Z9uen2HIO3jbe6tnzpQh5LRqeewOntlzm5nQxm1YG58KqcGVmnIfoyK7Zt9VoWkcOTvXzSNBkP5nkEqPnLqgQoNHA0DMNrOSxUZVcrhZg5q99efVNH4i+q+4YfEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krJKfUjF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FB4C4CEC5;
+	Wed,  2 Oct 2024 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880366;
-	bh=niZcw9usDgJ8ltLhvTvhFGEAUgbw5rFilsJJHKAcQBM=;
+	s=korg; t=1727878908;
+	bh=7ybcVWlgJsfJrADgHWb0zDS2EWaoXJPB8g8p50rnYkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9W2sIi7Lq91wp9b7yfygpumQJdCGM7Qm6lXrL1GfxohWNLjk6PtMJU8JKteOwjlB
-	 jbR2CJgNx7hFUdcT/N67wFljsYXWYjZ8g8QNgJ10prJHy6RPnMMXgZY7g9KwG36OEb
-	 1IQepN+mzswUr+0x/lMfESyF1tYLSI4SoaZrJ8/0=
+	b=krJKfUjFntCmZUeeDiG75MreaDBxH5ytRoYQub+EpqTEVul3l1XQI0sF+vOOVDYSO
+	 aL/7rAct+NIaUBfnRajoK/72u4trky8q48pUlvVdNFy1CB+y62K5qUTJ8MyhBasSa9
+	 jAPicseUuZ5JkG53jCJJ5zRrtikR6fkwS5y6DaRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 403/538] soc: versatile: integrator: fix OF node leak in probe() error path
+	Werner Sembach <wse@tuxedocomputers.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 542/634] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
 Date: Wed,  2 Oct 2024 15:00:42 +0200
-Message-ID: <20241002125808.345307191@linuxfoundation.org>
+Message-ID: <20241002125832.505093238@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 874c5b601856adbfda10846b9770a6c66c41e229 upstream.
+commit a98cfe6ff15b62f94a44d565607a16771c847bc6 upstream.
 
-Driver is leaking OF node reference obtained from
-of_find_matching_node().
+Internal documentation suggest that the TUXEDO Polaris 15 Gen5 AMD might
+have GMxXGxX as the board name instead of GMxXGxx.
 
-Fixes: f956a785a282 ("soc: move SoC driver for the ARM Integrator")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-1-ff4b35abed83@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Adding both to be on the safe side.
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240910094008.1601230-1-wse@tuxedocomputers.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/versatile/soc-integrator.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/resource.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/soc/versatile/soc-integrator.c
-+++ b/drivers/soc/versatile/soc-integrator.c
-@@ -113,6 +113,7 @@ static int __init integrator_soc_init(vo
- 		return -ENODEV;
- 
- 	syscon_regmap = syscon_node_to_regmap(np);
-+	of_node_put(np);
- 	if (IS_ERR(syscon_regmap))
- 		return PTR_ERR(syscon_regmap);
- 
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -579,6 +579,12 @@ static const struct dmi_system_id irq1_e
+ 		},
+ 	},
+ 	{
++		/* TongFang GMxXGxX/TUXEDO Polaris 15 Gen5 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
++		},
++	},
++	{
+ 		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
 
 
 
