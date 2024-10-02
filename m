@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6039F98DAD1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD7B98DD6F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130F71F21695
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951051F23B5D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D9C1D1E8A;
-	Wed,  2 Oct 2024 14:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7AC1D0E06;
+	Wed,  2 Oct 2024 14:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/kB/3Op"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn+e2Q+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15431D0E1A;
-	Wed,  2 Oct 2024 14:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5F21D016D;
+	Wed,  2 Oct 2024 14:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878800; cv=none; b=U+TosbwUa3LDlpwTk4VchNEr92ucB+6URV7Ns8U0cQh5IjQuyBrglEi46FMMW+X1pTUONzVBVUgjFtPq+k0wrxzH6uzZAZLdSD5D4YUDoAmsElJGbKYyKyF4ymPXC5lnzfxFcOUwk2B8IkNPQjKK7BxinHDR5Pz1obSUnEdH2bw=
+	t=1727880378; cv=none; b=fusOyL6C3IA5kWYWcyaw/gseAap/SrymEEM4YzStNh8ScdxabeQEC0m1d6pWz5mb6zVYXMOpMpdWDo++tUyHCvvABn4ZCowbQf6tFKW+Gq3jn4vUIEGNrJJ21seHjcT//JwExOvOvDH0A6xLueRgMytoYXaFCgydjhitdABJoT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878800; c=relaxed/simple;
-	bh=TJJW2x6/lw4nlrCMiW4ttHXDIOpP56yKBHu0WZInxcg=;
+	s=arc-20240116; t=1727880378; c=relaxed/simple;
+	bh=11FPwlqi8go07Sqb3ohxRkI8WlOpWS1zsjlquWCdscM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f6daHc9RJqRLh7OmtwxcePB8N9h9tOhMHJUEroLlzNQ1aM5nOkZk1wqik12ipXoR7bFA5aU+35EF5qBmUBLbAGOOUFi9pF6Nmc0OFWA2zPQhiVb3ZcVBjk3X/z4Etym8e4gEcGyHIorVBoUHfk69vpcq/dU/3NPHR6o+Facbefw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/kB/3Op; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DE3C4CEC2;
-	Wed,  2 Oct 2024 14:19:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mZHFt+xdLocH4TWasjgm4/M4fXVs8WG23vdCRuN8RYrarmgZrdhG9Lu3Hh+gbLfSTFgtVaI/lAOyIGqJ+zZaXO8uIdiSKYfx39+yHXjvr4yQLkpRfkmLr+ys9s+cJuOw7coMKEDsp4Mdw6tufoFj2dXkMXGHYHPEVItlPzP7+cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zn+e2Q+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26BFC4CEC2;
+	Wed,  2 Oct 2024 14:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878799;
-	bh=TJJW2x6/lw4nlrCMiW4ttHXDIOpP56yKBHu0WZInxcg=;
+	s=korg; t=1727880378;
+	bh=11FPwlqi8go07Sqb3ohxRkI8WlOpWS1zsjlquWCdscM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/kB/3Op+gIKM/31Va6OnSprP7w2XKXEuPc3F+kF7VY4oM4yJVBO6Ib5ptRlZ/PEi
-	 z9pta2N/R6JD6oBemvlI7oAEspoMza4zGKF191QsrU9bkVPQX2W0Zvddp8VvZdfq1I
-	 OPGqSe2w4LAI1ji8hoFRZ6we/aMCLTwPh+Eml918=
+	b=Zn+e2Q+h2alMUr/Bxcs68FL/LGXkfGtqEBtTodSbY8aMV7V7Bo7uVEQqqy7cTERK6
+	 3F/JuoxudwUyE9ps5BEeO84JrCEYtUkyDZCuZvu/HnV5OlwBLkkZUkIzzMRUd4Ksl8
+	 EwlrQi17TNaWmNKirwahHCP8CxZuX+xDVHfLpotQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.10 535/634] serial: qcom-geni: fix false console tx restart
-Date: Wed,  2 Oct 2024 15:00:35 +0200
-Message-ID: <20241002125832.225795579@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.6 397/538] PCI: Correct error reporting with PCIe failed link retraining
+Date: Wed,  2 Oct 2024 15:00:36 +0200
+Message-ID: <20241002125808.106403763@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +64,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit f97cdbbf187fefcf1fe19689cd9fdca11fe9c3eb upstream.
+commit 712e49c967064a3a7a5738c6f65ac540a3f6a1df upstream.
 
-Commit 663abb1a7a7f ("tty: serial: qcom_geni_serial: Fix UART hang")
-addressed an issue with stalled tx after the console code interrupted
-the last bytes of a tx command by reenabling the watermark interrupt if
-there is data in write buffer. This can however break software flow
-control by re-enabling tx after the user has stopped it.
+Only return successful completion status from pcie_failed_link_retrain() if
+retraining has actually been done, preventing excessive delays from being
+triggered at call sites in a hope that communication will finally be
+established with the downstream device where in fact nothing has been done
+about the link in question that would justify such a hope.
 
-Address the original issue by not clearing the CMD_DONE flag after
-polling for command completion. This allows the interrupt handler to
-start another transfer when the CMD_DONE interrupt has not been disabled
-due to flow control.
-
-Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
-Fixes: 663abb1a7a7f ("tty: serial: qcom_geni_serial: Fix UART hang")
-Cc: stable@vger.kernel.org	# 4.17
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240906131336.23625-3-johan+linaro@kernel.org
+Fixes: a89c82249c37 ("PCI: Work around PCIe link training failures")
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091133260.61955@angie.orcam.me.uk
+Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/aa2d1c4e-9961-d54a-00c7-ddf8e858a9b0@linux.intel.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.5+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/pci/quirks.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -306,18 +306,16 @@ static void qcom_geni_serial_setup_tx(st
- static void qcom_geni_serial_poll_tx_done(struct uart_port *uport)
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -78,7 +78,8 @@
+  * again to remove any residual state, ignoring the result as it's supposed
+  * to fail anyway.
+  *
+- * Return TRUE if the link has been successfully retrained, otherwise FALSE.
++ * Return TRUE if the link has been successfully retrained.  Return FALSE
++ * if retraining was not needed or we attempted a retrain and it failed.
+  */
+ bool pcie_failed_link_retrain(struct pci_dev *dev)
  {
- 	int done;
--	u32 irq_clear = M_CMD_DONE_EN;
+@@ -87,6 +88,7 @@ bool pcie_failed_link_retrain(struct pci
+ 		{}
+ 	};
+ 	u16 lnksta, lnkctl2;
++	bool ret = false;
  
- 	done = qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
- 						M_CMD_DONE_EN, true);
- 	if (!done) {
- 		writel(M_GENI_CMD_ABORT, uport->membase +
- 						SE_GENI_M_CMD_CTRL_REG);
--		irq_clear |= M_CMD_ABORT_EN;
- 		qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
- 							M_CMD_ABORT_EN, true);
-+		writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ 	if (!pci_is_pcie(dev) || !pcie_downstream_port(dev) ||
+ 	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
+@@ -104,7 +106,8 @@ bool pcie_failed_link_retrain(struct pci
+ 		lnkctl2 |= PCI_EXP_LNKCTL2_TLS_2_5GT;
+ 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+ 
+-		if (pcie_retrain_link(dev, false)) {
++		ret = pcie_retrain_link(dev, false) == 0;
++		if (!ret) {
+ 			pci_info(dev, "retraining failed\n");
+ 			pcie_capability_write_word(dev, PCI_EXP_LNKCTL2,
+ 						   oldlnkctl2);
+@@ -126,13 +129,14 @@ bool pcie_failed_link_retrain(struct pci
+ 		lnkctl2 |= lnkcap & PCI_EXP_LNKCAP_SLS;
+ 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+ 
+-		if (pcie_retrain_link(dev, false)) {
++		ret = pcie_retrain_link(dev, false) == 0;
++		if (!ret) {
+ 			pci_info(dev, "retraining failed\n");
+ 			return false;
+ 		}
  	}
--	writel(irq_clear, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ 
+-	return true;
++	return ret;
  }
  
- static void qcom_geni_serial_abort_rx(struct uart_port *uport)
-@@ -378,6 +376,7 @@ static void qcom_geni_serial_poll_put_ch
- 							unsigned char c)
- {
- 	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
-+	writel(M_CMD_DONE_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
- 	qcom_geni_serial_setup_tx(uport, 1);
- 	WARN_ON(!qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
- 						M_TX_FIFO_WATERMARK_EN, true));
-@@ -422,6 +421,7 @@ __qcom_geni_serial_console_write(struct
- 	}
- 
- 	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
-+	writel(M_CMD_DONE_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
- 	qcom_geni_serial_setup_tx(uport, bytes_to_send);
- 	for (i = 0; i < count; ) {
- 		size_t chars_to_write = 0;
-@@ -463,7 +463,6 @@ static void qcom_geni_serial_console_wri
- 	bool locked = true;
- 	unsigned long flags;
- 	u32 geni_status;
--	u32 irq_en;
- 
- 	WARN_ON(co->index < 0 || co->index >= GENI_UART_CONS_PORTS);
- 
-@@ -495,12 +494,6 @@ static void qcom_geni_serial_console_wri
- 		 * has been sent, in which case we need to look for done first.
- 		 */
- 		qcom_geni_serial_poll_tx_done(uport);
--
--		if (!kfifo_is_empty(&uport->state->port.xmit_fifo)) {
--			irq_en = readl(uport->membase + SE_GENI_M_IRQ_EN);
--			writel(irq_en | M_TX_FIFO_WATERMARK_EN,
--					uport->membase + SE_GENI_M_IRQ_EN);
--		}
- 	}
- 
- 	__qcom_geni_serial_console_write(uport, s, count);
+ static ktime_t fixup_debug_start(struct pci_dev *dev,
 
 
 
