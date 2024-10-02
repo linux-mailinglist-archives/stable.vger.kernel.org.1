@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-78940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1647598D5BB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728A998D906
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F3801C22233
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5C31B217AA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41C31D0965;
-	Wed,  2 Oct 2024 13:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7781D0DF6;
+	Wed,  2 Oct 2024 14:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq28fQsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDI8tswk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623A01D095B;
-	Wed,  2 Oct 2024 13:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7661D0BB0;
+	Wed,  2 Oct 2024 14:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875972; cv=none; b=IMEaeQWJYv+RU8fk812ILCnXxma9WnJ2oBo9b9deqxxj8WYf2C4465EC4jfl5TkVLyNJwVOdmqSpcAUpxSmsUSltaIfeL8785173GTXWvKDi6PzNtm/2j+ldFBcF1XtEZM7PTrlkZ42jnT9lLVSXwcDtqLKff6JYxTs0zt2JYU0=
+	t=1727877747; cv=none; b=SRDnOc6Qn2Wf377MxsEm3gHJilKkddDb4Dgok9FDMZtx44Gc+RY3QmObQstxltXBb//bF4S5xZrjl9f/+qVINYgXiUYjip3UX4DMVIEjmE/OpQcL3/CvAwYxPq62ViJ/xLOTMHkw6wuZAZQ83QfPJh9tZf8Uyt7xfXK7YGq1EXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875972; c=relaxed/simple;
-	bh=EntWRBAGUSrnP1LIJ1yooZ1ouC/qLfNr9Xjj+f6ImTo=;
+	s=arc-20240116; t=1727877747; c=relaxed/simple;
+	bh=Cx6QxB6h1G/i5sxode93kbs2EwA3bBk6uG+EKLWAEl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCKoN5W6gRpHnoOLXQ1mYH+xMqTXNEKNdfZsTHnYKdY55/b6GxneARVXM4p8O/o5S60w0MpGJAM3AHOHhpqp7DQIBd//idh/XXYd84R+4J6k/KO1X2QLzsLD0CziaFPPY932NFxhjph6oclFMFAgtwidYp/PKnKyTi6wKS8dfMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq28fQsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5B0C4CEC5;
-	Wed,  2 Oct 2024 13:32:51 +0000 (UTC)
+	 MIME-Version; b=dWKkpXKrNEuwQdM74+hoOWXsJ3hUXxiBpKeyRXnEv84XILVguFsC96LUzeL0X8Dnc2bwuNAZx6ExKzUDSktN/bdWvJUfSojqBYD3q4zv0q7hHG9vYjaihWUAmnExn6i8cvTTNC2riCNS/4f4RdazpW2T8Q96Dib2osAKADFydFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDI8tswk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D9FC4CEC5;
+	Wed,  2 Oct 2024 14:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875972;
-	bh=EntWRBAGUSrnP1LIJ1yooZ1ouC/qLfNr9Xjj+f6ImTo=;
+	s=korg; t=1727877747;
+	bh=Cx6QxB6h1G/i5sxode93kbs2EwA3bBk6uG+EKLWAEl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yq28fQsi82TQ5fUT2MCGS1kBSXIcLpLn4M8ww26I77sPZaZDi5PdT6+GdTVrGemNb
-	 ngSLPfsPpSt+nd64RDEs5ICdsw1VM48sYJbkM8frC/BQ4GvZXmJyfd4c/M1Tbxc+Y8
-	 uJIXT3qb7DsUUpL77zN/6Ox+Qy2HGv2F0FVV5yAg=
+	b=NDI8tswkVatzmV0VmjD8LgiFC3B9CF0MTJP3RIWCtJpeNd5ZX29H3VLzlvi7bqwbb
+	 Z/QCmoz6xZ3wmyxmC+eHcQr91OyFe3Qu3j/rY3HtIpkCcRpVL2ObjDivAk9Q6/5UeB
+	 EMGvN3rjmjxxL3mQrKgNlq8UVSS55/sQ/NiD88PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 283/695] selftests/bpf: Fix error compiling test_lru_map.c
+Subject: [PATCH 6.10 181/634] drm/amd/display: Add null check for set_output_gamma in dcn30_set_output_transfer_func
 Date: Wed,  2 Oct 2024 14:54:41 +0200
-Message-ID: <20241002125833.741896368@linuxfoundation.org>
+Message-ID: <20241002125818.252534803@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +71,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit cacf2a5a78cd1f5f616eae043ebc6f024104b721 ]
+[ Upstream commit 08ae395ea22fb3d9b318c8bde28c0dfd2f5fa4d2 ]
 
-Although the post-increment in macro 'CPU_SET(next++, &cpuset)' seems safe,
-the sequencing can raise compile errors, so move the increment outside the
-macro. This avoids an error seen using gcc 12.3.0 for mips64el/musl-libc:
+This commit adds a null check for the set_output_gamma function pointer
+in the  dcn30_set_output_transfer_func function. Previously,
+set_output_gamma was being checked for nullity at line 386, but then it
+was being dereferenced without any nullity check at line 401. This
+could potentially lead to a null pointer dereference error if
+set_output_gamma is indeed null.
 
-  In file included from test_lru_map.c:11:
-  test_lru_map.c: In function 'sched_next_online':
-  test_lru_map.c:129:29: error: operation on 'next' may be undefined [-Werror=sequence-point]
-    129 |                 CPU_SET(next++, &cpuset);
-        |                             ^
-  cc1: all warnings being treated as errors
+To fix this, we now ensure that set_output_gamma is not null before
+dereferencing it. We do this by adding a nullity check for
+set_output_gamma before the call to set_output_gamma at line 401. If
+set_output_gamma is null, we log an error message and do not call the
+function.
 
-Fixes: 3fbfadce6012 ("bpf: Fix test_lru_sanity5() in test_lru_map.c")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/22993dfb11ccf27925a626b32672fd3324cb76c4.1722244708.git.tony.ambardar@gmail.com
+This fix prevents a potential null pointer dereference error.
+
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:401 dcn30_set_output_transfer_func()
+error: we previously assumed 'mpc->funcs->set_output_gamma' could be null (see line 386)
+
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c
+    373 bool dcn30_set_output_transfer_func(struct dc *dc,
+    374                                 struct pipe_ctx *pipe_ctx,
+    375                                 const struct dc_stream_state *stream)
+    376 {
+    377         int mpcc_id = pipe_ctx->plane_res.hubp->inst;
+    378         struct mpc *mpc = pipe_ctx->stream_res.opp->ctx->dc->res_pool->mpc;
+    379         const struct pwl_params *params = NULL;
+    380         bool ret = false;
+    381
+    382         /* program OGAM or 3DLUT only for the top pipe*/
+    383         if (pipe_ctx->top_pipe == NULL) {
+    384                 /*program rmu shaper and 3dlut in MPC*/
+    385                 ret = dcn30_set_mpc_shaper_3dlut(pipe_ctx, stream);
+    386                 if (ret == false && mpc->funcs->set_output_gamma) {
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ If this is NULL
+
+    387                         if (stream->out_transfer_func.type == TF_TYPE_HWPWL)
+    388                                 params = &stream->out_transfer_func.pwl;
+    389                         else if (pipe_ctx->stream->out_transfer_func.type ==
+    390                                         TF_TYPE_DISTRIBUTED_POINTS &&
+    391                                         cm3_helper_translate_curve_to_hw_format(
+    392                                         &stream->out_transfer_func,
+    393                                         &mpc->blender_params, false))
+    394                                 params = &mpc->blender_params;
+    395                          /* there are no ROM LUTs in OUTGAM */
+    396                         if (stream->out_transfer_func.type == TF_TYPE_PREDEFINED)
+    397                                 BREAK_TO_DEBUGGER();
+    398                 }
+    399         }
+    400
+--> 401         mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Then it will crash
+
+    402         return ret;
+    403 }
+
+Fixes: d99f13878d6f ("drm/amd/display: Add DCN3 HWSEQ")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_lru_map.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_lru_map.c b/tools/testing/selftests/bpf/test_lru_map.c
-index 4d0650cfb5cd8..fda7589c50236 100644
---- a/tools/testing/selftests/bpf/test_lru_map.c
-+++ b/tools/testing/selftests/bpf/test_lru_map.c
-@@ -126,7 +126,8 @@ static int sched_next_online(int pid, int *next_to_try)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
+index 4c47061533050..05c5d4f04e1bd 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
+@@ -395,7 +395,11 @@ bool dcn30_set_output_transfer_func(struct dc *dc,
+ 		}
+ 	}
  
- 	while (next < nr_cpus) {
- 		CPU_ZERO(&cpuset);
--		CPU_SET(next++, &cpuset);
-+		CPU_SET(next, &cpuset);
-+		next++;
- 		if (!sched_setaffinity(pid, sizeof(cpuset), &cpuset)) {
- 			ret = 0;
- 			break;
+-	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++	if (mpc->funcs->set_output_gamma)
++		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++	else
++		DC_LOG_ERROR("%s: set_output_gamma function pointer is NULL.\n", __func__);
++
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
