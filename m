@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-78702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9024398D488
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:21:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51DA98D4B8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F5C41C217F6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E70928458D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E8E1D0487;
-	Wed,  2 Oct 2024 13:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A911D0416;
+	Wed,  2 Oct 2024 13:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NevQHmzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4jGUzUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9731D041D;
-	Wed,  2 Oct 2024 13:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1068316F84F;
+	Wed,  2 Oct 2024 13:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875280; cv=none; b=Ff/uUQgYUKZl7D9L4wNsbRzn7rPGd6pOCRZGOC+Z1O8iktnThXvDqSsWOfBEcn27Ewm+rMRFwmKNtmSuXuzSznYW85sxifrjm7lNM8dhH8ABWqSodLDMK7+TvcRJjP6bXTuTsoBfSFv73f5DYS6WL+BoG0Qe9Yug2PvbTqC/dpk=
+	t=1727875402; cv=none; b=YV2FfAGiCIm3m2gQWT4yFRYhgvKR9KmJOgGLZm4aAU+3qJeyM8OGZnbBrzDw/jlSUq5HEvvBEVS4/mY9feiyKdnNJQeB4F3qUdovOfzzgrs6LzJ51E8SDmToLJYQBoxMnbqpzx8PM+O1+zlAj571kdD3bSmz/XycAzzl8ewU1Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875280; c=relaxed/simple;
-	bh=FJmbTlTjbJESrJ8dWtbQrSQYKZwOB2ASglmYBdFU2U4=;
+	s=arc-20240116; t=1727875402; c=relaxed/simple;
+	bh=4MNlHYDsspHFJNFl1nNOrVRpLKNY/Zyg0bGtKB42Z0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORsxYmCu2bOnihnZsTy0epp6QUJClIl+afWZQgkKEleshciZGgwl4uWr1z/S9h5RIHEs/Dm1KQzLXUURJXhTSAlWpFkbHajFl2m33mm4GYKdM0CYxiPBQHZQSNWQMPW8R+quLJFByMBxDOwZgyNAUUFUjGUJHuq+g63Q0IVDzIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NevQHmzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13503C4CECF;
-	Wed,  2 Oct 2024 13:21:19 +0000 (UTC)
+	 MIME-Version; b=HrXX/OYTwJ1yUh02nMyEWFFHjslynVaRxeNwkB+N/+1+dWuCGOMnVO8LFjP21B9XrJwaovt+X0UJimLE+2boli9RLup208hGXwAfkl2s8JMvEj1bTXqcwrJOmmF0JzFHcxCYk30tthb4z9uAoOlqrYQot+44to4uTSHZHi8kQKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4jGUzUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674CEC4CEC5;
+	Wed,  2 Oct 2024 13:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875280;
-	bh=FJmbTlTjbJESrJ8dWtbQrSQYKZwOB2ASglmYBdFU2U4=;
+	s=korg; t=1727875401;
+	bh=4MNlHYDsspHFJNFl1nNOrVRpLKNY/Zyg0bGtKB42Z0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NevQHmztPO7hWNkZbrOzrG++7L6N7s5ZAPYx+J6mqqZbK1ujmwXW7H8m26yk11q9u
-	 +2JvF2//XdnP/toTospnV2av3ertgtz2KtZEPO2JGsGyb4n2IDEHV/bV8pscQ/dglz
-	 TkEbH7Ic9lElmEcwRIYKGVOi09bWz+i1qQvaNJJg=
+	b=B4jGUzUm4rxo3NSxE2be7QG7nrc41/el+jw0ABzIAAet+8Ibpg57a7AqWodjJjlt2
+	 8P//Jyte7EXXmJfOGevPe0iJWMcQf4FjVdJb7sKZfbUdWMejqS4OQmPLUCQcN2eypr
+	 MgxES3AghMBJ9Y9Rxf1UYkOAjPe6LKnY9AJOs6aI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 047/695] wifi: iwlwifi: config: label gl devices as discrete
-Date: Wed,  2 Oct 2024 14:50:45 +0200
-Message-ID: <20241002125824.367230576@linuxfoundation.org>
+Subject: [PATCH 6.11 048/695] wifi: iwlwifi: mvm: set the cipher for secured NDP ranging
+Date: Wed,  2 Oct 2024 14:50:46 +0200
+Message-ID: <20241002125824.406775272@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,77 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 8131dd52810dfcdb49fcdc78f5e18e1538b6c441 ]
+[ Upstream commit a949075d4bbf1ca83ccdeaa6ef4ac2ce7526c5f4 ]
 
-The 'gl' devices are in the bz family, but they're not,
-integrated, so should have their own trans config struct.
-Fix that, also necessitating the removal of LTR config,
-and while at it remove 0x2727 and 0x272D IDs that were
-only used for test chips.
+The cipher pointer is not set, but is derefereced trying to set its
+content, which leads to a NULL pointer dereference.
+Fix it by pointing to the cipher parameter before dereferencing.
 
-Fixes: c30a2a64788b ("wifi: iwlwifi: add a new PCI device ID for BZ device")ticket=none
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 626be4bf99f6 ("wifi: iwlwifi: mvm: modify iwl_mvm_ftm_set_secured_ranging() parameters")
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240729201718.95aed0620080.Ib9129512c95aa57acc9876bdff8b99dd41e1562c@changeid
+Link: https://patch.msgid.link/20240729201718.24e83369f136.I80501ddcb82920561f450d00020d860e7a3f90c6@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 11 +++++++++++
- drivers/net/wireless/intel/iwlwifi/iwl-config.h |  1 +
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c   |  4 +---
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index 3b6b8b410be58..b230441abc16a 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -148,6 +148,17 @@ const struct iwl_cfg_trans_params iwl_bz_trans_cfg = {
- 	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+index afd90a52d4ecb..55245f913286b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
+@@ -772,6 +772,7 @@ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 			struct iwl_mvm_ftm_iter_data target;
  
-+const struct iwl_cfg_trans_params iwl_gl_trans_cfg = {
-+	.device_family = IWL_DEVICE_FAMILY_BZ,
-+	.base_params = &iwl_bz_base_params,
-+	.mq_rx_supported = true,
-+	.rf_id = true,
-+	.gen2 = true,
-+	.umac_prph_offset = 0x300000,
-+	.xtal_latency = 12000,
-+	.low_latency_xtal = true,
-+};
-+
- const char iwl_bz_name[] = "Intel(R) TBD Bz device";
- const char iwl_fm_name[] = "Intel(R) Wi-Fi 7 BE201 320MHz";
- const char iwl_gl_name[] = "Intel(R) Wi-Fi 7 BE200 320MHz";
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index b2abd4fd19444..34c91deca57b1 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -504,6 +504,7 @@ extern const struct iwl_cfg_trans_params iwl_so_long_latency_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_so_long_latency_imr_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_ma_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_bz_trans_cfg;
-+extern const struct iwl_cfg_trans_params iwl_gl_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_sc_trans_cfg;
- extern const char iwl9162_name[];
- extern const char iwl9260_name[];
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 84fd93278450b..805fb249a0c6a 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -500,9 +500,7 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x7E40, PCI_ANY_ID, iwl_ma_trans_cfg)},
- 
- /* Bz devices */
--	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
--	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
--	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_gl_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, 0x0000, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, 0x0090, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, 0x0094, iwl_bz_trans_cfg)},
+ 			target.bssid = bssid;
++			target.cipher = cipher;
+ 			ieee80211_iter_keys(mvm->hw, vif, iter, &target);
+ 		} else {
+ 			memcpy(tk, entry->tk, sizeof(entry->tk));
 -- 
 2.43.0
 
