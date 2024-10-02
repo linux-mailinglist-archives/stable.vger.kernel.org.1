@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-80542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469E698DDF7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E455798DDC5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:52:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C07A31F25A34
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:54:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911DB1F26221
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA361D2206;
-	Wed,  2 Oct 2024 14:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03681D0940;
+	Wed,  2 Oct 2024 14:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWE4EjRE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/izECPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EC11D1F7A;
-	Wed,  2 Oct 2024 14:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECCB1D040D;
+	Wed,  2 Oct 2024 14:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880677; cv=none; b=hifJzERZYD2thdwiqX6L/qjZ59gRT9MfigI3aXb5LnC9cNnGaOFjPPJiNbdADG22WQk0R1qbSuvXgUq6HZ6SqPdDvHJNwNPOVM5pkO5IKIiTO0LMbI3Xw0B38XMyrMiF0KbwohX2fGvkAKZlcXg3i2Za/kZZzqCEOEasmSlmUts=
+	t=1727880580; cv=none; b=olSIDYZilbD7zhWy61oKoMUEXUsMJksbolCIpIYpLb40BwvN5GYkef77OePz0cN1K4fXOZFMdNioHuKBYaKNKhVVyYT/nnJ9OliGLrCM/IyAFll21TIHWqr3JVk+jd/Rzw+nm0IXpLRrlXR28cAPR41z/bcjtMWXOYPmoC1mtA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880677; c=relaxed/simple;
-	bh=LQ2PZ6uV+zXAa1JVIpFukyu9tsaUOjuAHx7nI0lazjY=;
+	s=arc-20240116; t=1727880580; c=relaxed/simple;
+	bh=kIjRvqnnEC3kETJPKb6N7L9Qk/ohn6YIUcjmuqS2gOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKLihxnQhjrYcf2k6pGkLEo/7vNShkS4ydC+iXoC4AD8M13+8AqFg285/ZJN1cHe/PtNeEJMw09hGtpeYIGgd8mxlMGRV0IcBRH2S4aPwTocPK0CHZMpIgXPkXORfK5VTEA+5WuwHhp4FUAXa3rucwmZpOveBvaGXBI8iJpUO/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWE4EjRE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69762C4CECF;
-	Wed,  2 Oct 2024 14:51:16 +0000 (UTC)
+	 MIME-Version; b=PliiWo7A3XePu619sbaTiLtHDBSCsdwW/zFoPFSP+mE/88ziQxvBtLxh8tkzLZafJfQTRp3zGHkO2er2JIS7uwqZgSJmf2Bi9xBjt3u3/7dTByT6+H3iVRVqi7KLOlp+XHvMg0hkYZFjRKND8y2p1dP24rsQDYbKE/6fLyacd4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/izECPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15F9C4CEC2;
+	Wed,  2 Oct 2024 14:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880676;
-	bh=LQ2PZ6uV+zXAa1JVIpFukyu9tsaUOjuAHx7nI0lazjY=;
+	s=korg; t=1727880580;
+	bh=kIjRvqnnEC3kETJPKb6N7L9Qk/ohn6YIUcjmuqS2gOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWE4EjREJT2wj1EqlVz9XIy9hQoJH+wI0uvInGvpXqPHQNBvwszm7WfquNhEx9qzU
-	 WreTmYGTFW0PJxkWPDDflQPp2H4tzozFfPIPnfcCPXNMqXh5KyYaSd6XeGvJi+b5vV
-	 m1MyKmXc6nOr+f6OKSq82FP3tQ8t8yZi0Ku4UuxE=
+	b=O/izECPdhKrrOZJ6DSela++rcgHoHr8moTo+eiKSIm4P73FUxZ0tRC4+LsWbIz7yu
+	 FJ/stNhEh1ZkYRpjESCsZ34ONvOgkRnDU6ofJlnB+qbvTSm3z61PIVGmeFqthKhu7L
+	 GL4Qi4vTZpnnoQiCB9URpKNeVgXC+WyemyezfjAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Han Xu <han.xu@nxp.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 499/538] btrfs: fix race setting file private on concurrent lseek using same fd
-Date: Wed,  2 Oct 2024 15:02:18 +0200
-Message-ID: <20241002125812.136504973@linuxfoundation.org>
+Subject: [PATCH 6.6 500/538] dt-bindings: spi: nxp-fspi: support i.MX93 and i.MX95
+Date: Wed,  2 Oct 2024 15:02:19 +0200
+Message-ID: <20241002125812.177119782@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -67,153 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 7ee85f5515e86a4e2a2f51969795920733912bad ]
+[ Upstream commit 18ab9e9e8889ecba23a5e8b7f8924f09284e33d8 ]
 
-When doing concurrent lseek(2) system calls against the same file
-descriptor, using multiple threads belonging to the same process, we have
-a short time window where a race happens and can result in a memory leak.
+Add i.MX93/95 flexspi compatible strings, which are compatible with
+i.MX8MM
 
-The race happens like this:
-
-1) A program opens a file descriptor for a file and then spawns two
-   threads (with the pthreads library for example), lets call them
-   task A and task B;
-
-2) Task A calls lseek with SEEK_DATA or SEEK_HOLE and ends up at
-   file.c:find_desired_extent() while holding a read lock on the inode;
-
-3) At the start of find_desired_extent(), it extracts the file's
-   private_data pointer into a local variable named 'private', which has
-   a value of NULL;
-
-4) Task B also calls lseek with SEEK_DATA or SEEK_HOLE, locks the inode
-   in shared mode and enters file.c:find_desired_extent(), where it also
-   extracts file->private_data into its local variable 'private', which
-   has a NULL value;
-
-5) Because it saw a NULL file private, task A allocates a private
-   structure and assigns to the file structure;
-
-6) Task B also saw a NULL file private so it also allocates its own file
-   private and then assigns it to the same file structure, since both
-   tasks are using the same file descriptor.
-
-   At this point we leak the private structure allocated by task A.
-
-Besides the memory leak, there's also the detail that both tasks end up
-using the same cached state record in the private structure (struct
-btrfs_file_private::llseek_cached_state), which can result in a
-use-after-free problem since one task can free it while the other is
-still using it (only one task took a reference count on it). Also, sharing
-the cached state is not a good idea since it could result in incorrect
-results in the future - right now it should not be a problem because it
-end ups being used only in extent-io-tree.c:count_range_bits() where we do
-range validation before using the cached state.
-
-Fix this by protecting the private assignment and check of a file while
-holding the inode's spinlock and keep track of the task that allocated
-the private, so that it's used only by that task in order to prevent
-user-after-free issues with the cached state record as well as potentially
-using it incorrectly in the future.
-
-Fixes: 3c32c7212f16 ("btrfs: use cached state when looking for delalloc ranges with lseek")
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Han Xu <han.xu@nxp.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://msgid.link/r/20240122091510.2077498-2-peng.fan@oss.nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 12736adc43b7 ("dt-bindings: spi: nxp-fspi: add imx8ulp support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/btrfs_inode.h |  1 +
- fs/btrfs/ctree.h       |  2 ++
- fs/btrfs/file.c        | 34 +++++++++++++++++++++++++++++++---
- 3 files changed, 34 insertions(+), 3 deletions(-)
+ .../devicetree/bindings/spi/spi-nxp-fspi.yaml  | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/btrfs_inode.h b/fs/btrfs/btrfs_inode.h
-index e9a979d0a9585..ec6679a538c1d 100644
---- a/fs/btrfs/btrfs_inode.h
-+++ b/fs/btrfs/btrfs_inode.h
-@@ -85,6 +85,7 @@ struct btrfs_inode {
- 	 * logged_trans), to access/update delalloc_bytes, new_delalloc_bytes,
- 	 * defrag_bytes, disk_i_size, outstanding_extents, csum_bytes and to
- 	 * update the VFS' inode number of bytes used.
-+	 * Also protects setting struct file::private_data.
- 	 */
- 	spinlock_t lock;
+diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
+index 7fd5911454800..4a5f41bde00f3 100644
+--- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
+@@ -15,12 +15,18 @@ allOf:
  
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index 06333a74d6c4c..f7bb4c34b984b 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -445,6 +445,8 @@ struct btrfs_file_private {
- 	void *filldir_buf;
- 	u64 last_index;
- 	struct extent_state *llseek_cached_state;
-+	/* Task that allocated this structure. */
-+	struct task_struct *owner_task;
- };
+ properties:
+   compatible:
+-    enum:
+-      - nxp,imx8dxl-fspi
+-      - nxp,imx8mm-fspi
+-      - nxp,imx8mp-fspi
+-      - nxp,imx8qxp-fspi
+-      - nxp,lx2160a-fspi
++    oneOf:
++      - enum:
++          - nxp,imx8dxl-fspi
++          - nxp,imx8mm-fspi
++          - nxp,imx8mp-fspi
++          - nxp,imx8qxp-fspi
++          - nxp,lx2160a-fspi
++      - items:
++          - enum:
++              - nxp,imx93-fspi
++              - nxp,imx95-fspi
++          - const: nxp,imx8mm-fspi
  
- static inline u32 BTRFS_LEAF_DATA_SIZE(const struct btrfs_fs_info *info)
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index 15fd8c00f4c08..fc6c91773bc89 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -3481,7 +3481,7 @@ static bool find_desired_extent_in_hole(struct btrfs_inode *inode, int whence,
- static loff_t find_desired_extent(struct file *file, loff_t offset, int whence)
- {
- 	struct btrfs_inode *inode = BTRFS_I(file->f_mapping->host);
--	struct btrfs_file_private *private = file->private_data;
-+	struct btrfs_file_private *private;
- 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
- 	struct extent_state *cached_state = NULL;
- 	struct extent_state **delalloc_cached_state;
-@@ -3509,7 +3509,19 @@ static loff_t find_desired_extent(struct file *file, loff_t offset, int whence)
- 	    inode_get_bytes(&inode->vfs_inode) == i_size)
- 		return i_size;
- 
--	if (!private) {
-+	spin_lock(&inode->lock);
-+	private = file->private_data;
-+	spin_unlock(&inode->lock);
-+
-+	if (private && private->owner_task != current) {
-+		/*
-+		 * Not allocated by us, don't use it as its cached state is used
-+		 * by the task that allocated it and we don't want neither to
-+		 * mess with it nor get incorrect results because it reflects an
-+		 * invalid state for the current task.
-+		 */
-+		private = NULL;
-+	} else if (!private) {
- 		private = kzalloc(sizeof(*private), GFP_KERNEL);
- 		/*
- 		 * No worries if memory allocation failed.
-@@ -3517,7 +3529,23 @@ static loff_t find_desired_extent(struct file *file, loff_t offset, int whence)
- 		 * lseek SEEK_HOLE/DATA calls to a file when there's delalloc,
- 		 * so everything will still be correct.
- 		 */
--		file->private_data = private;
-+		if (private) {
-+			bool free = false;
-+
-+			private->owner_task = current;
-+
-+			spin_lock(&inode->lock);
-+			if (file->private_data)
-+				free = true;
-+			else
-+				file->private_data = private;
-+			spin_unlock(&inode->lock);
-+
-+			if (free) {
-+				kfree(private);
-+				private = NULL;
-+			}
-+		}
- 	}
- 
- 	if (private)
+   reg:
+     items:
 -- 
 2.43.0
 
