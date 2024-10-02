@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A1A98D574
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70E398D8E4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308201C21DC0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45D52B24517
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C0B1D0173;
-	Wed,  2 Oct 2024 13:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E091D131F;
+	Wed,  2 Oct 2024 14:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcB+trE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzZtyPsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E7718DF60;
-	Wed,  2 Oct 2024 13:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441DE19F411;
+	Wed,  2 Oct 2024 14:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875833; cv=none; b=QheSsIXMjQRaBGX9qvBi8peeDUb8BwwLHBectQSxEUf/T4RmaGjHxMz0SvJNGA+jZSeguNZ7Am8LWLT6XmQ+4uMY6AHNl5hTlfS+5HAa2Pr2aEi26dykLz/5m4k0Z6YPSNsfAeKppL/5iQDG/QSTQ73bizDQVMQQwmVqLazhfTI=
+	t=1727877710; cv=none; b=bwiNjTWSOVrhZcLamglf2p5YWyMOPwFTStVsP/kl7P1vx3m3hqp0Ynkreo9SVZIJSj5crchBrqQGhoAlvrZgojPD6sZ6fGNMTMsJXG+tS/ku9YhCOv3god+mx1hgW9+yFLOGNAv4CDY+dEkONvKIq4ljIRHRVP2hTm6BMSuVPt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875833; c=relaxed/simple;
-	bh=KE0G2wD90JTvScnCC9N0hire1Rjut9xQxLEp4C2+qkY=;
+	s=arc-20240116; t=1727877710; c=relaxed/simple;
+	bh=jaF8KKF7PBOP7axcJCrDSZ7ur3LX/bxhqwshOW5tF0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMmmeog8WGBM67sAKofSnRNKrwIpRyYtEMRVlveZJoOBdsgK25hk6chOglFFwLianGbZ54lDHH/phubuApIC1l0CSa/PCSMjNo8nR54MPK5g4w15BtUMoFzQ8qLDKoWcAmYueAB/ULQ4EQuwvfGG34WVUj4ohG7+Bv/TSy81gwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcB+trE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74502C4CEC5;
-	Wed,  2 Oct 2024 13:30:32 +0000 (UTC)
+	 MIME-Version; b=cLuK+qcMM1SYYB1LNWiN4ZxoOYpaBnR3iWAk3N111QOMDFFkFE/yOeYvhP7Nk4VpMwZF+Pi0D/7F5X4LaRhnAvr/oo5EDJuCSpWRK6E0VwipblJ48pXZrWK1b7+qAFMr7ZLoyY7h21NMogm4acHiPnU+j0VPd2Hu9xeMOdyJ/ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzZtyPsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52443C4CEC2;
+	Wed,  2 Oct 2024 14:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875832;
-	bh=KE0G2wD90JTvScnCC9N0hire1Rjut9xQxLEp4C2+qkY=;
+	s=korg; t=1727877709;
+	bh=jaF8KKF7PBOP7axcJCrDSZ7ur3LX/bxhqwshOW5tF0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcB+trE3WphCEVmyoAQY7KV2JSK1Qp/ahZbjzhQigRAmm5688kJf+Cn++1a/FfUWe
-	 9ckJ9/u5Cdq3edrLnudJs70HiU44i9ajcoLprYogbOv73CkpYrD7vck2UZ5s+BUzkj
-	 r2tLRFZ6mIErZjTWQKHtf+bbiJ1vSNQZWc+R33HU=
+	b=LzZtyPsJh1hyUk++MW3v974GDqLckebOXT1jl+Rw94DzeyzFFm6yFrmptSN8pEUdq
+	 eBe6AxxUYKm1cmfAbBr9uWDTM2nAuxZH3I7w3+oI3u2fbZ+o450iiDQPo592q4PTqG
+	 Spol6xmN76zMQSWUvjG3Mrg0k/dy1Dm9fcfT32wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Yang <sherry.yang@oracle.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 237/695] drm/msm: fix %s null argument error
-Date: Wed,  2 Oct 2024 14:53:55 +0200
-Message-ID: <20241002125831.907470870@linuxfoundation.org>
+Subject: [PATCH 6.10 136/634] ARM: dts: imx7d-zii-rmu2: fix Ethernet PHY pinctrl property
+Date: Wed,  2 Oct 2024 14:53:56 +0200
+Message-ID: <20241002125816.477067699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Yang <sherry.yang@oracle.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 25b85075150fe8adddb096db8a4b950353045ee1 ]
+[ Upstream commit 0e49cfe364dea4345551516eb2fe53135a10432b ]
 
-The following build error was triggered because of NULL string argument:
+There is no "fsl,phy" property in pin controller pincfg nodes:
 
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c: In function 'mdp5_smp_dump':
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
-BUILDSTDERR:   352 |                         drm_printf(p, "%s:%d\t%d\t%s\n",
-BUILDSTDERR:       |                                                   ^~
-BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,pins' is a required property
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,phy' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-This happens from the commit a61ddb4393ad ("drm: enable (most) W=1
-warnings by default across the subsystem"). Using "(null)" instead
-to fix it.
-
-Fixes: bc5289eed481 ("drm/msm/mdp5: add debugfs to show smp block status")
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/611071/
-Link: https://lore.kernel.org/r/20240827165337.1075904-1-sherry.yang@oracle.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: f496e6750083 ("ARM: dts: Add ZII support for ZII i.MX7 RMU2 board")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-index 3a7f7edda96b2..500b7dc895d05 100644
---- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-+++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
-@@ -351,7 +351,7 @@ void mdp5_smp_dump(struct mdp5_smp *smp, struct drm_printer *p,
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
+index 521493342fe97..8f5566027c25a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
+@@ -350,7 +350,7 @@
  
- 			drm_printf(p, "%s:%d\t%d\t%s\n",
- 				pipe2name(pipe), j, inuse,
--				plane ? plane->name : NULL);
-+				plane ? plane->name : "(null)");
- 
- 			total += inuse;
- 		}
+ &iomuxc_lpsr {
+ 	pinctrl_enet1_phy_interrupt: enet1phyinterruptgrp {
+-		fsl,phy = <
++		fsl,pins = <
+ 			MX7D_PAD_LPSR_GPIO1_IO02__GPIO1_IO2	0x08
+ 		>;
+ 	};
 -- 
 2.43.0
 
