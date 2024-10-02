@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-79580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB1198D93A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA0698D944
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A6C28847B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C085F2855E2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474B81D1E93;
-	Wed,  2 Oct 2024 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2DA1D014A;
+	Wed,  2 Oct 2024 14:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0IEAZcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y360fxjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050861D0BAD;
-	Wed,  2 Oct 2024 14:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D077A1D016B;
+	Wed,  2 Oct 2024 14:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877858; cv=none; b=l4e74fXadIdzg/zFddkdrpty89QAFwY7X8uCWCFJwShUW3JHQG29Ia0o096tCIhDnMiBE9yu5emcsxXeQZ9Bk125UBNmRcVD8lNMgyuMzo2aTWRZh5cRfteOlOcqaQhQF1ZVnX+DdjhP7Mq9vwC3/tFLxxP/VbagF1Ns9aNutrw=
+	t=1727877889; cv=none; b=Of0kX8vzLMhMo7MrUjQA8tC+kg5RGz65ck7gOtd/Yud+L1wgMIn8u0tR6soh8UGKbHrWbmlr8l+Kov2meZpHJdO3BloneA1W9bfaxRT/dVSpCNQ47AwLIWPe8H3MeHk4DBTrB+UebrBlWOTuV14qWZGqBYJNJeub7HkGiD4x0dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877858; c=relaxed/simple;
-	bh=n4MlK78gSdXGXeiCDVj3RCwOx8orc2KsECfSCbBd0+w=;
+	s=arc-20240116; t=1727877889; c=relaxed/simple;
+	bh=qcDyuJ75Jlu/CRxIiL71VDymdJl78ZJrMaA8zYE2gTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DA5Rx0HEvCdWFPKeJGjJ0p+6ix+Xr3kuZZeXhBEI6jFcK4Tof2/3ARppnJXFfypluIKmSy4l+HNXdRXd28LRLfgFwaaI5RDlMn3wejc5qy+hzGjf4rh6SO9E52d0WNlaygAGVUj86vrh9AEtkQyABSecxLEDaCv8hL8qAXKFK+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0IEAZcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBAAC4CEC2;
-	Wed,  2 Oct 2024 14:04:17 +0000 (UTC)
+	 MIME-Version; b=XW1KwknJgjTC552BEn4PCVbh67jTD4dIM+2stzfnen2gjks/ipUPwtXESKC2nUB5shJOTPAAamJtadXiD/WY2GWuim8XDH2rJQcCegsWSHN6EImvsO0Tx9W6OKR8wgaIEMSU5cgCPDz+Z8JmDEj8L7OeGOnLFjFTVXqEdExfdOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y360fxjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B525C4CEC2;
+	Wed,  2 Oct 2024 14:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877857;
-	bh=n4MlK78gSdXGXeiCDVj3RCwOx8orc2KsECfSCbBd0+w=;
+	s=korg; t=1727877889;
+	bh=qcDyuJ75Jlu/CRxIiL71VDymdJl78ZJrMaA8zYE2gTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0IEAZcs2PbWJYIr+urb/pJ8ve848cQXzKRUSM0hbtOOTM3AEI5WfN+QZSbisjp5/
-	 Dz9Xcbmtat+dbtEo0airRF+PHIzwXc+b3SttY+TU94jdgrVb3VLC8mlLrZxzGDS3ww
-	 +CvahBhgzmFyi7fvzCFx1ZdpUkpoo7VZZ+krS2x4=
+	b=Y360fxjt7jOm1QQ1v8pKXeP9dRiYP4BQWvxxzkh8zBP58TCeT6J+9uISA+Q/5/Vky
+	 Cy76AVQKT5kRIQOi2267o8sRlbbWsH6kYg1heBmRsgVzIbJBFumEOzsMcNO6xu4/95
+	 1DmOCU3X/LYGYdgRXcF+Uf5hvWo98JmcLEzVBdmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 201/634] drm/msm: Fix CP_BV_DRAW_STATE_ADDR name
-Date: Wed,  2 Oct 2024 14:55:01 +0200
-Message-ID: <20241002125819.040478085@linuxfoundation.org>
+Subject: [PATCH 6.10 202/634] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Date: Wed,  2 Oct 2024 14:55:02 +0200
+Message-ID: <20241002125819.080741636@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -67,35 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Connor Abbott <cwabbott0@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit a47cfb688d78217983c4a0051449aa88e2ff5ebb ]
+[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
 
-This was missed because we weren't using the a750-specific indexed regs.
+In adreno_request_fw() when debugging information is printed to the log
+after firmware load, an incorrect filename is printed. 'newname' is used
+instead of 'fwname', so prefix "qcom/" is being added to filename.
+Looks like "copy-paste" mistake.
 
-Fixes: f3f8207d8aed ("drm/msm: Add devcoredump support for a750")
-Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/607394/
+Fix this mistake by replacing 'newname' with 'fwname'.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/602382/
 Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h | 2 +-
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h b/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h
-index 260d66eccfecb..9a327d543f27d 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h
-@@ -1303,7 +1303,7 @@ static struct a6xx_indexed_registers gen7_9_0_cp_indexed_reg_list[] = {
- 		REG_A6XX_CP_ROQ_DBG_DATA, 0x00800},
- 	{ "CP_UCODE_DBG_DATA", REG_A6XX_CP_SQE_UCODE_DBG_ADDR,
- 		REG_A6XX_CP_SQE_UCODE_DBG_DATA, 0x08000},
--	{ "CP_BV_SQE_STAT_ADDR", REG_A7XX_CP_BV_DRAW_STATE_ADDR,
-+	{ "CP_BV_DRAW_STATE_ADDR", REG_A7XX_CP_BV_DRAW_STATE_ADDR,
- 		REG_A7XX_CP_BV_DRAW_STATE_DATA, 0x00200},
- 	{ "CP_BV_ROQ_DBG_ADDR", REG_A7XX_CP_BV_ROQ_DBG_ADDR,
- 		REG_A7XX_CP_BV_ROQ_DBG_DATA, 0x00800},
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index b93ed15f04a30..d5d9361e11aa5 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -475,7 +475,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
+ 		ret = request_firmware_direct(&fw, fwname, drm->dev);
+ 		if (!ret) {
+ 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
+-				newname);
++				fwname);
+ 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
+ 			goto out;
+ 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
 -- 
 2.43.0
 
