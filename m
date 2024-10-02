@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-78805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1DA98D510
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3137598D80F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40AD01C206A6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 635651C22C98
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0F21D049A;
-	Wed,  2 Oct 2024 13:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8071E1D0786;
+	Wed,  2 Oct 2024 13:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jUyZrwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRnZk9bR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5EC16F84F;
-	Wed,  2 Oct 2024 13:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD561D0499;
+	Wed,  2 Oct 2024 13:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875582; cv=none; b=QIpamRQuCemHv3+ViZ+AgrJGD4myPcVcWTHpZ6BdMOHp8AE5cMe6kyoyZEr9xvKQTF2/Y3KwOhOfH1CLaHy3ETaCLh5eS6p/54LxyFiRpzyOXdA0HgEu0TJiQhsirxFP3R/6cFzX0LvnTIp8d7kgTAddtBEb1ejFr1A/ejJBN6I=
+	t=1727877335; cv=none; b=sHKZ3cCny3fjh4VwJ2EiXGgOWQweg/u5CD+3aMRpIDey0rmITYz06H10FqxekUNJWcJNbjB3Mai4b5fy7mxOsbD6ZhdYhVHTbITeqJSW2hfKRNOurbpHVr3c1GETRLZonyLN3C9x+byJru5wXRn1RjPBrPhx+PXoA0FxW0E1O6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875582; c=relaxed/simple;
-	bh=KLqKHH+RVr3YvvBw1GHowUuKrjn4kMUZgQyZROTXkBc=;
+	s=arc-20240116; t=1727877335; c=relaxed/simple;
+	bh=FDvsKKHW52m3SmosQx0nwSthRc1Z4VgNpkKsM5KQFeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws/Ld8b/8re1j32Uo0IxfCjRnD+PyS25SrycE4H9q+aeR1dD0LbF5N5mKOgvad2RGDb0nWKdE/RcJVf2ndWl2KJfKg1FV0I7GyFYUlf2lmN9gkr5OYmf2czodbMomjvKFJbFCQJY9hd4GMiO7ntVwKHfyPZKSOb5QQle/GiNF9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jUyZrwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3511C4CEC5;
-	Wed,  2 Oct 2024 13:26:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GP/sgYQ6rtkztAyH8adwrx5T2YntvBM5nSR31b4Jk0f7weAGdcTd0kk9cBnUPw89eRkP2QEnV6sX3FSdBv6pMtAWzE0Czvkf+JSc1kNSnKhwPwg9icq27q6v8bRG6sIg0/Ddt7mgJLUN9LxZzsy3Lbi6WJyNwFaisDiq4nCLPhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRnZk9bR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C003CC4CECE;
+	Wed,  2 Oct 2024 13:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875582;
-	bh=KLqKHH+RVr3YvvBw1GHowUuKrjn4kMUZgQyZROTXkBc=;
+	s=korg; t=1727877335;
+	bh=FDvsKKHW52m3SmosQx0nwSthRc1Z4VgNpkKsM5KQFeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jUyZrwWlBBxd5RX5FuXh9NEWtUwHL04dfQqcH+gHAls7K8Su+SShuRWTa2dCI6UB
-	 GrzbGohauOZFZcwU0gi410GVJNNFInAS81tAPy2iAsTsV7H+QOhFbShnTHslwes/Xz
-	 UoWanUcY9c4wvapmjlGIFY8mRoHcia3fj7gRPrEU=
+	b=QRnZk9bR/66kW40Dhp6hbL/i6NF/Zb8DTuUKUKK8C9Iv0GL7w7sGyI4z8SiHqIoH0
+	 1G95MLCkR50OaeLR4exda/BtYmOL6DcauICUujdE2U358+CZyhdyfkxaJIC6HyEc+z
+	 8xhbyeNQ5nzIijTFe3Kydcqh1YjY6/E99Bfdu9Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
+	Kamlesh Gurudasani <kamlesh@ti.com>,
+	=?UTF-8?q?=C2=A0=20Waiman=20Long?= <longman@redhat.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 149/695] spi: bcmbca-hsspi: Fix missing pm_runtime_disable()
+Subject: [PATCH 6.10 047/634] padata: Honor the callers alignment in case of chunk_size 0
 Date: Wed,  2 Oct 2024 14:52:27 +0200
-Message-ID: <20241002125828.429542672@linuxfoundation.org>
+Message-ID: <20241002125812.960790064@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Kamlesh Gurudasani <kamlesh@ti.com>
 
-[ Upstream commit 4439a2e92cb89028b22c5d7ba1b99e75d7d889f6 ]
+[ Upstream commit 24cc57d8faaa4060fd58adf810b858fcfb71a02f ]
 
-The pm_runtime_disable() is missing in remove function, use
-devm_pm_runtime_enable() to fix it. So the pm_runtime_disable() in
-the probe error path can also be removed.
+In the case where we are forcing the ps.chunk_size to be at least 1,
+we are ignoring the caller's alignment.
 
-Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Link: https://patch.msgid.link/20240826124903.3429235-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Move the forcing of ps.chunk_size to be at least 1 before rounding it
+up to caller's alignment, so that caller's alignment is honored.
+
+While at it, use max() to force the ps.chunk_size to be at least 1 to
+improve readability.
+
+Fixes: 6d45e1c948a8 ("padata: Fix possible divide-by-0 panic in padata_mt_helper()")
+Signed-off-by: Kamlesh Gurudasani <kamlesh@ti.com>
+Acked-by:  Waiman Long <longman@redhat.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcmbca-hsspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/padata.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
-index 9f64afd8164ea..4965bc86d7f52 100644
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -546,12 +546,14 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 			goto out_put_host;
- 	}
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 0fa6c28954603..9e98afe72a334 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -512,9 +512,12 @@ void __init padata_do_multithreaded(struct padata_mt_job *job)
+ 	 * thread function.  Load balance large jobs between threads by
+ 	 * increasing the number of chunks, guarantee at least the minimum
+ 	 * chunk size from the caller, and honor the caller's alignment.
++	 * Ensure chunk_size is at least 1 to prevent divide-by-0
++	 * panic in padata_mt_helper().
+ 	 */
+ 	ps.chunk_size = job->size / (ps.nworks * load_balance_factor);
+ 	ps.chunk_size = max(ps.chunk_size, job->min_chunk);
++	ps.chunk_size = max(ps.chunk_size, 1ul);
+ 	ps.chunk_size = roundup(ps.chunk_size, job->align);
  
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		goto out_put_host;
- 
- 	ret = sysfs_create_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
- 	if (ret) {
- 		dev_err(&pdev->dev, "couldn't register sysfs group\n");
--		goto out_pm_disable;
-+		goto out_put_host;
- 	}
- 
- 	/* register and we are done */
-@@ -565,8 +567,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 
- out_sysgroup_disable:
- 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
--out_pm_disable:
--	pm_runtime_disable(&pdev->dev);
- out_put_host:
- 	spi_controller_put(host);
- out_disable_pll_clk:
+ 	/*
 -- 
 2.43.0
 
