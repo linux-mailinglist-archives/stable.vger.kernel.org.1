@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321F398DD5E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A6498DAF1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0BA01F23351
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 792DD2831D3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041AD1D0E3F;
-	Wed,  2 Oct 2024 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991CE1D0DDA;
+	Wed,  2 Oct 2024 14:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOjphti0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxr086wt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B478D1D0DFE;
-	Wed,  2 Oct 2024 14:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BBD1E52C;
+	Wed,  2 Oct 2024 14:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880334; cv=none; b=CSNblPUfv6QRusMKHbdyQ9oayRZmTTjJ5eXjga7roOSV/PlXHn6oFKxMG7R32Mngf4bEYHJTO0LUN3zjkhItmmw6b3tkLvhavQDMbsWd6GjKYZGR76c0lna2cx3v6Qc2/sn9DJOk+/k/ikafTToUbx1HljU3qi8n6p/sWIt5yQE=
+	t=1727878879; cv=none; b=TNScBAlZv5+Hav92spKNmNDELW0nC3vsPff2AIFdr4SOsmmgs2Wl4lSGILy+tmCdOozOqUzykvqhaThkL/Jwh8CKX7Mp2ZLJhnt0BRoxA3ZfPq3xoJ64UKjWjzJJUtPbbKlxDFSqJfBBSBKO45HBqJiVOtUuWLnoGRyBbz7JZKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880334; c=relaxed/simple;
-	bh=BjoVYjr3c/V2EYoSRb6fi/TOHnEkn+WHFA7s3Iw2In0=;
+	s=arc-20240116; t=1727878879; c=relaxed/simple;
+	bh=hUfEkIWzE0QnqZTsR/uzzE37+T2PASmyMZfHfZxjkS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdV6ztziWVkcdncnXi6oVc71NJu8DAZuS1llcJpuuO8YylYZEhB0VEuOAYZaByahTZ16IymU3y2suWzrKfzw2G70nz+xFbyk57hVHAi3sZS7LJeWwXLWbMpA4lI7wnDYB1tC/2KhFCYe4fzTEh/TxLob/b50if0oIdpNggmQzFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOjphti0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6C3C4CEC2;
-	Wed,  2 Oct 2024 14:45:33 +0000 (UTC)
+	 MIME-Version; b=cHCcAznWz57gig1IgoP3EQlZRCTSYaWi5q+gDbB+61ooBZTebxM5qyZgvlEbkFfljiqZZ9Gnm0WPYeDVmox2CN6BKPB042t1Whj7t57vFNGZyC5ZMtgck4nLFjEh5Fwo3K51JvsBCq/pI2d4ospgkuHHeg1+ARFZYGX0ky1abW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxr086wt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B0AC4CECE;
+	Wed,  2 Oct 2024 14:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880334;
-	bh=BjoVYjr3c/V2EYoSRb6fi/TOHnEkn+WHFA7s3Iw2In0=;
+	s=korg; t=1727878879;
+	bh=hUfEkIWzE0QnqZTsR/uzzE37+T2PASmyMZfHfZxjkS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOjphti0oohyF06neOFYtlX11t2a1j5p+M+9Kgf91L5Je/dvanoDU47dKItoy4dt2
-	 5feALut/cg2uMnZXt9oyM1GPJylpCyfGWgc2TkmSbrCNQnqm9Zkuj95leEuAj/+TBN
-	 1SRZudwDrpvZ8iXPMS/E878y25zWy8mkPM9Jw6Tg=
+	b=oxr086wt0DzCrhYEP/fs+VU5uaMnnwDkeqA/Fz7j8E//FTlHFPNfZf6kxPSnzWeTR
+	 WaUBFnSY+LZg6ri6dUYSJgybHWvaWfngCUKD7CseC8iPCVuHSmrI2pPuMK63BjZK41
+	 2JEfrsMCySIfwQzkXhmDtYEEGuw5DVq/DYmiyWk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ray Zhang <zhanglei002@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 423/538] ksmbd: handle caseless file creation
-Date: Wed,  2 Oct 2024 15:01:02 +0200
-Message-ID: <20241002125809.132176859@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.10 563/634] f2fs: Require FMODE_WRITE for atomic write ioctls
+Date: Wed,  2 Oct 2024 15:01:03 +0200
+Message-ID: <20241002125833.338557387@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jann Horn <jannh@google.com>
 
-commit c5a709f08d40b1a082e44ffcde1aea4d2822ddd5 upstream.
+commit 4f5a100f87f32cb65d4bb1ad282a08c92f6f591e upstream.
 
-Ray Zhang reported ksmbd can not create file if parent filename is
-caseless.
+The F2FS ioctls for starting and committing atomic writes check for
+inode_owner_or_capable(), but this does not give LSMs like SELinux or
+Landlock an opportunity to deny the write access - if the caller's FSUID
+matches the inode's UID, inode_owner_or_capable() immediately returns true.
 
-Y:\>mkdir A
-Y:\>echo 123 >a\b.txt
-The system cannot find the path specified.
-Y:\>echo 123 >A\b.txt
+There are scenarios where LSMs want to deny a process the ability to write
+particular files, even files that the FSUID of the process owns; but this
+can currently partially be bypassed using atomic write ioctls in two ways:
 
-This patch convert name obtained by caseless lookup to parent name.
+ - F2FS_IOC_START_ATOMIC_REPLACE + F2FS_IOC_COMMIT_ATOMIC_WRITE can
+   truncate an inode to size 0
+ - F2FS_IOC_START_ATOMIC_WRITE + F2FS_IOC_ABORT_ATOMIC_WRITE can revert
+   changes another process concurrently made to a file
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Ray Zhang <zhanglei002@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix it by requiring FMODE_WRITE for these operations, just like for
+F2FS_IOC_MOVE_RANGE. Since any legitimate caller should only be using these
+ioctls when intending to write into the file, that seems unlikely to break
+anything.
+
+Fixes: 88b88a667971 ("f2fs: support atomic writes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |   10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ fs/f2fs/file.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1162,7 +1162,7 @@ static bool __caseless_lookup(struct dir
- 	if (cmp < 0)
- 		cmp = strncasecmp((char *)buf->private, name, namlen);
- 	if (!cmp) {
--		memcpy((char *)buf->private, name, namlen);
-+		memcpy((char *)buf->private, name, buf->used);
- 		buf->dirent_count = 1;
- 		return false;
- 	}
-@@ -1230,10 +1230,7 @@ int ksmbd_vfs_kern_path_locked(struct ks
- 		char *filepath;
- 		size_t path_len, remain_len;
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2123,6 +2123,9 @@ static int f2fs_ioc_start_atomic_write(s
+ 	loff_t isize;
+ 	int ret;
  
--		filepath = kstrdup(name, GFP_KERNEL);
--		if (!filepath)
--			return -ENOMEM;
--
-+		filepath = name;
- 		path_len = strlen(filepath);
- 		remain_len = path_len;
++	if (!(filp->f_mode & FMODE_WRITE))
++		return -EBADF;
++
+ 	if (!inode_owner_or_capable(idmap, inode))
+ 		return -EACCES;
  
-@@ -1276,10 +1273,9 @@ int ksmbd_vfs_kern_path_locked(struct ks
- 		err = -EINVAL;
- out2:
- 		path_put(parent_path);
--out1:
--		kfree(filepath);
- 	}
+@@ -2230,6 +2233,9 @@ static int f2fs_ioc_commit_atomic_write(
+ 	struct mnt_idmap *idmap = file_mnt_idmap(filp);
+ 	int ret;
  
-+out1:
- 	if (!err) {
- 		err = mnt_want_write(parent_path->mnt);
- 		if (err) {
++	if (!(filp->f_mode & FMODE_WRITE))
++		return -EBADF;
++
+ 	if (!inode_owner_or_capable(idmap, inode))
+ 		return -EACCES;
+ 
+@@ -2262,6 +2268,9 @@ static int f2fs_ioc_abort_atomic_write(s
+ 	struct mnt_idmap *idmap = file_mnt_idmap(filp);
+ 	int ret;
+ 
++	if (!(filp->f_mode & FMODE_WRITE))
++		return -EBADF;
++
+ 	if (!inode_owner_or_capable(idmap, inode))
+ 		return -EACCES;
+ 
 
 
 
