@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA95998DAF8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361EA98DD65
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B47B928357D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67A8E1C2296D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF4E1CFEB3;
-	Wed,  2 Oct 2024 14:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273531D0E29;
+	Wed,  2 Oct 2024 14:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK+W8QoF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lke5wji2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89A51D0487;
-	Wed,  2 Oct 2024 14:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C141D0786;
+	Wed,  2 Oct 2024 14:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878897; cv=none; b=XEfmA6LeRfgyUZ1nfRNJl0Ofo105VOxLA6LKC5f7JaV4UMHGsNySnUhsQBJC6GsoXvMPzLh9eIdFYN+hKSYBVU2PMnDAb/svkXhYGIIJKz9Hra1FPm3QPkmnsjgmRjKma04CzXOH7wtKfUzRivHPGbauwtMh9xjlgc+/u7ngJ+E=
+	t=1727880354; cv=none; b=RCqhaqRMK/DU0DCImClOLseO8i18PQkAuTtLJ1hEed3+aC8w5dSmfZOfplxBnm8eYvFYoihQALVHrUt9lsr83LocLSomewvYWV3doiZ2Vf0iZKRULTUAWJ3xub+JQx647WjiZ6RYeyWJMxDAkPVNtQi+QMDi3TedW3E1t4r3IXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878897; c=relaxed/simple;
-	bh=d5SiMG2agmkIvGSBmNC/TkBp6l8IG7/cNpPEjBao2Qg=;
+	s=arc-20240116; t=1727880354; c=relaxed/simple;
+	bh=77OyrkE1KMLyM79ZvN+8PE9vvjv3DErDmwGanJHsrmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JE8Olg1RsKaj4fwqxvkJKZTg/IjjPyYhhONYT3a7eQ65bB8TNtBY/DBx+7DsZ/Z5SA/gXJjyTS8aKGXPEBQRiZjuPMc1nEnJJ8weMpC1x7H2aSIG0ZK0N4y+0XEouyRYepWBGvN9Np5PwIMGj1Q2VWMKqWnbXNJg/23iOcMfS8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK+W8QoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB41C4CEC5;
-	Wed,  2 Oct 2024 14:21:36 +0000 (UTC)
+	 MIME-Version; b=YRPcDnzcBrpF0UqT9qnHF8f+Ek/LcT4aOUWv27psiRIylVV7QDTmYpcOnUZamTP703eTVbfWneY4bLOrFVTzJLi3/h94tc6bvZpW0VcgF5iqePm0eiU+s4j76zYpPV5t805CFZmVuBEV54bvBo/sRkz0hd/xfuPBdVRDdJyqAV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lke5wji2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6219BC4CEC2;
+	Wed,  2 Oct 2024 14:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878896;
-	bh=d5SiMG2agmkIvGSBmNC/TkBp6l8IG7/cNpPEjBao2Qg=;
+	s=korg; t=1727880354;
+	bh=77OyrkE1KMLyM79ZvN+8PE9vvjv3DErDmwGanJHsrmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iK+W8QoFVK1j0WkjYplNnZO7Z3a+ZcO+JnOiMqkmIrO7lv9/94qdwBIhxbRAAGrYi
-	 Fw1cun/VoNGJ1vrTRSfjgzQO8Qk5mIzHKh1w75uO9bbmpPJIv/SfuWj0izQOPRjGca
-	 CLgQKbLgRlVymuELzBwVBThW4sPgZMFs2Q1xzCH8=
+	b=lke5wji2f/nHxP1fMCS7IgO2MIzdALepPRwE8F1W1zK1mjLBa0e04qrS+vupeMAxy
+	 B+An0NWHEdIahV1wymOwvLe95QkrSpe45CLvNW/R99aNXXprLQHR855WyKW3mYwItP
+	 yqAcUZUTm7gDBCxWJyfiTwQnvO1r9lTR93AIaqcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.10 568/634] hwrng: cctrng - Add missing clk_disable_unprepare in cctrng_resume
+	Finn Thain <fthain@linux-m68k.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Stan Johnson <userm57@yahoo.com>
+Subject: [PATCH 6.6 429/538] scsi: mac_scsi: Disallow bus errors during PDMA send
 Date: Wed,  2 Oct 2024 15:01:08 +0200
-Message-ID: <20241002125833.536786366@linuxfoundation.org>
+Message-ID: <20241002125809.372122489@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit 4b7acc85de14ee8a2236f54445dc635d47eceac0 upstream.
+commit 5551bc30e4a69ad86d0d008e2f56cd59b6583476 upstream.
 
-Add the missing clk_disable_unprepare() before return in
-cctrng_resume().
+SD cards can produce write latency spikes on the order of a hundred
+milliseconds. If the target firmware does not hide that latency during DATA
+IN and OUT phases it can cause the PDMA circuitry to raise a processor bus
+fault which in turn leads to an unreliable byte count and a DMA overrun.
 
-Fixes: a583ed310bb6 ("hwrng: cctrng - introduce Arm CryptoCell driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The Last Byte Sent flag is used to detect the overrun but this mechanism is
+unreliable on some systems. Instead, set a DID_ERROR result whenever there
+is a bus fault during a PDMA send, unless the cause was a phase mismatch.
+
+Cc: stable@vger.kernel.org # 5.15+
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 7c1f3e3447a1 ("scsi: mac_scsi: Treat Last Byte Sent time-out as failure")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/cc38df687ace2c4ffc375a683b2502fc476b600d.1723001788.git.fthain@linux-m68k.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/cctrng.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/mac_scsi.c |   44 +++++++++++++++++++-------------------------
+ 1 file changed, 19 insertions(+), 25 deletions(-)
 
---- a/drivers/char/hw_random/cctrng.c
-+++ b/drivers/char/hw_random/cctrng.c
-@@ -622,6 +622,7 @@ static int __maybe_unused cctrng_resume(
- 	/* wait for Cryptocell reset completion */
- 	if (!cctrng_wait_for_reset_completion(drvdata)) {
- 		dev_err(dev, "Cryptocell reset not completed");
-+		clk_disable_unprepare(drvdata->clk);
- 		return -EBUSY;
+--- a/drivers/scsi/mac_scsi.c
++++ b/drivers/scsi/mac_scsi.c
+@@ -102,11 +102,15 @@ __setup("mac5380=", mac_scsi_setup);
+  * Linux SCSI drivers lack knowledge of the timing behaviour of SCSI targets
+  * so bus errors are unavoidable.
+  *
+- * If a MOVE.B instruction faults, we assume that zero bytes were transferred
+- * and simply retry. That assumption probably depends on target behaviour but
+- * seems to hold up okay. The NOP provides synchronization: without it the
+- * fault can sometimes occur after the program counter has moved past the
+- * offending instruction. Post-increment addressing can't be used.
++ * If a MOVE.B instruction faults during a receive operation, we assume the
++ * target sent nothing and try again. That assumption probably depends on
++ * target firmware but it seems to hold up okay. If a fault happens during a
++ * send operation, the target may or may not have seen /ACK and got the byte.
++ * It's uncertain so the whole SCSI command gets retried.
++ *
++ * The NOP is needed for synchronization because the fault address in the
++ * exception stack frame may or may not be the instruction that actually
++ * caused the bus error. Post-increment addressing can't be used.
+  */
+ 
+ #define MOVE_BYTE(operands) \
+@@ -243,22 +247,21 @@ static inline int mac_pdma_send(unsigned
+ 	if (n >= 1) {
+ 		MOVE_BYTE("%0@,%3@");
+ 		if (result)
+-			goto out;
++			return -1;
+ 	}
+ 	if (n >= 1 && ((unsigned long)addr & 1)) {
+ 		MOVE_BYTE("%0@,%3@");
+ 		if (result)
+-			goto out;
++			return -2;
+ 	}
+ 	while (n >= 32)
+ 		MOVE_16_WORDS("%0@+,%3@");
+ 	while (n >= 2)
+ 		MOVE_WORD("%0@+,%3@");
+ 	if (result)
+-		return start - addr; /* Negated to indicate uncertain length */
++		return start - addr - 1; /* Negated to indicate uncertain length */
+ 	if (n == 1)
+ 		MOVE_BYTE("%0@,%3@");
+-out:
+ 	return addr - start;
+ }
+ 
+@@ -307,7 +310,6 @@ static inline int macscsi_pread(struct N
+ {
+ 	u8 __iomem *s = hostdata->pdma_io + (INPUT_DATA_REG << 4);
+ 	unsigned char *d = dst;
+-	int result = 0;
+ 
+ 	hostdata->pdma_residual = len;
+ 
+@@ -343,11 +345,12 @@ static inline int macscsi_pread(struct N
+ 		if (bytes == 0)
+ 			continue;
+ 
+-		result = -1;
++		if (macscsi_wait_for_drq(hostdata) <= 0)
++			set_host_byte(hostdata->connected, DID_ERROR);
+ 		break;
  	}
  
+-	return result;
++	return 0;
+ }
+ 
+ static inline int macscsi_pwrite(struct NCR5380_hostdata *hostdata,
+@@ -355,7 +358,6 @@ static inline int macscsi_pwrite(struct
+ {
+ 	unsigned char *s = src;
+ 	u8 __iomem *d = hostdata->pdma_io + (OUTPUT_DATA_REG << 4);
+-	int result = 0;
+ 
+ 	hostdata->pdma_residual = len;
+ 
+@@ -377,17 +379,8 @@ static inline int macscsi_pwrite(struct
+ 			hostdata->pdma_residual -= bytes;
+ 		}
+ 
+-		if (hostdata->pdma_residual == 0) {
+-			if (NCR5380_poll_politely(hostdata, TARGET_COMMAND_REG,
+-			                          TCR_LAST_BYTE_SENT,
+-			                          TCR_LAST_BYTE_SENT,
+-			                          0) < 0) {
+-				scmd_printk(KERN_ERR, hostdata->connected,
+-				            "%s: Last Byte Sent timeout\n", __func__);
+-				result = -1;
+-			}
++		if (hostdata->pdma_residual == 0)
+ 			break;
+-		}
+ 
+ 		if (bytes > 0)
+ 			continue;
+@@ -400,11 +393,12 @@ static inline int macscsi_pwrite(struct
+ 		if (bytes == 0)
+ 			continue;
+ 
+-		result = -1;
++		if (macscsi_wait_for_drq(hostdata) <= 0)
++			set_host_byte(hostdata->connected, DID_ERROR);
+ 		break;
+ 	}
+ 
+-	return result;
++	return 0;
+ }
+ 
+ static int macscsi_dma_xfer_len(struct NCR5380_hostdata *hostdata,
 
 
 
