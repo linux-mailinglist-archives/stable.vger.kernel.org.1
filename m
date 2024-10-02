@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-80265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3DD98DCB3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E13498DA19
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 766FF2819CD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5ACD1F27AE0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F341D26EA;
-	Wed,  2 Oct 2024 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76E71D0E04;
+	Wed,  2 Oct 2024 14:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZsiX5ZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyrSv8F/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31431D0BBE;
-	Wed,  2 Oct 2024 14:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34811D0DF3;
+	Wed,  2 Oct 2024 14:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879863; cv=none; b=qWjp9WntWZwHDSNMl9hietSHNw1qjR3Pk/EwCX6U1b6R+yevCaAd2hojUxQclUQP9GgvpGXk9zmTM8F8kEcAR0XzjeBxvm7uTSmurf01BM1ol/yOgpYNnplo/AiGvPtlEu2Ff/u07TMFC86wDJR6ZRGICv53TSZbHBtBfmMwIX4=
+	t=1727878408; cv=none; b=DCPUKSSty2Mpb6rbZoOAuptoRoDIclauqoEYFnIpI028A3QbIkfM2npZCNTfe3P7Lbrcik0vQXkvYFKOWJeNYIf/Azobx5SFg58wemawAefdjXQyS9ulnM9RbigpWAHwV8P2aAd2Ghuu6gt1OA3LaobYn4ADCoz58+N1c4DFmC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879863; c=relaxed/simple;
-	bh=vPtuSU87oeGIoMXFUdb35jRJFTrTMXzlZaXx5+B6fDg=;
+	s=arc-20240116; t=1727878408; c=relaxed/simple;
+	bh=a3TxVzeaX8E1U09nIx9nhVzi0ubAGrGxbN84QhY6OwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxFKR9RX4VVjeR2WT0TcCu2IhrOiCrSmH1nOw+CTjFBgYCsoZgFo/HIewhsU8sgST3qOlrUE24ZxEsHCSf+tJKTwMXO5WWFScXhrsUAL47uw8HEAM/rE5LxN/NXwIPDs/Ft7Iz3r3XilSHyAGYBEnEGoZDg3AYbg5Cab6VNSuyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZsiX5ZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5642EC4CEC2;
-	Wed,  2 Oct 2024 14:37:43 +0000 (UTC)
+	 MIME-Version; b=YAyUom6m6Ydu9Ryjkx38favaHABp3rh8Si3sDHTJzjK4lakvega/UTF+UYGgFnRe0Pmrqo80TmiICUPr5sRCX5z56DMzR/6uCfTTnnc8xxY96zgG16rXmyt035/Pf+hcxwktycDvVWFOJVJTc0OlBuLTqnv2gme03hV6gDIvZmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyrSv8F/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F09C4CEC2;
+	Wed,  2 Oct 2024 14:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879863;
-	bh=vPtuSU87oeGIoMXFUdb35jRJFTrTMXzlZaXx5+B6fDg=;
+	s=korg; t=1727878408;
+	bh=a3TxVzeaX8E1U09nIx9nhVzi0ubAGrGxbN84QhY6OwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZsiX5ZKwJmBKi/r9CUyMsDHBqWbCtxrqK3XE89hpavkRt/nXabeci29uZgKUNosR
-	 ri3qxPKtUIFzMsPgZj0BV6T9QlzlPpvf+X7VjNXSrrEQQiN1xiduVXu46CjfsErAoP
-	 /9mDo1XDsDLpTDkByrRrSlsEoIKsE+UG0F44ZFng=
+	b=gyrSv8F/i7SuJrx10mlIP5t4RZqJXTugeodVpUk0lQ0TVNLgbCzi+vUbRrFBov/h9
+	 QAWRdEUl3ReRkECUni3tZyluh4FUy8eJd3acX6+8UL3WKJ9h7MXzZgWCIPGNYcqmL8
+	 OD4M/74rX+a1VqXSXvcMo1glnXuw6ce6hfZg/cs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Ingo Molnar <mingo@kernel.org>,
+	Jonas Blixt <jonas.blixt@actia.se>,
+	Anson Huang <anson.huang@nxp.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/538] sched/numa: Rename vma_numab_state::access_pids[] => ::pids_active[], ::next_pid_reset => ::pids_active_reset
+Subject: [PATCH 6.10 372/634] watchdog: imx_sc_wdt: Dont disable WDT in suspend
 Date: Wed,  2 Oct 2024 14:57:52 +0200
-Message-ID: <20241002125801.449503652@linuxfoundation.org>
+Message-ID: <20241002125825.781665317@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mel Gorman <mgorman@techsingularity.net>
+From: Jonas Blixt <jonas.blixt@actia.se>
 
-[ Upstream commit f3a6c97940fbd25d6c84c2d5642338fc99a9b35b ]
+[ Upstream commit 2d9d6d300fb0a4ae4431bb308027ac9385746d42 ]
 
-The access_pids[] field name is somewhat ambiguous as no PIDs are accessed.
-Similarly, it's not clear that next_pid_reset is related to access_pids[].
-Rename the fields to more accurately reflect their purpose.
+Parts of the suspend and resume chain is left unprotected if we disable
+the WDT here.
 
-[ mingo: Rename in the comments too. ]
+>From experiments we can see that the SCU disables and re-enables the WDT
+when we enter and leave suspend to ram. By not touching the WDT here we
+are protected by the WDT all the way to the SCU.
 
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231010083143.19593-3-mgorman@techsingularity.net
-Stable-dep-of: f22cde4371f3 ("sched/numa: Fix the vma scan starving issue")
+Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
+CC: Anson Huang <anson.huang@nxp.com>
+Fixes: 986857acbc9a ("watchdog: imx_sc: Add i.MX system controller watchdog support")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240801121845.1465765-1-jonas.blixt@actia.se
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm.h       |  4 ++--
- include/linux/mm_types.h |  6 +++---
- kernel/sched/fair.c      | 12 ++++++------
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/watchdog/imx_sc_wdt.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 830b925c2d005..b6a4d6471b4a7 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1732,8 +1732,8 @@ static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
- 	unsigned int pid_bit;
- 
- 	pid_bit = hash_32(current->pid, ilog2(BITS_PER_LONG));
--	if (vma->numab_state && !test_bit(pid_bit, &vma->numab_state->access_pids[1])) {
--		__set_bit(pid_bit, &vma->numab_state->access_pids[1]);
-+	if (vma->numab_state && !test_bit(pid_bit, &vma->numab_state->pids_active[1])) {
-+		__set_bit(pid_bit, &vma->numab_state->pids_active[1]);
- 	}
+diff --git a/drivers/watchdog/imx_sc_wdt.c b/drivers/watchdog/imx_sc_wdt.c
+index e51fe1b78518f..d73076b686d8c 100644
+--- a/drivers/watchdog/imx_sc_wdt.c
++++ b/drivers/watchdog/imx_sc_wdt.c
+@@ -216,29 +216,6 @@ static int imx_sc_wdt_probe(struct platform_device *pdev)
+ 	return devm_watchdog_register_device(dev, wdog);
  }
- #else /* !CONFIG_NUMA_BALANCING */
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index b53a13d15bbae..80d9d1b7685c6 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -559,10 +559,10 @@ struct vma_numab_state {
- 	unsigned long next_scan;
  
- 	/*
--	 * Time in jiffies when access_pids[] is reset to
-+	 * Time in jiffies when pids_active[] is reset to
- 	 * detect phase change behaviour:
- 	 */
--	unsigned long next_pid_reset;
-+	unsigned long pids_active_reset;
- 
- 	/*
- 	 * Approximate tracking of PIDs that trapped a NUMA hinting
-@@ -574,7 +574,7 @@ struct vma_numab_state {
- 	 * Window moves after next_pid_reset has expired approximately
- 	 * every VMA_PID_RESET_PERIOD jiffies:
- 	 */
--	unsigned long access_pids[2];
-+	unsigned long pids_active[2];
+-static int __maybe_unused imx_sc_wdt_suspend(struct device *dev)
+-{
+-	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
+-
+-	if (watchdog_active(&imx_sc_wdd->wdd))
+-		imx_sc_wdt_stop(&imx_sc_wdd->wdd);
+-
+-	return 0;
+-}
+-
+-static int __maybe_unused imx_sc_wdt_resume(struct device *dev)
+-{
+-	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
+-
+-	if (watchdog_active(&imx_sc_wdd->wdd))
+-		imx_sc_wdt_start(&imx_sc_wdd->wdd);
+-
+-	return 0;
+-}
+-
+-static SIMPLE_DEV_PM_OPS(imx_sc_wdt_pm_ops,
+-			 imx_sc_wdt_suspend, imx_sc_wdt_resume);
+-
+ static const struct of_device_id imx_sc_wdt_dt_ids[] = {
+ 	{ .compatible = "fsl,imx-sc-wdt", },
+ 	{ /* sentinel */ }
+@@ -250,7 +227,6 @@ static struct platform_driver imx_sc_wdt_driver = {
+ 	.driver		= {
+ 		.name	= "imx-sc-wdt",
+ 		.of_match_table = imx_sc_wdt_dt_ids,
+-		.pm	= &imx_sc_wdt_pm_ops,
+ 	},
  };
- 
- /*
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 5fc0d9cc9d9d7..d07fb0a0da808 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3200,7 +3200,7 @@ static bool vma_is_accessed(struct vm_area_struct *vma)
- 	if (READ_ONCE(current->mm->numa_scan_seq) < 2)
- 		return true;
- 
--	pids = vma->numab_state->access_pids[0] | vma->numab_state->access_pids[1];
-+	pids = vma->numab_state->pids_active[0] | vma->numab_state->pids_active[1];
- 	return test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids);
- }
- 
-@@ -3316,7 +3316,7 @@ static void task_numa_work(struct callback_head *work)
- 				msecs_to_jiffies(sysctl_numa_balancing_scan_delay);
- 
- 			/* Reset happens after 4 times scan delay of scan start */
--			vma->numab_state->next_pid_reset =  vma->numab_state->next_scan +
-+			vma->numab_state->pids_active_reset =  vma->numab_state->next_scan +
- 				msecs_to_jiffies(VMA_PID_RESET_PERIOD);
- 		}
- 
-@@ -3337,11 +3337,11 @@ static void task_numa_work(struct callback_head *work)
- 		 * vma for recent access to avoid clearing PID info before access..
- 		 */
- 		if (mm->numa_scan_seq &&
--				time_after(jiffies, vma->numab_state->next_pid_reset)) {
--			vma->numab_state->next_pid_reset = vma->numab_state->next_pid_reset +
-+				time_after(jiffies, vma->numab_state->pids_active_reset)) {
-+			vma->numab_state->pids_active_reset = vma->numab_state->pids_active_reset +
- 				msecs_to_jiffies(VMA_PID_RESET_PERIOD);
--			vma->numab_state->access_pids[0] = READ_ONCE(vma->numab_state->access_pids[1]);
--			vma->numab_state->access_pids[1] = 0;
-+			vma->numab_state->pids_active[0] = READ_ONCE(vma->numab_state->pids_active[1]);
-+			vma->numab_state->pids_active[1] = 0;
- 		}
- 
- 		do {
+ module_platform_driver(imx_sc_wdt_driver);
 -- 
 2.43.0
 
