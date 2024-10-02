@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-80432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842D798DD66
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F9798DD96
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 491E728345C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DA141F26838
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2951C1D0786;
-	Wed,  2 Oct 2024 14:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ACC1D049A;
+	Wed,  2 Oct 2024 14:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWacxm5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaS1E7GZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAC31D0F44;
-	Wed,  2 Oct 2024 14:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7421D07B5;
+	Wed,  2 Oct 2024 14:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880357; cv=none; b=U/tMZun2xVvaNnKFCoXJY+VdNDzQMEUbyS4sVh52gqIoL2Sf/8iyDTjwUuEI1m3ZOxC7J8sEcdlI7jJIcbKIskkP9SXm/qmeOQCImc8lIEg67+Sll4ExFwRs5rAhwwML8H3JT1pvQPva/sH+d1CaOvySVrhvfeVqQC7LJYlboxs=
+	t=1727880480; cv=none; b=n0kythA0GF3ULtrFzORTKdoa6sD55k6OpEwG+Oljb9LdVAOTFl4HMhnwhOKDsssZJjv9eQPYFwFOL4c3ZX+KGiInaSDpoosIVdelsUMmF44M+bvQBzC5ZIrzNuA2XT1or0E3NjJSeW9i1LmblcBP9oDajj9S8jOW2Ue4V60EiYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880357; c=relaxed/simple;
-	bh=8G1gdZNaz69ZCqCAHm/SzYgL3t6obcjlrCDvhgLOLVc=;
+	s=arc-20240116; t=1727880480; c=relaxed/simple;
+	bh=7XvoIITYLlCJWaCjskALd19nq7m6PoAo168WQOWwPU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ujiW4BOz0W2ImezhQM3kz0VDFHQWyd58UY+E7DTS91g2csC/XLGOmBGUq1AhG5eZ+PinyHmyDuBrL3UQeCFlr/5Z1xAmKxQgBL5K9KVpvfzDkaMtVFgCK36B3htr2WqBOA3iXtl70z7u4vTPfyNVSfH2QiCxBWMO4xq/3JB8c/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWacxm5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D034C4CEC2;
-	Wed,  2 Oct 2024 14:45:57 +0000 (UTC)
+	 MIME-Version; b=fBZLwVvGGZXnmSFCRzvqwtfUZ1kHFTmrxUMkpSAfKMka5YYzbdfVNxZk5em9PvQSHsZFLBzPPTDkR1An2UKQhPllR3yo3kwf/g2or/mibyNuExAwtwsvsskV0WjcOwfQjHMfRURVJ7iyLQSfsEeKHTBpdA4y6bM8CiL7ow1cgnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaS1E7GZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4376BC4CECE;
+	Wed,  2 Oct 2024 14:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880357;
-	bh=8G1gdZNaz69ZCqCAHm/SzYgL3t6obcjlrCDvhgLOLVc=;
+	s=korg; t=1727880480;
+	bh=7XvoIITYLlCJWaCjskALd19nq7m6PoAo168WQOWwPU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWacxm5za0Dp9tJtp2XDL3557XodZ4p6wxJc3TrgIQTfjDOnjfJ1h3UYcfF3+nV8t
-	 9tAOPT8EObpz7atSgkSsQaTzMueITMqSJJpI1YlRfHlUOJhhHkvINvHWeUP/cwUaXj
-	 Jn/lsmCJ7+7UmTK2cUBk5nKjs8m4WKxv6AmKHRGU=
+	b=yaS1E7GZ857RqIbpFYDGyW7Y06WlzbdN9LqjnRPVwzdOYCFAlSSrLIUf3hv5PI7kH
+	 Ua27pdCggwRtBjqceIkFU/pqh1eYw4Up6pvQqdEsh/jXXMsFx6V3Y3jysCPIMZTbFK
+	 yzZ4wPYWrz6g47T/SsxIaQzx4jqraTPbT+rPhH2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 430/538] can: esd_usb: Remove CAN_CTRLMODE_3_SAMPLES for CAN-USB/3-FD
-Date: Wed,  2 Oct 2024 15:01:09 +0200
-Message-ID: <20241002125809.412493070@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 431/538] wifi: rtw88: Fix USB/SDIO devices not transmitting beacons
+Date: Wed,  2 Oct 2024 15:01:10 +0200
+Message-ID: <20241002125809.451559140@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -60,69 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Mätje <stefan.maetje@esd.eu>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 75b3189540578f96b4996e4849b6649998f49455 upstream.
+commit faa2e484b393c56bc1243dca6676a70bc485f775 upstream.
 
-Remove the CAN_CTRLMODE_3_SAMPLES announcement for CAN-USB/3-FD devices
-because these devices don't support it.
+All USB devices supported by rtw88 have the same problem: they don't
+transmit beacons in AP mode. (Some?) SDIO devices are also affected.
+The cause appears to be clearing BIT_EN_BCNQ_DL of REG_FWHW_TXQ_CTRL
+before uploading the beacon reserved page, so don't clear the bit for
+USB and SDIO devices.
 
-The hardware has a Microchip SAM E70 microcontroller that uses a Bosch
-MCAN IP core as CAN FD controller. But this MCAN core doesn't support
-triple sampling.
+Tested with RTL8811CU and RTL8723DU.
 
-Fixes: 80662d943075 ("can: esd_usb: Add support for esd CAN-USB/3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20240904222740.2985864-2-stefan.maetje@esd.eu
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: <stable@vger.kernel.org> # 6.6.x
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/49de73b5-698f-4865-ab63-100e28dfc4a1@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/esd_usb.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw88/fw.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index 41a0e4261d15..03ad10b01867 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -3,7 +3,7 @@
-  * CAN driver for esd electronics gmbh CAN-USB/2, CAN-USB/3 and CAN-USB/Micro
-  *
-  * Copyright (C) 2010-2012 esd electronic system design gmbh, Matthias Fuchs <socketcan@esd.eu>
-- * Copyright (C) 2022-2023 esd electronics gmbh, Frank Jungclaus <frank.jungclaus@esd.eu>
-+ * Copyright (C) 2022-2024 esd electronics gmbh, Frank Jungclaus <frank.jungclaus@esd.eu>
-  */
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -1388,10 +1388,12 @@ int rtw_fw_write_data_rsvd_page(struct r
+ 	val |= BIT_ENSWBCN >> 8;
+ 	rtw_write8(rtwdev, REG_CR + 1, val);
  
- #include <linux/can.h>
-@@ -1116,9 +1116,6 @@ static int esd_usb_3_set_bittiming(struct net_device *netdev)
- 	if (priv->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
- 		flags |= ESD_USB_3_BAUDRATE_FLAG_LOM;
+-	val = rtw_read8(rtwdev, REG_FWHW_TXQ_CTRL + 2);
+-	bckp[1] = val;
+-	val &= ~(BIT_EN_BCNQ_DL >> 16);
+-	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, val);
++	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE) {
++		val = rtw_read8(rtwdev, REG_FWHW_TXQ_CTRL + 2);
++		bckp[1] = val;
++		val &= ~(BIT_EN_BCNQ_DL >> 16);
++		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, val);
++	}
  
--	if (priv->can.ctrlmode & CAN_CTRLMODE_3_SAMPLES)
--		flags |= ESD_USB_3_BAUDRATE_FLAG_TRS;
--
- 	baud_x->nom.brp = cpu_to_le16(nom_bt->brp & (nom_btc->brp_max - 1));
- 	baud_x->nom.sjw = cpu_to_le16(nom_bt->sjw & (nom_btc->sjw_max - 1));
- 	baud_x->nom.tseg1 = cpu_to_le16((nom_bt->prop_seg + nom_bt->phase_seg1)
-@@ -1219,7 +1216,6 @@ static int esd_usb_probe_one_net(struct usb_interface *intf, int index)
- 	switch (le16_to_cpu(dev->udev->descriptor.idProduct)) {
- 	case ESD_USB_CANUSB3_PRODUCT_ID:
- 		priv->can.clock.freq = ESD_USB_3_CAN_CLOCK;
--		priv->can.ctrlmode_supported |= CAN_CTRLMODE_3_SAMPLES;
- 		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
- 		priv->can.bittiming_const = &esd_usb_3_nom_bittiming_const;
- 		priv->can.data_bittiming_const = &esd_usb_3_data_bittiming_const;
--- 
-2.46.2
-
+ 	ret = rtw_hci_write_data_rsvd_page(rtwdev, buf, size);
+ 	if (ret) {
+@@ -1416,7 +1418,8 @@ restore:
+ 	rsvd_pg_head = rtwdev->fifo.rsvd_boundary;
+ 	rtw_write16(rtwdev, REG_FIFOPAGE_CTRL_2,
+ 		    rsvd_pg_head | BIT_BCN_VALID_V1);
+-	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, bckp[1]);
++	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE)
++		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, bckp[1]);
+ 	rtw_write8(rtwdev, REG_CR + 1, bckp[0]);
+ 
+ 	return ret;
 
 
 
