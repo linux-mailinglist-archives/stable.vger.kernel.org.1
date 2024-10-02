@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8483B98D5A6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC8E98D8F4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B603B1C215A6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E1801C215EE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48321D0DC8;
-	Wed,  2 Oct 2024 13:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC70F1D0420;
+	Wed,  2 Oct 2024 14:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvVHIAx8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpKmG0DV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1161D0799;
-	Wed,  2 Oct 2024 13:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C611D1728;
+	Wed,  2 Oct 2024 14:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875920; cv=none; b=NsaWD2FgGwQHg2l9fWV4wX85t6JDgTnKuSOgOUdVzypX+DZSUtSHjZxvNkKylAtqmn/m5OO70hL9tG99rfndzYhmJ52ILNnWuYT7xfVEFG+xI99iIUao2TZv/RbWGLQeEpERARl8Y3mDvI0mZIUdMFJo4xqtQ7wm39kMfF7zqnU=
+	t=1727877727; cv=none; b=ZfImJpdPxQe9WBnQxzhuiSnRS0GvcJitPGHI7nHDZd4m1v/oMNx7k1XadakPMTV8dLecB9HpWCYdvKYZGvMJDXxxTYOA39+e3vE/ezQPelWC1U3Lfo2+0X2NYCPdmTzyhOLdPyr7KJtE6Fu/BldVkdJRTmvZFPUW114jPI98FZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875920; c=relaxed/simple;
-	bh=+Nff7lImidNuoF5Ce+Dhca3A3U7TTexo1YDztBUkCRc=;
+	s=arc-20240116; t=1727877727; c=relaxed/simple;
+	bh=EJoRk00ZcCSzZmWI0u1xuOD22LQ3GJKlGaWVxUs9hzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRg+VmGtCqIf96Ro6HFjmYNO57k9HLEbT89b3McQuWq47q3QAdnfH17mXgj30Iv6nsrY+ilgl91O31IngypNFRJcbTKiMA+Ntkw8GDq+DbR21JADeNdwDCrfhl+i60Ieeh8dlBWdbx6NuavXmGRtKpK7TUJCGJrz4IjewCrPX9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvVHIAx8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB781C4CEC5;
-	Wed,  2 Oct 2024 13:31:59 +0000 (UTC)
+	 MIME-Version; b=VSb2KdDSI/IWLCy6qLYRv3fkI9d7Z54zfkmBJjhw3+XccYM5WgpHFn+RK2kb0kdTxtjHjU5n7MyefyOdYvu9jwIrutc46On3tD9FPz0I6WMpgV7Fe8EvwBAPdrf/3Qivu/n5x4rKk1ul4zq6vs7iE551m6KBZ030dkMqC6QSXuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpKmG0DV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6143C4CEC2;
+	Wed,  2 Oct 2024 14:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875920;
-	bh=+Nff7lImidNuoF5Ce+Dhca3A3U7TTexo1YDztBUkCRc=;
+	s=korg; t=1727877727;
+	bh=EJoRk00ZcCSzZmWI0u1xuOD22LQ3GJKlGaWVxUs9hzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvVHIAx8lbn8lGu7vVZO+WRykRW7qo6jQesauYBy1u6p1d7sw0MeyZIUCD/WhQGzx
-	 xjblHP7r8cms7bLdxwjirf9BTdpu470ZUc5xP9P34Cfx4JNxzn0XJ6MtHaOKvEXTH1
-	 2J8AdEV8mcu/QrBoZW4mIFei0dBJiYjFBnmF5erk=
+	b=DpKmG0DVjwZ0ZXeUdf82jQzdNoDuJPcbnbverxLTGavdyrQQ+w6Lmfrk1q53x2T2H
+	 h1hu9gIsqYdL5Cy9H6f0vqPPTxyRdy8Q9g7UDvO3XvYe5rhGT/cVbFJmmmqmFHS6Lb
+	 N0GFdgPyF8lDUGcZcFw8Q7XIGR3JJ9PUB7g7tit8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 267/695] selftests/bpf: Drop unneeded error.h includes
-Date: Wed,  2 Oct 2024 14:54:25 +0200
-Message-ID: <20241002125833.106942628@linuxfoundation.org>
+Subject: [PATCH 6.10 166/634] iommu/amd: Convert comma to semicolon
+Date: Wed,  2 Oct 2024 14:54:26 +0200
+Message-ID: <20241002125817.663222958@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 69f409469c9b1515a5db40d5a36fda372376fa2d ]
+[ Upstream commit 86c5eac3c4c4a2ee124d202af9a141bd0457ee68 ]
 
-The addition of general support for unprivileged tests in test_loader.c
-breaks building test_verifier on non-glibc (e.g. musl) systems, due to the
-inclusion of glibc extension '<error.h>' in 'unpriv_helpers.c'. However,
-the header is actually not needed, so remove it to restore building.
+Replace a comma between expression statements by a semicolon.
 
-Similarly for sk_lookup.c and flow_dissector.c, error.h is not necessary
-and causes problems, so drop them.
-
-Fixes: 1d56ade032a4 ("selftests/bpf: Unprivileged tests for test_loader.c")
-Fixes: 0ab5539f8584 ("selftests/bpf: Tests for BPF_SK_LOOKUP attach point")
-Fixes: 0905beec9f52 ("selftests/bpf: run flow dissector tests in skb-less mode")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/5664367edf5fea4f3f4b4aec3b182bcfc6edff9c.1721713597.git.tony.ambardar@gmail.com
+Fixes: c9b258c6be09 ("iommu/amd: Prepare for generic IO page table framework")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20240716072545.968690-1-nichen@iscas.ac.cn
+Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: 7a41dcb52f9d ("iommu/amd: Set the pgsize_bitmap correctly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 -
- tools/testing/selftests/bpf/prog_tests/sk_lookup.c      | 1 -
- tools/testing/selftests/bpf/unpriv_helpers.c            | 1 -
- 3 files changed, 3 deletions(-)
+ drivers/iommu/amd/io_pgtable.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-index 9e5f38739104b..9625e6d217913 100644
---- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-+++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <test_progs.h>
- #include <network_helpers.h>
--#include <error.h>
- #include <linux/if_tun.h>
- #include <sys/uio.h>
+diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
+index 9d9a7fde59e75..1074ee25064d0 100644
+--- a/drivers/iommu/amd/io_pgtable.c
++++ b/drivers/iommu/amd/io_pgtable.c
+@@ -588,9 +588,9 @@ static struct io_pgtable *v1_alloc_pgtable(struct io_pgtable_cfg *cfg, void *coo
+ {
+ 	struct amd_io_pgtable *pgtable = io_pgtable_cfg_to_data(cfg);
  
-diff --git a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-index ae87c00867ba4..dcb2f62cdec6c 100644
---- a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-@@ -18,7 +18,6 @@
- #include <arpa/inet.h>
- #include <assert.h>
- #include <errno.h>
--#include <error.h>
- #include <fcntl.h>
- #include <sched.h>
- #include <stdio.h>
-diff --git a/tools/testing/selftests/bpf/unpriv_helpers.c b/tools/testing/selftests/bpf/unpriv_helpers.c
-index b6d016461fb02..220f6a9638134 100644
---- a/tools/testing/selftests/bpf/unpriv_helpers.c
-+++ b/tools/testing/selftests/bpf/unpriv_helpers.c
-@@ -2,7 +2,6 @@
+-	cfg->pgsize_bitmap  = AMD_IOMMU_PGSIZES,
+-	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE,
+-	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE,
++	cfg->pgsize_bitmap  = AMD_IOMMU_PGSIZES;
++	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE;
++	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE;
+ 	cfg->tlb            = &v1_flush_ops;
  
- #include <stdbool.h>
- #include <stdlib.h>
--#include <error.h>
- #include <stdio.h>
- #include <string.h>
- #include <unistd.h>
+ 	pgtable->iop.ops.map_pages    = iommu_v1_map_pages;
 -- 
 2.43.0
 
