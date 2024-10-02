@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885DB98DD8D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB33798DB1C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4868E2857B0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25DEEB22B4C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FFD1D1514;
-	Wed,  2 Oct 2024 14:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7921D12F6;
+	Wed,  2 Oct 2024 14:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mch5EI4n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Edw1o2I1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862721D0493;
-	Wed,  2 Oct 2024 14:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC6B1D097D;
+	Wed,  2 Oct 2024 14:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880448; cv=none; b=MvE0f1gi9DgaqA8266lAjvdVRUYP2FPupZInG7vsv6puEepkAvKPBwUp3aHZYUTRFRrU5hWLh8TG53WVfUK14ChG+grcBI338akyYyIyoZPTeDhjobumZZdtsp7PnyHxyFKRvExw17ost7HPH4oJ02PtjkUPVzkAKt4wuDxIl0c=
+	t=1727878987; cv=none; b=JyLLZVJOampoq4EL5F2krZa7KePwKs0VkSlguCwuF0is4KGoK4uLpTR/3WMG1oVZyQ9hg3hoTnWTG7aR9N3uY2eN0j30NI1LBt7xFMFBrwY6LZ2RWpFb90AyexLkcn3TVFl/8o61F6hO9u1Ad/EaF08FxDZcl0bkJmcFuIJ8/xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880448; c=relaxed/simple;
-	bh=DByu+BY/1xKkkJetk5Oesu8pgpTp22mJEN4tk5XlLiI=;
+	s=arc-20240116; t=1727878987; c=relaxed/simple;
+	bh=qVwByCmo/a4NNxSTpjJSmQmTcpWl66G37Btiky4GS9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTwGmRT1kES0fq64lO/awhjR+MGOTWhkF+nqNoAkfSXzNDcEDzYM0ln3MF6KG5442r/HRNXZvfxrnlXRyVIll33OTgHGhWaWqkx09FgVeJM3bRSfePz9F8b2wSGjF0gGMnlTq9Q/nzNXFLR+ZAkYXCEc4Mo1uhK7Tj4zBuGl+ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mch5EI4n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDA0C4CECD;
-	Wed,  2 Oct 2024 14:47:27 +0000 (UTC)
+	 MIME-Version; b=IjAJjt4y61yL1jlvQj4UMDHMdcuVKzWzmJcygF/7AV3RSqpGrJJ0H3U7GYt9lCbVTaoqFrIzc/MuQgj7v31a+Q4GGoDomurrlly89BBs6JntNaCg7FcnwzigS5fr3XSABXXM1rTj/NG8znlK6T9wIwZ8XzY+D7JwepxfFY05HDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Edw1o2I1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAC4C4CEC2;
+	Wed,  2 Oct 2024 14:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880448;
-	bh=DByu+BY/1xKkkJetk5Oesu8pgpTp22mJEN4tk5XlLiI=;
+	s=korg; t=1727878987;
+	bh=qVwByCmo/a4NNxSTpjJSmQmTcpWl66G37Btiky4GS9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mch5EI4nMvrMG9L5WZiRGRj00rdSEYFrFmSc8s0Jem9vw1EOib5ixFMBVdqpApKF+
-	 +jX4VqgE8j9RfaS0hCNKA274cH2wnXIYGvTFe68/48wjtYUQSyj7c3KAlubR6tUdo4
-	 QQFlelHdCBtV20i6HsN9ikLofRbXoRbOKN+ns04g=
+	b=Edw1o2I1Y7rRevnUDTtZcRfzz/S6ivDNJ1wcgtamaVd6Ib0HrWJQQyX2VJ4GZQGDJ
+	 2IXC8QZNULtXQTKsBskCA8hILjKerzYCrPxwRCyt555hagMRvG7ua+bBOiHF8HYx36
+	 vVUPwA2LHD9GKfB3KRP3ppu0jenpxuQ8Ofb8BCUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 461/538] f2fs: fix several potential integer overflows in file offsets
+	"Alexey Gladkov (Intel)" <legion@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 600/634] x86/tdx: Fix "in-kernel MMIO" check
 Date: Wed,  2 Oct 2024 15:01:40 +0200
-Message-ID: <20241002125810.641854379@linuxfoundation.org>
+Message-ID: <20241002125834.799529278@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Alexey Gladkov (Intel) <legion@kernel.org>
 
-commit 1cade98cf6415897bf9342ee451cc5b40b58c638 upstream.
+[ Upstream commit d4fc4d01471528da8a9797a065982e05090e1d81 ]
 
-When dealing with large extents and calculating file offsets by
-summing up according extent offsets and lengths of unsigned int type,
-one may encounter possible integer overflow if the values are
-big enough.
+TDX only supports kernel-initiated MMIO operations. The handle_mmio()
+function checks if the #VE exception occurred in the kernel and rejects
+the operation if it did not.
 
-Prevent this from happening by expanding one of the addends to
-(pgoff_t) type.
+However, userspace can deceive the kernel into performing MMIO on its
+behalf. For example, if userspace can point a syscall to an MMIO address,
+syscall does get_user() or put_user() on it, triggering MMIO #VE. The
+kernel will treat the #VE as in-kernel MMIO.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Ensure that the target MMIO address is within the kernel before decoding
+instruction.
 
-Fixes: d323d005ac4a ("f2fs: support file defragment")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
+Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion%40kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c |    4 ++--
- fs/f2fs/file.c         |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -367,7 +367,7 @@ static unsigned int __free_extent_tree(s
- static void __drop_largest_extent(struct extent_tree *et,
- 					pgoff_t fofs, unsigned int len)
- {
--	if (fofs < et->largest.fofs + et->largest.len &&
-+	if (fofs < (pgoff_t)et->largest.fofs + et->largest.len &&
- 			fofs + len > et->largest.fofs) {
- 		et->largest.len = 0;
- 		et->largest_updated = true;
-@@ -457,7 +457,7 @@ static bool __lookup_extent_tree(struct
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index da8b66dce0da5..327c45c5013fe 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -16,6 +16,7 @@
+ #include <asm/insn-eval.h>
+ #include <asm/pgtable.h>
+ #include <asm/set_memory.h>
++#include <asm/traps.h>
  
- 	if (type == EX_READ &&
- 			et->largest.fofs <= pgofs &&
--			et->largest.fofs + et->largest.len > pgofs) {
-+			(pgoff_t)et->largest.fofs + et->largest.len > pgofs) {
- 		*ei = et->largest;
- 		ret = true;
- 		stat_inc_largest_node_hit(sbi);
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2687,7 +2687,7 @@ static int f2fs_defragment_range(struct
- 	 * block addresses are continuous.
- 	 */
- 	if (f2fs_lookup_read_extent_cache(inode, pg_start, &ei)) {
--		if (ei.fofs + ei.len >= pg_end)
-+		if ((pgoff_t)ei.fofs + ei.len >= pg_end)
- 			goto out;
+ /* MMIO direction */
+ #define EPT_READ	0
+@@ -433,6 +434,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+ 			return -EINVAL;
  	}
  
++	if (!fault_in_kernel_space(ve->gla)) {
++		WARN_ONCE(1, "Access to userspace address is not supported");
++		return -EINVAL;
++	}
++
+ 	/*
+ 	 * Reject EPT violation #VEs that split pages.
+ 	 *
+-- 
+2.43.0
+
 
 
 
