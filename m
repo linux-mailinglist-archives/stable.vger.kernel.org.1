@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-79410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2DA198D81C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF0C98D540
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9985A1F23137
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 923311C21BCF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB2B1D0BB3;
-	Wed,  2 Oct 2024 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166D31D0494;
+	Wed,  2 Oct 2024 13:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuAqnXvt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHT/Clao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A90F1D0795;
-	Wed,  2 Oct 2024 13:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CAF1D04A2;
+	Wed,  2 Oct 2024 13:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877368; cv=none; b=hU9dBCKlH1b20L4R9IySNto0ZE+Bfic3bnqgqVWPYGbkjtmrcmtHye6B0TrgdN/5Usxj8nRNZFSFxkPd5VZpARe4EDYruv3uukx7Sai17HNgRiqgYgLEHcepeJW+6cPwrMiFPx/wGTeqniF+1wvNUE/pgCJ/NLMtqxmqPQ+F43o=
+	t=1727875698; cv=none; b=V+9Gnq19New/8uJvo9YiWl7MUqVgP+WccoSH+RrArEYpEj+7gjiPhCcVgnZixSTQlPIwR1VkDFIiJ0Nox21p6Ve89bR9Juz8CWviDe2ZxbpRxK4YpZxrDwnSZQyCII+BGUctmI8p7PPa564gvsmEYc1DJ9dCzMilYOYgNcUikVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877368; c=relaxed/simple;
-	bh=w3KCrI7KttNBJdtS2L4hOau3lO/vV7SVKYRcd2BSk34=;
+	s=arc-20240116; t=1727875698; c=relaxed/simple;
+	bh=RDCG5fdno0ybqxi3W8UFFTQRtz3xktuDIGnayGSKaxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyjfc0NnapN8vlKsVAo7vFIpixxtDlaswgqnYPZQjGZFMllQ+G6z9ztcKKENdJ9F/uo/c+eRFEZWKgcD3WcN88z2D+YS0ysJsH5+tC6bp5y0M0KLd/qHkUqwX4zqkgr0AjlpRkYVjTt+BbSsoqkfMKUIfIVV6UJ4sI4BJ3s2Nnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuAqnXvt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A8BC4CECD;
-	Wed,  2 Oct 2024 13:56:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DfjMN4M5BD8pzK4b/vNzlt+z5ES40L7/jWr03R/d2r6uIw7kC02Yl6dN/CV9/YcRmLc3rmsiZTQY4HNSHhbRJ5IleYc/1piTMUhNaW3E83GxcchxTJi3EPtjlAGO9WoxD+oDxPAY09i6UT1AWtI3yx/JL4h2l7MRNHUVi2X1FMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHT/Clao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F139C4CEC5;
+	Wed,  2 Oct 2024 13:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877367;
-	bh=w3KCrI7KttNBJdtS2L4hOau3lO/vV7SVKYRcd2BSk34=;
+	s=korg; t=1727875698;
+	bh=RDCG5fdno0ybqxi3W8UFFTQRtz3xktuDIGnayGSKaxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuAqnXvtLx8xViMHF8lG0ywTyplthcXXxhqUVupJA6wOdnATIKI6BwOaHo8XNBOv3
-	 +e0cds3wqUYakakPSl+67RjUnG0xfhlrl83gkE9ZV/6aJEGIJoeoV0T/YAx+POAsiT
-	 oXogxGfF5Xl1zrfThcp3FfH+c2ZDY51Eydrb0oYM=
+	b=JHT/ClaofF8iHCeb0yb8gtq2OK2L+rp+gEIzML/MHQY3tBO4ckfg4Q9eQ/sYf3ahv
+	 tmPp1w8HRddBn+dgAsyySuzTDjxr0TYwA3nT8//TPkAwPQl6Lg9PiqnQybac23hFCi
+	 y0rJ9Dhfyp/W0nPhOQ+18fJ3G0xsmiSgCzZq/FBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 057/634] netfilter: nft_dynset: annotate data-races around set timeout
+Subject: [PATCH 6.11 159/695] arm64: dts: mediatek: mt8195: Correct clock order for dp_intf*
 Date: Wed,  2 Oct 2024 14:52:37 +0200
-Message-ID: <20241002125813.357352781@linuxfoundation.org>
+Message-ID: <20241002125828.823812996@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit c5ad8ed61fa8410b272c077ec167c593602b4542 ]
+[ Upstream commit 51bc68debab9e30b50c6352315950f3cfc309b32 ]
 
-set timeout can be read locklessly while being updated from control
-plane, add annotation.
+The clocks for dp_intf* device nodes are given in the wrong order,
+causing the binding validation to fail.
 
-Fixes: 123b99619cca ("netfilter: nf_tables: honor set timeout and garbage collection updates")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 6c2503b5856a ("arm64: dts: mt8195: Add dp-intf nodes")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20240802070951.1086616-1-wenst@chromium.org
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_dynset.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index b4ada3ab21679..489a9b34f1ecc 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -56,7 +56,7 @@ static struct nft_elem_priv *nft_dynset_new(struct nft_set *set,
- 	if (!atomic_add_unless(&set->nelems, 1, set->size))
- 		return NULL;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 2ee45752583c0..98c15eb68589a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -3251,10 +3251,10 @@
+ 			compatible = "mediatek,mt8195-dp-intf";
+ 			reg = <0 0x1c015000 0 0x1000>;
+ 			interrupts = <GIC_SPI 657 IRQ_TYPE_LEVEL_HIGH 0>;
+-			clocks = <&vdosys0  CLK_VDO0_DP_INTF0>,
+-				 <&vdosys0 CLK_VDO0_DP_INTF0_DP_INTF>,
++			clocks = <&vdosys0 CLK_VDO0_DP_INTF0_DP_INTF>,
++				 <&vdosys0  CLK_VDO0_DP_INTF0>,
+ 				 <&apmixedsys CLK_APMIXED_TVDPLL1>;
+-			clock-names = "engine", "pixel", "pll";
++			clock-names = "pixel", "engine", "pll";
+ 			status = "disabled";
+ 		};
  
--	timeout = priv->timeout ? : set->timeout;
-+	timeout = priv->timeout ? : READ_ONCE(set->timeout);
- 	elem_priv = nft_set_elem_init(set, &priv->tmpl,
- 				      &regs->data[priv->sreg_key], NULL,
- 				      &regs->data[priv->sreg_data],
-@@ -95,7 +95,7 @@ void nft_dynset_eval(const struct nft_expr *expr,
- 			     expr, regs, &ext)) {
- 		if (priv->op == NFT_DYNSET_OP_UPDATE &&
- 		    nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION)) {
--			timeout = priv->timeout ? : set->timeout;
-+			timeout = priv->timeout ? : READ_ONCE(set->timeout);
- 			*nft_set_ext_expiration(ext) = get_jiffies_64() + timeout;
- 		}
+@@ -3521,10 +3521,10 @@
+ 			reg = <0 0x1c113000 0 0x1000>;
+ 			interrupts = <GIC_SPI 513 IRQ_TYPE_LEVEL_HIGH 0>;
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+-			clocks = <&vdosys1 CLK_VDO1_DP_INTF0_MM>,
+-				 <&vdosys1 CLK_VDO1_DPINTF>,
++			clocks = <&vdosys1 CLK_VDO1_DPINTF>,
++				 <&vdosys1 CLK_VDO1_DP_INTF0_MM>,
+ 				 <&apmixedsys CLK_APMIXED_TVDPLL2>;
+-			clock-names = "engine", "pixel", "pll";
++			clock-names = "pixel", "engine", "pll";
+ 			status = "disabled";
+ 		};
  
-@@ -313,7 +313,7 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
- 		nft_dynset_ext_add_expr(priv);
- 
- 	if (set->flags & NFT_SET_TIMEOUT) {
--		if (timeout || set->timeout) {
-+		if (timeout || READ_ONCE(set->timeout)) {
- 			nft_set_ext_add(&priv->tmpl, NFT_SET_EXT_TIMEOUT);
- 			nft_set_ext_add(&priv->tmpl, NFT_SET_EXT_EXPIRATION);
- 		}
 -- 
 2.43.0
 
