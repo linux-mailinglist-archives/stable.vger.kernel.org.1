@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-79679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9746398D9A9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0089A98DC4A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFF7A1C21FE5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 329A61C23F31
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6141D1753;
-	Wed,  2 Oct 2024 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A370B1D094D;
+	Wed,  2 Oct 2024 14:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCk1s/Dm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBSKgphQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF581D174F;
-	Wed,  2 Oct 2024 14:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACE11EF1D;
+	Wed,  2 Oct 2024 14:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878147; cv=none; b=Ov1GH2nYQkj9aXtZNkT2BylT2tB0MisCm9jcyPMmhXcgp+znNhJ+sZK54ZEAwZSaFNTIpymcTjMAl+ufj7m6PMtDTLRfUWP+72Gfw3leqh+RkG0pRG4HUUozVhlKMGDtPICVYoelcwUCmGlcdRZJXuDC8ihGwc+CA9wfm2pEIGc=
+	t=1727879617; cv=none; b=N8byZe9oF43/UrOySh/391YYHIe3FRn4LCenDoS0QAxVhkmDZ9LhzCIYFkQhf9GDst+2ruelcrboN1OnMTfv/2Y90njtb6LLD7osbZ8t+oFBaKEwJHWfgdhk3DYYpFo0snGSEGHiziMCj8pewOCGQtbnPDp4AYZduN7DchnnIrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878147; c=relaxed/simple;
-	bh=85MoTE10Urd8LH7L7Zcq3IT7ZT7f3JiiOsPs+v60n+s=;
+	s=arc-20240116; t=1727879617; c=relaxed/simple;
+	bh=kU0oLZhCcKqycGZsyMiA3xddJL0jtBx/OJV//PIsmpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlyM75ioUQb5YK6RIPyf9irwl/U4sTHpXVdyaCvdRE+KVV/BylCAGfaitad31/GC8jOGKEHY8jlB39mAM8jKS57Y9znuxKJzgRomaabacxSG7ytClQHwAmu/wsA2OAW0dauWaaY5zkMJYY6e+AZ8G/qyqaPXbid5OGMh9cdOWP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCk1s/Dm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E9FC4CEC2;
-	Wed,  2 Oct 2024 14:09:06 +0000 (UTC)
+	 MIME-Version; b=QCeLCbxRlASSdETTiRBPwqOi5pIj2HuF/RHdlMO0bm/m0DEk7BRx1GHjGEYurSzWCOXogKJZHeC6e0zsf5kh/n2cd8exS8iuetVyBC/aeI4Ll98odQHgkwmffPoG5Uq3kNRchJv/rppwsVhj+py3iRlzsgWbu2MOSogIVIxTfww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBSKgphQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D24C4CEC2;
+	Wed,  2 Oct 2024 14:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878147;
-	bh=85MoTE10Urd8LH7L7Zcq3IT7ZT7f3JiiOsPs+v60n+s=;
+	s=korg; t=1727879616;
+	bh=kU0oLZhCcKqycGZsyMiA3xddJL0jtBx/OJV//PIsmpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCk1s/DmEjRTQQsusq7S+pUejh9VSE+X81defwnDndOyqvkdpitX60UxVDGYWUdC6
-	 BvHtogssT+pxyTqEXiK8oxO65yKxKv4zrx/Gc8F+8JIaMUHvUb3zMshUj8lwZ1/+NP
-	 Yooo3c+kqAtNxHmrRbK4Xkl3oSSH6cSMXLWSCwEE=
+	b=FBSKgphQFMaUIw8WOvJ27hMz31roBlUo3F7g+bRDL4sezHl064yZgveLt7Lkm1lke
+	 /uvYkHoyFtg6uF67S/QQLYR+zrLodbF3sVV6HfK0OqkRbcN6erQGadbS4rfM4nyhGd
+	 xtNhw8gB5lLFS2eEUbhS7XmdF38a8zluvG0fZy9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Lv <terry.lv@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 318/634] remoteproc: imx_rproc: Correct ddr alias for i.MX8M
-Date: Wed,  2 Oct 2024 14:56:58 +0200
-Message-ID: <20241002125823.657503343@linuxfoundation.org>
+Subject: [PATCH 6.6 180/538] selftests/bpf: Workaround strict bpf_lsm return value check.
+Date: Wed,  2 Oct 2024 14:56:59 +0200
+Message-ID: <20241002125759.361184906@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit c901f817792822eda9cec23814a4621fa3e66695 ]
+[ Upstream commit aa8ebb270c66cea1f56a25d0f938036e91ad085a ]
 
-The DDR Alias address should be 0x40000000 according to RM, so correct
-it.
+test_progs-no_alu32 -t libbpf_get_fd_by_id_opts
+is being rejected by the verifier with the following error
+due to compiler optimization:
 
-Fixes: 4ab8f9607aad ("remoteproc: imx_rproc: support i.MX8MQ/M")
-Reported-by: Terry Lv <terry.lv@nxp.com>
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-1-10d0268c7eb1@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+6: (67) r0 <<= 62                     ; R0_w=scalar(smax=0x4000000000000000,umax=0xc000000000000000,smin32=0,smax32=umax32=0,var_off=(0x0; 0xc000000000000000))
+7: (c7) r0 s>>= 63                    ; R0_w=scalar(smin=smin32=-1,smax=smax32=0)
+;  @ test_libbpf_get_fd_by_id_opts.c:0
+8: (57) r0 &= -13                     ; R0_w=scalar(smax=0x7ffffffffffffff3,umax=0xfffffffffffffff3,smax32=0x7ffffff3,umax32=0xfffffff3,var_off=(0x0; 0xfffffffffffffff3))
+; int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode) @ test_libbpf_get_fd_by_id_opts.c:27
+9: (95) exit
+At program exit the register R0 has smax=9223372036854775795 should have been in [-4095, 0]
+
+Workaround by adding barrier().
+Eventually the verifier will be able to recognize it.
+
+Fixes: 5d99e198be27 ("bpf, lsm: Add check for BPF LSM return value")
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c  | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 144c8e9a642e8..3c8b64db8823c 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -210,7 +210,7 @@ static const struct imx_rproc_att imx_rproc_att_imx8mq[] = {
- 	/* QSPI Code - alias */
- 	{ 0x08000000, 0x08000000, 0x08000000, 0 },
- 	/* DDR (Code) - alias */
--	{ 0x10000000, 0x80000000, 0x0FFE0000, 0 },
-+	{ 0x10000000, 0x40000000, 0x0FFE0000, 0 },
- 	/* TCML */
- 	{ 0x1FFE0000, 0x007E0000, 0x00020000, ATT_OWN  | ATT_IOMEM},
- 	/* TCMU */
+diff --git a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
+index f5ac5f3e89196..568816307f712 100644
+--- a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
++++ b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
+@@ -31,6 +31,7 @@ int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode)
+ 
+ 	if (fmode & FMODE_WRITE)
+ 		return -EACCES;
++	barrier();
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
