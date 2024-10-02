@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D33598D97A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C55AD98DC31
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F18272898B0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C895286547
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1831D131B;
-	Wed,  2 Oct 2024 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6AC1D2713;
+	Wed,  2 Oct 2024 14:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VANJc4KN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/xS3x0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E541D1302;
-	Wed,  2 Oct 2024 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9511474BC;
+	Wed,  2 Oct 2024 14:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878024; cv=none; b=csXjHzKuGYR/NnvHsT7lObrjCrW4odCfuqnY6+VDABSDGYnKNq2cC1/q5YMN09dYwjUCz4/XlOFlJh1ICRI6vT9MHs/4utwouDwHwoCnVn9gK4otHd71SIdHf1yqKk6LzqxnhbmRre13cvi8IimFmmwCmRFjm87++q15FTE0Jro=
+	t=1727879547; cv=none; b=OexKwLmu63oazFiW+yrScROxcf+7+HOs730OJTUR+lUpF0q+krqLs3OTRyYdxN/H9oQLRsWzAgQegc9E6kT+FFanhiEW+LuvGIKMtLWwuoNvcs371X0MW31/hlEi1qjcAGD2fXCvggJtjnUOtYMTUnA+tIf6e07CUZ7LXJvJaGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878024; c=relaxed/simple;
-	bh=ykck98d/9+d4Ta+Dq8vKPfsJV5Af4tkHJj7vWpYnr+8=;
+	s=arc-20240116; t=1727879547; c=relaxed/simple;
+	bh=Ou78rOEFoWGf8dOKNVNvvDDxdV+gErF3IZZM2dSEPpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uN2NrdLjQ6VmDhMUFHH1q8sH/D2sYfjeZSM+UjdBWM1ejyH7eLn4JXHU9dqc1nRD53uclRvn4JePiGFTKm+hZmMq02GXeHT1Zvsa0lBYn9r5RWktslE4AmVWN+XHG49/M7irh4WoEZFPhjEiInR230rbk4CgAs3PvLHrupDY6YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VANJc4KN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C768FC4CEC2;
-	Wed,  2 Oct 2024 14:07:03 +0000 (UTC)
+	 MIME-Version; b=BNQe9Ytw5+LuO+yawbHxKtVpp6jmedH4DsoW+Xb5/GXcu2FgUU3E82gPJebEnh8Y894rhsbfQanfWlgrZjrB3udYeltBgWgu+1tpZwOodsiOXD/jd1a8jJbtJLrHnr+AOd8D9SFu80MaO6dgAoSB+KPXOQrp9X409W8vmaUl78E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/xS3x0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F76FC4CEC2;
+	Wed,  2 Oct 2024 14:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878024;
-	bh=ykck98d/9+d4Ta+Dq8vKPfsJV5Af4tkHJj7vWpYnr+8=;
+	s=korg; t=1727879546;
+	bh=Ou78rOEFoWGf8dOKNVNvvDDxdV+gErF3IZZM2dSEPpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VANJc4KNBJj0nhjrXwGhImfvdqUrYUZel5JCqgE6r9DqI+/5gsYo22czaeOjdtd4M
-	 BEMEE5Wl+hAcGoyb47nbfxZojzeG5bOs91LlBEqanxbCYd4d7X/LdZWxj71cui61S2
-	 KEVjsP40d7vEX8RW7oNL+HZTT1Wxa5yf2Fie2zA4=
+	b=C/xS3x0fL4ttws3DutnhJBaKLtO6iwdYJvO2JSQdXWw6Rl1i3De1/rlWIUkbfe+BH
+	 73xUIpqyIopcoBHkKYZ/coMd5I758MUJpwYTvk2CWQ6B7NIyjxoHyCf1I+nm+Ro1uD
+	 EjvXCysGJz+cAv6XSwdY5FLgDNrVxNSI9+uwcrAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu RuiTong <cnitlrt@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Charles Han <hanchunchao@inspur.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 268/634] bpf: correctly handle malformed BPF_CORE_TYPE_ID_LOCAL relos
+Subject: [PATCH 6.6 129/538] mtd: powernv: Add check devm_kasprintf() returned value
 Date: Wed,  2 Oct 2024 14:56:08 +0200
-Message-ID: <20241002125821.679203971@linuxfoundation.org>
+Message-ID: <20241002125757.334456165@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 3d2786d65aaa954ebd3fcc033ada433e10da21c4 ]
+[ Upstream commit 395999829880a106bb95f0ce34e6e4c2b43c6a5d ]
 
-In case of malformed relocation record of kind BPF_CORE_TYPE_ID_LOCAL
-referencing a non-existing BTF type, function bpf_core_calc_relo_insn
-would cause a null pointer deference.
+devm_kasprintf() can return a NULL pointer on failure but this
+returned value is not checked.
 
-Fix this by adding a proper check upper in call stack, as malformed
-relocation records could be passed from user space.
-
-Simplest reproducer is a program:
-
-    r0 = 0
-    exit
-
-With a single relocation record:
-
-    .insn_off = 0,          /* patch first instruction */
-    .type_id = 100500,      /* this type id does not exist */
-    .access_str_off = 6,    /* offset of string "0" */
-    .kind = BPF_CORE_TYPE_ID_LOCAL,
-
-See the link for original reproducer or next commit for a test case.
-
-Fixes: 74753e1462e7 ("libbpf: Replace btf__type_by_id() with btf_type_by_id().")
-Reported-by: Liu RuiTong <cnitlrt@gmail.com>
-Closes: https://lore.kernel.org/bpf/CAK55_s6do7C+DVwbwY_7nKfUz0YLDoiA1v6X3Y9+p0sWzipFSA@mail.gmail.com/
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240822080124.2995724-2-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: acfe63ec1c59 ("mtd: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240828092427.128177-1-hanchunchao@inspur.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/mtd/devices/powernv_flash.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 49aba8e507996..96e8596a76cea 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -8718,6 +8718,7 @@ int bpf_core_apply(struct bpf_core_ctx *ctx, const struct bpf_core_relo *relo,
- 	struct bpf_core_cand_list cands = {};
- 	struct bpf_core_relo_res targ_res;
- 	struct bpf_core_spec *specs;
-+	const struct btf_type *type;
- 	int err;
- 
- 	/* ~4k of temp memory necessary to convert LLVM spec like "0:1:0:5"
-@@ -8727,6 +8728,13 @@ int bpf_core_apply(struct bpf_core_ctx *ctx, const struct bpf_core_relo *relo,
- 	if (!specs)
- 		return -ENOMEM;
- 
-+	type = btf_type_by_id(ctx->btf, relo->type_id);
-+	if (!type) {
-+		bpf_log(ctx->log, "relo #%u: bad type id %u\n",
-+			relo_idx, relo->type_id);
-+		return -EINVAL;
-+	}
+diff --git a/drivers/mtd/devices/powernv_flash.c b/drivers/mtd/devices/powernv_flash.c
+index 36e060386e59d..59e1b3a4406ed 100644
+--- a/drivers/mtd/devices/powernv_flash.c
++++ b/drivers/mtd/devices/powernv_flash.c
+@@ -207,6 +207,9 @@ static int powernv_flash_set_driver_info(struct device *dev,
+ 	 * get them
+ 	 */
+ 	mtd->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFP", dev->of_node);
++	if (!mtd->name)
++		return -ENOMEM;
 +
- 	if (need_cands) {
- 		struct bpf_cand_cache *cc;
- 		int i;
+ 	mtd->type = MTD_NORFLASH;
+ 	mtd->flags = MTD_WRITEABLE;
+ 	mtd->size = size;
 -- 
 2.43.0
 
