@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-80202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF33D98DC67
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1DD98D9F7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E14BB1C2419B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9921C20976
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7AC1D1F68;
-	Wed,  2 Oct 2024 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A0E1D0F77;
+	Wed,  2 Oct 2024 14:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVc6cWjY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhnhrs5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5885E1D1F6B;
-	Wed,  2 Oct 2024 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7A51D0E28;
+	Wed,  2 Oct 2024 14:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879682; cv=none; b=ZtSSeAOfEzUemC+i6FwxprKGoKYtv01xPdiWbEleMlQFtu8Qh0OJvwT0tNvZwEJZ7+LkPlXlS407Rt5rVxTTgQhuZmXslN6HfixSOrIiqmEvdZU/uJZqkab6XE9eQgs8o/mvsXXyZ3zcvWZXC0P8u0X5jHmI3jNnyTSEkLvvgCY=
+	t=1727878325; cv=none; b=QSSami64THJQnsq/j1+JNb+95LccmdebXNiBdwvq7KKWulKEc6exNeIuz5bzcvi002GRjAW7alydIqWjjfwRKUOoQjYLmjAoPihk4GH67AALZeUbs+MIwkq5/UMa4sa9yLJ2/WezNmrL8K+KeXAn2LHo18KpqWZhGrvpOZ6lpdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879682; c=relaxed/simple;
-	bh=DV7/iAcgSL+lfyHJTnNfSAqVZ/ex4HEbaCFw8BFWdjA=;
+	s=arc-20240116; t=1727878325; c=relaxed/simple;
+	bh=mZywu8NCO8Nl8x6fzkzfKcQ1ObnqnJsh/I13P+HDgSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/ycTRmr8P1ZoPhqrHiVYcwoEcyOiaEJQ+XFs5+d/pEkHBNVhKDGaiEfoIciatRuNf84M2hZ+WsT0vxTmXbfKttPA58ZIZSRhlcbz9eaFR2ef+pKE5M9JOYLc9r1/SYprcQhPDHSNVYdTXi+cfUh6PyJI7bHVxlnhrtybcFK17I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVc6cWjY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56D8C4CEC2;
-	Wed,  2 Oct 2024 14:34:41 +0000 (UTC)
+	 MIME-Version; b=FxXJa2ur1R8ZEu2XFm/+3+ocj71oDOG47MW7BRYyuWyluR2qVAHGHi3YwMJsTJ7cZ0ifLYX/kkyFCybAv+oMufMlOgV9vEq0g0E3bZZ8UXQtWbD1D4vDdxDkLNghNfgm8ZdjhygnG8thbNqCB8Urcq8G/Ilv0xgqIy3pxFWmqiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhnhrs5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6287CC4CEC2;
+	Wed,  2 Oct 2024 14:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879682;
-	bh=DV7/iAcgSL+lfyHJTnNfSAqVZ/ex4HEbaCFw8BFWdjA=;
+	s=korg; t=1727878325;
+	bh=mZywu8NCO8Nl8x6fzkzfKcQ1ObnqnJsh/I13P+HDgSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVc6cWjYwGq5Bh7G0xSn+qxbR4pRn3qX9YTj+Uu4fpOOp9qiu+10vMqxPIeSxfomb
-	 kVluSPaYemmWRLUzVlbXlFuV3NEB9MTNQ8XcQdwQZojmiMaMTIikLMlYmAdiGmSA1B
-	 ptu5GMQMHOaHxSprdUa5sYiqSkvtYgmjCX6TDGMI=
+	b=bhnhrs5ntDMvBOY02Zs1rvH0kIti3gU+hjXA9a8khoBCNiUfiEviQyPCJwrVC94oH
+	 /zwkFW2bTvsYT3USqN1PBtWbDyASAAbRzgmvaBculbBStr/O0JDpGEisZ/c2UWoywd
+	 laoxVYWDFP+UFnEraiRwHXK0WS+ZFVx0bjoSU9E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/538] selftests/bpf: Fix missing BUILD_BUG_ON() declaration
+Subject: [PATCH 6.10 334/634] firewire: core: correct range of block for case of switch statement
 Date: Wed,  2 Oct 2024 14:57:14 +0200
-Message-ID: <20241002125759.952927533@linuxfoundation.org>
+Message-ID: <20241002125824.286445305@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit 6495eb79ca7d15bd87c38d77307e8f9b6b7bf4ef ]
+[ Upstream commit ebb9d3ca8f7efc1b6a2f1750d1058eda444883d0 ]
 
-Explicitly include '<linux/build_bug.h>' to fix errors seen compiling with
-gcc targeting mips64el/musl-libc:
+A commit d8527cab6c31 ("firewire: cdev: implement new event to notify
+response subaction with time stamp") adds an additional case,
+FW_CDEV_EVENT_RESPONSE2, into switch statement in complete_transaction().
+However, the range of block is beyond to the case label and reaches
+neibour default label.
 
-  user_ringbuf.c: In function 'test_user_ringbuf_loop':
-  user_ringbuf.c:426:9: error: implicit declaration of function 'BUILD_BUG_ON' [-Werror=implicit-function-declaration]
-    426 |         BUILD_BUG_ON(total_samples <= c_max_entries);
-        |         ^~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+This commit corrects the range of block. Fortunately, it has few impacts
+in practice since the local variable in the scope under the label is not
+used in codes under default label.
 
-Fixes: e5a9df51c746 ("selftests/bpf: Add selftests validating the user ringbuf")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/b28575f9221ec54871c46a2e87612bb4bbf46ccd.1721713597.git.tony.ambardar@gmail.com
+Fixes: d8527cab6c31 ("firewire: cdev: implement new event to notify response subaction with time stamp")
+Link: https://lore.kernel.org/r/20240810070403.36801-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/user_ringbuf.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firewire/core-cdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-index e51721df14fc1..dfff6feac12c3 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-@@ -4,6 +4,7 @@
- #define _GNU_SOURCE
- #include <linux/compiler.h>
- #include <linux/ring_buffer.h>
-+#include <linux/build_bug.h>
- #include <pthread.h>
- #include <stdio.h>
- #include <stdlib.h>
+diff --git a/drivers/firewire/core-cdev.c b/drivers/firewire/core-cdev.c
+index 9a7dc90330a35..a888a001bedb1 100644
+--- a/drivers/firewire/core-cdev.c
++++ b/drivers/firewire/core-cdev.c
+@@ -599,11 +599,11 @@ static void complete_transaction(struct fw_card *card, int rcode, u32 request_ts
+ 		queue_event(client, &e->event, rsp, sizeof(*rsp) + rsp->length, NULL, 0);
+ 
+ 		break;
++	}
+ 	default:
+ 		WARN_ON(1);
+ 		break;
+ 	}
+-	}
+ 
+ 	/* Drop the idr's reference */
+ 	client_put(client);
 -- 
 2.43.0
 
