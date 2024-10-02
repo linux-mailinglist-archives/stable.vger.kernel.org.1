@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-80426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0B398DD61
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5164B98DAF2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C09D2816B7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0439E1F21657
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96AC51EF1D;
-	Wed,  2 Oct 2024 14:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B89C1D0DD6;
+	Wed,  2 Oct 2024 14:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pa4zJzZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mbDiWALt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FFE1D0794;
-	Wed,  2 Oct 2024 14:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2BB1E52C;
+	Wed,  2 Oct 2024 14:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880340; cv=none; b=OZmbL22GIjJfwKP7XzrDMVrZOO1iMVKIOHcrd5sVDj0XkcmdSzYRiJULSBZ3IDSiVmx0WI3jtafdiOIlzgomXtHzmHEatCCIGwDbPoIPCBi2vwvsUETittfPiTm5fY+vG960PmV3uGkZOpdgiEtVsWsMYeoqeyeHcSXitp556AI=
+	t=1727878882; cv=none; b=nJK4l2Zk0ZezC3ZkfBViC0DX9dOdAEB2eHC4Qz4Uuexm0ZrFGLr2Vs0I/PBU45MG1WeZnaDKB5susVRMUK4LLmfkoYHFfF794E1yC7/vQBZ6Y2tjeirYgT8O7slTJHd9CARbX+L7E6DfvfR/M7Rwj1M1sRkNa+172v+7OyJ8W6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880340; c=relaxed/simple;
-	bh=IFOfE3tlbkWssmSXddYKo0W32tAlxGqM2byWRMizScU=;
+	s=arc-20240116; t=1727878882; c=relaxed/simple;
+	bh=eQfZafVj3JFBWK3HfrNQQh6GEEqfPIFeB5zrN4HaqYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViwgkI+hKhzWZpf3xhMn3biDarauiUjPttY7ZXqLhLGq+2w/pCFgfNHkIIEoDl86w+DPDaABzUzv8QogbwQmdX9wdHEODYaEzOVstsPgAqI5b1e9l5vsEEoZtvi8PrR/pozoQDn5W9/MRKsNgaGgmnK80z5u0adMMI19E6moDqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pa4zJzZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE0CC4CEC2;
-	Wed,  2 Oct 2024 14:45:39 +0000 (UTC)
+	 MIME-Version; b=MJKTYUNgWVxRvSe85IZGhtz8w7lCRJhtvm8n1Ac5HxhHu4Z88Uo8BrzdRox8C0GlgluWT2H8I7ee066SVR3AhqZEffFkmW5WUnkq6Nupe93ozd+24Jee2rj9HKna4rWwuzQluN0uHtsaQ2KfLhSqC982zo4HbJruPrcUZ2wIG0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mbDiWALt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8853C4CEC5;
+	Wed,  2 Oct 2024 14:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880340;
-	bh=IFOfE3tlbkWssmSXddYKo0W32tAlxGqM2byWRMizScU=;
+	s=korg; t=1727878882;
+	bh=eQfZafVj3JFBWK3HfrNQQh6GEEqfPIFeB5zrN4HaqYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pa4zJzZyS3EPjLSS/xOgj8hKSDPHnbEpRCelu1u1faupDt/rfHS+UvkAaBwMyPb1r
-	 op+apERppqHKrhsB4CT2VWWMitAXGaYx2NVGKPIfGkDUe6412RDt8xL4ag0alu5ayy
-	 H8bGlKLr3R2YSGJh4nEL0OaOazrzkJcotNTMBY9A=
+	b=mbDiWALtIEgjRuz4TFcaaBYldfWj3HO8MFg+yKRbWyVaRigg71MFkacsHEFuOEdou
+	 rSpRXHDPtMSeFhqUOl6UysidNRwR9bGVpuKtoySsVFX2+8FHwnkn7e+ZHP0h+N51PL
+	 0G8R2D4eaiiwEUXY26bfSziolWUFOaFqBmwl6rmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Wilck <mwilck@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 425/538] scsi: sd: Fix off-by-one error in sd_read_block_characteristics()
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.10 564/634] f2fs: check discard support for conventional zones
 Date: Wed,  2 Oct 2024 15:01:04 +0200
-Message-ID: <20241002125809.212126446@linuxfoundation.org>
+Message-ID: <20241002125833.378137523@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Wilck <mwilck@suse.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit f81eaf08385ddd474a2f41595a7757502870c0eb upstream.
+commit 43aec4d01bd2ce961817a777b3846f8318f398e4 upstream.
 
-Ff the device returns page 0xb1 with length 8 (happens with qemu v2.x, for
-example), sd_read_block_characteristics() may attempt an out-of-bounds
-memory access when accessing the zoned field at offset 8.
+As the helper function f2fs_bdev_support_discard() shows, f2fs checks if
+the target block devices support discard by calling
+bdev_max_discard_sectors() and bdev_is_zoned(). This check works well
+for most cases, but it does not work for conventional zones on zoned
+block devices. F2fs assumes that zoned block devices support discard,
+and calls __submit_discard_cmd(). When __submit_discard_cmd() is called
+for sequential write required zones, it works fine since
+__submit_discard_cmd() issues zone reset commands instead of discard
+commands. However, when __submit_discard_cmd() is called for
+conventional zones, __blkdev_issue_discard() is called even when the
+devices do not support discard.
 
-Fixes: 7fb019c46eee ("scsi: sd: Switch to using scsi_device VPD pages")
+The inappropriate __blkdev_issue_discard() call was not a problem before
+the commit 30f1e7241422 ("block: move discard checks into the ioctl
+handler") because __blkdev_issue_discard() checked if the target devices
+support discard or not. If not, it returned EOPNOTSUPP. After the
+commit, __blkdev_issue_discard() no longer checks it. It always returns
+zero and sets NULL to the given bio pointer. This NULL pointer triggers
+f2fs_bug_on() in __submit_discard_cmd(). The BUG is recreated with the
+commands below at the umount step, where /dev/nullb0 is a zoned null_blk
+with 5GB total size, 128MB zone size and 10 conventional zones.
+
+$ mkfs.f2fs -f -m /dev/nullb0
+$ mount /dev/nullb0 /mnt
+$ for ((i=0;i<5;i++)); do dd if=/dev/zero of=/mnt/test bs=65536 count=1600 conv=fsync; done
+$ umount /mnt
+
+To fix the BUG, avoid the inappropriate __blkdev_issue_discard() call.
+When discard is requested for conventional zones, check if the device
+supports discard or not. If not, return EOPNOTSUPP.
+
+Fixes: 30f1e7241422 ("block: move discard checks into the ioctl handler")
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Wilck <mwilck@suse.com>
-Link: https://lore.kernel.org/r/20240912134308.282824-1-mwilck@suse.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/segment.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3118,7 +3118,7 @@ static void sd_read_block_characteristic
- 	rcu_read_lock();
- 	vpd = rcu_dereference(sdkp->device->vpd_pgb1);
- 
--	if (!vpd || vpd->len < 8) {
-+	if (!vpd || vpd->len <= 8) {
- 		rcu_read_unlock();
- 	        return;
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -1290,6 +1290,13 @@ static int __submit_discard_cmd(struct f
+ 						wait_list, issued);
+ 			return 0;
+ 		}
++
++		/*
++		 * Issue discard for conventional zones only if the device
++		 * supports discard.
++		 */
++		if (!bdev_max_discard_sectors(bdev))
++			return -EOPNOTSUPP;
  	}
+ #endif
+ 
 
 
 
