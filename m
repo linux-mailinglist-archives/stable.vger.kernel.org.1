@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-78844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740AB98D53C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E7898D81B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D5EF1C21794
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0B6C1C22DB7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEAB1D0494;
-	Wed,  2 Oct 2024 13:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCED1D0DE0;
+	Wed,  2 Oct 2024 13:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sb8FnWZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzl3wAQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15581D048C;
-	Wed,  2 Oct 2024 13:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10081D0BB3;
+	Wed,  2 Oct 2024 13:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875693; cv=none; b=r5aXmeBpWerwUkhHwlkUZtYHeSVqwmfWGF2iJtiBgUi/Gh6GosDkPhOwlH+m2qADc2AvnzC3q7cQWzB02/SSRfmmZUru+wV1DMV0ftRROo91r/MBVqNLKmt/VlrJ9mEfhzGq2RmgaAHY8V7FWWI8vSSZgWGnqkthsQsBcMq24+c=
+	t=1727877364; cv=none; b=CGeTtwWLxr6pgLn+ZBNdEVt/pofQBx6vtGr+68FK6WCSLgQge4E3AnJfoDTt9b6WDku8GFzYkf23KUHscO2ynjvmu6cZUaYmarzoioQUTPfNHy8nCykaS/FhZtyDTIj/gQOj2L7OJ1j0dNZeDw/heFdXGCmWTi0sZLODVvYNiTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875693; c=relaxed/simple;
-	bh=fCG1SFxMAnznGJEmb1p53n2kcvHQT+ZNnoMBQFPDZmA=;
+	s=arc-20240116; t=1727877364; c=relaxed/simple;
+	bh=Mq7EyTWf8U+ux7Irxw49uZmDYYuXy/MmReKgkhqdcsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t0CQjHBVLEMwSAt0XQM9j0NuurTUb0OlIygOGw4GdfwbcF0ZnTZOHzi1EpZa95IbwuTgc44y8HoAhpvfObs4nbLUWGHYp68hLKk8/5P60KFUi639u0jNCJ9AjSEYQVFZCp2eoN3yZBddsYBfTe9sy3mYUoIIwL9QS2nPPMIZKVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sb8FnWZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE06C4CEC5;
-	Wed,  2 Oct 2024 13:28:12 +0000 (UTC)
+	 MIME-Version; b=VhaUg649EugKzrB3eIGo6NYgshWPnhg6UYkfik7Y1qPdmqV2WgUIwDFrh6nFUrTcIpGReXRTJbaD9dtNW9rsAgQpBetGzitpgMgQq7x8LV8JhfWmgOGd2Rzi8vqnSWPOzWmGNgQjgxeDj2q0FZEknkt2ZQ/IVH7vvprc6TLHE5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzl3wAQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1EAC4CECD;
+	Wed,  2 Oct 2024 13:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875692;
-	bh=fCG1SFxMAnznGJEmb1p53n2kcvHQT+ZNnoMBQFPDZmA=;
+	s=korg; t=1727877364;
+	bh=Mq7EyTWf8U+ux7Irxw49uZmDYYuXy/MmReKgkhqdcsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sb8FnWZ6bYKWAoJ4DGM5J/JjnvldxP/G/gj3jc7o8FAQnVxMu6vjAzxEnqrukZvMO
-	 4M+kulQk0Ywr3F8xZo6wBt+ecxMGfk3r0eWsxxbxn96i62pSknVGVgLmMm4e8HLo2q
-	 eCJQ7ya4rNzrYAlSCpo5JQekao1D2e02/lwhWMAU=
+	b=fzl3wAQKqw9wuxW0UJ50Q1TA9s0RaVAE7t1AKjSUCH/VcR8iKX6R1s6yK1jyCcdUw
+	 CGVYDQ8tpj51exUrcPYoVEYVFWdUGjKIMK2cFuVYkgCQGNQ/JKHtDP16/2y8U7V4OY
+	 Z1ZolHJEQU6ejZ99tK5+HD1WqEslXEE7Syl4uPE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 157/695] platform: cznic: turris-omnia-mcu: Fix error check in omnia_mcu_register_trng()
-Date: Wed,  2 Oct 2024 14:52:35 +0200
-Message-ID: <20241002125828.745558307@linuxfoundation.org>
+Subject: [PATCH 6.10 056/634] netfilter: nf_tables: remove annotation to access set timeout while holding lock
+Date: Wed,  2 Oct 2024 14:52:36 +0200
+Message-ID: <20241002125813.317396008@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 2d516b8fc0f18ce9c0347a1aea6edb3d8ca1d692 ]
+[ Upstream commit 15d8605c0cf4fc9cf4386cae658c68a0fd4bdb92 ]
 
-The gpiod_to_irq() function never returns zero.  It returns negative
-error codes or a positive IRQ number.  Update the checking to check
-for negatives.
+Mutex is held when adding an element, no need for READ_ONCE, remove it.
 
-Fixes: 41bb142a4028 ("platform: cznic: turris-omnia-mcu: Add support for MCU provided TRNG")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Marek Behún <kabel@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 123b99619cca ("netfilter: nf_tables: honor set timeout and garbage collection updates")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/cznic/turris-omnia-mcu-trng.c | 4 ++--
+ net/netfilter/nf_tables_api.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/cznic/turris-omnia-mcu-trng.c b/drivers/platform/cznic/turris-omnia-mcu-trng.c
-index ad953fb3c37af..9a1d9292dc9ad 100644
---- a/drivers/platform/cznic/turris-omnia-mcu-trng.c
-+++ b/drivers/platform/cznic/turris-omnia-mcu-trng.c
-@@ -70,8 +70,8 @@ int omnia_mcu_register_trng(struct omnia_mcu *mcu)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index fcb68fe818566..d4b5f23930c9f 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6867,7 +6867,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 			return err;
+ 	} else if (set->flags & NFT_SET_TIMEOUT &&
+ 		   !(flags & NFT_SET_ELEM_INTERVAL_END)) {
+-		timeout = READ_ONCE(set->timeout);
++		timeout = set->timeout;
+ 	}
  
- 	irq_idx = omnia_int_to_gpio_idx[__bf_shf(OMNIA_INT_TRNG)];
- 	irq = gpiod_to_irq(gpio_device_get_desc(mcu->gc.gpiodev, irq_idx));
--	if (!irq)
--		return dev_err_probe(dev, -ENXIO, "Cannot get TRNG IRQ\n");
-+	if (irq < 0)
-+		return dev_err_probe(dev, irq, "Cannot get TRNG IRQ\n");
+ 	expiration = 0;
+@@ -6974,7 +6974,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 		if (err < 0)
+ 			goto err_parse_key_end;
  
- 	/*
- 	 * If someone else cleared the TRNG interrupt but did not read the
+-		if (timeout != READ_ONCE(set->timeout)) {
++		if (timeout != set->timeout) {
+ 			err = nft_set_ext_add(&tmpl, NFT_SET_EXT_TIMEOUT);
+ 			if (err < 0)
+ 				goto err_parse_key_end;
 -- 
 2.43.0
 
