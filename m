@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846C198DA80
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552B798DD2B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3840D284507
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23848B270B5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887211D0DDF;
-	Wed,  2 Oct 2024 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F058A1D0F7F;
+	Wed,  2 Oct 2024 14:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrGffEEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bW55cDfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4774A19F411;
-	Wed,  2 Oct 2024 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B96E1D0F7A;
+	Wed,  2 Oct 2024 14:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878598; cv=none; b=gJeBNF/IHDgFi1qbk0VvPxj4pVXbfjT2M5YKUFJg6TyWy/Q6VwWX4lYic13+b/oiZMlzmGUDUz5JUfQhalA2UrwphaJ0NbgOZKRe/XixG0yLY3zucK/xMj499oqJGoLuHsnId4fL8h/XYcL87w89gKSExFrUcxCyCgR/kAS236o=
+	t=1727880058; cv=none; b=MBAuu93Re6uN5Mf5UUFW2FBL1K7dtMwG46D1RXHHwOn6Kr/MW1zVYEUahxF0YoE26c9XF2FNRs5UFJ60S88Abm0zq8PNoiXEdDDuUHmIVbEbBJKXN8Rpg0ZxFTh8G3dOXEpVUcUBcO/85vFhJe5Do9E0WULCV6gJ4eUHjVDFrJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878598; c=relaxed/simple;
-	bh=ZzxX1qhLtJlNlebrz6rQZG6P8txYN8dyYu7z/1yGhlI=;
+	s=arc-20240116; t=1727880058; c=relaxed/simple;
+	bh=FcGZ9i0QKp6N7cXvRU9ardOXV8Oe9pTEnT2rBHZolPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JGpfbUIE+A58f+//oEz/Mh7Ep6HsUsUY3omU65xi4jK25tFbOo6F3w77WC/knZXUUcoNVJ86oYRblL0Eh09kZsR4jmzl80eDt7xedl/Jw+eGgtv75xwCsI2RczW3ZxmDgfYr5jhfweTBogjUAbA1LT1nMtrBCgl5VjqRpBQMDMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrGffEEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47D3C4CEC2;
-	Wed,  2 Oct 2024 14:16:37 +0000 (UTC)
+	 MIME-Version; b=ShqofUx8YFuxrpy/UblypjMEvjXUdGbD8IMDlAg18yVAspxSwnYKUXJpHp0PeR/MbiUkMAw3Kl5gWpxUxCIpDZGJJs0oKuJMHAl1bIEt9C4WpV+1ix1X4nwdaEFWf7aHGwk43rLgOMbnCNamuYguqIrf2W8iKC8FuTcWshkRyjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bW55cDfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20897C4CEC5;
+	Wed,  2 Oct 2024 14:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878598;
-	bh=ZzxX1qhLtJlNlebrz6rQZG6P8txYN8dyYu7z/1yGhlI=;
+	s=korg; t=1727880058;
+	bh=FcGZ9i0QKp6N7cXvRU9ardOXV8Oe9pTEnT2rBHZolPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qrGffEEsgm3eiUTg+z0qmf/Ehhi7W9UslafUP0UClV2wOJdAwTTsw9Mym30u4bMFK
-	 qmd4BzICWl3OMdi5uPiUBFs2JvNIDri+kpeRP7MSon4RCM4LfNk6IvGNYDk9zv/Fry
-	 jKr7YAs61NExpu6e52+cdPtks7+tfICHn5vJ4gUo=
+	b=bW55cDfAmBJwdENqsVTVfOpT8t69qrInu1KkhEbAtm3+uRqkkArGc4VRttrA8SH8k
+	 eyY11YwdrTqB6ehcDD8WR1dqdK8FiNOpHeY8aY57dwo31GL1UBw5dAwVYngh709GCL
+	 qf7Z5y9qZCPhL9zHQvIwZfl2XLtJGzcQi8KQ3n0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.10 467/634] PCI: imx6: Fix establish link failure in EP mode for i.MX8MM and i.MX8MP
+	Max Hawking <maxahawking@sonnenkinder.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 328/538] ntb_perf: Fix printk format
 Date: Wed,  2 Oct 2024 14:59:27 +0200
-Message-ID: <20241002125829.538897213@linuxfoundation.org>
+Message-ID: <20241002125805.377750874@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Max Hawking <maxahawking@sonnenkinder.org>
 
-commit 5214ff221a14cadab1e2ee29499750fd5e884feb upstream.
+[ Upstream commit 1501ae7479c8d0f66efdbfdc9ae8d6136cefbd37 ]
 
-Add IMX6_PCIE_FLAG_HAS_APP_RESET flag to IMX8MM_EP and IMX8MP_EP drvdata.
+The correct printk format is %pa or %pap, but not %pa[p].
 
-This flag was overlooked during code restructuring. It is crucial to
-release the app-reset from the System Reset Controller before initiating
-LTSSM to rectify the issue.
-
-Fixes: 0c9651c21f2a ("PCI: imx6: Simplify reset handling by using *_FLAG_HAS_*_RESET")
-Link: https://lore.kernel.org/linux-pci/20240729-pci2_upstream-v8-1-b68ee5ef2b4d@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org> # 6.9+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99a06056124d ("NTB: ntb_perf: Fix address err in perf_copy_chunk")
+Signed-off-by: Max Hawking <maxahawking@sonnenkinder.org>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ntb/test/ntb_perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1579,7 +1579,8 @@ static const struct imx6_pcie_drvdata dr
- 	},
- 	[IMX8MM_EP] = {
- 		.variant = IMX8MM_EP,
--		.flags = IMX6_PCIE_FLAG_HAS_PHYDRV,
-+		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
-+			 IMX6_PCIE_FLAG_HAS_PHYDRV,
- 		.mode = DW_PCIE_EP_TYPE,
- 		.gpr = "fsl,imx8mm-iomuxc-gpr",
- 		.clk_names = imx8mm_clks,
-@@ -1590,7 +1591,8 @@ static const struct imx6_pcie_drvdata dr
- 	},
- 	[IMX8MP_EP] = {
- 		.variant = IMX8MP_EP,
--		.flags = IMX6_PCIE_FLAG_HAS_PHYDRV,
-+		.flags = IMX6_PCIE_FLAG_HAS_APP_RESET |
-+			 IMX6_PCIE_FLAG_HAS_PHYDRV,
- 		.mode = DW_PCIE_EP_TYPE,
- 		.gpr = "fsl,imx8mp-iomuxc-gpr",
- 		.clk_names = imx8mm_clks,
+diff --git a/drivers/ntb/test/ntb_perf.c b/drivers/ntb/test/ntb_perf.c
+index 553f1f46bc664..72bc1d017a46e 100644
+--- a/drivers/ntb/test/ntb_perf.c
++++ b/drivers/ntb/test/ntb_perf.c
+@@ -1227,7 +1227,7 @@ static ssize_t perf_dbgfs_read_info(struct file *filep, char __user *ubuf,
+ 			"\tOut buffer addr 0x%pK\n", peer->outbuf);
+ 
+ 		pos += scnprintf(buf + pos, buf_size - pos,
+-			"\tOut buff phys addr %pa[p]\n", &peer->out_phys_addr);
++			"\tOut buff phys addr %pap\n", &peer->out_phys_addr);
+ 
+ 		pos += scnprintf(buf + pos, buf_size - pos,
+ 			"\tOut buffer size %pa\n", &peer->outbuf_size);
+-- 
+2.43.0
+
 
 
 
