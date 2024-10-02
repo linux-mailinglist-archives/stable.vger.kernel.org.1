@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-79817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1361398DA66
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA4598DCDF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A711C23808
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D9DB1F25D40
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109401D0E29;
-	Wed,  2 Oct 2024 14:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8495B1D0953;
+	Wed,  2 Oct 2024 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6Hd0zEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+O7lgKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27E31CFEB3;
-	Wed,  2 Oct 2024 14:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FD91D0414;
+	Wed,  2 Oct 2024 14:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878551; cv=none; b=YM5XEye9q4QUaZsJqJDvVpxa6TF2NHp/hGcBjFP6GbPyRWH3ZjC8EoLnm5/GmlQVbmEk/+Fy/NLu5eJxcWO8s0jfBF8eMoknmKOjoyCNfZTx98jvnqiy+GiQJwTwc8ZCIYE/gGTXN2j/GE3LWXIClF5Q+ESrJ/hZbZx3sIBYepU=
+	t=1727880012; cv=none; b=kAnE0ajn4u/QOx3GT9dniAYcAHAuIciBjXkijGK0lZu4bSGrju2qv3UgzasK46wDmOtVTbq4hqEH3fSgmDAp/LjpgoZYoZOKI8EKSyJCRIEfxX05eunrQW7OJFFWc2SpkDCc9cLduXr83+y9jY2FwhH0pBo0Hfol5j/MEkjyWrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878551; c=relaxed/simple;
-	bh=KZYnsib3zO9Vp0aX+v/B30ED7IrUCkJApoH2874TUbU=;
+	s=arc-20240116; t=1727880012; c=relaxed/simple;
+	bh=9uTP9GsHn74tOxKKY1Ef9+QdbTEP4TqQg/Q1VZq7UIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSaDmrs3vYjFbOWRIdHnKoWr3WlEOzT/DlEn6Y2c5/v1YNtOzZEUidlThY9aF/M1A29lgW9BEL1z167rBshevRJ8TuzPsggaKG4aQ99eVDg/G/Ldc7dydXztamTkxFmydLnIJ7HR+ldfdmd0CG7V0EzHy7uWuMATxwQ4pQBDnZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6Hd0zEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C0BC4CEC2;
-	Wed,  2 Oct 2024 14:15:51 +0000 (UTC)
+	 MIME-Version; b=MchPnT+QIIIiHUSZviC4FMyCLxC4cofqGf82Si/pnidmPsCyHPVWicMlQL7ufcik/4+Vnm5oWHkgJSPEq7GSaFTITmBj86/sjn3YtI57UlDBjnI4gCWiiil0C5QVxFyBEdJcoaHM3855v14kfi9UWJ5wuTblgzmK19q2oLgHMrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+O7lgKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754C4C4CEC2;
+	Wed,  2 Oct 2024 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878551;
-	bh=KZYnsib3zO9Vp0aX+v/B30ED7IrUCkJApoH2874TUbU=;
+	s=korg; t=1727880011;
+	bh=9uTP9GsHn74tOxKKY1Ef9+QdbTEP4TqQg/Q1VZq7UIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6Hd0zEde/UFPN+CfrUYQ4JG5AhN/ZNOWeNWTubLm4PyHPo7o6IKw9TTbvKuEDeVR
-	 uLppfM+t2/174fERH9TjWic9R0eAFC581MXRuPIY27Ui0GSiRPH0XAwYABCNty9RX0
-	 1E/r27WdyhqqbQG5xX2LM91i1tg1K395Skkot+rw=
+	b=x+O7lgKItyRhCB99/F6t+1aHusdvn/V394Il1+HK0KNcNM28jKtLEzBcCkseeFEIr
+	 uAE4zAjyedKcqzk8EMrGuBo9jkOzF/GkM0Dc+UcyNRJPKTPCUYXtzbyVmMEvKy2ZQ9
+	 /m6/tOsSYaESDopjPZWdk6B0633v0Hvy27qHCijw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangyun <yangyun50@huawei.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.10 453/634] fuse: use exclusive lock when FUSE_I_CACHE_IO_MODE is set
+	Jonas Blixt <jonas.blixt@actia.se>,
+	Anson Huang <anson.huang@nxp.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 314/538] watchdog: imx_sc_wdt: Dont disable WDT in suspend
 Date: Wed,  2 Oct 2024 14:59:13 +0200
-Message-ID: <20241002125828.983105275@linuxfoundation.org>
+Message-ID: <20241002125804.812648472@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yangyun <yangyun50@huawei.com>
+From: Jonas Blixt <jonas.blixt@actia.se>
 
-commit 2f3d8ff457982f4055fe8f7bf19d3821ba22c376 upstream.
+[ Upstream commit 2d9d6d300fb0a4ae4431bb308027ac9385746d42 ]
 
-This may be a typo. The comment has said shared locks are
-not allowed when this bit is set. If using shared lock, the
-wait in `fuse_file_cached_io_open` may be forever.
+Parts of the suspend and resume chain is left unprotected if we disable
+the WDT here.
 
-Fixes: 205c1d802683 ("fuse: allow parallel dio writes with FUSE_DIRECT_IO_ALLOW_MMAP")
-CC: stable@vger.kernel.org # v6.9
-Signed-off-by: yangyun <yangyun50@huawei.com>
-Reviewed-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>From experiments we can see that the SCU disables and re-enables the WDT
+when we enter and leave suspend to ram. By not touching the WDT here we
+are protected by the WDT all the way to the SCU.
+
+Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
+CC: Anson Huang <anson.huang@nxp.com>
+Fixes: 986857acbc9a ("watchdog: imx_sc: Add i.MX system controller watchdog support")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240801121845.1465765-1-jonas.blixt@actia.se
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/imx_sc_wdt.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index b8afeca12487..1b5cd46c8225 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1345,7 +1345,7 @@ static bool fuse_dio_wr_exclusive_lock(struct kiocb *iocb, struct iov_iter *from
+diff --git a/drivers/watchdog/imx_sc_wdt.c b/drivers/watchdog/imx_sc_wdt.c
+index 8ac021748d160..79649b0e89e47 100644
+--- a/drivers/watchdog/imx_sc_wdt.c
++++ b/drivers/watchdog/imx_sc_wdt.c
+@@ -213,29 +213,6 @@ static int imx_sc_wdt_probe(struct platform_device *pdev)
+ 	return devm_watchdog_register_device(dev, wdog);
+ }
  
- 	/* shared locks are not allowed with parallel page cache IO */
- 	if (test_bit(FUSE_I_CACHE_IO_MODE, &fi->state))
--		return false;
-+		return true;
- 
- 	/* Parallel dio beyond EOF is not supported, at least for now. */
- 	if (fuse_io_past_eof(iocb, from))
+-static int __maybe_unused imx_sc_wdt_suspend(struct device *dev)
+-{
+-	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
+-
+-	if (watchdog_active(&imx_sc_wdd->wdd))
+-		imx_sc_wdt_stop(&imx_sc_wdd->wdd);
+-
+-	return 0;
+-}
+-
+-static int __maybe_unused imx_sc_wdt_resume(struct device *dev)
+-{
+-	struct imx_sc_wdt_device *imx_sc_wdd = dev_get_drvdata(dev);
+-
+-	if (watchdog_active(&imx_sc_wdd->wdd))
+-		imx_sc_wdt_start(&imx_sc_wdd->wdd);
+-
+-	return 0;
+-}
+-
+-static SIMPLE_DEV_PM_OPS(imx_sc_wdt_pm_ops,
+-			 imx_sc_wdt_suspend, imx_sc_wdt_resume);
+-
+ static const struct of_device_id imx_sc_wdt_dt_ids[] = {
+ 	{ .compatible = "fsl,imx-sc-wdt", },
+ 	{ /* sentinel */ }
+@@ -247,7 +224,6 @@ static struct platform_driver imx_sc_wdt_driver = {
+ 	.driver		= {
+ 		.name	= "imx-sc-wdt",
+ 		.of_match_table = imx_sc_wdt_dt_ids,
+-		.pm	= &imx_sc_wdt_pm_ops,
+ 	},
+ };
+ module_platform_driver(imx_sc_wdt_driver);
 -- 
-2.46.2
+2.43.0
 
 
 
