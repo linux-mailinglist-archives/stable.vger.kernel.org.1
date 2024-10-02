@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-80489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17F298DDA6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3DF498DB3E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA5A11C23C70
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E4E28153B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A9B1D094C;
-	Wed,  2 Oct 2024 14:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010901D150C;
+	Wed,  2 Oct 2024 14:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoQuTVTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNTiHnQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC051D07BC;
-	Wed,  2 Oct 2024 14:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E6A1D0940;
+	Wed,  2 Oct 2024 14:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880521; cv=none; b=sIDKRifke22k3uFE2X0kZsadM2ZRRzI0vFofebfia9jI4djKhVj+KQ+M47xhU//CnCGFK8+qMghBmM/vr2VUovT6xsU1nEe5Cs7P8XiFITxGp4mb3EAfgr10KWmK0+bEXyevCe11iKYXLtEZhAack66hTvZb12UorZWkyKGWa1Y=
+	t=1727879068; cv=none; b=juS6ofM8ASczNeMj44Anb7gUa+J+XwVcGeV9glV52rfaEYsbZsX0KY/q32gwkqQPb+FXnZ1P7OwvurAkQtgWra47Gj5liXTP8p8/Q9/ByoEHkbU1QeXfAPFidZXsWJKSRNXhzGOjY5kk9bJICFyMSiEF+c3XXJbnvZvHT71N4PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880521; c=relaxed/simple;
-	bh=jb9/D2pXSDXSzCcVP6XzCGrWlQNwxFZSip1CTxJ8Oe0=;
+	s=arc-20240116; t=1727879068; c=relaxed/simple;
+	bh=OpEB67nDhZ7xcj07RuuuNUjHhI0lcwIp9ETcYfmUuAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEm7S5TE1uEUODk2supAWHRzWjc3zoPMrogrKplJ7imSm94CYxIfY9Kdzwx/LGhJfQKB3znEeTDXLsENDOq2gqOlS9NnO3RoUa0XMuDH1nYGjJ4dOjiknocqCtcFxPK3V4BMfhAG/x/mR930xhzxZN4ljS8VnG2z/byQ4ri7J44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoQuTVTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E46CC4CEC2;
-	Wed,  2 Oct 2024 14:48:40 +0000 (UTC)
+	 MIME-Version; b=QwSA/a2A0A3V63Bv6Me64rlt/1e5iU2P9eKycCTKcIhebGwM9YzcfuZ1dMSJ9MT3qK4yRjDe/IG8FlVT+wXlSvDvZFgKyLuQz8GQ0byCweKObbiOebr2DldIB0IwSV76SFjCXwaZAPjTz5Le6JESPQXig4LT9NasgMkIr4oSPCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNTiHnQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3B3C4CEC2;
+	Wed,  2 Oct 2024 14:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880521;
-	bh=jb9/D2pXSDXSzCcVP6XzCGrWlQNwxFZSip1CTxJ8Oe0=;
+	s=korg; t=1727879068;
+	bh=OpEB67nDhZ7xcj07RuuuNUjHhI0lcwIp9ETcYfmUuAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XoQuTVTzZpG9NwGC7+7Gp3gG9CqH3pG5AyOP3r4jaoy5M+PczFwpnEnsjy4fhrx1A
-	 Z6xerLVmgHa4KaliLUlH1rwqCsNIZVM4OXkxTllNDJMEeYGmoPXgHegHg2ty2YDQF/
-	 hFU0uE6wj0TxwooZPcOjBB9744lq7JJU++vy2ZWw=
+	b=aNTiHnQSyo9FZLSjn7a3yBXcVQ86aWxa+Lvuq/SlBLNlyMQtUl5qyl62JpJHkaI8+
+	 CJB1KSJJ4rYPMl5eYwzOA8eYkkEQ3CFTuMpndTlXzf4Q+rmTlMroNqaCFThhLu2Azh
+	 GRDY5mGxMsdWyLBRgT+seFOXk4jy+G2dakSuNd4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daehwan Jung <dh10.jung@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 487/538] xhci: Add a quirk for writing ERST in high-low order
-Date: Wed,  2 Oct 2024 15:02:06 +0200
-Message-ID: <20241002125811.664900374@linuxfoundation.org>
+	syzbot+2dab93857ee95f2eeb08@syzkaller.appspotmail.com,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 627/634] mm/hugetlb.c: fix UAF of vma in hugetlb fault pathway
+Date: Wed,  2 Oct 2024 15:02:07 +0200
+Message-ID: <20241002125835.874491007@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daehwan Jung <dh10.jung@samsung.com>
+From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-[ Upstream commit bc162403e33e1d57e40994977acaf19f1434e460 ]
+commit 98b74bb4d7e96b4da5ef3126511febe55b76b807 upstream.
 
-This quirk is for the controller that has a limitation in supporting
-separate ERSTBA_HI and ERSTBA_LO programming. It's supported when
-the ERSTBA is programmed ERSTBA_HI before ERSTBA_LO. That's because
-the internal initialization of event ring fetches the
-"Event Ring Segment Table Entry" based on the indication of ERSTBA_LO
-written.
+Syzbot reports a UAF in hugetlb_fault().  This happens because
+vmf_anon_prepare() could drop the per-VMA lock and allow the current VMA
+to be freed before hugetlb_vma_unlock_read() is called.
 
-Signed-off-by: Daehwan Jung <dh10.jung@samsung.com>
-Link: https://lore.kernel.org/r/1718019553-111939-3-git-send-email-dh10.jung@samsung.com
+We can fix this by using a modified version of vmf_anon_prepare() that
+doesn't release the VMA lock on failure, and then release it ourselves
+after hugetlb_vma_unlock_read().
+
+Link: https://lkml.kernel.org/r/20240914194243.245-2-vishal.moola@gmail.com
+Fixes: 9acad7ba3e25 ("hugetlb: use vmf_anon_prepare() instead of anon_vma_prepare()")
+Reported-by: syzbot+2dab93857ee95f2eeb08@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/00000000000067c20b06219fbc26@google.com/
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: e5fa8db0be3e ("usb: xhci: fix loss of data on Cadence xHC")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c | 5 ++++-
- drivers/usb/host/xhci.h     | 2 ++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index b1e3fa54c6397..54c47463c215c 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2289,7 +2289,10 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
- 	erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
- 	erst_base &= ERST_BASE_RSVDP;
- 	erst_base |= ir->erst.erst_dma_addr & ~ERST_BASE_RSVDP;
--	xhci_write_64(xhci, erst_base, &ir->ir_set->erst_base);
-+	if (xhci->quirks & XHCI_WRITE_64_HI_LO)
-+		hi_lo_writeq(erst_base, &ir->ir_set->erst_base);
-+	else
-+		xhci_write_64(xhci, erst_base, &ir->ir_set->erst_base);
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6075,7 +6075,7 @@ retry_avoidcopy:
+ 	 * When the original hugepage is shared one, it does not have
+ 	 * anon_vma prepared.
+ 	 */
+-	ret = vmf_anon_prepare(vmf);
++	ret = __vmf_anon_prepare(vmf);
+ 	if (unlikely(ret))
+ 		goto out_release_all;
  
- 	/* Set the event ring dequeue address of this interrupter */
- 	xhci_set_hc_event_deq(xhci, ir);
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index b29fe4716f34e..8e4d465b9dd66 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -17,6 +17,7 @@
- #include <linux/kernel.h>
- #include <linux/usb/hcd.h>
- #include <linux/io-64-nonatomic-lo-hi.h>
-+#include <linux/io-64-nonatomic-hi-lo.h>
+@@ -6274,7 +6274,7 @@ static vm_fault_t hugetlb_no_page(struct
+ 		}
  
- /* Code sharing between pci-quirks and xhci hcd */
- #include	"xhci-ext-caps.h"
-@@ -1913,6 +1914,7 @@ struct xhci_hcd {
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
- #define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
-+#define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ 		if (!(vma->vm_flags & VM_MAYSHARE)) {
+-			ret = vmf_anon_prepare(vmf);
++			ret = __vmf_anon_prepare(vmf);
+ 			if (unlikely(ret))
+ 				goto out;
+ 		}
+@@ -6406,6 +6406,14 @@ static vm_fault_t hugetlb_no_page(struct
+ 	folio_unlock(folio);
+ out:
+ 	hugetlb_vma_unlock_read(vma);
++
++	/*
++	 * We must check to release the per-VMA lock. __vmf_anon_prepare() is
++	 * the only way ret can be set to VM_FAULT_RETRY.
++	 */
++	if (unlikely(ret & VM_FAULT_RETRY))
++		vma_end_read(vma);
++
+ 	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+ 	return ret;
  
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
--- 
-2.43.0
-
+@@ -6627,6 +6635,14 @@ out_ptl:
+ 	}
+ out_mutex:
+ 	hugetlb_vma_unlock_read(vma);
++
++	/*
++	 * We must check to release the per-VMA lock. __vmf_anon_prepare() in
++	 * hugetlb_wp() is the only way ret can be set to VM_FAULT_RETRY.
++	 */
++	if (unlikely(ret & VM_FAULT_RETRY))
++		vma_end_read(vma);
++
+ 	mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+ 	/*
+ 	 * Generally it's safe to hold refcount during waiting page lock. But
 
 
 
