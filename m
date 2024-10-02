@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-79757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB9C98DA0B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756A698DCA9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2B21285AD5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 044E61F2813E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14201D130D;
-	Wed,  2 Oct 2024 14:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14191D26E7;
+	Wed,  2 Oct 2024 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcLfFz8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzuPaIa7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAAC1CF5FB;
-	Wed,  2 Oct 2024 14:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4A71D0B99;
+	Wed,  2 Oct 2024 14:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878379; cv=none; b=GVVz3Hrt4Us4swVLZHlHKEwW49CBul3YiqWWHAUY4fUWYCV7AQD8/6Tn968Saa/9Yyomi139tfHiow35WStzrv0V01E5V2WkPbsZPEE8NKmS0dQrCbdW2jmeF1iA9+ysV6wMhJFUa3v3W9pM9XVV6SV9tFz7tyjepyjP56NRhmc=
+	t=1727879837; cv=none; b=ZRtqwW96k0weNbnPSain9YD0JBm6yn98YfhBCUWFSko8uBxsmEFqzi9kaKjQ6wd/SwvttJOhWMIfGaJeodcI/7vjqhJzSblGe3+G/fnZ6W6VJenOyRYWGBjs1aVp2GBgj9tZ5cReHOvugYprA+x3JsPjgxiEKU6iKASmG82hz4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878379; c=relaxed/simple;
-	bh=sOKIOA9DAQOLrbua5UZzRnxotX3qlJTMXeybWyr4EGQ=;
+	s=arc-20240116; t=1727879837; c=relaxed/simple;
+	bh=ZTj4a74VmxmBlFmSLE6t2dTMkRM+y7mY+NIzzMSb+Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tN4B6Gq6XZxILaKVZlydvnWUt3asDHxw6zCIwsRqQcjseV98brenjIQUFDbKNNGEqt7YqrORMwAQJbLdLQn5KZtryaFCLRPwGw9WGm1TXtbBk20SRNfw21BGlaxBMuhOoHkYWRNM/i3h06/wHn2OtjT2wDI5NMwYRWP8PnndSTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcLfFz8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172FBC4CEC2;
-	Wed,  2 Oct 2024 14:12:58 +0000 (UTC)
+	 MIME-Version; b=RsvMjODLjzYXNJsRfE2onTCQpNcxJQMfXZEF18Z2anV2nj7+MhNfq7pUW/q9j2DAiMC81iaBR/+7I/aB1/kvi5rJC8k+iromgwyi5ws/GXqjRTbXbt0krMofwab7Z6rW9izLajhE2/rp56b1OszXFLSqZQ0p3okkUlw5EMDjKMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzuPaIa7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDADC4CEC2;
+	Wed,  2 Oct 2024 14:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878379;
-	bh=sOKIOA9DAQOLrbua5UZzRnxotX3qlJTMXeybWyr4EGQ=;
+	s=korg; t=1727879837;
+	bh=ZTj4a74VmxmBlFmSLE6t2dTMkRM+y7mY+NIzzMSb+Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OcLfFz8xY6NKozVQ7lzneYJ97KXTCzDMtpty8qydaqIKnFtDkxrJ8EyA0/x41KKuz
-	 pKhL1UZOt94O6Flsmxz36DDs9MdA1kXLa+EZCor20phF9284zI5r5BlJnvWIyahg7k
-	 FmLB08T+5OkqQSVMftMdhklhUAjkUyx46ChlQwcs=
+	b=tzuPaIa7NkuKZM70wp23MNrsn9Yw+YlaHXvIkllBOMmJFUJwVv3iQDbmeW0lHCERl
+	 0/0yZLJE8XiHoHtuarl6EeQY56dHcNueDzQ8PpjvRUps6+6BJAs9ZyseGH5poIRf6z
+	 TVU2dyuR/IfUtHrP5Z0kzrvB1/VRTwUfmu39DuUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Yang Jihong <yangjihong@bytedance.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	David Ahern <dsa@cumulusnetworks.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 393/634] nfsd: fix initial getattr on write delegation
-Date: Wed,  2 Oct 2024 14:58:13 +0200
-Message-ID: <20241002125826.616437596@linuxfoundation.org>
+Subject: [PATCH 6.6 255/538] perf sched timehist: Fixed timestamp error when unable to confirm event sched_in time
+Date: Wed,  2 Oct 2024 14:58:14 +0200
+Message-ID: <20241002125802.323179149@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +73,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Yang Jihong <yangjihong@bytedance.com>
 
-[ Upstream commit bf92e5008b17f935a6de8b708551e02c2294121c ]
+[ Upstream commit 39c243411bdb8fb35777adf49ee32549633c4e12 ]
 
-At this point in compound processing, currentfh refers to the parent of
-the file, not the file itself. Get the correct dentry from the delegation
-stateid instead.
+If sched_in event for current task is not recorded, sched_in timestamp
+will be set to end_time of time window interest, causing an error in
+timestamp show. In this case, we choose to ignore this event.
 
-Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Test scenario:
+
+  perf[1229608] does not record the first sched_in event, run time and sch delay are both 0
+
+  # perf sched timehist
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+   2090450.763231 [0000]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763235 [0000]  migration/0[15]                     0.000      0.001      0.003
+   2090450.763263 [0001]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763268 [0001]  migration/1[21]                     0.000      0.001      0.004
+   2090450.763302 [0002]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763309 [0002]  migration/2[27]                     0.000      0.001      0.007
+   2090450.763338 [0003]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763343 [0003]  migration/3[33]                     0.000      0.001      0.004
+
+Before:
+
+  arbitrarily specify a time window of interest, timestamp will be set to an incorrect value
+
+  # perf sched timehist --time 100,200
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+       200.000000 [0000]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0001]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0002]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0003]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0004]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0005]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0006]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0007]  perf[1229608]                       0.000      0.000      0.000
+
+ After:
+
+  # perf sched timehist --time 100,200
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+
+Fixes: 853b74071110bed3 ("perf sched timehist: Add option to specify time window of interest")
+Signed-off-by: Yang Jihong <yangjihong@bytedance.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: David Ahern <dsa@cumulusnetworks.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240819024720.2405244-1-yangjihong@bytedance.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ tools/perf/builtin-sched.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 29c11714ac3db..fe06779ea527a 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5912,6 +5912,28 @@ static void nfsd4_open_deleg_none_ext(struct nfsd4_open *open, int status)
- 	}
- }
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 489a5ef2a25de..42185da0f000a 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -2633,9 +2633,12 @@ static int timehist_sched_change_event(struct perf_tool *tool,
+ 	 * - previous sched event is out of window - we are done
+ 	 * - sample time is beyond window user cares about - reset it
+ 	 *   to close out stats for time window interest
++	 * - If tprev is 0, that is, sched_in event for current task is
++	 *   not recorded, cannot determine whether sched_in event is
++	 *   within time window interest - ignore it
+ 	 */
+ 	if (ptime->end) {
+-		if (tprev > ptime->end)
++		if (!tprev || tprev > ptime->end)
+ 			goto out;
  
-+static bool
-+nfs4_delegation_stat(struct nfs4_delegation *dp, struct svc_fh *currentfh,
-+		     struct kstat *stat)
-+{
-+	struct nfsd_file *nf = find_rw_file(dp->dl_stid.sc_file);
-+	struct path path;
-+	int rc;
-+
-+	if (!nf)
-+		return false;
-+
-+	path.mnt = currentfh->fh_export->ex_path.mnt;
-+	path.dentry = file_dentry(nf->nf_file);
-+
-+	rc = vfs_getattr(&path, stat,
-+			 (STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
-+			 AT_STATX_SYNC_AS_STAT);
-+
-+	nfsd_file_put(nf);
-+	return rc == 0;
-+}
-+
- /*
-  * The Linux NFS server does not offer write delegations to NFSv4.0
-  * clients in order to avoid conflicts between write delegations and
-@@ -5947,7 +5969,6 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
- 	int cb_up;
- 	int status = 0;
- 	struct kstat stat;
--	struct path path;
- 
- 	cb_up = nfsd4_cb_channel_good(oo->oo_owner.so_client);
- 	open->op_recall = false;
-@@ -5983,20 +6004,16 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
- 	memcpy(&open->op_delegate_stateid, &dp->dl_stid.sc_stateid, sizeof(dp->dl_stid.sc_stateid));
- 
- 	if (open->op_share_access & NFS4_SHARE_ACCESS_WRITE) {
--		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
--		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
--		path.mnt = currentfh->fh_export->ex_path.mnt;
--		path.dentry = currentfh->fh_dentry;
--		if (vfs_getattr(&path, &stat,
--				(STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
--				AT_STATX_SYNC_AS_STAT)) {
-+		if (!nfs4_delegation_stat(dp, currentfh, &stat)) {
- 			nfs4_put_stid(&dp->dl_stid);
- 			destroy_delegation(dp);
- 			goto out_no_deleg;
- 		}
-+		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
- 		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
- 		dp->dl_cb_fattr.ncf_initial_cinfo =
- 			nfsd4_change_attribute(&stat, d_inode(currentfh->fh_dentry));
-+		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
- 	} else {
- 		open->op_delegate_type = NFS4_OPEN_DELEGATE_READ;
- 		trace_nfsd_deleg_read(&dp->dl_stid.sc_stateid);
+ 		if (t > ptime->end)
 -- 
 2.43.0
 
