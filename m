@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-78789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7001998D501
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1024D98D825
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB089B219B9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97B801F21B37
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058AD1D04A0;
-	Wed,  2 Oct 2024 13:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD191D0B9E;
+	Wed,  2 Oct 2024 13:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWYfWuLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNIUL7EN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6ADD1D07A8;
-	Wed,  2 Oct 2024 13:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1E61D0B93;
+	Wed,  2 Oct 2024 13:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875535; cv=none; b=dGg637512n/qinaAty18JnWobNi1egC8QNz42SWLqNO21XXR5G2cwRbOJhIc+Sry59Zw30h16BtUEV4JYvzt2PJgYBuCdJKBCb5B0uYphS4Bd7seq5QmREMEsYzG9pN4dSFDjJBKLDMZututcrLiOOuFz6YRdZSm4kn7dOA+d2s=
+	t=1727877388; cv=none; b=NT/XhxfEgp+ilT1rurJ5PNHgo8Zqw/xDFOiAbCKJQ0Xa6zv8h3bh6CQz1FEMx3UvkP8KzvWb/Qscsn5KpCPz++U/niL3MxzDkLR6mxScHxg7U4GIEe2N4/I4Fmh85+hWHjmHoXmOVUNzQ94F8lwv9DY4gPqj0Hbr+TwloRDkMcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875535; c=relaxed/simple;
-	bh=Rcg6bEiAgPNmGFZrynKxofnnqsgoFPEkMYdP2OCrCQA=;
+	s=arc-20240116; t=1727877388; c=relaxed/simple;
+	bh=6JCDOToE78latShQkh7KUTtKAK26QJIeKYfLaeUp6Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V544eIkEvWDfQL/howO5S+eJqBxSHNVckY88J7UFBt4Fp7OIWCCp8ZaPYeMNKDPAYbYJjb8JSveMCljOzwNZXopnXhjK98PxO39SI2leJ5Op8ZZUbp0X8z80A3lDvdXX6sSI5bBG0OGq/xjGgKCTcjd2hMHWIEp34y+FKoVlH0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWYfWuLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A454C4CEC5;
-	Wed,  2 Oct 2024 13:25:35 +0000 (UTC)
+	 MIME-Version; b=Z6Xal4KkKuruj9rm+DG4ij8R/NUCRLyijyTpiU2qtm/m/gHv+Xl4GYDiPxuD1XHK/uRQNPo+XWiNDvx6rEMUvb+PQrRiOByP826/iOtIqb4lwJoqx5oeKigCrjCzi6Kebm8TgO7dIIg/KYZmM6IX8f5kAVjvMiZRbi/2o+kshuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNIUL7EN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77893C4CECE;
+	Wed,  2 Oct 2024 13:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875535;
-	bh=Rcg6bEiAgPNmGFZrynKxofnnqsgoFPEkMYdP2OCrCQA=;
+	s=korg; t=1727877387;
+	bh=6JCDOToE78latShQkh7KUTtKAK26QJIeKYfLaeUp6Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWYfWuLbiZjDQrbiaIpEvwfHvHEbl/XMz7eSGUYnBmmS48EhWA9vhyHvZhaP69OaP
-	 Tc1e6AujFrlBGg0M6RJAwpRDD/qrEXGMXfPpawODs68qmOAavpEE73XaqrAVHRpxRR
-	 JM9X2hTSzHQSQqWHiw6DE2R6DMWfCjJhhxP26EmA=
+	b=SNIUL7EN32h8I0fGpX+bTMOF8SI68Zm1311o7fHtyLHp3a8eocWbcQtaQyipuzFHE
+	 SM1ReIkgybeiSKVwCN2x2QDWYUNdcmgJZmgIHAixxHzXwExAFKYmmNTbTXCxbWZdfp
+	 E36VUkFCXxJVFyV+89RCsInayAAEi2VDwKmo6jGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 135/695] arm64: dts: mediatek: mt8186: Fix supported-hw mask for GPU OPPs
+Subject: [PATCH 6.10 033/634] perf/dwc_pcie: Always register for PCIe bus notifier
 Date: Wed,  2 Oct 2024 14:52:13 +0200
-Message-ID: <20241002125827.875785400@linuxfoundation.org>
+Message-ID: <20241002125812.405069496@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
 
-[ Upstream commit 2317d018b835842df0501d8f9e9efa843068a101 ]
+[ Upstream commit b94b05478fb6a09033bf70c6edd03f8930a0fe24 ]
 
-The speedbin eFuse reads a value 'x' from 0 to 7 and, in order to
-make that compatible with opp-supported-hw, it gets post processed
-as BIT(x).
+When the PCIe devices are discovered late, the driver can't find
+the PCIe devices and returns in the init without registering with
+the bus notifier. Due to that the devices which are discovered late
+the driver can't register for this.
 
-Change all of the 0x30 supported-hw to 0x20 to avoid getting
-duplicate OPPs for speedbin 4, and also change all of the 0x8 to
-0xcf because speedbins different from 4 and 5 do support 900MHz,
-950MHz, 1000MHz with the higher voltage of 850mV, 900mV, 950mV
-respectively.
+Register for bus notifier & driver even if the device is not found
+as part of init.
 
-Fixes: f38ea593ad0d ("arm64: dts: mediatek: mt8186: Wire up GPU voltage/frequency scaling")
-Link: https://lore.kernel.org/r/20240725072243.173104-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: af9597adc2f1 ("drivers/perf: add DesignWare PCIe PMU driver")
+Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20240816-dwc_pmu_fix-v2-3-198b8ab1077c@quicinc.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/perf/dwc_pcie_pmu.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-index 4763ed5dc86cf..d63a9defe73e1 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-@@ -731,7 +731,7 @@
- 		opp-900000000-3 {
- 			opp-hz = /bits/ 64 <900000000>;
- 			opp-microvolt = <850000>;
--			opp-supported-hw = <0x8>;
-+			opp-supported-hw = <0xcf>;
- 		};
+diff --git a/drivers/perf/dwc_pcie_pmu.c b/drivers/perf/dwc_pcie_pmu.c
+index 85a5155d60180..f205ecad2e4c0 100644
+--- a/drivers/perf/dwc_pcie_pmu.c
++++ b/drivers/perf/dwc_pcie_pmu.c
+@@ -726,7 +726,6 @@ static struct platform_driver dwc_pcie_pmu_driver = {
+ static int __init dwc_pcie_pmu_init(void)
+ {
+ 	struct pci_dev *pdev = NULL;
+-	bool found = false;
+ 	int ret;
  
- 		opp-900000000-4 {
-@@ -743,13 +743,13 @@
- 		opp-900000000-5 {
- 			opp-hz = /bits/ 64 <900000000>;
- 			opp-microvolt = <825000>;
--			opp-supported-hw = <0x30>;
-+			opp-supported-hw = <0x20>;
- 		};
+ 	for_each_pci_dev(pdev) {
+@@ -738,11 +737,7 @@ static int __init dwc_pcie_pmu_init(void)
+ 			pci_dev_put(pdev);
+ 			return ret;
+ 		}
+-
+-		found = true;
+ 	}
+-	if (!found)
+-		return -ENODEV;
  
- 		opp-950000000-3 {
- 			opp-hz = /bits/ 64 <950000000>;
- 			opp-microvolt = <900000>;
--			opp-supported-hw = <0x8>;
-+			opp-supported-hw = <0xcf>;
- 		};
- 
- 		opp-950000000-4 {
-@@ -761,13 +761,13 @@
- 		opp-950000000-5 {
- 			opp-hz = /bits/ 64 <950000000>;
- 			opp-microvolt = <850000>;
--			opp-supported-hw = <0x30>;
-+			opp-supported-hw = <0x20>;
- 		};
- 
- 		opp-1000000000-3 {
- 			opp-hz = /bits/ 64 <1000000000>;
- 			opp-microvolt = <950000>;
--			opp-supported-hw = <0x8>;
-+			opp-supported-hw = <0xcf>;
- 		};
- 
- 		opp-1000000000-4 {
-@@ -779,7 +779,7 @@
- 		opp-1000000000-5 {
- 			opp-hz = /bits/ 64 <1000000000>;
- 			opp-microvolt = <875000>;
--			opp-supported-hw = <0x30>;
-+			opp-supported-hw = <0x20>;
- 		};
- 	};
- 
+ 	ret = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN,
+ 				      "perf/dwc_pcie_pmu:online",
 -- 
 2.43.0
 
