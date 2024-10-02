@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-80362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2C598DD57
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F9798DAAE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A98E9B29785
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7449F282361
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5EF1D0BAD;
-	Wed,  2 Oct 2024 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864071D0B97;
+	Wed,  2 Oct 2024 14:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lnp3XUet"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KyfVEk+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E456FB0;
-	Wed,  2 Oct 2024 14:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437FD1D0B84;
+	Wed,  2 Oct 2024 14:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880152; cv=none; b=JD8H95wEcbHtqnqSyWKbfduxLXZ2b6WOM8ooLoLIW7+qau/7Jrrc0OHqRAFBkD5bHNFRWl+ddoNPAkxSq2dEASRpJzgwCLKW/uFws11St2H68eM7pfktsAByIuDhUXoAN5wbdH124p3DQTcpDiLRoy5QHo1QISn6P49Ym8Y2rHk=
+	t=1727878696; cv=none; b=sT0pNR2Qlzj7h6gVwrT6KUqohhtHSGoZNPzEQTbNhDo/0rpAw2bSDgAl1QVa84SUI91g16tC5cOF3jVRMjjGK8VXNiJDR6jCO+YuAD/biJLHRM6bJxPzs0kUQdQ3NXoPf6iA/aJgiBV9igOXOLz2QC387pKB2dpOySzGBZ6rmro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880152; c=relaxed/simple;
-	bh=ae1wYl5s/4b20LFdbDF8pyw62c115C6RMVuZe2mflNQ=;
+	s=arc-20240116; t=1727878696; c=relaxed/simple;
+	bh=f35ut4KeAz/cesxVksbcHK0FWGfq4SGeqZHXIFRzUzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLICYK++ydiif9iuDsfaPqC4oUJ3gueZOppKtn/3EDxJmMPjbRHheFjkmHIKFioFoZXcUfJqJhaKPKgT4B4IiXuK1gg+3NcyYWyTYM+9ctAZgMfS89E8DTObusIK47eL5C3BTN8fB9MRt36yDnKJwXxIF6URx87KH0AevS6chCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lnp3XUet; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD27C4CEC2;
-	Wed,  2 Oct 2024 14:42:31 +0000 (UTC)
+	 MIME-Version; b=T35j6q27nbWODd3g5Uf2wyMS7k59lLE9U0Z5L1VtZlDk1/sxUt8gMy5z4gG8xmE33mPW3bd7pz3NRVBxTNQ0EP1bFMKWwCRwdQregZ/WykqQhmzIjXEk7vv3/91R8pdPv0CQpotnSw83Ed6waN95GqwrMKNjQdKHcJ9s0eabab8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KyfVEk+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FE5C4CEC2;
+	Wed,  2 Oct 2024 14:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880152;
-	bh=ae1wYl5s/4b20LFdbDF8pyw62c115C6RMVuZe2mflNQ=;
+	s=korg; t=1727878696;
+	bh=f35ut4KeAz/cesxVksbcHK0FWGfq4SGeqZHXIFRzUzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lnp3XUetFi9KkYqARimXt8IL3g9nMFmRfuZSnLJKoR87vPC+U8kNxiEBSHfmTlgwO
-	 TMDSsiNLfHf0d7D7S7URZ8GAGHq2vDwDrIJutMm1QoqS0IQ2WnKCyk4+GBYpofrvMm
-	 pFiAU9J3JFMFbFdYC6yOZ+dLM9Ye0/q40/ZGriQc=
+	b=KyfVEk+lWCKXk6sbr1mHDg8oHhBGmpYsmqVxyxkEjcLiQugb8kce1d3qlxUDXI58u
+	 qhlOzmY3ULJlkniD2CHKp3Ax8TjGC5KrC3KAj0Y3tw5opzXwlJNxr2bIWtg2KB9Fui
+	 xvKBin8ztHwCUsv5skL6yi1MXxsq6SrvDQ5wP+vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 360/538] dt-bindings: iio: asahi-kasei,ak8975: drop incorrect AK09116 compatible
-Date: Wed,  2 Oct 2024 14:59:59 +0200
-Message-ID: <20241002125806.637036825@linuxfoundation.org>
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.10 500/634] Revert "LoongArch: KVM: Invalidate guest steal time address on vCPU reset"
+Date: Wed,  2 Oct 2024 15:00:00 +0200
+Message-ID: <20241002125830.833756701@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit c7668ac67bc21aebdd8e2d7f839bfffba31b7713 ]
+This reverts commit 05969a6944713f159e8f28be2388500174521818 which is
+commit 4956e07f05e239b274d042618a250c9fa3e92629 upstream.
 
-All compatibles in this binding without prefixes were deprecated, so
-adding a new deprecated one after some time is not allowed, because it
-defies the core logic of deprecating things.
+LoongArch's PV steal time support is add after 6.10, so 6.10.y doesn't
+need this fix.
 
-Drop the AK09916 vendorless compatible.
-
-Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20240806053016.6401-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml | 1 -
- 1 file changed, 1 deletion(-)
+ arch/loongarch/include/asm/kvm_vcpu.h |    1 +
+ arch/loongarch/kvm/timer.c            |    7 +++++++
+ arch/loongarch/kvm/vcpu.c             |    2 +-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-index 9790f75fc669e..fe5145d3b73cf 100644
---- a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-+++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
-@@ -23,7 +23,6 @@ properties:
-           - ak8963
-           - ak09911
-           - ak09912
--          - ak09916
-         deprecated: true
+--- a/arch/loongarch/include/asm/kvm_vcpu.h
++++ b/arch/loongarch/include/asm/kvm_vcpu.h
+@@ -76,6 +76,7 @@ static inline void kvm_restore_lasx(stru
+ #endif
  
-   reg:
--- 
-2.43.0
-
+ void kvm_init_timer(struct kvm_vcpu *vcpu, unsigned long hz);
++void kvm_reset_timer(struct kvm_vcpu *vcpu);
+ void kvm_save_timer(struct kvm_vcpu *vcpu);
+ void kvm_restore_timer(struct kvm_vcpu *vcpu);
+ 
+--- a/arch/loongarch/kvm/timer.c
++++ b/arch/loongarch/kvm/timer.c
+@@ -188,3 +188,10 @@ void kvm_save_timer(struct kvm_vcpu *vcp
+ 	kvm_save_hw_gcsr(csr, LOONGARCH_CSR_ESTAT);
+ 	preempt_enable();
+ }
++
++void kvm_reset_timer(struct kvm_vcpu *vcpu)
++{
++	write_gcsr_timercfg(0);
++	kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_TCFG, 0);
++	hrtimer_cancel(&vcpu->arch.swtimer);
++}
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -572,7 +572,7 @@ static int kvm_set_one_reg(struct kvm_vc
+ 				vcpu->kvm->arch.time_offset = (signed long)(v - drdtime());
+ 			break;
+ 		case KVM_REG_LOONGARCH_VCPU_RESET:
+-			vcpu->arch.st.guest_addr = 0;
++			kvm_reset_timer(vcpu);
+ 			memset(&vcpu->arch.irq_pending, 0, sizeof(vcpu->arch.irq_pending));
+ 			memset(&vcpu->arch.irq_clear, 0, sizeof(vcpu->arch.irq_clear));
+ 			break;
 
 
 
