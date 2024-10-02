@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-79504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0D398D8CE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561F198D586
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16057283555
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1847E288D6A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC1D1D2713;
-	Wed,  2 Oct 2024 14:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC0D18DF60;
+	Wed,  2 Oct 2024 13:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj0xnVZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wz/QhlrV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDC91D0F74;
-	Wed,  2 Oct 2024 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FBA1D04B4;
+	Wed,  2 Oct 2024 13:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877651; cv=none; b=qcG+uzo7iyNRaesjcqoXSolpLUwc7uy5/DzYGpXV0kI2bGok8X9imJAg0QHG1nFHMzJzqOYQqcipWVCBcJNBBzYWVbfARe+S0h5x9Rx/51pDpiGHP1fCohLBhj0Wcd2wkNGmbYbfiUVX6h1g6UcjQRYhT855xL5eoE1WUZmt1RY=
+	t=1727875876; cv=none; b=s5dZaP68LSUTg8kCV+GPjvAZgOksbQSHF40E1LJDOHf5GPIjwIQH5mlDNZL4rGKauQDRLnQL2r422xNfeV1NWox9hDUhc1UV9bEQSb9hEkIXTjDhgA/WNl/1wqeEdTuSquJ6qCEC+VRJR85qcicYYsu+/h3H/aPtSArwbct4xB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877651; c=relaxed/simple;
-	bh=CifOBE9ypAKOLPdZLIKqzINZ2+lAHQt4Y/wsfyHYbz4=;
+	s=arc-20240116; t=1727875876; c=relaxed/simple;
+	bh=47jzbcWp3COhZMlwGzzw2iOHzG88585ah0VvmNODI/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1knu5N8FQw/Me7r7NvPji33YqQEYaTwE/ynzcB3NmelwOv5CPqe9Ca8kr+UFHI1DNp6nNLCJ8amHTEqFzvnVxJmc1t2Z2n7t4qbF+70Bz+pDXhE9gYcXLrXLND3PcEcIJ3kVlB+9EGOnq77LQ4qmGkHf08VUiQo4uHqDrmoolo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj0xnVZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4638AC4CEC5;
-	Wed,  2 Oct 2024 14:00:51 +0000 (UTC)
+	 MIME-Version; b=swTftkyJnczZh9B9qd/Mgu4+lrbq0YLdJkyM5VZZpbGV9SJ5PhcGnPNA78IFSuaTZOHEWAX112h/ppbluIhueY+hzfGjpAJp6EVDBSUitn4Ld5Vo/9awJ8Evwz5ihOUrO6POqApOjo4XIyOwgxkUNcheCIrqd56BghKs2s9O4x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wz/QhlrV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA6AC4CECF;
+	Wed,  2 Oct 2024 13:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877651;
-	bh=CifOBE9ypAKOLPdZLIKqzINZ2+lAHQt4Y/wsfyHYbz4=;
+	s=korg; t=1727875876;
+	bh=47jzbcWp3COhZMlwGzzw2iOHzG88585ah0VvmNODI/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tj0xnVZ0b/eA4DOv9ZB5rfMgJo6Vf9s7vZa7LNxh95Xzn0XvmsEoeEBHyEH2LiO5e
-	 zgV8zgslU5v55YxOWKmfMaoNTfCsoBNCD/lU27vrfkQcBnikwIW/81LkhKAfqXBT1x
-	 S9grMIR+CVmJo6TLQX6k58vUL1SQV1EAcavRGgDw=
+	b=wz/QhlrVrMtJJlkg20n3T0FvirpM2J8Lqegb5jMxPXTr9aacBZ14K4TU0Ed96KeHr
+	 W7MbzI+r6w4m4CYrqCJ2dcA351Rtl0giGHsnlhKz/Vl93DrsSW6HoEVbRA0yoBqC2i
+	 VbMptMILQD63MBRpdHR7gmS8t60CwiUbHkiqgRww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Dafna Hirschfeld <dhirschfeld@habana.ai>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 148/634] selftests/ftrace: Add required dependency for kprobe tests
+Subject: [PATCH 6.11 250/695] drm/xe: fix missing xe_vm_put
 Date: Wed,  2 Oct 2024 14:54:08 +0200
-Message-ID: <20241002125816.952241144@linuxfoundation.org>
+Message-ID: <20241002125832.428003202@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Dafna Hirschfeld <dhirschfeld@habana.ai>
 
-[ Upstream commit 41f37c852ac3fbfd072a00281b60dc7ba056be8c ]
+[ Upstream commit 2efba0c095419f93f8913f1cbae8bf3fb030db20 ]
 
-kprobe_args_{char,string}.tc are using available_filter_functions file
-which is provided by function tracer. Thus if function tracer is disabled,
-these tests are failed on recent kernels because tracefs_create_dir is
-not raised events by adding a dynamic event.
-Add available_filter_functions to requires line.
+Fix memleak caused by missing xe_vm_put
 
-Fixes: 7c1130ea5cae ("test: ftrace: Fix kprobe test for eventfs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 852856e3b6f6 ("drm/xe: Use reserved copy engine for user binds on faulting devices")
+Signed-off-by: Dafna Hirschfeld <dhirschfeld@habana.ai>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240901044227.1177211-1-dhirschfeld@habana.ai
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 249df8cbecf0ab4877eab66cae857748631831a9)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc  | 2 +-
- .../selftests/ftrace/test.d/kprobe/kprobe_args_string.tc        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
-index e21c9c27ece47..77f4c07cdcb89 100644
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: Kprobe event char type argument
--# requires: kprobe_events
-+# requires: kprobe_events available_filter_functions
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index c2953ddbd16e1..d0bbb1d9b1ac1 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -221,8 +221,10 @@ struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
+ 							   gt->usm.reserved_bcs_instance,
+ 							   false);
  
- case `uname -m` in
- x86_64)
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-index 93217d4595563..39001073f7ed5 100644
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: Kprobe event string type argument
--# requires: kprobe_events
-+# requires: kprobe_events available_filter_functions
+-		if (!hwe)
++		if (!hwe) {
++			xe_vm_put(migrate_vm);
+ 			return ERR_PTR(-EINVAL);
++		}
  
- case `uname -m` in
- x86_64)
+ 		q = xe_exec_queue_create(xe, migrate_vm,
+ 					 BIT(hwe->logical_instance), 1, hwe,
 -- 
 2.43.0
 
