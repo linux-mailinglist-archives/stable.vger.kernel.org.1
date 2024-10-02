@@ -1,73 +1,61 @@
-Return-Path: <stable+bounces-78827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C9998D527
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2473598D785
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9A51C21CD1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC061F21556
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45431D0412;
-	Wed,  2 Oct 2024 13:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C97E1D042F;
+	Wed,  2 Oct 2024 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i8dqggLY"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="iUSYO3SO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5268716F84F
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 13:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17981CF5C6;
+	Wed,  2 Oct 2024 13:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875644; cv=none; b=hGzivv41o7BlXpQ4wxR78YqrRMsTgaKlRBKeh8NQPWWSDBweXS6mnmtpJkNBPW8v4d6BpDV2zrjeeYe9yzZYZ55HTvXXzkpkKpAatsiD7n+xkEDcOSo2Nqwv5BSmV9ioIYvISyk+1qv0fkThwh+GMsTenKJq3xlNjm9DJiT0IuA=
+	t=1727877023; cv=none; b=iFYvd/6AlkKEc9BzjCkL3rs+Ru0yabmAoj+Fr4lSP33rrdgFifaLuTDLtW+Z/2zg2Fn73KuYVZ+MUlsP9NAevn4uxwFIQNXqEbeoJyeiVXoEwSKJld36Ri3wtyeqQmve9u2/mt7fw+M0v647hmIHp6kqp+EjGx3ud3QJLdjJqJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875644; c=relaxed/simple;
-	bh=Mn9B6l9bRzL90ieh4PbtqaQCYwsvd+KT32io3NF9Z5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=aWl0TcipjkA48MABYsEU2tBJMA7HJLsJQoup3KqDWkwMSnrDmUkdVxSATixQgzlQfdx/js+yDi0Yl4D8h1Sw06O7QU84hjg4BOtfauOQ81UbyaMtlmROMVzZRiLjVYjGNxPfdeD4oloAVv1BpVmLI5Sz8g0Qjs0GR2UKUWdGyJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i8dqggLY; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727875641; x=1759411641;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Mn9B6l9bRzL90ieh4PbtqaQCYwsvd+KT32io3NF9Z5Q=;
-  b=i8dqggLYc4lBQAm7EraTIYFT10HR5v2RwvpOd1gP9TfPcZxoEW/v/e+l
-   USTrR2DykFWotuGn0a6qfL1wvxc9RM9st+GLi39Vn6eGBizgfinKhd77j
-   074a3gn1rVj1F7rdAzwdMJxzVUFkoCPfkp8rWYvCkUlb4wHjMz4GzF+D0
-   P10hsRy/AOWrBcVvIh7ioOZoH7dYdstzaCcoYKGiTJYCCkAD26xlzQ5Ax
-   vpIIzkzkSew4+U3+d2U/S8VoO5fDQVWXA8aJy8yda/THLAoVGUoD6HKTP
-   qIJ60h7XJVrIs4xvSayFjxtknkuHu46T1rApDasOG8PwiuqNtbSw2V29a
-   A==;
-X-CSE-ConnectionGUID: euzeEFF8SQCCPODMN/7x+w==
-X-CSE-MsgGUID: ydmnuHCaTNW347uXuT7F4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="26928014"
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; 
-   d="scan'208";a="26928014"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 06:27:20 -0700
-X-CSE-ConnectionGUID: 8DwRQJJ1QFSFwOBiLkjDqg==
-X-CSE-MsgGUID: 7yBEJjhhSeqx69Dng9JdvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; 
-   d="scan'208";a="78535734"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 02 Oct 2024 06:27:19 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1svzNt-000S7g-2l;
-	Wed, 02 Oct 2024 13:27:17 +0000
-Date: Wed, 2 Oct 2024 21:26:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] USB: chaoskey: fail open after removal
-Message-ID: <Zv1KAqAP8o4L3buz@5b378fdd06de>
+	s=arc-20240116; t=1727877023; c=relaxed/simple;
+	bh=I8zHU9ljuu6yT/c0cQjwimn/tPfKUTumboPM9IprxNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HgNav+LHDvuSHNpIjxeibvfD4FtELHXLMrz2Baq2PRzGwi0q1lb7y67w/ms7ulPgEanVulT4E89JBQCXDZxEJdDfKmgWxCKFpAs6TJWGZHvoZ5fR4akvyMaJbvyNW3+fHlMYFLxVtECVabH3Dfq/MvgUhAfpcDsr3VcY/qcxMu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=iUSYO3SO; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dn455BDcU15KPJl6HB0JCPOM6QTXx0KuElbVlyaPm2o=; b=iUSYO3SOkBW7MosqoxhdUz8xO5
+	FcO1RrPDywvaPJoOVXS/Hglls8bDjghzv2Ie3a6CgRv29Iij+a1fPNFXeaUmNfLGaJhF1aolYTIaE
+	/pmSTNjjnUC9cunTS5eKBGsDSka16cI9ySwOzVRtteDKea54HXizedon8qH0FraHOM8Y=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1svzk3-008rbD-OI; Wed, 02 Oct 2024 15:50:11 +0200
+Date: Wed, 2 Oct 2024 15:50:11 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Josua Mayer <josua@solid-run.com>
+Cc: Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: marvell: cn9130-sr-som: fix cp0 mdio pin
+ numbers
+Message-ID: <2d867c1f-2693-40f2-a410-2c83c253bea1@lunn.ch>
+References: <20241002-cn9130-som-mdio-v2-1-ec798e4a83ff@solid-run.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,24 +64,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241002132201.552578-1-oneukum@suse.com>
+In-Reply-To: <20241002-cn9130-som-mdio-v2-1-ec798e4a83ff@solid-run.com>
 
-Hi,
+On Wed, Oct 02, 2024 at 03:07:16PM +0200, Josua Mayer wrote:
+> SolidRun CN9130 SoM actually uses CP_MPP[0:1] for mdio. CP_MPP[40]
+> provides reference clock for dsa switch and ethernet phy on Clearfog
+> Pro, wheras MPP[41] controls efuse programming voltage "VHV".
+> 
+> Update the cp0 mdio pinctrl node to specify mpp0, mpp1.
+> 
+> Fixes: 1c510c7d82e5 ("arm64: dts: add description for solidrun cn9130 som and clearfog boards")
+> Cc: stable@vger.kernel.org # 6.11.x
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
 
-Thanks for your patch.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] USB: chaoskey: fail open after removal
-Link: https://lore.kernel.org/stable/20241002132201.552578-1-oneukum%40suse.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+    Andrew
 
