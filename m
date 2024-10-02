@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-78905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9810A98D582
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7464798D897
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B512E1C21E7B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B093282786
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262741D0174;
-	Wed,  2 Oct 2024 13:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C329F1D1E6E;
+	Wed,  2 Oct 2024 13:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slRpU5Xs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pMIEo3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71CB29CE7;
-	Wed,  2 Oct 2024 13:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1CB1D1E70;
+	Wed,  2 Oct 2024 13:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875870; cv=none; b=jnimagPLzLTPygIhRKGhNrb75seG0Jh165NlGtRUKKp0yn+AEPUTrLEh1BZucBW7AZ40oEscJ+cmUF0paWPJqqyLYoc4VcSdZkGiWcENLcjw/UTkiFpx93xA1RrhCNXOay9DiaUTtJCZJOn6rWJv28yCWtuhiLbuoxbicOfdv8k=
+	t=1727877572; cv=none; b=tukCZTgv+9CW0yGHue179zrVuDNQi5S56LBrIFxdxgQhq+0oaSIBGYs0hBkP3BLiRWqWteq3weRMj0HRZixWz7cACxE2rZU7IDH4sauuVSC3g9EA+0hSxvVN5oUokXQvubY3bx+MLLtLPC2/u6QHe90W3k2LxpZyxvgIY93LjUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875870; c=relaxed/simple;
-	bh=RqEMeUhb/k37Bf2xXxD/LhJUKboGVtPKldI0KlXcdzw=;
+	s=arc-20240116; t=1727877572; c=relaxed/simple;
+	bh=9Lx/tEWDQjylIE8JXTFB510CgXePII6FvN8/qwW1TYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdSYebBrf5vTbf6dywA0cE8yVAthb3WZmJe69/f9/S70jjSjtCztl6NY9eJ9X9oQkILTXoSGzm5qtwTfZKpRywYMDJN31ca+wISbgleyg+jIVEPSckKi3kXoE9H5Vea78mU2/1wmO6Lp7NccLkLTrZ8Jh7BrYkPj200+7/S0pB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slRpU5Xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8AAC4CEC5;
-	Wed,  2 Oct 2024 13:31:10 +0000 (UTC)
+	 MIME-Version; b=llpqFJi51vxpWSegsQXzVfkejBQoT+YG8JZVcbN0zy8XB5bM+4D3kATpGuGdSsiBzopytViC4LKKcc+QO6ozcHwuQJGPDCsUwCy7XmbHmtezR6etXdKnc+0jf1B1sPqqFPkKxHb9Fs9jH8ZiWfehfv96nqQWfAP+4uJ1DQknJHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pMIEo3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0179CC4CECD;
+	Wed,  2 Oct 2024 13:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875870;
-	bh=RqEMeUhb/k37Bf2xXxD/LhJUKboGVtPKldI0KlXcdzw=;
+	s=korg; t=1727877572;
+	bh=9Lx/tEWDQjylIE8JXTFB510CgXePII6FvN8/qwW1TYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slRpU5XsCWQ+Nj1QydEBBOqWCfgjvJeWc0T8DirRZGSbBzjyPMxCyNf2arCZ4Y8XK
-	 J2kf/bXrMDWXen9I+vPT2LhmK+wiSk7gudUr+uv9YNm8UM+sFSEVdEvrLDAxJqyGZj
-	 eiuJllDL3R6W/Oj+miaMlolP5cIH2iqSAegWagQY=
+	b=0pMIEo3V++/rUJO2xLd8cbltHSsLKZ/YsaS2/9ap4ChDEDkJnykED9g840pwxjGbG
+	 bzBt4IrDPR1SkDxN17BMGMjimxbAXKOMDVW/o7R3kk/6MzSViL3u6tBtTYYqGxB/6/
+	 Efm96m/nFUvEx7+dwF8Jsx2CHYDeIeWue95RhZTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fei Shao <fshao@chromium.org>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 222/695] drm/mediatek: Use spin_lock_irqsave() for CRTC event lock
+Subject: [PATCH 6.10 120/634] firmware: arm_scmi: Fix double free in OPTEE transport
 Date: Wed,  2 Oct 2024 14:53:40 +0200
-Message-ID: <20241002125831.319504294@linuxfoundation.org>
+Message-ID: <20241002125815.848344766@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fei Shao <fshao@chromium.org>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit be03b30b7aa99aca876fbc7c1c1b73b2d0339321 ]
+[ Upstream commit e98dba934b2fc587eafb83f47ad64d9053b18ae0 ]
 
-Use the state-aware spin_lock_irqsave() and spin_unlock_irqrestore()
-to avoid unconditionally re-enabling the local interrupts.
+Channels can be shared between protocols, avoid freeing the same channel
+descriptors twice when unloading the stack.
 
-Fixes: 411f5c1eacfe ("drm/mediatek: handle events when enabling/disabling crtc")
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240828101511.3269822-1-fshao@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 5f90f189a052 ("firmware: arm_scmi: Add optee transport")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Peng Fan <peng.fan@nxp.com>  #i.MX95 19x19 EVK
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Message-Id: <20240812173340.3912830-2-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_crtc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_scmi/optee.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
-index d7f0926f896d6..a90504359e8d2 100644
---- a/drivers/gpu/drm/mediatek/mtk_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
-@@ -467,6 +467,7 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
- {
- 	struct drm_device *drm = mtk_crtc->base.dev;
- 	struct drm_crtc *crtc = &mtk_crtc->base;
-+	unsigned long flags;
- 	int i;
+diff --git a/drivers/firmware/arm_scmi/optee.c b/drivers/firmware/arm_scmi/optee.c
+index 4e7944b91e385..0c8908d3b1d67 100644
+--- a/drivers/firmware/arm_scmi/optee.c
++++ b/drivers/firmware/arm_scmi/optee.c
+@@ -473,6 +473,13 @@ static int scmi_optee_chan_free(int id, void *p, void *data)
+ 	struct scmi_chan_info *cinfo = p;
+ 	struct scmi_optee_channel *channel = cinfo->transport_info;
  
- 	for (i = 0; i < mtk_crtc->ddp_comp_nr; i++) {
-@@ -498,10 +499,10 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
- 	pm_runtime_put(drm->dev);
- 
- 	if (crtc->state->event && !crtc->state->active) {
--		spin_lock_irq(&crtc->dev->event_lock);
-+		spin_lock_irqsave(&crtc->dev->event_lock, flags);
- 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
- 		crtc->state->event = NULL;
--		spin_unlock_irq(&crtc->dev->event_lock);
-+		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
- 	}
- }
- 
++	/*
++	 * Different protocols might share the same chan info, so a previous
++	 * call might have already freed the structure.
++	 */
++	if (!channel)
++		return 0;
++
+ 	mutex_lock(&scmi_optee_private->mu);
+ 	list_del(&channel->link);
+ 	mutex_unlock(&scmi_optee_private->mu);
 -- 
 2.43.0
 
