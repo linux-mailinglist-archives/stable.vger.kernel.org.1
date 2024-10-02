@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-78856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8051B98D54F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8EA98D88B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2F1B1C21DFA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22B841F211B9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B281D04A9;
-	Wed,  2 Oct 2024 13:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C9E1D0DED;
+	Wed,  2 Oct 2024 13:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VK7P5EEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vS2TouYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164CB1D049F;
-	Wed,  2 Oct 2024 13:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F4F2BAF9;
+	Wed,  2 Oct 2024 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875728; cv=none; b=S7r4r4XL3mzQVd+OzQWPZU/aPclNa5oo03DRIRqBrba49cDsqPalyEBFvIPtszvdAWuNRvcvDn3MP/YE4tlr3xYlNPCdONq+Lt5FctlhJIeUMEE5Aa+3eGFQBv5moKi6025/50D2V9s95twgr8P8YpCQJDwE37rLgyIhCDU6Nq4=
+	t=1727877556; cv=none; b=oO8j/DkcNUdJbqBkL6dGKu1XI73frLCySQsDNZgfTYjbhiMYALLyKK/1uTp8Rr6feuak9afei5rusNOFDG4LyyDrt2qp872aJzbxPEHrZ0b/FtS7DzoBY5HLBR7V99wO0DNHQYClNhO/+NWKwXEFdbjzbkoCBhfAeqOi6giUxmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875728; c=relaxed/simple;
-	bh=SWOpoiz8hRa4pCyVl5T+6LwICxPe9wZXuRhUZpHwwe0=;
+	s=arc-20240116; t=1727877556; c=relaxed/simple;
+	bh=r5JpGOqQPHcRPWTcAfQPRZofTcTDihGE5p4ArsODt00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/yYKqTteJlOTI1LVV4cTSFtzigtLIw4BoPOerBq4BfrPHMirHEvuRuTDKyNA+QIzrmR1QT9PFVemRCIGJMokMXZMvu7Dq7LN0k8HS3+T/CmwY0c6ylXqk4KKKFEC7hv2vBpEa4b2pMHJoCDrma8Kh14UhWRZ2y4B5h0Pkd/AI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VK7P5EEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898E2C4CEC5;
-	Wed,  2 Oct 2024 13:28:47 +0000 (UTC)
+	 MIME-Version; b=anTW7+h59auUcEbsn8E/zeGt1eHKu/Z4OUQM2S3muA50SKw3yA5CPz6eTgev/YWx1VMNBppkyBz3xqW7qgpTSYby3HVZ3Omr948rdQxKpGgE2ET7nOJafnomVSHJdizCNCfPzitmgeQhRqk60enpLI/mFlcpiMA+4HmY90GnDWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vS2TouYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2DBC4CEC2;
+	Wed,  2 Oct 2024 13:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875727;
-	bh=SWOpoiz8hRa4pCyVl5T+6LwICxPe9wZXuRhUZpHwwe0=;
+	s=korg; t=1727877555;
+	bh=r5JpGOqQPHcRPWTcAfQPRZofTcTDihGE5p4ArsODt00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VK7P5EEIgO5pG7eFd3Iag4UclBr/L7xqf4kOePiVWQnx84XUORNbBRvRdskxmxTrL
-	 DHKCAFQfCVaytO/Y9S6L7CobhtSm8xcZ576oI3yG1l507/0zv+RpZcU58rOOlWXxcg
-	 aU/TVmo8afXq4Uzu/60tekgd+n9LKl4bla5Y8EJI=
+	b=vS2TouYb/Cat1Wjw3QcoufbjqKgjzLO3ldUXXk3NpK5S60v1ve8M39/9EX3mMy0UX
+	 sAJhreDiOjwjdbk1+cU8qGhu/clgBj0hGo4k0t/M9y0QUhNNR9bpqw5kb4k5DLk0Wd
+	 aFc5CuK3SQm4O4a08EDuGTlKVudgjJuikBzCLpts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 201/695] drm/amd/display: Check link_res->hpo_dp_link_enc before using it
+Subject: [PATCH 6.10 099/634] net: ipv6: rpl_iptunnel: Fix memory leak in rpl_input
 Date: Wed,  2 Oct 2024 14:53:19 +0200
-Message-ID: <20241002125830.486435902@linuxfoundation.org>
+Message-ID: <20241002125815.021102016@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 0beca868cde8742240cd0038141c30482d2b7eb8 ]
+[ Upstream commit 2c84b0aa28b9e73e8c4b4ce038269469434ae372 ]
 
-[WHAT & HOW]
-Functions dp_enable_link_phy and dp_disable_link_phy can pass link_res
-without initializing hpo_dp_link_enc and it is necessary to check for
-null before dereferencing.
+Free the skb before returning from rpl_input when skb_cow_head() fails.
+Use a "drop" label and goto instructions.
 
-This fixes 2 FORWARD_NULL issues reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240911174557.11536-1-justin.iurman@uliege.be
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_dp.c    | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/ipv6/rpl_iptunnel.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_dp.c b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_dp.c
-index e1257404357b1..d0148f10dfc0a 100644
---- a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_dp.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_hpo_dp.c
-@@ -28,6 +28,8 @@
- #include "dccg.h"
- #include "clk_mgr.h"
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index 2c83b7586422d..db3c19a42e1ca 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -263,10 +263,8 @@ static int rpl_input(struct sk_buff *skb)
+ 	rlwt = rpl_lwt_lwtunnel(orig_dst->lwtstate);
  
-+#define DC_LOGGER link->ctx->logger
+ 	err = rpl_do_srh(skb, rlwt);
+-	if (unlikely(err)) {
+-		kfree_skb(skb);
+-		return err;
+-	}
++	if (unlikely(err))
++		goto drop;
+ 
+ 	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+@@ -286,9 +284,13 @@ static int rpl_input(struct sk_buff *skb)
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
+-		return err;
++		goto drop;
+ 
+ 	return dst_input(skb);
 +
- void set_hpo_dp_throttled_vcp_size(struct pipe_ctx *pipe_ctx,
- 		struct fixed31_32 throttled_vcp_size)
- {
-@@ -124,6 +126,11 @@ void disable_hpo_dp_link_output(struct dc_link *link,
- 		const struct link_resource *link_res,
- 		enum signal_type signal)
- {
-+	if (!link_res->hpo_dp_link_enc) {
-+		DC_LOG_ERROR("%s: invalid hpo_dp_link_enc\n", __func__);
-+		return;
-+	}
-+
- 		link_res->hpo_dp_link_enc->funcs->link_disable(link_res->hpo_dp_link_enc);
- 		link_res->hpo_dp_link_enc->funcs->disable_link_phy(
- 				link_res->hpo_dp_link_enc, signal);
++drop:
++	kfree_skb(skb);
++	return err;
+ }
+ 
+ static int nla_put_rpl_srh(struct sk_buff *skb, int attrtype,
 -- 
 2.43.0
 
