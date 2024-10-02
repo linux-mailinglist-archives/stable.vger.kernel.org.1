@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-79453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA1598D85C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3192C98D528
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3D691C22D2C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7997B2867A1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6161D04A2;
-	Wed,  2 Oct 2024 13:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C354E1D0403;
+	Wed,  2 Oct 2024 13:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caZC/NIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5Ws3caX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3FF1D0420;
-	Wed,  2 Oct 2024 13:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826BC16F84F;
+	Wed,  2 Oct 2024 13:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877503; cv=none; b=GG5eqibjdH7KgGsDkM2J8ll0cLVLMtiMvupFRFnQTHmbya2reZJA55+OckSD09mA4lWYf0yf+VlMhzKDt0tWWWSIAijyGKPBlNnFBmokz1zM7HTlQGXsOZNLeVnBHN8Sig3cR2tWUBNQ4lg2TzSEY5SmeKroojUO9LqA1OM5JbE=
+	t=1727875646; cv=none; b=tRBmF5U7iRzaB0q02aeEQQlhKVu9jpQNmPAaIqMnrGBbUdFCOmE5JajlPC7Ga38Ljx9yO05itMpRJqQeB+98/GIyVP7FavMGjqrwTBGvJpIAHHNnUrfdL4tKWPXugSppOSahqHIB+/LigWsh2Z1uWS85qaq2HDHGOWlMMUV2UcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877503; c=relaxed/simple;
-	bh=XFnNRpXeSLszDlMgkCcs17GyJ34vGqQRRboYHMnTfzY=;
+	s=arc-20240116; t=1727875646; c=relaxed/simple;
+	bh=hWJMOdBvjfu6KyizDCprh4deoo/X6oPvDt5sAWrG8SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ha3og6JOV9nkI4GyYgO60FNtCxpFqHvzw5koB8nusRdV7JyizxtAJ/FuzSwjPXd0ik4kQXzZag/V1u8qo4C/q5Fkutfqgierk4gtHtdOZFFDBASoYdZ3InOUg/YxAY2UjOQGdCWlq0+w9UV4XI6dqrweHGmA7xLQ7JCINykqwkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caZC/NIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4A4C4CEC2;
-	Wed,  2 Oct 2024 13:58:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D4BGf97Jz6VBW3+ZZ3DM2TKCiXjBn9BLiseiZg5nXtqfNnIL1E+BZfiAQIAcy6SOqXv/hWgI6+EYqX9OK0FGC/30GHRMm39gIbJqs+TUFwJa2RTzXbP3wxKYGPxmvNijIxCPnyK8iPFKNVQU264IcQvxJRmqkDEOt5sT19Hi2yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5Ws3caX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53E0C4CEC5;
+	Wed,  2 Oct 2024 13:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877503;
-	bh=XFnNRpXeSLszDlMgkCcs17GyJ34vGqQRRboYHMnTfzY=;
+	s=korg; t=1727875646;
+	bh=hWJMOdBvjfu6KyizDCprh4deoo/X6oPvDt5sAWrG8SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caZC/NIXzt/BrY7DeuL/DGb35COwJnm2FA7yrpfVbiEurJpOoyENeasHlXsA3SYCl
-	 Gz5Lnchhe0TGB25g9/4f4s6aIYJKaEDPDHuQcKCe4DjB4WYD1DzNibK3KA3HRoTKjJ
-	 wXEcBn1cqmQwZnXFAJmkAtLm7AsqpEw/TYgxllw0=
+	b=I5Ws3caXMJNUz8ENbqtJ77HEOod9effVfvqN3kNuHMYyvdPCxpew5mOJl7JoZ3HZk
+	 lOdtiykMbTesZH+fkWpkyK73Cx/Tm+TrH5AwqqTGQ6pYgwcgJPUAMuy05iriKUQfTL
+	 4HhGzrDGj0eBXoH1Cub+GrJ3p0ZJKHYA/ctAS8Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 069/634] wifi: mt76: mt7996: fix EHT beamforming capability check
-Date: Wed,  2 Oct 2024 14:52:49 +0200
-Message-ID: <20241002125813.830446869@linuxfoundation.org>
+Subject: [PATCH 6.11 172/695] selftests:resctrl: Fix build failure on archs without __cpuid_count()
+Date: Wed,  2 Oct 2024 14:52:50 +0200
+Message-ID: <20241002125829.338091490@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
 
-[ Upstream commit 9ca65757f0a5b393a7737d37f377d5daf91716af ]
+[ Upstream commit 7beaf1da074f7ea25454d6c11da142c3892d3c4e ]
 
-If a VIF acts as a beamformer, it should check peer's beamformee
-capability, and vice versa.
+When resctrl is built on architectures without __cpuid_count()
+support, build fails. resctrl uses __cpuid_count() defined in
+kselftest.h.
 
-Fixes: ba01944adee9 ("wifi: mt76: mt7996: add EHT beamforming support")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20240816094635.2391-7-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Even though the problem is seen while building resctrl on aarch64,
+this error can be seen on any platform that doesn't support CPUID.
+
+CPUID is a x86/x86-64 feature and code paths with CPUID asm commands
+will fail to build on all other architectures.
+
+All others tests call __cpuid_count() do so from x86/x86_64 code paths
+when _i386__ or __x86_64__ are defined. resctrl is an exception.
+
+Fix the problem by defining __cpuid_count() only when __i386__ or
+__x86_64__ are defined in kselftest.h and changing resctrl to call
+__cpuid_count() only when __i386__ or __x86_64__ are defined.
+
+In file included from resctrl.h:24,
+                 from cat_test.c:11:
+In function ‘arch_supports_noncont_cat’,
+    inlined from ‘noncont_cat_run_test’ at cat_test.c:326:6:
+../kselftest.h:74:9: error: impossible constraint in ‘asm’
+   74 |         __asm__ __volatile__ ("cpuid\n\t"                               \
+      |         ^~~~~~~
+cat_test.c:304:17: note: in expansion of macro ‘__cpuid_count’
+  304 |                 __cpuid_count(0x10, 1, eax, ebx, ecx, edx);
+      |                 ^~~~~~~~~~~~~
+../kselftest.h:74:9: error: impossible constraint in ‘asm’
+   74 |         __asm__ __volatile__ ("cpuid\n\t"                               \
+      |         ^~~~~~~
+cat_test.c:306:17: note: in expansion of macro ‘__cpuid_count’
+  306 |                 __cpuid_count(0x10, 2, eax, ebx, ecx, edx);
+
+Fixes: ae638551ab64 ("selftests/resctrl: Add non-contiguous CBMs CAT test")
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Closes: https://lore.kernel.org/lkml/20240809071059.265914-1-usama.anjum@collabora.com/
+Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kselftest.h        | 2 ++
+ tools/testing/selftests/resctrl/cat_test.c | 7 +++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 7220bcee6fae9..656199161e591 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1429,10 +1429,10 @@ mt7996_is_ebf_supported(struct mt7996_phy *phy, struct ieee80211_vif *vif,
+diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
+index b8967b6e29d50..e195ec1568599 100644
+--- a/tools/testing/selftests/kselftest.h
++++ b/tools/testing/selftests/kselftest.h
+@@ -61,6 +61,7 @@
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+ #endif
  
- 		if (bfee)
- 			return vif->bss_conf.eht_su_beamformee &&
--			       EHT_PHY(CAP0_SU_BEAMFORMEE, pe->phy_cap_info[0]);
-+			       EHT_PHY(CAP0_SU_BEAMFORMER, pe->phy_cap_info[0]);
- 		else
- 			return vif->bss_conf.eht_su_beamformer &&
--			       EHT_PHY(CAP0_SU_BEAMFORMER, pe->phy_cap_info[0]);
-+			       EHT_PHY(CAP0_SU_BEAMFORMEE, pe->phy_cap_info[0]);
- 	}
++#if defined(__i386__) || defined(__x86_64__) /* arch */
+ /*
+  * gcc cpuid.h provides __cpuid_count() since v4.4.
+  * Clang/LLVM cpuid.h provides  __cpuid_count() since v3.4.0.
+@@ -75,6 +76,7 @@
+ 			      : "=a" (a), "=b" (b), "=c" (c), "=d" (d)	\
+ 			      : "0" (level), "2" (count))
+ #endif
++#endif /* end arch */
  
- 	if (sta->deflink.he_cap.has_he) {
+ /* define kselftest exit codes */
+ #define KSFT_PASS  0
+diff --git a/tools/testing/selftests/resctrl/cat_test.c b/tools/testing/selftests/resctrl/cat_test.c
+index 742782438ca3b..94cfdba5308d8 100644
+--- a/tools/testing/selftests/resctrl/cat_test.c
++++ b/tools/testing/selftests/resctrl/cat_test.c
+@@ -290,12 +290,12 @@ static int cat_run_test(const struct resctrl_test *test, const struct user_param
+ 
+ static bool arch_supports_noncont_cat(const struct resctrl_test *test)
+ {
+-	unsigned int eax, ebx, ecx, edx;
+-
+ 	/* AMD always supports non-contiguous CBM. */
+ 	if (get_vendor() == ARCH_AMD)
+ 		return true;
+ 
++#if defined(__i386__) || defined(__x86_64__) /* arch */
++	unsigned int eax, ebx, ecx, edx;
+ 	/* Intel support for non-contiguous CBM needs to be discovered. */
+ 	if (!strcmp(test->resource, "L3"))
+ 		__cpuid_count(0x10, 1, eax, ebx, ecx, edx);
+@@ -305,6 +305,9 @@ static bool arch_supports_noncont_cat(const struct resctrl_test *test)
+ 		return false;
+ 
+ 	return ((ecx >> 3) & 1);
++#endif /* end arch */
++
++	return false;
+ }
+ 
+ static int noncont_cat_run_test(const struct resctrl_test *test,
 -- 
 2.43.0
 
