@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66A898D0DA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:09:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F8198D0E5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91EA1F2372E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:09:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A9501C21754
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F451E493F;
-	Wed,  2 Oct 2024 10:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEA91E6DC6;
+	Wed,  2 Oct 2024 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTYB7AcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3o3JkAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DA41FA5
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEED1E6DC1
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727863762; cv=none; b=HeZNz96Ny/TBY3idL3dKaLuwlVSIByw8YG7i+HaYSUHNsLsjnb2/EDaSOAdnq99w5mZMTRscmcdstrzED58TMJWzHdEeCuFW5jrKD3gc8127AuCStzfV7POqMIhBE2jTQz/S0lxHuoq8p5HUVMDedCpinn2umwgjIz0h8Jte7A8=
+	t=1727863938; cv=none; b=itcxmXjrAfJnZMD8t/VbMDr1gGi4ZjgJqq98vxnzlf53WAp1RkyCva4zJummwIGeYEBuul3BGlF1MDUchRL21qvGCMxV+TPCaWxlldBcWd9oLyzha27NEXIoE4bSHp97g8m7oG6ZNgNGw5A0BxXqHmzoOOO1uCzHZkttxJwVdOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727863762; c=relaxed/simple;
-	bh=bYitA5dYRMUcg7dcPgJzks7RO31y2OdV6p8fnnMgAFs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DDnc4IoiTrHWaGrSM2knHh14BVEGtGczicFXQ4E2GhUgqwIt7tajKghkVgk4FMi6sWm3gRZnQ5Nd68RTlaxrDy4xBhDOmhSMG3hRP1LySbt3qzOGa57EfRez7QQXqHXxCveX8uLYUKQCRrFqn8g6olmQYd7LvPk3cseRyVYAUgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTYB7AcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0099C4CECD;
-	Wed,  2 Oct 2024 10:09:21 +0000 (UTC)
+	s=arc-20240116; t=1727863938; c=relaxed/simple;
+	bh=AN6/sdC9vIgdqxDj3dqV1scLHoa6w0LOZGTAw1qoyIg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KbqAED48JoH57DyAbzh4ecvpk/PrNw/ONa6ineI+jNi+oO74VVSXnrsdmvxpkqatcb8n6n4A3zzUGXVUBLuPp1jjiW8bsD3TCynTgU81UG7fPVGxnz/O8B0r2HF4WDHOlpSsEh7bW8SZRylvZ5YbL2OBlKBtzqd1K8N6gg8pJtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3o3JkAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE34AC4CECE;
+	Wed,  2 Oct 2024 10:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727863762;
-	bh=bYitA5dYRMUcg7dcPgJzks7RO31y2OdV6p8fnnMgAFs=;
+	s=korg; t=1727863938;
+	bh=AN6/sdC9vIgdqxDj3dqV1scLHoa6w0LOZGTAw1qoyIg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kTYB7AcKNfFDIwcfXVE/aqaBq3TpeBVs5b5QXhlbUxuRp0O9GwS3e5l2Pnt/XO01F
-	 WTSmajl6VZUP2cNfr0K9f0mVfLeoqqwJUwboHRq/EGJCW6QQHoAriW2MoEjxWooCqg
-	 +Q3BcifhoxLHIunjLlKvQIpN/8tYw3WCz7FPio6M=
-Subject: FAILED: patch "[PATCH] mm/codetag: add pgalloc_tag_copy()" failed to apply to 6.10-stable tree
-To: yuzhao@google.com,akpm@linux-foundation.org,kent.overstreet@linux.dev,muchun.song@linux.dev,stable@vger.kernel.org,surenb@google.com
+	b=q3o3JkAdKyy2/VwTPxxMIvGs5V08RlZOP5foLw1/BIl9tnjqZxTKFiglGBBn7ydDB
+	 PBJLt8yjxOUb8TAmIwjRI2gZolBC3VOvcgPmSCiQ8ZxbUJvBNCcvu7rxcIpcLQyUhj
+	 R7j6QmL9KCYkkcrIATDvBNjouE1/p18O3aJgx2vA=
+Subject: FAILED: patch "[PATCH] i2c: xiic: Try re-initialization on bus busy timeout" failed to apply to 6.10-stable tree
+To: robert.hancock@calian.com,andi.shyti@kernel.org,manikanta.guntupalli@amd.com,michal.simek@amd.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 12:09:11 +0200
-Message-ID: <2024100211-petticoat-unnerving-003c@gregkh>
+Date: Wed, 02 Oct 2024 12:12:15 +0200
+Message-ID: <2024100215-lagged-definite-9910@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,18 +62,15 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x e0a955bf7f61cb034d228736d81c1ab3a47a3dca
+git cherry-pick -x 1d4a1adbed2582444aaf97671858b7d12915bd05
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100211-petticoat-unnerving-003c@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100215-lagged-definite-9910@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-e0a955bf7f61 ("mm/codetag: add pgalloc_tag_copy()")
-95599ef684d0 ("mm/codetag: fix pgalloc_tag_split()")
-cf54f310d0d3 ("mm/hugetlb: use __GFP_COMP for gigantic folios")
-c0f398c3b2cf ("mm/hugetlb_vmemmap: batch HVO work when demoting")
-fbc90c042cd1 ("Merge tag 'mm-stable-2024-07-21-14-50' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
+1d4a1adbed25 ("i2c: xiic: Try re-initialization on bus busy timeout")
+ee1691d0ae10 ("i2c: xiic: improve error message when transfer fails to start")
 
 thanks,
 
@@ -81,132 +78,99 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e0a955bf7f61cb034d228736d81c1ab3a47a3dca Mon Sep 17 00:00:00 2001
-From: Yu Zhao <yuzhao@google.com>
-Date: Thu, 5 Sep 2024 22:21:08 -0600
-Subject: [PATCH] mm/codetag: add pgalloc_tag_copy()
+From 1d4a1adbed2582444aaf97671858b7d12915bd05 Mon Sep 17 00:00:00 2001
+From: Robert Hancock <robert.hancock@calian.com>
+Date: Wed, 11 Sep 2024 22:16:53 +0200
+Subject: [PATCH] i2c: xiic: Try re-initialization on bus busy timeout
 
-Add pgalloc_tag_copy() to transfer the codetag from the old folio to the
-new one during migration.  This makes original allocation sites persist
-cross migration rather than lump into the get_new_folio callbacks passed
-into migrate_pages(), e.g., compaction_alloc():
+In the event that the I2C bus was powered down when the I2C controller
+driver loads, or some spurious pulses occur on the I2C bus, it's
+possible that the controller detects a spurious I2C "start" condition.
+In this situation it may continue to report the bus is busy indefinitely
+and block the controller from working.
 
-  # echo 1 >/proc/sys/vm/compact_memory
-  # grep compaction_alloc /proc/allocinfo
+The "single-master" DT flag can be specified to disable bus busy checks
+entirely, but this may not be safe to use in situations where other I2C
+masters may potentially exist.
 
-Before this patch:
-  132968448  32463  mm/compaction.c:1880 func:compaction_alloc
+In the event that the controller reports "bus busy" for too long when
+starting a transaction, we can try reinitializing the controller to see
+if the busy condition clears. This allows recovering from this scenario.
 
-After this patch:
-          0      0  mm/compaction.c:1880 func:compaction_alloc
+Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 
-Link: https://lkml.kernel.org/r/20240906042108.1150526-3-yuzhao@google.com
-Fixes: dcfe378c81f7 ("lib: introduce support for page allocation tagging")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-index 896491d9ebe8..1f0a9ff23a2c 100644
---- a/include/linux/alloc_tag.h
-+++ b/include/linux/alloc_tag.h
-@@ -137,7 +137,16 @@ static inline void alloc_tag_sub_check(union codetag_ref *ref) {}
- /* Caller should verify both ref and tag to be valid */
- static inline void __alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
- {
-+	alloc_tag_add_check(ref, tag);
-+	if (!ref || !tag)
-+		return;
-+
- 	ref->ct = &tag->ct;
-+}
-+
-+static inline void alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
-+{
-+	__alloc_tag_ref_set(ref, tag);
- 	/*
- 	 * We need in increment the call counter every time we have a new
- 	 * allocation or when we split a large allocation into smaller ones.
-@@ -147,22 +156,9 @@ static inline void __alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag
- 	this_cpu_inc(tag->counters->calls);
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index bd6e107472b7..4c89aad02451 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -843,23 +843,11 @@ static int xiic_bus_busy(struct xiic_i2c *i2c)
+ 	return (sr & XIIC_SR_BUS_BUSY_MASK) ? -EBUSY : 0;
  }
  
--static inline void alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *tag)
--{
--	alloc_tag_add_check(ref, tag);
--	if (!ref || !tag)
--		return;
--
--	__alloc_tag_ref_set(ref, tag);
--}
--
- static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes)
+-static int xiic_busy(struct xiic_i2c *i2c)
++static int xiic_wait_not_busy(struct xiic_i2c *i2c)
  {
--	alloc_tag_add_check(ref, tag);
--	if (!ref || !tag)
--		return;
--
--	__alloc_tag_ref_set(ref, tag);
-+	alloc_tag_ref_set(ref, tag);
- 	this_cpu_add(tag->counters->bytes, bytes);
- }
+ 	int tries = 3;
+ 	int err;
  
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6bb778cbaabf..39f6faace590 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4108,10 +4108,37 @@ static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new
- 		}
+-	if (i2c->tx_msg || i2c->rx_msg)
+-		return -EBUSY;
+-
+-	/* In single master mode bus can only be busy, when in use by this
+-	 * driver. If the register indicates bus being busy for some reason we
+-	 * should ignore it, since bus will never be released and i2c will be
+-	 * stuck forever.
+-	 */
+-	if (i2c->singlemaster) {
+-		return 0;
+-	}
+-
+ 	/* for instance if previous transfer was terminated due to TX error
+ 	 * it might be that the bus is on it's way to become available
+ 	 * give it at most 3 ms to wake
+@@ -1103,13 +1091,36 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
+ 
+ 	mutex_lock(&i2c->lock);
+ 
+-	ret = xiic_busy(i2c);
+-	if (ret) {
++	if (i2c->tx_msg || i2c->rx_msg) {
+ 		dev_err(i2c->adap.dev.parent,
+ 			"cannot start a transfer while busy\n");
++		ret = -EBUSY;
+ 		goto out;
  	}
- }
-+
-+static inline void pgalloc_tag_copy(struct folio *new, struct folio *old)
-+{
-+	struct alloc_tag *tag;
-+	union codetag_ref *ref;
-+
-+	tag = pgalloc_tag_get(&old->page);
-+	if (!tag)
-+		return;
-+
-+	ref = get_page_tag_ref(&new->page);
-+	if (!ref)
-+		return;
-+
-+	/* Clear the old ref to the original allocation tag. */
-+	clear_page_tag_ref(&old->page);
-+	/* Decrement the counters of the tag on get_new_folio. */
-+	alloc_tag_sub(ref, folio_nr_pages(new));
-+
-+	__alloc_tag_ref_set(ref, tag);
-+
-+	put_page_tag_ref(ref);
-+}
- #else /* !CONFIG_MEM_ALLOC_PROFILING */
- static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
- {
- }
-+
-+static inline void pgalloc_tag_copy(struct folio *new, struct folio *old)
-+{
-+}
- #endif /* CONFIG_MEM_ALLOC_PROFILING */
  
- #endif /* _LINUX_MM_H */
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 0f6b78fd73aa..dfdb3a136bf8 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -743,6 +743,7 @@ void folio_migrate_flags(struct folio *newfolio, struct folio *folio)
- 		folio_set_readahead(newfolio);
- 
- 	folio_copy_owner(newfolio, folio);
-+	pgalloc_tag_copy(newfolio, folio);
- 
- 	mem_cgroup_migrate(folio, newfolio);
- }
++	/* In single master mode bus can only be busy, when in use by this
++	 * driver. If the register indicates bus being busy for some reason we
++	 * should ignore it, since bus will never be released and i2c will be
++	 * stuck forever.
++	 */
++	if (!i2c->singlemaster) {
++		ret = xiic_wait_not_busy(i2c);
++		if (ret) {
++			/* If the bus is stuck in a busy state, such as due to spurious low
++			 * pulses on the bus causing a false start condition to be detected,
++			 * then try to recover by re-initializing the controller and check
++			 * again if the bus is still busy.
++			 */
++			dev_warn(i2c->adap.dev.parent, "I2C bus busy timeout, reinitializing\n");
++			ret = xiic_reinit(i2c);
++			if (ret)
++				goto out;
++			ret = xiic_wait_not_busy(i2c);
++			if (ret)
++				goto out;
++		}
++	}
++
+ 	i2c->tx_msg = msgs;
+ 	i2c->rx_msg = NULL;
+ 	i2c->nmsgs = num;
 
 
