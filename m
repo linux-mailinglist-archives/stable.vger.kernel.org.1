@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-79919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D928F98DAE5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257DB98DD51
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86EA41F25A65
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B891C22768
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E131D2711;
-	Wed,  2 Oct 2024 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E4B1CABF;
+	Wed,  2 Oct 2024 14:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fy0kbaqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/u5cHmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452A81D1F54;
-	Wed,  2 Oct 2024 14:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B555863CB;
+	Wed,  2 Oct 2024 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878853; cv=none; b=dMWEp/4polQKfRBkV68wXYW7BZr51yJZrEtIy5WPtW4sfN9LH0IUcqyFTv6cXnEfIM+1TEo4KWNyXBJdV2Np0X9Sw4MMBegEB3p8CDz2XaSBzcv2gcmw44kvp8qCt7oaScLkyrjXYSqDL1HGsHGQ1sYnv9hyTsnTACsToI5MPlA=
+	t=1727880310; cv=none; b=SQg40Z2AYAIvh97U8SDEbPLkA7jTjq3tad4aDBYiQqXILQAeby9voWMlwSQoq9p+CAJsQRBzcMiS24+isOAJhbbZWScW595iEzcabACNKQ/WxGDrbYT8Lb6VRNP/l/ugIbGnz/sf2UrkwwAg8vW3AORAQGfM6BgHLGES42Zyoeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878853; c=relaxed/simple;
-	bh=4HtmzEn0srA4tPt9FIxf4MRMZYqDhZhfjjgOd/ouujc=;
+	s=arc-20240116; t=1727880310; c=relaxed/simple;
+	bh=eFvYxuUmIS55UcP8WYlWtzQ2oSzZQ0bwd08X8I9jIyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHvpyI5EqMKd/Vd1HapcJONCe6AOVTBzXCXfg0NJhfElBgQptJSNCwEJnxp9z5GQYLgf/71swNlUxmtYxa/9hqub6Ip4F+BfigAHppgsGJP+N264vHsgXmnaj9op7uOMyVWRDrbTT5BQgecU3K9n1j9C+ORGohPjXE+trhUQbPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fy0kbaqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5914DC4CEC5;
-	Wed,  2 Oct 2024 14:20:52 +0000 (UTC)
+	 MIME-Version; b=jwKow3TwKnEEpSh4t9gRMDOxmXM8WKSqrM9aAxuqp47IfpK1NFBhSTGhl5ttL9DAhEYmiLAbxJvfO8SXSHb2O7xLLitH8ll8Ec8O4+xcKaPXuewDppqyQsiGqAhWvdLX5ElnFXtC/acnSPESSH2iLp6iaHwigaU+O+PS0m9ZTks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/u5cHmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4114FC4CEC2;
+	Wed,  2 Oct 2024 14:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878852;
-	bh=4HtmzEn0srA4tPt9FIxf4MRMZYqDhZhfjjgOd/ouujc=;
+	s=korg; t=1727880310;
+	bh=eFvYxuUmIS55UcP8WYlWtzQ2oSzZQ0bwd08X8I9jIyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fy0kbaqriu+PtO7DgMJpGID1+u7ahyjB6mMfBhkhY83iCncAuJBKj1TXq44jylXpZ
-	 2v4vt5w3fP7+fKxTSqZynxO/YDcjqP9IVg5ggi3+tEIkRsSTX3+NQO1HnE6+1Kv1YU
-	 6C5f4WxGLINx+cJRS93Af/Pe6Cz9KkUNdiW/dQQk=
+	b=A/u5cHmRgApRrvRmPx+X0XToy1DkJELZ2ejKYtbjetkCvCHfXKzv1ekTA21U9EaR6
+	 MlVz4KhDR2CcoqQ4eY8muSVO3pEFeia5EYylruklSXW1D5ih6N61L/S+mhHp9yUh1H
+	 t5z+TlrrDcM3LpbJN67Xu07X3xbbvm4Cn2+4woK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.10 555/634] wifi: mt76: mt7615: check devm_kasprintf() returned value
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Anthony Koo <anthony.koo@amd.com>,
+	Robin Chen <robin.chen@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 416/538] drm/amd/display: Round calculated vtotal
 Date: Wed,  2 Oct 2024 15:00:55 +0200
-Message-ID: <20241002125833.017870674@linuxfoundation.org>
+Message-ID: <20241002125808.853324237@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Robin Chen <robin.chen@amd.com>
 
-commit 5acdc432f832d810e0d638164c393b877291d9b4 upstream.
+commit c03fca619fc687338a3b6511fdbed94096abdf79 upstream.
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
+[WHY]
+The calculated vtotal may has 1 line deviation. To get precisely
+vtotal number, round the vtotal result.
 
-Found by code review.
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 0bb4e9187ea4 ("mt76: mt7615: fix hwmon temp sensor mem use-after-free")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://patch.msgid.link/20240905014753.353271-1-make24@iscas.ac.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
+Signed-off-by: Robin Chen <robin.chen@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/init.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/modules/freesync/freesync.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -56,6 +56,9 @@ int mt7615_thermal_init(struct mt7615_de
+--- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
++++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+@@ -133,7 +133,7 @@ unsigned int mod_freesync_calc_v_total_f
  
- 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7615_%s",
- 			      wiphy_name(wiphy));
-+	if (!name)
-+		return -ENOMEM;
-+
- 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, dev,
- 						       mt7615_hwmon_groups);
- 	return PTR_ERR_OR_ZERO(hwmon);
+ 	v_total = div64_u64(div64_u64(((unsigned long long)(
+ 			frame_duration_in_ns) * (stream->timing.pix_clk_100hz / 10)),
+-			stream->timing.h_total), 1000000);
++			stream->timing.h_total) + 500000, 1000000);
+ 
+ 	/* v_total cannot be less than nominal */
+ 	if (v_total < stream->timing.v_total) {
 
 
 
