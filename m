@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B3998DC37
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB5E98D985
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004C71C23E4D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09E711C22A6E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14791D0DCE;
-	Wed,  2 Oct 2024 14:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32901D14F6;
+	Wed,  2 Oct 2024 14:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ru/gezyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbUPSdgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE671D0487;
-	Wed,  2 Oct 2024 14:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5ED1D14F5;
+	Wed,  2 Oct 2024 14:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879561; cv=none; b=U8sibBTYRPlMng6cmS5M07a91LIpAsJ5SxtAgN1i5qXuESJEWZg4cD9DBWU6aKmyPmMULLvu3BOw4YOCOOSDIgOOB9jkAOWQ3mwcf14ycOYDs4WgkIWjiL0oEp1sNk+ghGVqg+RsYKRH5JaEsT4nJUr036ri5eBzndgyYnqLV2s=
+	t=1727878056; cv=none; b=HLJMKkbn1V9FCgJdoZONu9v4OZkXWeSPK/Lt/lA5+vtMzStMk8xHkui31GAJWx4xEbE9GXb1NNSyhIglk4+WwRJyUwb+DeMVuSk5iSU2j0EJqDgacAIBpI6Ln6NC3KtSvNiZ2w4tWnS14Q9taIvz4lWLOc2Tmxj4SE8ROBxOu/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879561; c=relaxed/simple;
-	bh=UnNGZL4dOuw/jLlKBmvoe1g3dxTw79DpGvR9I2gHV7k=;
+	s=arc-20240116; t=1727878056; c=relaxed/simple;
+	bh=ZVBQrMkWtgt04QDsI2aOy4xUPSywQsglFhuXFYrKJng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e2vOSPdlwI7pkLNjgfXjAK9c13NDHY9pI4Nzk/IuxVxsavMc4p7PmEd3+R/GBk7knNqKPzsyOTGHNoP9wOaxP2daEdADsKse5bhJ2egzAvem5Vl0Ccd8xjLXFPQlnrh6uT8fh6yCRVEXdZ0S3Wbv/PiusKIEHxEwsHH7wdpWYHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ru/gezyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2566AC4CEC2;
-	Wed,  2 Oct 2024 14:32:40 +0000 (UTC)
+	 MIME-Version; b=ZfC2gMAvcayHF+EAFFIDc0HbwGWuBW5xZl6a76hwGuaa3tjbHvBzrqTzvBSYWM2jQJs/LSoBCkFTw5Y2Nl5h9jAQ4h6+ACYTtFEJYbC/H/rm2URErn7gG8IejXj6ZG1HbiTpUZc7j1rwrjI5xJ84yENuTRzLULUn5kjY+5/OqyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbUPSdgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB282C4CEC2;
+	Wed,  2 Oct 2024 14:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879561;
-	bh=UnNGZL4dOuw/jLlKBmvoe1g3dxTw79DpGvR9I2gHV7k=;
+	s=korg; t=1727878056;
+	bh=ZVBQrMkWtgt04QDsI2aOy4xUPSywQsglFhuXFYrKJng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ru/gezyUz+On9eMvt/78DTOLcYfiCB/bEP6DQOVYoJJuKASyX8NbVH+t/8KuNMv1E
-	 tbCq7cOP2LL4E/fVLmIzrC5wFSRmrkx5U/z7CqaftPZuZtCkhV+i3TB1LaWyDtS6ZM
-	 SnnS9qPAg8evwNOkJJs6PMxKoZBvp2bsEN0NCzgI=
+	b=kbUPSdgGoNhr0wZQlBdWAy6SjX+HhcESG2HV4qpMOJFo9muDCKHVAJO+7fDTXZ5Pn
+	 PAocojy5j7p82IdJeyVvIlYlWxD2N/Xq+Becavq4GfHL7gQNt+yhc1k/5WwrE7dWnW
+	 aanKKFtKY1S9kDqz6zTSkAdGqrP6fpbNnCmoYq44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cheng-Jui=20Wang=20 ?= <Cheng-Jui.Wang@mediatek.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hao Ge <gehao@kylinos.cn>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/538] rcu/nocb: Fix RT throttling hrtimer armed from offline CPU
+Subject: [PATCH 6.10 269/634] selftests/bpf: Fix incorrect parameters in NULL pointer checking
 Date: Wed,  2 Oct 2024 14:56:09 +0200
-Message-ID: <20241002125757.373570874@linuxfoundation.org>
+Message-ID: <20241002125821.718532599@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Hao Ge <gehao@kylinos.cn>
 
-[ Upstream commit 9139f93209d1ffd7f489ab19dee01b7c3a1a43d2 ]
+[ Upstream commit c264487e5410e5a72db8a414566ab7d144223e6c ]
 
-After a CPU is marked offline and until it reaches its final trip to
-idle, rcuo has several opportunities to be woken up, either because
-a callback has been queued in the meantime or because
-rcutree_report_cpu_dead() has issued the final deferred NOCB wake up.
+Smatch reported the following warning:
+    ./tools/testing/selftests/bpf/testing_helpers.c:455 get_xlated_program()
+    warn: variable dereferenced before check 'buf' (see line 454)
 
-If RCU-boosting is enabled, RCU kthreads are set to SCHED_FIFO policy.
-And if RT-bandwidth is enabled, the related hrtimer might be armed.
-However this then happens after hrtimers have been migrated at the
-CPUHP_AP_HRTIMERS_DYING stage, which is broken as reported by the
-following warning:
+It seems correct,so let's modify it based on it's suggestion.
 
- Call trace:
-  enqueue_hrtimer+0x7c/0xf8
-  hrtimer_start_range_ns+0x2b8/0x300
-  enqueue_task_rt+0x298/0x3f0
-  enqueue_task+0x94/0x188
-  ttwu_do_activate+0xb4/0x27c
-  try_to_wake_up+0x2d8/0x79c
-  wake_up_process+0x18/0x28
-  __wake_nocb_gp+0x80/0x1a0
-  do_nocb_deferred_wakeup_common+0x3c/0xcc
-  rcu_report_dead+0x68/0x1ac
-  cpuhp_report_idle_dead+0x48/0x9c
-  do_idle+0x288/0x294
-  cpu_startup_entry+0x34/0x3c
-  secondary_start_kernel+0x138/0x158
+Actually,commit b23ed4d74c4d ("selftests/bpf: Fix invalid pointer
+check in get_xlated_program()") fixed an issue in the test_verifier.c
+once,but it was reverted this time.
 
-Fix this with waking up rcuo using an IPI if necessary. Since the
-existing API to deal with this situation only handles swait queue, rcuo
-is only woken up from offline CPUs if it's not already waiting on a
-grace period. In the worst case some callbacks will just wait for a
-grace period to complete before being assigned to a subsequent one.
+Let's solve this issue with the minimal changes possible.
 
-Reported-by: "Cheng-Jui Wang (王正睿)" <Cheng-Jui.Wang@mediatek.com>
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/1eb3732f-605a-479d-ba64-cd14250cbf91@stanley.mountain/
+Fixes: b4b7a4099b8c ("selftests/bpf: Factor out get_xlated_program() helper")
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240820023622.29190-1-hao.ge@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_nocb.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/testing_helpers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index 30b34f215ca35..e019f166daa61 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -220,7 +220,10 @@ static bool __wake_nocb_gp(struct rcu_data *rdp_gp,
- 	raw_spin_unlock_irqrestore(&rdp_gp->nocb_gp_lock, flags);
- 	if (needwake) {
- 		trace_rcu_nocb_wake(rcu_state.name, rdp->cpu, TPS("DoWake"));
--		wake_up_process(rdp_gp->nocb_gp_kthread);
-+		if (cpu_is_offline(raw_smp_processor_id()))
-+			swake_up_one_online(&rdp_gp->nocb_gp_wq);
-+		else
-+			wake_up_process(rdp_gp->nocb_gp_kthread);
- 	}
+diff --git a/tools/testing/selftests/bpf/testing_helpers.c b/tools/testing/selftests/bpf/testing_helpers.c
+index 4230420ef2940..680e452583a78 100644
+--- a/tools/testing/selftests/bpf/testing_helpers.c
++++ b/tools/testing/selftests/bpf/testing_helpers.c
+@@ -451,7 +451,7 @@ int get_xlated_program(int fd_prog, struct bpf_insn **buf, __u32 *cnt)
  
- 	return needwake;
+ 	*cnt = xlated_prog_len / buf_element_size;
+ 	*buf = calloc(*cnt, buf_element_size);
+-	if (!buf) {
++	if (!*buf) {
+ 		perror("can't allocate xlated program buffer");
+ 		return -ENOMEM;
+ 	}
 -- 
 2.43.0
 
