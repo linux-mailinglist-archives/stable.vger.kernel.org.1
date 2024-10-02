@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D0098D9F6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4180098DC6B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C28041F272F3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04F9F283C42
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B201D0F7B;
-	Wed,  2 Oct 2024 14:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E171D2706;
+	Wed,  2 Oct 2024 14:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHTGSu2G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9FEFV6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007A01D0F76;
-	Wed,  2 Oct 2024 14:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DCC1D222B;
+	Wed,  2 Oct 2024 14:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878323; cv=none; b=AZRTU51mlqz7KfWPqqw26qhpYx/pzB7tB4jq3q3rYwaQTOrKGVsVpUfo0RVOE/dKSFeZJMjyx4QQo0ubHtQl7KLebUhyCgi02HZQC9vU3UjeZ6gP+0+9344LKWamI5mjeX2ZRothzAtjVrx07sWHc8bWBKVGSeZIwnn6Q+H2cAg=
+	t=1727879688; cv=none; b=oYeF7ngYF0HSz/TXywxWneRkck3uCJD14mooVTx7gCA/tnroxcNT1F3JLrzSWPHxmuEPs2pr4ilJR5P5KgpUdX5yJccMmQNtje4ShDkoJlAWCgdDMPNsK/f/6BmqsCJPSuWpb9tardoZ/YzF1HbDD/hz6WzXAT+eGNzbdDJdClU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878323; c=relaxed/simple;
-	bh=iwSGbPbwdvqMfOyBYyPD22M9udA4wYFY7+E8kC/Hduw=;
+	s=arc-20240116; t=1727879688; c=relaxed/simple;
+	bh=N5FEYhNDs5ES9KYrTNgYYm6nFtawYb8A1vyUm5NIxKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZRzfFq7bN3VoJW88dfOActSc0honoKlt/HSwEQGO4sisTQxwdcCCpk/fFTElZxJe6r9DrJiVXypo7nPBk4VxAxvQRITfbCEUisXRQi/4s2PH/TXG0U7cOJWihmfsIJuIMsfCgggnR2/ItmMnbTLmU8qPNiae9RazH3xY3o5eco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHTGSu2G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7447DC4CEC2;
-	Wed,  2 Oct 2024 14:12:02 +0000 (UTC)
+	 MIME-Version; b=dz1fv2S8U/1ivnI5V3xRv8/C91uk80H01O0bUzPOjyHac1b9Fg+k0jvDpwicWfQY8KqEvyeW//CPMiINzOlhRQztGVGWDZH/EtiemiQIiylvwY9KT2ldcTKdnyOmSM855aGlqjmYGQc3GCpsC6syEGwP6YiByRr67NShhRKLxZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9FEFV6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A757DC4CEC2;
+	Wed,  2 Oct 2024 14:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878322;
-	bh=iwSGbPbwdvqMfOyBYyPD22M9udA4wYFY7+E8kC/Hduw=;
+	s=korg; t=1727879688;
+	bh=N5FEYhNDs5ES9KYrTNgYYm6nFtawYb8A1vyUm5NIxKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHTGSu2GycMMQdiJUcJIC2tMpI7ECKCtbsJkPYgK1La/agjfbrt67ZOhy/mgWNkCr
-	 yhhNrP7JtShMkvCEidrz4BmTWB90M2I78u/keV6I41toDgvo1Ye6O9nbQO06y4Mw23
-	 EKkUH9v+yS3GB9icN3s0ADvJVv7wfOnu+ZE1EB10=
+	b=X9FEFV6zTmChwCc+/CkdrfbRjO5ok6AOFRKOJg6qHSw+v8usVsgjoXRz98mIOk4bI
+	 LXrhLMkTtsG0AGVeWKlSe9iRvkSfVzpKg12blAg+Y0yuHqVWNKE5qUS9WuHDulhAcU
+	 cUhkts3/Zrp3RaCNz/dVUbsfyS3FHNllUFBWnV/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 343/634] nvdimm: Fix devs leaks in scan_labels()
-Date: Wed,  2 Oct 2024 14:57:23 +0200
-Message-ID: <20241002125824.639356355@linuxfoundation.org>
+Subject: [PATCH 6.6 205/538] selftests/bpf: Fix errors compiling lwt_redirect.c with musl libc
+Date: Wed,  2 Oct 2024 14:57:24 +0200
+Message-ID: <20241002125800.347313065@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 62c2aa6b1f565d2fc1ec11a6e9e8336ce37a6426 ]
+[ Upstream commit 27c4797ce51c8dd51e35e68e9024a892f62d78b2 ]
 
-scan_labels() leaks memory when label scanning fails and it falls back
-to just creating a default "seed" namespace for userspace to configure.
-Root can force the kernel to leak memory.
+Remove a redundant include of '<linux/icmp.h>' which is already provided in
+'lwt_helpers.h'. This avoids errors seen compiling for mips64el/musl-libc:
 
-Allocate the minimum resources unconditionally and release them when
-unneeded to avoid the memory leak.
+  In file included from .../arpa/inet.h:9,
+                   from lwt_redirect.c:51:
+  .../netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+     23 | struct in6_addr {
+        |        ^~~~~~~~
+  In file included from .../linux/icmp.h:24,
+                   from lwt_redirect.c:50:
+  .../linux/in6.h:33:8: note: originally defined here
+     33 | struct in6_addr {
+        |        ^~~~~~~~
+  .../netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+     34 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../linux/in6.h:50:8: note: originally defined here
+     50 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+     42 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+  .../linux/in6.h:60:8: note: originally defined here
+     60 | struct ipv6_mreq {
+        |        ^~~~~~~~~
 
-A kmemleak reports:
-unreferenced object 0xffff88800dda1980 (size 16):
-  comm "kworker/u10:5", pid 69, jiffies 4294671781
-  hex dump (first 16 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 0):
-    [<00000000c5dea560>] __kmalloc+0x32c/0x470
-    [<000000009ed43c83>] nd_region_register_namespaces+0x6fb/0x1120 [libnvdimm]
-    [<000000000e07a65c>] nd_region_probe+0xfe/0x210 [libnvdimm]
-    [<000000007b79ce5f>] nvdimm_bus_probe+0x7a/0x1e0 [libnvdimm]
-    [<00000000a5f3da2e>] really_probe+0xc6/0x390
-    [<00000000129e2a69>] __driver_probe_device+0x78/0x150
-    [<000000002dfed28b>] driver_probe_device+0x1e/0x90
-    [<00000000e7048de2>] __device_attach_driver+0x85/0x110
-    [<0000000032dca295>] bus_for_each_drv+0x85/0xe0
-    [<00000000391c5a7d>] __device_attach+0xbe/0x1e0
-    [<0000000026dabec0>] bus_probe_device+0x94/0xb0
-    [<00000000c590d936>] device_add+0x656/0x870
-    [<000000003d69bfaa>] nd_async_device_register+0xe/0x50 [libnvdimm]
-    [<000000003f4c52a4>] async_run_entry_fn+0x2e/0x110
-    [<00000000e201f4b0>] process_one_work+0x1ee/0x600
-    [<000000006d90d5a9>] worker_thread+0x183/0x350
-
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Fixes: 1b40e09a1232 ("libnvdimm: blk labels and namespace instantiation")
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20240819062045.1481298-1-lizhijian@fujitsu.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 43a7c3ef8a15 ("selftests/bpf: Add lwt_xmit tests for BPF_REDIRECT")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/3869dda876d5206d2f8d4dd67331c739ceb0c7f8.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/namespace_devs.c | 34 ++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/lwt_redirect.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index d6d558f94d6bb..35d9f3cc2efab 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -1937,12 +1937,16 @@ static int cmp_dpa(const void *a, const void *b)
- static struct device **scan_labels(struct nd_region *nd_region)
- {
- 	int i, count = 0;
--	struct device *dev, **devs = NULL;
-+	struct device *dev, **devs;
- 	struct nd_label_ent *label_ent, *e;
- 	struct nd_mapping *nd_mapping = &nd_region->mapping[0];
- 	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
- 	resource_size_t map_end = nd_mapping->start + nd_mapping->size - 1;
- 
-+	devs = kcalloc(2, sizeof(dev), GFP_KERNEL);
-+	if (!devs)
-+		return NULL;
-+
- 	/* "safe" because create_namespace_pmem() might list_move() label_ent */
- 	list_for_each_entry_safe(label_ent, e, &nd_mapping->labels, list) {
- 		struct nd_namespace_label *nd_label = label_ent->label;
-@@ -1961,12 +1965,14 @@ static struct device **scan_labels(struct nd_region *nd_region)
- 			goto err;
- 		if (i < count)
- 			continue;
--		__devs = kcalloc(count + 2, sizeof(dev), GFP_KERNEL);
--		if (!__devs)
--			goto err;
--		memcpy(__devs, devs, sizeof(dev) * count);
--		kfree(devs);
--		devs = __devs;
-+		if (count) {
-+			__devs = kcalloc(count + 2, sizeof(dev), GFP_KERNEL);
-+			if (!__devs)
-+				goto err;
-+			memcpy(__devs, devs, sizeof(dev) * count);
-+			kfree(devs);
-+			devs = __devs;
-+		}
- 
- 		dev = create_namespace_pmem(nd_region, nd_mapping, nd_label);
- 		if (IS_ERR(dev)) {
-@@ -1993,11 +1999,6 @@ static struct device **scan_labels(struct nd_region *nd_region)
- 
- 		/* Publish a zero-sized namespace for userspace to configure. */
- 		nd_mapping_free_labels(nd_mapping);
--
--		devs = kcalloc(2, sizeof(dev), GFP_KERNEL);
--		if (!devs)
--			goto err;
--
- 		nspm = kzalloc(sizeof(*nspm), GFP_KERNEL);
- 		if (!nspm)
- 			goto err;
-@@ -2036,11 +2037,10 @@ static struct device **scan_labels(struct nd_region *nd_region)
- 	return devs;
- 
-  err:
--	if (devs) {
--		for (i = 0; devs[i]; i++)
--			namespace_pmem_release(devs[i]);
--		kfree(devs);
--	}
-+	for (i = 0; devs[i]; i++)
-+		namespace_pmem_release(devs[i]);
-+	kfree(devs);
-+
- 	return NULL;
- }
- 
+diff --git a/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c b/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
+index 2bc932a18c17e..ea326e26656f5 100644
+--- a/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
++++ b/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
+@@ -47,7 +47,6 @@
+ #include <linux/if_ether.h>
+ #include <linux/if_packet.h>
+ #include <linux/if_tun.h>
+-#include <linux/icmp.h>
+ #include <arpa/inet.h>
+ #include <unistd.h>
+ #include <errno.h>
 -- 
 2.43.0
 
