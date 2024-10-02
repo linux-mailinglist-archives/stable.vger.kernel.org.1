@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F76198D8EE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF14B98D578
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A294728598D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83703288B39
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9D41D27A0;
-	Wed,  2 Oct 2024 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3404C1D0173;
+	Wed,  2 Oct 2024 13:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/T//Owc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoKA28nw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10BE1D1512;
-	Wed,  2 Oct 2024 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E5E29CE7;
+	Wed,  2 Oct 2024 13:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877715; cv=none; b=KGHIlwCmBQIuDqhRxmlDxeb1HyaPvKdSMEaYlS6c9Op1hjH4kdmO0qaeE4z95pQJ6/jstJJg7bbIPXilrq6kvdFXa2XWUL3c5cmrDZoJ8kEBE/UnhdH47Wesn0kPmTmKV+sWyQ4SKJiBe6Qz8Kv+Kts1nCr2g1BOUbMS0keyPmo=
+	t=1727875845; cv=none; b=kZNytk4MUVB/GCefap0MdSXAbPxi8EaMKn4SKH3VjmAK2+o+m7Z1MZVsRnKX/U7s6ZUnmqEe7UitPNqMTsInqWe/82qQtwTFGVvBAsrXj0ohkzQWI7GDfwVe/vt+Mc5hJ5jxwlUHarZ9TRZGMZV/ZOa1Ilobdha/rP6NYg0pihs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877715; c=relaxed/simple;
-	bh=vCWDj6so1pxb5d7EgzUkvVkLOwXk6Gmhx0rrrfbgkA8=;
+	s=arc-20240116; t=1727875845; c=relaxed/simple;
+	bh=FqNZdTU7c49hLzrYg6vKsQIWNN+kDBhOJZsCr1zpVhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkleja1xQet3brRrnQVWK1LvOg68TwUmnv+I7iY5B6i+lTAt0FqW96Wn494mB4H/ZscX9UCwJBB7OoAas3nWZ3kP0JjLe/WrtFFdwEWsJp8WIQbx67meo7Tch0aKDoRLz5ks3cn1SgdyOfVSLSa06C6n6iBiwYLDcHV5cJs4ajE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/T//Owc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C94C4CEC2;
-	Wed,  2 Oct 2024 14:01:54 +0000 (UTC)
+	 MIME-Version; b=UwChouz8TGJL5Pah6ljklv4eYiwSWUFwG6WTuXCBiCg6+mzHkjqP7Jyfidx2qxVXMZx7zhHDKCSQqGsHv7YBUX61q+jD3x67rC97AxLD+7+7AD+BsMr//BeqX43H5Qy/O5H9dJiRHhkMRCaRGuV5QjSgCdxaooQvxdMpqKI1giE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoKA28nw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D38C4CEC5;
+	Wed,  2 Oct 2024 13:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877715;
-	bh=vCWDj6so1pxb5d7EgzUkvVkLOwXk6Gmhx0rrrfbgkA8=;
+	s=korg; t=1727875844;
+	bh=FqNZdTU7c49hLzrYg6vKsQIWNN+kDBhOJZsCr1zpVhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/T//Owc09K0G+KO938/Cp4yWfRXQ2TGf1df0I8MwuxcQ3wFySF72PRi0lJh3ria6
-	 bNaHSXhLarywUf3gMapTtnWbEZ6kZaAoVHhHyLhVMMv94CWTGKz8Dw9fIjg7fr9aMB
-	 ZaS9uAQswbi3NeMpqUnYKi1GL8iX31iFGx1fqBUk=
+	b=DoKA28nw8joHcavLsqVk2nqvEM0pjnolWTwt3XRS1Vu3mp9dISF+z1AMsfFjIyav0
+	 3c0eo8kLcg6uoBc+IghAnvr4VRSDyFkjEEtp6zPmSia8vtyqx+0tKKOshRQ4T3kxxR
+	 5oprihUDYctzhhYx9fEp3WcWMmA+Lmwa+4qCsd48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Yuesong Li <liyuesong@vivo.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 138/634] ARM: versatile: fix OF node leak in CPUs prepare
+Subject: [PATCH 6.11 240/695] drivers:drm:exynos_drm_gsc:Fix wrong assignment in gsc_bind()
 Date: Wed,  2 Oct 2024 14:53:58 +0200
-Message-ID: <20241002125816.555203238@linuxfoundation.org>
+Message-ID: <20241002125832.031515042@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yuesong Li <liyuesong@vivo.com>
 
-[ Upstream commit f2642d97f2105ed17b2ece0c597450f2ff95d704 ]
+[ Upstream commit 94ebc3d3235c5c516f67315059ce657e5090e94b ]
 
-Machine code is leaking OF node reference from of_find_matching_node()
-in realview_smp_prepare_cpus().
+cocci reported a double assignment problem. Upon reviewing previous
+commits, it appears this may actually be an incorrect assignment.
 
-Fixes: 5420b4b15617 ("ARM: realview: add an DT SMP boot method")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/20240826054934.10724-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 8b9550344d39 ("drm/ipp: clean up debug messages")
+Signed-off-by: Yuesong Li <liyuesong@vivo.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-versatile/platsmp-realview.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-versatile/platsmp-realview.c b/arch/arm/mach-versatile/platsmp-realview.c
-index 6965a1de727b0..d38b2e174257e 100644
---- a/arch/arm/mach-versatile/platsmp-realview.c
-+++ b/arch/arm/mach-versatile/platsmp-realview.c
-@@ -70,6 +70,7 @@ static void __init realview_smp_prepare_cpus(unsigned int max_cpus)
- 		return;
- 	}
- 	map = syscon_node_to_regmap(np);
-+	of_node_put(np);
- 	if (IS_ERR(map)) {
- 		pr_err("PLATSMP: No syscon regmap\n");
- 		return;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+index 1b111e2c33472..752339d33f39a 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+@@ -1174,7 +1174,7 @@ static int gsc_bind(struct device *dev, struct device *master, void *data)
+ 	struct exynos_drm_ipp *ipp = &ctx->ipp;
+ 
+ 	ctx->drm_dev = drm_dev;
+-	ctx->drm_dev = drm_dev;
++	ipp->drm_dev = drm_dev;
+ 	exynos_drm_register_dma(drm_dev, dev, &ctx->dma_priv);
+ 
+ 	exynos_drm_ipp_register(dev, ipp, &ipp_funcs,
 -- 
 2.43.0
 
