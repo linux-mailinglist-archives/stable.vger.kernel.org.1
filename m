@@ -1,82 +1,64 @@
-Return-Path: <stable+bounces-80603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A001C98E3EC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 22:08:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AC998E453
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 22:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD2021C22244
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:08:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0099C1F2345E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40162216A17;
-	Wed,  2 Oct 2024 20:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28962217306;
+	Wed,  2 Oct 2024 20:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b="HeNjkTsb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBCXhiNp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DA1215F79
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 20:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A38216A21;
+	Wed,  2 Oct 2024 20:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727899702; cv=none; b=Jjm9DEecGdmBehOnk/UpYt58+20xBkAH/5t/zBKocroaj5Bac3ultptDn22O4zAKo3i3WNH/AdGYeDUpIAEjVN29uX45VPbeYHZKWyssFROMUOKchj1tn5OLSptcm3sFvmC4zL0EnHPuTL9bFWnA/5dPhf3//xl19JOSFLW8ARU=
+	t=1727901781; cv=none; b=eXT79aNEkQyQIlCdlW2LzeesvJynxeacVaXX5f/7OJLULNUlGBo9FoJLD5Z/tsoiTN5BQCtG9IngoeDjIrmjjYUlxVZio8HAMTIMKKTYvvHA6n3kxTCubwPnhyrm9TiTU7Dc9p/GgmSxryTl1BytylgLXT8Jo6n6EthhVgDKxB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727899702; c=relaxed/simple;
-	bh=/l8x0C5y2PsMjSoG8BupX97mLktXgFfrnegJFlrn0f0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iLgjuO8+tNnU0pzpja1ZGRfxMt2P0zQq4Gpgt+mNhSruI6kGyDFGWkXaMsVs4pyGT+cUYAn++kCQXIDX7W3hG9kOU0MzqkMQamW/0NnBGW4QcaAhwVgNuhwFYN3Lsw4dlOAn419hhO6Bw7DBH+4yDDY8ecSaJNNy8MdaHQdrs6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com; spf=none smtp.mailfrom=batbytes.com; dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b=HeNjkTsb; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=batbytes.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4585e250f9dso874241cf.1
-        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 13:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=batbytes-com.20230601.gappssmtp.com; s=20230601; t=1727899699; x=1728504499; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JdrIcDotBJl1qT8iyU6P6JS+Nsv6cgpYiBCs53eRkjc=;
-        b=HeNjkTsbB0trdatJ9la117Zg+n28JfchSIB5jQmlCdYpxKaD/TJ97/JWEkH7njYzTk
-         kN2atoFQw4wh1esv+GSzrDPj5qvu3oY7mJ60YIDh9+eW5k4RNQNL4Gj+2jeKXVc/5qXb
-         GLjNAeEiquApHPnxuWkO7K5DMfx/aC8FCPy+VPj4HKlphGgtFB9MtVBYbVS9exT4IDWl
-         Y1nYVtCIESqdq28bugYYOE1qYbnjhazD96qOBI5eGbYhXblTedHk3WwBloejftaeMoxF
-         AsXhILQOdzeDv3+Q+JvV2Xx6s+UQEIuhNTviFLJ2LWTfh+PaI77PaP/Hu0eCTYGTZ/lI
-         jivA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727899699; x=1728504499;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JdrIcDotBJl1qT8iyU6P6JS+Nsv6cgpYiBCs53eRkjc=;
-        b=LSZsy309MnDgpTjb7DW2B++mT0EBE33t6nJgbcJO5TpkemSaBT0BMVw8oXHmmFiyvt
-         PzkbKcyGZQRZ/h5I+5T67+RYqp4q3WLDJ2GhY2ZdNPnAoLT5pvUqooUdh5SB+bIQTbgJ
-         DMo/eUpIIE18bo7NHZiOubBuIsQdDISPwCLmcdUdPQ6Za7stmudLnUdeniXV2bpFAG21
-         LvTQYmS2ZpnyAbnh9hK9+zMDGkiY3KdVyEhBGyPomJ70M2pSv6o3E4sm0r/yL2GiLrkn
-         HjPoY/4MO+Fx59mZQtwHquZF7bry9slT6owljhjfNIOVfbnZowCi57/70hL6LNBmudvY
-         zGuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbBPy3Jr9q1Ua1EYQNzTSy5xmtcOxUFEYa4gawvF68sIt/C3zHTqqikyLsPaE8U1plqIrUTR0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1addp18BwBsqUMknBxvfbyoAVy7qyGF1o/WY8GIrh842Mbn8a
-	MuvVIJDFzQ9yvm1oNw1AmsnlNFFVpAFfSEPESklw04IAKGWaPwIDPLdcnyJVJg==
-X-Google-Smtp-Source: AGHT+IGkjQYOtn2pKwHHuzmH8OBvWnuVydeXrYv2H1wgm0A5PmgFPA3jP9FiD/IZ+W10APNfcN6SLQ==
-X-Received: by 2002:a05:622a:48:b0:458:532e:59d8 with SMTP id d75a77b69052e-45d804f8d60mr62923861cf.36.1727899699335;
-        Wed, 02 Oct 2024 13:08:19 -0700 (PDT)
-Received: from batbytes.com ([216.212.123.7])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45d7aad57c5sm18352291cf.63.2024.10.02.13.08.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 13:08:18 -0700 (PDT)
-From: Patrick Donnelly <batrick@batbytes.com>
-To: Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	David Howells <dhowells@redhat.com>
-Cc: Patrick Donnelly <pdonnell@redhat.com>,
-	stable@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ceph: fix cap ref leak via netfs init_request
-Date: Wed,  2 Oct 2024 16:08:04 -0400
-Message-ID: <20241002200805.34376-1-batrick@batbytes.com>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1727901781; c=relaxed/simple;
+	bh=hC26vYYWeZ8nbA3U9wUcvs+XGS5LYjab0kDJfyv/e5g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kjcC+1Jp4xhfcM4kO/chWTgPodyH0DmaZTpkcR1XAhSBfzLnFzn4ysVcuSg7IxtM0w7EgPb+8/kXswcQ0XdyPhvu1t7kdmzeMAzqc3JApN4QO7puJUtyt9fICnpHFOgc9qbK3Lzs8c2N/63aZgA4HkNEQB+qRalDb5tfy5QRxXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBCXhiNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D1BC4CEC2;
+	Wed,  2 Oct 2024 20:43:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727901781;
+	bh=hC26vYYWeZ8nbA3U9wUcvs+XGS5LYjab0kDJfyv/e5g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kBCXhiNpgjYnKdpobYDehSvGiXqYnvh4Ng2+gv2bo2hd1b2c1USIt4ucSFN4Na/bR
+	 y1BWWsOIWuBRZnmAAWFo0ioHZhFbRINg3YUSyTix2AKQ3DRg+1i77WAeqDVQubzqwj
+	 4pA98DQGsrVrXvlpt4IOovXCmNbuvK702J6Z/x7Y/yoOLItY2jFslgl/1/zsv3EZNK
+	 B9TiwbWC4vxnZ3x4t/rw36zq2QwZSlnOp/vftuesbMsZX41QYKt+PBlPX26PgbHWj4
+	 30fY3AToF+o5jJRWalXv1v3loKiqZWebMIdFf0HvnOpsxh8JGk+q5FmoT4xvqh9c7C
+	 +tghXEieno/1A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sw6BX-00HA0m-Dx;
+	Wed, 02 Oct 2024 21:42:59 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: Fix kvm_has_feat*() handling of negative features
+Date: Wed,  2 Oct 2024 21:42:39 +0100
+Message-Id: <20241002204239.2051637-1-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,53 +66,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Patrick Donnelly <pdonnell@redhat.com>
+Oliver reports that the kvm_has_feat() helper is not behaviing as
+expected for negative feature. On investigation, the main issue
+seems to be caused by the following construct:
 
-Log recovered from a user's cluster:
+ 	(id##_##fld##_SIGNED ?					\
+	 get_idreg_field_signed(kvm, id, fld) :			\
+	 get_idreg_field_unsigned(kvm, id, fld))
 
-    <7>[ 5413.970692] ceph:  get_cap_refs 00000000958c114b ret 1 got Fr
-    <7>[ 5413.970695] ceph:  start_read 00000000958c114b, no cache cap
-    ...
-    <7>[ 5473.934609] ceph:   my wanted = Fr, used = Fr, dirty -
-    <7>[ 5473.934616] ceph:  revocation: pAsLsXsFr -> pAsLsXs (revoking Fr)
-    <7>[ 5473.934632] ceph:  __ceph_caps_issued 00000000958c114b cap 00000000f7784259 issued pAsLsXs
-    <7>[ 5473.934638] ceph:  check_caps 10000000e68.fffffffffffffffe file_want - used Fr dirty - flushing - issued pAsLsXs revoking Fr retain pAsLsXsFsr  AUTHONLY NOINVAL FLUSH_FORCE
+where one side of the expression evaluates as something signed,
+and the other as something unsigned. In retrospect, this is totally
+braindead, as the compiler converts this into an unsigned expression.
+When compared to something that is 0, the test is simply elided.
 
-The MDS subsequently complains that the kernel client is late releasing caps.
+Epic fail. Similar issue exists in the expand_field_sign() macro.
 
-Closes: https://tracker.ceph.com/issues/67008
-Fixes: a5c9dc4451394b2854493944dcc0ff71af9705a3 ("ceph: Make ceph_init_request() check caps on readahead")
-Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
+The correct way to handle this is to chose between signed and unsigned
+comparisons, so that both sides of the ternary expression are of the
+same type (bool).
+
+In order to keep the code readable (sort of), we introduce new
+comparison primitives taking an operator as a parameter, and
+rewrite the kvm_has_feat*() helpers in terms of these primitives.
+
+Fixes: c62d7a23b947 ("KVM: arm64: Add feature checking helpers")
+Reported-by: Oliver Upton <oliver.upton@linux.dev>
+Tested-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
 ---
- fs/ceph/addr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/kvm_host.h | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 53fef258c2bc..702c6a730b70 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -489,8 +489,11 @@ static int ceph_init_request(struct netfs_io_request *rreq, struct file *file)
- 	rreq->io_streams[0].sreq_max_len = fsc->mount_options->rsize;
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index aab1e59aa91e..e9e9b57782e4 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1490,11 +1490,6 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
+ 		sign_extend64(__val, id##_##fld##_WIDTH - 1);		\
+ 	})
  
- out:
--	if (ret < 0)
-+	if (ret < 0) {
-+		if (got)
-+			ceph_put_cap_refs(ceph_inode(inode), got);
- 		kfree(priv);
-+	}
+-#define expand_field_sign(id, fld, val)					\
+-	(id##_##fld##_SIGNED ?						\
+-	 __expand_field_sign_signed(id, fld, val) :			\
+-	 __expand_field_sign_unsigned(id, fld, val))
+-
+ #define get_idreg_field_unsigned(kvm, id, fld)				\
+ 	({								\
+ 		u64 __val = kvm_read_vm_id_reg((kvm), SYS_##id);	\
+@@ -1510,20 +1505,26 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
+ #define get_idreg_field_enum(kvm, id, fld)				\
+ 	get_idreg_field_unsigned(kvm, id, fld)
  
- 	return ret;
- }
-
-base-commit: e32cde8d2bd7d251a8f9b434143977ddf13dcec6
+-#define get_idreg_field(kvm, id, fld)					\
++#define kvm_cmp_feat_signed(kvm, id, fld, op, limit)			\
++	(get_idreg_field_signed((kvm), id, fld) op __expand_field_sign_signed(id, fld, limit))
++
++#define kvm_cmp_feat_unsigned(kvm, id, fld, op, limit)			\
++	(get_idreg_field_unsigned((kvm), id, fld) op __expand_field_sign_unsigned(id, fld, limit))
++
++#define kvm_cmp_feat(kvm, id, fld, op, limit)				\
+ 	(id##_##fld##_SIGNED ?						\
+-	 get_idreg_field_signed(kvm, id, fld) :				\
+-	 get_idreg_field_unsigned(kvm, id, fld))
++	 kvm_cmp_feat_signed(kvm, id, fld, op, limit) :			\
++	 kvm_cmp_feat_unsigned(kvm, id, fld, op, limit))
+ 
+ #define kvm_has_feat(kvm, id, fld, limit)				\
+-	(get_idreg_field((kvm), id, fld) >= expand_field_sign(id, fld, limit))
++	kvm_cmp_feat(kvm, id, fld, >=, limit)
+ 
+ #define kvm_has_feat_enum(kvm, id, fld, val)				\
+-	(get_idreg_field_unsigned((kvm), id, fld) == __expand_field_sign_unsigned(id, fld, val))
++	kvm_cmp_feat_unsigned(kvm, id, fld, ==, val)
+ 
+ #define kvm_has_feat_range(kvm, id, fld, min, max)			\
+-	(get_idreg_field((kvm), id, fld) >= expand_field_sign(id, fld, min) && \
+-	 get_idreg_field((kvm), id, fld) <= expand_field_sign(id, fld, max))
++	(kvm_cmp_feat(kvm, id, fld, >=, min) &&				\
++	kvm_cmp_feat(kvm, id, fld, <=, max))
+ 
+ /* Check for a given level of PAuth support */
+ #define kvm_has_pauth(k, l)						\
 -- 
-Patrick Donnelly, Ph.D.
-He / Him / His
-Red Hat Partner Engineer
-IBM, Inc.
-GPG: 19F28A586F808C2402351B93C3301A3E258DD79D
+2.39.2
 
 
