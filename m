@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-80244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F8C98DC9D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3817F98DA00
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BE9B2825AF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDFB6286662
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9301E1D175A;
-	Wed,  2 Oct 2024 14:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D051D12F0;
+	Wed,  2 Oct 2024 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6c73PhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXD+IxiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D8C1D1757;
-	Wed,  2 Oct 2024 14:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C7A1D042F;
+	Wed,  2 Oct 2024 14:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879802; cv=none; b=K/vQxOph9WBqWVcNJIcWR5D2xkpIlmzSlz2FpxHgJi9tPLUqfC6WKOfwkdliV1sL6BhBm2oCkPtKkEbZcrVeUdsMyReizyUPmrX/AE24QvhLS4g4yZbw9lIq4Usx+ZV2pIp/OTAfa2BYj+FEX82F8uRdNtxvHi+GToMNYe+a3BE=
+	t=1727878346; cv=none; b=h4yebdm5aahait+7tGPlO7LIKcJ9Rr+M+0rozrs05ccJN6bQd0PEE0M1cX/Yu4nKCVO32E+Bea5EsOs6gVX4mnbOhFcEjoKCURR4sx/VXhzzFAQw8utgqQUxtxkxOAJepCNqntKoqsrHJGsV4BiN1HQWXIjQkH9DzwCY3cc+Tv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879802; c=relaxed/simple;
-	bh=6WigTb3e+wYif1gICuLncQOpTIPhCJ7xXd2q82yp8As=;
+	s=arc-20240116; t=1727878346; c=relaxed/simple;
+	bh=HZLeXjJUzP4adgiW6A3iVE1SSgpuRZ714pQGlrPhpsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/uGLrf0dsiqZY2PizpqM5YMo1aENb+aS+H94mfZkke9Wuyc7BoKJpfxiM9oF4Y5O/8lS5920GzbXdv+f9ER/GVnN4H7rtujhzRSeon2Gv8b6iJyQ9VVdhQqMYDXCc334hzGgB9fVqnAHrpO/bNYc5UAECOe/uSildSWpHKrEb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6c73PhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9111C4CEC2;
-	Wed,  2 Oct 2024 14:36:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mayYEp/5a4LURg091CZPx/sptQATZZk7v6AFtHGYEyTpy/2hirorUwYucM70oOJuT0/qS5NN5i6k740iIwxGbBlSAxiXnp/Q7skpASCpIqJhlj+6A9fwxr7rRPrHon1QDPr5tmiuzGgbu8BJzi9FmEe9bfZUAoT/S1LwOlSTcf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXD+IxiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E1FC4CEC2;
+	Wed,  2 Oct 2024 14:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879802;
-	bh=6WigTb3e+wYif1gICuLncQOpTIPhCJ7xXd2q82yp8As=;
+	s=korg; t=1727878346;
+	bh=HZLeXjJUzP4adgiW6A3iVE1SSgpuRZ714pQGlrPhpsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6c73PhFRl35U5CcbVONJa/T3ibrZK+JMwCNV09hwbFBKwB0oHDYDrsV6mix5jyJz
-	 k2e/d142JFBrBVkBOztaUStT0vy1LBvsn0b3Ek1kRXop9IPL9yD1CGFiGFw9uMEKcH
-	 BUAokQLlB22hJpiF6w6WBpS+QGu/D5WoEiJm+qDo=
+	b=jXD+IxiCnw/E75H06gkM/YS/YGItov9PygG2NiJQZujlvXP3EUUYUHfEdgEAYu0s6
+	 4XKTwnOgKh0O3PxOPwlbzhsV7fPF6L3BL2WSI/XZJtsAiSotIoBaEsQ6qjYlgDHOX8
+	 epEV6SNFDhadd45NnU2bgiLPgCfneh/nfmfUXZN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/538] bpf: Improve check_raw_mode_ok test for MEM_UNINIT-tagged types
+Subject: [PATCH 6.10 383/634] riscv: Fix fp alignment bug in perf_callchain_user()
 Date: Wed,  2 Oct 2024 14:58:03 +0200
-Message-ID: <20241002125801.882253069@linuxfoundation.org>
+Message-ID: <20241002125826.219113553@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 18752d73c1898fd001569195ba4b0b8c43255f4a ]
+[ Upstream commit 22ab08955ea13be04a8efd20cc30890e0afaa49c ]
 
-When checking malformed helper function signatures, also take other argument
-types into account aside from just ARG_PTR_TO_UNINIT_MEM.
+The standard RISC-V calling convention said:
+	"The stack grows downward and the stack pointer is always
+	kept 16-byte aligned".
 
-This concerns (formerly) ARG_PTR_TO_{INT,LONG} given uninitialized memory can
-be passed there, too.
+So perf_callchain_user() should check whether 16-byte aligned for fp.
 
-The func proto sanity check goes back to commit 435faee1aae9 ("bpf, verifier:
-add ARG_PTR_TO_RAW_STACK type"), and its purpose was to detect wrong func protos
-which had more than just one MEM_UNINIT-tagged type as arguments.
+Link: https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf
 
-The reason more than one is currently not supported is as we mark stack slots with
-STACK_MISC in check_helper_call() in case of raw mode based on meta.access_size to
-allow uninitialized stack memory to be passed to helpers when they just write into
-the buffer.
-
-Probing for base type as well as MEM_UNINIT tagging ensures that other types do not
-get missed (as it used to be the case for ARG_PTR_TO_{INT,LONG}).
-
-Fixes: 57c3bb725a3d ("bpf: Introduce ARG_PTR_TO_{INT,LONG} arg types")
-Reported-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Link: https://lore.kernel.org/r/20240913191754.13290-4-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: dbeb90b0c1eb ("riscv: Add perf callchain support")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: Björn Töpel <bjorn@kernel.org>
+Link: https://lore.kernel.org/r/20240708032847.2998158-2-ruanjinjie@huawei.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/riscv/kernel/perf_callchain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index f778a1b9e1cfd..834394faf2af3 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7987,6 +7987,12 @@ static bool arg_type_is_mem_size(enum bpf_arg_type type)
- 	       type == ARG_CONST_SIZE_OR_ZERO;
+diff --git a/arch/riscv/kernel/perf_callchain.c b/arch/riscv/kernel/perf_callchain.c
+index 3348a61de7d99..2932791e93882 100644
+--- a/arch/riscv/kernel/perf_callchain.c
++++ b/arch/riscv/kernel/perf_callchain.c
+@@ -62,7 +62,7 @@ void perf_callchain_user(struct perf_callchain_entry_ctx *entry,
+ 	perf_callchain_store(entry, regs->epc);
+ 
+ 	fp = user_backtrace(entry, fp, regs->ra);
+-	while (fp && !(fp & 0x3) && entry->nr < entry->max_stack)
++	while (fp && !(fp & 0x7) && entry->nr < entry->max_stack)
+ 		fp = user_backtrace(entry, fp, 0);
  }
  
-+static bool arg_type_is_raw_mem(enum bpf_arg_type type)
-+{
-+	return base_type(type) == ARG_PTR_TO_MEM &&
-+	       type & MEM_UNINIT;
-+}
-+
- static bool arg_type_is_release(enum bpf_arg_type type)
- {
- 	return type & OBJ_RELEASE;
-@@ -9009,15 +9015,15 @@ static bool check_raw_mode_ok(const struct bpf_func_proto *fn)
- {
- 	int count = 0;
- 
--	if (fn->arg1_type == ARG_PTR_TO_UNINIT_MEM)
-+	if (arg_type_is_raw_mem(fn->arg1_type))
- 		count++;
--	if (fn->arg2_type == ARG_PTR_TO_UNINIT_MEM)
-+	if (arg_type_is_raw_mem(fn->arg2_type))
- 		count++;
--	if (fn->arg3_type == ARG_PTR_TO_UNINIT_MEM)
-+	if (arg_type_is_raw_mem(fn->arg3_type))
- 		count++;
--	if (fn->arg4_type == ARG_PTR_TO_UNINIT_MEM)
-+	if (arg_type_is_raw_mem(fn->arg4_type))
- 		count++;
--	if (fn->arg5_type == ARG_PTR_TO_UNINIT_MEM)
-+	if (arg_type_is_raw_mem(fn->arg5_type))
- 		count++;
- 
- 	/* We only support one arg being in raw mode at the moment,
 -- 
 2.43.0
 
