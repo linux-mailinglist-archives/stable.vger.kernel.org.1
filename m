@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7C898D854
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E8398D521
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A52A1C22CDA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784C51F22FE0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273731D0955;
-	Wed,  2 Oct 2024 13:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8731D0437;
+	Wed,  2 Oct 2024 13:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQb+blHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkjKeAOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2781D04B4;
-	Wed,  2 Oct 2024 13:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C0016F84F;
+	Wed,  2 Oct 2024 13:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877482; cv=none; b=Xdhr/hoVqTPAzTFnoeyzzNZcl30moqp2TSmsuYzkiajqsLA/w3JI05wOVUXytrtl4CQ9BB6h2sO1YUJo6whtGa61enMov4hP8iAFFmQN/rowBudbNSKa5F9tw0dx1ue5XfbQmdeJceEoT19S3fQFfNCLeu3X45TA1h6X3LtPHx4=
+	t=1727875631; cv=none; b=H7wv851H8qTEcnXz7oUvb3+VXeK/W4oJ1Y6QpVkBHwrcPMGROLWxArIoZ/DToW5F1HwHceQvu7Ejdebrv7wZDjx8qOZntAHSVznH3Oa/QlU2olkcoGRSXbT8A0jhs3kvvtL3XNmdQfhTjznvZNJmSXlojLYur4U2uC3lST3DEU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877482; c=relaxed/simple;
-	bh=1lIvZkWkWLHW8ppICaPEh8Cjr0f7rcUdnDS+1GjYf8s=;
+	s=arc-20240116; t=1727875631; c=relaxed/simple;
+	bh=U+HPV/CYbN2+tp5JPUe2n1RgAz857NBjsShAsdSRYD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huFDs+Z2UuVq5RkEX/M+nJjC725UJUpj50M3Lsf34pDCfHvTn5TiPfxo/4etW2AHMzlS9AVrEqOQmehXTBUyAYBf/JdFvAxQdTDstgb+LOxZGZwbE3VIuH5u6b06iegaJ2XjtV50UohyViTGEpCLFZW3MMu6E+yqVItweA365Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQb+blHX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4780BC4CECD;
-	Wed,  2 Oct 2024 13:58:02 +0000 (UTC)
+	 MIME-Version; b=c7b2LO69Opi1gqZ6WrdBFjLbSw/HQLIEpJSbXTEtQvXvnOVlx4J/LCigj8LNNwb4kQOYIWlwUU50YO2O4Dgp2oSN/zP+5+r4C7QO52SZzWbPnoKaPqY7KSYJswy6mjTtQ0ktdflSaUFdkQvidUmP2rTYyReb+vE9WV6Uw2m42uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkjKeAOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33897C4CEC5;
+	Wed,  2 Oct 2024 13:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877482;
-	bh=1lIvZkWkWLHW8ppICaPEh8Cjr0f7rcUdnDS+1GjYf8s=;
+	s=korg; t=1727875631;
+	bh=U+HPV/CYbN2+tp5JPUe2n1RgAz857NBjsShAsdSRYD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQb+blHX4nVOA9Zpn6b/bjQjQ1xGhl4CheNzwesrB+BnQPptdPr0/5Wv4kx6XrzA+
-	 tbx0nifAGDyppU9EKi8Tr0x8Yr/AsqUY4ERGzKU47hho4LhXulI10pb5FiScjiT4fL
-	 uxx0Jb08k7sIUC5rPnKbqCEam8cbEEb8MkGK2I+s=
+	b=CkjKeAOQ9PG+XIpSVFTjKvggx5CIUsPwPpPGrP8uGGG4pDla8iA9l+sMWNCqViQOE
+	 NSuV/G0TG+nX7otRCCn7ZY13WMTpEOrCJzP8/eHkLXHWH8L2QzMq8+rE+/mfWTdLul
+	 r/gKB6kAIWxXVkzsgVUFC95AXzkc+JUGxcIXEbdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 066/634] wifi: mt76: mt7996: fix traffic delay when switching back to working channel
+Subject: [PATCH 6.11 168/695] x86/boot/64: Strip percpu address space when setting up GDT descriptors
 Date: Wed,  2 Oct 2024 14:52:46 +0200
-Message-ID: <20241002125813.712710904@linuxfoundation.org>
+Message-ID: <20241002125829.180979378@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 376200f095d0c3a7096199b336204698d7086279 ]
+[ Upstream commit b51207dc02ec3aeaa849e419f79055d7334845b6 ]
 
-During scanning, UNI_CHANNEL_RX_PATH tag is necessary for the firmware to
-properly stop and resume MAC TX queue. Without this tag, HW needs more time
-to resume traffic when switching back to working channel.
+init_per_cpu_var() returns a pointer in the percpu address space while
+rip_rel_ptr() expects a pointer in the generic address space.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20240816094635.2391-2-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+When strict address space checks are enabled, GCC's named address space
+checks fail:
+
+  asm.h:124:63: error: passing argument 1 of 'rip_rel_ptr' from
+                       pointer to non-enclosed address space
+
+Add a explicit cast to remove address space of the returned pointer.
+
+Fixes: 11e36b0f7c21 ("x86/boot/64: Load the final kernel GDT during early boot directly, remove startup_gdt[]")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240819083334.148536-1-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/head64.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 7c97140d8255a..15d880ef0d922 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -307,6 +307,10 @@ int mt7996_set_channel(struct mt7996_phy *phy)
- 	if (ret)
- 		goto out;
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index a817ed0724d1e..4b9d4557fc94a 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -559,10 +559,11 @@ void early_setup_idt(void)
+  */
+ void __head startup_64_setup_gdt_idt(void)
+ {
++	struct desc_struct *gdt = (void *)(__force unsigned long)init_per_cpu_var(gdt_page.gdt);
+ 	void *handler = NULL;
  
-+	ret = mt7996_mcu_set_chan_info(phy, UNI_CHANNEL_RX_PATH);
-+	if (ret)
-+		goto out;
-+
- 	ret = mt7996_dfs_init_radar_detector(phy);
- 	mt7996_mac_cca_stats_reset(phy);
+ 	struct desc_ptr startup_gdt_descr = {
+-		.address = (unsigned long)&RIP_REL_REF(init_per_cpu_var(gdt_page.gdt)),
++		.address = (unsigned long)&RIP_REL_REF(*gdt),
+ 		.size    = GDT_SIZE - 1,
+ 	};
  
 -- 
 2.43.0
