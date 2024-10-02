@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-79582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C4D98D93C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6009F98DBB9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1855F1F222FA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07B101F23594
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20301D0BAD;
-	Wed,  2 Oct 2024 14:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808D21D14F2;
+	Wed,  2 Oct 2024 14:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4Oa0c84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zk3ay2Jj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB051D0DC3;
-	Wed,  2 Oct 2024 14:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374AE1D1312;
+	Wed,  2 Oct 2024 14:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877863; cv=none; b=TvFXsAJSScOLCqH5lU3Kpe6FAnBa4FVy3y4uOO2VM163EHNfr6VZ/8RFl7fKVszRb29AO7ll1dotlwmhYF9CBrrwCwSwlwzGATHlPLWbrxuznE4e20qkAs/R1ED+D41wTA2/ME6J73HMq/xTnAF4sFSpduCmTCIa/UrnnBIVMGg=
+	t=1727879329; cv=none; b=iTyhwmKX7ldWhILGVFuCuWIwUog0d5HRRooKEQgYYxQLcuw21qdf8bZBecHa0V57Tk6rjMMcrn5+CZaXjqMGC/Ikxq02Pl9nMeKBgk0HjMdGjIdwuzHjPy/7W5QAU5V5SgNoVIsaTSAcd8oQLo0tpDb6POLTguyZetfZ5tpsrYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877863; c=relaxed/simple;
-	bh=ZctZ+BpgX1UHN+c8ZalYKlSDjI3FyrbTEqBaM5eBxwA=;
+	s=arc-20240116; t=1727879329; c=relaxed/simple;
+	bh=q3i+jh3J55NJ2YKPmphp1ZR3NNfS4eJnCqjvOtxmT18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vCj13ngEx79woLLogGYS1n5f0rURSPuQnIIQ14n/ENtJy3pwA6OuObIb0WuirPh2ZkHO7h6iSsfNu/V/U1WyVwfqu+Gwy6ofUtnSokhpuWvonTHkjmEl2X3buF+PakozPQ31Og9c5ANxM7dXjMhFXgWewmf7gTBoy32FlwfOrNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4Oa0c84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2ABC4CEC2;
-	Wed,  2 Oct 2024 14:04:23 +0000 (UTC)
+	 MIME-Version; b=JUZcabd5awKTiRp+lzK+5a37bJthMO9DmgePOqEy8XgVuzdZ2l9+fziNWBS1W3BGzNHB9YAy6LqIQ9oK0JsXHN2DeVxrzPoX00v2ySRoYM+tEq8FDZTUsCJ23d/SiHMEenn91yQx2DjWKfuLvD7zzeVWaOMYpIKG5DiNyQF3cpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zk3ay2Jj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A1BC4CEC2;
+	Wed,  2 Oct 2024 14:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877863;
-	bh=ZctZ+BpgX1UHN+c8ZalYKlSDjI3FyrbTEqBaM5eBxwA=;
+	s=korg; t=1727879329;
+	bh=q3i+jh3J55NJ2YKPmphp1ZR3NNfS4eJnCqjvOtxmT18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4Oa0c84/AHZJDJqxofLiwplHiUq9HLCenWID5PVUVAmaRJfBZySkOYcTZ43RXYAt
-	 B6wDUywFgOcWeDyLWo749oMtKMAfibry9B09mVjgl13LhYWMI0LyS0gM0v+uF6zONs
-	 zIXPgleVfD0zidjOnkKZKKFiLWvUoN1TEn5ja1Wc=
+	b=Zk3ay2JjJFdLcrl6nhhm2OfiNp1ABtROP2IsL4gHDmoy5abLtqvC++JYkrAx60pQd
+	 kCNuFG5WAZiDjwo5U/NNzArzlVsamRl9OqXXhAiKWoVxpCarCCGYrtzg8Dzoccmo2z
+	 MafR/74iPsA7d+QWg2Y2HkMVhtu0h9uQmVUMicSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Gao Xiang <xiang@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 220/634] xen: introduce generic helper checking for memory map conflicts
+Subject: [PATCH 6.6 081/538] cachefiles: Fix non-taking of sb_writers around set/removexattr
 Date: Wed,  2 Oct 2024 14:55:20 +0200
-Message-ID: <20241002125819.785571123@linuxfoundation.org>
+Message-ID: <20241002125755.416948368@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit ba88829706e2c5b7238638fc2b0713edf596495e ]
+[ Upstream commit 80887f31672970abae3aaa9cf62ac72a124e7c89 ]
 
-When booting as a Xen PV dom0 the memory layout of the dom0 is
-modified to match that of the host, as this requires less changes in
-the kernel for supporting Xen.
+Unlike other vfs_xxxx() calls, vfs_setxattr() and vfs_removexattr() don't
+take the sb_writers lock, so the caller should do it for them.
 
-There are some cases, though, which are problematic, as it is the Xen
-hypervisor selecting the kernel's load address plus some other data,
-which might conflict with the host's memory map.
+Fix cachefiles to do this.
 
-These conflicts are detected at boot time and result in a boot error.
-In order to support handling at least some of these conflicts in
-future, introduce a generic helper function which will later gain the
-ability to adapt the memory layout when possible.
-
-Add the missing check for the xen_start_info area.
-
-Note that possible p2m map and initrd memory conflicts are handled
-already by copying the data to memory areas not conflicting with the
-memory map. The initial stack allocated by Xen doesn't need to be
-checked, as early boot code is switching to the statically allocated
-initial kernel stack. Initial page tables and the kernel itself will
-be handled later.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Christian Brauner <brauner@kernel.org>
+cc: Gao Xiang <xiang@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-erofs@lists.ozlabs.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20240814203850.2240469-3-dhowells@redhat.com/ # v2
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/mmu_pv.c  |  5 +----
- arch/x86/xen/setup.c   | 34 ++++++++++++++++++++++++++++------
- arch/x86/xen/xen-ops.h |  3 ++-
- 3 files changed, 31 insertions(+), 11 deletions(-)
+ fs/cachefiles/xattr.c | 34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 54e0d311dcc94..9e9a122c2bcfa 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -2019,10 +2019,7 @@ void __init xen_reserve_special_pages(void)
+diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
+index 4dd8a993c60a8..7c6f260a3be56 100644
+--- a/fs/cachefiles/xattr.c
++++ b/fs/cachefiles/xattr.c
+@@ -64,9 +64,15 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
+ 		memcpy(buf->data, fscache_get_aux(object->cookie), len);
  
- void __init xen_pt_check_e820(void)
- {
--	if (xen_is_e820_reserved(xen_pt_base, xen_pt_size)) {
--		xen_raw_console_write("Xen hypervisor allocated page table memory conflicts with E820 map\n");
--		BUG();
--	}
-+	xen_chk_is_e820_usable(xen_pt_base, xen_pt_size, "page table");
- }
+ 	ret = cachefiles_inject_write_error();
+-	if (ret == 0)
+-		ret = vfs_setxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache,
+-				   buf, sizeof(struct cachefiles_xattr) + len, 0);
++	if (ret == 0) {
++		ret = mnt_want_write_file(file);
++		if (ret == 0) {
++			ret = vfs_setxattr(&nop_mnt_idmap, dentry,
++					   cachefiles_xattr_cache, buf,
++					   sizeof(struct cachefiles_xattr) + len, 0);
++			mnt_drop_write_file(file);
++		}
++	}
+ 	if (ret < 0) {
+ 		trace_cachefiles_vfs_error(object, file_inode(file), ret,
+ 					   cachefiles_trace_setxattr_error);
+@@ -151,8 +157,14 @@ int cachefiles_remove_object_xattr(struct cachefiles_cache *cache,
+ 	int ret;
  
- static unsigned char dummy_mapping[PAGE_SIZE] __page_aligned_bss;
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index d2073df5c5624..84cbc7ec55811 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -568,7 +568,7 @@ static void __init xen_ignore_unusable(void)
- 	}
- }
+ 	ret = cachefiles_inject_remove_error();
+-	if (ret == 0)
+-		ret = vfs_removexattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache);
++	if (ret == 0) {
++		ret = mnt_want_write(cache->mnt);
++		if (ret == 0) {
++			ret = vfs_removexattr(&nop_mnt_idmap, dentry,
++					      cachefiles_xattr_cache);
++			mnt_drop_write(cache->mnt);
++		}
++	}
+ 	if (ret < 0) {
+ 		trace_cachefiles_vfs_error(object, d_inode(dentry), ret,
+ 					   cachefiles_trace_remxattr_error);
+@@ -208,9 +220,15 @@ bool cachefiles_set_volume_xattr(struct cachefiles_volume *volume)
+ 	memcpy(buf->data, p, volume->vcookie->coherency_len);
  
--bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
-+static bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
- {
- 	struct e820_entry *entry;
- 	unsigned mapcnt;
-@@ -625,6 +625,23 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size)
- 	return 0;
- }
- 
-+/*
-+ * Check for an area in physical memory to be usable for non-movable purposes.
-+ * An area is considered to usable if the used E820 map lists it to be RAM.
-+ * In case the area is not usable, crash the system with an error message.
-+ */
-+void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
-+				   const char *component)
-+{
-+	if (!xen_is_e820_reserved(start, size))
-+		return;
-+
-+	xen_raw_console_write("Xen hypervisor allocated ");
-+	xen_raw_console_write(component);
-+	xen_raw_console_write(" memory conflicts with E820 map\n");
-+	BUG();
-+}
-+
- /*
-  * Like memcpy, but with physical addresses for dest and src.
-  */
-@@ -825,11 +842,16 @@ char * __init xen_memory_setup(void)
- 	 * Failing now is better than running into weird problems later due
- 	 * to relocating (and even reusing) pages with kernel text or data.
- 	 */
--	if (xen_is_e820_reserved(__pa_symbol(_text),
--				 __pa_symbol(_end) - __pa_symbol(_text))) {
--		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
--		BUG();
--	}
-+	xen_chk_is_e820_usable(__pa_symbol(_text),
-+			       __pa_symbol(_end) - __pa_symbol(_text),
-+			       "kernel");
-+
-+	/*
-+	 * Check for a conflict of the xen_start_info memory with the target
-+	 * E820 map.
-+	 */
-+	xen_chk_is_e820_usable(__pa(xen_start_info), sizeof(*xen_start_info),
-+			       "xen_start_info");
- 
- 	/*
- 	 * Check for a conflict of the hypervisor supplied page tables with
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index 79cf93f2c92f1..f46a1dd3624da 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -44,7 +44,8 @@ void xen_mm_unpin_all(void);
- void __init xen_relocate_p2m(void);
- #endif
- 
--bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size);
-+void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
-+				   const char *component);
- unsigned long __ref xen_chk_extra_mem(unsigned long pfn);
- void __init xen_inv_extra_mem(void);
- void __init xen_remap_memory(void);
+ 	ret = cachefiles_inject_write_error();
+-	if (ret == 0)
+-		ret = vfs_setxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache,
+-				   buf, len, 0);
++	if (ret == 0) {
++		ret = mnt_want_write(volume->cache->mnt);
++		if (ret == 0) {
++			ret = vfs_setxattr(&nop_mnt_idmap, dentry,
++					   cachefiles_xattr_cache,
++					   buf, len, 0);
++			mnt_drop_write(volume->cache->mnt);
++		}
++	}
+ 	if (ret < 0) {
+ 		trace_cachefiles_vfs_error(NULL, d_inode(dentry), ret,
+ 					   cachefiles_trace_setxattr_error);
 -- 
 2.43.0
 
