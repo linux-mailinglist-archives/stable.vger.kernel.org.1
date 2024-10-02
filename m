@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C62D98DC59
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C898C98D9B4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BB46B218DC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06D891C22B4A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1AF1D079B;
-	Wed,  2 Oct 2024 14:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E531D0B87;
+	Wed,  2 Oct 2024 14:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK49bXvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh4u8dRT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B66A1D0786;
-	Wed,  2 Oct 2024 14:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CDC198837;
+	Wed,  2 Oct 2024 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879644; cv=none; b=oDiUHiUwmpUimKMNjxlSCA7j5Fmebl5reSVHk2gc/XhZbV/rl9CjpJet3jORlhsq7pUUr46eUEDAwf7THDti2SmrCmbhKHpT80azPEYqfoUGPD6FHBOVyFwmCn75kpJczaB6y28NIw9WTXUrSYSXjVhW4UgCnyjWFTdox5g6dKA=
+	t=1727878184; cv=none; b=feh1kOUkWoUUCljnomPNW8FgKeJpdqJF4Ra5dhmKGcpJCsjvAfMn2SNBg9HAE73GcSQKbAiOzvh8bmA/1WU53f7HzeLpSnDzLHsdDZ3EHBWI+Ll5MqHAfwPC1tLfQYbk8OadSCXgH1t/84FjPDYhhqr4SgO+x6i4YrRCpQAOPPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879644; c=relaxed/simple;
-	bh=evb0DZAzM0yGI2mWMM8Sbs86t7CtoQXXnssxJbgKxb8=;
+	s=arc-20240116; t=1727878184; c=relaxed/simple;
+	bh=dErPW5lXXBmWKmnHfEPAd7zGIBA3OQFrkzHvBkmtPdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVXwZS17iuvkz4UFFxRKiuoBpT864pxhPbXmBEFsOB2VlQOUxl7Pechg93NjeL9nagjMKPpOncpmPyS4SMjM6BZUS0hmuRtZ1Jj/Z5o9VOKSSYAPtARd30eeUjTxBMp8HPc8lv+8lwd2yHK2+7v6PXjwhNLxmwM/Fm6dboaQnfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK49bXvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B418DC4CEC2;
-	Wed,  2 Oct 2024 14:34:03 +0000 (UTC)
+	 MIME-Version; b=RiJZgrNJDR5QiGTZB78G5XlAF7GDt80Wgrq+auaR8rZ3tSmm55m/dH93Ftjgdq7mZvUBcDqR3LhlzsHgbEfcYfOmrncsRjHr6BHSxwJCLTej5KUHr6KSoKapbRo5jsMsTp85YjMg38E4Ogb8HkXfaC6p7Hh5kXmbccwCYlE8KQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh4u8dRT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21646C4CEC2;
+	Wed,  2 Oct 2024 14:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879644;
-	bh=evb0DZAzM0yGI2mWMM8Sbs86t7CtoQXXnssxJbgKxb8=;
+	s=korg; t=1727878184;
+	bh=dErPW5lXXBmWKmnHfEPAd7zGIBA3OQFrkzHvBkmtPdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK49bXvXBw8bIOQJKPkz3FD9DloGO7jhZThSCTJBvvaqlaEmo+5lawSWd/8bsXgBd
-	 XO/6OwItUHXf1w5mX8EYi7f8QT4aEuJTPB7o6Sqy7PK4IvzfCAQOSUol/PsEo39WUQ
-	 IWvmXKCQkImgaTkiuKFpNtnDD6pm4/CB7cLH7vp8=
+	b=yh4u8dRTtnn3Ywpn2X+TA6Hcq7/B9w3kIATPuVoiRy9/2OIs0BkUm2ndZCQCHWNss
+	 Uvwk4KuTqrmAcs/7ZHi40w/s1Z+aQfP2qvUN4XW26T2J5mBbanyaNuloS94DX1L5q4
+	 zKKfGjojnvzK36qtnPZoK1gKIoAsYmIJH8bXa408=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 189/538] selftests/bpf: Fix compile error from rlim_t in sk_storage_map.c
+Subject: [PATCH 6.10 328/634] phy: phy-rockchip-samsung-hdptx: Explicitly include pm_runtime.h
 Date: Wed,  2 Oct 2024 14:57:08 +0200
-Message-ID: <20241002125759.718574394@linuxfoundation.org>
+Message-ID: <20241002125824.051020123@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit d393f9479d4aaab0fa4c3caf513f28685e831f13 ]
+[ Upstream commit 1b369ff94bc36d2e16c8a91c0ea8ebd329555976 ]
 
-Cast 'rlim_t' argument to match expected type of printf() format and avoid
-compile errors seen building for mips64el/musl-libc:
+Driver makes use of helpers from pm_runtime.h, but relies on the header
+file being implicitly included.
 
-  In file included from map_tests/sk_storage_map.c:20:
-  map_tests/sk_storage_map.c: In function 'test_sk_storage_map_stress_free':
-  map_tests/sk_storage_map.c:414:56: error: format '%lu' expects argument of type 'long unsigned int', but argument 2 has type 'rlim_t' {aka 'long long unsigned int'} [-Werror=format=]
-    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
-        |                                                        ^~~~~~~~~~~~~~~~~~~~~~~
-    415 |                       rlim_new.rlim_cur, errno);
-        |                       ~~~~~~~~~~~~~~~~~
-        |                               |
-        |                               rlim_t {aka long long unsigned int}
-  ./test_maps.h:12:24: note: in definition of macro 'CHECK'
-     12 |                 printf(format);                                         \
-        |                        ^~~~~~
-  map_tests/sk_storage_map.c:414:68: note: format string is defined here
-    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
-        |                                                                  ~~^
-        |                                                                    |
-        |                                                                    long unsigned int
-        |                                                                  %llu
-  cc1: all warnings being treated as errors
+Explicitly pull the header in to avoid potential build failures in some
+configurations.
 
-Fixes: 51a0e301a563 ("bpf: Add BPF_MAP_TYPE_SK_STORAGE test to test_maps")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/1e00a1fa7acf91b4ca135c4102dc796d518bad86.1721713597.git.tony.ambardar@gmail.com
+Fixes: 553be2830c5f ("phy: rockchip: Add Samsung HDMI/eDP Combo PHY driver")
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://lore.kernel.org/r/20240620-rk3588-hdmiphy-clkprov-v2-1-6a2d2164e508@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/map_tests/sk_storage_map.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-index 18405c3b7cee9..af10c309359a7 100644
---- a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-+++ b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
-@@ -412,7 +412,7 @@ static void test_sk_storage_map_stress_free(void)
- 		rlim_new.rlim_max = rlim_new.rlim_cur + 128;
- 		err = setrlimit(RLIMIT_NOFILE, &rlim_new);
- 		CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
--		      rlim_new.rlim_cur, errno);
-+		      (unsigned long) rlim_new.rlim_cur, errno);
- 	}
- 
- 	err = do_sk_storage_map_stress_free();
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index 946c01210ac8c..3bd9b62b23dcc 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -15,6 +15,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/phy/phy.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/rational.h>
+ #include <linux/regmap.h>
+ #include <linux/reset.h>
 -- 
 2.43.0
 
