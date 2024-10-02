@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-80159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D98998DC35
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BCC98D994
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458541F25FBA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 711182898AB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8E31D0DDA;
-	Wed,  2 Oct 2024 14:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5FB1D0954;
+	Wed,  2 Oct 2024 14:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOdn8o02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnG6yE8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30BC1CFED1;
-	Wed,  2 Oct 2024 14:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385CF1D2706;
+	Wed,  2 Oct 2024 14:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879555; cv=none; b=IE4NwWjfGT5++DejCRxy8Uwqnk/Wt8ZaVFA7wSqnXQ9g6+wV1qk/zcuW8gT9oNLGuyVyvZ/4Xq1sEtoTfoCiJHcY4ggp7v+LXGViAgA6iDvosNp0QmcSgG11qL0+RP63GXfMr7kq0ECrClJFORk6D6ORGyUMeHZLIp2cTkyD6cM=
+	t=1727878091; cv=none; b=DExORWKbQ/FnElZHlvgIepPd8KWe0js+TFO8GaIQ0PuNyKsZmyCgx6lO0aB7Z0BTZqTPRu/8gfalNomos3NiAnhv7U0p+3bE0m/LNPQAw1sfVYuImdDRBAa00RVQpGpV3wqJOEcYU97XX2jCfS7CBv92U+NJWygKdNCnpUiByLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879555; c=relaxed/simple;
-	bh=Cd9eMAAiMjui9gPwJi5cuWDhS0S2y2X+JR6HQNDhM5g=;
+	s=arc-20240116; t=1727878091; c=relaxed/simple;
+	bh=EIA6FtvU8un3CEPGp2VUdu32RJKLL3x30gdHrx46LK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NeUl5q+btPslbKcvXk5heOW/So8ATcrKV3FyXGpS1yNg4zJddc+pJllHWIejqupIC5yLOHJ2kD5ZiXfJcmG3POog8ZCp1LL2OcIQWRdIBEW/COmR6VOP65wmfrAHIR/lYGT6+73J6GdUdyxZlCc0Ve2cfOAbm47e3GcWTmWdy5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOdn8o02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9B4C4CEC2;
-	Wed,  2 Oct 2024 14:32:35 +0000 (UTC)
+	 MIME-Version; b=fvBzSBnYZFmZJ/jinRvBOQ0DJU77kDPP99488OMe4QKkTrlfk5SCReSnONlaghCz3omQMX8RyjxekZ9oZHPJJC/DGuqcZsUI/EzqsLUHTIygi7lJhTlxuJQcs42c3jHCp/yE2dQaOlyWnMG8ERSigPG19OPwUi4dvw6GYtl7uts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnG6yE8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BED9C4CEC2;
+	Wed,  2 Oct 2024 14:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879555;
-	bh=Cd9eMAAiMjui9gPwJi5cuWDhS0S2y2X+JR6HQNDhM5g=;
+	s=korg; t=1727878091;
+	bh=EIA6FtvU8un3CEPGp2VUdu32RJKLL3x30gdHrx46LK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOdn8o02wBpFzOla7qrRH67UwsxehJHLPAHvNH3rXwrrsnQLIgOO214SXMOLwnyas
-	 j3WjPTPhzaOb4C8v8iQLf7RM8wIkAOddZQAAefTPeqSScsrPggYVETdnUfXeMCL/Vy
-	 Igjo0TdD4rfc5AMlBHnRmeHrtbO3BfM3JYm1rHs0=
+	b=YnG6yE8rHRGWS/Oe2tcxQqTzzO9xZOAepcc5aC0yelFpVe9KQ2KLiXX3BbjEC3Nq+
+	 uisVXHuswfDpRbGo9hoJQFpEGbu+e3GUZfeJYXFk1pvl7f823Bky9fnBAe8MeDguQX
+	 5r7iEKlS/3eDZOIDwCo5BjFhY+WZfUJUT0zEyVxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jin Yao <yao.jin@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Stephane Eranian <eranian@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/538] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Subject: [PATCH 6.10 297/634] perf report: Fix --total-cycles --stdio output error
 Date: Wed,  2 Oct 2024 14:56:37 +0200
-Message-ID: <20241002125758.490604758@linuxfoundation.org>
+Message-ID: <20241002125822.835558866@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +70,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
+[ Upstream commit 3ef44458071a19e5b5832cdfe6f75273aa521b6e ]
 
-In adreno_request_fw() when debugging information is printed to the log
-after firmware load, an incorrect filename is printed. 'newname' is used
-instead of 'fwname', so prefix "qcom/" is being added to filename.
-Looks like "copy-paste" mistake.
+The --total-cycles may output wrong information with the --stdio.
 
-Fix this mistake by replacing 'newname' with 'fwname'.
+For example:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  # perf record -e "{cycles,instructions}",cache-misses -b sleep 1
+  # perf report --total-cycles --stdio
 
-Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/602382/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+The total cycles output of {cycles,instructions} and cache-misses are
+almost the same.
+
+  # Samples: 938  of events 'anon group { cycles, instructions }'
+  # Event count (approx.): 938
+  #
+  # Sampled Cycles%  Sampled Cycles  Avg Cycles%  Avg Cycles  [Program Block Range]
+  # ...............  ..............  ...........  ..........  ..................................................>
+  #
+            11.19%            2.6K        0.10%           21  [perf_iterate_ctx+48 -> >
+             5.79%            1.4K        0.45%           97  [__intel_pmu_enable_all.constprop.0+80 -> __intel_>
+             5.11%            1.2K        0.33%           71  [native_write_msr+0 ->>
+
+  # Samples: 293  of event 'cache-misses'
+  # Event count (approx.): 293
+  #
+  # Sampled Cycles%  Sampled Cycles  Avg Cycles%  Avg Cycles  [Program Block Range]
+  # ...............  ..............  ...........  ..........  ..................................................>
+  #
+            11.19%            2.6K        0.13%           21  [perf_iterate_ctx+48 -> >
+             5.79%            1.4K        0.59%           97  [__intel_pmu_enable_all.constprop.0+80 -> __intel_>
+             5.11%            1.2K        0.43%           71  [native_write_msr+0 ->>
+
+With the symbol_conf.event_group, the 'perf report' should only report the
+block information of the leader event in a group.
+
+However, the current implementation retrieves the next event's block
+information, rather than the next group leader's block information.
+
+Make sure the index is updated even if the event is skipped.
+
+With the patch,
+
+  # Samples: 293  of event 'cache-misses'
+  # Event count (approx.): 293
+  #
+  # Sampled Cycles%  Sampled Cycles  Avg Cycles%  Avg Cycles  [Program Block Range]
+  # ...............  ..............  ...........  ..........  ..................................................>
+  #
+           37.98%            9.0K        4.05%           299  [perf_event_addr_filters_exec+0 -> perf_event_a>
+           11.19%            2.6K        0.28%            21  [perf_iterate_ctx+48 -> >
+            5.79%            1.4K        1.32%            97  [__intel_pmu_enable_all.constprop.0+80 -> __intel_>
+
+Fixes: 6f7164fa231a5f36 ("perf report: Sort by sampled cycles percent per block for stdio")
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Link: https://lore.kernel.org/r/20240813160208.2493643-2-kan.liang@linux.intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-report.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index 96deaf85c0cd2..4127e2762dcd1 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -468,7 +468,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
- 		ret = request_firmware_direct(&fw, fwname, drm->dev);
- 		if (!ret) {
- 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
--				newname);
-+				fwname);
- 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
- 			goto out;
- 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 69618fb0110b6..8bebaba56bc3f 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -565,6 +565,7 @@ static int evlist__tty_browse_hists(struct evlist *evlist, struct report *rep, c
+ 		struct hists *hists = evsel__hists(pos);
+ 		const char *evname = evsel__name(pos);
+ 
++		i++;
+ 		if (symbol_conf.event_group && !evsel__is_group_leader(pos))
+ 			continue;
+ 
+@@ -574,7 +575,7 @@ static int evlist__tty_browse_hists(struct evlist *evlist, struct report *rep, c
+ 		hists__fprintf_nr_sample_events(hists, rep, evname, stdout);
+ 
+ 		if (rep->total_cycles_mode) {
+-			report__browse_block_hists(&rep->block_reports[i++].hist,
++			report__browse_block_hists(&rep->block_reports[i - 1].hist,
+ 						   rep->min_percent, pos, NULL);
+ 			continue;
+ 		}
 -- 
 2.43.0
 
