@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-80032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0012598DB74
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC5E98DB8C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B3B7B21DB3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:31:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AFE3B25AEE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A961D1F55;
-	Wed,  2 Oct 2024 14:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A31D0DCE;
+	Wed,  2 Oct 2024 14:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNJ1VS66"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kO7pfjv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4082E1D0DD5;
-	Wed,  2 Oct 2024 14:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FE31CFEB3;
+	Wed,  2 Oct 2024 14:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879186; cv=none; b=OwsaEeAi+yqCgxDBtDSrsQpQdcxDPag2D4LLKEV7WUsRQwBpEz54EerMBb4/jqybt9SZ0eIDpWq+J8noM8NbWb/fMsXzllrAyYVl4zomiOLsX2y08ZppbJ8RPByKcIUz8nzOr4SbB8Ehdsnn5J7KiaXubXsrl7UO16ZidvjUtQ4=
+	t=1727879218; cv=none; b=M7NCkF9V/VAqdz72eKcMcIgvu+0Dl9rp4QgMkWTynPDdPz3FfGHQdCMGdmtzvjG1f6D+5SucyomB15NsUWQHrtkU0PDPqslOXk4n7fQ6gWKloAd7Xu+QzX3AS9/K2HlMmN+sUIyTyp7yYtfbASsyM4kDLXBgzOJsihZtM72fg74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879186; c=relaxed/simple;
-	bh=FsNkc1vQQ54KrGSq2BhjEy8NEoAMLAybQgi/6Q1fRhg=;
+	s=arc-20240116; t=1727879218; c=relaxed/simple;
+	bh=jeSjJVPKA3YC1qySXKmxDbebALpl4DZDhgAsWU5E+3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qo2VTjp1w05Ha5XJtmA1IdjMV+ekBZTmhGMxnjGk9n/rTSxpxZJF/rVGA9b3YsZQMx9kejfW+1Vg7E5njEti9rzLTG8shwucQrttp+W9a/RI4L0if36/MaFTF7bl9ED24Z6dfeh4+t+/1Ta/rm4mGIOXNr85jXmaW61R3zzoqrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNJ1VS66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EE5C4CEC2;
-	Wed,  2 Oct 2024 14:26:25 +0000 (UTC)
+	 MIME-Version; b=DPecpJUUMjOZ4QYpKwsvAWv+tafrnhOAfM2hAdzJv31GjBTGLt+qfTNdIVJ2POYB6I7BmT1aYXm4ga/28BENE4htSn/0Ai4qy0VY4UHRegBUC66LhkJl9WKBw2dGLX3+ornPhJRCqcHCfmi92RsYGDWyjsojrlwBsLMSpT67s9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kO7pfjv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A16C4CEC2;
+	Wed,  2 Oct 2024 14:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879186;
-	bh=FsNkc1vQQ54KrGSq2BhjEy8NEoAMLAybQgi/6Q1fRhg=;
+	s=korg; t=1727879218;
+	bh=jeSjJVPKA3YC1qySXKmxDbebALpl4DZDhgAsWU5E+3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNJ1VS66YJ/PDvka/TW6rElTuSN2SOm4rUZd28hoF50Xkul5/oHL2gdRLkXRYHMp8
-	 vIEFwyDy8FpnjgG1bgmEYop7l9GUJtKg0+IXIqS6xzNxXT4bM+WJF+GVtb2Ql7a4pU
-	 gFJaIYNO6M+jexVsMUHhpRm3mceKO5nxg6oNFLe0=
+	b=kO7pfjv9w07YiXkh2lR8xERC7iNrSkCBcQu5HQlEQXUq7cDJzdxHLvjpwemSRRhWB
+	 CxLfvHaiUgeDyZRQHxqv0ts79HCn2XEMzdV4tSS23ahIuPx9QXOxDuPN5tWYvMiDCX
+	 Mp+nuJgql5ExSZMFfQ30JWdrA304E2IPMlNsJx0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/538] wifi: iwlwifi: config: label gl devices as discrete
-Date: Wed,  2 Oct 2024 14:54:24 +0200
-Message-ID: <20241002125753.010784903@linuxfoundation.org>
+Subject: [PATCH 6.6 026/538] wifi: iwlwifi: mvm: increase the time between ranging measurements
+Date: Wed,  2 Oct 2024 14:54:25 +0200
+Message-ID: <20241002125753.051862889@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -66,77 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 8131dd52810dfcdb49fcdc78f5e18e1538b6c441 ]
+[ Upstream commit 3a7ee94559dfd640604d0265739e86dec73b64e8 ]
 
-The 'gl' devices are in the bz family, but they're not,
-integrated, so should have their own trans config struct.
-Fix that, also necessitating the removal of LTR config,
-and while at it remove 0x2727 and 0x272D IDs that were
-only used for test chips.
+The algo running in fw may take a little longer than 5 milliseconds,
+(e.g. measurement on 80MHz while associated). Increase the minimum
+time between measurements to 7 milliseconds.
 
-Fixes: c30a2a64788b ("wifi: iwlwifi: add a new PCI device ID for BZ device")ticket=none
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 830aa3e7d1ca ("iwlwifi: mvm: add support for range request command version 13")
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240729201718.95aed0620080.Ib9129512c95aa57acc9876bdff8b99dd41e1562c@changeid
+Link: https://patch.msgid.link/20240729201718.d3f3c26e00d9.I09e951290e8a3d73f147b88166fd9a678d1d69ed@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 11 +++++++++++
- drivers/net/wireless/intel/iwlwifi/iwl-config.h |  1 +
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c   |  4 +---
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/constants.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index cc71b513adf98..cebd3c91756fe 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -152,6 +152,17 @@ const struct iwl_cfg_trans_params iwl_bz_trans_cfg = {
- 	.ltr_delay = IWL_CFG_TRANS_LTR_DELAY_2500US,
- };
- 
-+const struct iwl_cfg_trans_params iwl_gl_trans_cfg = {
-+	.device_family = IWL_DEVICE_FAMILY_BZ,
-+	.base_params = &iwl_bz_base_params,
-+	.mq_rx_supported = true,
-+	.rf_id = true,
-+	.gen2 = true,
-+	.umac_prph_offset = 0x300000,
-+	.xtal_latency = 12000,
-+	.low_latency_xtal = true,
-+};
-+
- const char iwl_bz_name[] = "Intel(R) TBD Bz device";
- 
- const struct iwl_cfg iwl_cfg_bz = {
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index f45f645ca6485..dd3913617bb0b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -493,6 +493,7 @@ extern const struct iwl_cfg_trans_params iwl_so_long_latency_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_so_long_latency_imr_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_ma_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_bz_trans_cfg;
-+extern const struct iwl_cfg_trans_params iwl_gl_trans_cfg;
- extern const struct iwl_cfg_trans_params iwl_sc_trans_cfg;
- extern const char iwl9162_name[];
- extern const char iwl9260_name[];
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 365e19314f2ca..4a2de79f2e864 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -501,9 +501,7 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x7E40, PCI_ANY_ID, iwl_ma_trans_cfg)},
- 
- /* Bz devices */
--	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
--	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
--	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_gl_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, 0x0000, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, 0x0090, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0xA840, 0x0094, iwl_bz_trans_cfg)},
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+index 243eccc68cb05..f7bec6f3d7584 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
+@@ -103,7 +103,7 @@
+ #define IWL_MVM_FTM_INITIATOR_SECURE_LTF	false
+ #define IWL_MVM_FTM_RESP_NDP_SUPPORT		true
+ #define IWL_MVM_FTM_RESP_LMR_FEEDBACK_SUPPORT	true
+-#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	5
++#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	7
+ #define IWL_MVM_FTM_NON_TB_MAX_TIME_BETWEEN_MSR	1000
+ #define IWL_MVM_D3_DEBUG			false
+ #define IWL_MVM_USE_TWT				true
 -- 
 2.43.0
 
