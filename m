@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-80371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C891C98DD21
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360A598DAB3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05C5B1C240EE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E20CF1F23448
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77ACD1D151B;
-	Wed,  2 Oct 2024 14:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EA81D1738;
+	Wed,  2 Oct 2024 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxrkJ1xX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mFBaXy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331BE405FB;
-	Wed,  2 Oct 2024 14:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356C11D1735;
+	Wed,  2 Oct 2024 14:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880179; cv=none; b=tWGHNMihg/Wfq/oFYfHLm/J+Ix3FJ4mWruXcxvgKKGB5PhjNPzt+ELZth7Ny2TtAKA+0POCSPR57b3JrvyQeUfasGL5DT8iXyHDkSHLxjQ1cAHSQ9wpR+JvmHwuY0u2UZml6DKgT0jHx0ZAmuNd7GttXjgpfGQcQG+saCXOSq/k=
+	t=1727878714; cv=none; b=BAmFQ976yAbvzPoY1qkzQKC1KO4jOY8D4EqxO6DajUjSIyasGOU6RoaIW7ghyv8pKZMrzNdWMhlua1yJDOSLvr7zMXElk2rquA8zHRqRSI7eVgaqIhmmLHEMR3SaGHxPPbBx+iKywdZ+st+4jd2uPVvcl6H8/ohv9QT/xFjMN2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880179; c=relaxed/simple;
-	bh=lnDJC3Rhry1Dg6t4lFeLVwhQ4jGdHE0ry7RD1xWEaQo=;
+	s=arc-20240116; t=1727878714; c=relaxed/simple;
+	bh=F5+yKkBNJbLl6SMCDQMlu2uNacDDe2Marmn20AgBMmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnhs5axBy4MXYKqr784oEznugLFvCtz6xxRVF6qOZeeuwWIIATocC4921OIwRxHYLpE1Q7lKBb8tAGv0THt2EXcL8iCr016QG7f9rB1nj00pcWPCW3yrZ5JxD2WejNX2bwIF8j0/tu0989BqZq0K/vyJm38lRhCj1RxVmjWBPVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxrkJ1xX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FDDC4CEC2;
-	Wed,  2 Oct 2024 14:42:58 +0000 (UTC)
+	 MIME-Version; b=mNradsc1zB4Lf1usi1pvjw8Epz0ZI/7NUbI26aaN78KUdAqy93WVMYNZx8zkMdk0ivvqwtRaJokRT3dchc/aaJUJRG/sT7IyFfxlUdn16G0fuXrYu1i7oSQNsdYAkPQ01sIeUXV7NeJfBi2FIn9houFDbSwhS5ZEX8DZp12lo3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mFBaXy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A936C4CEC5;
+	Wed,  2 Oct 2024 14:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880178;
-	bh=lnDJC3Rhry1Dg6t4lFeLVwhQ4jGdHE0ry7RD1xWEaQo=;
+	s=korg; t=1727878713;
+	bh=F5+yKkBNJbLl6SMCDQMlu2uNacDDe2Marmn20AgBMmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxrkJ1xXlmkOQjdUIiY2eFL48Yd0ErSNR/j7KOM4lPUv2c7e95ACUT4NEgG7dsyXw
-	 BOzEcCjtA6bEGzocwSRuYX+E5t2HTvtt6IhZUcZCdOKgPgjlyE/Sqv7fWvi4xlBtqP
-	 WLc5MV7hPFQZcp0MUP6vd9CdcRh0JoLnKEjor+fY=
+	b=2mFBaXy9oK1BFzxUAel8jot0FIAPV6juexJUpnTA8qR/CgOREZ5Ky1LH6wHWn3P2U
+	 qhIMy74ArO1L5KU84cJyPf3Ms9/Lq+vTO3rcSbWYJRb4hmflmUvLd26du+EI8nheWV
+	 NFJT2sDfm1V9Ok5ZpF8UxZGVOv3NAaTBV8OEZT3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/538] f2fs: fix to wait page writeback before setting gcing flag
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.10 477/634] soc: versatile: integrator: fix OF node leak in probe() error path
 Date: Wed,  2 Oct 2024 14:59:37 +0200
-Message-ID: <20241002125805.773505127@linuxfoundation.org>
+Message-ID: <20241002125829.934276620@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a4d7f2b3238fd5f76b9e6434a0bd5d2e29049cff ]
+commit 874c5b601856adbfda10846b9770a6c66c41e229 upstream.
 
-Soft IRQ				Thread
-- f2fs_write_end_io
-					- f2fs_defragment_range
-					 - set_page_private_gcing
- - type = WB_DATA_TYPE(page, false);
- : assign type w/ F2FS_WB_CP_DATA
- due to page_private_gcing() is true
-  - dec_page_count() w/ wrong type
-  - end_page_writeback()
+Driver is leaking OF node reference obtained from
+of_find_matching_node().
 
-Value of F2FS_WB_CP_DATA reference count may become negative under above
-race condition, the root cause is we missed to wait page writeback before
-setting gcing page private flag, let's fix it.
-
-Fixes: 2d1fe8a86bf5 ("f2fs: fix to tag gcing flag on page during file defragment")
-Fixes: 4961acdd65c9 ("f2fs: fix to tag gcing flag on page during block migration")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f956a785a282 ("soc: move SoC driver for the ARM Integrator")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-1-ff4b35abed83@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/soc/versatile/soc-integrator.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index a0d2e180f0ed7..e04f4dcb76d1f 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2743,6 +2743,8 @@ static int f2fs_defragment_range(struct f2fs_sb_info *sbi,
- 				goto clear_out;
- 			}
+--- a/drivers/soc/versatile/soc-integrator.c
++++ b/drivers/soc/versatile/soc-integrator.c
+@@ -113,6 +113,7 @@ static int __init integrator_soc_init(vo
+ 		return -ENODEV;
  
-+			f2fs_wait_on_page_writeback(page, DATA, true, true);
-+
- 			set_page_dirty(page);
- 			set_page_private_gcing(page);
- 			f2fs_put_page(page, 1);
-@@ -4137,6 +4139,8 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
- 		/* It will never fail, when page has pinned above */
- 		f2fs_bug_on(F2FS_I_SB(inode), !page);
+ 	syscon_regmap = syscon_node_to_regmap(np);
++	of_node_put(np);
+ 	if (IS_ERR(syscon_regmap))
+ 		return PTR_ERR(syscon_regmap);
  
-+		f2fs_wait_on_page_writeback(page, DATA, true, true);
-+
- 		set_page_dirty(page);
- 		set_page_private_gcing(page);
- 		f2fs_put_page(page, 1);
--- 
-2.43.0
-
 
 
 
