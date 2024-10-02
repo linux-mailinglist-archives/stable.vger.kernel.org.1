@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-80281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6920298DCC5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAE798DCDA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0BC1F22C92
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA0BBB291CF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015F51D1E99;
-	Wed,  2 Oct 2024 14:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ABB1D0434;
+	Wed,  2 Oct 2024 14:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb3DSd75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+NeYvGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14E71D0434;
-	Wed,  2 Oct 2024 14:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F381D1F54;
+	Wed,  2 Oct 2024 14:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879911; cv=none; b=NoNpBc/Q4M+ytTW7X2yliGZ6ByGs5cwPcGuZ3ZJ0e0a7bvmua9jR1r/z6BTQGlP8QdPCxJgAKL6BwcW2LlclNHOiIuPHoOdgjobHy7QCJwLPGUK1uBa5RFR1Ohb7gf3yxVE8htGHWMJjT7Z5vVXT/EjzL7SQjoJJV1E7m/C7dvE=
+	t=1727879917; cv=none; b=VdNk0Pwebc9iI6EqMh+OY7BSNVUmNo4qcR0twmucSeH9arFtpi7nA0e7bFAV6FONllm0NXExpeoWtYWxRJHwxNHcSk+Ve4MO2j32ra9lsVK4pMFQXZRZAaPOh5qsjpUvTXK6X1Ix/b/X9/iKmzM4I5mtyIcaAJP3KadTm6jNW5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879911; c=relaxed/simple;
-	bh=JvIXgDaaD7uVEVQKKICDFOKdiIPo10LgkWVspCUp1GU=;
+	s=arc-20240116; t=1727879917; c=relaxed/simple;
+	bh=GT3lJMhD9XQAlzMlt6IEizNoL42Ttqdz4uIwH2f13UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZtaPNRw6jx0u+FvqGykxmZ4gBjMOcyfYz5KQ/kAF1W0BPTz23iKr8DC0VYUhBtrU9HP+R5Qfy4jfvC7qvUFo7k9uKXq5yK219tJ9q3J6+s+ubpxs+Gm0UEiG84zqmeQyU5zmpBEF0CntJCeV3o2guSO3ktZ0jucl2yEIk3n570=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb3DSd75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B886C4CEC5;
-	Wed,  2 Oct 2024 14:38:31 +0000 (UTC)
+	 MIME-Version; b=PbsMQt8MM43DgDb4US1cSDn8BD1oAqi40zXfs4Xc8UT6WKlmZPEAAtLVFjgI1bwnGdjwK/u+vHbJY92idiKOv7U9RICoNdt+LbcI+/H5pvhoZhQ+jcxZJJJau++095PyLnPbl/a+8kQsr10JFCwRszGUU/4uzNhksmfsLs5JcDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+NeYvGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8DCC4CEC2;
+	Wed,  2 Oct 2024 14:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879911;
-	bh=JvIXgDaaD7uVEVQKKICDFOKdiIPo10LgkWVspCUp1GU=;
+	s=korg; t=1727879917;
+	bh=GT3lJMhD9XQAlzMlt6IEizNoL42Ttqdz4uIwH2f13UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fb3DSd75mEh/L/hZ2IBC7JeMFmTR61vtoRN5/1wKGkYUdS5WqxnbFBSlktS/u6Ubw
-	 izamrh5252ingJsBmx0j6qjAnambHfj6HG/hSJkBVg22aBhti8Bo2dAoc8jsdLlPoa
-	 KaTRgYsXp2crLasnGFFWg3YrJzomYAbR8vvLukOs=
+	b=s+NeYvGuylgFbCdDn/3x69rX3xIFaU7429Ov8x23qYNfAWkaFkvoEpR5rHFG+8lxw
+	 pF/BPPyh9jAOvJojNS9mo3r+B2j3szzIolyQgJbcoeS6/3DMhYe42vavHyuShRLdIG
+	 uakNlUeW06+Llq9k8uWiBua//V44odGcO2ARZ3Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Junlin Li <make24@iscas.ac.cn>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 281/538] drivers: media: dvb-frontends/rtl2832: fix an out-of-bounds write error
-Date: Wed,  2 Oct 2024 14:58:40 +0200
-Message-ID: <20241002125803.347456365@linuxfoundation.org>
+Subject: [PATCH 6.6 282/538] drivers: media: dvb-frontends/rtl2830: fix an out-of-bounds write error
+Date: Wed,  2 Oct 2024 14:58:41 +0200
+Message-ID: <20241002125803.386762093@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -68,9 +68,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Junlin Li <make24@iscas.ac.cn>
 
-[ Upstream commit 8ae06f360cfaca2b88b98ca89144548b3186aab1 ]
+[ Upstream commit 46d7ebfe6a75a454a5fa28604f0ef1491f9d8d14 ]
 
-Ensure index in rtl2832_pid_filter does not exceed 31 to prevent
+Ensure index in rtl2830_pid_filter does not exceed 31 to prevent
 out-of-bounds access.
 
 dev->filters is a 32-bit value, so set_bit and clear_bit functions should
@@ -79,21 +79,20 @@ access a non-existent 33rd bit, leading to out-of-bounds access.
 Change the boundary check from index > 32 to index >= 32 to resolve this
 issue.
 
+Fixes: df70ddad81b4 ("[media] rtl2830: implement PID filter")
 Signed-off-by: Junlin Li <make24@iscas.ac.cn>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: 4b01e01a81b6 ("[media] rtl2832: implement PID filter")
-[hverkuil: added fixes tag, rtl2830_pid_filter -> rtl2832_pid_filter in logmsg]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/rtl2832.c | 2 +-
+ drivers/media/dvb-frontends/rtl2830.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/rtl2832.c b/drivers/media/dvb-frontends/rtl2832.c
-index 601cf45c39358..e6a7877a98541 100644
---- a/drivers/media/dvb-frontends/rtl2832.c
-+++ b/drivers/media/dvb-frontends/rtl2832.c
-@@ -983,7 +983,7 @@ static int rtl2832_pid_filter(struct dvb_frontend *fe, u8 index, u16 pid,
- 		index, pid, onoff, dev->slave_ts);
+diff --git a/drivers/media/dvb-frontends/rtl2830.c b/drivers/media/dvb-frontends/rtl2830.c
+index 35c969fd2cb5e..4e59734ec53e2 100644
+--- a/drivers/media/dvb-frontends/rtl2830.c
++++ b/drivers/media/dvb-frontends/rtl2830.c
+@@ -609,7 +609,7 @@ static int rtl2830_pid_filter(struct dvb_frontend *fe, u8 index, u16 pid, int on
+ 		index, pid, onoff);
  
  	/* skip invalid PIDs (0x2000) */
 -	if (pid > 0x1fff || index > 32)
