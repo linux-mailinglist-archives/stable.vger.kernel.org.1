@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-79511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0055E98D8D6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B99B98D5BF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80B7FB24344
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF3791C220EB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485B71D12EB;
-	Wed,  2 Oct 2024 14:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286E21D0964;
+	Wed,  2 Oct 2024 13:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEY8Ch98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yLH154w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E871D12E8;
-	Wed,  2 Oct 2024 14:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFC01D078D;
+	Wed,  2 Oct 2024 13:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877672; cv=none; b=BLGjBWvYBUv4oRysxImobfJgSB0MtRivRYp4GcbPLfj0rK2BqnqPe3ZVg75RA1AaxGmCyQAcVC74oJI14FXrf4+Psm4f5a0dPEDxsMLae9UOD+9EAJfhtXCdS5bsc4mOlQlN/YFj85tq7lsSUqtzHOyGoat6MwF7DlsvlRKFjmc=
+	t=1727875983; cv=none; b=tfme/ZyfJ9bRU3K5Jdnml6aQhvYkiCo3EY3KZ+/ge+H1f84x+S1GX1JmiAUCqMOsZUdUnDrAVACSNxeztb4Kgh+s2roK1qy8FTulizUrmEnxsQlnwe9q3ESynDsVPiJRZlrGLA0rFCPxUEHFJrDVw6B2vi5Elfx8GLpwblAExfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877672; c=relaxed/simple;
-	bh=hfkFIWDkjKuAXkGi4ZeoGka0gItEFWOUXcq2Zw8Hk3s=;
+	s=arc-20240116; t=1727875983; c=relaxed/simple;
+	bh=CjGWieEnp2GxrVy5k8B7ecqOKYYKdSEwEY4HQ/bC3KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRaTq0GoqM4K+jVzJy/RZLaucrwDuC4j6D9A85M78wC4qfJgdLDd60NnO1RJofI4Zn2ACbjx6pANyAR2/fYsMUU1NCQSLxdaia/GfD3o+BbEK0vOxH2IlF1dEPFeDvColJlvkScsTANGYENoWz8exzUiWkv8F6nRIDrlbFKgcBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEY8Ch98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6B5C4CEC2;
-	Wed,  2 Oct 2024 14:01:11 +0000 (UTC)
+	 MIME-Version; b=Y0zmO8G/fRU/APhgrepPNBh1aAPbcBURj6zvzIax/EeReav1ydQ+ickgeK7P6/tPcd/8OUnzL+jCYk/du07LwXvLGbZnFTIx2cE8Ipi7XdJgKAzH/JlwtT0IPzKNuBjOkVFZgUkPZB2vQje0jpYIb6Fx7hr8j0XL8olsbaFFDhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yLH154w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62648C4CEC5;
+	Wed,  2 Oct 2024 13:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877671;
-	bh=hfkFIWDkjKuAXkGi4ZeoGka0gItEFWOUXcq2Zw8Hk3s=;
+	s=korg; t=1727875983;
+	bh=CjGWieEnp2GxrVy5k8B7ecqOKYYKdSEwEY4HQ/bC3KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KEY8Ch98Ynh0mnY0g/dqCm4Hz67DXdLztsVJdL1DumNHmtsmIILRFwxW9t5QC/HO5
-	 mK+IK40/KlhoU9dDF1DSv4Jrfj203kW29xvU4kdvgjfLc23f83RjaEe2t416oWUeKI
-	 7zSc2ASBWGXZBCecEUCq0LPWqR3i5maQYmHV5LKU=
+	b=0yLH154wxTROclImTR7aXj2DBNP+PWfE9qAlZTDHOTCXZuTEWNWTGEMUSQ/pJDqL9
+	 7R637eTQAuV/6cKd7MdWbOMEe28M7ud9NE6B9pX6ZQnsWWzPpCgK7ysfAdv2n6JP6Q
+	 6+FqzvQ1sxKQ38U0ncVSQy8VSz1TCfS9+CKPu1Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Xin Liu <liuxin350@huawei.com>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 154/634] selftests/ftrace: Fix eventfs ownership testcase to find mount point
-Date: Wed,  2 Oct 2024 14:54:14 +0200
-Message-ID: <20241002125817.188857098@linuxfoundation.org>
+Subject: [PATCH 6.11 257/695] bpf, lsm: Add check for BPF LSM return value
+Date: Wed,  2 Oct 2024 14:54:15 +0200
+Message-ID: <20241002125832.707160902@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Xu Kuohai <xukuohai@huawei.com>
 
-[ Upstream commit f0a6ecebd858658df213d114b0530f8f0b96e396 ]
+[ Upstream commit 5d99e198be279045e6ecefe220f5c52f8ce9bfd5 ]
 
-Fix eventfs ownership testcase to find mount point if stat -c "%m" failed.
-This can happen on the system based on busybox. In this case, this will
-try to use the current working directory, which should be a tracefs top
-directory (and eventfs is mounted as a part of tracefs.)
-If it does not work, the test is skipped as UNRESOLVED because of
-the environmental problem.
+A bpf prog returning a positive number attached to file_alloc_security
+hook makes kernel panic.
 
-Fixes: ee9793be08b1 ("tracing/selftests: Add ownership modification tests for eventfs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+This happens because file system can not filter out the positive number
+returned by the LSM prog using IS_ERR, and misinterprets this positive
+number as a file pointer.
+
+Given that hook file_alloc_security never returned positive number
+before the introduction of BPF LSM, and other BPF LSM hooks may
+encounter similar issues, this patch adds LSM return value check
+in verifier, to ensure no unexpected value is returned.
+
+Fixes: 520b7aa00d8c ("bpf: lsm: Initialize the BPF LSM hooks")
+Reported-by: Xin Liu <liuxin350@huawei.com>
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20240719110059.797546-3-xukuohai@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/00basic/test_ownership.tc          | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/linux/bpf.h     |  1 +
+ include/linux/bpf_lsm.h |  8 ++++++
+ kernel/bpf/bpf_lsm.c    | 34 ++++++++++++++++++++++-
+ kernel/bpf/btf.c        |  5 +++-
+ kernel/bpf/verifier.c   | 60 ++++++++++++++++++++++++++++++++++-------
+ 5 files changed, 97 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc b/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc
-index c45094d1e1d2d..803efd7b56c77 100644
---- a/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc
-+++ b/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc
-@@ -6,6 +6,18 @@ original_group=`stat -c "%g" .`
- original_owner=`stat -c "%u" .`
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 3b94ec161e8cc..71ccd39011ed0 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -927,6 +927,7 @@ struct bpf_insn_access_aux {
+ 		};
+ 	};
+ 	struct bpf_verifier_log *log; /* for verbose logs */
++	bool is_retval; /* is accessing function return value ? */
+ };
  
- mount_point=`stat -c '%m' .`
-+
-+# If stat -c '%m' does not work (e.g. busybox) or failed, try to use the
-+# current working directory (which should be a tracefs) as the mount point.
-+if [ ! -d "$mount_point" ]; then
-+	if mount | grep -qw $PWD ; then
-+		mount_point=$PWD
-+	else
-+		# If PWD doesn't work, that is an environmental problem.
-+		exit_unresolved
-+	fi
-+fi
-+
- mount_options=`mount | grep "$mount_point" | sed -e 's/.*(\(.*\)).*/\1/'`
+ static inline void
+diff --git a/include/linux/bpf_lsm.h b/include/linux/bpf_lsm.h
+index 1de7ece5d36d4..aefcd65642512 100644
+--- a/include/linux/bpf_lsm.h
++++ b/include/linux/bpf_lsm.h
+@@ -9,6 +9,7 @@
  
- # find another owner and group that is not the original
+ #include <linux/sched.h>
+ #include <linux/bpf.h>
++#include <linux/bpf_verifier.h>
+ #include <linux/lsm_hooks.h>
+ 
+ #ifdef CONFIG_BPF_LSM
+@@ -45,6 +46,8 @@ void bpf_inode_storage_free(struct inode *inode);
+ 
+ void bpf_lsm_find_cgroup_shim(const struct bpf_prog *prog, bpf_func_t *bpf_func);
+ 
++int bpf_lsm_get_retval_range(const struct bpf_prog *prog,
++			     struct bpf_retval_range *range);
+ #else /* !CONFIG_BPF_LSM */
+ 
+ static inline bool bpf_lsm_is_sleepable_hook(u32 btf_id)
+@@ -78,6 +81,11 @@ static inline void bpf_lsm_find_cgroup_shim(const struct bpf_prog *prog,
+ {
+ }
+ 
++static inline int bpf_lsm_get_retval_range(const struct bpf_prog *prog,
++					   struct bpf_retval_range *range)
++{
++	return -EOPNOTSUPP;
++}
+ #endif /* CONFIG_BPF_LSM */
+ 
+ #endif /* _LINUX_BPF_LSM_H */
+diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
+index 08a338e1f2311..701092736826a 100644
+--- a/kernel/bpf/bpf_lsm.c
++++ b/kernel/bpf/bpf_lsm.c
+@@ -11,7 +11,6 @@
+ #include <linux/lsm_hooks.h>
+ #include <linux/bpf_lsm.h>
+ #include <linux/kallsyms.h>
+-#include <linux/bpf_verifier.h>
+ #include <net/bpf_sk_storage.h>
+ #include <linux/bpf_local_storage.h>
+ #include <linux/btf_ids.h>
+@@ -390,3 +389,36 @@ const struct bpf_verifier_ops lsm_verifier_ops = {
+ 	.get_func_proto = bpf_lsm_func_proto,
+ 	.is_valid_access = btf_ctx_access,
+ };
++
++/* hooks return 0 or 1 */
++BTF_SET_START(bool_lsm_hooks)
++#ifdef CONFIG_SECURITY_NETWORK_XFRM
++BTF_ID(func, bpf_lsm_xfrm_state_pol_flow_match)
++#endif
++#ifdef CONFIG_AUDIT
++BTF_ID(func, bpf_lsm_audit_rule_known)
++#endif
++BTF_ID(func, bpf_lsm_inode_xattr_skipcap)
++BTF_SET_END(bool_lsm_hooks)
++
++int bpf_lsm_get_retval_range(const struct bpf_prog *prog,
++			     struct bpf_retval_range *retval_range)
++{
++	/* no return value range for void hooks */
++	if (!prog->aux->attach_func_proto->type)
++		return -EINVAL;
++
++	if (btf_id_set_contains(&bool_lsm_hooks, prog->aux->attach_btf_id)) {
++		retval_range->minval = 0;
++		retval_range->maxval = 1;
++	} else {
++		/* All other available LSM hooks, except task_prctl, return 0
++		 * on success and negative error code on failure.
++		 * To keep things simple, we only allow bpf progs to return 0
++		 * or negative errno for task_prctl too.
++		 */
++		retval_range->minval = -MAX_ERRNO;
++		retval_range->maxval = 0;
++	}
++	return 0;
++}
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index a4e4f8d43ecf0..249c94c996150 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6418,8 +6418,11 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
+ 
+ 	if (arg == nr_args) {
+ 		switch (prog->expected_attach_type) {
+-		case BPF_LSM_CGROUP:
+ 		case BPF_LSM_MAC:
++			/* mark we are accessing the return value */
++			info->is_retval = true;
++			fallthrough;
++		case BPF_LSM_CGROUP:
+ 		case BPF_TRACE_FEXIT:
+ 			/* When LSM programs are attached to void LSM hooks
+ 			 * they use FEXIT trampolines and when attached to
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index d8520095ca030..665bd75193b03 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2334,6 +2334,25 @@ static void mark_reg_unknown(struct bpf_verifier_env *env,
+ 	__mark_reg_unknown(env, regs + regno);
+ }
+ 
++static int __mark_reg_s32_range(struct bpf_verifier_env *env,
++				struct bpf_reg_state *regs,
++				u32 regno,
++				s32 s32_min,
++				s32 s32_max)
++{
++	struct bpf_reg_state *reg = regs + regno;
++
++	reg->s32_min_value = max_t(s32, reg->s32_min_value, s32_min);
++	reg->s32_max_value = min_t(s32, reg->s32_max_value, s32_max);
++
++	reg->smin_value = max_t(s64, reg->smin_value, s32_min);
++	reg->smax_value = min_t(s64, reg->smax_value, s32_max);
++
++	reg_bounds_sync(reg);
++
++	return reg_bounds_sanity_check(env, reg, "s32_range");
++}
++
+ static void __mark_reg_not_init(const struct bpf_verifier_env *env,
+ 				struct bpf_reg_state *reg)
+ {
+@@ -5587,11 +5606,12 @@ static int check_packet_access(struct bpf_verifier_env *env, u32 regno, int off,
+ /* check access to 'struct bpf_context' fields.  Supports fixed offsets only */
+ static int check_ctx_access(struct bpf_verifier_env *env, int insn_idx, int off, int size,
+ 			    enum bpf_access_type t, enum bpf_reg_type *reg_type,
+-			    struct btf **btf, u32 *btf_id)
++			    struct btf **btf, u32 *btf_id, bool *is_retval)
+ {
+ 	struct bpf_insn_access_aux info = {
+ 		.reg_type = *reg_type,
+ 		.log = &env->log,
++		.is_retval = false,
+ 	};
+ 
+ 	if (env->ops->is_valid_access &&
+@@ -5604,6 +5624,7 @@ static int check_ctx_access(struct bpf_verifier_env *env, int insn_idx, int off,
+ 		 * type of narrower access.
+ 		 */
+ 		*reg_type = info.reg_type;
++		*is_retval = info.is_retval;
+ 
+ 		if (base_type(*reg_type) == PTR_TO_BTF_ID) {
+ 			*btf = info.btf;
+@@ -6772,6 +6793,17 @@ static int check_stack_access_within_bounds(
+ 	return grow_stack_state(env, state, -min_off /* size */);
+ }
+ 
++static bool get_func_retval_range(struct bpf_prog *prog,
++				  struct bpf_retval_range *range)
++{
++	if (prog->type == BPF_PROG_TYPE_LSM &&
++		prog->expected_attach_type == BPF_LSM_MAC &&
++		!bpf_lsm_get_retval_range(prog, range)) {
++		return true;
++	}
++	return false;
++}
++
+ /* check whether memory at (regno + off) is accessible for t = (read | write)
+  * if t==write, value_regno is a register which value is stored into memory
+  * if t==read, value_regno is a register which will receive the value from memory
+@@ -6876,6 +6908,8 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+ 		if (!err && value_regno >= 0 && (t == BPF_READ || rdonly_mem))
+ 			mark_reg_unknown(env, regs, value_regno);
+ 	} else if (reg->type == PTR_TO_CTX) {
++		bool is_retval = false;
++		struct bpf_retval_range range;
+ 		enum bpf_reg_type reg_type = SCALAR_VALUE;
+ 		struct btf *btf = NULL;
+ 		u32 btf_id = 0;
+@@ -6891,7 +6925,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+ 			return err;
+ 
+ 		err = check_ctx_access(env, insn_idx, off, size, t, &reg_type, &btf,
+-				       &btf_id);
++				       &btf_id, &is_retval);
+ 		if (err)
+ 			verbose_linfo(env, insn_idx, "; ");
+ 		if (!err && t == BPF_READ && value_regno >= 0) {
+@@ -6900,7 +6934,14 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+ 			 * case, we know the offset is zero.
+ 			 */
+ 			if (reg_type == SCALAR_VALUE) {
+-				mark_reg_unknown(env, regs, value_regno);
++				if (is_retval && get_func_retval_range(env->prog, &range)) {
++					err = __mark_reg_s32_range(env, regs, value_regno,
++								   range.minval, range.maxval);
++					if (err)
++						return err;
++				} else {
++					mark_reg_unknown(env, regs, value_regno);
++				}
+ 			} else {
+ 				mark_reg_known_zero(env, regs,
+ 						    value_regno);
+@@ -15674,12 +15715,13 @@ static int check_return_code(struct bpf_verifier_env *env, int regno, const char
+ 
+ 	case BPF_PROG_TYPE_LSM:
+ 		if (env->prog->expected_attach_type != BPF_LSM_CGROUP) {
+-			/* Regular BPF_PROG_TYPE_LSM programs can return
+-			 * any value.
+-			 */
+-			return 0;
+-		}
+-		if (!env->prog->aux->attach_func_proto->type) {
++			/* no range found, any return value is allowed */
++			if (!get_func_retval_range(env->prog, &range))
++				return 0;
++			/* no restricted range, any return value is allowed */
++			if (range.minval == S32_MIN && range.maxval == S32_MAX)
++				return 0;
++		} else if (!env->prog->aux->attach_func_proto->type) {
+ 			/* Make sure programs that attach to void
+ 			 * hooks don't try to modify return value.
+ 			 */
 -- 
 2.43.0
 
