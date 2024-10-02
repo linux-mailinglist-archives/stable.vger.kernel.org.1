@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1FD98DC28
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:38:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E60E998D983
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E16286582
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:38:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DD671F218F6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF091D3597;
-	Wed,  2 Oct 2024 14:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB641D14EC;
+	Wed,  2 Oct 2024 14:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0X/SGA4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3VgXe62"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBD81D1F5D;
-	Wed,  2 Oct 2024 14:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2B21D07B7;
+	Wed,  2 Oct 2024 14:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879518; cv=none; b=BtmIOzA2FcW3xGG+2hNlf0NsjOoILC4hryguyNu5JZ0MWL8BLnD/vyz87z6c0rl1Xw/cACHShoj0cpAgccs9wh2mbiIOheQcNFQe2kqE69Rgu27+i15ktwshuZ6x+tWoNWpxn06BP0uzAQIYiHJDxKHqUBG+St4uz1ZDHXOzkp0=
+	t=1727878050; cv=none; b=pdV24uhTJFlMMALtQVHXw+G5wkYAzxaauAzLx//vsHZgtNTKlVWo+omOil/jWYdGS71dLZ/5XIxUr8KtocubralgV6p5VyHGwgxXctIbV5l4NOo2qgREsv+wUu/ot4pHbTGIHgUea+Uc4eUxJ1J+l1ZQBGsgdE6zQOzUTOcmZ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879518; c=relaxed/simple;
-	bh=vTwl1kAc7HqGrXDHAKKOm1gSfx1qxLqs3pfmUny4Gdg=;
+	s=arc-20240116; t=1727878050; c=relaxed/simple;
+	bh=SQygl5SZ8KkhnZ/ZsB/T+YMcydcsPydKjCA7reFeRHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LnPL0KVuqMPF6t6MDsfZeVZ0WEVwudGT/n6id5NRNODa0mKzS/QeIrL6Wg/51Sv16Br6WKYZ/4Dz1EmPoeMxfWN98IInjGiFO3KdePKYBqVIPXE5n+a+IUvHhEC5WZq0RjK/nYF5XLYLXVHk+kCYoFvyGL5pAP/PrDbU6lMBIeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0X/SGA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99955C4CECE;
-	Wed,  2 Oct 2024 14:31:57 +0000 (UTC)
+	 MIME-Version; b=BvYn62amIIXV+VwnzPEjVHQ09YrHnyP5AB+4fNGPGGxrlM/xtij1feErl6H/B6LbYQKwz1sLf0pqM4ar0w3GNMqcVrLn/6mN6taOqwJfjS6wYj8QDGZrVLBbhoIETBfbbMacIea4U1KhpsP6rxS6AfUxOG1T8FwBAk1Zl/EVQwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3VgXe62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E46C4CEC2;
+	Wed,  2 Oct 2024 14:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879518;
-	bh=vTwl1kAc7HqGrXDHAKKOm1gSfx1qxLqs3pfmUny4Gdg=;
+	s=korg; t=1727878050;
+	bh=SQygl5SZ8KkhnZ/ZsB/T+YMcydcsPydKjCA7reFeRHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0X/SGA4lLh4HzYN6xHhTeUVpp0aC5CCtB7RzddJCeXkmneJLgS7Iqop4cmtk3/Uq
-	 gZ5glZshV+5sV5hKYCVwT09UPRZrTNfD+y8NAJ8YkqiueBNJTOGVZMP2IefHhTWPQS
-	 nE9PQB3JZpeBMF7uo3KgLR6oIWy9MVVv3TmuQewQ=
+	b=L3VgXe62ZZkj86H3cj2qyp/Usn2Z5h9W99eRNp2Cyn5BwpCMauAx+Z03/F9BQVk+J
+	 QzGSci3bwBrU2sj06N8LrhGGVHIM+//dN9xXYd9RrD4fYLxw/8XAk0O9xPkVAU/tPZ
+	 61IpC3yWKPdvpv8+GlhHNJFryWRSozc2vM8QCWdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Bee <knaerzche@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/538] drm/rockchip: vop: Allow 4096px width scaling
+Subject: [PATCH 6.10 285/634] nilfs2: determine empty node blocks as corrupted
 Date: Wed,  2 Oct 2024 14:56:25 +0200
-Message-ID: <20241002125758.017623659@linuxfoundation.org>
+Message-ID: <20241002125822.359977814@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 0ef968d91a20b5da581839f093f98f7a03a804f7 ]
+[ Upstream commit 111b812d3662f3a1b831d19208f83aa711583fe6 ]
 
-There is no reason to limit VOP scaling to 3840px width, the limit of
-RK3288, when there are newer VOP versions that support 4096px width.
+Due to the nature of b-trees, nilfs2 itself and admin tools such as
+mkfs.nilfs2 will never create an intermediate b-tree node block with 0
+child nodes, nor will they delete (key, pointer)-entries that would result
+in such a state.  However, it is possible that a b-tree node block is
+corrupted on the backing device and is read with 0 child nodes.
 
-Change to enforce a maximum of 4096px width plane scaling, the maximum
-supported output width of the VOP versions supported by this driver.
+Because operation is not guaranteed if the number of child nodes is 0 for
+intermediate node blocks other than the root node, modify
+nilfs_btree_node_broken(), which performs sanity checks when reading a
+b-tree node block, so that such cases will be judged as metadata
+corruption.
 
-Fixes: 4c156c21c794 ("drm/rockchip: vop: support plane scale")
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240615170417.3134517-4-jonas@kwiboo.se
+Link: https://lkml.kernel.org/r/20240904081401.16682-3-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nilfs2/btree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index 4b338cb89d32d..c6fbfc0baeccd 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -381,8 +381,8 @@ static void scl_vop_cal_scl_fac(struct vop *vop, const struct vop_win_data *win,
- 	if (info->is_yuv)
- 		is_yuv = true;
- 
--	if (dst_w > 3840) {
--		DRM_DEV_ERROR(vop->dev, "Maximum dst width (3840) exceeded\n");
-+	if (dst_w > 4096) {
-+		DRM_DEV_ERROR(vop->dev, "Maximum dst width (4096) exceeded\n");
- 		return;
- 	}
- 
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index d390b8ba00d45..dedd3c4808423 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -350,7 +350,7 @@ static int nilfs_btree_node_broken(const struct nilfs_btree_node *node,
+ 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
+ 		     level >= NILFS_BTREE_LEVEL_MAX ||
+ 		     (flags & NILFS_BTREE_NODE_ROOT) ||
+-		     nchildren < 0 ||
++		     nchildren <= 0 ||
+ 		     nchildren > NILFS_BTREE_NODE_NCHILDREN_MAX(size))) {
+ 		nilfs_crit(inode->i_sb,
+ 			   "bad btree node (ino=%lu, blocknr=%llu): level = %d, flags = 0x%x, nchildren = %d",
 -- 
 2.43.0
 
