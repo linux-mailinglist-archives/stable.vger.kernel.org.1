@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-80255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE60A98DCA8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB9C98DA0B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D7B283225
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2B21285AD5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B011D1E9A;
-	Wed,  2 Oct 2024 14:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14201D130D;
+	Wed,  2 Oct 2024 14:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xazDi0i2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcLfFz8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A981D0B99;
-	Wed,  2 Oct 2024 14:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAAC1CF5FB;
+	Wed,  2 Oct 2024 14:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879834; cv=none; b=VyqvBHowIovXGp1f0jOOrYH0fxRPrHIcnBW3gPuwh2iwH3BBixrTu2WJcc9FRJGxrSk0eEm6uvV1x04sR2eWf65GwP7sjW0lO9gn8OQE06+XC/Xx5AqIoMzhOWHlT0SoYMSLWJ/Wt7uJEBeD2I/iXVNkCL6AKMl3HlAFovEKytA=
+	t=1727878379; cv=none; b=GVVz3Hrt4Us4swVLZHlHKEwW49CBul3YiqWWHAUY4fUWYCV7AQD8/6Tn968Saa/9Yyomi139tfHiow35WStzrv0V01E5V2WkPbsZPEE8NKmS0dQrCbdW2jmeF1iA9+ysV6wMhJFUa3v3W9pM9XVV6SV9tFz7tyjepyjP56NRhmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879834; c=relaxed/simple;
-	bh=YbVNPLPZGT7kZPObmdALXtI+gNj9Zj2YSyXsRiOSPTg=;
+	s=arc-20240116; t=1727878379; c=relaxed/simple;
+	bh=sOKIOA9DAQOLrbua5UZzRnxotX3qlJTMXeybWyr4EGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJqkNCNbvlzlrdt38Eng2HUVystlj9hx7CW358MXXVnY7iAfM9sNHJmXfCVOZMqH2VXvtCLCAY4bTU08Km+WQ+D2fQ2ZVM4ZBLO44+WolFt8Fw+E9msAN8UatOxPa9CjlspaBTKBpI1XZQMWLkcSbgn/RnTOZ1KeRteGSOzOiTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xazDi0i2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D72C4CEC2;
-	Wed,  2 Oct 2024 14:37:13 +0000 (UTC)
+	 MIME-Version; b=tN4B6Gq6XZxILaKVZlydvnWUt3asDHxw6zCIwsRqQcjseV98brenjIQUFDbKNNGEqt7YqrORMwAQJbLdLQn5KZtryaFCLRPwGw9WGm1TXtbBk20SRNfw21BGlaxBMuhOoHkYWRNM/i3h06/wHn2OtjT2wDI5NMwYRWP8PnndSTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcLfFz8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172FBC4CEC2;
+	Wed,  2 Oct 2024 14:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879834;
-	bh=YbVNPLPZGT7kZPObmdALXtI+gNj9Zj2YSyXsRiOSPTg=;
+	s=korg; t=1727878379;
+	bh=sOKIOA9DAQOLrbua5UZzRnxotX3qlJTMXeybWyr4EGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xazDi0i2+oaB+/9Z7OCMB23w1QMFsz+l0Ch/EZkO2K4iVseT49ef0dF/rsAxDG9ni
-	 VI2C44yTHn+n9sZ3TUjZTXwFHDoSyxyxYmcdya+40pAK1VHXjaE9Zl52VfnSzqwvVp
-	 DmUZ+d8J5uPIsuKZ9GTnm2zqtK/b0OBY6Sf3BxTQ=
+	b=OcLfFz8xY6NKozVQ7lzneYJ97KXTCzDMtpty8qydaqIKnFtDkxrJ8EyA0/x41KKuz
+	 pKhL1UZOt94O6Flsmxz36DDs9MdA1kXLa+EZCor20phF9284zI5r5BlJnvWIyahg7k
+	 FmLB08T+5OkqQSVMftMdhklhUAjkUyx46ChlQwcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	linuxarm@huawei.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
-	Zeng Tao <prime.zeng@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/538] perf stat: Display iostat headers correctly
+Subject: [PATCH 6.10 393/634] nfsd: fix initial getattr on write delegation
 Date: Wed,  2 Oct 2024 14:58:13 +0200
-Message-ID: <20241002125802.283248155@linuxfoundation.org>
+Message-ID: <20241002125826.616437596@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,68 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 2615639352420e6e3115952c5b8f46846e1c6d0e ]
+[ Upstream commit bf92e5008b17f935a6de8b708551e02c2294121c ]
 
-Currently we'll only print metric headers for metric leader in
-aggregration mode. This will make `perf iostat` header not shown
-since it'll aggregrated globally but don't have metric events:
+At this point in compound processing, currentfh refers to the parent of
+the file, not the file itself. Get the correct dentry from the delegation
+stateid instead.
 
-  root@ubuntu204:/home/yang/linux/tools/perf# ./perf stat --iostat --timeout 1000
-   Performance counter stats for 'system wide':
-      port
-  0000:00                    0                    0                    0                    0
-  0000:80                    0                    0                    0                    0
-  [...]
-
-Fix this by excluding the iostat in the check of printing metric
-headers. Then we can see the headers:
-
-  root@ubuntu204:/home/yang/linux/tools/perf# ./perf stat --iostat --timeout 1000
-   Performance counter stats for 'system wide':
-      port             Inbound Read(MB)    Inbound Write(MB)    Outbound Read(MB)   Outbound Write(MB)
-  0000:00                    0                    0                    0                    0
-  0000:80                    0                    0                    0                    0
-  [...]
-
-Fixes: 193a9e30207f5477 ("perf stat: Don't display metric header for non-leader uncore events")
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Junhao He <hejunhao3@huawei.com>
-Cc: linuxarm@huawei.com
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Cc: Zeng Tao <prime.zeng@hisilicon.com>
-Link: https://lore.kernel.org/r/20240802065800.48774-1-yangyicong@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/stat-display.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index 0abe35388ab15..f98ade7f9fba4 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -1207,7 +1207,8 @@ static void print_metric_headers(struct perf_stat_config *config,
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 29c11714ac3db..fe06779ea527a 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5912,6 +5912,28 @@ static void nfsd4_open_deleg_none_ext(struct nfsd4_open *open, int status)
+ 	}
+ }
  
- 	/* Print metrics headers only */
- 	evlist__for_each_entry(evlist, counter) {
--		if (config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
-+		if (!config->iostat_run &&
-+		    config->aggr_mode != AGGR_NONE && counter->metric_leader != counter)
- 			continue;
++static bool
++nfs4_delegation_stat(struct nfs4_delegation *dp, struct svc_fh *currentfh,
++		     struct kstat *stat)
++{
++	struct nfsd_file *nf = find_rw_file(dp->dl_stid.sc_file);
++	struct path path;
++	int rc;
++
++	if (!nf)
++		return false;
++
++	path.mnt = currentfh->fh_export->ex_path.mnt;
++	path.dentry = file_dentry(nf->nf_file);
++
++	rc = vfs_getattr(&path, stat,
++			 (STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
++			 AT_STATX_SYNC_AS_STAT);
++
++	nfsd_file_put(nf);
++	return rc == 0;
++}
++
+ /*
+  * The Linux NFS server does not offer write delegations to NFSv4.0
+  * clients in order to avoid conflicts between write delegations and
+@@ -5947,7 +5969,6 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
+ 	int cb_up;
+ 	int status = 0;
+ 	struct kstat stat;
+-	struct path path;
  
- 		os.evsel = counter;
+ 	cb_up = nfsd4_cb_channel_good(oo->oo_owner.so_client);
+ 	open->op_recall = false;
+@@ -5983,20 +6004,16 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
+ 	memcpy(&open->op_delegate_stateid, &dp->dl_stid.sc_stateid, sizeof(dp->dl_stid.sc_stateid));
+ 
+ 	if (open->op_share_access & NFS4_SHARE_ACCESS_WRITE) {
+-		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
+-		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
+-		path.mnt = currentfh->fh_export->ex_path.mnt;
+-		path.dentry = currentfh->fh_dentry;
+-		if (vfs_getattr(&path, &stat,
+-				(STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
+-				AT_STATX_SYNC_AS_STAT)) {
++		if (!nfs4_delegation_stat(dp, currentfh, &stat)) {
+ 			nfs4_put_stid(&dp->dl_stid);
+ 			destroy_delegation(dp);
+ 			goto out_no_deleg;
+ 		}
++		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
+ 		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
+ 		dp->dl_cb_fattr.ncf_initial_cinfo =
+ 			nfsd4_change_attribute(&stat, d_inode(currentfh->fh_dentry));
++		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
+ 	} else {
+ 		open->op_delegate_type = NFS4_OPEN_DELEGATE_READ;
+ 		trace_nfsd_deleg_read(&dp->dl_stid.sc_stateid);
 -- 
 2.43.0
 
