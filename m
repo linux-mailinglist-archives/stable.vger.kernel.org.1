@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CDE98D820
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83A298D51A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEF161C21B68
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFCE81C215CA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2661D0787;
-	Wed,  2 Oct 2024 13:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E14B1D014A;
+	Wed,  2 Oct 2024 13:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToBV4xO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSa73O5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBDB1D0488;
-	Wed,  2 Oct 2024 13:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D82B1D0403;
+	Wed,  2 Oct 2024 13:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877376; cv=none; b=TkejEW74BsygHKFydHsesxTx/b1NxTeKDaH4EwK5/5ucL4Wb94twWUcsX3PHU3TCLJrk2f55R9Zx4jVY99Zd7CjsgyCJEAISjGR0W2/NhFQcF5Yq3mavaeMpav8ZzMzkfAWRYKAyAkYSDl9zlNFby59wC5/7UPcIvodEIxx6B4w=
+	t=1727875611; cv=none; b=b56l9bUGm56uZsisfl3RGHt+ITlhngcb2hg4O3Sq3q0xG7EIxtRvNONjGrPxATnQUmEAmEsjh0nfpPwY3z4ilvUDX+63onomjclGYgqfMs2BDrpqqdsLHC4gtGekJTw8JnCqSuE+qWEbZrDX0PDRl3cKeL2Wz+SJfZTYC4MXLrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877376; c=relaxed/simple;
-	bh=dQazX52KD1gWkf1fPIvwKuOgk7dE/EdUynB8uBv83v4=;
+	s=arc-20240116; t=1727875611; c=relaxed/simple;
+	bh=Fa2o0rhrjxY0JGnOexv/j6mQEqXq7BZ9kRGHPK94OoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8L0ovhYf/W2a1IOiUjXFMtn05AHbaTNl3OnTzhNSS3akMu8qlKq57xzms056bYphSpZQPpwhfS1+3vFW/NzvQLzdczV1hY/cHWu3cy5GbzLb6HLWj8uubRnlqiDItP8FGcNMFqSTnjprvyWSQD+tz/BefF46ZpTtKMekH6B3qI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToBV4xO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E1BC4CEC2;
-	Wed,  2 Oct 2024 13:56:15 +0000 (UTC)
+	 MIME-Version; b=k1L1RjjCYQMJY16op2k0p52Ha6C7i3sKU2SGi7e9Yw7mX8QWMBSgS3ZmLWFfUmdhOvHEELTaS0YmYeuCCtJ//MdKmrkA4jefvLCJSX+wDzIuDK67hkVC29vqK8eb+I88I5MlR6fLMZpfyUqtkGBYqxz1ucV6FhoLtQDCud3jFMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSa73O5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D65C4CECF;
+	Wed,  2 Oct 2024 13:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877376;
-	bh=dQazX52KD1gWkf1fPIvwKuOgk7dE/EdUynB8uBv83v4=;
+	s=korg; t=1727875611;
+	bh=Fa2o0rhrjxY0JGnOexv/j6mQEqXq7BZ9kRGHPK94OoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToBV4xO4GauMMV8LE3zSZ7j+VlxzgaJSETzM0rQqbkywIy10UBxX9QQ4+dCMtrKvB
-	 eOZlR2NWY2Cf3oGeOetXdgG3HDSItwaFElCvr40I6SrlzttwEz7QxER/yNN1KTTQBz
-	 cGb6fIwCuXSSpqAmzTgXGhOl3p6h1aRWUqQOalHI=
+	b=tSa73O5OrrAMXwNmCwzSbzXg6YmVr+hiYjPdKOyX+xPtA2NDJijYaayb8bL0+7fhJ
+	 RahiyORqOG3M04o8eT9/2HHkAZkCUY6ggq7H529H3G1TMeQrRTu1ebo+Rj/cKmVsBC
+	 Pdxc2qnuzH+viTs8mCgicHGJbmsG/Nk885SGx1I4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 059/634] perf/arm-cmn: Fix CCLA register offset
+Subject: [PATCH 6.11 161/695] ASoC: rt5682s: Return devm_of_clk_add_hw_provider to transfer the error
 Date: Wed,  2 Oct 2024 14:52:39 +0200
-Message-ID: <20241002125813.436995390@linuxfoundation.org>
+Message-ID: <20241002125828.902461013@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 88b63a82c84ed9bbcbdefb10cb6f75dd1dd04887 ]
+[ Upstream commit 3ff810b9bebe5578a245cfa97c252ab602e703f1 ]
 
-Apparently pmu_event_sel is offset by 8 for all CCLA nodes, not just
-the CCLA_RNI combination type.
+Return devm_of_clk_add_hw_provider() in order to transfer the error, if it
+fails due to resource allocation failure or device tree clock provider
+registration failure.
 
-Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/6e7bb06fef6046f83e7647aad0e5be544139763f.1725296395.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: bdd229ab26be ("ASoC: rt5682s: Add driver for ALC5682I-VS codec")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20240717115436.3449492-1-make24@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ sound/soc/codecs/rt5682s.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index 6cd4fd9667aa6..f33fd110081c3 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -70,7 +70,8 @@
- /* Technically this is 4 bits wide on DNs, but we only use 2 there anyway */
- #define CMN__PMU_OCCUP1_ID		GENMASK_ULL(34, 32)
+diff --git a/sound/soc/codecs/rt5682s.c b/sound/soc/codecs/rt5682s.c
+index f50f196d700d7..ce2e88e066f3e 100644
+--- a/sound/soc/codecs/rt5682s.c
++++ b/sound/soc/codecs/rt5682s.c
+@@ -2828,7 +2828,9 @@ static int rt5682s_register_dai_clks(struct snd_soc_component *component)
+ 		}
  
--/* HN-Ps are weird... */
-+/* Some types are designed to coexist with another device in the same node */
-+#define CMN_CCLA_PMU_EVENT_SEL		0x008
- #define CMN_HNP_PMU_EVENT_SEL		0x008
- 
- /* DTMs live in the PMU space of XP registers */
-@@ -2323,10 +2324,13 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 			case CMN_TYPE_CXHA:
- 			case CMN_TYPE_CCRA:
- 			case CMN_TYPE_CCHA:
--			case CMN_TYPE_CCLA:
- 			case CMN_TYPE_HNS:
- 				dn++;
- 				break;
-+			case CMN_TYPE_CCLA:
-+				dn->pmu_base += CMN_CCLA_PMU_EVENT_SEL;
-+				dn++;
-+				break;
- 			/* Nothing to see here */
- 			case CMN_TYPE_MPAM_S:
- 			case CMN_TYPE_MPAM_NS:
-@@ -2344,7 +2348,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 			case CMN_TYPE_HNP:
- 			case CMN_TYPE_CCLA_RNI:
- 				dn[1] = dn[0];
--				dn[0].pmu_base += CMN_HNP_PMU_EVENT_SEL;
-+				dn[0].pmu_base += CMN_CCLA_PMU_EVENT_SEL;
- 				dn[1].type = arm_cmn_subtype(dn->type);
- 				dn += 2;
- 				break;
+ 		if (dev->of_node) {
+-			devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, dai_clk_hw);
++			ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, dai_clk_hw);
++			if (ret)
++				return ret;
+ 		} else {
+ 			ret = devm_clk_hw_register_clkdev(dev, dai_clk_hw,
+ 							  init.name, dev_name(dev));
 -- 
 2.43.0
 
