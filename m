@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-79384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4CE98D7F7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C4298D4CD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54231F2176A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EF3A1F22E1E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636A11D079B;
-	Wed,  2 Oct 2024 13:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F421D0437;
+	Wed,  2 Oct 2024 13:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EblyrWG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXxR5lnD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229A91CB32E;
-	Wed,  2 Oct 2024 13:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E2B1D0434;
+	Wed,  2 Oct 2024 13:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877286; cv=none; b=Q2sM1E8s6L3rHiNiGOXZibGxqetC7be7vioo/PKpKMRnD5S9Wdz7dN+FxHPtNyKy3mp6qEo1wuMrjqJiCmzEOfv+FNhmw5YMlEmQmL1n31wba+CVAO7KmxZEzumjfU73TsZXcCABQ8wzVx8UOjjeeykGjzN1rbt4362IIMuaTEo=
+	t=1727875455; cv=none; b=rqZZYcrZIKpadREGX5nIp+KN58i0Zkl5VYODyZvo7WGuLbrqUIgVncOlFuh/ZgL34R18I8TijJOt2qAPo/iOvvZlYqc3FfEBogDtXH5YpLUnCjbLhPGtKjfTt5hpW8+04Aa+e/LT1zkUmrNfjlKOGsqlWks79OMMdV55rQguRKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877286; c=relaxed/simple;
-	bh=jhysiYH3OQf1cpAXSJU6N8E2YD6fz5Ik+gmolWOsaFA=;
+	s=arc-20240116; t=1727875455; c=relaxed/simple;
+	bh=DMBdgjRnhdSleSkfjwLmcGU7KQTekDG6GVMReTYiS/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llzHgBDC8ABdrlUH5RTD1dWXAmXuszZgNgTZcppnQluAwTppjlyF+F7Qom3OQ8sMquTIIZifY4/gRxt8bIfatO7C1geYLYLs76OO+JJZHFWSD8tpeajJos6PWItT0MJD61jiJassqeeqkPhyl/nRu60jsoaevYq4xJO3R16b9Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EblyrWG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BEDC4CEFB;
-	Wed,  2 Oct 2024 13:54:45 +0000 (UTC)
+	 MIME-Version; b=pEBqYg+BU2hEwhtr/S49XY5mT4yqjO5cGoRXAdCaVflB7DT7isFGfEQtuhMF3pmS6Gcd94OTnnNoEj9Nw4ffiN8qjyPlPZvNnpjKHNmy8eS0Pqg6T3xE1aLvbChW4er5AcMpiMvrAx8NdO8XpNpUUSbj65vcMAYw/syJ2vKwKQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXxR5lnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFE0C4CEC5;
+	Wed,  2 Oct 2024 13:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877286;
-	bh=jhysiYH3OQf1cpAXSJU6N8E2YD6fz5Ik+gmolWOsaFA=;
+	s=korg; t=1727875455;
+	bh=DMBdgjRnhdSleSkfjwLmcGU7KQTekDG6GVMReTYiS/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EblyrWG8PFInQKdO8DT5rjExwh6VdKl6pkX3wKj/JNBeN2XpIl4o+h48VvFSBhrss
-	 ukMP1w/lJoyoFYNURhEjhBasDbcbiKhEouj4UbckSBL4CX6mLupcDHlrvuEiP5PQK6
-	 mTOR/Q8CBwo9wvEforvmpGCK4qf6dqvoz4hw3o2A=
+	b=rXxR5lnDFZjsQxHQfRuzuP8kW0lgKPrcrVr4vH1T28kcZgBqnHNBL2l4dYHA7vIb3
+	 oX+7I5F2K1xhTMg7auVtp+9w+UprWm+iaMKizVSmQFOCq5ZxXK69L6xIlvCUwDVfU5
+	 UZNZglBXf2ANQkViM3jE3yuPx8jQDpcXRnXlUEro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Witwicki <michal.witwicki@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Guillaume Nault <gnault@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 005/634] crypto: qat - disable IOV in adf_dev_stop()
+Subject: [PATCH 6.11 107/695] bareudp: Pull inner IP header in bareudp_udp_encap_recv().
 Date: Wed,  2 Oct 2024 14:51:45 +0200
-Message-ID: <20241002125811.299710500@linuxfoundation.org>
+Message-ID: <20241002125826.744729749@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Witwicki <michal.witwicki@intel.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit b6c7d36292d50627dbe6a57fa344f87c776971e6 ]
+[ Upstream commit 45fa29c85117170b0508790f878b13ec6593c888 ]
 
-Disabling IOV has the side effect of re-enabling the AEs that might
-attempt to do DMAs into the heartbeat buffers.
-Move the disable_iov() function in adf_dev_stop() before the AEs are
-stopped.
+Bareudp reads the inner IP header to get the ECN value. Therefore, it
+needs to ensure that it's part of the skb's linear data.
 
-Fixes: ed8ccaef52fa ("crypto: qat - Add support for SRIOV")
-Signed-off-by: Michal Witwicki <michal.witwicki@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This is similar to the vxlan and geneve fixes for that same problem:
+  * commit f7789419137b ("vxlan: Pull inner IP header in vxlan_rcv().")
+  * commit 1ca1ba465e55 ("geneve: make sure to pull inner header in
+    geneve_rx()")
+
+Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/5205940067c40218a70fbb888080466b2fc288db.1726046181.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bareudp.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_init.c b/drivers/crypto/intel/qat/qat_common/adf_init.c
-index 74f0818c07034..55f1ff1e0b322 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_init.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
-@@ -323,6 +323,8 @@ static void adf_dev_stop(struct adf_accel_dev *accel_dev)
- 	if (hw_data->stop_timer)
- 		hw_data->stop_timer(accel_dev);
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 7aca0544fb29c..b4e820a123caf 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -68,6 +68,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	__be16 proto;
+ 	void *oiph;
+ 	int err;
++	int nh;
  
-+	hw_data->disable_iov(accel_dev);
+ 	bareudp = rcu_dereference_sk_user_data(sk);
+ 	if (!bareudp)
+@@ -148,10 +149,25 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	}
+ 	skb_dst_set(skb, &tun_dst->dst);
+ 	skb->dev = bareudp->dev;
+-	oiph = skb_network_header(skb);
+-	skb_reset_network_header(skb);
+ 	skb_reset_mac_header(skb);
+ 
++	/* Save offset of outer header relative to skb->head,
++	 * because we are going to reset the network header to the inner header
++	 * and might change skb->head.
++	 */
++	nh = skb_network_header(skb) - skb->head;
 +
- 	if (wait)
- 		msleep(100);
- 
-@@ -386,8 +388,6 @@ static void adf_dev_shutdown(struct adf_accel_dev *accel_dev)
- 
- 	adf_tl_shutdown(accel_dev);
- 
--	hw_data->disable_iov(accel_dev);
--
- 	if (test_bit(ADF_STATUS_IRQ_ALLOCATED, &accel_dev->status)) {
- 		hw_data->free_irq(accel_dev);
- 		clear_bit(ADF_STATUS_IRQ_ALLOCATED, &accel_dev->status);
++	skb_reset_network_header(skb);
++
++	if (!pskb_inet_may_pull(skb)) {
++		DEV_STATS_INC(bareudp->dev, rx_length_errors);
++		DEV_STATS_INC(bareudp->dev, rx_errors);
++		goto drop;
++	}
++
++	/* Get the outer header. */
++	oiph = skb->head + nh;
++
+ 	if (!ipv6_mod_enabled() || family == AF_INET)
+ 		err = IP_ECN_decapsulate(oiph, skb);
+ 	else
 -- 
 2.43.0
 
