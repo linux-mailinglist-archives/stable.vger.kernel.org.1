@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD5798D839
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A7898D53D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F6771F23995
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618FC287098
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BD51D0795;
-	Wed,  2 Oct 2024 13:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02661CF284;
+	Wed,  2 Oct 2024 13:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyAkk4Cm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGXpB9Rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025901D0491;
-	Wed,  2 Oct 2024 13:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB8C1CFECF;
+	Wed,  2 Oct 2024 13:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877439; cv=none; b=pP42DhxVjrHE6pKFbAQ7BUZJytLkM3J4D74sHavdXwvivqoAiwHusW7WgLTTtWbY/rBs89CbsPS4NL1IXpGo01tKmUYXgI7Hh3zwAl00oKVfSykPPKTZfC4xXAD1i4A9kOxX6ucbNQq/dr8Z/hLZl5DRvbl93Khpii77Sm2ZL1E=
+	t=1727875678; cv=none; b=PMDzB14g2SVthd2szGtuhFo1DQIP50Q0lF61ADkmHWkPvQNC1/O/p3eWRgYLOg/J6+9Tp/oEY4gG2AWReDvEoA3sCvzvgKjW9u6pRKjyEwQBzF3gCkuWSKjpYWhLgU+MXvudwKJxyL5tREwRh8UURSG248/r07gFt5yocUzEfQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877439; c=relaxed/simple;
-	bh=n7MEG9fout3wMkUsKQLW2DU5Dsr+Nrlu9AcxYkmO5/A=;
+	s=arc-20240116; t=1727875678; c=relaxed/simple;
+	bh=S4aKJSSdXMRn7b3BfSEHpFOVCQv3UqsJk23X4q+J/oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RaacEFOcqhsEKbDSxSvbX0oLFbyzFfYbws9kRHJI1tG7sTS5Df2KgfGrX948ao4obvaKwT249/Co2v1/j8qP2Nz4fYmPwdhUYstPJp0fQaP83Y41EKcU1Dsn1zN55C7paYQCm7bVAklHPGHqZd5PTnDjW8gvp3ipLpIcyRhSpSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyAkk4Cm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA66C4CECF;
-	Wed,  2 Oct 2024 13:57:18 +0000 (UTC)
+	 MIME-Version; b=AOhGyAQ0w3kZe2+dlnDsqqgtSa85Z8kXy/1TfERyX3s1tCg6+YmF6JbAx1t/VuhMq+de5ISJZYRjJVChetaEjdx30GnSwKutlsaboyyEw9IUcLMVjHHk7ExXR1NS/t45z8CE3JnnLab55qu3VlJynY7Zew11wVLbDzC+u2NJ3TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGXpB9Rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0811BC4CECD;
+	Wed,  2 Oct 2024 13:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877438;
-	bh=n7MEG9fout3wMkUsKQLW2DU5Dsr+Nrlu9AcxYkmO5/A=;
+	s=korg; t=1727875678;
+	bh=S4aKJSSdXMRn7b3BfSEHpFOVCQv3UqsJk23X4q+J/oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyAkk4Cm/Qi8qfxnFAExvpD9E+O4VeMXPcQQl1uykDlrPRF1mYRs7hBqOcQ9dM4Nu
-	 0o2G+aV4Ylwi0Sncr0h9ZdnnZuEda8BOTSjT3Q0ELIRrvYgRpaiiltpIHNG1fVj+iI
-	 5+RWLK3Ly7qWqp+o+Xud7e2qI8rK28A96xjYpSz0=
+	b=pGXpB9RwwCuy+OwwXplyEjwAWFqwPBXo9HqN45eGEmxM3eiPb2SFNYiUfAPO/fpJ+
+	 pzK3k3/Ue0hXcy9EOtBtqKuqmT2qdBXhYRAqHqF+pDbvLcsP/5TNauBSPnNnsfr7Tt
+	 eYo3lRZbM4NV3BBHGvO/73nBJ03ft3LkZFCGmHJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Kees Cook <kees@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 079/634] wifi: cfg80211: fix UBSAN noise in cfg80211_wext_siwscan()
-Date: Wed,  2 Oct 2024 14:52:59 +0200
-Message-ID: <20241002125814.228636117@linuxfoundation.org>
+Subject: [PATCH 6.11 182/695] fbdev: hpfb: Fix an error handling path in hpfb_dio_probe()
+Date: Wed,  2 Oct 2024 14:53:00 +0200
+Message-ID: <20241002125829.736207749@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a26a5107bc52922cf5f67361e307ad66547b51c7 ]
+[ Upstream commit aa578e897520f32ae12bec487f2474357d01ca9c ]
 
-Looking at https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
-and running reproducer with CONFIG_UBSAN_BOUNDS, I've noticed the
-following:
+If an error occurs after request_mem_region(), a corresponding
+release_mem_region() should be called, as already done in the remove
+function.
 
-[ T4985] UBSAN: array-index-out-of-bounds in net/wireless/scan.c:3479:25
-[ T4985] index 164 is out of range for type 'struct ieee80211_channel *[]'
-<...skipped...>
-[ T4985] Call Trace:
-[ T4985]  <TASK>
-[ T4985]  dump_stack_lvl+0x1c2/0x2a0
-[ T4985]  ? __pfx_dump_stack_lvl+0x10/0x10
-[ T4985]  ? __pfx__printk+0x10/0x10
-[ T4985]  __ubsan_handle_out_of_bounds+0x127/0x150
-[ T4985]  cfg80211_wext_siwscan+0x11a4/0x1260
-<...the rest is not too useful...>
-
-Even if we do 'creq->n_channels = n_channels' before 'creq->ssids =
-(void *)&creq->channels[n_channels]', UBSAN treats the latter as
-off-by-one error. Fix this by using pointer arithmetic rather than
-an expression with explicit array indexing and use convenient
-'struct_size()' to simplify the math here and in 'kzalloc()' above.
-
-Fixes: 5ba63533bbf6 ("cfg80211: fix alignment problem in scan request")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Link: https://patch.msgid.link/20240905150400.126386-1-dmantipov@yandex.ru
-[fix coding style for multi-line calculation]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/hpfb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 64c779788a646..44c93b9a9751c 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3452,8 +3452,8 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 		n_channels = ieee80211_get_num_supported_channels(wiphy);
- 	}
- 
--	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
--		       n_channels * sizeof(void *),
-+	creq = kzalloc(struct_size(creq, channels, n_channels) +
-+		       sizeof(struct cfg80211_ssid),
- 		       GFP_ATOMIC);
- 	if (!creq)
+diff --git a/drivers/video/fbdev/hpfb.c b/drivers/video/fbdev/hpfb.c
+index 66fac8e5393e0..a1144b1509826 100644
+--- a/drivers/video/fbdev/hpfb.c
++++ b/drivers/video/fbdev/hpfb.c
+@@ -345,6 +345,7 @@ static int hpfb_dio_probe(struct dio_dev *d, const struct dio_device_id *ent)
+ 	if (hpfb_init_one(paddr, vaddr)) {
+ 		if (d->scode >= DIOII_SCBASE)
+ 			iounmap((void *)vaddr);
++		release_mem_region(d->resource.start, resource_size(&d->resource));
  		return -ENOMEM;
-@@ -3461,7 +3461,7 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	creq->wiphy = wiphy;
- 	creq->wdev = dev->ieee80211_ptr;
- 	/* SSIDs come after channels */
--	creq->ssids = (void *)&creq->channels[n_channels];
-+	creq->ssids = (void *)creq + struct_size(creq, channels, n_channels);
- 	creq->n_channels = n_channels;
- 	creq->n_ssids = 1;
- 	creq->scan_start = jiffies;
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
