@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747C298DBE1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8AB98D958
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27ADB1F24A89
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80E5E1C2320E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E1C1D0792;
-	Wed,  2 Oct 2024 14:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352E31D0E2B;
+	Wed,  2 Oct 2024 14:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHUlE8uC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmw/52N2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9591D2F70;
-	Wed,  2 Oct 2024 14:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89741CFEA9;
+	Wed,  2 Oct 2024 14:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879402; cv=none; b=HRcApQMUmTjWHjDqq1QBRoIYg2jhVf15shdFNx4+mAv4ne0dP9a9GpObQOe9S6FhtCqr5Hh9Po4hO4mjCq+vk7F03B2kt71pluoM80iCwt0AaVfeZK0Os0Pw2322AcFWfR/1d0TD17GD41VPaW3aXfCrgZ8wONg5XV3LeeHJO1M=
+	t=1727877937; cv=none; b=mVKm4UqOivpZTJhsHFCsfRrAhgTvaEgKyAZ6SppDQ6gy++Jlwzn7UDyUTDMOwNP5wFwT2pQzwY22vsW6zbVHWYnk2mMWpZ85HhCkTrbX27a5C3WAUdN9et8x5e4of4N9bhMKkDhyRo5t+2L4Bjlu+HO7dqZN+rGakGFB4ei3XGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879402; c=relaxed/simple;
-	bh=cbdbD6aNuhpWhXDZI8xWPQrcCV9OATA3COfYuy8qXRI=;
+	s=arc-20240116; t=1727877937; c=relaxed/simple;
+	bh=WjiOD1aLur9QCDxzw8PatcPUlnEEo7R3GIJsayB0X9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqRZGMdcZaDoj67lOH2CxufECUaCOyzEVVp4+Wk31woCrNfvXFrt8xQkkh4sohWNY0ySbsgYIdwDRMosCQQG+1yCkZmIpkhI5XT0F4cnAKZK0lAxS5FCofyWlb/dyoIMTnMGkhCcV9XZ2bFCMNaxwxpP/GfteDVm8S4ZS/HPkx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHUlE8uC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C29C4CECE;
-	Wed,  2 Oct 2024 14:30:01 +0000 (UTC)
+	 MIME-Version; b=eazoys6f62bCX/YJnSIygRPcfCD65rea8eekOdjoHnZZzx+eMVpjLFETQgs5xqWsZP2yv2KE8LqSgzVuvPFkP/LjMlYf56Tv+VnBNqwmYIinbTot4zffVnFj23uBeQmVMkbuwzNpEC4Fuf2WYd7AOUBSNjGp+VVSKio4By2i33c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmw/52N2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F634C4CEC2;
+	Wed,  2 Oct 2024 14:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879401;
-	bh=cbdbD6aNuhpWhXDZI8xWPQrcCV9OATA3COfYuy8qXRI=;
+	s=korg; t=1727877936;
+	bh=WjiOD1aLur9QCDxzw8PatcPUlnEEo7R3GIJsayB0X9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHUlE8uCAnr8M4pICwWEC+faCaEpJAiwf6bCLkK74d60CMwR8ymSWjL2XYCVve217
-	 ZsfnvrCl6E23fi97NkuvlFAf82/pCo5OZUyvkV5cxvG6wDL3S1RNt85HoqxdNWiFn+
-	 XhwVYr/qWGZmTlyx2kdzVg+e+0QY3N9wNEklF62A=
+	b=wmw/52N2o2lsj7kHtrZrQLpzfjXHHT1yYK7iVXUXXSHyDyyfqxwaEFFIDMk1S80on
+	 8SwJoZOodU8oNH2fgq8hlM1dXMRriOlHwAU9SXLxNzmml7DCQK0xhmQo5gZXtry8fL
+	 DsQnpOkK6YVD/V3G2JAYjLqidLbI9bEMawaJdILo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/538] reset: k210: fix OF node leak in probe() error path
+Subject: [PATCH 6.10 246/634] selftests/bpf: Fix compiling kfree_skb.c with musl-libc
 Date: Wed,  2 Oct 2024 14:55:46 +0200
-Message-ID: <20241002125756.455539494@linuxfoundation.org>
+Message-ID: <20241002125820.808318771@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit b14e40f5dc7cd0dd7e958010e6ca9ad32ff2ddad ]
+[ Upstream commit bae9a5ce7d3a9b3a9e07b31ab9e9c58450e3e9fd ]
 
-Driver is leaking OF node reference on memory allocation failure.
-Acquire the OF node reference after memory allocation to fix this and
-keep it simple.
+The GNU version of 'struct tcphdr' with member 'doff' is not exposed by
+musl headers unless _GNU_SOURCE is defined. Add this definition to fix
+errors seen compiling for mips64el/musl-libc:
 
-Fixes: 5a2308da9f60 ("riscv: Add Canaan Kendryte K210 reset controller")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-2-03f6d834f8c0@linaro.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+  In file included from kfree_skb.c:2:
+  kfree_skb.c: In function 'on_sample':
+  kfree_skb.c:45:30: error: 'struct tcphdr' has no member named 'doff'
+     45 |         if (CHECK(pkt_v6->tcp.doff != 5, "check_tcp",
+        |                              ^
+
+Fixes: 580d656d80cf ("selftests/bpf: Add kfree_skb raw_tp test")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/e2d8cedc790959c10d6822a51f01a7a3616bea1b.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/reset-k210.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/kfree_skb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/reset/reset-k210.c b/drivers/reset/reset-k210.c
-index b62a2fd44e4e4..e77e4cca377dc 100644
---- a/drivers/reset/reset-k210.c
-+++ b/drivers/reset/reset-k210.c
-@@ -90,7 +90,7 @@ static const struct reset_control_ops k210_rst_ops = {
- static int k210_rst_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct device_node *parent_np = of_get_parent(dev->of_node);
-+	struct device_node *parent_np;
- 	struct k210_rst *ksr;
- 
- 	dev_info(dev, "K210 reset controller\n");
-@@ -99,6 +99,7 @@ static int k210_rst_probe(struct platform_device *pdev)
- 	if (!ksr)
- 		return -ENOMEM;
- 
-+	parent_np = of_get_parent(dev->of_node);
- 	ksr->map = syscon_node_to_regmap(parent_np);
- 	of_node_put(parent_np);
- 	if (IS_ERR(ksr->map))
+diff --git a/tools/testing/selftests/bpf/prog_tests/kfree_skb.c b/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
+index c07991544a789..34f8822fd2219 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
++++ b/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include <network_helpers.h>
+ #include "kfree_skb.skel.h"
 -- 
 2.43.0
 
