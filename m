@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECFE98DCF9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA2098DA88
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 389191F23AE4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C263B23D7F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642ED1D12EA;
-	Wed,  2 Oct 2024 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C7D1D12E0;
+	Wed,  2 Oct 2024 14:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLhqdDhJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0V4Vrpp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EFD1D079C;
-	Wed,  2 Oct 2024 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1AE1CF5FB;
+	Wed,  2 Oct 2024 14:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880073; cv=none; b=W8706OgvnIlUgOoOSwcChmr9SyQOY2yggmR8bJmM+Qqw52bD0JhIptlx/3fJCZTSEYY/vr9AXGELVuBiC1RTsz92xuFHEM4yEsOEGBb5xbkaW6THdO6JTMGJ2V+FY6+k4XYGcWin9wbmhvibuCdpiDeS9rxvdQ+yt6lWVpj2TNo=
+	t=1727878619; cv=none; b=sSUbcOJ5VDKbZttxsKgsJp/5FAt6fuSW8L8W1yp8OdKQO3ipCvEWZzyho4D6IBLDHeVs6EsyS4F1PRvNKIPQVzBI1fVv+oi03OsDdaf/AoA+7Rd65R73O9BJ0iqniJyhunJM/RyOCk/4p6cgzSgc+ROTZYUzn1kgw57Ulb6+PCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880073; c=relaxed/simple;
-	bh=WOnFDK+bikbZzLZ//Y/XlQnlcNNQlHlPiR8nxrfjiVI=;
+	s=arc-20240116; t=1727878619; c=relaxed/simple;
+	bh=tELeybN+sotRaGGqDglIJ6T704Gy+8X3lCmEmvJdJ+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MVT2i5ZVkEoEjwib3f4S/qlOll7DCm2e2z48lyZIMjn0enSsvnZLJpaVnTTS1oLziSWFybMWwRiWJJ5vzD5yZBNrf9K6ymQl6cHbX0QugSFiiRJxKSZitN6A2A+/KzpeTy8SqGb+IvfezSy+O6aVPVrvZmx+rBLmpGGG/9ebKds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLhqdDhJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15BAC4CEC2;
-	Wed,  2 Oct 2024 14:41:12 +0000 (UTC)
+	 MIME-Version; b=MbAb7TCPg79UU/3LU0e3oTZnr+jBNGZwRYvdoB8rh0OoYGzFi0hL5zPJN9RdrLvRItP2QFGqiuw1FmGN+0Zu3QsYVYaskwh9jCXqK5ssMhIpDfUIhk5QLGQhDOGVgIbs7iIziyMhoRZuV2d81JzOqnvsQDqLhjV3AvY2+icSIQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0V4Vrpp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848ACC4CEC2;
+	Wed,  2 Oct 2024 14:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880073;
-	bh=WOnFDK+bikbZzLZ//Y/XlQnlcNNQlHlPiR8nxrfjiVI=;
+	s=korg; t=1727878618;
+	bh=tELeybN+sotRaGGqDglIJ6T704Gy+8X3lCmEmvJdJ+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLhqdDhJGZMDnHOapxiKUCWFDR6CX/SuUHVdOq8KpqoMVd3kZo6yKFcEojFzAlmof
-	 57k7u2zRx90AHa0HitGEbEuFOQrNliyooPyTzLZu483leS5tykoaqkkcMRWdUioOcf
-	 NciGJJnvOdssGmf/vuA2Y+pDoy3j9sak98EXGHQM=
+	b=O0V4Vrppwz/2jihSgNJW8Bq4NuMTT/VIpn0P+uo0FjQ3/BRXt0IYT6g1OF1jVX0BX
+	 AvJ1RGeZ8Z23yRoMfQeM2HMZxshDaGRI4Ocku0Vy1Y/6T36qiHvKFa5oRQZ4YnN56L
+	 l2GVL9r13ZDToIQYw3PLNXvhCOzGIOoKqSlR+a4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Furong Xu <0x1207@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 304/538] clk: ti: dra7-atl: Fix leak of of_nodes
-Date: Wed,  2 Oct 2024 14:59:03 +0200
-Message-ID: <20241002125804.416388733@linuxfoundation.org>
+Subject: [PATCH 6.10 444/634] net: stmmac: set PP_FLAG_DMA_SYNC_DEV only if XDP is enabled
+Date: Wed,  2 Oct 2024 14:59:04 +0200
+Message-ID: <20241002125828.626508040@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Furong Xu <0x1207@gmail.com>
 
-[ Upstream commit 9d6e9f10e2e031fb7bfb3030a7d1afc561a28fea ]
+[ Upstream commit b514c47ebf41a6536551ed28a05758036e6eca7c ]
 
-This fix leaking the of_node references in of_dra7_atl_clk_probe().
+Commit 5fabb01207a2 ("net: stmmac: Add initial XDP support") sets
+PP_FLAG_DMA_SYNC_DEV flag for page_pool unconditionally,
+page_pool_recycle_direct() will call page_pool_dma_sync_for_device()
+on every page even the page is not going to be reused by XDP program.
 
-The docs for of_parse_phandle_with_args() say that the caller must call
-of_node_put() on the returned node. This adds the missing of_node_put()
-to fix the leak.
+When XDP is not enabled, the page which holds the received buffer
+will be recycled once the buffer is copied into new SKB by
+skb_copy_to_linear_data(), then the MAC core will never reuse this
+page any longer. Always setting PP_FLAG_DMA_SYNC_DEV wastes CPU cycles
+on unnecessary calling of page_pool_dma_sync_for_device().
 
-Fixes: 9ac33b0ce81f ("CLK: TI: Driver for DRA7 ATL (Audio Tracking Logic)")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20240826-clk-fix-leak-v1-1-f55418a13aa6@baylibre.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+After this patch, up to 9% noticeable performance improvement was observed
+on certain platforms.
+
+Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Link: https://patch.msgid.link/20240919121028.1348023-1-0x1207@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ti/clk-dra7-atl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/ti/clk-dra7-atl.c b/drivers/clk/ti/clk-dra7-atl.c
-index d964e3affd42c..0eab7f3e2eab9 100644
---- a/drivers/clk/ti/clk-dra7-atl.c
-+++ b/drivers/clk/ti/clk-dra7-atl.c
-@@ -240,6 +240,7 @@ static int of_dra7_atl_clk_probe(struct platform_device *pdev)
- 		}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 33e2bd5a351ca..3b1bb6aa5b8c8 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2025,7 +2025,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 	rx_q->queue_index = queue;
+ 	rx_q->priv_data = priv;
  
- 		clk = of_clk_get_from_provider(&clkspec);
-+		of_node_put(clkspec.np);
- 		if (IS_ERR(clk)) {
- 			pr_err("%s: failed to get atl clock %d from provider\n",
- 			       __func__, i);
+-	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
++	pp_params.flags = PP_FLAG_DMA_MAP | (xdp_prog ? PP_FLAG_DMA_SYNC_DEV : 0);
+ 	pp_params.pool_size = dma_conf->dma_rx_size;
+ 	num_pages = DIV_ROUND_UP(dma_conf->dma_buf_sz, PAGE_SIZE);
+ 	pp_params.order = ilog2(num_pages);
 -- 
 2.43.0
 
