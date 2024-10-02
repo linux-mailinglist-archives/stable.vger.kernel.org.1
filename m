@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-80178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358CB98DC4B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9746398D9A9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1C57B2612F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFF7A1C21FE5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712371D0F7B;
-	Wed,  2 Oct 2024 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6141D1753;
+	Wed,  2 Oct 2024 14:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIx+wXAJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCk1s/Dm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E81C1D0DE6;
-	Wed,  2 Oct 2024 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF581D174F;
+	Wed,  2 Oct 2024 14:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879611; cv=none; b=jCAO12lFD6ObfQq5TUM8zIDfBUKn+7yDaaGMTb2l+uaCTgx2IdvkNhpPQrTHHqZGMbPyV0Mno++4sn/dSN8/WWFYEg1bl286Jg1nfUC910kU/dagaX+C1Uh/HYn9iZEJLEjSPpIN0puZA3hgkDrRTaUIfZ+NmzjEH9gsNqhjCNA=
+	t=1727878147; cv=none; b=Ov1GH2nYQkj9aXtZNkT2BylT2tB0MisCm9jcyPMmhXcgp+znNhJ+sZK54ZEAwZSaFNTIpymcTjMAl+ufj7m6PMtDTLRfUWP+72Gfw3leqh+RkG0pRG4HUUozVhlKMGDtPICVYoelcwUCmGlcdRZJXuDC8ihGwc+CA9wfm2pEIGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879611; c=relaxed/simple;
-	bh=uCdy9OUnVxkUBseNU9QUBEli1q2X0DS/Ph09M/U8lZo=;
+	s=arc-20240116; t=1727878147; c=relaxed/simple;
+	bh=85MoTE10Urd8LH7L7Zcq3IT7ZT7f3JiiOsPs+v60n+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IePvYuxpFNJoU5GYvgP4sbXuo4waR2xag3+GRcA5vYZ2e4RzCqg4iTGT3EtQd4dMRf3td2ciL2GbzrEQm0sCW3wYOv4CAlp6mm1HjKNraIDg+aXXem6Eh0/e7Hj6fjIFygoycZN+6wZq7f/opAbf4i8T+//PJwwYOkxhAfaATRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIx+wXAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1AFC4CEC2;
-	Wed,  2 Oct 2024 14:33:30 +0000 (UTC)
+	 MIME-Version; b=HlyM75ioUQb5YK6RIPyf9irwl/U4sTHpXVdyaCvdRE+KVV/BylCAGfaitad31/GC8jOGKEHY8jlB39mAM8jKS57Y9znuxKJzgRomaabacxSG7ytClQHwAmu/wsA2OAW0dauWaaY5zkMJYY6e+AZ8G/qyqaPXbid5OGMh9cdOWP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCk1s/Dm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E9FC4CEC2;
+	Wed,  2 Oct 2024 14:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879611;
-	bh=uCdy9OUnVxkUBseNU9QUBEli1q2X0DS/Ph09M/U8lZo=;
+	s=korg; t=1727878147;
+	bh=85MoTE10Urd8LH7L7Zcq3IT7ZT7f3JiiOsPs+v60n+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cIx+wXAJ6SVP0FOD3scWzgS3qlqovSgrRcsQgHHcoMhqNyBhpBiU4x23xdsJ4gvKz
-	 Kp1sDeiaEXezxFOL3gknZiCdSjDYarx8wtZrmmUEsyu0XLWdfWX00EhK/TPuTlG2Oi
-	 91hM9imn9oseLTH9qIkPbErmHWkUZ3TBQKlpYaX8=
+	b=dCk1s/DmEjRTQQsusq7S+pUejh9VSE+X81defwnDndOyqvkdpitX60UxVDGYWUdC6
+	 BvHtogssT+pxyTqEXiK8oxO65yKxKv4zrx/Gc8F+8JIaMUHvUb3zMshUj8lwZ1/+NP
+	 Yooo3c+kqAtNxHmrRbK4Xkl3oSSH6cSMXLWSCwEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Josh Don <joshdon@google.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Terry Lv <terry.lv@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/538] sched/fair: Make SCHED_IDLE entity be preempted in strict hierarchy
+Subject: [PATCH 6.10 318/634] remoteproc: imx_rproc: Correct ddr alias for i.MX8M
 Date: Wed,  2 Oct 2024 14:56:58 +0200
-Message-ID: <20241002125759.321708549@linuxfoundation.org>
+Message-ID: <20241002125823.657503343@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchen Ding <dtcccc@linux.alibaba.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit faa42d29419def58d3c3e5b14ad4037f0af3b496 ]
+[ Upstream commit c901f817792822eda9cec23814a4621fa3e66695 ]
 
-Consider the following cgroup:
+The DDR Alias address should be 0x40000000 according to RM, so correct
+it.
 
-                       root
-                        |
-             ------------------------
-             |                      |
-       normal_cgroup            idle_cgroup
-             |                      |
-   SCHED_IDLE task_A           SCHED_NORMAL task_B
-
-According to the cgroup hierarchy, A should preempt B. But current
-check_preempt_wakeup_fair() treats cgroup se and task separately, so B
-will preempt A unexpectedly.
-Unify the wakeup logic by {c,p}se_is_idle only. This makes SCHED_IDLE of
-a task a relative policy that is effective only within its own cgroup,
-similar to the behavior of NICE.
-
-Also fix se_is_idle() definition when !CONFIG_FAIR_GROUP_SCHED.
-
-Fixes: 304000390f88 ("sched: Cgroup SCHED_IDLE support")
-Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Josh Don <joshdon@google.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20240626023505.1332596-1-dtcccc@linux.alibaba.com
+Fixes: 4ab8f9607aad ("remoteproc: imx_rproc: support i.MX8MQ/M")
+Reported-by: Terry Lv <terry.lv@nxp.com>
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-1-10d0268c7eb1@nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index b2e1009e5706e..5fc0d9cc9d9d7 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -533,7 +533,7 @@ static int cfs_rq_is_idle(struct cfs_rq *cfs_rq)
- 
- static int se_is_idle(struct sched_entity *se)
- {
--	return 0;
-+	return task_has_idle_policy(task_of(se));
- }
- 
- #endif	/* CONFIG_FAIR_GROUP_SCHED */
-@@ -8209,16 +8209,7 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
- 	if (test_tsk_need_resched(curr))
- 		return;
- 
--	/* Idle tasks are by definition preempted by non-idle tasks. */
--	if (unlikely(task_has_idle_policy(curr)) &&
--	    likely(!task_has_idle_policy(p)))
--		goto preempt;
--
--	/*
--	 * Batch and idle tasks do not preempt non-idle tasks (their preemption
--	 * is driven by the tick):
--	 */
--	if (unlikely(p->policy != SCHED_NORMAL) || !sched_feat(WAKEUP_PREEMPTION))
-+	if (!sched_feat(WAKEUP_PREEMPTION))
- 		return;
- 
- 	find_matching_se(&se, &pse);
-@@ -8228,7 +8219,7 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
- 	pse_is_idle = se_is_idle(pse);
- 
- 	/*
--	 * Preempt an idle group in favor of a non-idle group (and don't preempt
-+	 * Preempt an idle entity in favor of a non-idle entity (and don't preempt
- 	 * in the inverse case).
- 	 */
- 	if (cse_is_idle && !pse_is_idle)
-@@ -8236,9 +8227,14 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
- 	if (cse_is_idle != pse_is_idle)
- 		return;
- 
-+	/*
-+	 * BATCH and IDLE tasks do not preempt others.
-+	 */
-+	if (unlikely(p->policy != SCHED_NORMAL))
-+		return;
-+
- 	cfs_rq = cfs_rq_of(se);
- 	update_curr(cfs_rq);
--
- 	/*
- 	 * XXX pick_eevdf(cfs_rq) != se ?
- 	 */
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 144c8e9a642e8..3c8b64db8823c 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -210,7 +210,7 @@ static const struct imx_rproc_att imx_rproc_att_imx8mq[] = {
+ 	/* QSPI Code - alias */
+ 	{ 0x08000000, 0x08000000, 0x08000000, 0 },
+ 	/* DDR (Code) - alias */
+-	{ 0x10000000, 0x80000000, 0x0FFE0000, 0 },
++	{ 0x10000000, 0x40000000, 0x0FFE0000, 0 },
+ 	/* TCML */
+ 	{ 0x1FFE0000, 0x007E0000, 0x00020000, ATT_OWN  | ATT_IOMEM},
+ 	/* TCMU */
 -- 
 2.43.0
 
