@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-78710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479D498D494
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3658998D4A1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A3D281959
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:22:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F278228279F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256E816F84F;
-	Wed,  2 Oct 2024 13:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2941CFEBA;
+	Wed,  2 Oct 2024 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjhvOz6b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouWElaVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AE01D0433;
-	Wed,  2 Oct 2024 13:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B77425771;
+	Wed,  2 Oct 2024 13:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875303; cv=none; b=mo8wQYhy2zYTptG9Dm17BbxyRgwgvehaiTownhngkOwFOWTYDD5YoXI/NTY0h/faoDqbosgbn+6hAa8o3JkRyuBlSUVUDIau7vqv/91Sx+gBUa40doSpAGrrSs2M+9n0sM+ync6sId5lvpMuXNlFr3QumOqhDpPCqHBJGddAgRo=
+	t=1727875336; cv=none; b=B1YuMAskdAVWZknhzTySfFDIZkE5d/6PfX2eYQcY2nbhzD9al9TD4QmDaj+tsKkhh5eWiGP1tPeTRnQZZh2l2jdDaAS881cpHdcRs70MahvG28xW9LbWVGbLkGHFPFnQvXkJIXhHF2Vy6V0HFcyzK/vg+NqEo9y1eOAUAE9Bpmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875303; c=relaxed/simple;
-	bh=d/lTFQPFTnBaLHpfYevSwPzUjwKVAU6KxvCld86iaZg=;
+	s=arc-20240116; t=1727875336; c=relaxed/simple;
+	bh=EHpqAAj7chMRrVfZtB52gg2UYA/9jshacE48ZINU0W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOmYyolDouu5h8zJGKIdQDo0N2RH3n8gZTQpgnMamgmg/H3MTrEitOyjPJtlNvLzDudClIyx2b0EATIuWHT7IMYhk4ck5uhasb918HV0+tIkakIQo9RbQqV1Y62mT2d2lvO422RMM5i4ObZR7+H+H8VqwzEM2337sACFfemlswk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjhvOz6b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59720C4CECD;
-	Wed,  2 Oct 2024 13:21:43 +0000 (UTC)
+	 MIME-Version; b=HWaxzhJpYTnCk4VtKiOsp0k+wOzifDfYKyO/uwIu/SRoR2/EGrhlbmF83P7L/0hR5bAOCQKoM1kxdWFIteguiKmZ5yy4xGfkBhH8D8IeDMhtViuX2ZAa6jptSUvyPv0oLd3hZTVG4OpkFKNku+Qak4rxYBWWwRQoLzy2VbT/JLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouWElaVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457C9C4CEC5;
+	Wed,  2 Oct 2024 13:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875303;
-	bh=d/lTFQPFTnBaLHpfYevSwPzUjwKVAU6KxvCld86iaZg=;
+	s=korg; t=1727875335;
+	bh=EHpqAAj7chMRrVfZtB52gg2UYA/9jshacE48ZINU0W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjhvOz6btzIrj08Nov8cI4A52fAI+dRSRZqo1wr+iEMKuOW8kH6rPXXHorEyRsG44
-	 cagdibfuRv6noJz9r1xBSCryLjHNFCDTnEntpw1DhLHKk1KPd/QwADx7/LEZaQhLMM
-	 6+YEaZkZa5LhQO5jEm5rzRW2gizn6wEmdiFVONws=
+	b=ouWElaVTBFno04cZQVarzcebq/kONlDd4bqkyuWslI+rHYOIrOnPvrsOSytEumXqq
+	 mL9ceJhdrNTKpfrLdA4PFSGDhgLlOayXOwDKuf/sGDYi99w38wJuIc2WPNwQghaf7H
+	 eIywBMC1W8biVxR2GL0fysZn/bGiPExP9x+zBWfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avraham Stern <avraham.stern@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	hhorace <hhoracehsu@gmail.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 049/695] wifi: iwlwifi: mvm: increase the time between ranging measurements
-Date: Wed,  2 Oct 2024 14:50:47 +0200
-Message-ID: <20241002125824.446091020@linuxfoundation.org>
+Subject: [PATCH 6.11 050/695] wifi: cfg80211: fix bug of mapping AF3x to incorrect User Priority
+Date: Wed,  2 Oct 2024 14:50:48 +0200
+Message-ID: <20241002125824.485779507@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -67,37 +68,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: hhorace <hhoracehsu@gmail.com>
 
-[ Upstream commit 3a7ee94559dfd640604d0265739e86dec73b64e8 ]
+[ Upstream commit a68b22e2905b04f376e2fa116be5e48b948f81c8 ]
 
-The algo running in fw may take a little longer than 5 milliseconds,
-(e.g. measurement on 80MHz while associated). Increase the minimum
-time between measurements to 7 milliseconds.
+According to RFC8325 4.3, Multimedia Streaming: AF31(011010, 26),
+AF32(011100, 28), AF33(011110, 30) maps to User Priority = 4
+and AC_VI (Video).
 
-Fixes: 830aa3e7d1ca ("iwlwifi: mvm: add support for range request command version 13")
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240729201718.d3f3c26e00d9.I09e951290e8a3d73f147b88166fd9a678d1d69ed@changeid
+However, the original code remain the default three Most Significant
+Bits (MSBs) of the DSCP, which makes AF3x map to User Priority = 3
+and AC_BE (Best Effort).
+
+Fixes: 6fdb8b8781d5 ("wifi: cfg80211: Update the default DSCP-to-UP mapping")
+Signed-off-by: hhorace <hhoracehsu@gmail.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20240807082205.1369-1-hhoracehsu@gmail.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/constants.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/util.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-index c4c1e67b9ac76..8f63cbe9e50da 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-@@ -109,7 +109,7 @@
- #define IWL_MVM_FTM_INITIATOR_SECURE_LTF	false
- #define IWL_MVM_FTM_RESP_NDP_SUPPORT		true
- #define IWL_MVM_FTM_RESP_LMR_FEEDBACK_SUPPORT	true
--#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	5
-+#define IWL_MVM_FTM_NON_TB_MIN_TIME_BETWEEN_MSR	7
- #define IWL_MVM_FTM_NON_TB_MAX_TIME_BETWEEN_MSR	1000
- #define IWL_MVM_D3_DEBUG			false
- #define IWL_MVM_USE_TWT				true
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 9a7c3adc8a3bf..edeeb056fe4da 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -998,10 +998,10 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
+ 	 * Diffserv Service Classes no update is needed:
+ 	 * - Standard: DF
+ 	 * - Low Priority Data: CS1
+-	 * - Multimedia Streaming: AF31, AF32, AF33
+ 	 * - Multimedia Conferencing: AF41, AF42, AF43
+ 	 * - Network Control Traffic: CS7
+ 	 * - Real-Time Interactive: CS4
++	 * - Signaling: CS5
+ 	 */
+ 	switch (dscp >> 2) {
+ 	case 10:
+@@ -1026,9 +1026,11 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
+ 		/* Broadcasting video: CS3 */
+ 		ret = 4;
+ 		break;
+-	case 40:
+-		/* Signaling: CS5 */
+-		ret = 5;
++	case 26:
++	case 28:
++	case 30:
++		/* Multimedia Streaming: AF31, AF32, AF33 */
++		ret = 4;
+ 		break;
+ 	case 44:
+ 		/* Voice Admit: VA */
 -- 
 2.43.0
 
