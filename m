@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BE998DA65
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA098DD07
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1172D1F2165C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6448DB294DB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BEC1D0E30;
-	Wed,  2 Oct 2024 14:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532601D0E1E;
+	Wed,  2 Oct 2024 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIf4XD93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SqA8HNO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75DE1D0E2C;
-	Wed,  2 Oct 2024 14:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8181D096E;
+	Wed,  2 Oct 2024 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878548; cv=none; b=SmIdU8GBjtVsV7F3st7h7Pg1eLwtGzMSuCe9/NWv053tSrUnvC2QmQVuxc7qVVaFBn0nz7caQDuwFk0MN2VpByT2abUovSBpSaPTqNzldinKa5eOl39lCrZzchTszkuDugwDut3Hrv4K6BD9Yx9f+hNG15wt6Q9Wbky55bCKsrI=
+	t=1727880009; cv=none; b=SwmH7avj88EnLTHUGkBL965m2jTAJauGAZNAo89Dw2Gw/LPrV6TNOC/HpSRTTUspRj69wWe8ynfISjguWi2DzdCZHq9KTlq3eMHuPHxcEh5o2CYxyMQTUDmDIKepfMWQ5Yf1vLXb7/kIswHARx4YtEpY39aNg49Qys6LuwUHfk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878548; c=relaxed/simple;
-	bh=kgnvcHTaocHVlYofO3+y42somCHAf4flv2M3kZ3ukxI=;
+	s=arc-20240116; t=1727880009; c=relaxed/simple;
+	bh=pGp97DpmRADn31TnHbo6FLB5AZD/MEfRJn3dJiBAsQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUoi3nfjQ5JY9qvNcLlgWyFYaKT9mat1FVJaxZklwcSL0O0X7+YGicJFV8C/X5+4qk0IMKXskJZ3geQVA6MpDHwV4z5oWTBP8AHP6uVQn5+he3SDOT7nSErq7rWnMPjhU6baq7E1oybuFrYP9oYVhhrv/6LUre9cCG1IkqziDEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIf4XD93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B7AC4CEC2;
-	Wed,  2 Oct 2024 14:15:48 +0000 (UTC)
+	 MIME-Version; b=lTwZy0cCzzvLS0sD3Hu+EZP+VN/OYp8vIR5ELjNkmU/VDg7VTmtEfuBbudyMIaJreKwq/wsKRX1aMVL90gApu0BdOPQvgO7DFemTDL/geijFdkYdM5+zFaWFFpYk9Jg9sk2akksYyLS5gLxNlRpR2K09XWXNGT2HiLRW0/gHTi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SqA8HNO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB1EC4CEC2;
+	Wed,  2 Oct 2024 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878548;
-	bh=kgnvcHTaocHVlYofO3+y42somCHAf4flv2M3kZ3ukxI=;
+	s=korg; t=1727880008;
+	bh=pGp97DpmRADn31TnHbo6FLB5AZD/MEfRJn3dJiBAsQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIf4XD93LTg5d1dMannIpCvOejWKqFp0iSUwu3U806YP3Et5AcTQyq9r9j9mhNCeu
-	 de1E6QlJb5ea2e6dD3lC0tknfPF9h678mkVw2vWIdw58UZsygTuwqjzGwpz2Gg/lCL
-	 OLzfFr6WwjYrCOhCd5IvFU8FaHxS4HphW4DGa1vM=
+	b=1SqA8HNOxVTPkb0maFbZ1Ej3iBTFhUXvrbfJbpSXbMKoqNVxNF+8C8VmZ5eY9VTdE
+	 +ReXy7zirAJLT1t4D5Ses7y05L3mNAw3VJa5cSheIvwdBTvV8TgE4fZENznbtwj8tp
+	 mr/JFEu5soeUNHfU9ERGPuQivmfX+6SmAcPd4rF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 452/634] io_uring: check for presence of task_work rather than TIF_NOTIFY_SIGNAL
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 313/538] RDMA/mlx5: Limit usage of over-sized mkeys from the MR cache
 Date: Wed,  2 Oct 2024 14:59:12 +0200
-Message-ID: <20241002125828.943323180@linuxfoundation.org>
+Message-ID: <20241002125804.772544059@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-commit 04beb6e0e08c30c6f845f50afb7d7953603d7a6f upstream.
+[ Upstream commit ee6d57a2e13d11ce9050cfc3e3b69ef707a44a63 ]
 
-If some part of the kernel adds task_work that needs executing, in terms
-of signaling it'll generally use TWA_SIGNAL or TWA_RESUME. Those two
-directly translate to TIF_NOTIFY_SIGNAL or TIF_NOTIFY_RESUME, and can
-be used for a variety of use case outside of task_work.
+When searching the MR cache for suitable cache entries, don't use mkeys
+larger than twice the size required for the MR.
+This should ensure the usage of mkeys closer to the minimal required size
+and reduce memory waste.
 
-However, io_cqring_wait_schedule() only tests explicitly for
-TIF_NOTIFY_SIGNAL. This means it can miss if task_work got added for
-the task, but used a different kind of signaling mechanism (or none at
-all). Normally this doesn't matter as any task_work will be run once
-the task exits to userspace, except if:
+On driver init we create entries for mkeys with clear attributes and
+powers of 2 sizes from 4 to the max supported size.
+This solves the issue for anyone using mkeys that fit these
+requirements.
 
-1) The ring is setup with DEFER_TASKRUN
-2) The local work item may generate normal task_work
+In the use case where an MR is registered with different attributes,
+like an access flag we can't UMR, we'll create a new cache entry to store
+it upon dereg.
+Without this fix, any later registration with same attributes and smaller
+size will use the newly created cache entry and it's mkeys, disregarding
+the memory waste of using mkeys larger than required.
 
-For condition 2, this can happen when closing a file and it's the final
-put of that file, for example. This can cause stalls where a task is
-waiting to make progress inside io_cqring_wait(), but there's nothing else
-that will wake it up. Hence change the "should we schedule or loop around"
-check to check for the presence of task_work explicitly, rather than just
-TIF_NOTIFY_SIGNAL as the mechanism. While in there, also change the
-ordering of what type of task_work first in terms of ordering, to both
-make it consistent with other task_work runs in io_uring, but also to
-better handle the case of defer task_work generating normal task_work,
-like in the above example.
+For example, one worst-case scenario can be when registering and
+deregistering a 1GB mkey with ATS enabled which will cause the creation of
+a new cache entry to hold those type of mkeys. A user registering a 4k MR
+with ATS will end up using the new cache entry and an mkey that can
+support a 1GB MR, thus wasting x250k memory than actually needed in the HW.
 
-Reported-by: Jan Hendrik Farr <kernel@jfarr.cc>
-Link: https://github.com/axboe/liburing/issues/1235
-Cc: stable@vger.kernel.org
-Fixes: 846072f16eed ("io_uring: mimimise io_cqring_wait_schedule")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Additionally, allow all small registration to use the smallest size
+cache entry that is initialized on driver load even if size is larger
+than twice the required size.
+
+Fixes: 73d09b2fe833 ("RDMA/mlx5: Introduce mlx5r_cache_rb_key")
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/8ba3a6e3748aace2026de8b83da03aba084f78f4.1725362530.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2401,7 +2401,7 @@ static inline int io_cqring_wait_schedul
- 		return 1;
- 	if (unlikely(!llist_empty(&ctx->work_llist)))
- 		return 1;
--	if (unlikely(test_thread_flag(TIF_NOTIFY_SIGNAL)))
-+	if (unlikely(task_work_pending(current)))
- 		return 1;
- 	if (unlikely(task_sigpending(current)))
- 		return -EINTR;
-@@ -2502,9 +2502,9 @@ static int io_cqring_wait(struct io_ring
- 		 * If we got woken because of task_work being processed, run it
- 		 * now rather than let the caller do another wait loop.
- 		 */
--		io_run_task_work();
- 		if (!llist_empty(&ctx->work_llist))
- 			io_run_local_work(ctx, nr_wait);
-+		io_run_task_work();
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index 50a1786231c77..9e465cf99733e 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -48,6 +48,7 @@ enum {
+ 	MAX_PENDING_REG_MR = 8,
+ };
  
- 		/*
- 		 * Non-local task_work will be run on exit to userspace, but
++#define MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS 4
+ #define MLX5_UMR_ALIGN 2048
+ 
+ static void
+@@ -715,6 +716,7 @@ mkey_cache_ent_from_rb_key(struct mlx5_ib_dev *dev,
+ {
+ 	struct rb_node *node = dev->cache.rb_root.rb_node;
+ 	struct mlx5_cache_ent *cur, *smallest = NULL;
++	u64 ndescs_limit;
+ 	int cmp;
+ 
+ 	/*
+@@ -733,10 +735,18 @@ mkey_cache_ent_from_rb_key(struct mlx5_ib_dev *dev,
+ 			return cur;
+ 	}
+ 
++	/*
++	 * Limit the usage of mkeys larger than twice the required size while
++	 * also allowing the usage of smallest cache entry for small MRs.
++	 */
++	ndescs_limit = max_t(u64, rb_key.ndescs * 2,
++			     MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS);
++
+ 	return (smallest &&
+ 		smallest->rb_key.access_mode == rb_key.access_mode &&
+ 		smallest->rb_key.access_flags == rb_key.access_flags &&
+-		smallest->rb_key.ats == rb_key.ats) ?
++		smallest->rb_key.ats == rb_key.ats &&
++		smallest->rb_key.ndescs <= ndescs_limit) ?
+ 		       smallest :
+ 		       NULL;
+ }
+@@ -986,7 +996,7 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
+ 	mlx5_mkey_cache_debugfs_init(dev);
+ 	mutex_lock(&cache->rb_lock);
+ 	for (i = 0; i <= mkey_cache_max_order(dev); i++) {
+-		rb_key.ndescs = 1 << (i + 2);
++		rb_key.ndescs = MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS << i;
+ 		ent = mlx5r_cache_create_ent_locked(dev, rb_key, true);
+ 		if (IS_ERR(ent)) {
+ 			ret = PTR_ERR(ent);
+-- 
+2.43.0
+
 
 
 
