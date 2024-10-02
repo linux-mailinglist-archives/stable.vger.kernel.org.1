@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A7898D53D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0CD98D83A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618FC287098
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADCF71F23B95
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02661CF284;
-	Wed,  2 Oct 2024 13:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384391D0782;
+	Wed,  2 Oct 2024 13:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGXpB9Rw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zs86X5Vb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB8C1CFECF;
-	Wed,  2 Oct 2024 13:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8971D016E;
+	Wed,  2 Oct 2024 13:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875678; cv=none; b=PMDzB14g2SVthd2szGtuhFo1DQIP50Q0lF61ADkmHWkPvQNC1/O/p3eWRgYLOg/J6+9Tp/oEY4gG2AWReDvEoA3sCvzvgKjW9u6pRKjyEwQBzF3gCkuWSKjpYWhLgU+MXvudwKJxyL5tREwRh8UURSG248/r07gFt5yocUzEfQc=
+	t=1727877442; cv=none; b=LAcMKFXO8sQl77iAfMNOV8SVIjn7Y5Db4Ow4whMDfH95e8Uu1ZWB78clq/kkII9vyl3vx6YV3FucQZ3QZZNIdfgMCI3q/HGHGMxlnsN9aZxHuOWUxJ25lEg7JxXDVfqgWQzvVcpYfDF1vJDdHTCh20vEMTdF+rT3Osqu5SOBFuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875678; c=relaxed/simple;
-	bh=S4aKJSSdXMRn7b3BfSEHpFOVCQv3UqsJk23X4q+J/oU=;
+	s=arc-20240116; t=1727877442; c=relaxed/simple;
+	bh=t0zQRryQr7lV7gX/QMwkBBlLytaOsjqQ/oTO5YXL+/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOhGyAQ0w3kZe2+dlnDsqqgtSa85Z8kXy/1TfERyX3s1tCg6+YmF6JbAx1t/VuhMq+de5ISJZYRjJVChetaEjdx30GnSwKutlsaboyyEw9IUcLMVjHHk7ExXR1NS/t45z8CE3JnnLab55qu3VlJynY7Zew11wVLbDzC+u2NJ3TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGXpB9Rw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0811BC4CECD;
-	Wed,  2 Oct 2024 13:27:57 +0000 (UTC)
+	 MIME-Version; b=WfmHaM7aIooHeRyAO+aTx3g8MT/NllXpDev8jgssjWb0df3uPVmx4grafTCxOvBC4gH+P/d8Fsm1w8VYThA+r+NpauR6xjzX1tG8hRSM8SqwpIzxF867joCTbcaLqI04VMNU1tE/2T1K1zTVzm4JGADa+UVoOjlPU0AIRMbeJkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zs86X5Vb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727F9C4CECF;
+	Wed,  2 Oct 2024 13:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875678;
-	bh=S4aKJSSdXMRn7b3BfSEHpFOVCQv3UqsJk23X4q+J/oU=;
+	s=korg; t=1727877441;
+	bh=t0zQRryQr7lV7gX/QMwkBBlLytaOsjqQ/oTO5YXL+/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGXpB9RwwCuy+OwwXplyEjwAWFqwPBXo9HqN45eGEmxM3eiPb2SFNYiUfAPO/fpJ+
-	 pzK3k3/Ue0hXcy9EOtBtqKuqmT2qdBXhYRAqHqF+pDbvLcsP/5TNauBSPnNnsfr7Tt
-	 eYo3lRZbM4NV3BBHGvO/73nBJ03ft3LkZFCGmHJU=
+	b=Zs86X5VbYNCeRIW0luPCrYVNB8ikxyKpHHrscgc4uybMYVcNzPzEDflb4dLUBNjMD
+	 Qik1VCzzMv+aA+0A12EfmN6EPozk+FYaD50HP/9vs4pvcXYiK2FOJPP6kk1BxCIcsr
+	 tADhIykzRIVs7VKlH1QMTmCItAiwqKtXPpjmCJKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Helge Deller <deller@gmx.de>,
+	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 182/695] fbdev: hpfb: Fix an error handling path in hpfb_dio_probe()
+Subject: [PATCH 6.10 080/634] wifi: mt76: mt7915: fix rx filter setting for bfee functionality
 Date: Wed,  2 Oct 2024 14:53:00 +0200
-Message-ID: <20241002125829.736207749@linuxfoundation.org>
+Message-ID: <20241002125814.269084797@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit aa578e897520f32ae12bec487f2474357d01ca9c ]
+[ Upstream commit 6ac80fce713e875a316a58975b830720a3e27721 ]
 
-If an error occurs after request_mem_region(), a corresponding
-release_mem_region() should be called, as already done in the remove
-function.
+Fix rx filter setting to prevent dropping NDPA frames. Without this
+change, bfee functionality may behave abnormally.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: e57b7901469f ("mt76: add mac80211 driver for MT7915 PCIe-based chipsets")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Link: https://patch.msgid.link/20240827093011.18621-21-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/hpfb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/hpfb.c b/drivers/video/fbdev/hpfb.c
-index 66fac8e5393e0..a1144b1509826 100644
---- a/drivers/video/fbdev/hpfb.c
-+++ b/drivers/video/fbdev/hpfb.c
-@@ -345,6 +345,7 @@ static int hpfb_dio_probe(struct dio_dev *d, const struct dio_device_id *ent)
- 	if (hpfb_init_one(paddr, vaddr)) {
- 		if (d->scode >= DIOII_SCBASE)
- 			iounmap((void *)vaddr);
-+		release_mem_region(d->resource.start, resource_size(&d->resource));
- 		return -ENOMEM;
- 	}
- 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 2624edbb59a1a..eea41b29f0967 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -564,8 +564,7 @@ static void mt7915_configure_filter(struct ieee80211_hw *hw,
+ 
+ 	MT76_FILTER(CONTROL, MT_WF_RFCR_DROP_CTS |
+ 			     MT_WF_RFCR_DROP_RTS |
+-			     MT_WF_RFCR_DROP_CTL_RSV |
+-			     MT_WF_RFCR_DROP_NDPA);
++			     MT_WF_RFCR_DROP_CTL_RSV);
+ 
+ 	*total_flags = flags;
+ 	rxfilter = phy->rxfilter;
 -- 
 2.43.0
 
