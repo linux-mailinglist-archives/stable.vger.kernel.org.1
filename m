@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8533B98DC65
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0A798D9C9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 438E9284114
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A361D1C2328D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11921D079C;
-	Wed,  2 Oct 2024 14:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC33F1D1E92;
+	Wed,  2 Oct 2024 14:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXCS7Z0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NL0wFVia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4521D04A8;
-	Wed,  2 Oct 2024 14:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6890C1D0799;
+	Wed,  2 Oct 2024 14:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879676; cv=none; b=sZI2GHXHbY2rA6odoV4HKb2ldv3c450X6PlQCRZ/vzzKTnUBaNT7WWhqJu3ZvHktX8yTiv/aM3objpv7Fz+oNgIrlVbrIhRqqs/03K61+TahT5YfpaCNURfUjzTXjOMSnXQYEcxOXi6cBp/4I3XFGqUMmvAueSHgcEGGIjKAhpE=
+	t=1727878224; cv=none; b=k9+jw8VEQbOqoQq2kZ4TzRniKlK0sKRbJ32R8CqCLVbtADVBVwURrDSxNrler+o91M3APrqt1NCmS3VQsDX8vcJAcV9SapnohGqflnzdoi6AcqPwm5+t0ZOscQ4b7DXlGfrcB39fwEQT/vXExaEdzcNv6ekE5xtTakH8+bF1Bko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879676; c=relaxed/simple;
-	bh=kjTYPSzfDU8SeZ4Zbe6NwN0VvMSrHkwL65EwshlrVf4=;
+	s=arc-20240116; t=1727878224; c=relaxed/simple;
+	bh=rYzOHMU4oTQBonYggbjrVSCEGSx9QWeo3dKzVxdbH7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4qkHJ7VjdM0UZBGU3FqLg6rRlVxUP//g6pxGgKlT5ZcBm+/vLQjwq4n3XL0KSrRpZEa6jj1kedEavGIvKXmKz7xfI75Hitz1q8eObYct1lt7tn0RZ3/mX1TeWw6M8D/mjTbIdm3HG5hO9zFz6RhSkx3fjeImO3JmU2hmzOUABE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXCS7Z0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE23C4CEC2;
-	Wed,  2 Oct 2024 14:34:35 +0000 (UTC)
+	 MIME-Version; b=QIVJVBk54MMKDHADQjpcT/E+vLNyfUdKFpxMjaw86WksxeeukNu5pL24wK5gh5luGVL/VsOg688Pc+WyR0Q4KIHU1c0K75XHT2JIb18y+F2mwxXGwZtAaFsYcNYpmMgKUWcY1qIIyQ3sK4dxbQndPiFte5ADEkbOkupt3k5f3xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NL0wFVia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FA0C4CEC2;
+	Wed,  2 Oct 2024 14:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879676;
-	bh=kjTYPSzfDU8SeZ4Zbe6NwN0VvMSrHkwL65EwshlrVf4=;
+	s=korg; t=1727878224;
+	bh=rYzOHMU4oTQBonYggbjrVSCEGSx9QWeo3dKzVxdbH7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXCS7Z0hBKmOiwGSRVayOEHVw67Nx1m2YhV8Y5m0VWYL8sOQKwrqAt8/prp7cxGK5
-	 CIu5sRWensqLKFB/tW6pKQtNBouClVHGnw/aTIhGQeB0C6yH0NX9tYRuVbEJyy+76t
-	 6LwjjcQ4er8y4q/27wulxPKSVHCz2jYnC5IU6AOo=
+	b=NL0wFViaAUxzmWWKYF5x7LIWGbpH+IHkcb9SKY0vgPjWWDGyOrMd2tKW3K5CKy1PZ
+	 Eqxk2S/CyVDzCJeW4BNidobwxEL9d+a9N7EcCy7oVaNBx7J70R0OWbuOB/XdxOxCQU
+	 +zuK/5M9TI3KBxHM2jxBnU5pf6KiDhbqI5rRe7ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Joshua Dickens <joshua.dickens@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Sebastien Laveze <slaveze@smartandconnective.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/538] HID: wacom: Do not warn about dropped packets for first packet
-Date: Wed,  2 Oct 2024 14:56:48 +0200
-Message-ID: <20241002125758.924480356@linuxfoundation.org>
+Subject: [PATCH 6.10 309/634] clk: imx: imx6ul: fix default parent for enet*_ref_sel
+Date: Wed,  2 Oct 2024 14:56:49 +0200
+Message-ID: <20241002125823.304861111@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Sebastien Laveze <slaveze@smartandconnective.com>
 
-[ Upstream commit 84aecf2d251a3359bc78b7c8e58f54b9fc966e89 ]
+[ Upstream commit e52fd71333b4ed78fd5bb43094bdc46476614d25 ]
 
-The driver currently assumes that the first sequence number it will see
-is going to be 0. This is not a realiable assumption and can break if,
-for example, the tablet has already been running for some time prior to
-the kernel driver connecting to the device. This commit initializes the
-expected sequence number to -1 and will only print the "Dropped" warning
-the it has been updated to a non-negative value.
+The clk_set_parent for "enet1_ref_sel" and  "enet2_ref_sel" are
+incorrect, therefore the original requirements to have "enet_clk_ref" as
+output sourced by iMX ENET PLL as a default config is not met.
 
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Joshua Dickens <joshua.dickens@wacom.com>
-Fixes: 6d09085b38e5 ("HID: wacom: Adding Support for new usages")
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Only "enet[1,2]_ref_125m" "enet[1,2]_ref_pad" are possible parents for
+"enet1_ref_sel" and "enet2_ref_sel".
+
+This was observed as a regression using a custom device tree which was
+expecting this default config.
+
+This can be fixed at the device tree level but having a default config
+matching the original behavior (before refclock mux) will avoid breaking
+existing configs.
+
+Fixes: 4e197ee880c2 ("clk: imx6ul: add ethernet refclock mux support")
+Link: https://lore.kernel.org/lkml/20230306020226.GC143566@dragon/T/
+Signed-off-by: Sebastien Laveze <slaveze@smartandconnective.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20240528151434.227602-1-slaveze@smartandconnective.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 6 +++++-
- drivers/hid/wacom_wac.h | 2 +-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-imx6ul.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index c3c576641a38e..18b5cd0234d21 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2368,6 +2368,9 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
- 		wacom_map_usage(input, usage, field, EV_KEY, BTN_STYLUS3, 0);
- 		features->quirks &= ~WACOM_QUIRK_PEN_BUTTON3;
- 		break;
-+	case WACOM_HID_WD_SEQUENCENUMBER:
-+		wacom_wac->hid_data.sequence_number = -1;
-+		break;
- 	}
+diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
+index f9394e94f69d7..05c7a82b751f3 100644
+--- a/drivers/clk/imx/clk-imx6ul.c
++++ b/drivers/clk/imx/clk-imx6ul.c
+@@ -542,8 +542,8 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
+ 
+ 	clk_set_parent(hws[IMX6UL_CLK_ENFC_SEL]->clk, hws[IMX6UL_CLK_PLL2_PFD2]->clk);
+ 
+-	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET_REF]->clk);
+-	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF]->clk);
++	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET1_REF_125M]->clk);
++	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF_125M]->clk);
+ 
+ 	imx_register_uart_clocks();
  }
- 
-@@ -2492,7 +2495,8 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
- 		wacom_wac->hid_data.barrelswitch3 = value;
- 		return;
- 	case WACOM_HID_WD_SEQUENCENUMBER:
--		if (wacom_wac->hid_data.sequence_number != value) {
-+		if (wacom_wac->hid_data.sequence_number != value &&
-+		    wacom_wac->hid_data.sequence_number >= 0) {
- 			int sequence_size = field->logical_maximum - field->logical_minimum + 1;
- 			int drop_count = (value - wacom_wac->hid_data.sequence_number) % sequence_size;
- 			hid_warn(hdev, "Dropped %d packets", drop_count);
-diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
-index 57e185f18d53d..61073fe81ead2 100644
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -324,7 +324,7 @@ struct hid_data {
- 	int bat_connected;
- 	int ps_connected;
- 	bool pad_input_event_flag;
--	unsigned short sequence_number;
-+	int sequence_number;
- 	ktime_t time_delayed;
- };
- 
 -- 
 2.43.0
 
