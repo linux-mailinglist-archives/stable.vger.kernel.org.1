@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-78760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140F098D4CA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4821F98D7F3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4656C1C219AE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B56828344A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395D71D043D;
-	Wed,  2 Oct 2024 13:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777181D043E;
+	Wed,  2 Oct 2024 13:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMIuPTX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwACLGnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9721CF28B;
-	Wed,  2 Oct 2024 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DB01CB32E;
+	Wed,  2 Oct 2024 13:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875450; cv=none; b=QTtsQAR/nkpajYqueUhFOFlMxtKXiXxSV9XiJGGItTxibsS3moT7XlJSiouDnQbGyUHCQwE9cO9gRdUfMin3PJpJb1k0taVbyttfn9wnOXVMF0DpXyVd5fcDEd/fC9VSome1XujEfmoTiuF+Fa9vqs13NGWbIKDyrdg5VYQFI9M=
+	t=1727877280; cv=none; b=NDr8yYPuBmAWg/yApuwv69f/mAkhm51ovIVwUwulr+GMta/OGX9muaaWQmKw6IZTXhbgyrOnv26ThH6IZxu5lNnweE4Ela8hytCJ0bENVOzj/mKkBfH1b0CkXUjcbf2JQhTFDjnKGa/qzEI4vkgprn1418XLvWOMSwU4hnRUWpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875450; c=relaxed/simple;
-	bh=yp5lKI+2Dnk9KoMirpVP5iumwoSpwS1dY/JtzUz1ZUg=;
+	s=arc-20240116; t=1727877280; c=relaxed/simple;
+	bh=ihSLVo4c1qn24KaSQnMkIu17UWQlj92v+4ukswxh7bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hi4/TlS5yzV6Gei21QJRkoaISbpB3pTNoEijtvMhoZMk+eZn7ey2VXhm1J6UImt3J36nqXRAeh38wX0M/yvVu/7kGBrdcT50Kn6d1+oxpLYo0qTiIHeTzpUngzSxhTSWliRG82+SK4LNrUfx/1h5JuMkAUfy+rJ4X64D/lfrGSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMIuPTX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67517C4CEC5;
-	Wed,  2 Oct 2024 13:24:09 +0000 (UTC)
+	 MIME-Version; b=eDgLHYIGUXTC7yyOMlZaq6WQfDRfuhkF2gUs5XmXIECtfMCHarhRqYzbTtuwhNTNgntnQgwAa7n7DIwfFtSeO4ZLXjsbRup3wrGsFmRwVw522byD3SwSEzWbVY6Uw32O4vl03uaICPiwOOrSzhNYjGfFArMmMgJkzpiPQAtDPxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwACLGnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB1DC4AF13;
+	Wed,  2 Oct 2024 13:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875449;
-	bh=yp5lKI+2Dnk9KoMirpVP5iumwoSpwS1dY/JtzUz1ZUg=;
+	s=korg; t=1727877280;
+	bh=ihSLVo4c1qn24KaSQnMkIu17UWQlj92v+4ukswxh7bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMIuPTX3+7eFT7GmvulGYpqD+g7BDYMVgWwFMgWK/Z5mBxp4jysr9z/pnSxpFgIPm
-	 htfQC64ld+R2zY0wtZtfvsypdsdHkNfEmGZV0Zs59dTtARuJcM6E9relaCGtMhL773
-	 yEfNrWGEK5LdIxTNCpNrL3U150dOOO1n8Fw23uiw=
+	b=bwACLGnuAhsAmx2sBbSRdpmDDxE/UTG8GohCN4LsXmeqrL7EDffo7pWy+NTJcp51a
+	 mymg+hPr5M8FIgjPiydeww43Uw+jRTpmwMoUUKoJjBhb3be/5pMTD0yEcyyBLnfX9B
+	 MeCod7WcoAoUXFLS5nJTLJTrOskH3VIcih2HwHuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	syzbot+6c6c08700f9480c41fe3@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 105/695] can: m_can: m_can_close(): stop clocks after device has been shut down
+Subject: [PATCH 6.10 003/634] wifi: rtw88: always wait for both firmware loading attempts
 Date: Wed,  2 Oct 2024 14:51:43 +0200
-Message-ID: <20241002125826.666007924@linuxfoundation.org>
+Message-ID: <20241002125811.217594838@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 2c09b50efcad985cf920ca88baa9aa52b1999dcc ]
+[ Upstream commit 0e735a4c6137262bcefe45bb52fde7b1f5fc6c4d ]
 
-After calling m_can_stop() an interrupt may be pending or NAPI might
-still be executed. This means the driver might still touch registers
-of the IP core after the clocks have been disabled. This is not good
-practice and might lead to aborts depending on the SoC integration.
+In 'rtw_wait_firmware_completion()', always wait for both (regular and
+wowlan) firmware loading attempts. Otherwise if 'rtw_usb_intf_init()'
+has failed in 'rtw_usb_probe()', 'rtw_usb_disconnect()' may issue
+'ieee80211_free_hw()' when one of 'rtw_load_firmware_cb()' (usually
+the wowlan one) is still in progress, causing UAF detected by KASAN.
 
-To avoid these potential problems, make m_can_close() symmetric to
-m_can_open(), i.e. stop the clocks at the end, right before shutting
-down the transceiver.
-
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Link: https://patch.msgid.link/20240910-can-m_can-fix-ifup-v3-2-6c1720ba45ce@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: c8e5695eae99 ("rtw88: load wowlan firmware if wowlan is supported")
+Reported-by: syzbot+6c6c08700f9480c41fe3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c6c08700f9480c41fe3
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240726114657.25396-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/m_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index c1a07013433eb..7fec04b024d5b 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1764,7 +1764,6 @@ static int m_can_close(struct net_device *dev)
- 	netif_stop_queue(dev);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 7ab7a988b123f..33a7577557a56 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1313,20 +1313,21 @@ static int rtw_wait_firmware_completion(struct rtw_dev *rtwdev)
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_fw_state *fw;
++	int ret = 0;
  
- 	m_can_stop(dev);
--	m_can_clk_stop(cdev);
- 	free_irq(dev->irq, dev);
+ 	fw = &rtwdev->fw;
+ 	wait_for_completion(&fw->completion);
+ 	if (!fw->firmware)
+-		return -EINVAL;
++		ret = -EINVAL;
  
- 	m_can_clean(dev);
-@@ -1779,6 +1778,7 @@ static int m_can_close(struct net_device *dev)
+ 	if (chip->wow_fw_name) {
+ 		fw = &rtwdev->wow_fw;
+ 		wait_for_completion(&fw->completion);
+ 		if (!fw->firmware)
+-			return -EINVAL;
++			ret = -EINVAL;
+ 	}
  
- 	close_candev(dev);
+-	return 0;
++	return ret;
+ }
  
-+	m_can_clk_stop(cdev);
- 	phy_power_off(cdev->transceiver);
- 
- 	return 0;
+ static enum rtw_lps_deep_mode rtw_update_lps_deep_mode(struct rtw_dev *rtwdev,
 -- 
 2.43.0
 
