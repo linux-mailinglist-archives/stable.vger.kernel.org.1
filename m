@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C51F98D961
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CEB98DBEC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B45E61F21ADA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C94F01C23D0B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041081D0F49;
-	Wed,  2 Oct 2024 14:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BD31D1737;
+	Wed,  2 Oct 2024 14:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zzy3HH6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhXvYFMH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40351D07AD;
-	Wed,  2 Oct 2024 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371E01EB21;
+	Wed,  2 Oct 2024 14:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877965; cv=none; b=snJSUBfR2dfHc3VKWWS79/baJHVYiELpqqvGAXTylFSn8PbIWnP3a8Wg7CfNWMKSEF1V8Q4zzNXuKCOa/trrMbekSUWe5jGAvnlCNTAZlVov7k/GFWwJXkwVBsb6U3JWZJv2JZNVlBa2Z0JOBtmzHeqaEMc4tI12B3dIoNU0CKY=
+	t=1727879431; cv=none; b=GTQ15S5ShqnH8aqULG3lAiVnN7bZKDKt8fsEcP7xENmhmKuMtZtG+KEpDtLKGGoOBZ/H94H+mTNpupVFjDWTKHmLmr1BYmWJnjGn32s3/txMvM3XYaGJpTbNlm6yGW8ojtA049rJf8GZ88X51YRJ4LkRCfyadfBKh3vn8ocS80Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877965; c=relaxed/simple;
-	bh=u6aHO6HVeFpfZ08qtkxbeQZzVMiNpbNS0GS/M30j2y8=;
+	s=arc-20240116; t=1727879431; c=relaxed/simple;
+	bh=GxWmguJpx7mAtkXXyul4G0qrYaFDP+ZnWMQXxpBJU7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azWyLmeRu/DRdwXApINP9dkNctJ+TImC80Bathzio5e0Gsdmku3kz3rllG5bYItfg/zykP6VDU7I9UR9Ar9MueSQIvCSrl0HZRM4A2TAos7aOZ1ZZ6tWzpYYf60k/1bMhIKglEIzLdLpfmuJVhGnLqV5a+X52WqDQy7DfwGBkbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zzy3HH6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39878C4CEC2;
-	Wed,  2 Oct 2024 14:06:05 +0000 (UTC)
+	 MIME-Version; b=acaFCaswO2hv9xrtwI8iO+p5NWzznghY3tCn2HYZkqiJ67yPSbVwJnfNXw8SKGRIvyyAdgHMxcGw50qKrE+2CLsyLpels2GNjmD6Sjfh/9JFiSv39eXdeBjpxDJZsUgK4Yk/sHRtHL7L7kj2mY5P+YqnRHp/s9NL9yYuCHASNyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhXvYFMH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21ECC4CEC2;
+	Wed,  2 Oct 2024 14:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877965;
-	bh=u6aHO6HVeFpfZ08qtkxbeQZzVMiNpbNS0GS/M30j2y8=;
+	s=korg; t=1727879431;
+	bh=GxWmguJpx7mAtkXXyul4G0qrYaFDP+ZnWMQXxpBJU7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zzy3HH6wzdCP4Xg7jh/Q9ktKYOfRDmk7V5mPnzzQFmBYvY5IcTFMX5piJ+z8HZAxJ
-	 kSeJ0agwiGQhG18T9anmootjx9W/MaGkW30PzVE/B5uLf9BE3KDWF/qiWDAtoP4cJa
-	 PqdLd5RmtNTnC3E56ajUKluuGhsJ/m15OdMQbBqk=
+	b=PhXvYFMHXtQtQ6HCQwOiyBwGZ29pUILaDQIAMsoaTSYIvKhgYeZOHO7oqgENqqqSV
+	 0QAcrwlqtI/OydLRph/5TVC8JYPIY4nodq6Dt5BRZQ0hdaXGhAujEQQRVLMggOaC6s
+	 dJsaDhuaJoVgxe9JFSkBW9ZBX7J4W+5wg1gCPj9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 255/634] selftests/bpf: Fix arg parsing in veristat, test_progs
+Subject: [PATCH 6.6 116/538] selftests/ftrace: Add required dependency for kprobe tests
 Date: Wed,  2 Oct 2024 14:55:55 +0200
-Message-ID: <20241002125821.163366667@linuxfoundation.org>
+Message-ID: <20241002125756.824435952@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 03bfcda1fbc37ef34aa21d2b9e09138335afc6ee ]
+[ Upstream commit 41f37c852ac3fbfd072a00281b60dc7ba056be8c ]
 
-Current code parses arguments with strtok_r() using a construct like
+kprobe_args_{char,string}.tc are using available_filter_functions file
+which is provided by function tracer. Thus if function tracer is disabled,
+these tests are failed on recent kernels because tracefs_create_dir is
+not raised events by adding a dynamic event.
+Add available_filter_functions to requires line.
 
-    char *state = NULL;
-    while ((next = strtok_r(state ? NULL : input, ",", &state))) {
-        ...
-    }
-
-where logic assumes the 'state' var can distinguish between first and
-subsequent strtok_r() calls, and adjusts parameters accordingly. However,
-'state' is strictly internal context for strtok_r() and no such assumptions
-are supported in the man page. Moreover, the exact behaviour of 'state'
-depends on the libc implementation, making the above code fragile.
-
-Indeed, invoking "./test_progs -t <test_name>" on mips64el/musl will hang,
-with the above code in an infinite loop.
-
-Similarly, we see strange behaviour running 'veristat' on mips64el/musl:
-
-    $ ./veristat -e file,prog,verdict,insns -C two-ok add-failure
-    Can't specify more than 9 stats
-
-Rewrite code using a counter to distinguish between strtok_r() calls.
-
-Fixes: 61ddff373ffa ("selftests/bpf: Improve by-name subtest selection logic in prog_tests")
-Fixes: 394169b079b5 ("selftests/bpf: add comparison mode to veristat")
-Fixes: c8bc5e050976 ("selftests/bpf: Add veristat tool for mass-verifying BPF object files")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/392d8bf5559f85fa37926c1494e62312ef252c3d.1722244708.git.tony.ambardar@gmail.com
+Fixes: 7c1130ea5cae ("test: ftrace: Fix kprobe test for eventfs")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/testing_helpers.c | 4 ++--
- tools/testing/selftests/bpf/veristat.c        | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ .../testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc  | 2 +-
+ .../selftests/ftrace/test.d/kprobe/kprobe_args_string.tc        | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/testing_helpers.c b/tools/testing/selftests/bpf/testing_helpers.c
-index d5379a0e6da80..4230420ef2940 100644
---- a/tools/testing/selftests/bpf/testing_helpers.c
-+++ b/tools/testing/selftests/bpf/testing_helpers.c
-@@ -220,13 +220,13 @@ int parse_test_list(const char *s,
- 		    bool is_glob_pattern)
- {
- 	char *input, *state = NULL, *test_spec;
--	int err = 0;
-+	int err = 0, cnt = 0;
+diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
+index ff7499eb98d6d..ce5d2e62731f3 100644
+--- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ # SPDX-License-Identifier: GPL-2.0
+ # description: Kprobe event char type argument
+-# requires: kprobe_events
++# requires: kprobe_events available_filter_functions
  
- 	input = strdup(s);
- 	if (!input)
- 		return -ENOMEM;
+ case `uname -m` in
+ x86_64)
+diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
+index a202b2ea4baf9..4f72c2875f6b9 100644
+--- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ # SPDX-License-Identifier: GPL-2.0
+ # description: Kprobe event string type argument
+-# requires: kprobe_events
++# requires: kprobe_events available_filter_functions
  
--	while ((test_spec = strtok_r(state ? NULL : input, ",", &state))) {
-+	while ((test_spec = strtok_r(cnt++ ? NULL : input, ",", &state))) {
- 		err = insert_test(set, test_spec, is_glob_pattern);
- 		if (err)
- 			break;
-diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
-index b2854238d4a0e..fd9780082ff48 100644
---- a/tools/testing/selftests/bpf/veristat.c
-+++ b/tools/testing/selftests/bpf/veristat.c
-@@ -784,13 +784,13 @@ static int parse_stat(const char *stat_name, struct stat_specs *specs)
- static int parse_stats(const char *stats_str, struct stat_specs *specs)
- {
- 	char *input, *state = NULL, *next;
--	int err;
-+	int err, cnt = 0;
- 
- 	input = strdup(stats_str);
- 	if (!input)
- 		return -ENOMEM;
- 
--	while ((next = strtok_r(state ? NULL : input, ",", &state))) {
-+	while ((next = strtok_r(cnt++ ? NULL : input, ",", &state))) {
- 		err = parse_stat(next, specs);
- 		if (err) {
- 			free(input);
-@@ -1493,7 +1493,7 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
- 	while (fgets(line, sizeof(line), f)) {
- 		char *input = line, *state = NULL, *next;
- 		struct verif_stats *st = NULL;
--		int col = 0;
-+		int col = 0, cnt = 0;
- 
- 		if (!header) {
- 			void *tmp;
-@@ -1511,7 +1511,7 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
- 			*stat_cntp += 1;
- 		}
- 
--		while ((next = strtok_r(state ? NULL : input, ",\n", &state))) {
-+		while ((next = strtok_r(cnt++ ? NULL : input, ",\n", &state))) {
- 			if (header) {
- 				/* for the first line, set up spec stats */
- 				err = parse_stat(next, specs);
+ case `uname -m` in
+ x86_64)
 -- 
 2.43.0
 
