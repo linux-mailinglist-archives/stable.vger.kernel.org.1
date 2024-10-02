@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E0198DBD2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886ED98D94B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77E3B1C23D03
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5133B288BBB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4791D1D0B8B;
-	Wed,  2 Oct 2024 14:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F951D221C;
+	Wed,  2 Oct 2024 14:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muuHZvix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwZ+G/Jv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E501D0488;
-	Wed,  2 Oct 2024 14:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C2E1D1F7F;
+	Wed,  2 Oct 2024 14:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879385; cv=none; b=hOYUluIzkw0dpo8H+KSGEddZPirrSPk2q7gIBU7gbjilvL/MkdiASm85nxDoLlTGv6cwEDMDGW/gsfhmlfS4BdGeW6wNmRIFhn7NTOVCDMSUxu2aDRpOPBIqD351mfr9EWzqnsqzaoXVZ1RaHJe3TGHqiWMIt1Ypuj+zpCfLt7o=
+	t=1727877901; cv=none; b=LnQMHaVmp0JnRVSZJfexvMn49Nuh9IETH2J5dvv4DmiYdMvLMFiCiFSpNJynO/lWjktQHrR4zRulihpp5aFRNHjogOrr8miYpSlaef04WHpdTwO40MBwl/ruaVbNeMz5fAMy0/kNnHbDfUkqLUSQm6op234/oz+ADXDQ641yIT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879385; c=relaxed/simple;
-	bh=t44MCUISRYo7DW060qDAJmlY71tO36twyrf4EEhCT+8=;
+	s=arc-20240116; t=1727877901; c=relaxed/simple;
+	bh=VL/2akMimO0ynW83oVFIw7mt8KH4QW+KZEdP2eClMk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhOOpR2jNhfU59uk5oUYGwzMmK455v7YsdJ7GeRMRAYb4T4yMkAAljyej8fwRu0pEVy4uU/4xF2vqdrXoRG3pql1lTAhJ2+m4S9Mkpt2ffXOCyxKftSYBml2pi4lcfPVoVKCso+KycoVQ3HGiG1QDVy8eBPLRwSUGn0yUgCYQrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muuHZvix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C48C4CEC2;
-	Wed,  2 Oct 2024 14:29:43 +0000 (UTC)
+	 MIME-Version; b=JZj6BwdPHD6oS9x8xoEILoIL55UzzlUsxP38CUxNy9oobSXemDhv8+Jiw9RT55gQA7xKpI5/P2LnrbsE8Wvi1V4EHr3t7o7yk1+clzlcL/fAziMmfSe6h0V32AT5zpzFhT5r/vv6944kRTVtUXATmr+VuFWlRCX0/ojvPQvxdmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwZ+G/Jv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7FEC4CEC2;
+	Wed,  2 Oct 2024 14:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879384;
-	bh=t44MCUISRYo7DW060qDAJmlY71tO36twyrf4EEhCT+8=;
+	s=korg; t=1727877901;
+	bh=VL/2akMimO0ynW83oVFIw7mt8KH4QW+KZEdP2eClMk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muuHZvixK5pKL+O75D7y56kSqEMcp8aq9H0g3wJvqYpoMNBd36qwH5X1zBw21n0by
-	 8QYtg1/xjeN3rHTii7lf6E/s2x22yUv2ep1a+Ds7qYq4wKNNGGX+zVryOpYMvvg0Ny
-	 8WOIoKkEWE1Ie37Nre3b2pgg/ySXOtCrhP0ud01U=
+	b=VwZ+G/Jv2pwDt1RuYvkwf+zunGR4iI+iHa2rUmU6zRnlnlAnmHKNrlrML8YvW2qjZ
+	 8r4mUPQftXAXjVY9hecYd2hb1xQqgd6PyMjIC35clXL6F61dQUZvRc4GESB/ba0IkK
+	 7z/dEiFLXQCGWUlDES1tIsjN68QaC41462M5qp1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/538] spi: ppc4xx: Avoid returning 0 when failed to parse and map IRQ
+Subject: [PATCH 6.10 232/634] selftests/bpf: Workaround strict bpf_lsm return value check.
 Date: Wed,  2 Oct 2024 14:55:32 +0200
-Message-ID: <20241002125755.900912560@linuxfoundation.org>
+Message-ID: <20241002125820.256411368@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit 7781f1d120fec8624fc654eda900fc8748262082 ]
+[ Upstream commit aa8ebb270c66cea1f56a25d0f938036e91ad085a ]
 
-0 is incorrect error code when failed to parse and map IRQ.
-Replace OF specific old API for IRQ retrieval with a generic
-one to fix this issue.
+test_progs-no_alu32 -t libbpf_get_fd_by_id_opts
+is being rejected by the verifier with the following error
+due to compiler optimization:
 
-Fixes: 0f245463b01e ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20240814144525.2648450-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+6: (67) r0 <<= 62                     ; R0_w=scalar(smax=0x4000000000000000,umax=0xc000000000000000,smin32=0,smax32=umax32=0,var_off=(0x0; 0xc000000000000000))
+7: (c7) r0 s>>= 63                    ; R0_w=scalar(smin=smin32=-1,smax=smax32=0)
+;  @ test_libbpf_get_fd_by_id_opts.c:0
+8: (57) r0 &= -13                     ; R0_w=scalar(smax=0x7ffffffffffffff3,umax=0xfffffffffffffff3,smax32=0x7ffffff3,umax32=0xfffffff3,var_off=(0x0; 0xfffffffffffffff3))
+; int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode) @ test_libbpf_get_fd_by_id_opts.c:27
+9: (95) exit
+At program exit the register R0 has smax=9223372036854775795 should have been in [-4095, 0]
+
+Workaround by adding barrier().
+Eventually the verifier will be able to recognize it.
+
+Fixes: 5d99e198be27 ("bpf, lsm: Add check for BPF LSM return value")
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ppc4xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c  | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index 0d698580194e9..1381563941fe3 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -26,7 +26,6 @@
- #include <linux/errno.h>
- #include <linux/wait.h>
- #include <linux/of_address.h>
--#include <linux/of_irq.h>
- #include <linux/of_platform.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
-@@ -410,9 +409,10 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
- 	}
+diff --git a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
+index f5ac5f3e89196..568816307f712 100644
+--- a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
++++ b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
+@@ -31,6 +31,7 @@ int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode)
  
- 	/* Request IRQ */
--	hw->irqnum = irq_of_parse_and_map(np, 0);
--	if (hw->irqnum <= 0)
-+	ret = platform_get_irq(op, 0);
-+	if (ret < 0)
- 		goto free_host;
-+	hw->irqnum = ret;
+ 	if (fmode & FMODE_WRITE)
+ 		return -EACCES;
++	barrier();
  
- 	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
- 			  0, "spi_ppc4xx_of", (void *)hw);
+ 	return 0;
+ }
 -- 
 2.43.0
 
