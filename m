@@ -1,159 +1,96 @@
-Return-Path: <stable+bounces-80604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AC998E453
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 22:43:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD398E487
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 23:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0099C1F2345E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:43:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FD441C235A4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 21:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28962217306;
-	Wed,  2 Oct 2024 20:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467531D1756;
+	Wed,  2 Oct 2024 21:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBCXhiNp"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="avqZJN+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A38216A21;
-	Wed,  2 Oct 2024 20:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2027745F4;
+	Wed,  2 Oct 2024 21:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727901781; cv=none; b=eXT79aNEkQyQIlCdlW2LzeesvJynxeacVaXX5f/7OJLULNUlGBo9FoJLD5Z/tsoiTN5BQCtG9IngoeDjIrmjjYUlxVZio8HAMTIMKKTYvvHA6n3kxTCubwPnhyrm9TiTU7Dc9p/GgmSxryTl1BytylgLXT8Jo6n6EthhVgDKxB4=
+	t=1727902889; cv=none; b=cBu90f2HlwTWRP7b8UHem5HHmjR3Qo8jBtHVpxcDx07MFhwTwihFk8Ep/32E8dS9/QwhtxlvuVuwfNVUNJQ6euK60DOx6dqK8Q5mNwe6I3TXc+IPnXJoexloeJjU6n/aVl4P5VBMQVG28AZzyCccSZRSWATj3UKbpNwnzwSVeJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727901781; c=relaxed/simple;
-	bh=hC26vYYWeZ8nbA3U9wUcvs+XGS5LYjab0kDJfyv/e5g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kjcC+1Jp4xhfcM4kO/chWTgPodyH0DmaZTpkcR1XAhSBfzLnFzn4ysVcuSg7IxtM0w7EgPb+8/kXswcQ0XdyPhvu1t7kdmzeMAzqc3JApN4QO7puJUtyt9fICnpHFOgc9qbK3Lzs8c2N/63aZgA4HkNEQB+qRalDb5tfy5QRxXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBCXhiNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D1BC4CEC2;
-	Wed,  2 Oct 2024 20:43:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727901781;
-	bh=hC26vYYWeZ8nbA3U9wUcvs+XGS5LYjab0kDJfyv/e5g=;
-	h=From:To:Cc:Subject:Date:From;
-	b=kBCXhiNpgjYnKdpobYDehSvGiXqYnvh4Ng2+gv2bo2hd1b2c1USIt4ucSFN4Na/bR
-	 y1BWWsOIWuBRZnmAAWFo0ioHZhFbRINg3YUSyTix2AKQ3DRg+1i77WAeqDVQubzqwj
-	 4pA98DQGsrVrXvlpt4IOovXCmNbuvK702J6Z/x7Y/yoOLItY2jFslgl/1/zsv3EZNK
-	 B9TiwbWC4vxnZ3x4t/rw36zq2QwZSlnOp/vftuesbMsZX41QYKt+PBlPX26PgbHWj4
-	 30fY3AToF+o5jJRWalXv1v3loKiqZWebMIdFf0HvnOpsxh8JGk+q5FmoT4xvqh9c7C
-	 +tghXEieno/1A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sw6BX-00HA0m-Dx;
-	Wed, 02 Oct 2024 21:42:59 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: arm64: Fix kvm_has_feat*() handling of negative features
-Date: Wed,  2 Oct 2024 21:42:39 +0100
-Message-Id: <20241002204239.2051637-1-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1727902889; c=relaxed/simple;
+	bh=trnJ0WFXx1ZZxIm39VZd7TZ0LQp5r0PG8+GM6+k0C+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KPqKF1RYy8/TkTb/cJpGZfvx6OBxB5ubjDFhh+XXKBjE7y7d4UwqaASZvrvqK/zmBhoVRfK1lybzYFsbckYRxFcbR3+RtcTH9qhMpHJzt/czFo+27fVw+PihBKkAQiyEiBdFgtfdAFgxgHcDFxuRUwpvfAOYkekdWcQTnOPcZfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=avqZJN+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5954CC4CEC2;
+	Wed,  2 Oct 2024 21:01:27 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="avqZJN+p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1727902885;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E8l8Bf1zxd4P4KLwrfQid3+fVNuVZfaH/EFN27Wk0dE=;
+	b=avqZJN+pDPy1cUuWq1daACEqUQK+buEgRPJeWfbowQH7dNb7dsKVFpMiLKuFedpIEBrKGm
+	Hqkz5mUtVoOgZfg6hSwumvmcI3pF4DSGGHBypUd6+F4HUBJtSRle8gemXICC1Cm7wbjPnJ
+	W3ZL41QYSd+upr0SGaGaUT5OUJijHj8=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 93c531ca (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 2 Oct 2024 21:01:24 +0000 (UTC)
+Date: Wed, 2 Oct 2024 23:01:22 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Greg KH <greg@kroah.com>, stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org,
+	Shuah Khan <shuah@kernel.org>
+Subject: Re: Patch "selftests: vDSO: skip getrandom test if architecture is
+ unsupported" has been added to the 6.11-stable tree
+Message-ID: <Zv20olVBlnxL9UnS@zx2c4.com>
+References: <CAHmME9rFjE7nt4j5ZWwh=CrpPmtuZ_UdS5O4bQOgH8cVwEjr0Q@mail.gmail.com>
+ <433ff0ca-92d1-475e-ad8b-d4416601d4ba@linuxfoundation.org>
+ <ZvwLAib3296hIwI_@zx2c4.com>
+ <279d123d-9a8d-446f-ac72-524979db6f7d@linuxfoundation.org>
+ <ZvwPTngjm_OEPZjt@zx2c4.com>
+ <2db8ba9e-853c-4733-be39-4b4207da2367@linuxfoundation.org>
+ <ZvzIeenvKYaG_B1y@zx2c4.com>
+ <2024100227-zesty-procreate-1d48@gregkh>
+ <Zv18ICE_3-ASLGp_@zx2c4.com>
+ <7657fb39-da01-4db9-b4b2-5801c38733e4@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7657fb39-da01-4db9-b4b2-5801c38733e4@linuxfoundation.org>
 
-Oliver reports that the kvm_has_feat() helper is not behaviing as
-expected for negative feature. On investigation, the main issue
-seems to be caused by the following construct:
+On Wed, Oct 02, 2024 at 01:45:57PM -0600, Shuah Khan wrote:
+> This is not different from other kernel APIs and enhancements and
+> correspo0nding updates to the existing selftests.
+> 
+> The
+> vdso_test_getrandom test a user-space program exists in 6.11.
+> 
+> Use should be able to run vdso_test_getrandom compiled on 6.12
+> repo on a 6.11 kernel.
+> vdso_test_getrandom test a user-space program exists in 6.11.
+> Users should be able to run vdso_test_getrandom compiled on 6.12
+> repo on a 6.11 kernel. This is what several CIs do.
 
- 	(id##_##fld##_SIGNED ?					\
-	 get_idreg_field_signed(kvm, id, fld) :			\
-	 get_idreg_field_unsigned(kvm, id, fld))
+The x86 test from 6.12 works just fine on 6.11.
 
-where one side of the expression evaluates as something signed,
-and the other as something unsigned. In retrospect, this is totally
-braindead, as the compiler converts this into an unsigned expression.
-When compared to something that is 0, the test is simply elided.
-
-Epic fail. Similar issue exists in the expand_field_sign() macro.
-
-The correct way to handle this is to chose between signed and unsigned
-comparisons, so that both sides of the ternary expression are of the
-same type (bool).
-
-In order to keep the code readable (sort of), we introduce new
-comparison primitives taking an operator as a parameter, and
-rewrite the kvm_has_feat*() helpers in terms of these primitives.
-
-Fixes: c62d7a23b947 ("KVM: arm64: Add feature checking helpers")
-Reported-by: Oliver Upton <oliver.upton@linux.dev>
-Tested-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/include/asm/kvm_host.h | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
-
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index aab1e59aa91e..e9e9b57782e4 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -1490,11 +1490,6 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
- 		sign_extend64(__val, id##_##fld##_WIDTH - 1);		\
- 	})
- 
--#define expand_field_sign(id, fld, val)					\
--	(id##_##fld##_SIGNED ?						\
--	 __expand_field_sign_signed(id, fld, val) :			\
--	 __expand_field_sign_unsigned(id, fld, val))
--
- #define get_idreg_field_unsigned(kvm, id, fld)				\
- 	({								\
- 		u64 __val = kvm_read_vm_id_reg((kvm), SYS_##id);	\
-@@ -1510,20 +1505,26 @@ void kvm_set_vm_id_reg(struct kvm *kvm, u32 reg, u64 val);
- #define get_idreg_field_enum(kvm, id, fld)				\
- 	get_idreg_field_unsigned(kvm, id, fld)
- 
--#define get_idreg_field(kvm, id, fld)					\
-+#define kvm_cmp_feat_signed(kvm, id, fld, op, limit)			\
-+	(get_idreg_field_signed((kvm), id, fld) op __expand_field_sign_signed(id, fld, limit))
-+
-+#define kvm_cmp_feat_unsigned(kvm, id, fld, op, limit)			\
-+	(get_idreg_field_unsigned((kvm), id, fld) op __expand_field_sign_unsigned(id, fld, limit))
-+
-+#define kvm_cmp_feat(kvm, id, fld, op, limit)				\
- 	(id##_##fld##_SIGNED ?						\
--	 get_idreg_field_signed(kvm, id, fld) :				\
--	 get_idreg_field_unsigned(kvm, id, fld))
-+	 kvm_cmp_feat_signed(kvm, id, fld, op, limit) :			\
-+	 kvm_cmp_feat_unsigned(kvm, id, fld, op, limit))
- 
- #define kvm_has_feat(kvm, id, fld, limit)				\
--	(get_idreg_field((kvm), id, fld) >= expand_field_sign(id, fld, limit))
-+	kvm_cmp_feat(kvm, id, fld, >=, limit)
- 
- #define kvm_has_feat_enum(kvm, id, fld, val)				\
--	(get_idreg_field_unsigned((kvm), id, fld) == __expand_field_sign_unsigned(id, fld, val))
-+	kvm_cmp_feat_unsigned(kvm, id, fld, ==, val)
- 
- #define kvm_has_feat_range(kvm, id, fld, min, max)			\
--	(get_idreg_field((kvm), id, fld) >= expand_field_sign(id, fld, min) && \
--	 get_idreg_field((kvm), id, fld) <= expand_field_sign(id, fld, max))
-+	(kvm_cmp_feat(kvm, id, fld, >=, min) &&				\
-+	kvm_cmp_feat(kvm, id, fld, <=, max))
- 
- /* Check for a given level of PAuth support */
- #define kvm_has_pauth(k, l)						\
--- 
-2.39.2
-
+I really don't follow you at all or what you're getting at. I think if
+you actually look at the code, you'll be mostly okay with it. And if
+there's something that looks awry to you, send a patch or describe to me
+clearly what looks wrong and I'll send a patch.
 
