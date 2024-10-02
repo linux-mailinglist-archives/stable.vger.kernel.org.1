@@ -1,74 +1,56 @@
-Return-Path: <stable+bounces-80223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707A298DC80
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D170F98D9E3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 373262815A8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A7AD282EE1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241491D1513;
-	Wed,  2 Oct 2024 14:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C0C1D0DC4;
+	Wed,  2 Oct 2024 14:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7Zhrcqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuFoE/yf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9171D0BBC;
-	Wed,  2 Oct 2024 14:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DBF1CFEB3;
+	Wed,  2 Oct 2024 14:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879740; cv=none; b=NoNg66Q+vpI96DrZ/iqq0fgOHiPyBwJsdJwK8QjtAbBfBElgg6aNkc0r4F7TpGFtKGzMPsvUtRIYF7eQmJEXdIsUmh5WLjk1qzcXww6W2HNnxkp4mZkWdNnY3ttPrIKnLp9aRGLrZG/fsb1S1yCplJKNQdZVra35jbsysr/3MIc=
+	t=1727878288; cv=none; b=ClbEr9kDr0sWzusis06EQO0CaU8zzRuxIW7xtLubBUAcrODKWDqq3EZczUJqc+Q/VCO5ZI9q805LMYBg3JESm41/aaGO4rpQ+jPNB56IafWD/eJUEGhYAM4w9fkiODUEYt0yioT/0yVUN43F5/mKzsotqXYpwzrPMgCZ/uemnsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879740; c=relaxed/simple;
-	bh=HlgdY6taOhPBGT0b/L3lxfZektmJBNc08Nepx/FAoV4=;
+	s=arc-20240116; t=1727878288; c=relaxed/simple;
+	bh=3flzsuIxQ55gXsXGIu4ud2RnONxUCyRjpUmmLaVUWYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nu5P5kUNOJ2l8haHwKCpT+6BTBfrBX4hFiRwwzp1N2L2LhlUeoL4BgdgoZE3Y/qd1U4i/s5lkP1dLuzSMey1uskdOIbec7OEpLHv6ThVGtefJ6U/rBERj8dg2Hov3nbFAixx70jZko9R+m6Yn7hzlyBeH5G9GcERbDOqsgHsVeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7Zhrcqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D5DC4CEC2;
-	Wed,  2 Oct 2024 14:35:40 +0000 (UTC)
+	 MIME-Version; b=d7ae0wQkrURO/6t/gZLN1YGVp0QYQnOcYxtfriEZtVPVFQ0HaCN2rE+9IsOaBOqarkohSZU4VJd0etQ+3jNZgYGDgQXzTUhwyBbqBs4DYObYO0z+V59KYopIUUVet8AAiCwyPBh6ig5nuMaVfSHCLvtaTZ5xDs+Iu/wLauQrGDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuFoE/yf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D8FC4CEC2;
+	Wed,  2 Oct 2024 14:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879740;
-	bh=HlgdY6taOhPBGT0b/L3lxfZektmJBNc08Nepx/FAoV4=;
+	s=korg; t=1727878288;
+	bh=3flzsuIxQ55gXsXGIu4ud2RnONxUCyRjpUmmLaVUWYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7ZhrcqgSFg+z+V5r3hw1UPju+Zot9wbhRUN9vgkpuNtP6jllkhYD1oK1KpBA2Su9
-	 RhED5pVmGbZ3f35fuNPb6s3f2BobpHWvEzKLtwTm2uukpWqMnbsN7JygYexTXz5fKt
-	 MXdsHSmmHxpzNzc0ehQU5EVUuH7WrQg1b7KUd4uE=
+	b=DuFoE/yfzsLRIRTnzRAl9+PfP7V8VoVsnH5C/x9rZtG6VMj91N0Om06X6W0lFOCMO
+	 QsNARdHJsSZOf0UDDCa7MJDJbBN7nFxNmQnKseMx914VcVDOVayiB/rx3fJAHHR2yN
+	 e42bhMly9yYaUMTaXrHs6j9V9Asb8HS4vjQDmTmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lasse Collin <lasse.collin@tukaani.org>,
-	Sam James <sam@gentoo.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Joel Stanley <joel@jms.id.au>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jubin Zhong <zhongjubin@huawei.com>,
-	Jules Maselbas <jmaselbas@zdiv.net>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rui Li <me@lirui.org>,
-	Simon Glass <sjg@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 222/538] xz: cleanup CRC32 edits from 2018
-Date: Wed,  2 Oct 2024 14:57:41 +0200
-Message-ID: <20241002125801.017663129@linuxfoundation.org>
+	Wang Jianzheng <wangjianzheng@vivo.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 362/634] pinctrl: mvebu: Fix devinit_dove_pinctrl_probe function
+Date: Wed,  2 Oct 2024 14:57:42 +0200
+Message-ID: <20241002125825.384688831@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,80 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lasse Collin <lasse.collin@tukaani.org>
+From: Wang Jianzheng <wangjianzheng@vivo.com>
 
-[ Upstream commit 2ee96abef214550d9e92f5143ee3ac1fd1323e67 ]
+[ Upstream commit c25478419f6fd3f74c324a21ec007cf14f2688d7 ]
 
-In 2018, a dependency on <linux/crc32poly.h> was added to avoid
-duplicating the same constant in multiple files.  Two months later it was
-found to be a bad idea and the definition of CRC32_POLY_LE macro was moved
-into xz_private.h to avoid including <linux/crc32poly.h>.
+When an error occurs during the execution of the function
+__devinit_dove_pinctrl_probe, the clk is not properly disabled.
 
-xz_private.h is a wrong place for it too.  Revert back to the upstream
-version which has the poly in xz_crc32_init() in xz_crc32.c.
+Fix this by calling clk_disable_unprepare before return.
 
-Link: https://lkml.kernel.org/r/20240721133633.47721-10-lasse.collin@tukaani.org
-Fixes: faa16bc404d7 ("lib: Use existing define with polynomial")
-Fixes: 242cdad873a7 ("lib/xz: Put CRC32_POLY_LE in xz_private.h")
-Signed-off-by: Lasse Collin <lasse.collin@tukaani.org>
-Reviewed-by: Sam James <sam@gentoo.org>
-Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Joel Stanley <joel@jms.id.au>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Jubin Zhong <zhongjubin@huawei.com>
-Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Rui Li <me@lirui.org>
-Cc: Simon Glass <sjg@chromium.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ba607b6238a1 ("pinctrl: mvebu: make pdma clock on dove mandatory")
+Signed-off-by: Wang Jianzheng <wangjianzheng@vivo.com>
+Link: https://lore.kernel.org/20240829064823.19808-1-wangjianzheng@vivo.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/xz/xz_crc32.c   | 2 +-
- lib/xz/xz_private.h | 4 ----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-dove.c | 42 +++++++++++++++++++---------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
 
-diff --git a/lib/xz/xz_crc32.c b/lib/xz/xz_crc32.c
-index 88a2c35e1b597..5627b00fca296 100644
---- a/lib/xz/xz_crc32.c
-+++ b/lib/xz/xz_crc32.c
-@@ -29,7 +29,7 @@ STATIC_RW_DATA uint32_t xz_crc32_table[256];
+diff --git a/drivers/pinctrl/mvebu/pinctrl-dove.c b/drivers/pinctrl/mvebu/pinctrl-dove.c
+index 1947da73e5121..dce601d993728 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-dove.c
++++ b/drivers/pinctrl/mvebu/pinctrl-dove.c
+@@ -767,7 +767,7 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 	struct resource fb_res;
+ 	struct mvebu_mpp_ctrl_data *mpp_data;
+ 	void __iomem *base;
+-	int i;
++	int i, ret;
  
- XZ_EXTERN void xz_crc32_init(void)
- {
--	const uint32_t poly = CRC32_POLY_LE;
-+	const uint32_t poly = 0xEDB88320;
+ 	pdev->dev.platform_data = (void *)device_get_match_data(&pdev->dev);
  
- 	uint32_t i;
- 	uint32_t j;
-diff --git a/lib/xz/xz_private.h b/lib/xz/xz_private.h
-index bf1e94ec7873c..d9fd49b45fd75 100644
---- a/lib/xz/xz_private.h
-+++ b/lib/xz/xz_private.h
-@@ -105,10 +105,6 @@
- #	endif
- #endif
+@@ -783,13 +783,17 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 	clk_prepare_enable(clk);
  
--#ifndef CRC32_POLY_LE
--#define CRC32_POLY_LE 0xedb88320
--#endif
--
- /*
-  * Allocate memory for LZMA2 decoder. xz_dec_lzma2_reset() must be used
-  * before calling xz_dec_lzma2_run().
+ 	base = devm_platform_get_and_ioremap_resource(pdev, 0, &mpp_res);
+-	if (IS_ERR(base))
+-		return PTR_ERR(base);
++	if (IS_ERR(base)) {
++		ret = PTR_ERR(base);
++		goto err_probe;
++	}
+ 
+ 	mpp_data = devm_kcalloc(&pdev->dev, dove_pinctrl_info.ncontrols,
+ 				sizeof(*mpp_data), GFP_KERNEL);
+-	if (!mpp_data)
+-		return -ENOMEM;
++	if (!mpp_data) {
++		ret = -ENOMEM;
++		goto err_probe;
++	}
+ 
+ 	dove_pinctrl_info.control_data = mpp_data;
+ 	for (i = 0; i < ARRAY_SIZE(dove_mpp_controls); i++)
+@@ -808,8 +812,10 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	mpp4_base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(mpp4_base))
+-		return PTR_ERR(mpp4_base);
++	if (IS_ERR(mpp4_base)) {
++		ret = PTR_ERR(mpp4_base);
++		goto err_probe;
++	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 2);
+ 	if (!res) {
+@@ -820,8 +826,10 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	pmu_base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(pmu_base))
+-		return PTR_ERR(pmu_base);
++	if (IS_ERR(pmu_base)) {
++		ret = PTR_ERR(pmu_base);
++		goto err_probe;
++	}
+ 
+ 	gconfmap = syscon_regmap_lookup_by_compatible("marvell,dove-global-config");
+ 	if (IS_ERR(gconfmap)) {
+@@ -831,12 +839,17 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 		adjust_resource(&fb_res,
+ 			(mpp_res->start & INT_REGS_MASK) + GC_REGS_OFFS, 0x14);
+ 		gc_base = devm_ioremap_resource(&pdev->dev, &fb_res);
+-		if (IS_ERR(gc_base))
+-			return PTR_ERR(gc_base);
++		if (IS_ERR(gc_base)) {
++			ret = PTR_ERR(gc_base);
++			goto err_probe;
++		}
++
+ 		gconfmap = devm_regmap_init_mmio(&pdev->dev,
+ 						 gc_base, &gc_regmap_config);
+-		if (IS_ERR(gconfmap))
+-			return PTR_ERR(gconfmap);
++		if (IS_ERR(gconfmap)) {
++			ret = PTR_ERR(gconfmap);
++			goto err_probe;
++		}
+ 	}
+ 
+ 	/* Warn on any missing DT resource */
+@@ -844,6 +857,9 @@ static int dove_pinctrl_probe(struct platform_device *pdev)
+ 		dev_warn(&pdev->dev, FW_BUG "Missing pinctrl regs in DTB. Please update your firmware.\n");
+ 
+ 	return mvebu_pinctrl_probe(pdev);
++err_probe:
++	clk_disable_unprepare(clk);
++	return ret;
+ }
+ 
+ static struct platform_driver dove_pinctrl_driver = {
 -- 
 2.43.0
 
