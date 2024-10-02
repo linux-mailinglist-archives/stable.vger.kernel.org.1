@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF47798DA2B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D2298DCC0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFECC1C2314B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FFD8281759
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DD21D172F;
-	Wed,  2 Oct 2024 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1801D2F64;
+	Wed,  2 Oct 2024 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0b/q51W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jL5BA7S9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209161D1729;
-	Wed,  2 Oct 2024 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CED919752C;
+	Wed,  2 Oct 2024 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878444; cv=none; b=nM3j7Nm2CqE6lEEsfiihrLbZxKgNqIRbMCCwukhfoFN9L3h0s6nu/i2hocR0cvFMFFjF3iqHLQL14Qh3iEUwWjq/ST0sdEuMhSSH7Sf695EzNvVbb2jYr3nzzr/DldeqCtNCrkZenWuQc8xmk3c0KLvQZ0IBqX4eaBZxXVdfHXg=
+	t=1727879900; cv=none; b=D94LtkBLbJYfgYY6mMlQqW24wOw915y8EK+WtBmVJQz81I+n6+FvTyS2c5AR4eAkRcyJipT1wEQo9ZW8R40pbafILc8eOjb/PGn4jQXoVdABjJd9Hia3Q4Ti+GA1zK0yWK78zr5P7hq+rDInxRNOFAQ91ITLhnkkUkSZbuayhO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878444; c=relaxed/simple;
-	bh=6tb26KfJLC+RbdzCZ82NrczCwAzXICyTotqx+7cqy3k=;
+	s=arc-20240116; t=1727879900; c=relaxed/simple;
+	bh=XmAU4ZKIqOpMEGSLJrspEfPWnWsGEmPgDZCf5MJwVOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oB9t8Lj20fEr3TQ3jvEk0TVCOH+buQp6ql31UD45oMaqIOEkdaiZFagUNXYrDmI9CKP2iRHbx0ofwrZLOLb9T8jWZZnGlgRn4ceq+eQGkuaRA1mWbzXIjeFT1juRkS5XIrufsfNhFs9GYwWU+qQgXEqiHAhdZL1QKNLjosE9CLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0b/q51W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8D1C4CEC2;
-	Wed,  2 Oct 2024 14:14:03 +0000 (UTC)
+	 MIME-Version; b=uJ9lqdSFzYdasIBp+rEoZrcUSqN8qKCPLT3JPpYdPz8RqL50DaIoinjYh6XtyqR41pSOahjbm/z8N7STiW6/YDdI8R/3Y5rxswY3N+r21eGQqegzg8kDWQuALAeLxoAeSDVc1TUl9LGzomCyP2QhSXrkMxvlTuHcgoAurdL0i5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jL5BA7S9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCF3C4CEC5;
+	Wed,  2 Oct 2024 14:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878444;
-	bh=6tb26KfJLC+RbdzCZ82NrczCwAzXICyTotqx+7cqy3k=;
+	s=korg; t=1727879899;
+	bh=XmAU4ZKIqOpMEGSLJrspEfPWnWsGEmPgDZCf5MJwVOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0b/q51WZSY5RnA0DykTUzQqb7h0ishuHLrA6u2tdFD7/dmb0JrmQvlNhukL6lDZZ
-	 uOmyL6WLiSI0Mvc+QILFJYwbqtqdprYc0tTsoGME7G5y4WRkVDIA4C0iyJTQY8AhLu
-	 +yXxgPnS9H7saXIi4F9GD/+iI6QUH6M8TshZSZzE=
+	b=jL5BA7S9uesZn+F4Cbby9gdj67tKWrNSpAsgVXPlQ00ZVEsd/vE8eEDa5zaprTgjK
+	 Feh1Qw1+ocgtOXri0RvhBIgbj1inq5l1CR4wZ9/72lKxqA1Q9B9szV/9/mr023xUTK
+	 gUMZRc0N7+rHzZdwle5Cj+CMDgY84OLUbgXq59N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Stols <gstols@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 416/634] iio: adc: ad7606: fix standby gpio state to match the documentation
+Subject: [PATCH 6.6 277/538] pinctrl: ti: iodelay: Use scope based of_node_put() cleanups
 Date: Wed,  2 Oct 2024 14:58:36 +0200
-Message-ID: <20241002125827.525723379@linuxfoundation.org>
+Message-ID: <20241002125803.192550716@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Stols <gstols@baylibre.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 059fe4f8bbdf5cad212e1aeeb3e8968c80b9ff3b ]
+[ Upstream commit 791a8bb202a85f707c20ef04a471519e35f089dc ]
 
-The binding's documentation specifies that "As the line is active low, it
-should be marked GPIO_ACTIVE_LOW". However, in the driver, it was handled
-the opposite way. This commit sets the driver's behaviour in sync with the
-documentation
+Use scope based of_node_put() cleanup to simplify code.
 
-Fixes: 722407a4e8c0 ("staging:iio:ad7606: Use GPIO descriptor API")
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/20240627131721.678727-2-peng.fan@oss.nxp.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: a9f2b249adee ("pinctrl: ti: ti-iodelay: Fix some error handling paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 43 +++++++++----------------
+ 1 file changed, 15 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 8c66b1e364014..4d755ffc3f414 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -422,7 +422,7 @@ static int ad7606_request_gpios(struct ad7606_state *st)
- 		return PTR_ERR(st->gpio_range);
+diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+index ef97586385019..f5e5a23d22260 100644
+--- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
++++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+@@ -822,53 +822,48 @@ MODULE_DEVICE_TABLE(of, ti_iodelay_of_match);
+ static int ti_iodelay_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *np = of_node_get(dev->of_node);
++	struct device_node *np __free(device_node) = of_node_get(dev->of_node);
+ 	struct resource *res;
+ 	struct ti_iodelay_device *iod;
+-	int ret = 0;
++	int ret;
  
- 	st->gpio_standby = devm_gpiod_get_optional(dev, "standby",
--						   GPIOD_OUT_HIGH);
-+						   GPIOD_OUT_LOW);
- 	if (IS_ERR(st->gpio_standby))
- 		return PTR_ERR(st->gpio_standby);
- 
-@@ -665,7 +665,7 @@ static int ad7606_suspend(struct device *dev)
- 
- 	if (st->gpio_standby) {
- 		gpiod_set_value(st->gpio_range, 1);
--		gpiod_set_value(st->gpio_standby, 0);
-+		gpiod_set_value(st->gpio_standby, 1);
+ 	if (!np) {
+-		ret = -EINVAL;
+ 		dev_err(dev, "No OF node\n");
+-		goto exit_out;
++		return -EINVAL;
  	}
  
- 	return 0;
+ 	iod = devm_kzalloc(dev, sizeof(*iod), GFP_KERNEL);
+-	if (!iod) {
+-		ret = -ENOMEM;
+-		goto exit_out;
+-	}
++	if (!iod)
++		return -ENOMEM;
++
+ 	iod->dev = dev;
+ 	iod->reg_data = device_get_match_data(dev);
+ 	if (!iod->reg_data) {
+-		ret = -EINVAL;
+ 		dev_err(dev, "No DATA match\n");
+-		goto exit_out;
++		return -EINVAL;
+ 	}
+ 
+ 	/* So far We can assume there is only 1 bank of registers */
+ 	iod->reg_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+-	if (IS_ERR(iod->reg_base)) {
+-		ret = PTR_ERR(iod->reg_base);
+-		goto exit_out;
+-	}
++	if (IS_ERR(iod->reg_base))
++		return PTR_ERR(iod->reg_base);
++
+ 	iod->phys_base = res->start;
+ 
+ 	iod->regmap = devm_regmap_init_mmio(dev, iod->reg_base,
+ 					    iod->reg_data->regmap_config);
+ 	if (IS_ERR(iod->regmap)) {
+ 		dev_err(dev, "Regmap MMIO init failed.\n");
+-		ret = PTR_ERR(iod->regmap);
+-		goto exit_out;
++		return PTR_ERR(iod->regmap);
+ 	}
+ 
+ 	ret = ti_iodelay_pinconf_init_dev(iod);
+ 	if (ret)
+-		goto exit_out;
++		return ret;
+ 
+ 	ret = ti_iodelay_alloc_pins(dev, iod, res->start);
+ 	if (ret)
+-		goto exit_out;
++		return ret;
+ 
+ 	iod->desc.pctlops = &ti_iodelay_pinctrl_ops;
+ 	/* no pinmux ops - we are pinconf */
+@@ -879,20 +874,12 @@ static int ti_iodelay_probe(struct platform_device *pdev)
+ 	ret = devm_pinctrl_register_and_init(dev, &iod->desc, iod, &iod->pctl);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to register pinctrl\n");
+-		goto exit_out;
++		return ret;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, iod);
+ 
+-	ret = pinctrl_enable(iod->pctl);
+-	if (ret)
+-		goto exit_out;
+-
+-	return 0;
+-
+-exit_out:
+-	of_node_put(np);
+-	return ret;
++	return pinctrl_enable(iod->pctl);
+ }
+ 
+ /**
 -- 
 2.43.0
 
