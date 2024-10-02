@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219C498DB27
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CA398DD71
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9233EB27184
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258791F227F9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8821D0951;
-	Wed,  2 Oct 2024 14:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEC91D0957;
+	Wed,  2 Oct 2024 14:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9sjwkmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFfrBI/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD6C198A1A;
-	Wed,  2 Oct 2024 14:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154D11E892;
+	Wed,  2 Oct 2024 14:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879018; cv=none; b=d0I4zOcBRBWDEUNMeVRC2eLs5yrLi2cmGKyW6mvHD8SM5iR7ZIRUL7tS6YSh5NkUWKVVFJuEsiQiZytCbdMHEFiriM5ZrMEHyv4qHjAeCuMO1UGmM5WCEFaqD/oc7q+uTQrh2w1qEbuqTUskVIG81qWanZzceIRCpZP4ew0vvEI=
+	t=1727880384; cv=none; b=YIDC6AWxdfRFqTtNYhBFJDtKT9lcq63jMg2lGawkM5QU1J+gDghXo+Cg3Gyspd6uGJXLLZsntM69app8t37PiniQ+go8pPo+95fVrmzg67a8+jJ/fnSsh5IKi8QbevTqaoSnMgRGG06KuoCXh1ycQl1HHOxiXnfZBvZB81x+l20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879018; c=relaxed/simple;
-	bh=zLIZ8uXvllxf4kOqywkBzpJILNSpYuAkJDEqBhnYRvo=;
+	s=arc-20240116; t=1727880384; c=relaxed/simple;
+	bh=WbDkYdPF8xEw8ZECU/Ht9y6Np5UoVBpZCaMvZzIFwG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfRcEoE4D0TmWGUB9n3/tIifnmNTnHJcJYM7V+QeVHRCMtzSBrB7BsqILkorUuTwpxivchRZdEei7YbdHJHnfoQa8rLx3FAXRWKZ30p7T1Kbr5w4sE4xVtp9mzRFKP4K5WmW0G76TAAYzsEoCs08K+l8M8TOeg7NEY1/CFn9uk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9sjwkmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170D9C4CEC2;
-	Wed,  2 Oct 2024 14:23:37 +0000 (UTC)
+	 MIME-Version; b=gh2QFbtaGERy07mIhlPMgKATMASpna5yx101UJxNBpLpH9/NF94fElHkhFiMVe/USOeruJBwDzo6yI5RSB6/UIdrh5LJCCBN2aU6Jved3L6o/zi2sDefZZrD9HhtnIlmEP1wThEPJgIoWwCeHFkLNrh2ewdqVNa/cAaeTV/MuVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFfrBI/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9098DC4CEC2;
+	Wed,  2 Oct 2024 14:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879018;
-	bh=zLIZ8uXvllxf4kOqywkBzpJILNSpYuAkJDEqBhnYRvo=;
+	s=korg; t=1727880384;
+	bh=WbDkYdPF8xEw8ZECU/Ht9y6Np5UoVBpZCaMvZzIFwG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9sjwkmP5fgGEo/Oemw//fAwtc64Tu6cK99yc6sM+THLaHOeycl49r02rLovSEQmc
-	 +x6BphDjIlsBJwqrQHAArBZeTTfqEU2S/1w66GeMlmA5sumA/deN+JuacXoOsvZvRX
-	 teg09L/bGqH6eJKM9UEkihLC4dRu0C1hBOaAEkKY=
+	b=lFfrBI/bqIKjK13Y6Ft/Ng9SYMQmLS9+vGx+PKoy88vGH6fgHOXknK3YwI9Y7mtj/
+	 rElrw5TZUqdks8iYvv2HOkzElb/hviigZKXaOAqEcv0UDTocLlT+xpJU7EQYlKfFEG
+	 ojWLrfrUsN0CUUQbAxkEo2bBSfnnTXJDCAuYBNGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH 6.10 579/634] EDAC/igen6: Fix conversion of system address to physical memory address
-Date: Wed,  2 Oct 2024 15:01:19 +0200
-Message-ID: <20241002125833.971622340@linuxfoundation.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.6 441/538] firmware_loader: Block path traversal
+Date: Wed,  2 Oct 2024 15:01:20 +0200
+Message-ID: <20241002125809.848146189@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Jann Horn <jannh@google.com>
 
-commit 0ad875f442e95d69a1145a38aabac2fd29984fe3 upstream.
+commit f0e5311aa8022107d63c54e2f03684ec097d1394 upstream.
 
-The conversion of system address to physical memory address (as viewed by
-the memory controller) by igen6_edac is incorrect when the system address
-is above the TOM (Total amount Of populated physical Memory) for Elkhart
-Lake and Ice Lake (Neural Network Processor). Fix this conversion.
+Most firmware names are hardcoded strings, or are constructed from fairly
+constrained format strings where the dynamic parts are just some hex
+numbers or such.
 
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+However, there are a couple codepaths in the kernel where firmware file
+names contain string components that are passed through from a device or
+semi-privileged userspace; the ones I could find (not counting interfaces
+that require root privileges) are:
+
+ - lpfc_sli4_request_firmware_update() seems to construct the firmware
+   filename from "ModelName", a string that was previously parsed out of
+   some descriptor ("Vital Product Data") in lpfc_fill_vpd()
+ - nfp_net_fw_find() seems to construct a firmware filename from a model
+   name coming from nfp_hwinfo_lookup(pf->hwinfo, "nffw.partno"), which I
+   think parses some descriptor that was read from the device.
+   (But this case likely isn't exploitable because the format string looks
+   like "netronome/nic_%s", and there shouldn't be any *folders* starting
+   with "netronome/nic_". The previous case was different because there,
+   the "%s" is *at the start* of the format string.)
+ - module_flash_fw_schedule() is reachable from the
+   ETHTOOL_MSG_MODULE_FW_FLASH_ACT netlink command, which is marked as
+   GENL_UNS_ADMIN_PERM (meaning CAP_NET_ADMIN inside a user namespace is
+   enough to pass the privilege check), and takes a userspace-provided
+   firmware name.
+   (But I think to reach this case, you need to have CAP_NET_ADMIN over a
+   network namespace that a special kind of ethernet device is mapped into,
+   so I think this is not a viable attack path in practice.)
+
+Fix it by rejecting any firmware names containing ".." path components.
+
+For what it's worth, I went looking and haven't found any USB device
+drivers that use the firmware loader dangerously.
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/stable/20240814061011.43545-1-qiuxu.zhuo%40intel.com
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: abb139e75c2c ("firmware: teach the kernel to load firmware files directly from the filesystem")
+Signed-off-by: Jann Horn <jannh@google.com>
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20240828-firmware-traversal-v3-1-c76529c63b5f@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/igen6_edac.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/firmware_loader/main.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -311,7 +311,7 @@ static u64 ehl_err_addr_to_imc_addr(u64
- 	if (igen6_tom <= _4GB)
- 		return eaddr + igen6_tolud - _4GB;
+--- a/drivers/base/firmware_loader/main.c
++++ b/drivers/base/firmware_loader/main.c
+@@ -844,6 +844,26 @@ static void fw_log_firmware_info(const s
+ {}
+ #endif
  
--	if (eaddr < _4GB)
-+	if (eaddr >= igen6_tom)
- 		return eaddr + igen6_tolud - igen6_tom;
++/*
++ * Reject firmware file names with ".." path components.
++ * There are drivers that construct firmware file names from device-supplied
++ * strings, and we don't want some device to be able to tell us "I would like to
++ * be sent my firmware from ../../../etc/shadow, please".
++ *
++ * Search for ".." surrounded by either '/' or start/end of string.
++ *
++ * This intentionally only looks at the firmware name, not at the firmware base
++ * directory or at symlink contents.
++ */
++static bool name_contains_dotdot(const char *name)
++{
++	size_t name_len = strlen(name);
++
++	return strcmp(name, "..") == 0 || strncmp(name, "../", 3) == 0 ||
++	       strstr(name, "/../") != NULL ||
++	       (name_len >= 3 && strcmp(name+name_len-3, "/..") == 0);
++}
++
+ /* called from request_firmware() and request_firmware_work_func() */
+ static int
+ _request_firmware(const struct firmware **firmware_p, const char *name,
+@@ -864,6 +884,14 @@ _request_firmware(const struct firmware
+ 		goto out;
+ 	}
  
- 	return eaddr;
++	if (name_contains_dotdot(name)) {
++		dev_warn(device,
++			 "Firmware load for '%s' refused, path contains '..' component\n",
++			 name);
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	ret = _request_firmware_prepare(&fw, name, device, buf, size,
+ 					offset, opt_flags);
+ 	if (ret <= 0) /* error or already assigned */
+@@ -941,6 +969,8 @@ out:
+  *      @name will be used as $FIRMWARE in the uevent environment and
+  *      should be distinctive enough not to be confused with any other
+  *      firmware image for this or any other device.
++ *	It must not contain any ".." path components - "foo/bar..bin" is
++ *	allowed, but "foo/../bar.bin" is not.
+  *
+  *	Caller must hold the reference count of @device.
+  *
 
 
 
