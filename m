@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-80155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0180B98DC33
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8002C98D990
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65576B28842
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D0CC2898D9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCC21D0DDE;
-	Wed,  2 Oct 2024 14:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6B71D1720;
+	Wed,  2 Oct 2024 14:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqBa0VvJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w46g4wFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB981474BC;
-	Wed,  2 Oct 2024 14:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2B21D0BAC;
+	Wed,  2 Oct 2024 14:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879544; cv=none; b=SNmlfaETctjpLjSCUWnQfOMLmCPEvwx8ssM/DNPjS8E4lwnaqHhoW2Hb/ZO7xf9FkpwQhfU+X92lTiy7ooZVnbRCEIC33LaSd4fduqb/kaZ5X5Q+vGJFrsvL6CA/8HyoUyF8du89/MLTbKI3BmvX8OJgiFG4g6ei0QRkJ2f1jao=
+	t=1727878079; cv=none; b=Ev6JSHATfolqlItDhbauC/1Nn7sdK6L5k1Q8U3T9ihzJrFs4NdkfUo6/q0sc74ctcSypVkS2Tl2zFALtKMNaqBbm3fIE1bQ3mKW12AVWzREBCPLICYe9voA0sAFedDFcDIqnifu7phxj+ISfo06DSmLEt3N+MuLjGm9p0SC62jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879544; c=relaxed/simple;
-	bh=UKZrsZwHGKlnJ7qwLSYtmZ94gIlIb5+wWIpZ1xywPzI=;
+	s=arc-20240116; t=1727878079; c=relaxed/simple;
+	bh=s69oBi+vmkuA4AAD65iXZv6cR3zO/XBmJQIHXNGT8A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0IGpNZHLRdge8F0m6IpvPb36XUEqOdhfWJbMNvuTkdye0KmFlezhV24FBWXa4kt5jsNlTfJTxp87+QIfY0gB12YEaULMuIwt9B4/WCDYBxDZGLUW32OE0K1ywwfQjzWBGvawDPrXN0TGBec5aSOh/r1Mi3YLxhPwfVc+6P3GSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqBa0VvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC253C4CEC2;
-	Wed,  2 Oct 2024 14:32:23 +0000 (UTC)
+	 MIME-Version; b=sq/RmPTlgM6iSY14wxS0GObjKhyeUn9euvdio76XCoHWJdKM85MG9Sk17UxM0jiqT1Tmzy3DmEp30+ATmo00ffZrq8fivd4vdGptd8pQPUN0MRZOqHAXZIF9itP8cyAxVEjz17odZjL71d6Pq7fQSgxW/LqO5aG8mR76VFL47lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w46g4wFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF29CC4CEC5;
+	Wed,  2 Oct 2024 14:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879544;
-	bh=UKZrsZwHGKlnJ7qwLSYtmZ94gIlIb5+wWIpZ1xywPzI=;
+	s=korg; t=1727878079;
+	bh=s69oBi+vmkuA4AAD65iXZv6cR3zO/XBmJQIHXNGT8A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqBa0VvJAgxalgGV1FWoA6Dj6fx8yqoaqvugsJNQrxcJD+RA7nZ1jwbmrQem8xoV9
-	 cC/XXMQlnyoAJ+yGilnPMA/YMYi3J1GwMzD38ad8Qfl0KzUbckdJzk2Y/fOXbjNSOg
-	 0EDuDwCJL49z7fccB3g7RlUDnjecRYfr+JN/gwis=
+	b=w46g4wFKQ5bR+UsrFw4me9c0yTd5KCQ32ZVkeYxgqiYhqtzR01Ia1dDoNLIH3eEbs
+	 3qnwb5ZG7p8rJ3Z0KJGuJEIdu67RTp8Rf7e9s4K7xXD9J1xswZxKKniPAOJDXnk03+
+	 7fLyTwygkFA9j17yroNUA9KipPFjADxbDxNOuFgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Anne Macedo <retpolanne@posteo.net>,
+	Changbin Du <changbin.du@huawei.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/538] powerpc/8xx: Fix initial memory mapping
+Subject: [PATCH 6.10 294/634] perf callchain: Fix stitch LBR memory leaks
 Date: Wed,  2 Oct 2024 14:56:34 +0200
-Message-ID: <20241002125758.372673243@linuxfoundation.org>
+Message-ID: <20241002125822.717398522@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +73,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit f9f2bff64c2f0dbee57be3d8c2741357ad3d05e6 ]
+[ Upstream commit 599c19397b17d197fc1184bbc950f163a292efc9 ]
 
-Commit cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-introduced an initial mapping of kernel TEXT using PAGE_KERNEL_TEXT,
-but the pages that contain kernel TEXT may also contain kernel RODATA,
-and depending on selected debug options PAGE_KERNEL_TEXT may be either
-RWX or ROX. RODATA must be writable during init because it also
-contains ro_after_init data.
+The 'struct callchain_cursor_node' has a 'struct map_symbol' whose maps
+and map members are reference counted. Ensure these values use a _get
+routine to increment the reference counts and use map_symbol__exit() to
+release the reference counts.
 
-So use PAGE_KERNEL_X instead to be sure it is RWX.
+Do similar for 'struct thread's prev_lbr_cursor, but save the size of
+the prev_lbr_cursor array so that it may be iterated.
 
-Fixes: cf209951fa7f ("powerpc/8xx: Map linear memory with huge pages")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/dac7a828d8497c4548c91840575a706657baa4f1.1724173828.git.christophe.leroy@csgroup.eu
+Ensure that when stitch_nodes are placed on the free list the
+map_symbols are exited.
+
+Fix resolve_lbr_callchain_sample() by replacing list_replace_init() to
+list_splice_init(), so the whole list is moved and nodes aren't leaked.
+
+A reproduction of the memory leaks is possible with a leak sanitizer
+build in the perf report command of:
+
+  ```
+  $ perf record -e cycles --call-graph lbr perf test -w thloop
+  $ perf report --stitch-lbr
+  ```
+
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: ff165628d72644e3 ("perf callchain: Stitch LBR call stack")
+Signed-off-by: Ian Rogers <irogers@google.com>
+[ Basic tests after applying the patch, repeating the example above ]
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Anne Macedo <retpolanne@posteo.net>
+Cc: Changbin Du <changbin.du@huawei.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240808054644.1286065-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/nohash/8xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/machine.c | 17 +++++++++++++++--
+ tools/perf/util/thread.c  |  4 ++++
+ tools/perf/util/thread.h  |  1 +
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 3245016302787..a947dff35d651 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -149,11 +149,11 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 8477edefc2997..706be5e4a0761 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -2270,8 +2270,12 @@ static void save_lbr_cursor_node(struct thread *thread,
+ 		cursor->curr = cursor->first;
+ 	else
+ 		cursor->curr = cursor->curr->next;
++
++	map_symbol__exit(&lbr_stitch->prev_lbr_cursor[idx].ms);
+ 	memcpy(&lbr_stitch->prev_lbr_cursor[idx], cursor->curr,
+ 	       sizeof(struct callchain_cursor_node));
++	lbr_stitch->prev_lbr_cursor[idx].ms.maps = maps__get(cursor->curr->ms.maps);
++	lbr_stitch->prev_lbr_cursor[idx].ms.map = map__get(cursor->curr->ms.map);
  
- 	mmu_mapin_immr();
+ 	lbr_stitch->prev_lbr_cursor[idx].valid = true;
+ 	cursor->pos++;
+@@ -2482,6 +2486,9 @@ static bool has_stitched_lbr(struct thread *thread,
+ 		memcpy(&stitch_node->cursor, &lbr_stitch->prev_lbr_cursor[i],
+ 		       sizeof(struct callchain_cursor_node));
  
--	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_TEXT, true);
-+	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_X, true);
- 	if (debug_pagealloc_enabled_or_kfence()) {
- 		top = boundary;
- 	} else {
--		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_TEXT, true);
-+		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_X, true);
- 		mmu_mapin_ram_chunk(einittext8, top, PAGE_KERNEL, true);
++		stitch_node->cursor.ms.maps = maps__get(lbr_stitch->prev_lbr_cursor[i].ms.maps);
++		stitch_node->cursor.ms.map = map__get(lbr_stitch->prev_lbr_cursor[i].ms.map);
++
+ 		if (callee)
+ 			list_add(&stitch_node->node, &lbr_stitch->lists);
+ 		else
+@@ -2505,6 +2512,8 @@ static bool alloc_lbr_stitch(struct thread *thread, unsigned int max_lbr)
+ 	if (!thread__lbr_stitch(thread)->prev_lbr_cursor)
+ 		goto free_lbr_stitch;
+ 
++	thread__lbr_stitch(thread)->prev_lbr_cursor_size = max_lbr + 1;
++
+ 	INIT_LIST_HEAD(&thread__lbr_stitch(thread)->lists);
+ 	INIT_LIST_HEAD(&thread__lbr_stitch(thread)->free_lists);
+ 
+@@ -2560,8 +2569,12 @@ static int resolve_lbr_callchain_sample(struct thread *thread,
+ 						max_lbr, callee);
+ 
+ 		if (!stitched_lbr && !list_empty(&lbr_stitch->lists)) {
+-			list_replace_init(&lbr_stitch->lists,
+-					  &lbr_stitch->free_lists);
++			struct stitch_list *stitch_node;
++
++			list_for_each_entry(stitch_node, &lbr_stitch->lists, node)
++				map_symbol__exit(&stitch_node->cursor.ms);
++
++			list_splice_init(&lbr_stitch->lists, &lbr_stitch->free_lists);
+ 		}
+ 		memcpy(&lbr_stitch->prev_sample, sample, sizeof(*sample));
+ 	}
+diff --git a/tools/perf/util/thread.c b/tools/perf/util/thread.c
+index 87c59aa9fe38b..0ffdd52d86d70 100644
+--- a/tools/perf/util/thread.c
++++ b/tools/perf/util/thread.c
+@@ -476,6 +476,7 @@ void thread__free_stitch_list(struct thread *thread)
+ 		return;
+ 
+ 	list_for_each_entry_safe(pos, tmp, &lbr_stitch->lists, node) {
++		map_symbol__exit(&pos->cursor.ms);
+ 		list_del_init(&pos->node);
+ 		free(pos);
+ 	}
+@@ -485,6 +486,9 @@ void thread__free_stitch_list(struct thread *thread)
+ 		free(pos);
  	}
  
++	for (unsigned int i = 0 ; i < lbr_stitch->prev_lbr_cursor_size; i++)
++		map_symbol__exit(&lbr_stitch->prev_lbr_cursor[i].ms);
++
+ 	zfree(&lbr_stitch->prev_lbr_cursor);
+ 	free(thread__lbr_stitch(thread));
+ 	thread__set_lbr_stitch(thread, NULL);
+diff --git a/tools/perf/util/thread.h b/tools/perf/util/thread.h
+index 8b4a3c69bad19..6cbf6eb2812e0 100644
+--- a/tools/perf/util/thread.h
++++ b/tools/perf/util/thread.h
+@@ -26,6 +26,7 @@ struct lbr_stitch {
+ 	struct list_head		free_lists;
+ 	struct perf_sample		prev_sample;
+ 	struct callchain_cursor_node	*prev_lbr_cursor;
++	unsigned int prev_lbr_cursor_size;
+ };
+ 
+ DECLARE_RC_STRUCT(thread) {
 -- 
 2.43.0
 
