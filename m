@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-79979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D8C98DB2D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F66C98DD9B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32E31280CFE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA6C1F264C7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF711D222B;
-	Wed,  2 Oct 2024 14:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4A31D1732;
+	Wed,  2 Oct 2024 14:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4jzt6kD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdQ1TiL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784D51D2228;
-	Wed,  2 Oct 2024 14:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4681D07B5;
+	Wed,  2 Oct 2024 14:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879030; cv=none; b=iOh1Wp16wkZswdE55UWM0D2UltslQMLNb0NIdRwYJNL6JVuq50ELmGdZ/UPqqsby3GpbfwnuEvyEaF/IVEkMD3lA2HeH2GnfzT1PIxBsGPpvs2ECLSzqe8VN+sxzndW2pohGo/uFPgvD7Uj4ARDaTeKLnRG2J/mzyuJ7oDc2jTE=
+	t=1727880489; cv=none; b=jGf2BfqqN+QZXN/RksuyhE5SdmO8PmnlvMZbuVAOFuLe+OhxmUJvR5ZYiyAn+jVrykzX8ijpur+664ZCaW9v+28cwv7/1pg5O7aX3X0pQxSZLeIT+W6IhYYzfnKK3lEjRDkPZA7e7SLbyQHhB+H2VV/Ekoda4W99xEcvODA68H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879030; c=relaxed/simple;
-	bh=HAe4FdTuFrZXSeYMEJRR7qUvQp0wskHQfGoy4vbqgRo=;
+	s=arc-20240116; t=1727880489; c=relaxed/simple;
+	bh=IeNhZHrfDqCHML5tBfkyZmMu2cX+hoIbuHa8Vhm1IKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CSpNlNnS2EpxYdDTFCXLKhydHrw1gK+uRXAliSABaBjTtWW+G5fazu9srRKG5uVpP7S3+11XWwelYuAdBO6ccNuTe6C8UpKpWz3sHL8x5clMVxumZ9pjHE2ig+R/pJxKXgV0jUW6HqE0/SXxi3Lxo+2lJcWyCjF/zVDYDaLK2jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4jzt6kD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025DDC4CEC2;
-	Wed,  2 Oct 2024 14:23:49 +0000 (UTC)
+	 MIME-Version; b=kJ9Li+hY1dY9Fqw742LRG8b1u69jiG90GkVT19GOiLihpFpFdfevJjDNl4YT5ElHo59Z8qdGOhz2/5y/Y1ozpmL/LvAScfh55ze+GosbAJc4AHYB7iKWCG7NC/eHmf6WgxdIc3/kZ8gmHxFBJCCTqa+broQXxSJrDblaV6Pt3ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdQ1TiL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029D6C4CEC2;
+	Wed,  2 Oct 2024 14:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879030;
-	bh=HAe4FdTuFrZXSeYMEJRR7qUvQp0wskHQfGoy4vbqgRo=;
+	s=korg; t=1727880489;
+	bh=IeNhZHrfDqCHML5tBfkyZmMu2cX+hoIbuHa8Vhm1IKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4jzt6kDZigJedpU+jmqqHBAilOgu+M6bFJwnDCSLdb+yLhXMJkWKZr+22yipIfDD
-	 1+I/cT64ogIz3ek8nW6o+yctM+xBN8ol746/fo2g6oVREy6e9PKohoaF1GW/n/lcF6
-	 Fe3PhEcDlkF4Gvg54DC5k8F1AD4tulY8Mtesuh1M=
+	b=CdQ1TiL8gPJCFwLv+xQK69+QYmmbZVT1sJmX83v7M1Q1f6qHaEzvBOyggDn2JUMEx
+	 2Zir5cfBPQu2eJojfO5XTA/8fB4sM1rrcdqhATtOdGt0xFrQxlVRcEb4oa2ro0u0eu
+	 DTl634lqqqwRa4/buzrNc8W/PCOFYhD0Ykr/17VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	KP Singh <kpsingh@kernel.org>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.10 615/634] bpf: lsm: Set bpf_lsm_blob_sizes.lbs_task to 0
-Date: Wed,  2 Oct 2024 15:01:55 +0200
-Message-ID: <20241002125835.393482413@linuxfoundation.org>
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>
+Subject: [PATCH 6.6 477/538] EDAC/igen6: Fix conversion of system address to physical memory address
+Date: Wed,  2 Oct 2024 15:01:56 +0200
+Message-ID: <20241002125811.274431325@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-commit 300a90b2cb5d442879e6398920c49aebbd5c8e40 upstream.
+commit 0ad875f442e95d69a1145a38aabac2fd29984fe3 upstream.
 
-bpf task local storage is now using task_struct->bpf_storage, so
-bpf_lsm_blob_sizes.lbs_task is no longer needed. Remove it to save some
-memory.
+The conversion of system address to physical memory address (as viewed by
+the memory controller) by igen6_edac is incorrect when the system address
+is above the TOM (Total amount Of populated physical Memory) for Elkhart
+Lake and Ice Lake (Neural Network Processor). Fix this conversion.
 
-Fixes: a10787e6d58c ("bpf: Enable task local storage for tracing programs")
+Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
 Cc: stable@vger.kernel.org
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: Matt Bobrowski <mattbobrowski@google.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Acked-by: Matt Bobrowski <mattbobrowski@google.com>
-Link: https://lore.kernel.org/r/20240911055508.9588-1-song@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/stable/20240814061011.43545-1-qiuxu.zhuo%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/bpf/hooks.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/edac/igen6_edac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/bpf/hooks.c
-+++ b/security/bpf/hooks.c
-@@ -31,7 +31,6 @@ static int __init bpf_lsm_init(void)
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -245,7 +245,7 @@ static u64 ehl_err_addr_to_imc_addr(u64
+ 	if (igen6_tom <= _4GB)
+ 		return eaddr + igen6_tolud - _4GB;
  
- struct lsm_blob_sizes bpf_lsm_blob_sizes __ro_after_init = {
- 	.lbs_inode = sizeof(struct bpf_storage_blob),
--	.lbs_task = sizeof(struct bpf_storage_blob),
- };
+-	if (eaddr < _4GB)
++	if (eaddr >= igen6_tom)
+ 		return eaddr + igen6_tolud - igen6_tom;
  
- DEFINE_LSM(bpf) = {
+ 	return eaddr;
 
 
 
