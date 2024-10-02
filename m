@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-80197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A0998DC62
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE0198D9C6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 919141F26C22
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC3411C2308F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4173198A1A;
-	Wed,  2 Oct 2024 14:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6541D0E18;
+	Wed,  2 Oct 2024 14:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2oQdlK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iryZ0LJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820F51D04A8;
-	Wed,  2 Oct 2024 14:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBE01D0797;
+	Wed,  2 Oct 2024 14:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879667; cv=none; b=ryy9crKlQUmqrv8hpl4/Sd4phB0o/tjcSvti+ntNBgc7FpmPV8wYUzZTkR5uUmazLE8E11PyNkjQGpvb3zGgBupUpurNDy3q41hd6KZtx7GFCyP65ofyqNT+dDIJYxoT0YNqYsvp117rLvD4oKkyKa5DvU/4228q6/Z6KTw/zfk=
+	t=1727878213; cv=none; b=txrZ0R2jcclaubrPjE+uZuyDwhF+mnLp4+dJy1wXI8YPoW3qEaLi4qe8JxMxcU5rEtETZyp4BM8wVs+2YFfVz9kZka8GM3V5baszBKpJUj5auxXv4many6wvEICrZVUOI4nrubP8AsqZ+vud0r+KRApj3KD50FSyDLVT96tgygs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879667; c=relaxed/simple;
-	bh=3FOL0vZOpUI6Cru6EkBXcgYa1uhXDJOi8P3SZlchaLs=;
+	s=arc-20240116; t=1727878213; c=relaxed/simple;
+	bh=jbVM7d/BuwKcWOZs7WABmD5EdVWfBGOWswsqEgu1NfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2XMuRP2PUdRcd3/pkHZq3DVHQznPOL6zxTtB3bQuzmiRTxEWi4ZyAlZPnT1YiC7Heeq1v+BG08y//IdJ3sa+MTU6cUlad1pBebx0WEE4CPOVppZFGu2o44TXBK4QMm4TtPMD/v/xgxl1N2UsWstQecvbssRy17AlkV/eJFfxNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2oQdlK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAA7C4CEC2;
-	Wed,  2 Oct 2024 14:34:26 +0000 (UTC)
+	 MIME-Version; b=fr0BY3CckFIAzSFiHvgyDp5cwIOnVR5i6kH6DchQ8j+NjjyBchZcQz66LjoyEqK+zP0l8ZSwc3CKS0txjqdpahBeSo40PLkcTPlDfeNpTrn6Ss8WGCRTHM2sRXSepUBXV+3p1ZtJlCXci5bffMZDY3lCv8GTHKON8zBPnDAtxQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iryZ0LJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C7EC4CEC2;
+	Wed,  2 Oct 2024 14:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879667;
-	bh=3FOL0vZOpUI6Cru6EkBXcgYa1uhXDJOi8P3SZlchaLs=;
+	s=korg; t=1727878212;
+	bh=jbVM7d/BuwKcWOZs7WABmD5EdVWfBGOWswsqEgu1NfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2oQdlK0jUZER/jHZJP6/8vsE//WH/FteWVLlIZdEwlHmRQswcFnXjId/+V4b8aza
-	 9uScSRbJTCrQOlX8ID/94RBkNYGOLJsu6kgNlWNuRlFyFkiYKvgzreLNCU87vqmvlM
-	 9bFaBXfz+xXQ7zylj3ZJl6R+WvhU4L2r6BTndX3k=
+	b=iryZ0LJnW9qxiPAzjxzFGqRddYUaCL9b3kqupVks5ZPfb31Y7odSrBn9mO4e8hnlX
+	 YDHBW0ai0Z1RxAGWb49dd92zlBaOyqfT+7fa/ZGy4pRLm1ODFlPFUZ7ZkP76l9EW0v
+	 H5ykvwe5uO8t38LOJm7t5FoOfC6MN7nGBcCVA2U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuesong Li <liyuesong@vivo.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	David Ahern <dsa@cumulusnetworks.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Junhao He <hejunhao3@huawei.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Yang Jihong <yangjihong@bytedance.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/538] drivers:drm:exynos_drm_gsc:Fix wrong assignment in gsc_bind()
+Subject: [PATCH 6.10 305/634] perf time-utils: Fix 32-bit nsec parsing
 Date: Wed,  2 Oct 2024 14:56:45 +0200
-Message-ID: <20241002125758.806241974@linuxfoundation.org>
+Message-ID: <20241002125823.147951535@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +80,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuesong Li <liyuesong@vivo.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 94ebc3d3235c5c516f67315059ce657e5090e94b ]
+[ Upstream commit 38e2648a81204c9fc5b4c87a8ffce93a6ed91b65 ]
 
-cocci reported a double assignment problem. Upon reviewing previous
-commits, it appears this may actually be an incorrect assignment.
+The "time utils" test fails in 32-bit builds:
+  ...
+  parse_nsec_time("18446744073.709551615")
+  Failed. ptime 4294967295709551615 expected 18446744073709551615
+  ...
 
-Fixes: 8b9550344d39 ("drm/ipp: clean up debug messages")
-Signed-off-by: Yuesong Li <liyuesong@vivo.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Switch strtoul to strtoull as an unsigned long in 32-bit build isn't
+64-bits.
+
+Fixes: c284d669a20d408b ("perf tools: Move parse_nsec_time to time-utils.c")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: David Ahern <dsa@cumulusnetworks.com>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Junhao He <hejunhao3@huawei.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Yang Jihong <yangjihong@bytedance.com>
+Link: https://lore.kernel.org/r/20240831070415.506194-3-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/time-utils.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-index 5302bebbe38c9..1456abd5b9dde 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-@@ -1173,7 +1173,7 @@ static int gsc_bind(struct device *dev, struct device *master, void *data)
- 	struct exynos_drm_ipp *ipp = &ctx->ipp;
+diff --git a/tools/perf/util/time-utils.c b/tools/perf/util/time-utils.c
+index 3024439216816..1b91ccd4d5234 100644
+--- a/tools/perf/util/time-utils.c
++++ b/tools/perf/util/time-utils.c
+@@ -20,7 +20,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
+ 	u64 time_sec, time_nsec;
+ 	char *end;
  
- 	ctx->drm_dev = drm_dev;
--	ctx->drm_dev = drm_dev;
-+	ipp->drm_dev = drm_dev;
- 	exynos_drm_register_dma(drm_dev, dev, &ctx->dma_priv);
+-	time_sec = strtoul(str, &end, 10);
++	time_sec = strtoull(str, &end, 10);
+ 	if (*end != '.' && *end != '\0')
+ 		return -1;
  
- 	exynos_drm_ipp_register(dev, ipp, &ipp_funcs,
+@@ -38,7 +38,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
+ 		for (i = strlen(nsec_buf); i < 9; i++)
+ 			nsec_buf[i] = '0';
+ 
+-		time_nsec = strtoul(nsec_buf, &end, 10);
++		time_nsec = strtoull(nsec_buf, &end, 10);
+ 		if (*end != '\0')
+ 			return -1;
+ 	} else
 -- 
 2.43.0
 
