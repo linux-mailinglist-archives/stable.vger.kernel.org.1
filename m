@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8554198D518
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A9898D813
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B732C1C2171E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1760B1F2206B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6271D049D;
-	Wed,  2 Oct 2024 13:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B09C1D07B8;
+	Wed,  2 Oct 2024 13:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TufrGEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkj3hths"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1991D014A;
-	Wed,  2 Oct 2024 13:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF521D0788;
+	Wed,  2 Oct 2024 13:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875608; cv=none; b=n5L/DFo9xuSy2NRL1Edb77b+d04AYzQUM4KHs+COq4/dcWmMzidjzqn52tmcZMm/mp3JnPvyXjbt6lzVwvIgTWeanOBoyItBlIg2HiB0p/sPM7ggwD70KDRgIvYBs9OlCd82b9ZD7etUS8FSaWOM2S69erIshJdCddsqZWlrho4=
+	t=1727877347; cv=none; b=oNM6W+hXNrkV52/wpMgogv/NGdqePyUftINYlApw8QwcH5KjSDHcVPJ2cXIcTkqwAnQiwdwnOznLqc8RzDhvFyYy69biGA7QoCYVy2Jj3NvUu9rLOhFR3Tqr7q+cxf21zUInN+Me9sTRM3VLWnQpsdM9wob7eHiy/ltbL8+yodE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875608; c=relaxed/simple;
-	bh=DgXJFb/nc4G6YyGxbekQ36oWxKVjjMJMctkpL5tMinU=;
+	s=arc-20240116; t=1727877347; c=relaxed/simple;
+	bh=BTP0N9iOp+ROtYf8H/Es9cjl8pOwD4ndjL9Y/yJaJLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbV03LrHbq5L9ofvPXyYsnzLwafOVwMU0ZwcI8/yKneWktZAol1uUknWL9a5xo1lB16xbViLTHpZL/DmT2cCQcVYBAOwY1Ty0Rk/tOGIrSWCdw6TSgx9DCIruLs0JEoj3+BGhemsUktwQg6/yZA0kvk7f8qZqd1RZf5MKwxQ5YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TufrGEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9476C4CECD;
-	Wed,  2 Oct 2024 13:26:47 +0000 (UTC)
+	 MIME-Version; b=loNetKzGzHRaHEV19buiPaAHF62D/9l9/18yhH05g/sug9ioDbjFidhUd1CXdG0O93HRbd0kAQqxWGgJnjsW6PImX1p7wP6PBDJ9wg1gM81tDNZF8PhCOWWuWpqmSL+ubqV+zGQHC/IDPbrli0eQ6BiF01ZnrkCRKr0+GQpRLfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkj3hths; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7303AC4CECD;
+	Wed,  2 Oct 2024 13:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875608;
-	bh=DgXJFb/nc4G6YyGxbekQ36oWxKVjjMJMctkpL5tMinU=;
+	s=korg; t=1727877346;
+	bh=BTP0N9iOp+ROtYf8H/Es9cjl8pOwD4ndjL9Y/yJaJLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TufrGEqXgfCnzbS5GSXS5ry+owcVgZhypygkY9YgnJvZ6EWGq10rwgxcrMKRvoo+
-	 7g32gAxd1I2EW/+7KLolfVboasUqlsLTcugJase7U5dnCNPn5Y704vHMTtaak0Spit
-	 jLMTpzSLTR2MrCV6xeuJpNNHAYNMLwipW2U1nXbY=
+	b=dkj3hthsgHqdRKOR+L8dHku+mP62q28R6Fc8jGI+L0EUw6MNAZVWkbAYsFoa1DnGx
+	 7k9s+mOTWc/UqG50/TY8m/a8n6EWbr3pvBqC2pYyRHr9L475nWnYl+1huWlw0Z1itg
+	 rgP8BbPVKDWvB+o9et81sZyrQGjdtKeFzOt29r/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 152/695] ARM: dts: imx7d-zii-rmu2: fix Ethernet PHY pinctrl property
+Subject: [PATCH 6.10 050/634] kselftest/arm64: Actually test SME vector length changes via sigreturn
 Date: Wed,  2 Oct 2024 14:52:30 +0200
-Message-ID: <20241002125828.548019543@linuxfoundation.org>
+Message-ID: <20241002125813.079664631@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 0e49cfe364dea4345551516eb2fe53135a10432b ]
+[ Upstream commit 6f0315330af7a57c1c00587fdfb69c7778bf1c50 ]
 
-There is no "fsl,phy" property in pin controller pincfg nodes:
+The test case for SME vector length changes via sigreturn use a bit too
+much cut'n'paste and only actually changed the SVE vector length in the
+test itself. Andre's recent factoring out of the initialisation code caused
+this to be exposed and the test to start failing. Fix the test to actually
+cover the thing it's supposed to test.
 
-  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,pins' is a required property
-  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,phy' does not match any of the regexes: 'pinctrl-[0-9]+'
-
-Fixes: f496e6750083 ("ARM: dts: Add ZII support for ZII i.MX7 RMU2 board")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 4963aeb35a9e ("kselftest/arm64: signal: Add SME signal handling tests")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Tested-by: Andre Przywara <andre.przywara@arm.com>
+Link: https://lore.kernel.org/r/20240829-arm64-sme-signal-vl-change-test-v1-1-42d7534cb818@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../testcases/fake_sigreturn_sme_change_vl.c       | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
-index 521493342fe97..8f5566027c25a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
-@@ -350,7 +350,7 @@
+diff --git a/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sme_change_vl.c b/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sme_change_vl.c
+index cb8c051b5c8f2..dfd6a2badf9fb 100644
+--- a/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sme_change_vl.c
++++ b/tools/testing/selftests/arm64/signal/testcases/fake_sigreturn_sme_change_vl.c
+@@ -35,30 +35,30 @@ static int fake_sigreturn_ssve_change_vl(struct tdescr *td,
+ {
+ 	size_t resv_sz, offset;
+ 	struct _aarch64_ctx *head = GET_SF_RESV_HEAD(sf);
+-	struct sve_context *sve;
++	struct za_context *za;
  
- &iomuxc_lpsr {
- 	pinctrl_enet1_phy_interrupt: enet1phyinterruptgrp {
--		fsl,phy = <
-+		fsl,pins = <
- 			MX7D_PAD_LPSR_GPIO1_IO02__GPIO1_IO2	0x08
- 		>;
- 	};
+ 	/* Get a signal context with a SME ZA frame in it */
+ 	if (!get_current_context(td, &sf.uc, sizeof(sf.uc)))
+ 		return 1;
+ 
+ 	resv_sz = GET_SF_RESV_SIZE(sf);
+-	head = get_header(head, SVE_MAGIC, resv_sz, &offset);
++	head = get_header(head, ZA_MAGIC, resv_sz, &offset);
+ 	if (!head) {
+-		fprintf(stderr, "No SVE context\n");
++		fprintf(stderr, "No ZA context\n");
+ 		return 1;
+ 	}
+ 
+-	if (head->size != sizeof(struct sve_context)) {
++	if (head->size != sizeof(struct za_context)) {
+ 		fprintf(stderr, "Register data present, aborting\n");
+ 		return 1;
+ 	}
+ 
+-	sve = (struct sve_context *)head;
++	za = (struct za_context *)head;
+ 
+ 	/* No changes are supported; init left us at minimum VL so go to max */
+ 	fprintf(stderr, "Attempting to change VL from %d to %d\n",
+-		sve->vl, vls[0]);
+-	sve->vl = vls[0];
++		za->vl, vls[0]);
++	za->vl = vls[0];
+ 
+ 	fake_sigreturn(&sf, sizeof(sf), 0);
+ 
 -- 
 2.43.0
 
