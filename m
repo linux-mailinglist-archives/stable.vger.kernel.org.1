@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-80171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BE098DC41
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E437798D9A2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950D11C241D6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC3B82898E9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1230D1D0414;
-	Wed,  2 Oct 2024 14:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C258C1D1741;
+	Wed,  2 Oct 2024 14:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNPjRrXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCHYtIFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C293B1D0964;
-	Wed,  2 Oct 2024 14:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9A01D0DE9;
+	Wed,  2 Oct 2024 14:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879590; cv=none; b=IIwJGbmDWwads2wbQLZR79B6j4BGBkWJcNzYE3oEePhIW13MW6oblMDRmx6CsrZ7o20HFS9n8Avikm6SKhO5V1ghN4K9mo1MwX+0TnSnktDZBEkcJV5B61DmceBdlMPizTZlulZ9hGKoz1V2hfsRT+pO9tR3nZ90gelHB8KDGYQ=
+	t=1727878126; cv=none; b=stLLQsI2OKFBZwrvHZmH7Z6nz5qEACq4THlcoo/dL8DKFHkg+cowcEGz1qP9TjRjS3L8paNoKqcVlCaSrc/lk5n44KvVWtMQLpWAphPk9tL8+Hjx5RnYm07z17Fbdw6iz9oXdKcQ4nmPdnSsBZyOrfS548JE5RSSxEf822uka+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879590; c=relaxed/simple;
-	bh=rYdX/xVQMxMgTPbjB5m9waffjLYPD00PRUb8uYWgGW4=;
+	s=arc-20240116; t=1727878126; c=relaxed/simple;
+	bh=DphxnEGc/4vacRonEo+F1Y3OnAFg425ljvPHPYVChkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m3QFtqP27CKzCIwYPRUgrFraDwJ6epY/HAzIllHBeUBpzPiRkgAc/Lyy9mIySdvxjvRkzhEmnuE2OzrTKtOMYUdGpHaXwlc5DbVpbF4EVRsd1Ljw1Xd4DHwSgS3EOefyFgH6B5xHpPGJF61Gqm2jc8Uh2PC1g/F27YjQ3AlbTpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNPjRrXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B672C4CEC2;
-	Wed,  2 Oct 2024 14:33:10 +0000 (UTC)
+	 MIME-Version; b=WUmsDlbk1ELUUOynkcfSSpiJg0PXwEL8c/oApcX+mMoPKiDcZnmofxnXH42oCuImJYBa6tDjlQDJY6WTRXudmIToHjTWYnXsY4mOKAJRUUH/7r0w+LN/J8ygzZzuCTuK4ZiGiYyB+H2Nv5GUMTw5OmGv0aFYk7t//6p2Oe3CIRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCHYtIFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A0FC4CEC2;
+	Wed,  2 Oct 2024 14:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879590;
-	bh=rYdX/xVQMxMgTPbjB5m9waffjLYPD00PRUb8uYWgGW4=;
+	s=korg; t=1727878126;
+	bh=DphxnEGc/4vacRonEo+F1Y3OnAFg425ljvPHPYVChkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNPjRrXNK/tSy3054bS7B7ngrPBE6XkiKa7ZcmlQsH6unj9vfcaNPbT5TmchvHC43
-	 kUMBtF8iq+wQbx6VF0rA+EL6F4Xka6Ix+jyNgcNCYF7yRh/cTsPtdOSM5JeKWvE2cx
-	 03Kv+yf6ly2nUyWSQxqz84HsDlZkY5RMPQCkuMBM=
+	b=lCHYtIFOZR/EkNVHDuKi70Qufw9yRvK4g7T22FJ/17GdKCL+/e8kEKVPn5bTiSBhK
+	 fZN3tLJuOJm4Od5Xwdd+VcgCedQdQOTsSj22hJ7uD0ORc0hl51wfymLT8H034pvOwH
+	 5st2s0abHoutvSPotN3RHxC7/tPe0bleiwnp8BOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/538] xen: introduce generic helper checking for memory map conflicts
+Subject: [PATCH 6.10 311/634] clk: imx: composite-93: keep root clock on when mcore enabled
 Date: Wed,  2 Oct 2024 14:56:51 +0200
-Message-ID: <20241002125759.045154751@linuxfoundation.org>
+Message-ID: <20241002125823.383031031@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit ba88829706e2c5b7238638fc2b0713edf596495e ]
+[ Upstream commit d342df11726bfac9c3a9d2037afa508ac0e9e44e ]
 
-When booting as a Xen PV dom0 the memory layout of the dom0 is
-modified to match that of the host, as this requires less changes in
-the kernel for supporting Xen.
+Previously we assumed that the root clock slice is enabled
+by default when kernel boot up. But the bootloader may disable
+the clocks before jump into kernel. The gate ops should be registered
+rather than NULL to make sure the disabled clock can be enabled
+when kernel boot up.  Refine the code to skip disable the clock
+if mcore booted.
 
-There are some cases, though, which are problematic, as it is the Xen
-hypervisor selecting the kernel's load address plus some other data,
-which might conflict with the host's memory map.
-
-These conflicts are detected at boot time and result in a boot error.
-In order to support handling at least some of these conflicts in
-future, introduce a generic helper function which will later gain the
-ability to adapt the memory layout when possible.
-
-Add the missing check for the xen_start_info area.
-
-Note that possible p2m map and initrd memory conflicts are handled
-already by copying the data to memory areas not conflicting with the
-memory map. The initial stack allocated by Xen doesn't need to be
-checked, as early boot code is switching to the statically allocated
-initial kernel stack. Initial page tables and the kernel itself will
-be handled later.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Fixes: a740d7350ff7 ("clk: imx: imx93: add mcore_booted module paratemter")
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Tested-by: Chancel Liu <chancel.liu@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-3-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/mmu_pv.c  |  5 +----
- arch/x86/xen/setup.c   | 34 ++++++++++++++++++++++++++++------
- arch/x86/xen/xen-ops.h |  3 ++-
- 3 files changed, 31 insertions(+), 11 deletions(-)
+ drivers/clk/imx/clk-composite-93.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index 9d4a9311e819b..6b201e64d8abc 100644
---- a/arch/x86/xen/mmu_pv.c
-+++ b/arch/x86/xen/mmu_pv.c
-@@ -2019,10 +2019,7 @@ void __init xen_reserve_special_pages(void)
+diff --git a/drivers/clk/imx/clk-composite-93.c b/drivers/clk/imx/clk-composite-93.c
+index 81164bdcd6cc9..6c6c5a30f3282 100644
+--- a/drivers/clk/imx/clk-composite-93.c
++++ b/drivers/clk/imx/clk-composite-93.c
+@@ -76,6 +76,13 @@ static int imx93_clk_composite_gate_enable(struct clk_hw *hw)
  
- void __init xen_pt_check_e820(void)
+ static void imx93_clk_composite_gate_disable(struct clk_hw *hw)
  {
--	if (xen_is_e820_reserved(xen_pt_base, xen_pt_size)) {
--		xen_raw_console_write("Xen hypervisor allocated page table memory conflicts with E820 map\n");
--		BUG();
--	}
-+	xen_chk_is_e820_usable(xen_pt_base, xen_pt_size, "page table");
- }
- 
- static unsigned char dummy_mapping[PAGE_SIZE] __page_aligned_bss;
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index d2073df5c5624..84cbc7ec55811 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -568,7 +568,7 @@ static void __init xen_ignore_unusable(void)
- 	}
- }
- 
--bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
-+static bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
- {
- 	struct e820_entry *entry;
- 	unsigned mapcnt;
-@@ -625,6 +625,23 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size)
- 	return 0;
- }
- 
-+/*
-+ * Check for an area in physical memory to be usable for non-movable purposes.
-+ * An area is considered to usable if the used E820 map lists it to be RAM.
-+ * In case the area is not usable, crash the system with an error message.
-+ */
-+void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
-+				   const char *component)
-+{
-+	if (!xen_is_e820_reserved(start, size))
++	/*
++	 * Skip disable the root clock gate if mcore enabled.
++	 * The root clock may be used by the mcore.
++	 */
++	if (mcore_booted)
 +		return;
 +
-+	xen_raw_console_write("Xen hypervisor allocated ");
-+	xen_raw_console_write(component);
-+	xen_raw_console_write(" memory conflicts with E820 map\n");
-+	BUG();
-+}
-+
- /*
-  * Like memcpy, but with physical addresses for dest and src.
-  */
-@@ -825,11 +842,16 @@ char * __init xen_memory_setup(void)
- 	 * Failing now is better than running into weird problems later due
- 	 * to relocating (and even reusing) pages with kernel text or data.
- 	 */
--	if (xen_is_e820_reserved(__pa_symbol(_text),
--				 __pa_symbol(_end) - __pa_symbol(_text))) {
--		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
--		BUG();
--	}
-+	xen_chk_is_e820_usable(__pa_symbol(_text),
-+			       __pa_symbol(_end) - __pa_symbol(_text),
-+			       "kernel");
-+
-+	/*
-+	 * Check for a conflict of the xen_start_info memory with the target
-+	 * E820 map.
-+	 */
-+	xen_chk_is_e820_usable(__pa(xen_start_info), sizeof(*xen_start_info),
-+			       "xen_start_info");
+ 	imx93_clk_composite_gate_endisable(hw, 0);
+ }
  
- 	/*
- 	 * Check for a conflict of the hypervisor supplied page tables with
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index 79cf93f2c92f1..f46a1dd3624da 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -44,7 +44,8 @@ void xen_mm_unpin_all(void);
- void __init xen_relocate_p2m(void);
- #endif
+@@ -222,7 +229,7 @@ struct clk_hw *imx93_clk_composite_flags(const char *name, const char * const *p
+ 		hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
+ 					       mux_hw, &clk_mux_ro_ops, div_hw,
+ 					       &clk_divider_ro_ops, NULL, NULL, flags);
+-	} else if (!mcore_booted) {
++	} else {
+ 		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
+ 		if (!gate)
+ 			goto fail;
+@@ -238,12 +245,6 @@ struct clk_hw *imx93_clk_composite_flags(const char *name, const char * const *p
+ 					       &imx93_clk_composite_divider_ops, gate_hw,
+ 					       &imx93_clk_composite_gate_ops,
+ 					       flags | CLK_SET_RATE_NO_REPARENT);
+-	} else {
+-		hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
+-					       mux_hw, &imx93_clk_composite_mux_ops, div_hw,
+-					       &imx93_clk_composite_divider_ops, NULL,
+-					       &imx93_clk_composite_gate_ops,
+-					       flags | CLK_SET_RATE_NO_REPARENT);
+ 	}
  
--bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size);
-+void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
-+				   const char *component);
- unsigned long __ref xen_chk_extra_mem(unsigned long pfn);
- void __init xen_inv_extra_mem(void);
- void __init xen_remap_memory(void);
+ 	if (IS_ERR(hw))
 -- 
 2.43.0
 
