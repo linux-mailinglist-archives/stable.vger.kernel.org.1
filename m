@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D8698DAC3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B995D98DD30
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C94CF1C22E94
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75937281D9B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846D91D1E65;
-	Wed,  2 Oct 2024 14:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903081D174C;
+	Wed,  2 Oct 2024 14:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejMiCJER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFyMvHXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417FE1D1E61;
-	Wed,  2 Oct 2024 14:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4101974F4;
+	Wed,  2 Oct 2024 14:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878761; cv=none; b=ShhpmdzPHhJuUJO9S5lEGk+eWH6SGBLREul4FwIAUbhJlCkaPtasbPakqRt7c7RvjbZf/qx+3p/SZicDX9K1ynBoaNS3YbWbiqbaOqo9RiGdpr4xl7gliWBXioNsoczXivtkgtmYAwA20axXU3Ky+kt/e/cqmLpr/SXxPh7tQVQ=
+	t=1727880220; cv=none; b=am3NvAkksAIqd7rEA9vN+ESJs2jBk+tIzGqyMqv/DaauizsVLLGmcjbbBDQUDsEB2LDlx86rYShaha4dumzQuChfGl8YQi6rGWoCOtj8hd5JCJRpoSRFRM21XjK06BWwHKRZwQI/IQ+263jpSas83kDxAmQWxfoK/nM6164rgq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878761; c=relaxed/simple;
-	bh=8yq8n9mFq1jNS9b+ppr7eRKrC4OpyuB+PZIOnBdrkMc=;
+	s=arc-20240116; t=1727880220; c=relaxed/simple;
+	bh=XKxN/wnqBO+NDZxJVPFws6orc6cM4n1zH/TxSweV8Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STzy/mYNF3Pfr+i7lJYdMQvplIijaziwH5OIWaEePYnwKvUaLElc4fia4TeTzMCk5YVpwUB35aVWxZHPttpCVEV39uGbdB+lOX82zj1LUxZfSr1MdX6N9JF4CYyuutrpLZ6AKVre9JuKWnutzCbqC5RCAh3KKC4Ar41g1jlo1B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejMiCJER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A9BC4CEC2;
-	Wed,  2 Oct 2024 14:19:20 +0000 (UTC)
+	 MIME-Version; b=XoOMf3rhsQFc8gQMdvKW/SUyn9XQyd5r2oh+t1lY+ibXVK0JcZ6yZPQX/liHTFnv+kjhc630PxhaLeSORjQNsMHFmC2hbqOjgtYwR76OVaDIRuYpmaLwtqpiyjDZ1R0Pu5IVYML/uFTQbd/x/z9hzuk8bmKipy2jx+LxQlo4Wjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFyMvHXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B78C4CEC2;
+	Wed,  2 Oct 2024 14:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878761;
-	bh=8yq8n9mFq1jNS9b+ppr7eRKrC4OpyuB+PZIOnBdrkMc=;
+	s=korg; t=1727880220;
+	bh=XKxN/wnqBO+NDZxJVPFws6orc6cM4n1zH/TxSweV8Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejMiCJERHazfU2C+PKW8cMPUuyIJJtTNoByIWURI+wqj2LCyiJacNVUuysjMFrgcE
-	 +ZgJwORz+yAzlKcHdx5cMB58j00i51ib+yQVx0uRtp170C5e+hxnFydEloP2ZL22HC
-	 wstB7BBQEtBO9PhZ0Cs5vZxaXKrE+mqKeoaHvJc4=
+	b=jFyMvHXqXZbpnBPkJc1sXcyULgSoOUW/1vnaSy6RTQqslUBs5BqCSisiOFqFD9IUF
+	 qqOoCKUcS4ZPwmKtyvfiVjDnfT6M27buuDuWy8Da0GTiUu2cFyycGwd/de04beMCV+
+	 4NHWraTu4H5yuWv7x5nXZo2K/Dcz5lKKDwME/hLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.10 523/634] usb: cdnsp: Fix incorrect usb_request status
+	Shu Han <ebpqwerty472123@gmail.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.6 384/538] mm: call the security_mmap_file() LSM hook in remap_file_pages()
 Date: Wed,  2 Oct 2024 15:00:23 +0200
-Message-ID: <20241002125831.749464062@linuxfoundation.org>
+Message-ID: <20241002125807.588416884@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Shu Han <ebpqwerty472123@gmail.com>
 
-commit 1702bec4477cc7d31adb4a760d14d33fac928b7a upstream.
+commit ea7e2d5e49c05e5db1922387b09ca74aa40f46e2 upstream.
 
-Fix changes incorrect usb_request->status returned during disabling
-endpoints. Before fix the status returned during dequeuing requests
-while disabling endpoint was ECONNRESET.
-Patch change it to ESHUTDOWN.
+The remap_file_pages syscall handler calls do_mmap() directly, which
+doesn't contain the LSM security check. And if the process has called
+personality(READ_IMPLIES_EXEC) before and remap_file_pages() is called for
+RW pages, this will actually result in remapping the pages to RWX,
+bypassing a W^X policy enforced by SELinux.
 
-Patch fixes issue detected during testing UVC gadget.
-During stopping streaming the class starts dequeuing usb requests and
-controller driver returns the -ECONNRESET status. After completion
-requests the class or application "uvc-gadget" try to queue this
-request again. Changing this status to ESHUTDOWN cause that UVC assumes
-that endpoint is disabled, or device is disconnected and stops
-re-queuing usb requests.
+So we should check prot by security_mmap_file LSM hook in the
+remap_file_pages syscall handler before do_mmap() is called. Otherwise, it
+potentially permits an attacker to bypass a W^X policy enforced by
+SELinux.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-cc: stable@vger.kernel.org
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Reviewed-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB9538E8CA7A2096AAF6A3718FDD9E2@PH7PR07MB9538.namprd07.prod.outlook.com
+The bypass is similar to CVE-2016-10044, which bypass the same thing via
+AIO and can be found in [1].
+
+The PoC:
+
+$ cat > test.c
+
+int main(void) {
+	size_t pagesz = sysconf(_SC_PAGE_SIZE);
+	int mfd = syscall(SYS_memfd_create, "test", 0);
+	const char *buf = mmap(NULL, 4 * pagesz, PROT_READ | PROT_WRITE,
+		MAP_SHARED, mfd, 0);
+	unsigned int old = syscall(SYS_personality, 0xffffffff);
+	syscall(SYS_personality, READ_IMPLIES_EXEC | old);
+	syscall(SYS_remap_file_pages, buf, pagesz, 0, 2, 0);
+	syscall(SYS_personality, old);
+	// show the RWX page exists even if W^X policy is enforced
+	int fd = open("/proc/self/maps", O_RDONLY);
+	unsigned char buf2[1024];
+	while (1) {
+		int ret = read(fd, buf2, 1024);
+		if (ret <= 0) break;
+		write(1, buf2, ret);
+	}
+	close(fd);
+}
+
+$ gcc test.c -o test
+$ ./test | grep rwx
+7f1836c34000-7f1836c35000 rwxs 00002000 00:01 2050 /memfd:test (deleted)
+
+Link: https://project-zero.issues.chromium.org/issues/42452389 [1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Shu Han <ebpqwerty472123@gmail.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+[PM: subject line tweaks]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-ring.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/mmap.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -718,7 +718,8 @@ int cdnsp_remove_request(struct cdnsp_de
- 	seg = cdnsp_trb_in_td(pdev, cur_td->start_seg, cur_td->first_trb,
- 			      cur_td->last_trb, hw_deq);
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -3025,8 +3025,12 @@ SYSCALL_DEFINE5(remap_file_pages, unsign
+ 		flags |= MAP_LOCKED;
  
--	if (seg && (pep->ep_state & EP_ENABLED))
-+	if (seg && (pep->ep_state & EP_ENABLED) &&
-+	    !(pep->ep_state & EP_DIS_IN_RROGRESS))
- 		cdnsp_find_new_dequeue_state(pdev, pep, preq->request.stream_id,
- 					     cur_td, &deq_state);
- 	else
-@@ -736,7 +737,8 @@ int cdnsp_remove_request(struct cdnsp_de
- 	 * During disconnecting all endpoint will be disabled so we don't
- 	 * have to worry about updating dequeue pointer.
- 	 */
--	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING) {
-+	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING ||
-+	    pep->ep_state & EP_DIS_IN_RROGRESS) {
- 		status = -ESHUTDOWN;
- 		ret = cdnsp_cmd_set_deq(pdev, pep, &deq_state);
- 	}
+ 	file = get_file(vma->vm_file);
++	ret = security_mmap_file(vma->vm_file, prot, flags);
++	if (ret)
++		goto out_fput;
+ 	ret = do_mmap(vma->vm_file, start, size,
+ 			prot, flags, 0, pgoff, &populate, NULL);
++out_fput:
+ 	fput(file);
+ out:
+ 	mmap_write_unlock(mm);
 
 
 
