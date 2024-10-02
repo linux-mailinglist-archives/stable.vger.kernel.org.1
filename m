@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7856098D512
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C932F98D7EB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ED321F22F4E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 850DB1F2115C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEC01D04B6;
-	Wed,  2 Oct 2024 13:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8051D07A0;
+	Wed,  2 Oct 2024 13:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjI0lghK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHyQ9b9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BDE1D04A3;
-	Wed,  2 Oct 2024 13:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF2D1D0796;
+	Wed,  2 Oct 2024 13:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875591; cv=none; b=kNjDqMWMKmmYL3v7X9WLqkBgmc9xqPt4OitVG1RdvUhvoXFjxSkm6Q7+kaaV5twmgqE8XjJXKHigi7btr1jMqSldJygu4jTnaMZpTKeQzTjZdFL+kVk0rzkO/6o/iachwTBOlObC3vt4s+3s7lm09qBtSwh3wxowiEP834y7UCs=
+	t=1727877256; cv=none; b=SNFmplOTKwcl6GXTYcA5WwddooJQz738F4Wk+RphaTwAQckZUoD94bNZfthR1RkO8uLVxVcBVm95yvnsSHTtpyppA71urWZYL2kiD7ck53SkoRkBtRNGiIRBHgtwF2wA3t6+Atagya0En6OcpZTpHNW0S8pbIEzR62UauFQdoX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875591; c=relaxed/simple;
-	bh=oCyqQcfhBoLmivHFm46sURADWIgKSi9BGgJZxA3ZrDk=;
+	s=arc-20240116; t=1727877256; c=relaxed/simple;
+	bh=99+Yn5cUzku5+re8qnJ6mrtKpLgD4YtGb5TmSxb4VJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aTndVBYFXG0C+qvDYdOvcAA43taAqeXCw3iJuuy0OtMMhPeqxy9p7e9eACKmaF2ralZLpkbVPhEjvSMZSJxfK93qE12TwTCJgWUGqcJiOm3ObEAzhuX9dPzxZUS8ASUWdHXuZdONcdJPsY0sEx/yigmKB6cX4LgRDF/z8IGR1XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjI0lghK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F75C4CEC5;
-	Wed,  2 Oct 2024 13:26:30 +0000 (UTC)
+	 MIME-Version; b=HNPnrfIaGUWbbF8kbs2Dhx5v/Em3ar7vc1L1WMEADwtrdMuamRwzM3YtnfMR7T7CSHVX8QcCfgOOzugaf8LHyDGJp4Zl1iCpH+U/fNK1Y/tOD0B2R9Btl1KhkOlHuuuW5R9QUFhaJAKumxUuOxn/MyLk9XcpI8TgCNJkeSDIcT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHyQ9b9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4711DC4CEE2;
+	Wed,  2 Oct 2024 13:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875590;
-	bh=oCyqQcfhBoLmivHFm46sURADWIgKSi9BGgJZxA3ZrDk=;
+	s=korg; t=1727877256;
+	bh=99+Yn5cUzku5+re8qnJ6mrtKpLgD4YtGb5TmSxb4VJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjI0lghKnjE79pCs1FfZDTz9T+XiKwiNOW1Yd83gp/625PoFzNtJYEf5Yyp5JF8Z0
-	 eZAjRsLxIpzm7/ZgxAPXNV6MQhwDuiKFm+SR4rTrSc1qIl5HksT/xx9hR25kXOs1Ot
-	 4Fcvh7IfMCeJDk3dYI9MHBLebF2wVZofi+vFkw4Y=
+	b=GHyQ9b9eLvTczmfrM6qZZhgZrI1mnlwbGrpdTtBEcaS7iQ5P6ojtUPBiL7VK2LS4b
+	 /Vn/3H3yYDB8aK+cHQl+fHxSNa+oiN3Sb3qpIwDmJvgmeT2WS+S4S5zLqdCKiufI6T
+	 m7TOigLkbBwS9vY8jJKUHXUsspZubJrr7n6sfjyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Atish Patra <atishp@rivosinc.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 122/695] block, bfq: dont break merge chain in bfq_split_bfqq()
-Date: Wed,  2 Oct 2024 14:52:00 +0200
-Message-ID: <20241002125827.342808164@linuxfoundation.org>
+Subject: [PATCH 6.10 021/634] RISC-V: KVM: Allow legacy PMU access from guest
+Date: Wed,  2 Oct 2024 14:52:01 +0200
+Message-ID: <20241002125811.931242122@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Atish Patra <atishp@rivosinc.com>
 
-[ Upstream commit 42c306ed723321af4003b2a41bb73728cab54f85 ]
+[ Upstream commit 7d1ffc8b087e97dbe1985912c7a2d00e53cea169 ]
 
-Consider the following scenario:
+Currently, KVM traps & emulates PMU counter access only if SBI PMU
+is available as the guest can only configure/read PMU counters via
+SBI only. However, if SBI PMU is not enabled in the host, the
+guest will fallback to the legacy PMU which will try to access
+cycle/instret and result in an illegal instruction trap which
+is not desired.
 
-    Process 1       Process 2       Process 3       Process 4
-     (BIC1)          (BIC2)          (BIC3)          (BIC4)
-      Λ               |               |                |
-       \-------------\ \-------------\ \--------------\|
-                      V               V                V
-      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-ref    0              1               2                4
+KVM can allow dummy emulation of cycle/instret only for the guest
+if SBI PMU is not enabled in the host. The dummy emulation will
+still return zero as we don't to expose the host counter values
+from a guest using legacy PMU.
 
-If Process 1 issue a new IO and bfqq2 is found, and then bfq_init_rq()
-decide to spilt bfqq2 by bfq_split_bfqq(). Howerver, procress reference
-of bfqq2 is 1 and bfq_split_bfqq() just clear the coop flag, which will
-break the merge chain.
-
-Expected result: caller will allocate a new bfqq for BIC1
-
-    Process 1       Process 2       Process 3       Process 4
-     (BIC1)          (BIC2)          (BIC3)          (BIC4)
-                      |               |                |
-                       \-------------\ \--------------\|
-                                      V                V
-      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-ref    0              0               1                3
-
-Since the condition is only used for the last bfqq4 when the previous
-bfqq2 and bfqq3 are already splited. Fix the problem by checking if
-bfqq is the last one in the merge chain as well.
-
-Fixes: 36eca8948323 ("block, bfq: add Early Queue Merge (EQM)")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240902130329.3787024-4-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: a9ac6c37521f ("RISC-V: KVM: Implement trap & emulate for hpmcounters")
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+Link: https://lore.kernel.org/r/20240816-kvm_pmu_fixes-v1-1-cdfce386dd93@rivosinc.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/kvm_vcpu_pmu.h | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index ffaa0d56328a5..ca766b7d5560e 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -6727,7 +6727,7 @@ bfq_split_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq)
- {
- 	bfq_log_bfqq(bfqq->bfqd, bfqq, "splitting queue");
+diff --git a/arch/riscv/include/asm/kvm_vcpu_pmu.h b/arch/riscv/include/asm/kvm_vcpu_pmu.h
+index fa0f535bbbf02..c309daa2d75a8 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_pmu.h
++++ b/arch/riscv/include/asm/kvm_vcpu_pmu.h
+@@ -10,6 +10,7 @@
+ #define __KVM_VCPU_RISCV_PMU_H
  
--	if (bfqq_process_refs(bfqq) == 1) {
-+	if (bfqq_process_refs(bfqq) == 1 && !bfqq->new_bfqq) {
- 		bfqq->pid = current->pid;
- 		bfq_clear_bfqq_coop(bfqq);
- 		bfq_clear_bfqq_split_coop(bfqq);
+ #include <linux/perf/riscv_pmu.h>
++#include <asm/kvm_vcpu_insn.h>
+ #include <asm/sbi.h>
+ 
+ #ifdef CONFIG_RISCV_PMU_SBI
+@@ -104,8 +105,20 @@ void kvm_riscv_vcpu_pmu_reset(struct kvm_vcpu *vcpu);
+ struct kvm_pmu {
+ };
+ 
++static inline int kvm_riscv_vcpu_pmu_read_legacy(struct kvm_vcpu *vcpu, unsigned int csr_num,
++						 unsigned long *val, unsigned long new_val,
++						 unsigned long wr_mask)
++{
++	if (csr_num == CSR_CYCLE || csr_num == CSR_INSTRET) {
++		*val = 0;
++		return KVM_INSN_CONTINUE_NEXT_SEPC;
++	} else {
++		return KVM_INSN_ILLEGAL_TRAP;
++	}
++}
++
+ #define KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS \
+-{.base = 0,	.count = 0,	.func = NULL },
++{.base = CSR_CYCLE,	.count = 3,	.func = kvm_riscv_vcpu_pmu_read_legacy },
+ 
+ static inline void kvm_riscv_vcpu_pmu_init(struct kvm_vcpu *vcpu) {}
+ static inline int kvm_riscv_vcpu_pmu_incr_fw(struct kvm_vcpu *vcpu, unsigned long fid)
 -- 
 2.43.0
 
