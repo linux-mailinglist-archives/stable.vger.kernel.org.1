@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E2A98DA15
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3DD98DCB3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0C07B24677
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 766FF2819CD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906B31D0BAC;
-	Wed,  2 Oct 2024 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F341D26EA;
+	Wed,  2 Oct 2024 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fZv1Eex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZsiX5ZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3C71D0956;
-	Wed,  2 Oct 2024 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31431D0BBE;
+	Wed,  2 Oct 2024 14:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878394; cv=none; b=rD7kaalhcAnnZxZxGj7HqsxXNNQJW3Jj2nyesRMoFBvjoAEiHQRq/VdyklUvvW+eecyHJQlF4ccs0aRY6m22SX2WYxmARpRFzG6PXm5Myrk3+BXSvfCU6tESLovDkMt7tBzvS5SRc0kRKG5ZQGCHY6ofY82YjBVf+bDz2zJHs14=
+	t=1727879863; cv=none; b=qWjp9WntWZwHDSNMl9hietSHNw1qjR3Pk/EwCX6U1b6R+yevCaAd2hojUxQclUQP9GgvpGXk9zmTM8F8kEcAR0XzjeBxvm7uTSmurf01BM1ol/yOgpYNnplo/AiGvPtlEu2Ff/u07TMFC86wDJR6ZRGICv53TSZbHBtBfmMwIX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878394; c=relaxed/simple;
-	bh=4LlQdoBT8g9Q25YSg24t32G0Cec5DVVRFR5rlmQ+new=;
+	s=arc-20240116; t=1727879863; c=relaxed/simple;
+	bh=vPtuSU87oeGIoMXFUdb35jRJFTrTMXzlZaXx5+B6fDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osQ3lcvwtG1LhIZr27Fm+YTyzrPUFKcQffUCG9FVdXRL67VJgl07L5jmuYwHhvppCvQitWoSgGF3jEH6BYFQbbc7reVZGG78ApmRWswCQb3j3yD8XGcmO9BvNMpMIB2uBKtyLHt97V0tva6ZaWs9HvRaAScIuVOZUespjGp9+AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fZv1Eex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DBDC4CEC2;
-	Wed,  2 Oct 2024 14:13:13 +0000 (UTC)
+	 MIME-Version; b=sxFKR9RX4VVjeR2WT0TcCu2IhrOiCrSmH1nOw+CTjFBgYCsoZgFo/HIewhsU8sgST3qOlrUE24ZxEsHCSf+tJKTwMXO5WWFScXhrsUAL47uw8HEAM/rE5LxN/NXwIPDs/Ft7Iz3r3XilSHyAGYBEnEGoZDg3AYbg5Cab6VNSuyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZsiX5ZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5642EC4CEC2;
+	Wed,  2 Oct 2024 14:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878394;
-	bh=4LlQdoBT8g9Q25YSg24t32G0Cec5DVVRFR5rlmQ+new=;
+	s=korg; t=1727879863;
+	bh=vPtuSU87oeGIoMXFUdb35jRJFTrTMXzlZaXx5+B6fDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fZv1EexknXzLkyH8CqwS+z78mPcZUlphl0gfPRizImXZuElGzPjzdAR27Ako+fyL
-	 VOnbGGdOcpLo+3fugevJBcJo6EJXqai2CjfJB7hwQd/II9gT+q6ADrxYousfGl60nQ
-	 HmhU8xw5EjDCHhXb0FR8d6hD46KZwsWXwAFc62fU=
+	b=iZsiX5ZKwJmBKi/r9CUyMsDHBqWbCtxrqK3XE89hpavkRt/nXabeci29uZgKUNosR
+	 ri3qxPKtUIFzMsPgZj0BV6T9QlzlPpvf+X7VjNXSrrEQQiN1xiduVXu46CjfsErAoP
+	 /9mDo1XDsDLpTDkByrRrSlsEoIKsE+UG0F44ZFng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 371/634] RDMA/mlx5: Fix MR cache temp entries cleanup
-Date: Wed,  2 Oct 2024 14:57:51 +0200
-Message-ID: <20241002125825.742237020@linuxfoundation.org>
+Subject: [PATCH 6.6 233/538] sched/numa: Rename vma_numab_state::access_pids[] => ::pids_active[], ::next_pid_reset => ::pids_active_reset
+Date: Wed,  2 Oct 2024 14:57:52 +0200
+Message-ID: <20241002125801.449503652@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,220 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Mel Gorman <mgorman@techsingularity.net>
 
-[ Upstream commit 7ebb00cea49db641b458edef0ede389f7004821d ]
+[ Upstream commit f3a6c97940fbd25d6c84c2d5642338fc99a9b35b ]
 
-Fix the cleanup of the temp cache entries that are dynamically created
-in the MR cache.
+The access_pids[] field name is somewhat ambiguous as no PIDs are accessed.
+Similarly, it's not clear that next_pid_reset is related to access_pids[].
+Rename the fields to more accurately reflect their purpose.
 
-The cleanup of the temp cache entries is currently scheduled only when a
-new entry is created. Since in the cleanup of the entries only the mkeys
-are destroyed and the cache entry stays in the cache, subsequent
-registrations might reuse the entry and it will eventually be filled with
-new mkeys without cleanup ever getting scheduled again.
+[ mingo: Rename in the comments too. ]
 
-On workloads that register and deregister MRs with a wide range of
-properties we see the cache ends up holding many cache entries, each
-holding the max number of mkeys that were ever used through it.
-
-Additionally, as the cleanup work is scheduled to run over the whole
-cache, any mkey that is returned to the cache after the cleanup was
-scheduled will be held for less than the intended 30 seconds timeout.
-
-Solve both issues by dropping the existing remove_ent_work and reusing
-the existing per-entry work to also handle the temp entries cleanup.
-
-Schedule the work to run with a 30 seconds delay every time we push an
-mkey to a clean temp entry.
-This ensures the cleanup runs on each entry only 30 seconds after the
-first mkey was pushed to an empty entry.
-
-As we have already been distinguishing between persistent and temp entries
-when scheduling the cache_work_func, it is not being scheduled in any
-other flows for the temp entries.
-
-Another benefit from moving to a per-entry cleanup is we now not
-required to hold the rb_tree mutex, thus enabling other flow to run
-concurrently.
-
-Fixes: dd1b913fb0d0 ("RDMA/mlx5: Cache all user cacheable mkeys on dereg MR flow")
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/e4fa4bb03bebf20dceae320f26816cd2dde23a26.1725362530.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231010083143.19593-3-mgorman@techsingularity.net
+Stable-dep-of: f22cde4371f3 ("sched/numa: Fix the vma scan starving issue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mlx5_ib.h |  2 +-
- drivers/infiniband/hw/mlx5/mr.c      | 82 +++++++++++-----------------
- 2 files changed, 32 insertions(+), 52 deletions(-)
+ include/linux/mm.h       |  4 ++--
+ include/linux/mm_types.h |  6 +++---
+ kernel/sched/fair.c      | 12 ++++++------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index f9abdca3493aa..0b2f18c34ee5e 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -795,6 +795,7 @@ struct mlx5_cache_ent {
- 	u8 is_tmp:1;
- 	u8 disabled:1;
- 	u8 fill_to_high_water:1;
-+	u8 tmp_cleanup_scheduled:1;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 830b925c2d005..b6a4d6471b4a7 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1732,8 +1732,8 @@ static inline void vma_set_access_pid_bit(struct vm_area_struct *vma)
+ 	unsigned int pid_bit;
+ 
+ 	pid_bit = hash_32(current->pid, ilog2(BITS_PER_LONG));
+-	if (vma->numab_state && !test_bit(pid_bit, &vma->numab_state->access_pids[1])) {
+-		__set_bit(pid_bit, &vma->numab_state->access_pids[1]);
++	if (vma->numab_state && !test_bit(pid_bit, &vma->numab_state->pids_active[1])) {
++		__set_bit(pid_bit, &vma->numab_state->pids_active[1]);
+ 	}
+ }
+ #else /* !CONFIG_NUMA_BALANCING */
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index b53a13d15bbae..80d9d1b7685c6 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -559,10 +559,10 @@ struct vma_numab_state {
+ 	unsigned long next_scan;
  
  	/*
- 	 * - limit is the low water mark for stored mkeys, 2* limit is the
-@@ -826,7 +827,6 @@ struct mlx5_mkey_cache {
- 	struct mutex		rb_lock;
- 	struct dentry		*fs_root;
- 	unsigned long		last_add;
--	struct delayed_work	remove_ent_dwork;
+-	 * Time in jiffies when access_pids[] is reset to
++	 * Time in jiffies when pids_active[] is reset to
+ 	 * detect phase change behaviour:
+ 	 */
+-	unsigned long next_pid_reset;
++	unsigned long pids_active_reset;
+ 
+ 	/*
+ 	 * Approximate tracking of PIDs that trapped a NUMA hinting
+@@ -574,7 +574,7 @@ struct vma_numab_state {
+ 	 * Window moves after next_pid_reset has expired approximately
+ 	 * every VMA_PID_RESET_PERIOD jiffies:
+ 	 */
+-	unsigned long access_pids[2];
++	unsigned long pids_active[2];
  };
  
- struct mlx5_ib_port_resources {
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 842e218cd0b5e..59bde614f061f 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -528,6 +528,21 @@ static void queue_adjust_cache_locked(struct mlx5_cache_ent *ent)
- 	}
+ /*
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 5fc0d9cc9d9d7..d07fb0a0da808 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3200,7 +3200,7 @@ static bool vma_is_accessed(struct vm_area_struct *vma)
+ 	if (READ_ONCE(current->mm->numa_scan_seq) < 2)
+ 		return true;
+ 
+-	pids = vma->numab_state->access_pids[0] | vma->numab_state->access_pids[1];
++	pids = vma->numab_state->pids_active[0] | vma->numab_state->pids_active[1];
+ 	return test_bit(hash_32(current->pid, ilog2(BITS_PER_LONG)), &pids);
  }
  
-+static void clean_keys(struct mlx5_ib_dev *dev, struct mlx5_cache_ent *ent)
-+{
-+	u32 mkey;
-+
-+	spin_lock_irq(&ent->mkeys_queue.lock);
-+	while (ent->mkeys_queue.ci) {
-+		mkey = pop_mkey_locked(ent);
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
-+		mlx5_core_destroy_mkey(dev->mdev, mkey);
-+		spin_lock_irq(&ent->mkeys_queue.lock);
-+	}
-+	ent->tmp_cleanup_scheduled = false;
-+	spin_unlock_irq(&ent->mkeys_queue.lock);
-+}
-+
- static void __cache_work_func(struct mlx5_cache_ent *ent)
- {
- 	struct mlx5_ib_dev *dev = ent->dev;
-@@ -599,7 +614,11 @@ static void delayed_cache_work_func(struct work_struct *work)
- 	struct mlx5_cache_ent *ent;
+@@ -3316,7 +3316,7 @@ static void task_numa_work(struct callback_head *work)
+ 				msecs_to_jiffies(sysctl_numa_balancing_scan_delay);
  
- 	ent = container_of(work, struct mlx5_cache_ent, dwork.work);
--	__cache_work_func(ent);
-+	/* temp entries are never filled, only cleaned */
-+	if (ent->is_tmp)
-+		clean_keys(ent->dev, ent);
-+	else
-+		__cache_work_func(ent);
- }
+ 			/* Reset happens after 4 times scan delay of scan start */
+-			vma->numab_state->next_pid_reset =  vma->numab_state->next_scan +
++			vma->numab_state->pids_active_reset =  vma->numab_state->next_scan +
+ 				msecs_to_jiffies(VMA_PID_RESET_PERIOD);
+ 		}
  
- static int cache_ent_key_cmp(struct mlx5r_cache_rb_key key1,
-@@ -775,20 +794,6 @@ struct mlx5_ib_mr *mlx5_mr_cache_alloc(struct mlx5_ib_dev *dev,
- 	return _mlx5_mr_cache_alloc(dev, ent, access_flags);
- }
+@@ -3337,11 +3337,11 @@ static void task_numa_work(struct callback_head *work)
+ 		 * vma for recent access to avoid clearing PID info before access..
+ 		 */
+ 		if (mm->numa_scan_seq &&
+-				time_after(jiffies, vma->numab_state->next_pid_reset)) {
+-			vma->numab_state->next_pid_reset = vma->numab_state->next_pid_reset +
++				time_after(jiffies, vma->numab_state->pids_active_reset)) {
++			vma->numab_state->pids_active_reset = vma->numab_state->pids_active_reset +
+ 				msecs_to_jiffies(VMA_PID_RESET_PERIOD);
+-			vma->numab_state->access_pids[0] = READ_ONCE(vma->numab_state->access_pids[1]);
+-			vma->numab_state->access_pids[1] = 0;
++			vma->numab_state->pids_active[0] = READ_ONCE(vma->numab_state->pids_active[1]);
++			vma->numab_state->pids_active[1] = 0;
+ 		}
  
--static void clean_keys(struct mlx5_ib_dev *dev, struct mlx5_cache_ent *ent)
--{
--	u32 mkey;
--
--	spin_lock_irq(&ent->mkeys_queue.lock);
--	while (ent->mkeys_queue.ci) {
--		mkey = pop_mkey_locked(ent);
--		spin_unlock_irq(&ent->mkeys_queue.lock);
--		mlx5_core_destroy_mkey(dev->mdev, mkey);
--		spin_lock_irq(&ent->mkeys_queue.lock);
--	}
--	spin_unlock_irq(&ent->mkeys_queue.lock);
--}
--
- static void mlx5_mkey_cache_debugfs_cleanup(struct mlx5_ib_dev *dev)
- {
- 	if (!mlx5_debugfs_root || dev->is_rep)
-@@ -901,10 +906,6 @@ mlx5r_cache_create_ent_locked(struct mlx5_ib_dev *dev,
- 			ent->limit = 0;
- 
- 		mlx5_mkey_cache_debugfs_add_ent(dev, ent);
--	} else {
--		mod_delayed_work(ent->dev->cache.wq,
--				 &ent->dev->cache.remove_ent_dwork,
--				 msecs_to_jiffies(30 * 1000));
- 	}
- 
- 	return ent;
-@@ -915,35 +916,6 @@ mlx5r_cache_create_ent_locked(struct mlx5_ib_dev *dev,
- 	return ERR_PTR(ret);
- }
- 
--static void remove_ent_work_func(struct work_struct *work)
--{
--	struct mlx5_mkey_cache *cache;
--	struct mlx5_cache_ent *ent;
--	struct rb_node *cur;
--
--	cache = container_of(work, struct mlx5_mkey_cache,
--			     remove_ent_dwork.work);
--	mutex_lock(&cache->rb_lock);
--	cur = rb_last(&cache->rb_root);
--	while (cur) {
--		ent = rb_entry(cur, struct mlx5_cache_ent, node);
--		cur = rb_prev(cur);
--		mutex_unlock(&cache->rb_lock);
--
--		spin_lock_irq(&ent->mkeys_queue.lock);
--		if (!ent->is_tmp) {
--			spin_unlock_irq(&ent->mkeys_queue.lock);
--			mutex_lock(&cache->rb_lock);
--			continue;
--		}
--		spin_unlock_irq(&ent->mkeys_queue.lock);
--
--		clean_keys(ent->dev, ent);
--		mutex_lock(&cache->rb_lock);
--	}
--	mutex_unlock(&cache->rb_lock);
--}
--
- int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
- {
- 	struct mlx5_mkey_cache *cache = &dev->cache;
-@@ -959,7 +931,6 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
- 	mutex_init(&dev->slow_path_mutex);
- 	mutex_init(&dev->cache.rb_lock);
- 	dev->cache.rb_root = RB_ROOT;
--	INIT_DELAYED_WORK(&dev->cache.remove_ent_dwork, remove_ent_work_func);
- 	cache->wq = alloc_ordered_workqueue("mkey_cache", WQ_MEM_RECLAIM);
- 	if (!cache->wq) {
- 		mlx5_ib_warn(dev, "failed to create work queue\n");
-@@ -1010,7 +981,6 @@ void mlx5_mkey_cache_cleanup(struct mlx5_ib_dev *dev)
- 		return;
- 
- 	mutex_lock(&dev->cache.rb_lock);
--	cancel_delayed_work(&dev->cache.remove_ent_dwork);
- 	for (node = rb_first(root); node; node = rb_next(node)) {
- 		ent = rb_entry(node, struct mlx5_cache_ent, node);
- 		spin_lock_irq(&ent->mkeys_queue.lock);
-@@ -1852,8 +1822,18 @@ static int mlx5_revoke_mr(struct mlx5_ib_mr *mr)
- 	struct mlx5_ib_dev *dev = to_mdev(mr->ibmr.device);
- 	struct mlx5_cache_ent *ent = mr->mmkey.cache_ent;
- 
--	if (mr->mmkey.cacheable && !mlx5r_umr_revoke_mr(mr) && !cache_ent_find_and_store(dev, mr))
-+	if (mr->mmkey.cacheable && !mlx5r_umr_revoke_mr(mr) && !cache_ent_find_and_store(dev, mr)) {
-+		ent = mr->mmkey.cache_ent;
-+		/* upon storing to a clean temp entry - schedule its cleanup */
-+		spin_lock_irq(&ent->mkeys_queue.lock);
-+		if (ent->is_tmp && !ent->tmp_cleanup_scheduled) {
-+			mod_delayed_work(ent->dev->cache.wq, &ent->dwork,
-+					 msecs_to_jiffies(30 * 1000));
-+			ent->tmp_cleanup_scheduled = true;
-+		}
-+		spin_unlock_irq(&ent->mkeys_queue.lock);
- 		return 0;
-+	}
- 
- 	if (ent) {
- 		spin_lock_irq(&ent->mkeys_queue.lock);
+ 		do {
 -- 
 2.43.0
 
