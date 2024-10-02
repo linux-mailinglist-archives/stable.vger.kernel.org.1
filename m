@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD8098D974
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8679E98DBFC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBD31C210F6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEF571C23E30
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D690A1D12F6;
-	Wed,  2 Oct 2024 14:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C551D1E66;
+	Wed,  2 Oct 2024 14:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TK+OsgUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qC3nsgfz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9667119F411;
-	Wed,  2 Oct 2024 14:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643371D1E74;
+	Wed,  2 Oct 2024 14:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878009; cv=none; b=RhXGkf95QR1/UKgOgqsPZXpKL9X4NbSDsTyKu/VoSZCcwSa+kTo6tym09YyI5xWpJNcqerNTbNboit8S2lusQBQM5BCRn7Krit8LwVssfd/ptSGPjcacMW3HRwob4DkZTH0C8fwVBP72F3V0Z5if2zfeWR446RAnTnBbkwgwa1k=
+	t=1727879474; cv=none; b=eTDpf3YK/Hu2AIigojcKz6T01oRNpfib1nf4HU4hXK2/FHnzCr6xDbdkDpq4R37Agre64OWqpmJzd24eZI0N5WY6+PeKFfg1xSsnFFbjKLHgXumAELbscBPDpLoKKYnfrQ2q6+1VluU15PNNDSgiycWcJoqIKP7iTI1BoVJkx9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878009; c=relaxed/simple;
-	bh=QWvRTreEEWbwk8ZwukEmUWVe/AZO1+nFeg3KJy95iKY=;
+	s=arc-20240116; t=1727879474; c=relaxed/simple;
+	bh=CqW/JoxyFPI+P28OrrS5925aNSfYCOzdR2tsu9Lxtow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZv7sduA/Xd6Ayr2E+itLSUm7Vi83DD7cH12iYaFDjt/+ivOCjtU8wz+mJ+ZGVDa+ag7l1BQIukZRqsJ8B38aPPgh8SeubeljGMfAroKVyangy7iYNowXedPpbpElCDQGSpN1EuJRPOKiF6fHaNMHunCfRRnyr0czn59g1VzzwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TK+OsgUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C6DC4CEC5;
-	Wed,  2 Oct 2024 14:06:48 +0000 (UTC)
+	 MIME-Version; b=A5LNMt+4H1h6wwcOd0KpVGIUUKJJUWjTN5supHyWWlLFruTYeqgTVZMOIF86SHOUV5V75Qe1w/uOMd1mXuS10XUGJeN2a9HejhYd1aIPR+d1o+tGo/YvKlptSAKXXUzqLaqmR8nhz/d0po7TDiBYwRzf+wWT2zTNQC3b2be4kpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qC3nsgfz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3441C4CEC2;
+	Wed,  2 Oct 2024 14:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878009;
-	bh=QWvRTreEEWbwk8ZwukEmUWVe/AZO1+nFeg3KJy95iKY=;
+	s=korg; t=1727879474;
+	bh=CqW/JoxyFPI+P28OrrS5925aNSfYCOzdR2tsu9Lxtow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TK+OsgUQ2sPUru33gmyO8v8gFBgWgaCVs9zK/VB72BYF9RuqA3dAZwP64OBRyqRm5
-	 4M6+Y4ypkhgue6UbkngPfH9GfQnIoX8TiGcpwXKOwY+V2gIla/shxqEvlF6YZdtDdk
-	 0GHU2sMltOyW5c3M/Nv1rMbuYxaMu+EMpuHjCty4=
+	b=qC3nsgfzZbA93pKqj7ntvp0tBAPVWE0hrY1xLvwolTPZpLkX2v0Txw0Eh9buUpkmw
+	 ANptAfqfuatI8Pn459gEsWyXfF4Z3o88BinFlYsyDr+SbKSjfwd/IiptqttYBnZdPq
+	 Tw2L/F4oDqS3ZGxbZNjcpLfR0VVsxGrkEE/WL2v4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 239/634] selftests/bpf: Fix error compiling bpf_iter_setsockopt.c with musl libc
+Subject: [PATCH 6.6 100/538] arm64: dts: ti: k3-j721e-sk: Fix reversed C6x carveout locations
 Date: Wed,  2 Oct 2024 14:55:39 +0200
-Message-ID: <20241002125820.534053158@linuxfoundation.org>
+Message-ID: <20241002125756.179044337@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 7b10f0c227ce3fa055d601f058dc411092a62a78 ]
+[ Upstream commit 9f3814a7c06b7c7296cf8c1622078ad71820454b ]
 
-Existing code calls getsockname() with a 'struct sockaddr_in6 *' argument
-where a 'struct sockaddr *' argument is declared, yielding compile errors
-when building for mips64el/musl-libc:
+The DMA carveout for the C6x core 0 is at 0xa6000000 and core 1 is at
+0xa7000000. These are reversed in DT. While both C6x can access either
+region, so this is not normally a problem, but if we start restricting
+the memory each core can access (such as with firewalls) the cores
+accessing the regions for the wrong core will not work. Fix this here.
 
-  bpf_iter_setsockopt.c: In function 'get_local_port':
-  bpf_iter_setsockopt.c:98:30: error: passing argument 2 of 'getsockname' from incompatible pointer type [-Werror=incompatible-pointer-types]
-     98 |         if (!getsockname(fd, &addr, &addrlen))
-        |                              ^~~~~
-        |                              |
-        |                              struct sockaddr_in6 *
-  In file included from .../netinet/in.h:10,
-                   from .../arpa/inet.h:9,
-                   from ./test_progs.h:17,
-                   from bpf_iter_setsockopt.c:5:
-  .../sys/socket.h:391:23: note: expected 'struct sockaddr * restrict' but argument is of type 'struct sockaddr_in6 *'
-    391 | int getsockname (int, struct sockaddr *__restrict, socklen_t *__restrict);
-        |                       ^
-  cc1: all warnings being treated as errors
-
-This compiled under glibc only because the argument is declared to be a
-"funky" transparent union which includes both types above. Explicitly cast
-the argument to allow compiling for both musl and glibc.
-
-Fixes: eed92afdd14c ("bpf: selftest: Test batching and bpf_(get|set)sockopt in bpf tcp iter")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Geliang Tang <geliang@kernel.org>
-Link: https://lore.kernel.org/bpf/f41def0f17b27a23b1709080e4e3f37f4cc11ca9.1721713597.git.tony.ambardar@gmail.com
+Fixes: f46d16cf5b43 ("arm64: dts: ti: k3-j721e-sk: Add DDR carveout memory nodes")
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240801181232.55027-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c b/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c
-index b52ff8ce34db8..16bed9dd8e6a3 100644
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c
-@@ -95,7 +95,7 @@ static unsigned short get_local_port(int fd)
- 	struct sockaddr_in6 addr;
- 	socklen_t addrlen = sizeof(addr);
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+index 42fe8eee9ec8c..ccacb65683b5b 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -119,7 +119,7 @@ main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
+ 			no-map;
+ 		};
  
--	if (!getsockname(fd, &addr, &addrlen))
-+	if (!getsockname(fd, (struct sockaddr *)&addr, &addrlen))
- 		return ntohs(addr.sin6_port);
+-		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
++		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+@@ -131,7 +131,7 @@ c66_0_memory_region: c66-memory@a6100000 {
+ 			no-map;
+ 		};
  
- 	return 0;
+-		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
++		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
 -- 
 2.43.0
 
