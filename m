@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-79591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA0698D944
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C059798DBC8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C085F2855E2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E89911C23C2F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2DA1D014A;
-	Wed,  2 Oct 2024 14:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8710C1D12E4;
+	Wed,  2 Oct 2024 14:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y360fxjt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2bsMXAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D077A1D016B;
-	Wed,  2 Oct 2024 14:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ADB1D07AB;
+	Wed,  2 Oct 2024 14:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877889; cv=none; b=Of0kX8vzLMhMo7MrUjQA8tC+kg5RGz65ck7gOtd/Yud+L1wgMIn8u0tR6soh8UGKbHrWbmlr8l+Kov2meZpHJdO3BloneA1W9bfaxRT/dVSpCNQ47AwLIWPe8H3MeHk4DBTrB+UebrBlWOTuV14qWZGqBYJNJeub7HkGiD4x0dc=
+	t=1727879367; cv=none; b=XwOKhmn1fLhLmg94tMGgB4MBEeCci1r2GBXMza8X0+o67cqAL9lNLIJPlo4kNtufDGHp9m1G4XLpFhsyz3nIZ8u23R618ZO/20EdH4qzfccWrhxAEEVXxABeWtd6jNIRMtFlCPTj3jjlOqGylgJXoCkPhx14/wSw7Temck6PKGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877889; c=relaxed/simple;
-	bh=qcDyuJ75Jlu/CRxIiL71VDymdJl78ZJrMaA8zYE2gTk=;
+	s=arc-20240116; t=1727879367; c=relaxed/simple;
+	bh=j9dW6dNsHWwYIiVCyr6PrrWcUEi3skswc8bfQ8ytexM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XW1KwknJgjTC552BEn4PCVbh67jTD4dIM+2stzfnen2gjks/ipUPwtXESKC2nUB5shJOTPAAamJtadXiD/WY2GWuim8XDH2rJQcCegsWSHN6EImvsO0Tx9W6OKR8wgaIEMSU5cgCPDz+Z8JmDEj8L7OeGOnLFjFTVXqEdExfdOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y360fxjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B525C4CEC2;
-	Wed,  2 Oct 2024 14:04:49 +0000 (UTC)
+	 MIME-Version; b=PUv/BBg2NxRektaBcC15lbF8SqmfhM/oQ+c+y+xYFbaER1I7JR5lrQQzvd82g/hup5De1tn4A5x1Medhln6kllsBnMktIO/0LXNmVfRjg7g5r0tbmmYxS2fgT50iOhk7hy0nicF2Q2AgoX7/kppN5IwKDWtqB9RAfBVgLIkqnd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2bsMXAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DF1C4CEC2;
+	Wed,  2 Oct 2024 14:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877889;
-	bh=qcDyuJ75Jlu/CRxIiL71VDymdJl78ZJrMaA8zYE2gTk=;
+	s=korg; t=1727879367;
+	bh=j9dW6dNsHWwYIiVCyr6PrrWcUEi3skswc8bfQ8ytexM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y360fxjt7jOm1QQ1v8pKXeP9dRiYP4BQWvxxzkh8zBP58TCeT6J+9uISA+Q/5/Vky
-	 Cy76AVQKT5kRIQOi2267o8sRlbbWsH6kYg1heBmRsgVzIbJBFumEOzsMcNO6xu4/95
-	 1DmOCU3X/LYGYdgRXcF+Uf5hvWo98JmcLEzVBdmA=
+	b=v2bsMXAVIF7H+VBHuiwNcyP/ydC5fSQEQWthZ7xqEFKcv3oxmUDi7PlymluuiD/Bz
+	 Owk+DURaSkpsHoJ7FFF0dwp/rqgWRJkY8KYkj6aoIxfKNVF6DdNCEQ8hkBy4RKuds0
+	 wAN1fg+aIlFhtSpKt51L2UT5bZR6xN/V2MObGNic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 202/634] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Subject: [PATCH 6.6 063/538] Bluetooth: hci_sync: Ignore errors from HCI_OP_REMOTE_NAME_REQ_CANCEL
 Date: Wed,  2 Oct 2024 14:55:02 +0200
-Message-ID: <20241002125819.080741636@linuxfoundation.org>
+Message-ID: <20241002125754.697118688@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
+[ Upstream commit cfbfeee61582e638770a1a10deef866c9adb38f5 ]
 
-In adreno_request_fw() when debugging information is printed to the log
-after firmware load, an incorrect filename is printed. 'newname' is used
-instead of 'fwname', so prefix "qcom/" is being added to filename.
-Looks like "copy-paste" mistake.
+This ignores errors from HCI_OP_REMOTE_NAME_REQ_CANCEL since it
+shouldn't interfere with the stopping of discovery and in certain
+conditions it seems to be failing.
 
-Fix this mistake by replacing 'newname' with 'fwname'.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/602382/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Link: https://github.com/bluez/bluez/issues/575
+Fixes: d0b137062b2d ("Bluetooth: hci_sync: Rework init stages")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index b93ed15f04a30..d5d9361e11aa5 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -475,7 +475,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
- 		ret = request_firmware_direct(&fw, fwname, drm->dev);
- 		if (!ret) {
- 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
--				newname);
-+				fwname);
- 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
- 			goto out;
- 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index af7817a7c585b..75515a1d2923a 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5391,7 +5391,10 @@ int hci_stop_discovery_sync(struct hci_dev *hdev)
+ 		if (!e)
+ 			return 0;
+ 
+-		return hci_remote_name_cancel_sync(hdev, &e->data.bdaddr);
++		/* Ignore cancel errors since it should interfere with stopping
++		 * of the discovery.
++		 */
++		hci_remote_name_cancel_sync(hdev, &e->data.bdaddr);
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
