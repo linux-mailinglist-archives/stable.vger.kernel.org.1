@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D731C98DD18
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E3498DAAF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14A4A1C21A0C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14C251F216B4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1A01CFEA3;
-	Wed,  2 Oct 2024 14:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CBA1D0B9E;
+	Wed,  2 Oct 2024 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzGFcXwD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlYrTXS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2936FB0;
-	Wed,  2 Oct 2024 14:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F58E1CFECF;
+	Wed,  2 Oct 2024 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880155; cv=none; b=X457Y+wnrxcAGKxWG5ZfA1N0rqu4lFabh92ea4feEDOKV+h/FMPohLZa78hA/WrcHNhVEhAvu97m2L/xofuVZisei9xWDwFyol1rrdufQDFOGRCyT8mRDmzWG+T1M25JHsM0rm7pLFKCtz6+ZbJk/rfiRIp5SQhaXHNj1+U0EDs=
+	t=1727878699; cv=none; b=jGxE/tu+q5D0NufKzvx4jhLnebFPtCnB2HamU+Ek2u/8FEX0NhBgL9gflm/VMLkVfgbKyr5VJ5AFDrn4Nf+19XF/3mKX+++buOD3WgwGhhWYAaFLMXTJLdxCscboaEDTN4KcqJk9pWnHQbF59unQ4lXPWCEkhHIG5ZSo6fQDGfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880155; c=relaxed/simple;
-	bh=5mI+A+MdGUQf4FD80HF5+g4oA06anbI7oTW7EQIO5XE=;
+	s=arc-20240116; t=1727878699; c=relaxed/simple;
+	bh=DZG8v9arPDvYM5yjrT7D4wsUjjPzOeDCVgutNHdDVbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbMPCBWXznbQHJsnE/3QhUum5xM3gkqSvMc+pBL6ccNJ7vxjJY8zxL8uArXOFvt6bxjuGsVmD+5AhmwMX/fu3uUOVCGKGL4bbI9wpd36Pt+Jtflv0KWMd4i76gDhRNKp1VC86hga8vNy2puJ8SASyCqStaLoaYWX9cGd4BHJXeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzGFcXwD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1296AC4CEC2;
-	Wed,  2 Oct 2024 14:42:34 +0000 (UTC)
+	 MIME-Version; b=A9N+kE/lLhzKMZ++fQ/bUXPVTSa179amHQWo3C++W1DnOSXXqH9uy4eB8sHyimXtcXmdi2RZESmAjsUXjSIkGv1vx6NtXEmGSSK4XGEQlC4tH49E2JJpykdrR/C9hfsNMedyjWfJ/6hnwwShmdrPtwBDGzeK8Jkc6EsdN//fRng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlYrTXS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DCFC4CEC2;
+	Wed,  2 Oct 2024 14:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880155;
-	bh=5mI+A+MdGUQf4FD80HF5+g4oA06anbI7oTW7EQIO5XE=;
+	s=korg; t=1727878699;
+	bh=DZG8v9arPDvYM5yjrT7D4wsUjjPzOeDCVgutNHdDVbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzGFcXwDvyPgce/jBpA+ZjNtmWcYU8ZenABEdDTvBjMWIiy5l7v7LSrq0BIpWhWEF
-	 feli/QHr3aiuekeIhjcOIqHTzJOkhMkqTg6SxhfMoyfi7qWFHNzFCCMVn5Xmp+uTnM
-	 J6M5lF6W+T+7djkr6K9FqRam5H6dPdADVJ7QCGds=
+	b=mlYrTXS2RzySqVlBSpzWCXjyepzLdtG1viLyM11P9uRxVnIt62YVcZjEYkD61HA30
+	 CB9qQKKg29ss7+ITnX/Fx+78X+I+wm4i6fFMsC2b+fh0gIanlGQH4B4J2Q6saUnlrH
+	 cx0NraD/GbQWa/nmwuxifr6lo+GqogiHVIl5u5dQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 361/538] driver core: Fix a potential null-ptr-deref in module_add_driver()
-Date: Wed,  2 Oct 2024 15:00:00 +0200
-Message-ID: <20241002125806.676599151@linuxfoundation.org>
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.10 501/634] objtool: Handle frame pointer related instructions
+Date: Wed,  2 Oct 2024 15:00:01 +0200
+Message-ID: <20241002125830.874281391@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +61,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 18ec12c97b39ff6aa15beb8d2b25d15cd44b87d8 ]
+commit da5b2ad1c2f18834cb1ce429e2e5a5cf5cbdf21b upstream.
 
-Inject fault while probing of-fpga-region, if kasprintf() fails in
-module_add_driver(), the second sysfs_remove_link() in exit path will cause
-null-ptr-deref as below because kernfs_name_hash() will call strlen() with
-NULL driver_name.
+After commit a0f7085f6a63 ("LoongArch: Add RANDOMIZE_KSTACK_OFFSET
+support"), there are three new instructions "addi.d $fp, $sp, 32",
+"sub.d $sp, $sp, $t0" and "addi.d $sp, $fp, -32" for the secondary
+stack in do_syscall(), then there is a objtool warning "return with
+modified stack frame" and no handle_syscall() which is the previous
+frame of do_syscall() in the call trace when executing the command
+"echo l > /proc/sysrq-trigger".
 
-Fix it by releasing resources based on the exit path sequence.
+objdump shows something like this:
 
-	 KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-	 Mem abort info:
-	   ESR = 0x0000000096000005
-	   EC = 0x25: DABT (current EL), IL = 32 bits
-	   SET = 0, FnV = 0
-	   EA = 0, S1PTW = 0
-	   FSC = 0x05: level 1 translation fault
-	 Data abort info:
-	   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-	   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-	   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-	 [dfffffc000000000] address between user and kernel address ranges
-	 Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-	 Dumping ftrace buffer:
-	    (ftrace buffer empty)
-	 Modules linked in: of_fpga_region(+) fpga_region fpga_bridge cfg80211 rfkill 8021q garp mrp stp llc ipv6 [last unloaded: of_fpga_region]
-	 CPU: 2 UID: 0 PID: 2036 Comm: modprobe Not tainted 6.11.0-rc2-g6a0e38264012 #295
-	 Hardware name: linux,dummy-virt (DT)
-	 pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-	 pc : strlen+0x24/0xb0
-	 lr : kernfs_name_hash+0x1c/0xc4
-	 sp : ffffffc081f97380
-	 x29: ffffffc081f97380 x28: ffffffc081f97b90 x27: ffffff80c821c2a0
-	 x26: ffffffedac0be418 x25: 0000000000000000 x24: ffffff80c09d2000
-	 x23: 0000000000000000 x22: 0000000000000000 x21: 0000000000000000
-	 x20: 0000000000000000 x19: 0000000000000000 x18: 0000000000001840
-	 x17: 0000000000000000 x16: 0000000000000000 x15: 1ffffff8103f2e42
-	 x14: 00000000f1f1f1f1 x13: 0000000000000004 x12: ffffffb01812d61d
-	 x11: 1ffffff01812d61c x10: ffffffb01812d61c x9 : dfffffc000000000
-	 x8 : 0000004fe7ed29e4 x7 : ffffff80c096b0e7 x6 : 0000000000000001
-	 x5 : ffffff80c096b0e0 x4 : 1ffffffdb990efa2 x3 : 0000000000000000
-	 x2 : 0000000000000000 x1 : dfffffc000000000 x0 : 0000000000000000
-	 Call trace:
-	  strlen+0x24/0xb0
-	  kernfs_name_hash+0x1c/0xc4
-	  kernfs_find_ns+0x118/0x2e8
-	  kernfs_remove_by_name_ns+0x80/0x100
-	  sysfs_remove_link+0x74/0xa8
-	  module_add_driver+0x278/0x394
-	  bus_add_driver+0x1f0/0x43c
-	  driver_register+0xf4/0x3c0
-	  __platform_driver_register+0x60/0x88
-	  of_fpga_region_init+0x20/0x1000 [of_fpga_region]
-	  do_one_initcall+0x110/0x788
-	  do_init_module+0x1dc/0x5c8
-	  load_module+0x3c38/0x4cac
-	  init_module_from_file+0xd4/0x128
-	  idempotent_init_module+0x2cc/0x528
-	  __arm64_sys_finit_module+0xac/0x100
-	  invoke_syscall+0x6c/0x258
-	  el0_svc_common.constprop.0+0x160/0x22c
-	  do_el0_svc+0x44/0x5c
-	  el0_svc+0x48/0xb8
-	  el0t_64_sync_handler+0x13c/0x158
-	  el0t_64_sync+0x190/0x194
-	 Code: f2fbffe1 a90157f4 12000802 aa0003f5 (38e16861)
-	 ---[ end trace 0000000000000000 ]---
-	 Kernel panic - not syncing: Oops: Fatal exception
+0000000000000000 <do_syscall>:
+   0:   02ff8063        addi.d          $sp, $sp, -32
+   4:   29c04076        st.d            $fp, $sp, 16
+   8:   29c02077        st.d            $s0, $sp, 8
+   c:   29c06061        st.d            $ra, $sp, 24
+  10:   02c08076        addi.d          $fp, $sp, 32
+  ...
+  74:   0011b063        sub.d           $sp, $sp, $t0
+  ...
+  a8:   4c000181        jirl            $ra, $t0, 0
+  ...
+  dc:   02ff82c3        addi.d          $sp, $fp, -32
+  e0:   28c06061        ld.d            $ra, $sp, 24
+  e4:   28c04076        ld.d            $fp, $sp, 16
+  e8:   28c02077        ld.d            $s0, $sp, 8
+  ec:   02c08063        addi.d          $sp, $sp, 32
+  f0:   4c000020        jirl            $zero, $ra, 0
 
-Fixes: 85d2b0aa1703 ("module: don't ignore sysfs_create_link() failures")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240812080658.2791982-1-ruanjinjie@huawei.com
+The instruction "sub.d $sp, $sp, $t0" changes the stack bottom and the
+new stack size is a random value, in order to find the return address of
+do_syscall() which is stored in the original stack frame after executing
+"jirl $ra, $t0, 0", it should use fp which points to the original stack
+top.
+
+At the beginning, the thought is tended to decode the secondary stack
+instruction "sub.d $sp, $sp, $t0" and set it as a label, then check this
+label for the two frame pointer instructions to change the cfa base and
+cfa offset during the period of secondary stack in update_cfi_state().
+This is valid for GCC but invalid for Clang due to there are different
+secondary stack instructions for ClangBuiltLinux on LoongArch, something
+like this:
+
+0000000000000000 <do_syscall>:
+  ...
+  88:   00119064        sub.d           $a0, $sp, $a0
+  8c:   00150083        or              $sp, $a0, $zero
+  ...
+
+Actually, it equals to a single instruction "sub.d $sp, $sp, $a0", but
+there is no proper condition to check it as a label like GCC, and so the
+beginning thought is not a good way.
+
+Essentially, there are two special frame pointer instructions which are
+"addi.d $fp, $sp, imm" and "addi.d $sp, $fp, imm", the first one points
+fp to the original stack top and the second one restores the original
+stack bottom from fp.
+
+Based on the above analysis, in order to avoid adding an arch-specific
+update_cfi_state(), we just add a member "frame_pointer" in the "struct
+symbol" as a label to avoid affecting the current normal case, then set
+it as true only if there is "addi.d $sp, $fp, imm". The last is to check
+this label for the two frame pointer instructions to change the cfa base
+and cfa offset in update_cfi_state().
+
+Tested with the following two configs:
+(1) CONFIG_RANDOMIZE_KSTACK_OFFSET=y &&
+    CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT=n
+(2) CONFIG_RANDOMIZE_KSTACK_OFFSET=y &&
+    CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT=y
+
+By the way, there is no effect for x86 with this patch, tested on the
+x86 machine with Fedora 40 system.
+
+Cc: stable@vger.kernel.org # 6.9+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/module.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ tools/objtool/arch/loongarch/decode.c |   11 ++++++++++-
+ tools/objtool/check.c                 |   23 ++++++++++++++++++++---
+ tools/objtool/include/objtool/elf.h   |    1 +
+ 3 files changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/module.c b/drivers/base/module.c
-index b0b79b9c189d4..0d5c5da367f72 100644
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -66,27 +66,31 @@ int module_add_driver(struct module *mod, struct device_driver *drv)
- 	driver_name = make_driver_name(drv);
- 	if (!driver_name) {
- 		ret = -ENOMEM;
--		goto out;
-+		goto out_remove_kobj;
- 	}
- 
- 	module_create_drivers_dir(mk);
- 	if (!mk->drivers_dir) {
- 		ret = -EINVAL;
--		goto out;
-+		goto out_free_driver_name;
- 	}
- 
- 	ret = sysfs_create_link(mk->drivers_dir, &drv->p->kobj, driver_name);
- 	if (ret)
--		goto out;
-+		goto out_remove_drivers_dir;
- 
- 	kfree(driver_name);
- 
- 	return 0;
--out:
--	sysfs_remove_link(&drv->p->kobj, "module");
+--- a/tools/objtool/arch/loongarch/decode.c
++++ b/tools/objtool/arch/loongarch/decode.c
+@@ -122,7 +122,7 @@ static bool decode_insn_reg2i12_fomat(un
+ 	switch (inst.reg2i12_format.opcode) {
+ 	case addid_op:
+ 		if ((inst.reg2i12_format.rd == CFI_SP) || (inst.reg2i12_format.rj == CFI_SP)) {
+-			/* addi.d sp,sp,si12 or addi.d fp,sp,si12 */
++			/* addi.d sp,sp,si12 or addi.d fp,sp,si12 or addi.d sp,fp,si12 */
+ 			insn->immediate = sign_extend64(inst.reg2i12_format.immediate, 11);
+ 			ADD_OP(op) {
+ 				op->src.type = OP_SRC_ADD;
+@@ -132,6 +132,15 @@ static bool decode_insn_reg2i12_fomat(un
+ 				op->dest.reg = inst.reg2i12_format.rd;
+ 			}
+ 		}
++		if ((inst.reg2i12_format.rd == CFI_SP) && (inst.reg2i12_format.rj == CFI_FP)) {
++			/* addi.d sp,fp,si12 */
++			struct symbol *func = find_func_containing(insn->sec, insn->offset);
 +
-+out_remove_drivers_dir:
- 	sysfs_remove_link(mk->drivers_dir, driver_name);
++			if (!func)
++				return false;
 +
-+out_free_driver_name:
- 	kfree(driver_name);
++			func->frame_pointer = true;
++		}
+ 		break;
+ 	case ldd_op:
+ 		if (inst.reg2i12_format.rj == CFI_SP) {
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2991,10 +2991,27 @@ static int update_cfi_state(struct instr
+ 				break;
+ 			}
  
-+out_remove_kobj:
-+	sysfs_remove_link(&drv->p->kobj, "module");
- 	return ret;
- }
+-			if (op->dest.reg == CFI_SP && op->src.reg == CFI_BP) {
++			if (op->dest.reg == CFI_BP && op->src.reg == CFI_SP &&
++			    insn->sym->frame_pointer) {
++				/* addi.d fp,sp,imm on LoongArch */
++				if (cfa->base == CFI_SP && cfa->offset == op->src.offset) {
++					cfa->base = CFI_BP;
++					cfa->offset = 0;
++				}
++				break;
++			}
  
--- 
-2.43.0
-
+-				/* lea disp(%rbp), %rsp */
+-				cfi->stack_size = -(op->src.offset + regs[CFI_BP].offset);
++			if (op->dest.reg == CFI_SP && op->src.reg == CFI_BP) {
++				/* addi.d sp,fp,imm on LoongArch */
++				if (cfa->base == CFI_BP && cfa->offset == 0) {
++					if (insn->sym->frame_pointer) {
++						cfa->base = CFI_SP;
++						cfa->offset = -op->src.offset;
++					}
++				} else {
++					/* lea disp(%rbp), %rsp */
++					cfi->stack_size = -(op->src.offset + regs[CFI_BP].offset);
++				}
+ 				break;
+ 			}
+ 
+--- a/tools/objtool/include/objtool/elf.h
++++ b/tools/objtool/include/objtool/elf.h
+@@ -68,6 +68,7 @@ struct symbol {
+ 	u8 warned	     : 1;
+ 	u8 embedded_insn     : 1;
+ 	u8 local_label       : 1;
++	u8 frame_pointer     : 1;
+ 	struct list_head pv_target;
+ 	struct reloc *relocs;
+ };
 
 
 
