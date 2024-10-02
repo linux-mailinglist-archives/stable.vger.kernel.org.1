@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B88D98DCBE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C48398DA28
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6246B281BB7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 098101F27FDB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F981D2B13;
-	Wed,  2 Oct 2024 14:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4471D0E08;
+	Wed,  2 Oct 2024 14:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRQDBluP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7gQ+o19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A7F19752C;
-	Wed,  2 Oct 2024 14:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A61B1D0488;
+	Wed,  2 Oct 2024 14:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879894; cv=none; b=WCgZc6/sVkSPRE5we3pWRMXj7nsl/JdYINu8TpdmapDuMjSFdWRS3L3YxxpS0hYyPJfYlDLAqO+M0nkgCikZ3TocvhgB1KVmHY3O/8XZOQPMIZc39JEd7nc2JEGzT+v1J1pzHyd6BqGWyj5akZtGthwNU6wDhxJR5q7v/PbjEWY=
+	t=1727878441; cv=none; b=EBrJvm4M4KWjUuXAbhQkwtB6g22YBJML84etRcDNx0KAwHNOTniNADVvyPJlHVWU90iw6kvM207zZnii4XTCFJ0glEKduw2VgwGTBuPTs8di6ElzWCf1ty6HduS5fs4DqIwPEEsNEEHMQW3/lJ3WyrSZ75EipEORuyZ102DTFxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879894; c=relaxed/simple;
-	bh=lKZD6dgPxS/HMRM7bpqZjg7b0lTbPVzH2ijsThvfY3c=;
+	s=arc-20240116; t=1727878441; c=relaxed/simple;
+	bh=SWv6ZCMvHVnFauD2F9/0BMwpjFQgimGvDPhKTnomZyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WBfTixLp8lUFC13bCA/58SAJLlI1opzntrZhx8bcbCshfq6dROwijeynIchxB7LPMybXmPaDiQm6LSxy7u/9xFLEY8XfXd00KIz3K9ThSqLdwbOak3lHkZmeOcQbQ8SbvlhOc6qpXX4R0Z+/1q12Oy2bYLy6TjU55XaKI08op+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRQDBluP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD360C4CEC2;
-	Wed,  2 Oct 2024 14:38:13 +0000 (UTC)
+	 MIME-Version; b=oXDHZprW6T268A31mmD7uQx+Xr7+w9TqbP9ZIkAlwEFOKkZxTfz9F7h7ad7tCaNNSC6uqH7oRq12X0QPiFwEs7XGkqDBVU9lv5QoM06+KrALQG/7drBX1WbEEkVDUbx01dCYUyM5aSpz06z5M7Pf1F9WN2g9MFO6VKF6BQLTa0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7gQ+o19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70AEC4CEC2;
+	Wed,  2 Oct 2024 14:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879894;
-	bh=lKZD6dgPxS/HMRM7bpqZjg7b0lTbPVzH2ijsThvfY3c=;
+	s=korg; t=1727878441;
+	bh=SWv6ZCMvHVnFauD2F9/0BMwpjFQgimGvDPhKTnomZyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRQDBluPoohUG8ewHZh0MDO/7iHKkRsVibKKVq9LSp0HSLeyLJm3Nip1l+UmBUPaq
-	 2OqngtDh0oWdryROX2ZSkPqUdOT6T+9GIehV4Gy0Hp6fK9ULTsz89505l+tugVOrRG
-	 9fWGvXzrjjyTOdBiKNCFpYCblVOxD+er9tkw/kP8=
+	b=r7gQ+o19ZRvpyqg5fzLNOTWTCI/P5w5CYYipXllJGd5U5YBKnMXVKLbGvtPr1nPfn
+	 PAntSk9edSv1n5/Xk3+QUzW9ZUU8nZxOOU8HFCLREx0Hq/+pG15BezhefJmzjOHxZI
+	 qHPzaUnAqqFykHFrvKjvk7a2A1DgvObq1xT6Yerk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 275/538] pinctrl: ti: ti-iodelay: Convert to platform remove callback returning void
-Date: Wed,  2 Oct 2024 14:58:34 +0200
-Message-ID: <20241002125803.111497427@linuxfoundation.org>
+Subject: [PATCH 6.10 415/634] iio: adc: ad7606: fix oversampling gpio array
+Date: Wed,  2 Oct 2024 14:58:35 +0200
+Message-ID: <20241002125827.486188943@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Guillaume Stols <gstols@baylibre.com>
 
-[ Upstream commit 93650550dff9d1a3b88c553f8adb81dc89778977 ]
+[ Upstream commit 8dc4594b54dbaaba40dc8884ad3d42083de39434 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+gpiod_set_array_value was misused here: the implementation relied on the
+assumption that an unsigned long was required for each gpio, while the
+function expects a bit array stored in "as much unsigned long as needed
+for storing one bit per GPIO", i.e it is using a bit field.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+This leaded to incorrect parameter passed to gpiod_set_array_value, that
+would set 1 value instead of 3.
+It also prevents to select the software mode correctly for the AD7606B.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231009083856.222030-21-u.kleine-koenig@pengutronix.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: a9f2b249adee ("pinctrl: ti: ti-iodelay: Fix some error handling paths")
+Fixes: d2a415c86c6b ("iio: adc: ad7606: Add support for AD7606B ADC")
+Fixes: 41f71e5e7daf ("staging: iio: adc: ad7606: Use find_closest() macro")
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/iio/adc/ad7606.c     | 4 ++--
+ drivers/iio/adc/ad7606_spi.c | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-index 5370bbdf2e1a1..81ae6737928a5 100644
---- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-+++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-@@ -900,23 +900,19 @@ static int ti_iodelay_probe(struct platform_device *pdev)
- /**
-  * ti_iodelay_remove() - standard remove
-  * @pdev: platform device
-- *
-- * Return: 0 if all went fine, else appropriate error value.
-  */
--static int ti_iodelay_remove(struct platform_device *pdev)
-+static void ti_iodelay_remove(struct platform_device *pdev)
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 1c08c0921ee71..8c66b1e364014 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -215,9 +215,9 @@ static int ad7606_write_os_hw(struct iio_dev *indio_dev, int val)
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+ 	DECLARE_BITMAP(values, 3);
+ 
+-	values[0] = val;
++	values[0] = val & GENMASK(2, 0);
+ 
+-	gpiod_set_array_value(ARRAY_SIZE(values), st->gpio_os->desc,
++	gpiod_set_array_value(st->gpio_os->ndescs, st->gpio_os->desc,
+ 			      st->gpio_os->info, values);
+ 
+ 	/* AD7616 requires a reset to update value */
+diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+index 263a778bcf253..287a0591533b6 100644
+--- a/drivers/iio/adc/ad7606_spi.c
++++ b/drivers/iio/adc/ad7606_spi.c
+@@ -249,8 +249,9 @@ static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
+ static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
  {
- 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+-	unsigned long os[3] = {1};
++	DECLARE_BITMAP(os, 3);
  
- 	ti_iodelay_pinconf_deinit_dev(iod);
- 
- 	/* Expect other allocations to be freed by devm */
--
--	return 0;
- }
- 
- static struct platform_driver ti_iodelay_driver = {
- 	.probe = ti_iodelay_probe,
--	.remove = ti_iodelay_remove,
-+	.remove_new = ti_iodelay_remove,
- 	.driver = {
- 		   .name = DRIVER_NAME,
- 		   .of_match_table = ti_iodelay_of_match,
++	bitmap_fill(os, 3);
+ 	/*
+ 	 * Software mode is enabled when all three oversampling
+ 	 * pins are set to high. If oversampling gpios are defined
+@@ -258,7 +259,7 @@ static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
+ 	 * otherwise, they must be hardwired to VDD
+ 	 */
+ 	if (st->gpio_os) {
+-		gpiod_set_array_value(ARRAY_SIZE(os),
++		gpiod_set_array_value(st->gpio_os->ndescs,
+ 				      st->gpio_os->desc, st->gpio_os->info, os);
+ 	}
+ 	/* OS of 128 and 256 are available only in software mode */
 -- 
 2.43.0
 
