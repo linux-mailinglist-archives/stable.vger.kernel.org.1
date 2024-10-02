@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9489298DBB2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A747698D953
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574FC28396D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22EFC1F21ED7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16CB1D0E1A;
-	Wed,  2 Oct 2024 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEBD1D2700;
+	Wed,  2 Oct 2024 14:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkcXJ+MU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJjs+hCM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3FC1D04A8;
-	Wed,  2 Oct 2024 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC771D26FE;
+	Wed,  2 Oct 2024 14:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879317; cv=none; b=CjaODlWGMXcD3OECFYPkiHLfguMBSv8O1YWRAdXQComND4jHkBIeKh9WNSif4fa2daHmr3/MyWGsbR9PjIwR0iOzt0veVcdB1B+8df8Orti4bMh4lGIU6DRUTygUCqhflESzpXo2fJFE9QzRW17osk+Mq2PqBYyNFVuBj2Oq5CI=
+	t=1727877922; cv=none; b=lKdFckFwRVRO9/3h67bbgryXArNbUIeJvmoRgZBAH6fqmAQWSEik/INYO8vqQoVxzVA6cIc4pjTzfLT0u3knUw6RtY/pt/VQcUdYfXn/TIH2woXvYlmWmJNUhnqMZSJ1Uj3IjfMhzJAP7PGHH7OaD6ybNWpCWa/OH+0luPQlWNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879317; c=relaxed/simple;
-	bh=g06iMQIDoGAdNQQPRiMEd24jS+8cXi1JTLrX+UWP+jE=;
+	s=arc-20240116; t=1727877922; c=relaxed/simple;
+	bh=f3R7qUrauKXJn+4t8heDqzHm2TF5QPB2lRZcUqj1b0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhPJrPCj3gPpNUil0Of4VJ5Jj2fGFWLb/n+NzCMCtEmYqg1f13JzEFI5bPmvT8QO3xOdw0wgZvnQa0IJfhDanHHgdS1CzhpnXZix7q+uT4NHqKZPoY4PpEZpMnfAlvsXttHRML+P3oBkraCsswqbsFevNnONCnXuc/bhxlPYVdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkcXJ+MU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A24C4CEC2;
-	Wed,  2 Oct 2024 14:28:36 +0000 (UTC)
+	 MIME-Version; b=DOs/KgV6tgaLcKDc6nzoc3hqXJUcV8PrTT/92Z0JTxbYJp3q5KbRJz5ux6OZArjRJJJRHpZIhHmqFWPgtHLEPkm4FBWsuHWNLLgM4tbRXpQ9wfUJOWe7RCB7hcvmwWp7v9jAxv2j7Q4yUgazvHFKH20OA6zCIb6LromgJr9wxdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJjs+hCM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73749C4CEC2;
+	Wed,  2 Oct 2024 14:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879317;
-	bh=g06iMQIDoGAdNQQPRiMEd24jS+8cXi1JTLrX+UWP+jE=;
+	s=korg; t=1727877921;
+	bh=f3R7qUrauKXJn+4t8heDqzHm2TF5QPB2lRZcUqj1b0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkcXJ+MUs9RoD7NhzWpqmQ5Vq6h3rnFuDx0JH28H7zAhzZ+T32eT/Sl3RoB8NOj/m
-	 n6oHfceIjpU2mg4RsRYqnyNNZC6e7Vh7sDsTceBV9g/YofrzyNeaDxZRO9DXfEnCiT
-	 7Tad9OEnZ6FKu4QjQ9gzCB3YrdZySeAm4qx7jirI=
+	b=vJjs+hCMJ6S8WLnLgST5iyL8NvOXgq5RyxnAipPrqbE4hHYkD6kjCpfdtzgPEwhmN
+	 BwUei8g5olsiUsJ3D+1ZTzedlmZLybTJm3xeX1Myf9YMDRXnQl4wO4mJ7IIMywmtVM
+	 FBJe4FHst1Xt+OKenvkJrn44SC9WJ0pPlFpvrX2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/538] wifi: mac80211: use two-phase skb reclamation in ieee80211_do_stop()
+Subject: [PATCH 6.10 199/634] drm/msm: Use a7xx family directly in gpu_state
 Date: Wed,  2 Oct 2024 14:54:59 +0200
-Message-ID: <20241002125754.575606778@linuxfoundation.org>
+Message-ID: <20241002125818.960636457@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Connor Abbott <cwabbott0@gmail.com>
 
-[ Upstream commit 9d301de12da6e1bb069a9835c38359b8e8135121 ]
+[ Upstream commit db75ef03d72ea75515f5282fe8a4925ae8373fe1 ]
 
-Since '__dev_queue_xmit()' should be called with interrupts enabled,
-the following backtrace:
+With a7xx, we need to import a new header for each new generation and
+switch to a different list of registers, instead of making
+backwards-compatible changes. Using the helpers inadvertently made a750
+use the a740 list of registers, instead use the family directly to fix
+this.
 
-ieee80211_do_stop()
- ...
- spin_lock_irqsave(&local->queue_stop_reason_lock, flags)
- ...
- ieee80211_free_txskb()
-  ieee80211_report_used_skb()
-   ieee80211_report_ack_skb()
-    cfg80211_mgmt_tx_status_ext()
-     nl80211_frame_tx_status()
-      genlmsg_multicast_netns()
-       genlmsg_multicast_netns_filtered()
-        nlmsg_multicast_filtered()
-	 netlink_broadcast_filtered()
-	  do_one_broadcast()
-	   netlink_broadcast_deliver()
-	    __netlink_sendskb()
-	     netlink_deliver_tap()
-	      __netlink_deliver_tap_skb()
-	       dev_queue_xmit()
-	        __dev_queue_xmit() ; with IRQS disabled
- ...
- spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags)
-
-issues the warning (as reported by syzbot reproducer):
-
-WARNING: CPU: 2 PID: 5128 at kernel/softirq.c:362 __local_bh_enable_ip+0xc3/0x120
-
-Fix this by implementing a two-phase skb reclamation in
-'ieee80211_do_stop()', where actual work is performed
-outside of a section with interrupts disabled.
-
-Fixes: 5061b0c2b906 ("mac80211: cooperate more with network namespaces")
-Reported-by: syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20240906123151.351647-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: f3f8207d8aed ("drm/msm: Add devcoredump support for a750")
+Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/607392/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 41 ++++++++++-----------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index a7c39e895b1e5..fae701248f058 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -466,6 +466,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- {
- 	struct ieee80211_local *local = sdata->local;
- 	unsigned long flags;
-+	struct sk_buff_head freeq;
- 	struct sk_buff *skb, *tmp;
- 	u32 hw_reconf_flags = 0;
- 	int i, flushed;
-@@ -652,18 +653,32 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		skb_queue_purge(&sdata->status_queue);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index 789a11416f7a4..f2030e521a03a 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -388,18 +388,18 @@ static void a7xx_get_debugbus_blocks(struct msm_gpu *gpu,
+ 	const u32 *debugbus_blocks, *gbif_debugbus_blocks;
+ 	int i;
+ 
+-	if (adreno_is_a730(adreno_gpu)) {
++	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		debugbus_blocks = gen7_0_0_debugbus_blocks;
+ 		debugbus_blocks_count = ARRAY_SIZE(gen7_0_0_debugbus_blocks);
+ 		gbif_debugbus_blocks = a7xx_gbif_debugbus_blocks;
+ 		gbif_debugbus_blocks_count = ARRAY_SIZE(a7xx_gbif_debugbus_blocks);
+-	} else if (adreno_is_a740_family(adreno_gpu)) {
++	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
+ 		debugbus_blocks = gen7_2_0_debugbus_blocks;
+ 		debugbus_blocks_count = ARRAY_SIZE(gen7_2_0_debugbus_blocks);
+ 		gbif_debugbus_blocks = a7xx_gbif_debugbus_blocks;
+ 		gbif_debugbus_blocks_count = ARRAY_SIZE(a7xx_gbif_debugbus_blocks);
+ 	} else {
+-		BUG_ON(!adreno_is_a750(adreno_gpu));
++		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
+ 		debugbus_blocks = gen7_9_0_debugbus_blocks;
+ 		debugbus_blocks_count = ARRAY_SIZE(gen7_9_0_debugbus_blocks);
+ 		gbif_debugbus_blocks = gen7_9_0_gbif_debugbus_blocks;
+@@ -509,7 +509,7 @@ static void a6xx_get_debugbus(struct msm_gpu *gpu,
+ 		const struct a6xx_debugbus_block *cx_debugbus_blocks;
+ 
+ 		if (adreno_is_a7xx(adreno_gpu)) {
+-			BUG_ON(!(adreno_is_a730(adreno_gpu) || adreno_is_a740_family(adreno_gpu)));
++			BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
+ 			cx_debugbus_blocks = a7xx_cx_debugbus_blocks;
+ 			nr_cx_debugbus_blocks = ARRAY_SIZE(a7xx_cx_debugbus_blocks);
+ 		} else {
+@@ -660,11 +660,11 @@ static void a7xx_get_dbgahb_clusters(struct msm_gpu *gpu,
+ 	const struct gen7_sptp_cluster_registers *dbgahb_clusters;
+ 	unsigned dbgahb_clusters_size;
+ 
+-	if (adreno_is_a730(adreno_gpu)) {
++	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		dbgahb_clusters = gen7_0_0_sptp_clusters;
+ 		dbgahb_clusters_size = ARRAY_SIZE(gen7_0_0_sptp_clusters);
+ 	} else {
+-		BUG_ON(!adreno_is_a740_family(adreno_gpu));
++		BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
+ 		dbgahb_clusters = gen7_2_0_sptp_clusters;
+ 		dbgahb_clusters_size = ARRAY_SIZE(gen7_2_0_sptp_clusters);
+ 	}
+@@ -818,14 +818,14 @@ static void a7xx_get_clusters(struct msm_gpu *gpu,
+ 	const struct gen7_cluster_registers *clusters;
+ 	unsigned clusters_size;
+ 
+-	if (adreno_is_a730(adreno_gpu)) {
++	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		clusters = gen7_0_0_clusters;
+ 		clusters_size = ARRAY_SIZE(gen7_0_0_clusters);
+-	} else if (adreno_is_a740_family(adreno_gpu)) {
++	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
+ 		clusters = gen7_2_0_clusters;
+ 		clusters_size = ARRAY_SIZE(gen7_2_0_clusters);
+ 	} else {
+-		BUG_ON(!adreno_is_a750(adreno_gpu));
++		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
+ 		clusters = gen7_9_0_clusters;
+ 		clusters_size = ARRAY_SIZE(gen7_9_0_clusters);
+ 	}
+@@ -893,7 +893,7 @@ static void a7xx_get_shader_block(struct msm_gpu *gpu,
+ 	if (WARN_ON(datasize > A6XX_CD_DATA_SIZE))
+ 		return;
+ 
+-	if (adreno_is_a730(adreno_gpu)) {
++	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		gpu_rmw(gpu, REG_A7XX_SP_DBG_CNTL, GENMASK(1, 0), 3);
  	}
  
-+	/*
-+	 * Since ieee80211_free_txskb() may issue __dev_queue_xmit()
-+	 * which should be called with interrupts enabled, reclamation
-+	 * is done in two phases:
-+	 */
-+	__skb_queue_head_init(&freeq);
-+
-+	/* unlink from local queues... */
- 	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
- 	for (i = 0; i < IEEE80211_MAX_QUEUES; i++) {
- 		skb_queue_walk_safe(&local->pending[i], skb, tmp) {
- 			struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 			if (info->control.vif == &sdata->vif) {
- 				__skb_unlink(skb, &local->pending[i]);
--				ieee80211_free_txskb(&local->hw, skb);
-+				__skb_queue_tail(&freeq, skb);
- 			}
- 		}
+@@ -923,7 +923,7 @@ static void a7xx_get_shader_block(struct msm_gpu *gpu,
+ 		datasize);
+ 
+ out:
+-	if (adreno_is_a730(adreno_gpu)) {
++	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		gpu_rmw(gpu, REG_A7XX_SP_DBG_CNTL, GENMASK(1, 0), 0);
  	}
- 	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
+ }
+@@ -956,14 +956,14 @@ static void a7xx_get_shaders(struct msm_gpu *gpu,
+ 	unsigned num_shader_blocks;
+ 	int i;
  
-+	/* ... and perform actual reclamation with interrupts enabled. */
-+	skb_queue_walk_safe(&freeq, skb, tmp) {
-+		__skb_unlink(skb, &freeq);
-+		ieee80211_free_txskb(&local->hw, skb);
-+	}
-+
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		ieee80211_txq_remove_vlan(local, sdata);
+-	if (adreno_is_a730(adreno_gpu)) {
++	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		shader_blocks = gen7_0_0_shader_blocks;
+ 		num_shader_blocks = ARRAY_SIZE(gen7_0_0_shader_blocks);
+-	} else if (adreno_is_a740_family(adreno_gpu)) {
++	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
+ 		shader_blocks = gen7_2_0_shader_blocks;
+ 		num_shader_blocks = ARRAY_SIZE(gen7_2_0_shader_blocks);
+ 	} else {
+-		BUG_ON(!adreno_is_a750(adreno_gpu));
++		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
+ 		shader_blocks = gen7_9_0_shader_blocks;
+ 		num_shader_blocks = ARRAY_SIZE(gen7_9_0_shader_blocks);
+ 	}
+@@ -1348,14 +1348,14 @@ static void a7xx_get_registers(struct msm_gpu *gpu,
+ 	const u32 *pre_crashdumper_regs;
+ 	const struct gen7_reg_list *reglist;
  
+-	if (adreno_is_a730(adreno_gpu)) {
++	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		reglist = gen7_0_0_reg_list;
+ 		pre_crashdumper_regs = gen7_0_0_pre_crashdumper_gpu_registers;
+-	} else if (adreno_is_a740_family(adreno_gpu)) {
++	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
+ 		reglist = gen7_2_0_reg_list;
+ 		pre_crashdumper_regs = gen7_0_0_pre_crashdumper_gpu_registers;
+ 	} else {
+-		BUG_ON(!adreno_is_a750(adreno_gpu));
++		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
+ 		reglist = gen7_9_0_reg_list;
+ 		pre_crashdumper_regs = gen7_9_0_pre_crashdumper_gpu_registers;
+ 	}
+@@ -1405,8 +1405,7 @@ static void a7xx_get_post_crashdumper_registers(struct msm_gpu *gpu,
+ 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+ 	const u32 *regs;
+ 
+-	BUG_ON(!(adreno_is_a730(adreno_gpu) || adreno_is_a740_family(adreno_gpu) ||
+-		 adreno_is_a750(adreno_gpu)));
++	BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
+ 	regs = gen7_0_0_post_crashdumper_registers;
+ 
+ 	a7xx_get_ahb_gpu_registers(gpu,
+@@ -1514,11 +1513,11 @@ static void a7xx_get_indexed_registers(struct msm_gpu *gpu,
+ 	const struct a6xx_indexed_registers *indexed_regs;
+ 	int i, indexed_count, mempool_count;
+ 
+-	if (adreno_is_a730(adreno_gpu) || adreno_is_a740_family(adreno_gpu)) {
++	if (adreno_gpu->info->family <= ADRENO_7XX_GEN2) {
+ 		indexed_regs = a7xx_indexed_reglist;
+ 		indexed_count = ARRAY_SIZE(a7xx_indexed_reglist);
+ 	} else {
+-		BUG_ON(!adreno_is_a750(adreno_gpu));
++		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
+ 		indexed_regs = gen7_9_0_cp_indexed_reg_list;
+ 		indexed_count = ARRAY_SIZE(gen7_9_0_cp_indexed_reg_list);
+ 	}
 -- 
 2.43.0
 
