@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1CF98DCCD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3C398DA4C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324D61F242AB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 417DBB25382
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFE81D2F6A;
-	Wed,  2 Oct 2024 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC451D27A3;
+	Wed,  2 Oct 2024 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6XtbUpN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjbRSalS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD861D0F4B;
-	Wed,  2 Oct 2024 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE871D2798;
+	Wed,  2 Oct 2024 14:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879948; cv=none; b=eHXkwCIxq9E+h89Uo4VveDNx62SfFOprjWhYxH0ylVfpEm5nf6V9zEyw6Z+b9GX53x2Y4M+pJgIlGPLT7KVS7wCJqxY85mNpuaFau3jfyzisSgSHpkcZdBohxyQl/XcHPwsWRVIBr4ohj7xK7vkpgj7L1XR36/asHgylJTkuQ3Q=
+	t=1727878493; cv=none; b=hnEUQab/jtysHp3QRGdF3ssrsUrHMmcgAN4HHifQ8h4yppJqvQp8UUqNgCMighmpPDvHeBi+rCtzIgDSl9zGr58cKGss1zkkpoTE02+5dpmi4d69ZC2TfYalPialiHt58XSbUan9tDaSibgOm0QS2uAEzfl2ch5EK3Uk1VZvtxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879948; c=relaxed/simple;
-	bh=O8GOFF6cnHVvzzmlwk8fBzx84EP6TjwLQ6oqs6v6MSg=;
+	s=arc-20240116; t=1727878493; c=relaxed/simple;
+	bh=D7qdiCG0CrA25tH/1AAIeGsab7k5EiQQ4agoO3HZFTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iw9axJZKldWAQ6o5B0nn/mN1RovA7xOBARrH7nfY5La497Ftyrh4N6V9VvrzHvQTLc9ueiRrL2XrWP8OGn/4YhGK4FFLAmqbMNmmvtYOYlJC2PPP1Y4wSS178M2Cnm9rFq6Pxkb1YRB4EknUg7JSml4X3vUqs9X/1llhfJJAs/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6XtbUpN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E979AC4CEC2;
-	Wed,  2 Oct 2024 14:39:07 +0000 (UTC)
+	 MIME-Version; b=f+C0l8glBJx9ejI0EW95AdLuL5FVyoWKT96LUOZEnQ/txV0jZeumHsGz/bEQY7QgIed7rA4B5tiTpnYb8beEYCXmlCx9bMvC7mtQw5KA6IGRGB2/B/gjeKsUPIh/OGAlaiU5dftYQ3CsCq0epTsbTy/nK5gkNHrfodSxju9u8AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjbRSalS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24806C4CED2;
+	Wed,  2 Oct 2024 14:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879948;
-	bh=O8GOFF6cnHVvzzmlwk8fBzx84EP6TjwLQ6oqs6v6MSg=;
+	s=korg; t=1727878493;
+	bh=D7qdiCG0CrA25tH/1AAIeGsab7k5EiQQ4agoO3HZFTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6XtbUpN+8ykm+EIdxCYM4IMYkjZNAqZ+voiBT9qLwAJRKpOsC9A4YXsZNDtR29uk
-	 39HSqxHNIjzGL9JRZgYXYbqVftexOLPs9ZlVfzqYejAauYsmn+zDJa9f2zc5TXUAAG
-	 /M3S/VzbzL9xeG9zV1Pu5YslDRLF+/rTkewt28mw=
+	b=PjbRSalS1O2PKnE8FZ6ZrWFEP16B5e5rSLRRLo+4XAu+cPQ5vO/PTFlssDJxB3Am0
+	 qb8F56pkwedjtesx+GoXAdLkQ+obikAIZ0rjmB4h0O6lEUe8ZqImtDPqj0h3TXalDC
+	 aCfyIYjutPf2ykSe/2opX0fd9fH2Jnxqr27X31oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/538] clk: imx: imx8qxp: Register dc0_bypass0_clk before disp clk
-Date: Wed,  2 Oct 2024 14:58:24 +0200
-Message-ID: <20241002125802.716976846@linuxfoundation.org>
+Subject: [PATCH 6.10 405/634] f2fs: get rid of online repaire on corrupted directory
+Date: Wed,  2 Oct 2024 14:58:25 +0200
+Message-ID: <20241002125827.096304389@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,216 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit e61352d5ecdc0da2e7253121c15d9a3e040f78a1 ]
+[ Upstream commit 884ee6dc85b959bc152f15bca80c30f06069e6c4 ]
 
-The initialization order of SCU clocks affects the sequence of SCU clock
-resume. If there are no other effects, the earlier the initialization,
-the earlier the resume. During SCU clock resume, the clock rate is
-restored. As SCFW guidelines, configure the parent clock rate before
-configuring the child rate.
+syzbot reports a f2fs bug as below:
 
-Fixes: 91e916771de0 ("clk: imx: scu: remove legacy scu clock binding support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-14-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+kernel BUG at fs/f2fs/inode.c:896!
+RIP: 0010:f2fs_evict_inode+0x1598/0x15c0 fs/f2fs/inode.c:896
+Call Trace:
+ evict+0x532/0x950 fs/inode.c:704
+ dispose_list fs/inode.c:747 [inline]
+ evict_inodes+0x5f9/0x690 fs/inode.c:797
+ generic_shutdown_super+0x9d/0x2d0 fs/super.c:627
+ kill_block_super+0x44/0x90 fs/super.c:1696
+ kill_f2fs_super+0x344/0x690 fs/f2fs/super.c:4898
+ deactivate_locked_super+0xc4/0x130 fs/super.c:473
+ cleanup_mnt+0x41f/0x4b0 fs/namespace.c:1373
+ task_work_run+0x24f/0x310 kernel/task_work.c:228
+ ptrace_notify+0x2d2/0x380 kernel/signal.c:2402
+ ptrace_report_syscall include/linux/ptrace.h:415 [inline]
+ ptrace_report_syscall_exit include/linux/ptrace.h:477 [inline]
+ syscall_exit_work+0xc6/0x190 kernel/entry/common.c:173
+ syscall_exit_to_user_mode_prepare kernel/entry/common.c:200 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:205 [inline]
+ syscall_exit_to_user_mode+0x279/0x370 kernel/entry/common.c:218
+ do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0010:f2fs_evict_inode+0x1598/0x15c0 fs/f2fs/inode.c:896
+
+Online repaire on corrupted directory in f2fs_lookup() can generate
+dirty data/meta while racing w/ readonly remount, it may leave dirty
+inode after filesystem becomes readonly, however, checkpoint() will
+skips flushing dirty inode in a state of readonly mode, result in
+above panic.
+
+Let's get rid of online repaire in f2fs_lookup(), and leave the work
+to fsck.f2fs.
+
+Fixes: 510022a85839 ("f2fs: add F2FS_INLINE_DOTS to recover missing dot dentries")
+Reported-by: syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a7b20f061ff2d56a@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8qxp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/f2fs.h          | 11 -------
+ fs/f2fs/namei.c         | 68 -----------------------------------------
+ include/linux/f2fs_fs.h |  2 +-
+ 3 files changed, 1 insertion(+), 80 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
-index 245761e018973..bc75e37d818d5 100644
---- a/drivers/clk/imx/clk-imx8qxp.c
-+++ b/drivers/clk/imx/clk-imx8qxp.c
-@@ -199,11 +199,11 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
- 	imx_clk_scu("usb3_lpm_div", IMX_SC_R_USB_2, IMX_SC_PM_CLK_MISC);
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 88ca80afffd3d..9c8acb98f4dbf 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -785,7 +785,6 @@ enum {
+ 	FI_NEED_IPU,		/* used for ipu per file */
+ 	FI_ATOMIC_FILE,		/* indicate atomic file */
+ 	FI_DATA_EXIST,		/* indicate data exists */
+-	FI_INLINE_DOTS,		/* indicate inline dot dentries */
+ 	FI_SKIP_WRITES,		/* should skip data page writeback */
+ 	FI_OPU_WRITE,		/* used for opu per file */
+ 	FI_DIRTY_FILE,		/* indicate regular/symlink has dirty pages */
+@@ -3047,7 +3046,6 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
+ 			return;
+ 		fallthrough;
+ 	case FI_DATA_EXIST:
+-	case FI_INLINE_DOTS:
+ 	case FI_PIN_FILE:
+ 	case FI_COMPRESS_RELEASED:
+ 		f2fs_mark_inode_dirty_sync(inode, true);
+@@ -3171,8 +3169,6 @@ static inline void get_inline_info(struct inode *inode, struct f2fs_inode *ri)
+ 		set_bit(FI_INLINE_DENTRY, fi->flags);
+ 	if (ri->i_inline & F2FS_DATA_EXIST)
+ 		set_bit(FI_DATA_EXIST, fi->flags);
+-	if (ri->i_inline & F2FS_INLINE_DOTS)
+-		set_bit(FI_INLINE_DOTS, fi->flags);
+ 	if (ri->i_inline & F2FS_EXTRA_ATTR)
+ 		set_bit(FI_EXTRA_ATTR, fi->flags);
+ 	if (ri->i_inline & F2FS_PIN_FILE)
+@@ -3193,8 +3189,6 @@ static inline void set_raw_inline(struct inode *inode, struct f2fs_inode *ri)
+ 		ri->i_inline |= F2FS_INLINE_DENTRY;
+ 	if (is_inode_flag_set(inode, FI_DATA_EXIST))
+ 		ri->i_inline |= F2FS_DATA_EXIST;
+-	if (is_inode_flag_set(inode, FI_INLINE_DOTS))
+-		ri->i_inline |= F2FS_INLINE_DOTS;
+ 	if (is_inode_flag_set(inode, FI_EXTRA_ATTR))
+ 		ri->i_inline |= F2FS_EXTRA_ATTR;
+ 	if (is_inode_flag_set(inode, FI_PIN_FILE))
+@@ -3281,11 +3275,6 @@ static inline int f2fs_exist_data(struct inode *inode)
+ 	return is_inode_flag_set(inode, FI_DATA_EXIST);
+ }
  
- 	/* Display controller SS */
--	imx_clk_scu2("dc0_disp0_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC0);
--	imx_clk_scu2("dc0_disp1_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc0_pll0_clk", IMX_SC_R_DC_0_PLL_0, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu("dc0_pll1_clk", IMX_SC_R_DC_0_PLL_1, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu("dc0_bypass0_clk", IMX_SC_R_DC_0_VIDEO0, IMX_SC_PM_CLK_BYPASS);
-+	imx_clk_scu2("dc0_disp0_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC0);
-+	imx_clk_scu2("dc0_disp1_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc0_bypass1_clk", IMX_SC_R_DC_0_VIDEO1, IMX_SC_PM_CLK_BYPASS);
+-static inline int f2fs_has_inline_dots(struct inode *inode)
+-{
+-	return is_inode_flag_set(inode, FI_INLINE_DOTS);
+-}
+-
+ static inline int f2fs_is_mmap_file(struct inode *inode)
+ {
+ 	return is_inode_flag_set(inode, FI_MMAP_FILE);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index e54f8c08bda83..a2c4091fca6fa 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -455,62 +455,6 @@ struct dentry *f2fs_get_parent(struct dentry *child)
+ 	return d_obtain_alias(f2fs_iget(child->d_sb, ino));
+ }
  
- 	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
+-static int __recover_dot_dentries(struct inode *dir, nid_t pino)
+-{
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dir);
+-	struct qstr dot = QSTR_INIT(".", 1);
+-	struct f2fs_dir_entry *de;
+-	struct page *page;
+-	int err = 0;
+-
+-	if (f2fs_readonly(sbi->sb)) {
+-		f2fs_info(sbi, "skip recovering inline_dots inode (ino:%lu, pino:%u) in readonly mountpoint",
+-			  dir->i_ino, pino);
+-		return 0;
+-	}
+-
+-	if (!S_ISDIR(dir->i_mode)) {
+-		f2fs_err(sbi, "inconsistent inode status, skip recovering inline_dots inode (ino:%lu, i_mode:%u, pino:%u)",
+-			  dir->i_ino, dir->i_mode, pino);
+-		set_sbi_flag(sbi, SBI_NEED_FSCK);
+-		return -ENOTDIR;
+-	}
+-
+-	err = f2fs_dquot_initialize(dir);
+-	if (err)
+-		return err;
+-
+-	f2fs_balance_fs(sbi, true);
+-
+-	f2fs_lock_op(sbi);
+-
+-	de = f2fs_find_entry(dir, &dot, &page);
+-	if (de) {
+-		f2fs_put_page(page, 0);
+-	} else if (IS_ERR(page)) {
+-		err = PTR_ERR(page);
+-		goto out;
+-	} else {
+-		err = f2fs_do_add_link(dir, &dot, NULL, dir->i_ino, S_IFDIR);
+-		if (err)
+-			goto out;
+-	}
+-
+-	de = f2fs_find_entry(dir, &dotdot_name, &page);
+-	if (de)
+-		f2fs_put_page(page, 0);
+-	else if (IS_ERR(page))
+-		err = PTR_ERR(page);
+-	else
+-		err = f2fs_do_add_link(dir, &dotdot_name, NULL, pino, S_IFDIR);
+-out:
+-	if (!err)
+-		clear_inode_flag(dir, FI_INLINE_DOTS);
+-
+-	f2fs_unlock_op(sbi);
+-	return err;
+-}
+-
+ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
+ 		unsigned int flags)
+ {
+@@ -520,7 +464,6 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
+ 	struct dentry *new;
+ 	nid_t ino = -1;
+ 	int err = 0;
+-	unsigned int root_ino = F2FS_ROOT_INO(F2FS_I_SB(dir));
+ 	struct f2fs_filename fname;
+ 
+ 	trace_f2fs_lookup_start(dir, dentry, flags);
+@@ -556,17 +499,6 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
+ 		goto out;
+ 	}
+ 
+-	if ((dir->i_ino == root_ino) && f2fs_has_inline_dots(dir)) {
+-		err = __recover_dot_dentries(dir, root_ino);
+-		if (err)
+-			goto out_iput;
+-	}
+-
+-	if (f2fs_has_inline_dots(inode)) {
+-		err = __recover_dot_dentries(inode, dir->i_ino);
+-		if (err)
+-			goto out_iput;
+-	}
+ 	if (IS_ENCRYPTED(dir) &&
+ 	    (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
+ 	    !fscrypt_has_permitted_context(dir, inode)) {
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index 41d1d71c36ff5..eee8577bcc543 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -279,7 +279,7 @@ struct node_footer {
+ #define F2FS_INLINE_DATA	0x02	/* file inline data flag */
+ #define F2FS_INLINE_DENTRY	0x04	/* file inline dentry flag */
+ #define F2FS_DATA_EXIST		0x08	/* file inline data exist flag */
+-#define F2FS_INLINE_DOTS	0x10	/* file having implicit dot dentries */
++#define F2FS_INLINE_DOTS	0x10	/* file having implicit dot dentries (obsolete) */
+ #define F2FS_EXTRA_ATTR		0x20	/* file having extra attribute */
+ #define F2FS_PIN_FILE		0x40	/* file should not be gced */
+ #define F2FS_COMPRESS_RELEASED	0x80	/* file released compressed blocks */
 -- 
 2.43.0
 
