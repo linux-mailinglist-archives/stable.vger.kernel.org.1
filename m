@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBC198DC50
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D70298D9AE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6364B2622C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAC16289919
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B61C1D0DED;
-	Wed,  2 Oct 2024 14:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE0A1D1E60;
+	Wed,  2 Oct 2024 14:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYAwrjna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRnWBNrf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0857119F411;
-	Wed,  2 Oct 2024 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B791D175D;
+	Wed,  2 Oct 2024 14:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879627; cv=none; b=CqfCHDeq59uhbdefE/mDm99ytb4/8g2AlM+oi+EVG62K9l3CeMYg+UBGZogogQvhy9OVCRRhz1z+lh4VzQ0hY6BGLVVtBN0OpePuSIBtZXxDFio8MTbjXCwdFpFrPvXj8sRnS267oLweT6IP1EM54hkpCjj73wBOPWAprD3JSak=
+	t=1727878167; cv=none; b=ZqKxbGZi+hKrq6TXe6oYlSLie+au6wTkSraB4LYIo5XD229gZvWtfMCV2/ZXLQinc2BFbUsPZjY1zcwCM/zHUtWzrjil1x/57u3mboRdAMr1iiTYwB8dhttqW0TLOwpxxNT+FMUp4TgSbpHbcT90zreRuLfmsJ7C0XtnFD61Fdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879627; c=relaxed/simple;
-	bh=2axs1V5N+/h/11dhneskzEjIOQhoxfSPDn+ioJXLHiE=;
+	s=arc-20240116; t=1727878167; c=relaxed/simple;
+	bh=HMvJZ0gMIXuMTbsiHoLxLkFex8YFPw8yzTKm5o26FUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9xc1E1mSxj2269mgXHUUnUeD3ecJR/nuVzS8sL4z7vOR2LTcpsQWVOYjBJxy/Cv3TXp+66EfZmvMUuQ4Jz5JgrsyBFY/g+e5U0s0V06fM0F3nQaKfPWUfOq/AgWd/Z1xTFjybqjc/i9s7LORgEErCU63pfzbOhnCOYJjMNcQtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYAwrjna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDBDC4CEC2;
-	Wed,  2 Oct 2024 14:33:45 +0000 (UTC)
+	 MIME-Version; b=fuToAMS48lDo4zi3YF0kmiWVdxvGtlnlEAaCfOsnvAsFYYOHLl+3LmU3M/qTa6Ybv7m7boHxovTC1f2FIbCbhNTe4DhRFXJzJ+pK4WvEHb4IPGYSDbuC/5tfO1C2tVwytattIl3EbU+EnWc9q2FOxPcYUODJUJDpLQOgYDegFGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRnWBNrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E74C4CEC2;
+	Wed,  2 Oct 2024 14:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879625;
-	bh=2axs1V5N+/h/11dhneskzEjIOQhoxfSPDn+ioJXLHiE=;
+	s=korg; t=1727878167;
+	bh=HMvJZ0gMIXuMTbsiHoLxLkFex8YFPw8yzTKm5o26FUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYAwrjna+3Fo3tyJoA+WXgpswLVvFOxB8w4peIIqCdzuBAa3AiR8LA1Hb4jbp05mB
-	 QgNCWPOvSbHaPtSFX7827+7UICsAauKqVt2v8LiT48wZQLwcD+3jJYYxbHazbfQfLV
-	 AEKFeLaLnY+bz/BHW3QOKZhN3KxSmr6am23fdexs=
+	b=mRnWBNrfoYw8dXaKqoJdnlm+ctIYj31hmBrzPcDjixZqxmIGZ2usYAuOGSYceDSU0
+	 HBp/kNkJM1D48F+xJTaVRshkp89ubGpr6ir+XuzdOFV/80iOhiNpmHQQstkYCYu+ki
+	 Q6UPjtKl4vQUlPldrpHDW/mDJsPP87r6laWoGa2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/538] bpf: Disable some `attribute ignored warnings in GCC
+Subject: [PATCH 6.10 322/634] clk: qcom: dispcc-sm8550: use rcg2_ops for mdss_dptx1_aux_clk_src
 Date: Wed,  2 Oct 2024 14:57:02 +0200
-Message-ID: <20241002125759.483618929@linuxfoundation.org>
+Message-ID: <20241002125823.813138407@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose E. Marchesi <jose.marchesi@oracle.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b0fbdf759da05a35b67fd27b8859738b79af25d6 ]
+[ Upstream commit cb4c00698f2f27d99a69adcce659370ca286cf2a ]
 
-This patch modifies selftests/bpf/Makefile to pass -Wno-attributes to
-GCC.  This is because of the following attributes which are ignored:
+clk_dp_ops should only be used for DisplayPort pixel clocks. Use
+clk_rcg2_ops for disp_cc_mdss_dptx1_aux_clk_src.
 
-- btf_decl_tag
-- btf_type_tag
-
-  There are many of these.  At the moment none of these are
-  recognized/handled by gcc-bpf.
-
-  We are aware that btf_decl_tag is necessary for some of the
-  selftest harness to communicate test failure/success.  Support for
-  it is in progress in GCC upstream:
-
-  https://gcc.gnu.org/pipermail/gcc-patches/2024-May/650482.html
-
-  However, the GCC master branch is not yet open, so the series
-  above (currently under review upstream) wont be able to make it
-  there until 14.1 gets released, probably mid next week.
-
-  As for btf_type_tag, more extensive work will be needed in GCC
-  upstream to support it in both BTF and DWARF.  We have a WIP big
-  patch for that, but that is not needed to compile/build the
-  selftests.
-
-- used
-
-  There are SEC macros defined in the selftests as:
-
-  #define SEC(N) __attribute__((section(N),used))
-
-  The SEC macro is used for both functions and global variables.
-  According to the GCC documentation `used' attribute is really only
-  meaningful for functions, and it warns when the attribute is used
-  for other global objects, like for example ctl_array in
-  test_xdp_noinline.c.
-
-  Ignoring this is benign.
-
-- align_value
-
-  In progs/test_cls_redirect.c:127 there is:
-
-  typedef uint8_t *net_ptr __attribute__((align_value(8)));
-
-  GCC warns that it is ignoring this attribute, because it is not
-  implemented by GCC.
-
-  I think ignoring this attribute in GCC is benign, because according
-  to the clang documentation [1] its purpose seems to be merely
-  declarative and doesn't seem to translate into extra checks at
-  run-time, only to perhaps better optimized code ("runtime behavior
-  is undefined if the pointed memory object is not aligned to the
-  specified alignment").
-
-  [1] https://clang.llvm.org/docs/AttributeReference.html#align-value
-
-Tested in bpf-next master.
-
-Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20240507074227.4523-3-jose.marchesi@oracle.com
-Stable-dep-of: 3ece93a4087b ("selftests/bpf: Fix wrong binary in Makefile log output")
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-2-5c4a3128c40b@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 2 +-
+ drivers/clk/qcom/dispcc-sm8550.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 397306f5cf911..e0f499794f162 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -412,7 +412,7 @@ endef
- # Build BPF object using GCC
- define GCC_BPF_BUILD_RULE
- 	$(call msg,GCC-BPF,$(TRUNNER_BINARY),$2)
--	$(Q)$(BPF_GCC) $3 -O2 -c $1 -o $2
-+	$(Q)$(BPF_GCC) $3 -Wno-attributes -O2 -c $1 -o $2
- endef
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index 56918e2a7734d..6ac7a0cd7e063 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -400,7 +400,7 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
+ 		.parent_data = disp_cc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_dp_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
- SKEL_BLACKLIST := btf__% test_pinning_invalid.c test_sk_assign.c
 -- 
 2.43.0
 
