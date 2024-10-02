@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-80372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED9F98DD23
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3689198DA81
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E026C1F23032
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA65B286211
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152BC1D1727;
-	Wed,  2 Oct 2024 14:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE081D0DE6;
+	Wed,  2 Oct 2024 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVk3xFE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PchfRvRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C104B1D151C;
-	Wed,  2 Oct 2024 14:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD0E1D0965;
+	Wed,  2 Oct 2024 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880181; cv=none; b=kbT75rvE8r4d6JtRbeRLlEA3gLXLxL4XYWDOCMxN8Wvor4flEaZlEF7MsDVDEMPqC+yIhnzsXYwXhW4ZnjMr9UWKnyJCB36tXWrstoGpFSgIgM7Mo6L1WuOCEh+sOZx3oJgA5ltJBkWpiJ4CEJ40CPfRl5Ctq3hVRWdjLT4QHnw=
+	t=1727878601; cv=none; b=DTIHXmp6gcmC6BuEPA4ms9NsKzrLWbBlXR3ZPx4WhdALsxIwO5oT5lwB75UXyyv3WVLc/jQGKGQEvNycOQMbTbtFmUm1Izz7OYZRTCiane9+9xup6Ax2lWL0JgG2nq6HAaqiMNKrqAa4xbgOI/fV2Y8m6M0M5Zfllum8kHACMK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880181; c=relaxed/simple;
-	bh=d9p720E+YwotdLHe2QdryutBp3CumGFlUUPHVxIT7VM=;
+	s=arc-20240116; t=1727878601; c=relaxed/simple;
+	bh=4WB8j2YjHdE84+darz1ffniTZYYp/nWm6p7oHyfMMuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZQqWfCmYE6g2QWwt+j3X25IgWZdo4gVrqRcj9one6MKd0da5cWME7sQ5QH/NPTxECjCMb35ktQ0vPG0gM/GSPKTVry3peF5F/+AgOm63vxUhAWUeB2jJjwjNdSIV9KHEpVIPXuXHl/NxHMC7Noz+Wc6GZKyZcxunHKAf3YCUGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVk3xFE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C4CC4CEC2;
-	Wed,  2 Oct 2024 14:43:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=coOC+Fdn3omI74F90Xic1BaIfQBpzwcsdV2HwqKjzPLxEbyjEmSj/IKGVW/mcXuqcWBSmQkSkS5DKU7MHfRAZdCVO46F2yd6zfI/aQB9quukawbQ5o5XoiYYqxEwTVpVyDp66/Bqo4Dts9b4KgnLeLdNSW7G2cbd2iqDevTB2kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PchfRvRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99194C4CEC2;
+	Wed,  2 Oct 2024 14:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880181;
-	bh=d9p720E+YwotdLHe2QdryutBp3CumGFlUUPHVxIT7VM=;
+	s=korg; t=1727878601;
+	bh=4WB8j2YjHdE84+darz1ffniTZYYp/nWm6p7oHyfMMuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVk3xFE6+KzuzrowsnFvthJM0vEMOYkeW6vBAdBkvQA1LYWQNopDtTJrvKuRs+2+b
-	 8yDJmhotzP51RsQ2t9OzhGqu080HsUjqsPl83L7KzkgTYIyc0/d2Nfvg4LU+lGmhgm
-	 ckwFFvq6r7birlAB6/pAD6nuxfj1jZtc8q1xBnko=
+	b=PchfRvRBssi2gvLglTpFBUQAHVRTLonv1nsPtn4maodEoGEP1R0elUaCVkrJyQNvR
+	 GAZJQsfvKpzeaKR4MpSeFGaFOyngOzEOEr7Q8x45ZxXoVXEMRQFs4Fa3iMxQRjfvK2
+	 hIxxQ5YWfm13Njm575CTCK08/JvYGhm7IoUZvxCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Dai <jerry.dai@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 329/538] ntb: Force physically contiguous allocation of rx ring buffers
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Jason Liu <jason.hui.liu@nxp.com>
+Subject: [PATCH 6.10 468/634] PCI: imx6: Fix i.MX8MP PCIe EPs occasional failure to trigger MSI
 Date: Wed,  2 Oct 2024 14:59:28 +0200
-Message-ID: <20241002125805.417362280@linuxfoundation.org>
+Message-ID: <20241002125829.579519842@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 061a785a114f159e990ea8ed8d1b7dca4b41120f ]
+commit 5cb3aa92c7cf182940ae575c3f450d3708af087c upstream.
 
-Physical addresses under IOVA on x86 platform are mapped contiguously
-as a side effect before the patch that removed CONFIG_DMA_REMAP. The
-NTB rx buffer ring is a single chunk DMA buffer that is allocated
-against the NTB PCI device. If the receive side is using a DMA device,
-then the buffers are remapped against the DMA device before being
-submitted via the dmaengine API. This scheme becomes a problem when
-the physical memory is discontiguous. When dma_map_page() is called
-on the kernel virtual address from the dma_alloc_coherent() call, the
-new IOVA mapping no longer points to all the physical memory allocated
-due to being discontiguous. Change dma_alloc_coherent() to dma_alloc_attrs()
-in order to force DMA_ATTR_FORCE_CONTIGUOUS attribute. This is the best
-fix for the circumstance. A potential future solution may be having the DMA
-mapping API providing a way to alias an existing IOVA mapping to a new
-device perhaps.
+Correct occasional MSI triggering failures in i.MX8MP PCIe EP by applying
+the correct hardware outbound alignment requirement.
 
-This fix is not to fix the patch pointed to by the fixes tag, but to fix
-the issue arised in the ntb_transport driver on x86 platforms after the
-said patch is applied.
+The i.MX platform has a restriction about outbound address translation. The
+pci-epc-mem uses page_size to manage it. Set the correct page_size for i.MX
+platform to meet the hardware requirement, which is the same as inbound
+address alignment.
 
-Reported-by: Jerry Dai <jerry.dai@intel.com>
-Fixes: f5ff79fddf0e ("dma-mapping: remove CONFIG_DMA_REMAP")
-Tested-by: Jerry Dai <jerry.dai@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thus, align it with epc_features::align.
+
+Fixes: 1bd0d43dcf3b ("PCI: imx6: Clean up addr_space retrieval code")
+Link: https://lore.kernel.org/linux-pci/20240729-pci2_upstream-v8-2-b68ee5ef2b4d@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Jason Liu <jason.hui.liu@nxp.com>
+Cc: <stable@vger.kernel.org> # 6.9+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/ntb_transport.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
-index f9e7847a378e7..c84fadfc63c52 100644
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -807,16 +807,29 @@ static void ntb_free_mw(struct ntb_transport_ctx *nt, int num_mw)
- }
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1119,6 +1119,8 @@ static int imx6_add_pcie_ep(struct imx6_
+ 	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_SUPPORT_64BIT))
+ 		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
  
- static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
--			       struct device *dma_dev, size_t align)
-+			       struct device *ntb_dev, size_t align)
- {
- 	dma_addr_t dma_addr;
- 	void *alloc_addr, *virt_addr;
- 	int rc;
- 
--	alloc_addr = dma_alloc_coherent(dma_dev, mw->alloc_size,
--					&dma_addr, GFP_KERNEL);
-+	/*
-+	 * The buffer here is allocated against the NTB device. The reason to
-+	 * use dma_alloc_*() call is to allocate a large IOVA contiguous buffer
-+	 * backing the NTB BAR for the remote host to write to. During receive
-+	 * processing, the data is being copied out of the receive buffer to
-+	 * the kernel skbuff. When a DMA device is being used, dma_map_page()
-+	 * is called on the kvaddr of the receive buffer (from dma_alloc_*())
-+	 * and remapped against the DMA device. It appears to be a double
-+	 * DMA mapping of buffers, but first is mapped to the NTB device and
-+	 * second is to the DMA device. DMA_ATTR_FORCE_CONTIGUOUS is necessary
-+	 * in order for the later dma_map_page() to not fail.
-+	 */
-+	alloc_addr = dma_alloc_attrs(ntb_dev, mw->alloc_size,
-+				     &dma_addr, GFP_KERNEL,
-+				     DMA_ATTR_FORCE_CONTIGUOUS);
- 	if (!alloc_addr) {
--		dev_err(dma_dev, "Unable to alloc MW buff of size %zu\n",
-+		dev_err(ntb_dev, "Unable to alloc MW buff of size %zu\n",
- 			mw->alloc_size);
- 		return -ENOMEM;
- 	}
-@@ -845,7 +858,7 @@ static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
- 	return 0;
- 
- err:
--	dma_free_coherent(dma_dev, mw->alloc_size, alloc_addr, dma_addr);
-+	dma_free_coherent(ntb_dev, mw->alloc_size, alloc_addr, dma_addr);
- 
- 	return rc;
- }
--- 
-2.43.0
-
++	ep->page_size = imx6_pcie->drvdata->epc_features->align;
++
+ 	ret = dw_pcie_ep_init(ep);
+ 	if (ret) {
+ 		dev_err(dev, "failed to initialize endpoint\n");
 
 
 
