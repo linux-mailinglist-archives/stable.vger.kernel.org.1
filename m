@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-79951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850A498DB0D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5953498DD7A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DC73B26E3B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ABFB1C2341B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056451D0F71;
-	Wed,  2 Oct 2024 14:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5651D1303;
+	Wed,  2 Oct 2024 14:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yxyje6by"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8fUVRRS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A741D0953;
-	Wed,  2 Oct 2024 14:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E8D1D0B8C;
+	Wed,  2 Oct 2024 14:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878946; cv=none; b=WbUMXUeadeT4mFFAyjF4ip3U0bqyknOnXcH5T98ro4uM/EJ/BV4Vq2DQGWUA1Ta8mlG463J5uvLa1pcV03vp2piUg0S6R0wE30sBvcHm7ReuEFssAemImEomXc6AzEOq7vSO4reqkhS1xkrwybtR9BY/2zp0OeY7sXgFC5EL+D8=
+	t=1727880405; cv=none; b=jEs6MEtLIqVXuUI1abCyll9ngRQVND+AY39tvZMCec4KoxrQsWrR48R5I3SsRscqAuI1YLy8BnRHbF85INPcVXXjsXbWM7chcguFCzhQVEF2XlRKs8l62aMhKuAnbjXWOKjGOVHoSQ5tJpve+xMrFBADp45MNbrkY69517By0Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878946; c=relaxed/simple;
-	bh=fLdct5HtFPYOip4OT8nhifBJkxI9O6fwkrkt58IW1O8=;
+	s=arc-20240116; t=1727880405; c=relaxed/simple;
+	bh=7i5PAEVuA77Vw0N0PSORFwqJUTrc1qDFSDKxfXIgasc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnB2E2q2vOSscwVY65aLlKK+g2nO8nDjE39i9/uIjNbMcVMzAW3fJzkf7nJDY+81SJo/MHhzOuq21VLccy3MgVpL2WrwhtOHSekANj04NttuA8cNV/XicFd4RQ5muDT43ogUgSS9WdGHTtabof8wxPjH5vAJTw4N2icf40f+M2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yxyje6by; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3294CC4CEC2;
-	Wed,  2 Oct 2024 14:22:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CL9R9kJYD/KOyUV8sHNKMa7Of9f+2MYhkdcffn6d4ou29aPxBY3KZLhCsTSQyOTMOrpoYJszzH6HN06D5UTStRDVdIeHPbKfnu8GFbJe/v3HN85h22qmLp/kFq9QivFBYjC14V5jBeRQnj/50XoJPylbeIZZtWKRHufje0dhPpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8fUVRRS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC54C4CEC2;
+	Wed,  2 Oct 2024 14:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878946;
-	bh=fLdct5HtFPYOip4OT8nhifBJkxI9O6fwkrkt58IW1O8=;
+	s=korg; t=1727880404;
+	bh=7i5PAEVuA77Vw0N0PSORFwqJUTrc1qDFSDKxfXIgasc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yxyje6by0Cyej6f6KucyTKlkcRMmOgQiT7iyhmKdn+JE+scAwa0pn7FaiyeoR9zLy
-	 Vb5Y16z393uP/3pvVVUGC81t184JRYZl1t//FQxYqCSd9fWL9dtHbrCarrUyD9SaZO
-	 opwRci+DVf+r4j3ZYjp9f0Eib6YzlY7jhWw6NDuM=
+	b=t8fUVRRSkeINxdTgGCRFLmKV5BegWo41Fk6xNiCTup8rrMv9oqNRfI33NqCMbuC6S
+	 djEM2sHHGhT4issVt8RfUvj3z0sTHwJPZuEjEqgr9QROuuoHlVsXiKk1hztDD7lMh2
+	 E01dDpuHb44L6NGvHfTlYYcUBmfLqON3k1DTEy4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.10 587/634] dt-bindings: spi: nxp-fspi: add imx8ulp support
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 448/538] ACPI: sysfs: validate return type of _STR method
 Date: Wed,  2 Oct 2024 15:01:27 +0200
-Message-ID: <20241002125834.285396422@linuxfoundation.org>
+Message-ID: <20241002125810.125676448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 12736adc43b7cd5cb83f274f8f37b0f89d107c97 upstream.
+commit 4bb1e7d027413835b086aed35bc3f0713bc0f72b upstream.
 
-The flexspi on imx8ulp only has 16 number of LUTs, it is different
-with flexspi on other imx SoC which has 32 number of LUTs.
+Only buffer objects are valid return values of _STR.
 
-Fixes: ef89fd56bdfc ("arm64: dts: imx8ulp: add flexspi node")
-Cc: stable@kernel.org
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240905094338.1986871-2-haibo.chen@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If something else is returned description_show() will access invalid
+memory.
+
+Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20240709-acpi-sysfs-groups-v2-1-058ab0667fa8@weissschuh.net
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/device_sysfs.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-@@ -21,6 +21,7 @@ properties:
-           - nxp,imx8mm-fspi
-           - nxp,imx8mp-fspi
-           - nxp,imx8qxp-fspi
-+          - nxp,imx8ulp-fspi
-           - nxp,lx2160a-fspi
-       - items:
-           - enum:
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -544,8 +544,9 @@ int acpi_device_setup_files(struct acpi_
+ 	 * If device has _STR, 'description' file is created
+ 	 */
+ 	if (acpi_has_method(dev->handle, "_STR")) {
+-		status = acpi_evaluate_object(dev->handle, "_STR",
+-					NULL, &buffer);
++		status = acpi_evaluate_object_typed(dev->handle, "_STR",
++						    NULL, &buffer,
++						    ACPI_TYPE_BUFFER);
+ 		if (ACPI_FAILURE(status))
+ 			buffer.pointer = NULL;
+ 		dev->pnp.str_obj = buffer.pointer;
 
 
 
