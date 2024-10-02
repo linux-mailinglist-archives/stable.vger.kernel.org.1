@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-80150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315B898DC2C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5080398D98B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E39942865EB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03DC31F2169B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006C11D2701;
-	Wed,  2 Oct 2024 14:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416041D1510;
+	Wed,  2 Oct 2024 14:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1igP8nWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAtwtNf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31FA1474BC;
-	Wed,  2 Oct 2024 14:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67CC1D097D;
+	Wed,  2 Oct 2024 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879529; cv=none; b=Mcmt2LseDA/JcF7NxP0fch0yltWY7JF/WokiUQYq3axcKlhnndVcihKgxe3jGTFGebugMgqYQV2gHJwBnuj0EOYan5DiZyq3BftfDhWOnSU+jv5MhvsJFM3ZubrCxz7TUuO0ArYXcaAtNT9f/wLVWKPfthVIkLaNdhPZf0JVK00=
+	t=1727878068; cv=none; b=XEywf9pv5yYpp2HGQnR601tULOpMrtfZEEd/6OuX6FRg9B46KgjqEn2ZaYQe/gND08beGkh2903Fn0/L6j8So7iMDru00By+nT53Ir7Czb6KZCvdKekUClgXfuHnKFbbGiX5gpSpzIuR7fx7M+ej93sDNZ7WTVcCwJA576JxSpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879529; c=relaxed/simple;
-	bh=IJ7A8TJEznEqhDHaEhrhf+ZSuLedJKUZJZ7AL35cwC8=;
+	s=arc-20240116; t=1727878068; c=relaxed/simple;
+	bh=uWLX746XEwQrujuzlPazbKCzHFDz70QrLuDUob4iONI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jX4jvb5ZpmzpD5+dXQHd7Z7VTsxa7LAaux8Swjm4KAemx5ZyqE+MBtPgyLf6ykqc2+KyVonp2/E8xJpHSO00SE5KN8kWMv7Bg2BORPRdjht0R+52DFN5Llz83C4C7aBHOOVKGnMCKWBOx7Ykv2fABO2vmQS1UdVThh4IANyLRTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1igP8nWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF1AC4CEC2;
-	Wed,  2 Oct 2024 14:32:08 +0000 (UTC)
+	 MIME-Version; b=Lw+FNIRUYyQKHWVBqz28dG64tW3rU7G099Kz9azgpddOlzhyyywOkdrq/qw+6SKc+ryVjrWOFOKNjsuFOPFxPTGYRMRRP1s4AoCvHX0tPXfO4y/5vyqvtyLg/k3jhwR+fPvanEih4FJWSOS4gzId3T6SDe9dVe3+dm9wpsmd6Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAtwtNf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717C1C4CEC5;
+	Wed,  2 Oct 2024 14:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879529;
-	bh=IJ7A8TJEznEqhDHaEhrhf+ZSuLedJKUZJZ7AL35cwC8=;
+	s=korg; t=1727878067;
+	bh=uWLX746XEwQrujuzlPazbKCzHFDz70QrLuDUob4iONI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1igP8nWM9UNEv7os3SYXt7qCjXzaBb+IlcSg6aWPos4kV928HXcbkEmSO7DiEYcNb
-	 A30uDsXSZTUNyaH96TGxTikSv2jCSzTYTe7R7tHUIkm/J/MSTO1+W0kqCnF/hdjIsE
-	 HB14Wpv0aP6Xmpqj9wGhKoeOHd4Hfc0e/S9fAxjc=
+	b=OAtwtNf4nhSCGbNCyefSlO3tUXhB5BXXzrliUtM1x5P7B1lbmCIb/uxLVPdp85Mgq
+	 tM2Y8WyFOQ26YWxH5r+AvjiRNbhpZXrJSLmg8fHqHakKF9F9zhWUNUw/X+qdCoPHOC
+	 Uk27xCfI4yxwcoLtYj0af8YrHzt9yS/OTA7dpdd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/538] drm/vc4: hdmi: Handle error case of pm_runtime_resume_and_get
-Date: Wed,  2 Oct 2024 14:56:29 +0200
-Message-ID: <20241002125758.175528977@linuxfoundation.org>
+Subject: [PATCH 6.10 290/634] bpf: Improve check_raw_mode_ok test for MEM_UNINIT-tagged types
+Date: Wed,  2 Oct 2024 14:56:30 +0200
+Message-ID: <20241002125822.557048721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit f1a54e860b1bc8d824925b5a77f510913880e8d6 ]
+[ Upstream commit 18752d73c1898fd001569195ba4b0b8c43255f4a ]
 
-The commit 0f5251339eda ("drm/vc4: hdmi: Make sure the controller is
-powered in detect") introduced the necessary power management handling
-to avoid register access while controller is powered down.
-Unfortunately it just print a warning if pm_runtime_resume_and_get()
-fails and proceed anyway.
+When checking malformed helper function signatures, also take other argument
+types into account aside from just ARG_PTR_TO_UNINIT_MEM.
 
-This could happen during suspend to idle. So we must assume it is unsafe
-to access the HDMI register. So bail out properly.
+This concerns (formerly) ARG_PTR_TO_{INT,LONG} given uninitialized memory can
+be passed there, too.
 
-Fixes: 0f5251339eda ("drm/vc4: hdmi: Make sure the controller is powered in detect")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240821214052.6800-3-wahrenst@gmx.net
+The func proto sanity check goes back to commit 435faee1aae9 ("bpf, verifier:
+add ARG_PTR_TO_RAW_STACK type"), and its purpose was to detect wrong func protos
+which had more than just one MEM_UNINIT-tagged type as arguments.
+
+The reason more than one is currently not supported is as we mark stack slots with
+STACK_MISC in check_helper_call() in case of raw mode based on meta.access_size to
+allow uninitialized stack memory to be passed to helpers when they just write into
+the buffer.
+
+Probing for base type as well as MEM_UNINIT tagging ensures that other types do not
+get missed (as it used to be the case for ARG_PTR_TO_{INT,LONG}).
+
+Fixes: 57c3bb725a3d ("bpf: Introduce ARG_PTR_TO_{INT,LONG} arg types")
+Reported-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20240913191754.13290-4-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 643754fa6a8ad..c6e986f71a26f 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -458,6 +458,7 @@ static int vc4_hdmi_connector_detect_ctx(struct drm_connector *connector,
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index e924e520b23ae..c821713249c81 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -8158,6 +8158,12 @@ static bool arg_type_is_mem_size(enum bpf_arg_type type)
+ 	       type == ARG_CONST_SIZE_OR_ZERO;
+ }
+ 
++static bool arg_type_is_raw_mem(enum bpf_arg_type type)
++{
++	return base_type(type) == ARG_PTR_TO_MEM &&
++	       type & MEM_UNINIT;
++}
++
+ static bool arg_type_is_release(enum bpf_arg_type type)
  {
- 	struct vc4_hdmi *vc4_hdmi = connector_to_vc4_hdmi(connector);
- 	enum drm_connector_status status = connector_status_disconnected;
-+	int ret;
+ 	return type & OBJ_RELEASE;
+@@ -9200,15 +9206,15 @@ static bool check_raw_mode_ok(const struct bpf_func_proto *fn)
+ {
+ 	int count = 0;
  
- 	/*
- 	 * NOTE: This function should really take vc4_hdmi->mutex, but
-@@ -470,7 +471,12 @@ static int vc4_hdmi_connector_detect_ctx(struct drm_connector *connector,
- 	 * the lock for now.
- 	 */
+-	if (fn->arg1_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg1_type))
+ 		count++;
+-	if (fn->arg2_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg2_type))
+ 		count++;
+-	if (fn->arg3_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg3_type))
+ 		count++;
+-	if (fn->arg4_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg4_type))
+ 		count++;
+-	if (fn->arg5_type == ARG_PTR_TO_UNINIT_MEM)
++	if (arg_type_is_raw_mem(fn->arg5_type))
+ 		count++;
  
--	WARN_ON(pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev));
-+	ret = pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev);
-+	if (ret) {
-+		drm_err_once(connector->dev, "Failed to retain HDMI power domain: %d\n",
-+			     ret);
-+		return connector_status_unknown;
-+	}
- 
- 	if (vc4_hdmi->hpd_gpio) {
- 		if (gpiod_get_value_cansleep(vc4_hdmi->hpd_gpio))
+ 	/* We only support one arg being in raw mode at the moment,
 -- 
 2.43.0
 
