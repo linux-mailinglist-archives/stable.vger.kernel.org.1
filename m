@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-78948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D554898D5C3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392A598D8D9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B74A1F23884
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5AD1C230D8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B871A1D0786;
-	Wed,  2 Oct 2024 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242061D1309;
+	Wed,  2 Oct 2024 14:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7UCas5+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkNIpYgR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769A91D04A8;
-	Wed,  2 Oct 2024 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B091D1305;
+	Wed,  2 Oct 2024 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875995; cv=none; b=nRBuIkNKinaB8/O4qjxi21U7w//z1fxRoxHeVdFjyhm6uJU1+GphaYQH8hy+puZy+MFRnJzTVPfTseoHfujoCkwh8muNKj4MT27m7mjBZlcgoXKvm2rYUcK8MCiT5/eG1WntgGgA47WqJiMIyY2KXdtV9jl0I3td6lPXpP+wGk0=
+	t=1727877686; cv=none; b=OYSfnvwHRmws1O3OHNIh3Dry5rx9uRrojr8B/a2cFvts+2Bi110VCGCpB5yz/fVa/C7+UQbaL5qjtXzeM7P2VMnmiL+Zw4fHNxSdURFRfGxQgKbJHEMtKfaL6JG8RSXmhrij9GqnjKesG+8VENVHSfeDm/v6BX88r5Z+AbNcuac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875995; c=relaxed/simple;
-	bh=bBQWtMm8m/B7cV9ecLAUflJFt4gLxZmpsNvTyVNJa0c=;
+	s=arc-20240116; t=1727877686; c=relaxed/simple;
+	bh=Ya1g/I6gRjrOqcYBLn1RWbaQsMWxcpKZMt2JB2H4PT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJuc4iiJGfdiRCld0C/M84GF+y3GP8MrKcITffr4igt4vvN7OePC833P3XfT4oYL8zK05m6N9hcVHR8rp/C9np+BmeiMOGBGft2Ku3kWTl8CL8cED2LadPo3hEkyBdHhkwtYYtscb5pSLEgw06GuQpbaRHSvZlGGteDDIHMhYak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7UCas5+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B62C4CEC5;
-	Wed,  2 Oct 2024 13:33:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nK4vgDuMdg5T7mACKSNABB9J8mtQVjQkmEmdcqv5oO8+Whe//D3LMmr578yIDmxMid/Bd2kP0wX6w56F6FoaVXky+F8F6U1aMaNQfJgXX9LtjqDDy6CxOMVvQSqFxcoWjlsPmvOio02Kqv0ITjUTpRIiv5ZhZCfjXrJNTyCm3uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkNIpYgR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09318C4CEC2;
+	Wed,  2 Oct 2024 14:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875995;
-	bh=bBQWtMm8m/B7cV9ecLAUflJFt4gLxZmpsNvTyVNJa0c=;
+	s=korg; t=1727877686;
+	bh=Ya1g/I6gRjrOqcYBLn1RWbaQsMWxcpKZMt2JB2H4PT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7UCas5+S+46OzQ9WJB+HFMooI7pnfrl39j/FTyOLVfL17OF0BDVPPC3JUY+rHF/B
-	 Kb+5M0kP4Pvn7BduPK2duX7jy8oWn+9BHIv7rhRhFGxz37DRHzqO56k0HpwX3lMIHo
-	 SKbeXwLoOaKrcgQXBt0Ll7eOlM9hBaly+LWRMlws=
+	b=RkNIpYgRdH0FxOmTAjoi1SxvViN/0DJJE58ySopqY/qgnunpXTW1lB1C+FP3k3uBf
+	 4e2vm/yepSn8iUuA8oXSwXRVA6/fa/2BGPiApmGWbo2eb9CeZiD92vE4BwcXWNuVgl
+	 dmyNIBy+R/L3+KcKxuz53du4rlWebUwmhg6Vhdmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	linux-mtd@lists.infradead.org,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 261/695] selftests/bpf: Fix wrong binary in Makefile log output
+Subject: [PATCH 6.10 159/634] mtd: slram: insert break after errors in parsing the map
 Date: Wed,  2 Oct 2024 14:54:19 +0200
-Message-ID: <20241002125832.865182939@linuxfoundation.org>
+Message-ID: <20241002125817.388116329@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Mirsad Todorovac <mtodorovac69@gmail.com>
 
-[ Upstream commit 3ece93a4087b2db7b99ebb2412bd60cf26bbbb51 ]
+[ Upstream commit 336c218dd7f0588ed8a7345f367975a00a4f003f ]
 
-Make log output incorrectly shows 'test_maps' as the binary name for every
-'CLNG-BPF' build step, apparently picking up the last value defined for the
-$(TRUNNER_BINARY) variable. Update the 'CLANG_BPF_BUILD_RULE' variants to
-fix this confusing output.
+GCC 12.3.0 compiler on linux-next next-20240709 tree found the execution
+path in which, due to lazy evaluation, devlength isn't initialised with the
+parsed string:
 
-Current output:
-  CLNG-BPF [test_maps] access_map_in_map.bpf.o
-  GEN-SKEL [test_progs] access_map_in_map.skel.h
-  ...
-  CLNG-BPF [test_maps] access_map_in_map.bpf.o
-  GEN-SKEL [test_progs-no_alu32] access_map_in_map.skel.h
-  ...
-  CLNG-BPF [test_maps] access_map_in_map.bpf.o
-  GEN-SKEL [test_progs-cpuv4] access_map_in_map.skel.h
+   289		while (map) {
+   290			devname = devstart = devlength = NULL;
+   291
+   292			if (!(devname = strsep(&map, ","))) {
+   293				E("slram: No devicename specified.\n");
+   294				break;
+   295			}
+   296			T("slram: devname = %s\n", devname);
+   297			if ((!map) || (!(devstart = strsep(&map, ",")))) {
+   298				E("slram: No devicestart specified.\n");
+   299			}
+   300			T("slram: devstart = %s\n", devstart);
+ → 301			if ((!map) || (!(devlength = strsep(&map, ",")))) {
+   302				E("slram: No devicelength / -end specified.\n");
+   303			}
+ → 304			T("slram: devlength = %s\n", devlength);
+   305			if (parse_cmdline(devname, devstart, devlength) != 0) {
+   306				return(-EINVAL);
+   307			}
 
-After fix:
-  CLNG-BPF [test_progs] access_map_in_map.bpf.o
-  GEN-SKEL [test_progs] access_map_in_map.skel.h
-  ...
-  CLNG-BPF [test_progs-no_alu32] access_map_in_map.bpf.o
-  GEN-SKEL [test_progs-no_alu32] access_map_in_map.skel.h
-  ...
-  CLNG-BPF [test_progs-cpuv4] access_map_in_map.bpf.o
-  GEN-SKEL [test_progs-cpuv4] access_map_in_map.skel.h
+Parsing should be finished after map == NULL, so a break is best inserted after
+each E("slram: ... \n") error message.
 
-Fixes: a5d0c26a2784 ("selftests/bpf: Add a cpuv4 test runner for cpu=v4 testing")
-Fixes: 89ad7420b25c ("selftests/bpf: Drop the need for LLVM's llc")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20240720052535.2185967-1-tony.ambardar@gmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: linux-mtd@lists.infradead.org
+Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240711234319.637824-1-mtodorovac69@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/mtd/devices/slram.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index 9351f37b720cf..848fffa250227 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -427,23 +427,24 @@ $(OUTPUT)/cgroup_getset_retval_hooks.o: cgroup_getset_retval_hooks.h
- # $1 - input .c file
- # $2 - output .o file
- # $3 - CFLAGS
-+# $4 - binary name
- define CLANG_BPF_BUILD_RULE
--	$(call msg,CLNG-BPF,$(TRUNNER_BINARY),$2)
-+	$(call msg,CLNG-BPF,$4,$2)
- 	$(Q)$(CLANG) $3 -O2 --target=bpf -c $1 -mcpu=v3 -o $2
- endef
- # Similar to CLANG_BPF_BUILD_RULE, but with disabled alu32
- define CLANG_NOALU32_BPF_BUILD_RULE
--	$(call msg,CLNG-BPF,$(TRUNNER_BINARY),$2)
-+	$(call msg,CLNG-BPF,$4,$2)
- 	$(Q)$(CLANG) $3 -O2 --target=bpf -c $1 -mcpu=v2 -o $2
- endef
- # Similar to CLANG_BPF_BUILD_RULE, but with cpu-v4
- define CLANG_CPUV4_BPF_BUILD_RULE
--	$(call msg,CLNG-BPF,$(TRUNNER_BINARY),$2)
-+	$(call msg,CLNG-BPF,$4,$2)
- 	$(Q)$(CLANG) $3 -O2 --target=bpf -c $1 -mcpu=v4 -o $2
- endef
- # Build BPF object using GCC
- define GCC_BPF_BUILD_RULE
--	$(call msg,GCC-BPF,$(TRUNNER_BINARY),$2)
-+	$(call msg,GCC-BPF,$4,$2)
- 	$(Q)$(BPF_GCC) $3 -DBPF_NO_PRESERVE_ACCESS_INDEX -Wno-attributes -O2 -c $1 -o $2
- endef
- 
-@@ -535,7 +536,7 @@ $(TRUNNER_BPF_OBJS): $(TRUNNER_OUTPUT)/%.bpf.o:				\
- 	$$(call $(TRUNNER_BPF_BUILD_RULE),$$<,$$@,			\
- 					  $(TRUNNER_BPF_CFLAGS)         \
- 					  $$($$<-CFLAGS)		\
--					  $$($$<-$2-CFLAGS))
-+					  $$($$<-$2-CFLAGS),$(TRUNNER_BINARY))
- 
- $(TRUNNER_BPF_SKELS): %.skel.h: %.bpf.o $(BPFTOOL) | $(TRUNNER_OUTPUT)
- 	$$(call msg,GEN-SKEL,$(TRUNNER_BINARY),$$@)
+diff --git a/drivers/mtd/devices/slram.c b/drivers/mtd/devices/slram.c
+index 28131a127d065..8297b366a0669 100644
+--- a/drivers/mtd/devices/slram.c
++++ b/drivers/mtd/devices/slram.c
+@@ -296,10 +296,12 @@ static int __init init_slram(void)
+ 		T("slram: devname = %s\n", devname);
+ 		if ((!map) || (!(devstart = strsep(&map, ",")))) {
+ 			E("slram: No devicestart specified.\n");
++			break;
+ 		}
+ 		T("slram: devstart = %s\n", devstart);
+ 		if ((!map) || (!(devlength = strsep(&map, ",")))) {
+ 			E("slram: No devicelength / -end specified.\n");
++			break;
+ 		}
+ 		T("slram: devlength = %s\n", devlength);
+ 		if (parse_cmdline(devname, devstart, devlength) != 0) {
 -- 
 2.43.0
 
