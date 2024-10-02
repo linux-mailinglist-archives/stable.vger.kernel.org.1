@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D548598DC98
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DACB98D9FC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808E31F27C9D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EABCB23167
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE331D0DC8;
-	Wed,  2 Oct 2024 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EAA1D0DE6;
+	Wed,  2 Oct 2024 14:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFgqsSBb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ms30U3OI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFDD1CF7D4;
-	Wed,  2 Oct 2024 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810871D042F;
+	Wed,  2 Oct 2024 14:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879790; cv=none; b=JAJtBEg8kECOrJXztXpNEA3U+0ceSWLOgtzo4bfOOSTwG7W20oBwKbi/Kng3dP1jnvRxku9fZdyOXJSWDpvlNh8zsyGjLABFhCgwKHSZCeFop53+m5RwySFpBjxRoDhzoKx2dWaOt+bAtPjuweFEFL6TtarQcDn2pfNjHmT7NOs=
+	t=1727878337; cv=none; b=KxvBM63r1egzEHbKCXkeL6tjBiKj6rRtkcVI6FiFyHaJHRoNbtwiPREInp5dVjpEwS8AAuHGETg4CMtsoafO14goTiMAmc1UlM0wth+h9EaVkrJCLu878c2ekhHMJeu4artxp4f5v7777oLcPgYObhdi99F3uuWRF4WGezZ5qTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879790; c=relaxed/simple;
-	bh=8N9lYnrJ1+uuN2kzeZrnqzT9yop7NMCBdH8uS0jTCdA=;
+	s=arc-20240116; t=1727878337; c=relaxed/simple;
+	bh=0xe8bwdUpvalwVBUAEGB9mCZ7wtRWcOhWIN2GIZhI8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgGoIhk5XsL98pHsvysrP0QnpifowXLbo1mBzSTRwjr4IVHIZVR7P8/zLQHA8YajnmuZE358b3Tsjk34J98/KhW7F1ASym0m0xGuJMhsKkTkTKH1CouUqcxjnTeduWwhVLfKuJ8kqb9Zt5VDMxh8LKlfGqlOwLMc+aXv8/p7DAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFgqsSBb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26596C4CEC2;
-	Wed,  2 Oct 2024 14:36:29 +0000 (UTC)
+	 MIME-Version; b=L4OOxgySucqtWYIPCkqStLu9j7cVYP4USyjMPcU1BETFb7hDiQV12Tt1qkKMFjQnD+qlJauEPpX3o1VlCIudu9wRslmRgrIsMkkeO4QV4gm9X+pIeCe/h9C8WoYLRjOn9WYXRKrHhogoyI/qsUknu0XAgrRbRG87N30rnd3Sk/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ms30U3OI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACF4C4CEC5;
+	Wed,  2 Oct 2024 14:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879790;
-	bh=8N9lYnrJ1+uuN2kzeZrnqzT9yop7NMCBdH8uS0jTCdA=;
+	s=korg; t=1727878337;
+	bh=0xe8bwdUpvalwVBUAEGB9mCZ7wtRWcOhWIN2GIZhI8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFgqsSBbm8djIL8fL34pUPDBt6eQy3CWzG1UmroWTEH7Un/VpFUgQ9DzutnUrLZeI
-	 Hd0fdEEqWUKRCWUYeC2CsvZIJOtVgNi4m6KxnrEbfmW1gfZw2xBcLb6fk9CB+pbi5f
-	 XClBU4yNEAqNqDTO7y9ZEMEAtmfc8gc7lEodPYVs=
+	b=Ms30U3OIwdyuVEkeR2MpqtgQ4ye1Si7mmuYf7WXAmodhW3m+aSwfS3ZBRCLemQzc5
+	 FIo++YS24R0s8YTZRiXbz0yyNNg7ZG2JgG85HuiUTUooAS8ywLZ+19tccMXBYWpABu
+	 K6OJP3o5ve9OvdNaGpzdnAAoawSfdTL41BhE7n0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	kernel test robot <lkp@intel.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 240/538] nilfs2: determine empty node blocks as corrupted
-Date: Wed,  2 Oct 2024 14:57:59 +0200
-Message-ID: <20241002125801.723944354@linuxfoundation.org>
+Subject: [PATCH 6.10 380/634] RDMA/hns: Fix restricted __le16 degrades to integer issue
+Date: Wed,  2 Oct 2024 14:58:00 +0200
+Message-ID: <20241002125826.099037183@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 111b812d3662f3a1b831d19208f83aa711583fe6 ]
+[ Upstream commit f4ccc0a2a0c5977540f519588636b5bc81aae2db ]
 
-Due to the nature of b-trees, nilfs2 itself and admin tools such as
-mkfs.nilfs2 will never create an intermediate b-tree node block with 0
-child nodes, nor will they delete (key, pointer)-entries that would result
-in such a state.  However, it is possible that a b-tree node block is
-corrupted on the backing device and is read with 0 child nodes.
+Fix sparse warnings: restricted __le16 degrades to integer.
 
-Because operation is not guaranteed if the number of child nodes is 0 for
-intermediate node blocks other than the root node, modify
-nilfs_btree_node_broken(), which performs sanity checks when reading a
-b-tree node block, so that such cases will be judged as metadata
-corruption.
-
-Link: https://lkml.kernel.org/r/20240904081401.16682-3-konishi.ryusuke@gmail.com
-Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5a87279591a1 ("RDMA/hns: Support hns HW stats")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409080508.g4mNSLwy-lkp@intel.com/
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20240909065331.3950268-1-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index fa51ed649968e..dac090c162a7a 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -350,7 +350,7 @@ static int nilfs_btree_node_broken(const struct nilfs_btree_node *node,
- 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
- 		     level >= NILFS_BTREE_LEVEL_MAX ||
- 		     (flags & NILFS_BTREE_NODE_ROOT) ||
--		     nchildren < 0 ||
-+		     nchildren <= 0 ||
- 		     nchildren > NILFS_BTREE_NODE_NCHILDREN_MAX(size))) {
- 		nilfs_crit(inode->i_sb,
- 			   "bad btree node (ino=%lu, blocknr=%llu): level = %d, flags = 0x%x, nchildren = %d",
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 349b68d7e7db6..24e906b9d3ae1 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -1681,8 +1681,8 @@ static int hns_roce_hw_v2_query_counter(struct hns_roce_dev *hr_dev,
+ 
+ 	for (i = 0; i < HNS_ROCE_HW_CNT_TOTAL && i < *num_counters; i++) {
+ 		bd_idx = i / CNT_PER_DESC;
+-		if (!(desc[bd_idx].flag & HNS_ROCE_CMD_FLAG_NEXT) &&
+-		    bd_idx != HNS_ROCE_HW_CNT_TOTAL / CNT_PER_DESC)
++		if (bd_idx != HNS_ROCE_HW_CNT_TOTAL / CNT_PER_DESC &&
++		    !(desc[bd_idx].flag & cpu_to_le16(HNS_ROCE_CMD_FLAG_NEXT)))
+ 			break;
+ 
+ 		cnt_data = (__le64 *)&desc[bd_idx].data[0];
 -- 
 2.43.0
 
