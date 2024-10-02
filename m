@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BBF98D557
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1659A98D8BF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BCB11F22DE0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 988F3B23DF8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4AB1D048C;
-	Wed,  2 Oct 2024 13:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E731D0DD5;
+	Wed,  2 Oct 2024 14:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H85a6xTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKBnJYUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3E11D014A;
-	Wed,  2 Oct 2024 13:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C5B1CFEA9;
+	Wed,  2 Oct 2024 14:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875752; cv=none; b=C7qfACHfqpH2SR7TYLudkdqPvYnVcn5Rf7KzJ7dCLTlhO6vfr/Lx5VpiMfilsy6PBUIyVzKW4x10gDLptU4M4gZ7kETNVr3utBZyNmrSuOQrUac47H6+cmJ24UH3keZJIQN1vSbR7uLhvMIS5qMYBs/4IMYtRKvaeGLyRoGAcdw=
+	t=1727877622; cv=none; b=WrrRbsUqHnip0XwFRWnOd2gH7uLwOd7oxpcrCrK81oT9R5K9BgxrCaVhSecWA/Us9KjL3TVRZL8/V3/gEcgGfehAskhaYPWtM9Ks5TBRdjiXMdlOx/aaFMuDTT/YXsHtRvLFiEg+W0VHH0tUyWsm+kPliRkkGxn2XuwcqxRpXVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875752; c=relaxed/simple;
-	bh=2/7AaWkVqQwADH8EkAuGgaibFZz5VKnnWMIAC4wWjfQ=;
+	s=arc-20240116; t=1727877622; c=relaxed/simple;
+	bh=DY4p+vqmPKwN9M0wxlGbEMRlbA/e1QJf5C4210Ni5U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJxoNHapWo9aJPmt69e+HFy6nh0TufgbHMlHSfus2tGtQpF2zPWK7dK7cdN0cBjqxcLXfINd8FZjMSprZqPsZmHaYYRQHTcr9D+QEjLUoo9tVtpB3vYH5HrJlqxs3FuxiMOstMVykRSFGIpLRfO/ypwQYnWQFyD9wxqKJrnEoyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H85a6xTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E29AC4CECD;
-	Wed,  2 Oct 2024 13:29:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EnRdbfiM8eEN+mYoTFAIBm2MTLrnxjQBsnGhbNBfHaDr+XwKoNEVeesmXbuXpR6sJyEDoacLQn0EHYTHTSguwRPQzs8r09EfeYT1YDm9PqQkGAivB1pgw45NbjZ765ipKa47y7NYwi+KcQxeVa/6OsqlxIhVG1zKLWb1f+cKKB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKBnJYUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DF1C4CEC2;
+	Wed,  2 Oct 2024 14:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875751;
-	bh=2/7AaWkVqQwADH8EkAuGgaibFZz5VKnnWMIAC4wWjfQ=;
+	s=korg; t=1727877622;
+	bh=DY4p+vqmPKwN9M0wxlGbEMRlbA/e1QJf5C4210Ni5U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H85a6xTSrd075QwFJLBux5esfuuXiEE37RgbkH8CFKkAYA2FYNxG9ikvj9DHDgwPs
-	 DLtYUoy/wZfVrn2EjJCTCWPqX6GTFCJ7IklTDOXP64krkg6aKt2mbjmEQtjb/9VUzO
-	 yUoJgzD+vDDCHkb1n57hiGBTujpHLDil4MCs30Aw=
+	b=kKBnJYUyZ5IOqr2cISdrsWakHCgnkKwlVMaWDU5MhCuiQJJKEwxaWNwl0JaVK2UGz
+	 YelcUg+NxzKwl/w4wkf474BBpl0nIcrXDA1EdCeHAQ9LhaxwRVnZjjVBhysM8bG3/v
+	 MzStw1DISf8eviVocmFKkVhH8UbGGGSlAg7dtqPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 208/695] scsi: block: Dont check REQ_ATOMIC for reads
+Subject: [PATCH 6.10 106/634] block, bfq: dont break merge chain in bfq_split_bfqq()
 Date: Wed,  2 Oct 2024 14:53:26 +0200
-Message-ID: <20241002125830.763889845@linuxfoundation.org>
+Message-ID: <20241002125815.298840286@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit ea6787c695ab7595d851c3506f67c157f3b593c0 ]
+[ Upstream commit 42c306ed723321af4003b2a41bb73728cab54f85 ]
 
-We check in submit_bio_noacct() if flag REQ_ATOMIC is set for both read and
-write operations, and then validate the atomic operation if set. Flag
-REQ_ATOMIC can only be set for writes, so don't bother checking for reads.
+Consider the following scenario:
 
-Fixes: 9da3d1e912f3 ("block: Add core atomic write support")
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20240805113315.1048591-3-john.g.garry@oracle.com
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    Process 1       Process 2       Process 3       Process 4
+     (BIC1)          (BIC2)          (BIC3)          (BIC4)
+      Λ               |               |                |
+       \-------------\ \-------------\ \--------------\|
+                      V               V                V
+      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+ref    0              1               2                4
+
+If Process 1 issue a new IO and bfqq2 is found, and then bfq_init_rq()
+decide to spilt bfqq2 by bfq_split_bfqq(). Howerver, procress reference
+of bfqq2 is 1 and bfq_split_bfqq() just clear the coop flag, which will
+break the merge chain.
+
+Expected result: caller will allocate a new bfqq for BIC1
+
+    Process 1       Process 2       Process 3       Process 4
+     (BIC1)          (BIC2)          (BIC3)          (BIC4)
+                      |               |                |
+                       \-------------\ \--------------\|
+                                      V                V
+      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+ref    0              0               1                3
+
+Since the condition is only used for the last bfqq4 when the previous
+bfqq2 and bfqq3 are already splited. Fix the problem by checking if
+bfqq is the last one in the merge chain as well.
+
+Fixes: 36eca8948323 ("block, bfq: add Early Queue Merge (EQM)")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240902130329.3787024-4-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/bfq-iosched.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 1217c2cd66dd8..bc5e8c5eaac9f 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -799,6 +799,7 @@ void submit_bio_noacct(struct bio *bio)
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 279ea5bed78d8..2b6fff39b9f4b 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -6725,7 +6725,7 @@ bfq_split_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq)
+ {
+ 	bfq_log_bfqq(bfqq->bfqd, bfqq, "splitting queue");
  
- 	switch (bio_op(bio)) {
- 	case REQ_OP_READ:
-+		break;
- 	case REQ_OP_WRITE:
- 		if (bio->bi_opf & REQ_ATOMIC) {
- 			status = blk_validate_atomic_write_op_size(q, bio);
+-	if (bfqq_process_refs(bfqq) == 1) {
++	if (bfqq_process_refs(bfqq) == 1 && !bfqq->new_bfqq) {
+ 		bfqq->pid = current->pid;
+ 		bfq_clear_bfqq_coop(bfqq);
+ 		bfq_clear_bfqq_split_coop(bfqq);
 -- 
 2.43.0
 
