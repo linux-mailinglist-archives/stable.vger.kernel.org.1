@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DFD98DAF9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842D798DD66
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 507E92836F4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 491E728345C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAE61D0487;
-	Wed,  2 Oct 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2951C1D0786;
+	Wed,  2 Oct 2024 14:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+9VY8zp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWacxm5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FF41D0E35;
-	Wed,  2 Oct 2024 14:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAC31D0F44;
+	Wed,  2 Oct 2024 14:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878899; cv=none; b=m4wBv919KcX1gA7QhYuWDmb/373NM346xd6lcvSpLvxaos2e/Hpj1u8QR0x5Uslj/3xzLmAJfyWnbeghzN15FkOzGGJkt0b4QlEXjfc5mlC+3Ig8UqadyGrRAbKmk0QiEtGE2KxS/+P97yJdkbrYDT/cNpuu+VnmfkQ8Cp1OkDM=
+	t=1727880357; cv=none; b=U/tMZun2xVvaNnKFCoXJY+VdNDzQMEUbyS4sVh52gqIoL2Sf/8iyDTjwUuEI1m3ZOxC7J8sEcdlI7jJIcbKIskkP9SXm/qmeOQCImc8lIEg67+Sll4ExFwRs5rAhwwML8H3JT1pvQPva/sH+d1CaOvySVrhvfeVqQC7LJYlboxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878899; c=relaxed/simple;
-	bh=YCUf02teDD330e1hN6u+t4Y2VMwfmY6P/jF3s2epV+8=;
+	s=arc-20240116; t=1727880357; c=relaxed/simple;
+	bh=8G1gdZNaz69ZCqCAHm/SzYgL3t6obcjlrCDvhgLOLVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhL/8ntD9NGqvqdSJyYP8IcQhgKAWgoub5wphRZyAvTYqidC3/Vs8UpUaLeKOV7ZSCk0Fd/3D0zykVP+nx8A9Wxl1pCd7ooFLl+MrwcJ/5oNksDi5gytUpmOogff7dvsvn9ewg+rLN52ETZUSY3o72H02Ic49It5bIt/w3VJtNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+9VY8zp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43499C4CEC5;
-	Wed,  2 Oct 2024 14:21:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ujiW4BOz0W2ImezhQM3kz0VDFHQWyd58UY+E7DTS91g2csC/XLGOmBGUq1AhG5eZ+PinyHmyDuBrL3UQeCFlr/5Z1xAmKxQgBL5K9KVpvfzDkaMtVFgCK36B3htr2WqBOA3iXtl70z7u4vTPfyNVSfH2QiCxBWMO4xq/3JB8c/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWacxm5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D034C4CEC2;
+	Wed,  2 Oct 2024 14:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878899;
-	bh=YCUf02teDD330e1hN6u+t4Y2VMwfmY6P/jF3s2epV+8=;
+	s=korg; t=1727880357;
+	bh=8G1gdZNaz69ZCqCAHm/SzYgL3t6obcjlrCDvhgLOLVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+9VY8zpZ+WaGvtxoy2SmhbzmqGV/IlD82X/KQ1wj9uL0UpT207EG1I56Z8/n/lDY
-	 pZvt5lnQguMN16ZV7tNAvrNCEFSsPAg25EB/iTlr3XnN4BzVgotEeKCaDAljxj4N0m
-	 K7GBifsaxKkdgQDWzyd837E7K+ZdgP08vPdSeGV4=
+	b=NWacxm5za0Dp9tJtp2XDL3557XodZ4p6wxJc3TrgIQTfjDOnjfJ1h3UYcfF3+nV8t
+	 9tAOPT8EObpz7atSgkSsQaTzMueITMqSJJpI1YlRfHlUOJhhHkvINvHWeUP/cwUaXj
+	 Jn/lsmCJ7+7UmTK2cUBk5nKjs8m4WKxv6AmKHRGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.10 569/634] arm64: esr: Define ESR_ELx_EC_* constants as UL
+	=?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 430/538] can: esd_usb: Remove CAN_CTRLMODE_3_SAMPLES for CAN-USB/3-FD
 Date: Wed,  2 Oct 2024 15:01:09 +0200
-Message-ID: <20241002125833.575827406@linuxfoundation.org>
+Message-ID: <20241002125809.412493070@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,149 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Stefan Mätje <stefan.maetje@esd.eu>
 
-commit b6db3eb6c373b97d9e433530d748590421bbeea7 upstream.
+commit 75b3189540578f96b4996e4849b6649998f49455 upstream.
 
-Add explicit casting to prevent expantion of 32th bit of
-u32 into highest half of u64 in several places.
+Remove the CAN_CTRLMODE_3_SAMPLES announcement for CAN-USB/3-FD devices
+because these devices don't support it.
 
-For example, in inject_abt64:
-ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT = 0x24 << 26.
-This operation's result is int with 1 in 32th bit.
-While casting this value into u64 (esr is u64) 1
-fills 32 highest bits.
+The hardware has a Microchip SAM E70 microcontroller that uses a Bosch
+MCAN IP core as CAN FD controller. But this MCAN core doesn't support
+triple sampling.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Cc: <stable@vger.kernel.org>
-Fixes: aa8eff9bfbd5 ("arm64: KVM: fault injection into a guest")
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/stable/20240910085016.32120-1-abelova%40astralinux.ru
-Link: https://lore.kernel.org/r/20240910085016.32120-1-abelova@astralinux.ru
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 80662d943075 ("can: esd_usb: Add support for esd CAN-USB/3")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20240904222740.2985864-2-stefan.maetje@esd.eu
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/esr.h |   88 +++++++++++++++++++++----------------------
- 1 file changed, 44 insertions(+), 44 deletions(-)
+ drivers/net/can/usb/esd_usb.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/arch/arm64/include/asm/esr.h
-+++ b/arch/arm64/include/asm/esr.h
-@@ -10,63 +10,63 @@
- #include <asm/memory.h>
- #include <asm/sysreg.h>
+diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
+index 41a0e4261d15..03ad10b01867 100644
+--- a/drivers/net/can/usb/esd_usb.c
++++ b/drivers/net/can/usb/esd_usb.c
+@@ -3,7 +3,7 @@
+  * CAN driver for esd electronics gmbh CAN-USB/2, CAN-USB/3 and CAN-USB/Micro
+  *
+  * Copyright (C) 2010-2012 esd electronic system design gmbh, Matthias Fuchs <socketcan@esd.eu>
+- * Copyright (C) 2022-2023 esd electronics gmbh, Frank Jungclaus <frank.jungclaus@esd.eu>
++ * Copyright (C) 2022-2024 esd electronics gmbh, Frank Jungclaus <frank.jungclaus@esd.eu>
+  */
  
--#define ESR_ELx_EC_UNKNOWN	(0x00)
--#define ESR_ELx_EC_WFx		(0x01)
-+#define ESR_ELx_EC_UNKNOWN	UL(0x00)
-+#define ESR_ELx_EC_WFx		UL(0x01)
- /* Unallocated EC: 0x02 */
--#define ESR_ELx_EC_CP15_32	(0x03)
--#define ESR_ELx_EC_CP15_64	(0x04)
--#define ESR_ELx_EC_CP14_MR	(0x05)
--#define ESR_ELx_EC_CP14_LS	(0x06)
--#define ESR_ELx_EC_FP_ASIMD	(0x07)
--#define ESR_ELx_EC_CP10_ID	(0x08)	/* EL2 only */
--#define ESR_ELx_EC_PAC		(0x09)	/* EL2 and above */
-+#define ESR_ELx_EC_CP15_32	UL(0x03)
-+#define ESR_ELx_EC_CP15_64	UL(0x04)
-+#define ESR_ELx_EC_CP14_MR	UL(0x05)
-+#define ESR_ELx_EC_CP14_LS	UL(0x06)
-+#define ESR_ELx_EC_FP_ASIMD	UL(0x07)
-+#define ESR_ELx_EC_CP10_ID	UL(0x08)	/* EL2 only */
-+#define ESR_ELx_EC_PAC		UL(0x09)	/* EL2 and above */
- /* Unallocated EC: 0x0A - 0x0B */
--#define ESR_ELx_EC_CP14_64	(0x0C)
--#define ESR_ELx_EC_BTI		(0x0D)
--#define ESR_ELx_EC_ILL		(0x0E)
-+#define ESR_ELx_EC_CP14_64	UL(0x0C)
-+#define ESR_ELx_EC_BTI		UL(0x0D)
-+#define ESR_ELx_EC_ILL		UL(0x0E)
- /* Unallocated EC: 0x0F - 0x10 */
--#define ESR_ELx_EC_SVC32	(0x11)
--#define ESR_ELx_EC_HVC32	(0x12)	/* EL2 only */
--#define ESR_ELx_EC_SMC32	(0x13)	/* EL2 and above */
-+#define ESR_ELx_EC_SVC32	UL(0x11)
-+#define ESR_ELx_EC_HVC32	UL(0x12)	/* EL2 only */
-+#define ESR_ELx_EC_SMC32	UL(0x13)	/* EL2 and above */
- /* Unallocated EC: 0x14 */
--#define ESR_ELx_EC_SVC64	(0x15)
--#define ESR_ELx_EC_HVC64	(0x16)	/* EL2 and above */
--#define ESR_ELx_EC_SMC64	(0x17)	/* EL2 and above */
--#define ESR_ELx_EC_SYS64	(0x18)
--#define ESR_ELx_EC_SVE		(0x19)
--#define ESR_ELx_EC_ERET		(0x1a)	/* EL2 only */
-+#define ESR_ELx_EC_SVC64	UL(0x15)
-+#define ESR_ELx_EC_HVC64	UL(0x16)	/* EL2 and above */
-+#define ESR_ELx_EC_SMC64	UL(0x17)	/* EL2 and above */
-+#define ESR_ELx_EC_SYS64	UL(0x18)
-+#define ESR_ELx_EC_SVE		UL(0x19)
-+#define ESR_ELx_EC_ERET		UL(0x1a)	/* EL2 only */
- /* Unallocated EC: 0x1B */
--#define ESR_ELx_EC_FPAC		(0x1C)	/* EL1 and above */
--#define ESR_ELx_EC_SME		(0x1D)
-+#define ESR_ELx_EC_FPAC		UL(0x1C)	/* EL1 and above */
-+#define ESR_ELx_EC_SME		UL(0x1D)
- /* Unallocated EC: 0x1E */
--#define ESR_ELx_EC_IMP_DEF	(0x1f)	/* EL3 only */
--#define ESR_ELx_EC_IABT_LOW	(0x20)
--#define ESR_ELx_EC_IABT_CUR	(0x21)
--#define ESR_ELx_EC_PC_ALIGN	(0x22)
-+#define ESR_ELx_EC_IMP_DEF	UL(0x1f)	/* EL3 only */
-+#define ESR_ELx_EC_IABT_LOW	UL(0x20)
-+#define ESR_ELx_EC_IABT_CUR	UL(0x21)
-+#define ESR_ELx_EC_PC_ALIGN	UL(0x22)
- /* Unallocated EC: 0x23 */
--#define ESR_ELx_EC_DABT_LOW	(0x24)
--#define ESR_ELx_EC_DABT_CUR	(0x25)
--#define ESR_ELx_EC_SP_ALIGN	(0x26)
--#define ESR_ELx_EC_MOPS		(0x27)
--#define ESR_ELx_EC_FP_EXC32	(0x28)
-+#define ESR_ELx_EC_DABT_LOW	UL(0x24)
-+#define ESR_ELx_EC_DABT_CUR	UL(0x25)
-+#define ESR_ELx_EC_SP_ALIGN	UL(0x26)
-+#define ESR_ELx_EC_MOPS		UL(0x27)
-+#define ESR_ELx_EC_FP_EXC32	UL(0x28)
- /* Unallocated EC: 0x29 - 0x2B */
--#define ESR_ELx_EC_FP_EXC64	(0x2C)
-+#define ESR_ELx_EC_FP_EXC64	UL(0x2C)
- /* Unallocated EC: 0x2D - 0x2E */
--#define ESR_ELx_EC_SERROR	(0x2F)
--#define ESR_ELx_EC_BREAKPT_LOW	(0x30)
--#define ESR_ELx_EC_BREAKPT_CUR	(0x31)
--#define ESR_ELx_EC_SOFTSTP_LOW	(0x32)
--#define ESR_ELx_EC_SOFTSTP_CUR	(0x33)
--#define ESR_ELx_EC_WATCHPT_LOW	(0x34)
--#define ESR_ELx_EC_WATCHPT_CUR	(0x35)
-+#define ESR_ELx_EC_SERROR	UL(0x2F)
-+#define ESR_ELx_EC_BREAKPT_LOW	UL(0x30)
-+#define ESR_ELx_EC_BREAKPT_CUR	UL(0x31)
-+#define ESR_ELx_EC_SOFTSTP_LOW	UL(0x32)
-+#define ESR_ELx_EC_SOFTSTP_CUR	UL(0x33)
-+#define ESR_ELx_EC_WATCHPT_LOW	UL(0x34)
-+#define ESR_ELx_EC_WATCHPT_CUR	UL(0x35)
- /* Unallocated EC: 0x36 - 0x37 */
--#define ESR_ELx_EC_BKPT32	(0x38)
-+#define ESR_ELx_EC_BKPT32	UL(0x38)
- /* Unallocated EC: 0x39 */
--#define ESR_ELx_EC_VECTOR32	(0x3A)	/* EL2 only */
-+#define ESR_ELx_EC_VECTOR32	UL(0x3A)	/* EL2 only */
- /* Unallocated EC: 0x3B */
--#define ESR_ELx_EC_BRK64	(0x3C)
-+#define ESR_ELx_EC_BRK64	UL(0x3C)
- /* Unallocated EC: 0x3D - 0x3F */
--#define ESR_ELx_EC_MAX		(0x3F)
-+#define ESR_ELx_EC_MAX		UL(0x3F)
+ #include <linux/can.h>
+@@ -1116,9 +1116,6 @@ static int esd_usb_3_set_bittiming(struct net_device *netdev)
+ 	if (priv->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
+ 		flags |= ESD_USB_3_BAUDRATE_FLAG_LOM;
  
- #define ESR_ELx_EC_SHIFT	(26)
- #define ESR_ELx_EC_WIDTH	(6)
+-	if (priv->can.ctrlmode & CAN_CTRLMODE_3_SAMPLES)
+-		flags |= ESD_USB_3_BAUDRATE_FLAG_TRS;
+-
+ 	baud_x->nom.brp = cpu_to_le16(nom_bt->brp & (nom_btc->brp_max - 1));
+ 	baud_x->nom.sjw = cpu_to_le16(nom_bt->sjw & (nom_btc->sjw_max - 1));
+ 	baud_x->nom.tseg1 = cpu_to_le16((nom_bt->prop_seg + nom_bt->phase_seg1)
+@@ -1219,7 +1216,6 @@ static int esd_usb_probe_one_net(struct usb_interface *intf, int index)
+ 	switch (le16_to_cpu(dev->udev->descriptor.idProduct)) {
+ 	case ESD_USB_CANUSB3_PRODUCT_ID:
+ 		priv->can.clock.freq = ESD_USB_3_CAN_CLOCK;
+-		priv->can.ctrlmode_supported |= CAN_CTRLMODE_3_SAMPLES;
+ 		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
+ 		priv->can.bittiming_const = &esd_usb_3_nom_bittiming_const;
+ 		priv->can.data_bittiming_const = &esd_usb_3_data_bittiming_const;
+-- 
+2.46.2
+
 
 
 
