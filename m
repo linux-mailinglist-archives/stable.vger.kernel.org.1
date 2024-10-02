@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-79409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E7898D81B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FD998D53E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0B6C1C22DB7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A621C20AF2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCED1D0DE0;
-	Wed,  2 Oct 2024 13:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347C91D043D;
+	Wed,  2 Oct 2024 13:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzl3wAQK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rN09U4/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10081D0BB3;
-	Wed,  2 Oct 2024 13:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E639D1D0412;
+	Wed,  2 Oct 2024 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877364; cv=none; b=CGeTtwWLxr6pgLn+ZBNdEVt/pofQBx6vtGr+68FK6WCSLgQge4E3AnJfoDTt9b6WDku8GFzYkf23KUHscO2ynjvmu6cZUaYmarzoioQUTPfNHy8nCykaS/FhZtyDTIj/gQOj2L7OJ1j0dNZeDw/heFdXGCmWTi0sZLODVvYNiTE=
+	t=1727875696; cv=none; b=ciajIvClusv4PHORbW+mvrC/VwajUpuEn+Ii0lm3UbjeEbGobHJG/qDci8r4Xy3nFn9ZY/6o4vSJcqfo3kSVmyzu50AX1Zx7rGRVhvLEKHsflvlN5h+uTVpXVkN5MPz/qeqKx9AlsYpls+RiRCcbNmmiD9qeDRrFkC1Mw+/Fpp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877364; c=relaxed/simple;
-	bh=Mq7EyTWf8U+ux7Irxw49uZmDYYuXy/MmReKgkhqdcsY=;
+	s=arc-20240116; t=1727875696; c=relaxed/simple;
+	bh=g4AKidmB15uD7JJG91fvE/qTy1re+reosvqUZZL4JGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhaUg649EugKzrB3eIGo6NYgshWPnhg6UYkfik7Y1qPdmqV2WgUIwDFrh6nFUrTcIpGReXRTJbaD9dtNW9rsAgQpBetGzitpgMgQq7x8LV8JhfWmgOGd2Rzi8vqnSWPOzWmGNgQjgxeDj2q0FZEknkt2ZQ/IVH7vvprc6TLHE5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzl3wAQK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1EAC4CECD;
-	Wed,  2 Oct 2024 13:56:04 +0000 (UTC)
+	 MIME-Version; b=prLNSIoWv8qGtfVnK1CAVEinfmk3yn7gA82Y2MHyZZQ+bgmFzAccxdjmPYvBU4qFgKJpa/aQGeWkL6MBtg5GYZAABSA74Bd9DKEBd87j9lWeTine4caLchKYcqdDBH/Wuo7aLDyXcWHxG25qgsOZvEw4xYPjP+mImbSRo9IFNXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rN09U4/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB68C4CEC5;
+	Wed,  2 Oct 2024 13:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877364;
-	bh=Mq7EyTWf8U+ux7Irxw49uZmDYYuXy/MmReKgkhqdcsY=;
+	s=korg; t=1727875695;
+	bh=g4AKidmB15uD7JJG91fvE/qTy1re+reosvqUZZL4JGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzl3wAQKqw9wuxW0UJ50Q1TA9s0RaVAE7t1AKjSUCH/VcR8iKX6R1s6yK1jyCcdUw
-	 CGVYDQ8tpj51exUrcPYoVEYVFWdUGjKIMK2cFuVYkgCQGNQ/JKHtDP16/2y8U7V4OY
-	 Z1ZolHJEQU6ejZ99tK5+HD1WqEslXEE7Syl4uPE0=
+	b=rN09U4/U9H7ICxnTGLH+gM8WQB6SHPR3+fFGfTFUKoVzSanKshHmjHwquT2mosoY7
+	 s7cQO5gyKW7cRUhE8U9odMm3edgZRCt+35nJ/MKjVJZbijPseKId/sGvusJPXac6m4
+	 rtLidSCpw4HXSOukCxu8C17od/zunI+LpdCAnqgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Ankit Agrawal <agrawal.ag.ankit@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 056/634] netfilter: nf_tables: remove annotation to access set timeout while holding lock
+Subject: [PATCH 6.11 158/695] clocksource/drivers/qcom: Add missing iounmap() on errors in msm_dt_timer_init()
 Date: Wed,  2 Oct 2024 14:52:36 +0200
-Message-ID: <20241002125813.317396008@linuxfoundation.org>
+Message-ID: <20241002125828.784835596@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
 
-[ Upstream commit 15d8605c0cf4fc9cf4386cae658c68a0fd4bdb92 ]
+[ Upstream commit ca140a0dc0a18acd4653b56db211fec9b2339986 ]
 
-Mutex is held when adding an element, no need for READ_ONCE, remove it.
+Add the missing iounmap() when clock frequency fails to get read by the
+of_property_read_u32() call, or if the call to msm_timer_init() fails.
 
-Fixes: 123b99619cca ("netfilter: nf_tables: honor set timeout and garbage collection updates")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 6e3321631ac2 ("ARM: msm: Add DT support to msm_timer")
+Signed-off-by: Ankit Agrawal <agrawal.ag.ankit@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240713095713.GA430091@bnew-VirtualBox
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clocksource/timer-qcom.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index fcb68fe818566..d4b5f23930c9f 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6867,7 +6867,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 			return err;
- 	} else if (set->flags & NFT_SET_TIMEOUT &&
- 		   !(flags & NFT_SET_ELEM_INTERVAL_END)) {
--		timeout = READ_ONCE(set->timeout);
-+		timeout = set->timeout;
+diff --git a/drivers/clocksource/timer-qcom.c b/drivers/clocksource/timer-qcom.c
+index b4afe3a675835..eac4c95c6127f 100644
+--- a/drivers/clocksource/timer-qcom.c
++++ b/drivers/clocksource/timer-qcom.c
+@@ -233,6 +233,7 @@ static int __init msm_dt_timer_init(struct device_node *np)
  	}
  
- 	expiration = 0;
-@@ -6974,7 +6974,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		if (err < 0)
- 			goto err_parse_key_end;
+ 	if (of_property_read_u32(np, "clock-frequency", &freq)) {
++		iounmap(cpu0_base);
+ 		pr_err("Unknown frequency\n");
+ 		return -EINVAL;
+ 	}
+@@ -243,7 +244,11 @@ static int __init msm_dt_timer_init(struct device_node *np)
+ 	freq /= 4;
+ 	writel_relaxed(DGT_CLK_CTL_DIV_4, source_base + DGT_CLK_CTL);
  
--		if (timeout != READ_ONCE(set->timeout)) {
-+		if (timeout != set->timeout) {
- 			err = nft_set_ext_add(&tmpl, NFT_SET_EXT_TIMEOUT);
- 			if (err < 0)
- 				goto err_parse_key_end;
+-	return msm_timer_init(freq, 32, irq, !!percpu_offset);
++	ret = msm_timer_init(freq, 32, irq, !!percpu_offset);
++	if (ret)
++		iounmap(cpu0_base);
++
++	return ret;
+ }
+ TIMER_OF_DECLARE(kpss_timer, "qcom,kpss-timer", msm_dt_timer_init);
+ TIMER_OF_DECLARE(scss_timer, "qcom,scss-timer", msm_dt_timer_init);
 -- 
 2.43.0
 
