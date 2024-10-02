@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCE398D92D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBE598D5B1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1524CB23EC0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3716D1F22F6F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EB6198837;
-	Wed,  2 Oct 2024 14:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F04E1D0486;
+	Wed,  2 Oct 2024 13:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbXwkk1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vz/WlX8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4111D0B8E;
-	Wed,  2 Oct 2024 14:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAB31D0480;
+	Wed,  2 Oct 2024 13:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877820; cv=none; b=aueIh3pGbuovzsi4OYX1kK7L1C+2q/9pSbEP+IaIIhO+aX1F99QYh4zhz4H07yVIl8G23Eauy5DWn50BdPI4pwqPasHYKf96SeG/urV1SKesMn1/tHkI78yEIn6ej5/cKsPQtwLsdsN4jnVA5Re5X/9IUT7Qn/CsZGNbTvBBiIY=
+	t=1727875952; cv=none; b=br/Y67CPj7nAAVyhCxyaGEIhXenYTi2q2HZLG6ATcz5x/k6kinY4ZfWtT890h3VZ9IgERhwWmb152eioQgQl+69crcHiWgpcOX3FYV5QYQYuwvJBWK8FLis5TFNEuHOxy6V99UUQJzo1rg661npoBGChaiQ/toBzVN2eGWpT+bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877820; c=relaxed/simple;
-	bh=i3JA2deXEnZeP0tPfNAX//oFNy47Z7yTOwPxxfRvzmU=;
+	s=arc-20240116; t=1727875952; c=relaxed/simple;
+	bh=+9iWcoitQHZrpSEPME1Z/xBurJGHhbrOHMLohDBa2A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSl0B4WTBSFa819SPt1mpI8wbgizrSJrwflCqnfFPaySjuVeBOCaL/4KnmyRB/UwO8zVErWDWoYcmGKQ4f4mKiKsc9DsjAE+bTHbN1vg7HcL6LNW5AeOrMEzixSsOIsSI59GNCAb1iuFLbX6l+SlonWfqF0XNKB6DhwZehHWB+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbXwkk1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A124FC4CEC2;
-	Wed,  2 Oct 2024 14:03:39 +0000 (UTC)
+	 MIME-Version; b=kaQTT9zPVdCxWgmXwJ1qNQg/awwHjQfVHk89RQZEbCeB/JTHAk9YW/BBSkroQRV09LvNQkR8ueDxXHrfvD/hMwk8duAteCA1c0vUrlpwFLYY/KM94z7PTpvmjYhDBa/t0cbEvKur1qDMDdOD+WsB0pi26cVmnRlz2bhhBbbrSlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vz/WlX8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944EAC4CEC5;
+	Wed,  2 Oct 2024 13:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877820;
-	bh=i3JA2deXEnZeP0tPfNAX//oFNy47Z7yTOwPxxfRvzmU=;
+	s=korg; t=1727875952;
+	bh=+9iWcoitQHZrpSEPME1Z/xBurJGHhbrOHMLohDBa2A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbXwkk1AqFXUI5S7dGc2rpq0XhZ1W51RqY+ALmwLPIj9sqjS7B7CnDkD/Z4U1kvbe
-	 FvUD81D6ojj/BQbFPJ7ieYQjrC8QNqeNHnFn/2x/mg6p8TtDmbNS6OJ6v8YW/mu3cK
-	 bwBBcwFnHFsmBswJrRheb8uO/vyVx3So6sCXUgGw=
+	b=Vz/WlX8JZaM5P17eYjJppSwEqCAh2Fr1OUDyN3D+pnU3EP9qiqUkX766jjPXw4r7r
+	 uAmJUnFLldVuJrGcaknOZzxaJK8qLITZIVAk2nuxofl3wsqj4Qpm3mmeW2kzvl0gp0
+	 9Du50vWGCa4jAyVXLFS9TZCpU1iU7K7crgADBy3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Matthias Brugger <matthias.bgg@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 174/634] mtd: rawnand: mtk: Fix init error path
-Date: Wed,  2 Oct 2024 14:54:34 +0200
-Message-ID: <20241002125817.976576951@linuxfoundation.org>
+Subject: [PATCH 6.11 277/695] selftests/bpf: Fix errors compiling lwt_redirect.c with musl libc
+Date: Wed,  2 Oct 2024 14:54:35 +0200
+Message-ID: <20241002125833.501699668@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 2073ae37d550ea32e8545edaa94ef10b4fef7235 ]
+[ Upstream commit 27c4797ce51c8dd51e35e68e9024a892f62d78b2 ]
 
-Reviewing a series converting the for_each_chil_of_node() loops into
-their _scoped variants made me realize there was no cleanup of the
-already registered NAND devices upon error which may leak memory on
-systems with more than a chip when this error occurs. We should call the
-_nand_chips_cleanup() function when this happens.
+Remove a redundant include of '<linux/icmp.h>' which is already provided in
+'lwt_helpers.h'. This avoids errors seen compiling for mips64el/musl-libc:
 
-Fixes: 1d6b1e464950 ("mtd: mediatek: driver for MTK Smart Device")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@kernel.org>
-Link: https://lore.kernel.org/linux-mtd/20240826153019.67106-2-miquel.raynal@bootlin.com
+  In file included from .../arpa/inet.h:9,
+                   from lwt_redirect.c:51:
+  .../netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+     23 | struct in6_addr {
+        |        ^~~~~~~~
+  In file included from .../linux/icmp.h:24,
+                   from lwt_redirect.c:50:
+  .../linux/in6.h:33:8: note: originally defined here
+     33 | struct in6_addr {
+        |        ^~~~~~~~
+  .../netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+     34 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../linux/in6.h:50:8: note: originally defined here
+     50 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+     42 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+  .../linux/in6.h:60:8: note: originally defined here
+     60 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+
+Fixes: 43a7c3ef8a15 ("selftests/bpf: Add lwt_xmit tests for BPF_REDIRECT")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/3869dda876d5206d2f8d4dd67331c739ceb0c7f8.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/mtk_nand.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/lwt_redirect.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
-index bf845dd167374..586868b4139f5 100644
---- a/drivers/mtd/nand/raw/mtk_nand.c
-+++ b/drivers/mtd/nand/raw/mtk_nand.c
-@@ -1453,8 +1453,10 @@ static int mtk_nfc_nand_chips_init(struct device *dev, struct mtk_nfc *nfc)
- 
- 	for_each_child_of_node_scoped(np, nand_np) {
- 		ret = mtk_nfc_nand_chip_init(dev, nfc, nand_np);
--		if (ret)
-+		if (ret) {
-+			mtk_nfc_nand_chips_cleanup(nfc);
- 			return ret;
-+		}
- 	}
- 
- 	return 0;
+diff --git a/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c b/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
+index 835a1d756c166..b6e8d822e8e95 100644
+--- a/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
++++ b/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
+@@ -47,7 +47,6 @@
+ #include <linux/if_ether.h>
+ #include <linux/if_packet.h>
+ #include <linux/if_tun.h>
+-#include <linux/icmp.h>
+ #include <arpa/inet.h>
+ #include <unistd.h>
+ #include <errno.h>
 -- 
 2.43.0
 
