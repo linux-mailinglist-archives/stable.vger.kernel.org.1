@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FA098D0CC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:07:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E89698D0D2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CE6A284576
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:07:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0FF6B237F9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCAB1E4937;
-	Wed,  2 Oct 2024 10:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2088B1E493E;
+	Wed,  2 Oct 2024 10:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GudcHoIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6GeK6pQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB88C1E2033
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A011E2033
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727863649; cv=none; b=ZRhUnCwa/ruymBHxXWiAMxB847FNX14Z71zvTZSljDn9ZCduqpNtLfJMjReoLbyAj7S9Xo5GXZakICDf+Z16GEvd1RgeM3i8mD3/mK95kf/kTBq5LP7+PzGXwjXxvpnllp3C5c2Rg47GtQrOvE7sKptpLORT4ESrdxx33h9DTRs=
+	t=1727863708; cv=none; b=U34WtHzZ7fshwcRie0lkG7cHYhERIO9XiWJMZJe5OlFzRMvcu7HH1XKG4/EqzmTlo2YEC7VDMdKYW28BrElGpX05wVXcTUe0kCoaRu6BEmEiokgPXrWyPauCGtDM/gW5Mcvt8vXkorzeGn0Iz0jvfubDGyp7jsOYNcMkJ/aruEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727863649; c=relaxed/simple;
-	bh=ecl02q1nqSgMB2+9fBQhjI7BE8zqHpNnS1qWR7EPB8k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qhSqmb/fzz1DePLT3nXKr7CFjmKs0RulGQOY0beljLokZ4ERis2Q4JYtBTUyHbkHRJRi68NqZodMrTTQhv+VqlA8U1IoHc143JuRT7sRjhus1cMbbIZCRaMPqzhP2NrAWFKVgZj+FbEQC4btdCyyX82JwH3Vg8hWJnmsrI6hLFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GudcHoIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D081FC4CEC5;
-	Wed,  2 Oct 2024 10:07:28 +0000 (UTC)
+	s=arc-20240116; t=1727863708; c=relaxed/simple;
+	bh=ow/sRCgSi+qqgp9WpHBRd8nSqLsFo2qR8NQQ2RUJaD4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ccW2i8VP7Pk0h3IJRedBVrE7h4b4GPv1YfP2wsUY43bCgH6wnPszgDvYWdLqgnoIwSkUvIBbjem6yhBEtjMF8p3yVumeYb+roT9T946bKl6uXoebw/U9qqeSYIVJD3xQu7aqOdQFg3M4rmMzN1QMTh//ieC4oFyavMTGfxcIcfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6GeK6pQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA404C4CEC5;
+	Wed,  2 Oct 2024 10:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727863649;
-	bh=ecl02q1nqSgMB2+9fBQhjI7BE8zqHpNnS1qWR7EPB8k=;
+	s=korg; t=1727863708;
+	bh=ow/sRCgSi+qqgp9WpHBRd8nSqLsFo2qR8NQQ2RUJaD4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=GudcHoIuCIAmrCnpkwpbQ3+tAzAe899QiJgMJGpO78fpNCO2FT20B3/hs0Pj+E84Q
-	 eAfQfo9/fTLWf6YRENThk6ngyu/8LyVz0e3QUSwqIlVnmWXdbIkvGGMrE8J+lLPUOC
-	 FdrFhNnOTGoM/tK8GQiYZ8NrLk3YNigVEwG2Rm4g=
-Subject: FAILED: patch "[PATCH] lockdep: fix deadlock issue between lockdep and rcu" failed to apply to 5.4-stable tree
-To: zhiguo.niu@unisoc.com,boqun.feng@gmail.com,bvanassche@acm.org,cmllamas@google.com,longman@redhat.com,paulmck@kernel.org,xuewen.yan@unisoc.com
+	b=h6GeK6pQuiEbAVnadHThqZWrHoyWcUbOGS2mCW4Iz28dSm6HJUib982IbJeyNmWQR
+	 Bj/ejVtOz0b/8TyM2AqLv+i527aQ/q+7LVuzzA1tNnhjIGpOkcDDXAyVe5/edBQpln
+	 Jh0oGRVgINzvCgZWuB2FKioWAOVuZUZOJ+UwkI44=
+Subject: FAILED: patch "[PATCH] selftest mm/mseal: fix" failed to apply to 6.10-stable tree
+To: jeffxu@chromium.org,Liam.Howlett@oracle.com,akpm@linux-foundation.org,dave.hansen@intel.com,lorenzo.stoakes@oracle.com,mpe@ellerman.id.au,pedro.falcato@gmail.com,stable@vger.kernel.org,vbabka@suse.cz,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 12:07:26 +0200
-Message-ID: <2024100226-unselfish-triangle-e5eb@gregkh>
+Date: Wed, 02 Oct 2024 12:08:20 +0200
+Message-ID: <2024100220-poppy-baggage-6f39@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x a6f88ac32c6e63e69c595bfae220d8641704c9b7
+git cherry-pick -x 072cd213b75eb01fcf40eff898f8d5c008ce1457
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100226-unselfish-triangle-e5eb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100220-poppy-baggage-6f39@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-a6f88ac32c6e ("lockdep: fix deadlock issue between lockdep and rcu")
-61cc4534b655 ("locking/lockdep: Avoid potential access of invalid memory in lock_class")
-248efb2158f1 ("locking/lockdep: Rework lockdep_lock")
-10476e630422 ("locking/lockdep: Fix bad recursion pattern")
-25016bd7f4ca ("locking/lockdep: Avoid recursion in lockdep_count_{for,back}ward_deps()")
+072cd213b75e ("selftest mm/mseal: fix test_seal_mremap_move_dontunmap_anyaddr")
 
 thanks,
 
@@ -81,215 +77,199 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a6f88ac32c6e63e69c595bfae220d8641704c9b7 Mon Sep 17 00:00:00 2001
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Date: Thu, 20 Jun 2024 22:54:34 +0000
-Subject: [PATCH] lockdep: fix deadlock issue between lockdep and rcu
+From 072cd213b75eb01fcf40eff898f8d5c008ce1457 Mon Sep 17 00:00:00 2001
+From: Jeff Xu <jeffxu@chromium.org>
+Date: Wed, 7 Aug 2024 21:23:20 +0000
+Subject: [PATCH] selftest mm/mseal: fix
+ test_seal_mremap_move_dontunmap_anyaddr
 
-There is a deadlock scenario between lockdep and rcu when
-rcu nocb feature is enabled, just as following call stack:
+the syscall remap accepts following:
 
-     rcuop/x
--000|queued_spin_lock_slowpath(lock = 0xFFFFFF817F2A8A80, val = ?)
--001|queued_spin_lock(inline) // try to hold nocb_gp_lock
--001|do_raw_spin_lock(lock = 0xFFFFFF817F2A8A80)
--002|__raw_spin_lock_irqsave(inline)
--002|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F2A8A80)
--003|wake_nocb_gp_defer(inline)
--003|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F30B680)
--004|__call_rcu_common(inline)
--004|call_rcu(head = 0xFFFFFFC082EECC28, func = ?)
--005|call_rcu_zapped(inline)
--005|free_zapped_rcu(ch = ?)// hold graph lock
--006|rcu_do_batch(rdp = 0xFFFFFF817F245680)
--007|nocb_cb_wait(inline)
--007|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F245680)
--008|kthread(_create = 0xFFFFFF80803122C0)
--009|ret_from_fork(asm)
+mremap(src, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, dst)
 
-     rcuop/y
--000|queued_spin_lock_slowpath(lock = 0xFFFFFFC08291BBC8, val = 0)
--001|queued_spin_lock()
--001|lockdep_lock()
--001|graph_lock() // try to hold graph lock
--002|lookup_chain_cache_add()
--002|validate_chain()
--003|lock_acquire
--004|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F211D80)
--005|lock_timer_base(inline)
--006|mod_timer(inline)
--006|wake_nocb_gp_defer(inline)// hold nocb_gp_lock
--006|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F2A8680)
--007|__call_rcu_common(inline)
--007|call_rcu(head = 0xFFFFFFC0822E0B58, func = ?)
--008|call_rcu_hurry(inline)
--008|rcu_sync_call(inline)
--008|rcu_sync_func(rhp = 0xFFFFFFC0822E0B58)
--009|rcu_do_batch(rdp = 0xFFFFFF817F266680)
--010|nocb_cb_wait(inline)
--010|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F266680)
--011|kthread(_create = 0xFFFFFF8080363740)
--012|ret_from_fork(asm)
+when the src is sealed, the call will fail with error code:
+EPERM
 
-rcuop/x and rcuop/y are rcu nocb threads with the same nocb gp thread.
-This patch release the graph lock before lockdep call_rcu.
+Previously, the test uses hard-coded 0xdeaddead as dst, and it
+will fail on the system with newer glibc installed.
 
-Fixes: a0b0fd53e1e6 ("locking/lockdep: Free lock classes that are no longer in use")
-Cc: stable@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Waiman Long <longman@redhat.com>
-Cc: Carlos Llamas <cmllamas@google.com>
-Cc: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20240620225436.3127927-1-cmllamas@google.com
+This patch removes test's dependency on glibc for mremap(), also
+fix the test and remove the hardcoded address.
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 266f57f36f69..b172ead28f1c 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -6186,25 +6186,27 @@ static struct pending_free *get_pending_free(void)
- static void free_zapped_rcu(struct rcu_head *cb);
- 
- /*
-- * Schedule an RCU callback if no RCU callback is pending. Must be called with
-- * the graph lock held.
-- */
--static void call_rcu_zapped(struct pending_free *pf)
-+* See if we need to queue an RCU callback, must called with
-+* the lockdep lock held, returns false if either we don't have
-+* any pending free or the callback is already scheduled.
-+* Otherwise, a call_rcu() must follow this function call.
-+*/
-+static bool prepare_call_rcu_zapped(struct pending_free *pf)
- {
- 	WARN_ON_ONCE(inside_selftest());
- 
- 	if (list_empty(&pf->zapped))
--		return;
-+		return false;
- 
- 	if (delayed_free.scheduled)
--		return;
-+		return false;
- 
- 	delayed_free.scheduled = true;
- 
- 	WARN_ON_ONCE(delayed_free.pf + delayed_free.index != pf);
- 	delayed_free.index ^= 1;
- 
--	call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
-+	return true;
+Link: https://lkml.kernel.org/r/20240807212320.2831848-1-jeffxu@chromium.org
+Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
+Signed-off-by: Jeff Xu <jeffxu@chromium.org>
+Reported-by: Pedro Falcato <pedro.falcato@gmail.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
+index 7eec3f0152e3..bd0bfda7aae7 100644
+--- a/tools/testing/selftests/mm/mseal_test.c
++++ b/tools/testing/selftests/mm/mseal_test.c
+@@ -110,6 +110,16 @@ static int sys_madvise(void *start, size_t len, int types)
+ 	return sret;
  }
  
- /* The caller must hold the graph lock. May be called from RCU context. */
-@@ -6230,6 +6232,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
++static void *sys_mremap(void *addr, size_t old_len, size_t new_len,
++	unsigned long flags, void *new_addr)
++{
++	void *sret;
++
++	errno = 0;
++	sret = (void *) syscall(__NR_mremap, addr, old_len, new_len, flags, new_addr);
++	return sret;
++}
++
+ static int sys_pkey_alloc(unsigned long flags, unsigned long init_val)
  {
- 	struct pending_free *pf;
- 	unsigned long flags;
-+	bool need_callback;
+ 	int ret = syscall(__NR_pkey_alloc, flags, init_val);
+@@ -1115,12 +1125,12 @@ static void test_seal_mremap_shrink(bool seal)
+ 	}
  
- 	if (WARN_ON_ONCE(ch != &delayed_free.rcu_head))
- 		return;
-@@ -6241,14 +6244,18 @@ static void free_zapped_rcu(struct rcu_head *ch)
- 	pf = delayed_free.pf + (delayed_free.index ^ 1);
- 	__free_zapped_classes(pf);
- 	delayed_free.scheduled = false;
+ 	/* shrink from 4 pages to 2 pages. */
+-	ret2 = mremap(ptr, size, 2 * page_size, 0, 0);
++	ret2 = sys_mremap(ptr, size, 2 * page_size, 0, 0);
+ 	if (seal) {
+-		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
++		FAIL_TEST_IF_FALSE(ret2 == (void *) MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
+-		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
++		FAIL_TEST_IF_FALSE(ret2 != (void *) MAP_FAILED);
+ 
+ 	}
+ 
+@@ -1147,7 +1157,7 @@ static void test_seal_mremap_expand(bool seal)
+ 	}
+ 
+ 	/* expand from 2 page to 4 pages. */
+-	ret2 = mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
++	ret2 = sys_mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1180,7 +1190,7 @@ static void test_seal_mremap_move(bool seal)
+ 	}
+ 
+ 	/* move from ptr to fixed address. */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1299,7 +1309,7 @@ static void test_seal_mremap_shrink_fixed(bool seal)
+ 	}
+ 
+ 	/* mremap to move and shrink to fixed address */
+-	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
++	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
+ 			newAddr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+@@ -1330,7 +1340,7 @@ static void test_seal_mremap_expand_fixed(bool seal)
+ 	}
+ 
+ 	/* mremap to move and expand to fixed address */
+-	ret2 = mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
++	ret2 = sys_mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
+ 			newAddr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+@@ -1361,7 +1371,7 @@ static void test_seal_mremap_move_fixed(bool seal)
+ 	}
+ 
+ 	/* mremap to move to fixed address */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+@@ -1390,14 +1400,13 @@ static void test_seal_mremap_move_fixed_zero(bool seal)
+ 	/*
+ 	 * MREMAP_FIXED can move the mapping to zero address
+ 	 */
+-	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
++	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
+ 			0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
+ 		FAIL_TEST_IF_FALSE(ret2 == 0);
 -
--	/*
--	 * If there's anything on the open list, close and start a new callback.
--	 */
--	call_rcu_zapped(delayed_free.pf + delayed_free.index);
+ 	}
+ 
+ 	REPORT_TEST_PASS();
+@@ -1420,13 +1429,13 @@ static void test_seal_mremap_move_dontunmap(bool seal)
+ 	}
+ 
+ 	/* mremap to move, and don't unmap src addr. */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
++		/* kernel will allocate a new address */
+ 		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
 -
-+	need_callback =
-+		prepare_call_rcu_zapped(delayed_free.pf + delayed_free.index);
- 	lockdep_unlock();
- 	raw_local_irq_restore(flags);
+ 	}
+ 
+ 	REPORT_TEST_PASS();
+@@ -1434,7 +1443,7 @@ static void test_seal_mremap_move_dontunmap(bool seal)
+ 
+ static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
+ {
+-	void *ptr;
++	void *ptr, *ptr2;
+ 	unsigned long page_size = getpagesize();
+ 	unsigned long size = 4 * page_size;
+ 	int ret;
+@@ -1449,24 +1458,30 @@ static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
+ 	}
+ 
+ 	/*
+-	 * The 0xdeaddead should not have effect on dest addr
+-	 * when MREMAP_DONTUNMAP is set.
++	 * The new address is any address that not allocated.
++	 * use allocate/free to similate that.
+ 	 */
+-	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
+-			0xdeaddead);
++	setup_single_address(size, &ptr2);
++	FAIL_TEST_IF_FALSE(ptr2 != (void *)-1);
++	ret = sys_munmap(ptr2, size);
++	FAIL_TEST_IF_FALSE(!ret);
 +
 +	/*
-+	* If there's pending free and its callback has not been scheduled,
-+	* queue an RCU callback.
-+	*/
-+	if (need_callback)
-+		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
-+
- }
- 
- /*
-@@ -6288,6 +6295,7 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
- {
- 	struct pending_free *pf;
- 	unsigned long flags;
-+	bool need_callback;
- 
- 	init_data_structures_once();
- 
-@@ -6295,10 +6303,11 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
- 	lockdep_lock();
- 	pf = get_pending_free();
- 	__lockdep_free_key_range(pf, start, size);
--	call_rcu_zapped(pf);
-+	need_callback = prepare_call_rcu_zapped(pf);
- 	lockdep_unlock();
- 	raw_local_irq_restore(flags);
++	 * remap to any address.
++	 */
++	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
++			(void *) ptr2);
+ 	if (seal) {
+ 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
+ 		FAIL_TEST_IF_FALSE(errno == EPERM);
+ 	} else {
+-		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
+-		FAIL_TEST_IF_FALSE((long)ret2 != 0xdeaddead);
 -
-+	if (need_callback)
-+		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
- 	/*
- 	 * Wait for any possible iterators from look_up_lock_class() to pass
- 	 * before continuing to free the memory they refer to.
-@@ -6392,6 +6401,7 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
- 	struct pending_free *pf;
- 	unsigned long flags;
- 	int locked;
-+	bool need_callback = false;
- 
- 	raw_local_irq_save(flags);
- 	locked = graph_lock();
-@@ -6400,11 +6410,13 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
- 
- 	pf = get_pending_free();
- 	__lockdep_reset_lock(pf, lock);
--	call_rcu_zapped(pf);
-+	need_callback = prepare_call_rcu_zapped(pf);
- 
- 	graph_unlock();
- out_irq:
- 	raw_local_irq_restore(flags);
-+	if (need_callback)
-+		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
- }
- 
- /*
-@@ -6448,6 +6460,7 @@ void lockdep_unregister_key(struct lock_class_key *key)
- 	struct pending_free *pf;
- 	unsigned long flags;
- 	bool found = false;
-+	bool need_callback = false;
- 
- 	might_sleep();
- 
-@@ -6468,11 +6481,14 @@ void lockdep_unregister_key(struct lock_class_key *key)
- 	if (found) {
- 		pf = get_pending_free();
- 		__lockdep_free_key_range(pf, key, 1);
--		call_rcu_zapped(pf);
-+		need_callback = prepare_call_rcu_zapped(pf);
++		/* remap success and return ptr2 */
++		FAIL_TEST_IF_FALSE(ret2 ==  ptr2);
  	}
- 	lockdep_unlock();
- 	raw_local_irq_restore(flags);
  
-+	if (need_callback)
-+		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
-+
- 	/* Wait until is_dynamic_key() has finished accessing k->hash_entry. */
- 	synchronize_rcu();
+ 	REPORT_TEST_PASS();
  }
+ 
+-
+ static void test_seal_merge_and_split(void)
+ {
+ 	void *ptr;
 
 
