@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-79986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880C998DB39
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A9C98DDA1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03BEEB25141
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299571C22A5E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9751D14FD;
-	Wed,  2 Oct 2024 14:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FF78F5E;
+	Wed,  2 Oct 2024 14:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvFuhMNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlO2V4Ps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C7F1D0940;
-	Wed,  2 Oct 2024 14:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC098BEA;
+	Wed,  2 Oct 2024 14:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879051; cv=none; b=McgGdYt2Ueq8qvjgUsJuJgi/UPh3av2lmSPb2buo5IlUB8eR9QGH5tySM+WLr2CjE1c0HIdJ4wOWuJgqVRpMMuViM+eDfqR6ewgQ1f9MRBC/gwkTseLdZwni8uAe6SvwXgpf21/9ivH41bA5iGxAu5JrFaZ2cjyk7HZEzJSb5cg=
+	t=1727880507; cv=none; b=g7eDLgGXWiii55Xu/jtwFRa5brDXAXOWctJMyDI4STjuKqOIkKmqJpRxmAp6hsRCP5wceopjimhvAkMBTlzs37NTHMoWNLJOY/dmIsTSryZuORIShx9AkxrNGmSVD8a6+uV8Tq1EkSH9CCtX0WzpbhzfCuh2G/SjmuBqU+2qRpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879051; c=relaxed/simple;
-	bh=kFdx23UqjXX7J247ZNE4gZGMiLbTA3CDX06aO2UvOUY=;
+	s=arc-20240116; t=1727880507; c=relaxed/simple;
+	bh=4iQ0lIMISSWWmFq0bZg0T40BPfqyr3RaSDJ83M0qaaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ih1RQkd6Y7YOvKVc9lfdtwtyKmW7HZrje3bcMupXbC2EWr8HsxVUkXRivqiEnlhn82yV7YqwlJXUOZ/rinWS7jSd3dWwzKcTRxFo/5C4U6njMqyiuopByLMBar75xB4UD9Vp1xXiyfqdBgVdPWls22n9OtNAhqMjrc32cWODAu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvFuhMNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2B2C4CEC2;
-	Wed,  2 Oct 2024 14:24:10 +0000 (UTC)
+	 MIME-Version; b=Lx4BFQBqKM5GKvY+x8pK65+CCang3FdgCnu9HyLhwMicolSp1iXOUscSPv/1WtxoSRH4HDYIcNwhZXwVeO13tUq18BywaTO//gNNuKd4hiSahuOmMeMe1q8MATHG3wK4fqePUwAWAZNMw9TKlKNRUCVaqKEKzfglYlZaxGN43YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlO2V4Ps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E746C4CEC2;
+	Wed,  2 Oct 2024 14:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879051;
-	bh=kFdx23UqjXX7J247ZNE4gZGMiLbTA3CDX06aO2UvOUY=;
+	s=korg; t=1727880506;
+	bh=4iQ0lIMISSWWmFq0bZg0T40BPfqyr3RaSDJ83M0qaaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvFuhMNAhM4jr0bvYw2eyRgSAXHxKQHqCN/A/ij1o2G84Vdgw85iwKqTh/6H4ZZwy
-	 7o+m6dgiCdjGFHHpPR73r8g0Eo3+PDbp9f9sGB+W2qBkf16/EqTkRg4V9PbNUZUkQJ
-	 m3Hc9eE2bGKbJwi8vDof0raq8nfgBgQ8yAoKtb4o=
+	b=YlO2V4PsIDcujr3UaK3uLHtGNLUStdiyejP/k6F8wg5Xr6fb/5JCersIJz8V2K6ey
+	 bTsaHvvvgSiRlnASKUEuMFuqcmmMTFUrPIq8CXUvuqydpFP9OJNs8xjF+3wYKLGVqJ
+	 GyMmM4R5Lb7VcwJ83OyjO91886MDH7Tkrh6zHltI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Alexandre Ghiti <alex@ghiti.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 622/634] mm: only enforce minimum stack gap size if its sensible
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 483/538] soc: versatile: realview: fix memory leak during device remove
 Date: Wed,  2 Oct 2024 15:02:02 +0200
-Message-ID: <20241002125835.678363443@linuxfoundation.org>
+Message-ID: <20241002125811.508179789@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,56 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 69b50d4351ed924f29e3d46b159e28f70dfc707f upstream.
+[ Upstream commit 1c4f26a41f9d052f334f6ae629e01f598ed93508 ]
 
-The generic mmap_base code tries to leave a gap between the top of the
-stack and the mmap base address, but enforces a minimum gap size (MIN_GAP)
-of 128MB, which is too large on some setups.  In particular, on arm tasks
-without ADDR_LIMIT_32BIT, the STACK_TOP value is less than 128MB, so it's
-impossible to fit such a gap in.
+If device is unbound, the memory allocated for soc_dev_attr should be
+freed to prevent leaks.
 
-Only enforce this minimum if MIN_GAP < MAX_GAP, as we'd prefer to honour
-MAX_GAP, which is defined proportionally, so scales better and always
-leaves us with both _some_ stack space and some room for mmap.
-
-This fixes the usercopy KUnit test suite on 32-bit arm, as it doesn't set
-any personality flags so gets the default (in this case 26-bit) task size.
-This test can be run with: ./tools/testing/kunit/kunit.py run --arch arm
-usercopy --make_options LLVM=1
-
-Link: https://lkml.kernel.org/r/20240803074642.1849623-2-davidgow@google.com
-Fixes: dba79c3df4a2 ("arm: use generic mmap top-down layout and brk randomization")
-Signed-off-by: David Gow <davidgow@google.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-2-ff4b35abed83@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: c774f2564c00 ("soc: versatile: realview: fix soc_dev leak during device remove")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/util.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/versatile/soc-realview.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -451,7 +451,7 @@ static unsigned long mmap_base(unsigned
- 	if (gap + pad > gap)
- 		gap += pad;
+diff --git a/drivers/soc/versatile/soc-realview.c b/drivers/soc/versatile/soc-realview.c
+index c6876d232d8fd..d304ee69287af 100644
+--- a/drivers/soc/versatile/soc-realview.c
++++ b/drivers/soc/versatile/soc-realview.c
+@@ -93,7 +93,7 @@ static int realview_soc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(syscon_regmap))
+ 		return PTR_ERR(syscon_regmap);
  
--	if (gap < MIN_GAP)
-+	if (gap < MIN_GAP && MIN_GAP < MAX_GAP)
- 		gap = MIN_GAP;
- 	else if (gap > MAX_GAP)
- 		gap = MAX_GAP;
+-	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
++	soc_dev_attr = devm_kzalloc(&pdev->dev, sizeof(*soc_dev_attr), GFP_KERNEL);
+ 	if (!soc_dev_attr)
+ 		return -ENOMEM;
+ 
+@@ -106,10 +106,9 @@ static int realview_soc_probe(struct platform_device *pdev)
+ 	soc_dev_attr->family = "Versatile";
+ 	soc_dev_attr->custom_attr_group = realview_groups[0];
+ 	soc_dev = soc_device_register(soc_dev_attr);
+-	if (IS_ERR(soc_dev)) {
+-		kfree(soc_dev_attr);
++	if (IS_ERR(soc_dev))
+ 		return -ENODEV;
+-	}
++
+ 	ret = regmap_read(syscon_regmap, REALVIEW_SYS_ID_OFFSET,
+ 			  &realview_coreid);
+ 	if (ret)
+-- 
+2.43.0
+
 
 
 
