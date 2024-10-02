@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DF798DCAD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F54398DA14
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 999BF1C209BB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 059AB1F27A72
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42CA1D26E3;
-	Wed,  2 Oct 2024 14:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788C91D0DEF;
+	Wed,  2 Oct 2024 14:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfPsldkx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/8jJqFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8072A1D27BD;
-	Wed,  2 Oct 2024 14:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354341D0956;
+	Wed,  2 Oct 2024 14:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879849; cv=none; b=XSmOHqO9OHT01o/Ic63q1vOpkwGuVzdFZuzueJMKRKhnCBOzUY7nuVZhAFlLnQl0YDkO9o7EtCYQ08ktPOWwyOXG3uRs3hbF3MXO0CVd0UqTOp/WJ8bSyPK6i5pHp2zEtkEWk8gID7ua8ey2IoUloU5AvxdFKumfgEziASZZWIg=
+	t=1727878397; cv=none; b=OXfcNNg+2x/19c3boiAt0/HkgwWXsBWD6UlKC2Dq7QC2ols3w3BeJzNM2UoyvSYMx7EiYAPcSCTY7JPNFZyG95uu9AJ0tUGoMbG695/2yYSAgp8Yx6w9OI+2Mcxkdv6uguvAXtpc9VsxJ1GhmDGV3Ye8SqyP41scssjV2w11rTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879849; c=relaxed/simple;
-	bh=FyzSik51FE1MxkqFc/tVLykKIdvoY08INVWuC2GzOv4=;
+	s=arc-20240116; t=1727878397; c=relaxed/simple;
+	bh=kyfqQXbam9dZT4/sFEi+T6AW6veyJZsaZ4CV9cQ311o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJYbzefIw97AJTpG1Q/8X0dV8XUM0tzLoc3rvZlc2RVSEh0KxzxS7PooVHnofoxBMJgnKHo3ymiKwtHNfcsuhl9udR7OpBw38syOSP8dUQ68D6Z40CkeMFgIoSfZQBGt4/wlLZipnZHhPpz1bcd+h3O6mmKouWX+eqpdfIwDMAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfPsldkx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D98C4CEC2;
-	Wed,  2 Oct 2024 14:37:28 +0000 (UTC)
+	 MIME-Version; b=B/fH7sqTIcBeGBKH5fbqEWj5uUhYq/VSxwmdmz4kCmI0fe5vC9ap2rse480q4qieeINkyE8ZJVODBkr/YvA3ilNsIK/VE485fjn8E+8bYYQIOdt6jy5U4JB+ffAqLjj42OxbStAhDdxELNPOMaLCmr8Lxi1Au37YGuT7zWVKdFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/8jJqFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7646FC4CEC2;
+	Wed,  2 Oct 2024 14:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879849;
-	bh=FyzSik51FE1MxkqFc/tVLykKIdvoY08INVWuC2GzOv4=;
+	s=korg; t=1727878396;
+	bh=kyfqQXbam9dZT4/sFEi+T6AW6veyJZsaZ4CV9cQ311o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfPsldkxLalAaUoJSAwf2HTwh6mlG//sb4RoPf9V8aTd0JYLnQEkg1E771bXAWws9
-	 qJuvUoS61PcnV4QQbPROflnX5+mr9vU30Pud2Mbtpz/YUH3hdmM3FRhvgH9cahQpJ1
-	 WtXVAm0aq+3/SlBZoXDPDL4ullGRUO1tbrPipq+Q=
+	b=P/8jJqFeOLNLgh4R8GyG7YExci0qUqhXG6J+DY7HCaWSmQFDDfOYnF+/4O0pW+rjr
+	 J//Alr09aNMymZef2O7j0H5xhn7En22SZJ/aIkKZck9oVjrIR34M8jclwQptXojxo6
+	 LyKtScO+3JFST3SXVvIqiwWnqeddrfCudqXxFJEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastien Laveze <slaveze@smartandconnective.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/538] clk: imx: imx6ul: fix default parent for enet*_ref_sel
-Date: Wed,  2 Oct 2024 14:58:17 +0200
-Message-ID: <20241002125802.441338443@linuxfoundation.org>
+Subject: [PATCH 6.10 398/634] f2fs: fix to avoid racing in between read and OPU dio write
+Date: Wed,  2 Oct 2024 14:58:18 +0200
+Message-ID: <20241002125826.814957574@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastien Laveze <slaveze@smartandconnective.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit e52fd71333b4ed78fd5bb43094bdc46476614d25 ]
+[ Upstream commit 0cac51185e65dc2a20686184e02f3cafc99eb202 ]
 
-The clk_set_parent for "enet1_ref_sel" and  "enet2_ref_sel" are
-incorrect, therefore the original requirements to have "enet_clk_ref" as
-output sourced by iMX ENET PLL as a default config is not met.
+If lfs mode is on, buffered read may race w/ OPU dio write as below,
+it may cause buffered read hits unwritten data unexpectly, and for
+dio read, the race condition exists as well.
 
-Only "enet[1,2]_ref_125m" "enet[1,2]_ref_pad" are possible parents for
-"enet1_ref_sel" and "enet2_ref_sel".
+Thread A			Thread B
+- f2fs_file_write_iter
+ - f2fs_dio_write_iter
+  - __iomap_dio_rw
+   - f2fs_iomap_begin
+    - f2fs_map_blocks
+     - __allocate_data_block
+      - allocated blkaddr #x
+       - iomap_dio_submit_bio
+				- f2fs_file_read_iter
+				 - filemap_read
+				  - f2fs_read_data_folio
+				   - f2fs_mpage_readpages
+				    - f2fs_map_blocks
+				     : get blkaddr #x
+				    - f2fs_submit_read_bio
+				IRQ
+				- f2fs_read_end_io
+				 : read IO on blkaddr #x complete
+IRQ
+- iomap_dio_bio_end_io
+ : direct write IO on blkaddr #x complete
 
-This was observed as a regression using a custom device tree which was
-expecting this default config.
+In LFS mode, if there is inflight dio, let's wait for its completion,
+this policy won't cover all race cases, however it is a tradeoff which
+avoids abusing lock around IO paths.
 
-This can be fixed at the device tree level but having a default config
-matching the original behavior (before refclock mux) will avoid breaking
-existing configs.
-
-Fixes: 4e197ee880c2 ("clk: imx6ul: add ethernet refclock mux support")
-Link: https://lore.kernel.org/lkml/20230306020226.GC143566@dragon/T/
-Signed-off-by: Sebastien Laveze <slaveze@smartandconnective.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20240528151434.227602-1-slaveze@smartandconnective.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: f847c699cff3 ("f2fs: allow out-place-update for direct IO in LFS mode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6ul.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
-index f9394e94f69d7..05c7a82b751f3 100644
---- a/drivers/clk/imx/clk-imx6ul.c
-+++ b/drivers/clk/imx/clk-imx6ul.c
-@@ -542,8 +542,8 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index fa6299a88492f..ad326c0ab5bd7 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4590,6 +4590,10 @@ static ssize_t f2fs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 		f2fs_trace_rw_file_path(iocb->ki_filp, iocb->ki_pos,
+ 					iov_iter_count(to), READ);
  
- 	clk_set_parent(hws[IMX6UL_CLK_ENFC_SEL]->clk, hws[IMX6UL_CLK_PLL2_PFD2]->clk);
- 
--	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET_REF]->clk);
--	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF]->clk);
-+	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET1_REF_125M]->clk);
-+	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF_125M]->clk);
- 
- 	imx_register_uart_clocks();
- }
++	/* In LFS mode, if there is inflight dio, wait for its completion */
++	if (f2fs_lfs_mode(F2FS_I_SB(inode)))
++		inode_dio_wait(inode);
++
+ 	if (f2fs_should_use_dio(inode, iocb, to)) {
+ 		ret = f2fs_dio_read_iter(iocb, to);
+ 	} else {
 -- 
 2.43.0
 
