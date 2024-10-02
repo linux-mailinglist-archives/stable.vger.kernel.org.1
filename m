@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-79988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020E998DB3A
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDFD98DB3B
 	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E163B25139
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 718DE1C236EB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E51D1D14E5;
-	Wed,  2 Oct 2024 14:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688AC1D1504;
+	Wed,  2 Oct 2024 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHIDjH3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8/Gv7Jn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09981D0940;
-	Wed,  2 Oct 2024 14:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257B41D0949;
+	Wed,  2 Oct 2024 14:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879057; cv=none; b=dKNqr57C56J2TVeEQ0IvNgvtZ+3creYfftHOzHWG/Vi2izegSuik6aacCnYSU5IcN4Sc3Y/MaICSDAS7UkO9SFSE0o6NZBtpbGh1C3tiUcdFbAS8UxWMFyDzIO1BPiGyUbGPSQKenE6srJMExTEOI5Sl93U5oCgROKlCHbMFeCg=
+	t=1727879063; cv=none; b=rRJNNFpPHkpkEiZAbR9Clm5f9uH1+YB2XtYJKfYMHDaQCjVv3UC6Ul6TuaDOSSPrZrz2kk3F/8alcZuk5r2MJx0WN9rPq0GduleMkBjLHn7O5E7m2K4eB6hRqkNESpRAawdnimGzYOHQJ6BecM39v/D4/vaYHn/pA0Ein2KasnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879057; c=relaxed/simple;
-	bh=ljzZsiq/XTvVuvAl7gzGkr6cS1S/zuvFUH6mnWX/Huw=;
+	s=arc-20240116; t=1727879063; c=relaxed/simple;
+	bh=NaGPaQnC3AgrPjPpnS0XRac76bHNxWgzWf/UxuUKnQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBpUxdmEv8pszYf3Grb1jjEc3Rqhcvut1f7CqGnQLRr5TeyAgJ2WwwWV1vicq9+RTurYOGiYFhkm2ESD/jtPNN7wRyBSGcYf37NchIP/I3kRiHZJscMMaa45Bq4khMe4kAJGzVTQ28B26wFJ/HBxFRDDfHzDdKhN5c98IWLo8GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHIDjH3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F89C4CEC2;
-	Wed,  2 Oct 2024 14:24:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dQGwGKOlHrx9XE9N0T08HR5HfFxSzJC5Nh8pIaOKilcINo8IjR0OcY1SicOI1amVPbGhQKDUQzK+yoS+5baWH0kk7paxyfxB3s/ojpTA7YKwexRbtVOJeUS70CrNy3epVo1z1sKx1qte4Rzyo5EV03oC9LPwC75z7S2GZ74zehc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8/Gv7Jn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A04C4CECD;
+	Wed,  2 Oct 2024 14:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879056;
-	bh=ljzZsiq/XTvVuvAl7gzGkr6cS1S/zuvFUH6mnWX/Huw=;
+	s=korg; t=1727879062;
+	bh=NaGPaQnC3AgrPjPpnS0XRac76bHNxWgzWf/UxuUKnQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHIDjH3lUTU1QXnN6eTdqH+w4uAvm+cZOZZ6ublwAmcKVAdcukmyAzFAEPjGOlL38
-	 cghlxS/UFy5Fb2YbINk7bFFolnhfz8zWplNmm7pknc0qiaRq7fRtDNE86DAiIUt6kW
-	 IQGQ2T+diyA567gGPg5oXgoSCg0UI+zI4UMSafF0=
+	b=O8/Gv7Jn6HBwY6aDOyzVIEMogwdxQOAqmkQtBvYV6FH3KqhmEjN8a+JqKWZxb+gtb
+	 3vpi/dRxV481LIwrAVECHWUdJmBUBq2+pojSZDA7lBaqzPT0M32kz7irYtVKYxbCvC
+	 Jj/F1GnrwJdN+yvVCesvVhQqlGW2wAPnjqbhleRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>
-Subject: [PATCH 6.10 624/634] module: Fix KCOV-ignored file name
-Date: Wed,  2 Oct 2024 15:02:04 +0200
-Message-ID: <20241002125835.756253255@linuxfoundation.org>
+	Arthur Borsboom <arthurborsboom@gmail.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.10 625/634] fbdev: xen-fbfront: Assign fb_info->device
+Date: Wed,  2 Oct 2024 15:02:05 +0200
+Message-ID: <20241002125835.795329165@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -62,43 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Vyukov <dvyukov@google.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-commit f34d086fb7102fec895fd58b9e816b981b284c17 upstream.
+commit c2af2a45560bd4046c2e109152acde029ed0acc2 upstream.
 
-module.c was renamed to main.c, but the Makefile directive was copy-pasted
-verbatim with the old file name.  Fix up the file name.
+Probing xen-fbfront faults in video_is_primary_device().  The passed-in
+struct device is NULL since xen-fbfront doesn't assign it and the
+memory is kzalloc()-ed.  Assign fb_info->device to avoid this.
 
-Fixes: cfc1d277891e ("module: Move all into module/")
-Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/bc0cf790b4839c5e38e2fafc64271f620568a39e.1718092070.git.dvyukov@google.com
+This was exposed by the conversion of fb_is_primary_device() to
+video_is_primary_device() which dropped a NULL check for struct device.
+
+Fixes: f178e96de7f0 ("arch: Remove struct fb_info from video helpers")
+Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
+Closes: https://lore.kernel.org/xen-devel/CALUcmUncX=LkXWeiSiTKsDY-cOe8QksWhFvcCneOKfrKd0ZajA@mail.gmail.com/
+Tested-by: Arthur Borsboom <arthurborsboom@gmail.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/xen-fbfront.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/module/Makefile
-+++ b/kernel/module/Makefile
-@@ -5,7 +5,7 @@
+diff --git a/drivers/video/fbdev/xen-fbfront.c b/drivers/video/fbdev/xen-fbfront.c
+index 66d4628a96ae..c90f48ebb15e 100644
+--- a/drivers/video/fbdev/xen-fbfront.c
++++ b/drivers/video/fbdev/xen-fbfront.c
+@@ -407,6 +407,7 @@ static int xenfb_probe(struct xenbus_device *dev,
+ 	/* complete the abuse: */
+ 	fb_info->pseudo_palette = fb_info->par;
+ 	fb_info->par = info;
++	fb_info->device = &dev->dev;
  
- # These are called from save_stack_trace() on slub debug path,
- # and produce insane amounts of uninteresting coverage.
--KCOV_INSTRUMENT_module.o := n
-+KCOV_INSTRUMENT_main.o := n
+ 	fb_info->screen_buffer = info->fb;
  
- obj-y += main.o
- obj-y += strict_rwx.o
+-- 
+2.46.2
+
 
 
 
