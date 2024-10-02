@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7167798D9D7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5DE98DC74
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A0D11F26860
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8167B269EA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DA21D1F5D;
-	Wed,  2 Oct 2024 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9D01D150A;
+	Wed,  2 Oct 2024 14:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKoXaDGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k++ohhYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB2D1D1F4E;
-	Wed,  2 Oct 2024 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF591D0DF7;
+	Wed,  2 Oct 2024 14:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878256; cv=none; b=oHptHe+NBfXt2maNctFAi1CtpKQp139qAk0fmko0VUBFhjiNg8iFyuk0VyOq2GBbSa35tOKQ7HIxSMdJVSjzWiXPmQJqiizvLp0LVSmGgkBkFD0/cuMEia3rSMHfQzc5EuJtVJTTrLr6jkHxpbhBJaDk/TshnU+HIi6yGn7QeXg=
+	t=1727879711; cv=none; b=FS6yg274nimt2lTf2eknohAavIvpfI/6Ny9JsVpQKTEBd9N7wJCVOtfioxGFnnRvfKXVOQAGA/R3ZX5/++R37ayVN7P63efJ50ocxDpM0v4uBJFjdgVJMaVF2hnUy/uEUpEHhWdf0dyxqeIcxsQC4mw03nxz8uFZcz0fIkCjsqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878256; c=relaxed/simple;
-	bh=2//gNeVVE4yE7zUgTqNt90ny2NcPiuoOZtSGugwGUNU=;
+	s=arc-20240116; t=1727879711; c=relaxed/simple;
+	bh=iNc0j/d0Vf5a19I5iLT0qSRhDpLhnXLs0mZD/2bMzW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8AWOELbjSr+eXeOTNBaCpzvLqYMVsI9mAiwWaiUTBGlEvHXdzhVtfxI3/lcr5e4JR6OWHaWKALex5e4VfpphZsjlEPaQcn30bziBQhz6GTuODnfrTPbD/lzdNOSV9xiXYqB+/j72OossKthjAChs7rw6U8AEN6LIj98uEUW2WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKoXaDGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C84C4CEC2;
-	Wed,  2 Oct 2024 14:10:55 +0000 (UTC)
+	 MIME-Version; b=RzLRBBaAx+p04/1YTyVR1OXtoQc743VthG8JtJ7CPnkErKrg0o5rFQW7ltmKJbl8mPhynsZupN8ALXmkencei9wfTzIq6hdX3NhJwEQLFrpZw2nlSA3BNuHmMC7gUg7YkiMqvRtNHtB38IXOaDcOdGnK9Sz8v4a+R2zkj65gE2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k++ohhYn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0620DC4CEC5;
+	Wed,  2 Oct 2024 14:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878256;
-	bh=2//gNeVVE4yE7zUgTqNt90ny2NcPiuoOZtSGugwGUNU=;
+	s=korg; t=1727879711;
+	bh=iNc0j/d0Vf5a19I5iLT0qSRhDpLhnXLs0mZD/2bMzW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKoXaDGAk18G4uvwXwxNdUcyVAx1ZQbb5KeiZ9GFn0GxjEi3ubZCzA45bFV16Bm8R
-	 1Ji11hPAkp+iqARPmeazncb7t38li5tZ26yvSGpotkT65Dr7ucnfNDaAOgNKqx3hGl
-	 isXFdJUClDhKYTdReFHAl9X2ebvVDWYeQaxg1JnI=
+	b=k++ohhYnIpEMimyXo3FelZuW3DFo1+1NMvh/1X0GnuvpyluQqFzACO/a2uSpvW/Lh
+	 7RFFlCBhhiatA2PaFsiHyNAvp/k1umi49CbflUw00RUWK49pwAv5Ht8SyZA0bU7tUY
+	 +EifmDQ7fVNFZvtEwN2nuKDQKjQqZOIJ/9mnAYiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 352/634] media: mediatek: vcodec: Fix H264 multi stateless decoder smatch warning
+Subject: [PATCH 6.6 213/538] selftests/bpf: Fix arg parsing in veristat, test_progs
 Date: Wed,  2 Oct 2024 14:57:32 +0200
-Message-ID: <20241002125824.992062847@linuxfoundation.org>
+Message-ID: <20241002125800.665362856@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 9be85491619f1953b8a29590ca630be571941ffa ]
+[ Upstream commit 03bfcda1fbc37ef34aa21d2b9e09138335afc6ee ]
 
-Fix a smatch static checker warning on vdec_h264_req_multi_if.c.
-Which leads to a kernel crash when fb is NULL.
+Current code parses arguments with strtok_r() using a construct like
 
-Fixes: 397edc703a10 ("media: mediatek: vcodec: add h264 decoder driver for mt8186")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+    char *state = NULL;
+    while ((next = strtok_r(state ? NULL : input, ",", &state))) {
+        ...
+    }
+
+where logic assumes the 'state' var can distinguish between first and
+subsequent strtok_r() calls, and adjusts parameters accordingly. However,
+'state' is strictly internal context for strtok_r() and no such assumptions
+are supported in the man page. Moreover, the exact behaviour of 'state'
+depends on the libc implementation, making the above code fragile.
+
+Indeed, invoking "./test_progs -t <test_name>" on mips64el/musl will hang,
+with the above code in an infinite loop.
+
+Similarly, we see strange behaviour running 'veristat' on mips64el/musl:
+
+    $ ./veristat -e file,prog,verdict,insns -C two-ok add-failure
+    Can't specify more than 9 stats
+
+Rewrite code using a counter to distinguish between strtok_r() calls.
+
+Fixes: 61ddff373ffa ("selftests/bpf: Improve by-name subtest selection logic in prog_tests")
+Fixes: 394169b079b5 ("selftests/bpf: add comparison mode to veristat")
+Fixes: c8bc5e050976 ("selftests/bpf: Add veristat tool for mass-verifying BPF object files")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/392d8bf5559f85fa37926c1494e62312ef252c3d.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vcodec/decoder/vdec/vdec_h264_req_multi_if.c         | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/testing_helpers.c | 4 ++--
+ tools/testing/selftests/bpf/veristat.c        | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
-index 2d4611e7fa0b2..1ed0ccec56655 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_multi_if.c
-@@ -724,11 +724,16 @@ static int vdec_h264_slice_single_decode(void *h_vdec, struct mtk_vcodec_mem *bs
- 		return vpu_dec_reset(vpu);
+diff --git a/tools/testing/selftests/bpf/testing_helpers.c b/tools/testing/selftests/bpf/testing_helpers.c
+index 8d994884c7b44..6acffe0426f01 100644
+--- a/tools/testing/selftests/bpf/testing_helpers.c
++++ b/tools/testing/selftests/bpf/testing_helpers.c
+@@ -220,13 +220,13 @@ int parse_test_list(const char *s,
+ 		    bool is_glob_pattern)
+ {
+ 	char *input, *state = NULL, *test_spec;
+-	int err = 0;
++	int err = 0, cnt = 0;
  
- 	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
-+	if (!fb) {
-+		mtk_vdec_err(inst->ctx, "fb buffer is NULL");
-+		return -ENOMEM;
-+	}
-+
- 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
- 	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
+ 	input = strdup(s);
+ 	if (!input)
+ 		return -ENOMEM;
  
--	y_fb_dma = fb ? (u64)fb->base_y.dma_addr : 0;
--	c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
-+	y_fb_dma = fb->base_y.dma_addr;
-+	c_fb_dma = fb->base_c.dma_addr;
- 	mtk_vdec_debug(inst->ctx, "[h264-dec] [%d] y_dma=%llx c_dma=%llx",
- 		       inst->ctx->decoded_frame_cnt, y_fb_dma, c_fb_dma);
+-	while ((test_spec = strtok_r(state ? NULL : input, ",", &state))) {
++	while ((test_spec = strtok_r(cnt++ ? NULL : input, ",", &state))) {
+ 		err = insert_test(set, test_spec, is_glob_pattern);
+ 		if (err)
+ 			break;
+diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
+index 0ad98b6a8e6ef..611b5a0a6f7e3 100644
+--- a/tools/testing/selftests/bpf/veristat.c
++++ b/tools/testing/selftests/bpf/veristat.c
+@@ -753,13 +753,13 @@ static int parse_stat(const char *stat_name, struct stat_specs *specs)
+ static int parse_stats(const char *stats_str, struct stat_specs *specs)
+ {
+ 	char *input, *state = NULL, *next;
+-	int err;
++	int err, cnt = 0;
  
+ 	input = strdup(stats_str);
+ 	if (!input)
+ 		return -ENOMEM;
+ 
+-	while ((next = strtok_r(state ? NULL : input, ",", &state))) {
++	while ((next = strtok_r(cnt++ ? NULL : input, ",", &state))) {
+ 		err = parse_stat(next, specs);
+ 		if (err)
+ 			return err;
+@@ -1444,7 +1444,7 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
+ 	while (fgets(line, sizeof(line), f)) {
+ 		char *input = line, *state = NULL, *next;
+ 		struct verif_stats *st = NULL;
+-		int col = 0;
++		int col = 0, cnt = 0;
+ 
+ 		if (!header) {
+ 			void *tmp;
+@@ -1462,7 +1462,7 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
+ 			*stat_cntp += 1;
+ 		}
+ 
+-		while ((next = strtok_r(state ? NULL : input, ",\n", &state))) {
++		while ((next = strtok_r(cnt++ ? NULL : input, ",\n", &state))) {
+ 			if (header) {
+ 				/* for the first line, set up spec stats */
+ 				err = parse_stat(next, specs);
 -- 
 2.43.0
 
