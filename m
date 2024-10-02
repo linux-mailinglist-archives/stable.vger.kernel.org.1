@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-79062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C912798D663
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:40:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD8098D671
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41694B2207A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCAB01C21F3D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494BC1D079C;
-	Wed,  2 Oct 2024 13:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9CA1D0B98;
+	Wed,  2 Oct 2024 13:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfHOxhmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FeoresIQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087911D0164;
-	Wed,  2 Oct 2024 13:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE0A1D0173;
+	Wed,  2 Oct 2024 13:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876328; cv=none; b=bWQWJwDN3bMOuNUjFuMRyUA5+E5FY0IIMOdEtcsmmC5EKyJ8slnvHYIVIZ2+N/fqm4u+LO2JBFFrucqiK+lx4T2bZjveMhvnV5ggHUQ9B3KZgKVeEmwJ473YFwfsLMJqvvbz/nBFa+jUe8CBNk62cIPtGuIWSqbpjAtj9BnWeiQ=
+	t=1727876360; cv=none; b=Bh/g3noTUvTMVUAZpcLIi3/muyJt4brza36/IuYyWCsozWugfMoHAPModVprCowyibEw3306g4OfXgx/1HmgJtqIfPP5bXgfHz27MMT4T0ZnhSSxCSOUDm+tXVob7uO98lcP7z5XxBuHii1RfEUeGNhsI/2IuPnyo3X2CoLBIgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876328; c=relaxed/simple;
-	bh=Fh9RsQerJk2U5kOOHe1ecxsVkkGz1o1M048vKfwTiDY=;
+	s=arc-20240116; t=1727876360; c=relaxed/simple;
+	bh=SZ+OA+YqL3UcSNS0Q5mYT4RMkT03vqCqxRINPOXW0yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJMP1qqk9tUvJDJDTznDM1IZg5T9q46+grB5Tv35QJqKcxLEEd3lsQdV2hkPsGX91FW+D74pYEsdhXX/7EZvoaIGC5seyvMGbXhHRkOjt4dx51cQELWyyO1TqrkmIPe5gTPPqXHkZsEuWhAfp072Pmp6e9fh2Aei4OGJiO6kbi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfHOxhmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E47C4CEC5;
-	Wed,  2 Oct 2024 13:38:47 +0000 (UTC)
+	 MIME-Version; b=AKDubJeqd47BvMaEzsQL0/ZauVaj7+p9dvjjuy2oaNi4YbGHV3QmNDOp0GD2TPr1N4Nr+mCLMKN6B1uMXg9VScxqAcjUvLFEvHM/A+X/KRDXmwz9nVCGOk9RYzJ0a2B8ZcZ+WJ3eptKGrtO+Ewu8pGmSiuuX8u9XlKd4rJ6K5uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FeoresIQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F638C4CEC5;
+	Wed,  2 Oct 2024 13:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876327;
-	bh=Fh9RsQerJk2U5kOOHe1ecxsVkkGz1o1M048vKfwTiDY=;
+	s=korg; t=1727876360;
+	bh=SZ+OA+YqL3UcSNS0Q5mYT4RMkT03vqCqxRINPOXW0yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfHOxhmzD7AKIxhSzWBwjLHuS6rQVOxPAIJUkFxHWsuwU9yHXxQt7SqqBjDhntd0Q
-	 baA0831qxw1JQgroPYmVa8USIJV4boTFbVmB3Vp1OByjTtxV7aEIFopnu646MRWYQu
-	 DlihHYpB69wdvFBwR4HruifxKhRn6oaZoduQjEVw=
+	b=FeoresIQNm7LXfV0WCyYCISLKk2BWayttszpwZH3PvTHHTyOP1GDW3n/waqMWO+xw
+	 SFmWyTnXDhXaLrKbHYhCHS435k7GidlLoLNIpWoWXaqmHX2rrI8qo3G+GVipWS612g
+	 G6TBUBpfb4CtviRORJpJLDWk/xpuWvpzDj6LY9pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sebastian Fricke <sebastian.fricke@collabora.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 389/695] media: mediatek: vcodec: Fix H264 stateless decoder smatch warning
-Date: Wed,  2 Oct 2024 14:56:27 +0200
-Message-ID: <20241002125837.982551376@linuxfoundation.org>
+Subject: [PATCH 6.11 390/695] media: imagination: VIDEO_E5010_JPEG_ENC should depend on ARCH_K3
+Date: Wed,  2 Oct 2024 14:56:28 +0200
+Message-ID: <20241002125838.022471321@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -68,46 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 7878d3a385efab560dce793b595447867fb163f2 ]
+[ Upstream commit afe6ec667e8846c8470d32789cebbc435588972d ]
 
-Fix a smatch static checker warning on vdec_h264_req_if.c.
-Which leads to a kernel crash when fb is NULL.
+Currently, the Imagination E5010 JPEG Encoder is only present on Texas
+Instruments K3 SoCs.  Hence add a dependency on ARCH_K3, to prevent
+asking the user about this driver when configuring a kernel without TI
+K3 SoC support.  The dependency can be relaxed if/when the encoder
+appears on other SoC families.
 
-Fixes: 06fa5f757dc5 ("media: mtk-vcodec: vdec: support stateless H.264 decoding")
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: a1e294045885 ("media: imagination: Add E5010 JPEG Encoder driver")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mediatek/vcodec/decoder/vdec/vdec_h264_req_if.c      | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/platform/imagination/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_if.c
-index 73d5cef33b2ab..1e1b32faac77b 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_h264_req_if.c
-@@ -347,11 +347,16 @@ static int vdec_h264_slice_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
- 		return vpu_dec_reset(vpu);
- 
- 	fb = inst->ctx->dev->vdec_pdata->get_cap_buffer(inst->ctx);
-+	if (!fb) {
-+		mtk_vdec_err(inst->ctx, "fb buffer is NULL");
-+		return -ENOMEM;
-+	}
-+
- 	src_buf_info = container_of(bs, struct mtk_video_dec_buf, bs_buffer);
- 	dst_buf_info = container_of(fb, struct mtk_video_dec_buf, frame_buffer);
- 
--	y_fb_dma = fb ? (u64)fb->base_y.dma_addr : 0;
--	c_fb_dma = fb ? (u64)fb->base_c.dma_addr : 0;
-+	y_fb_dma = fb->base_y.dma_addr;
-+	c_fb_dma = fb->base_c.dma_addr;
- 
- 	mtk_vdec_debug(inst->ctx, "+ [%d] FB y_dma=%llx c_dma=%llx va=%p",
- 		       inst->num_nalu, y_fb_dma, c_fb_dma, fb);
+diff --git a/drivers/media/platform/imagination/Kconfig b/drivers/media/platform/imagination/Kconfig
+index 7139ae22219b4..a302c955483dc 100644
+--- a/drivers/media/platform/imagination/Kconfig
++++ b/drivers/media/platform/imagination/Kconfig
+@@ -2,6 +2,7 @@
+ config VIDEO_E5010_JPEG_ENC
+ 	tristate "Imagination E5010 JPEG Encoder Driver"
+ 	depends on VIDEO_DEV
++	depends on ARCH_K3 || COMPILE_TEST
+ 	select VIDEOBUF2_DMA_CONTIG
+ 	select VIDEOBUF2_VMALLOC
+ 	select V4L2_MEM2MEM_DEV
 -- 
 2.43.0
 
