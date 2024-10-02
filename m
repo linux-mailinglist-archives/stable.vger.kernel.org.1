@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-79360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F073C98D7D6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:53:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B97E98D7D3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:53:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A89DF1F210B5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:53:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F38CA28341A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3091CFECF;
-	Wed,  2 Oct 2024 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54721D0786;
+	Wed,  2 Oct 2024 13:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HslXKlml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeupUoI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6011D0438;
-	Wed,  2 Oct 2024 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811161CFECF;
+	Wed,  2 Oct 2024 13:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877215; cv=none; b=YKX6AG6HNoIWZP65bC8+rv/coOhNVYLR/myhdxQ1aVo58uupZIaPyZp6iU/0dhZjramHr0dFpF7SbPdQhsmZMISx+UWcY8hrk8k4TmhC/d0sRyzq4CE8OMO+kTjdhBB8Dif6DxQeSf0P4UGTdwui2ErYXhDw7GG+lDe0FkwIuSg=
+	t=1727877206; cv=none; b=s9nypAbR6D+SBStQktbM42u2CBM8ku0QlJmfauXS51Dttbx0315n9uF4IQdfmnXXH+ZtPHT36lB4+VNx9E76eRngLo2agGqsfMGVwYs3A3C/qaOBiUeEyJewjINzyrBB7fsW8nl2hF4d/C6lmVigqLS1/1LHiT7mU2BKdUENFB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877215; c=relaxed/simple;
-	bh=ZRKdWTXOR/o/oCaJnYTqkyGztRN8qWnG5J1DaeGxemU=;
+	s=arc-20240116; t=1727877206; c=relaxed/simple;
+	bh=whrNqcsUa6ZvaorYiThhtDgZx1Uvo8YKijB5XCuNBQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mP/2tHquJdhWTVgSbQXRn+8BR3FPlgjPSISrPOluqnjrxKM0CCnFyInevAaygpFkpGxjfgfHkx/u+yb39FqmfPviiijAb2L+MhRV4bv5qZiqsyXlm6Sw62YIHPVUyi4pyLoK8FLoGEE50F/X94Fgk4Lqqo4G9dWrtKlkpO0K4PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HslXKlml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD4EC4CED2;
-	Wed,  2 Oct 2024 13:53:34 +0000 (UTC)
+	 MIME-Version; b=WpQMOiYLcww8oZxmsDl0E2KwFwcmNHZ4L81PHLOax3CLnlXaXMl7Ud/lPW5ZFujFr7eaRYizDIUB+rr0VuHEaYviys8q/gc7PvSX/VnaFsJNXgrFmDTa0Bj8Xi8Cwc4ZKyCzYZ/3H4MIllQgglTWuWaXAxW3t6tvK0jeuIwfzx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeupUoI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B6AC4CEC5;
+	Wed,  2 Oct 2024 13:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877215;
-	bh=ZRKdWTXOR/o/oCaJnYTqkyGztRN8qWnG5J1DaeGxemU=;
+	s=korg; t=1727877206;
+	bh=whrNqcsUa6ZvaorYiThhtDgZx1Uvo8YKijB5XCuNBQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HslXKlmlkLWJbnHIN/v3Y9qGDdvp3YeTYmzkcVw1aRz+Hmnl+H7U7d4SWWFwSgDuN
-	 3G3XcV3dMdcdRodcdiTN+vTF9Vm0i6RyPSjTdU75da3OXyZI2nG8BxHOSVWAnKSAs/
-	 vPiQv6UfuiSFOZWGu5yHJG4+MHYw4eBE2S/JGt14=
+	b=UeupUoI2NpKFU3qaFgW/uIGBOT9m2iSE4ax+/0xpSt12w2xBHtwY/3LJTJ3A1or/S
+	 sYQGl+O+YzITgt0cg2ZaBgGMBmsRnbHGTm+aYIsznSgMK5xYzl7Xoe53u5NJ5iHnhM
+	 FGCGtuteH0z6YeilMugIER18vfhfPNEHbVsKQpvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Robert Hancock <robert.hancock@calian.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.11 692/695] i2c: isch: Add missed else
-Date: Wed,  2 Oct 2024 15:01:30 +0200
-Message-ID: <20241002125850.142905523@linuxfoundation.org>
+Subject: [PATCH 6.11 693/695] i2c: xiic: Try re-initialization on bus busy timeout
+Date: Wed,  2 Oct 2024 15:01:31 +0200
+Message-ID: <20241002125850.183206295@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -65,35 +67,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Robert Hancock <robert.hancock@calian.com>
 
-commit 1db4da55070d6a2754efeb3743f5312fc32f5961 upstream.
+commit 1d4a1adbed2582444aaf97671858b7d12915bd05 upstream.
 
-In accordance with the existing comment and code analysis
-it is quite likely that there is a missed 'else' when adapter
-times out. Add it.
+In the event that the I2C bus was powered down when the I2C controller
+driver loads, or some spurious pulses occur on the I2C bus, it's
+possible that the controller detects a spurious I2C "start" condition.
+In this situation it may continue to report the bus is busy indefinitely
+and block the controller from working.
 
-Fixes: 5bc1200852c3 ("i2c: Add Intel SCH SMBus support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v2.6.27+
+The "single-master" DT flag can be specified to disable bus busy checks
+entirely, but this may not be safe to use in situations where other I2C
+masters may potentially exist.
+
+In the event that the controller reports "bus busy" for too long when
+starting a transaction, we can try reinitializing the controller to see
+if the busy condition clears. This allows recovering from this scenario.
+
+Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-isch.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-xiic.c |   41 ++++++++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 15 deletions(-)
 
---- a/drivers/i2c/busses/i2c-isch.c
-+++ b/drivers/i2c/busses/i2c-isch.c
-@@ -99,8 +99,7 @@ static int sch_transaction(void)
- 	if (retries > MAX_RETRIES) {
- 		dev_err(&sch_adapter.dev, "SMBus Timeout!\n");
- 		result = -ETIMEDOUT;
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -844,23 +844,11 @@ static int xiic_bus_busy(struct xiic_i2c
+ 	return (sr & XIIC_SR_BUS_BUSY_MASK) ? -EBUSY : 0;
+ }
+ 
+-static int xiic_busy(struct xiic_i2c *i2c)
++static int xiic_wait_not_busy(struct xiic_i2c *i2c)
+ {
+ 	int tries = 3;
+ 	int err;
+ 
+-	if (i2c->tx_msg || i2c->rx_msg)
+-		return -EBUSY;
+-
+-	/* In single master mode bus can only be busy, when in use by this
+-	 * driver. If the register indicates bus being busy for some reason we
+-	 * should ignore it, since bus will never be released and i2c will be
+-	 * stuck forever.
+-	 */
+-	if (i2c->singlemaster) {
+-		return 0;
 -	}
--	if (temp & 0x04) {
-+	} else if (temp & 0x04) {
- 		result = -EIO;
- 		dev_dbg(&sch_adapter.dev, "Bus collision! SMBus may be "
- 			"locked until next hard reset. (sorry!)\n");
+-
+ 	/* for instance if previous transfer was terminated due to TX error
+ 	 * it might be that the bus is on it's way to become available
+ 	 * give it at most 3 ms to wake
+@@ -1104,13 +1092,36 @@ static int xiic_start_xfer(struct xiic_i
+ 
+ 	mutex_lock(&i2c->lock);
+ 
+-	ret = xiic_busy(i2c);
+-	if (ret) {
++	if (i2c->tx_msg || i2c->rx_msg) {
+ 		dev_err(i2c->adap.dev.parent,
+ 			"cannot start a transfer while busy\n");
++		ret = -EBUSY;
+ 		goto out;
+ 	}
+ 
++	/* In single master mode bus can only be busy, when in use by this
++	 * driver. If the register indicates bus being busy for some reason we
++	 * should ignore it, since bus will never be released and i2c will be
++	 * stuck forever.
++	 */
++	if (!i2c->singlemaster) {
++		ret = xiic_wait_not_busy(i2c);
++		if (ret) {
++			/* If the bus is stuck in a busy state, such as due to spurious low
++			 * pulses on the bus causing a false start condition to be detected,
++			 * then try to recover by re-initializing the controller and check
++			 * again if the bus is still busy.
++			 */
++			dev_warn(i2c->adap.dev.parent, "I2C bus busy timeout, reinitializing\n");
++			ret = xiic_reinit(i2c);
++			if (ret)
++				goto out;
++			ret = xiic_wait_not_busy(i2c);
++			if (ret)
++				goto out;
++		}
++	}
++
+ 	i2c->tx_msg = msgs;
+ 	i2c->rx_msg = NULL;
+ 	i2c->nmsgs = num;
 
 
 
