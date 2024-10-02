@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-79096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3233C98D68D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:42:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CA098D6A0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D27CB1F23E06
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:42:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 998DF1F23ED8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AA61D0DD6;
-	Wed,  2 Oct 2024 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CEB1D0E0B;
+	Wed,  2 Oct 2024 13:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJ4mlZpi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhYgSmXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74A61D0787;
-	Wed,  2 Oct 2024 13:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773251D0E06;
+	Wed,  2 Oct 2024 13:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876427; cv=none; b=q4YXoBjNbHieEp3ElKqJXL7PpRZ3elEGaTSQ55By4xMzbJTJvqbROfvElxheWMLH4TV6Nl/QK4SXU2ShlDQQN6rxntNAmfUS63qvX+yN4FdmPdRD8aTk6E5HAwFDrhuDtOpyrZFivNpLT/mFmFWyMdklEii91SlLAKYG5yOB+ag=
+	t=1727876459; cv=none; b=LBNbHptJXZM7T4ajAQwB2oHYR28aOnayrZ59Z/evceDOYmpB0AZgtB9mlIkxww8LoulcNcWrRc0IVb0AqwoDK9Frq+80whAfNtAbGMg8idHeq+tADosjaN6FunJMIp3bU7H1m+z0cf9pEMmmP7ziXWo5zt4K6qt8PfQIw3PrwrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876427; c=relaxed/simple;
-	bh=s6yRsFVAYM91IPnTVSrVjH9ieTDLcu/1wpqzHC37G2Y=;
+	s=arc-20240116; t=1727876459; c=relaxed/simple;
+	bh=tqrTgK6T4Q+JIBPomdr+uwwLivjXLRRddXbxZgFQ+r0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wow8HpZkVMG2ocyYrIE0tx0v6XqPr2ipwIq1esssjT5WiVre9u9WZKQpwxV566sTWr7kxfjJzl3KSMdLgGT7PU8BcHlNzQ/qgM8zVrQZADsZVdN1c12ujSeWMksqrmY3qJh0ZpmnMxH3R7FZqNeHacluuiQN8BSs2mtmm4HrADU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJ4mlZpi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1913FC4CEC5;
-	Wed,  2 Oct 2024 13:40:26 +0000 (UTC)
+	 MIME-Version; b=cwf0KhZUnl8ERu8zxQjszVDJUDxnqFze1bz+q6vh6GeZcmbqfQfM2C93Qh4OhATTSvU2qS5KHxjsumuKcRhr8HiIJEeY8hgaKO5+Epi1KSdsYbjyfe6npo35SILjtG5Dfb4ZI/uCo3SJVvBleDRi3mFXfZUcZSu0vyGpsVMdnT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhYgSmXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DA4C4CEC5;
+	Wed,  2 Oct 2024 13:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876427;
-	bh=s6yRsFVAYM91IPnTVSrVjH9ieTDLcu/1wpqzHC37G2Y=;
+	s=korg; t=1727876459;
+	bh=tqrTgK6T4Q+JIBPomdr+uwwLivjXLRRddXbxZgFQ+r0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJ4mlZpiRIvbrvsGVRX1CB4JAhqIJT06QXrNad2HDtPTXTeBqBZmByvaklqvX1tsj
-	 gnc0773sKL+etpn8rCZmsd2OhtGhCzY2RZnzDPMVwfBrdSEMRPOqtEHnUfXdSAcT/3
-	 AwyIRuXhMot+4phEcELjNyj65YzfakhvUH0E3/Wo=
+	b=zhYgSmXp4DuAG8XTs0Cf5XpaAf+5gEuV07xEaAMjO8p8zrW6rO5oze6gfdYzHphTn
+	 tboPWTbdb55npaXqmSUcAxulcKUnJOK5FhWtieFDcCttUA5a1Kqi9ijgIAAmQTmxmp
+	 kABw5dAM5Kt5mZSZ/WI3fJF++OfpP5Vv/OviWHDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
+	Vitaliy Shevtsov <v.shevtsov@maxima.ru>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 423/695] RDMA/cxgb4: Added NULL check for lookup_atid
-Date: Wed,  2 Oct 2024 14:57:01 +0200
-Message-ID: <20241002125839.338682213@linuxfoundation.org>
+Subject: [PATCH 6.11 424/695] RDMA/irdma: fix error message in irdma_modify_qp_roce()
+Date: Wed,  2 Oct 2024 14:57:02 +0200
+Message-ID: <20241002125839.379931378@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,50 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
 
-[ Upstream commit e766e6a92410ca269161de059fff0843b8ddd65f ]
+[ Upstream commit 9f0eafe86ea0a589676209d0cff1a1ed49a037d3 ]
 
-The lookup_atid() function can return NULL if the ATID is
-invalid or does not exist in the identifier table, which
-could lead to dereferencing a null pointer without a
-check in the `act_establish()` and `act_open_rpl()` functions.
-Add a NULL check to prevent null pointer dereferencing.
+Use a correct field max_dest_rd_atomic instead of max_rd_atomic for the
+error output.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Fixes: cfdda9d76436 ("RDMA/cxgb4: Add driver for Chelsio T4 RNIC")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-Link: https://patch.msgid.link/20240912145844.77516-1-m.lobanov@rosalinux.ru
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+Link: https://lore.kernel.org/stable/20240916165817.14691-1-v.shevtsov%40maxima.ru
+Link: https://patch.msgid.link/20240916165817.14691-1-v.shevtsov@maxima.ru
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/cxgb4/cm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/hw/irdma/verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
-index 040ba2224f9ff..b3757c6a0457a 100644
---- a/drivers/infiniband/hw/cxgb4/cm.c
-+++ b/drivers/infiniband/hw/cxgb4/cm.c
-@@ -1222,6 +1222,8 @@ static int act_establish(struct c4iw_dev *dev, struct sk_buff *skb)
- 	int ret;
- 
- 	ep = lookup_atid(t, atid);
-+	if (!ep)
-+		return -EINVAL;
- 
- 	pr_debug("ep %p tid %u snd_isn %u rcv_isn %u\n", ep, tid,
- 		 be32_to_cpu(req->snd_isn), be32_to_cpu(req->rcv_isn));
-@@ -2279,6 +2281,9 @@ static int act_open_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
- 	int ret = 0;
- 
- 	ep = lookup_atid(t, atid);
-+	if (!ep)
-+		return -EINVAL;
-+
- 	la = (struct sockaddr_in *)&ep->com.local_addr;
- 	ra = (struct sockaddr_in *)&ep->com.remote_addr;
- 	la6 = (struct sockaddr_in6 *)&ep->com.local_addr;
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index fc0ce35da14e6..c7475c925d1b4 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -1347,7 +1347,7 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 		if (attr->max_dest_rd_atomic > dev->hw_attrs.max_hw_ird) {
+ 			ibdev_err(&iwdev->ibdev,
+ 				  "rd_atomic = %d, above max_hw_ird=%d\n",
+-				   attr->max_rd_atomic,
++				   attr->max_dest_rd_atomic,
+ 				   dev->hw_attrs.max_hw_ird);
+ 			return -EINVAL;
+ 		}
 -- 
 2.43.0
 
