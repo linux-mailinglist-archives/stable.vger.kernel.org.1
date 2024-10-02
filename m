@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE03898DC91
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:42:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E600698D9F5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A291F278B2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91A3B1F272B7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02801D27B3;
-	Wed,  2 Oct 2024 14:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479D41D0F74;
+	Wed,  2 Oct 2024 14:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZaIzx6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuzIE+ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE70B1D27AD;
-	Wed,  2 Oct 2024 14:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074EF1D0F69;
+	Wed,  2 Oct 2024 14:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879772; cv=none; b=bE9+2wpzaTex97Nru03qb5wDBGmGvoRNj8EaeLtVIXBg1sl7Au9azo/9LICNUCdf8Ony1vLVp8MU8q4M3QelXhnDpqDY4Rz00XS+2BoyJsbU3HS/80dmRNy+kVSy0Q9XADZD6veTzUywkGiPDQq/CjZDBBTny6iwtQWewUNPWVY=
+	t=1727878320; cv=none; b=B/N6aeZjF7fzV0a7e1ArSMVIDjv/6F7YF5qubdrnHvalibAzokfW6GL6YL7RBhsZqvkDMIlOe6wR/GhFijz1H7BszOtvMI0JoiG5cvdwem76Xe8B8F+25cUZ1rvESelXuYrm3uFz7CW2AmGL5B2RjGq2I0dfpodLNryuCAPFttM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879772; c=relaxed/simple;
-	bh=brpNF6536GR6Q2+n4uMvHSr9HvnA7YR6oT0P++BUg4Q=;
+	s=arc-20240116; t=1727878320; c=relaxed/simple;
+	bh=mOoBD6NWXVNY6zPjQU6q0ZnTjb7RLqNPGtT+SFoW7Gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnWQGwcNDW4gPCHXtYrPsLOF36aAGfzUbRQ7o4/2kpJyfbvAA3zYbnfr4VulQVXjNabVWCI5v+8wHKX/F22wHBqfZH2CKk/aHEInwNvlwK9KtBcbhBbe3Qp6kQ3RJbjfS/SRboZnNNowYXFMFAlQ5JZ5aTDuietOky+PRKC0NbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZaIzx6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EADC4CED9;
-	Wed,  2 Oct 2024 14:36:12 +0000 (UTC)
+	 MIME-Version; b=DhiZfXP4BIm219Y8V0Ik0aVc5ZdV8jozltJTfRcAltASJ+8gQH22e44UETR/BIlvFHtPw/HFs22yVT1bcQX2rrTV0B8WMJrZVr8PjtyoRHiGEFs9h8wenPjTCqBrIuQ4qNdkQBUDiZGTN81crqn/OGhLk1HDw1YbxoAFawKoJHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuzIE+ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DDAC4CEC2;
+	Wed,  2 Oct 2024 14:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879772;
-	bh=brpNF6536GR6Q2+n4uMvHSr9HvnA7YR6oT0P++BUg4Q=;
+	s=korg; t=1727878319;
+	bh=mOoBD6NWXVNY6zPjQU6q0ZnTjb7RLqNPGtT+SFoW7Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZaIzx6j3iCHtdYp7Ulun39S91I374oLXVswE3ufI41BrbW17viVvPTKPod2XpT0P
-	 NuBc/PUBLc3ueAEuI7JZSWMVZU/S8uI+bypK8gAOBvmkh1OW27ygqZtjclxPRa9Kal
-	 6Z/QGhkKh6DaP3rowWz+d+O+zVzgWtiDbG94OqVI=
+	b=DuzIE+ld5xfzn6Ekc5ROWa6jqOfE8GZZTjBBpe72OLlS9II7MgrGd+bU8BErbqe5d
+	 5byW8mouR1+1eBYETckvIOdOTxg9mUca8Fe73LwBYYffhKuumLQNPnZxjVyxdCoERX
+	 GNc/sfI0odxq+oEIFTWlT2BYV7lX+vPy1mCN/yQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 202/538] selftests/bpf: Fix compiling flow_dissector.c with musl-libc
-Date: Wed,  2 Oct 2024 14:57:21 +0200
-Message-ID: <20241002125800.227650513@linuxfoundation.org>
+Subject: [PATCH 6.10 342/634] x86/PCI: Check pcie_find_root_port() return for NULL
+Date: Wed,  2 Oct 2024 14:57:22 +0200
+Message-ID: <20241002125824.600624462@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 5e4c43bcb85973243d7274e0058b6e8f5810e4f7 ]
+[ Upstream commit dbc3171194403d0d40e4bdeae666f6e76e428b53 ]
 
-The GNU version of 'struct tcphdr' has members 'doff', 'source' and 'dest',
-which are not exposed by musl libc headers unless _GNU_SOURCE is defined.
+If pcie_find_root_port() is unable to locate a Root Port, it will return
+NULL. Check the pointer for NULL before dereferencing it.
 
-Add this definition to fix errors seen compiling for mips64el/musl-libc:
+This particular case is in a quirk for devices that are always below a Root
+Port, so this won't avoid a problem and doesn't need to be backported, but
+check as a matter of style and to prevent copy/paste mistakes.
 
-  flow_dissector.c:118:30: error: 'struct tcphdr' has no member named 'doff'
-    118 |                         .tcp.doff = 5,
-        |                              ^~~~
-  flow_dissector.c:119:30: error: 'struct tcphdr' has no member named 'source'
-    119 |                         .tcp.source = 80,
-        |                              ^~~~~~
-  flow_dissector.c:120:30: error: 'struct tcphdr' has no member named 'dest'
-    120 |                         .tcp.dest = 8080,
-        |                              ^~~~
-
-Fixes: ae173a915785 ("selftests/bpf: support BPF_FLOW_DISSECTOR_F_PARSE_1ST_FRAG")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/8f7ab21a73f678f9cebd32b26c444a686e57414d.1721713597.git.tony.ambardar@gmail.com
+Link: https://lore.kernel.org/r/20240812202659.1649121-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+[bhelgaas: drop Fixes: and explain why there's no problem in this case]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/pci/fixup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-index 9625e6d217913..3171047414a7d 100644
---- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-+++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
- #include <test_progs.h>
- #include <network_helpers.h>
- #include <linux/if_tun.h>
+diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
+index b33afb240601b..98a9bb92d75c8 100644
+--- a/arch/x86/pci/fixup.c
++++ b/arch/x86/pci/fixup.c
+@@ -980,7 +980,7 @@ static void amd_rp_pme_suspend(struct pci_dev *dev)
+ 		return;
+ 
+ 	rp = pcie_find_root_port(dev);
+-	if (!rp->pm_cap)
++	if (!rp || !rp->pm_cap)
+ 		return;
+ 
+ 	rp->pme_support &= ~((PCI_PM_CAP_PME_D3hot|PCI_PM_CAP_PME_D3cold) >>
+@@ -994,7 +994,7 @@ static void amd_rp_pme_resume(struct pci_dev *dev)
+ 	u16 pmc;
+ 
+ 	rp = pcie_find_root_port(dev);
+-	if (!rp->pm_cap)
++	if (!rp || !rp->pm_cap)
+ 		return;
+ 
+ 	pci_read_config_word(rp, rp->pm_cap + PCI_PM_PMC, &pmc);
 -- 
 2.43.0
 
