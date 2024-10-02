@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-79678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BF398D9A8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 358CB98DC4B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4112898BA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1C57B2612F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB761D174B;
-	Wed,  2 Oct 2024 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712371D0F7B;
+	Wed,  2 Oct 2024 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ai9U1UW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIx+wXAJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E74E1D0488;
-	Wed,  2 Oct 2024 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E81C1D0DE6;
+	Wed,  2 Oct 2024 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878144; cv=none; b=AunXzbd6EmhBDr98Vy5SHWf7Cfp9WA3OfeleCdWSnFTKhdOV9RJzM7W0eN2j90aMk8iDevPRtwkv3sTYgaTuqaEPVuvhuwuJivns8sLzU8XpY7kR9MLoHGHgWXL/zzlujNuSRMjWA/cPQeTtKVCK7rliIJezH2EtwgKDs6BPDyY=
+	t=1727879611; cv=none; b=jCAO12lFD6ObfQq5TUM8zIDfBUKn+7yDaaGMTb2l+uaCTgx2IdvkNhpPQrTHHqZGMbPyV0Mno++4sn/dSN8/WWFYEg1bl286Jg1nfUC910kU/dagaX+C1Uh/HYn9iZEJLEjSPpIN0puZA3hgkDrRTaUIfZ+NmzjEH9gsNqhjCNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878144; c=relaxed/simple;
-	bh=N7IxAtEBNZAcgziCom0gehKAVi1LBEQ8C5QN3Tk1k8A=;
+	s=arc-20240116; t=1727879611; c=relaxed/simple;
+	bh=uCdy9OUnVxkUBseNU9QUBEli1q2X0DS/Ph09M/U8lZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b026ZBDF7SqomNdDS2QTnJUqHam1RitsJOmwX8FT2LdET7EIezqLFYs5kKxFpRsCHG81xg6Fpr1ponkVDshzX/cyMZxPA7FFhTJj4SGDXQbhO7RzFv0fzLjXfBQf2+P9BcygvBX8blGofM5ZS/aEFTXyMTV9z/gihZCikPD7NrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ai9U1UW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D680BC4CEC2;
-	Wed,  2 Oct 2024 14:09:03 +0000 (UTC)
+	 MIME-Version; b=IePvYuxpFNJoU5GYvgP4sbXuo4waR2xag3+GRcA5vYZ2e4RzCqg4iTGT3EtQd4dMRf3td2ciL2GbzrEQm0sCW3wYOv4CAlp6mm1HjKNraIDg+aXXem6Eh0/e7Hj6fjIFygoycZN+6wZq7f/opAbf4i8T+//PJwwYOkxhAfaATRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIx+wXAJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1AFC4CEC2;
+	Wed,  2 Oct 2024 14:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878144;
-	bh=N7IxAtEBNZAcgziCom0gehKAVi1LBEQ8C5QN3Tk1k8A=;
+	s=korg; t=1727879611;
+	bh=uCdy9OUnVxkUBseNU9QUBEli1q2X0DS/Ph09M/U8lZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ai9U1UWsPSGKDy/mtoEFzCV8DSkXlyDO7Wwct6pm+JBhJ365psMQ5iSySFBJD1Y8
-	 mB/PG9oSTla9b+JjtXedC64e02av6hinA4CS5s+Q74PhffxH8DEt60p5C0PWHCTEwe
-	 Qej0HH6w0MRUwK/xmyVygLDa8TLQdRPhq3aTJTdo=
+	b=cIx+wXAJ6SVP0FOD3scWzgS3qlqovSgrRcsQgHHcoMhqNyBhpBiU4x23xdsJ4gvKz
+	 Kp1sDeiaEXezxFOL3gknZiCdSjDYarx8wtZrmmUEsyu0XLWdfWX00EhK/TPuTlG2Oi
+	 91hM9imn9oseLTH9qIkPbErmHWkUZ3TBQKlpYaX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Josh Don <joshdon@google.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 317/634] quota: avoid missing put_quota_format when DQUOT_SUSPENDED is passed
-Date: Wed,  2 Oct 2024 14:56:57 +0200
-Message-ID: <20241002125823.617420720@linuxfoundation.org>
+Subject: [PATCH 6.6 179/538] sched/fair: Make SCHED_IDLE entity be preempted in strict hierarchy
+Date: Wed,  2 Oct 2024 14:56:58 +0200
+Message-ID: <20241002125759.321708549@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Tianchen Ding <dtcccc@linux.alibaba.com>
 
-[ Upstream commit d16a5f852025be546b6e4ceef15899db3490f4d7 ]
+[ Upstream commit faa42d29419def58d3c3e5b14ad4037f0af3b496 ]
 
-Avoid missing put_quota_format when DQUOT_SUSPENDED is passed to
-dquot_load_quota_sb.
+Consider the following cgroup:
 
-Link: https://patch.msgid.link/20240715130534.2112678-2-shikemeng@huaweicloud.com
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Fixes: d44c57663723 ("quota: Remove BUG_ON in dquot_load_quota_sb()")
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+                       root
+                        |
+             ------------------------
+             |                      |
+       normal_cgroup            idle_cgroup
+             |                      |
+   SCHED_IDLE task_A           SCHED_NORMAL task_B
+
+According to the cgroup hierarchy, A should preempt B. But current
+check_preempt_wakeup_fair() treats cgroup se and task separately, so B
+will preempt A unexpectedly.
+Unify the wakeup logic by {c,p}se_is_idle only. This makes SCHED_IDLE of
+a task a relative policy that is effective only within its own cgroup,
+similar to the behavior of NICE.
+
+Also fix se_is_idle() definition when !CONFIG_FAIR_GROUP_SCHED.
+
+Fixes: 304000390f88 ("sched: Cgroup SCHED_IDLE support")
+Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Josh Don <joshdon@google.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20240626023505.1332596-1-dtcccc@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 627eb2f72ef37..23fcf9e9d6c55 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -2408,7 +2408,7 @@ static int vfs_setup_quota_inode(struct inode *inode, int type)
- int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
- 	unsigned int flags)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index b2e1009e5706e..5fc0d9cc9d9d7 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -533,7 +533,7 @@ static int cfs_rq_is_idle(struct cfs_rq *cfs_rq)
+ 
+ static int se_is_idle(struct sched_entity *se)
  {
--	struct quota_format_type *fmt = find_quota_format(format_id);
-+	struct quota_format_type *fmt;
- 	struct quota_info *dqopt = sb_dqopt(sb);
- 	int error;
+-	return 0;
++	return task_has_idle_policy(task_of(se));
+ }
  
-@@ -2418,6 +2418,7 @@ int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
- 	if (WARN_ON_ONCE(flags & DQUOT_SUSPENDED))
- 		return -EINVAL;
+ #endif	/* CONFIG_FAIR_GROUP_SCHED */
+@@ -8209,16 +8209,7 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
+ 	if (test_tsk_need_resched(curr))
+ 		return;
  
-+	fmt = find_quota_format(format_id);
- 	if (!fmt)
- 		return -ESRCH;
- 	if (!sb->dq_op || !sb->s_qcop ||
+-	/* Idle tasks are by definition preempted by non-idle tasks. */
+-	if (unlikely(task_has_idle_policy(curr)) &&
+-	    likely(!task_has_idle_policy(p)))
+-		goto preempt;
+-
+-	/*
+-	 * Batch and idle tasks do not preempt non-idle tasks (their preemption
+-	 * is driven by the tick):
+-	 */
+-	if (unlikely(p->policy != SCHED_NORMAL) || !sched_feat(WAKEUP_PREEMPTION))
++	if (!sched_feat(WAKEUP_PREEMPTION))
+ 		return;
+ 
+ 	find_matching_se(&se, &pse);
+@@ -8228,7 +8219,7 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
+ 	pse_is_idle = se_is_idle(pse);
+ 
+ 	/*
+-	 * Preempt an idle group in favor of a non-idle group (and don't preempt
++	 * Preempt an idle entity in favor of a non-idle entity (and don't preempt
+ 	 * in the inverse case).
+ 	 */
+ 	if (cse_is_idle && !pse_is_idle)
+@@ -8236,9 +8227,14 @@ static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_
+ 	if (cse_is_idle != pse_is_idle)
+ 		return;
+ 
++	/*
++	 * BATCH and IDLE tasks do not preempt others.
++	 */
++	if (unlikely(p->policy != SCHED_NORMAL))
++		return;
++
+ 	cfs_rq = cfs_rq_of(se);
+ 	update_curr(cfs_rq);
+-
+ 	/*
+ 	 * XXX pick_eevdf(cfs_rq) != se ?
+ 	 */
 -- 
 2.43.0
 
