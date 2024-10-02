@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F3598D5D2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C6598D90E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF08C288DDE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 824D5B212DD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4861D04BE;
-	Wed,  2 Oct 2024 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9121D1743;
+	Wed,  2 Oct 2024 14:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqCHVHyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtwE6Z6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886C01D04B4;
-	Wed,  2 Oct 2024 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5831D0BB2;
+	Wed,  2 Oct 2024 14:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876036; cv=none; b=Spr8QugyDYT2a+EIyQTGzhSabELQzGKAo9pjwtEeQoS3QmaqV63qJ0QySMAowzxrgdF95DAgyRlIZ8BhCnSfl1Hnltr9q4pI50OQ+yCeNd06/zh9q3uc82vGb2fiVw0WD1IcGBdHF/NDncF+NMom1SQNzchCgivIvT0JWTPC2NQ=
+	t=1727877767; cv=none; b=hU7nZlEA0xG5vzu+f8x1P+VFU/hmWimwvOq1cpEoE+gRMfgoPo/wQJe/L44RvEGHlqfGVF0NJeZyTo+jjcHp/wzmlCM0JgmPVLtldyRFRf1t8kn1bRK70aYp7qlpwKctYy2r6SUfEtxzHq7l1lTYZ9uN0HyVtE/d/xiolA01q9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876036; c=relaxed/simple;
-	bh=YuB9nZfX40b25zvNjrD99XiOwR5bpp2Xr9hPOAjh/gM=;
+	s=arc-20240116; t=1727877767; c=relaxed/simple;
+	bh=jYKiReDE0CDXoflQT7i/9wCzvZEvTC1RbZ53GA7/Q58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FAhXcVzMVValGrLy/CQ5xWE7oyrX4y/KRgzZWHOjhzbvFDp/y199HyEuToDJ4IOJ4BLv/MugWEFlFxmp5Rv0vTDnN2nL5qTAB0LuV5ILZA1MhGRJSUCzN1t5BrXz0dGKHx9IqF2RabDBC3coyE4m9ZnkCKZm7HB2Bhgvg89U6Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqCHVHyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E49C4CEC5;
-	Wed,  2 Oct 2024 13:33:55 +0000 (UTC)
+	 MIME-Version; b=IVWR7qr8WSaARQ7vY/vF6C7Qn2g0HIXi9ZImGe3IIC8s/Mvo0Wha/airdggg7HA+vlHnk5zX0xDAmKhHMT7Q1wZdHLATzfLwoUeCTKjV+jUg7fS5ZprNYSS77i1NWadm0P6X6qATUcfELOaf3SpfFUiP0qDSxv3Tfbje4stTJJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtwE6Z6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52139C4CECD;
+	Wed,  2 Oct 2024 14:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876036;
-	bh=YuB9nZfX40b25zvNjrD99XiOwR5bpp2Xr9hPOAjh/gM=;
+	s=korg; t=1727877767;
+	bh=jYKiReDE0CDXoflQT7i/9wCzvZEvTC1RbZ53GA7/Q58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqCHVHyCyXfYjmlPzVga3F8CJaNKGIwTt9Ms3EQfc3fsO3K8t2UU89ufLt5rVj93P
-	 VTYfY3bqlnshcntJXTu7tqBH4hKJdjyje43eAARC8HCPzeJ1Qen/Nxo3t9l7oVWnyN
-	 522ltlLldEY0ftvaZ5epV2k7PlgfNr7GJwVXDdKU=
+	b=jtwE6Z6FOewob30BgKRvVdV3amHTAN3DmaX0Pj+Q56MsYFm0sQC+2psNN3gtTkqJc
+	 xA4ioO1zipNbbbv0/inrX5tU0RkG41mhwRz2HWYLtO0q2rAZbnSoyapgbHzGRQrnEl
+	 owjYX+vjOBvoA2prcqLDKM7siZ9c1m7vK+Ws6ksw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Alex Bee <knaerzche@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 289/695] s390/entry: Make early program check handler relocated lowcore aware
+Subject: [PATCH 6.10 187/634] drm/rockchip: vop: Allow 4096px width scaling
 Date: Wed,  2 Oct 2024 14:54:47 +0200
-Message-ID: <20241002125833.977276102@linuxfoundation.org>
+Message-ID: <20241002125818.487995905@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Alex Bee <knaerzche@gmail.com>
 
-[ Upstream commit f101b305a7b9513a8042a2cf09018de4ff371af2 ]
+[ Upstream commit 0ef968d91a20b5da581839f093f98f7a03a804f7 ]
 
-Add the missing pieces so the early program check handler also works
-with a relocated lowcore. Right now the result of an early program
-check in case of a relocated lowcore would be a program check loop.
+There is no reason to limit VOP scaling to 3840px width, the limit of
+RK3288, when there are newer VOP versions that support 4096px width.
 
-Fixes: 8f1e70adb1a3 ("s390/boot: Add cmdline option to relocate lowcore")
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Change to enforce a maximum of 4096px width plane scaling, the maximum
+supported output width of the VOP versions supported by this driver.
+
+Fixes: 4c156c21c794 ("drm/rockchip: vop: support plane scale")
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240615170417.3134517-4-jonas@kwiboo.se
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/early.c |  7 +++++--
- arch/s390/kernel/entry.S | 11 ++++++-----
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 14d324865e33f..ee051ad81c711 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -183,12 +183,15 @@ void __do_early_pgm_check(struct pt_regs *regs)
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index a13473b2d54c4..4a9c6ea7f15dc 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -396,8 +396,8 @@ static void scl_vop_cal_scl_fac(struct vop *vop, const struct vop_win_data *win,
+ 	if (info->is_yuv)
+ 		is_yuv = true;
  
- static noinline __init void setup_lowcore_early(void)
- {
-+	struct lowcore *lc = get_lowcore();
- 	psw_t psw;
+-	if (dst_w > 3840) {
+-		DRM_DEV_ERROR(vop->dev, "Maximum dst width (3840) exceeded\n");
++	if (dst_w > 4096) {
++		DRM_DEV_ERROR(vop->dev, "Maximum dst width (4096) exceeded\n");
+ 		return;
+ 	}
  
- 	psw.addr = (unsigned long)early_pgm_check_handler;
- 	psw.mask = PSW_KERNEL_BITS;
--	get_lowcore()->program_new_psw = psw;
--	get_lowcore()->preempt_count = INIT_PREEMPT_COUNT;
-+	lc->program_new_psw = psw;
-+	lc->preempt_count = INIT_PREEMPT_COUNT;
-+	lc->return_lpswe = gen_lpswe(__LC_RETURN_PSW);
-+	lc->return_mcck_lpswe = gen_lpswe(__LC_RETURN_MCCK_PSW);
- }
- 
- static __init void detect_diag9c(void)
-diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
-index b01f4ac43f729..6539ec4800cd1 100644
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -600,18 +600,19 @@ SYM_CODE_START(restart_int_handler)
- SYM_CODE_END(restart_int_handler)
- 
- SYM_CODE_START(early_pgm_check_handler)
--	stmg	%r8,%r15,__LC_SAVE_AREA_SYNC
-+	STMG_LC %r8,%r15,__LC_SAVE_AREA_SYNC
-+	GET_LC	%r13
- 	aghi	%r15,-(STACK_FRAME_OVERHEAD+__PT_SIZE)
- 	la	%r11,STACK_FRAME_OVERHEAD(%r15)
- 	xc	__SF_BACKCHAIN(8,%r15),__SF_BACKCHAIN(%r15)
- 	stmg	%r0,%r7,__PT_R0(%r11)
--	mvc	__PT_PSW(16,%r11),__LC_PGM_OLD_PSW
--	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA_SYNC
-+	mvc	__PT_PSW(16,%r11),__LC_PGM_OLD_PSW(%r13)
-+	mvc	__PT_R8(64,%r11),__LC_SAVE_AREA_SYNC(%r13)
- 	lgr	%r2,%r11
- 	brasl	%r14,__do_early_pgm_check
--	mvc	__LC_RETURN_PSW(16),STACK_FRAME_OVERHEAD+__PT_PSW(%r15)
-+	mvc	__LC_RETURN_PSW(16,%r13),STACK_FRAME_OVERHEAD+__PT_PSW(%r15)
- 	lmg	%r0,%r15,STACK_FRAME_OVERHEAD+__PT_R0(%r15)
--	lpswe	__LC_RETURN_PSW
-+	LPSWEY	__LC_RETURN_PSW,__LC_RETURN_LPSWE
- SYM_CODE_END(early_pgm_check_handler)
- 
- 	.section .kprobes.text, "ax"
 -- 
 2.43.0
 
