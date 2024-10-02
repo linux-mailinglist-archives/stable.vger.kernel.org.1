@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF14B98D578
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A50298D8F0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83703288B39
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 497431F218ED
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3404C1D0173;
-	Wed,  2 Oct 2024 13:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E691E1D279E;
+	Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoKA28nw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19bYc7GA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E5E29CE7;
-	Wed,  2 Oct 2024 13:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55101D07B7;
+	Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875845; cv=none; b=kZNytk4MUVB/GCefap0MdSXAbPxi8EaMKn4SKH3VjmAK2+o+m7Z1MZVsRnKX/U7s6ZUnmqEe7UitPNqMTsInqWe/82qQtwTFGVvBAsrXj0ohkzQWI7GDfwVe/vt+Mc5hJ5jxwlUHarZ9TRZGMZV/ZOa1Ilobdha/rP6NYg0pihs=
+	t=1727877718; cv=none; b=kvQOni8ip88g7ewA+Tx1gmYtpRGY7o3MsCYxnTM2ZxljkX49MJj+NrAF2PVUwQKtQmTbZZ5bcg5mbDlOffPrHVgoUvqZP2iP0GLW2HCnEaoW8OOqYM0zjoc4bG1A92LivvvoWWe79HHFDyNKIoO2p2eyKrZ19JUIgXr+NuVN03o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875845; c=relaxed/simple;
-	bh=FqNZdTU7c49hLzrYg6vKsQIWNN+kDBhOJZsCr1zpVhc=;
+	s=arc-20240116; t=1727877718; c=relaxed/simple;
+	bh=CLlSacbeFZwubProGPbiS2ADnpPaDxWvGLYn1Kabdr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwChouz8TGJL5Pah6ljklv4eYiwSWUFwG6WTuXCBiCg6+mzHkjqP7Jyfidx2qxVXMZx7zhHDKCSQqGsHv7YBUX61q+jD3x67rC97AxLD+7+7AD+BsMr//BeqX43H5Qy/O5H9dJiRHhkMRCaRGuV5QjSgCdxaooQvxdMpqKI1giE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoKA28nw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D38C4CEC5;
-	Wed,  2 Oct 2024 13:30:43 +0000 (UTC)
+	 MIME-Version; b=YEP4J/vpHf3CyaGVivLemBLdPRXQWHxAiCp4hR0dB3Qa64R8QcGUOC3Cfap+XDrLss5kqZ+R3CL9cVRIfINPJjO8meNXuEg3LjpzbbX43ir5XAvmCdE+EIf5HBGD9jJ8T/5Y2DRjOOcb+ZGHeXiV4uI6SWh+vU02A/4/Vs6b4WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19bYc7GA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F26C4CEC2;
+	Wed,  2 Oct 2024 14:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875844;
-	bh=FqNZdTU7c49hLzrYg6vKsQIWNN+kDBhOJZsCr1zpVhc=;
+	s=korg; t=1727877718;
+	bh=CLlSacbeFZwubProGPbiS2ADnpPaDxWvGLYn1Kabdr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoKA28nw8joHcavLsqVk2nqvEM0pjnolWTwt3XRS1Vu3mp9dISF+z1AMsfFjIyav0
-	 3c0eo8kLcg6uoBc+IghAnvr4VRSDyFkjEEtp6zPmSia8vtyqx+0tKKOshRQ4T3kxxR
-	 5oprihUDYctzhhYx9fEp3WcWMmA+Lmwa+4qCsd48=
+	b=19bYc7GAhe16NBWuWPtYATpT673rSP/cYGVt+u6jV1TEdQCDPUpara8crR6QpYWC5
+	 cZW3ahJpmAr/NBgYnJnUXElH5OH0mlFza8Cwh3Xkr84GcXAt/ZCeRg3t/aYZlYhBaH
+	 6JzUslsqQbxo6Y/RkZkaUV+WhfNtJ2yz1N62lJGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuesong Li <liyuesong@vivo.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 240/695] drivers:drm:exynos_drm_gsc:Fix wrong assignment in gsc_bind()
-Date: Wed,  2 Oct 2024 14:53:58 +0200
-Message-ID: <20241002125832.031515042@linuxfoundation.org>
+Subject: [PATCH 6.10 139/634] reset: berlin: fix OF node leak in probe() error path
+Date: Wed,  2 Oct 2024 14:53:59 +0200
+Message-ID: <20241002125816.594171780@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuesong Li <liyuesong@vivo.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 94ebc3d3235c5c516f67315059ce657e5090e94b ]
+[ Upstream commit 5f58a88cc91075be38cec69b7cb70aaa4ba69e8b ]
 
-cocci reported a double assignment problem. Upon reviewing previous
-commits, it appears this may actually be an incorrect assignment.
+Driver is leaking OF node reference on memory allocation failure.
+Acquire the OF node reference after memory allocation to fix this and
+keep it simple.
 
-Fixes: 8b9550344d39 ("drm/ipp: clean up debug messages")
-Signed-off-by: Yuesong Li <liyuesong@vivo.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Fixes: aed6f3cadc86 ("reset: berlin: convert to a platform driver")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-1-03f6d834f8c0@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/reset/reset-berlin.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-index 1b111e2c33472..752339d33f39a 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-@@ -1174,7 +1174,7 @@ static int gsc_bind(struct device *dev, struct device *master, void *data)
- 	struct exynos_drm_ipp *ipp = &ctx->ipp;
+diff --git a/drivers/reset/reset-berlin.c b/drivers/reset/reset-berlin.c
+index 2537ec05eceef..578fe867080ce 100644
+--- a/drivers/reset/reset-berlin.c
++++ b/drivers/reset/reset-berlin.c
+@@ -68,13 +68,14 @@ static int berlin_reset_xlate(struct reset_controller_dev *rcdev,
  
- 	ctx->drm_dev = drm_dev;
--	ctx->drm_dev = drm_dev;
-+	ipp->drm_dev = drm_dev;
- 	exynos_drm_register_dma(drm_dev, dev, &ctx->dma_priv);
+ static int berlin2_reset_probe(struct platform_device *pdev)
+ {
+-	struct device_node *parent_np = of_get_parent(pdev->dev.of_node);
++	struct device_node *parent_np;
+ 	struct berlin_reset_priv *priv;
  
- 	exynos_drm_ipp_register(dev, ipp, &ipp_funcs,
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	parent_np = of_get_parent(pdev->dev.of_node);
+ 	priv->regmap = syscon_node_to_regmap(parent_np);
+ 	of_node_put(parent_np);
+ 	if (IS_ERR(priv->regmap))
 -- 
 2.43.0
 
