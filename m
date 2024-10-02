@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CC698D543
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 076AD98D859
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A36472875BA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0DB21F23E07
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB401D0486;
-	Wed,  2 Oct 2024 13:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7AD1D0968;
+	Wed,  2 Oct 2024 13:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQTFlg1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1a+nBLAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5845A1D0403;
-	Wed,  2 Oct 2024 13:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B871D095B;
+	Wed,  2 Oct 2024 13:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875713; cv=none; b=Dxsf7XgllJq7DeOc6yR+RW9QbLLNKzlev0A/GZyGEFh5NeGJDJqRFJexQxB1W6RSOCZ85FUBtAxeCuN3lASqkB90/HCN8On/4tq2ANM0dhqtz8g+O72qk1zYTx/OZz5dEBluI49UyHyEWDs1e/Uf0XaJd7htG9+HkJ25bUte+oY=
+	t=1727877491; cv=none; b=hSCSblvUDDU7f+Da4fAjqbL+hESoyIOnvJHP94x/D2+vvEC2qa5KR1N94LQ3YwZSRBlmsdsz/oy1SZOhfkei79seUWkpCmtbY8E1TxgCMnJXh9cbPEYON7VgG3/OL1bxLVDjvzVuNTGVeOXR7TA0/dVIJSL7fizH7RMeg3yLA4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875713; c=relaxed/simple;
-	bh=naa7/c2iezFPHihrbHcKVAotbBbSLebAkliqL24oWLs=;
+	s=arc-20240116; t=1727877491; c=relaxed/simple;
+	bh=CBnS3pkZ2Tm5p9GPp3+AI4je9EESxFnIBG271dlHv0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HitQl73t+OyrPbZYI6rHZ7dExtO++fWiIyrfOKWGBL7NmXaK8wQuOzqgnuUODqpUE/dIA8KhucD67FOEoSyZydt1y65ECJveOL9b9csCWIpOx3oDPbcSIyp3iLaUg267+/D7/rt8NmvE+teV90JHrMIiq1YUMEA3cUMfVKkTJyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQTFlg1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D454CC4CEC5;
-	Wed,  2 Oct 2024 13:28:32 +0000 (UTC)
+	 MIME-Version; b=Uiapft42/eSfdonROjBH5tJ1KBn0QhlxkiylndQOlxTNyBvN6bsV0DUQc/wWJsztDtjau/TJX2ITDefo79IyK0TA3qFUQ+gJQE/y+Xz/WgpF0wlxZ0wTgjkTSFjzNq+CNz5haZ99JxzZCQdJuizBtqj+SS7xa3M68SkDX5hKL3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1a+nBLAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178A9C4CECD;
+	Wed,  2 Oct 2024 13:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875713;
-	bh=naa7/c2iezFPHihrbHcKVAotbBbSLebAkliqL24oWLs=;
+	s=korg; t=1727877491;
+	bh=CBnS3pkZ2Tm5p9GPp3+AI4je9EESxFnIBG271dlHv0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQTFlg1OtnqYjk786JG+UrzlWSQuQxWSL/Ok1Qrvc3sbv+w26nALj0k6uFJqKFHGo
-	 jioUcF+id2vj6m4slPrfIsKyRPVKmqQCBrnukQwf43VGnD1WdxKiaQwFKXasPobu6Y
-	 Xd+EVQsICXgniddxUcbBFg4nkR+aCJDAxDftHxEM=
+	b=1a+nBLAfRx5rO5TCB4iRDgHUL5mXd8o0Z2xsyBQPnLrOyiBN2p3d8jo6uuQMRvFSN
+	 BPSpngk9WyAJSajxALjkRsnUd2czcqmjUM/hHNsCxTzR3yCKW8ALl3MG6LH2jsozGi
+	 70H0JMF8JPx2Roqz5FRQrQFYed6+IhAO1zr122ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 196/695] pmdomain: core: Harden inter-column space in debug summary
-Date: Wed,  2 Oct 2024 14:53:14 +0200
-Message-ID: <20241002125830.289998530@linuxfoundation.org>
+Subject: [PATCH 6.10 095/634] net: enetc: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Wed,  2 Oct 2024 14:53:15 +0200
+Message-ID: <20241002125814.859221606@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 692c20c4d075bd452acfbbc68200fc226c7c9496 ]
+[ Upstream commit 799a9225997799f7b1b579bc50a93b78b4fb2a01 ]
 
-The inter-column space in the debug summary is two spaces.  However, in
-one case, the extra space is handled implicitly in a field width
-specifier.  Make inter-column space explicit to ease future maintenance.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Fixes: 45fbc464b047 ("PM: domains: Add "performance" column to debug summary")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/ae61eb363621b981edde878e1e74d701702a579f.1725459707.git.geert+renesas@glider.be
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: bbb96dc7fa1a ("enetc: Factor out the traffic start/stop procedures")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240911094445.1922476-3-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index 7a61aa88c0614..6691b42eae476 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -3226,7 +3226,7 @@ static int genpd_summary_one(struct seq_file *s,
- 	else
- 		snprintf(state, sizeof(state), "%s",
- 			 status_lookup[genpd->status]);
--	seq_printf(s, "%-30s  %-50s %u", genpd->name, state, genpd->performance_state);
-+	seq_printf(s, "%-30s  %-49s  %u", genpd->name, state, genpd->performance_state);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 5c45f42232d32..f04f42ea60c0f 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -2305,12 +2305,11 @@ static int enetc_setup_irqs(struct enetc_ndev_priv *priv)
  
- 	/*
- 	 * Modifications on the list require holding locks on both
+ 		snprintf(v->name, sizeof(v->name), "%s-rxtx%d",
+ 			 priv->ndev->name, i);
+-		err = request_irq(irq, enetc_msix, 0, v->name, v);
++		err = request_irq(irq, enetc_msix, IRQF_NO_AUTOEN, v->name, v);
+ 		if (err) {
+ 			dev_err(priv->dev, "request_irq() failed!\n");
+ 			goto irq_err;
+ 		}
+-		disable_irq(irq);
+ 
+ 		v->tbier_base = hw->reg + ENETC_BDR(TX, 0, ENETC_TBIER);
+ 		v->rbier = hw->reg + ENETC_BDR(RX, i, ENETC_RBIER);
 -- 
 2.43.0
 
