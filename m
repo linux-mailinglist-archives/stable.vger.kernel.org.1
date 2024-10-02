@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE0B98DBEF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFCB98D964
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 758E91F24D9D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C6FD2895AA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0521D0E0D;
-	Wed,  2 Oct 2024 14:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C014F1D0F4C;
+	Wed,  2 Oct 2024 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhWAMYBk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsJQqqlc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E441D0493;
-	Wed,  2 Oct 2024 14:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA5B1D07B8;
+	Wed,  2 Oct 2024 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879440; cv=none; b=qasadYR0VzrQPXQlIaNLi904/IZQ5DrOmEdanpdwv0EK49b2mZ26u6VpZ75xpyEjn5Q0EWwastXkEnePHFpEyhTFvwTqbJhkxV0GyBwGYd1n/DbzUYrLP6PziZmE7RIz9CoGGIC8lzlpIq5baITDH+i4Qbbih/I469xFqpEznQk=
+	t=1727877974; cv=none; b=gacZXliPiM1nEnQbbflMsMSGRbn4Vh3n5MTG2RpNZPcWhyzFOo77D5mmJbvb9vUM1J5k3OSrJ+D35FqlW2sMtmp3x85yxtqr4LYiDgLXCNkdvdURjkKTuMkx84D7YTx7GzpUmQ68edNVJtFaJKDuLXxSQJZN4xoCRCpUHfKZ6Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879440; c=relaxed/simple;
-	bh=Ldy1VtWrHE0TVOQY/nFfZoTX224+46yOJcLXggGKWno=;
+	s=arc-20240116; t=1727877974; c=relaxed/simple;
+	bh=ZPiXBQX7qIF6Xq+F8JLB4H0RDsvMnEmqa/mHASWnw60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzRIIzfRfK/Chbn/ekboQ7BvqaJUUf/B0Cxh7HrW0Y6TSfaWL+3tF2QbJpUMCyfHNYZDiLzfICJnuCwuGvMpjvEzKd5vMWBHF7Mz17kEAf797Ki8Plv9jeNYD1l0a8ECWlUI8ThuIv097pw7Pui6WRwHMC1zdfflLHxc8OCTtGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhWAMYBk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6381CC4CEC2;
-	Wed,  2 Oct 2024 14:30:39 +0000 (UTC)
+	 MIME-Version; b=BvIv5BmW9z9AwRhQIV2tloSUvv71C+eRNOm3cTC8DA51L7Hj/8W4EiDe/FB5nm23j7iyap1StOdCM1fLB2RqKB10LdUMjsSMGcsq2/bcDwB5EfcrjdeKP1KaIolzjT/XpDNMptNVg3ujoLzvuQHfHgamPBfDoV4CQwR9Tswd5EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsJQqqlc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052E6C4CEC2;
+	Wed,  2 Oct 2024 14:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879439;
-	bh=Ldy1VtWrHE0TVOQY/nFfZoTX224+46yOJcLXggGKWno=;
+	s=korg; t=1727877974;
+	bh=ZPiXBQX7qIF6Xq+F8JLB4H0RDsvMnEmqa/mHASWnw60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PhWAMYBkiVD0QT8NX2OrFX3yt4nhB3v7RWuNQTA87IABR/gFMT5wIrl3rhPPwyI5m
-	 Sa4nnatqcnsLbyhu4OILcYfmBKGU2yPs5VT1V5ll3SEtfEMBKlZ4Tb9RlNfkMoM1s7
-	 EzPIZQsz1916D/l3b37jzjzHZ9Kt6/3GuLvs55Uo=
+	b=tsJQqqlcUMcH15Ph0bNOs17DU9KM1uagR1MQJ4xRy+wWuv1QOy2FXInY0GXvI+8Ul
+	 nGkECCiOrSvLi6orizcdxE/uxrhmbBYCoIRxHaL9/Ha7k55zo6flp9Z82POmNRZgZR
+	 A0LySMopIPZCz4+pHfBZKQaHba9mxtxyoW+l/CnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tangbin <tangbin@cmss.chinamobile.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/538] ASoC: loongson: fix error release
+Subject: [PATCH 6.10 258/634] selftests/bpf: Fix redefinition errors compiling lwt_reroute.c
 Date: Wed,  2 Oct 2024 14:55:58 +0200
-Message-ID: <20241002125756.943877737@linuxfoundation.org>
+Message-ID: <20241002125821.284441960@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tangbin <tangbin@cmss.chinamobile.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 97688a9c5b1fd2b826c682cdfa36d411a5c99828 ]
+[ Upstream commit 16b795cc59528cf280abc79af3c70bda42f715b9 ]
 
-In function loongson_card_parse_of(), when get device_node
-'codec' failed, the function of_node_put(codec) should not
-be invoked, thus fix error release.
+Compiling lwt_reroute.c with GCC 12.3 for mips64el/musl-libc yields errors:
 
-Fixes: d24028606e76 ("ASoC: loongson: Add Loongson ASoC Sound Card Support")
-Signed-off-by: tangbin <tangbin@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20240903090620.6276-1-tangbin@cmss.chinamobile.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In file included from .../include/arpa/inet.h:9,
+                 from ./test_progs.h:18,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_helpers.h:11,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_reroute.c:52:
+.../include/netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+   23 | struct in6_addr {
+      |        ^~~~~~~~
+In file included from .../include/linux/icmp.h:24,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_helpers.h:9:
+.../include/linux/in6.h:33:8: note: originally defined here
+   33 | struct in6_addr {
+      |        ^~~~~~~~
+.../include/netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+   34 | struct sockaddr_in6 {
+      |        ^~~~~~~~~~~~
+.../include/linux/in6.h:50:8: note: originally defined here
+   50 | struct sockaddr_in6 {
+      |        ^~~~~~~~~~~~
+.../include/netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+   42 | struct ipv6_mreq {
+      |        ^~~~~~~~~
+.../include/linux/in6.h:60:8: note: originally defined here
+   60 | struct ipv6_mreq {
+      |        ^~~~~~~~~
+
+These errors occur because <linux/in6.h> is included before <netinet/in.h>,
+bypassing the Linux uapi/libc compat mechanism's partial musl support. As
+described in [1] and [2], fix these errors by including <netinet/in.h> in
+lwt_reroute.c before any uapi headers.
+
+[1]: commit c0bace798436 ("uapi libc compat: add fallback for unsupported libcs")
+[2]: https://git.musl-libc.org/cgit/musl/commit/?id=04983f227238
+
+Fixes: 6c77997bc639 ("selftests/bpf: Add lwt_xmit tests for BPF_REROUTE")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/bd2908aec0755ba8b75f5dc41848b00585f5c73e.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/loongson/loongson_card.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/lwt_reroute.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/loongson/loongson_card.c b/sound/soc/loongson/loongson_card.c
-index 406ee8db1a3c5..8cc54aedd0024 100644
---- a/sound/soc/loongson/loongson_card.c
-+++ b/sound/soc/loongson/loongson_card.c
-@@ -127,8 +127,8 @@ static int loongson_card_parse_of(struct loongson_card_data *data)
- 	codec = of_get_child_by_name(dev->of_node, "codec");
- 	if (!codec) {
- 		dev_err(dev, "audio-codec property missing or invalid\n");
--		ret = -EINVAL;
--		goto err;
-+		of_node_put(cpu);
-+		return -EINVAL;
- 	}
- 
- 	for (i = 0; i < card->num_links; i++) {
+diff --git a/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c b/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
+index 03825d2b45a8b..6c50c0f63f436 100644
+--- a/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
++++ b/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
+@@ -49,6 +49,7 @@
+  *  is not crashed, it is considered successful.
+  */
+ #define NETNS "ns_lwt_reroute"
++#include <netinet/in.h>
+ #include "lwt_helpers.h"
+ #include "network_helpers.h"
+ #include <linux/net_tstamp.h>
 -- 
 2.43.0
 
