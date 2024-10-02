@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B2698DBF7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB3098D960
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77A9284D99
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D0A5B2463D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604831D1E61;
-	Wed,  2 Oct 2024 14:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F45F1D0F41;
+	Wed,  2 Oct 2024 14:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rq5Zjmkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Amp489sS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0CA1D175B;
-	Wed,  2 Oct 2024 14:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7081D07AD;
+	Wed,  2 Oct 2024 14:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879463; cv=none; b=X8iE3t07ny4yI1N00bdANXMs3TeI0uJKl6eNXP9rv4Lx79L7a6NmBhFabE/r9oQ1uNbQZ+O9R4extgH4mo/ent8sykpuKR7T6Alb1DmUDz2ItaIZ7QWGiBN8J+qn9M1ft2iJr2SGEpDYtNbsQ9QrSPCOJrdWfF+mr1euIIVdFd0=
+	t=1727877957; cv=none; b=PfW88CEvLqgrr9iEuU+nnv/ThcjCiIW6JhmeTATtEqSGYgTL02RpYfZOlQ1XoYOwxWnDrFotSKopLtvLPhgB4mDF3kOm7tvbssvoRdtTrZvUgO4W5F0DcbQwGt/Zaj8AW2f3nK3nkoVVFikA4y6Ixhb95efLe7m9FQMw6viGgWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879463; c=relaxed/simple;
-	bh=hIM1teF/NmEPDM12UyteVrF5k8Ur3dlBDpiOoW9Fm24=;
+	s=arc-20240116; t=1727877957; c=relaxed/simple;
+	bh=Jnz3QpoixdEiVtyCS5gEaJyXTWYeC4Kegj+VVCTSDvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuNlCtWaJhonEGYxmCRD5+qtG0O3yafDRduhSoCdgPZlRXWeA1S/Az+6iL2U7TxXNBYs+FTE/e/itNLvR9vilaEmmIQHV0mNb2gxpP1b7vYghp6nSuKbm5pMZphr/vOG8B8Yr6B5MR77e23jUvFppIT4d9ItB4Wq8aClzseY4gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rq5Zjmkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B693C4CEC2;
-	Wed,  2 Oct 2024 14:31:02 +0000 (UTC)
+	 MIME-Version; b=q48TNcmOL6mtJ5QEcuK1tMw+B15W8ynAWY44JJeVDf9UdLqk1PHvsKmANqlxtDNli77SbytScjxFcLruCWQixtifV35lhX0lATbwG8QSsP/64dnhYr50y9vZ2QbDlMrUciny3HXtXQJBhlH4uOsy1XbEPc1oOACV5cOVHXHxrn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Amp489sS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89502C4CEC2;
+	Wed,  2 Oct 2024 14:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879462;
-	bh=hIM1teF/NmEPDM12UyteVrF5k8Ur3dlBDpiOoW9Fm24=;
+	s=korg; t=1727877956;
+	bh=Jnz3QpoixdEiVtyCS5gEaJyXTWYeC4Kegj+VVCTSDvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rq5Zjmkq74+eBOVcYBHD9dji6lXPuGAZajCtHYI8DpDOrTIDwcsUheolBH3AOva0t
-	 UsjaZ61KLFmqAF1zpm8y/WnVHrtQY7GuioNNJP9NKx1XRpO6IarYP0SxXBY4bLe9X4
-	 pNjzIpuXlzvi5j8fx6vS+uDn8/gqQLy4kRvjXh6w=
+	b=Amp489sSDOVDAsAj5KGYZnhuAze3MrajPiuiADawOI6kCwzNgpAVknpYgOuNGmI4e
+	 fN4bQwepNMx0yvqoqgLnA7sQTjM8LsgeHAN1FCBV4WqPegq/ev33rrJYBwduOgUflI
+	 svih5PcZ5OYQfdCy2li9pEWcyG1rFlyhw8KZFroM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/538] arm64: dts: renesas: r9a07g054: Correct GICD and GICR sizes
+Subject: [PATCH 6.10 235/634] tools/runqslower: Fix LDFLAGS and add LDLIBS support
 Date: Wed,  2 Oct 2024 14:55:35 +0200
-Message-ID: <20241002125756.018594997@linuxfoundation.org>
+Message-ID: <20241002125820.374059054@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 45afa9eacb59b258d2e53c7f63430ea1e8344803 ]
+[ Upstream commit f86601c3661946721e8f260bdd812b759854ac22 ]
 
-The RZ/V2L SoC is equipped with the GIC-600. The GICD is 64KiB + 64KiB
-for the MBI alias (in total 128KiB), and the GICR is 128KiB per CPU.
+Actually use previously defined LDFLAGS during build and add support for
+LDLIBS to link extra standalone libraries e.g. 'argp' which is not provided
+by musl libc.
 
-Fixes: 7c2b8198f4f32 ("arm64: dts: renesas: Add initial DTSI for RZ/V2L SoC")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/20240730122436.350013-4-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 585bf4640ebe ("tools: runqslower: Add EXTRA_CFLAGS and EXTRA_LDFLAGS support")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/bpf/20240723003045.2273499-1-tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r9a07g054.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/bpf/runqslower/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
-index 3f01b096cfb71..d61f7894e55cd 100644
---- a/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a07g054.dtsi
-@@ -1004,8 +1004,8 @@ gic: interrupt-controller@11900000 {
- 			#interrupt-cells = <3>;
- 			#address-cells = <0>;
- 			interrupt-controller;
--			reg = <0x0 0x11900000 0 0x40000>,
--			      <0x0 0x11940000 0 0x60000>;
-+			reg = <0x0 0x11900000 0 0x20000>,
-+			      <0x0 0x11940000 0 0x40000>;
- 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
- 		};
+diff --git a/tools/bpf/runqslower/Makefile b/tools/bpf/runqslower/Makefile
+index d8288936c9120..c4f1f1735af65 100644
+--- a/tools/bpf/runqslower/Makefile
++++ b/tools/bpf/runqslower/Makefile
+@@ -15,6 +15,7 @@ INCLUDES := -I$(OUTPUT) -I$(BPF_INCLUDE) -I$(abspath ../../include/uapi)
+ CFLAGS := -g -Wall $(CLANG_CROSS_FLAGS)
+ CFLAGS += $(EXTRA_CFLAGS)
+ LDFLAGS += $(EXTRA_LDFLAGS)
++LDLIBS += -lelf -lz
  
+ # Try to detect best kernel BTF source
+ KERNEL_REL := $(shell uname -r)
+@@ -51,7 +52,7 @@ clean:
+ libbpf_hdrs: $(BPFOBJ)
+ 
+ $(OUTPUT)/runqslower: $(OUTPUT)/runqslower.o $(BPFOBJ)
+-	$(QUIET_LINK)$(CC) $(CFLAGS) $^ -lelf -lz -o $@
++	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+ 
+ $(OUTPUT)/runqslower.o: runqslower.h $(OUTPUT)/runqslower.skel.h	      \
+ 			$(OUTPUT)/runqslower.bpf.o | libbpf_hdrs
 -- 
 2.43.0
 
