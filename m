@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-80460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86E098DD88
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 969D398DB16
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07EF1C234A1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43A13280DC8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3355E1D0E0D;
-	Wed,  2 Oct 2024 14:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378B51D12E3;
+	Wed,  2 Oct 2024 14:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2veJ4vsY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILSkYPz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D9C6FB0;
-	Wed,  2 Oct 2024 14:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB56F1D0412;
+	Wed,  2 Oct 2024 14:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880437; cv=none; b=pvBNSd//sze83Tg16fLrHtIcLPFla2sbrhLkh6zZ/qUdg6EaPiA7Sv7BUcRoqa+Oedr+C2uZjcY0n2+6X3dikwJ0UYWDJWdR2E4gG0hH/azyL/sr3MDXSn8YzIjyWRSanjeBjo1jRtXcib8tiF5QvfqLAo0/OOuCXnE8FD72WcY=
+	t=1727878979; cv=none; b=qyqoQeIvVooB1G8B6nGFKhdfZpqWm5O6C3LHBb+dTOn8gPVdFKTOktIWpSvvqpurCXTV633D63+0Iyg5TmIn/sSxW8DvXuuGdSND0XcnrpzcozxDRpebf5PGzfNa2Wm3yuI48FCbGBGL8hopDCh7/w9fDewaoA6GNcjekYKt8G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880437; c=relaxed/simple;
-	bh=ZJo+zGfwVFZmlpYFneEYQYK6OsqSCvmA0lf6acANshE=;
+	s=arc-20240116; t=1727878979; c=relaxed/simple;
+	bh=xBBcqUNxlD5JyKxK4tHofcjxFNsonv12/3wgNmEwzW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DeRVaPzXFbh5VWtn6P5cNR5ZCMfXZfltqpjUjorwl3kxXxU5ocWXpcY3gv6s87nW363dw8f/4jWG6hBpF3/aIPYbjFn73Or+ztt2Ilxxpvc4+H9KMIezsZfk5ztTZQveAgVF033/h1a5U1jBgm0BmRUdlL512Ir1PSRuhsltwqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2veJ4vsY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0EDC4CEC2;
-	Wed,  2 Oct 2024 14:47:16 +0000 (UTC)
+	 MIME-Version; b=Z7DH9au1Rsy82yh0d6v1PwogFnlun9Hgb6G1+4rrdto+S/N07+2Ii+w3jjOFrkM7D8FxT/jMw9HQuAW6Cs/wSZN3lss4WkD1Hn4JLQyIEdX3fGm0zN1gd8jJ9f0DyRJrPHzX84H9H+a6RK+n3kXwXznd51ih2C6aD6Z4MFj4nG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILSkYPz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7039BC4CEC2;
+	Wed,  2 Oct 2024 14:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880436;
-	bh=ZJo+zGfwVFZmlpYFneEYQYK6OsqSCvmA0lf6acANshE=;
+	s=korg; t=1727878978;
+	bh=xBBcqUNxlD5JyKxK4tHofcjxFNsonv12/3wgNmEwzW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2veJ4vsY3spz+l6kZQQeefM7jHFl6WiVlO5Aqo5Lxr8g1LDMQ3iK5jgMiluK/aUnO
-	 oMkCF2TpriSkxrcpqDhuSIqQNKzfWAQRQv/FLRO+slDVqd43WDoVSGIr+mjwl+EJle
-	 u5uGHdR18w5UIvwveHlLJnFvWDQ87UxFbOOkGLjg=
+	b=ILSkYPz+eil3X1AedOKATD9KnoDnD7N2lvRNa7upnAH3dLID3UHi0cY4PE3xP4prD
+	 qkCIFrJtz43F9ONpj9GndTYVMbxJzHYmLaJufwRQQCpNFffnxEqRlYqRy4+VyjnHMs
+	 ez8evt0p1//s6azTVF3NccSEBiBCvcE9BVdKz1LU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 458/538] debugobjects: Fix conditions in fill_pool()
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Kai Huang <kai.huang@intel.com>,
+	Tao Liu <ltao@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 597/634] x86/tdx: Account shared memory
 Date: Wed,  2 Oct 2024 15:01:37 +0200
-Message-ID: <20241002125810.522064838@linuxfoundation.org>
+Message-ID: <20241002125834.678709803@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit 684d28feb8546d1e9597aa363c3bfcf52fe250b7 upstream.
+[ Upstream commit c3abbf1376874f0d6eb22859a8655831644efa42 ]
 
-fill_pool() uses 'obj_pool_min_free' to decide whether objects should be
-handed back to the kmem cache. But 'obj_pool_min_free' records the lowest
-historical value of the number of objects in the object pool and not the
-minimum number of objects which should be kept in the pool.
+The kernel will convert all shared memory back to private during kexec.
+The direct mapping page tables will provide information on which memory
+is shared.
 
-Use 'debug_objects_pool_min_level' instead, which holds the minimum number
-which was scaled to the number of CPUs at boot time.
+It is extremely important to convert all shared memory. If a page is
+missed, it will cause the second kernel to crash when it accesses it.
 
-[ tglx: Massage change log ]
+Keep track of the number of shared pages. This will allow for
+cross-checking against the shared information in the direct mapping and
+reporting if the shared bit is lost.
 
-Fixes: d26bf5056fc0 ("debugobjects: Reduce number of pool_lock acquisitions in fill_pool()")
-Fixes: 36c4ead6f6df ("debugobjects: Add global free list and the counter")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240904133944.2124-3-thunder.leizhen@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Memory conversion is slow and does not happen often. Global atomic is
+not going to be a bottleneck.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Tested-by: Tao Liu <ltao@redhat.com>
+Link: https://lore.kernel.org/r/20240614095904.1345461-10-kirill.shutemov@linux.intel.com
+Stable-dep-of: d4fc4d014715 ("x86/tdx: Fix "in-kernel MMIO" check")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/debugobjects.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/coco/tdx/tdx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -141,13 +141,14 @@ static void fill_pool(void)
- 	 * READ_ONCE()s pair with the WRITE_ONCE()s in pool_lock critical
- 	 * sections.
- 	 */
--	while (READ_ONCE(obj_nr_tofree) && (READ_ONCE(obj_pool_free) < obj_pool_min_free)) {
-+	while (READ_ONCE(obj_nr_tofree) &&
-+	       READ_ONCE(obj_pool_free) < debug_objects_pool_min_level) {
- 		raw_spin_lock_irqsave(&pool_lock, flags);
- 		/*
- 		 * Recheck with the lock held as the worker thread might have
- 		 * won the race and freed the global free list already.
- 		 */
--		while (obj_nr_tofree && (obj_pool_free < obj_pool_min_free)) {
-+		while (obj_nr_tofree && (obj_pool_free < debug_objects_pool_min_level)) {
- 			obj = hlist_entry(obj_to_free.first, typeof(*obj), node);
- 			hlist_del(&obj->node);
- 			WRITE_ONCE(obj_nr_tofree, obj_nr_tofree - 1);
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index fdcc081317764..729ef77b65865 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -38,6 +38,8 @@
+ 
+ #define TDREPORT_SUBTYPE_0	0
+ 
++static atomic_long_t nr_shared;
++
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ noinstr void __noreturn __tdx_hypercall_failed(void)
+ {
+@@ -820,6 +822,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+ 		return -EIO;
+ 
++	if (enc)
++		atomic_long_sub(numpages, &nr_shared);
++	else
++		atomic_long_add(numpages, &nr_shared);
++
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
