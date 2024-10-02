@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EF098DD74
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C922B98DB05
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 706D61F22FDA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73200B26D6A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE41A1D0B89;
-	Wed,  2 Oct 2024 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BDE1D0F65;
+	Wed,  2 Oct 2024 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChnOasLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7gN5pJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE6E1D040D;
-	Wed,  2 Oct 2024 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F66C1D07BC;
+	Wed,  2 Oct 2024 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880393; cv=none; b=QKzvu9nvEQUDZhx03IsIJyiHO9gXNOiSpCJOGO4/S2V7l7CLtYM7/vcXhTIIWPeLxhGo3TTwEFGYQVxQexvrNa7zws1UrgtpAv7lhMYWed8LEQxVfVpU7/r/Ahw+RmhXBg2xyM84TvXNGOYgYuBGd9+8g9Xkxn4V4e0Df4K6ejA=
+	t=1727878935; cv=none; b=qS1lDPUTv24dyFdCdmawOTgysfKhdAe0mrYUYEI00iC87HIXVlR5B/MDACIyP/JGtuRc4mcmrih1VP3vHwmwhj+ea57nHdb/fSMHd1pzyP7SPf9xbVcruIoYetiaAtuPCpbPtqjW0eVJVbwBRFYD2HdQvCRHLzj0TcjlGNBQn80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880393; c=relaxed/simple;
-	bh=Y2mintr9GgXWdPavxsmVKYsG7Da+qAmFBqcMGzPsZFo=;
+	s=arc-20240116; t=1727878935; c=relaxed/simple;
+	bh=YJHrnTtQ7fnA/ELaf0PfH6VLHNte7EfYomtSseAYDkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sTO/VIc93pfeSNqdI3XSkwrG56LPtkYb1MVCpiB7EEA4o6clSUJQmSJMODA6cqOQriEHxG3jJvg/ruM87Lw/SzAqUOG5yCcKVeas4rLfyz8mZpGwwYsgOHYrMRppto2Pak+dWXfWVV6KsQ2YSXxBuVt7+TevHt5i/8EaSU2KAao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChnOasLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43F8C4CEC2;
-	Wed,  2 Oct 2024 14:46:32 +0000 (UTC)
+	 MIME-Version; b=EkaxY9sFqI6LjMckAqPzmIOuGRKIEfZbRmYmTcxI53K2yMBSiQQGD2Duh/ifkDPRde4nufJVz1n/GyIxNMcPOoPuQGRZ+p+XcdWsXFirY9DBURCLWPS+YbimIIAMOBeJvho1ZvESHX5UCvAFThP3MnCPNzJEVorDx5su+fLs9NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7gN5pJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF94C4CEC2;
+	Wed,  2 Oct 2024 14:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880393;
-	bh=Y2mintr9GgXWdPavxsmVKYsG7Da+qAmFBqcMGzPsZFo=;
+	s=korg; t=1727878935;
+	bh=YJHrnTtQ7fnA/ELaf0PfH6VLHNte7EfYomtSseAYDkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ChnOasLXtGkRHYWkJifcBgJwSstsBDOFEiLsa3IFnb83zg9g8EZg402GaVXgXjBmS
-	 NUbPWioHMm6bkmRzQSi2I4NZCtTjZeJftJ5IRZJvJOPKOR2BYUJPog92Krjd+LKpbQ
-	 XBR283HULM9IZj1pMegc2+SzEPuKsSrWCshAQFKQ=
+	b=w7gN5pJRR7BYs3EclRijFh1j4EuUAz9p5rHTUDukiIoQV5WUfhphV93gNPeYylK9i
+	 QB/IwC7Ryz69jShDYmMWYftriHsugCPEZUsC43rhmzRD9iPImPSyh5Hsp2QxuGYKp6
+	 Q2IUA7mibz/NBqIW38+HCW6aSgIdNQ87vsDdh3Mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.6 444/538] serial: qcom-geni: fix fifo polling timeout
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Anup Patel <anup@brainfault.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 583/634] cpuidle: riscv-sbi: Use scoped device node handling to fix missing of_node_put
 Date: Wed,  2 Oct 2024 15:01:23 +0200
-Message-ID: <20241002125809.966208271@linuxfoundation.org>
+Message-ID: <20241002125834.129010083@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,124 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c80ee36ac8f9e9c27d8e097a2eaaf198e7534c83 upstream.
+commit a309320ddbac6b1583224fcb6bacd424bcf8637f upstream.
 
-The qcom_geni_serial_poll_bit() can be used to wait for events like
-command completion and is supposed to wait for the time it takes to
-clear a full fifo before timing out.
+Two return statements in sbi_cpuidle_dt_init_states() did not drop the
+OF node reference count.  Solve the issue and simplify entire error
+handling with scoped/cleanup.h.
 
-As noted by Doug, the current implementation does not account for start,
-stop and parity bits when determining the timeout. The helper also does
-not currently account for the shift register and the two-word
-intermediate transfer register.
-
-A too short timeout can specifically lead to lost characters when
-waiting for a transfer to complete as the transfer is cancelled on
-timeout.
-
-Instead of determining the poll timeout on every call, store the fifo
-timeout when updating it in set_termios() and make sure to take the
-shift and intermediate registers into account. Note that serial core has
-already added a 20 ms margin to the fifo timeout.
-
-Also note that the current uart_fifo_timeout() interface does
-unnecessary calculations on every call and did not exist in earlier
-kernels so only store its result once. This facilitates backports too as
-earlier kernels can derive the timeout from uport->timeout, which has
-since been removed.
-
-Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
-Cc: stable@vger.kernel.org	# 4.17
-Reported-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240906131336.23625-2-johan+linaro@kernel.org
+Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://patch.msgid.link/20240820094023.61155-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ drivers/cpuidle/cpuidle-riscv-sbi.c |   21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -124,7 +124,7 @@ struct qcom_geni_serial_port {
- 	dma_addr_t tx_dma_addr;
- 	dma_addr_t rx_dma_addr;
- 	bool setup;
--	unsigned int baud;
-+	unsigned long poll_timeout_us;
- 	unsigned long clk_rate;
- 	void *rx_buf;
- 	u32 loopback;
-@@ -270,22 +270,13 @@ static bool qcom_geni_serial_poll_bit(st
+--- a/drivers/cpuidle/cpuidle-riscv-sbi.c
++++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
+@@ -8,6 +8,7 @@
+ 
+ #define pr_fmt(fmt) "cpuidle-riscv-sbi: " fmt
+ 
++#include <linux/cleanup.h>
+ #include <linux/cpuhotplug.h>
+ #include <linux/cpuidle.h>
+ #include <linux/cpumask.h>
+@@ -236,19 +237,16 @@ static int sbi_cpuidle_dt_init_states(st
  {
- 	u32 reg;
- 	struct qcom_geni_serial_port *port;
--	unsigned int baud;
--	unsigned int fifo_bits;
- 	unsigned long timeout_us = 20000;
- 	struct qcom_geni_private_data *private_data = uport->private_data;
+ 	struct sbi_cpuidle_data *data = per_cpu_ptr(&sbi_cpuidle_data, cpu);
+ 	struct device_node *state_node;
+-	struct device_node *cpu_node;
+ 	u32 *states;
+ 	int i, ret;
  
- 	if (private_data->drv) {
- 		port = to_dev_port(uport);
--		baud = port->baud;
--		if (!baud)
--			baud = 115200;
--		fifo_bits = port->tx_fifo_depth * port->tx_fifo_width;
--		/*
--		 * Total polling iterations based on FIFO worth of bytes to be
--		 * sent at current baud. Add a little fluff to the wait.
--		 */
--		timeout_us = ((fifo_bits * USEC_PER_SEC) / baud) + 500;
-+		if (port->poll_timeout_us)
-+			timeout_us = port->poll_timeout_us;
+-	cpu_node = of_cpu_device_node_get(cpu);
++	struct device_node *cpu_node __free(device_node) = of_cpu_device_node_get(cpu);
+ 	if (!cpu_node)
+ 		return -ENODEV;
+ 
+ 	states = devm_kcalloc(dev, state_count, sizeof(*states), GFP_KERNEL);
+-	if (!states) {
+-		ret = -ENOMEM;
+-		goto fail;
+-	}
++	if (!states)
++		return -ENOMEM;
+ 
+ 	/* Parse SBI specific details from state DT nodes */
+ 	for (i = 1; i < state_count; i++) {
+@@ -264,10 +262,8 @@ static int sbi_cpuidle_dt_init_states(st
+ 
+ 		pr_debug("sbi-state %#x index %d\n", states[i], i);
  	}
+-	if (i != state_count) {
+-		ret = -ENODEV;
+-		goto fail;
+-	}
++	if (i != state_count)
++		return -ENODEV;
  
- 	/*
-@@ -1223,11 +1214,11 @@ static void qcom_geni_serial_set_termios
- 	unsigned long clk_rate;
- 	u32 ver, sampling_rate;
- 	unsigned int avg_bw_core;
-+	unsigned long timeout;
+ 	/* Initialize optional data, used for the hierarchical topology. */
+ 	ret = sbi_dt_cpu_init_topology(drv, data, state_count, cpu);
+@@ -277,10 +273,7 @@ static int sbi_cpuidle_dt_init_states(st
+ 	/* Store states in the per-cpu struct. */
+ 	data->states = states;
  
- 	qcom_geni_serial_stop_rx(uport);
- 	/* baud rate */
- 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
--	port->baud = baud;
+-fail:
+-	of_node_put(cpu_node);
+-
+-	return ret;
++	return 0;
+ }
  
- 	sampling_rate = UART_OVERSAMPLING;
- 	/* Sampling rate is halved for IP versions >= 2.5 */
-@@ -1305,9 +1296,21 @@ static void qcom_geni_serial_set_termios
- 	else
- 		tx_trans_cfg |= UART_CTS_MASK;
- 
--	if (baud)
-+	if (baud) {
- 		uart_update_timeout(uport, termios->c_cflag, baud);
- 
-+		/*
-+		 * Make sure that qcom_geni_serial_poll_bitfield() waits for
-+		 * the FIFO, two-word intermediate transfer register and shift
-+		 * register to clear.
-+		 *
-+		 * Note that uart_fifo_timeout() also adds a 20 ms margin.
-+		 */
-+		timeout = jiffies_to_usecs(uart_fifo_timeout(uport));
-+		timeout += 3 * timeout / port->tx_fifo_depth;
-+		WRITE_ONCE(port->poll_timeout_us, timeout);
-+	}
-+
- 	if (!uart_console(uport))
- 		writel(port->loopback,
- 				uport->membase + SE_UART_LOOPBACK_CFG);
+ static void sbi_cpuidle_deinit_cpu(int cpu)
 
 
 
