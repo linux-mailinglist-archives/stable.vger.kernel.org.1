@@ -1,169 +1,162 @@
-Return-Path: <stable+bounces-80588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAED98E157
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 19:01:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3574298E18A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 19:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD371F22C46
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:01:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4510B1C22283
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E931D174C;
-	Wed,  2 Oct 2024 17:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1621D150E;
+	Wed,  2 Oct 2024 17:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="AO3ZaMFT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V89OgqV4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222A81D1314;
-	Wed,  2 Oct 2024 17:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BCF1D0BB0;
+	Wed,  2 Oct 2024 17:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727888422; cv=none; b=Z9KUfKp2q0RtydvFXb+VVForhnxZuSMSoI7YE83ztf/J77z9jevRqDPoWSeNVbEMhdddRYoAxRzNw+iX/xJN4q7JRxexQEv+RnrGylWf+Wl9ewN599hk1OiTLgQTU+Tw5NTW2FMuhl4lakaDKFhCWZDftx6aEZc6WiRLS+901CA=
+	t=1727889598; cv=none; b=n3Y05znzMP8LvpnscJz3D1k4fgMru051CaabGh/K5LwBfJF1Aln5qIPxekASGxItY5jHGjZQmUz4XqDQO+WQea/gVrrYiUBfxkPHWt7xm8KTxMO2ImZqt/b0UBF3qQogX/GN/I4htiulQaDal6Hws7+MFsrJGItSNx6oz2FTTBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727888422; c=relaxed/simple;
-	bh=JZz8gzddKUszdtYw5MN3ktLmT45RZx+JHWcCROzRJDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aN1AE7jc+cIQZyptseibmZfi/WyH+gIBK2v71X1+bocRrQY+1tvnAXm6e0cpyQE4iAHLDHF8tqzLEHpQLteoy18T3nl3Jd4Mosdxj5C16I7ncDElUUjtJuKT9B+lK0yuyuPYX5k4NpG04Mdv9tPNXk8uQA9mHVxR15+ffwS+JMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=AO3ZaMFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F714C4CECD;
-	Wed,  2 Oct 2024 17:00:20 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="AO3ZaMFT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1727888419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3vi3F61bmre7831EOYYbn7XMr2/b9RWvATa9gIfC3k=;
-	b=AO3ZaMFTjadjvh3hC2og6qgTtDNFU664rf/H5T2A4n0g3MVTO7vDX23T8trPDoeXJRk2UN
-	0WCPrpZ2K15M+MHWFIcetZooLxiXdDTofBhswr9/qAOForgMXKlDXRwdYgdcXp1s+qgLOI
-	Pci1Mkdg7wcS0vCjpbQomz4OE4OFtNI=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id acf4af39 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 2 Oct 2024 17:00:18 +0000 (UTC)
-Date: Wed, 2 Oct 2024 19:00:16 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Greg KH <greg@kroah.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: Patch "selftests: vDSO: skip getrandom test if architecture is
- unsupported" has been added to the 6.11-stable tree
-Message-ID: <Zv18ICE_3-ASLGp_@zx2c4.com>
-References: <20240930231443.2560728-1-sashal@kernel.org>
- <CAHmME9rFjE7nt4j5ZWwh=CrpPmtuZ_UdS5O4bQOgH8cVwEjr0Q@mail.gmail.com>
- <433ff0ca-92d1-475e-ad8b-d4416601d4ba@linuxfoundation.org>
- <ZvwLAib3296hIwI_@zx2c4.com>
- <279d123d-9a8d-446f-ac72-524979db6f7d@linuxfoundation.org>
- <ZvwPTngjm_OEPZjt@zx2c4.com>
- <2db8ba9e-853c-4733-be39-4b4207da2367@linuxfoundation.org>
- <ZvzIeenvKYaG_B1y@zx2c4.com>
- <2024100227-zesty-procreate-1d48@gregkh>
+	s=arc-20240116; t=1727889598; c=relaxed/simple;
+	bh=Sbfqm/YoHaNm6XOt8vy7oCLPqoe4IEjj91/nQVdjcX8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZpZQcMZyM5Y5tqCarTcabiBE8tD39qtqXvNKvKLwloPnUQ5vvr5OXz+knsZR4GqpshKf9VqbXq3+5T4/ggXlqSeo6R8MkZ7pBdqcnkuPBq0drsSmWkynH8w+kmMQH0DQRHshcd+QkE/zra4C1ikUrV7hKh38lQ+tfosuEpAp/WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V89OgqV4; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3e0465e6bd5so68262b6e.2;
+        Wed, 02 Oct 2024 10:19:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727889595; x=1728494395; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=tMrXenvfViWrqA5x5E3oVvAbgpaUSaEl3Bo6hLbb6IU=;
+        b=V89OgqV4iADzNB4rJ+JGaDqUOVQYg4MmQI/Pw2PO9Hto8r38XvzwlAGTGIsErhgiqS
+         FRd+G0tuP+U+OZR5ENX8uoixiEJDdSi6GP9Xxh61i7N62+84MYl6M5KkCUsBWK780+Sy
+         xUcFYgZzQd/6XUvxrtEc9YtFWDPLhzgZn9uuAPPMs1Tbf6Gj3GxXzu7ARRutrjX+MARN
+         x/Or9KS1SoChKemcqFxQLJqK/dg3plRdhageGIy/vti9ZZ8NSH5dsOaVRAofP8Vr/Csf
+         YSLp3ydAy/ZLazcmR79jstnQGg4nNsRXF7pxl4MOoXtgy67DnLvEmF38g6WET7lwjxUD
+         14Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727889595; x=1728494395;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tMrXenvfViWrqA5x5E3oVvAbgpaUSaEl3Bo6hLbb6IU=;
+        b=biULsKXSYkx1Ulv9PdXNV6poAIT6a7b9TMNOBtVKhglGLP8YtU0SqFUgCxi7oWIk8Z
+         gGcIJPAlUwpWwu3Qa3AGk261aDmsQA6aLjrM8P51VcyZnan3JbLcphM12RTcr1TFd0l4
+         54Km6kP89p8aUr4ccHe3oLeXOIfoVK1L5kl7mhE7CrDuPUOONoeGKLjU8YtEqojRh3wb
+         vsykZ1eQxiUVCz6xpiSfEa/GHhnvvnvmF8CF+/Zb60OV3mRERcXOa2pQLpXtFCn5lMMk
+         L6xM5RkeufAlnn6ji/lJJbIRDhknNAEl/yZDPtQf8T51nXEsf3t0d1W7St6d34cuBTeV
+         WeRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjixWLcxklbvXjOYyY4Q5T7sGXrM5mXV4ivZNw13cwvE6u1f2AsCJh/zVubU+Tk94B6TuL69i5@vger.kernel.org, AJvYcCXFDPaapdiklp4H9AOn+CtNOAJOiGveDbqdQx9f/tFfg12RmrJyHAZRaF3r1hNEikqShbcwqhrBuGanIKI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzopXDRHZcbJZOHg7P9tLlZwVDv2dC7ZX9Oi8tmzv+TIMaFYNoz
+	xSfyfMtpBeeThtiFSG1PV8FXzbVLHVsmgT3KKVdCee9oLqq46g1c
+X-Google-Smtp-Source: AGHT+IE8YwjUdIa5w0L3xpzUkffBpyRtcpNI2t0kxfiyVNQsyKrR1V9myARjr4tNiVAw86oEPHlwvQ==
+X-Received: by 2002:a05:6808:2212:b0:3e0:3b81:6b26 with SMTP id 5614622812f47-3e3b40fba7amr3715568b6e.15.1727889595505;
+        Wed, 02 Oct 2024 10:19:55 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e6db292f3bsm10123133a12.10.2024.10.02.10.19.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Oct 2024 10:19:54 -0700 (PDT)
+Message-ID: <fc54e825-17dd-4b6a-973e-00d2c3b1b4d0@gmail.com>
+Date: Wed, 2 Oct 2024 10:19:51 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2024100227-zesty-procreate-1d48@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/538] 6.6.54-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20241002125751.964700919@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 02, 2024 at 08:21:36AM +0200, Greg KH wrote:
-> On Wed, Oct 02, 2024 at 06:13:45AM +0200, Jason A. Donenfeld wrote:
-> > On Tue, Oct 01, 2024 at 09:29:45AM -0600, Shuah Khan wrote:
-> > > On 10/1/24 09:03, Jason A. Donenfeld wrote:
-> > > > On Tue, Oct 01, 2024 at 08:56:43AM -0600, Shuah Khan wrote:
-> > > >> On 10/1/24 08:45, Jason A. Donenfeld wrote:
-> > > >>> On Tue, Oct 01, 2024 at 08:43:05AM -0600, Shuah Khan wrote:
-> > > >>>> On 9/30/24 21:56, Jason A. Donenfeld wrote:
-> > > >>>>> This is not stable material and I didn't mark it as such. Do not backport.
-> > > >>>>
-> > > >>>> The way selftest work is they just skip if a feature isn't supported.
-> > > >>>> As such this test should run gracefully on stable releases.
-> > > >>>>
-> > > >>>> I would say backport unless and skip if the feature isn't supported.
-> > > >>>
-> > > >>> Nonsense. 6.11 never returns ENOSYS from vDSO. This doesn't make sense.
-> > > >>
-> > > >> Not sure what you mean by Nonsense. ENOSYS can be used to skip??
-> > > > 
-> > > > The branch that this patch adds will never be reached in 6.11 because
-> > > > the kernel does not have the corresponding code.
-> > > 
-> > > What should/would happen if this test is run on a kernel that doesn't
-> > > support the feature?
-> > 
-> > The build system doesn't compile it for kernels without the feature.
-> > 
+On 10/2/24 05:53, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.54 release.
+> There are 538 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> That's not how the kselftests should be working.
+> Responses should be made by Fri, 04 Oct 2024 12:56:13 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.54-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-If you'd like to get involved in the development of these, by all means
-send patches. As you can see, for 6.12, these were intensely improved in
-all manner of ways:
+Fails to build on arm, arm64 and mips with:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/tools/testing/selftests/vDSO
+libbpf.c: In function 'bpf_object__create_map':
+libbpf.c:5215:50: error: 'BPF_F_VTYPE_BTF_OBJ_FD' undeclared (first use 
+in this function)
+  5215 |                         create_attr.map_flags |= 
+BPF_F_VTYPE_BTF_OBJ_FD;
+       | 
+^~~~~~~~~~~~~~~~~~~~~~
+libbpf.c:5215:50: note: each undeclared identifier is reported only once 
+for each function it appears in
 
-Just look at that flurry of activity. Things are getting better! And
-things were in pretty bad shape before. If you think there's an
-interesting subset of that for backporting, by all means go for it, but
-do it thoughtfully and don't pick patches willy-nilly.
-
-> They can run on any
-> kernel image (build is separate from running on many test systems), and
-> so they should just fail with whatever the "feature not present" error
-> is if the feature isn't present in the system-that-is-being-tested.
-
-So, it's actually not that clear what the best thing is. Firstly, for
-vdso_test_chacha.c, it can't even compile without the symlink and a
-resolving tools/arch/$(SRCARCH)/vdso/vgetrandom-chacha.S symlink, which
-is on a per-arch basis. You might say that in this case, it's best to
-condition the Makefile on `ifneq ($(wildcard tools/arch/$(SRCARCH)/vdso/
-vgetrandom-chacha.S),)` instead of on $(ARCH), but there's this ugly
-wrinkle where some of the code that's being compiled is 64-bit only, and
-x86_64 and x86 share a $(SRCARCH) path. (That Makefile makes use of
-$(CONFIG_X86_32), which is pretty gross and might not work; I'm not yet
-sure how to fix that.) Christophe experimented with having the compiler
-decide, and then there being a runtime result, but it added a lot of
-complexity that didn't seem necessary. There's more experimentation to
-be done here.
-
-Meanwhile, part of vdso_test_getrandom.c's purpose is to test whether
-__kernel_getrandom() or __vdso_getrandom() is actually being properly
-exported from the vDSO. This is also interesting on powerpc, where it's
-implemented on both 32-bit and 64-bit, so there's the compat case to
-worry about. That in turn means that this test has in it:
-
-	vgrnd.fn = (__typeof__(vgrnd.fn))vdso_sym(version, name);
-	if (!vgrnd.fn) {
-		printf("%s is missing!\n", name);
-		exit(KSFT_FAIL);
-	}
-
-And not exit(KSFT_SKIP), since that would hide the failure to export the
-symbol. Now, you could say that since development on the fundamental
-part is mostly concluded, we could move to a KSFT_SKIP, in order to
-simplify the build choice and such. I'm not sure where I stand on that.
-At the very least, there's still RISC-V coming down the pipeline for
-this feature, so it probably would change after that comes out.
-
-Anyway, that is all to say that this stuff has been thoroughly
-considered, not haphazardly glued together or something. Maybe that
-consideration has reached wrong conclusions -- that's an entirely
-possible of an outcome -- but it wouldn't be for lack of caring. If
-you'd like to contribute to it, I'd certainly welcome a hand. But please
-don't do the arm-chair coding thing.
-
-Meanwhile, this ENOSYS thing has nothing to do with what either of you
-assumed it does. This is to handle obscure/exotic arm64 hardware, which
-might not exist in the Linux world, that doesn't have NEON support. But
-since arm64 support for this function didn't even come to Linux 6.11,
-there's no point in discussing it as a backport.
-
-Jason
+Caused by "libbpf: Find correct module BTFs for struct_ops maps and progs.".
+-- 
+Florian
 
