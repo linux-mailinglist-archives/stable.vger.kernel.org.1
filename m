@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-79027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891F898D62E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:37:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C960C98D630
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30C601F22B76
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:37:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 595A91F22D30
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4FA1D0164;
-	Wed,  2 Oct 2024 13:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640611D04A9;
+	Wed,  2 Oct 2024 13:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZq3yyZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJ0SrIGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B53418DF60;
-	Wed,  2 Oct 2024 13:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222BB29CE7;
+	Wed,  2 Oct 2024 13:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876226; cv=none; b=YTtASfSrzYkDzMw1Oeb4df7NcNJTGIc8qiNkIbkaQLCUrmbB5B3gd5XaYXgcefEX+4cx+SG/6qtLGeWRDsSXGDvFpHtn9q64Ut0YcHQ1+R2bex19k4HbCj2WPn8w8LpJRo9ZXistCy4khgWAIMz5MUOoSYZA6SQu/UAvmOiF410=
+	t=1727876232; cv=none; b=oXqCi2uyIzdi976T7UQVyOHL0TamjNiTmB6VKZgNcEwS8aGy95kEXdUNWS8o+o1oi9ayX9GH4+g0n030jompOWHRTPTLHWDSdsN6CgHMkM1Y8vrfSK6BSVexN6BDUJmwzUez+ADHQX82HWKwkRh32KHS3ArEVqHk0eSd7fbhSSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876226; c=relaxed/simple;
-	bh=Ot1WF+FVxFp5Q+ko5ylo042nhC9I3f4J/0bYPSDQ6Ds=;
+	s=arc-20240116; t=1727876232; c=relaxed/simple;
+	bh=pO444YDJRettAnApMhgd9QJk5IZb5gcgHosh+7VaFI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtmOQNbKUkg9x97R44NNEp8rbEn4fLpn9MeyqzOhHv7WQfxS7KU2veTdFtbJVbLvChiDBNIGV3q6SUPPEFoQ59quPEqnkFGJ4PNSvcEOAtfmyrYr+xnORJvJfnIVAteYYUW5XRkkzkVNUyY4ffaJMJAL5ITq5RQZ4fop8oYfr14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZq3yyZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FA2C4CEC5;
-	Wed,  2 Oct 2024 13:37:05 +0000 (UTC)
+	 MIME-Version; b=lBYQM6BC2rHpYzztpdsHhadRCG8I52ibqn4L5K+7EQGqKBIhJDRUKGzHjhFEOB1ga+p9OM8Gh7saKX8iUpPo+n0FEEMQPAtvp0+e3tqPoV0IbA0GQaIC4XbmdBip7m3V6hNFkvE0oQqdWTIeH/zaDKfKO6xUUGmixC/gPw7vrLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJ0SrIGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E454C4CECD;
+	Wed,  2 Oct 2024 13:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876226;
-	bh=Ot1WF+FVxFp5Q+ko5ylo042nhC9I3f4J/0bYPSDQ6Ds=;
+	s=korg; t=1727876232;
+	bh=pO444YDJRettAnApMhgd9QJk5IZb5gcgHosh+7VaFI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZq3yyZog6w1B2+AVeCQCReAWJ2Z5hw6mdVgzRFMzs7rxrICSIQUKTjfeXxI5kiY2
-	 AMXzNiMilNZEZZpz23tdZB9aw8iEklcmpMQRKP7fiCaq7UXOM23VZU0X14oyXceKNM
-	 2/BR1A9VH+A2JC6t8w/b7A/CXOidsgfOLnqVoqaM=
+	b=nJ0SrIGtgQGOqeFOPrm0QG/3DllR/HVvE1yJvES67lP+bqllacDObhv9anGVDFAiI
+	 TNaEkXy0vWTpwIU2E9X745y34zURivedm3FpIr7oWHab84ok1UqPp7r7dh0C9lB/qc
+	 2x1mrUbW1WyPXSrWRPYgM002hVnOEGsg8kC/On+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Varadarajan Narayanan <quic_varada@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 372/695] clk: qcom: ipq5332: Register gcc_qdss_tsctr_clk_src
-Date: Wed,  2 Oct 2024 14:56:10 +0200
-Message-ID: <20241002125837.308872593@linuxfoundation.org>
+Subject: [PATCH 6.11 373/695] clk: qcom: dispcc-sm8250: use special function for Lucid 5LPE PLL
+Date: Wed,  2 Oct 2024 14:56:11 +0200
+Message-ID: <20241002125837.348524069@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -67,38 +66,122 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Varadarajan Narayanan <quic_varada@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0e1ac23dfa3f635e486fdeb08206b981cb0a2a6b ]
+[ Upstream commit 362be5cbaec2a663eb86b7105313368b4a71fc1e ]
 
-gcc_qdss_tsctr_clk_src (enabled in the boot loaders and dependent
-on gpll4_main) was not registered as one of the ipq5332 clocks.
-Hence clk_disable_unused() disabled 'gpll4_main' assuming there
-were no consumers for 'gpll4_main' resulting in system freeze or
-reboots.
+According to msm-5.10 the lucid 5lpe PLLs have require slightly
+different configuration that trion / lucid PLLs, it doesn't set
+PLL_UPDATE_BYPASS bit. Add corresponding function and use it for the
+display clock controller on Qualcomm SM8350 platform.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: 3d89d52970fd ("clk: qcom: add Global Clock controller (GCC) driver for IPQ5332 SoC")
-Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
-Link: https://lore.kernel.org/r/20240730054817.1915652-4-quic_varada@quicinc.com
+Fixes: 205737fe3345 ("clk: qcom: add support for SM8350 DISPCC")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-2-1149dd8399fe@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq5332.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++++++++++++
+ drivers/clk/qcom/clk-alpha-pll.h |  2 ++
+ drivers/clk/qcom/dispcc-sm8250.c |  9 ++++--
+ 3 files changed, 61 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-ipq5332.c b/drivers/clk/qcom/gcc-ipq5332.c
-index f98591148a976..6a4877d888294 100644
---- a/drivers/clk/qcom/gcc-ipq5332.c
-+++ b/drivers/clk/qcom/gcc-ipq5332.c
-@@ -3388,6 +3388,7 @@ static struct clk_regmap *gcc_ipq5332_clocks[] = {
- 	[GCC_QDSS_DAP_DIV_CLK_SRC] = &gcc_qdss_dap_div_clk_src.clkr,
- 	[GCC_QDSS_ETR_USB_CLK] = &gcc_qdss_etr_usb_clk.clkr,
- 	[GCC_QDSS_EUD_AT_CLK] = &gcc_qdss_eud_at_clk.clkr,
-+	[GCC_QDSS_TSCTR_CLK_SRC] = &gcc_qdss_tsctr_clk_src.clkr,
- 	[GCC_QPIC_AHB_CLK] = &gcc_qpic_ahb_clk.clkr,
- 	[GCC_QPIC_CLK] = &gcc_qpic_clk.clkr,
- 	[GCC_QPIC_IO_MACRO_CLK] = &gcc_qpic_io_macro_clk.clkr,
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 31bf9d13f1541..b59317e234c61 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -1832,6 +1832,58 @@ const struct clk_ops clk_alpha_pll_agera_ops = {
+ };
+ EXPORT_SYMBOL_GPL(clk_alpha_pll_agera_ops);
+ 
++/**
++ * clk_lucid_5lpe_pll_configure - configure the lucid 5lpe pll
++ *
++ * @pll: clk alpha pll
++ * @regmap: register map
++ * @config: configuration to apply for pll
++ */
++void clk_lucid_5lpe_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
++				  const struct alpha_pll_config *config)
++{
++	/*
++	 * If the bootloader left the PLL enabled it's likely that there are
++	 * RCGs that will lock up if we disable the PLL below.
++	 */
++	if (trion_pll_is_enabled(pll, regmap)) {
++		pr_debug("Lucid 5LPE PLL is already enabled, skipping configuration\n");
++		return;
++	}
++
++	clk_alpha_pll_write_config(regmap, PLL_L_VAL(pll), config->l);
++	regmap_write(regmap, PLL_CAL_L_VAL(pll), TRION_PLL_CAL_VAL);
++	clk_alpha_pll_write_config(regmap, PLL_ALPHA_VAL(pll), config->alpha);
++	clk_alpha_pll_write_config(regmap, PLL_CONFIG_CTL(pll),
++				     config->config_ctl_val);
++	clk_alpha_pll_write_config(regmap, PLL_CONFIG_CTL_U(pll),
++				     config->config_ctl_hi_val);
++	clk_alpha_pll_write_config(regmap, PLL_CONFIG_CTL_U1(pll),
++				     config->config_ctl_hi1_val);
++	clk_alpha_pll_write_config(regmap, PLL_USER_CTL(pll),
++					config->user_ctl_val);
++	clk_alpha_pll_write_config(regmap, PLL_USER_CTL_U(pll),
++					config->user_ctl_hi_val);
++	clk_alpha_pll_write_config(regmap, PLL_USER_CTL_U1(pll),
++					config->user_ctl_hi1_val);
++	clk_alpha_pll_write_config(regmap, PLL_TEST_CTL(pll),
++					config->test_ctl_val);
++	clk_alpha_pll_write_config(regmap, PLL_TEST_CTL_U(pll),
++					config->test_ctl_hi_val);
++	clk_alpha_pll_write_config(regmap, PLL_TEST_CTL_U1(pll),
++					config->test_ctl_hi1_val);
++
++	/* Disable PLL output */
++	regmap_update_bits(regmap, PLL_MODE(pll),  PLL_OUTCTRL, 0);
++
++	/* Set operation mode to OFF */
++	regmap_write(regmap, PLL_OPMODE(pll), PLL_STANDBY);
++
++	/* Place the PLL in STANDBY mode */
++	regmap_update_bits(regmap, PLL_MODE(pll), PLL_RESET_N, PLL_RESET_N);
++}
++EXPORT_SYMBOL_GPL(clk_lucid_5lpe_pll_configure);
++
+ static int alpha_pll_lucid_5lpe_enable(struct clk_hw *hw)
+ {
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+diff --git a/drivers/clk/qcom/clk-alpha-pll.h b/drivers/clk/qcom/clk-alpha-pll.h
+index df8f0fe155313..e2cf5c7e501d0 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.h
++++ b/drivers/clk/qcom/clk-alpha-pll.h
+@@ -208,6 +208,8 @@ void clk_agera_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
+ 
+ void clk_zonda_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
+ 			     const struct alpha_pll_config *config);
++void clk_lucid_5lpe_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
++				  const struct alpha_pll_config *config);
+ void clk_lucid_evo_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
+ 				 const struct alpha_pll_config *config);
+ void clk_lucid_ole_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
+diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
+index 5a09009b72891..6665e064a5551 100644
+--- a/drivers/clk/qcom/dispcc-sm8250.c
++++ b/drivers/clk/qcom/dispcc-sm8250.c
+@@ -1357,8 +1357,13 @@ static int disp_cc_sm8250_probe(struct platform_device *pdev)
+ 		disp_cc_sm8250_clocks[DISP_CC_MDSS_EDP_GTC_CLK_SRC] = NULL;
+ 	}
+ 
+-	clk_lucid_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
+-	clk_lucid_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
++	if (of_device_is_compatible(pdev->dev.of_node, "qcom,sm8350-dispcc")) {
++		clk_lucid_5lpe_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
++		clk_lucid_5lpe_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
++	} else {
++		clk_lucid_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
++		clk_lucid_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
++	}
+ 
+ 	/* Enable clock gating for MDP clocks */
+ 	regmap_update_bits(regmap, 0x8000, 0x10, 0x10);
 -- 
 2.43.0
 
