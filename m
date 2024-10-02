@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D70298D9AE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E32E98DC4F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAC16289919
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD385285EFE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE0A1D1E60;
-	Wed,  2 Oct 2024 14:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBEF1D0956;
+	Wed,  2 Oct 2024 14:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRnWBNrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqclOs11"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B791D175D;
-	Wed,  2 Oct 2024 14:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4B01EF1D;
+	Wed,  2 Oct 2024 14:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878167; cv=none; b=ZqKxbGZi+hKrq6TXe6oYlSLie+au6wTkSraB4LYIo5XD229gZvWtfMCV2/ZXLQinc2BFbUsPZjY1zcwCM/zHUtWzrjil1x/57u3mboRdAMr1iiTYwB8dhttqW0TLOwpxxNT+FMUp4TgSbpHbcT90zreRuLfmsJ7C0XtnFD61Fdg=
+	t=1727879629; cv=none; b=lw001AFMC9WiCgULNFsjlcZ6lpQBGnhs2zsChcDXHaMvwlgxmn+3sCSvoTkaBAubQPbfdWoAQilu4HZ2PVHyye3xsqj4ShH5tWD+/rj4LIVNdBaX//Uqpzn6wn+LkOuP3J1IlP+KT/qVBKIc4x4Soa2qyi3oA92wpHumuAzKVHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878167; c=relaxed/simple;
-	bh=HMvJZ0gMIXuMTbsiHoLxLkFex8YFPw8yzTKm5o26FUk=;
+	s=arc-20240116; t=1727879629; c=relaxed/simple;
+	bh=K1oqR8hZ4IrT3yreUL1QHREWBbI00aoklg+EZiNc6yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuToAMS48lDo4zi3YF0kmiWVdxvGtlnlEAaCfOsnvAsFYYOHLl+3LmU3M/qTa6Ybv7m7boHxovTC1f2FIbCbhNTe4DhRFXJzJ+pK4WvEHb4IPGYSDbuC/5tfO1C2tVwytattIl3EbU+EnWc9q2FOxPcYUODJUJDpLQOgYDegFGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRnWBNrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E74C4CEC2;
-	Wed,  2 Oct 2024 14:09:26 +0000 (UTC)
+	 MIME-Version; b=hanVS69R4Fz+m8XKCBjIr3RKQQ8+aOg4FR8GB0yDsJbVfGH6gwKp1hZK1L2MaTB1MRwbsmWsZru+sTaVS/j78KSv12wlE+mX9SFgCgAqFzUsPCyu0vLom9XjSlI+Ba7Gpsl/kezPEKf5fJRwGgsW1Cyb9TLgaLUoLtOBSMGun08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqclOs11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FD7C4CECD;
+	Wed,  2 Oct 2024 14:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878167;
-	bh=HMvJZ0gMIXuMTbsiHoLxLkFex8YFPw8yzTKm5o26FUk=;
+	s=korg; t=1727879629;
+	bh=K1oqR8hZ4IrT3yreUL1QHREWBbI00aoklg+EZiNc6yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRnWBNrfoYw8dXaKqoJdnlm+ctIYj31hmBrzPcDjixZqxmIGZ2usYAuOGSYceDSU0
-	 HBp/kNkJM1D48F+xJTaVRshkp89ubGpr6ir+XuzdOFV/80iOhiNpmHQQstkYCYu+ki
-	 Q6UPjtKl4vQUlPldrpHDW/mDJsPP87r6laWoGa2Y=
+	b=xqclOs11JX5b8ULjDwlzovT+XuKTooCcrbksxrmSlCOHciKuIVa1aRpGOm75ewfvb
+	 RD47GPU7BLTcnbM0TegoAy/Ha44sBfkZxp3aEpags6gy6d9/6wynVE9/tmR5qps/Eu
+	 UV+wrWKjFFcOLrILP1grw2AAMDded8RV8aJawDFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 322/634] clk: qcom: dispcc-sm8550: use rcg2_ops for mdss_dptx1_aux_clk_src
-Date: Wed,  2 Oct 2024 14:57:02 +0200
-Message-ID: <20241002125823.813138407@linuxfoundation.org>
+Subject: [PATCH 6.6 184/538] bpf: Temporarily define BPF_NO_PRESEVE_ACCESS_INDEX for GCC
+Date: Wed,  2 Oct 2024 14:57:03 +0200
+Message-ID: <20241002125759.521756525@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jose E. Marchesi <jose.marchesi@oracle.com>
 
-[ Upstream commit cb4c00698f2f27d99a69adcce659370ca286cf2a ]
+[ Upstream commit 675b4e24bc50f4600b6bf3527fdbaa1f73498334 ]
 
-clk_dp_ops should only be used for DisplayPort pixel clocks. Use
-clk_rcg2_ops for disp_cc_mdss_dptx1_aux_clk_src.
+The vmlinux.h file generated by bpftool makes use of compiler pragmas
+in order to install the CO-RE preserve_access_index in all the struct
+types derived from the BTF info:
 
-Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-2-5c4a3128c40b@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  #ifndef __VMLINUX_H__
+  #define __VMLINUX_H__
+
+  #ifndef BPF_NO_PRESERVE_ACCESS_INDEX
+  #pragma clang attribute push (__attribute__((preserve_access_index)), apply_t = record
+  #endif
+
+  [... type definitions generated from kernel BTF ... ]
+
+  #ifndef BPF_NO_PRESERVE_ACCESS_INDEX
+  #pragma clang attribute pop
+  #endif
+
+The `clang attribute push/pop' pragmas are specific to clang/llvm and
+are not supported by GCC.
+
+At the moment the BTF dumping services in libbpf do not support
+dicriminating between types dumped because they are directly referred
+and types dumped because they are dependencies.  A suitable API is
+being worked now. See [1] and [2].
+
+In the interim, this patch changes the selftests/bpf Makefile so it
+passes -DBPF_NO_PRESERVE_ACCESS_INDEX to GCC when it builds the
+selftests.  This workaround is temporary, and may have an impact on
+the results of the GCC-built tests.
+
+[1] https://lore.kernel.org/bpf/20240503111836.25275-1-jose.marchesi@oracle.com/T/#u
+[2] https://lore.kernel.org/bpf/20240504205510.24785-1-jose.marchesi@oracle.com/T/#u
+
+Tested in bpf-next master.
+No regressions.
+
+Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240507095011.15867-1-jose.marchesi@oracle.com
+Stable-dep-of: 3ece93a4087b ("selftests/bpf: Fix wrong binary in Makefile log output")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8550.c | 2 +-
+ tools/testing/selftests/bpf/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
-index 56918e2a7734d..6ac7a0cd7e063 100644
---- a/drivers/clk/qcom/dispcc-sm8550.c
-+++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -400,7 +400,7 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
- 		.parent_data = disp_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_dp_ops,
-+		.ops = &clk_rcg2_ops,
- 	},
- };
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index e0f499794f162..24b85060df779 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -412,7 +412,7 @@ endef
+ # Build BPF object using GCC
+ define GCC_BPF_BUILD_RULE
+ 	$(call msg,GCC-BPF,$(TRUNNER_BINARY),$2)
+-	$(Q)$(BPF_GCC) $3 -Wno-attributes -O2 -c $1 -o $2
++	$(Q)$(BPF_GCC) $3 -DBPF_NO_PRESERVE_ACCESS_INDEX -Wno-attributes -O2 -c $1 -o $2
+ endef
  
+ SKEL_BLACKLIST := btf__% test_pinning_invalid.c test_sk_assign.c
 -- 
 2.43.0
 
