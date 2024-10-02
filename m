@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-80251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6522C98DCA4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDFC98DA08
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D35861F2804F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414DD1C2048A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D761D0BA5;
-	Wed,  2 Oct 2024 14:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DF31D1303;
+	Wed,  2 Oct 2024 14:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8r51CVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyGpM6Ku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65BB1EB21;
-	Wed,  2 Oct 2024 14:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350C81D1300;
+	Wed,  2 Oct 2024 14:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879822; cv=none; b=b6mO/CQDWfM5sAjfUFJq39aTntmbblEIsreSwq9EFzyail37X8mwIRennRMea7vQqFpOVCvZRyHnCjqFPQMpwh0168ha4Uwb59eFeSuJ8VGj1Jwz4VLvAAB9oUZIEjBQ7aDAHwdVnAfkSrPoz491ePRLemuvDyqB+CJhT9uhMi0=
+	t=1727878367; cv=none; b=mHBx6FrwVg4nwQ3fqWl/jfhaBlO06IzkQwCmerwFAr85I/AruIiU3SZeD+2iSjKWElUhnqNJiOUHlbwcw2OYz7E4Es0RaVrMmNHKVj31nTjPfbfkaLwHC1R5RwznuODR8bHCeAus1IK/NxZhkTbj/IexMwY9xAqoRPYVRlZjeP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879822; c=relaxed/simple;
-	bh=pw4pW51ueLNms/BqGFDbRqlSYeaqI0otLmCvUa6Z1/g=;
+	s=arc-20240116; t=1727878367; c=relaxed/simple;
+	bh=HIHax+0ku9WWJ0NZGXbUdbyqhLdvyP+MCXigoncU2r0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WetpKA+zkjqSalEejo++C81xTRDfjAhXUL6L3bsGg6eMgYSnDRX+4LMIIrmFlMtY3WaRh0pGKcnEMe+Ae60rF2WIESnI0J04uBl1s1lV+KO22X4hCHZkhCb7O3mTZoYr/JAyvXiWcdWwIxIN1DJ8nm9OMXjT7kt4FXRZzt3t1Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8r51CVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44082C4CEC2;
-	Wed,  2 Oct 2024 14:37:02 +0000 (UTC)
+	 MIME-Version; b=EzWqaMMg63Rxc5rOshklGn1nT/T6axvt2nI38QrcunsC23HCDi9Fh+7iTrj9IwuQARFUYTjQZfOTip9xxTdT97iewAFU/dfO7JVWyh4y+2wy1U2EewRGQ65SRA6E3YYg0Z4QGrPk8e68ObMv6Fv5Dc3XQ2rpCZHHlGtIaKEcvCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyGpM6Ku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE554C4CEC2;
+	Wed,  2 Oct 2024 14:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879822;
-	bh=pw4pW51ueLNms/BqGFDbRqlSYeaqI0otLmCvUa6Z1/g=;
+	s=korg; t=1727878367;
+	bh=HIHax+0ku9WWJ0NZGXbUdbyqhLdvyP+MCXigoncU2r0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8r51CVlsCSF8P5zgF6I7UmMKE1yKIx0RwpabVPAiQfYqhakdwW1b8aAuu4nU95QJ
-	 j1Vlpg6K1rgJMjcM30xQzcVNsOikkOPQl7n2IrCymNtvvaspbkMO/qR56jWOkPHqji
-	 TRvV4IPg/mRNCEEtZzRXLT+NhOn60nOJEtkgcPLA=
+	b=RyGpM6KuPwwemMmIKZdPcAYGp/i+/TBRBFornUV66MmJkp3pYabVWxUyLZCK6ottj
+	 kL9CC1mR5SdPsyVewPWkHws2Pk/nAgPv5FX3fJ9N12pUSVJgc0ppte3+7sCYNK+mJH
+	 gaBPpGzc7bB7nwXK6cIa7vMDKks2UX9r+viPGUJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jerry Dai <jerry.dai@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 250/538] perf annotate: Move some source code related fields from struct annotation to struct annotated_source
+Subject: [PATCH 6.10 389/634] ntb: Force physically contiguous allocation of rx ring buffers
 Date: Wed,  2 Oct 2024 14:58:09 +0200
-Message-ID: <20241002125802.123578020@linuxfoundation.org>
+Message-ID: <20241002125826.458798726@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,151 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 0aae4c99c5f8f748c6cb5ca03bb3b3ae8cfb10df ]
+[ Upstream commit 061a785a114f159e990ea8ed8d1b7dca4b41120f ]
 
-Some fields in the 'struct annotation' are only used with 'struct
-annotated_source' so better to be moved there in order to reduce memory
-consumption for other symbols.
+Physical addresses under IOVA on x86 platform are mapped contiguously
+as a side effect before the patch that removed CONFIG_DMA_REMAP. The
+NTB rx buffer ring is a single chunk DMA buffer that is allocated
+against the NTB PCI device. If the receive side is using a DMA device,
+then the buffers are remapped against the DMA device before being
+submitted via the dmaengine API. This scheme becomes a problem when
+the physical memory is discontiguous. When dma_map_page() is called
+on the kernel virtual address from the dma_alloc_coherent() call, the
+new IOVA mapping no longer points to all the physical memory allocated
+due to being discontiguous. Change dma_alloc_coherent() to dma_alloc_attrs()
+in order to force DMA_ATTR_FORCE_CONTIGUOUS attribute. This is the best
+fix for the circumstance. A potential future solution may be having the DMA
+mapping API providing a way to alias an existing IOVA mapping to a new
+device perhaps.
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231103191907.54531-5-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 3ef44458071a ("perf report: Fix --total-cycles --stdio output error")
+This fix is not to fix the patch pointed to by the fixes tag, but to fix
+the issue arised in the ntb_transport driver on x86 platforms after the
+said patch is applied.
+
+Reported-by: Jerry Dai <jerry.dai@intel.com>
+Fixes: f5ff79fddf0e ("dma-mapping: remove CONFIG_DMA_REMAP")
+Tested-by: Jerry Dai <jerry.dai@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/browsers/annotate.c | 12 ++++++------
- tools/perf/util/annotate.c        | 17 +++++++++--------
- tools/perf/util/annotate.h        | 14 +++++++-------
- 3 files changed, 22 insertions(+), 21 deletions(-)
+ drivers/ntb/ntb_transport.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/ui/browsers/annotate.c b/tools/perf/ui/browsers/annotate.c
-index d9f9fa254a71f..1fb7118ef5077 100644
---- a/tools/perf/ui/browsers/annotate.c
-+++ b/tools/perf/ui/browsers/annotate.c
-@@ -384,7 +384,7 @@ static bool annotate_browser__toggle_source(struct annotate_browser *browser)
- 		if (al->idx_asm < offset)
- 			offset = al->idx;
- 
--		browser->b.nr_entries = notes->nr_entries;
-+		browser->b.nr_entries = notes->src->nr_entries;
- 		notes->options->hide_src_code = false;
- 		browser->b.seek(&browser->b, -offset, SEEK_CUR);
- 		browser->b.top_idx = al->idx - offset;
-@@ -402,7 +402,7 @@ static bool annotate_browser__toggle_source(struct annotate_browser *browser)
- 		if (al->idx_asm < offset)
- 			offset = al->idx_asm;
- 
--		browser->b.nr_entries = notes->nr_asm_entries;
-+		browser->b.nr_entries = notes->src->nr_asm_entries;
- 		notes->options->hide_src_code = true;
- 		browser->b.seek(&browser->b, -offset, SEEK_CUR);
- 		browser->b.top_idx = al->idx_asm - offset;
-@@ -435,7 +435,7 @@ static void ui_browser__init_asm_mode(struct ui_browser *browser)
- {
- 	struct annotation *notes = browser__annotation(browser);
- 	ui_browser__reset_index(browser);
--	browser->nr_entries = notes->nr_asm_entries;
-+	browser->nr_entries = notes->src->nr_asm_entries;
+diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+index f9e7847a378e7..c84fadfc63c52 100644
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -807,16 +807,29 @@ static void ntb_free_mw(struct ntb_transport_ctx *nt, int num_mw)
  }
  
- static int sym_title(struct symbol *sym, struct map *map, char *title,
-@@ -860,7 +860,7 @@ static int annotate_browser__run(struct annotate_browser *browser,
- 					   browser->b.height,
- 					   browser->b.index,
- 					   browser->b.top_idx,
--					   notes->nr_asm_entries);
-+					   notes->src->nr_asm_entries);
- 		}
- 			continue;
- 		case K_ENTER:
-@@ -991,8 +991,8 @@ int symbol__tui_annotate(struct map_symbol *ms, struct evsel *evsel,
- 
- 	ui_helpline__push("Press ESC to exit");
- 
--	browser.b.width = notes->max_line_len;
--	browser.b.nr_entries = notes->nr_entries;
-+	browser.b.width = notes->src->max_line_len;
-+	browser.b.nr_entries = notes->src->nr_entries;
- 	browser.b.entries = &notes->src->source,
- 	browser.b.width += 18; /* Percentage */
- 
-diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-index e594be2b71340..6dfe11cbf30e2 100644
---- a/tools/perf/util/annotate.c
-+++ b/tools/perf/util/annotate.c
-@@ -2825,19 +2825,20 @@ void annotation__mark_jump_targets(struct annotation *notes, struct symbol *sym)
- void annotation__set_offsets(struct annotation *notes, s64 size)
+ static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
+-			       struct device *dma_dev, size_t align)
++			       struct device *ntb_dev, size_t align)
  {
- 	struct annotation_line *al;
-+	struct annotated_source *src = notes->src;
+ 	dma_addr_t dma_addr;
+ 	void *alloc_addr, *virt_addr;
+ 	int rc;
  
--	notes->max_line_len = 0;
--	notes->nr_entries = 0;
--	notes->nr_asm_entries = 0;
-+	src->max_line_len = 0;
-+	src->nr_entries = 0;
-+	src->nr_asm_entries = 0;
+-	alloc_addr = dma_alloc_coherent(dma_dev, mw->alloc_size,
+-					&dma_addr, GFP_KERNEL);
++	/*
++	 * The buffer here is allocated against the NTB device. The reason to
++	 * use dma_alloc_*() call is to allocate a large IOVA contiguous buffer
++	 * backing the NTB BAR for the remote host to write to. During receive
++	 * processing, the data is being copied out of the receive buffer to
++	 * the kernel skbuff. When a DMA device is being used, dma_map_page()
++	 * is called on the kvaddr of the receive buffer (from dma_alloc_*())
++	 * and remapped against the DMA device. It appears to be a double
++	 * DMA mapping of buffers, but first is mapped to the NTB device and
++	 * second is to the DMA device. DMA_ATTR_FORCE_CONTIGUOUS is necessary
++	 * in order for the later dma_map_page() to not fail.
++	 */
++	alloc_addr = dma_alloc_attrs(ntb_dev, mw->alloc_size,
++				     &dma_addr, GFP_KERNEL,
++				     DMA_ATTR_FORCE_CONTIGUOUS);
+ 	if (!alloc_addr) {
+-		dev_err(dma_dev, "Unable to alloc MW buff of size %zu\n",
++		dev_err(ntb_dev, "Unable to alloc MW buff of size %zu\n",
+ 			mw->alloc_size);
+ 		return -ENOMEM;
+ 	}
+@@ -845,7 +858,7 @@ static int ntb_alloc_mw_buffer(struct ntb_transport_mw *mw,
+ 	return 0;
  
--	list_for_each_entry(al, &notes->src->source, node) {
-+	list_for_each_entry(al, &src->source, node) {
- 		size_t line_len = strlen(al->line);
+ err:
+-	dma_free_coherent(dma_dev, mw->alloc_size, alloc_addr, dma_addr);
++	dma_free_coherent(ntb_dev, mw->alloc_size, alloc_addr, dma_addr);
  
--		if (notes->max_line_len < line_len)
--			notes->max_line_len = line_len;
--		al->idx = notes->nr_entries++;
-+		if (src->max_line_len < line_len)
-+			src->max_line_len = line_len;
-+		al->idx = src->nr_entries++;
- 		if (al->offset != -1) {
--			al->idx_asm = notes->nr_asm_entries++;
-+			al->idx_asm = src->nr_asm_entries++;
- 			/*
- 			 * FIXME: short term bandaid to cope with assembly
- 			 * routines that comes with labels in the same column
-diff --git a/tools/perf/util/annotate.h b/tools/perf/util/annotate.h
-index dd612f9f04c98..238e7ef289a82 100644
---- a/tools/perf/util/annotate.h
-+++ b/tools/perf/util/annotate.h
-@@ -269,10 +269,13 @@ struct cyc_hist {
-  * returns.
-  */
- struct annotated_source {
--	struct list_head   source;
--	int    		   nr_histograms;
--	size_t		   sizeof_sym_hist;
--	struct sym_hist	   *histograms;
-+	struct list_head	source;
-+	size_t			sizeof_sym_hist;
-+	struct sym_hist		*histograms;
-+	int    			nr_histograms;
-+	int			nr_entries;
-+	int			nr_asm_entries;
-+	u16			max_line_len;
- };
- 
- struct annotated_branch {
-@@ -290,9 +293,6 @@ struct LOCKABLE annotation {
- 	struct annotation_line	**offsets;
- 	int			nr_events;
- 	int			max_jump_sources;
--	int			nr_entries;
--	int			nr_asm_entries;
--	u16			max_line_len;
- 	struct {
- 		u8		addr;
- 		u8		jumps;
+ 	return rc;
+ }
 -- 
 2.43.0
 
