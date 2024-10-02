@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-79788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A619B98DA38
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E4398DCC8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E871B21562
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0CDA1F2399F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F611D1E61;
-	Wed,  2 Oct 2024 14:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914221D0E1B;
+	Wed,  2 Oct 2024 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xutgF8vV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhKOlXoX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED411D0BBA;
-	Wed,  2 Oct 2024 14:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412641D551;
+	Wed,  2 Oct 2024 14:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878467; cv=none; b=o/olEK8M7SyomEr00hOqHmbHdOuqlulHCJjSMBukpufsbNPrrfgVpIxNH+fHFf4Uc9rG3CV5S91TNnpwVhhczHT8O0soimemFeYf/r487GyCqhmOJXFHoXHLcuxAmOeacZIcDkhvVeiXJOTpITrSzW1H1OPi5XPigyYDTwIb7VY=
+	t=1727879926; cv=none; b=mHVv3msSVXw2pPLlwIB8kcBmyfNsYaHvFBQzmemvlCOlVwP02I1BsAn79GeYKASod9FJqEGIosMs10ynlFpu3JXrakNGQgT+hEa+uyjr0gcM0y42JOLunTuMZLI96EzICasohDtKo1Q+qUnW2ynLKlS9iOsKdtIxZev5K8+AKYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878467; c=relaxed/simple;
-	bh=yuVRgoCzjScAK+Aa7j8N7qYY4SQBxwaEA7pRAp5/JvI=;
+	s=arc-20240116; t=1727879926; c=relaxed/simple;
+	bh=xZ8SB3Ejmqxn1parzHuYi0eJWHTinqSWTmRJOVBHvgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STfQp2C+mjbM9cXtt+LPrG5tNKKe7Rfzst2AIgiP4HqgL0No1BHKUkkZrB6bTc1a+ukJLOugSfo/mxfZMPxAU5GI4s4rokbexx/a7bOsXgIkvZ+nDv1krQKXBHmzxhLwgjLwVIX5DHaszzgK587q+lSIVlY1yRYlH1v2ml/F3dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xutgF8vV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4B5C4CECD;
-	Wed,  2 Oct 2024 14:14:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=suq8ewoeplWK9S9biPG61tJqnHRwHCfX0q/eSJi12OOuuHZgblqSkFotBPGo/8dLlx5vtg2jzoyLnzx27xhcPx78BWbo3wvT3aQsS5h3UwtWPgdzFOiUMjUdIljIHJAKYzriduK45wGuzaP1IKifQVv56L3wYaGxz/MjfDr3q0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhKOlXoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3737C4CECF;
+	Wed,  2 Oct 2024 14:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878467;
-	bh=yuVRgoCzjScAK+Aa7j8N7qYY4SQBxwaEA7pRAp5/JvI=;
+	s=korg; t=1727879926;
+	bh=xZ8SB3Ejmqxn1parzHuYi0eJWHTinqSWTmRJOVBHvgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xutgF8vVUH/2I/nQzZwpZ4s0BGIeAENNxFtXqmi7AzRVl7ETcYiNsl/k60vI/qbiY
-	 GjHkqJDpMq9qhJcdNQVxDBozzKqFmzJinypA+JeBxYVkYy0iH2q4kGvVqcWAeCjEUp
-	 WwdpCxz+Vh2ipnwxYKFfIbh2UnnbuEzPQsRPaysc=
+	b=FhKOlXoXVF0BHZ5PkY2FhsWtKl2nOhDxPouJ88VvOQN13dBVvC+DNLjqZC8mTwM7d
+	 xxRD2YStI5zzYXg+3U5Wtu6Bx7HGQPrwbNa+vNbNBHv3/H7eAN7S1/bpG0DGLdKqd0
+	 PiK5RD6a3fqMziY/icNIU3bcDm6C+VddVORb9kUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 423/634] serial: 8250: omap: Cleanup on error in request_irq
-Date: Wed,  2 Oct 2024 14:58:43 +0200
-Message-ID: <20241002125827.800000714@linuxfoundation.org>
+Subject: [PATCH 6.6 285/538] PCI: keystone: Fix if-statement expression in ks_pcie_quirk()
+Date: Wed,  2 Oct 2024 14:58:44 +0200
+Message-ID: <20241002125803.505536112@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Schneider-Pargmann <msp@baylibre.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 35e648a16018b747897be2ccc3ce95ff23237bb5 ]
+[ Upstream commit 6188a1c762eb9bbd444f47696eda77a5eae6207a ]
 
-If devm_request_irq fails, the code does not cleanup many things that
-were setup before. Instead of directly returning ret we should jump to
-err.
+This code accidentally uses && where || was intended.  It potentially
+results in a NULL dereference.
 
-Fixes: fef4f600319e ("serial: 8250: omap: Fix life cycle issues for interrupt handlers")
-Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
-Link: https://lore.kernel.org/r/20240807141227.1093006-4-msp@baylibre.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus, fix the if-statement expression to use the correct condition.
+
+Fixes: 86f271f22bbb ("PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)")
+Link: https://lore.kernel.org/linux-pci/1b762a93-e1b2-4af3-8c04-c8843905c279@stanley.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 2 +-
+ drivers/pci/controller/dwc/pci-keystone.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index afef1dd4ddf49..fca5f25d693a7 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1581,7 +1581,7 @@ static int omap8250_probe(struct platform_device *pdev)
- 	ret = devm_request_irq(&pdev->dev, up.port.irq, omap8250_irq, 0,
- 			       dev_name(&pdev->dev), priv);
- 	if (ret < 0)
--		return ret;
-+		goto err;
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index c1dedc83759c6..c5475830c835f 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -579,7 +579,7 @@ static void ks_pcie_quirk(struct pci_dev *dev)
+ 	 */
+ 	if (pci_match_id(am6_pci_devids, bridge)) {
+ 		bridge_dev = pci_get_host_bridge_device(dev);
+-		if (!bridge_dev && !bridge_dev->parent)
++		if (!bridge_dev || !bridge_dev->parent)
+ 			return;
  
- 	priv->wakeirq = irq_of_parse_and_map(np, 1);
- 
+ 		ks_pcie = dev_get_drvdata(bridge_dev->parent);
 -- 
 2.43.0
 
