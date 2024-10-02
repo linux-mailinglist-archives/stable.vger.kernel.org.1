@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-79301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BBA98D78D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:50:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E018B98D79E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C09284245
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:50:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E462831CF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D341D042F;
-	Wed,  2 Oct 2024 13:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91E21D078E;
+	Wed,  2 Oct 2024 13:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfYvK1KA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fYdOqab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E818E1C9B91;
-	Wed,  2 Oct 2024 13:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FFA1D015C;
+	Wed,  2 Oct 2024 13:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877042; cv=none; b=igcM/nJVTx+u0/GZbx+ZKldIvkk1WcgLFlmnJR6suSiknLGy+IFT+D1Z8wIw1a7T2FGiGfO/UG+K/4ShMs+kJ5k6eLy2KxAg0ePvv64GdLUFGIaUmKmH57xbjC5rRfVH0E2fVN+rM3tGrZVQTizjU5BuHpqlU1IphsTPOEtLuJs=
+	t=1727877074; cv=none; b=WMSky9IALPwmFOKt347WchT1JLOb00Rv+3fWfLGjZNfVugvN+SdKg1pDdMTnGwOsHgzlbgwOPbtSNSh87t0QB09lICqRZLAIfOMcOV9Vp/mgXUHxmvHs0KkXYQOfNO+/RIfIpej2vj6mD4DukBrFf3hn+c57nMk9ykwSDjKTH24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877042; c=relaxed/simple;
-	bh=SFmAXZddesVd+h+MZjaat17d/dXyRZdyu3pOTcd1JNk=;
+	s=arc-20240116; t=1727877074; c=relaxed/simple;
+	bh=qmBhEDTn5rCs4ld8A1p7cu48ZjFU7iXEJvd4EULYfgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q67Wyl1mWrl/Pt0zNw1OkyjBr3022EMnXqBuOGmeKhIOE9DWAxtFmpJlKGtMmmhrJ87nF3a7XSvWCdLIfqKZt4JmcvbX5ZOB8qwdZV8OvUewDu357lQzrvOHEtRPhmcvg4AQP+9Y0kEY8bMrA00Y3ZZ0zRbyTUVg8vMWeLxrMF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfYvK1KA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB96C4CEC2;
-	Wed,  2 Oct 2024 13:50:41 +0000 (UTC)
+	 MIME-Version; b=Z5ye+HCIw6t4gYwONnbExIvxGYMROUlRe51IR0fjDmKEWmrS+km6IfXs0qfEFrKEDsPP2TjNXI2mHSun6irdKE1NQJuTZhltyQOveaTLAzKpxIM7opzd2Nwy/sS+ukuCoXFNtWDFjFURvwnmDgdCNT8v6gYnTkJcSEmeDv/xqmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fYdOqab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EF8C4CEC2;
+	Wed,  2 Oct 2024 13:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877041;
-	bh=SFmAXZddesVd+h+MZjaat17d/dXyRZdyu3pOTcd1JNk=;
+	s=korg; t=1727877074;
+	bh=qmBhEDTn5rCs4ld8A1p7cu48ZjFU7iXEJvd4EULYfgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfYvK1KAtxmomnYsHvsV9FOSwgICDO4SOj2byNDwII3ieb9aTmxq+YmnHEtImvAvq
-	 ABuU1Z2QeQqndrTsmqjbElsjKY2MZ1CAPb8wi78cmqYydZgTnJAVqgYP5H2hfoGqG1
-	 +lSE+6CpNe1u/131Y7xBWAsMoo1N8kpS9hqVNVT8=
+	b=1fYdOqabD2GmULCZXYu5KscHpvSnhohHSEe8vpjahQ5szPQA80IPOTt1/zpfqCJ58
+	 7o7HVeG3xzo7xS9RRF1wuUTLFMZpBX2pgiLm9KgcROoC9akDq+Z5/Dn+9RZAn32/7L
+	 9d3RbPiztd0zREwZWhZd4mkryxfEY7aec7C7VdP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Parton <njparton@gmail.com>,
-	Archange <archange@archlinux.org>,
-	Filipe Manana <fdmanana@suse.com>,
 	Qu Wenruo <wqu@suse.com>,
+	Luca Stefani <luca.stefani.ge1@gmail.com>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.11 627/695] btrfs: tree-checker: fix the wrong output of data backref objectid
-Date: Wed,  2 Oct 2024 15:00:25 +0200
-Message-ID: <20241002125847.540533528@linuxfoundation.org>
+Subject: [PATCH 6.11 628/695] btrfs: always update fstrim_range on failure in FITRIM ioctl
+Date: Wed,  2 Oct 2024 15:00:26 +0200
+Message-ID: <20241002125847.583153183@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -68,60 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Luca Stefani <luca.stefani.ge1@gmail.com>
 
-commit b0b595e61d97de61c15b379b754b2caa90e83e5c upstream.
+commit 3368597206dc3c6c3c2247ee146beada14c67380 upstream.
 
-[BUG]
-There are some reports about invalid data backref objectids, the report
-looks like this:
+Even in case of failure we could've discarded some data and userspace
+should be made aware of it, so copy fstrim_range to userspace
+regardless.
 
-  BTRFS critical (device sda): corrupt leaf: block=333654787489792 slot=110 extent bytenr=333413935558656 len=65536 invalid data ref objectid value 2543
+Also make sure to update the trimmed bytes amount even if
+btrfs_trim_free_extents fails.
 
-The data ref objectid is the inode number inside the subvolume.
-
-But in above case, the value is completely sane, not really showing the
-problem.
-
-[CAUSE]
-The root cause of the problem is the deprecated feature, inode cache.
-
-This feature results a special inode number, -12ULL, and it's no longer
-recognized by tree-checker, triggering the error.
-
-The direct problem here is the output of data ref objectid. The value
-shown is in fact the dref_root (subvolume id), not the dref_objectid
-(inode number).
-
-[FIX]
-Fix the output to use dref_objectid instead.
-
-Reported-by: Neil Parton <njparton@gmail.com>
-Reported-by: Archange <archange@archlinux.org>
-Link: https://lore.kernel.org/linux-btrfs/CAAYHqBbrrgmh6UmW3ANbysJX9qG9Pbg3ZwnKsV=5mOpv_qix_Q@mail.gmail.com/
-Link: https://lore.kernel.org/linux-btrfs/9541deea-9056-406e-be16-a996b549614d@archlinux.org/
-Fixes: f333a3c7e832 ("btrfs: tree-checker: validate dref root and objectid")
-CC: stable@vger.kernel.org # 6.11
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-checker.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c |    4 ++--
+ fs/btrfs/ioctl.c       |    4 +---
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1517,7 +1517,7 @@ static int check_extent_item(struct exte
- 				     dref_objectid > BTRFS_LAST_FREE_OBJECTID)) {
- 				extent_err(leaf, slot,
- 					   "invalid data ref objectid value %llu",
--					   dref_root);
-+					   dref_objectid);
- 				return -EUCLEAN;
- 			}
- 			if (unlikely(!IS_ALIGNED(dref_offset,
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -6551,13 +6551,13 @@ int btrfs_trim_fs(struct btrfs_fs_info *
+ 			continue;
+ 
+ 		ret = btrfs_trim_free_extents(device, &group_trimmed);
++
++		trimmed += group_trimmed;
+ 		if (ret) {
+ 			dev_failed++;
+ 			dev_ret = ret;
+ 			break;
+ 		}
+-
+-		trimmed += group_trimmed;
+ 	}
+ 	mutex_unlock(&fs_devices->device_list_mutex);
+ 
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -543,13 +543,11 @@ static noinline int btrfs_ioctl_fitrim(s
+ 
+ 	range.minlen = max(range.minlen, minlen);
+ 	ret = btrfs_trim_fs(fs_info, &range);
+-	if (ret < 0)
+-		return ret;
+ 
+ 	if (copy_to_user(arg, &range, sizeof(range)))
+ 		return -EFAULT;
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ int __pure btrfs_is_empty_uuid(const u8 *uuid)
 
 
 
