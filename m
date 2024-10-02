@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-79864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B57898DAAB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2C598DD57
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C69061F22040
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A98E9B29785
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C824F1D0B89;
-	Wed,  2 Oct 2024 14:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5EF1D0BAD;
+	Wed,  2 Oct 2024 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBBTEv70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lnp3XUet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866EA1D0493;
-	Wed,  2 Oct 2024 14:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E456FB0;
+	Wed,  2 Oct 2024 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878690; cv=none; b=sL8kpDRyfrgVxI0P1Ciwj5NJJbwvvCS//fMNTS4RQqiH7pXR+XRJlr468SbJ7P1i/AsKTLgJMbNJ3UPLeE8yM/wr6g3zTPQUUVxWpOHKk1MplPiD1bQz3BylPUlJybrN3AJdDIl3Hbq25pohMHdf/RIAOGa9J9r3Oh0CCvJj65c=
+	t=1727880152; cv=none; b=JD8H95wEcbHtqnqSyWKbfduxLXZ2b6WOM8ooLoLIW7+qau/7Jrrc0OHqRAFBkD5bHNFRWl+ddoNPAkxSq2dEASRpJzgwCLKW/uFws11St2H68eM7pfktsAByIuDhUXoAN5wbdH124p3DQTcpDiLRoy5QHo1QISn6P49Ym8Y2rHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878690; c=relaxed/simple;
-	bh=iHcVNEl5rwKFjaglsoFa1wRMpJjopD/w2u3baj4U0zw=;
+	s=arc-20240116; t=1727880152; c=relaxed/simple;
+	bh=ae1wYl5s/4b20LFdbDF8pyw62c115C6RMVuZe2mflNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5Le3ZX1yPNPiV77ZxtwvZA9M22vrNCFhxVC04kM0cKdV7yNF8tksj3tycLcjvWlC0OseFggLwGh5jevZLAQGGlATe4MC5tKi/qPedSIWLlx9cJi+LoarserNtj41uAY4wCcA4wczCKRnRK5wiCucUWx7MxA3zWV1W9L1N8mUCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBBTEv70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000DEC4CEC2;
-	Wed,  2 Oct 2024 14:18:09 +0000 (UTC)
+	 MIME-Version; b=JLICYK++ydiif9iuDsfaPqC4oUJ3gueZOppKtn/3EDxJmMPjbRHheFjkmHIKFioFoZXcUfJqJhaKPKgT4B4IiXuK1gg+3NcyYWyTYM+9ctAZgMfS89E8DTObusIK47eL5C3BTN8fB9MRt36yDnKJwXxIF6URx87KH0AevS6chCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lnp3XUet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD27C4CEC2;
+	Wed,  2 Oct 2024 14:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878690;
-	bh=iHcVNEl5rwKFjaglsoFa1wRMpJjopD/w2u3baj4U0zw=;
+	s=korg; t=1727880152;
+	bh=ae1wYl5s/4b20LFdbDF8pyw62c115C6RMVuZe2mflNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBBTEv70QG9RXoWLxxHgLSjqh2kptZI6mbW3w6m4/Bb7yy79bfGp/VEjgf9IFnVW3
-	 fPiWCWbB8NGxCAmv/wjgpjU9oCMEg29K32/lTQOsupGr4ALj0yYLak24K95M6V4Ie1
-	 RpWqeLC19949iOdFlnl3vqQg8qAA5woNoQrCaO2U=
+	b=Lnp3XUetFi9KkYqARimXt8IL3g9nMFmRfuZSnLJKoR87vPC+U8kNxiEBSHfmTlgwO
+	 TMDSsiNLfHf0d7D7S7URZ8GAGHq2vDwDrIJutMm1QoqS0IQ2WnKCyk4+GBYpofrvMm
+	 pFiAU9J3JFMFbFdYC6yOZ+dLM9Ye0/q40/ZGriQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Zhikai Zhai <zhikai.zhai@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.10 499/634] drm/amd/display: Skip to enable dsc if it has been off
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 360/538] dt-bindings: iio: asahi-kasei,ak8975: drop incorrect AK09116 compatible
 Date: Wed,  2 Oct 2024 14:59:59 +0200
-Message-ID: <20241002125830.794976280@linuxfoundation.org>
+Message-ID: <20241002125806.637036825@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 4bdc5b504af7de1f649004cfdd37445d36db6703 upstream.
+[ Upstream commit c7668ac67bc21aebdd8e2d7f839bfffba31b7713 ]
 
-[WHY]
-It makes DSC enable when we commit the stream which need
-keep power off, and then it will skip to disable DSC if
-pipe reset at this situation as power has been off. It may
-cause the DSC unexpected enable on the pipe with the
-next new stream which doesn't support DSC.
+All compatibles in this binding without prefixes were deprecated, so
+adding a new deprecated one after some time is not allowed, because it
+defies the core logic of deprecating things.
 
-[HOW]
-Check the DSC used on current pipe status when update stream.
-Skip to enable if it has been off. The operation enable
-DSC should happen when set power on.
+Drop the AK09916 vendorless compatible.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20240806053016.6401-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c |   14 ++++++++++++++
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c |   13 +++++++++++++
- 2 files changed, 27 insertions(+)
+ .../devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-@@ -991,6 +991,20 @@ static void update_dsc_on_stream(struct
- 		struct dsc_config dsc_cfg;
- 		struct dsc_optc_config dsc_optc_cfg = {0};
- 		enum optc_dsc_mode optc_dsc_mode;
-+		struct dcn_dsc_state dsc_state = {0};
-+
-+		if (!dsc) {
-+			DC_LOG_DSC("DSC is NULL for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+			return;
-+		}
-+
-+		if (dsc->funcs->dsc_read_state) {
-+			dsc->funcs->dsc_read_state(dsc, &dsc_state);
-+			if (!dsc_state.dsc_fw_en) {
-+				DC_LOG_DSC("DSC has been disabled for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+				return;
-+			}
-+		}
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+index 9790f75fc669e..fe5145d3b73cf 100644
+--- a/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
++++ b/Documentation/devicetree/bindings/iio/magnetometer/asahi-kasei,ak8975.yaml
+@@ -23,7 +23,6 @@ properties:
+           - ak8963
+           - ak09911
+           - ak09912
+-          - ak09916
+         deprecated: true
  
- 		/* Enable DSC hw block */
- 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -375,7 +375,20 @@ static void update_dsc_on_stream(struct
- 		struct dsc_config dsc_cfg;
- 		struct dsc_optc_config dsc_optc_cfg = {0};
- 		enum optc_dsc_mode optc_dsc_mode;
-+		struct dcn_dsc_state dsc_state = {0};
- 
-+		if (!dsc) {
-+			DC_LOG_DSC("DSC is NULL for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+			return;
-+		}
-+
-+		if (dsc->funcs->dsc_read_state) {
-+			dsc->funcs->dsc_read_state(dsc, &dsc_state);
-+			if (!dsc_state.dsc_fw_en) {
-+				DC_LOG_DSC("DSC has been disabled for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+				return;
-+			}
-+		}
- 		/* Enable DSC hw block */
- 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
- 		dsc_cfg.pic_height = stream->timing.v_addressable + stream->timing.v_border_top + stream->timing.v_border_bottom;
+   reg:
+-- 
+2.43.0
+
 
 
 
