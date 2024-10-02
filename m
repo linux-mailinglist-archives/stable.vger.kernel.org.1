@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E8498D4D4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A9998D7FB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A8E51C21A1D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC851F20FE2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF0D1D043C;
-	Wed,  2 Oct 2024 13:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3221D0795;
+	Wed,  2 Oct 2024 13:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15mgPAg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfwAkEEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE2C1D04B6;
-	Wed,  2 Oct 2024 13:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298541CFECF;
+	Wed,  2 Oct 2024 13:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875467; cv=none; b=Gda1u5escPbvJCs6vnDo7rZtuUmx5RDs0HS+VJUiDoS+DKdqzAXQ/nMxKRmcGFpcFdV4GkYS+8a07W53sQ9ypXI0VTPrI8uAv+JKbWEze+4nD9ulVOTcFHhwocyDuht99vV6yA4D+muEEeX7OejeP2bmlZVfyd+ltz3U92JUQnY=
+	t=1727877300; cv=none; b=MHFRwVCrB51pxN+0cHt1/7+t5YMfU2IaJy7VPYp0HeF6PbhEUgnJd1nNsczfcjxcsEC7EaTaOwZQCr/qI8PYq1Uis6h2zv/Yl2S/GCZjTGvgognAz8rPMMmy+pNq4rO+mV4Oi1hkAf/9zBSw+bZJPzlKIisxvThSHWWDUaOYjoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875467; c=relaxed/simple;
-	bh=nTZpSdznELTNLY2NDLMpYHIj++KqG1exJTbqDLdRXSQ=;
+	s=arc-20240116; t=1727877300; c=relaxed/simple;
+	bh=GhFTIITOsWIEEhqUxzL8qZFPxEcZLJz39REo+ZF48xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5BpIc+6cBLf6sj53+vkcBkTSdp69n3eu9qTd7Kd02csKMh/l7cTUafCwRc6bA9NMNubbo4PHZuSxSe6kDTMBjqino+Nu1g+UZcFN6Qigxr+qQAXm6rwVpzzpf7MYa4YwosLf6SV8173M5/5qFz0n5hb+8w5Tj+a/7gbdZrzoS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15mgPAg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245B6C4CECE;
-	Wed,  2 Oct 2024 13:24:24 +0000 (UTC)
+	 MIME-Version; b=KP/tGNKJ2g+kXrxTOWRIOvnrnG9ANYmOaJvoI7Zvy1WDfIa5e79cUUy5Ur4dltyALQ7BtWLXPmmzez9KVKWEYnKAjZ5lRQ2vydW/22mcJG/QyloB+4A2UqCCFXHTeTBjO9yIERCfjbzjOLXjOwcKUwtP2YIWDtidwbzeRyGJkbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfwAkEEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FF5C4CEFC;
+	Wed,  2 Oct 2024 13:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875465;
-	bh=nTZpSdznELTNLY2NDLMpYHIj++KqG1exJTbqDLdRXSQ=;
+	s=korg; t=1727877299;
+	bh=GhFTIITOsWIEEhqUxzL8qZFPxEcZLJz39REo+ZF48xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15mgPAg5Dy8RAxc6phlrNYgdL19apwdb4iGbeMgjyCTCJRbvSxFvyRMVF6QiFh20M
-	 A5sfDT48D/6kCD1OloDlmPYTm1PJ+V1OnEnILAcN3wBRpfJaawSlywDxznuvkw7Uwh
-	 rdwV7khGOlMfnXDl5tmt6zynEV72OvKIAuzjhjxc=
+	b=jfwAkEEd+E8/kxwKO9icuMw/lT6zdi7qS12X9V6CA6Ab9P8YDnggeiu4l1L00I4J4
+	 7ZDzeTtja6gfZ6saZAhTfQrpHqNp9cseviafRtxND/SAcmkR2iKdNax+Vafgs/zQh3
+	 BxPrz7hOQDDZm1TeYs+LdMcF+g8ZXVUYL4w+PjQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tom Zanussi <tom.zanussi@linux.intel.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 110/695] crypto: n2 - Set err to EINVAL if snprintf fails for hmac
+Subject: [PATCH 6.10 008/634] crypto: iaa - Fix potential use after free bug
 Date: Wed,  2 Oct 2024 14:51:48 +0200
-Message-ID: <20241002125826.864423791@linuxfoundation.org>
+Message-ID: <20241002125811.419406352@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ce212d2afca47acd366a2e74c76fe82c31f785ab ]
+[ Upstream commit e0d3b845a1b10b7b5abdad7ecc69d45b2aab3209 ]
 
-Return EINVAL if the snprintf check fails when constructing the
-algorithm names.
+The free_device_compression_mode(iaa_device, device_mode) function frees
+"device_mode" but it iss passed to iaa_compression_modes[i]->free() a few
+lines later resulting in a use after free.
 
-Fixes: 8c20982caca4 ("crypto: n2 - Silence gcc format-truncation false positive warnings")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202409090726.TP0WfY7p-lkp@intel.com/
+The good news is that, so far as I can tell, nothing implements the
+->free() function and the use after free happens in dead code.  But, with
+this fix, when something does implement it, we'll be ready.  :)
+
+Fixes: b190447e0fa3 ("crypto: iaa - Add compression mode management along with fixed mode")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Tom Zanussi <tom.zanussi@linux.intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/n2_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/n2_core.c b/drivers/crypto/n2_core.c
-index 251e088a53dff..b11545cc5cb79 100644
---- a/drivers/crypto/n2_core.c
-+++ b/drivers/crypto/n2_core.c
-@@ -1353,6 +1353,7 @@ static int __n2_register_one_hmac(struct n2_ahash_alg *n2ahash)
- 	ahash->setkey = n2_hmac_async_setkey;
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index e810d286ee8c4..237f870000702 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -495,10 +495,10 @@ static void remove_device_compression_modes(struct iaa_device *iaa_device)
+ 		if (!device_mode)
+ 			continue;
  
- 	base = &ahash->halg.base;
-+	err = -EINVAL;
- 	if (snprintf(base->cra_name, CRYPTO_MAX_ALG_NAME, "hmac(%s)",
- 		     p->child_alg) >= CRYPTO_MAX_ALG_NAME)
- 		goto out_free_p;
+-		free_device_compression_mode(iaa_device, device_mode);
+-		iaa_device->compression_modes[i] = NULL;
+ 		if (iaa_compression_modes[i]->free)
+ 			iaa_compression_modes[i]->free(device_mode);
++		free_device_compression_mode(iaa_device, device_mode);
++		iaa_device->compression_modes[i] = NULL;
+ 	}
+ }
+ 
 -- 
 2.43.0
 
