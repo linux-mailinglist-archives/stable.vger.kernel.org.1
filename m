@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-80463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919E998DD8C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF10898DB10
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413321F264AC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56B7B1F2254C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20821D0E1F;
-	Wed,  2 Oct 2024 14:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B911CF5FB;
+	Wed,  2 Oct 2024 14:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRf0vjVO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVjXccpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAFD1D043E;
-	Wed,  2 Oct 2024 14:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702981D0412;
+	Wed,  2 Oct 2024 14:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880445; cv=none; b=G5Y/8CWQAe0Ee4+M690AvbmoPbGLpDBHhe4NFWEAzn2pyg5yX++BVgjlUA8qzJ1G6WvJux0KWeqTgfT9GRDt3vP7vrW+z79730W4O9hjVFlnxjqRGv/UwJUcBoqyX+ibbl1iumuR+iSo1WcjrI2GD3BF0qLImSBkVMp1/ME/bBI=
+	t=1727878958; cv=none; b=SaggHo7SuqfxCOYh6iJjmiJyvEoD7lBBcGLvgfYbNrXsvULaILDIuyRqxx+ZrQpPQPUUgvB/tqqEnBHFcesif5cfYF0Q6nG+Oc62Dasl9uHgL6CVh40fchqg9WwI5EMHU/mdyzNw5wTrzgNwG38kZnFlwUNQ9FgHxgB1xKfRHWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880445; c=relaxed/simple;
-	bh=OZKdYKCY0PIg6WfZ1hziwoFyQqPdhPkCtylq7bUL4v0=;
+	s=arc-20240116; t=1727878958; c=relaxed/simple;
+	bh=o0DT1CV9J1xwivWZ8ha2DIdWgtKGttGNOcpjINGwbag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=By55ESss+foFwN4Ln/IhMpXvMRrgLZ8G56/Ipf054d9GiUmhH6ic9ZdgiBnrKsgbsbm3VFdWzz8lKVUGNw2uFpTW3Nm0IH7v8xKRIpAiqJqnfaQRA9j7Xe5/Jcf9n+d4dILXO1SE+aPVXIgKOhkDUroZpESwv49TnuV+Bmt+VBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRf0vjVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D73C4CEC2;
-	Wed,  2 Oct 2024 14:47:24 +0000 (UTC)
+	 MIME-Version; b=KSk46quVl+QRtPq7BVnbanD7Z9RB+Dey1BTu7rn9zmynT6q8CWM/ufv7uvZxXpo+q5QXtq8d/EScqL5j0wbdPaNmYS3j2T4yKRI6oRaXt4dPmm+8jFxj+FIWn3Waxm33iO88T57kVYJUyUIvyErQQXt4ArK98LcYxUV5xYHoCxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVjXccpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5533C4CEC2;
+	Wed,  2 Oct 2024 14:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880445;
-	bh=OZKdYKCY0PIg6WfZ1hziwoFyQqPdhPkCtylq7bUL4v0=;
+	s=korg; t=1727878958;
+	bh=o0DT1CV9J1xwivWZ8ha2DIdWgtKGttGNOcpjINGwbag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRf0vjVOS5phKZxiOHCwdspLgHJ40Vxon0ROp+2sYvgR9ULoBADFO2hUi5WVxkMQa
-	 j3IxAXgOOxZ0rQWpGm44BQJJAdtaLNW6mFKrrpYgbxt7VVFeCNQD72AX55DVn7rNGB
-	 sTUKMOIbfIpW8tqoUgbnbJcAqtEwt5JG1SX0VAIo=
+	b=jVjXccpXaMaQqNobM/osbXrLR8s1o4kV7J/zgrndB25Kdabkn8dckQxSUhK78CNPW
+	 yZN5nN4sdCr9/K7Q1f8tc0B0LIXaoHBwJKKPXa3FAllfzR/zGfNbVtwtjqC5vl8yWS
+	 kJB5Or7syQ4ECAugGvgfF/bzUIbB0moU10fPc3EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.6 434/538] USB: appledisplay: close race between probe and completion handler
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Qingqing Zhou <quic_qqzhou@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 573/634] arm64: dts: qcom: sa8775p: Mark APPS and PCIe SMMUs as DMA coherent
 Date: Wed,  2 Oct 2024 15:01:13 +0200
-Message-ID: <20241002125809.571395952@linuxfoundation.org>
+Message-ID: <20241002125833.732831291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Qingqing Zhou <quic_qqzhou@quicinc.com>
 
-commit 8265d06b7794493d82c5c21a12d7ba43eccc30cb upstream.
+commit 421688265d7f5d3ff4211982e7231765378bb64f upstream.
 
-There is a small window during probing when IO is running
-but the backlight is not registered. Processing events
-during that time will crash. The completion handler
-needs to check for a backlight before scheduling work.
+The SMMUs on sa8775p are cache-coherent. GPU SMMU is marked as such,
+mark the APPS and PCIe ones as well.
 
-The bug is as old as the driver.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240912123317.1026049-1-oneukum@suse.com
+Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
+Fixes: 2dba7a613a6e ("arm64: dts: qcom: sa8775p: add the pcie smmu node")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Qingqing Zhou <quic_qqzhou@quicinc.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20240723075948.9545-1-quic_qqzhou%40quicinc.com
+Link: https://lore.kernel.org/r/20240725072117.22425-1-quic_qqzhou@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/appledisplay.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/misc/appledisplay.c
-+++ b/drivers/usb/misc/appledisplay.c
-@@ -107,7 +107,12 @@ static void appledisplay_complete(struct
- 	case ACD_BTN_BRIGHT_UP:
- 	case ACD_BTN_BRIGHT_DOWN:
- 		pdata->button_pressed = 1;
--		schedule_delayed_work(&pdata->work, 0);
-+		/*
-+		 * there is a window during which no device
-+		 * is registered
-+		 */
-+		if (pdata->bd )
-+			schedule_delayed_work(&pdata->work, 0);
- 		break;
- 	case ACD_BTN_NONE:
- 	default:
-@@ -202,6 +207,7 @@ static int appledisplay_probe(struct usb
- 	const struct usb_device_id *id)
- {
- 	struct backlight_properties props;
-+	struct backlight_device *backlight;
- 	struct appledisplay *pdata;
- 	struct usb_device *udev = interface_to_usbdev(iface);
- 	struct usb_endpoint_descriptor *endpoint;
-@@ -272,13 +278,14 @@ static int appledisplay_probe(struct usb
- 	memset(&props, 0, sizeof(struct backlight_properties));
- 	props.type = BACKLIGHT_RAW;
- 	props.max_brightness = 0xff;
--	pdata->bd = backlight_device_register(bl_name, NULL, pdata,
-+	backlight = backlight_device_register(bl_name, NULL, pdata,
- 					      &appledisplay_bl_data, &props);
--	if (IS_ERR(pdata->bd)) {
-+	if (IS_ERR(backlight)) {
- 		dev_err(&iface->dev, "Backlight registration failed\n");
--		retval = PTR_ERR(pdata->bd);
-+		retval = PTR_ERR(backlight);
- 		goto error;
- 	}
-+	pdata->bd = backlight;
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -2104,6 +2104,7 @@
+ 			reg = <0x0 0x15000000 0x0 0x100000>;
+ 			#iommu-cells = <2>;
+ 			#global-interrupts = <2>;
++			dma-coherent;
  
- 	/* Try to get brightness */
- 	brightness = appledisplay_bl_get_brightness(pdata->bd);
+ 			interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
+@@ -2242,6 +2243,7 @@
+ 			reg = <0x0 0x15200000 0x0 0x80000>;
+ 			#iommu-cells = <2>;
+ 			#global-interrupts = <2>;
++			dma-coherent;
+ 
+ 			interrupts = <GIC_SPI 920 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 921 IRQ_TYPE_LEVEL_HIGH>,
 
 
 
