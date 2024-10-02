@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-79893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD0198DAC8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC1F98DD33
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55181F2511E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3D6A1C20BFA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664C51D1E76;
-	Wed,  2 Oct 2024 14:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9F11D1758;
+	Wed,  2 Oct 2024 14:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7cTc5pw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ok4xaQpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D0A1D0E12;
-	Wed,  2 Oct 2024 14:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29A91EA80;
+	Wed,  2 Oct 2024 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878776; cv=none; b=PrbO37+jFq/oj67mPPfJMdpr9QS6WcVODcY4WBwIivS5Ur8pcNiDSzcZyIiVt9BkInXu4w71lB2KbnFizkpArVXuoiH0NZFTbQt1m7Qhlh8Co38ta2CppPYrgvZ1RoaAgz5i3MABCjxlO7gvyZKpjXEiXcPiZHbEDPNJZUcVpWU=
+	t=1727880234; cv=none; b=YTM1KO8AToEJgTEl7En726ed4WTjEvlaV8OX6zVej5WLGkhGBE5rU2pE7JmMSnROwruKNu/eF2DZLyas4LYKmiUAU+bzVutq6tbf9/Ukf6kstb2NaD3p2XbDxzlRfct6VBRmCdnelQGrchE/TmexBhd6rAdRhoTUof79yLGc8PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878776; c=relaxed/simple;
-	bh=N6xMzKRFu0R/p1kFjrE7/YI8Frp0zu9Kl3ztGKGPCSY=;
+	s=arc-20240116; t=1727880234; c=relaxed/simple;
+	bh=dtxz6chEi5kwI7ZaPJ87otg3WPIRPnoR5+LJkSriVUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMKyLFT9kKay+usZuw69bLfbn7VDN8xiHgLC+289QDrNEmsc9g/oRHfyAV37mHDpRigIjo71dYK3Re0isRNnyL+dYUvIxba11jIu8eDBQwyjcnL5/HThWMU/ovUqhnaEyxfPAipoRb0guL8v374h9BGkbwBXwxLRyw9Lcxf7CgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7cTc5pw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA85C4CEC2;
-	Wed,  2 Oct 2024 14:19:35 +0000 (UTC)
+	 MIME-Version; b=B/r2HLmv1x1yDGhLG9eOOx0c+q5T5VhxmLcnCg88Uz35L0Vepst2D7TIRHn+nbj0xTGs/jioMnR8hEljWZ2dEcJ9kacaT4uE+lquLH8j0uSP1wYZExpVTP2Nl4N6GbzUY3Dd7Xg85SpnY+P2tpOn0pTywswUxWVCthHgYqlI0/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ok4xaQpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D966C4CEC2;
+	Wed,  2 Oct 2024 14:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878776;
-	bh=N6xMzKRFu0R/p1kFjrE7/YI8Frp0zu9Kl3ztGKGPCSY=;
+	s=korg; t=1727880234;
+	bh=dtxz6chEi5kwI7ZaPJ87otg3WPIRPnoR5+LJkSriVUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7cTc5pw8nPn2OeLJahzhDYpkXcXdtoD5/rqA+KWOVAAdTnf965XnEGRfLiTJCPfn
-	 NoYN4H5QE+9/VGPyTLQJAbJicLkllGa6LJu7K7zSZpVhfS2LXCBXmdJla++3kS0kVq
-	 QIDd6bwJ2wxblJO4qMwKv22OiBBvKYiIzSajm45Q=
+	b=Ok4xaQpqPfunhBbYktkTzTOufP8N1gyuyRbNpEjWXn9fiudNZZwnCHGRfuq2fKPzV
+	 fs5DXl4XY5AoEvXltpgajHsQojevsTgq5Q8BcMJavoyD7FAVkMYEz7SOQbsIni8iQa
+	 tsbRs/zYclzyXahUBmlOcWLNWw9hXvwORH8MeH8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.10 528/634] bus: mhi: host: pci_generic: Fix the name for the Telit FE990A
+	Juergen Gross <jgross@suse.com>,
+	Jan Beulich <jbeulich@suse.com>
+Subject: [PATCH 6.6 389/538] xen: allow mapping ACPI data using a different physical address
 Date: Wed,  2 Oct 2024 15:00:28 +0200
-Message-ID: <20241002125831.945783704@linuxfoundation.org>
+Message-ID: <20241002125807.786966502@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit bfc5ca0fd1ea7aceae0b682fa4bd8079c52f96c8 upstream.
+commit 9221222c717dbddac1e3c49906525475d87a3a44 upstream.
 
-Add a mhi_pci_dev_info struct specific for the Telit FE990A modem in
-order to use the correct product name.
+When running as a Xen PV dom0 the system needs to map ACPI data of the
+host using host physical addresses, while those addresses can conflict
+with the guest physical addresses of the loaded linux kernel. The same
+problem might apply in case a PV guest is configured to use the host
+memory map.
 
-Cc: stable@vger.kernel.org # 6.1+
-Fixes: 0724869ede9c ("bus: mhi: host: pci_generic: add support for Telit FE990 modem")
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240820080439.837666-1-fabio.porcedda@gmail.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+This conflict can be solved by mapping the ACPI data to a different
+guest physical address, but mapping the data via acpi_os_ioremap()
+must still be possible using the host physical address, as this
+address might be generated by AML when referencing some of the ACPI
+data.
+
+When configured to support running as a Xen PV domain, have an
+implementation of acpi_os_ioremap() being aware of the possibility to
+need above mentioned translation of a host physical address to the
+guest physical address.
+
+This modification requires to #include linux/acpi.h in some sources
+which need to include asm/acpi.h directly.
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/acpi.h        |    8 ++++++++
+ arch/x86/kernel/acpi/boot.c        |   11 +++++++++++
+ arch/x86/kernel/jailhouse.c        |    1 +
+ arch/x86/kernel/mmconf-fam10h_64.c |    1 +
+ arch/x86/kernel/smpboot.c          |    1 +
+ arch/x86/kernel/x86_init.c         |    1 +
+ arch/x86/xen/p2m.c                 |   35 +++++++++++++++++++++++++++++++++++
+ arch/x86/xen/setup.c               |    2 +-
+ 8 files changed, 59 insertions(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -606,6 +606,15 @@ static const struct mhi_pci_dev_info mhi
- 	.mru_default = 32768,
- };
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -165,6 +165,14 @@ void acpi_generic_reduced_hw_init(void);
+ void x86_default_set_root_pointer(u64 addr);
+ u64 x86_default_get_root_pointer(void);
  
-+static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
-+	.name = "telit-fe990a",
-+	.config = &modem_telit_fn990_config,
-+	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
-+	.dma_data_width = 32,
-+	.sideband_wake = false,
-+	.mru_default = 32768,
-+};
++#ifdef CONFIG_XEN_PV
++/* A Xen PV domain needs a special acpi_os_ioremap() handling. */
++extern void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys,
++					 acpi_size size);
++void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size size);
++#define acpi_os_ioremap acpi_os_ioremap
++#endif
 +
- /* Keep the list sorted based on the PID. New VID should be added as the last entry */
- static const struct pci_device_id mhi_pci_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
-@@ -623,9 +632,9 @@ static const struct pci_device_id mhi_pc
- 	/* Telit FN990 */
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
- 		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
--	/* Telit FE990 */
-+	/* Telit FE990A */
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
--		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-+		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
- 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
+ #else /* !CONFIG_ACPI */
+ 
+ #define acpi_lapic 0
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -1901,3 +1901,14 @@ u64 x86_default_get_root_pointer(void)
+ {
+ 	return boot_params.acpi_rsdp_addr;
+ }
++
++#ifdef CONFIG_XEN_PV
++void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
++{
++	return ioremap_cache(phys, size);
++}
++
++void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys, acpi_size size) =
++	x86_acpi_os_ioremap;
++EXPORT_SYMBOL_GPL(acpi_os_ioremap);
++#endif
+--- a/arch/x86/kernel/jailhouse.c
++++ b/arch/x86/kernel/jailhouse.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/reboot.h>
+ #include <linux/serial_8250.h>
++#include <linux/acpi.h>
+ #include <asm/apic.h>
+ #include <asm/io_apic.h>
+ #include <asm/acpi.h>
+--- a/arch/x86/kernel/mmconf-fam10h_64.c
++++ b/arch/x86/kernel/mmconf-fam10h_64.c
+@@ -9,6 +9,7 @@
+ #include <linux/pci.h>
+ #include <linux/dmi.h>
+ #include <linux/range.h>
++#include <linux/acpi.h>
+ 
+ #include <asm/pci-direct.h>
+ #include <linux/sort.h>
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -60,6 +60,7 @@
+ #include <linux/stackprotector.h>
+ #include <linux/cpuhotplug.h>
+ #include <linux/mc146818rtc.h>
++#include <linux/acpi.h>
+ 
+ #include <asm/acpi.h>
+ #include <asm/cacheinfo.h>
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -8,6 +8,7 @@
+ #include <linux/ioport.h>
+ #include <linux/export.h>
+ #include <linux/pci.h>
++#include <linux/acpi.h>
+ 
+ #include <asm/acpi.h>
+ #include <asm/bios_ebda.h>
+--- a/arch/x86/xen/p2m.c
++++ b/arch/x86/xen/p2m.c
+@@ -70,6 +70,7 @@
+ #include <linux/memblock.h>
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
++#include <linux/acpi.h>
+ 
+ #include <asm/cache.h>
+ #include <asm/setup.h>
+@@ -836,6 +837,34 @@ void __init xen_do_remap_nonram(void)
+ 	pr_info("Remapped %u non-RAM page(s)\n", remapped);
+ }
+ 
++#ifdef CONFIG_ACPI
++/*
++ * Xen variant of acpi_os_ioremap() taking potentially remapped non-RAM
++ * regions into account.
++ * Any attempt to map an area crossing a remap boundary will produce a
++ * WARN() splat.
++ * phys is related to remap->maddr on input and will be rebased to remap->paddr.
++ */
++static void __iomem *xen_acpi_os_ioremap(acpi_physical_address phys,
++					 acpi_size size)
++{
++	unsigned int i;
++	const struct nonram_remap *remap = xen_nonram_remap;
++
++	for (i = 0; i < nr_nonram_remap; i++) {
++		if (phys + size > remap->maddr &&
++		    phys < remap->maddr + remap->size) {
++			WARN_ON(phys < remap->maddr ||
++				phys + size > remap->maddr + remap->size);
++			phys += remap->paddr - remap->maddr;
++			break;
++		}
++	}
++
++	return x86_acpi_os_ioremap(phys, size);
++}
++#endif /* CONFIG_ACPI */
++
+ /*
+  * Add a new non-RAM remap entry.
+  * In case of no free entry found, just crash the system.
+@@ -850,6 +879,12 @@ void __init xen_add_remap_nonram(phys_ad
+ 		BUG();
+ 	}
+ 
++#ifdef CONFIG_ACPI
++	/* Switch to the Xen acpi_os_ioremap() variant. */
++	if (nr_nonram_remap == 0)
++		acpi_os_ioremap = xen_acpi_os_ioremap;
++#endif
++
+ 	xen_nonram_remap[nr_nonram_remap].maddr = maddr;
+ 	xen_nonram_remap[nr_nonram_remap].paddr = paddr;
+ 	xen_nonram_remap[nr_nonram_remap].size = size;
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -15,12 +15,12 @@
+ #include <linux/cpuidle.h>
+ #include <linux/cpufreq.h>
+ #include <linux/memory_hotplug.h>
++#include <linux/acpi.h>
+ 
+ #include <asm/elf.h>
+ #include <asm/vdso.h>
+ #include <asm/e820/api.h>
+ #include <asm/setup.h>
+-#include <asm/acpi.h>
+ #include <asm/numa.h>
+ #include <asm/idtentry.h>
+ #include <asm/xen/hypervisor.h>
 
 
 
