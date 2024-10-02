@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F54398DA14
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CD198DCC4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 059AB1F27A72
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE005B22AC0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788C91D0DEF;
-	Wed,  2 Oct 2024 14:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C351D2B00;
+	Wed,  2 Oct 2024 14:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/8jJqFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFYK3M5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354341D0956;
-	Wed,  2 Oct 2024 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F07C1D223D;
+	Wed,  2 Oct 2024 14:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878397; cv=none; b=OXfcNNg+2x/19c3boiAt0/HkgwWXsBWD6UlKC2Dq7QC2ols3w3BeJzNM2UoyvSYMx7EiYAPcSCTY7JPNFZyG95uu9AJ0tUGoMbG695/2yYSAgp8Yx6w9OI+2Mcxkdv6uguvAXtpc9VsxJ1GhmDGV3Ye8SqyP41scssjV2w11rTs=
+	t=1727879852; cv=none; b=bKBojZwQoET7+fvV1BIypCDv5p/We5zkXc2m1lRSFwtJHISD9LBGf8HZNzv7ZOSlXuWFZze9gayVrg8vmxuXteQkIo19g9m/zh0kQkU6N1yDKTGsdATYqi514TBCgtz50BbTynUTGsWr70vtrySlAyts6/wAePdJEHHtDsDXGFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878397; c=relaxed/simple;
-	bh=kyfqQXbam9dZT4/sFEi+T6AW6veyJZsaZ4CV9cQ311o=;
+	s=arc-20240116; t=1727879852; c=relaxed/simple;
+	bh=k2tsakUFgN1OJ9qnDemBwg/54Id3THrRDAAmhXg9uIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/fH7sqTIcBeGBKH5fbqEWj5uUhYq/VSxwmdmz4kCmI0fe5vC9ap2rse480q4qieeINkyE8ZJVODBkr/YvA3ilNsIK/VE485fjn8E+8bYYQIOdt6jy5U4JB+ffAqLjj42OxbStAhDdxELNPOMaLCmr8Lxi1Au37YGuT7zWVKdFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/8jJqFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7646FC4CEC2;
-	Wed,  2 Oct 2024 14:13:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yge0VhQF1+kRjXPa/JVuC5MotDdSpFp6/TfIZsV6mGNYMDfcrTFdSVgHVVCGqYO3UgL5x1GI+VCRYZF93XpWDB630Pfqobw+zKg8jjcJ8ZSuG5bdygfWJXK4iOmFrhTsPYvVkUJ9gxnJokm9cTGjRFOai5u7XwfbFkXvvzBqlbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFYK3M5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB76FC4CEC2;
+	Wed,  2 Oct 2024 14:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878396;
-	bh=kyfqQXbam9dZT4/sFEi+T6AW6veyJZsaZ4CV9cQ311o=;
+	s=korg; t=1727879852;
+	bh=k2tsakUFgN1OJ9qnDemBwg/54Id3THrRDAAmhXg9uIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/8jJqFeOLNLgh4R8GyG7YExci0qUqhXG6J+DY7HCaWSmQFDDfOYnF+/4O0pW+rjr
-	 J//Alr09aNMymZef2O7j0H5xhn7En22SZJ/aIkKZck9oVjrIR34M8jclwQptXojxo6
-	 LyKtScO+3JFST3SXVvIqiwWnqeddrfCudqXxFJEU=
+	b=gFYK3M5MtJxEV03A+SxXqb6w8uKg/JNjsoRZUVXItg2yCv5qeQxcjUaayAMlC5sNC
+	 rdTQnv92S8o72bXYFxbRAhcPS7YRXrxO8LtKA1mV1+lm7+Z3JZdWdZnuZZHJ9Ud24G
+	 5Ef+t9osVuNr2K5rCtlOvU7G0FyeTOYbXSa1h9kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 398/634] f2fs: fix to avoid racing in between read and OPU dio write
+Subject: [PATCH 6.6 259/538] clk: imx: composite-8m: Less function calls in __imx8m_clk_hw_composite() after error detection
 Date: Wed,  2 Oct 2024 14:58:18 +0200
-Message-ID: <20241002125826.814957574@linuxfoundation.org>
+Message-ID: <20241002125802.480521642@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 0cac51185e65dc2a20686184e02f3cafc99eb202 ]
+[ Upstream commit fed6bf52c86df27ad4f39a72cdad8c27da9a50ba ]
 
-If lfs mode is on, buffered read may race w/ OPU dio write as below,
-it may cause buffered read hits unwritten data unexpectly, and for
-dio read, the race condition exists as well.
+The function “kfree” was called in up to three cases
+by the function “__imx8m_clk_hw_composite” during error handling
+even if the passed variables contained a null pointer.
 
-Thread A			Thread B
-- f2fs_file_write_iter
- - f2fs_dio_write_iter
-  - __iomap_dio_rw
-   - f2fs_iomap_begin
-    - f2fs_map_blocks
-     - __allocate_data_block
-      - allocated blkaddr #x
-       - iomap_dio_submit_bio
-				- f2fs_file_read_iter
-				 - filemap_read
-				  - f2fs_read_data_folio
-				   - f2fs_mpage_readpages
-				    - f2fs_map_blocks
-				     : get blkaddr #x
-				    - f2fs_submit_read_bio
-				IRQ
-				- f2fs_read_end_io
-				 : read IO on blkaddr #x complete
-IRQ
-- iomap_dio_bio_end_io
- : direct write IO on blkaddr #x complete
+Adjust jump targets according to the Linux coding style convention.
 
-In LFS mode, if there is inflight dio, let's wait for its completion,
-this policy won't cover all race cases, however it is a tradeoff which
-avoids abusing lock around IO paths.
-
-Fixes: f847c699cff3 ("f2fs: allow out-place-update for direct IO in LFS mode")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/147ca1e6-69f3-4586-b5b3-b69f9574a862@web.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Stable-dep-of: 8f32e9dd0916 ("clk: imx: composite-8m: Enable gate clk with mcore_booted")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/imx/clk-composite-8m.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index fa6299a88492f..ad326c0ab5bd7 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -4590,6 +4590,10 @@ static ssize_t f2fs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
- 		f2fs_trace_rw_file_path(iocb->ki_filp, iocb->ki_pos,
- 					iov_iter_count(to), READ);
+diff --git a/drivers/clk/imx/clk-composite-8m.c b/drivers/clk/imx/clk-composite-8m.c
+index 27a08c50ac1d8..eb5392f7a2574 100644
+--- a/drivers/clk/imx/clk-composite-8m.c
++++ b/drivers/clk/imx/clk-composite-8m.c
+@@ -220,7 +220,7 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
  
-+	/* In LFS mode, if there is inflight dio, wait for its completion */
-+	if (f2fs_lfs_mode(F2FS_I_SB(inode)))
-+		inode_dio_wait(inode);
-+
- 	if (f2fs_should_use_dio(inode, iocb, to)) {
- 		ret = f2fs_dio_read_iter(iocb, to);
- 	} else {
+ 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
+ 	if (!mux)
+-		goto fail;
++		return ERR_CAST(hw);
+ 
+ 	mux_hw = &mux->hw;
+ 	mux->reg = reg;
+@@ -230,7 +230,7 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+ 
+ 	div = kzalloc(sizeof(*div), GFP_KERNEL);
+ 	if (!div)
+-		goto fail;
++		goto free_mux;
+ 
+ 	div_hw = &div->hw;
+ 	div->reg = reg;
+@@ -260,7 +260,7 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+ 	if (!mcore_booted) {
+ 		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
+ 		if (!gate)
+-			goto fail;
++			goto free_div;
+ 
+ 		gate_hw = &gate->hw;
+ 		gate->reg = reg;
+@@ -272,13 +272,15 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+ 			mux_hw, mux_ops, div_hw,
+ 			divider_ops, gate_hw, &clk_gate_ops, flags);
+ 	if (IS_ERR(hw))
+-		goto fail;
++		goto free_gate;
+ 
+ 	return hw;
+ 
+-fail:
++free_gate:
+ 	kfree(gate);
++free_div:
+ 	kfree(div);
++free_mux:
+ 	kfree(mux);
+ 	return ERR_CAST(hw);
+ }
 -- 
 2.43.0
 
