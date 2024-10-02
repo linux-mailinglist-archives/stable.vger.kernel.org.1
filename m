@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4568898D9DB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3A598DC7B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03EAE281D86
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2A831F27275
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B101D07B9;
-	Wed,  2 Oct 2024 14:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675341D0B87;
+	Wed,  2 Oct 2024 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUeF7My6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/nonMkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3B1D1F69;
-	Wed,  2 Oct 2024 14:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2560A1D0488;
+	Wed,  2 Oct 2024 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878268; cv=none; b=cEritq12/sGqqTt9UUn2SjMxLWC8f1bR4TA8awmFEcwuXAkoc6FA02qSczc5+tQeER5840q+papgce7kmkB136Ja/salWBRkyWgFtuxHNJVpbhjlZfFrJRdMBLOR+CnNjXPQ/T0u5nxX56rLzN45pnxkptzHNKDxTxiwGU1A8FY=
+	t=1727879726; cv=none; b=Pg7Byj7rvbQB1QOj+OfN+jxyluP1NAXT8ZA/s2I4R1Z83km7tiaKqYQtW9x7l2htJkzLjtZ3ikyNxhudeBxbuoBfoXO1Pnv6uQtcD8D2klaSqP5twMhmKo8V9ZpaMBnUVpkkczxl/q1wlLzBbY38F6M8ypz3/QnBeUMyLowq7TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878268; c=relaxed/simple;
-	bh=+bUqIXn6LQascmB2Mhz94hCowrkRVT1Lvhq0xaKaJmk=;
+	s=arc-20240116; t=1727879726; c=relaxed/simple;
+	bh=yfZcLkzCvEy7xp/G+R1dWjkjb7Kzk9mYqXDz908yXUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtp4w9uK2vPa32TMqZizJJaf1oYbDzu3rv1s9M5ItDe+ZV8DmCjE4wAOVvGIDmVYMUQArRWVcy0slUYTIHzfntYc8EvCIfylB1Tr/nn9on4WBT0Vs6HkbBqN8b+q4/E6UAFII5lsQ8YqMGyb8GoczoIQZN6P1WBSJCttLNCoU2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUeF7My6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C50C4CEC2;
-	Wed,  2 Oct 2024 14:11:07 +0000 (UTC)
+	 MIME-Version; b=c0kWm865qbwUTCOY+5sj/XkBs0zv1dIKdyrkSRGK9iuquUxWcGS8o7dx9Sf7dOE5zgyIqwp1uailrjZjhyQYTEB/lOcYGjBNHXAK5NrERo1jyILvgpfqvxxRUsMtP6aH4qa7cSAgRdwz2u5e3br4HtVWMHCtizADpT3PNad02bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/nonMkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E702C4CEC2;
+	Wed,  2 Oct 2024 14:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878267;
-	bh=+bUqIXn6LQascmB2Mhz94hCowrkRVT1Lvhq0xaKaJmk=;
+	s=korg; t=1727879726;
+	bh=yfZcLkzCvEy7xp/G+R1dWjkjb7Kzk9mYqXDz908yXUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUeF7My64hwGlxMRBVntjuvD+RCddTQqQ+JNsAeaDBoDsYV+CaYit+xsT9MZKb6F7
-	 meG7s2NS1KTYRR3MfIj2qmtcoeEFAU6KlNJCRStstV/qvQt+0QLV6xyq4/Jbufehrp
-	 aiWt+KtaFVku4gvYWq+YeeOzazD0JcScSqbDwDkY=
+	b=B/nonMkBHZinYTYxpevRDiEmbNRXB4ZMIhgPEXpmyIpKFsUuP+B2FFjpQCssWnMw1
+	 jPYfJaA8hWLcUdpHWu+ZRCjmHLI/6ehIvWLpz2QHA5CQbFVkLI2vXlC1DfSm/hbvNC
+	 2Nm6HeuZUaSgxSQy6gOYzl7un+lzx/TW9S3q1JWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 355/634] RDMA/rtrs: Reset hb_missed_cnt after receiving other traffic from peer
-Date: Wed,  2 Oct 2024 14:57:35 +0200
-Message-ID: <20241002125825.108875668@linuxfoundation.org>
+Subject: [PATCH 6.6 217/538] selftests/bpf: Fix redefinition errors compiling lwt_reroute.c
+Date: Wed,  2 Oct 2024 14:57:36 +0200
+Message-ID: <20241002125800.821619625@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 3258cbbd86deaa2675e1799bc3d18bd1ef472641 ]
+[ Upstream commit 16b795cc59528cf280abc79af3c70bda42f715b9 ]
 
-Reset hb_missed_cnt after receiving traffic from other peer, so
-hb is more robust again high load on host or network.
+Compiling lwt_reroute.c with GCC 12.3 for mips64el/musl-libc yields errors:
 
-Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://patch.msgid.link/20240821112217.41827-5-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+In file included from .../include/arpa/inet.h:9,
+                 from ./test_progs.h:18,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_helpers.h:11,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_reroute.c:52:
+.../include/netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+   23 | struct in6_addr {
+      |        ^~~~~~~~
+In file included from .../include/linux/icmp.h:24,
+                 from tools/testing/selftests/bpf/prog_tests/lwt_helpers.h:9:
+.../include/linux/in6.h:33:8: note: originally defined here
+   33 | struct in6_addr {
+      |        ^~~~~~~~
+.../include/netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+   34 | struct sockaddr_in6 {
+      |        ^~~~~~~~~~~~
+.../include/linux/in6.h:50:8: note: originally defined here
+   50 | struct sockaddr_in6 {
+      |        ^~~~~~~~~~~~
+.../include/netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+   42 | struct ipv6_mreq {
+      |        ^~~~~~~~~
+.../include/linux/in6.h:60:8: note: originally defined here
+   60 | struct ipv6_mreq {
+      |        ^~~~~~~~~
+
+These errors occur because <linux/in6.h> is included before <netinet/in.h>,
+bypassing the Linux uapi/libc compat mechanism's partial musl support. As
+described in [1] and [2], fix these errors by including <netinet/in.h> in
+lwt_reroute.c before any uapi headers.
+
+[1]: commit c0bace798436 ("uapi libc compat: add fallback for unsupported libcs")
+[2]: https://git.musl-libc.org/cgit/musl/commit/?id=04983f227238
+
+Fixes: 6c77997bc639 ("selftests/bpf: Add lwt_xmit tests for BPF_REROUTE")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/bd2908aec0755ba8b75f5dc41848b00585f5c73e.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c | 3 ++-
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/lwt_reroute.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index 88106cf5ce550..9936a3354b478 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -626,6 +626,7 @@ static void rtrs_clt_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
- 		 */
- 		if (WARN_ON(wc->wr_cqe->done != rtrs_clt_rdma_done))
- 			return;
-+		clt_path->s.hb_missed_cnt = 0;
- 		rtrs_from_imm(be32_to_cpu(wc->ex.imm_data),
- 			       &imm_type, &imm_payload);
- 		if (imm_type == RTRS_IO_RSP_IMM ||
-@@ -643,7 +644,6 @@ static void rtrs_clt_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
- 				return  rtrs_clt_recv_done(con, wc);
- 		} else if (imm_type == RTRS_HB_ACK_IMM) {
- 			WARN_ON(con->c.cid);
--			clt_path->s.hb_missed_cnt = 0;
- 			clt_path->s.hb_cur_latency =
- 				ktime_sub(ktime_get(), clt_path->s.hb_last_sent);
- 			if (clt_path->flags & RTRS_MSG_NEW_RKEY_F)
-@@ -670,6 +670,7 @@ static void rtrs_clt_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
- 		/*
- 		 * Key invalidations from server side
- 		 */
-+		clt_path->s.hb_missed_cnt = 0;
- 		WARN_ON(!(wc->wc_flags & IB_WC_WITH_INVALIDATE ||
- 			  wc->wc_flags & IB_WC_WITH_IMM));
- 		WARN_ON(wc->wr_cqe->done != rtrs_clt_rdma_done);
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 1d33efb8fb03b..94ac99a4f696e 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -1229,6 +1229,7 @@ static void rtrs_srv_rdma_done(struct ib_cq *cq, struct ib_wc *wc)
- 		 */
- 		if (WARN_ON(wc->wr_cqe != &io_comp_cqe))
- 			return;
-+		srv_path->s.hb_missed_cnt = 0;
- 		err = rtrs_post_recv_empty(&con->c, &io_comp_cqe);
- 		if (err) {
- 			rtrs_err(s, "rtrs_post_recv(), err: %d\n", err);
+diff --git a/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c b/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
+index c104f07f1b0bc..920ee3042d093 100644
+--- a/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
++++ b/tools/testing/selftests/bpf/prog_tests/lwt_reroute.c
+@@ -49,6 +49,7 @@
+  *  is not crashed, it is considered successful.
+  */
+ #define NETNS "ns_lwt_reroute"
++#include <netinet/in.h>
+ #include "lwt_helpers.h"
+ #include "network_helpers.h"
+ #include <linux/net_tstamp.h>
 -- 
 2.43.0
 
