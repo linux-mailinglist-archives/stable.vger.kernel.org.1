@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0664B98D95E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FFA98DBEA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9C032893F4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB42B283171
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667E01D0E3E;
-	Wed,  2 Oct 2024 14:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7AC1D0E1F;
+	Wed,  2 Oct 2024 14:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkcdMuvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdE3WFQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B291D07AD;
-	Wed,  2 Oct 2024 14:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3281D0DC1;
+	Wed,  2 Oct 2024 14:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877954; cv=none; b=W8of0C/ot3XoORYf1ntW2lblkH9s4bbyrEjVHwrP2GwJnUWhPwKyJ9Z2AOOEE4TE/L4aHJdBRoTXkdthhAErH0iOjCheAhQCnZ26huNAlGfysGgi3W/5k9V4WnuhKCIkP3chAbPUAwdnFhmastAdcyrD0w3/jidUjA6YpW0Ma/8=
+	t=1727879425; cv=none; b=Z0vlhuOj5A/fYi0eX4yxRj/6XbubhX47z06vHZeGMJH6p7ss3wVAbddYCyc4N3vMZbE0ROjDclVlknjRJbRKGlTYLR4NKWg3KCDAD9f7Nqc4MetYQyFzzX2XxSjcG3iG+OwnrnOfwmdJbA4R7dM3cz0MAV4GLUa4lTKEfBMuUf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877954; c=relaxed/simple;
-	bh=4AXtpsKfJ9ekXafRsbFneUptTDnUoBfLlgMbEboKGrI=;
+	s=arc-20240116; t=1727879425; c=relaxed/simple;
+	bh=+VWOLxRYihFCBjBBQbE0PxN/l+xylG6qfz9pqTIoj3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E71RWrmDKDu1Q+UtyCztdyukzJnSLPa3nDmjtejVdRAfccSuHJfs8gsqTQ9LyixJTV3UjHd3B2n/9AAM1aV8+57O9QBbXQjfl5Qp7cs8NzquRf1oB5ntkkcEPaG7AoWIjBWpUA4etlkypI+GAumjxQJxSyHeGCdVe1ULJQTPDXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkcdMuvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744AAC4CEC2;
-	Wed,  2 Oct 2024 14:05:53 +0000 (UTC)
+	 MIME-Version; b=tem6ADmDRse349jLbzpNnoKZBDuSb0YSEDnR7JF6tV7W3Jes6exxAGX8eTFqXgX6gjW4epkXo8L7Gjm8ud23WBJPuVExiOfRQXoO7khtENA8ZVSdLfKNLQtPu28MEL+zoIWCiI0U1dX6brzNSISX/AiWvZQqo2NGxIgvSsPc9lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdE3WFQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1953C4CEC2;
+	Wed,  2 Oct 2024 14:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877954;
-	bh=4AXtpsKfJ9ekXafRsbFneUptTDnUoBfLlgMbEboKGrI=;
+	s=korg; t=1727879425;
+	bh=+VWOLxRYihFCBjBBQbE0PxN/l+xylG6qfz9pqTIoj3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkcdMuvpmEx3eyDiIN+rjpsAYnlWyby37Q+eiWZLdpLk+OhpwdFrKZsAxgyreKO7K
-	 knYCO6EYR1bH3gbBMlz3rlYa3SwkCZ1qdpReVWopYxSYgAPhszksV/4+26w1oGWjAX
-	 MEuv+h6yJxn6coqmEdRQ/lkD2rDMG+6o7nA6ERRE=
+	b=FdE3WFQOUYoKEQDqZnfzmKIxVHXZB32Pd870terHfpfviN7m9TGI2rOl7F9SRLcsc
+	 kAHC+cr+OkYhPgjl6IYz0SZ4xLx4goWXipcGaHBRnL/k1uJccaMI3lEfPVTqALvJEW
+	 ETqOE62LqiXjPP5JiV9YWuUp81cpNEeuKYRpKf+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 252/634] selftests/bpf: Fix errors compiling crypto_sanity.c with musl libc
-Date: Wed,  2 Oct 2024 14:55:52 +0200
-Message-ID: <20241002125821.044251390@linuxfoundation.org>
+Subject: [PATCH 6.6 114/538] ASoC: tas2781-i2c: Drop weird GPIO code
+Date: Wed,  2 Oct 2024 14:55:53 +0200
+Message-ID: <20241002125756.744653264@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 9822be702fe6e1c3e0933ef4b68a8c56683d930d ]
+[ Upstream commit c2c0b67dca3cb3b3cea0dd60075a1c5ba77e2fcd ]
 
-Remove a redundant include of '<linux/in6.h>', whose needed definitions are
-already provided by 'test_progs.h'. This avoids errors seen compiling for
-mips64el/musl-libc:
+The tas2781-i2c driver gets an IRQ from either ACPI or device tree,
+then proceeds to check if the IRQ has a corresponding GPIO and in
+case it does enforce the GPIO as input and set a label on it.
 
-  In file included from .../arpa/inet.h:9,
-                   from ./test_progs.h:17,
-                   from prog_tests/crypto_sanity.c:10:
-  .../netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
-     23 | struct in6_addr {
-        |        ^~~~~~~~
-  In file included from crypto_sanity.c:7:
-  .../linux/in6.h:33:8: note: originally defined here
-     33 | struct in6_addr {
-        |        ^~~~~~~~
-  .../netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
-     34 | struct sockaddr_in6 {
-        |        ^~~~~~~~~~~~
-  .../linux/in6.h:50:8: note: originally defined here
-     50 | struct sockaddr_in6 {
-        |        ^~~~~~~~~~~~
-  .../netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
-     42 | struct ipv6_mreq {
-        |        ^~~~~~~~~
-  .../linux/in6.h:60:8: note: originally defined here
-     60 | struct ipv6_mreq {
-        |        ^~~~~~~~~
+This is abuse of the API:
 
-Fixes: 91541ab192fc ("selftests: bpf: crypto skcipher algo selftests")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://lore.kernel.org/bpf/911293968f424ad7b462d8805aeb3baee8f4985b.1721713597.git.tony.ambardar@gmail.com
+- First we cannot guarantee that the numberspaces of the GPIOs and
+  the IRQs are the same, i.e that an IRQ number corresponds to
+  a GPIO number like that.
+
+- Second, GPIO chips and IRQ chips should be treated as orthogonal
+  APIs, the irqchip needs to ascertain that the backing GPIO line
+  is set to input etc just using the irqchip.
+
+- Third it is using the legacy <linux/gpio.h> API which should not
+  be used in new code yet this was added just a year ago.
+
+Delete the offending code.
+
+If this creates problems the GPIO and irqchip maintainers can help
+to fix the issues.
+
+It *should* not create any problems, because the irq isn't
+used anywhere in the driver, it's just obtained and then
+left unused.
+
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patch.msgid.link/20240807-asoc-tas-gpios-v2-1-bd0f2705d58b@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/crypto_sanity.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/sound/tas2781.h           |  7 +------
+ sound/pci/hda/tas2781_hda_i2c.c   |  2 +-
+ sound/soc/codecs/tas2781-comlib.c |  3 ---
+ sound/soc/codecs/tas2781-fmwlib.c |  1 -
+ sound/soc/codecs/tas2781-i2c.c    | 24 +++---------------------
+ 5 files changed, 5 insertions(+), 32 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c b/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
-index b1a3a49a822a7..42bd07f7218dc 100644
---- a/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
-+++ b/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
-@@ -4,7 +4,6 @@
- #include <sys/types.h>
- #include <sys/socket.h>
- #include <net/if.h>
--#include <linux/in6.h>
- #include <linux/if_alg.h>
+diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
+index be6f70dd54f93..f97f386e5a55a 100644
+--- a/include/sound/tas2781.h
++++ b/include/sound/tas2781.h
+@@ -78,11 +78,6 @@ struct tasdevice {
+ 	bool is_loaderr;
+ };
  
- #include "test_progs.h"
+-struct tasdevice_irqinfo {
+-	int irq_gpio;
+-	int irq;
+-};
+-
+ struct calidata {
+ 	unsigned char *data;
+ 	unsigned long total_sz;
+@@ -90,7 +85,6 @@ struct calidata {
+ 
+ struct tasdevice_priv {
+ 	struct tasdevice tasdevice[TASDEVICE_MAX_CHANNELS];
+-	struct tasdevice_irqinfo irq_info;
+ 	struct tasdevice_rca rcabin;
+ 	struct calidata cali_data;
+ 	struct tasdevice_fw *fmw;
+@@ -111,6 +105,7 @@ struct tasdevice_priv {
+ 	unsigned int chip_id;
+ 	unsigned int sysclk;
+ 
++	int irq;
+ 	int cur_prog;
+ 	int cur_conf;
+ 	int fw_state;
+diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
+index 0a587f55583ff..980e6104c2f3f 100644
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -710,7 +710,7 @@ static int tas2781_hda_i2c_probe(struct i2c_client *clt)
+ 	} else
+ 		return -ENODEV;
+ 
+-	tas_hda->priv->irq_info.irq = clt->irq;
++	tas_hda->priv->irq = clt->irq;
+ 	ret = tas2781_read_acpi(tas_hda->priv, device_name);
+ 	if (ret)
+ 		return dev_err_probe(tas_hda->dev, ret,
+diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
+index 3aa81514dad76..0444cf90c5119 100644
+--- a/sound/soc/codecs/tas2781-comlib.c
++++ b/sound/soc/codecs/tas2781-comlib.c
+@@ -14,7 +14,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+@@ -406,8 +405,6 @@ EXPORT_SYMBOL_GPL(tasdevice_dsp_remove);
+ 
+ void tasdevice_remove(struct tasdevice_priv *tas_priv)
+ {
+-	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
+-		gpio_free(tas_priv->irq_info.irq_gpio);
+ 	mutex_destroy(&tas_priv->codec_lock);
+ }
+ EXPORT_SYMBOL_GPL(tasdevice_remove);
+diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
+index 3639dcd0bbb2b..629e2195a890b 100644
+--- a/sound/soc/codecs/tas2781-fmwlib.c
++++ b/sound/soc/codecs/tas2781-fmwlib.c
+@@ -13,7 +13,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 61a64d18a7d55..b25978f01cd2a 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -22,7 +22,6 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+@@ -617,7 +616,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ {
+ 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
+ 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
+-	int rc, i, ndev = 0;
++	int i, ndev = 0;
+ 
+ 	if (tas_priv->isacpi) {
+ 		ndev = device_property_read_u32_array(&client->dev,
+@@ -632,7 +631,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ 				"ti,audio-slots", dev_addrs, ndev);
+ 		}
+ 
+-		tas_priv->irq_info.irq_gpio =
++		tas_priv->irq =
+ 			acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
+ 	} else if (IS_ENABLED(CONFIG_OF)) {
+ 		struct device_node *np = tas_priv->dev->of_node;
+@@ -644,7 +643,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ 			dev_addrs[ndev++] = addr;
+ 		}
+ 
+-		tas_priv->irq_info.irq_gpio = of_irq_get(np, 0);
++		tas_priv->irq = of_irq_get(np, 0);
+ 	} else {
+ 		ndev = 1;
+ 		dev_addrs[0] = client->addr;
+@@ -660,23 +659,6 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+ 			__func__);
+ 
+ 	strcpy(tas_priv->dev_name, tasdevice_id[tas_priv->chip_id].name);
+-
+-	if (gpio_is_valid(tas_priv->irq_info.irq_gpio)) {
+-		rc = gpio_request(tas_priv->irq_info.irq_gpio,
+-				"AUDEV-IRQ");
+-		if (!rc) {
+-			gpio_direction_input(
+-				tas_priv->irq_info.irq_gpio);
+-
+-			tas_priv->irq_info.irq =
+-				gpio_to_irq(tas_priv->irq_info.irq_gpio);
+-		} else
+-			dev_err(tas_priv->dev, "%s: GPIO %d request error\n",
+-				__func__, tas_priv->irq_info.irq_gpio);
+-	} else
+-		dev_err(tas_priv->dev,
+-			"Looking up irq-gpio property failed %d\n",
+-			tas_priv->irq_info.irq_gpio);
+ }
+ 
+ static int tasdevice_i2c_probe(struct i2c_client *i2c)
 -- 
 2.43.0
 
