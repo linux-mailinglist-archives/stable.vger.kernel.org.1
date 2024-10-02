@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2FA98DC13
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:37:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7E498D97B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3701C20F60
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:37:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36B07289553
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357271D31A0;
-	Wed,  2 Oct 2024 14:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769F31D131F;
+	Wed,  2 Oct 2024 14:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEWhgYv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4keIXYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BE51D319B;
-	Wed,  2 Oct 2024 14:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347931D1317;
+	Wed,  2 Oct 2024 14:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879492; cv=none; b=sGFvRiZ7ZzNMYP15CAsA3d5X+1nVq0lPVM7w0snX6qE71NF5TalO0KPfq8DHHMk0uxT4GR7bEFCuY03WDOmC3RvNtAI2w3GfkJWHFDLnKimUWhLTFzRkViD7YXWsfoTugC1xbJYdT7ki8uB+tnjLS8TbU+W6nj3BXPQpMLWi2g4=
+	t=1727878027; cv=none; b=R4/hF6MwaGuHcqx4a9CgW/IUNwu0tVyz8HpotTIg22vu0YLMwaNPnRmSWYFU5PzH/Xk4O5+OG5ITHwREZ6djVxIUOXi315qjS1W/1rxw5llxzbdTl3fLyRxeeoIbJ3Nh+z/IeLRXT2O5i1DJQ+toalCj2FsHT/kWi+e/hNOrqBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879492; c=relaxed/simple;
-	bh=lpeeOhN4u54p7wQdyyS9CIseET9+0JSlDcF9C4Oiyvc=;
+	s=arc-20240116; t=1727878027; c=relaxed/simple;
+	bh=GDazl1KXQJjCZfSWYjWfZkGJ+JwIWG/NIVuCbalUno8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kA6hbSo6tFMKdmd00IMv5zLy4ZEhsTGKgDN61/1iZxGPy4nFXldefz6CIG8fWTtgenFpqGY5dvZY8FBg1tKSlmXAK9NxmM4EAeuoTqp2d7VILnNkbBK4ZWZTNsw+7pYi9vOpf5FWC3lS9g51XYWGcxpmzct2gWXTe9X7KTbmNbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEWhgYv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689E7C4CEC2;
-	Wed,  2 Oct 2024 14:31:31 +0000 (UTC)
+	 MIME-Version; b=JXx0e+J6GB3LwS4dV9rKU37WpUSqwvQK3dhp6Ysodse6m0BM+2s/iJqVMMuzxn2OFhCZuPgNGT867wg9AYyZdhz8Tr8r6J/lRKu5SpxHHXVHfpfK6QmLxzeAS3V/g03EMYQauyESxSvgMJy9yDmItRxwhXU7UPYPmFtNqEm2nSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4keIXYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF484C4CEC2;
+	Wed,  2 Oct 2024 14:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879491;
-	bh=lpeeOhN4u54p7wQdyyS9CIseET9+0JSlDcF9C4Oiyvc=;
+	s=korg; t=1727878027;
+	bh=GDazl1KXQJjCZfSWYjWfZkGJ+JwIWG/NIVuCbalUno8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEWhgYv4ki9khcEWR95Lr/+rKXM6Dq5ECMDI2Vcyj7y6pf6/9zHjqvmSXctXjB3gu
-	 X35NcgYbAKKKaAccRNj2UtacB1fnkQueHRHEXOeE5BQ3WL5TXXhhg4Y3D0de7Qa/VJ
-	 jFayJTEgFIzpGl4B2BgvIyIp2AbzvQEyfFLhDj7g=
+	b=k4keIXYFMpqhaekFTmDbNhBaFlrwXkNgBeVCzxZTCkSu23Ysw+JnjgtYRI8RFH8En
+	 zTgreTgLoGvi5K/QBavVmzj309Wlz+7vCnoAF4lGkJNNTTW43gBv+ti2CZ5ryVusG5
+	 X6phGYIwnGe/ECPIVorsr8o1SBM2Fygw+icltBuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/538] drm/stm: Fix an error handling path in stm_drm_platform_probe()
+Subject: [PATCH 6.10 277/634] ext4: avoid buffer_head leak in ext4_mark_inode_used()
 Date: Wed,  2 Oct 2024 14:56:17 +0200
-Message-ID: <20241002125757.689139012@linuxfoundation.org>
+Message-ID: <20241002125822.034965240@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit ce7c90bfda2656418c69ba0dd8f8a7536b8928d4 ]
+[ Upstream commit 5e5b2a56c57def1b41efd49596621504d7bcc61c ]
 
-If drm_dev_register() fails, a call to drv_load() must be undone, as
-already done in the remove function.
+Release inode_bitmap_bh from ext4_read_inode_bitmap() in
+ext4_mark_inode_used() to avoid buffer_head leak.
+By the way, remove unneeded goto for invalid ino when inode_bitmap_bh
+is NULL.
 
-Fixes: b759012c5fa7 ("drm/stm: Add STM32 LTDC driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20fff7f853f20a48a96db8ff186124470ec4d976.1704560028.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://patch.msgid.link/20240820132234.2759926-2-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/stm/drv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/ialloc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
-index e8523abef27a5..4d2db079ad4ff 100644
---- a/drivers/gpu/drm/stm/drv.c
-+++ b/drivers/gpu/drm/stm/drv.c
-@@ -203,12 +203,14 @@ static int stm_drm_platform_probe(struct platform_device *pdev)
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index e9bbb1da2d0a2..bf14450da35f4 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -755,10 +755,10 @@ int ext4_mark_inode_used(struct super_block *sb, int ino)
+ 	struct ext4_group_desc *gdp;
+ 	ext4_group_t group;
+ 	int bit;
+-	int err = -EFSCORRUPTED;
++	int err;
  
- 	ret = drm_dev_register(ddev, 0);
- 	if (ret)
--		goto err_put;
-+		goto err_unload;
+ 	if (ino < EXT4_FIRST_INO(sb) || ino > max_ino)
+-		goto out;
++		return -EFSCORRUPTED;
  
- 	drm_fbdev_dma_setup(ddev, 16);
- 
- 	return 0;
- 
-+err_unload:
-+	drv_unload(ddev);
- err_put:
- 	drm_dev_put(ddev);
+ 	group = (ino - 1) / EXT4_INODES_PER_GROUP(sb);
+ 	bit = (ino - 1) % EXT4_INODES_PER_GROUP(sb);
+@@ -860,6 +860,7 @@ int ext4_mark_inode_used(struct super_block *sb, int ino)
+ 	err = ext4_handle_dirty_metadata(NULL, NULL, group_desc_bh);
+ 	sync_dirty_buffer(group_desc_bh);
+ out:
++	brelse(inode_bitmap_bh);
+ 	return err;
+ }
  
 -- 
 2.43.0
