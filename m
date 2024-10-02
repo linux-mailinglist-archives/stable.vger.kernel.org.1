@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-80322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3132098DCE6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB1298DA72
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D96631F25F96
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53DF71C23802
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5441D0DF4;
-	Wed,  2 Oct 2024 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DB11D2206;
+	Wed,  2 Oct 2024 14:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4tlrPzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiaqtO68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0B01D0951;
-	Wed,  2 Oct 2024 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD661D0F67;
+	Wed,  2 Oct 2024 14:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880035; cv=none; b=Mmtdzk+A3K98qthPuTio1C3FL8lWdnAc6xAgPMRmSgZR5U8SWB7nMK5AULvXiYIVqQ1NBfYwi/Kszk79w8FHwgVKUPTwxrRD26neDeJy0wNQje5azCdp/dj8m07xdPLh1XelVG75quRddtrsOF5Qavs0Oga7d3nh1aAHbmAC2+w=
+	t=1727878574; cv=none; b=ucuu4LDQe9DVWFbA7f61AASLx6tNNPPLCM+tOr+1+3//82ynflPvL0D5jOkDrtq5imnSM+W5vW260G1epQwv4vC2VciJkbc+5Hl7EmLLiF5kUwOAbgmIxX5d/vcEDWjdzodlGZq1hbCFhxhl2oD632Cj8lk7jn/MzZjgWZQCXAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880035; c=relaxed/simple;
-	bh=oUdvzIcr1Q+6E4cA6KR0qBNnSq/DH1LUmUIbbvMRFII=;
+	s=arc-20240116; t=1727878574; c=relaxed/simple;
+	bh=UMP3vflGRgMllkBCrCGw8iZSrhpWHpqPc13LFU8dX2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8ilja9xm6W8xHI0O5eLZxXW0JsYmPJ8lkoGr9ZLNvtuwu2Bi6J6FOsBmqCVlCOlzV4L5gxFPo27hEf1LOd8spMJHKqTPlBLC+Aqao/KiJfQuS1JQPvMc5BqWxAbMo+Tr4uIAP2WAPj2nr6GY+sGJ4/ImeX7vbtCU7wvSGR2RMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4tlrPzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3B5C4CEC2;
-	Wed,  2 Oct 2024 14:40:34 +0000 (UTC)
+	 MIME-Version; b=tKmc3k/WCPLlr2Jhu8XlfY27AfuHJam4jzpaefLnh0JvbzNFsxR9qoUTlMpoyzKGZxszzIlL+sXnZm/RdjWI4qVVZODYY6XeACiWMHjPdc1hOkl8AVln0ldmLgF5CrNvYOkOqcRrwGhg47GniQOHm/O0SBhimnlgwvUeTe1AJY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiaqtO68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CCEC4CEC2;
+	Wed,  2 Oct 2024 14:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880035;
-	bh=oUdvzIcr1Q+6E4cA6KR0qBNnSq/DH1LUmUIbbvMRFII=;
+	s=korg; t=1727878574;
+	bh=UMP3vflGRgMllkBCrCGw8iZSrhpWHpqPc13LFU8dX2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4tlrPznBQyeyOjKq7GhBVdW7+I1zSWOVFqetjj57hOBbq9qcbmPGikye03grDsFe
-	 V/hBPboloE7/2SDsm9kDUcdIMHPjdiorpIyye5AiF+JBxRNB8xbyoNdZvhXs0mROD8
-	 87+4nyOF/EyE8yeav84pjqo+z4MFWtpiOFmSxcFA=
+	b=SiaqtO689KG4b0Mq+i4WkGYlTrPXmeTJGG4WPSXBLGRadAm3Dq8e0OcJDVL0L89M/
+	 9OC+yxeKM2s2wybUSzCymI0GbyTH2OnroRr3WjB6q9mtU3kajCisG2xXG2v85nUgBn
+	 YYGX5Rix2EiVKx11gUhATVcMzyfi1LSRRPQbZ6UE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/538] RDMA/hns: Optimize hem allocation performance
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 460/634] io_uring/sqpoll: do not put cpumask on stack
 Date: Wed,  2 Oct 2024 14:59:20 +0200
-Message-ID: <20241002125805.099306890@linuxfoundation.org>
+Message-ID: <20241002125829.259547114@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
 
-[ Upstream commit fe51f6254d81f5a69c31df16353d6539b2b51630 ]
+commit 7f44beadcc11adb98220556d2ddbe9c97aa6d42d upstream.
 
-When allocating MTT hem, for each hop level of each hem that is being
-allocated, the driver iterates the hem list to find out whether the
-bt page has been allocated in this hop level. If not, allocate a new
-one and splice it to the list. The time complexity is O(n^2) in worst
-cases.
+Putting the cpumask on the stack is deprecated for a long time (since
+2d3854a37e8), as these can be big. Given that, change the on-stack
+allocation of allowed_mask to be dynamically allocated.
 
-Currently the allocation for-loop uses 'unit' as the step size. This
-actually has taken into account the reuse of last-hop-level MTT bt
-pages by multiple buffer pages. Thus pages of last hop level will
-never have been allocated, so there is no need to iterate the hem list
-in last hop level.
-
-Removing this unnecessary iteration can reduce the time complexity to
-O(n).
-
-Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20240906093444.3571619-9-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Link: https://lore.kernel.org/r/20240916111150.1266191-1-felix.moessbauer@siemens.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ io_uring/sqpoll.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index a429d95a387cd..7ebf80504fd12 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -1191,10 +1191,12 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -461,15 +461,22 @@ __cold int io_sq_offload_create(struct i
+ 			return 0;
  
- 	/* config L1 bt to last bt and link them to corresponding parent */
- 	for (level = 1; level < hopnum; level++) {
--		cur = hem_list_search_item(&mid_bt[level], offset);
--		if (cur) {
--			hem_ptrs[level] = cur;
--			continue;
-+		if (!hem_list_is_bottom_bt(hopnum, level)) {
-+			cur = hem_list_search_item(&mid_bt[level], offset);
-+			if (cur) {
-+				hem_ptrs[level] = cur;
-+				continue;
+ 		if (p->flags & IORING_SETUP_SQ_AFF) {
+-			struct cpumask allowed_mask;
++			cpumask_var_t allowed_mask;
+ 			int cpu = p->sq_thread_cpu;
+ 
+ 			ret = -EINVAL;
+ 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
+ 				goto err_sqpoll;
+-			cpuset_cpus_allowed(current, &allowed_mask);
+-			if (!cpumask_test_cpu(cpu, &allowed_mask))
++			ret = -ENOMEM;
++			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
+ 				goto err_sqpoll;
++			ret = -EINVAL;
++			cpuset_cpus_allowed(current, allowed_mask);
++			if (!cpumask_test_cpu(cpu, allowed_mask)) {
++				free_cpumask_var(allowed_mask);
++				goto err_sqpoll;
 +			}
- 		}
- 
- 		step = hem_list_calc_ba_range(hopnum, level, unit);
--- 
-2.43.0
-
++			free_cpumask_var(allowed_mask);
+ 			sqd->sq_cpu = cpu;
+ 		} else {
+ 			sqd->sq_cpu = -1;
 
 
 
