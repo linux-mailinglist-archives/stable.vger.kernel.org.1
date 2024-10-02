@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F998DA92
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:23:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A768798DD01
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C659D1F218EC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 277811F230CC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476281D14FA;
-	Wed,  2 Oct 2024 14:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EA91D04B8;
+	Wed,  2 Oct 2024 14:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iwc2iMJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2/PDG2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068A21D14F8;
-	Wed,  2 Oct 2024 14:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041CC1D0BA2;
+	Wed,  2 Oct 2024 14:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878632; cv=none; b=CJRwHT1jQmF/XuG97IgRiC7LaRklzlwC1yJ1ex675ssiMlHsVaI8MVHT0WKO76wNCyWiRlIrusCPXlAda1csIqAOre5hzChmq3h+9LVaGxjCiVRFEcorsE3o2SXhezn58keqOvMSHgnYi6tLDYYS77SrsQ+c5qDdWSLVZ87b2dA=
+	t=1727880094; cv=none; b=j2N5OfsW1ZFYoHaWEchBcH1jFThoL1dxrDDyf9zYgpQUOJ1MqjeJvsiD2bgWKRtynYSRsmQU/5uJlrOaNCarVa3uolR4/BMHDQ7f/eymkRAlNx5G1zvG6QN1RaJm0n8SQtlUrDVDamLPCLffho/YezvBMbCzxf3VPjD7LyhsmhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878632; c=relaxed/simple;
-	bh=DTL2S1oTU1jTdDvyiH5YWXPsz2bw596eDK6YaDsEg6M=;
+	s=arc-20240116; t=1727880094; c=relaxed/simple;
+	bh=EJq1diHurIEXx3Tg3YnAC5/X6aarIGSAdF0jwCbfVIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuFLdoCeEfaj/skv2P0jAUO8To0tC1xtfriuoALAjHCO3Pz2VYwfJ7STwXkG3UlBQuRRLWAUMaTINr+Ma7B3olWXeQZvi+VllRFHVaZPZCKFadxFufLDFch51LljzISkXcVO76hRB+K4yS7KcDCXHQ5qaW1lFwNvzgC2i7hd5QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iwc2iMJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A26C4CEC5;
-	Wed,  2 Oct 2024 14:17:11 +0000 (UTC)
+	 MIME-Version; b=HMoDHtA0o7BuPSrYVUwCZjvJFJoIflgi4mV3ZZn/Rky3el+ZhqZTqLb0Rk3OC6LdJC/zCD89JHYwEXqN1KWea02NbJGMqd6fckcOJvvTDkfr6UiN/p17U1jUXf0WZPc6h1D06MKSH2nPxHmI0LvV//GBkT/xZYi20yuxhqWYOEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2/PDG2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC97C4CEC2;
+	Wed,  2 Oct 2024 14:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878631;
-	bh=DTL2S1oTU1jTdDvyiH5YWXPsz2bw596eDK6YaDsEg6M=;
+	s=korg; t=1727880093;
+	bh=EJq1diHurIEXx3Tg3YnAC5/X6aarIGSAdF0jwCbfVIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iwc2iMJkZe2j7yBGgwVJlNQPq7z1ue+0kiTOktfAJ8NnsHHUv04KPsEMS8+IHLDvR
-	 S7QE9imF8EiZ+zBeqy/OwYLWM/9cg2TDD6KoasQRnECEwNppC6TP3cy6jHC4sMJ/Tj
-	 BS/djx+XaCNTTCSqEI6I+26lNreQEdSQqe0ohSEY=
+	b=f2/PDG2DV9BuDHmcb22Q4D3iK07HrdmVPuQAJ8Gsy1/DceLzAnDzNezXiUGYYqYdb
+	 6Vqgzfm5XUYT16V/gLHX9TQyZWdmQKwwWmON6LD46odoyR8X4xjCLgo653vdRSnURo
+	 AIwPV38mZZT3XrVaV/XjalLVL3/WqCoICe3scksk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	syzbot+16073ebbc4c64b819b47@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.10 480/634] iommufd: Protect against overflow of ALIGN() during iova allocation
-Date: Wed,  2 Oct 2024 14:59:40 +0200
-Message-ID: <20241002125830.050977053@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 342/538] f2fs: compress: do sanity check on cluster when CONFIG_F2FS_CHECK_FS is on
+Date: Wed,  2 Oct 2024 14:59:41 +0200
+Message-ID: <20241002125805.929920615@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 8f6887349b2f829a4121c518aeb064fc922714e4 upstream.
+[ Upstream commit 2aaea533bf063ed3b442df5fe5f6abfc538054c9 ]
 
-Userspace can supply an iova and uptr such that the target iova alignment
-becomes really big and ALIGN() overflows which corrupts the selected area
-range during allocation. CONFIG_IOMMUFD_TEST can detect this:
+This patch covers sanity check logic on cluster w/ CONFIG_F2FS_CHECK_FS,
+otherwise, there will be performance regression while querying cluster
+mapping info.
 
-   WARNING: CPU: 1 PID: 5092 at drivers/iommu/iommufd/io_pagetable.c:268 iopt_alloc_area_pages drivers/iommu/iommufd/io_pagetable.c:268 [inline]
-   WARNING: CPU: 1 PID: 5092 at drivers/iommu/iommufd/io_pagetable.c:268 iopt_map_pages+0xf95/0x1050 drivers/iommu/iommufd/io_pagetable.c:352
-   Modules linked in:
-   CPU: 1 PID: 5092 Comm: syz-executor294 Not tainted 6.10.0-rc5-syzkaller-00294-g3ffea9a7a6f7 #0
-   Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-   RIP: 0010:iopt_alloc_area_pages drivers/iommu/iommufd/io_pagetable.c:268 [inline]
-   RIP: 0010:iopt_map_pages+0xf95/0x1050 drivers/iommu/iommufd/io_pagetable.c:352
-   Code: fc e9 a4 f3 ff ff e8 1a 8b 4c fc 41 be e4 ff ff ff e9 8a f3 ff ff e8 0a 8b 4c fc 90 0f 0b 90 e9 37 f5 ff ff e8 fc 8a 4c fc 90 <0f> 0b 90 e9 68 f3 ff ff 48 c7 c1 ec 82 ad 8f 80 e1 07 80 c1 03 38
-   RSP: 0018:ffffc90003ebf9e0 EFLAGS: 00010293
-   RAX: ffffffff85499fa4 RBX: 00000000ffffffef RCX: ffff888079b49e00
-   RDX: 0000000000000000 RSI: 00000000ffffffef RDI: 0000000000000000
-   RBP: ffffc90003ebfc50 R08: ffffffff85499b30 R09: ffffffff85499942
-   R10: 0000000000000002 R11: ffff888079b49e00 R12: ffff8880228e0010
-   R13: 0000000000000000 R14: 1ffff920007d7f68 R15: ffffc90003ebfd00
-   FS:  000055557d760380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   CR2: 00000000005fdeb8 CR3: 000000007404a000 CR4: 00000000003506f0
-   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-   Call Trace:
-    <TASK>
-    iommufd_ioas_copy+0x610/0x7b0 drivers/iommu/iommufd/ioas.c:274
-    iommufd_fops_ioctl+0x4d9/0x5a0 drivers/iommu/iommufd/main.c:421
-    vfs_ioctl fs/ioctl.c:51 [inline]
-    __do_sys_ioctl fs/ioctl.c:907 [inline]
-    __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
-    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-    do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Callers of f2fs_is_compressed_cluster() only care about whether cluster
+is compressed or not, rather than # of valid blocks in compressed cluster,
+so, let's adjust f2fs_is_compressed_cluster()'s logic according to
+caller's requirement.
 
-Cap the automatic alignment to the huge page size, which is probably a
-better idea overall. Huge automatic alignments can fragment and chew up
-the available IOVA space without any reason.
-
-Link: https://patch.msgid.link/r/0-v1-8009738b9891+1f7-iommufd_align_overflow_jgg@nvidia.com
-Cc: stable@vger.kernel.org
-Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reported-by: syzbot+16073ebbc4c64b819b47@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000388410061a74f014@google.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: f785cec298c9 ("f2fs: compress: don't redirty sparse cluster during {,de}compress")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/f2fs/compress.c | 61 ++++++++++++++++++++++++++--------------------
+ fs/f2fs/data.c     |  4 +--
+ 2 files changed, 35 insertions(+), 30 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -112,6 +112,7 @@ static int iopt_alloc_iova(struct io_pag
- 	unsigned long page_offset = uptr % PAGE_SIZE;
- 	struct interval_tree_double_span_iter used_span;
- 	struct interval_tree_span_iter allowed_span;
-+	unsigned long max_alignment = PAGE_SIZE;
- 	unsigned long iova_alignment;
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index c07fe6b840a09..995f6544cc300 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -887,14 +887,15 @@ static bool cluster_has_invalid_data(struct compress_ctx *cc)
  
- 	lockdep_assert_held(&iopt->iova_rwsem);
-@@ -131,6 +132,13 @@ static int iopt_alloc_iova(struct io_pag
- 				       roundup_pow_of_two(length),
- 				       1UL << __ffs64(uptr));
+ bool f2fs_sanity_check_cluster(struct dnode_of_data *dn)
+ {
++#ifdef CONFIG_F2FS_CHECK_FS
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(dn->inode);
+ 	unsigned int cluster_size = F2FS_I(dn->inode)->i_cluster_size;
+-	bool compressed = dn->data_blkaddr == COMPRESS_ADDR;
+ 	int cluster_end = 0;
++	unsigned int count;
+ 	int i;
+ 	char *reason = "";
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	max_alignment = HPAGE_SIZE;
-+#endif
-+	/* Protect against ALIGN() overflow */
-+	if (iova_alignment >= max_alignment)
-+		iova_alignment = max_alignment;
+-	if (!compressed)
++	if (dn->data_blkaddr != COMPRESS_ADDR)
+ 		return false;
+ 
+ 	/* [..., COMPR_ADDR, ...] */
+@@ -903,7 +904,7 @@ bool f2fs_sanity_check_cluster(struct dnode_of_data *dn)
+ 		goto out;
+ 	}
+ 
+-	for (i = 1; i < cluster_size; i++) {
++	for (i = 1, count = 1; i < cluster_size; i++, count++) {
+ 		block_t blkaddr = data_blkaddr(dn->inode, dn->node_page,
+ 							dn->ofs_in_node + i);
+ 
+@@ -923,19 +924,42 @@ bool f2fs_sanity_check_cluster(struct dnode_of_data *dn)
+ 			goto out;
+ 		}
+ 	}
 +
- 	if (iova_alignment < iopt->iova_alignment)
- 		return -EINVAL;
++	f2fs_bug_on(F2FS_I_SB(dn->inode), count != cluster_size &&
++		!is_inode_flag_set(dn->inode, FI_COMPRESS_RELEASED));
++
+ 	return false;
+ out:
+ 	f2fs_warn(sbi, "access invalid cluster, ino:%lu, nid:%u, ofs_in_node:%u, reason:%s",
+ 			dn->inode->i_ino, dn->nid, dn->ofs_in_node, reason);
+ 	set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 	return true;
++#else
++	return false;
++#endif
++}
++
++static int __f2fs_get_cluster_blocks(struct inode *inode,
++					struct dnode_of_data *dn)
++{
++	unsigned int cluster_size = F2FS_I(inode)->i_cluster_size;
++	int count, i;
++
++	for (i = 1, count = 1; i < cluster_size; i++) {
++		block_t blkaddr = data_blkaddr(dn->inode, dn->node_page,
++							dn->ofs_in_node + i);
++
++		if (__is_valid_data_blkaddr(blkaddr))
++			count++;
++	}
++
++	return count;
+ }
  
+ static int __f2fs_cluster_blocks(struct inode *inode,
+-				unsigned int cluster_idx, bool compr)
++				unsigned int cluster_idx, bool compr_blks)
+ {
+ 	struct dnode_of_data dn;
+-	unsigned int cluster_size = F2FS_I(inode)->i_cluster_size;
+ 	unsigned int start_idx = cluster_idx <<
+ 				F2FS_I(inode)->i_log_cluster_size;
+ 	int ret;
+@@ -950,31 +974,14 @@ static int __f2fs_cluster_blocks(struct inode *inode,
+ 
+ 	if (f2fs_sanity_check_cluster(&dn)) {
+ 		ret = -EFSCORRUPTED;
+-		f2fs_handle_error(F2FS_I_SB(inode), ERROR_CORRUPTED_CLUSTER);
+ 		goto fail;
+ 	}
+ 
+ 	if (dn.data_blkaddr == COMPRESS_ADDR) {
+-		int i;
+-
+-		ret = 1;
+-		for (i = 1; i < cluster_size; i++) {
+-			block_t blkaddr;
+-
+-			blkaddr = data_blkaddr(dn.inode,
+-					dn.node_page, dn.ofs_in_node + i);
+-			if (compr) {
+-				if (__is_valid_data_blkaddr(blkaddr))
+-					ret++;
+-			} else {
+-				if (blkaddr != NULL_ADDR)
+-					ret++;
+-			}
+-		}
+-
+-		f2fs_bug_on(F2FS_I_SB(inode),
+-			!compr && ret != cluster_size &&
+-			!is_inode_flag_set(inode, FI_COMPRESS_RELEASED));
++		if (compr_blks)
++			ret = __f2fs_get_cluster_blocks(inode, &dn);
++		else
++			ret = 1;
+ 	}
+ fail:
+ 	f2fs_put_dnode(&dn);
+@@ -987,7 +994,7 @@ static int f2fs_compressed_blocks(struct compress_ctx *cc)
+ 	return __f2fs_cluster_blocks(cc->inode, cc->cluster_idx, true);
+ }
+ 
+-/* return # of valid blocks in compressed cluster */
++/* return whether cluster is compressed one or not */
+ int f2fs_is_compressed_cluster(struct inode *inode, pgoff_t index)
+ {
+ 	return __f2fs_cluster_blocks(inode,
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index d54644d386842..1c59a3b2b2c34 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1614,9 +1614,7 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
+ 			map->m_flags |= F2FS_MAP_NEW;
+ 	} else if (is_hole) {
+ 		if (f2fs_compressed_file(inode) &&
+-		    f2fs_sanity_check_cluster(&dn) &&
+-		    (flag != F2FS_GET_BLOCK_FIEMAP ||
+-		     IS_ENABLED(CONFIG_F2FS_CHECK_FS))) {
++		    f2fs_sanity_check_cluster(&dn)) {
+ 			err = -EFSCORRUPTED;
+ 			f2fs_handle_error(sbi,
+ 					ERROR_CORRUPTED_CLUSTER);
+-- 
+2.43.0
+
 
 
 
