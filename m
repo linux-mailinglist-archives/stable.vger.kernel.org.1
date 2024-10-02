@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-78651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFAD98D339
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BEE98D368
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514131C2042A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:28:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7661F2809B0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF311CF7CC;
-	Wed,  2 Oct 2024 12:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D47C1CFEAD;
+	Wed,  2 Oct 2024 12:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="XnZf1xvj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vRliCxfS"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060A329CE7;
-	Wed,  2 Oct 2024 12:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D325C1D52B
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 12:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727872016; cv=none; b=Ab9r85RleW3snqjUX2GpOWUMdY6dnNaPzMgCoFNDSsAL2Mb94VYVnbQnMbnb5Zql76WPSt3o5sggLjHQEiaddE1nuwnRWKHvnydxnnSTpmoIkr33ATcPpJDz/ub/ubxrTHxTGTNzfatIpB96+L0VArCVp8kWNdOXWG6FAI2sREc=
+	t=1727872615; cv=none; b=ahtaRi5trMkOa1Mi6ZCNl9H/X2iRtv+46HV9gS8M+aB7zjMCE20GAmKI9aeAbDQeDaq41xRWP1isrwLeaO52Fyzl3HnB/xmcjmOyVWND68u+974Auth5TDUnYGH4QZClWfsDsp4jfq6ftL3oB+pAec2U+wpXErMZ1iB7F/CYZp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727872016; c=relaxed/simple;
-	bh=Z3iGhP84Y3QCg9GHA/1Ymr+4r2pvOQzH06K7BVvfNfE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jqa4vFTXpC3pf2q5ZW0ZwOrlRqp/D19M1oKg9VcD0cnfI1OzB9B0ko4BCSmHMNK1cMhRhJMZ0ljAvglRJ9OH7jpR8NjGnUY+o7kBAFGWcSd4TDbxFot6BouOgxzDsJXvd+npp4x1jg1VwslSvVr1XzeiXiD6B8XdTjN0yBuVegg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=XnZf1xvj; arc=none smtp.client-ip=178.154.239.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:4a24:0:640:9413:0])
-	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 742476003B;
-	Wed,  2 Oct 2024 15:26:41 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:6413::1:3])
-	by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id ZQa8h82Ig0U0-XCZIZoN5;
-	Wed, 02 Oct 2024 15:26:40 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1727872000;
-	bh=BS9mL8Bw7Lo0Kw6QmoUghvwWGovppnMzZ0k0iicLcEc=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=XnZf1xvj3wgg172N1x5xR4EUX2UkEDvDhCsvHEXiHPWAaXDYVRWaGkhZQOyT2JfEe
-	 hh2VBbHRH2LppJlmf+nb4/ibytdqBjlZ2x58Dp4h9M6+sjMThBIRlR1gh9gYQ2dKga
-	 kJD5uogUSdKAGdwaojwzP9roPu2zAXg3Arp36/yY=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: linux-kernel@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	bcm-kernel-feedback-list@broadcom.com,
-	Sinclair Yeh <syeh@vmware.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Thomas Hellstrom <thellstrom@vmware.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [PATCH] drm/vmwgfx: Handle surface check failure correctly
-Date: Wed,  2 Oct 2024 15:24:29 +0300
-Message-Id: <20241002122429.1981822-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1727872615; c=relaxed/simple;
+	bh=wGee77k5PCtNg6xcb+kNjTEA9ZbDYE/Af4As144H8+c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=il71FCFN8axHgqbVZFF3fcUSTRTwnSWRs+AyA5VhaRGMAbmFbkoSFTDMw9h2RqxjgH3phpWhtPLn0kAwp8OZk+BXpTILZgAU2dxrFeDvkhBPeiPAoYFAyRlr3VJWfxAd7HzEURThWZIcrkhyoKW3uPHs+nmfqIdV21dD1EIGJrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vRliCxfS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55455C4CEC5;
+	Wed,  2 Oct 2024 12:36:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727872615;
+	bh=wGee77k5PCtNg6xcb+kNjTEA9ZbDYE/Af4As144H8+c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vRliCxfS5id/G09K505QJZsjUWtx1gT2nUCjFvBZjytrAJifryxX5aCFRFitgxWnX
+	 9o5ELSXTWl7gFxpmUag7Xs/lA0gZ8+t0BZHUP45B/z8Kt+OeBXzjixPYf3FMLhGfXl
+	 1eZLcYmmevhmrZigzHJr41dROH7URS575bB92TyiB47SAcU69tR8uIhIipEHylLEz6
+	 iDK/hSi234pcAHy6v9Yl3T3sG8MRO5876u80U3X9ireI0VixjDnH1Nso7zcamaEVH5
+	 0s9xNDZcfBaIS8gP98cazt2k5Aco+BaW6JQBgOJeiS10rUBRO0n2t2+HBGIVjp3x5Z
+	 m+a3JiJYbqxhw==
+From: "Alexey Gladkov (Intel)" <legion@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Alexey Gladkov (Intel)" <legion@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH 6.1.y] x86/tdx: Fix "in-kernel MMIO" check
+Date: Wed,  2 Oct 2024 14:36:27 +0200
+Message-ID: <20241002123627.158020-1-legion@kernel.org>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <2024100104-everybody-retrace-89ed@gregkh>
+References: <2024100104-everybody-retrace-89ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,36 +59,57 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Yandex-Filter: 1
 
-Currently if condition (!bo and !vmw_kms_srf_ok()) was met
-we go to err_out with ret == 0.
-err_out dereferences vfb if ret == 0, but in our case vfb is still NULL.
+TDX only supports kernel-initiated MMIO operations. The handle_mmio()
+function checks if the #VE exception occurred in the kernel and rejects
+the operation if it did not.
 
-Fix this by assigning sensible error to ret.
+However, userspace can deceive the kernel into performing MMIO on its
+behalf. For example, if userspace can point a syscall to an MMIO address,
+syscall does get_user() or put_user() on it, triggering MMIO #VE. The
+kernel will treat the #VE as in-kernel MMIO.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+Ensure that the target MMIO address is within the kernel before decoding
+instruction.
 
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org
-Fixes: 810b3e1683d0 ("drm/vmwgfx: Support topology greater than texture size")
+Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
+Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion%40kernel.org
+(cherry picked from commit d4fc4d01471528da8a9797a065982e05090e1d81)
+Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/coco/tdx/tdx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 288ed0bb75cb..752510a11e1b 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1539,6 +1539,7 @@ static struct drm_framebuffer *vmw_kms_fb_create(struct drm_device *dev,
- 		DRM_ERROR("Surface size cannot exceed %dx%d\n",
- 			dev_priv->texture_max_width,
- 			dev_priv->texture_max_height);
-+		ret = -EINVAL;
- 		goto err_out;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index b9da467bd222..9032fea50219 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -12,6 +12,7 @@
+ #include <asm/insn.h>
+ #include <asm/insn-eval.h>
+ #include <asm/pgtable.h>
++#include <asm/traps.h>
+ 
+ /* TDX module Call Leaf IDs */
+ #define TDX_GET_INFO			1
+@@ -371,6 +372,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+ 			return -EINVAL;
  	}
  
++	if (!fault_in_kernel_space(ve->gla)) {
++		WARN_ONCE(1, "Access to userspace address is not supported");
++		return -EINVAL;
++	}
++
+ 	/*
+ 	 * Reject EPT violation #VEs that split pages.
+ 	 *
 -- 
-2.34.1
+2.46.2
 
 
