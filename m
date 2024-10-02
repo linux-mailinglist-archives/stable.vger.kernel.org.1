@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD58698DB1D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB14098DDAA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B9061C22E6F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A62B238B6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9411D12FF;
-	Wed,  2 Oct 2024 14:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5E01D1517;
+	Wed,  2 Oct 2024 14:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5QiHLNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEWj8wMS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE4A1D0DED;
-	Wed,  2 Oct 2024 14:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDC31EB21;
+	Wed,  2 Oct 2024 14:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878994; cv=none; b=upnfcod0ZzeBBsTu+YDrA/v1gcSPe+mYflC1lTNSM4lJgY0NX1JY7PAobRilj5HuttMaBTrhvMH0EZu58cjwhMoF+vdFfgkMdIdLIRAwyCzzrfrgMGpXl3plphwRn773UstZbTPYXRJNLLwDqrn5/3dytWA9iv1JXAPu3hQWlJQ=
+	t=1727880454; cv=none; b=s2zWeC1AF73HtiP4tgseCuNMJ7IZb2bVjaUC6lWMFbbOabZrJD0n0r6zro+Zg1Qv7NExvYZ2fbH2x+MFVmHDIvd7D087wuzhRXL1PHn7HUFdf++5NAckNS+8EiR185CSymD12BHPFNBeEdnetXSiZe1bCZMgLGkBU1MH1SnoPRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878994; c=relaxed/simple;
-	bh=ug4z2XiRMC1Y5eGGhnFVtnmbAiA3dqSPJ41rPdW+5HY=;
+	s=arc-20240116; t=1727880454; c=relaxed/simple;
+	bh=pwRWcu55c79FUq2yZTLyUH9HiIhOFQqboa5BiHSIgrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXEFVZu9/hdDrlSCwRhczEEdxOHgSasTfOnjjOwQOZVD+t9+ZpZ33zyXZde4PA2EJOETAE2G6xNLPHC+Sc+HSoIWcEC/5VsFS/FV9JWs25hwTdTMyiLTFxpW7G/eOH0rf1rR1druisvv381aERuIq5kRGrqSbYkg/AIF8vZ0AVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5QiHLNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED601C4CEC2;
-	Wed,  2 Oct 2024 14:23:13 +0000 (UTC)
+	 MIME-Version; b=n3F145YenEu6Fu8GgTPLX5ymrlnMz4Sq0ffbedHqUhOKpqhUU1J7H9XaLhoke7CCYoVOSTgefH3qh3dVQfs1pDsRpCAMkA1k9SZt37keZr4yQPGfYoCBTfR+J8cS59QoYHULSU3RYL4Fbuyp4+SArogScN3dKfd52BoQuOzwpnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEWj8wMS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE58FC4CEC2;
+	Wed,  2 Oct 2024 14:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878994;
-	bh=ug4z2XiRMC1Y5eGGhnFVtnmbAiA3dqSPJ41rPdW+5HY=;
+	s=korg; t=1727880454;
+	bh=pwRWcu55c79FUq2yZTLyUH9HiIhOFQqboa5BiHSIgrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5QiHLNksR1/XaC63hp1rgLZzu7c9rOkRP0RvceAd5ff5TsVIGyRFX4M8MzDiGqe3
-	 /97rCLiaH91bHKWqzUsA5STMTbyXHjX6bWTgPl3JTHcpZZypPHytdXonjRkswsiqkS
-	 S0IyqkymWwv3jDdoOy3oCueX54Qh0UThfCgx5oEc=
+	b=PEWj8wMSQMOpLd1OoafMCrXzcNJVxyRNXfIh81Ylz6fgdI0qdOF8Eo/EuUP1GSCWY
+	 xnYV71IbIXLpgbQVwExtW7Sj6Blk8eGgINsTIcE7rUFw0mN7Q87C4iKAnB+tJFny6D
+	 hrmoJ9sLVqS3ZpowyM6Pk48PY8b3q61wN1+P/DV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daehwan Jung <dh10.jung@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 601/634] xhci: Add a quirk for writing ERST in high-low order
-Date: Wed,  2 Oct 2024 15:01:41 +0200
-Message-ID: <20241002125834.838706907@linuxfoundation.org>
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 463/538] f2fs: avoid potential int overflow in sanity_check_area_boundary()
+Date: Wed,  2 Oct 2024 15:01:42 +0200
+Message-ID: <20241002125810.719644151@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daehwan Jung <dh10.jung@samsung.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit bc162403e33e1d57e40994977acaf19f1434e460 ]
+commit 50438dbc483ca6a133d2bce9d5d6747bcee38371 upstream.
 
-This quirk is for the controller that has a limitation in supporting
-separate ERSTBA_HI and ERSTBA_LO programming. It's supported when
-the ERSTBA is programmed ERSTBA_HI before ERSTBA_LO. That's because
-the internal initialization of event ring fetches the
-"Event Ring Segment Table Entry" based on the indication of ERSTBA_LO
-written.
+While calculating the end addresses of main area and segment 0, u32
+may be not enough to hold the result without the danger of int
+overflow.
 
-Signed-off-by: Daehwan Jung <dh10.jung@samsung.com>
-Link: https://lore.kernel.org/r/1718019553-111939-3-git-send-email-dh10.jung@samsung.com
+Just in case, play it safe and cast one of the operands to a
+wider type (u64).
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: fd694733d523 ("f2fs: cover large section in sanity check of super")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: e5fa8db0be3e ("usb: xhci: fix loss of data on Cadence xHC")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c | 5 ++++-
- drivers/usb/host/xhci.h     | 2 ++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ fs/f2fs/super.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index f591ddd086627..fa3ee53df0ecc 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2325,7 +2325,10 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
- 	erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
- 	erst_base &= ERST_BASE_RSVDP;
- 	erst_base |= ir->erst.erst_dma_addr & ~ERST_BASE_RSVDP;
--	xhci_write_64(xhci, erst_base, &ir->ir_set->erst_base);
-+	if (xhci->quirks & XHCI_WRITE_64_HI_LO)
-+		hi_lo_writeq(erst_base, &ir->ir_set->erst_base);
-+	else
-+		xhci_write_64(xhci, erst_base, &ir->ir_set->erst_base);
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3336,9 +3336,9 @@ static inline bool sanity_check_area_bou
+ 	u32 segment_count = le32_to_cpu(raw_super->segment_count);
+ 	u32 log_blocks_per_seg = le32_to_cpu(raw_super->log_blocks_per_seg);
+ 	u64 main_end_blkaddr = main_blkaddr +
+-				(segment_count_main << log_blocks_per_seg);
++				((u64)segment_count_main << log_blocks_per_seg);
+ 	u64 seg_end_blkaddr = segment0_blkaddr +
+-				(segment_count << log_blocks_per_seg);
++				((u64)segment_count << log_blocks_per_seg);
  
- 	/* Set the event ring dequeue address of this interrupter */
- 	xhci_set_hc_event_deq(xhci, ir);
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 78d014c4d884a..5a8925474176d 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -17,6 +17,7 @@
- #include <linux/kernel.h>
- #include <linux/usb/hcd.h>
- #include <linux/io-64-nonatomic-lo-hi.h>
-+#include <linux/io-64-nonatomic-hi-lo.h>
- 
- /* Code sharing between pci-quirks and xhci hcd */
- #include	"xhci-ext-caps.h"
-@@ -1628,6 +1629,7 @@ struct xhci_hcd {
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
- #define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
- #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
-+#define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
--- 
-2.43.0
-
+ 	if (segment0_blkaddr != cp_blkaddr) {
+ 		f2fs_info(sbi, "Mismatch start address, segment0(%u) cp_blkaddr(%u)",
 
 
 
