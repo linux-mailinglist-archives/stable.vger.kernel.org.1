@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F8DE98D886
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:01:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1ABA98D55D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FA71C21DE6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D4AE1F21D78
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EA91D1721;
-	Wed,  2 Oct 2024 13:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584531D0434;
+	Wed,  2 Oct 2024 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPgTALtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugzA5ChE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941FC1D1517;
-	Wed,  2 Oct 2024 13:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA921CFECF;
+	Wed,  2 Oct 2024 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877538; cv=none; b=RDI+vocYe9j4kziLJU/leBxjoxRnLeFWpo8OStWPPePvsGShOujVi3FLFndnqTG+GnwfuClV6VLDG2TJ0WOM2dsyhcOOqsaf8K0Qq/x/448e32QFe4Hig5ktOjn4iBe+BTxpjJG1c+Rfn7xghdCOXqx5uTo5rpNBihorI4BhqEM=
+	t=1727875769; cv=none; b=W1XRmwDFnrIgQjS28mN1gmDH3wUx6EF8xaAbzr7k+0hPdms8e8nuuNtb529622jcnMCu5cAXxFmnv9lTuoV97drJAsZP2OKJigj2oK0Qx4sgSzuc8nF1Qg/j+pm1qorZXnG/SgPNond5A6f5NDxVL+Wg/MEr6SsxXosyrcas4lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877538; c=relaxed/simple;
-	bh=fi34C3MJf5xLmHB1Q8lO/dvw23J9ehefXBIyOmLbl74=;
+	s=arc-20240116; t=1727875769; c=relaxed/simple;
+	bh=yNs49o6hbi7HYL7HzfCm7Llhf2PBsq/3Y987jEQtI2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=terYMzTbK2SUlxZ3Ak1mZVSsNH65Z5vrYiddUT8luTnZ5HYKbgmuhNS6gZ/QdnddUWb+bSdMEay3toWfW3hdVqWQU70z/nZT5AHhNvox3p5WYXkFR82R20yRF3AUppbFw8EqNH+UYD/wxAlYx7cT4Z8jzXQQjeYwe4W74N083nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPgTALtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA23C4CECD;
-	Wed,  2 Oct 2024 13:58:57 +0000 (UTC)
+	 MIME-Version; b=YrczYe4BblwAL6sJW2sGVbPaYAOG3ZXpyZvYLuUyGYeDXdzIaqR4SnVfpjbVApoYsrj+N7QbVsYsgQdNAxfWt6noyYQYtfw/IFT3ibgIh/u6bo3Sa79gcJV0cme3OOLdsuGnLl/nBYwDAZWVd3HQg4f3SGlicq7KMO9ie6kDhFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugzA5ChE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C492C4CEC5;
+	Wed,  2 Oct 2024 13:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877538;
-	bh=fi34C3MJf5xLmHB1Q8lO/dvw23J9ehefXBIyOmLbl74=;
+	s=korg; t=1727875768;
+	bh=yNs49o6hbi7HYL7HzfCm7Llhf2PBsq/3Y987jEQtI2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPgTALtKl3XCVCBRknAFgolKlf7YJog1gP/2NoYTpIyeINE4fUvBdcDkROQF+rUKX
-	 CCVeUOiXVR/EooxQbuMkbid7tfTmElhDeqLY/D+QPS34N3Jxb8axy6PVGwD7QsCwhW
-	 Ae/Ivl3GNguJVXRlZBXwkrfuIj8M3h0qsgJxJcPA=
+	b=ugzA5ChEGAtUoOxp45XZmHX+PGiouMFZa0F67fXUZfKByngmlD12D/oiih+flEbDG
+	 qrvUBW/6z1BXBxn3oE3NT6mLbPKHDjcvuz6Utc+shK4nNFjZ+rV1vcRMUwOoLcwgOy
+	 2UJVBaByVMqOe+sc7YVgBWGJueylvts8hVNowEf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com,
-	syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com,
-	syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 111/634] erofs: handle overlapped pclusters out of crafted images properly
-Date: Wed,  2 Oct 2024 14:53:31 +0200
-Message-ID: <20241002125815.495527286@linuxfoundation.org>
+Subject: [PATCH 6.11 214/695] drm/radeon/evergreen_cs: fix int overflow errors in cs track offsets
+Date: Wed,  2 Oct 2024 14:53:32 +0200
+Message-ID: <20241002125831.004937399@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,203 +62,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50 ]
+[ Upstream commit 3fbaf475a5b8361ebee7da18964db809e37518b7 ]
 
-syzbot reported a task hang issue due to a deadlock case where it is
-waiting for the folio lock of a cached folio that will be used for
-cache I/Os.
+Several cs track offsets (such as 'track->db_s_read_offset')
+either are initialized with or plainly take big enough values that,
+once shifted 8 bits left, may be hit with integer overflow if the
+resulting values end up going over u32 limit.
 
-After looking into the crafted fuzzed image, I found it's formed with
-several overlapped big pclusters as below:
+Same goes for a few instances of 'surf.layer_size * mslice'
+multiplications that are added to 'offset' variable - they may
+potentially overflow as well and need to be validated properly.
 
- Ext:   logical offset   |  length :     physical offset    |  length
-   0:        0..   16384 |   16384 :     151552..    167936 |   16384
-   1:    16384..   32768 |   16384 :     155648..    172032 |   16384
-   2:    32768..   49152 |   16384 :  537223168.. 537239552 |   16384
-...
+While some debug prints in this code section take possible overflow
+issues into account, simply casting to (unsigned long) may be
+erroneous in its own way, as depending on CPU architecture one is
+liable to get different results.
 
-Here, extent 0/1 are physically overlapped although it's entirely
-_impossible_ for normal filesystem images generated by mkfs.
+Fix said problems by:
+ - casting 'offset' to fixed u64 data type instead of
+ ambiguous unsigned long.
+ - casting one of the operands in vulnerable to integer
+ overflow cases to u64.
+ - adjust format specifiers in debug prints to properly
+ represent 'offset' values.
 
-First, managed folios containing compressed data will be marked as
-up-to-date and then unlocked immediately (unlike in-place folios) when
-compressed I/Os are complete.  If physical blocks are not submitted in
-the incremental order, there should be separate BIOs to avoid dependency
-issues.  However, the current code mis-arranges z_erofs_fill_bio_vec()
-and BIO submission which causes unexpected BIO waits.
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-Second, managed folios will be connected to their own pclusters for
-efficient inter-queries.  However, this is somewhat hard to implement
-easily if overlapped big pclusters exist.  Again, these only appear in
-fuzzed images so let's simply fall back to temporary short-lived pages
-for correctness.
-
-Additionally, it justifies that referenced managed folios cannot be
-truncated for now and reverts part of commit 2080ca1ed3e4 ("erofs: tidy
-up `struct z_erofs_bvec`") for simplicity although it shouldn't be any
-difference.
-
-Reported-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
-Reported-by: syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com
-Reported-by: syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com
-Tested-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/0000000000002fda01061e334873@google.com
-Fixes: 8e6c8fa9f2e9 ("erofs: enable big pcluster feature")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240910070847.3356592-1-hsiangkao@linux.alibaba.com
+Fixes: 285484e2d55e ("drm/radeon: add support for evergreen/ni tiling informations v11")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 71 ++++++++++++++++++++++++++----------------------
- 1 file changed, 38 insertions(+), 33 deletions(-)
+ drivers/gpu/drm/radeon/evergreen_cs.c | 62 +++++++++++++--------------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index d269b092c477f..2535479fb82db 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1416,6 +1416,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 	struct z_erofs_bvec zbv;
- 	struct address_space *mapping;
- 	struct folio *folio;
-+	struct page *page;
- 	int bs = i_blocksize(f->inode);
+diff --git a/drivers/gpu/drm/radeon/evergreen_cs.c b/drivers/gpu/drm/radeon/evergreen_cs.c
+index e5577d2a19ef4..a466132833936 100644
+--- a/drivers/gpu/drm/radeon/evergreen_cs.c
++++ b/drivers/gpu/drm/radeon/evergreen_cs.c
+@@ -397,7 +397,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 	struct evergreen_cs_track *track = p->track;
+ 	struct eg_surface surf;
+ 	unsigned pitch, slice, mslice;
+-	unsigned long offset;
++	u64 offset;
+ 	int r;
  
- 	/* Except for inplace folios, the entire folio can be used for I/Os */
-@@ -1438,7 +1439,6 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 	 * file-backed folios will be used instead.
- 	 */
- 	if (folio->private == (void *)Z_EROFS_PREALLOCATED_PAGE) {
--		folio->private = 0;
- 		tocache = true;
- 		goto out_tocache;
- 	}
-@@ -1456,7 +1456,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 	mslice = G_028C6C_SLICE_MAX(track->cb_color_view[id]) + 1;
+@@ -435,14 +435,14 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 		return r;
  	}
  
- 	folio_lock(folio);
--	if (folio->mapping == mc) {
-+	if (likely(folio->mapping == mc)) {
- 		/*
- 		 * The cached folio is still in managed cache but without
- 		 * a valid `->private` pcluster hint.  Let's reconnect them.
-@@ -1466,41 +1466,44 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 			/* compressed_bvecs[] already takes a ref before */
- 			folio_put(folio);
- 		}
--
--		/* no need to submit if it is already up-to-date */
--		if (folio_test_uptodate(folio)) {
--			folio_unlock(folio);
--			bvec->bv_page = NULL;
-+		if (likely(folio->private == pcl))  {
-+			/* don't submit cache I/Os again if already uptodate */
-+			if (folio_test_uptodate(folio)) {
-+				folio_unlock(folio);
-+				bvec->bv_page = NULL;
-+			}
-+			return;
- 		}
--		return;
-+		/*
-+		 * Already linked with another pcluster, which only appears in
-+		 * crafted images by fuzzers for now.  But handle this anyway.
-+		 */
-+		tocache = false;	/* use temporary short-lived pages */
-+	} else {
-+		DBG_BUGON(1); /* referenced managed folios can't be truncated */
-+		tocache = true;
+-	offset = track->cb_color_bo_offset[id] << 8;
++	offset = (u64)track->cb_color_bo_offset[id] << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d cb[%d] bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d cb[%d] bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, id, offset, surf.base_align);
+ 		return -EINVAL;
  	}
--
--	/*
--	 * It has been truncated, so it's unsafe to reuse this one. Let's
--	 * allocate a new page for compressed data.
--	 */
--	DBG_BUGON(folio->mapping);
--	tocache = true;
- 	folio_unlock(folio);
- 	folio_put(folio);
- out_allocfolio:
--	zbv.page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
-+	page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
- 	spin_lock(&pcl->obj.lockref.lock);
--	if (pcl->compressed_bvecs[nr].page) {
--		erofs_pagepool_add(&f->pagepool, zbv.page);
-+	if (unlikely(pcl->compressed_bvecs[nr].page != zbv.page)) {
-+		erofs_pagepool_add(&f->pagepool, page);
- 		spin_unlock(&pcl->obj.lockref.lock);
- 		cond_resched();
- 		goto repeat;
- 	}
--	bvec->bv_page = pcl->compressed_bvecs[nr].page = zbv.page;
--	folio = page_folio(zbv.page);
--	/* first mark it as a temporary shortlived folio (now 1 ref) */
--	folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
-+	bvec->bv_page = pcl->compressed_bvecs[nr].page = page;
-+	folio = page_folio(page);
- 	spin_unlock(&pcl->obj.lockref.lock);
- out_tocache:
- 	if (!tocache || bs != PAGE_SIZE ||
--	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp))
-+	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp)) {
-+		/* turn into a temporary shortlived folio (1 ref) */
-+		folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
- 		return;
-+	}
- 	folio_attach_private(folio, pcl);
- 	/* drop a refcount added by allocpage (then 2 refs in total here) */
- 	folio_put(folio);
-@@ -1635,13 +1638,10 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 		cur = mdev.m_pa;
- 		end = cur + pcl->pclustersize;
- 		do {
--			z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
--			if (!bvec.bv_page)
--				continue;
--
-+			bvec.bv_page = NULL;
- 			if (bio && (cur != last_pa ||
- 				    bio->bi_bdev != mdev.m_bdev)) {
--io_retry:
-+drain_io:
- 				if (!erofs_is_fscache_mode(sb))
- 					submit_bio(bio);
- 				else
-@@ -1654,6 +1654,15 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 				bio = NULL;
+ 
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->cb_color_bo[id])) {
+ 		/* old ddx are broken they allocate bo with w*h*bpp but
+ 		 * program slice with ALIGN(h, 8), catch this and patch
+@@ -450,14 +450,14 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 		 */
+ 		if (!surf.mode) {
+ 			uint32_t *ib = p->ib.ptr;
+-			unsigned long tmp, nby, bsize, size, min = 0;
++			u64 tmp, nby, bsize, size, min = 0;
+ 
+ 			/* find the height the ddx wants */
+ 			if (surf.nby > 8) {
+ 				min = surf.nby - 8;
  			}
- 
-+			if (!bvec.bv_page) {
-+				z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
-+				if (!bvec.bv_page)
-+					continue;
-+				if (cur + bvec.bv_len > end)
-+					bvec.bv_len = end - cur;
-+				DBG_BUGON(bvec.bv_len < sb->s_blocksize);
-+			}
-+
- 			if (unlikely(PageWorkingset(bvec.bv_page)) &&
- 			    !memstall) {
- 				psi_memstall_enter(&pflags);
-@@ -1673,13 +1682,9 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 				++nr_bios;
+ 			bsize = radeon_bo_size(track->cb_color_bo[id]);
+-			tmp = track->cb_color_bo_offset[id] << 8;
++			tmp = (u64)track->cb_color_bo_offset[id] << 8;
+ 			for (nby = surf.nby; nby > min; nby--) {
+ 				size = nby * surf.nbx * surf.bpe * surf.nsamples;
+ 				if ((tmp + size * mslice) <= bsize) {
+@@ -469,7 +469,7 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
+ 				slice = ((nby * surf.nbx) / 64) - 1;
+ 				if (!evergreen_surface_check(p, &surf, "cb")) {
+ 					/* check if this one works */
+-					tmp += surf.layer_size * mslice;
++					tmp += (u64)surf.layer_size * mslice;
+ 					if (tmp <= bsize) {
+ 						ib[track->cb_color_slice_idx[id]] = slice;
+ 						goto old_ddx_ok;
+@@ -478,9 +478,9 @@ static int evergreen_cs_track_validate_cb(struct radeon_cs_parser *p, unsigned i
  			}
+ 		}
+ 		dev_warn(p->dev, "%s:%d cb[%d] bo too small (layer size %d, "
+-			 "offset %d, max layer %d, bo size %ld, slice %d)\n",
++			 "offset %llu, max layer %d, bo size %ld, slice %d)\n",
+ 			 __func__, __LINE__, id, surf.layer_size,
+-			track->cb_color_bo_offset[id] << 8, mslice,
++			(u64)track->cb_color_bo_offset[id] << 8, mslice,
+ 			radeon_bo_size(track->cb_color_bo[id]), slice);
+ 		dev_warn(p->dev, "%s:%d problematic surf: (%d %d) (%d %d %d %d %d %d %d)\n",
+ 			 __func__, __LINE__, surf.nbx, surf.nby,
+@@ -564,7 +564,7 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 	struct evergreen_cs_track *track = p->track;
+ 	struct eg_surface surf;
+ 	unsigned pitch, slice, mslice;
+-	unsigned long offset;
++	u64 offset;
+ 	int r;
  
--			if (cur + bvec.bv_len > end)
--				bvec.bv_len = end - cur;
--			DBG_BUGON(bvec.bv_len < sb->s_blocksize);
- 			if (!bio_add_page(bio, bvec.bv_page, bvec.bv_len,
- 					  bvec.bv_offset))
--				goto io_retry;
--
-+				goto drain_io;
- 			last_pa = cur + bvec.bv_len;
- 			bypass = false;
- 		} while ((cur += bvec.bv_len) < end);
+ 	mslice = G_028008_SLICE_MAX(track->db_depth_view) + 1;
+@@ -610,18 +610,18 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 		return r;
+ 	}
+ 
+-	offset = track->db_s_read_offset << 8;
++	offset = (u64)track->db_s_read_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil read bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_s_read_bo)) {
+ 		dev_warn(p->dev, "%s:%d stencil read bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_s_read_offset << 8, mslice,
++			(u64)track->db_s_read_offset << 8, mslice,
+ 			radeon_bo_size(track->db_s_read_bo));
+ 		dev_warn(p->dev, "%s:%d stencil invalid (0x%08x 0x%08x 0x%08x 0x%08x)\n",
+ 			 __func__, __LINE__, track->db_depth_size,
+@@ -629,18 +629,18 @@ static int evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+ 		return -EINVAL;
+ 	}
+ 
+-	offset = track->db_s_write_offset << 8;
++	offset = (u64)track->db_s_write_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil write bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_s_write_bo)) {
+ 		dev_warn(p->dev, "%s:%d stencil write bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_s_write_offset << 8, mslice,
++			(u64)track->db_s_write_offset << 8, mslice,
+ 			radeon_bo_size(track->db_s_write_bo));
+ 		return -EINVAL;
+ 	}
+@@ -661,7 +661,7 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+ 	struct evergreen_cs_track *track = p->track;
+ 	struct eg_surface surf;
+ 	unsigned pitch, slice, mslice;
+-	unsigned long offset;
++	u64 offset;
+ 	int r;
+ 
+ 	mslice = G_028008_SLICE_MAX(track->db_depth_view) + 1;
+@@ -708,34 +708,34 @@ static int evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+ 		return r;
+ 	}
+ 
+-	offset = track->db_z_read_offset << 8;
++	offset = (u64)track->db_z_read_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil read bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil read bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_z_read_bo)) {
+ 		dev_warn(p->dev, "%s:%d depth read bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_z_read_offset << 8, mslice,
++			(u64)track->db_z_read_offset << 8, mslice,
+ 			radeon_bo_size(track->db_z_read_bo));
+ 		return -EINVAL;
+ 	}
+ 
+-	offset = track->db_z_write_offset << 8;
++	offset = (u64)track->db_z_write_offset << 8;
+ 	if (offset & (surf.base_align - 1)) {
+-		dev_warn(p->dev, "%s:%d stencil write bo base %ld not aligned with %ld\n",
++		dev_warn(p->dev, "%s:%d stencil write bo base %llu not aligned with %ld\n",
+ 			 __func__, __LINE__, offset, surf.base_align);
+ 		return -EINVAL;
+ 	}
+-	offset += surf.layer_size * mslice;
++	offset += (u64)surf.layer_size * mslice;
+ 	if (offset > radeon_bo_size(track->db_z_write_bo)) {
+ 		dev_warn(p->dev, "%s:%d depth write bo too small (layer size %d, "
+-			 "offset %ld, max layer %d, bo size %ld)\n",
++			 "offset %llu, max layer %d, bo size %ld)\n",
+ 			 __func__, __LINE__, surf.layer_size,
+-			(unsigned long)track->db_z_write_offset << 8, mslice,
++			(u64)track->db_z_write_offset << 8, mslice,
+ 			radeon_bo_size(track->db_z_write_bo));
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
