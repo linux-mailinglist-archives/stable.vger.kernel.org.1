@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-79932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AD498DAF6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D8E98DD67
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4390A1F22683
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C74F71C22D98
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396FA1D0E2B;
-	Wed,  2 Oct 2024 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4757D1D0F43;
+	Wed,  2 Oct 2024 14:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4tbgRag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ng72p6b8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC9A1D0E1C;
-	Wed,  2 Oct 2024 14:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030B41D551;
+	Wed,  2 Oct 2024 14:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878891; cv=none; b=oWdl4dIox/78CZ60dsnC/si+DVKU1T0L4YG5v4LhTdkGqqWLcspEXARPXOv8ipOS7TBK796DpHtJaPk0K/OlTuzsJ4f0hu7Am1m6z5mThca/9F4SacrfyUNHww1vnxcRBKIJZcv2EM4n4qsYzKpbefDkDFcCoIAYFI2dPgWY62Q=
+	t=1727880361; cv=none; b=I/THrzK5H0W8rFOnWBlt73n28PxceWp126tsOjf0keYMVaArkxc8u37meweHkwYpYIck2v0CmO9SiGpSlbXUhzTf0ps3be5zTtnzcVNjeSjIz01OP3I6nbzkPAwiMORNIE72Li90fcvgfY/cDllcVmXFBfiWINwz/4u0Sftz7m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878891; c=relaxed/simple;
-	bh=QaW/ebcYO1wT+nz50cTmAacXIQPWkbV7SKrdzftsNNo=;
+	s=arc-20240116; t=1727880361; c=relaxed/simple;
+	bh=0NZxAJguEuNtBzlAH/plIsbZSKaFNzvgMtDETtRUsBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N2BHy1S216WUW0xPkZaLHdiVnzZe+PandaK5XYc641j+d0psQyRmAxo0mQiNpkdyRy6kiocOXT3Ezd7LTwgg34GCcZTzgvdOY3fEF5EMw2posjvt3gr85KR5kwwVnL2rd6KkaXTyVSd/urakKBWtgTo9ZvNWbR79fimSabCsvsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4tbgRag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728F4C4CEC5;
-	Wed,  2 Oct 2024 14:21:30 +0000 (UTC)
+	 MIME-Version; b=lqV5L/5uHhTlEx5xT7OjInMZRqKknigxyPLhWfCpxnqQazPiTNcubfwQRduxNbjTL5a87p3YzcRI2f/xEIPsBN9Ytb9bkPKzGx7ut3xoZio4MA2O8OuBVbQLF0+MnBZlFDu1FCPnGahcz6dPbo3+QZJ0Vxdhdvs81h+h2hRZjlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ng72p6b8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DDAC4CEC2;
+	Wed,  2 Oct 2024 14:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878890;
-	bh=QaW/ebcYO1wT+nz50cTmAacXIQPWkbV7SKrdzftsNNo=;
+	s=korg; t=1727880360;
+	bh=0NZxAJguEuNtBzlAH/plIsbZSKaFNzvgMtDETtRUsBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4tbgRagrhZK6rM2Kl0gawFz62UTOFb95Mmi74grbp5LaFumg9oAR/PgsNwXwBxnm
-	 7fEkblUxzDynmhaSrlT4C8UbbMoEJvKNOi1n68DRvnemyXjQPFwq3R+JF2UfDRQusS
-	 37/Ixa6SKTB3wu0iCTwturUqb8dfaDuMYTzjxRa8=
+	b=ng72p6b8zPrAvnTmmAxHENyCq+JJehrxEpkj19MqR9wDO7SLkTgXw4qBb179zoJzn
+	 1yzE0DialNuYOywiYAEyth4zGWV4ALzSiVWxDb4MJ7UDSmuuS4oVgUlGm8qil/uQIs
+	 bKhTDpkxSB+4NaMfCx5sEruDygWh8pCQn3s4w4QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 540/634] ACPI: sysfs: validate return type of _STR method
+	Ma Ke <make24@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 401/538] ASoC: rt5682: Return devm_of_clk_add_hw_provider to transfer the error
 Date: Wed,  2 Oct 2024 15:00:40 +0200
-Message-ID: <20241002125832.424244107@linuxfoundation.org>
+Message-ID: <20241002125808.266792894@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 4bb1e7d027413835b086aed35bc3f0713bc0f72b upstream.
+commit fcca6d05ef49d5650514ea1dcfd12e4ae3ff2be6 upstream.
 
-Only buffer objects are valid return values of _STR.
+Return devm_of_clk_add_hw_provider() in order to transfer the error, if it
+fails due to resource allocation failure or device tree clock provider
+registration failure.
 
-If something else is returned description_show() will access invalid
-memory.
-
-Fixes: d1efe3c324ea ("ACPI: Add new sysfs interface to export device description")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20240709-acpi-sysfs-groups-v2-1-058ab0667fa8@weissschuh.net
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: ebbfabc16d23 ("ASoC: rt5682: Add CCF usage for providing I2S clks")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20240830143154.3448004-1-make24@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/device_sysfs.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5682.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -540,8 +540,9 @@ int acpi_device_setup_files(struct acpi_
- 	 * If device has _STR, 'description' file is created
- 	 */
- 	if (acpi_has_method(dev->handle, "_STR")) {
--		status = acpi_evaluate_object(dev->handle, "_STR",
--					NULL, &buffer);
-+		status = acpi_evaluate_object_typed(dev->handle, "_STR",
-+						    NULL, &buffer,
-+						    ACPI_TYPE_BUFFER);
- 		if (ACPI_FAILURE(status))
- 			buffer.pointer = NULL;
- 		dev->pnp.str_obj = buffer.pointer;
+--- a/sound/soc/codecs/rt5682.c
++++ b/sound/soc/codecs/rt5682.c
+@@ -2903,8 +2903,10 @@ int rt5682_register_dai_clks(struct rt56
+ 		}
+ 
+ 		if (dev->of_node) {
+-			devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
++			ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
+ 						    dai_clk_hw);
++			if (ret)
++				return ret;
+ 		} else {
+ 			ret = devm_clk_hw_register_clkdev(dev, dai_clk_hw,
+ 							  init.name,
 
 
 
