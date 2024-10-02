@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B82A98D9EE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C9D98DCB7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C624E1F2706A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB45A1C21293
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2971D2215;
-	Wed,  2 Oct 2024 14:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257171D0E25;
+	Wed,  2 Oct 2024 14:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jx9+ktgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXjBvcVc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889851D0F64;
-	Wed,  2 Oct 2024 14:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AFF1D0BBE;
+	Wed,  2 Oct 2024 14:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878305; cv=none; b=LnDzj5P97i2Tku9K0aUQBW/nSzpjg+PwGVEcYRR3qDGZ8sphDu3O0tTC6JI6GutubW3W4aUuvbDVt0Ef7SHyw2inbMH7irf9z5GDxfVkFfHtmj3GBcPRJwapNF0yAvYF8HSvW/bhtPt57QjVXW7HyFxbFVykdDYAbhwWGVRX/1Y=
+	t=1727879878; cv=none; b=mmCnL3FJ3j8r9GWRNQ6Jxrr1zjyDz9OrTHi7l+983Hl3cfzHMJ5D/cW9/SIgFbMZLtF+foW874f0OhU3jvf63bH6xfuAcakYunV6vv+NLft78xkVo/HahxzNvVawAVqgsE5tsy+K4XimU3t36f/ZXD/wBkpJRxysXgYYngCkrA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878305; c=relaxed/simple;
-	bh=esfYvqNeJEAu+3ONBIxwzO2wIEpFq9jtBtk8hUIouw0=;
+	s=arc-20240116; t=1727879878; c=relaxed/simple;
+	bh=Rt0LTDX+qJGZUXZvhLstHzwYKwVf8waW29cPY34hRxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HG4/oLMupr1zzITtFdJ7KG3Rxgl5CQILzrSYriGxU525aV+dFPtW7s6+oy50Dai5VdbCsgBIbxX/n4Oro9Mr8MUraC3o1FemBR413v6nrNkGRm/JE81GvkZP8y96XKpfiVwnlRzYdSdUZTMmVCXM0aTw3yO3HnCJuywVlVxEuWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jx9+ktgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11660C4CEC2;
-	Wed,  2 Oct 2024 14:11:44 +0000 (UTC)
+	 MIME-Version; b=TklAey3HCBVmUyD9fpAH1QPRhQK6wArOp0S5zf/EBcHLp872j0V8bXP6/Un4a6OCMPSt9RGXg16IkrDSs6QsLBuOsJsJDav2gLMGc0T9C9PHLB7wUkCd7BkGCglQ6k34pNeIPjG/p37B3IdxaNsniUJZiyIQQ2akpFIL8+Nlgck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXjBvcVc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F13EC4CEC2;
+	Wed,  2 Oct 2024 14:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878305;
-	bh=esfYvqNeJEAu+3ONBIxwzO2wIEpFq9jtBtk8hUIouw0=;
+	s=korg; t=1727879878;
+	bh=Rt0LTDX+qJGZUXZvhLstHzwYKwVf8waW29cPY34hRxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jx9+ktgIRz9nj3W3o0BMOLU32XipO+Dp+vnr3nwcbl8k7oRZ3Qh2LMu46zBrEBxy5
-	 Si6exwh4lwjIPRQ+VJwaprDbQn7O/GT+ObJoPLtJNByur7V/jKvYAxxYZ+KTLjpsZL
-	 eZMHH2uoGHx4pipw7ZQ5G/D+yu3wMfhBbc9e0atg=
+	b=AXjBvcVcBfN5m7mhnkuPETazZiaSZcuMslkgwSeEm1MVlg5f+m0dyzAfS2sKi52fm
+	 Xdd6IseSaJAMS0DgHZp6POfCBrXbKqa7CIIErHdx3fdFKjqrX7DiDeoraz4FVyWwOR
+	 SL3FPQlnsM/DGXNflOe7RlZ8Y4pUCd0hGbrwSOjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Xu <chengyou@linux.alibaba.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 367/634] RDMA/erdma: Return QP state in erdma_query_qp
+Subject: [PATCH 6.6 228/538] ext4: avoid negative min_clusters in find_group_orlov()
 Date: Wed,  2 Oct 2024 14:57:47 +0200
-Message-ID: <20241002125825.581949527@linuxfoundation.org>
+Message-ID: <20241002125801.252734243@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Xu <chengyou@linux.alibaba.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit e77127ff6416b17e0b3e630ac46ee5c9a6570f57 ]
+[ Upstream commit bb0a12c3439b10d88412fd3102df5b9a6e3cd6dc ]
 
-Fix qp_state and cur_qp_state to return correct values in
-struct ib_qp_attr.
+min_clusters is signed integer and will be converted to unsigned
+integer when compared with unsigned number stats.free_clusters.
+If min_clusters is negative, it will be converted to a huge unsigned
+value in which case all groups may not meet the actual desired free
+clusters.
+Set negative min_clusters to 0 to avoid unexpected behavior.
 
-Fixes: 155055771704 ("RDMA/erdma: Add verbs implementation")
-Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
-Link: https://patch.msgid.link/20240902112920.58749-4-chengyou@linux.alibaba.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://patch.msgid.link/20240820132234.2759926-4-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/erdma/erdma_verbs.c | 25 ++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ fs/ext4/ialloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
-index 40c9b6e46b82b..3e3a3e1c241e7 100644
---- a/drivers/infiniband/hw/erdma/erdma_verbs.c
-+++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
-@@ -1544,11 +1544,31 @@ int erdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask,
- 	return ret;
- }
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index d7d89133ed368..1a1e2214c581f 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -514,6 +514,8 @@ static int find_group_orlov(struct super_block *sb, struct inode *parent,
+ 	if (min_inodes < 1)
+ 		min_inodes = 1;
+ 	min_clusters = avefreec - EXT4_CLUSTERS_PER_GROUP(sb)*flex_size / 4;
++	if (min_clusters < 0)
++		min_clusters = 0;
  
-+static enum ib_qp_state query_qp_state(struct erdma_qp *qp)
-+{
-+	switch (qp->attrs.state) {
-+	case ERDMA_QP_STATE_IDLE:
-+		return IB_QPS_INIT;
-+	case ERDMA_QP_STATE_RTR:
-+		return IB_QPS_RTR;
-+	case ERDMA_QP_STATE_RTS:
-+		return IB_QPS_RTS;
-+	case ERDMA_QP_STATE_CLOSING:
-+		return IB_QPS_ERR;
-+	case ERDMA_QP_STATE_TERMINATE:
-+		return IB_QPS_ERR;
-+	case ERDMA_QP_STATE_ERROR:
-+		return IB_QPS_ERR;
-+	default:
-+		return IB_QPS_ERR;
-+	}
-+}
-+
- int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
- 		   int qp_attr_mask, struct ib_qp_init_attr *qp_init_attr)
- {
--	struct erdma_qp *qp;
- 	struct erdma_dev *dev;
-+	struct erdma_qp *qp;
- 
- 	if (ibqp && qp_attr && qp_init_attr) {
- 		qp = to_eqp(ibqp);
-@@ -1575,6 +1595,9 @@ int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
- 
- 	qp_init_attr->cap = qp_attr->cap;
- 
-+	qp_attr->qp_state = query_qp_state(qp);
-+	qp_attr->cur_qp_state = query_qp_state(qp);
-+
- 	return 0;
- }
- 
+ 	/*
+ 	 * Start looking in the flex group where we last allocated an
 -- 
 2.43.0
 
