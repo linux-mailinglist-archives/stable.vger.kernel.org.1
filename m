@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-80274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2822898DCBD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD6398DA27
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C141C203D5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A82E21C233A8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907421D1F51;
-	Wed,  2 Oct 2024 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D426A1D1720;
+	Wed,  2 Oct 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5/lk0wy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edFGph4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF021D1F4A;
-	Wed,  2 Oct 2024 14:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9233D1D151A;
+	Wed,  2 Oct 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879891; cv=none; b=Oz53RAZRMgUm/wLU42r78YJG1+YQ7JemmvhCXp2sCDT7PzVvJrvXOXvUjWWN+1BeK7HAcDK5L82dROW4WmwUQCEbOBS8IZab6wsbWKzJYrssx21SRBwSucirkoHhZYOrcQEmxsyCoZaErFVc7RApb6jfKlt7gKT19I9uZ85oAfg=
+	t=1727878438; cv=none; b=U9hAvce93c8rgHUtifVtV7Foggix6wv47mDiZPvAYoJzdCth9b9jFGs3wbo1a+qULsEu4zsFuEoiwX28jC78IyWoxzDCcirf8ENbnblNU9nQKCaJdGL6cJkSJNZo9kB6XD3VEhnkWdxOviJ4hWkKirnpBgqIsgCIgPoKHsrYJzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879891; c=relaxed/simple;
-	bh=l4ZcSBQ+OcZ4iQlo0km15gpIInUt7pwqG1j5GTfw55g=;
+	s=arc-20240116; t=1727878438; c=relaxed/simple;
+	bh=c8KfnpoKVswqQh9Dx5Rvgce1rpmXUY00jjsg4P1ufWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmcvmTLOcLfuSezbEys69eBXDPNgtwywvxbrYvOFNYaG7q2krVwFvxWKclQ0XddSR7fpFy5Y5lKi0Pji9H6NJFLLg5BMGeG7m0HDx1/TFSJZ3bCwHne09FCaWYLdWXpXFN7koiHfRQY5QPCDup7njyMWluuQwPkNFC+rsapxPgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5/lk0wy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA79EC4CEC2;
-	Wed,  2 Oct 2024 14:38:10 +0000 (UTC)
+	 MIME-Version; b=r5nEAzdLQ9t49vIk6CIrkqRU6waQNkjoyWrXCPlGO1TwYd/1f3F/KpSTdpIF2d8qCfZm11cbvJkwi8xlfq4aXSpKzTj4u1V1fc/Eof26DwRJo1g0Bpy69rgG4gN0erk2ybiDKNQurJYrOm+jnITqwSLhRmb4H+d+vq/Hk7qiCc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edFGph4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98B1C4CEC2;
+	Wed,  2 Oct 2024 14:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879891;
-	bh=l4ZcSBQ+OcZ4iQlo0km15gpIInUt7pwqG1j5GTfw55g=;
+	s=korg; t=1727878438;
+	bh=c8KfnpoKVswqQh9Dx5Rvgce1rpmXUY00jjsg4P1ufWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5/lk0wyAVstsl7hkOlLE0vG9OcF9tYL62wFq+f0MF9DBusGDhRjGgo9KoiuBF5nC
-	 uNRXSzHAw3q9GTHhubWkvIhySCs4FOI7MoOJveNI+yEcqO2oRR3FEW6ikTiI1VYiQ/
-	 Y4hyCo8I3/Telz2zFECXGikw19jnUmk/hhCwD3RE=
+	b=edFGph4p7MU90G2/cj/vELQdrh2yqUlIQoiI/tOQm+X2U6MPX4gLf4UdfUsCKHXw4
+	 91UMhI4KRodJWNyEpsO18SeFegc4vWhht6BGwTeBrtv4wyFAfSr7Y4Buv40+rH2Zo1
+	 oYMmCDrvKPjx8DbIYc5x7hh2iCuUyj5tJbmY/WYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Hannes Reinecke <hare@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/538] leds: bd2606mvv: Fix device child node usage in bd2606mvv_probe()
-Date: Wed,  2 Oct 2024 14:58:33 +0200
-Message-ID: <20241002125803.071977240@linuxfoundation.org>
+Subject: [PATCH 6.10 414/634] nvme-multipath: system fails to create generic nvme device
+Date: Wed,  2 Oct 2024 14:58:34 +0200
+Message-ID: <20241002125827.446056271@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit ffbf1fcb421429916a861cfc25dfe0c6387dda75 ]
+[ Upstream commit 63bcf9014e95a7d279d10d8e2caa5d88db2b1855 ]
 
-The current implementation accesses the `child` fwnode handle outside of
-fwnode_for_each_available_child_node() without incrementing its
-refcount. Add the missing call to `fwnode_handle_get(child)`.
+NVME_NSHEAD_DISK_LIVE is a flag for struct nvme_ns_head, not nvme_ns.
+The current code has a typo causing NVME_NSHEAD_DISK_LIVE never to
+be cleared once device_add_disk_fails, causing the system never to
+create the 'generic' character device. Even several rescan attempts
+will change the situation and the system has to be rebooted to fix
+the issue.
 
-The cleanup process where `child` is accessed is not right either
-because a single call to `fwnode_handle_put()` is carried out in case of
-an error, ignoring unasigned nodes at the point when the error happens.
-Keep `child` inside of the first loop, and use the helper pointer that
-receives references via `fwnode_handle_get()` to handle the child nodes
-within the second loop.
-
-Moreover, the iterated nodes are direct children of the device node,
-and the `device_for_each_child_node()` macro accounts for child node
-availability. By restricting `child` to live within that loop, the
-scoped version of it can be used to simplify the error handling.
-
-`fwnode_for_each_available_child_node()` is meant to access the child
-nodes of an fwnode, and therefore not direct child nodes of the device
-node.
-
-Use `device_for_each_child_node_scoped()` to indicate device's direct
-child nodes.
-
-Fixes: 8325642d2757 ("leds: bd2606mvv: Driver for the Rohm 6 Channel i2c LED driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20240721-device_for_each_child_node-available-v2-3-f33748fd8b2d@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 11384580e332 ("nvme-multipath: add error handling support for add_disk()")
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-bd2606mvv.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/nvme/host/multipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-bd2606mvv.c b/drivers/leds/leds-bd2606mvv.c
-index 3fda712d2f809..c1181a35d0f76 100644
---- a/drivers/leds/leds-bd2606mvv.c
-+++ b/drivers/leds/leds-bd2606mvv.c
-@@ -69,16 +69,14 @@ static const struct regmap_config bd2606mvv_regmap = {
- 
- static int bd2606mvv_probe(struct i2c_client *client)
- {
--	struct fwnode_handle *np, *child;
- 	struct device *dev = &client->dev;
- 	struct bd2606mvv_priv *priv;
- 	struct fwnode_handle *led_fwnodes[BD2606_MAX_LEDS] = { 0 };
- 	int active_pairs[BD2606_MAX_LEDS / 2] = { 0 };
- 	int err, reg;
--	int i;
-+	int i, j;
- 
--	np = dev_fwnode(dev);
--	if (!np)
-+	if (!dev_fwnode(dev))
- 		return -ENODEV;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -94,20 +92,18 @@ static int bd2606mvv_probe(struct i2c_client *client)
- 
- 	i2c_set_clientdata(client, priv);
- 
--	fwnode_for_each_available_child_node(np, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		struct bd2606mvv_led *led;
- 
- 		err = fwnode_property_read_u32(child, "reg", &reg);
--		if (err) {
--			fwnode_handle_put(child);
-+		if (err)
- 			return err;
--		}
--		if (reg < 0 || reg >= BD2606_MAX_LEDS || led_fwnodes[reg]) {
--			fwnode_handle_put(child);
-+
-+		if (reg < 0 || reg >= BD2606_MAX_LEDS || led_fwnodes[reg])
- 			return -EINVAL;
--		}
-+
- 		led = &priv->leds[reg];
--		led_fwnodes[reg] = child;
-+		led_fwnodes[reg] = fwnode_handle_get(child);
- 		active_pairs[reg / 2]++;
- 		led->priv = priv;
- 		led->led_no = reg;
-@@ -130,7 +126,8 @@ static int bd2606mvv_probe(struct i2c_client *client)
- 						     &priv->leds[i].ldev,
- 						     &init_data);
- 		if (err < 0) {
--			fwnode_handle_put(child);
-+			for (j = i; j < BD2606_MAX_LEDS; j++)
-+				fwnode_handle_put(led_fwnodes[j]);
- 			return dev_err_probe(dev, err,
- 					     "couldn't register LED %s\n",
- 					     priv->leds[i].ldev.name);
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 03a6868f4dbc1..a47d35102b7ce 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -587,7 +587,7 @@ static void nvme_mpath_set_live(struct nvme_ns *ns)
+ 		rc = device_add_disk(&head->subsys->dev, head->disk,
+ 				     nvme_ns_attr_groups);
+ 		if (rc) {
+-			clear_bit(NVME_NSHEAD_DISK_LIVE, &ns->flags);
++			clear_bit(NVME_NSHEAD_DISK_LIVE, &head->flags);
+ 			return;
+ 		}
+ 		nvme_add_ns_head_cdev(head);
 -- 
 2.43.0
 
