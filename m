@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2799698D5EF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AE798D913
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BF131C22110
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C1C1C208F5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31A21D0794;
-	Wed,  2 Oct 2024 13:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF901D0798;
+	Wed,  2 Oct 2024 14:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et99zx1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ED4FhKIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8951D04A2;
-	Wed,  2 Oct 2024 13:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA151D043E;
+	Wed,  2 Oct 2024 14:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876083; cv=none; b=QqT6qaReKHoy3Jx2ZxvxOvSS03jqpTfcfkAs31rkfVynCSUfdPRmDGT5lGnWxlQrWHkkBiLGVeq1I8XRVPIltoRwSYo8M7k/piBdRPls69DzaBxckhKD6aaKFqw7dDmDzSDF82/Kg+g4wJEsI1Kg7BH4AvghjxayBoCI/7PTJmA=
+	t=1727877776; cv=none; b=kGyCaq3GRIWhS96kadHrM2S0M2CRvjkXnHCqNLaG01igOym43zYQ+aqhteywCzUDmlC1DUCIG0r/6VyXWrS3jQEdbSu0pWALEkKYbuQQZLa59MUEJuk7Z8uSJ4R/MzzDj/uyGjyxJus0txokfK4W+rVuu9k9y7ILccODIfiERsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876083; c=relaxed/simple;
-	bh=ErAeEF0ZtrKVj71CHqqsda7aSJZgborYPlg80HWiraQ=;
+	s=arc-20240116; t=1727877776; c=relaxed/simple;
+	bh=K3J2Ckqqy0l5luq3zrRguUmK7WsQiMNah6nZLW9YvWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDK8Z/r0NWV5DsgSCWO2rpiwaq48fHr4J4dPhJGCzJdfbHCaez7ZOMV0DDPdjRhj8Wlnh/eFh7upUjepXv0fxpnt2B35a4kuuqidveURVSrh3Hv63iazkldz7F1JCQ9XChvtMs7IpZINAB3U0YWYDF5My7ZwV+8UDjN2/YmR8qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et99zx1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14736C4CEC5;
-	Wed,  2 Oct 2024 13:34:42 +0000 (UTC)
+	 MIME-Version; b=RoNosyQKpeARpRhxSrcFdK2qv+U6rPa/GqYvEWqUQ/AcC2c5IfHhu5qWr0Ez3BzLMOHFCr3VamkQAWDHhVin4q5AQp5qjkxvhzuExEQrbPfiWf+mXps9BB1RG6+lnHnwlGl6L62j4RLeNOf2+gx8UriOVrDXBEV7EMvsXgmv/N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ED4FhKIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ED6C4CEC2;
+	Wed,  2 Oct 2024 14:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876083;
-	bh=ErAeEF0ZtrKVj71CHqqsda7aSJZgborYPlg80HWiraQ=;
+	s=korg; t=1727877776;
+	bh=K3J2Ckqqy0l5luq3zrRguUmK7WsQiMNah6nZLW9YvWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et99zx1CfIWcKolDU8BtTsNA1jl5VGkEYHH+YxnUHhjzaAJ6RNN3WXXPjG9vLInzV
-	 XQv3WWPbRdPXe6lzZ8peQLJ6laQ+FTcii6frESou8ACdxU/McjORBJChiiiSh7c3v5
-	 yW07khbT8gynWwvRMElyiaKdx1J1y8INOcgauIO8=
+	b=ED4FhKIFRag8xAsceHZYTPdBiXlKZm+fdloSv4DZv2GTJcrO3OYiKH4g4r05t+HoQ
+	 M0jrSsqd3H6fNi6gfaDZh/rWw4uuWBfaHZuKyDbAQdeoGKLAsnUniTWplSovvfzOLi
+	 6Qd4OP4/nggEsqd+O11fElczy0BUDtycGf/rEc4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Liu Ying <victor.liu@nxp.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 292/695] selftests/bpf: no need to track next_match_pos in struct test_loader
+Subject: [PATCH 6.10 190/634] drm/bridge: lontium-lt8912b: Validate mode in drm_bridge_funcs::mode_valid()
 Date: Wed,  2 Oct 2024 14:54:50 +0200
-Message-ID: <20241002125834.098989290@linuxfoundation.org>
+Message-ID: <20241002125818.604886507@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Liu Ying <victor.liu@nxp.com>
 
-[ Upstream commit 4ef5d6af493558124b7a6c13cace58b938fe27d4 ]
+[ Upstream commit fe828fbd87786238b30f44cafd698d975d956c97 ]
 
-The call stack for validate_case() function looks as follows:
-- test_loader__run_subtests()
-  - process_subtest()
-    - run_subtest()
-      - prepare_case(), which does 'tester->next_match_pos = 0';
-      - validate_case(), which increments tester->next_match_pos.
+If the bridge is attached with the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag set,
+this driver won't initialize a connector and hence display mode won't be
+validated in drm_connector_helper_funcs::mode_valid().  So, move the mode
+validation from drm_connector_helper_funcs::mode_valid() to
+drm_bridge_funcs::mode_valid(), because the mode validation is always done
+for the bridge.
 
-Hence, each subtest is run with next_match_pos freshly set to zero.
-Meaning that there is no need to persist this variable in the
-struct test_loader, use local variable instead.
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240722233844.1406874-7-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Stable-dep-of: f00bb757ed63 ("selftests/bpf: fix to avoid __msg tag de-duplication by clang")
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240813091637.1054586-1-victor.liu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_loader.c | 19 ++++++++-----------
- tools/testing/selftests/bpf/test_progs.h  |  1 -
- 2 files changed, 8 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 35 ++++++++++++------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
-index f14e10b0de96e..47508cf66e896 100644
---- a/tools/testing/selftests/bpf/test_loader.c
-+++ b/tools/testing/selftests/bpf/test_loader.c
-@@ -434,7 +434,6 @@ static void prepare_case(struct test_loader *tester,
- 	bpf_program__set_flags(prog, prog_flags | spec->prog_flags);
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index 1a9defa15663c..e265ab3c8c929 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -422,22 +422,6 @@ static const struct drm_connector_funcs lt8912_connector_funcs = {
+ 	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
+ };
  
- 	tester->log_buf[0] = '\0';
--	tester->next_match_pos = 0;
+-static enum drm_mode_status
+-lt8912_connector_mode_valid(struct drm_connector *connector,
+-			    struct drm_display_mode *mode)
+-{
+-	if (mode->clock > 150000)
+-		return MODE_CLOCK_HIGH;
+-
+-	if (mode->hdisplay > 1920)
+-		return MODE_BAD_HVALUE;
+-
+-	if (mode->vdisplay > 1080)
+-		return MODE_BAD_VVALUE;
+-
+-	return MODE_OK;
+-}
+-
+ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ {
+ 	const struct drm_edid *drm_edid;
+@@ -463,7 +447,6 @@ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ 
+ static const struct drm_connector_helper_funcs lt8912_connector_helper_funcs = {
+ 	.get_modes = lt8912_connector_get_modes,
+-	.mode_valid = lt8912_connector_mode_valid,
+ };
+ 
+ static void lt8912_bridge_mode_set(struct drm_bridge *bridge,
+@@ -605,6 +588,23 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
+ 		drm_bridge_hpd_disable(lt->hdmi_port);
  }
  
- static void emit_verifier_log(const char *log_buf, bool force)
-@@ -450,25 +449,23 @@ static void validate_case(struct test_loader *tester,
- 			  struct bpf_program *prog,
- 			  int load_err)
++static enum drm_mode_status
++lt8912_bridge_mode_valid(struct drm_bridge *bridge,
++			 const struct drm_display_info *info,
++			 const struct drm_display_mode *mode)
++{
++	if (mode->clock > 150000)
++		return MODE_CLOCK_HIGH;
++
++	if (mode->hdisplay > 1920)
++		return MODE_BAD_HVALUE;
++
++	if (mode->vdisplay > 1080)
++		return MODE_BAD_VVALUE;
++
++	return MODE_OK;
++}
++
+ static enum drm_connector_status
+ lt8912_bridge_detect(struct drm_bridge *bridge)
  {
--	int i, j, err;
--	char *match;
- 	regmatch_t reg_match[1];
-+	const char *log = tester->log_buf;
-+	int i, j, err;
- 
- 	for (i = 0; i < subspec->expect_msg_cnt; i++) {
- 		struct expect_msg *msg = &subspec->expect_msgs[i];
-+		const char *match = NULL;
- 
- 		if (msg->substr) {
--			match = strstr(tester->log_buf + tester->next_match_pos, msg->substr);
-+			match = strstr(log, msg->substr);
- 			if (match)
--				tester->next_match_pos = match - tester->log_buf + strlen(msg->substr);
-+				log += strlen(msg->substr);
- 		} else {
--			err = regexec(&msg->regex,
--				      tester->log_buf + tester->next_match_pos, 1, reg_match, 0);
-+			err = regexec(&msg->regex, log, 1, reg_match, 0);
- 			if (err == 0) {
--				match = tester->log_buf + tester->next_match_pos + reg_match[0].rm_so;
--				tester->next_match_pos += reg_match[0].rm_eo;
--			} else {
--				match = NULL;
-+				match = log + reg_match[0].rm_so;
-+				log += reg_match[0].rm_eo;
- 			}
- 		}
- 
-diff --git a/tools/testing/selftests/bpf/test_progs.h b/tools/testing/selftests/bpf/test_progs.h
-index 51341d50213b9..b1e949fb16cf3 100644
---- a/tools/testing/selftests/bpf/test_progs.h
-+++ b/tools/testing/selftests/bpf/test_progs.h
-@@ -447,7 +447,6 @@ typedef int (*pre_execution_cb)(struct bpf_object *obj);
- struct test_loader {
- 	char *log_buf;
- 	size_t log_buf_sz;
--	size_t next_match_pos;
- 	pre_execution_cb pre_execution_cb;
- 
- 	struct bpf_object *obj;
+@@ -635,6 +635,7 @@ static const struct drm_edid *lt8912_bridge_edid_read(struct drm_bridge *bridge,
+ static const struct drm_bridge_funcs lt8912_bridge_funcs = {
+ 	.attach = lt8912_bridge_attach,
+ 	.detach = lt8912_bridge_detach,
++	.mode_valid = lt8912_bridge_mode_valid,
+ 	.mode_set = lt8912_bridge_mode_set,
+ 	.enable = lt8912_bridge_enable,
+ 	.detect = lt8912_bridge_detect,
 -- 
 2.43.0
 
