@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-79017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3207D98D61E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:36:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8E698D62F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE62D1F22027
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:36:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2F71C21B27
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C7F1CF5C6;
-	Wed,  2 Oct 2024 13:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CA81D04B8;
+	Wed,  2 Oct 2024 13:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdFLTccg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8ofaosT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1A0376;
-	Wed,  2 Oct 2024 13:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4710E1CDFBC;
+	Wed,  2 Oct 2024 13:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876197; cv=none; b=L2BeoEqse6giRpFuhDv3AZzOcdsJG6IC/qVcUpaWZBIZgwrcJevq3a/d8RMGxUYpHPUYHzAlQB3TO95agMJqmwh36nt+wKmMERCOAO3FuG+7bdBAQ4cPhiqO1h917gQI6J7Wu4aR28k8FuBIZXKCKeEZUBzVphKGT/AZXM1cHUA=
+	t=1727876229; cv=none; b=emiDyxbSF9HUCjzmQRp36u1KnJJzEHtIYrkrDt/xW1vfWfRRn7VzEt0n6f1oH08FZBXJ8i7OhCXI7PuBJzhoPjt2D5W524ddr4LjVgRtbdcdxtaqZppkzPa88Sj2Wq2mE8mrqyHNsDKoofnc7ecpXOaDx8UrYWw78p+4dFVouMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876197; c=relaxed/simple;
-	bh=QyxWga2MUnupIARh3tkEHKAE7yzTHvx/VE3lOLexo0k=;
+	s=arc-20240116; t=1727876229; c=relaxed/simple;
+	bh=Lr70Itl92O03qM/9WsmBNuQTsr1c4owjE434DY1tqW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hp450f9gq7gDmEgjMBwDtMYPkiSFwoSzQVpa2xEVyYYTSItfUAd3X5Wf4B4JeoDDJ+yBxzsOIIgFUslutlrFOjCnp2tiNPzHnrMGE6/B5/GRdf6Em2OBmz81k2wC7u+bukHDWgZKJ0HSKD5iRgGmBsHjwEjdZ940FaAEJWJ6sM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdFLTccg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D2FC4CEC5;
-	Wed,  2 Oct 2024 13:36:36 +0000 (UTC)
+	 MIME-Version; b=nu7VTYoT5TrCAIXH5AypSSRkxBHVHhN5bCqi9Fgu9UliPNbQrkylRwoGN2sHgwSijbWpr9945ZyYLvULzH3hCJmHxnfY6zwH0L/q9CT26ZaFigZuFZyqcMV63H73h28w09BaAu55ZrzAZ8e5k+sshW+ICGJJ2OtckVPMzYAC4VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8ofaosT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2255C4CECD;
+	Wed,  2 Oct 2024 13:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876197;
-	bh=QyxWga2MUnupIARh3tkEHKAE7yzTHvx/VE3lOLexo0k=;
+	s=korg; t=1727876229;
+	bh=Lr70Itl92O03qM/9WsmBNuQTsr1c4owjE434DY1tqW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdFLTccgZC/bkdONWNef3u17X/zLNIl5zy/GK9x5kL4IzL/I+zBq/+uNNgeNy1MIg
-	 xIaCdNjhm1Y77b0sa/Aui0b06am27EBMLTN9vgzjMyqaVlbiR39AAirQXcni4eFtmL
-	 cEqliCjPmcOhmF6oVOT3fec8UtZJ8HONz9ty9uDY=
+	b=P8ofaosTbCzB652z5bAQ+YOBeB6gHWXiPP5KcBU0X5bjJQ82YU+HBv8i1ma/Eh2eP
+	 77FE9BW+pzhhgp1T67238ryYFZBpPaCkZJoBhNQkSPAQLjDvP/gO+4VUYJmjt2ATF4
+	 6NN0i+i37uhUY9Yc9haYDTp+36P+ZZNwZfUQbDlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 354/695] clk: rockchip: Set parent rate for DCLK_VOP clock on RK3228
-Date: Wed,  2 Oct 2024 14:55:52 +0200
-Message-ID: <20241002125836.576786083@linuxfoundation.org>
+Subject: [PATCH 6.11 355/695] clk: qcom: dispcc-sm8550: fix several supposed typos
+Date: Wed,  2 Oct 2024 14:55:53 +0200
+Message-ID: <20241002125836.615666364@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,40 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1d34b9757523c1ad547bd6d040381f62d74a3189 ]
+[ Upstream commit 7b6a4b907297b28727933493b9e0c95494504634 ]
 
-Similar to DCLK_LCDC on RK3328, the DCLK_VOP on RK3228 is typically
-parented by the hdmiphy clk and it is expected that the DCLK_VOP and
-hdmiphy clk rate are kept in sync.
+Fix seveal odd-looking places in SM8550's dispcc driver:
 
-Use CLK_SET_RATE_PARENT and CLK_SET_RATE_NO_REPARENT flags, same as used
-on RK3328, to make full use of all possible supported display modes.
+- duplicate entries in disp_cc_parent_map_4 and disp_cc_parent_map_5
+- using &disp_cc_mdss_dptx0_link_div_clk_src as a source for
+  disp_cc_mdss_dptx1_usb_router_link_intf_clk
 
-Fixes: 0a9d4ac08ebc ("clk: rockchip: set the clock ids for RK3228 VOP")
-Fixes: 307a2e9ac524 ("clk: rockchip: add clock controller for rk3228")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240615170417.3134517-3-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+The SM8650 driver has been used as a reference.
+
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-1-5c4a3128c40b@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3228.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sm8550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3228.c b/drivers/clk/rockchip/clk-rk3228.c
-index a24a35553e134..7343d2d7676bc 100644
---- a/drivers/clk/rockchip/clk-rk3228.c
-+++ b/drivers/clk/rockchip/clk-rk3228.c
-@@ -409,7 +409,7 @@ static struct rockchip_clk_branch rk3228_clk_branches[] __initdata = {
- 			RK2928_CLKSEL_CON(29), 0, 3, DFLAGS),
- 	DIV(0, "sclk_vop_pre", "sclk_vop_src", 0,
- 			RK2928_CLKSEL_CON(27), 8, 8, DFLAGS),
--	MUX(DCLK_VOP, "dclk_vop", mux_dclk_vop_p, 0,
-+	MUX(DCLK_VOP, "dclk_vop", mux_dclk_vop_p, CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPARENT,
- 			RK2928_CLKSEL_CON(27), 1, 1, MFLAGS),
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index 31ae46f180a5c..954b0f6fcea28 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -196,7 +196,7 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
+ static const struct parent_map disp_cc_parent_map_4[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_DP0_PHY_PLL_LINK_CLK, 1 },
+-	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 2 },
++	{ P_DP0_PHY_PLL_VCO_DIV_CLK, 2 },
+ 	{ P_DP3_PHY_PLL_VCO_DIV_CLK, 3 },
+ 	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 4 },
+ 	{ P_DP2_PHY_PLL_VCO_DIV_CLK, 6 },
+@@ -213,7 +213,7 @@ static const struct clk_parent_data disp_cc_parent_data_4[] = {
  
- 	FACTOR(0, "xin12m", "xin24m", 0, 1, 2),
+ static const struct parent_map disp_cc_parent_map_5[] = {
+ 	{ P_BI_TCXO, 0 },
+-	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 4 },
++	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 2 },
+ 	{ P_DSI1_PHY_PLL_OUT_BYTECLK, 4 },
+ };
+ 
 -- 
 2.43.0
 
