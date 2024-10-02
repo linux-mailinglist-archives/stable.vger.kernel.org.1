@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1491598DA71
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1884298DD09
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77188B23AF7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44692B24B1B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807751D0F65;
-	Wed,  2 Oct 2024 14:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7611D0F43;
+	Wed,  2 Oct 2024 14:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyPFmRt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdjWzChR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F33A1D2200;
-	Wed,  2 Oct 2024 14:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88BE1D0956;
+	Wed,  2 Oct 2024 14:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878570; cv=none; b=qooFuDypPqPGB4aHyXpqTZUkYRXp+seVecSpJyXFNsLYmWn+SaieL844UbX3ksefnXV4ykZgHtVE249AIfotMhKdvK6lRuD6t3/T8y+nsXcR/s5g2QZVfezEXMP7gw69g7LKhUugTyTzyRvMvsh0iAsKR5KYLEnzbq0Bk1fX/io=
+	t=1727880029; cv=none; b=Z4rkp7snuGkXoEPLNpSzhAjPKyQKxRkwmJspiVefgol4BXAvH7KQgIxRWWYUjvbdhpbFObuRytjFZhGvR8IBfNH5Dy1fAWGerU7mrdbY6KMPQq6F94yx7jeV8LlOtc9A8PqJQmP2d5fzMLvgD1HEOPyexQWXmEmAYPlvXGNFHvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878570; c=relaxed/simple;
-	bh=Epwi4LNysfbyZjof2hw3OQCYJf3kO3t4th07S9SY5ak=;
+	s=arc-20240116; t=1727880029; c=relaxed/simple;
+	bh=azw+piXIUbxZmQIiomVvO7gXR/iNH1+1nkwrLnsT3aU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8RA1HeJYSSb+ZZiTrwxtA1BRPWXAgMo2ioYpjfL7KYSd9dmk2SWomGUSOjNC7AjwO4p+p0Os11nG6MadOPjiDk1Lg2rJ0uKh5vl87LAEBhslOYD+QS1REh4a4MOC5FvjOOlRD5v7M9Thn7EkWWELUYtZz9cQ+6DVGpE5Hy6tvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyPFmRt5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32DDC4CEC2;
-	Wed,  2 Oct 2024 14:16:08 +0000 (UTC)
+	 MIME-Version; b=Q4N2/8ZocVultxCEksQd1qOq9dQ76fialuuJTSO1WHlDRdhPn9AZYoUZQG5qNWvPY4ueauQJrcTkfC6CVzVyChhSRtHH6KJA6igD181AszPzVEzVyvEBNgPd8pWdLRZ+1nP27b9+mTshXzpXyO8DEgc8hzOmFtYY8755x66JFEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdjWzChR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29236C4CEC2;
+	Wed,  2 Oct 2024 14:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878569;
-	bh=Epwi4LNysfbyZjof2hw3OQCYJf3kO3t4th07S9SY5ak=;
+	s=korg; t=1727880029;
+	bh=azw+piXIUbxZmQIiomVvO7gXR/iNH1+1nkwrLnsT3aU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oyPFmRt5K3yF9KHvjwh5ZRNqSu27V+hepZ10CH6dodsKvAHpdRuXLYcWuMmhZcb13
-	 ww/POIwbIPzw7dQr8Lj5Nif3ZhCHTY1QsOCzLjwnDTahj1H3owuEo7rHOeIsKnrsyK
-	 g1yQRHb3Ekr6Bfzna2U9TRYxCL0Seom59wcqW8mE=
+	b=UdjWzChRB+7yzndScYjAzKl3u96VDWPYnHXcyvZtaNzoudYiJ/roWJT2hvo+mhgUS
+	 f7PXguLY1cEjFtmUnu5JEkhim2+4KFQdtj99nDOaLPx4smVqBiT3bMB4dNubo9QqZP
+	 U6upqUEnRWSHf9VGubqrjOdTfNay+KgCzsuZilE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>
-Subject: [PATCH 6.10 458/634] xen: allow mapping ACPI data using a different physical address
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 319/538] RDMA/hns: Fix VF triggering PF reset in abnormal interrupt handler
 Date: Wed,  2 Oct 2024 14:59:18 +0200
-Message-ID: <20241002125829.180609200@linuxfoundation.org>
+Message-ID: <20241002125805.019394762@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,197 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 9221222c717dbddac1e3c49906525475d87a3a44 upstream.
+[ Upstream commit 4321feefa5501a746ebf6a7d8b59e6b955ae1860 ]
 
-When running as a Xen PV dom0 the system needs to map ACPI data of the
-host using host physical addresses, while those addresses can conflict
-with the guest physical addresses of the loaded linux kernel. The same
-problem might apply in case a PV guest is configured to use the host
-memory map.
+In abnormal interrupt handler, a PF reset will be triggered even if
+the device is a VF. It should be a VF reset.
 
-This conflict can be solved by mapping the ACPI data to a different
-guest physical address, but mapping the data via acpi_os_ioremap()
-must still be possible using the host physical address, as this
-address might be generated by AML when referencing some of the ACPI
-data.
-
-When configured to support running as a Xen PV domain, have an
-implementation of acpi_os_ioremap() being aware of the possibility to
-need above mentioned translation of a host physical address to the
-guest physical address.
-
-This modification requires to #include linux/acpi.h in some sources
-which need to include asm/acpi.h directly.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b9acb9a97fe ("RDMA/hns: Add the process of AEQ overflow for hip08")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20240906093444.3571619-7-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/acpi.h        |    8 ++++++++
- arch/x86/kernel/acpi/boot.c        |   11 +++++++++++
- arch/x86/kernel/jailhouse.c        |    1 +
- arch/x86/kernel/mmconf-fam10h_64.c |    1 +
- arch/x86/kernel/smpboot.c          |    1 +
- arch/x86/kernel/x86_init.c         |    1 +
- arch/x86/xen/p2m.c                 |   35 +++++++++++++++++++++++++++++++++++
- arch/x86/xen/setup.c               |    2 +-
- 8 files changed, 59 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -167,6 +167,14 @@ void acpi_generic_reduced_hw_init(void);
- void x86_default_set_root_pointer(u64 addr);
- u64 x86_default_get_root_pointer(void);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 908b4372bac95..2cdd002b71228 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -6070,6 +6070,7 @@ static irqreturn_t abnormal_interrupt_basic(struct hns_roce_dev *hr_dev,
+ 	struct pci_dev *pdev = hr_dev->pci_dev;
+ 	struct hnae3_ae_dev *ae_dev = pci_get_drvdata(pdev);
+ 	const struct hnae3_ae_ops *ops = ae_dev->ops;
++	enum hnae3_reset_type reset_type;
+ 	irqreturn_t int_work = IRQ_NONE;
+ 	u32 int_en;
  
-+#ifdef CONFIG_XEN_PV
-+/* A Xen PV domain needs a special acpi_os_ioremap() handling. */
-+extern void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys,
-+					 acpi_size size);
-+void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size size);
-+#define acpi_os_ioremap acpi_os_ioremap
-+#endif
+@@ -6081,10 +6082,12 @@ static irqreturn_t abnormal_interrupt_basic(struct hns_roce_dev *hr_dev,
+ 		roce_write(hr_dev, ROCEE_VF_ABN_INT_ST_REG,
+ 			   1 << HNS_ROCE_V2_VF_INT_ST_AEQ_OVERFLOW_S);
+ 
++		reset_type = hr_dev->is_vf ?
++			     HNAE3_VF_FUNC_RESET : HNAE3_FUNC_RESET;
 +
- #else /* !CONFIG_ACPI */
+ 		/* Set reset level for reset_event() */
+ 		if (ops->set_default_reset_request)
+-			ops->set_default_reset_request(ae_dev,
+-						       HNAE3_FUNC_RESET);
++			ops->set_default_reset_request(ae_dev, reset_type);
+ 		if (ops->reset_event)
+ 			ops->reset_event(pdev, NULL);
  
- #define acpi_lapic 0
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -1862,3 +1862,14 @@ u64 x86_default_get_root_pointer(void)
- {
- 	return boot_params.acpi_rsdp_addr;
- }
-+
-+#ifdef CONFIG_XEN_PV
-+void __iomem *x86_acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
-+{
-+	return ioremap_cache(phys, size);
-+}
-+
-+void __iomem * (*acpi_os_ioremap)(acpi_physical_address phys, acpi_size size) =
-+	x86_acpi_os_ioremap;
-+EXPORT_SYMBOL_GPL(acpi_os_ioremap);
-+#endif
---- a/arch/x86/kernel/jailhouse.c
-+++ b/arch/x86/kernel/jailhouse.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/reboot.h>
- #include <linux/serial_8250.h>
-+#include <linux/acpi.h>
- #include <asm/apic.h>
- #include <asm/io_apic.h>
- #include <asm/acpi.h>
---- a/arch/x86/kernel/mmconf-fam10h_64.c
-+++ b/arch/x86/kernel/mmconf-fam10h_64.c
-@@ -9,6 +9,7 @@
- #include <linux/pci.h>
- #include <linux/dmi.h>
- #include <linux/range.h>
-+#include <linux/acpi.h>
- 
- #include <asm/pci-direct.h>
- #include <linux/sort.h>
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -60,6 +60,7 @@
- #include <linux/stackprotector.h>
- #include <linux/cpuhotplug.h>
- #include <linux/mc146818rtc.h>
-+#include <linux/acpi.h>
- 
- #include <asm/acpi.h>
- #include <asm/cacheinfo.h>
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -8,6 +8,7 @@
- #include <linux/ioport.h>
- #include <linux/export.h>
- #include <linux/pci.h>
-+#include <linux/acpi.h>
- 
- #include <asm/acpi.h>
- #include <asm/bios_ebda.h>
---- a/arch/x86/xen/p2m.c
-+++ b/arch/x86/xen/p2m.c
-@@ -70,6 +70,7 @@
- #include <linux/memblock.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/acpi.h>
- 
- #include <asm/cache.h>
- #include <asm/setup.h>
-@@ -835,6 +836,34 @@ void __init xen_do_remap_nonram(void)
- 	pr_info("Remapped %u non-RAM page(s)\n", remapped);
- }
- 
-+#ifdef CONFIG_ACPI
-+/*
-+ * Xen variant of acpi_os_ioremap() taking potentially remapped non-RAM
-+ * regions into account.
-+ * Any attempt to map an area crossing a remap boundary will produce a
-+ * WARN() splat.
-+ * phys is related to remap->maddr on input and will be rebased to remap->paddr.
-+ */
-+static void __iomem *xen_acpi_os_ioremap(acpi_physical_address phys,
-+					 acpi_size size)
-+{
-+	unsigned int i;
-+	const struct nonram_remap *remap = xen_nonram_remap;
-+
-+	for (i = 0; i < nr_nonram_remap; i++) {
-+		if (phys + size > remap->maddr &&
-+		    phys < remap->maddr + remap->size) {
-+			WARN_ON(phys < remap->maddr ||
-+				phys + size > remap->maddr + remap->size);
-+			phys += remap->paddr - remap->maddr;
-+			break;
-+		}
-+	}
-+
-+	return x86_acpi_os_ioremap(phys, size);
-+}
-+#endif /* CONFIG_ACPI */
-+
- /*
-  * Add a new non-RAM remap entry.
-  * In case of no free entry found, just crash the system.
-@@ -849,6 +878,12 @@ void __init xen_add_remap_nonram(phys_ad
- 		BUG();
- 	}
- 
-+#ifdef CONFIG_ACPI
-+	/* Switch to the Xen acpi_os_ioremap() variant. */
-+	if (nr_nonram_remap == 0)
-+		acpi_os_ioremap = xen_acpi_os_ioremap;
-+#endif
-+
- 	xen_nonram_remap[nr_nonram_remap].maddr = maddr;
- 	xen_nonram_remap[nr_nonram_remap].paddr = paddr;
- 	xen_nonram_remap[nr_nonram_remap].size = size;
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -15,12 +15,12 @@
- #include <linux/cpuidle.h>
- #include <linux/cpufreq.h>
- #include <linux/memory_hotplug.h>
-+#include <linux/acpi.h>
- 
- #include <asm/elf.h>
- #include <asm/vdso.h>
- #include <asm/e820/api.h>
- #include <asm/setup.h>
--#include <asm/acpi.h>
- #include <asm/numa.h>
- #include <asm/idtentry.h>
- #include <asm/xen/hypervisor.h>
+-- 
+2.43.0
+
 
 
 
