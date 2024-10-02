@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-79151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831A598D6DA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5DD98D6AD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1895B1F21108
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA811F23F77
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8806C1D0B84;
-	Wed,  2 Oct 2024 13:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2931D0BAC;
+	Wed,  2 Oct 2024 13:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xp+2Ccrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kxo9YXso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F881D0164;
-	Wed,  2 Oct 2024 13:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98B11D042F;
+	Wed,  2 Oct 2024 13:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876589; cv=none; b=KMIF9Q9xBOFaFcKZaR8+nh6UmbXZmabv1vq6zpHEZRMNLhlbDzOPijycIuiqK9EXc4AZNSuj1Qsey1wjEBZrh7BcSPoeXuirgUAxdt7AvA53TZ5Ik7pR4itUR3e/yc0Vy5CQ30zwHl3huFXO2l2sFYNijeNxm1i4BZ2ur1zfJgM=
+	t=1727876498; cv=none; b=GFuKUcvWMWi8kICqhg9+rpmqvWPhkN8+yR5+YccPjU7AEkR7lUhEPKUmOVWaBmiMiqaq9MtvvtVTd2+OKwJXpjzmXlA4HtieRIXaE1H4T7B/P0TVLtGCHqcp0QMg4ZfFevIwKRMRkWdG5ULb6S8nlu3s/KRfgLrUyC0Se/Y8wac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876589; c=relaxed/simple;
-	bh=bqIAhEFa21Ynl1iFA9RpOJjp9+yWz1C9YYy4E4ETNQ0=;
+	s=arc-20240116; t=1727876498; c=relaxed/simple;
+	bh=JNiZL+ti5tbMKc4v0qHTO9mEmwX14eKV4lSaGLm74pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUBK8QN2LTKhf+9y2dwtJqMfS/rL5X23uvozm5zjBGvBe3i117dI0Q6Lm0WaUwwVXM9MvQj1aCBPBedGJPiEvYmH4Tjlz8VMjW7bJOKzEuhIh9DCusQRCKfxTNpmOAPmw7Nx1m7Fe99NiW+1AcyCYZY4ltDSnaJX9hnF3lRGpOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xp+2Ccrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7213CC4CEC5;
-	Wed,  2 Oct 2024 13:43:08 +0000 (UTC)
+	 MIME-Version; b=KppI0wOxlnNT5h1MmDP2SZ1UfFj54hFatoUlMI89oPNFAOXRYKdLuX9bawpmZPJ1rEwyQzJft83pc9HktZnIFm7A/s9B3O8MZmLBvux/LcERN738TD4lHQaInITnfJHcXxTjHgLPHU5rehs/xxPCK2rgKcAO+GCbIQxwhyOSiuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kxo9YXso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B34C4CECD;
+	Wed,  2 Oct 2024 13:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876588;
-	bh=bqIAhEFa21Ynl1iFA9RpOJjp9+yWz1C9YYy4E4ETNQ0=;
+	s=korg; t=1727876497;
+	bh=JNiZL+ti5tbMKc4v0qHTO9mEmwX14eKV4lSaGLm74pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xp+2CcrrsZSPMLSw4S3ouTKZg63mgUd+90mgSXqY59PJVeJRs4jbJQkQhodieRQKI
-	 JAAnkl4gQWXPTmcdx5E6p579wg1l5ilCKVl2rZn7cKvQqZkrQD/zHogurNVcocm8Hh
-	 Eh67rUjwb0pilXLtJV/KGeo9qbr5Lretlu1v56d8=
+	b=Kxo9YXsoSZrrEqijgbFGmF7R9dj5OjCOQIIDdQaDRN915ml0F3Qrg1VOdnhAlOcMI
+	 AFDxoyvHm++FOoGmrl9AmvgW3w6jJBIDtESJMKoAkttqMAuFccDGSvYu9ks9GjtOGy
+	 rh+3S7jfbYQMR9Y/YXDgERA406uh9nVf9nEgS1OY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Gan <quic_jiegan@quicinc.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 464/695] Coresight: Set correct cs_mode for dummy source to fix disable issue
-Date: Wed,  2 Oct 2024 14:57:42 +0200
-Message-ID: <20241002125840.980705364@linuxfoundation.org>
+Subject: [PATCH 6.11 465/695] coresight: tmc: sg: Do not leak sg_table
+Date: Wed,  2 Oct 2024 14:57:43 +0200
+Message-ID: <20241002125841.019682735@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,49 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jie Gan <quic_jiegan@quicinc.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit e6b64cda393efd84709ab3df2e42d36d36d7553e ]
+[ Upstream commit c58dc5a1f886f2fcc1133746d0cbaa1fe7fd44ff ]
 
-The coresight_disable_source_sysfs function should verify the
-mode of the coresight device before disabling the source.
-However, the mode for the dummy source device is always set to
-CS_MODE_DISABLED, resulting in the check consistently failing.
-As a result, dummy source cannot be properly disabled.
+Running perf with cs_etm on Juno triggers the following kmemleak warning !
 
-Configure CS_MODE_SYSFS/CS_MODE_PERF during the enablement.
-Configure CS_MODE_DISABLED during the disablement.
+:~# cat /sys/kernel/debug/kmemleak
+ unreferenced object 0xffffff8806b6d720 (size 96):
+ comm "perf", pid 562, jiffies 4297810960
+ hex dump (first 32 bytes):
+ 38 d8 13 07 88 ff ff ff 00 d0 9e 85 c0 ff ff ff  8...............
+ 00 10 00 88 c0 ff ff ff 00 f0 ff f7 ff 00 00 00  ................
+ backtrace (crc 1dbf6e00):
+ [<ffffffc08107381c>] kmemleak_alloc+0xbc/0xd8
+ [<ffffffc0802f9798>] kmalloc_trace_noprof+0x220/0x2e8
+ [<ffffffc07bb71948>] tmc_alloc_sg_table+0x48/0x208 [coresight_tmc]
+ [<ffffffc07bb71cbc>] tmc_etr_alloc_sg_buf+0xac/0x240 [coresight_tmc]
+ [<ffffffc07bb72538>] tmc_alloc_etr_buf.constprop.0+0x1f0/0x260 [coresight_tmc]
+ [<ffffffc07bb7280c>] alloc_etr_buf.constprop.0.isra.0+0x74/0xa8 [coresight_tmc]
+ [<ffffffc07bb72950>] tmc_alloc_etr_buffer+0x110/0x260 [coresight_tmc]
+ [<ffffffc07bb38afc>] etm_setup_aux+0x204/0x3b0 [coresight]
+ [<ffffffc08025837c>] rb_alloc_aux+0x20c/0x318
+ [<ffffffc08024dd84>] perf_mmap+0x2e4/0x7a0
+ [<ffffffc0802cceb0>] mmap_region+0x3b0/0xa08
+ [<ffffffc0802cd8a8>] do_mmap+0x3a0/0x500
+ [<ffffffc080295328>] vm_mmap_pgoff+0x100/0x1d0
+ [<ffffffc0802cadf8>] ksys_mmap_pgoff+0xb8/0x110
+ [<ffffffc080020688>] __arm64_sys_mmap+0x38/0x58
+ [<ffffffc080028fc0>] invoke_syscall.constprop.0+0x58/0x100
 
-Fixes: 9d3ba0b6c056 ("Coresight: Add coresight dummy driver")
-Signed-off-by: Jie Gan <quic_jiegan@quicinc.com>
+This due to the fact that we do not free the "sg_table" itself while
+freeing up  the SG table and data pages. Fix this by freeing the sg_table
+in tmc_free_sg_table().
+
+Fixes: 99443ea19e8b ("coresight: Add generic TMC sg table framework")
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: James Clark <james.clark@arm.com>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240812042844.2890115-1-quic_jiegan@quicinc.com
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20240702132846.1677261-1-suzuki.poulose@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-dummy.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwtracing/coresight/coresight-tmc-etr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-dummy.c b/drivers/hwtracing/coresight/coresight-dummy.c
-index ac70c0b491beb..dab389a5507c1 100644
---- a/drivers/hwtracing/coresight/coresight-dummy.c
-+++ b/drivers/hwtracing/coresight/coresight-dummy.c
-@@ -23,6 +23,9 @@ DEFINE_CORESIGHT_DEVLIST(sink_devs, "dummy_sink");
- static int dummy_source_enable(struct coresight_device *csdev,
- 			       struct perf_event *event, enum cs_mode mode)
+diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+index e75428fa1592a..610ad51cda656 100644
+--- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+@@ -261,6 +261,7 @@ void tmc_free_sg_table(struct tmc_sg_table *sg_table)
  {
-+	if (!coresight_take_mode(csdev, mode))
-+		return -EBUSY;
-+
- 	dev_dbg(csdev->dev.parent, "Dummy source enabled\n");
- 
- 	return 0;
-@@ -31,6 +34,7 @@ static int dummy_source_enable(struct coresight_device *csdev,
- static void dummy_source_disable(struct coresight_device *csdev,
- 				 struct perf_event *event)
- {
-+	coresight_set_mode(csdev, CS_MODE_DISABLED);
- 	dev_dbg(csdev->dev.parent, "Dummy source disabled\n");
+ 	tmc_free_table_pages(sg_table);
+ 	tmc_free_data_pages(sg_table);
++	kfree(sg_table);
  }
+ EXPORT_SYMBOL_GPL(tmc_free_sg_table);
+ 
+@@ -342,7 +343,6 @@ struct tmc_sg_table *tmc_alloc_sg_table(struct device *dev,
+ 		rc = tmc_alloc_table_pages(sg_table);
+ 	if (rc) {
+ 		tmc_free_sg_table(sg_table);
+-		kfree(sg_table);
+ 		return ERR_PTR(rc);
+ 	}
  
 -- 
 2.43.0
