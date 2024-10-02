@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044B198DCD6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C0998DA5B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361531C21A23
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070EC1C238DF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2441D07A3;
-	Wed,  2 Oct 2024 14:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8461D551;
+	Wed,  2 Oct 2024 14:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIjDCUii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06AqCsP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70733232;
-	Wed,  2 Oct 2024 14:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DE51CFED1;
+	Wed,  2 Oct 2024 14:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879980; cv=none; b=SDOtr0VyU/Twm5gan34esL6f9mDgUcN6vpCFtaGB4sSdwhRYWkTJtzvuz1k7jYZBEoifvG8/qcFBm5rKBawMuss3Cf0z9fKWPNoYrkWdJ7hmWGoJNggi2NRYYfC9pTy8E4VZbYYiFEy0WE4O2OyNS3Wjmk2hdAzKOjm7RI6JVx0=
+	t=1727878525; cv=none; b=JGg7Tz5TZMaQ+7VSKagdx7YMp4vnQZqmz37idCsw521bY+PV3re1FPFLBE0yUafXrJkccEb37N7ud9yTHS9KmZtlzZLSDDppY7uQYZLgIesL5xQYGQ8k+YKFFn9Sj9M+QhVMjclsFVzFtEQARYUeT1/JI/QA4CdC/oSjpI+rP9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879980; c=relaxed/simple;
-	bh=Z7VrEzVX+TSWj+/E4DzE6/rJsC39Ra0+PZKZrONeZzc=;
+	s=arc-20240116; t=1727878525; c=relaxed/simple;
+	bh=VYOaIeOlsc8rVBodqBXMaLbQ6DGr3utRo5967TM2KIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTVNdD3KxE323u7F1/QXym+eSE2OKeTZAm+sVClwMBxspvCJtgxo2vbmbysVw8Q36Cn/xNtAaBxK955tJp8RLvMKxRKrp7gBB9tmeIHnFq3wMuMuWHDVzZkPaSWQLYnn4GxXXqtQ4Y7BngFPtTLHUnUR2rAe+0Gai8MDHQwUmhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIjDCUii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B4FC4CEC2;
-	Wed,  2 Oct 2024 14:39:40 +0000 (UTC)
+	 MIME-Version; b=LkGV5lAQEaIS+XLbOzEjViKN6suT6a1+A45QYZ3L7WZqGMNx+dvTrF9w10VSV0xEZZBIswkhTs88UCYUdMidazkBefdauNZXnvcbrXkrIO4FODTsQ/XWsDzY7T/o08ycx9PvWs3jyOBYnKpqXzRrceKCq/saYozcaxMUxHVseYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06AqCsP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3366EC4CEC2;
+	Wed,  2 Oct 2024 14:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879980;
-	bh=Z7VrEzVX+TSWj+/E4DzE6/rJsC39Ra0+PZKZrONeZzc=;
+	s=korg; t=1727878525;
+	bh=VYOaIeOlsc8rVBodqBXMaLbQ6DGr3utRo5967TM2KIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIjDCUiirVfkI3BQjiHQTcSygD/Z1m/4jVA/UJ3BTLbEXvDRE6lhs0DjEs8EIkW/V
-	 KKnQrvnWDDg7mwzXw/p+juZ//W4BftjG+eMByALWZIPXKbRq3OOlOe9XnajT9w3WmC
-	 nfGQ2Kxmmhcz4KbN4Z+xhsyoc8NuH4fLtZybLKlo=
+	b=06AqCsP1MKdHoRj2xkAD1OrLBZ8GYQYhL+WunvdFaQksLOzyCE3GIQ5gXxqXH+8UF
+	 hrjG+mVDKHg6jOQAbexMj4uoRHbA2mQsxV9VIs0CA89Iw4VEw+fUPk2UsMsORwDk/j
+	 P6HYoGZm+wxisfjTSSUTX8sDsdhVIBZat8AfPoo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Ye Li <ye.li@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	syzbot+1a8e2b31f2ac9bd3d148@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 262/538] clk: imx: composite-7ulp: Check the PCC present bit
-Date: Wed,  2 Oct 2024 14:58:21 +0200
-Message-ID: <20241002125802.600108154@linuxfoundation.org>
+Subject: [PATCH 6.10 402/634] f2fs: fix to avoid use-after-free in f2fs_stop_gc_thread()
+Date: Wed,  2 Oct 2024 14:58:22 +0200
+Message-ID: <20241002125826.976647776@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Li <ye.li@nxp.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 4717ccadb51e2630790dddd222830702de17f090 ]
+[ Upstream commit c7f114d864ac91515bb07ac271e9824a20f5ed95 ]
 
-When some module is disabled by fuse, its PCC PR bit is default 0 and
-PCC is not operational. Any write to this PCC will cause SError.
+syzbot reports a f2fs bug as below:
 
-Fixes: b40ba8065347 ("clk: imx: Update the compsite driver to support imx8ulp")
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Ye Li <ye.li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-4-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ print_report+0xe8/0x550 mm/kasan/report.c:491
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
+ atomic_fetch_add_relaxed include/linux/atomic/atomic-instrumented.h:252 [inline]
+ __refcount_add include/linux/refcount.h:184 [inline]
+ __refcount_inc include/linux/refcount.h:241 [inline]
+ refcount_inc include/linux/refcount.h:258 [inline]
+ get_task_struct include/linux/sched/task.h:118 [inline]
+ kthread_stop+0xca/0x630 kernel/kthread.c:704
+ f2fs_stop_gc_thread+0x65/0xb0 fs/f2fs/gc.c:210
+ f2fs_do_shutdown+0x192/0x540 fs/f2fs/file.c:2283
+ f2fs_ioc_shutdown fs/f2fs/file.c:2325 [inline]
+ __f2fs_ioctl+0x443a/0xbe60 fs/f2fs/file.c:4325
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The root cause is below race condition, it may cause use-after-free
+issue in sbi->gc_th pointer.
+
+- remount
+ - f2fs_remount
+  - f2fs_stop_gc_thread
+   - kfree(gc_th)
+				- f2fs_ioc_shutdown
+				 - f2fs_do_shutdown
+				  - f2fs_stop_gc_thread
+				   - kthread_stop(gc_th->f2fs_gc_task)
+   : sbi->gc_thread = NULL;
+
+We will call f2fs_do_shutdown() in two paths:
+- for f2fs_ioc_shutdown() path, we should grab sb->s_umount semaphore
+for fixing.
+- for f2fs_shutdown() path, it's safe since caller has already grabbed
+sb->s_umount semaphore.
+
+Reported-by: syzbot+1a8e2b31f2ac9bd3d148@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/0000000000005c7ccb061e032b9b@google.com
+Fixes: 7950e9ac638e ("f2fs: stop gc/discard thread after fs shutdown")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-composite-7ulp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/f2fs/f2fs.h  |  2 +-
+ fs/f2fs/file.c  | 11 +++++++++--
+ fs/f2fs/super.c |  2 +-
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-composite-7ulp.c b/drivers/clk/imx/clk-composite-7ulp.c
-index e208ddc511339..db7f40b07d1ab 100644
---- a/drivers/clk/imx/clk-composite-7ulp.c
-+++ b/drivers/clk/imx/clk-composite-7ulp.c
-@@ -14,6 +14,7 @@
- #include "../clk-fractional-divider.h"
- #include "clk.h"
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index c7bc3ba59a31f..e2867036af9f5 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3509,7 +3509,7 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ int f2fs_truncate_hole(struct inode *inode, pgoff_t pg_start, pgoff_t pg_end);
+ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count);
+ int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
+-							bool readonly);
++						bool readonly, bool need_lock);
+ int f2fs_precache_extents(struct inode *inode);
+ int f2fs_fileattr_get(struct dentry *dentry, struct fileattr *fa);
+ int f2fs_fileattr_set(struct mnt_idmap *idmap,
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index b2763cde3f582..17a771bc85729 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2281,7 +2281,7 @@ static int f2fs_ioc_abort_atomic_write(struct file *filp)
+ }
  
-+#define PCG_PR_MASK		BIT(31)
- #define PCG_PCS_SHIFT	24
- #define PCG_PCS_MASK	0x7
- #define PCG_CGC_SHIFT	30
-@@ -78,6 +79,12 @@ static struct clk_hw *imx_ulp_clk_hw_composite(const char *name,
- 	struct clk_hw *hw;
- 	u32 val;
+ int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
+-							bool readonly)
++						bool readonly, bool need_lock)
+ {
+ 	struct super_block *sb = sbi->sb;
+ 	int ret = 0;
+@@ -2328,12 +2328,19 @@ int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
+ 	if (readonly)
+ 		goto out;
  
-+	val = readl(reg);
-+	if (!(val & PCG_PR_MASK)) {
-+		pr_info("PCC PR is 0 for clk:%s, bypass\n", name);
-+		return 0;
-+	}
++	/* grab sb->s_umount to avoid racing w/ remount() */
++	if (need_lock)
++		down_read(&sbi->sb->s_umount);
 +
- 	if (mux_present) {
- 		mux = kzalloc(sizeof(*mux), GFP_KERNEL);
- 		if (!mux)
+ 	f2fs_stop_gc_thread(sbi);
+ 	f2fs_stop_discard_thread(sbi);
+ 
+ 	f2fs_drop_discard_cmd(sbi);
+ 	clear_opt(sbi, DISCARD);
+ 
++	if (need_lock)
++		up_read(&sbi->sb->s_umount);
++
+ 	f2fs_update_time(sbi, REQ_TIME);
+ out:
+ 
+@@ -2370,7 +2377,7 @@ static int f2fs_ioc_shutdown(struct file *filp, unsigned long arg)
+ 		}
+ 	}
+ 
+-	ret = f2fs_do_shutdown(sbi, in, readonly);
++	ret = f2fs_do_shutdown(sbi, in, readonly, true);
+ 
+ 	if (need_drop)
+ 		mnt_drop_write_file(filp);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 1f1b3647a998c..832c052dd94bc 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2571,7 +2571,7 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
+ 
+ static void f2fs_shutdown(struct super_block *sb)
+ {
+-	f2fs_do_shutdown(F2FS_SB(sb), F2FS_GOING_DOWN_NOSYNC, false);
++	f2fs_do_shutdown(F2FS_SB(sb), F2FS_GOING_DOWN_NOSYNC, false, false);
+ }
+ 
+ #ifdef CONFIG_QUOTA
 -- 
 2.43.0
 
