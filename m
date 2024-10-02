@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C9798D5B4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6409F98D902
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCACA1F23014
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE3DDB20EA2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B961D0426;
-	Wed,  2 Oct 2024 13:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC831D0DF0;
+	Wed,  2 Oct 2024 14:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnEaUBcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIfLkOvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AF21D0487;
-	Wed,  2 Oct 2024 13:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF0E1D2B36;
+	Wed,  2 Oct 2024 14:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875960; cv=none; b=ZV7CA5duQ/U75pt2aQuBszMjE+Mz166zHXt3sikZWsOTjCzMrFM13a4L/V3r3Ov9mrN9h5YdA4KbtfMWFm+IFIDR5etqQVLVbgdLjbxY3nWsXZYIkS8iOeCZJyNHXRviGkusTfVao+6HnBINx0RRdUJLaZX0HKGNsoXaCFCP0wM=
+	t=1727877742; cv=none; b=t7vAdSSKOEPYN7UZ2zh2MUKIHpJBjVudpik+14hcZuGLtICtO7EXeV184lTTRLzrwG8ycSirV+JnbxxYyTTf81BTQb+ewbac8YXNp4Uw1izu4sHqOCFlsmjbPzAGvJIdgh2rYFw9DyZIS8o6L2N69tUcTnp/xPqGP+OIeR1EaSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875960; c=relaxed/simple;
-	bh=30ehgGnBoIjIAUnwsyQkADpVWFZ/Z05q9MIFjX+acQU=;
+	s=arc-20240116; t=1727877742; c=relaxed/simple;
+	bh=BEzq0/Jz3t+Y8ulH8MMtO09noQZCs2vBsY7jPlyo1B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkNt6kcaaCfEipaYDculd92esECKAHzkF+MEAG1sQO9ZulraDTlG+pJOLcBa9TOggE9CIfVE7s4dnacz4n1JEzH+UHD/Ms6gJGSIUy5z90A5bPxx7C86nHlFKFkOT+EUOYs3YU73Aat7ooq7miFx1SiOjbj4j2e2UJrLQR9/KaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnEaUBcP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577A2C4CEC5;
-	Wed,  2 Oct 2024 13:32:40 +0000 (UTC)
+	 MIME-Version; b=CyqOX9cA2iy3NiIE0WQIdHdCTtUmLesZLG1e6wxeJUKNvSMj5QlhleyiINxQcxzzU/+6gy86IkZk1f9IXG0URJKShvgYAEL/u3bf8D9IYIDjYoLO6+4lkef2yuxpg5LSx0msiEyPHDjxfCfCVxe29dIDDBU5MFZ/uag6BwWI8dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIfLkOvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7CEC4CEC2;
+	Wed,  2 Oct 2024 14:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875960;
-	bh=30ehgGnBoIjIAUnwsyQkADpVWFZ/Z05q9MIFjX+acQU=;
+	s=korg; t=1727877741;
+	bh=BEzq0/Jz3t+Y8ulH8MMtO09noQZCs2vBsY7jPlyo1B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnEaUBcPp7LdnOqQV54unqLr1HW7FZZk1JwFs5qd4kAF3M/PtcU1xnrQn2JTO0s5a
-	 xwpGBThKCLVxHPnZcw8TgJ9R05oiVCiKzBjGEcVqRnyLtVQ2EXlG3vI/y1z+dihuIg
-	 wHj9ntGBm3lz6wqgajey5WAplkfYJp/B2Z/XtNHk=
+	b=UIfLkOvhv3qN/UV3PVNLpwAC7nPovh2VhKQwqrqted14cn9XeN2zE2TlPwUYLOVvd
+	 hx7ZRuim8cXQ/OT+Yeq7P6boqmPL7aj2LAydAP3Gu9n579EsGY7+GNYdjUuSb1MG1R
+	 E5hKUqxVz09TMtKbD+3O++T3MjwL3krDRMgO3Ji8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 280/695] selftests/bpf: Fix errors compiling cg_storage_multi.h with musl libc
-Date: Wed,  2 Oct 2024 14:54:38 +0200
-Message-ID: <20241002125833.621257793@linuxfoundation.org>
+Subject: [PATCH 6.10 179/634] drm/stm: Fix an error handling path in stm_drm_platform_probe()
+Date: Wed,  2 Oct 2024 14:54:39 +0200
+Message-ID: <20241002125818.174455023@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 730561d3c08d4a327cceaabf11365958a1c00cec ]
+[ Upstream commit ce7c90bfda2656418c69ba0dd8f8a7536b8928d4 ]
 
-Remove a redundant include of '<asm/types.h>', whose needed definitions are
-already included (via '<linux/types.h>') in cg_storage_multi_egress_only.c,
-cg_storage_multi_isolated.c, and cg_storage_multi_shared.c. This avoids
-redefinition errors seen compiling for mips64el/musl-libc like:
+If drm_dev_register() fails, a call to drv_load() must be undone, as
+already done in the remove function.
 
-  In file included from progs/cg_storage_multi_egress_only.c:13:
-  In file included from progs/cg_storage_multi.h:6:
-  In file included from /usr/mips64el-linux-gnuabi64/include/asm/types.h:23:
-  /usr/include/asm-generic/int-l64.h:29:25: error: typedef redefinition with different types ('long' vs 'long long')
-     29 | typedef __signed__ long __s64;
-        |                         ^
-  /usr/include/asm-generic/int-ll64.h:30:44: note: previous definition is here
-     30 | __extension__ typedef __signed__ long long __s64;
-        |                                            ^
-
-Fixes: 9e5bd1f7633b ("selftests/bpf: Test CGROUP_STORAGE map can't be used by multiple progs")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/4f4702e9f6115b7f84fea01b2326ca24c6df7ba8.1721713597.git.tony.ambardar@gmail.com
+Fixes: b759012c5fa7 ("drm/stm: Add STM32 LTDC driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20fff7f853f20a48a96db8ff186124470ec4d976.1704560028.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/cg_storage_multi.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/stm/drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/cg_storage_multi.h b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
-index a0778fe7857a1..41d59f0ee606c 100644
---- a/tools/testing/selftests/bpf/progs/cg_storage_multi.h
-+++ b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
-@@ -3,8 +3,6 @@
- #ifndef __PROGS_CG_STORAGE_MULTI_H
- #define __PROGS_CG_STORAGE_MULTI_H
+diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
+index e8523abef27a5..4d2db079ad4ff 100644
+--- a/drivers/gpu/drm/stm/drv.c
++++ b/drivers/gpu/drm/stm/drv.c
+@@ -203,12 +203,14 @@ static int stm_drm_platform_probe(struct platform_device *pdev)
  
--#include <asm/types.h>
--
- struct cgroup_value {
- 	__u32 egress_pkts;
- 	__u32 ingress_pkts;
+ 	ret = drm_dev_register(ddev, 0);
+ 	if (ret)
+-		goto err_put;
++		goto err_unload;
+ 
+ 	drm_fbdev_dma_setup(ddev, 16);
+ 
+ 	return 0;
+ 
++err_unload:
++	drv_unload(ddev);
+ err_put:
+ 	drm_dev_put(ddev);
+ 
 -- 
 2.43.0
 
