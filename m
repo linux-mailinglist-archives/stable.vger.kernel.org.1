@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4180098DC6B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3444598D9CD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04F9F283C42
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07611F26629
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E171D2706;
-	Wed,  2 Oct 2024 14:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5E71D1E9A;
+	Wed,  2 Oct 2024 14:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9FEFV6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMR0tcda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DCC1D222B;
-	Wed,  2 Oct 2024 14:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C84F1D1E98;
+	Wed,  2 Oct 2024 14:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879688; cv=none; b=oYeF7ngYF0HSz/TXywxWneRkck3uCJD14mooVTx7gCA/tnroxcNT1F3JLrzSWPHxmuEPs2pr4ilJR5P5KgpUdX5yJccMmQNtje4ShDkoJlAWCgdDMPNsK/f/6BmqsCJPSuWpb9tardoZ/YzF1HbDD/hz6WzXAT+eGNzbdDJdClU=
+	t=1727878233; cv=none; b=JmxfnALygLgz0BgzQPOIFXqq9RotA00mXbU/Q98XxKS+akVYKp6Dmrrt5gyb6jzh1nolxH1YKXo0eBrVkSBgWCj94i6QM8L6o8gWRaFDlisPul7gAJ5X3bm3VsZ5vkhB885JbrDNEszrgRmdlK/hmI+/ABUlwJaILYqToQ0xm50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879688; c=relaxed/simple;
-	bh=N5FEYhNDs5ES9KYrTNgYYm6nFtawYb8A1vyUm5NIxKA=;
+	s=arc-20240116; t=1727878233; c=relaxed/simple;
+	bh=Az2WQxVQUwrs6u2Tcmo7x/dcw97PgPV59qFD2fNgTrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dz1fv2S8U/1ivnI5V3xRv8/C91uk80H01O0bUzPOjyHac1b9Fg+k0jvDpwicWfQY8KqEvyeW//CPMiINzOlhRQztGVGWDZH/EtiemiQIiylvwY9KT2ldcTKdnyOmSM855aGlqjmYGQc3GCpsC6syEGwP6YiByRr67NShhRKLxZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9FEFV6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A757DC4CEC2;
-	Wed,  2 Oct 2024 14:34:47 +0000 (UTC)
+	 MIME-Version; b=NuxnVqqkiIOmxksXCgOz4tj2l2aEAmJD9g+EFATIEzX9cyNpTFw40l9yKA8Bx4eRnixxuJIgylro2euRlOtMUkH9rHfUSxBSlqu0UmJYCr7vQ4okmoae1W1a1Irvh8lpc8hj8ZVmLwDDoEAmf6TXxyjSexD+EqZ/iEPtPP9BGow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMR0tcda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB46C4CEC2;
+	Wed,  2 Oct 2024 14:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879688;
-	bh=N5FEYhNDs5ES9KYrTNgYYm6nFtawYb8A1vyUm5NIxKA=;
+	s=korg; t=1727878233;
+	bh=Az2WQxVQUwrs6u2Tcmo7x/dcw97PgPV59qFD2fNgTrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9FEFV6zTmChwCc+/CkdrfbRjO5ok6AOFRKOJg6qHSw+v8usVsgjoXRz98mIOk4bI
-	 LXrhLMkTtsG0AGVeWKlSe9iRvkSfVzpKg12blAg+Y0yuHqVWNKE5qUS9WuHDulhAcU
-	 cUhkts3/Zrp3RaCNz/dVUbsfyS3FHNllUFBWnV/w=
+	b=yMR0tcdaDoK2dRZcmMjHjjr7NPiAkCbNzGdM5I5D9ktgWQwaiH/Nl9xtBDO+nmnzf
+	 u7dXtkykC1MWx6FEUjQ2SNavMYMYANYGXagZuaFHBWvJ3xxX7KZhiIezg/bFe1t5ed
+	 sbgUmcWDLE8TzEU1VzxUfzunjr3uhZWgiE29eWXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/538] selftests/bpf: Fix errors compiling lwt_redirect.c with musl libc
+Subject: [PATCH 6.10 344/634] PCI: xilinx-nwl: Fix register misspelling
 Date: Wed,  2 Oct 2024 14:57:24 +0200
-Message-ID: <20241002125800.347313065@linuxfoundation.org>
+Message-ID: <20241002125824.678260906@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 27c4797ce51c8dd51e35e68e9024a892f62d78b2 ]
+[ Upstream commit a437027ae1730b8dc379c75fa0dd7d3036917400 ]
 
-Remove a redundant include of '<linux/icmp.h>' which is already provided in
-'lwt_helpers.h'. This avoids errors seen compiling for mips64el/musl-libc:
+MSIC -> MISC
 
-  In file included from .../arpa/inet.h:9,
-                   from lwt_redirect.c:51:
-  .../netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
-     23 | struct in6_addr {
-        |        ^~~~~~~~
-  In file included from .../linux/icmp.h:24,
-                   from lwt_redirect.c:50:
-  .../linux/in6.h:33:8: note: originally defined here
-     33 | struct in6_addr {
-        |        ^~~~~~~~
-  .../netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
-     34 | struct sockaddr_in6 {
-        |        ^~~~~~~~~~~~
-  .../linux/in6.h:50:8: note: originally defined here
-     50 | struct sockaddr_in6 {
-        |        ^~~~~~~~~~~~
-  .../netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
-     42 | struct ipv6_mreq {
-        |        ^~~~~~~~~
-  .../linux/in6.h:60:8: note: originally defined here
-     60 | struct ipv6_mreq {
-        |        ^~~~~~~~~
-
-Fixes: 43a7c3ef8a15 ("selftests/bpf: Add lwt_xmit tests for BPF_REDIRECT")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/3869dda876d5206d2f8d4dd67331c739ceb0c7f8.1721713597.git.tony.ambardar@gmail.com
+Fixes: c2a7ff18edcd ("PCI: xilinx-nwl: Expand error logging")
+Link: https://lore.kernel.org/r/20240531161337.864994-4-sean.anderson@linux.dev
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/lwt_redirect.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/controller/pcie-xilinx-nwl.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c b/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
-index 2bc932a18c17e..ea326e26656f5 100644
---- a/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
-+++ b/tools/testing/selftests/bpf/prog_tests/lwt_redirect.c
-@@ -47,7 +47,6 @@
- #include <linux/if_ether.h>
- #include <linux/if_packet.h>
- #include <linux/if_tun.h>
--#include <linux/icmp.h>
- #include <arpa/inet.h>
- #include <unistd.h>
- #include <errno.h>
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 0408f4d612b5a..1e15852153d6c 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -80,8 +80,8 @@
+ #define MSGF_MISC_SR_NON_FATAL_DEV	BIT(22)
+ #define MSGF_MISC_SR_FATAL_DEV		BIT(23)
+ #define MSGF_MISC_SR_LINK_DOWN		BIT(24)
+-#define MSGF_MSIC_SR_LINK_AUTO_BWIDTH	BIT(25)
+-#define MSGF_MSIC_SR_LINK_BWIDTH	BIT(26)
++#define MSGF_MISC_SR_LINK_AUTO_BWIDTH	BIT(25)
++#define MSGF_MISC_SR_LINK_BWIDTH	BIT(26)
+ 
+ #define MSGF_MISC_SR_MASKALL		(MSGF_MISC_SR_RXMSG_AVAIL | \
+ 					MSGF_MISC_SR_RXMSG_OVER | \
+@@ -96,8 +96,8 @@
+ 					MSGF_MISC_SR_NON_FATAL_DEV | \
+ 					MSGF_MISC_SR_FATAL_DEV | \
+ 					MSGF_MISC_SR_LINK_DOWN | \
+-					MSGF_MSIC_SR_LINK_AUTO_BWIDTH | \
+-					MSGF_MSIC_SR_LINK_BWIDTH)
++					MSGF_MISC_SR_LINK_AUTO_BWIDTH | \
++					MSGF_MISC_SR_LINK_BWIDTH)
+ 
+ /* Legacy interrupt status mask bits */
+ #define MSGF_LEG_SR_INTA		BIT(0)
+@@ -299,10 +299,10 @@ static irqreturn_t nwl_pcie_misc_handler(int irq, void *data)
+ 	if (misc_stat & MSGF_MISC_SR_FATAL_DEV)
+ 		dev_err(dev, "Fatal Error Detected\n");
+ 
+-	if (misc_stat & MSGF_MSIC_SR_LINK_AUTO_BWIDTH)
++	if (misc_stat & MSGF_MISC_SR_LINK_AUTO_BWIDTH)
+ 		dev_info(dev, "Link Autonomous Bandwidth Management Status bit set\n");
+ 
+-	if (misc_stat & MSGF_MSIC_SR_LINK_BWIDTH)
++	if (misc_stat & MSGF_MISC_SR_LINK_BWIDTH)
+ 		dev_info(dev, "Link Bandwidth Management Status bit set\n");
+ 
+ 	/* Clear misc interrupt status */
 -- 
 2.43.0
 
