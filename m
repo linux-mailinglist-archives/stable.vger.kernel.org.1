@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-79764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B6F98DA16
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 311FD98DCB0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CE2E1F27A6F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF536281C6A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A131D0DF2;
-	Wed,  2 Oct 2024 14:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427E31D26E6;
+	Wed,  2 Oct 2024 14:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMaw6tWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzed92rv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0F1D0DEB;
-	Wed,  2 Oct 2024 14:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E561D223D;
+	Wed,  2 Oct 2024 14:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878400; cv=none; b=pn7yv0q63iAqYy5lwk8F/2xwfqPfN61TodTprwgM6Kj+Fw3Prv/ytiUXEdFwDC8gC/WpIa7oQ9Mf7IXpNs6xqYE1XuIK5zgCSLkArtjDlCxu9F05F4yylap+OoWUJrAfquRLv2GbTesOsfQkXbSFTQjs8/uoUylcIfj0OX/kqrI=
+	t=1727879858; cv=none; b=K0pG+BvEy6umo2byUr5LDb7ZvCVYD1zR+yn4oyQTrNsbT+g2zD7UE+aL5C9m3rHhsoWsYExKKCd1+PzWCG2aLSsHbm04ngSFYd9t3IbsA8pBDsD1wFn/E+SDW/1loJ6UU4GdJ++GnUwqJaJp4zP4CuV+VBsSp1JRhsLD/Nj0TIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878400; c=relaxed/simple;
-	bh=NyW0tfCRx5ChDGAIZebPIVZks4U7ghdMnarx3ZFrlRA=;
+	s=arc-20240116; t=1727879858; c=relaxed/simple;
+	bh=HN9iO5YZGq4qjXWbPCPlC3NfUry2lC7aU6IjvCT1/TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lx8dodPH5bZ3OipkAKXyOTq9URNjEa/eJmh05kLCrcxq3gfEVZcYlkmWkD63Np1mpf0vqkIHs0JEfIToAbiUkztTzpJjsY3RbAImgThRBkC6u8gjyJ0UgIq+j/CCpjW64jkDiH3A3rn5tAmu4xFHisclgQCyLBrMPVhCuUQiWr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMaw6tWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60408C4CEC2;
-	Wed,  2 Oct 2024 14:13:19 +0000 (UTC)
+	 MIME-Version; b=tPuZGIxV/H7IGtc8aD1S10lpRI6wtse+UUrhDxT+iRnQUzNvtMQ9cDdo+Q4KMF10vDvBx6W6LqVnwPtMlTtAPKDJZd4j0n7WIRMbbPLRKDS0RGV2CZ93jbvakkq+3LMljvXb+y0dbSZceHqz2xAvpbZho2qU45Ann4iEDu8cDpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzed92rv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7429DC4CEC2;
+	Wed,  2 Oct 2024 14:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878399;
-	bh=NyW0tfCRx5ChDGAIZebPIVZks4U7ghdMnarx3ZFrlRA=;
+	s=korg; t=1727879857;
+	bh=HN9iO5YZGq4qjXWbPCPlC3NfUry2lC7aU6IjvCT1/TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMaw6tWU2Bnr0EVuejCl5YVW+shsetULeb/icOnVpr8OiVnhzFDpQChMpOciZtibJ
-	 g+wYXo8UNK1J9cl0TSKEQpbnG7dPVn1CxVAtwjtJm1aA7iqLMjoMfXj5KqGvWHOX0L
-	 TOSRvoVwkog23IHTFPfFvV1Cp9C3kHKA7awnMEzo=
+	b=zzed92rvQmN5AYTCBR8DUHjTQ3zWavyEP4bLP+3ik3H3jq3w50aoL0HxZBWFJwngP
+	 X+ihUjQLGnFPCfVmEdvS6j9/Il6pVsMpF+VkMLNeWhQrvxZU+CoCqxV/or+GeiF9gH
+	 05ezoih4A+lsgl7lHCKZcRS0IaQTGSICNNehU15M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Sunmin Jeong <s_min.jeong@samsung.com>,
-	Yeongjin Gil <youngjin.gil@samsung.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 399/634] f2fs: Create COW inode from parent dentry for atomic write
-Date: Wed,  2 Oct 2024 14:58:19 +0200
-Message-ID: <20241002125826.854159613@linuxfoundation.org>
+Subject: [PATCH 6.6 261/538] clk: imx: composite-93: keep root clock on when mcore enabled
+Date: Wed,  2 Oct 2024 14:58:20 +0200
+Message-ID: <20241002125802.560078871@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeongjin Gil <youngjin.gil@samsung.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit 8c1b787938fd86bab27a1492fa887408c75fec2b ]
+[ Upstream commit d342df11726bfac9c3a9d2037afa508ac0e9e44e ]
 
-The i_pino in f2fs_inode_info has the previous parent's i_ino when inode
-was renamed, which may cause f2fs_ioc_start_atomic_write to fail.
-If file_wrong_pino is true and i_nlink is 1, then to find a valid pino,
-we should refer to the dentry from inode.
+Previously we assumed that the root clock slice is enabled
+by default when kernel boot up. But the bootloader may disable
+the clocks before jump into kernel. The gate ops should be registered
+rather than NULL to make sure the disabled clock can be enabled
+when kernel boot up.  Refine the code to skip disable the clock
+if mcore booted.
 
-To resolve this issue, let's get parent inode using parent dentry
-directly.
-
-Fixes: 3db1de0e582c ("f2fs: change the current atomic write way")
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Sunmin Jeong <s_min.jeong@samsung.com>
-Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: a740d7350ff7 ("clk: imx: imx93: add mcore_booted module paratemter")
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Tested-by: Chancel Liu <chancel.liu@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-3-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/clk/imx/clk-composite-93.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index ad326c0ab5bd7..19da00ab31aeb 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2120,7 +2120,6 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
- 	struct mnt_idmap *idmap = file_mnt_idmap(filp);
- 	struct f2fs_inode_info *fi = F2FS_I(inode);
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--	struct inode *pinode;
- 	loff_t isize;
- 	int ret;
+diff --git a/drivers/clk/imx/clk-composite-93.c b/drivers/clk/imx/clk-composite-93.c
+index 81164bdcd6cc9..6c6c5a30f3282 100644
+--- a/drivers/clk/imx/clk-composite-93.c
++++ b/drivers/clk/imx/clk-composite-93.c
+@@ -76,6 +76,13 @@ static int imx93_clk_composite_gate_enable(struct clk_hw *hw)
  
-@@ -2170,15 +2169,10 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
- 	/* Check if the inode already has a COW inode */
- 	if (fi->cow_inode == NULL) {
- 		/* Create a COW inode for atomic write */
--		pinode = f2fs_iget(inode->i_sb, fi->i_pino);
--		if (IS_ERR(pinode)) {
--			f2fs_up_write(&fi->i_gc_rwsem[WRITE]);
--			ret = PTR_ERR(pinode);
--			goto out;
--		}
-+		struct dentry *dentry = file_dentry(filp);
-+		struct inode *dir = d_inode(dentry->d_parent);
+ static void imx93_clk_composite_gate_disable(struct clk_hw *hw)
+ {
++	/*
++	 * Skip disable the root clock gate if mcore enabled.
++	 * The root clock may be used by the mcore.
++	 */
++	if (mcore_booted)
++		return;
++
+ 	imx93_clk_composite_gate_endisable(hw, 0);
+ }
  
--		ret = f2fs_get_tmpfile(idmap, pinode, &fi->cow_inode);
--		iput(pinode);
-+		ret = f2fs_get_tmpfile(idmap, dir, &fi->cow_inode);
- 		if (ret) {
- 			f2fs_up_write(&fi->i_gc_rwsem[WRITE]);
- 			goto out;
+@@ -222,7 +229,7 @@ struct clk_hw *imx93_clk_composite_flags(const char *name, const char * const *p
+ 		hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
+ 					       mux_hw, &clk_mux_ro_ops, div_hw,
+ 					       &clk_divider_ro_ops, NULL, NULL, flags);
+-	} else if (!mcore_booted) {
++	} else {
+ 		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
+ 		if (!gate)
+ 			goto fail;
+@@ -238,12 +245,6 @@ struct clk_hw *imx93_clk_composite_flags(const char *name, const char * const *p
+ 					       &imx93_clk_composite_divider_ops, gate_hw,
+ 					       &imx93_clk_composite_gate_ops,
+ 					       flags | CLK_SET_RATE_NO_REPARENT);
+-	} else {
+-		hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
+-					       mux_hw, &imx93_clk_composite_mux_ops, div_hw,
+-					       &imx93_clk_composite_divider_ops, NULL,
+-					       &imx93_clk_composite_gate_ops,
+-					       flags | CLK_SET_RATE_NO_REPARENT);
+ 	}
+ 
+ 	if (IS_ERR(hw))
 -- 
 2.43.0
 
