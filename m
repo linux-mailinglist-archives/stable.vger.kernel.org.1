@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A269D98DABD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D7E98DD29
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A46B1F24B02
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 264DB1C216F7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA011D1754;
-	Wed,  2 Oct 2024 14:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC4E1D151F;
+	Wed,  2 Oct 2024 14:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mz+hfQtJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsB5ZP0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD47B1D1752;
-	Wed,  2 Oct 2024 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC5B1EA80;
+	Wed,  2 Oct 2024 14:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878740; cv=none; b=eS2SiPhcQwoDhRrrzX3i4LuM1cfzjY6mwkpOboZWo4xaaFx1shp0q+uOaxeiF+tegk8jkHWW0h0FjF0zVEQu8FmXpzVu14DIJOwqCArbdOw+BGDwZkQZ3TwrPoS7yJqGeK6D+HAVIZWVPjLZi7FINouXTQ7IHN8FlopmPUy0R4E=
+	t=1727880199; cv=none; b=gJbk9sYmP3qV/0olPl7wQK6gb65t79Z3s8AybqknS5eUVx9zDGHUvo54cw9SNMah/AO9Bzx5z3kneHnzEI/DKl4O56TTzhTo5DZp4HNOGfHxhIdQwHUOUwPvS0s6LPf8d5SeFMytqt6rrobuLOACw5SRIxcP3BnUNSE5FXrjoqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878740; c=relaxed/simple;
-	bh=Oy69riVdUbQltVhI7hoejnLjRIsARA5mC6nLiv2QiQc=;
+	s=arc-20240116; t=1727880199; c=relaxed/simple;
+	bh=44Qk29Rq6y1fkUBd4/KfB5dHztCg2AsXPRpd28f213w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HMyMGPy1yTj9OzvcL76zZYcIy6IC2aAdr+aAd3E6LNmxnFTWmAYvNspc/hh2/PWrxkzFd3auGmi1C9sS6zjA87Ljs0v3WNn5/jxlOmXMUcwjgBCGCHDcRqgfPXZ5zh60nnGcSo//doyp4J1b3/cA5ZMVpoj8FXjwk7JLgAWikpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mz+hfQtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5462EC4CEC2;
-	Wed,  2 Oct 2024 14:19:00 +0000 (UTC)
+	 MIME-Version; b=Y5FfRupMBspaL99QCwBeIQKdbQU7yoLFj1AlA4/f/MVV5Vmu0fXhyTRWY4ZkZYb2zF/3aq8cJydIsRLWE+a2u1DfUtB1Jn1vkpmuD0CYSMRn5BkHldH/3L+vnEwPxxevolN1w0I8BpwIQKuAbTJTelsewC7XFdzmwvDem3hLVls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsB5ZP0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7389C4CEC2;
+	Wed,  2 Oct 2024 14:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878740;
-	bh=Oy69riVdUbQltVhI7hoejnLjRIsARA5mC6nLiv2QiQc=;
+	s=korg; t=1727880199;
+	bh=44Qk29Rq6y1fkUBd4/KfB5dHztCg2AsXPRpd28f213w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mz+hfQtJjWv58MubSBLfMRwwMmxpxdeJBxrNQaa+dk4SPyZq+6ACZcHlMmeMHGNb9
-	 led2XpwibIozUoT7nf4uBI2jlY6VA+I7vJ4/UK0g8hHgbJc1RHGEkJeVaeqIVZuS/5
-	 euhB5vmOlvvTte+rhNLw/72p/xfZKHKnew7Yqbz0=
+	b=NsB5ZP0K6x96291m3/9EJMHiu83FyjNm/G0nVEDzB5K8wdZUmFlpCBVQPeOar/MDM
+	 P42FHHPRVmNDoaG+M2z1AZlVBRGe51P//n/ojn82xlq9jSJxJZ4QihAKEseaL3xcQl
+	 owfAJK5c/YV+hJlOcxcsgSnulwYREV6HxGYQd46o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>
-Subject: [PATCH 6.10 517/634] arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled
+	Furong Xu <0x1207@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 378/538] net: stmmac: set PP_FLAG_DMA_SYNC_DEV only if XDP is enabled
 Date: Wed,  2 Oct 2024 15:00:17 +0200
-Message-ID: <20241002125831.516319313@linuxfoundation.org>
+Message-ID: <20241002125807.351975150@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Furong Xu <0x1207@gmail.com>
 
-commit 09d385679487c58f0859c1ad4f404ba3df2f8830 upstream.
+[ Upstream commit b514c47ebf41a6536551ed28a05758036e6eca7c ]
 
-USB 3.0 on xhci1 is not used, as the controller shares the same PHY as
-pcie1. The latter is enabled to support the M.2 PCIe WLAN card on this
-design.
+Commit 5fabb01207a2 ("net: stmmac: Add initial XDP support") sets
+PP_FLAG_DMA_SYNC_DEV flag for page_pool unconditionally,
+page_pool_recycle_direct() will call page_pool_dma_sync_for_device()
+on every page even the page is not going to be reused by XDP program.
 
-Mark USB 3.0 as disabled on this controller using the
-"mediatek,u3p-dis-msk" property.
+When XDP is not enabled, the page which holds the received buffer
+will be recycled once the buffer is copied into new SKB by
+skb_copy_to_linear_data(), then the MAC core will never reuse this
+page any longer. Always setting PP_FLAG_DMA_SYNC_DEV wastes CPU cycles
+on unnecessary calling of page_pool_dma_sync_for_device().
 
-Reported-by: Nícolas F. R. A. Prado <nfraprado@collabora.com> #KernelCI
-Closes: https://lore.kernel.org/all/9fce9838-ef87-4d1b-b3df-63e1ddb0ec51@notapiano/
-Fixes: b6267a396e1c ("arm64: dts: mediatek: cherry: Enable T-PHYs and USB XHCI controllers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240731034411.371178-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After this patch, up to 9% noticeable performance improvement was observed
+on certain platforms.
+
+Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Link: https://patch.msgid.link/20240919121028.1348023-1-0x1207@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -1359,6 +1359,7 @@
- 	rx-fifo-depth = <3072>;
- 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
- 	vbus-supply = <&usb_vbus>;
-+	mediatek,u3p-dis-msk = <1>;
- };
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index d6167a7b19f21..89a80e3e8bb88 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2018,7 +2018,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 	rx_q->queue_index = queue;
+ 	rx_q->priv_data = priv;
  
- &xhci2 {
+-	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
++	pp_params.flags = PP_FLAG_DMA_MAP | (xdp_prog ? PP_FLAG_DMA_SYNC_DEV : 0);
+ 	pp_params.pool_size = dma_conf->dma_rx_size;
+ 	num_pages = DIV_ROUND_UP(dma_conf->dma_buf_sz, PAGE_SIZE);
+ 	pp_params.order = ilog2(num_pages);
+-- 
+2.43.0
+
 
 
 
