@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B409898DAFC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8626B98DD6C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1C9A1C235CE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307FF1F21612
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEDB1D0DCE;
-	Wed,  2 Oct 2024 14:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9361D0F62;
+	Wed,  2 Oct 2024 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4H0aVhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRVrLyrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997BB1D07BC;
-	Wed,  2 Oct 2024 14:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B28C1D0F59;
+	Wed,  2 Oct 2024 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878911; cv=none; b=TBrWTyHJ2kKVq7+pGQasKSAT1tdm8Aqc2iyPkpRcW7XBWuka+D9qzVoJVmGUi3V6HPG9HPptTi21n4m1wm6x4jrFCiFKMKcUgNCcAoBzsb3EU4a7qBn2rlkTnYYyYlaKiDgespRcjX1pmxGRNgjMqg6QEwnRQf8f1HRgnxL5xuQ=
+	t=1727880369; cv=none; b=ZVHG7S1Q1Ftp1wWx7OARDdJtuZ1diD2Ya9mz73ybtchkh9xDhXF6EWC6eOts+fxXAaN400Si9F/CTpa/StAD+3sin2KnkEcg02LCn1C95BHSfekao+jSSu/xucvJ4/U8zrBN+tHzT2DbBkNf/XBC2v3eD8lyC8jNK5g2mSzOM6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878911; c=relaxed/simple;
-	bh=XNMCeNFafReDAVkD8JeUrXsToyOGOxPlYNPlOdQ4+64=;
+	s=arc-20240116; t=1727880369; c=relaxed/simple;
+	bh=5spiVBe5o8H96ouncjrWRve+xESJELEcIB2u9HIAiSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6EsEzR04MLWwrh49/Wm0NT8NVy2rEWWqeQ4UFj0EqUYDTq/1oGLKgpUZRseicHc+mRH43jNq50DtJICDOtnZBYw4F6C/2WhNI8xl9JiE+NcwXN6/Pkp/PzQMB5UHIfD0NNBfVjXUBc/kj98wpuk2aMavlkcTQLgAlWqR98r8TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4H0aVhq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBA5C4CECD;
-	Wed,  2 Oct 2024 14:21:50 +0000 (UTC)
+	 MIME-Version; b=HaFi9rOkOehQav38eTg8szCCYemscgH+49DLXelxX/OwTKcue7x5si/mlrUxgPkZKGxMA6fTSMbF5u7QDmzUPa8eVCt28zFITk7DZ82JB5x0jPAXNVfF0KUZsyxwO/ZkiHbOOoY6W2xg8zCRlSz5vwjcd4Eql+qsLoVnOdMmhjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRVrLyrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B53C4CECD;
+	Wed,  2 Oct 2024 14:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878911;
-	bh=XNMCeNFafReDAVkD8JeUrXsToyOGOxPlYNPlOdQ4+64=;
+	s=korg; t=1727880369;
+	bh=5spiVBe5o8H96ouncjrWRve+xESJELEcIB2u9HIAiSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4H0aVhq3IEbwGFTl88yf3lgNFrLg8JPoALLFQu1l/zNltGOc97Rcya1lARMuo4dU
-	 leyfya2Ex3ILf7VRIXURFPJjRu2zMcFDsKYnwELFketYmIfmYHX091MQK0orHYvc4H
-	 dUrP3bMUBSkaSSNfpHHUl4+k2CenFPvck+tStcHQ=
+	b=MRVrLyrQmT3b2L/olsZ7bJRFbL0nDGiTjUhEbKtGLuC07Ls2Gh09m1kkr4eALCJk9
+	 Mp9h6/TXY+1B98XE2dgFuDsSyKyLWLGeTl2bQPZELwyb7EJSAfmdMRFGrrN/T5nvuA
+	 /VCoTQRRavXUI35myswWVQQB89gQfbR1x2mSyIOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.10 543/634] efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 404/538] Revert "media: tuners: fix error return code of hybrid_tuner_request_state()"
 Date: Wed,  2 Oct 2024 15:00:43 +0200
-Message-ID: <20241002125832.543710901@linuxfoundation.org>
+Message-ID: <20241002125808.384070733@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-commit 77d48d39e99170b528e4f2e9fc5d1d64cdedd386 upstream.
+commit e25cc4be4616fcf5689622b3226d648aab253cdb upstream.
 
-The TPM event log table is a Linux specific construct, where the data
-produced by the GetEventLog() boot service is cached in memory, and
-passed on to the OS using an EFI configuration table.
+This reverts commit b9302fa7ed979e84b454e4ca92192cf485a4ed41.
 
-The use of EFI_LOADER_DATA here results in the region being left
-unreserved in the E820 memory map constructed by the EFI stub, and this
-is the memory description that is passed on to the incoming kernel by
-kexec, which is therefore unaware that the region should be reserved.
+As Fedor Pchelkin pointed out, this commit violates the
+convention of using the macro return value, which causes errors.
+For example, in functions tda18271_attach(), xc5000_attach(),
+simple_tuner_attach().
 
-Even though the utility of the TPM2 event log after a kexec is
-questionable, any corruption might send the parsing code off into the
-weeds and crash the kernel. So let's use EFI_ACPI_RECLAIM_MEMORY
-instead, which is always treated as reserved by the E820 conversion
-logic.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: Breno Leitao <leitao@debian.org>
-Tested-by: Usama Arif <usamaarif642@gmail.com>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240424202031.syigrtrtipbq5f2l@fpc/
+Suggested-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/tpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/tuners/tuner-i2c.h |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/firmware/efi/libstub/tpm.c
-+++ b/drivers/firmware/efi/libstub/tpm.c
-@@ -96,7 +96,7 @@ static void efi_retrieve_tcg2_eventlog(i
- 	}
- 
- 	/* Allocate space for the logs and copy them. */
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-+	status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
- 			     sizeof(*log_tbl) + log_size, (void **)&log_tbl);
- 
- 	if (status != EFI_SUCCESS) {
+--- a/drivers/media/tuners/tuner-i2c.h
++++ b/drivers/media/tuners/tuner-i2c.h
+@@ -133,10 +133,8 @@ static inline int tuner_i2c_xfer_send_re
+ 	}								\
+ 	if (0 == __ret) {						\
+ 		state = kzalloc(sizeof(type), GFP_KERNEL);		\
+-		if (!state) {						\
+-			__ret = -ENOMEM;				\
++		if (NULL == state)					\
+ 			goto __fail;					\
+-		}							\
+ 		state->i2c_props.addr = i2caddr;			\
+ 		state->i2c_props.adap = i2cadap;			\
+ 		state->i2c_props.name = devname;			\
 
 
 
