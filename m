@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-80311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0516098DCDD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8610A98DA63
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1E21F25DFF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BEFF1F211CB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27181D0E2B;
-	Wed,  2 Oct 2024 14:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E971CFED1;
+	Wed,  2 Oct 2024 14:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUWAm18b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSKE6lBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BA51D0DE3;
-	Wed,  2 Oct 2024 14:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FE91D0DD6;
+	Wed,  2 Oct 2024 14:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880001; cv=none; b=O2YIYR6n/YAxpqjBjGv508OOZ58brkJ1U7822Eo9nhj5FeqAnC+cifwyH+T6MQi8GO+taB56sBoFq839IU6UzU6RUK6AB5osR047ChUs01CdU+r5Cc4ew9rnVP4m85GZBApRF7XzolI4kzddva6nm61zg5VXDa2RZgJNOPeqlH0=
+	t=1727878543; cv=none; b=pAQ4s9lSrzndLcsssNQpKxuIoxlmZ+ah1RF01r48l6uhBRowF61ij3vagFXSCblPepqaE/8igjGGKXYQkF+rhl39Gw6HKoHIV8nzi59mx1PecoGpV0dPjHlkZQrXsVKV/SnPPcLS3sohSrc9rOnfk+5CdW+F8nzd4mB3mD2Qo9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880001; c=relaxed/simple;
-	bh=fsSEvDePjKJAFzndN4QvMv5jTw+bHLTqG/Oub76Iaew=;
+	s=arc-20240116; t=1727878543; c=relaxed/simple;
+	bh=ZL+rSOjOGmHCj8Xc3oSqx21S7fJqogHgScTyugsCgPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UFpmLSmksxHKUar238QfYVULmgXfgC0c0hP/JXCBLjlWcW3y1rfrrDlsQWid19pqcQcKpUhwDbO2yNZyAs0ImBe6XGzHA4KhwT5U0vRx0sgFRU2QHH5aJIRhKy29EGLhjq/KxCrpvD1XuXykbdl7Y/lZOvMdrsdxCpVtAWo9ZR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUWAm18b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296E8C4CEC2;
-	Wed,  2 Oct 2024 14:40:00 +0000 (UTC)
+	 MIME-Version; b=sgH2zIvTEM6JYQ7EWgxxU/0ZnsuyZNV2llsSPp6FCmCxeHKdd3jzAe0rIJMlidKVqmbe2KJOeggDlWY4FjgTF2ZQCki4bF+ZQDeSTVJdMVVaaFI04TIvMetvk8tQIpECJE9Sij3IO++AKsDVK6XYbPrOvokvpKhEneJ9z23B44g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSKE6lBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951D2C4CEC5;
+	Wed,  2 Oct 2024 14:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880001;
-	bh=fsSEvDePjKJAFzndN4QvMv5jTw+bHLTqG/Oub76Iaew=;
+	s=korg; t=1727878543;
+	bh=ZL+rSOjOGmHCj8Xc3oSqx21S7fJqogHgScTyugsCgPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUWAm18bP1mUDCW9f8sAcmQuHeC91xnFwoPhA4FHCKmJdttE75fj3g+H4k8Pc3f+c
-	 N2WO3bhlT2N68Gs5+YiIatjiC23mnZampWCpYk2iQxNn+GVadyXqMuwocyEXqaZFvE
-	 cvu33MYIE3c0+d1bRKOJHItttTClKWf5yWf9tShA=
+	b=QSKE6lBhw4SzBftvC35B4ZQdZY3oLglbIYNuY2El9OewhpTLIgqtPusNpL0itWF/G
+	 PIk15uyK1Blcb7m6uwaXI3VS1eGxZZ6HHA5L/V55Amw1qeED6dgpphIjhklMia7ao1
+	 B/ay3g426+fMSQ0nqCqkUaPnKWy5/iGG3zysJN9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Diupina <adiupina@astralinux.ru>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 311/538] PCI: kirin: Fix buffer overflow in kirin_pcie_parse_port()
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 450/634] io_uring/sqpoll: do not allow pinning outside of cpuset
 Date: Wed,  2 Oct 2024 14:59:10 +0200
-Message-ID: <20241002125804.693829163@linuxfoundation.org>
+Message-ID: <20241002125828.863158714@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
 
-[ Upstream commit c500a86693a126c9393e602741e348f80f1b0fc5 ]
+commit f011c9cf04c06f16b24f583d313d3c012e589e50 upstream.
 
-Within kirin_pcie_parse_port(), the pcie->num_slots is compared to
-pcie->gpio_id_reset size (MAX_PCI_SLOTS) which is correct and would lead
-to an overflow.
+The submit queue polling threads are userland threads that just never
+exit to the userland. When creating the thread with IORING_SETUP_SQ_AFF,
+the affinity of the poller thread is set to the cpu specified in
+sq_thread_cpu. However, this CPU can be outside of the cpuset defined
+by the cgroup cpuset controller. This violates the rules defined by the
+cpuset controller and is a potential issue for realtime applications.
 
-Thus, fix condition to pcie->num_slots + 1 >= MAX_PCI_SLOTS and move
-pcie->num_slots increment below the if-statement to avoid out-of-bounds
-array access.
+In b7ed6d8ffd6 we fixed the default affinity of the poller thread, in
+case no explicit pinning is required by inheriting the one of the
+creating task. In case of explicit pinning, the check is more
+complicated, as also a cpu outside of the parent cpumask is allowed.
+We implemented this by using cpuset_cpus_allowed (that has support for
+cgroup cpusets) and testing if the requested cpu is in the set.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b22dbbb24571 ("PCI: kirin: Support PERST# GPIOs for HiKey970 external PEX 8606 bridge")
-Link: https://lore.kernel.org/linux-pci/20240903115823.30647-1-adiupina@astralinux.ru
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 37d1e2e3642e ("io_uring: move SQPOLL thread io-wq forked worker")
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Link: https://lore.kernel.org/r/20240909150036.55921-1-felix.moessbauer@siemens.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-kirin.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/sqpoll.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
-index 2ee146767971c..421697ec7591d 100644
---- a/drivers/pci/controller/dwc/pcie-kirin.c
-+++ b/drivers/pci/controller/dwc/pcie-kirin.c
-@@ -415,12 +415,12 @@ static int kirin_pcie_parse_port(struct kirin_pcie *pcie,
- 			if (pcie->gpio_id_reset[i] < 0)
- 				continue;
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -10,6 +10,7 @@
+ #include <linux/slab.h>
+ #include <linux/audit.h>
+ #include <linux/security.h>
++#include <linux/cpuset.h>
+ #include <linux/io_uring.h>
  
--			pcie->num_slots++;
--			if (pcie->num_slots > MAX_PCI_SLOTS) {
-+			if (pcie->num_slots + 1 >= MAX_PCI_SLOTS) {
- 				dev_err(dev, "Too many PCI slots!\n");
- 				ret = -EINVAL;
- 				goto put_node;
- 			}
-+			pcie->num_slots++;
+ #include <uapi/linux/io_uring.h>
+@@ -460,10 +461,12 @@ __cold int io_sq_offload_create(struct i
+ 			return 0;
  
- 			ret = of_pci_get_devfn(child);
- 			if (ret < 0) {
--- 
-2.43.0
-
+ 		if (p->flags & IORING_SETUP_SQ_AFF) {
++			struct cpumask allowed_mask;
+ 			int cpu = p->sq_thread_cpu;
+ 
+ 			ret = -EINVAL;
+-			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
++			cpuset_cpus_allowed(current, &allowed_mask);
++			if (!cpumask_test_cpu(cpu, &allowed_mask))
+ 				goto err_sqpoll;
+ 			sqd->sq_cpu = cpu;
+ 		} else {
 
 
 
