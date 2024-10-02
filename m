@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8148198D82D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA3B98D506
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220D31F22FEF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 224A5285832
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E615E1D07BB;
-	Wed,  2 Oct 2024 13:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778FA1D095C;
+	Wed,  2 Oct 2024 13:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cev7pGQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4ZlBwlm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6C0198A1A;
-	Wed,  2 Oct 2024 13:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341FA1D04AE;
+	Wed,  2 Oct 2024 13:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877407; cv=none; b=RA4+h9DjgGeY5V1e3FNh2PW5RluqNmAXcOpQ+vd9U6kLT1Q/JcsTOCEzYZ0SHXPGg4RhZiB3Phgfasm4XvS11dS9JKN2YZoJekDTve520I96+OlV8834trXpx76kbiXq/YguKgoP0kLi7NS0bJwTGwRSBFWzn5mHnJF+YINMkJc=
+	t=1727875553; cv=none; b=J6XOWf3AjnUc5naFkYbarmgaGa+qq7DIRj+9cmeiRZk7h2DpBxphZXfiqiX/FmVRbCZJEQOZFtzwM+lrUcjIY3vrMi5O9s9SKT6tIkPvmZ8BDm0U+ffp38icgdTB0+/gvisk5sKP4L5dGvNme/ywe9FkM70bv3a1jF6D3juym0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877407; c=relaxed/simple;
-	bh=i/lYADUcs7Hamk4oC/RLTTOtNvuAa3sCW2W4YCLBCEM=;
+	s=arc-20240116; t=1727875553; c=relaxed/simple;
+	bh=J1mgo37azx6qHUUZZtrCMilia09R4nnfUg7+wY+iQ20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOExiZFmXi2VqoegknzZoITbOzqGpijFLtUbdU8MCIxDLQ1d+zomKxW7h+l0wiKb7gjdT4lcIKSXJh4DAPxoeTwiMbvIYbcxQ/swYL/+w/MiAOTF2S5A+4ScVVSsy2MNK1qMqkoZ60FZLzJsSaOqBA1OsNP79OaskhlbEVpc1eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cev7pGQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25665C4CED3;
-	Wed,  2 Oct 2024 13:56:46 +0000 (UTC)
+	 MIME-Version; b=Rn/E2jKN3Ck3ZDGaeT9gUFsIcDBKvk7JSGzuMfn9lf68Ha/8NucrgTeQfL/PQW/xH4CBarJJtHF6PPxj1GlsepX72ojM2a2Nh12Gh/SPPXXGZqra7KYIJR94QgxMsrlwU/3QkdsplcQcU7w0dwS0my9cG9Hud/XosnYuOab6H1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4ZlBwlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99A5C4CEC5;
+	Wed,  2 Oct 2024 13:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877407;
-	bh=i/lYADUcs7Hamk4oC/RLTTOtNvuAa3sCW2W4YCLBCEM=;
+	s=korg; t=1727875553;
+	bh=J1mgo37azx6qHUUZZtrCMilia09R4nnfUg7+wY+iQ20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cev7pGQNLSkqmq5cAExjjDCGt22HgVg6lG6jDcbQt3IUJQJd4/w7OHzckIlBoFnH8
-	 oKKUnZ5cLaJzjZgmnE46C4FyzGXfgFQcUgg60WCBCzSg6tBnWtW7RSrSSqxFakGi2P
-	 HtNAfVy6yONzmE5AXlzJoqGvfmqHMZNglk6qY1Cw=
+	b=G4ZlBwlm+0CYHg6JkgoDoofvivgPKSBKJx+ddm5rzkR3LIFGQh+NsRp14GWxCnOpG
+	 PXW5tUba2w/RgCy9MgZ0g4qpFYMDLsjPmGjYK6oOEMiEv9a9plh/axQfpZlgV98r14
+	 /3vF2Cs5XA9T/pme3ITzk6SzgZlWakhb5sXrlh70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Golan Ben Ami <golan.ben.ami@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 038/634] wifi: iwlwifi: remove AX101, AX201 and AX203 support from LNL
+Subject: [PATCH 6.11 140/695] arm64: dts: renesas: r9a08g045: Correct GICD and GICR sizes
 Date: Wed,  2 Oct 2024 14:52:18 +0200
-Message-ID: <20241002125812.602137014@linuxfoundation.org>
+Message-ID: <20241002125828.073067176@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Golan Ben Ami <golan.ben.ami@intel.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 6adae0b081454393ca5f7363fd3c7379c8e2a7a1 ]
+[ Upstream commit ec9532628eb9d82282b8e52fd9c4a3800d87feec ]
 
-LNL is the codename for the upcoming Series 2 Core Ultra
-processors designed by Intel. AX101, AX201 and AX203 devices
-are not shiped on LNL platforms, so don't support them.
+The RZ/G3S SoC is equipped with the GIC-600. The GICD is 64KiB + 64KiB
+for the MBI alias (in total 128KiB), and the GICR is 128KiB per CPU.
 
-Signed-off-by: Golan Ben Ami <golan.ben.ami@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240613171043.f24a228dfd96.I989a2d3f1513211bc49ac8143ee4e9e341e1ee67@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 8131dd52810d ("wifi: iwlwifi: config: label 'gl' devices as discrete")
+Despite the RZ/G3S SoC being single-core, it has two instances of GICR.
+
+Fixes: e20396d65b959 ("arm64: dts: renesas: Add initial DTSI for RZ/G3S SoC")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/20240730122436.350013-2-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 32 ++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r9a08g045.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index fed2754be6802..9863292fddde7 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -503,7 +503,37 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
--	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0000, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0090, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0094, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0098, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x009C, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00C0, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00C4, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00E0, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00E4, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00E8, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00EC, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0100, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0110, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0114, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0118, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x011C, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0310, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0314, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0510, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0A10, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1671, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1672, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1771, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1772, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1791, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1792, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x4090, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x40C4, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x40E0, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x4110, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x4314, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x4D40, PCI_ANY_ID, iwl_bz_trans_cfg)},
+diff --git a/arch/arm64/boot/dts/renesas/r9a08g045.dtsi b/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
+index 0d5c47a65e46c..34e29463a672d 100644
+--- a/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
+@@ -269,8 +269,8 @@
+ 			#interrupt-cells = <3>;
+ 			#address-cells = <0>;
+ 			interrupt-controller;
+-			reg = <0x0 0x12400000 0 0x40000>,
+-			      <0x0 0x12440000 0 0x60000>;
++			reg = <0x0 0x12400000 0 0x20000>,
++			      <0x0 0x12440000 0 0x40000>;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
+ 		};
  
 -- 
 2.43.0
