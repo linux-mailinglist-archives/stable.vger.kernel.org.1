@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-80361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8548298DD17
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 186D498DAAC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C48928547B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FE51B25FF0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AC21CF7AA;
-	Wed,  2 Oct 2024 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0181D096B;
+	Wed,  2 Oct 2024 14:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UstD8qKV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPshxu51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D386FB0;
-	Wed,  2 Oct 2024 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8989D1CFECF;
+	Wed,  2 Oct 2024 14:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880149; cv=none; b=bWmptGsoaKEKa+MU6hp2ynL3ofdz2hmlBK2JTV+7hfb1pvmWBAR3EQPEinFOkTmJrzuCWPjo5OqRDIUW8oYhxnZM0acP+mL43LMDhw6qR/c+hpWrKJlAsGA1GmQQ78ZQCXi1ISzXCSRlJXsIJWGE2QPi0GfICLURnWxBQg6PxGI=
+	t=1727878687; cv=none; b=XKIP3sMv7kNuWkavDDLhetNHFyF0mcAmNF7/o3KgmVQMgpWnyUV0FSUSPQ/Y1knwaL64Bazucltm1ZKAI7+S0J0gupko6my5Ja7u6xeiH6yVwT+f3xuLltBNl1P/iD0hKDKtP1BIohnyshiJ4UT/SK5K3Z8xqaeE0WfXsg+xI3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880149; c=relaxed/simple;
-	bh=KrABpt9MLBelVRHFZeKqINhqQs33BYyeoTMahidCeXU=;
+	s=arc-20240116; t=1727878687; c=relaxed/simple;
+	bh=vl1DYRyyvQI6jB1jaZ4xs7QeuOlD8GZIfLQpxWhdw/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nR25z8Q9/y9DOdGKYneItudX3GrR75wZakXloRBSXJbYF0Pr8ihemJBShAs7OabE93ZquX/yH2TCPGqFjxIFninBV13bn2EdtcJJpk+5mIAI43bpa9al6J0ijHnZjDUYXnxHvcMDOl+jSu8nlqZt/Q7qVTUmdaAJ4QXcohdBd8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UstD8qKV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8E0C4CEC2;
-	Wed,  2 Oct 2024 14:42:28 +0000 (UTC)
+	 MIME-Version; b=rnilPIoyvYuMdU12ndjzxAK9W8iEXRURRsj8/HqR1r+xutsuq6FbvAbOqbGk/z8gRze++PK5MRTBbqBzreqi07zbU8/F+gCHSBpoHaeWqKZlFgy0kMD45qZRfeCC8Sabm4FmpgI9uiarlX8V5mbCofNksVALA0RBh86cRNPQFjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPshxu51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FE6C4CEC2;
+	Wed,  2 Oct 2024 14:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880149;
-	bh=KrABpt9MLBelVRHFZeKqINhqQs33BYyeoTMahidCeXU=;
+	s=korg; t=1727878687;
+	bh=vl1DYRyyvQI6jB1jaZ4xs7QeuOlD8GZIfLQpxWhdw/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UstD8qKViV0iLGqYkwKBgUGOQ76d9XhTGeaZ5SV3hv8Px5rJnAgjicmFp2s91DR/4
-	 pS1WWfLygelWCEH++lTmO1Iv68zd5d1fLtey1IAXfsn6y3R3TMpgJ4S/dKKPG3uRmI
-	 Ej84b+7KT6sxLup0LUdHlpYU9le2oK2/tnv+mMbo=
+	b=gPshxu51jK25T8OYgdgBlqCtPtE6ar0vS2F6R08kRxWvvoZQ3Mckh0JaqIf8Pv2sr
+	 +0esNce7SGAdAz4CdMD3hITnB73M0yodiS2DYSNcTnl8zhxrWXCUIRa/yXomR83S3Z
+	 D1Rb8EY2WGhQXKSRlVVIpcEgoPkbABNj1RgFE6TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 359/538] iio: magnetometer: ak8975: drop incorrect AK09116 compatible
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.10 498/634] drm/amd/display: Enable DML2 override_det_buffer_size_kbytes
 Date: Wed,  2 Oct 2024 14:59:58 +0200
-Message-ID: <20241002125806.597494198@linuxfoundation.org>
+Message-ID: <20241002125830.754926517@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-[ Upstream commit da6e3160df230692bbd48a6d52318035f19595e2 ]
+commit f57b77d667dc6bd2b114d08d04b03869539209f6 upstream.
 
-All compatibles in this binding without prefixes were deprecated, so
-adding a new deprecated one after some time is not allowed, because it
-defies the core logic of deprecating things.
+[WHY]
+Corrupted screen will be observed when 4k144 DP/HDMI display and
+4k144 eDP are connected, changing eDP refresh rate from 60Hz to 144Hz.
 
-Drop the AK09916 vendorless compatible.
+[HOW]
+override_det_buffer_size_kbytes should be true for DCN35/DCN351.
 
-Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240806053016.6401-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Roman Li <roman.li@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/magnetometer/ak8975.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c   |    1 +
+ drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 104798549de11..a79a1d5b46394 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -1083,7 +1083,6 @@ static const struct of_device_id ak8975_of_match[] = {
- 	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
- 	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
- 	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
--	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ak8975_of_match);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -2150,6 +2150,7 @@ static bool dcn35_resource_construct(
+ 	dc->dml2_options.max_segments_per_hubp = 24;
+ 
+ 	dc->dml2_options.det_segment_size = DCN3_2_DET_SEG_SIZE;/*todo*/
++	dc->dml2_options.override_det_buffer_size_kbytes = true;
+ 
+ 	if (dc->config.sdpif_request_limit_words_per_umc == 0)
+ 		dc->config.sdpif_request_limit_words_per_umc = 16;/*todo*/
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
+@@ -2132,6 +2132,7 @@ static bool dcn351_resource_construct(
+ 
+ 	dc->dml2_options.max_segments_per_hubp = 24;
+ 	dc->dml2_options.det_segment_size = DCN3_2_DET_SEG_SIZE;/*todo*/
++	dc->dml2_options.override_det_buffer_size_kbytes = true;
+ 
+ 	if (dc->config.sdpif_request_limit_words_per_umc == 0)
+ 		dc->config.sdpif_request_limit_words_per_umc = 16;/*todo*/
 
 
 
