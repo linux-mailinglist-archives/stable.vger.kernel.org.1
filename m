@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2239B98D8C8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7DB98D580
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD262856E6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36401C21F0F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1421D0F54;
-	Wed,  2 Oct 2024 14:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1F01D016B;
+	Wed,  2 Oct 2024 13:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iS29aqDI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4fPdzkE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BC51D0F40;
-	Wed,  2 Oct 2024 14:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C96129CE7;
+	Wed,  2 Oct 2024 13:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877643; cv=none; b=PQmHh2Y+bSzmdOkk3QzfxDJ1cO7jbTkHpvmeUewf5o4/oGzy4Muyk9hX5Oe141bWvuv/36hXebtP2g0Wk4SuJDCVuXLPkH1CZqNOLfDCi+00nb1P0PHkiyA0aDLyu8T4hfv2zaeVN90n3jFoJQ28vpt3XFS6++1ipq1zk5FlJPI=
+	t=1727875865; cv=none; b=Qy5GnSH/pikCXB9kIKT4+8+tQ5NWXTZdAH+LpxQT9L/0Kfs653ZbiSKhnu+Q863oKRraB3G5dHMXvQdQlhNgFfS87RG/OBLb2SwiCLnQFgR2VWVm3ZMooemfEj/d47KprF7OESZ9iz/2DEh3+8UCWM+lOHy2NR75BT2M02G2eLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877643; c=relaxed/simple;
-	bh=qL0R/Vuh9QR4ZftxaE90ec5P8qPQY4TXyIN4+WY1vJw=;
+	s=arc-20240116; t=1727875865; c=relaxed/simple;
+	bh=8O2bENdDjLZYl/DEOKiAwJYnDM01qgpXsj7qqbnqWkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6kPQHOAQ53PeOLo+8ovXhfThnqpqXDJseQSp0BnkS8lufL37wumbA4h01+qGJ1ZDg2tkqVbdZ9K5FYOlovzEBz+czg3ilgqTAoLl8tntHBQq2PWtF1IKx7jchRql/BDZYFsGMKKnNt7KrCHuUxlWSkKkWWZDuArdFnWHv1OCE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iS29aqDI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87247C4CEC2;
-	Wed,  2 Oct 2024 14:00:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fRp6NeEMOxFs/hNuPJheHdYKxyi6Dn1NvzHAGYv21SI2wlWMXur0zuNCDg8azZaVJJyhs+iKz28daFfsUXuSjEGnr44FvUOnMs/d89VVi+6dfZKyyowHlOa2e1B2JduWrwss1OgCgypSqZuqJGScmnKjjgDCjjvQ+8zBx6WluVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4fPdzkE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBAEC4CEC5;
+	Wed,  2 Oct 2024 13:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877642;
-	bh=qL0R/Vuh9QR4ZftxaE90ec5P8qPQY4TXyIN4+WY1vJw=;
+	s=korg; t=1727875864;
+	bh=8O2bENdDjLZYl/DEOKiAwJYnDM01qgpXsj7qqbnqWkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iS29aqDI4gZhRlcy5W40ONEYzniQ/lkmkSQ+GA8glFtdWYtpP1f5F5irdVdDq2Fj0
-	 Xup4xs3TZWAfI3vKBNtFS+SNktZMoXdxnjvivnHFfWYW3gLPgMklh2N0JkpmlTqIiU
-	 YJCBG6GoHzB8eFaNVmpUNq3U/WCQ0BoQ9wyUr5Q0=
+	b=E4fPdzkEdo/BK7YytQrw6ADW4SCKL8H9JclQbyGJATO8t3AsGAhv0zvTp/G5g2UOi
+	 PA6fl2hoIbjV91AuNRf/rjx3f6yaT2+G+hDsqdm+Yy8EEEaThEj7UNLV4wOWJQ0IlI
+	 NTgOFWg3Hg5H7pLVQocyvzbJaELjIWtFRg9wyzP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Jan Beulich <jbeulich@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 145/634] ASoC: tas2781: Use of_property_read_reg()
+Subject: [PATCH 6.11 247/695] xen: move max_pfn in xen_memory_setup() out of function scope
 Date: Wed,  2 Oct 2024 14:54:05 +0200
-Message-ID: <20241002125816.828987796@linuxfoundation.org>
+Message-ID: <20241002125832.310784221@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +61,197 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 31a45f9190b5b4f5cd8cdec8471babd5215eee04 ]
+[ Upstream commit 43dc2a0f479b9cd30f6674986d7a40517e999d31 ]
 
-Replace the open-coded parsing of "reg" with of_property_read_reg().
-The #ifdef is also easily replaced with IS_ENABLED().
+Instead of having max_pfn as a local variable of xen_memory_setup(),
+make it a static variable in setup.c instead. This avoids having to
+pass it to subfunctions, which will be needed in more cases in future.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20240702215402.839673-1-robh@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: c2c0b67dca3c ("ASoC: tas2781-i2c: Drop weird GPIO code")
+Rename it to ini_nr_pages, as the value denotes the currently usable
+number of memory pages as passed from the hypervisor at boot time.
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2781-i2c.c | 34 +++++++++++-----------------------
- 1 file changed, 11 insertions(+), 23 deletions(-)
+ arch/x86/xen/setup.c | 52 ++++++++++++++++++++++----------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index c64d458e524e2..1963c777ba8e0 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -21,6 +21,7 @@
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_address.h>
- #include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
-@@ -635,33 +636,20 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index 96765180514bd..4c18d8b1cdf10 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -46,6 +46,9 @@ bool xen_pv_pci_possible;
+ /* E820 map used during setting up memory. */
+ static struct e820_table xen_e820_table __initdata;
  
- 		tas_priv->irq_info.irq_gpio =
- 			acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
--	} else {
-+	} else if (IS_ENABLED(CONFIG_OF)) {
- 		struct device_node *np = tas_priv->dev->of_node;
--#ifdef CONFIG_OF
--		const __be32 *reg, *reg_end;
--		int len, sw, aw;
--
--		aw = of_n_addr_cells(np);
--		sw = of_n_size_cells(np);
--		if (sw == 0) {
--			reg = (const __be32 *)of_get_property(np,
--				"reg", &len);
--			reg_end = reg + len/sizeof(*reg);
--			ndev = 0;
--			do {
--				dev_addrs[ndev] = of_read_number(reg, aw);
--				reg += aw;
--				ndev++;
--			} while (reg < reg_end);
--		} else {
--			ndev = 1;
--			dev_addrs[0] = client->addr;
-+		u64 addr;
++/* Number of initially usable memory pages. */
++static unsigned long ini_nr_pages __initdata;
 +
-+		for (i = 0; i < TASDEVICE_MAX_CHANNELS; i++) {
-+			if (of_property_read_reg(np, i, &addr, NULL))
-+				break;
-+			dev_addrs[ndev++] = addr;
+ /*
+  * Buffer used to remap identity mapped pages. We only need the virtual space.
+  * The physical page behind this address is remapped as needed to different
+@@ -212,7 +215,7 @@ static int __init xen_free_mfn(unsigned long mfn)
+  * as a fallback if the remapping fails.
+  */
+ static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
+-			unsigned long end_pfn, unsigned long nr_pages)
++						      unsigned long end_pfn)
+ {
+ 	unsigned long pfn, end;
+ 	int ret;
+@@ -220,7 +223,7 @@ static void __init xen_set_identity_and_release_chunk(unsigned long start_pfn,
+ 	WARN_ON(start_pfn > end_pfn);
+ 
+ 	/* Release pages first. */
+-	end = min(end_pfn, nr_pages);
++	end = min(end_pfn, ini_nr_pages);
+ 	for (pfn = start_pfn; pfn < end; pfn++) {
+ 		unsigned long mfn = pfn_to_mfn(pfn);
+ 
+@@ -341,15 +344,14 @@ static void __init xen_do_set_identity_and_remap_chunk(
+  * to Xen and not remapped.
+  */
+ static unsigned long __init xen_set_identity_and_remap_chunk(
+-	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
+-	unsigned long remap_pfn)
++	unsigned long start_pfn, unsigned long end_pfn, unsigned long remap_pfn)
+ {
+ 	unsigned long pfn;
+ 	unsigned long i = 0;
+ 	unsigned long n = end_pfn - start_pfn;
+ 
+ 	if (remap_pfn == 0)
+-		remap_pfn = nr_pages;
++		remap_pfn = ini_nr_pages;
+ 
+ 	while (i < n) {
+ 		unsigned long cur_pfn = start_pfn + i;
+@@ -358,19 +360,19 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
+ 		unsigned long remap_range_size;
+ 
+ 		/* Do not remap pages beyond the current allocation */
+-		if (cur_pfn >= nr_pages) {
++		if (cur_pfn >= ini_nr_pages) {
+ 			/* Identity map remaining pages */
+ 			set_phys_range_identity(cur_pfn, cur_pfn + size);
+ 			break;
  		}
--#else
-+
-+		tas_priv->irq_info.irq_gpio = of_irq_get(np, 0);
-+	} else {
- 		ndev = 1;
- 		dev_addrs[0] = client->addr;
--#endif
--		tas_priv->irq_info.irq_gpio = of_irq_get(np, 0);
+-		if (cur_pfn + size > nr_pages)
+-			size = nr_pages - cur_pfn;
++		if (cur_pfn + size > ini_nr_pages)
++			size = ini_nr_pages - cur_pfn;
+ 
+ 		remap_range_size = xen_find_pfn_range(&remap_pfn);
+ 		if (!remap_range_size) {
+ 			pr_warn("Unable to find available pfn range, not remapping identity pages\n");
+ 			xen_set_identity_and_release_chunk(cur_pfn,
+-						cur_pfn + left, nr_pages);
++							   cur_pfn + left);
+ 			break;
+ 		}
+ 		/* Adjust size to fit in current e820 RAM region */
+@@ -397,18 +399,18 @@ static unsigned long __init xen_set_identity_and_remap_chunk(
+ }
+ 
+ static unsigned long __init xen_count_remap_pages(
+-	unsigned long start_pfn, unsigned long end_pfn, unsigned long nr_pages,
++	unsigned long start_pfn, unsigned long end_pfn,
+ 	unsigned long remap_pages)
+ {
+-	if (start_pfn >= nr_pages)
++	if (start_pfn >= ini_nr_pages)
+ 		return remap_pages;
+ 
+-	return remap_pages + min(end_pfn, nr_pages) - start_pfn;
++	return remap_pages + min(end_pfn, ini_nr_pages) - start_pfn;
+ }
+ 
+-static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
++static unsigned long __init xen_foreach_remap_area(
+ 	unsigned long (*func)(unsigned long start_pfn, unsigned long end_pfn,
+-			      unsigned long nr_pages, unsigned long last_val))
++			      unsigned long last_val))
+ {
+ 	phys_addr_t start = 0;
+ 	unsigned long ret_val = 0;
+@@ -436,8 +438,7 @@ static unsigned long __init xen_foreach_remap_area(unsigned long nr_pages,
+ 				end_pfn = PFN_UP(entry->addr);
+ 
+ 			if (start_pfn < end_pfn)
+-				ret_val = func(start_pfn, end_pfn, nr_pages,
+-					       ret_val);
++				ret_val = func(start_pfn, end_pfn, ret_val);
+ 			start = end;
+ 		}
  	}
- 	tas_priv->ndev = ndev;
- 	for (i = 0; i < ndev; i++)
+@@ -700,7 +701,7 @@ static void __init xen_reserve_xen_mfnlist(void)
+  **/
+ char * __init xen_memory_setup(void)
+ {
+-	unsigned long max_pfn, pfn_s, n_pfns;
++	unsigned long pfn_s, n_pfns;
+ 	phys_addr_t mem_end, addr, size, chunk_size;
+ 	u32 type;
+ 	int rc;
+@@ -712,9 +713,8 @@ char * __init xen_memory_setup(void)
+ 	int op;
+ 
+ 	xen_parse_512gb();
+-	max_pfn = xen_get_pages_limit();
+-	max_pfn = min(max_pfn, xen_start_info->nr_pages);
+-	mem_end = PFN_PHYS(max_pfn);
++	ini_nr_pages = min(xen_get_pages_limit(), xen_start_info->nr_pages);
++	mem_end = PFN_PHYS(ini_nr_pages);
+ 
+ 	memmap.nr_entries = ARRAY_SIZE(xen_e820_table.entries);
+ 	set_xen_guest_handle(memmap.buffer, xen_e820_table.entries);
+@@ -767,10 +767,10 @@ char * __init xen_memory_setup(void)
+ 	max_pages = xen_get_max_pages();
+ 
+ 	/* How many extra pages do we need due to remapping? */
+-	max_pages += xen_foreach_remap_area(max_pfn, xen_count_remap_pages);
++	max_pages += xen_foreach_remap_area(xen_count_remap_pages);
+ 
+-	if (max_pages > max_pfn)
+-		extra_pages += max_pages - max_pfn;
++	if (max_pages > ini_nr_pages)
++		extra_pages += max_pages - ini_nr_pages;
+ 
+ 	/*
+ 	 * Clamp the amount of extra memory to a EXTRA_MEM_RATIO
+@@ -779,8 +779,8 @@ char * __init xen_memory_setup(void)
+ 	 * Make sure we have no memory above max_pages, as this area
+ 	 * isn't handled by the p2m management.
+ 	 */
+-	maxmem_pages = EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM));
+-	extra_pages = min3(maxmem_pages, extra_pages, max_pages - max_pfn);
++	maxmem_pages = EXTRA_MEM_RATIO * min(ini_nr_pages, PFN_DOWN(MAXMEM));
++	extra_pages = min3(maxmem_pages, extra_pages, max_pages - ini_nr_pages);
+ 	i = 0;
+ 	addr = xen_e820_table.entries[0].addr;
+ 	size = xen_e820_table.entries[0].size;
+@@ -885,7 +885,7 @@ char * __init xen_memory_setup(void)
+ 	 * Set identity map on non-RAM pages and prepare remapping the
+ 	 * underlying RAM.
+ 	 */
+-	xen_foreach_remap_area(max_pfn, xen_set_identity_and_remap_chunk);
++	xen_foreach_remap_area(xen_set_identity_and_remap_chunk);
+ 
+ 	pr_info("Released %ld page(s)\n", xen_released_pages);
+ 
 -- 
 2.43.0
 
