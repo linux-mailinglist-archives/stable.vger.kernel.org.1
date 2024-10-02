@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-79955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF10898DB10
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8362A98DD90
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56B7B1F2254C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD3F1F2653A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B911CF5FB;
-	Wed,  2 Oct 2024 14:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FFC1D0E25;
+	Wed,  2 Oct 2024 14:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVjXccpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOET6YE1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702981D0412;
-	Wed,  2 Oct 2024 14:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D011EB21;
+	Wed,  2 Oct 2024 14:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878958; cv=none; b=SaggHo7SuqfxCOYh6iJjmiJyvEoD7lBBcGLvgfYbNrXsvULaILDIuyRqxx+ZrQpPQPUUgvB/tqqEnBHFcesif5cfYF0Q6nG+Oc62Dasl9uHgL6CVh40fchqg9WwI5EMHU/mdyzNw5wTrzgNwG38kZnFlwUNQ9FgHxgB1xKfRHWc=
+	t=1727880463; cv=none; b=kuYh9/kqZdFmQdfMHZFzfV5p3pZ2yD7EBlcus6ThI2h8rmaxuUqKUxoSfgLWROGu1qFAiLgM4b8QX0DYe4zpPlPskgtNcfboZlRoDbb4Gt935mxi6n7XgnoHZSKq42rU6N+5c7zUNzDSutnw80AIRXBpEWxXpd+RepdszBa+7Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878958; c=relaxed/simple;
-	bh=o0DT1CV9J1xwivWZ8ha2DIdWgtKGttGNOcpjINGwbag=;
+	s=arc-20240116; t=1727880463; c=relaxed/simple;
+	bh=s3SpCu1KNH0V8VyTFrvtgzjI1BVTQR7pjPdLfyCTQig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSk46quVl+QRtPq7BVnbanD7Z9RB+Dey1BTu7rn9zmynT6q8CWM/ufv7uvZxXpo+q5QXtq8d/EScqL5j0wbdPaNmYS3j2T4yKRI6oRaXt4dPmm+8jFxj+FIWn3Waxm33iO88T57kVYJUyUIvyErQQXt4ArK98LcYxUV5xYHoCxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVjXccpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5533C4CEC2;
-	Wed,  2 Oct 2024 14:22:37 +0000 (UTC)
+	 MIME-Version; b=uKz0+GcuJeNh5cijPott4LPR/ssJUmAs5ilNfqAWJNGHQeL8nPox+0d78fcmIdNM8vOGCuUaoYzP8zRAX1pTBphCr8Tvx6FIizC1kEA9tuMWNU4wlvHvpJC518YE5othBWN6HAT4v1Ueu/YVnI2vMX+L3s5Ew0TayMlGuIsrj5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOET6YE1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEBBC4CEC2;
+	Wed,  2 Oct 2024 14:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878958;
-	bh=o0DT1CV9J1xwivWZ8ha2DIdWgtKGttGNOcpjINGwbag=;
+	s=korg; t=1727880463;
+	bh=s3SpCu1KNH0V8VyTFrvtgzjI1BVTQR7pjPdLfyCTQig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVjXccpXaMaQqNobM/osbXrLR8s1o4kV7J/zgrndB25Kdabkn8dckQxSUhK78CNPW
-	 yZN5nN4sdCr9/K7Q1f8tc0B0LIXaoHBwJKKPXa3FAllfzR/zGfNbVtwtjqC5vl8yWS
-	 kJB5Or7syQ4ECAugGvgfF/bzUIbB0moU10fPc3EE=
+	b=rOET6YE1kZ/dUeU8aXKqNRchmRvDTAVbmqOndf/h1Odytqdci5riZSu3D5e660kry
+	 flZbpj8CQT/6xrEooDfZVIEgsX+fASTes5i+PLXqFLKa7AhwFlY75WY9Gjnvn0dEQX
+	 HwW9AV5eZUBnR9ZzQnJZw03emNf0zpWuMJ0A1PqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Qingqing Zhou <quic_qqzhou@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 573/634] arm64: dts: qcom: sa8775p: Mark APPS and PCIe SMMUs as DMA coherent
-Date: Wed,  2 Oct 2024 15:01:13 +0200
-Message-ID: <20241002125833.732831291@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.6 435/538] USB: misc: cypress_cy7c63: check for short transfer
+Date: Wed,  2 Oct 2024 15:01:14 +0200
+Message-ID: <20241002125809.610663120@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingqing Zhou <quic_qqzhou@quicinc.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 421688265d7f5d3ff4211982e7231765378bb64f upstream.
+commit 49cd2f4d747eeb3050b76245a7f72aa99dbd3310 upstream.
 
-The SMMUs on sa8775p are cache-coherent. GPU SMMU is marked as such,
-mark the APPS and PCIe ones as well.
+As we process the second byte of a control transfer, transfers
+of less than 2 bytes must be discarded.
 
-Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
-Fixes: 2dba7a613a6e ("arm64: dts: qcom: sa8775p: add the pcie smmu node")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Qingqing Zhou <quic_qqzhou@quicinc.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20240723075948.9545-1-quic_qqzhou%40quicinc.com
-Link: https://lore.kernel.org/r/20240725072117.22425-1-quic_qqzhou@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This bug is as old as the driver.
+
+SIgned-off-by: Oliver Neukum <oneukum@suse.com>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240912125449.1030536-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/misc/cypress_cy7c63.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -2104,6 +2104,7 @@
- 			reg = <0x0 0x15000000 0x0 0x100000>;
- 			#iommu-cells = <2>;
- 			#global-interrupts = <2>;
-+			dma-coherent;
+--- a/drivers/usb/misc/cypress_cy7c63.c
++++ b/drivers/usb/misc/cypress_cy7c63.c
+@@ -88,6 +88,9 @@ static int vendor_command(struct cypress
+ 				 USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_OTHER,
+ 				 address, data, iobuf, CYPRESS_MAX_REQSIZE,
+ 				 USB_CTRL_GET_TIMEOUT);
++	/* we must not process garbage */
++	if (retval < 2)
++		goto err_buf;
  
- 			interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
-@@ -2242,6 +2243,7 @@
- 			reg = <0x0 0x15200000 0x0 0x80000>;
- 			#iommu-cells = <2>;
- 			#global-interrupts = <2>;
-+			dma-coherent;
+ 	/* store returned data (more READs to be added) */
+ 	switch (request) {
+@@ -107,6 +110,7 @@ static int vendor_command(struct cypress
+ 			break;
+ 	}
  
- 			interrupts = <GIC_SPI 920 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 921 IRQ_TYPE_LEVEL_HIGH>,
++err_buf:
+ 	kfree(iobuf);
+ error:
+ 	return retval;
 
 
 
