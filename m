@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1387E98D952
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C886898DBA8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB3B28902D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816562839E4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0381D2707;
-	Wed,  2 Oct 2024 14:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A648A1D0BAA;
+	Wed,  2 Oct 2024 14:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbw/vGig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8sGXpMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE931D1F74;
-	Wed,  2 Oct 2024 14:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625DD1D0954;
+	Wed,  2 Oct 2024 14:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877919; cv=none; b=fO7W7TWBNZkPkQdTLuHY8JtXb1pV5g783tuJ+p83iBL1pnvDQ3dWg/foSsJnH9UPeRmh+hfy4hdNyWNyEsjrkmX5+2D/75JmYBx3BLv73lGG5X+ylEr/90Bc1xEjGYupJfrdKmAWm7uNqDSU2v9pigx5zstiQd7BMVqaDeeyzbA=
+	t=1727879291; cv=none; b=gWa1XaHL9d25/eGtM03aZTduVE8WvNq/5gDtfWHbEGxE6cnlUBI0tEJgG4ZPO746JuHJSgoRRQzOyrynMcazTDuIWW0J+FypjWvxzl0qYIGJ2D5De8ZD5xUPdWdXisPipg/82rf/+Af9MR7j+cCzZ8NpJqxlBOqrWmn7JqjlQk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877919; c=relaxed/simple;
-	bh=pnUxWqlhOS2Te6gO3uxsAypm8MBl8rv+eWbRTtdBrMM=;
+	s=arc-20240116; t=1727879291; c=relaxed/simple;
+	bh=AeqoaRhRbND/2XgJUF9gSUY92oS1kZ0egUQKCyFGRTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icYDp5g4aQhekc80YK/XmKBEdaF0b53V/4mr9zuaeY8X97Q3CRXSkJYGvGk+S+GV0v6x7WNguqVOy82iyd0av51qZvciAqQbwsB3I7P0yVffdqXyiFjJHkVfd/WW38VQq3IzHKYgiiOuBFaQ7S5PVteUAP/xKHUJ+nbtOyXwAWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbw/vGig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87565C4CEC2;
-	Wed,  2 Oct 2024 14:05:18 +0000 (UTC)
+	 MIME-Version; b=flf45dJgZwzYDA436cgG+ZY/f9KXipj5jAzFA9ybXVTOiyjz8gCfb6bXWJt3CkfABu1mXGklwRwBFADAUQcN0U8XT1jP0FxQLdFl22evM03Ja37KFrJivbjTESIzZV8xgsBw4NOZ4cbi0im7nUfdzZshzyKda+4KmKOXskGl2Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8sGXpMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19C7C4CEC2;
+	Wed,  2 Oct 2024 14:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877918;
-	bh=pnUxWqlhOS2Te6gO3uxsAypm8MBl8rv+eWbRTtdBrMM=;
+	s=korg; t=1727879291;
+	bh=AeqoaRhRbND/2XgJUF9gSUY92oS1kZ0egUQKCyFGRTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbw/vGiga//BJzmcLnVWJs3gIu1wT7f5MhNCH0m02JbDlrK2MglTfs4VH+m1Y/gyx
-	 oCb4/sFVPV8doBck6UsVuE171Rb2uVHUs12VXaB29yFDma30P23lduk4kqebmUkYad
-	 KQjv59TpKDcM+17ODv37bzaSim268VgODWbPgFsM=
+	b=V8sGXpMMvHEYmJB0gyzLG0BeO4iJhWkwOkEg3jkWHP1dwfM0e/i7LfsbJ4gPtY1VD
+	 +lXUxAoah2L272QpGBXgyLlbCZe1c8TnNnebjAMv7RwD5nl45yKKixzlrQFKmRfIpu
+	 KS5EhJVzi+2lQlk4OiQ01oA4OPJr5PupyjQDDIUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 208/634] drm/msm/dp: enable widebus on all relevant chipsets
+Subject: [PATCH 6.6 069/538] bareudp: Pull inner IP header in bareudp_udp_encap_recv().
 Date: Wed,  2 Oct 2024 14:55:08 +0200
-Message-ID: <20241002125819.315705262@linuxfoundation.org>
+Message-ID: <20241002125754.936692860@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit c7c412202623951dcfc22316f5255fd84fd56186 ]
+[ Upstream commit 45fa29c85117170b0508790f878b13ec6593c888 ]
 
-Hardware document indicates that widebus is recommended on DP on all
-MDSS chipsets starting version 5.x.x and above.
+Bareudp reads the inner IP header to get the ECN value. Therefore, it
+needs to ensure that it's part of the skb's linear data.
 
-Follow the guideline and mark widebus support on all relevant
-chipsets for DP.
+This is similar to the vxlan and geneve fixes for that same problem:
+  * commit f7789419137b ("vxlan: Pull inner IP header in vxlan_rcv().")
+  * commit 1ca1ba465e55 ("geneve: make sure to pull inner header in
+    geneve_rx()")
 
-Fixes: 766f705204a0 ("drm/msm/dp: Remove now unused connector_type from desc")
-Fixes: 1b2d98bdd7b7 ("drm/msm/dp: Add DisplayPort controller for SM8650")
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: 757a2f36ab09 ("drm/msm/dp: enable widebus feature for display port")
-Fixes: 1b2d98bdd7b7 ("drm/msm/dp: Add DisplayPort controller for SM8650")
-Patchwork: https://patchwork.freedesktop.org/patch/606556/
-Link: https://lore.kernel.org/r/20240730195012.2595980-1-quic_abhinavk@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/5205940067c40218a70fbb888080466b2fc288db.1726046181.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/bareudp.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index 672a7ba52edad..9dc44ea85b7c6 100644
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -119,7 +119,7 @@ struct msm_dp_desc {
- };
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 277493e41b072..d0759d8bf7305 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -67,6 +67,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	__be16 proto;
+ 	void *oiph;
+ 	int err;
++	int nh;
  
- static const struct msm_dp_desc sc7180_dp_descs[] = {
--	{ .io_start = 0x0ae90000, .id = MSM_DP_CONTROLLER_0 },
-+	{ .io_start = 0x0ae90000, .id = MSM_DP_CONTROLLER_0, .wide_bus_supported = true },
- 	{}
- };
+ 	bareudp = rcu_dereference_sk_user_data(sk);
+ 	if (!bareudp)
+@@ -144,10 +145,25 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	}
+ 	skb_dst_set(skb, &tun_dst->dst);
+ 	skb->dev = bareudp->dev;
+-	oiph = skb_network_header(skb);
+-	skb_reset_network_header(skb);
+ 	skb_reset_mac_header(skb);
  
-@@ -130,9 +130,9 @@ static const struct msm_dp_desc sc7280_dp_descs[] = {
- };
- 
- static const struct msm_dp_desc sc8180x_dp_descs[] = {
--	{ .io_start = 0x0ae90000, .id = MSM_DP_CONTROLLER_0 },
--	{ .io_start = 0x0ae98000, .id = MSM_DP_CONTROLLER_1 },
--	{ .io_start = 0x0ae9a000, .id = MSM_DP_CONTROLLER_2 },
-+	{ .io_start = 0x0ae90000, .id = MSM_DP_CONTROLLER_0, .wide_bus_supported = true },
-+	{ .io_start = 0x0ae98000, .id = MSM_DP_CONTROLLER_1, .wide_bus_supported = true },
-+	{ .io_start = 0x0ae9a000, .id = MSM_DP_CONTROLLER_2, .wide_bus_supported = true },
- 	{}
- };
- 
-@@ -149,7 +149,7 @@ static const struct msm_dp_desc sc8280xp_dp_descs[] = {
- };
- 
- static const struct msm_dp_desc sm8650_dp_descs[] = {
--	{ .io_start = 0x0af54000, .id = MSM_DP_CONTROLLER_0 },
-+	{ .io_start = 0x0af54000, .id = MSM_DP_CONTROLLER_0, .wide_bus_supported = true },
- 	{}
- };
- 
++	/* Save offset of outer header relative to skb->head,
++	 * because we are going to reset the network header to the inner header
++	 * and might change skb->head.
++	 */
++	nh = skb_network_header(skb) - skb->head;
++
++	skb_reset_network_header(skb);
++
++	if (!pskb_inet_may_pull(skb)) {
++		DEV_STATS_INC(bareudp->dev, rx_length_errors);
++		DEV_STATS_INC(bareudp->dev, rx_errors);
++		goto drop;
++	}
++
++	/* Get the outer header. */
++	oiph = skb->head + nh;
++
+ 	if (!ipv6_mod_enabled() || family == AF_INET)
+ 		err = IP_ECN_decapsulate(oiph, skb);
+ 	else
 -- 
 2.43.0
 
