@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-79862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B8498DAAA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0330998DD5F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41F18B24E45
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD7B8B2545B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1641D0B80;
-	Wed,  2 Oct 2024 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7BF1D1508;
+	Wed,  2 Oct 2024 14:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmsc+a9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GH3sowOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F191D0493;
-	Wed,  2 Oct 2024 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02FB1D0BBC;
+	Wed,  2 Oct 2024 14:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878684; cv=none; b=Dmg+e0c6xU4Kw4jYjdgeHCupi9+NN4+EqA+GAEL/shUPJYx9U0gdyKuhwkvwaab4gjVpW5xGBZEaJiDQO3dO82wjmRsf9P9hlQMcjcoUfFPXv/0ekb6vEr5OsIxoqemxTr1heSLh1URvpAsPCn0FCvAxQGc8tqJ1qreQBidklB0=
+	t=1727880143; cv=none; b=aTwNl8nwXXwkO/bJjAHYx+mn0+8vC/IViHq6XZNaOGZQcqZnELMegwuFzmHg8zUDlhhYBDU5EFg4OcK9Y2uLXr5Hh72rBUhbuYnW4/9xWh/q4zjJAvFTWoHcWLxJ9aEr4crAVSrM2vjC1OPTLRfw7mcK1Ze/TOPd0t4yQFidyeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878684; c=relaxed/simple;
-	bh=iPM8Jfo5DB7Z5VkQiiIBg5WeKSMrJyHa1ReDCe9HvRI=;
+	s=arc-20240116; t=1727880143; c=relaxed/simple;
+	bh=YtbwWg4E9AYeaLf5e6rHGYcASo/3Yll+B1GYuWLzj8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYrMEkye4UGv8RjpaUFlwHF10EpHjpepXeSXPXat4sS8sZ/rKboYIed/NpVMzzkcibS3K3FwixmI/NQpNMRT0azKefoPsNS4z9u1aa8b5mmHA6Sd94eTEgNTZxcx+npzcq1v1b0S5fnIXMOPZW2j5UeCn3/iORjPygoayeiFiOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmsc+a9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D00C4CEC2;
-	Wed,  2 Oct 2024 14:18:03 +0000 (UTC)
+	 MIME-Version; b=s7Rc/DJQwshmAplwSUVmS+m8mfXp7SqZey5TtNXwy+l39H0d/WD/0EHzAFiqdb4+AAKgbwyMxRYxdfNXxh+oHBxbHTkBxKEoONZpNE8c1Oy1Qr0iTrbjAanlbRK3osnJfcCsWaot8vh26IkIq2Xeywi6NhOiW/5Vj4bVZgMC9Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GH3sowOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D35C4CECD;
+	Wed,  2 Oct 2024 14:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878684;
-	bh=iPM8Jfo5DB7Z5VkQiiIBg5WeKSMrJyHa1ReDCe9HvRI=;
+	s=korg; t=1727880143;
+	bh=YtbwWg4E9AYeaLf5e6rHGYcASo/3Yll+B1GYuWLzj8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmsc+a9gOA0nxPIUcO+N7cYeUcnDqN/08nnEWiWjYjcZo86udE1XzFrnWD2Uyg5Hb
-	 K8TkCeX0XWf6XWHTMeGrQcv5dlPIME9osJDWeNzkBFYAuUAf/WbWUTIYW1896vOufI
-	 kAsTO/ufTOOgIQHn37riS/ApZGI+QyqBw6JrS9TA=
+	b=GH3sowOlGrzVIBmNz7+GC0kLlvlPqiAsOPkpbOvxSZGv3k4IXOg6pSaDBsqWUoyfs
+	 XiQJdOjdEw/l1PSDZgUez+wq4qaEvSyFZhPi/tiThKAHgvzwKwe6ncLDWh/feewToP
+	 Yvw0UbdyveJGa6Fhs4h3cF09CcDZYeTvVz09TqdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.10 497/634] drm/amd/display: Block dynamic IPS2 on DCN35 for incompatible FW versions
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 358/538] iio: magnetometer: ak8975: Convert enum->pointer for data in the match tables
 Date: Wed,  2 Oct 2024 14:59:57 +0200
-Message-ID: <20241002125830.715826737@linuxfoundation.org>
+Message-ID: <20241002125806.558478478@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 401c90c4d64f2227fc2f4c02d2ad23296bf5ca6f upstream.
+[ Upstream commit 4f9ea93afde190a0f906ee624fc9a45cf784551b ]
 
-[WHY]
-Hangs with Z8 can occur if running an older unfixed PMFW version.
+Convert enum->pointer for data in the match tables to simplify the probe()
+by replacing device_get_match_data() and i2c_client_get_device_id by
+i2c_get_match_data() as we have similar I2C, ACPI and DT matching table.
 
-[HOW]
-Fallback to RCG only for dynamic IPS2 states if it's not newer than
-93.12. Limit to DCN35.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230818075600.24277-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: da6e3160df23 ("iio: magnetometer: ak8975: drop incorrect AK09116 compatible")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/magnetometer/ak8975.c | 75 +++++++++++++------------------
+ 1 file changed, 30 insertions(+), 45 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -1149,6 +1149,12 @@ void dcn35_clk_mgr_construct(
- 			ctx->dc->debug.disable_dpp_power_gate = false;
- 			ctx->dc->debug.disable_hubp_power_gate = false;
- 			ctx->dc->debug.disable_dsc_power_gate = false;
-+
-+			/* Disable dynamic IPS2 in older PMFW (93.12) for Z8 interop. */
-+			if (ctx->dc->config.disable_ips == DMUB_IPS_ENABLE &&
-+			    ctx->dce_version == DCN_VERSION_3_5 &&
-+			    ((clk_mgr->base.smu_ver & 0x00FFFFFF) <= 0x005d0c00))
-+				ctx->dc->config.disable_ips = DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF;
- 		} else {
- 			/*let's reset the config control flag*/
- 			ctx->dc->config.disable_ips = DMUB_IPS_DISABLE_ALL; /*pmfw not support it, disable it all*/
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index eb706d0bf70bc..104798549de11 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -813,13 +813,13 @@ static const struct iio_info ak8975_info = {
+ };
+ 
+ static const struct acpi_device_id ak_acpi_match[] = {
+-	{"AK8975", AK8975},
+-	{"AK8963", AK8963},
+-	{"INVN6500", AK8963},
+-	{"AK009911", AK09911},
+-	{"AK09911", AK09911},
+-	{"AKM9911", AK09911},
+-	{"AK09912", AK09912},
++	{"AK8975", (kernel_ulong_t)&ak_def_array[AK8975] },
++	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"INVN6500", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"AK009911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AK09911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AKM9911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"AK09912", (kernel_ulong_t)&ak_def_array[AK09912] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, ak_acpi_match);
+@@ -883,10 +883,7 @@ static int ak8975_probe(struct i2c_client *client)
+ 	struct iio_dev *indio_dev;
+ 	struct gpio_desc *eoc_gpiod;
+ 	struct gpio_desc *reset_gpiod;
+-	const void *match;
+-	unsigned int i;
+ 	int err;
+-	enum asahi_compass_chipset chipset;
+ 	const char *name = NULL;
+ 
+ 	/*
+@@ -928,27 +925,15 @@ static int ak8975_probe(struct i2c_client *client)
+ 		return err;
+ 
+ 	/* id will be NULL when enumerated via ACPI */
+-	match = device_get_match_data(&client->dev);
+-	if (match) {
+-		chipset = (uintptr_t)match;
+-		name = dev_name(&client->dev);
+-	} else if (id) {
+-		chipset = (enum asahi_compass_chipset)(id->driver_data);
+-		name = id->name;
+-	} else
+-		return -ENOSYS;
+-
+-	for (i = 0; i < ARRAY_SIZE(ak_def_array); i++)
+-		if (ak_def_array[i].type == chipset)
+-			break;
+-
+-	if (i == ARRAY_SIZE(ak_def_array)) {
+-		dev_err(&client->dev, "AKM device type unsupported: %d\n",
+-			chipset);
++	data->def = i2c_get_match_data(client);
++	if (!data->def)
+ 		return -ENODEV;
+-	}
+ 
+-	data->def = &ak_def_array[i];
++	/* If enumerated via firmware node, fix the ABI */
++	if (dev_fwnode(&client->dev))
++		name = dev_name(&client->dev);
++	else
++		name = id->name;
+ 
+ 	/* Fetch the regulators */
+ 	data->vdd = devm_regulator_get(&client->dev, "vdd");
+@@ -1077,28 +1062,28 @@ static DEFINE_RUNTIME_DEV_PM_OPS(ak8975_dev_pm_ops, ak8975_runtime_suspend,
+ 				 ak8975_runtime_resume, NULL);
+ 
+ static const struct i2c_device_id ak8975_id[] = {
+-	{"ak8975", AK8975},
+-	{"ak8963", AK8963},
+-	{"AK8963", AK8963},
+-	{"ak09911", AK09911},
+-	{"ak09912", AK09912},
+-	{"ak09916", AK09916},
++	{"ak8975", (kernel_ulong_t)&ak_def_array[AK8975] },
++	{"ak8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"AK8963", (kernel_ulong_t)&ak_def_array[AK8963] },
++	{"ak09911", (kernel_ulong_t)&ak_def_array[AK09911] },
++	{"ak09912", (kernel_ulong_t)&ak_def_array[AK09912] },
++	{"ak09916", (kernel_ulong_t)&ak_def_array[AK09916] },
+ 	{}
+ };
+ 
+ MODULE_DEVICE_TABLE(i2c, ak8975_id);
+ 
+ static const struct of_device_id ak8975_of_match[] = {
+-	{ .compatible = "asahi-kasei,ak8975", },
+-	{ .compatible = "ak8975", },
+-	{ .compatible = "asahi-kasei,ak8963", },
+-	{ .compatible = "ak8963", },
+-	{ .compatible = "asahi-kasei,ak09911", },
+-	{ .compatible = "ak09911", },
+-	{ .compatible = "asahi-kasei,ak09912", },
+-	{ .compatible = "ak09912", },
+-	{ .compatible = "asahi-kasei,ak09916", },
+-	{ .compatible = "ak09916", },
++	{ .compatible = "asahi-kasei,ak8975", .data = &ak_def_array[AK8975] },
++	{ .compatible = "ak8975", .data = &ak_def_array[AK8975] },
++	{ .compatible = "asahi-kasei,ak8963", .data = &ak_def_array[AK8963] },
++	{ .compatible = "ak8963", .data = &ak_def_array[AK8963] },
++	{ .compatible = "asahi-kasei,ak09911", .data = &ak_def_array[AK09911] },
++	{ .compatible = "ak09911", .data = &ak_def_array[AK09911] },
++	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
++	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
++	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
++	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, ak8975_of_match);
+-- 
+2.43.0
+
 
 
 
