@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-79346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F19698D7C2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:53:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E51198D7CA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FEF1C225C1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:52:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAFF1B219DE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC021D04BA;
-	Wed,  2 Oct 2024 13:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFC11D07B0;
+	Wed,  2 Oct 2024 13:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bA1v/FC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNMOUQeq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B98D1D04A2;
-	Wed,  2 Oct 2024 13:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5C01D07A8;
+	Wed,  2 Oct 2024 13:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877174; cv=none; b=RcPHW7gQ6PkMwQ4rLMqzFuz1VxA2Mjw5X9cVNIkfv2f467G7RQWyUZNILuc+ae6VXyMFIoBz8XPf1bD3YnLlqHV9FzIRY9IXpA2daeF+HLVk/Quzhd753TYquietMn97jYa7mP80LOpBtyMDJaXfmW6bab27YSvlux78XPX4jEQ=
+	t=1727877186; cv=none; b=opb+mSb7991Nwqn/T/Yro8B4v9KlvzX+JsGcoTxu2NNJha716vDnS6T1DGCh86I7zotomjbt/zxCsLHD21OOEqsHE7/O9DxdxprNN3bp9rfOCOfDluk88h4INckzWw3vDeMVI1IhbBSH17gKSGNmufVniPQSvVTMei3t/GVOLAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877174; c=relaxed/simple;
-	bh=nznfNvb1rnfor1LKSS0Kj5/+lYOKMvNYHd2iBTqVpAo=;
+	s=arc-20240116; t=1727877186; c=relaxed/simple;
+	bh=35DeZ4AjRzAhc7z23W1iCRixgVwYTkSuXgovOqS6gFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYmKtMChXkdlMDPMdiJqayDn8GIL38t1fqGIbJAqpaHMBozd6a07enb+kUhitLE6D8ggr1Foo45IDRPTEkHqyoK8Y0EmpHYzZpJaDwifeFdT2a3fPd4/jFfgljU/aRlRSx47lF0LsPN7td3pZGKJB2RymlicORdUypGBqWVv040=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bA1v/FC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063C4C4CED2;
-	Wed,  2 Oct 2024 13:52:53 +0000 (UTC)
+	 MIME-Version; b=afuInU69gk+lyDf5UWTwRZT27SUgwoG2HNmme2aT/HOw2J013sVoWdhz1niW7oa9oLwMroMlifBlm6aI9RjZSzVqgWf/wuXadnYyQkkA810cNI2z4klI2AVvG6Mvik2rTTbu10K+XEVCv4FJoCGUD+ZBasXFBxLJ5NQ8ikCczMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNMOUQeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99583C4CECE;
+	Wed,  2 Oct 2024 13:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877174;
-	bh=nznfNvb1rnfor1LKSS0Kj5/+lYOKMvNYHd2iBTqVpAo=;
+	s=korg; t=1727877186;
+	bh=35DeZ4AjRzAhc7z23W1iCRixgVwYTkSuXgovOqS6gFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bA1v/FC5DCak/qQWARE0tR8smRGTyAxu1OArg0dZ6juAGFfhW48m6rqf9Bb/z0iZj
-	 5UKbWBgjrvUGZEso2nQeiGNg4/ZQd4i6Nn5j4ZbQRZWIdK8/8266SJx0wbxJbeuoBN
-	 sQpaEF5S/E6VYCv+/1bx4flQAwYCDA7UzDX5FqpU=
+	b=KNMOUQeqpNtcMwBhjvSv5J4FSFjgwHP2F07GN3LpNJrl00OopxWcVTZdqplCQeoLk
+	 37YpbfFox1luFCRhAjxBCiFtDESagFX/CwLOIJMVaSteuomkjalncQ0NF2CdxxhsbE
+	 C1ZqHQFUowfCLKGWtUuPXEZ9OxPegdkgMlBrLQJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 662/695] soc: versatile: realview: fix soc_dev leak during device remove
-Date: Wed,  2 Oct 2024 15:01:00 +0200
-Message-ID: <20241002125848.934169516@linuxfoundation.org>
+Subject: [PATCH 6.11 663/695] usb: typec: ucsi: Call CANCEL from single location
+Date: Wed,  2 Oct 2024 15:01:01 +0200
+Message-ID: <20241002125848.973452355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,61 +65,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit c774f2564c0086c23f5269fd4691f233756bf075 ]
+[ Upstream commit 4f322657ade1b784bb2b1ba8761469ae87520681 ]
 
-If device is unbound, the soc_dev should be unregistered to prevent
-memory leak.
+The command cancellation can be done right after detecting
+that the PPM is busy. There is no need to do it separately
+in ucsi_read_error() and ucsi_send_command_common().
 
-Fixes: a2974c9c1f83 ("soc: add driver for the ARM RealView")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-3-ff4b35abed83@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240816135859.3499351-6-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 7fa6b25dfb43 ("usb: typec: ucsi: Fix busy loop on ASUS VivoBooks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/versatile/soc-realview.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/usb/typec/ucsi/ucsi.c | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/soc/versatile/soc-realview.c b/drivers/soc/versatile/soc-realview.c
-index d304ee69287af..cf91abe07d38d 100644
---- a/drivers/soc/versatile/soc-realview.c
-+++ b/drivers/soc/versatile/soc-realview.c
-@@ -4,6 +4,7 @@
-  *
-  * Author: Linus Walleij <linus.walleij@linaro.org>
-  */
-+#include <linux/device.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -81,6 +82,13 @@ static struct attribute *realview_attrs[] = {
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 17155ed17fdf8..26a28c7b680b1 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -115,7 +115,7 @@ static int ucsi_run_command(struct ucsi *ucsi, u64 command, u32 *cci,
+ 		return ret;
  
- ATTRIBUTE_GROUPS(realview);
+ 	if (*cci & UCSI_CCI_BUSY)
+-		return -EBUSY;
++		return ucsi_run_command(ucsi, UCSI_CANCEL, cci, NULL, 0, false) ?: -EBUSY;
  
-+static void realview_soc_socdev_release(void *data)
-+{
-+	struct soc_device *soc_dev = data;
-+
-+	soc_device_unregister(soc_dev);
-+}
-+
- static int realview_soc_probe(struct platform_device *pdev)
- {
- 	struct regmap *syscon_regmap;
-@@ -109,6 +117,11 @@ static int realview_soc_probe(struct platform_device *pdev)
- 	if (IS_ERR(soc_dev))
- 		return -ENODEV;
+ 	if (!(*cci & UCSI_CCI_COMMAND_COMPLETE))
+ 		return -EIO;
+@@ -148,15 +148,7 @@ static int ucsi_read_error(struct ucsi *ucsi, u8 connector_num)
+ 	int ret;
  
-+	ret = devm_add_action_or_reset(&pdev->dev, realview_soc_socdev_release,
-+				       soc_dev);
-+	if (ret)
-+		return ret;
+ 	command = UCSI_GET_ERROR_STATUS | UCSI_CONNECTOR_NUMBER(connector_num);
+-	ret = ucsi_run_command(ucsi, command, &cci,
+-			       &error, sizeof(error), false);
+-
+-	if (cci & UCSI_CCI_BUSY) {
+-		ret = ucsi_run_command(ucsi, UCSI_CANCEL, &cci, NULL, 0, false);
+-
+-		return ret ? ret : -EBUSY;
+-	}
+-
++	ret = ucsi_run_command(ucsi, command, &cci, &error, sizeof(error), false);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -238,9 +230,8 @@ static int ucsi_send_command_common(struct ucsi *ucsi, u64 cmd,
+ 	mutex_lock(&ucsi->ppm_lock);
+ 
+ 	ret = ucsi_run_command(ucsi, cmd, &cci, data, size, conn_ack);
+-	if (cci & UCSI_CCI_BUSY)
+-		ret = ucsi_run_command(ucsi, UCSI_CANCEL, &cci, NULL, 0, false) ?: -EBUSY;
+-	else if (cci & UCSI_CCI_ERROR)
 +
- 	ret = regmap_read(syscon_regmap, REALVIEW_SYS_ID_OFFSET,
- 			  &realview_coreid);
- 	if (ret)
++	if (cci & UCSI_CCI_ERROR)
+ 		ret = ucsi_read_error(ucsi, connector_num);
+ 
+ 	mutex_unlock(&ucsi->ppm_lock);
 -- 
 2.43.0
 
