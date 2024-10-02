@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-79378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7097698D7EF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3655498D4F0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D541F23C7F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494641C21DFA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68781D0488;
-	Wed,  2 Oct 2024 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EDD1D0786;
+	Wed,  2 Oct 2024 13:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bajbmo/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KI+nKuSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657D41D042F;
-	Wed,  2 Oct 2024 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F711D0434;
+	Wed,  2 Oct 2024 13:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877268; cv=none; b=pZR5NhpdGKxpV0LUP0+1X8VD5b1YQSFw8NHCXwGaWpeiwxifZbdN4dOowQIBS/x529o+4WNHt0r/Cz5/c+HRdalSO8hrG2LgvuppnX6qmsOkxmXXOSDUOgUHEvSYJxuLBWoCehUjEJtQ4tFTQLF1jOvIRUiXP6wLDVr76pJENbg=
+	t=1727875512; cv=none; b=DbjIQqZk6hO7FewuoR4JR+R5HCEmQu3LZh1zAzLzNHmH+YstlaELM0Mu8Rp2xt/N0CJcp3aGNvXZiSPmX+7x5Uqyo5nDg6fIQch8gPTm29qI6WTBHiEuJ8eQwN4Sgx4IUpXrpzYpK1Oc60h4wI4d3FZU5tpy6DX79JgNxsOLiSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877268; c=relaxed/simple;
-	bh=+kr4KZEsqs25iChWuATirIXTr3LYekwDFc9rcgfrbDQ=;
+	s=arc-20240116; t=1727875512; c=relaxed/simple;
+	bh=lTv/s9pmey26iLkJ9eU//j2bg0jrppDMLjOW/JUwEtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8E092MY8CpmDrz9ioJSoe2hXBcTQvQp2zWdU2tJZyak+2TsbgjJT3lutKvWnG8HzIo5LfrIxbHIlk8CUpxBFJu/y6Pa+QvWptKKXep+1bpW0q1tV6LsCM6MJBFGnLOed1hXjnFzWm//Vw8HzhCxMgRC2GQ1EmJJYm7ngPzhYWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bajbmo/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA30C4CEF4;
-	Wed,  2 Oct 2024 13:54:27 +0000 (UTC)
+	 MIME-Version; b=JWufyWmeIGH7WOp4x+s93WQTCRt7o9O2z8l1DrWWn6clXrVdKLs60Y/+m0TyEkxucX2Xim5S+z4gPowQRFLUXTxSphXonxqFzMVD0ZFIe6GiZz/V85N/Ym2q5IEHKSdk7N9aVTIMyplqasB5hEzcmsDqOBiu3Dfq83hxB96AeSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KI+nKuSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD92C4CEC5;
+	Wed,  2 Oct 2024 13:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877268;
-	bh=+kr4KZEsqs25iChWuATirIXTr3LYekwDFc9rcgfrbDQ=;
+	s=korg; t=1727875512;
+	bh=lTv/s9pmey26iLkJ9eU//j2bg0jrppDMLjOW/JUwEtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bajbmo/d1g6tQ+asRIbdAZXAbI1PJYKjZ144CdsJo23ZzZjMnE6W30fgPvT+DzsWq
-	 R4lTklQbmCtvO3YcweFtUxjrg+g5Y2aXnA5GGYWDEsG/rlOLjY3DHu6E0FfuEZ3pKx
-	 ZKSHpnw4EHjP7jS+DXk+BpVVe21GkyLQxvn3fgV0=
+	b=KI+nKuSSMtVKHfVN5clPvMERtk20fi7b3Azi9XZE7CN8rL4MYWJTSxk/yS6w/NltL
+	 BAlGOXjJse8DNuZGeMWLbj/JTVevrExrYN7je8N8pIB1Ngd6etdG0YBiQOQjsmWY9b
+	 MkYRNDcQCaVeABCJkBoMCE90AORxH1sGcYiEKt1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calvin Owens <calvin@wbinvd.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com,
+	syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com,
+	syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 025/634] ARM: 9410/1: vfp: Use asm volatile in fmrx/fmxr macros
+Subject: [PATCH 6.11 127/695] erofs: handle overlapped pclusters out of crafted images properly
 Date: Wed,  2 Oct 2024 14:52:05 +0200
-Message-ID: <20241002125812.089009462@linuxfoundation.org>
+Message-ID: <20241002125827.548342243@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,224 +64,203 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Calvin Owens <calvin@wbinvd.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 89a906dfa8c3b21b3e5360f73c49234ac1eb885b ]
+[ Upstream commit 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50 ]
 
-Floating point instructions in userspace can crash some arm kernels
-built with clang/LLD 17.0.6:
+syzbot reported a task hang issue due to a deadlock case where it is
+waiting for the folio lock of a cached folio that will be used for
+cache I/Os.
 
-    BUG: unsupported FP instruction in kernel mode
-    FPEXC == 0xc0000780
-    Internal error: Oops - undefined instruction: 0 [#1] ARM
-    CPU: 0 PID: 196 Comm: vfp-reproducer Not tainted 6.10.0 #1
-    Hardware name: BCM2835
-    PC is at vfp_support_entry+0xc8/0x2cc
-    LR is at do_undefinstr+0xa8/0x250
-    pc : [<c0101d50>]    lr : [<c010a80c>]    psr: a0000013
-    sp : dc8d1f68  ip : 60000013  fp : bedea19c
-    r10: ec532b17  r9 : 00000010  r8 : 0044766c
-    r7 : c0000780  r6 : ec532b17  r5 : c1c13800  r4 : dc8d1fb0
-    r3 : c10072c4  r2 : c0101c88  r1 : ec532b17  r0 : 0044766c
-    Flags: NzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-    Control: 00c5387d  Table: 0251c008  DAC: 00000051
-    Register r0 information: non-paged memory
-    Register r1 information: vmalloc memory
-    Register r2 information: non-slab/vmalloc memory
-    Register r3 information: non-slab/vmalloc memory
-    Register r4 information: 2-page vmalloc region
-    Register r5 information: slab kmalloc-cg-2k
-    Register r6 information: vmalloc memory
-    Register r7 information: non-slab/vmalloc memory
-    Register r8 information: non-paged memory
-    Register r9 information: zero-size pointer
-    Register r10 information: vmalloc memory
-    Register r11 information: non-paged memory
-    Register r12 information: non-paged memory
-    Process vfp-reproducer (pid: 196, stack limit = 0x61aaaf8b)
-    Stack: (0xdc8d1f68 to 0xdc8d2000)
-    1f60:                   0000081f b6f69300 0000000f c10073f4 c10072c4 dc8d1fb0
-    1f80: ec532b17 0c532b17 0044766c b6f9ccd8 00000000 c010a80c 00447670 60000010
-    1fa0: ffffffff c1c13800 00c5387d c0100f10 b6f68af8 00448fc0 00000000 bedea188
-    1fc0: bedea314 00000001 00448ebc b6f9d000 00447608 b6f9ccd8 00000000 bedea19c
-    1fe0: bede9198 bedea188 b6e1061c 0044766c 60000010 ffffffff 00000000 00000000
-    Call trace:
-    [<c0101d50>] (vfp_support_entry) from [<c010a80c>] (do_undefinstr+0xa8/0x250)
-    [<c010a80c>] (do_undefinstr) from [<c0100f10>] (__und_usr+0x70/0x80)
-    Exception stack(0xdc8d1fb0 to 0xdc8d1ff8)
-    1fa0:                                     b6f68af8 00448fc0 00000000 bedea188
-    1fc0: bedea314 00000001 00448ebc b6f9d000 00447608 b6f9ccd8 00000000 bedea19c
-    1fe0: bede9198 bedea188 b6e1061c 0044766c 60000010 ffffffff
-    Code: 0a000061 e3877202 e594003c e3a09010 (eef16a10)
-    ---[ end trace 0000000000000000 ]---
-    Kernel panic - not syncing: Fatal exception in interrupt
-    ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+After looking into the crafted fuzzed image, I found it's formed with
+several overlapped big pclusters as below:
 
-This is a minimal userspace reproducer on a Raspberry Pi Zero W:
+ Ext:   logical offset   |  length :     physical offset    |  length
+   0:        0..   16384 |   16384 :     151552..    167936 |   16384
+   1:    16384..   32768 |   16384 :     155648..    172032 |   16384
+   2:    32768..   49152 |   16384 :  537223168.. 537239552 |   16384
+...
 
-    #include <stdio.h>
-    #include <math.h>
+Here, extent 0/1 are physically overlapped although it's entirely
+_impossible_ for normal filesystem images generated by mkfs.
 
-    int main(void)
-    {
-            double v = 1.0;
-            printf("%fn", NAN + *(volatile double *)&v);
-            return 0;
-    }
+First, managed folios containing compressed data will be marked as
+up-to-date and then unlocked immediately (unlike in-place folios) when
+compressed I/Os are complete.  If physical blocks are not submitted in
+the incremental order, there should be separate BIOs to avoid dependency
+issues.  However, the current code mis-arranges z_erofs_fill_bio_vec()
+and BIO submission which causes unexpected BIO waits.
 
-Another way to consistently trigger the oops is:
+Second, managed folios will be connected to their own pclusters for
+efficient inter-queries.  However, this is somewhat hard to implement
+easily if overlapped big pclusters exist.  Again, these only appear in
+fuzzed images so let's simply fall back to temporary short-lived pages
+for correctness.
 
-    calvin@raspberry-pi-zero-w ~$ python -c "import json"
+Additionally, it justifies that referenced managed folios cannot be
+truncated for now and reverts part of commit 2080ca1ed3e4 ("erofs: tidy
+up `struct z_erofs_bvec`") for simplicity although it shouldn't be any
+difference.
 
-The bug reproduces only when the kernel is built with DYNAMIC_DEBUG=n,
-because the pr_debug() calls act as barriers even when not activated.
-
-This is the output from the same kernel source built with the same
-compiler and DYNAMIC_DEBUG=y, where the userspace reproducer works as
-expected:
-
-    VFP: bounce: trigger ec532b17 fpexc c0000780
-    VFP: emulate: INST=0xee377b06 SCR=0x00000000
-    VFP: bounce: trigger eef1fa10 fpexc c0000780
-    VFP: emulate: INST=0xeeb40b40 SCR=0x00000000
-    VFP: raising exceptions 30000000
-
-    calvin@raspberry-pi-zero-w ~$ ./vfp-reproducer
-    nan
-
-Crudely grepping for vmsr/vmrs instructions in the otherwise nearly
-idential text for vfp_support_entry() makes the problem obvious:
-
-    vmlinux.llvm.good [0xc0101cb8] <+48>:  vmrs   r7, fpexc
-    vmlinux.llvm.good [0xc0101cd8] <+80>:  vmsr   fpexc, r0
-    vmlinux.llvm.good [0xc0101d20] <+152>: vmsr   fpexc, r7
-    vmlinux.llvm.good [0xc0101d38] <+176>: vmrs   r4, fpexc
-    vmlinux.llvm.good [0xc0101d6c] <+228>: vmrs   r0, fpscr
-    vmlinux.llvm.good [0xc0101dc4] <+316>: vmsr   fpexc, r0
-    vmlinux.llvm.good [0xc0101dc8] <+320>: vmrs   r0, fpsid
-    vmlinux.llvm.good [0xc0101dcc] <+324>: vmrs   r6, fpscr
-    vmlinux.llvm.good [0xc0101e10] <+392>: vmrs   r10, fpinst
-    vmlinux.llvm.good [0xc0101eb8] <+560>: vmrs   r10, fpinst2
-
-    vmlinux.llvm.bad  [0xc0101cb8] <+48>:  vmrs   r7, fpexc
-    vmlinux.llvm.bad  [0xc0101cd8] <+80>:  vmsr   fpexc, r0
-    vmlinux.llvm.bad  [0xc0101d20] <+152>: vmsr   fpexc, r7
-    vmlinux.llvm.bad  [0xc0101d30] <+168>: vmrs   r0, fpscr
-    vmlinux.llvm.bad  [0xc0101d50] <+200>: vmrs   r6, fpscr  <== BOOM!
-    vmlinux.llvm.bad  [0xc0101d6c] <+228>: vmsr   fpexc, r0
-    vmlinux.llvm.bad  [0xc0101d70] <+232>: vmrs   r0, fpsid
-    vmlinux.llvm.bad  [0xc0101da4] <+284>: vmrs   r10, fpinst
-    vmlinux.llvm.bad  [0xc0101df8] <+368>: vmrs   r4, fpexc
-    vmlinux.llvm.bad  [0xc0101e5c] <+468>: vmrs   r10, fpinst2
-
-I think LLVM's reordering is valid as the code is currently written: the
-compiler doesn't know the instructions have side effects in hardware.
-
-Fix by using "asm volatile" in fmxr() and fmrx(), so they cannot be
-reordered with respect to each other. The original compiler now produces
-working kernels on my hardware with DYNAMIC_DEBUG=n.
-
-This is the relevant piece of the diff of the vfp_support_entry() text,
-from the original oopsing kernel to a working kernel with this patch:
-
-         vmrs r0, fpscr
-         tst r0, #4096
-         bne 0xc0101d48
-         tst r0, #458752
-         beq 0xc0101ecc
-         orr r7, r7, #536870912
-         ldr r0, [r4, #0x3c]
-         mov r9, #16
-        -vmrs r6, fpscr
-         orr r9, r9, #251658240
-         add r0, r0, #4
-         str r0, [r4, #0x3c]
-         mvn r0, #159
-         sub r0, r0, #-1207959552
-         and r0, r7, r0
-         vmsr fpexc, r0
-         vmrs r0, fpsid
-        +vmrs r6, fpscr
-         and r0, r0, #983040
-         cmp r0, #65536
-         bne 0xc0101d88
-
-Fixes: 4708fb041346 ("ARM: vfp: Reimplement VFP exception entry in C code")
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reported-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+Reported-by: syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com
+Reported-by: syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com
+Tested-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/0000000000002fda01061e334873@google.com
+Fixes: 8e6c8fa9f2e9 ("erofs: enable big pcluster feature")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240910070847.3356592-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/vfp/vfpinstr.h | 48 ++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 22 deletions(-)
+ fs/erofs/zdata.c | 71 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
 
-diff --git a/arch/arm/vfp/vfpinstr.h b/arch/arm/vfp/vfpinstr.h
-index 3c7938fd40aad..32090b0fb250b 100644
---- a/arch/arm/vfp/vfpinstr.h
-+++ b/arch/arm/vfp/vfpinstr.h
-@@ -64,33 +64,37 @@
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 424f656cd765e..a0bae499c5ff6 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1428,6 +1428,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 	struct z_erofs_bvec zbv;
+ 	struct address_space *mapping;
+ 	struct folio *folio;
++	struct page *page;
+ 	int bs = i_blocksize(f->inode);
  
- #ifdef CONFIG_AS_VFP_VMRS_FPINST
+ 	/* Except for inplace folios, the entire folio can be used for I/Os */
+@@ -1450,7 +1451,6 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 	 * file-backed folios will be used instead.
+ 	 */
+ 	if (folio->private == (void *)Z_EROFS_PREALLOCATED_PAGE) {
+-		folio->private = 0;
+ 		tocache = true;
+ 		goto out_tocache;
+ 	}
+@@ -1468,7 +1468,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 	}
  
--#define fmrx(_vfp_) ({			\
--	u32 __v;			\
--	asm(".fpu	vfpv2\n"	\
--	    "vmrs	%0, " #_vfp_	\
--	    : "=r" (__v) : : "cc");	\
--	__v;				\
-- })
+ 	folio_lock(folio);
+-	if (folio->mapping == mc) {
++	if (likely(folio->mapping == mc)) {
+ 		/*
+ 		 * The cached folio is still in managed cache but without
+ 		 * a valid `->private` pcluster hint.  Let's reconnect them.
+@@ -1478,41 +1478,44 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 			/* compressed_bvecs[] already takes a ref before */
+ 			folio_put(folio);
+ 		}
 -
--#define fmxr(_vfp_,_var_)		\
--	asm(".fpu	vfpv2\n"	\
--	    "vmsr	" #_vfp_ ", %0"	\
--	   : : "r" (_var_) : "cc")
-+#define fmrx(_vfp_) ({				\
-+	u32 __v;				\
-+	asm volatile (".fpu	vfpv2\n"	\
-+		      "vmrs	%0, " #_vfp_	\
-+		     : "=r" (__v) : : "cc");	\
-+	__v;					\
-+})
-+
-+#define fmxr(_vfp_, _var_) ({			\
-+	asm volatile (".fpu	vfpv2\n"	\
-+		      "vmsr	" #_vfp_ ", %0"	\
-+		     : : "r" (_var_) : "cc");	\
-+})
- 
- #else
- 
- #define vfpreg(_vfp_) #_vfp_
- 
--#define fmrx(_vfp_) ({			\
--	u32 __v;			\
--	asm("mrc p10, 7, %0, " vfpreg(_vfp_) ", cr0, 0 @ fmrx	%0, " #_vfp_	\
--	    : "=r" (__v) : : "cc");	\
--	__v;				\
-- })
+-		/* no need to submit if it is already up-to-date */
+-		if (folio_test_uptodate(folio)) {
+-			folio_unlock(folio);
+-			bvec->bv_page = NULL;
++		if (likely(folio->private == pcl))  {
++			/* don't submit cache I/Os again if already uptodate */
++			if (folio_test_uptodate(folio)) {
++				folio_unlock(folio);
++				bvec->bv_page = NULL;
++			}
++			return;
+ 		}
+-		return;
++		/*
++		 * Already linked with another pcluster, which only appears in
++		 * crafted images by fuzzers for now.  But handle this anyway.
++		 */
++		tocache = false;	/* use temporary short-lived pages */
++	} else {
++		DBG_BUGON(1); /* referenced managed folios can't be truncated */
++		tocache = true;
+ 	}
 -
--#define fmxr(_vfp_,_var_)		\
--	asm("mcr p10, 7, %0, " vfpreg(_vfp_) ", cr0, 0 @ fmxr	" #_vfp_ ", %0"	\
--	   : : "r" (_var_) : "cc")
-+#define fmrx(_vfp_) ({						\
-+	u32 __v;						\
-+	asm volatile ("mrc p10, 7, %0, " vfpreg(_vfp_) ","	\
-+		      "cr0, 0 @ fmrx	%0, " #_vfp_		\
-+		     : "=r" (__v) : : "cc");			\
-+	__v;							\
-+})
+-	/*
+-	 * It has been truncated, so it's unsafe to reuse this one. Let's
+-	 * allocate a new page for compressed data.
+-	 */
+-	DBG_BUGON(folio->mapping);
+-	tocache = true;
+ 	folio_unlock(folio);
+ 	folio_put(folio);
+ out_allocfolio:
+-	zbv.page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
++	page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
+ 	spin_lock(&pcl->obj.lockref.lock);
+-	if (pcl->compressed_bvecs[nr].page) {
+-		erofs_pagepool_add(&f->pagepool, zbv.page);
++	if (unlikely(pcl->compressed_bvecs[nr].page != zbv.page)) {
++		erofs_pagepool_add(&f->pagepool, page);
+ 		spin_unlock(&pcl->obj.lockref.lock);
+ 		cond_resched();
+ 		goto repeat;
+ 	}
+-	bvec->bv_page = pcl->compressed_bvecs[nr].page = zbv.page;
+-	folio = page_folio(zbv.page);
+-	/* first mark it as a temporary shortlived folio (now 1 ref) */
+-	folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
++	bvec->bv_page = pcl->compressed_bvecs[nr].page = page;
++	folio = page_folio(page);
+ 	spin_unlock(&pcl->obj.lockref.lock);
+ out_tocache:
+ 	if (!tocache || bs != PAGE_SIZE ||
+-	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp))
++	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp)) {
++		/* turn into a temporary shortlived folio (1 ref) */
++		folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
+ 		return;
++	}
+ 	folio_attach_private(folio, pcl);
+ 	/* drop a refcount added by allocpage (then 2 refs in total here) */
+ 	folio_put(folio);
+@@ -1647,13 +1650,10 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 		cur = mdev.m_pa;
+ 		end = cur + pcl->pclustersize;
+ 		do {
+-			z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
+-			if (!bvec.bv_page)
+-				continue;
+-
++			bvec.bv_page = NULL;
+ 			if (bio && (cur != last_pa ||
+ 				    bio->bi_bdev != mdev.m_bdev)) {
+-io_retry:
++drain_io:
+ 				if (!erofs_is_fscache_mode(sb))
+ 					submit_bio(bio);
+ 				else
+@@ -1666,6 +1666,15 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				bio = NULL;
+ 			}
+ 
++			if (!bvec.bv_page) {
++				z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
++				if (!bvec.bv_page)
++					continue;
++				if (cur + bvec.bv_len > end)
++					bvec.bv_len = end - cur;
++				DBG_BUGON(bvec.bv_len < sb->s_blocksize);
++			}
 +
-+#define fmxr(_vfp_, _var_) ({					\
-+	asm volatile ("mcr p10, 7, %0, " vfpreg(_vfp_) ","	\
-+		      "cr0, 0 @ fmxr	" #_vfp_ ", %0"		\
-+		     : : "r" (_var_) : "cc");			\
-+})
+ 			if (unlikely(PageWorkingset(bvec.bv_page)) &&
+ 			    !memstall) {
+ 				psi_memstall_enter(&pflags);
+@@ -1685,13 +1694,9 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				++nr_bios;
+ 			}
  
- #endif
- 
+-			if (cur + bvec.bv_len > end)
+-				bvec.bv_len = end - cur;
+-			DBG_BUGON(bvec.bv_len < sb->s_blocksize);
+ 			if (!bio_add_page(bio, bvec.bv_page, bvec.bv_len,
+ 					  bvec.bv_offset))
+-				goto io_retry;
+-
++				goto drain_io;
+ 			last_pa = cur + bvec.bv_len;
+ 			bypass = false;
+ 		} while ((cur += bvec.bv_len) < end);
 -- 
 2.43.0
 
