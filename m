@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408BA98D8DF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E7298D573
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC390B24485
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5620B1C21F0F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9351D1D0DE2;
-	Wed,  2 Oct 2024 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0381D0437;
+	Wed,  2 Oct 2024 13:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG+/CCts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ooIq56II"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508081D1305;
-	Wed,  2 Oct 2024 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061B01D0403;
+	Wed,  2 Oct 2024 13:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877692; cv=none; b=smO1vrZeIbLdUiO6jwIv23X9sY12e4OfNhSXwT/4Obk8LlllHVbxblFBvC69wDS2hJQKPjvsr3wf+u300HaxlB3dspfc4bS8DnPkjXOYEJB6yWJL8UYbTlGWVZ2CgPTKuX7ZOMUCtNqjGCgXiUJ+8tda1Q+fqOqhUP4vdxUbbh0=
+	t=1727875830; cv=none; b=XVijN8QhkSXJiaRBZPSqPsJeEHra94JDIiCb6sPCRDp8TSwKA9AKjR8Pt1UoUpmgmtQLR+DGrHyP0pM1pPrtqX77JTq+2DaAoUAV6zSTBySdEdtKz6Zk1udQjyOp/2D3AuZ1PN6VMYQjknVyKX35kGK+s/5IGSr4P0NTabO9VIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877692; c=relaxed/simple;
-	bh=t2SCqB+m4gUt3fmvROzN3dO7K1TT7CB65vsYLz4spB8=;
+	s=arc-20240116; t=1727875830; c=relaxed/simple;
+	bh=QK7OSkAkbAXRdGw6jxTWhRMQkYNk1JTPlK852Bmj3zE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gk9hxyH/VPmhaFakp49q5j6nQNtqRPN5Kouvx5C++EnOvEIYvmjHPBuSQA2xIKIX1jJaFRj5zOeA2eCcj7l/y+VnUAbdsdG4UvfF73Fjg4hMttlDgXvr60EPMjEdFpaxDa+w28goiDRArFJ5DWEOsT9TXNHm9MYGgrZTGcRoHD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG+/CCts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA816C4CEC2;
-	Wed,  2 Oct 2024 14:01:31 +0000 (UTC)
+	 MIME-Version; b=amuXUuJQXLY5GyRcaIVtM1joXoIa/pRJgjI8cqipYSnXK3QLmT/A/+DmtngIf8C2L6o2/ziP+cKtbT7iQTrWKpvV9j5TTxOKieX/xqlnkJ5UtJktIVvXar33xk7QwFz26xsABXlyY0Z6+raCg+1YQhcsi0l0prBAraEUb2K1OaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ooIq56II; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BCCC4CEC5;
+	Wed,  2 Oct 2024 13:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877692;
-	bh=t2SCqB+m4gUt3fmvROzN3dO7K1TT7CB65vsYLz4spB8=;
+	s=korg; t=1727875829;
+	bh=QK7OSkAkbAXRdGw6jxTWhRMQkYNk1JTPlK852Bmj3zE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tG+/CCtssfGK+/X5CqYmNOXjFhyh+SwvxoOhTwqUeDbe2AxH96KCbe7VE2tdcMSay
-	 KMESXS3XsWd4f4+V0EgQ9uemcOdiHT8L8pj+5bHgsFfPPYxZzx5Xqta86rD8F1BIzB
-	 ffU48vmpjVQI9DOtSz52jbCcvGlG6g/kYD6mFs7g=
+	b=ooIq56II+/jBOen47rWWQGIUP0e+NVMfVi3J8SghQOPkfev93DSwJ40jxiN+gpD8s
+	 AzgUlL2sdsgabwzhSiFAuHisx+kqGyh39ybq/hqPtd/Xhc94IwKpSJ5JnYAxCHlQPB
+	 hx4Yt4Jptd7BlnvieLS797c+YgmlfdQK3Vgfs12s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 134/634] arm64: dts: qcom: x1e80100: Fix PHY for DP2
+Subject: [PATCH 6.11 236/695] drm/msm/dsi: correct programming sequence for SM8350 / SM8450
 Date: Wed,  2 Oct 2024 14:53:54 +0200
-Message-ID: <20241002125816.398286084@linuxfoundation.org>
+Message-ID: <20241002125831.868251481@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ba728bda663b0e812cb20450d18af5d0edd803a2 ]
+[ Upstream commit 1328cb7c34bf6d056df9ff694ee5194537548258 ]
 
-The actual PHY used by MDSS DP2 is the USB SS2 QMP one. So switch to it
-instead. This is needed to get external DP support on boards like CRD
-where the 3rd Type-C USB port (right-hand side) is connected to DP2.
+According to the display-drivers, 5nm DSI PLL (v4.2, v4.3) have
+different boundaries for pll_clock_inverters programming. Follow the
+vendor code and use correct values.
 
-Fixes: 1940c25eaa63 ("arm64: dts: qcom: x1e80100: Add display nodes")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Link: https://lore.kernel.org/r/20240829-x1e80100-dts-dp2-use-qmpphy-ss2-v1-1-9ba3dca61ccc@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 2f9ae4e395ed ("drm/msm/dsi: add support for DSI-PHY on SM8350 and SM8450")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/606947/
+Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-3-1149dd8399fe@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 36c398e5fe501..64d5f6e4c0b01 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -3998,14 +3998,14 @@
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index 3b59137ca6743..031446c87daec 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+@@ -135,7 +135,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
+ 			config->pll_clock_inverters = 0x00;
+ 		else
+ 			config->pll_clock_inverters = 0x40;
+-	} else {
++	} else if (pll->phy->cfg->quirks & DSI_PHY_7NM_QUIRK_V4_1) {
+ 		if (pll_freq <= 1000000000ULL)
+ 			config->pll_clock_inverters = 0xa0;
+ 		else if (pll_freq <= 2500000000ULL)
+@@ -144,6 +144,16 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
+ 			config->pll_clock_inverters = 0x00;
+ 		else
+ 			config->pll_clock_inverters = 0x40;
++	} else {
++		/* 4.2, 4.3 */
++		if (pll_freq <= 1000000000ULL)
++			config->pll_clock_inverters = 0xa0;
++		else if (pll_freq <= 2500000000ULL)
++			config->pll_clock_inverters = 0x20;
++		else if (pll_freq <= 3500000000ULL)
++			config->pll_clock_inverters = 0x00;
++		else
++			config->pll_clock_inverters = 0x40;
+ 	}
  
- 				assigned-clocks = <&dispcc DISP_CC_MDSS_DPTX2_LINK_CLK_SRC>,
- 						  <&dispcc DISP_CC_MDSS_DPTX2_PIXEL0_CLK_SRC>;
--				assigned-clock-parents = <&mdss_dp2_phy 0>,
--							 <&mdss_dp2_phy 1>;
-+				assigned-clock-parents = <&usb_1_ss2_qmpphy QMP_USB43DP_DP_LINK_CLK>,
-+							 <&usb_1_ss2_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>;
- 
- 				operating-points-v2 = <&mdss_dp2_opp_table>;
- 
- 				power-domains = <&rpmhpd RPMHPD_MMCX>;
- 
--				phys = <&mdss_dp2_phy>;
-+				phys = <&usb_1_ss2_qmpphy QMP_USB43DP_DP_PHY>;
- 				phy-names = "dp";
- 
- 				#sound-dai-cells = <0>;
-@@ -4189,8 +4189,8 @@
- 				 <&usb_1_ss0_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>,
- 				 <&usb_1_ss1_qmpphy QMP_USB43DP_DP_LINK_CLK>, /* dp1 */
- 				 <&usb_1_ss1_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>,
--				 <&mdss_dp2_phy 0>, /* dp2 */
--				 <&mdss_dp2_phy 1>,
-+				 <&usb_1_ss2_qmpphy QMP_USB43DP_DP_LINK_CLK>, /* dp2 */
-+				 <&usb_1_ss2_qmpphy QMP_USB43DP_DP_VCO_DIV_CLK>,
- 				 <&mdss_dp3_phy 0>, /* dp3 */
- 				 <&mdss_dp3_phy 1>;
- 			power-domains = <&rpmhpd RPMHPD_MMCX>;
+ 	config->decimal_div_start = dec;
 -- 
 2.43.0
 
