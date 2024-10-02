@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C186F98D863
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AEB98D52A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CDF11F2415F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 560ADB21439
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736411D0B8B;
-	Wed,  2 Oct 2024 13:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAA61D0429;
+	Wed,  2 Oct 2024 13:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5EVNrjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lM+X8Pl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D7E1D0B84;
-	Wed,  2 Oct 2024 13:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3EE16F84F;
+	Wed,  2 Oct 2024 13:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877512; cv=none; b=uEA+kYOzw9OlkKZlyJm7Yw4F2eOxK0NmSxKcJjMcX85lg3a257fb4EjeAfuHwbukLcLBB8BDIR/nPZlOBZ6At7ucOI4dHfqdOw4kxVe0wFZzy2Y5kL/3iMcHrsMeAxgyGeaWkIze/fzI2Bn86VM6FtIpZjzIBDYmUOsA/nEdC18=
+	t=1727875652; cv=none; b=giTjjqVvmxSM3ygJtwDucKoZeFrKiiBc2Nz511UdaCAzH9DwGOWIL/ueKsRbx/B4OIEMkhOTs70/PO7mGuhm4Htwo2yVnjE+t1u8EY0jmThb8eZEid6MUobVQSaQ+nA/SQzw0PG+ZUHOoVKM40U9Bz7D1CumaLipB0G1/SsSjNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877512; c=relaxed/simple;
-	bh=kVQIzNB20BTlSFbLhtt6odeqxLgDFnomMHDqORSf/2g=;
+	s=arc-20240116; t=1727875652; c=relaxed/simple;
+	bh=zr0+LrAhuGStMk3+TJxC+F5FmF97r0aK7aH9DD9Avrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0zmXrukQYE2ww/y/P+Ypu8hXyLuabgDoR6qjWoBNytK7qh31BHgBBFpV2qzXiXaUbWz/CJQM8sbITon0mtTifuqdpfyGlccEU/FeAcLr9Fi1K+Svgb/1m3HdZiexOOcParq8G+ehJXuF6Q3S9uUcBgFKI50EiNcOJX973QhK6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5EVNrjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7E9C4CED3;
-	Wed,  2 Oct 2024 13:58:31 +0000 (UTC)
+	 MIME-Version; b=PEUP0+TieYzNB4/K+Ktka/TVj/48KSbEODprMwUpppczdsZkNVauG1Jr7eKHayZiKNDy1FVtcqeCrGfQScD61IlQ5mmkBVwz6PWOqieQG/SzESZ3VdLAnsoZiKpUsgBTEWWCFkObU4nvMa86bLFHO86cnyBjFyxNfQo1M6Oi5f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lM+X8Pl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA37C4CEC5;
+	Wed,  2 Oct 2024 13:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877512;
-	bh=kVQIzNB20BTlSFbLhtt6odeqxLgDFnomMHDqORSf/2g=;
+	s=korg; t=1727875652;
+	bh=zr0+LrAhuGStMk3+TJxC+F5FmF97r0aK7aH9DD9Avrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5EVNrjNky37pRMnbpuFYS3QDFVbcLf+lEB1wXld+psI/U/7qKDE54FxAIF8HXxXr
-	 2ytbiS3i8rvFMWunLO2XKgkYVsHYMko00ZBOhq7Ow6EMXWTnDXk+TL7px84PHOrvgU
-	 DltESCAJyQdyRk1aRbkt3LavoQ+54Pt2RFZ/OGYs=
+	b=lM+X8Pl3iK1nhb7l86VPBd22wdf13sNgTFW2Ty416Fj5q7ZneHcCIUjjrnJTCtnZG
+	 DpUttrZw0nQx79d4Zwp24skabqE8sOfu5vC9WWzE0B7GezbuJd4LjRPSQ10medHFGk
+	 KMeGqiXpr4FhoyhNXkvjZWHzOYLUkvwBxF2D0xfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Shah <amit.shah@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.10 072/634] crypto: ccp - do not request interrupt on cmd completion when irqs disabled
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 174/695] hwmon: (max16065) Fix overflows seen when writing limits
 Date: Wed,  2 Oct 2024 14:52:52 +0200
-Message-ID: <20241002125813.949599426@linuxfoundation.org>
+Message-ID: <20241002125829.418672474@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Shah <amit.shah@amd.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 3401f63e72596dcb7d912a5b67b4291643cc1034 ]
+[ Upstream commit 744ec4477b11c42e2c8de9eb8364675ae7a0bd81 ]
 
-While sending a command to the PSP, we always requested an interrupt
-from the PSP after command completion.  This worked for most cases.  For
-the special case of irqs being disabled -- e.g. when running within
-crashdump or kexec contexts, we should not set the SEV_CMDRESP_IOC flag,
-so the PSP knows to not attempt interrupt delivery.
+Writing large limits resulted in overflows as reported by module tests.
 
-Fixes: 8ef979584ea8 ("crypto: ccp: Add panic notifier for SEV/SNP firmware shutdown on kdump")
+in0_lcrit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_crit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_min: Suspected overflow: [max=5538, read 0, written 2147483647]
 
-Based-on-patch-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Amit Shah <amit.shah@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fix the problem by clamping prior to multiplications and the use of
+DIV_ROUND_CLOSEST, and by using consistent variable types.
+
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/hwmon/max16065.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 1912bee22dd4a..f2ad4653a58cb 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -910,7 +910,18 @@ static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret)
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index 7ce9a89f93a0d..5b2a174c6bad3 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -114,9 +114,10 @@ static inline int LIMIT_TO_MV(int limit, int range)
+ 	return limit * range / 256;
+ }
  
- 	sev->int_rcvd = 0;
+-static inline int MV_TO_LIMIT(int mv, int range)
++static inline int MV_TO_LIMIT(unsigned long mv, int range)
+ {
+-	return clamp_val(DIV_ROUND_CLOSEST(mv * 256, range), 0, 255);
++	mv = clamp_val(mv, 0, ULONG_MAX / 256);
++	return DIV_ROUND_CLOSEST(clamp_val(mv * 256, 0, range * 255), range);
+ }
  
--	reg = FIELD_PREP(SEV_CMDRESP_CMD, cmd) | SEV_CMDRESP_IOC;
-+	reg = FIELD_PREP(SEV_CMDRESP_CMD, cmd);
-+
-+	/*
-+	 * If invoked during panic handling, local interrupts are disabled so
-+	 * the PSP command completion interrupt can't be used.
-+	 * sev_wait_cmd_ioc() already checks for interrupts disabled and
-+	 * polls for PSP command completion.  Ensure we do not request an
-+	 * interrupt from the PSP if irqs disabled.
-+	 */
-+	if (!irqs_disabled())
-+		reg |= SEV_CMDRESP_IOC;
-+
- 	iowrite32(reg, sev->io_regs + sev->vdata->cmdresp_reg);
- 
- 	/* wait for command completion */
+ static inline int ADC_TO_CURR(int adc, int gain)
 -- 
 2.43.0
 
