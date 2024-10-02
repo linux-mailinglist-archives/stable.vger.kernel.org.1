@@ -1,51 +1,55 @@
-Return-Path: <stable+bounces-80530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAA898DDDD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:53:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A89598DDDF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 774351C23D85
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF89F1F25A9F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CEB1D1312;
-	Wed,  2 Oct 2024 14:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092521D0DC3;
+	Wed,  2 Oct 2024 14:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrvtrRRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzWi9VAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB15F1D1313;
-	Wed,  2 Oct 2024 14:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26C1EA80;
+	Wed,  2 Oct 2024 14:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880642; cv=none; b=R0YwAV9TR0f/3Scro74/f2fakI3a1QYta8aF/kQGS+fuiJxv1aAiOE667Jyta1qsIm0qroQwndSwXF4aN2BleWPrwFpQEvB4Y142+3lGUMoPnak8zbqVz1pYo3VaCoEztbLfP+avIvP1LxQTBlRYtJswAvc27iPVa9RSV3gr4Aw=
+	t=1727880647; cv=none; b=ULOfzQjs0uZnp6b5jiq0R9RMCrgy+Fx9R5wuqNkNDQpuk+Uqeu9ZLRnkDIkgYLVDqpt3qK2fLWK8B3LUzQeem580Tb7UVDNcvIjXdA/umpRRNIAUoBXD6iPztC1vEOPoq/jKhfHKF7jhrly2nvm0lF21ZmJLaRVGo3Hg9rOFxAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880642; c=relaxed/simple;
-	bh=2QbgEd4K5NjxoLSekWuQCmQsJ1Jl9WoziYFQlKiVT9M=;
+	s=arc-20240116; t=1727880647; c=relaxed/simple;
+	bh=KNapO2jJnAX8TVCFOabwwX8fJlliXtq6iDZbqqp+OrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jELG/wtzCK5bdoQkoMnxr7X1oMA0fYnrY0lUJVf7aWqf/hb+Tnv4d5gULlp6am+KPyBgSg4/0ZdiLn3ZxiOCz0HG6UleD8Zq00lZBWUEfMXZps5LMA3p6oCTeOfvzYiEPtNnfIMZBVzD5EP15RQhN+rgFsr5Xgdad2GSfF7LhVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrvtrRRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A02C4CECE;
-	Wed,  2 Oct 2024 14:50:41 +0000 (UTC)
+	 MIME-Version; b=Srw3R9t2gposXxCvAQo6GqW1u7Z5PjJpyv+CWGHpZfh1ZOl4QOA2IuFxj0UZNTE/pmyNEz8pTZLE3gISkbJw5ubiE7KB8puaAPiQ52WaNFUin9zAiQRSG2tuQyFfUssgXe7RYex5gGGuGMPYEb4DpkbTQ765QY1HTMLPrRMEi9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzWi9VAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41813C4CEC2;
+	Wed,  2 Oct 2024 14:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880641;
-	bh=2QbgEd4K5NjxoLSekWuQCmQsJ1Jl9WoziYFQlKiVT9M=;
+	s=korg; t=1727880647;
+	bh=KNapO2jJnAX8TVCFOabwwX8fJlliXtq6iDZbqqp+OrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrvtrRRCLjgHapbNwpsq67eVD4yLxNZ0vRbgN6fobIRpw0lzQE7pEh/s481QzY2eP
-	 Gm236RfjncWr7GdsUUSdwtJh2WgdZkCP4EW/FTFmJE9rAGoXcJIasHl3q1kpuz+nqU
-	 v/eVq0Hwk67egg/5lK7yXZs132v7OuO3517fCzC8=
+	b=LzWi9VAAAZ5yzQpoPs9BWsN27jCMgB7CbnGYtPeZKA38mrzwVlQIiBwgd0hh+xSjr
+	 Ipy41WrcxYFjfjO1BcOeGTM2+h2rFLu/vhf19zEtVwc3EoaJd9LxqfjkGeDBFOFx/Y
+	 ChKiggAxwUF+1PCdbfah192RZtOU7Q2jNHPmvduA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 528/538] Documentation: KVM: fix warning in "make htmldocs"
-Date: Wed,  2 Oct 2024 15:02:47 +0200
-Message-ID: <20241002125813.288411938@linuxfoundation.org>
+	syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com,
+	Oleg Nesterov <oleg@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>
+Subject: [PATCH 6.6 529/538] bpf: Fix use-after-free in bpf_uprobe_multi_link_attach()
+Date: Wed,  2 Oct 2024 15:02:48 +0200
+Message-ID: <20241002125813.327852306@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -64,34 +68,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit efbc6bd090f48ccf64f7a8dd5daea775821d57ec upstream.
+commit 5fe6e308abaea082c20fbf2aa5df8e14495622cf upstream.
 
-The warning
+If bpf_link_prime() fails, bpf_uprobe_multi_link_attach() goes to the
+error_free label and frees the array of bpf_uprobe's without calling
+bpf_uprobe_unregister().
 
- Documentation/virt/kvm/locking.rst:31: ERROR: Unexpected indentation.
+This leaks bpf_uprobe->uprobe and worse, this frees bpf_uprobe->consumer
+without removing it from the uprobe->consumers list.
 
-is caused by incorrectly treating a line as the continuation of a paragraph,
-rather than as the first line in a bullet list.
-
-Fixed: 44d174596260 ("KVM: Use dedicated mutex to protect kvm_usage_count to avoid deadlock")
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Closes: https://lore.kernel.org/all/000000000000382d39061f59f2dd@google.com/
+Reported-by: syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Tested-by: syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240813152524.GA7292@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/virt/kvm/locking.rst |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/bpf_trace.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/Documentation/virt/kvm/locking.rst
-+++ b/Documentation/virt/kvm/locking.rst
-@@ -25,6 +25,7 @@ The acquisition orders for mutexes are a
-   must not take either kvm->slots_lock or kvm->slots_arch_lock.
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3285,17 +3285,20 @@ int bpf_uprobe_multi_link_attach(const u
+ 					     uprobes[i].ref_ctr_offset,
+ 					     &uprobes[i].consumer);
+ 		if (err) {
+-			bpf_uprobe_unregister(&path, uprobes, i);
+-			goto error_free;
++			link->cnt = i;
++			goto error_unregister;
+ 		}
+ 	}
  
- cpus_read_lock() vs kvm_lock:
+ 	err = bpf_link_prime(&link->link, &link_primer);
+ 	if (err)
+-		goto error_free;
++		goto error_unregister;
+ 
+ 	return bpf_link_settle(&link_primer);
+ 
++error_unregister:
++	bpf_uprobe_unregister(&path, uprobes, link->cnt);
 +
- - Taking cpus_read_lock() outside of kvm_lock is problematic, despite that
-   being the official ordering, as it is quite easy to unknowingly trigger
-   cpus_read_lock() while holding kvm_lock.  Use caution when walking vm_list,
+ error_free:
+ 	kvfree(uprobes);
+ 	kfree(link);
 
 
 
