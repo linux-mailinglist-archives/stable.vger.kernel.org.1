@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-79198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A3D98D710
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:46:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5706398D720
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E75B5B23552
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3D22B21BA6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747D01D0499;
-	Wed,  2 Oct 2024 13:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3431D0797;
+	Wed,  2 Oct 2024 13:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAw8aU4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpQExj3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D071C9B91;
-	Wed,  2 Oct 2024 13:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DC61D042F;
+	Wed,  2 Oct 2024 13:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876727; cv=none; b=Q6tU/KbvjjMKIU9VC2ncYN/3qaCbarekXhnXauPfQ2zY85PxIra4gVcRWZoJZxpCdSc8qiVflt/N1XxiUgwt98cKVdXMZ6308igwz8bMj61ZRp1Ndxu59amcuStayydI74s6bm/T/jhwLvycHQMhN1CGp/hloOutDPhoZ8q+LRA=
+	t=1727876759; cv=none; b=nIKgvakh6QfotFi9cTonUpmMdKyIokGWkw5YyjQKBjVje1xG6vTocNESin0Gd+kB045Ev//2FJ1fGqKtxv5yyysuO6tEfeIIEz3DnncBimsF2Ua3nfb/TL9LFI1N+akmhnnSErd2KOaGfwUxVrnNjYb+wsJvjorcHtkXYJkkovg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876727; c=relaxed/simple;
-	bh=Lzl5KWL1OO31ROKNIbaozRq7HtPm6JP2iSOlCXnPS2I=;
+	s=arc-20240116; t=1727876759; c=relaxed/simple;
+	bh=1OoiIls1CqmSwAhkomeL39L5mzu6G1KEhxYwrGSPgzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naIhbnRtaXQqhEuBirFzMyKYHe9Mt8HnduxcRbWBBPNYztahSXZyiLbzG5zWK4jOawJaDGJDtcsIbCy2zPxiVSIDO8DK40xua/igOzP2tfD7wWFvRpS758dqBy228tFJlZ+j+3hs5AL0DXGsb4GefSzBOktjRnHy41BnCgx+rqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAw8aU4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0F6C4CEC5;
-	Wed,  2 Oct 2024 13:45:26 +0000 (UTC)
+	 MIME-Version; b=edumh53WalLKC5vAoHiGKTmZBxAYVU8XC5LSpK/CID1Z5dJ4JwjFloXtHdCe8x4lhmTT6iBOGI2zjxQUNgg40En8YeKLgqh4JaQmIO2Pv1WzBD/vwTb6nfXqcc77gZ3RV/L9q65AxyXvWNAkqtN3zJyqxK/BM0IiF3cTdQvZN78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpQExj3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EA5C4CEC5;
+	Wed,  2 Oct 2024 13:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876727;
-	bh=Lzl5KWL1OO31ROKNIbaozRq7HtPm6JP2iSOlCXnPS2I=;
+	s=korg; t=1727876759;
+	bh=1OoiIls1CqmSwAhkomeL39L5mzu6G1KEhxYwrGSPgzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAw8aU4g+yw1kuTDPo4BMXyULI/tTsroMxt7Bu6v/+fCKXB1YWQwoxu57zZEjrT/Q
-	 cz40Z3SZrXHY2WqKNsLtiEN6cO2vr2e32ZZkdcPiSraXp14DQO1BWGUxmHQ/6UD+np
-	 zjLvlMP7tE9RzFgIASKw9MgJ561gS4T0sUX1l7n0=
+	b=RpQExj3Gri8/Yx0ZE2o3d98bwxaz3OyJAmv2wIopS5Slf7DCR1/bvytyfqSYsjwZx
+	 7syYGi3+srokPVb+VkqpyyDr/J/jkuK0tU4bUFUnUacifOR/wj2gr3pXIXfPd+su/U
+	 MkwLBbVdMd2rHpvgoeKvIfsSSl4gJYhstSShg4NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.11 525/695] soc: fsl: cpm1: tsa: Fix tsa_write8()
-Date: Wed,  2 Oct 2024 14:58:43 +0200
-Message-ID: <20241002125843.443298634@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.11 526/695] soc: versatile: integrator: fix OF node leak in probe() error path
+Date: Wed,  2 Oct 2024 14:58:44 +0200
+Message-ID: <20241002125843.483747115@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -65,37 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 47a347bae9a491b467ab3543e4725a3e4fbe30f5 upstream.
+commit 874c5b601856adbfda10846b9770a6c66c41e229 upstream.
 
-The tsa_write8() parameter is an u32 value. This is not consistent with
-the function itself. Indeed, tsa_write8() writes an 8bits value.
+Driver is leaking OF node reference obtained from
+of_find_matching_node().
 
-Be consistent and use an u8 parameter value.
-
-Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
+Fixes: f956a785a282 ("soc: move SoC driver for the ARM Integrator")
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20240808071132.149251-4-herve.codina@bootlin.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-1-ff4b35abed83@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/fsl/qe/tsa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/versatile/soc-integrator.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/soc/fsl/qe/tsa.c
-+++ b/drivers/soc/fsl/qe/tsa.c
-@@ -140,7 +140,7 @@ static inline void tsa_write32(void __io
- 	iowrite32be(val, addr);
- }
+--- a/drivers/soc/versatile/soc-integrator.c
++++ b/drivers/soc/versatile/soc-integrator.c
+@@ -113,6 +113,7 @@ static int __init integrator_soc_init(vo
+ 		return -ENODEV;
  
--static inline void tsa_write8(void __iomem *addr, u32 val)
-+static inline void tsa_write8(void __iomem *addr, u8 val)
- {
- 	iowrite8(val, addr);
- }
+ 	syscon_regmap = syscon_node_to_regmap(np);
++	of_node_put(np);
+ 	if (IS_ERR(syscon_regmap))
+ 		return PTR_ERR(syscon_regmap);
+ 
 
 
 
