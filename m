@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-78952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0EDF98D5C7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287B898D922
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 259281C220E0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58241F23D09
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70A1D079E;
-	Wed,  2 Oct 2024 13:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2741D2F74;
+	Wed,  2 Oct 2024 14:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUIy7T43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pd7MZHpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390491D04A8;
-	Wed,  2 Oct 2024 13:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5C81D2F6E;
+	Wed,  2 Oct 2024 14:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876007; cv=none; b=Aatd24ncsE99uZUHRr0CfEhPeAc0CBPryKHd20nqypdx+TAnX+xikmQ9TlmIo5aSpXHJfW9s1gEaXPGXF9F4Y15slrJZSPgpWpl+4ieHU32zQHYaleNxlEjoP7mXm6SZ44yFhTz8OJn5+UlUdXANyIgqsQwazTmE40qQ56srmV0=
+	t=1727877794; cv=none; b=L20VlKVPB7IwF0KtQL0y3a9pIQI77TOGOVJH7TF2+lN7p+KeDakd0NhsJZ+guD8+Q0xPJu3nGv/Z4pGuUHJGBkUPjWtKv1d9TSbpqA4O9LqV0SJefiSTUJoTFZ5zRKaf8xK1Vj/9NKuG/BcxhVeI+vBr+pdxW7QQqDKvJnPOrLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876007; c=relaxed/simple;
-	bh=G3XwklZq6t+1vLAXNRKPeWYUCLaHBUjovODRW5qjiPY=;
+	s=arc-20240116; t=1727877794; c=relaxed/simple;
+	bh=FycatTYOxYEIiq6k4+Qr1RXD6uzTaK/qDwDmRtWcxdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dT/ZVS4Och8VjDglyOxTPWBHwytEsch4klpRDbgh9ZKCkCqRh7YUpYMcVJq2/ncTqw/+4CVVp6WIB7hC3C43GgxCAPjERR0vnOVxsiTKN64qC1ULZjEDivIRUHtMuqoBP9ajNzLtiJjgh+4SyoH9jiYolkgDtEXCgOzRHHI7Ezc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUIy7T43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5431C4CEC5;
-	Wed,  2 Oct 2024 13:33:26 +0000 (UTC)
+	 MIME-Version; b=tVQ4gaAt5X6uIAmc7/QDQSyPA37PF+UYYGybqR2VeWSkiMAZ7ZsJAAEVL7j3OMSuPeuf54qXG/VS32Xgxm94faooG/G1SzOktM5b4kpEMkPFNyK32zZzQJhyxVTBnjKe+YzKOEzJ9ayNM2YW9uj/dNFRhSMz6kTh7MKknH4UjwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pd7MZHpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5BDC4CED4;
+	Wed,  2 Oct 2024 14:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876007;
-	bh=G3XwklZq6t+1vLAXNRKPeWYUCLaHBUjovODRW5qjiPY=;
+	s=korg; t=1727877793;
+	bh=FycatTYOxYEIiq6k4+Qr1RXD6uzTaK/qDwDmRtWcxdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUIy7T43D/2SKTLk0nUkVw58MF1rnVNtDrkTHgOZZXdtfOIkQYj05qlfc/LQF1Dv8
-	 6nWYKMEpk5LpfnJrQpFM+JVwLCYK9DzUeh/qqLJQNFtd2RkO/Bcu9mj/ewhBeEBJKT
-	 uPmUeyWunKZefU3IAYVpu9yHSwI7Aqh6QNZhbfnE=
+	b=Pd7MZHpSLjnX5wwg03vRIWWcxg/VmgYHx1tRtK7mHagR/DRBsbG1AAjFdVT1nsRKQ
+	 zlHLNhb4epSNA2jv1arpyPEKSSgE1K4szX94KimW67tUhKJU//sffn/EV7EBrbmWiE
+	 XeGiE9wJRgqYQvYQGyqTG7QeB1PkFTvEkTWjqXcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu RuiTong <cnitlrt@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Fei Shao <fshao@chromium.org>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 297/695] bpf: correctly handle malformed BPF_CORE_TYPE_ID_LOCAL relos
+Subject: [PATCH 6.10 195/634] drm/mediatek: Use spin_lock_irqsave() for CRTC event lock
 Date: Wed,  2 Oct 2024 14:54:55 +0200
-Message-ID: <20241002125834.296475375@linuxfoundation.org>
+Message-ID: <20241002125818.802068424@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Fei Shao <fshao@chromium.org>
 
-[ Upstream commit 3d2786d65aaa954ebd3fcc033ada433e10da21c4 ]
+[ Upstream commit be03b30b7aa99aca876fbc7c1c1b73b2d0339321 ]
 
-In case of malformed relocation record of kind BPF_CORE_TYPE_ID_LOCAL
-referencing a non-existing BTF type, function bpf_core_calc_relo_insn
-would cause a null pointer deference.
+Use the state-aware spin_lock_irqsave() and spin_unlock_irqrestore()
+to avoid unconditionally re-enabling the local interrupts.
 
-Fix this by adding a proper check upper in call stack, as malformed
-relocation records could be passed from user space.
-
-Simplest reproducer is a program:
-
-    r0 = 0
-    exit
-
-With a single relocation record:
-
-    .insn_off = 0,          /* patch first instruction */
-    .type_id = 100500,      /* this type id does not exist */
-    .access_str_off = 6,    /* offset of string "0" */
-    .kind = BPF_CORE_TYPE_ID_LOCAL,
-
-See the link for original reproducer or next commit for a test case.
-
-Fixes: 74753e1462e7 ("libbpf: Replace btf__type_by_id() with btf_type_by_id().")
-Reported-by: Liu RuiTong <cnitlrt@gmail.com>
-Closes: https://lore.kernel.org/bpf/CAK55_s6do7C+DVwbwY_7nKfUz0YLDoiA1v6X3Y9+p0sWzipFSA@mail.gmail.com/
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240822080124.2995724-2-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 411f5c1eacfe ("drm/mediatek: handle events when enabling/disabling crtc")
+Signed-off-by: Fei Shao <fshao@chromium.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240828101511.3269822-1-fshao@chromium.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_crtc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 249c94c996150..7783b16b87cfe 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -8891,6 +8891,7 @@ int bpf_core_apply(struct bpf_core_ctx *ctx, const struct bpf_core_relo *relo,
- 	struct bpf_core_cand_list cands = {};
- 	struct bpf_core_relo_res targ_res;
- 	struct bpf_core_spec *specs;
-+	const struct btf_type *type;
- 	int err;
+diff --git a/drivers/gpu/drm/mediatek/mtk_crtc.c b/drivers/gpu/drm/mediatek/mtk_crtc.c
+index d7f0926f896d6..a90504359e8d2 100644
+--- a/drivers/gpu/drm/mediatek/mtk_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_crtc.c
+@@ -467,6 +467,7 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
+ {
+ 	struct drm_device *drm = mtk_crtc->base.dev;
+ 	struct drm_crtc *crtc = &mtk_crtc->base;
++	unsigned long flags;
+ 	int i;
  
- 	/* ~4k of temp memory necessary to convert LLVM spec like "0:1:0:5"
-@@ -8900,6 +8901,13 @@ int bpf_core_apply(struct bpf_core_ctx *ctx, const struct bpf_core_relo *relo,
- 	if (!specs)
- 		return -ENOMEM;
+ 	for (i = 0; i < mtk_crtc->ddp_comp_nr; i++) {
+@@ -498,10 +499,10 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_crtc *mtk_crtc)
+ 	pm_runtime_put(drm->dev);
  
-+	type = btf_type_by_id(ctx->btf, relo->type_id);
-+	if (!type) {
-+		bpf_log(ctx->log, "relo #%u: bad type id %u\n",
-+			relo_idx, relo->type_id);
-+		return -EINVAL;
-+	}
-+
- 	if (need_cands) {
- 		struct bpf_cand_cache *cc;
- 		int i;
+ 	if (crtc->state->event && !crtc->state->active) {
+-		spin_lock_irq(&crtc->dev->event_lock);
++		spin_lock_irqsave(&crtc->dev->event_lock, flags);
+ 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
+ 		crtc->state->event = NULL;
+-		spin_unlock_irq(&crtc->dev->event_lock);
++		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
