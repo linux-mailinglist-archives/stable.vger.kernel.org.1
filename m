@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-79489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01AF98D8BB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC93B98D554
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552021F21248
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6F11F21959
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB3E1D278C;
-	Wed,  2 Oct 2024 14:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAA316F84F;
+	Wed,  2 Oct 2024 13:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iz0kQOQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU8cTUAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC4D1D271A;
-	Wed,  2 Oct 2024 14:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9E61D0403;
+	Wed,  2 Oct 2024 13:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877611; cv=none; b=CQrMrfQubjJbo2FJAZ88Y+kQ2WKKlav2nQnH09ZMUBwC7f359MZ7DD3QaQwEyj3FQ7HQ5AcruY1GnhpMuDjRD2nSDgwD1w1vqTuLkq7yPDc8GjZzu+E7tDA2S1sErMs8wVg0qvSa8CjAv/BGmbNp4L6dU2qshm0vBwA6UjH0tXc=
+	t=1727875743; cv=none; b=l3h3rnQvHxh+X6q3GMFtOQ1nM8MeTbCiQG+Tr6MytiPOlFWrp8Z/+K0604RWugXJwixebsUm4LF5NK9aGmRTMI0rzUp1I7jek/wc2b7KYry8ggcBKWfXLcd0502NJYd/9UW4cFmeM1FwTGq6/1XkTb/HoGuf7sG6aFs29CAoa0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877611; c=relaxed/simple;
-	bh=Mi5toyebAKWBAWahijWNv0hMQRUbmiBXfotPNUZg/dM=;
+	s=arc-20240116; t=1727875743; c=relaxed/simple;
+	bh=QwZttdrryEXkIrkxEy/18LIzjcxoy/FBu/ha61NnZz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sqd8Z3zi8go9CCAyyZTypcEkmwweigqoqsgybKxeWyuLvKibpcHpQrEg5am791JTmm4O24k8Z1ykwsbJUCsAkLqQ8RP3cP5uMRCB3bwpvwBhyZKL2td6aIwU5gWX/xIUdjHY3gMg5UBJarqZBIg3z91wqCOhYQqDT2YTp+hHZ4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iz0kQOQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3113BC4CEC2;
-	Wed,  2 Oct 2024 14:00:10 +0000 (UTC)
+	 MIME-Version; b=uKUV1DgtCq5X2rZ66GDveH0zZO5RngF7Yx0lfVxxxG/gbaVQHWNhWcIiokRDNN9n/UwxWMTxRQEL2eRt3SwpCW0srZAurzqh1D5q+s2F/3yb9+D7PaWZP0y24/5DydlGD8CgRuMMUReGxH/VSZ5Tz8JrhTSoay+1TzIczKooXXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU8cTUAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51594C4CECD;
+	Wed,  2 Oct 2024 13:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877610;
-	bh=Mi5toyebAKWBAWahijWNv0hMQRUbmiBXfotPNUZg/dM=;
+	s=korg; t=1727875742;
+	bh=QwZttdrryEXkIrkxEy/18LIzjcxoy/FBu/ha61NnZz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iz0kQOQ/oqslB8EgXBWpeSXWu2E6i2qKo1a2Id7wV/cZUNG40QeMd7fd1eA8KG2HP
-	 aXJtH00EY2KMdS3QG+CpnAPSQkI6T223Mk+qvbUc9kW5c2FjvkWGHYyQAVwR5j4Zwy
-	 4ZIJ2PWjoRzZwJhyZuBw8pocv7Z9qt2e/Vl1hUiQ=
+	b=AU8cTUAVGC5afTTBLqQqozj17I/UyZVmsIPv73BW+l5MGOzkQcqcIYOwMvUEUI0Ic
+	 vsn2IyHi0pwIuOaORbwX+YVH/6eNv+HqnUU710f6PILsJfmdvwIEmtsJzE3EdwpMnt
+	 vO0oVKJeIKPdMsk3eIBMbRDNRJ1qBZHRbfLXWeAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 102/634] ublk: move zone report data out of request pdu
-Date: Wed,  2 Oct 2024 14:53:22 +0200
-Message-ID: <20241002125815.141032907@linuxfoundation.org>
+Subject: [PATCH 6.11 205/695] drm/amd/display: Reset VRR config during resume
+Date: Wed,  2 Oct 2024 14:53:23 +0200
+Message-ID: <20241002125830.644689558@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,150 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 9327b51c9a9c864f5177127e09851da9d78b4943 ]
+[ Upstream commit df18a4de9e77ad92c472fd1eb0fb1255d52dd4cd ]
 
-ublk zoned takes 16 bytes in each request pdu just for handling REPORT_ZONE
-operation, this way does waste memory since request pdu is allocated
-statically.
+[Why]
+After resume the system, the new_crtc_state->vrr_infopacket does not
+synchronize with the current state.  It will affect the
+update_freesync_state_on_stream() does not update the state correctly.
 
-Store the transient zone report data into one global xarray, and remove
-it after the report zone request is completed. This way is reasonable
-since report zone is run in slow code path.
+The previous patch causes a PSR SU regression that cannot let panel go
+into self-refresh mode.
 
-Fixes: 29802d7ca33b ("ublk: enable zoned storage support")
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240812013624.587587-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[How]
+Reset the VRR config during resume to force update the VRR config later.
+
+Fixes: eb6dfbb7a9c6 ("drm/amd/display: Reset freesync config before update new state")
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 62 +++++++++++++++++++++++++++++-----------
- 1 file changed, 46 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index fc001e9f95f61..d06c8ed29620b 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -71,9 +71,6 @@ struct ublk_rq_data {
- 	struct llist_node node;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 511d46d38d6af..ba5f98bd7b391 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -176,6 +176,7 @@ MODULE_FIRMWARE(FIRMWARE_DCN_401_DMUB);
+ static int amdgpu_dm_init(struct amdgpu_device *adev);
+ static void amdgpu_dm_fini(struct amdgpu_device *adev);
+ static bool is_freesync_video_mode(const struct drm_display_mode *mode, struct amdgpu_dm_connector *aconnector);
++static void reset_freesync_config_for_crtc(struct dm_crtc_state *new_crtc_state);
  
- 	struct kref ref;
--	__u64 sector;
--	__u32 operation;
--	__u32 nr_zones;
- };
- 
- struct ublk_uring_cmd_pdu {
-@@ -214,6 +211,33 @@ static inline bool ublk_queue_is_zoned(struct ublk_queue *ubq)
- 
- #ifdef CONFIG_BLK_DEV_ZONED
- 
-+struct ublk_zoned_report_desc {
-+	__u64 sector;
-+	__u32 operation;
-+	__u32 nr_zones;
-+};
-+
-+static DEFINE_XARRAY(ublk_zoned_report_descs);
-+
-+static int ublk_zoned_insert_report_desc(const struct request *req,
-+		struct ublk_zoned_report_desc *desc)
-+{
-+	return xa_insert(&ublk_zoned_report_descs, (unsigned long)req,
-+			    desc, GFP_KERNEL);
-+}
-+
-+static struct ublk_zoned_report_desc *ublk_zoned_erase_report_desc(
-+		const struct request *req)
-+{
-+	return xa_erase(&ublk_zoned_report_descs, (unsigned long)req);
-+}
-+
-+static struct ublk_zoned_report_desc *ublk_zoned_get_report_desc(
-+		const struct request *req)
-+{
-+	return xa_load(&ublk_zoned_report_descs, (unsigned long)req);
-+}
-+
- static int ublk_get_nr_zones(const struct ublk_device *ub)
+ static enum drm_mode_subconnector get_subconnector_type(struct dc_link *link)
  {
- 	const struct ublk_param_basic *p = &ub->params.basic;
-@@ -310,7 +334,7 @@ static int ublk_report_zones(struct gendisk *disk, sector_t sector,
- 		unsigned int zones_in_request =
- 			min_t(unsigned int, remaining_zones, max_zones_per_request);
- 		struct request *req;
--		struct ublk_rq_data *pdu;
-+		struct ublk_zoned_report_desc desc;
- 		blk_status_t status;
+@@ -3239,8 +3240,11 @@ static int dm_resume(void *handle)
+ 	drm_connector_list_iter_end(&iter);
  
- 		memset(buffer, 0, buffer_length);
-@@ -321,20 +345,23 @@ static int ublk_report_zones(struct gendisk *disk, sector_t sector,
- 			goto out;
- 		}
+ 	/* Force mode set in atomic commit */
+-	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i)
++	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i) {
+ 		new_crtc_state->active_changed = true;
++		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
++		reset_freesync_config_for_crtc(dm_new_crtc_state);
++	}
  
--		pdu = blk_mq_rq_to_pdu(req);
--		pdu->operation = UBLK_IO_OP_REPORT_ZONES;
--		pdu->sector = sector;
--		pdu->nr_zones = zones_in_request;
-+		desc.operation = UBLK_IO_OP_REPORT_ZONES;
-+		desc.sector = sector;
-+		desc.nr_zones = zones_in_request;
-+		ret = ublk_zoned_insert_report_desc(req, &desc);
-+		if (ret)
-+			goto free_req;
- 
- 		ret = blk_rq_map_kern(disk->queue, req, buffer, buffer_length,
- 					GFP_KERNEL);
--		if (ret) {
--			blk_mq_free_request(req);
--			goto out;
--		}
-+		if (ret)
-+			goto erase_desc;
- 
- 		status = blk_execute_rq(req, 0);
- 		ret = blk_status_to_errno(status);
-+erase_desc:
-+		ublk_zoned_erase_report_desc(req);
-+free_req:
- 		blk_mq_free_request(req);
- 		if (ret)
- 			goto out;
-@@ -368,7 +395,7 @@ static blk_status_t ublk_setup_iod_zoned(struct ublk_queue *ubq,
- {
- 	struct ublksrv_io_desc *iod = ublk_get_iod(ubq, req->tag);
- 	struct ublk_io *io = &ubq->ios[req->tag];
--	struct ublk_rq_data *pdu = blk_mq_rq_to_pdu(req);
-+	struct ublk_zoned_report_desc *desc;
- 	u32 ublk_op;
- 
- 	switch (req_op(req)) {
-@@ -391,12 +418,15 @@ static blk_status_t ublk_setup_iod_zoned(struct ublk_queue *ubq,
- 		ublk_op = UBLK_IO_OP_ZONE_RESET_ALL;
- 		break;
- 	case REQ_OP_DRV_IN:
--		ublk_op = pdu->operation;
-+		desc = ublk_zoned_get_report_desc(req);
-+		if (!desc)
-+			return BLK_STS_IOERR;
-+		ublk_op = desc->operation;
- 		switch (ublk_op) {
- 		case UBLK_IO_OP_REPORT_ZONES:
- 			iod->op_flags = ublk_op | ublk_req_build_flags(req);
--			iod->nr_zones = pdu->nr_zones;
--			iod->start_sector = pdu->sector;
-+			iod->nr_zones = desc->nr_zones;
-+			iod->start_sector = desc->sector;
- 			return BLK_STS_OK;
- 		default:
- 			return BLK_STS_IOERR;
+ 	/*
+ 	 * atomic_check is expected to create the dc states. We need to release
 -- 
 2.43.0
 
