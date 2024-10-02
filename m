@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC8298D938
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DFC98DBB4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08E711C22D5A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A4FA1C21C90
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4D31D1E97;
-	Wed,  2 Oct 2024 14:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4711D12FD;
+	Wed,  2 Oct 2024 14:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPqlgeRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UD2CXGah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7A21D0DC3;
-	Wed,  2 Oct 2024 14:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8E61D0787;
+	Wed,  2 Oct 2024 14:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877852; cv=none; b=qL2Z6the9prd8Me9OvUhk0/mpI5q/OeXhKV3lNjXcTznbK2bgyioyL+U/K8UeUCQkzhasZXbesfX9M74OH7S2/PlREnuDI6PwCDKSJvZyIHX4wjzuohx7JJGxcMA3MpIwKPfBHkiIZZt1C1iI1AKJDhbQv0gzdwa04u3OGGwQr8=
+	t=1727879323; cv=none; b=ckByC8oNrbz6QiUgp/cM5MM0FBVK1DgI6fNu+u7yL3mp1puhukdNOsCBXUFH+3M9DxE/oy3e15Nv2VnGJOsSuTSLyP0/Bf3Qanp5o0amlVd482bhQe9Iin8ShIgOO2FD/3ftuE6iFGs6oGzGLLQtSLUD489k3oTFoJKa2JyxFUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877852; c=relaxed/simple;
-	bh=FUXyB0bc9/17kvWSbE1A8cVCpLieGvhiQjCUw1vBJYc=;
+	s=arc-20240116; t=1727879323; c=relaxed/simple;
+	bh=WAKIvE4pBnNt8B9WoxEO4cgHA4ugLJCmiTvbHwEbKxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=noYe4V6RdnY163iEUaiaMxiNEiBg3P3e+7BwNMnDRjJLBsUxJETj21QeNzSFaLtPE6gxf2B+CG+PXQaRpNQZHcgLF+0O71Oc0qXfzPPSwj7scKbHaKQaaWqqKWJh1ZSJzvn6DR3zQukHqrVwDJ7GZEXjBwC2szX8Ifiu8F1KlA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPqlgeRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B03C4CEC2;
-	Wed,  2 Oct 2024 14:04:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rjLM1jjT14YuprvksuLC7ce6IESpRnyHS6pp9KRWdKmRE5do/MBJffGYuO4l2+IDfkffzLNFOXJ1pb2+RkzkkN72jbvRh+tfE5+x0lOWpFOBJSALJ0w4OekAXed2pJsiujuPzj9kgLm+MGyoDxEaKa0wyQ8d60MNr4/uLvdrynM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UD2CXGah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA7DC4CEC2;
+	Wed,  2 Oct 2024 14:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877852;
-	bh=FUXyB0bc9/17kvWSbE1A8cVCpLieGvhiQjCUw1vBJYc=;
+	s=korg; t=1727879323;
+	bh=WAKIvE4pBnNt8B9WoxEO4cgHA4ugLJCmiTvbHwEbKxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPqlgeRk9E2KglaBzkFBwn2OrwYL8/9R1j0MTo0BGCMOsrxKocBwTb44LKdQx1k2S
-	 PYVcaO3rB9Lo9h39kDnwQ7m+b7e1C2FvbBp7g5CUJFgXiK0sEL0nVsy9XmwoWKqNyU
-	 oUPrzaUED8aEFhtjpkkqiSzZEg+I33HVZldFBZsg=
+	b=UD2CXGah0NdXqa3xm76A1ndew037FknqdFWi4XQIFitN3yI+1FHcFeRgBO2LLb1sx
+	 9dIDjxOmVdxP+Tb6dh3bBqbNoLElhOBlALh5yKsaXGO8BPHbFBaFlD4vseIODmfwfX
+	 FzAA12I0muqqs/BDri0gGJyuFWjBhP6doTPUeW2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Joshua Dickens <joshua.dickens@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 217/634] HID: wacom: Do not warn about dropped packets for first packet
-Date: Wed,  2 Oct 2024 14:55:17 +0200
-Message-ID: <20241002125819.668039735@linuxfoundation.org>
+Subject: [PATCH 6.6 079/538] block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()
+Date: Wed,  2 Oct 2024 14:55:18 +0200
+Message-ID: <20241002125755.336790232@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 84aecf2d251a3359bc78b7c8e58f54b9fc966e89 ]
+[ Upstream commit 0e456dba86c7f9a19792204a044835f1ca2c8dbb ]
 
-The driver currently assumes that the first sequence number it will see
-is going to be 0. This is not a realiable assumption and can break if,
-for example, the tablet has already been running for some time prior to
-the kernel driver connecting to the device. This commit initializes the
-expected sequence number to -1 and will only print the "Dropped" warning
-the it has been updated to a non-negative value.
+Consider the following merge chain:
 
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Joshua Dickens <joshua.dickens@wacom.com>
-Fixes: 6d09085b38e5 ("HID: wacom: Adding Support for new usages")
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Process 1       Process 2       Process 3	Process 4
+ (BIC1)          (BIC2)          (BIC3)		 (BIC4)
+  Λ                |               |               |
+   \--------------\ \-------------\ \-------------\|
+                   V               V		   V
+  bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+
+IO from Process 1 will get bfqf2 from BIC1 first, then
+bfq_setup_cooperator() will found bfqq2 already merged to bfqq3 and then
+handle this IO from bfqq3. However, the merge chain can be much deeper
+and bfqq3 can be merged to other bfqq as well.
+
+Fix this problem by iterating to the last bfqq in
+bfq_setup_cooperator().
+
+Fixes: 36eca8948323 ("block, bfq: add Early Queue Merge (EQM)")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240902130329.3787024-3-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 6 +++++-
- drivers/hid/wacom_wac.h | 2 +-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ block/bfq-iosched.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index 8cf82a5f3a5bf..7660f62e6c1f2 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2368,6 +2368,9 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
- 		wacom_map_usage(input, usage, field, EV_KEY, BTN_STYLUS3, 0);
- 		features->quirks &= ~WACOM_QUIRK_PEN_BUTTON3;
- 		break;
-+	case WACOM_HID_WD_SEQUENCENUMBER:
-+		wacom_wac->hid_data.sequence_number = -1;
-+		break;
- 	}
- }
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 7d13420a16d6a..bdb7ceb680890 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -2911,8 +2911,12 @@ bfq_setup_cooperator(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+ 	struct bfq_iocq_bfqq_data *bfqq_data = &bic->bfqq_data[a_idx];
  
-@@ -2492,7 +2495,8 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
- 		wacom_wac->hid_data.barrelswitch3 = value;
- 		return;
- 	case WACOM_HID_WD_SEQUENCENUMBER:
--		if (wacom_wac->hid_data.sequence_number != value) {
-+		if (wacom_wac->hid_data.sequence_number != value &&
-+		    wacom_wac->hid_data.sequence_number >= 0) {
- 			int sequence_size = field->logical_maximum - field->logical_minimum + 1;
- 			int drop_count = (value - wacom_wac->hid_data.sequence_number) % sequence_size;
- 			hid_warn(hdev, "Dropped %d packets", drop_count);
-diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
-index 6ec499841f709..e6443740b462f 100644
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -324,7 +324,7 @@ struct hid_data {
- 	int bat_connected;
- 	int ps_connected;
- 	bool pad_input_event_flag;
--	unsigned short sequence_number;
-+	int sequence_number;
- 	ktime_t time_delayed;
- };
+ 	/* if a merge has already been setup, then proceed with that first */
+-	if (bfqq->new_bfqq)
+-		return bfqq->new_bfqq;
++	new_bfqq = bfqq->new_bfqq;
++	if (new_bfqq) {
++		while (new_bfqq->new_bfqq)
++			new_bfqq = new_bfqq->new_bfqq;
++		return new_bfqq;
++	}
  
+ 	/*
+ 	 * Check delayed stable merge for rotational or non-queueing
 -- 
 2.43.0
 
