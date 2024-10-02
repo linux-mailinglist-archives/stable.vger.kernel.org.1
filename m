@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-79152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A0198D6DC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96B298D6AC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E5AAB20DAD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BF0A284FEF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C00D1D0487;
-	Wed,  2 Oct 2024 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B00F1D0BA9;
+	Wed,  2 Oct 2024 13:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFIRWQcI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu+L7oWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B05B1D016B;
-	Wed,  2 Oct 2024 13:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177981D0B9B;
+	Wed,  2 Oct 2024 13:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876592; cv=none; b=Zl6DrTaEAkVlO+47rm6qPYLfO3/OTs4ALspAiJ0AWl8E7wyGB0U35Ge6fGXiXtO4LfA2OpyNJ9Bj1JJWcSOux0d3AA1rQJO6u3wCfW+u6mqBUPRL2IwwlDB0wcS59J5C9Di5CnZc9cGwpw22IgWcVidlf/T3CKAUkg57RetM/v4=
+	t=1727876495; cv=none; b=K9tF3LnV9ApFz4Hsuhc6czeROCnJNV+FDsodAMmpzNuKd51pVDnD8O5XP3JY3UHOYlRA4EQWpO/kE3c18WoYO2tXz6DDLrjLLElS6w8DaFHFPCXSF2uxvO4DcPP7Fvahz3PPqKP9B04tFwp5z5ghStVGkPTrBTmfHNKpCYceinU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876592; c=relaxed/simple;
-	bh=vMhEhzSEddfBZbF4ZqzQsO6jD3KlTUS0o/SXxk4mLtE=;
+	s=arc-20240116; t=1727876495; c=relaxed/simple;
+	bh=e2rgpZ0/CCNcyTusu4MR10BHwlp5c8UM5dK16TiPQLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZ8agDmd1jisYl5yWwShawOtGmpUwESPQPVS6LPmmi4vnf3b/y+exgL9a5w126A91zScN+OH1aUY9fjzjRye66nzh7YHHjXpqyRxlIEZQfLIX/h+8sB7urgz5eo0GwW4OvYsCCtabTF33YMfMzdsKfncW/ou3Ll7y6EUeTpVScg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFIRWQcI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D8EC4CEC5;
-	Wed,  2 Oct 2024 13:43:11 +0000 (UTC)
+	 MIME-Version; b=dhyHibem7/THpxsYTOy3GQBcEq8ug4y06sUHkUaFfsou8QjXnnqR31ppoD5+o0b43XCUIVK+SPh0YlFLXVypmCr1KFMNHFqaLyyXUM03ErsjhpMniX8cDn/2jThaRw21V04Qx6a2Af7HWGCCJRbhRs6wtxdQbBEWjb85cfXvkME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xu+L7oWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EA3C4CEC5;
+	Wed,  2 Oct 2024 13:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876591;
-	bh=vMhEhzSEddfBZbF4ZqzQsO6jD3KlTUS0o/SXxk4mLtE=;
+	s=korg; t=1727876494;
+	bh=e2rgpZ0/CCNcyTusu4MR10BHwlp5c8UM5dK16TiPQLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFIRWQcIM8aboyFw8fZgwTh5MXjQ3dQvXCSI8pMQ5voQx8YLVV0n5YEDo8L0Kc6mN
-	 EJo/U8afmync5ppz5neOzUh8q0ExIV1KkgKW66cY3HM1hU9ce/zl+kuPjZEfDWIP+L
-	 zZIgNztdsWDQs0FH7O6xkOtYRY+VvopDbX+0zdpI=
+	b=xu+L7oWH1eGIilQgBlk1cVS/vhWqp9oFQBxgxEPei6FnyPKNOBg+8q/I1wcKVRqcE
+	 X+1Mdc+EmT2LTs+4x4/D7IfjvKtdU02Jk4CbTiDkO+7LwwIpRs/EJVLqk6DImmxhJP
+	 by8ik5ctavxCFdApkERGGgO2bfZylUDa58kgIxN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Stols <gstols@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 455/695] iio: adc: ad7606: fix standby gpio state to match the documentation
-Date: Wed,  2 Oct 2024 14:57:33 +0200
-Message-ID: <20241002125840.618364878@linuxfoundation.org>
+Subject: [PATCH 6.11 456/695] driver core: Fix error handling in driver API device_rename()
+Date: Wed,  2 Oct 2024 14:57:34 +0200
+Message-ID: <20241002125840.658066133@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -67,46 +65,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guillaume Stols <gstols@baylibre.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 059fe4f8bbdf5cad212e1aeeb3e8968c80b9ff3b ]
+[ Upstream commit 6d8249ac29bc23260dfa9747eb398ce76012d73c ]
 
-The binding's documentation specifies that "As the line is active low, it
-should be marked GPIO_ACTIVE_LOW". However, in the driver, it was handled
-the opposite way. This commit sets the driver's behaviour in sync with the
-documentation
+For class-device, device_rename() failure maybe cause unexpected link name
+within its class folder as explained below:
 
-Fixes: 722407a4e8c0 ("staging:iio:ad7606: Use GPIO descriptor API")
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+/sys/class/.../old_name -> /sys/devices/.../old_name
+device_rename(..., new_name) and failed
+/sys/class/.../new_name -> /sys/devices/.../old_name
+
+Fixed by undoing renaming link if renaming kobject failed.
+
+Fixes: f349cf34731c ("driver core: Implement ns directory support for device classes.")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240722-device_rename_fix-v2-1-77de1a6c6495@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/core.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index a123a9e35b33f..8f9ee56c8bed2 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -419,7 +419,7 @@ static int ad7606_request_gpios(struct ad7606_state *st)
- 		return PTR_ERR(st->gpio_range);
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 8c0733d3aad8e..3b0f4b6153fc5 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -4515,9 +4515,11 @@ EXPORT_SYMBOL_GPL(device_destroy);
+  */
+ int device_rename(struct device *dev, const char *new_name)
+ {
++	struct subsys_private *sp = NULL;
+ 	struct kobject *kobj = &dev->kobj;
+ 	char *old_device_name = NULL;
+ 	int error;
++	bool is_link_renamed = false;
  
- 	st->gpio_standby = devm_gpiod_get_optional(dev, "standby",
--						   GPIOD_OUT_HIGH);
-+						   GPIOD_OUT_LOW);
- 	if (IS_ERR(st->gpio_standby))
- 		return PTR_ERR(st->gpio_standby);
- 
-@@ -662,7 +662,7 @@ static int ad7606_suspend(struct device *dev)
- 
- 	if (st->gpio_standby) {
- 		gpiod_set_value(st->gpio_range, 1);
--		gpiod_set_value(st->gpio_standby, 0);
-+		gpiod_set_value(st->gpio_standby, 1);
+ 	dev = get_device(dev);
+ 	if (!dev)
+@@ -4532,7 +4534,7 @@ int device_rename(struct device *dev, const char *new_name)
  	}
  
- 	return 0;
+ 	if (dev->class) {
+-		struct subsys_private *sp = class_to_subsys(dev->class);
++		sp = class_to_subsys(dev->class);
+ 
+ 		if (!sp) {
+ 			error = -EINVAL;
+@@ -4541,16 +4543,19 @@ int device_rename(struct device *dev, const char *new_name)
+ 
+ 		error = sysfs_rename_link_ns(&sp->subsys.kobj, kobj, old_device_name,
+ 					     new_name, kobject_namespace(kobj));
+-		subsys_put(sp);
+ 		if (error)
+ 			goto out;
++
++		is_link_renamed = true;
+ 	}
+ 
+ 	error = kobject_rename(kobj, new_name);
+-	if (error)
+-		goto out;
+-
+ out:
++	if (error && is_link_renamed)
++		sysfs_rename_link_ns(&sp->subsys.kobj, kobj, new_name,
++				     old_device_name, kobject_namespace(kobj));
++	subsys_put(sp);
++
+ 	put_device(dev);
+ 
+ 	kfree(old_device_name);
 -- 
 2.43.0
 
