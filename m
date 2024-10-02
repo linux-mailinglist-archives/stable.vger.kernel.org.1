@@ -1,95 +1,98 @@
-Return-Path: <stable+bounces-78602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A44F98D073
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 11:51:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B69198D094
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 11:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D9A1282122
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 09:51:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 337AA1F21BC8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 09:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767AF1E2019;
-	Wed,  2 Oct 2024 09:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB371E630D;
+	Wed,  2 Oct 2024 09:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDvNc/3Z"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b="B6CtcBgV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C6C1A2561;
-	Wed,  2 Oct 2024 09:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42BE1E500C
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 09:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727862713; cv=none; b=DKEbVWdw1jjqTM5SGs3bCMHKJw+0cToPaSeXiOHL0lS6ikAjKPmbnMN9UtoqCf4y0x9eCITEKGWjARTAhVrzsgq2lY1/2BksFKYbS0YSndkx1vjJ74frz5oYBGW0MerMthZ6vjAia8egOUS7KqqnESnlpWvaD7vi9eXT/Vk5rHE=
+	t=1727862962; cv=none; b=Lw6okTu7768VUs8imBIQMJ05sFCgrmFQHFK87GC4bQh8CQXhd+0X77sjw3XCNeHNr8SRSB9Ttk2xC8zmZr0gKJ0bLwu5YRWYLp2EeOa/2tK4AuQb2b6oikf9IAur5zSXwZn4zv4Kj1xN6A/IU7Vu9hOfXF5WH/zxgaxdHsggxUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727862713; c=relaxed/simple;
-	bh=oYWy7FXEI1QBLLJJEz8QY8YzcBJIzeu5d7jKvv2jiHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TpJZnwqqlZ5j9KGGBq4CjCALp2QlFtKVkbDrNaoMDEGXVfD/nsS1Wtbh1jC0CU2BJxT8BwWmmtVFp9tD4lz59Qil1zZj3+gEtba/Wqb4ToyHnQk68skON1sY/9FLOG9d+ZGUnH1wXO6JKTOFTz0250lYHxvxEsUNcEq3ay4g/9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDvNc/3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697E6C4CEC5;
-	Wed,  2 Oct 2024 09:51:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727862712;
-	bh=oYWy7FXEI1QBLLJJEz8QY8YzcBJIzeu5d7jKvv2jiHs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dDvNc/3Zz018aNCMs5mDmiJeHxnFJ0SRlQ/IJU8tfGCu6dFi5eHJuGT5adcwhtvcF
-	 f6GIupdrTF4umlekv+lF9MhHAOv7q+9DNmexZ1/iu7foRoD/3Nx0i7WA72Yoj1b+zX
-	 H/kBnU3zLdC15c0Ocy17Nq18MY3UKxnHEjqJnhKU=
-Date: Wed, 2 Oct 2024 11:51:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 033/440] arm64: dts: qcom: sm8250: switch UFS QMP PHY
- to new style of bindings
-Message-ID: <2024100238-margarine-strongbox-d096@gregkh>
-References: <20240730151615.753688326@linuxfoundation.org>
- <20240730151617.057892121@linuxfoundation.org>
- <CAO_48GGH0J9z3NCq=jH5PKQewPdrhUiNk-Bu9yKvX8yhsTWDtQ@mail.gmail.com>
- <F1136AC5-0860-4070-B4FA-86BAEFC070FB@linaro.org>
+	s=arc-20240116; t=1727862962; c=relaxed/simple;
+	bh=kprkkoRwy/gD4X7MinyLm2c5+ph18yp2cPiWRZGD/BQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Jk4nb5DcVRzcGVknPkwjZ56aH661robOebnGuj9rq/aiAw1S4Vny0fmkA61hSaHcXIT/FdE7niaRmhPlJkAO/yKlvCEILtf8L6AuiypDn/5lMQACwZhAsURxGaWwIDth7kTv3N9WzyPfKSHpzheN1BREjas7acxZY+WujJ3y5VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b=B6CtcBgV; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1727862952; x=1728467752; i=georgmueller@gmx.net;
+	bh=kprkkoRwy/gD4X7MinyLm2c5+ph18yp2cPiWRZGD/BQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=B6CtcBgVeiFbIMgqtCEpKAZ5xbywFaNGfFo11sRNso4F/Tkz21o1YFOLucGI9LyJ
+	 +zysKKFJz9AZF/52Ds5MF4RGne7kTWe5Y+7sJN6lxzeWM3bksYHMoT05UUFUIhsqR
+	 0+HF5nqyCD4nPo0wCi1mpfgflcGdIPT/6maTkdZ+Lx61Bhe62O34nKLBXYMj5nMja
+	 OQhYEvHa/3iBEL14mRnXDKLvNuwibVJ297uFsMMFkXkwxX8wp8TSWCu1Cf4Ypq3XL
+	 2dGx7jY2t5iV9WmKclSxWij4/Z7XDP7rq4RAXQ1cf7A5vg4e1X7bhuAxhT5fJr0qt
+	 qaP3YWsJejT5hBbS9A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.41.16.31] ([80.153.205.84]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N0X8u-1rzpgy2oL6-00sqoj; Wed, 02
+ Oct 2024 11:55:52 +0200
+Message-ID: <f520eda3-0831-4590-b337-3bfd85096922@gmx.net>
+Date: Wed, 2 Oct 2024 11:55:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <F1136AC5-0860-4070-B4FA-86BAEFC070FB@linaro.org>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, de-DE
+To: stable@vger.kernel.org
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>
+From: =?UTF-8?Q?Georg_M=C3=BCller?= <georgmueller@gmx.net>
+Subject: Stable request: wifi: mt76: do not run mt76_unregister_device() on
+ unregistered hw
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:0CcYuf8v2IeIlhOyjl9tMDf+UH1VawnQHRtbIqfiQuTmLpoYhv3
+ i+aU//s5udnacYrLBjeBrgJf0o3I3008zWX0Byeb3PR4d00HSfRFy3j9hpB6M1dleVf471a
+ wGe9Py8qPFNkfWClOAXGLXpdZsaOyyYLUALm0ARRGCh75agx06V2KLi53GU099Smg3SeJb1
+ tHBR4dice7HoCRn7iF7bQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:gby7YB56vYk=;JMhnPX5Etb/XONjksdOI3lBwN0X
+ NFJ2uoO4pkIkj+GG+o/Bkd+nBvxvpUZRHzqaqPrI2RbvvKa9eeyDzqildnqKKvHZjPlRI5GPm
+ lNGOiUohlhMrCHQUM+nMaIMR64k2iozZavpS7YENlju4PbcT5XiwoKdQtciQ4a4+7Gfwf/QJ4
+ RhpU9czGh7Aa7YOABozMUs9GQxH/HBl1trPDdFCMVg/fdAhMS9Prr5vzPYNe6p4RNtAtqUOiT
+ X+SzCfJc8MaS10VjAt2fdi3bpzWYuDXTTgZZng7g2PjINgcATe6/jcuY3CTao3+qrGaQmdicV
+ uOkfCbkzMZMpa9RKN33uq3KY8NuRvd2uJbz8sJCpX0tIHuFPdLGOItgVaANhUGFB/IuiAfmrn
+ v41cfzVOq7gKWrlBTpVHfZ3+5/8rd/dbvCFnaGaNdc1kp2a7UDxg8zK97DYyUpgxKseR9qiWy
+ iwHrUI83f9jdq5siDQBqUPc+nZwL0v9VrlpMxB7EVYyjfVkdgOSqeRVUEF7VLXy1yt0n78+s0
+ UTF69FVlcbjt1P3Z0998hVVkX8JvEgAM7gUFwnRCKe7K4bfl/T30Cj4k3NdiCXxlg8/B5Le8Q
+ nGLNLm2zYWvNsRw+5wG3ogDFRlngY3BXp8N6flezKWtl9RE/O+o+xb5hsv3n9YT9ycd/ewj3H
+ xMYU+Uy4EIcxRqM4x45FN4CAfs5DaaBmGv3OciltfUgSi4tiHBZZafbE8WEYNcznN9h9bvUAv
+ pt29loDdVhWUQ9KV+LlowaYogLXT+NdVlRGWWp3fhvu/xflbd0j1ZsX93vCUoZNGk/drTTtUb
+ VrIp6vcAKSItXfVL2MDeWXsQ==
 
-On Tue, Oct 01, 2024 at 09:01:09PM +0300, Dmitry Baryshkov wrote:
-> On October 1, 2024 8:27:55 PM GMT+03:00, Sumit Semwal <sumit.semwal@linaro.org> wrote:
-> >Hello Greg,
-> >
-> >On Tue, 30 Jul 2024 at 21:25, Greg Kroah-Hartman
-> ><gregkh@linuxfoundation.org> wrote:
-> >>
-> >> 6.1-stable review patch.  If anyone has any objections, please let me know.
-> >>
-> >> ------------------
-> >>
-> >> From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> >>
-> >> [ Upstream commit ba865bdcc688932980b8e5ec2154eaa33cd4a981 ]
-> >>
-> >> Change the UFS QMP PHY to use newer style of QMP PHY bindings (single
-> >> resource region, no per-PHY subnodes).
-> >
-> >This patch breaks UFS on RB5 - it got caught on the merge with
-> >android14-6.1-lts.
-> >
-> >Could we please revert it? [Also on 5.15.165+ kernels].
-> 
-> Not just this one. All "UFS newer style is bindings" must be reverted from these kernels.
+commit 41130c32f3a18fcc930316da17f3a5f3bc326aa1 upstream
 
-How many got backported?
+This was not marked as stable (but has a Fixes: tag), but causes the USB stack
+to crash with 6.1.x kernels.
 
-thanks,
+The patch does not apply when cherry-picking because of the context.
+Should I send the patch again with updated context so that it applies without
+conflicts?
 
-greg k-h
+Best regards,
+Georg
+
 
