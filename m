@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC8E98D8F4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51D398D5A7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E1801C215EE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0FE288DCC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC70F1D0420;
-	Wed,  2 Oct 2024 14:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896D41D079E;
+	Wed,  2 Oct 2024 13:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpKmG0DV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LP5t/SFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C611D1728;
-	Wed,  2 Oct 2024 14:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C761D0796;
+	Wed,  2 Oct 2024 13:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877727; cv=none; b=ZfImJpdPxQe9WBnQxzhuiSnRS0GvcJitPGHI7nHDZd4m1v/oMNx7k1XadakPMTV8dLecB9HpWCYdvKYZGvMJDXxxTYOA39+e3vE/ezQPelWC1U3Lfo2+0X2NYCPdmTzyhOLdPyr7KJtE6Fu/BldVkdJRTmvZFPUW114jPI98FZw=
+	t=1727875923; cv=none; b=kXtae5bNQ/poD5VPSYgSgkhxT5iqqnpQA/wxpUOXh937vgmFVuIlO0o6O6KThVSNuDDB+PfMiMTmDbiqpDVHHCIKnIT4L2KdPE9a8yXo8rG48P9b/4M79PorqOpdcs3Om89C7Hn69zXahgJgpBRF0D1pxA81Bw6nwZPtZChiWQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877727; c=relaxed/simple;
-	bh=EJoRk00ZcCSzZmWI0u1xuOD22LQ3GJKlGaWVxUs9hzI=;
+	s=arc-20240116; t=1727875923; c=relaxed/simple;
+	bh=/KhkLk92WaPw/wqbvhOoChGd5vnCXWL+de5LflvdLQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSb2KdDSI/IWLCy6qLYRv3fkI9d7Z54zfkmBJjhw3+XccYM5WgpHFn+RK2kb0kdTxtjHjU5n7MyefyOdYvu9jwIrutc46On3tD9FPz0I6WMpgV7Fe8EvwBAPdrf/3Qivu/n5x4rKk1ul4zq6vs7iE551m6KBZ030dkMqC6QSXuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpKmG0DV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6143C4CEC2;
-	Wed,  2 Oct 2024 14:02:06 +0000 (UTC)
+	 MIME-Version; b=SRdnCTJs1rJPf8lgQdZTlgNee+9l3TG/kswomNJ7uXQiuj/G6aX4tXHCZIyjEwlGpgUujWMOeZCB8d2JnqNYUuS0MOO0WhvBdv41KE8iFxB/eYZPEbKbSZCqnFgCSB8qahxh4pZk6BStxXED3jzF54nP0dcT8aK6P0aWkXI6bik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LP5t/SFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A27C4CEC5;
+	Wed,  2 Oct 2024 13:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877727;
-	bh=EJoRk00ZcCSzZmWI0u1xuOD22LQ3GJKlGaWVxUs9hzI=;
+	s=korg; t=1727875923;
+	bh=/KhkLk92WaPw/wqbvhOoChGd5vnCXWL+de5LflvdLQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpKmG0DVjwZ0ZXeUdf82jQzdNoDuJPcbnbverxLTGavdyrQQ+w6Lmfrk1q53x2T2H
-	 h1hu9gIsqYdL5Cy9H6f0vqPPTxyRdy8Q9g7UDvO3XvYe5rhGT/cVbFJmmmqmFHS6Lb
-	 N0GFdgPyF8lDUGcZcFw8Q7XIGR3JJ9PUB7g7tit8=
+	b=LP5t/SFdJOCISb10YR2U10PHnQLvAfzTULd6OgMCVQCYUvXiNfjbnYXm6Ew8zcBMS
+	 faYHKgLBa18jdMiZwGhf/CryQJSZ45FPm38MBCoDonDBaZiBtbrPRuuHbyBzRLS0BD
+	 myy8skZWSQbU9l0WhA53lPDR7KI1sikHZ5C5d1kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Will Deacon <will@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 166/634] iommu/amd: Convert comma to semicolon
+Subject: [PATCH 6.11 268/695] selftests/bpf: Fix missing ARRAY_SIZE() definition in bench.c
 Date: Wed,  2 Oct 2024 14:54:26 +0200
-Message-ID: <20241002125817.663222958@linuxfoundation.org>
+Message-ID: <20241002125833.147061570@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 86c5eac3c4c4a2ee124d202af9a141bd0457ee68 ]
+[ Upstream commit d44c93fc2f5a0c47b23fa03d374e45259abd92d2 ]
 
-Replace a comma between expression statements by a semicolon.
+Add a "bpf_util.h" include to avoid the following error seen compiling for
+mips64el with musl libc:
 
-Fixes: c9b258c6be09 ("iommu/amd: Prepare for generic IO page table framework")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/20240716072545.968690-1-nichen@iscas.ac.cn
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: 7a41dcb52f9d ("iommu/amd: Set the pgsize_bitmap correctly")
+  bench.c: In function 'find_benchmark':
+  bench.c:590:25: error: implicit declaration of function 'ARRAY_SIZE' [-Werror=implicit-function-declaration]
+    590 |         for (i = 0; i < ARRAY_SIZE(benchs); i++) {
+        |                         ^~~~~~~~~~
+  cc1: all warnings being treated as errors
+
+Fixes: 8e7c2a023ac0 ("selftests/bpf: Add benchmark runner infrastructure")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/bc4dde77dfcd17a825d8f28f72f3292341966810.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/io_pgtable.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/bench.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
-index 9d9a7fde59e75..1074ee25064d0 100644
---- a/drivers/iommu/amd/io_pgtable.c
-+++ b/drivers/iommu/amd/io_pgtable.c
-@@ -588,9 +588,9 @@ static struct io_pgtable *v1_alloc_pgtable(struct io_pgtable_cfg *cfg, void *coo
- {
- 	struct amd_io_pgtable *pgtable = io_pgtable_cfg_to_data(cfg);
+diff --git a/tools/testing/selftests/bpf/bench.c b/tools/testing/selftests/bpf/bench.c
+index 627b74ae041b5..90dc3aca32bd8 100644
+--- a/tools/testing/selftests/bpf/bench.c
++++ b/tools/testing/selftests/bpf/bench.c
+@@ -10,6 +10,7 @@
+ #include <sys/sysinfo.h>
+ #include <signal.h>
+ #include "bench.h"
++#include "bpf_util.h"
+ #include "testing_helpers.h"
  
--	cfg->pgsize_bitmap  = AMD_IOMMU_PGSIZES,
--	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE,
--	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE,
-+	cfg->pgsize_bitmap  = AMD_IOMMU_PGSIZES;
-+	cfg->ias            = IOMMU_IN_ADDR_BIT_SIZE;
-+	cfg->oas            = IOMMU_OUT_ADDR_BIT_SIZE;
- 	cfg->tlb            = &v1_flush_ops;
- 
- 	pgtable->iop.ops.map_pages    = iommu_v1_map_pages;
+ struct env env = {
 -- 
 2.43.0
 
