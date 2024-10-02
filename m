@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-79130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186CA98D6BE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:43:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9FF098D6CD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D9F1C222E1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:43:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF1C1F240BA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9781D049D;
-	Wed,  2 Oct 2024 13:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7A51D0B86;
+	Wed,  2 Oct 2024 13:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUJRw8z0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9V97djb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496C11CDFBC;
-	Wed,  2 Oct 2024 13:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294D1D079E;
+	Wed,  2 Oct 2024 13:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876527; cv=none; b=MyqxNa7HTV01TlMXKvCb1I6P+zKQ0QwYD3GivJAUSigTNbhS7OpIO1yfIPqppRz73UuaPFEnfG/6PkCVftSvGvUlRfyPgGqbwy2SXKllba3MJquplJQIEbGLNLRSmitptTWNcRoihAIxpBb/xuU8+aBWdr3MUiZjxCbnBkKNukU=
+	t=1727876559; cv=none; b=uTe0Cdfj7tw4/hEq5+6dg2sApN5tvglIncJoBBkGpbdVwmQxsPq2RpLYKfy4Qtl71vEgUDYWCXwv5YaXln+qIGQbUMiVZ0h0jGbI/yFkk/F239vjjjKuyqhoZ5MpAvYCM5+TU6MpDI2gGfnKsAmhJosJcx8Cm8fuhGFcsSDToJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876527; c=relaxed/simple;
-	bh=iqFk93x/rq122Ajk4Q5c+Ye7CC0LlIyQ8dtPIc/s82I=;
+	s=arc-20240116; t=1727876559; c=relaxed/simple;
+	bh=HA7xc5AfffQB3FkV+e5B3G1WmfhSey8mtFvm6wDGsVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQTFWTUoyos35T3eI/RsI6KCylldMbwEX1Bs+5C5ocKWkaKziql5Y3MMhbDXOhhZcmT8+xDIeY86xpvHSu+BVnh++hhSqDrMc4ZyjfW+k/HFD034pzD2j2XpJbdmorcks1opjsU/KqyWU7X6WnWu+uvlOKybpBUTFD38Kz5Cy3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUJRw8z0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6114C4CEC5;
-	Wed,  2 Oct 2024 13:42:06 +0000 (UTC)
+	 MIME-Version; b=tmaarQ2aUrq/MwOTKuSbGl2pqqKQyGievW4j31j1gV5gbS3h+kmeVzJpE3JPHkx8NP9fGJmm5H2R2Ua2yIjfLN5yzmDV6ws4xAFSdQ1IhEP5QQU4D7VB6uR0bp8exZO6En0bNzT+rPFzdrIkcRxQ86IUEQ/0930Vqp+Ov0Zrbqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9V97djb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A48CC4CEC5;
+	Wed,  2 Oct 2024 13:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876527;
-	bh=iqFk93x/rq122Ajk4Q5c+Ye7CC0LlIyQ8dtPIc/s82I=;
+	s=korg; t=1727876559;
+	bh=HA7xc5AfffQB3FkV+e5B3G1WmfhSey8mtFvm6wDGsVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUJRw8z0BMPaa6EHw8tbSZCWsmZBsXkAwxYWr/rf2BagqTp6NQNooDvIQNrW3A59k
-	 IqcKhxH1Dnr2ydlz3LZMahU2FGmiJB+q54AubC1Km44lBoTobYFSwtQ5QsL2hLapfu
-	 cVxvatInZeS9hzlvXiaLejvvdfXf60VAP3GQyp7g=
+	b=a9V97djb+A3WofDWV5mP/bweAC4vSGfCnoo2dTqZFG74U4inHZeEy9EDdq96IiOB7
+	 rPbpAvKf2pzQ4Lx9rDccbix6ltBq7S2PuJm5xMFH2t+tlez/YqQEjh7rKbySHzOnEP
+	 WXsdtdxMdCmarhMSO8jJnq5dYnONUC9r7MZ1QHa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 457/695] ABI: testing: fix admv8818 attr description
-Date: Wed,  2 Oct 2024 14:57:35 +0200
-Message-ID: <20241002125840.698159707@linuxfoundation.org>
+Subject: [PATCH 6.11 458/695] iio: chemical: bme680: Fix read/write ops to device by adding mutexes
+Date: Wed,  2 Oct 2024 14:57:36 +0200
+Message-ID: <20241002125840.738422719@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,35 +66,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-[ Upstream commit 7d34b4ad8cd2867b130b5b8d7d76d0d6092bd019 ]
+[ Upstream commit 77641e5a477d428335cd094b88ac54e09ccb70f4 ]
 
-Fix description of the filter_mode_available attribute by pointing to
-the correct name of the attribute that can be written with valid values.
+Add mutexes in the {read/write}_raw() functions of the device to guard the
+read/write of data from/to the device. This is necessary because for any
+operation other than temperature, multiple reads need to take place from
+the device. Even though regmap has a locking by itself, it won't protect us
+from multiple applications trying to read at the same time temperature and
+pressure since the pressure reading includes an internal temperature
+reading and there is nothing to ensure that this temperature+pressure
+reading will happen sequentially without any other operation interfering
+in the meantime.
 
-Fixes: bf92d87d7c67 ("iio:filter:admv8818: Add sysfs ABI documentation")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Link: https://patch.msgid.link/20240702081851.4663-1-antoniu.miclaus@analog.com
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://patch.msgid.link/20240609233826.330516-2-vassilisamir@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/chemical/bme680_core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-index 31dbb390573ff..c431f0a13cf50 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-@@ -3,7 +3,7 @@ KernelVersion:
- Contact:	linux-iio@vger.kernel.org
- Description:
- 		Reading this returns the valid values that can be written to the
--		on_altvoltage0_mode attribute:
-+		filter_mode attribute:
+diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+index 500f56834b01f..a6bf689833dad 100644
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -10,6 +10,7 @@
+  */
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+@@ -52,6 +53,7 @@ struct bme680_calib {
+ struct bme680_data {
+ 	struct regmap *regmap;
+ 	struct bme680_calib bme680;
++	struct mutex lock; /* Protect multiple serial R/W ops to device. */
+ 	u8 oversampling_temp;
+ 	u8 oversampling_press;
+ 	u8 oversampling_humid;
+@@ -827,6 +829,8 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
+ {
+ 	struct bme680_data *data = iio_priv(indio_dev);
  
- 		- auto -> Adjust bandpass filter to track changes in input clock rate.
- 		- manual -> disable/unregister the clock rate notifier / input clock tracking.
++	guard(mutex)(&data->lock);
++
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		switch (chan->type) {
+@@ -871,6 +875,8 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
+ {
+ 	struct bme680_data *data = iio_priv(indio_dev);
+ 
++	guard(mutex)(&data->lock);
++
+ 	if (val2 != 0)
+ 		return -EINVAL;
+ 
+@@ -967,6 +973,7 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+ 		name = bme680_match_acpi_device(dev);
+ 
+ 	data = iio_priv(indio_dev);
++	mutex_init(&data->lock);
+ 	dev_set_drvdata(dev, indio_dev);
+ 	data->regmap = regmap;
+ 	indio_dev->name = name;
 -- 
 2.43.0
 
