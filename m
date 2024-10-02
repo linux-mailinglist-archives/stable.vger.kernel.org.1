@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA49598DD81
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FAA98DB00
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 965D4B24F47
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C94328196F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B68F1D0DE9;
-	Wed,  2 Oct 2024 14:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77751D0F4E;
+	Wed,  2 Oct 2024 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPRUywKx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZQHa6Cf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A111E892;
-	Wed,  2 Oct 2024 14:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655221D07BC;
+	Wed,  2 Oct 2024 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880375; cv=none; b=K3SSvNuoVnYsSHsJR1HJP2Ho6l3APbGZwsn0cwt2PBG7fvW/VxuVHyMnxJRiT6g4gbqvBH6zjkbywqp1t4e5wfedaDp5riFeB5RQdPU4GNHqvNqORlRIDDDwil9Daa3FjhsXSuwHVOsyvD0tsj1oUHL15Npjb4cEwfRK1DdfRMg=
+	t=1727878920; cv=none; b=T/msyUKxmi3DfLKqYGcqPGj9xwC9W+w5sLnKy/JR9r0UCDL22IGE99kGY0085gVx2gN4OP/+xtkn0a3czG3U1UWG5kgEfNkeSdnam6NlOYAgjM+WY2VkS5hGqJZ6z2XRGXujrfGHFPsr5KRayI8OvyqJT4BymmWoTwn0HOzQGqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880375; c=relaxed/simple;
-	bh=gHt8nUA8dkQk/Hx/36J2KCQl+zGG41+bPI/nthl9GB8=;
+	s=arc-20240116; t=1727878920; c=relaxed/simple;
+	bh=ZnC0FZdV4D3lhkQ9UGLL+f+2wWnxN16No//GhLXgpZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8Amp2OfRIzBrgrxyL0KgKeupEUmxQ6ZlJOKek/tVWWuSr54Ie4Hn1jv/oj3y21XFVLJzSN0EMP+ZE1wy7X8fqUyZxI+H9YuoSg+wbfiYWpMU4bWuCSPhTRssHdt4OoK8StdyXh8d4LFScGBvywK8ebh/zRrbh53PQVxe71a5fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPRUywKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E88C4CEC2;
-	Wed,  2 Oct 2024 14:46:14 +0000 (UTC)
+	 MIME-Version; b=piInBXyQa/NZCHgnXEHgo3L8esKzMmQVrDpf4imnHFgw1YNDQ8NjDl4sJgMZFvVS/euajwYKfDla5VHK8l0t7Wobzi48bjM7WhEDlAGDa0cBXmt65TvIAo3fmUVHDKLJgsb2O30ppBVhlxTccic8u4NvQ7ozM7fcGV2wWNXpDsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZQHa6Cf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE75DC4CEC2;
+	Wed,  2 Oct 2024 14:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880375;
-	bh=gHt8nUA8dkQk/Hx/36J2KCQl+zGG41+bPI/nthl9GB8=;
+	s=korg; t=1727878920;
+	bh=ZnC0FZdV4D3lhkQ9UGLL+f+2wWnxN16No//GhLXgpZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPRUywKxLigRxd2CQwSfbx8x3krHTJwV6lubIqhCjH0X/YX73keQArUTiCOLgQcjN
-	 DyGH2ueGUwx8qVva7g9oUY7fpAA6s7H5JsH2QAJ7GbAJKU7xXJvmlfo8RU0jsJNnOD
-	 kbRBgqHGqJL50rDne0xn2OzYO6Ec2rt0Xa+OJ2d4=
+	b=QZQHa6Cf3oVZgH4T7/RRnyhoBAeOh2+sKtDUJfy8fL0oG1VNiunV3v4VhJNZPY1As
+	 MKY/sjJujTti2iijGV79jFn1qJEWtMEPD7tzIhUtYiYeD9HrcsQyr7SNFUNs1iuuTZ
+	 i9xHD3nLuYNs0/2nmf0/LqQcywBHZUcX5rcF6gn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 406/538] Input: adp5588-keys - fix check on return code
-Date: Wed,  2 Oct 2024 15:00:45 +0200
-Message-ID: <20241002125808.462205513@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.10 546/634] perf/x86/intel/pt: Fix sampling synchronization
+Date: Wed,  2 Oct 2024 15:00:46 +0200
+Message-ID: <20241002125832.660370535@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit eb017f4ea13b1a5ad7f4332279f2e4c67b44bdea upstream.
+commit d92792a4b26e50b96ab734cbe203d8a4c932a7a9 upstream.
 
-During adp5588_setup(), we read all the events to clear the event FIFO.
-However, adp5588_read() just calls i2c_smbus_read_byte_data() which
-returns the byte read in case everything goes well. Hence, we need to
-explicitly check for a negative error code instead of checking for
-something different than 0.
+pt_event_snapshot_aux() uses pt->handle_nmi to determine if tracing
+needs to be stopped, however tracing can still be going because
+pt->handle_nmi is set to zero before tracing is stopped in pt_event_stop,
+whereas pt_event_snapshot_aux() requires that tracing must be stopped in
+order to copy a sample of trace from the buffer.
 
-Fixes: e960309ce318 ("Input: adp5588-keys - bail out on returned error")
+Instead call pt_config_stop() always, which anyway checks config for
+RTIT_CTL_TRACEEN and does nothing if it is already clear.
+
+Note pt_event_snapshot_aux() can continue to use pt->handle_nmi to
+determine if the trace needs to be restarted afterwards.
+
+Fixes: 25e8920b301c ("perf/x86/intel/pt: Add sampling support")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240920-fix-adp5588-err-check-v1-1-81f6e957ef24@analog.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lkml.kernel.org/r/20240715160712.127117-2-adrian.hunter@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/adp5588-keys.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/pt.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/input/keyboard/adp5588-keys.c
-+++ b/drivers/input/keyboard/adp5588-keys.c
-@@ -627,7 +627,7 @@ static int adp5588_setup(struct adp5588_
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -1606,6 +1606,7 @@ static void pt_event_stop(struct perf_ev
+ 	 * see comment in intel_pt_interrupt().
+ 	 */
+ 	WRITE_ONCE(pt->handle_nmi, 0);
++	barrier();
  
- 	for (i = 0; i < KEYP_MAX_EVENT; i++) {
- 		ret = adp5588_read(client, KEY_EVENTA);
--		if (ret)
-+		if (ret < 0)
- 			return ret;
- 	}
+ 	pt_config_stop(event);
  
+@@ -1657,11 +1658,10 @@ static long pt_event_snapshot_aux(struct
+ 		return 0;
+ 
+ 	/*
+-	 * Here, handle_nmi tells us if the tracing is on
++	 * There is no PT interrupt in this mode, so stop the trace and it will
++	 * remain stopped while the buffer is copied.
+ 	 */
+-	if (READ_ONCE(pt->handle_nmi))
+-		pt_config_stop(event);
+-
++	pt_config_stop(event);
+ 	pt_read_offset(buf);
+ 	pt_update_head(pt);
+ 
+@@ -1673,11 +1673,10 @@ static long pt_event_snapshot_aux(struct
+ 	ret = perf_output_copy_aux(&pt->handle, handle, from, to);
+ 
+ 	/*
+-	 * If the tracing was on when we turned up, restart it.
+-	 * Compiler barrier not needed as we couldn't have been
+-	 * preempted by anything that touches pt->handle_nmi.
++	 * Here, handle_nmi tells us if the tracing was on.
++	 * If the tracing was on, restart it.
+ 	 */
+-	if (pt->handle_nmi)
++	if (READ_ONCE(pt->handle_nmi))
+ 		pt_config_start(event);
+ 
+ 	return ret;
 
 
 
