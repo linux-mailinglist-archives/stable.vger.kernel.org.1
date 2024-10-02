@@ -1,102 +1,90 @@
-Return-Path: <stable+bounces-78654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C720298D376
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C35D98D378
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E8F128322B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24765283A3E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807661D0411;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60311D0418;
 	Wed,  2 Oct 2024 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b="kYsQiO02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6DtdAiu"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF05D1D0141
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 12:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697421D040E
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 12:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727872893; cv=none; b=dfBB8ceGc8h31TwDMVAGiIv5N6MhZZHCt9QoX2sG89BnFgQzUonP5m0wtlhcjjXYuXmcPKezxOB52wpMtHmTpgLY5VVxs9hs9INry6vhVqWO1bHLiBfJTT4dAmdPAFJllBgVjFm5gUvTFC8/g0YNlqLTajjVK57GbxIcrz/UP3Y=
+	t=1727872893; cv=none; b=VjdU8kJFXKkpYhenJga1puMw8gVlexjvFnnhcmM3qLrgYXoeW4bwD6JLh9/6NVAwViF2qK44UcNNCERtiSKnY/ZvgsQGJjv94+cXNQp/2qGBkZFJ4RfAsTiwhtX/C6+1nySRetWS3twcePx95fYsyRgE4124A19BKQBpUv8fCos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727872893; c=relaxed/simple;
-	bh=C4utB14r9gCxQ+O/HXcvQyObNXDOaCxafEgXaEYT+QA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dObXvYch9eP47vdA1yBPvdo3wsisethc+NndrvDJ9IHlifkPOwxIuZ1qSRZYfaub89exfjed0xh4F3Ud6gQmG3V/Z2SpUTE9NKOr2w0KENvClla+1VbktwHRbgzfPnXgWI7F2VVGkXEMHkvF07gMRQpxnO8aWaenD0XufsUDdMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b=kYsQiO02; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1727872882; x=1728477682; i=georgmueller@gmx.net;
-	bh=C4utB14r9gCxQ+O/HXcvQyObNXDOaCxafEgXaEYT+QA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=kYsQiO02cj8HwuZSvK4cRGx51rawLP6KvaDfiw9bP0VYMu+d5baw5GlrdVj8Iahg
-	 tn6tXjvBWRK5lqzKbPdiPeS12e3p0JQzcVHPkqvXuU+L6MTm5/onDoGDuiav08R+W
-	 YAe98F8AH96KvuFvbdYl81VeqlC45B3QNAJfnyUwCwmY8P8NRJPkPnveNwWjxhMdk
-	 p39cZ+Wr5DU9YyvgohM0EgECJOWIyj6ve56K/ZkZZM2wdtKr7Raya7X+9vmmYq5HW
-	 Z0gZ8YmpLoQ+6LnG2kPuPwAbzrCg7EH/5gHUIUZ3y2SlF57mqeGmDb1GSm3X7v+YI
-	 7ipE88pd5JruB+ZZpw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [10.41.16.31] ([80.153.205.84]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBDj4-1skNXo12Xm-00Gurd; Wed, 02
- Oct 2024 14:41:22 +0200
-Message-ID: <d039eb47-d41e-48d3-a51f-1a0cb6c0ebb9@gmx.net>
-Date: Wed, 2 Oct 2024 14:41:21 +0200
+	bh=891JsYRqKPjA1U/8qJ5D8CgoQUtBX3+jfNSxSkQeAcQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QVF6W+hjec0+BlITjJSMb2wpYwL6wT77AAm78fcZEV/0qV0XAt+YvK3ywZRLzJdjMyvpIVpv49skxCv4OBe5uZYj7rQwlM7I+xw7M+68WCoXtLc+rhGZ0chD/wO5SpcY7kmbReoMUb+MF6Z7ySVv4axDAXtmVh7fO+FfKgRvJuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6DtdAiu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A03C4CEC5;
+	Wed,  2 Oct 2024 12:41:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727872892;
+	bh=891JsYRqKPjA1U/8qJ5D8CgoQUtBX3+jfNSxSkQeAcQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O6DtdAiuqZAKMLv21tYXFfepV3IFGvbz50uAijm6o3/PZKDMrLHBbQcoZcTUT/w6x
+	 vtVD0frBaxwwowCDFezSTHTVm6xGJFRID1AnrxWXFnLuOWRcmckQ2hPOq+QnXw8tjX
+	 +XNQ3tsRIiPT8YPIpClg+DZWfld0yA1YmErlHyR4=
+Date: Wed, 2 Oct 2024 14:41:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Alexey Gladkov (Intel)" <legion@kernel.org>
+Cc: stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH 6.6.y] x86/tdx: Fix "in-kernel MMIO" check
+Message-ID: <2024100217-casing-endeared-f49e@gregkh>
+References: <2024100100-emperor-thespian-397f@gregkh>
+ <20241002122359.83485-1-legion@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: do not run mt76_unregister_device() on
- unregistered hw
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Lorenzo Bianconi <lorenzo@kernel.org>,
- Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
- Helmut Grohne <helmut@freexian.com>, Kalle Valo <kvalo@kernel.org>
-References: <2024100221-flight-whenever-eedb@gregkh>
- <20241002120721.1324759-1-georgmueller@gmx.net>
- <2024100217-sighing-rehab-b6fd@gregkh>
-Content-Language: en-US, de-DE
-From: =?UTF-8?Q?Georg_M=C3=BCller?= <georgmueller@gmx.net>
-In-Reply-To: <2024100217-sighing-rehab-b6fd@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:8zfxFTpKPU4nlE1tdBpuVctZC0fWSA5GJ5kaEYVYpNRBmjvqvx4
- IarRDQggF/9a22XHrJmNWEq5DYqT0TOuDpvksd3UCFQE9GOWbwVWmVraSmXTRCnJ4ON1FyD
- g57XbX1azS6KLxAZtM+uGAoa5gd7XeCVUj6bkgRUopwlQc9Brf6ACi1GXYLZ3iqEZQhvfAf
- dNWLylF1tzXB7XbLiQTEA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:MGa+idyptW0=;+y2KWGu+wxIISBAthknH1c5ZHAP
- Lf1dIIuK1UOFnGH/+m5dG5DL6l80UWCfIUdYgUutY8LpFHZbktjpk81Kr88O4YVkS51u6BnvQ
- JBrblDXl+CpfoB3QOSty4ZZG9g0LIm0dC+BKBsATl3qsRDDPWbGjvbFGrk8sx7MxhkSH7dwTj
- ub4eqSyphoXdEkAncmQuz0eW5YaHIw+M0474cPfcgeOcRnD5wo5xcYhXP9YJkbWyzuusVFCoT
- pISeLN2axB1FhvJcl2rOE6bx6yb5o6diuiFfZ0bjg4LEDRW5cfOsq6REYlfugy5NXXx8zqkIF
- js6qOffpxQfmM4ciensPYwxryg6ZxN4V/g6hN7lFgxFQVS7OHJx16LCVG1/QNLJqA2fHypmLJ
- okImdV0w90AprlROP+0IoyjiycRoY9hZnNykBCJKspdk0SO43q1ZR4zs/mn/xQpNrtpfxc8v5
- GQlziaXL2jHOaU9/y3mcckQRuS/VMPanEXWaxfYfKEn2nWrj+6f2m4FV3mWGPX3q2ioHT0cxL
- DxSbLKjP44EQquwIfV9Y31GO7Xl0y5trntbi9u+RyxGpn0pBuBkyENuhdrwla9OnvA7b5KFTq
- rH1RAodjm4KuXfeTqsLdBfSbTfkO+MReV6SLF3x8cRszLQhH61B+HAIr6GY+JGektPsIieppL
- FXH9THTjFEngxm3+kklYPsTSwEyGb3cCPdIHcnmT4ZuaLY2lNI/xgprLtZhUPVVhCcCO0g0GJ
- H2NTN9kHV1ps1hsV6XEA/xy98roq+leDPeWCjcJEO5sin4IQ1XPFnaKEXP/4nwh5/47kNld3A
- 8Shd7dxZVmGH6c/2VozuEPsg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241002122359.83485-1-legion@kernel.org>
 
-> What kernel tree(s) do you want this applied to?
+On Wed, Oct 02, 2024 at 02:23:59PM +0200, Alexey Gladkov (Intel) wrote:
+> TDX only supports kernel-initiated MMIO operations. The handle_mmio()
+> function checks if the #VE exception occurred in the kernel and rejects
+> the operation if it did not.
+> 
+> However, userspace can deceive the kernel into performing MMIO on its
+> behalf. For example, if userspace can point a syscall to an MMIO address,
+> syscall does get_user() or put_user() on it, triggering MMIO #VE. The
+> kernel will treat the #VE as in-kernel MMIO.
+> 
+> Ensure that the target MMIO address is within the kernel before decoding
+> instruction.
+> 
+> Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
+> Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc:stable@vger.kernel.org
+> Link: https://lore.kernel.org/all/565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion%40kernel.org
+> (cherry picked from commit d4fc4d01471528da8a9797a065982e05090e1d81)
+> Signed-off-by: Alexey Gladkov (Intel) <legion@kernel.org>
+> ---
+>  arch/x86/coco/tdx/tdx.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
 
-linux-6.1.y, please.
+Now queued up, thanks.
 
-Thank you,
-Best regards,
-Georg
-
+greg k-h
 
