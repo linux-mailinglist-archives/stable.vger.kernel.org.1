@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-80456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A643898DD84
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D9098DB13
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5290B1F25E39
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4BED1C227F8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887861CCEDA;
-	Wed,  2 Oct 2024 14:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34A31D0DDF;
+	Wed,  2 Oct 2024 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHmlwKPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJLzCTqj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450651EEE6;
-	Wed,  2 Oct 2024 14:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDC81D097D;
+	Wed,  2 Oct 2024 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880425; cv=none; b=idecWbkKcCwiD6chpIPQA+YXTFSB00UG4LV/WalbJUvNcDX+OMVxMY4V2VjYxXAvtsFXJjEoP4gMjb0VKeimcFLKGwGdo7sjVv6CJIokvrtv/ij8qB8tw9gzW19hDzPnhm/B+KlcJ+S8SKSIThAiiGbL374tUvc8z2Ew0hQ2lKQ=
+	t=1727878967; cv=none; b=VeFFG7vSrP5AnVlnZjXdMGL2yLf+afkHSgq9fI3PN4raIBEe2qJLLaDkJAn6Cqlq8PmISqRK9VnkcRXo9e6DaJKYLC5z1auLT4VLEFlndJCOgxSgkoBC1pWXIlXHy2MeWTV+ZsaUXMJQIARZSok5nTy3eZkvvQH8VdFTnv6QyMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880425; c=relaxed/simple;
-	bh=nCzkOGNDu8fq65aaSu71i5Aza3mH+Ti+10oMhkYOMX8=;
+	s=arc-20240116; t=1727878967; c=relaxed/simple;
+	bh=RUkQb291UoTPK1pxTfEs/myJwHZaYJfXY/mhyeCVcPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etFgSefrYSEXRKqmgUp6w64+9WtB1mZOBHxUd+nzoUMBKAtfaPL/f1+aD55sICvZIA9kCOAIJsPG2eg00OGkFbZ6D41XfSU/V4UaMgE2hXoY+bCUP1DgERUwXgr7o+rlh3+XWrk3ba3zX+KJ7tHXHw4XgzeQq7mx4BaiCkhBIYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHmlwKPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D1DC4CEC2;
-	Wed,  2 Oct 2024 14:47:04 +0000 (UTC)
+	 MIME-Version; b=Z+xr3Ub5x8dQsTTLX3ILiHfqo9UHAFca0Lk/8O5V9nIe42p4NH5DuD9FgG2mo449G1nsYmruOk+Nii6a4qnC6SpHLdh9UfkhM6mo/p3X7pVU+3maoYSmOuR8v+DpMoseUr9TwJglAxCLCCcoHEwQDgIk2UdEx2B4748YyEvLky0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJLzCTqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8B8C4CEC2;
+	Wed,  2 Oct 2024 14:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880425;
-	bh=nCzkOGNDu8fq65aaSu71i5Aza3mH+Ti+10oMhkYOMX8=;
+	s=korg; t=1727878967;
+	bh=RUkQb291UoTPK1pxTfEs/myJwHZaYJfXY/mhyeCVcPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHmlwKPUqM8eAaBCgetwQS0gisQ3GyTEujRZmcF/SXZ6AqWbvFKd2+SwxaHsX1uYy
-	 TBRGe2ZWKzzJw53OnRDx4bGmi65/HQduft3p+2lseHL/b6etfUzQn0X1Roy35Gf7zV
-	 onyWmOoMrk2SqPjlUXep9l7uTVU2ikYOMGw6G/sg=
+	b=nJLzCTqjRCBYVGjqNCG0dd/o7mTNRgr62M6D1QTe7NhlxHhhLe/qLvXInxHTfncjV
+	 rLOQr4rL6INoC60ncmBPQ0rU8IzFyqezI1qA/XN3utwRzrgXqKqSe7fXF3XbfzAP8o
+	 NBX88TqDgpjUpfsPAELlsdUqJgcK+cp3GGJsT5c4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.6 454/538] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 593/634] KVM: x86: Drop unused check_apicv_inhibit_reasons() callback definition
 Date: Wed,  2 Oct 2024 15:01:33 +0200
-Message-ID: <20241002125810.363365385@linuxfoundation.org>
+Message-ID: <20241002125834.520752735@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 
-commit f503ae90c7355e8506e68498fe84c1357894cd5b upstream.
+[ Upstream commit c7d4c5f01961cdc4f1d29525e2b0d71f62c5bc33 ]
 
-Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
-routine adding an sta interface to the mt7996 driver.
+The check_apicv_inhibit_reasons() callback implementation was dropped in
+the commit b3f257a84696 ("KVM: x86: Track required APICv inhibits with
+variable, not callback"), but the definition removal was missed in the
+final version patch (it was removed in the v4). Therefore, it should be
+dropped, and the vmx_check_apicv_inhibit_reasons() function declaration
+should also be removed.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20240813081242.3991814-1-make24@iscas.ac.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Reviewed-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Link: https://lore.kernel.org/r/54abd1d0ccaba4d532f81df61259b9c0e021fbde.1714977229.git.houwenlong.hwl@antgroup.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: 73b42dc69be8 ("KVM: x86: Re-split x2APIC ICR into ICR+ICR2 for AMD (x2AVIC)")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/kvm_host.h | 1 -
+ arch/x86/kvm/vmx/x86_ops.h      | 1 -
+ 2 files changed, 2 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1300,6 +1300,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_
- 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
- 	u8 snd_dim, sts;
- 
-+	if (!vc)
-+		return;
-+
- 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
- 
- 	mt7996_mcu_sta_sounding_rate(bf);
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index d0274b3be2c40..a571f89db6977 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1708,7 +1708,6 @@ struct kvm_x86_ops {
+ 	void (*enable_nmi_window)(struct kvm_vcpu *vcpu);
+ 	void (*enable_irq_window)(struct kvm_vcpu *vcpu);
+ 	void (*update_cr8_intercept)(struct kvm_vcpu *vcpu, int tpr, int irr);
+-	bool (*check_apicv_inhibit_reasons)(enum kvm_apicv_inhibit reason);
+ 	const unsigned long required_apicv_inhibits;
+ 	bool allow_apicv_in_x2apic_without_x2apic_virtualization;
+ 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
+index d404227c164d6..e46aba18600e7 100644
+--- a/arch/x86/kvm/vmx/x86_ops.h
++++ b/arch/x86/kvm/vmx/x86_ops.h
+@@ -46,7 +46,6 @@ bool vmx_apic_init_signal_blocked(struct kvm_vcpu *vcpu);
+ void vmx_migrate_timers(struct kvm_vcpu *vcpu);
+ void vmx_set_virtual_apic_mode(struct kvm_vcpu *vcpu);
+ void vmx_apicv_pre_state_restore(struct kvm_vcpu *vcpu);
+-bool vmx_check_apicv_inhibit_reasons(enum kvm_apicv_inhibit reason);
+ void vmx_hwapic_irr_update(struct kvm_vcpu *vcpu, int max_irr);
+ void vmx_hwapic_isr_update(int max_isr);
+ int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu);
+-- 
+2.43.0
+
 
 
 
