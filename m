@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014CF98DC16
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:37:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB8998D97C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A995B22909
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:37:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B923E28937D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178C21D31A9;
-	Wed,  2 Oct 2024 14:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD5C1D0420;
+	Wed,  2 Oct 2024 14:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8Vevo4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmahaiKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5261D26F2;
-	Wed,  2 Oct 2024 14:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0F01D07B7;
+	Wed,  2 Oct 2024 14:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879494; cv=none; b=NY2oI0gmDYyBzcpeze62wmRstdYV3U9l1F9j6bBQWklYJExOiRoMeUseUJ7ih+EpWarh8EzCKOw21uPodkmV/4fG/exbRAxF2ZU4dE/7eE4/g+c5LDgUpQ8C6oRobh+x92zJJqt0FQ50t3QR1j5Df42Dww+BoPdze7QwpZeUwnE=
+	t=1727878033; cv=none; b=Xf28ufYqw4MQoC/Kw/Cc732mIyqqo87KPV6Dbou0FEY77Op5Ptay6xjFpFNOfxK+4BwXbsNHwg6HripubJ2BT33ApVzJI0IzqQpfC68NLOryD1mxBbW98jy6qjtfkjz9TIBHwUAXD8ASRnqwP1hb8U09M2xmICW5y5JVurMuANA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879494; c=relaxed/simple;
-	bh=OMx0Ed7l3NnGHb7SoqwKEr3QdForwDIe6HlwaGZV1nk=;
+	s=arc-20240116; t=1727878033; c=relaxed/simple;
+	bh=L9ol85dt6bMOMLVCFIQp0vfYgmTLLp7pQzUvyiluOUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shYzUbGVW67GEjtCoOKI1LDgbXMRTxWwaH/+Ohq9mFHDvoOWMXT3D9u/i+ZDs1Zb61qI77p8vLb0UYE2w5RVt64e4Q/pNpM8WICy63HdgeAb7/3rA5PoMGTgeF4qCvH1kpgCPsAF/62OWGUn8lRGmTk+B6lNjTlz0FOWjwIxzsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8Vevo4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547DCC4CEC2;
-	Wed,  2 Oct 2024 14:31:34 +0000 (UTC)
+	 MIME-Version; b=mpJLhL3Je8lHagjLbHOknNQGun3lP+tD4rzH2zY0jtkoVfHtls613t70NvZjxLzQeqlbEIdUy0AFGGyA8I7P45jGGBoNIFBzw0iB2f2Dh8efjnUlhfPGW4wj9bRoW2g6lCjBTETrDFyhXuW+pvhGVscncJNcgi13pY3scCG+cXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmahaiKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B668C4CEC2;
+	Wed,  2 Oct 2024 14:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879494;
-	bh=OMx0Ed7l3NnGHb7SoqwKEr3QdForwDIe6HlwaGZV1nk=;
+	s=korg; t=1727878032;
+	bh=L9ol85dt6bMOMLVCFIQp0vfYgmTLLp7pQzUvyiluOUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T8Vevo4mFeUS7ejvobJoG4gNaFekKA2UY/KoXy4xPrcUGFtgtbUjEGqaThyrZ88ll
-	 gG9zO87QmqcE9MSts3Tw3z240+0cOQ55s7MelkF1i92tZaKM1LFa/R1DvnQe7NhLQk
-	 8HTkgiA0pL1lqi0FzbCatHXl+rV6iztoLfG6+QU0=
+	b=gmahaiKN+rr86eiwLIqu/n2iemNOslPeub4Ra8u7lctA73avgXmCrVRx8o+AxRiId
+	 pis+rGqPX9DfPSTK/w3KDFomEaaIDlsU4pLM4uHT9uXGBaN00e8tr79DtRnOpT7f2l
+	 Lbsqn0UnHpZup80Nc2UYwd0zQqm/qnjMfm5IgxnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/538] drm/stm: ltdc: check memory returned by devm_kzalloc()
-Date: Wed,  2 Oct 2024 14:56:18 +0200
-Message-ID: <20241002125757.728266161@linuxfoundation.org>
+Subject: [PATCH 6.10 279/634] ext4: avoid negative min_clusters in find_group_orlov()
+Date: Wed,  2 Oct 2024 14:56:19 +0200
+Message-ID: <20241002125822.124816539@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit fd39730c58890cd7f0a594231e19bb357f28877c ]
+[ Upstream commit bb0a12c3439b10d88412fd3102df5b9a6e3cd6dc ]
 
-devm_kzalloc() can fail and return NULL pointer. Check its return status.
-Identified with Coccinelle (kmerr.cocci script).
+min_clusters is signed integer and will be converted to unsigned
+integer when compared with unsigned number stats.free_clusters.
+If min_clusters is negative, it will be converted to a huge unsigned
+value in which case all groups may not meet the actual desired free
+clusters.
+Set negative min_clusters to 0 to avoid unexpected behavior.
 
-Fixes: 484e72d3146b ("drm/stm: ltdc: add support of ycbcr pixel formats")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230531072854.142629-1-claudiu.beznea@microchip.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://patch.msgid.link/20240820132234.2759926-4-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/stm/ltdc.c | 2 ++
+ fs/ext4/ialloc.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/stm/ltdc.c b/drivers/gpu/drm/stm/ltdc.c
-index 5576fdae49623..5aec1e58c968c 100644
---- a/drivers/gpu/drm/stm/ltdc.c
-+++ b/drivers/gpu/drm/stm/ltdc.c
-@@ -1580,6 +1580,8 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
- 			       ARRAY_SIZE(ltdc_drm_fmt_ycbcr_sp) +
- 			       ARRAY_SIZE(ltdc_drm_fmt_ycbcr_fp)) *
- 			       sizeof(*formats), GFP_KERNEL);
-+	if (!formats)
-+		return NULL;
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index de04f4400d926..5a3b4bc124149 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -514,6 +514,8 @@ static int find_group_orlov(struct super_block *sb, struct inode *parent,
+ 	if (min_inodes < 1)
+ 		min_inodes = 1;
+ 	min_clusters = avefreec - EXT4_CLUSTERS_PER_GROUP(sb)*flex_size / 4;
++	if (min_clusters < 0)
++		min_clusters = 0;
  
- 	for (i = 0; i < ldev->caps.pix_fmt_nb; i++) {
- 		drm_fmt = ldev->caps.pix_fmt_drm[i];
+ 	/*
+ 	 * Start looking in the flex group where we last allocated an
 -- 
 2.43.0
 
