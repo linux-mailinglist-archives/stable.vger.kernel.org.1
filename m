@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-79737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1DD98D9F7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7B498DC77
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9921C20976
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C552A1F27210
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A0E1D0F77;
-	Wed,  2 Oct 2024 14:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65891D2783;
+	Wed,  2 Oct 2024 14:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhnhrs5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnCXOKZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7A51D0E28;
-	Wed,  2 Oct 2024 14:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6520E1D2785;
+	Wed,  2 Oct 2024 14:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878325; cv=none; b=QSSami64THJQnsq/j1+JNb+95LccmdebXNiBdwvq7KKWulKEc6exNeIuz5bzcvi002GRjAW7alydIqWjjfwRKUOoQjYLmjAoPihk4GH67AALZeUbs+MIwkq5/UMa4sa9yLJ2/WezNmrL8K+KeXAn2LHo18KpqWZhGrvpOZ6lpdA=
+	t=1727879714; cv=none; b=jmXEC8t+sxugDT/iU+cjxorPngLlbQk5PBlRDCzJJ/L8HfKbFf05UXjCK/2+AvEloIeB+MyqyIoUb9/FIy5r0oy/y/ud7ji6Q3UBWTeMm0Kw7O4mjTY0N7AHlWu2Fg4VpTRnM9Trl6G8JTNbce8HOGeHjl2zBTEUINC2lYMyOxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878325; c=relaxed/simple;
-	bh=mZywu8NCO8Nl8x6fzkzfKcQ1ObnqnJsh/I13P+HDgSk=;
+	s=arc-20240116; t=1727879714; c=relaxed/simple;
+	bh=dzWkA12PrFrNeVvfQ9tCL8iGRn4lPrxEmX6Dg85rL1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FxXJa2ur1R8ZEu2XFm/+3+ocj71oDOG47MW7BRYyuWyluR2qVAHGHi3YwMJsTJ7cZ0ifLYX/kkyFCybAv+oMufMlOgV9vEq0g0E3bZZ8UXQtWbD1D4vDdxDkLNghNfgm8ZdjhygnG8thbNqCB8Urcq8G/Ilv0xgqIy3pxFWmqiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhnhrs5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6287CC4CEC2;
-	Wed,  2 Oct 2024 14:12:05 +0000 (UTC)
+	 MIME-Version; b=eXh7p1SFvIa8S75wVtfMdhkKx+MsqNWxhpAIjxgQtGdq/IWAitIcE6xT7jMJCRJhQUzRNYBOct5XAbey6MfujlET+yrevwi171Cv75XYkPXWZysgbWjKEqU044GmSN8Tn+2MNLVdY5rYKTd6uZz9UfhhrGwSJemhVKbqK5AJZH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnCXOKZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32BFC4CEC2;
+	Wed,  2 Oct 2024 14:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878325;
-	bh=mZywu8NCO8Nl8x6fzkzfKcQ1ObnqnJsh/I13P+HDgSk=;
+	s=korg; t=1727879714;
+	bh=dzWkA12PrFrNeVvfQ9tCL8iGRn4lPrxEmX6Dg85rL1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhnhrs5ntDMvBOY02Zs1rvH0kIti3gU+hjXA9a8khoBCNiUfiEviQyPCJwrVC94oH
-	 /zwkFW2bTvsYT3USqN1PBtWbDyASAAbRzgmvaBculbBStr/O0JDpGEisZ/c2UWoywd
-	 laoxVYWDFP+UFnEraiRwHXK0WS+ZFVx0bjoSU9E4=
+	b=TnCXOKZihJQQ7z7SsFdYZnJTm3juQkvFhloCqDlhpvgn20jJIp3XaMM4ahVQ2uqjb
+	 Ty83Btjq94eeaXHl7UMIRmoeOtTJyihE6osNgCj+KNHqC5AWeK0+UpXuH16yDGjoub
+	 Mf5mdfZDXAdqRAYIEmrNJ7I88brVaUfAZmvQ6b4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 334/634] firewire: core: correct range of block for case of switch statement
-Date: Wed,  2 Oct 2024 14:57:14 +0200
-Message-ID: <20241002125824.286445305@linuxfoundation.org>
+Subject: [PATCH 6.6 196/538] selftests/bpf: Replace CHECK with ASSERT_* in ns_current_pid_tgid test
+Date: Wed,  2 Oct 2024 14:57:15 +0200
+Message-ID: <20241002125759.992864627@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit ebb9d3ca8f7efc1b6a2f1750d1058eda444883d0 ]
+[ Upstream commit 84239a24d10174fcfc7d6760cb120435a6ff69af ]
 
-A commit d8527cab6c31 ("firewire: cdev: implement new event to notify
-response subaction with time stamp") adds an additional case,
-FW_CDEV_EVENT_RESPONSE2, into switch statement in complete_transaction().
-However, the range of block is beyond to the case label and reaches
-neibour default label.
+Replace CHECK in selftest ns_current_pid_tgid with recommended ASSERT_* style.
+I also shortened subtest name as the prefix of subtest name is covered
+by the test name already.
 
-This commit corrects the range of block. Fortunately, it has few impacts
-in practice since the local variable in the scope under the label is not
-used in codes under default label.
+This patch does fix a testing issue. Currently even if bss->user_{pid,tgid}
+is not correct, the test still passed since the clone func returns 0.
+I fixed it to return a non-zero value if bss->user_{pid,tgid} is incorrect.
 
-Fixes: d8527cab6c31 ("firewire: cdev: implement new event to notify response subaction with time stamp")
-Link: https://lore.kernel.org/r/20240810070403.36801-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240315184859.2975543-1-yonghong.song@linux.dev
+Stable-dep-of: 21f0b0af9772 ("selftests/bpf: Fix include of <sys/fcntl.h>")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/core-cdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bpf/prog_tests/ns_current_pid_tgid.c      | 36 ++++++++++---------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/firewire/core-cdev.c b/drivers/firewire/core-cdev.c
-index 9a7dc90330a35..a888a001bedb1 100644
---- a/drivers/firewire/core-cdev.c
-+++ b/drivers/firewire/core-cdev.c
-@@ -599,11 +599,11 @@ static void complete_transaction(struct fw_card *card, int rcode, u32 request_ts
- 		queue_event(client, &e->event, rsp, sizeof(*rsp) + rsp->length, NULL, 0);
+diff --git a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+index 24d493482ffc7..3a0664a86243e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
++++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+@@ -20,19 +20,19 @@ static int test_current_pid_tgid(void *args)
+ {
+ 	struct test_ns_current_pid_tgid__bss  *bss;
+ 	struct test_ns_current_pid_tgid *skel;
+-	int err = -1, duration = 0;
++	int ret = -1, err;
+ 	pid_t tgid, pid;
+ 	struct stat st;
  
- 		break;
-+	}
- 	default:
- 		WARN_ON(1);
- 		break;
- 	}
--	}
+ 	skel = test_ns_current_pid_tgid__open_and_load();
+-	if (CHECK(!skel, "skel_open_load", "failed to load skeleton\n"))
+-		goto cleanup;
++	if (!ASSERT_OK_PTR(skel, "test_ns_current_pid_tgid__open_and_load"))
++		goto out;
  
- 	/* Drop the idr's reference */
- 	client_put(client);
+ 	pid = syscall(SYS_gettid);
+ 	tgid = getpid();
+ 
+ 	err = stat("/proc/self/ns/pid", &st);
+-	if (CHECK(err, "stat", "failed /proc/self/ns/pid: %d\n", err))
++	if (!ASSERT_OK(err, "stat /proc/self/ns/pid"))
+ 		goto cleanup;
+ 
+ 	bss = skel->bss;
+@@ -42,24 +42,26 @@ static int test_current_pid_tgid(void *args)
+ 	bss->user_tgid = 0;
+ 
+ 	err = test_ns_current_pid_tgid__attach(skel);
+-	if (CHECK(err, "skel_attach", "skeleton attach failed: %d\n", err))
++	if (!ASSERT_OK(err, "test_ns_current_pid_tgid__attach"))
+ 		goto cleanup;
+ 
+ 	/* trigger tracepoint */
+ 	usleep(1);
+-	ASSERT_EQ(bss->user_pid, pid, "pid");
+-	ASSERT_EQ(bss->user_tgid, tgid, "tgid");
+-	err = 0;
++	if (!ASSERT_EQ(bss->user_pid, pid, "pid"))
++		goto cleanup;
++	if (!ASSERT_EQ(bss->user_tgid, tgid, "tgid"))
++		goto cleanup;
++	ret = 0;
+ 
+ cleanup:
+-	 test_ns_current_pid_tgid__destroy(skel);
+-
+-	return err;
++	test_ns_current_pid_tgid__destroy(skel);
++out:
++	return ret;
+ }
+ 
+ static void test_ns_current_pid_tgid_new_ns(void)
+ {
+-	int wstatus, duration = 0;
++	int wstatus;
+ 	pid_t cpid;
+ 
+ 	/* Create a process in a new namespace, this process
+@@ -68,21 +70,21 @@ static void test_ns_current_pid_tgid_new_ns(void)
+ 	cpid = clone(test_current_pid_tgid, child_stack + STACK_SIZE,
+ 		     CLONE_NEWPID | SIGCHLD, NULL);
+ 
+-	if (CHECK(cpid == -1, "clone", "%s\n", strerror(errno)))
++	if (!ASSERT_NEQ(cpid, -1, "clone"))
+ 		return;
+ 
+-	if (CHECK(waitpid(cpid, &wstatus, 0) == -1, "waitpid", "%s\n", strerror(errno)))
++	if (!ASSERT_NEQ(waitpid(cpid, &wstatus, 0), -1, "waitpid"))
+ 		return;
+ 
+-	if (CHECK(WEXITSTATUS(wstatus) != 0, "newns_pidtgid", "failed"))
++	if (!ASSERT_OK(WEXITSTATUS(wstatus), "newns_pidtgid"))
+ 		return;
+ }
+ 
+ /* TODO: use a different tracepoint */
+ void serial_test_ns_current_pid_tgid(void)
+ {
+-	if (test__start_subtest("ns_current_pid_tgid_root_ns"))
++	if (test__start_subtest("root_ns_tp"))
+ 		test_current_pid_tgid(NULL);
+-	if (test__start_subtest("ns_current_pid_tgid_new_ns"))
++	if (test__start_subtest("new_ns_tp"))
+ 		test_ns_current_pid_tgid_new_ns();
+ }
 -- 
 2.43.0
 
