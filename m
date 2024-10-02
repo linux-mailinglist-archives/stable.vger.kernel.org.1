@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0455798DC56
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E2598D9B2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 360991C241B3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18BF82898C2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949411D0DF4;
-	Wed,  2 Oct 2024 14:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BC71D0977;
+	Wed,  2 Oct 2024 14:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCunbTB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhEx0zxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BCE1D096F;
-	Wed,  2 Oct 2024 14:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD08C1D04BE;
+	Wed,  2 Oct 2024 14:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879638; cv=none; b=poIVZBZl7Ki2PsXnNq7WUm9PDSzJK6uSOkwWvA3ojZ5Oq4ZDlEVTF+GqGm91bkzUF3lYxU+IPTxU9bZ9xK7MtkBE+9dLEMfsaBpUi6IvfI38ZdCkXA8OHSH0hZy+o7hrhxtLy04LoWLUGSRJT3vsz6Ul+QGOHCOnZrtSgRQSW68=
+	t=1727878178; cv=none; b=EFAHOdOOjj5nDBWASvNl+v4rN1eHzr/cLNXgcCkLrBhwg+SikX7jmpzeA6r6Mw5GNV+kVTS+tvBpRN6VectM5Owob9JCeO7FTKj7K7RbYCLs88Pv3K/jGsPaKx78bwh7SDnY8DlfwydB0TGBAHvPa5hsFKzCwwIAZmyWM05PMw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879638; c=relaxed/simple;
-	bh=CQ8cCa3SEbkn7exE7h7cxmcETAiFTwpUIFP95xBnipA=;
+	s=arc-20240116; t=1727878178; c=relaxed/simple;
+	bh=WRCYKp4BOeV6cKO91NSA3rgz3NhDh9rfzzgHBLmIQlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vq8o4fFXkFkpMGH+Dbi9xKWatZbGBHiDmto7oraIhE4SptmZX8GSRp/QHTj+ipmQcpPoDCvPO7x/jquxoBTqZdRp8/BPI1FtkpsPbADCSjxgkAodpVQZPjjQ7/PIM1ktf2KpTy7AGq3NFksl35hsOdgMvpJYDnpB7kG/T8NXATY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCunbTB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3B9C4CECD;
-	Wed,  2 Oct 2024 14:33:57 +0000 (UTC)
+	 MIME-Version; b=TNcuh/yaCWdXxblfd5Y2s/DGFJxb9IfKvAzH4oI6vhX7HL4AuaqpDQO7VGC9SRA1U9ohF8b3ZOE8ykqrcs7RF3vK9mVzq2qLrxwAydzC4NTnJhlR+A3pYuAwXxdrW6UaZctFYoD+B7CTtPnM5Alb6tjyoRA922OGbDKXiQRpNaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhEx0zxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4404FC4CEC2;
+	Wed,  2 Oct 2024 14:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879638;
-	bh=CQ8cCa3SEbkn7exE7h7cxmcETAiFTwpUIFP95xBnipA=;
+	s=korg; t=1727878178;
+	bh=WRCYKp4BOeV6cKO91NSA3rgz3NhDh9rfzzgHBLmIQlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCunbTB7QVp74JpNtk7ghyCfUnZqFysBPu8vb8vKQLOv8n1wGG/rT+/pzmD0hElrZ
-	 aD5R+cOpKrR65K8JdHmz7ByzhhE1Ti4vQNhIRWGcGSa3TGOSM//N2/Z54U77CI0I6M
-	 lzj4Et9Pm8ZLGJ1O2DF2ac3XlS/J3auFl2WRRuCg=
+	b=WhEx0zxuvJfqjUQA/2SUAcT4GzlgNJqcywy1KPEvz6z+qiQ5wQ/+O4BXjAHM+IoQv
+	 NIcDv+oyZjMOyWavCKcL9pQLzRGFG3X2Y6PKLnQZXben44nRCXEKA0Nqp+mFxOOJKD
+	 QjOCMVEakFr5DMVquxC8ir95br4Jft1ppvezkJMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/538] tools/runqslower: Fix LDFLAGS and add LDLIBS support
+Subject: [PATCH 6.10 326/634] pinctrl: ti: iodelay: Use scope based of_node_put() cleanups
 Date: Wed,  2 Oct 2024 14:57:06 +0200
-Message-ID: <20241002125759.641125729@linuxfoundation.org>
+Message-ID: <20241002125823.967978567@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit f86601c3661946721e8f260bdd812b759854ac22 ]
+[ Upstream commit 791a8bb202a85f707c20ef04a471519e35f089dc ]
 
-Actually use previously defined LDFLAGS during build and add support for
-LDLIBS to link extra standalone libraries e.g. 'argp' which is not provided
-by musl libc.
+Use scope based of_node_put() cleanup to simplify code.
 
-Fixes: 585bf4640ebe ("tools: runqslower: Add EXTRA_CFLAGS and EXTRA_LDFLAGS support")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/bpf/20240723003045.2273499-1-tony.ambardar@gmail.com
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/20240627131721.678727-2-peng.fan@oss.nxp.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: a9f2b249adee ("pinctrl: ti: ti-iodelay: Fix some error handling paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/runqslower/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 43 +++++++++----------------
+ 1 file changed, 15 insertions(+), 28 deletions(-)
 
-diff --git a/tools/bpf/runqslower/Makefile b/tools/bpf/runqslower/Makefile
-index d8288936c9120..c4f1f1735af65 100644
---- a/tools/bpf/runqslower/Makefile
-+++ b/tools/bpf/runqslower/Makefile
-@@ -15,6 +15,7 @@ INCLUDES := -I$(OUTPUT) -I$(BPF_INCLUDE) -I$(abspath ../../include/uapi)
- CFLAGS := -g -Wall $(CLANG_CROSS_FLAGS)
- CFLAGS += $(EXTRA_CFLAGS)
- LDFLAGS += $(EXTRA_LDFLAGS)
-+LDLIBS += -lelf -lz
+diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+index ef97586385019..f5e5a23d22260 100644
+--- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
++++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+@@ -822,53 +822,48 @@ MODULE_DEVICE_TABLE(of, ti_iodelay_of_match);
+ static int ti_iodelay_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *np = of_node_get(dev->of_node);
++	struct device_node *np __free(device_node) = of_node_get(dev->of_node);
+ 	struct resource *res;
+ 	struct ti_iodelay_device *iod;
+-	int ret = 0;
++	int ret;
  
- # Try to detect best kernel BTF source
- KERNEL_REL := $(shell uname -r)
-@@ -51,7 +52,7 @@ clean:
- libbpf_hdrs: $(BPFOBJ)
+ 	if (!np) {
+-		ret = -EINVAL;
+ 		dev_err(dev, "No OF node\n");
+-		goto exit_out;
++		return -EINVAL;
+ 	}
  
- $(OUTPUT)/runqslower: $(OUTPUT)/runqslower.o $(BPFOBJ)
--	$(QUIET_LINK)$(CC) $(CFLAGS) $^ -lelf -lz -o $@
-+	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+ 	iod = devm_kzalloc(dev, sizeof(*iod), GFP_KERNEL);
+-	if (!iod) {
+-		ret = -ENOMEM;
+-		goto exit_out;
+-	}
++	if (!iod)
++		return -ENOMEM;
++
+ 	iod->dev = dev;
+ 	iod->reg_data = device_get_match_data(dev);
+ 	if (!iod->reg_data) {
+-		ret = -EINVAL;
+ 		dev_err(dev, "No DATA match\n");
+-		goto exit_out;
++		return -EINVAL;
+ 	}
  
- $(OUTPUT)/runqslower.o: runqslower.h $(OUTPUT)/runqslower.skel.h	      \
- 			$(OUTPUT)/runqslower.bpf.o | libbpf_hdrs
+ 	/* So far We can assume there is only 1 bank of registers */
+ 	iod->reg_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+-	if (IS_ERR(iod->reg_base)) {
+-		ret = PTR_ERR(iod->reg_base);
+-		goto exit_out;
+-	}
++	if (IS_ERR(iod->reg_base))
++		return PTR_ERR(iod->reg_base);
++
+ 	iod->phys_base = res->start;
+ 
+ 	iod->regmap = devm_regmap_init_mmio(dev, iod->reg_base,
+ 					    iod->reg_data->regmap_config);
+ 	if (IS_ERR(iod->regmap)) {
+ 		dev_err(dev, "Regmap MMIO init failed.\n");
+-		ret = PTR_ERR(iod->regmap);
+-		goto exit_out;
++		return PTR_ERR(iod->regmap);
+ 	}
+ 
+ 	ret = ti_iodelay_pinconf_init_dev(iod);
+ 	if (ret)
+-		goto exit_out;
++		return ret;
+ 
+ 	ret = ti_iodelay_alloc_pins(dev, iod, res->start);
+ 	if (ret)
+-		goto exit_out;
++		return ret;
+ 
+ 	iod->desc.pctlops = &ti_iodelay_pinctrl_ops;
+ 	/* no pinmux ops - we are pinconf */
+@@ -879,20 +874,12 @@ static int ti_iodelay_probe(struct platform_device *pdev)
+ 	ret = devm_pinctrl_register_and_init(dev, &iod->desc, iod, &iod->pctl);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to register pinctrl\n");
+-		goto exit_out;
++		return ret;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, iod);
+ 
+-	ret = pinctrl_enable(iod->pctl);
+-	if (ret)
+-		goto exit_out;
+-
+-	return 0;
+-
+-exit_out:
+-	of_node_put(np);
+-	return ret;
++	return pinctrl_enable(iod->pctl);
+ }
+ 
+ /**
 -- 
 2.43.0
 
