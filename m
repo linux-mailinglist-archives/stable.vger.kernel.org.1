@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6315198D56C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D321B98D8A7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FC0E1C21E6F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F17511C22F60
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453081D04B4;
-	Wed,  2 Oct 2024 13:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEA91D0DC1;
+	Wed,  2 Oct 2024 13:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmfyveSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1mvYQk8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044C31D0490;
-	Wed,  2 Oct 2024 13:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEFB1D0BBD;
+	Wed,  2 Oct 2024 13:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875811; cv=none; b=ulLxc9DCJW9sfQfITm3Yd98b32N+XS2IVmreeQ6c3TRJY0y1bK4unuLhUHNAUTSmPbd9al6RPvxcIZF/9/n/DoK0qiWLJogHlRnLYgX8O0X06jsXVp6yqBxKq8jkl/pfG0HBuVcL10CL/ti1H/XOQ08FdrPpaa9xBbr/KIQmdjM=
+	t=1727877595; cv=none; b=CYPf1Ne9HSqPSw6sUtZDJLdRKcPxFRw3XNm42vH6zvxEeXwB28KGf4A6qJIFGD/VJjXEer8TuuEDiRxGpaWUZAFYTVnUYgoZY8umoCD6W0Qt8ySRdSj45AIswOy/dQf157JyoiWQmJFT/AburAmh2Bz54s0avFmXpTADJj0MvpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875811; c=relaxed/simple;
-	bh=IhK1dKlGDnabj+PN86Uz5S/ULkcZD6JDBTyt9SyoWkc=;
+	s=arc-20240116; t=1727877595; c=relaxed/simple;
+	bh=VGh64lt4tvxFIGsi/4kJ46XIaOSJVOrhmsLCK6mD6zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9j4nD+HQn7cdP4rqMxmBOtAnlou4DPrf+d9uHTKiImX/53t3Vd25e/NcyJZ4L93WT/BhBzkm0e9bK4cWnGnSFLvosNbQza/F3nW0xeyYve/HbXaKPSfKkqBuRt2nGr+FLVbCKuapE6A27vB3k1aqW565y3AovH+szqi3wan8gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmfyveSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0909AC4CECD;
-	Wed,  2 Oct 2024 13:30:08 +0000 (UTC)
+	 MIME-Version; b=CNP346eaUfyEiHzKEr5m7HNqW51DBjCB/0bmqmCdFdUisMPvu3go8u5Rge3IVkwNxAtblogLwVXHz7yRXWmBHrc/39y9Efk5Utayy6h2sAAg/HgoEa0rSz0OY4yCuRyZ+rnjy1Ftg8EIakIYlMVrfOJdrKWGYQxAHfw2jJoWGlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1mvYQk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0F0C4CEC5;
+	Wed,  2 Oct 2024 13:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875809;
-	bh=IhK1dKlGDnabj+PN86Uz5S/ULkcZD6JDBTyt9SyoWkc=;
+	s=korg; t=1727877595;
+	bh=VGh64lt4tvxFIGsi/4kJ46XIaOSJVOrhmsLCK6mD6zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmfyveSdnaBqxulqot8eLCfxPWvJVJ8NKjs1EvSs0/swiBZUcAt1Tmef1JRIuGuNA
-	 Qmr84ykvYiasV/+Lw+1CLXGQJfUf1iupgHawqRrvWbpctrdhbm5J8q1+qJ13iTZE5i
-	 AY6z7jtGeJ3G/rFj+HQgc6HumfHOYmr/pPq1z6kU=
+	b=g1mvYQk8QjZtMzkt42i/funn8jxJIUrdbuAzmlkNrs/e96BweOKGUx9EKxxXZhoTx
+	 lF3aCfMaD5nMA0wxTFu8hNhQZTlTso/p142yxePhkCjFOlzmxAz57BDCBeOlAritPk
+	 XqQMZENPHwVW4Es0/t9ekjOupcja4ohy+qXoGxbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 229/695] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Subject: [PATCH 6.10 127/634] arm64: dts: renesas: r9a07g044: Correct GICD and GICR sizes
 Date: Wed,  2 Oct 2024 14:53:47 +0200
-Message-ID: <20241002125831.594148965@linuxfoundation.org>
+Message-ID: <20241002125816.125222381@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
+[ Upstream commit 833948fb2b63155847ab691a54800f801555429b ]
 
-In adreno_request_fw() when debugging information is printed to the log
-after firmware load, an incorrect filename is printed. 'newname' is used
-instead of 'fwname', so prefix "qcom/" is being added to filename.
-Looks like "copy-paste" mistake.
+The RZ/G2L(C) SoC is equipped with the GIC-600. The GICD is 64KiB +
+64KiB for the MBI alias (in total 128KiB), and the GICR is 128KiB per
+CPU.
 
-Fix this mistake by replacing 'newname' with 'fwname'.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/602382/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 68a45525297b2 ("arm64: dts: renesas: Add initial DTSI for RZ/G2{L,LC} SoC's")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/20240730122436.350013-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r9a07g044.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index ecc3fc5cec227..3896123ec51c9 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -478,7 +478,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
- 		ret = request_firmware_direct(&fw, fwname, drm->dev);
- 		if (!ret) {
- 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
--				newname);
-+				fwname);
- 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
- 			goto out;
- 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
+index 1a9891ba6c02c..960537e401f4c 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g044.dtsi
+@@ -1043,8 +1043,8 @@
+ 			#interrupt-cells = <3>;
+ 			#address-cells = <0>;
+ 			interrupt-controller;
+-			reg = <0x0 0x11900000 0 0x40000>,
+-			      <0x0 0x11940000 0 0x60000>;
++			reg = <0x0 0x11900000 0 0x20000>,
++			      <0x0 0x11940000 0 0x40000>;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 
 -- 
 2.43.0
 
