@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-79890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC8598DAC7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA6E98DD68
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53927B26146
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AE0FB29A8B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DD21D1E68;
-	Wed,  2 Oct 2024 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D20A1D174F;
+	Wed,  2 Oct 2024 14:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgSHJuwH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCxu1sC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467AE1CF7D4;
-	Wed,  2 Oct 2024 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ED91D0B99;
+	Wed,  2 Oct 2024 14:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878767; cv=none; b=u+CpZpCzkF45o2tIzGi4s76MOXvj6B4oHLU34rK3OmMc5D4IydJXJVLTueET7UlsdD2315woxQ1G9/JMIRhPueLlV/0oVaSR1v1rEXcNXuiJKr6jhbZzMfSWOfsrf/WH2vsBFmNQXHh4MYAQtx/qLamS25b4XdyScIH+LUf2Z3c=
+	t=1727880226; cv=none; b=Hxblr345cxtRpSV5I9mHjbX86uw5qMdKE3sFhHutY4eu9Yg+cHtTSUDpNyP069YXvzwXNtOZXpkck9GKClKQI5FgQOp7MdD1SKK26casRqUa6h52Z2UDhwX4YkdrPdJ8otsM0GwFRoolrpDSYJK2KlNbXFAwoxy+VDYW4mZfwjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878767; c=relaxed/simple;
-	bh=YHv3TFC4qpVdrTs79ljA0nKbW5z+RyrpinTUITLVLp8=;
+	s=arc-20240116; t=1727880226; c=relaxed/simple;
+	bh=zid43ne4mlTfAIaPdwQmanhZxZdUuEKbHT1BoMsQwcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=No1Kf4w9j/4b1sRhf70jfI6FL2Z3jru+27T+01BL/Khh+k3HLXoWsyr+eNxjjjXIturXgFAN+6+SJyEKYa1HWs4BjlltXMwkvuxX6duWVit4rXK/z5wQ5iOq+X4slGn27WPKy2+Gl6AzjRwRVNpKChfAgxXk153B1UDR1a49sA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgSHJuwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D71C4CEC2;
-	Wed,  2 Oct 2024 14:19:26 +0000 (UTC)
+	 MIME-Version; b=akDysyHn5WUUNLAcIIABGgcTA8HSoaZZDU3IhDskaOec1fRRtZC3wPV863qTS3uvtz5wSXgwuVJYj05tE+AXy5qP8caMXj7u3cPNcPJmetmUXMI44VWRx6Ei7Q8dHBJ/bMXzDRmmJ4cugcsfLnhZ81AXLYXWLaTO/MR18mzmYSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCxu1sC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B81C4CEC2;
+	Wed,  2 Oct 2024 14:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878767;
-	bh=YHv3TFC4qpVdrTs79ljA0nKbW5z+RyrpinTUITLVLp8=;
+	s=korg; t=1727880226;
+	bh=zid43ne4mlTfAIaPdwQmanhZxZdUuEKbHT1BoMsQwcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgSHJuwHVrfEZM6m8RwXQBvHkBv7AXqEATHDRCg10ZnxP5NJVK6ZisTwKlFlF0lef
-	 Lrk31jGNfo8X/pXbIJyN/TC8lJdfBbpAigmlo0NGuTYsLOAHFJuJ2VEL/pdvTXwrGa
-	 u5pdfMz9P+RtAQu5gvbTZSFVNGGyoQlYr9uLtfnc=
+	b=TCxu1sC2hDzOyxlBjEMmuWOEcla/OPoirMwm/UvysI7zA941zwdTFMpoGBlt21KGJ
+	 8N59wCe2buZOweKOvhfcsv9b2P3r21tqcp+XYYPSRqUNy7vy8hR2KJTF+0xYiicQi6
+	 vc3T8HBgMkPLbjhDjCv2SyAhFR4e3L+YubXsZGXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com,
-	syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com,
-	syzbot+c793a7eca38803212c61@syzkaller.appspotmail.com,
-	syzbot+1e6e0b916b211bee1bd6@syzkaller.appspotmail.com,
-	kernel test robot <oliver.sang@intel.com>,
-	Marcello Sylvester Bauer <sylv@sylv.io>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Subject: [PATCH 6.10 525/634] usb: gadget: dummy_hcd: execute hrtimer callback in softirq context
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	dri-devel@lists.freedesktop.org,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.6 386/538] drm/vmwgfx: Prevent unmapping active read buffers
 Date: Wed,  2 Oct 2024 15:00:25 +0200
-Message-ID: <20241002125831.827738540@linuxfoundation.org>
+Message-ID: <20241002125807.667158491@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,122 +65,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-commit 9313d139aa25e572d860f6f673b73a20f32d7f93 upstream.
+commit aba07b9a0587f50e5d3346eaa19019cf3f86c0ea upstream.
 
-Commit a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer
-scheduler") switched dummy_hcd to use hrtimer and made the timer's
-callback be executed in the hardirq context.
+The kms paths keep a persistent map active to read and compare the cursor
+buffer. These maps can race with each other in simple scenario where:
+a) buffer "a" mapped for update
+b) buffer "a" mapped for compare
+c) do the compare
+d) unmap "a" for compare
+e) update the cursor
+f) unmap "a" for update
+At step "e" the buffer has been unmapped and the read contents is bogus.
 
-With that change, __usb_hcd_giveback_urb now gets executed in the hardirq
-context, which causes problems for KCOV and KMSAN.
+Prevent unmapping of active read buffers by simply keeping a count of
+how many paths have currently active maps and unmap only when the count
+reaches 0.
 
-One problem is that KCOV now is unable to collect coverage from
-the USB code that gets executed from the dummy_hcd's timer callback,
-as KCOV cannot collect coverage in the hardirq context.
-
-Another problem is that the dummy_hcd hrtimer might get triggered in the
-middle of a softirq with KCOV remote coverage collection enabled, and that
-causes a WARNING in KCOV, as reported by syzbot. (I sent a separate patch
-to shut down this WARNING, but that doesn't fix the other two issues.)
-
-Finally, KMSAN appears to ignore tracking memory copying operations
-that happen in the hardirq context, which causes false positive
-kernel-infoleaks, as reported by syzbot.
-
-Change the hrtimer in dummy_hcd to execute the callback in the softirq
-context.
-
-Reported-by: syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2388cdaeb6b10f0c13ac
-Reported-by: syzbot+17ca2339e34a1d863aad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=17ca2339e34a1d863aad
-Reported-by: syzbot+c793a7eca38803212c61@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c793a7eca38803212c61
-Reported-by: syzbot+1e6e0b916b211bee1bd6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1e6e0b916b211bee1bd6
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406141323.413a90d2-lkp@intel.com
-Fixes: a7f3813e589f ("usb: gadget: dummy_hcd: Switch to hrtimer transfer scheduler")
-Cc: stable@vger.kernel.org
-Acked-by: Marcello Sylvester Bauer <sylv@sylv.io>
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=edd9fe0d3a65b14588d5
-Link: https://lore.kernel.org/r/20240904013051.4409-1-andrey.konovalov@linux.dev
+Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and CursorBypass 4")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.19+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240816183332.31961-2-zack.rusin@broadcom.com
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+[Shivani: Modified to apply on v6.6.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.c |   13 +++++++++++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.h |    3 +++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/dummy_hcd.c b/drivers/usb/gadget/udc/dummy_hcd.c
-index f37b0d8386c1..ff7bee78bcc4 100644
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -1304,7 +1304,8 @@ static int dummy_urb_enqueue(
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+@@ -331,6 +331,8 @@ void *vmw_bo_map_and_cache(struct vmw_bo
+ 	void *virtual;
+ 	int ret;
  
- 	/* kick the scheduler, it'll do the rest */
- 	if (!hrtimer_active(&dum_hcd->timer))
--		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
-+				HRTIMER_MODE_REL_SOFT);
- 
-  done:
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
-@@ -1325,7 +1326,7 @@ static int dummy_urb_dequeue(struct usb_hcd *hcd, struct urb *urb, int status)
- 	rc = usb_hcd_check_unlink_urb(hcd, urb, status);
- 	if (!rc && dum_hcd->rh_state != DUMMY_RH_RUNNING &&
- 			!list_empty(&dum_hcd->urbp_list))
--		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
- 
- 	spin_unlock_irqrestore(&dum_hcd->dum->lock, flags);
- 	return rc;
-@@ -1995,7 +1996,8 @@ static enum hrtimer_restart dummy_timer(struct hrtimer *t)
- 		dum_hcd->udev = NULL;
- 	} else if (dum_hcd->rh_state == DUMMY_RH_RUNNING) {
- 		/* want a 1 msec delay here */
--		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS), HRTIMER_MODE_REL);
-+		hrtimer_start(&dum_hcd->timer, ns_to_ktime(DUMMY_TIMER_INT_NSECS),
-+				HRTIMER_MODE_REL_SOFT);
- 	}
- 
- 	spin_unlock_irqrestore(&dum->lock, flags);
-@@ -2389,7 +2391,7 @@ static int dummy_bus_resume(struct usb_hcd *hcd)
- 		dum_hcd->rh_state = DUMMY_RH_RUNNING;
- 		set_link_state(dum_hcd);
- 		if (!list_empty(&dum_hcd->urbp_list))
--			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL);
-+			hrtimer_start(&dum_hcd->timer, ns_to_ktime(0), HRTIMER_MODE_REL_SOFT);
- 		hcd->state = HC_STATE_RUNNING;
- 	}
- 	spin_unlock_irq(&dum_hcd->dum->lock);
-@@ -2467,7 +2469,7 @@ static DEVICE_ATTR_RO(urbs);
- 
- static int dummy_start_ss(struct dummy_hcd *dum_hcd)
++	atomic_inc(&vbo->map_count);
++
+ 	virtual = ttm_kmap_obj_virtual(&vbo->map, &not_used);
+ 	if (virtual)
+ 		return virtual;
+@@ -353,11 +355,17 @@ void *vmw_bo_map_and_cache(struct vmw_bo
+  */
+ void vmw_bo_unmap(struct vmw_bo *vbo)
  {
--	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-+	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
- 	dum_hcd->timer.function = dummy_timer;
- 	dum_hcd->rh_state = DUMMY_RH_RUNNING;
- 	dum_hcd->stream_en_ep = 0;
-@@ -2497,7 +2499,7 @@ static int dummy_start(struct usb_hcd *hcd)
- 		return dummy_start_ss(dum_hcd);
++	int map_count;
++
+ 	if (vbo->map.bo == NULL)
+ 		return;
  
- 	spin_lock_init(&dum_hcd->dum->lock);
--	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-+	hrtimer_init(&dum_hcd->timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
- 	dum_hcd->timer.function = dummy_timer;
- 	dum_hcd->rh_state = DUMMY_RH_RUNNING;
+-	ttm_bo_kunmap(&vbo->map);
+-	vbo->map.bo = NULL;
++	map_count = atomic_dec_return(&vbo->map_count);
++
++	if (!map_count) {
++		ttm_bo_kunmap(&vbo->map);
++		vbo->map.bo = NULL;
++	}
+ }
  
--- 
-2.46.2
-
+ 
+@@ -390,6 +398,7 @@ static int vmw_bo_init(struct vmw_privat
+ 	BUILD_BUG_ON(TTM_MAX_BO_PRIORITY <= 3);
+ 	vmw_bo->tbo.priority = 3;
+ 	vmw_bo->res_tree = RB_ROOT;
++	atomic_set(&vmw_bo->map_count, 0);
+ 
+ 	params->size = ALIGN(params->size, PAGE_SIZE);
+ 	drm_gem_private_object_init(vdev, &vmw_bo->tbo.base, params->size);
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+@@ -68,6 +68,8 @@ struct vmw_bo_params {
+  * @map: Kmap object for semi-persistent mappings
+  * @res_tree: RB tree of resources using this buffer object as a backing MOB
+  * @res_prios: Eviction priority counts for attached resources
++ * @map_count: The number of currently active maps. Will differ from the
++ * cpu_writers because it includes kernel maps.
+  * @cpu_writers: Number of synccpu write grabs. Protected by reservation when
+  * increased. May be decreased without reservation.
+  * @dx_query_ctx: DX context if this buffer object is used as a DX query MOB
+@@ -86,6 +88,7 @@ struct vmw_bo {
+ 	struct rb_root res_tree;
+ 	u32 res_prios[TTM_MAX_BO_PRIORITY];
+ 
++	atomic_t map_count;
+ 	atomic_t cpu_writers;
+ 	/* Not ref-counted.  Protected by binding_mutex */
+ 	struct vmw_resource *dx_query_ctx;
 
 
 
