@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A074698D969
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D7598DBF4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 588C11F23127
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE060B28125
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8153A1D0E39;
-	Wed,  2 Oct 2024 14:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BB11D1753;
+	Wed,  2 Oct 2024 14:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWXHD14R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGuQ1byR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9C61D07B8;
-	Wed,  2 Oct 2024 14:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547C61D0E19;
+	Wed,  2 Oct 2024 14:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877983; cv=none; b=gbCsDAVjc07hjCvGlk+cQMchC89lM2xbmxFeoLCfooH2Sg/mp3rxbxnJbI8R9T/ryUsCrfGUbARBh5ILs8DaGOw4pcoN5IFYXNtFnpQdLzRHkPAoLybw7MrO/OdK3UkTU7sQapLDnQnA/4D1qbUs83zORX1itg3BT7Dbs6c7reg=
+	t=1727879451; cv=none; b=OJItqhVCOHqyNTNqX9bqdCTPhsNfZOesSAsyCa8DfkzP3hs1L1gE3FroTybAh1f9AE1Xw1xomZIO9Hb7CJcmX6sMWIZGFjz9TfQwN958cpys9Dt/D6H0wbPGhjmAll3iSRy0ntYxR8hgcvA5Vut9hw3f7Rx0Q1a5zW7lJYgtoqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877983; c=relaxed/simple;
-	bh=56xr5caJ3IpxOQgiakeORtYs6+N9XykFhV4J4GiU4bE=;
+	s=arc-20240116; t=1727879451; c=relaxed/simple;
+	bh=4zp5fgi9PYLs65KZw1VdMKe1ZQKWLPZMGihqCEqV5OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rERPpEJzaQZfSEIMz1vaTtbhgUpC65jrtz9cmJwbZrIbBG3iaRMGAiGjTkOHj6LOjU2N9i6RPhPOlxjocNr7zAqLvKBjhI9r7j3rVTFj+YCFNhvTCW1bK5/Fx7jPIbfsZEe9RfBiPfFzJeEMZEH3LPRtPI1TNs+45uPO1M/PAd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWXHD14R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7093C4CEC2;
-	Wed,  2 Oct 2024 14:06:22 +0000 (UTC)
+	 MIME-Version; b=o4aPsx9SdgfiEST5+BqGpFKZc/moflol69HkabU093jZJ3DA4w8QlspveNzUhYuql/VHKYloCsPwifPAf5LJMNtI2a4ey3pnwcWrGYSShdNjiVEE+fvqRtuzGOxWiQNYORC8LDQXJt7qiFnlq+1WOOyu0ipYDTPgwQr0yIAcXLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGuQ1byR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E6BC4CECE;
+	Wed,  2 Oct 2024 14:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877983;
-	bh=56xr5caJ3IpxOQgiakeORtYs6+N9XykFhV4J4GiU4bE=;
+	s=korg; t=1727879451;
+	bh=4zp5fgi9PYLs65KZw1VdMKe1ZQKWLPZMGihqCEqV5OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWXHD14RA9uh7EjMUWRozFCYaIT12blXuiQ9q4dKlJ1HJtEnyadB238K+3/6PXUM4
-	 oDr7ZtFSFnlIXIl2xbCA1dAaQDWAWTWSOwGdmJJHlRAka0TQ0G2UDzkVM5WTww1s0I
-	 k3WEIMjiqiYzBXipvYnuJBuUbjQ2ocQeD/JSxUTE=
+	b=PGuQ1byRTSWIqQiufRvv7tjnNAeuIolKi1bqsCwRLqhCZbyxLWxyp0oqx3WnFyx+/
+	 c+BiZNy9VCrTC4XkWtrWWswjrDSNpza2oF8ZaNGaRCvy045PPneNnJcohmdT6LIHiP
+	 /UKQDFYQ/dk+6agaGi/zIVvTLBq1YU63h8EU5kFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiangshan Yi <yijiangshan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Qiang Wang <wangqiang1@kylinos.cn>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 261/634] samples/bpf: Fix compilation errors with cf-protection option
+Subject: [PATCH 6.6 122/538] hwmon: (max16065) Fix alarm attributes
 Date: Wed,  2 Oct 2024 14:56:01 +0200
-Message-ID: <20241002125821.403322078@linuxfoundation.org>
+Message-ID: <20241002125757.061012666@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiangshan Yi <yijiangshan@kylinos.cn>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit fdf1c728fac541891ef1aa773bfd42728626769c ]
+[ Upstream commit 119abf7d1815f098f7f91ae7abc84324a19943d7 ]
 
-Currently, compiling the bpf programs will result the compilation errors
-with the cf-protection option as follows in arm64 and loongarch64 machine
-when using gcc 12.3.1 and clang 17.0.6. This commit fixes the compilation
-errors by limited the cf-protection option only used in x86 platform.
+Chips reporting overcurrent alarms report it in the second alarm register.
+That means the second alarm register has to be read, even if the chip only
+supports 8 or fewer ADC channels.
 
-[root@localhost linux]# make M=samples/bpf
-	......
-  CLANG-bpf  samples/bpf/xdp2skb_meta_kern.o
-error: option 'cf-protection=return' cannot be specified on this target
-error: option 'cf-protection=branch' cannot be specified on this target
-2 errors generated.
-  CLANG-bpf  samples/bpf/syscall_tp_kern.o
-error: option 'cf-protection=return' cannot be specified on this target
-error: option 'cf-protection=branch' cannot be specified on this target
-2 errors generated.
-	......
+MAX16067 and MAX16068 report undervoltage and overvoltage alarms in
+separate registers. Fold register contents together to report both with
+the existing alarm attribute. This requires actually storing the chip type
+in struct max16065_data. Rename the variable 'chip' to match the variable
+name used in the probe function.
 
-Fixes: 34f6e38f58db ("samples/bpf: fix warning with ignored-attributes")
-Reported-by: Jiangshan Yi <yijiangshan@kylinos.cn>
-Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Qiang Wang <wangqiang1@kylinos.cn>
-Link: https://lore.kernel.org/bpf/20240815135524.140675-1-13667453960@163.com
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hwmon/max16065.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
-index 3e003dd6bea09..dca56aa360ff3 100644
---- a/samples/bpf/Makefile
-+++ b/samples/bpf/Makefile
-@@ -169,6 +169,10 @@ BPF_EXTRA_CFLAGS += -I$(srctree)/arch/mips/include/asm/mach-generic
- endif
- endif
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index 5b2a174c6bad3..0ccb5eb596fc4 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -79,7 +79,7 @@ static const bool max16065_have_current[] = {
+ };
  
-+ifeq ($(ARCH), x86)
-+BPF_EXTRA_CFLAGS += -fcf-protection
-+endif
+ struct max16065_data {
+-	enum chips type;
++	enum chips chip;
+ 	struct i2c_client *client;
+ 	const struct attribute_group *groups[4];
+ 	struct mutex update_lock;
+@@ -162,10 +162,17 @@ static struct max16065_data *max16065_update_device(struct device *dev)
+ 						     MAX16065_CURR_SENSE);
+ 		}
+ 
+-		for (i = 0; i < DIV_ROUND_UP(data->num_adc, 8); i++)
++		for (i = 0; i < 2; i++)
+ 			data->fault[i]
+ 			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
+ 
++		/*
++		 * MAX16067 and MAX16068 have separate undervoltage and
++		 * overvoltage alarm bits. Squash them together.
++		 */
++		if (data->chip == max16067 || data->chip == max16068)
++			data->fault[0] |= data->fault[1];
 +
- TPROGS_CFLAGS += -Wall -O2
- TPROGS_CFLAGS += -Wmissing-prototypes
- TPROGS_CFLAGS += -Wstrict-prototypes
-@@ -405,7 +409,7 @@ $(obj)/%.o: $(src)/%.c
- 		-Wno-gnu-variable-sized-type-not-at-end \
- 		-Wno-address-of-packed-member -Wno-tautological-compare \
- 		-Wno-unknown-warning-option $(CLANG_ARCH_ARGS) \
--		-fno-asynchronous-unwind-tables -fcf-protection \
-+		-fno-asynchronous-unwind-tables \
- 		-I$(srctree)/samples/bpf/ -include asm_goto_workaround.h \
- 		-O2 -emit-llvm -Xclang -disable-llvm-passes -c $< -o - | \
- 		$(OPT) -O2 -mtriple=bpf-pc-linux | $(LLVM_DIS) | \
+ 		data->last_updated = jiffies;
+ 		data->valid = true;
+ 	}
+@@ -514,6 +521,7 @@ static int max16065_probe(struct i2c_client *client)
+ 	if (unlikely(!data))
+ 		return -ENOMEM;
+ 
++	data->chip = chip;
+ 	data->client = client;
+ 	mutex_init(&data->update_lock);
+ 
 -- 
 2.43.0
 
