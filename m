@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-80132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE2F98DBFD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE1998DBD3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42881F24249
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC85C1C23CDA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A461D1E89;
-	Wed,  2 Oct 2024 14:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66E81D07B0;
+	Wed,  2 Oct 2024 14:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkf9IjaD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gixfT8Pu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F441D223C;
-	Wed,  2 Oct 2024 14:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A0D1D0438;
+	Wed,  2 Oct 2024 14:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879477; cv=none; b=O8BRbozyEjp/+FNV6IMImzt0URp6q7XQmi1EQO2IAbVxkP5y7c9ziP+sYQR7b8a21nQfKxu+7mn5yJxofD0/V/axEtdbUJfrSphRxGYpydxqYPQEa6ly0viVmCbVvBI5I9ygxzrPiqgfHzelg3zEHDo7PDlkmHpGTsndzXE8PQA=
+	t=1727879387; cv=none; b=lzcI4vv/AFdFs0PZHYzrbTsDcp+MdE7MoiCTdPIlAQ+VNJ7ZJUP8MEIu7cD0vmp6zSENsIpufBTVMaY6YyHSf47vfTz89bAcAHWpC19i5b2f0J3VMlm0xdNHMoTA1Gc6qqkuf5vGaktEoVYKvJ/ETtyptEzZaN1D61hYETnJKEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879477; c=relaxed/simple;
-	bh=c8vm5i/zZ13iM98a5JGfRoDowCHodDWT5cgIvajAg4g=;
+	s=arc-20240116; t=1727879387; c=relaxed/simple;
+	bh=kan7scXuJgH5oey2u31V/zvzx+lHBxkUkFntGhAyBXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buqWwW5E2VGZmsft7RCC9rghchfkN7dpEl6sUuhtDBKdqsM3tDAxLnsHufMn2nSCNrMyyOBcp24r7heVd1M3lZiAUHo8z2mt1c7wk482iom8qV11Gk+oYzZiUBizzuA9ILwLtfIBjm5cTERS7lbi9xo8cNIQ1zSvm90yRS6z2qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkf9IjaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84D1C4CEC2;
-	Wed,  2 Oct 2024 14:31:16 +0000 (UTC)
+	 MIME-Version; b=M6DMuRMFSQR4ZOyaVt1q8FOkIxysw993ozLQSxHAD8t1tpJx0T+dYSHQw4QGgz1+Eyja/5LWwpt5WU7fZHWEhrABkEvUMn5B72FtKDi+fpkfq1yjT8pF/R/pnwEkblB5xKdZwtUWBBtwPrdCdyqFj8xZLKs429bpGyc1WMPeMpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gixfT8Pu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F201C4CEC2;
+	Wed,  2 Oct 2024 14:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879477;
-	bh=c8vm5i/zZ13iM98a5JGfRoDowCHodDWT5cgIvajAg4g=;
+	s=korg; t=1727879387;
+	bh=kan7scXuJgH5oey2u31V/zvzx+lHBxkUkFntGhAyBXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkf9IjaDNO6ir+lsddanXv5hBSUJd5KyqOwZHS4zIbupy6HHFcO8B4O/CIsQ5pZ58
-	 0O56Iaa1L4L+kPrA5buKpNKNTBnYNVLg5JFrVJRpjxPIWDBHPwyP6+3X/7ZSbsqQcd
-	 GYL/jDKJjsBrY5BU8//fxZrNRVWY4Mo6LNKfLS8g=
+	b=gixfT8PuJl9mUiJooz0aAxmJ5k+qePpXNf666ZHAMDfr3aonXr9+iMCcjBCcTT34m
+	 hGA4N7XADFB3rh9Ph1sXEbqFUY9V9aT7kEWLsQxY/tTNjvqHNljP2qgYeqK4RQumck
+	 gKsDL+McWx7nP/8YRp1OhI+MqykeLqHN+Q4eYGWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/538] arm64: dts: ti: k3-j721e-beagleboneai64: Fix reversed C6x carveout locations
-Date: Wed,  2 Oct 2024 14:55:40 +0200
-Message-ID: <20241002125756.218784422@linuxfoundation.org>
+Subject: [PATCH 6.6 102/538] spi: bcmbca-hsspi: Fix missing pm_runtime_disable()
+Date: Wed,  2 Oct 2024 14:55:41 +0200
+Message-ID: <20241002125756.258497607@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -66,47 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 1a314099b7559690fe23cdf3300dfff6e830ecb1 ]
+[ Upstream commit 4439a2e92cb89028b22c5d7ba1b99e75d7d889f6 ]
 
-The DMA carveout for the C6x core 0 is at 0xa6000000 and core 1 is at
-0xa7000000. These are reversed in DT. While both C6x can access either
-region, so this is not normally a problem, but if we start restricting
-the memory each core can access (such as with firewalls) the cores
-accessing the regions for the wrong core will not work. Fix this here.
+The pm_runtime_disable() is missing in remove function, use
+devm_pm_runtime_enable() to fix it. So the pm_runtime_disable() in
+the probe error path can also be removed.
 
-Fixes: fae14a1cb8dd ("arm64: dts: ti: Add k3-j721e-beagleboneai64")
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240801181232.55027-2-afd@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Link: https://patch.msgid.link/20240826124903.3429235-2-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcmbca-hsspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
-index 2f954729f3533..7897323376a5b 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
-@@ -123,7 +123,7 @@ main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
- 			no-map;
- 		};
+diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
+index 9f64afd8164ea..4965bc86d7f52 100644
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -546,12 +546,14 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
+ 			goto out_put_host;
+ 	}
  
--		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
-+		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0x00 0xa6000000 0x00 0x100000>;
- 			no-map;
-@@ -135,7 +135,7 @@ c66_0_memory_region: c66-memory@a6100000 {
- 			no-map;
- 		};
+-	pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		goto out_put_host;
  
--		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
-+		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0x00 0xa7000000 0x00 0x100000>;
- 			no-map;
+ 	ret = sysfs_create_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "couldn't register sysfs group\n");
+-		goto out_pm_disable;
++		goto out_put_host;
+ 	}
+ 
+ 	/* register and we are done */
+@@ -565,8 +567,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
+ 
+ out_sysgroup_disable:
+ 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+-out_pm_disable:
+-	pm_runtime_disable(&pdev->dev);
+ out_put_host:
+ 	spi_controller_put(host);
+ out_disable_pll_clk:
 -- 
 2.43.0
 
