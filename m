@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4200B98D966
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228B198DBF0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F631F22115
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC7D1281578
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84411D0F4E;
-	Wed,  2 Oct 2024 14:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E14D1D174C;
+	Wed,  2 Oct 2024 14:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mf2nXS3c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygB1Ddts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C301D0DDD;
-	Wed,  2 Oct 2024 14:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9DC1D174A;
+	Wed,  2 Oct 2024 14:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877977; cv=none; b=WE0+PauMKM1+Adsul7O4Od+rnplHjHuBt/GLVCzxZjZ4NRs0bVQq27i7nq811X592ix9PLbwhXWvr0AR3VqPfuPAQQ+ESg81t8NqDZighX+X1ngUld3y1vDAWtZzn/rYyCbCD6fTMWa9YKRbRiWCAmtIT0u8YC0aN9n0rCBhDNQ=
+	t=1727879442; cv=none; b=E9hY9dzbEf135l8H1Ph7myNuhh0nEpyc7O0NggxS9ULWqpNf4jsymKyp8l0OIGNcfi1t4fLsxvp1aBXBYHwMXrItsURPp3RWKoXOaMcrMHBM0yQuHkS29DAOvpL9aLQcKefNXQCY/PZIWcR682mMskC4DxZhsGkoUqdpzzjCV60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877977; c=relaxed/simple;
-	bh=JXybtLkVl+5ofFQgCkavZwDi4Na2ugQXo2+hc8tqmes=;
+	s=arc-20240116; t=1727879442; c=relaxed/simple;
+	bh=EiXTvfT4ZHuuHZ6TmloK0zOyMJzqKlqo7XglJVJdcuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxyOElhoZK8dBLbZ/vRGa8Lh++VWs0s5m49F5MY4pu4ViEfy+pD7JoR/XWw7u99Tq/7pQJN5isUE9sec3A/oeh8io2KvLoc2H3dd49QBhK/YwtHFTVhSOJPgwKFtb1648QfZvlTPH16Bbco7g3kxYLhKvSgm7J7nx2ZGAqty8Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mf2nXS3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF629C4CEC2;
-	Wed,  2 Oct 2024 14:06:16 +0000 (UTC)
+	 MIME-Version; b=Ru1a5RF+j4GgbOVfUbQ+kWEKmCTl0t6DYfg34p7lEOSyIwPn/20kt5I146NP3bwET52iqTf18NDC4E6m1EPol9r8X3ZdR3u1HBfORm7xsSD5BTPtcePBYAvQ/0FqxcegDB2gwxJA1rxGeKc5rZX5yIy4fVaVoLksZeeOA+H8LPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygB1Ddts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B530C4CEC2;
+	Wed,  2 Oct 2024 14:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877977;
-	bh=JXybtLkVl+5ofFQgCkavZwDi4Na2ugQXo2+hc8tqmes=;
+	s=korg; t=1727879442;
+	bh=EiXTvfT4ZHuuHZ6TmloK0zOyMJzqKlqo7XglJVJdcuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mf2nXS3coa6KhcjERcvxxFzmUJtX2E3bmMssDlMf6O1QiGDe92W60WlXOWlCJIHNh
-	 /5C0cYy89uRkY7akIBkF2KENYnipuTFgXnQ5NN+aOMcXiUucIVT6gIe80zlBOn+3SU
-	 /bkMYBLFr9Jsskjsp3PAcIpGneMEXi2ShTD9Pbf0=
+	b=ygB1DdtsWIXWF9g6pJxkGFy1upl459ivdR4Rgyv7+wzFVAtS3f56swzCHVkIBbYGm
+	 zKCXq75H6GkXqY+IskiF9VH9LSHhery91znFnDoO1RotbQwXdrgNLrmnv95tTMeVjq
+	 +DDR2VE0XwzNUdsCSyxaPINo5VDcbTg7UX8rChOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 259/634] selftests/bpf: Fix compile if backtrace support missing in libc
+Subject: [PATCH 6.6 120/538] hwmon: (max16065) Fix overflows seen when writing limits
 Date: Wed,  2 Oct 2024 14:55:59 +0200
-Message-ID: <20241002125821.323725498@linuxfoundation.org>
+Message-ID: <20241002125756.982937766@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit c9a83e76b5a96801a2c7ea0a79ca77c356d8b38d ]
+[ Upstream commit 744ec4477b11c42e2c8de9eb8364675ae7a0bd81 ]
 
-Include GNU <execinfo.h> header only with glibc and provide weak, stubbed
-backtrace functions as a fallback in test_progs.c. This allows for non-GNU
-replacements while avoiding compile errors (e.g. with musl libc) like:
+Writing large limits resulted in overflows as reported by module tests.
 
-  test_progs.c:13:10: fatal error: execinfo.h: No such file or directory
-     13 | #include <execinfo.h> /* backtrace */
-        |          ^~~~~~~~~~~~
-  test_progs.c: In function 'crash_handler':
-  test_progs.c:1034:14: error: implicit declaration of function 'backtrace' [-Werror=implicit-function-declaration]
-   1034 |         sz = backtrace(bt, ARRAY_SIZE(bt));
-        |              ^~~~~~~~~
-  test_progs.c:1045:9: error: implicit declaration of function 'backtrace_symbols_fd' [-Werror=implicit-function-declaration]
-   1045 |         backtrace_symbols_fd(bt, sz, STDERR_FILENO);
-        |         ^~~~~~~~~~~~~~~~~~~~
+in0_lcrit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_crit: Suspected overflow: [max=5538, read 0, written 2147483647]
+in0_min: Suspected overflow: [max=5538, read 0, written 2147483647]
 
-Fixes: 9fb156bb82a3 ("selftests/bpf: Print backtrace on SIGSEGV in test_progs")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/aa6dc8e23710cb457b278039d0081de7e7b4847d.1722244708.git.tony.ambardar@gmail.com
+Fix the problem by clamping prior to multiplications and the use of
+DIV_ROUND_CLOSEST, and by using consistent variable types.
+
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_progs.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/hwmon/max16065.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_progs.c b/tools/testing/selftests/bpf/test_progs.c
-index 60c5ec0f6abf6..d5d0cb4eb1975 100644
---- a/tools/testing/selftests/bpf/test_progs.c
-+++ b/tools/testing/selftests/bpf/test_progs.c
-@@ -10,7 +10,6 @@
- #include <sched.h>
- #include <signal.h>
- #include <string.h>
--#include <execinfo.h> /* backtrace */
- #include <sys/sysinfo.h> /* get_nprocs */
- #include <netinet/in.h>
- #include <sys/select.h>
-@@ -19,6 +18,21 @@
- #include <bpf/btf.h>
- #include "json_writer.h"
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index aa38c45adc09e..e392529de098e 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -114,9 +114,10 @@ static inline int LIMIT_TO_MV(int limit, int range)
+ 	return limit * range / 256;
+ }
  
-+#ifdef __GLIBC__
-+#include <execinfo.h> /* backtrace */
-+#endif
-+
-+/* Default backtrace funcs if missing at link */
-+__weak int backtrace(void **buffer, int size)
-+{
-+	return 0;
-+}
-+
-+__weak void backtrace_symbols_fd(void *const *buffer, int size, int fd)
-+{
-+	dprintf(fd, "<backtrace not supported>\n");
-+}
-+
- static bool verbose(void)
+-static inline int MV_TO_LIMIT(int mv, int range)
++static inline int MV_TO_LIMIT(unsigned long mv, int range)
  {
- 	return env.verbosity > VERBOSE_NONE;
+-	return clamp_val(DIV_ROUND_CLOSEST(mv * 256, range), 0, 255);
++	mv = clamp_val(mv, 0, ULONG_MAX / 256);
++	return DIV_ROUND_CLOSEST(clamp_val(mv * 256, 0, range * 255), range);
+ }
+ 
+ static inline int ADC_TO_CURR(int adc, int gain)
 -- 
 2.43.0
 
