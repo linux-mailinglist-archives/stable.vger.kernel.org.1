@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-79665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D1D98D99C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FC198DC3B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4463B2208E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C146A28658C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9C01D173A;
-	Wed,  2 Oct 2024 14:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EFE1D0E2C;
+	Wed,  2 Oct 2024 14:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCKXIuAo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vw7Bkd+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A63E1D07B2;
-	Wed,  2 Oct 2024 14:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F35C1D040D;
+	Wed,  2 Oct 2024 14:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878106; cv=none; b=sZBYeXf/RwlauthghnPDU+ZIStCoJfPm2ZHRKMMGYhpxtKFQ5aQL4fqvAe+UBhLjHQI1f4Cw6sjCnHQQtHWlqzClWVEAEoptTwrTyfXgoNI5Y5sd49okgqzF252zcCkagH1r3JVF0l1JhAsZ4nIRpiUX7z+0tjrws6WvI13/VhU=
+	t=1727879573; cv=none; b=YWZK4g5jrYqcGAHsxxSeMxC7pYKt82KWZ75xeI6cDEprhvOYh4Rr94VlyfADZiYHpqzXMTI0PVw66Dgc4FTOMLJqPlxm6JZIVW+KpqrFB+tiw3mS60gCgJ6UrJJQVPqBo/HqPj95k7A4CxYbkMc8oqyf3TbK70qKQ/Lk3CkVkIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878106; c=relaxed/simple;
-	bh=ICJcHN5fisMTPLuJKPWRwWPAVBxV49B5X2X/o8W+3oM=;
+	s=arc-20240116; t=1727879573; c=relaxed/simple;
+	bh=tstZ3OXO+zJAlBTifA5ZrcAniylwcxwP85qkFwBX4K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=btVrbiZ8X/JyRNXc/IgA07+Od3c3p5JPIpSU/MiuO1bhMu1jy7wxR90rzDNrau4mW8FjdTncElH84F+UtZXgauEMTTnwuKHUGeskM9XEznTuAoJF1rPZZP6B8c/7dY4xM5TUNwGMMEKA/95b1DJO3/rHIWse7svC+GDx8iQoxnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCKXIuAo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFF4C4CEC2;
-	Wed,  2 Oct 2024 14:08:25 +0000 (UTC)
+	 MIME-Version; b=WTwX6hxE16cGoPKSPYSa4TPhI5Z/Y4PBDYsgYM5/ur7F50ZRZkIYCOSg3em+I6manEtHvxs4O7b7KsyoWwlMLZheX3bAMyxpN9NhyG2EI6ejX+94aHaWgPqF3JA51nMROpKC3CcMNnLxNvcdZrBugTG6LmvnkdfFAG3Xdpn1W8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vw7Bkd+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA73CC4CEC2;
+	Wed,  2 Oct 2024 14:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878106;
-	bh=ICJcHN5fisMTPLuJKPWRwWPAVBxV49B5X2X/o8W+3oM=;
+	s=korg; t=1727879573;
+	bh=tstZ3OXO+zJAlBTifA5ZrcAniylwcxwP85qkFwBX4K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCKXIuAotZiBVoZETwsLPUfy6/y3KJkTCr/REArmfF+cfIS1e3nXvLqXSimzglx7F
-	 NHTNaEa8D84d9BfwfvIsExwVOMVdj1KKfZOrlIjUi0njOrqetgKbbzLsdd9sD3kGj9
-	 ZCfPhtHuHLJv7i1oAs5VB7oHRBMDvNdliCG7TwgE=
+	b=Vw7Bkd+CjPSf5J5I+uQ3YOIee0vff5Y6QvO2MeNlEvZcM42MLArFsaKKaPic0Js26
+	 t4gUhgRf85cC/udSon57fRU7GjUQNqnjrFsBmRVpqNlIcHAnIC/OyyvSnn5RAt8MQI
+	 rZFncqrBzHyFcXjQNZNyufYjsraTQ3TMAmrPEltg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yu <yu.c.chen@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	David Gow <davidgow@google.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Tejun Heo <tj@kernel.org>,
+	Marc Gonzalez <mgonzalez@freebox.fr>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 273/634] kthread: fix task state in kthread worker if being frozen
+Subject: [PATCH 6.6 134/538] iommu/arm-smmu-qcom: hide last LPASS SMMU context bank from linux
 Date: Wed,  2 Oct 2024 14:56:13 +0200
-Message-ID: <20241002125821.876532296@linuxfoundation.org>
+Message-ID: <20241002125757.529569725@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Marc Gonzalez <mgonzalez@freebox.fr>
 
-[ Upstream commit e16c7b07784f3fb03025939c4590b9a7c64970a7 ]
+[ Upstream commit 3a8990b8a778219327c5f8ecf10b5d81377b925a ]
 
-When analyzing a kernel waring message, Peter pointed out that there is a
-race condition when the kworker is being frozen and falls into
-try_to_freeze() with TASK_INTERRUPTIBLE, which could trigger a
-might_sleep() warning in try_to_freeze().  Although the root cause is not
-related to freeze()[1], it is still worthy to fix this issue ahead.
+On qcom msm8998, writing to the last context bank of lpass_q6_smmu
+(base address 0x05100000) produces a system freeze & reboot.
 
-One possible race scenario:
+The hardware/hypervisor reports 13 context banks for the LPASS SMMU
+on msm8998, but only the first 12 are accessible...
+Override the number of context banks
 
-        CPU 0                                           CPU 1
-        -----                                           -----
+[    2.546101] arm-smmu 5100000.iommu: probing hardware configuration...
+[    2.552439] arm-smmu 5100000.iommu: SMMUv2 with:
+[    2.558945] arm-smmu 5100000.iommu: 	stage 1 translation
+[    2.563627] arm-smmu 5100000.iommu: 	address translation ops
+[    2.568923] arm-smmu 5100000.iommu: 	non-coherent table walk
+[    2.574566] arm-smmu 5100000.iommu: 	(IDR0.CTTW overridden by FW configuration)
+[    2.580220] arm-smmu 5100000.iommu: 	stream matching with 12 register groups
+[    2.587263] arm-smmu 5100000.iommu: 	13 context banks (0 stage-2 only)
+[    2.614447] arm-smmu 5100000.iommu: 	Supported page sizes: 0x63315000
+[    2.621358] arm-smmu 5100000.iommu: 	Stage-1: 36-bit VA -> 36-bit IPA
+[    2.627772] arm-smmu 5100000.iommu: 	preserved 0 boot mappings
 
-        // kthread_worker_fn
-        set_current_state(TASK_INTERRUPTIBLE);
-                                                       suspend_freeze_processes()
-                                                         freeze_processes
-                                                           static_branch_inc(&freezer_active);
-                                                         freeze_kernel_threads
-                                                           pm_nosig_freezing = true;
-        if (work) { //false
-          __set_current_state(TASK_RUNNING);
+Specifically, the crashes occur here:
 
-        } else if (!freezing(current)) //false, been frozen
+	qsmmu->bypass_cbndx = smmu->num_context_banks - 1;
+	arm_smmu_cb_write(smmu, qsmmu->bypass_cbndx, ARM_SMMU_CB_SCTLR, 0);
 
-                      freezing():
-                      if (static_branch_unlikely(&freezer_active))
-                        if (pm_nosig_freezing)
-                          return true;
-          schedule()
-	}
+and here:
 
-        // state is still TASK_INTERRUPTIBLE
-        try_to_freeze()
-          might_sleep() <--- warning
+	arm_smmu_write_context_bank(smmu, i);
+	arm_smmu_cb_write(smmu, i, ARM_SMMU_CB_FSR, ARM_SMMU_CB_FSR_FAULT);
 
-Fix this by explicitly set the TASK_RUNNING before entering
-try_to_freeze().
+It is likely that FW reserves the last context bank for its own use,
+thus a simple work-around is: DON'T USE IT in Linux.
 
-Link: https://lore.kernel.org/lkml/Zs2ZoAcUsZMX2B%2FI@chenyu5-mobl2/ [1]
-Link: https://lkml.kernel.org/r/20240827112308.181081-1-yu.c.chen@intel.com
-Fixes: b56c0d8937e6 ("kthread: implement kthread_worker")
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: David Gow <davidgow@google.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Mickaël Salaün <mic@digikod.net>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+If we decrease the number of context banks, last one will be "hidden".
+
+Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20240820-smmu-v3-1-2f71483b00ec@freebox.fr
+Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: 19eb465c969f ("iommu/arm-smmu-qcom: apply num_context_bank fixes for SDM630 / SDM660")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kthread.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index f7be976ff88af..db4ceb0f503cc 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -845,8 +845,16 @@ int kthread_worker_fn(void *worker_ptr)
- 		 * event only cares about the address.
- 		 */
- 		trace_sched_kthread_work_execute_end(work, func);
--	} else if (!freezing(current))
-+	} else if (!freezing(current)) {
- 		schedule();
-+	} else {
-+		/*
-+		 * Handle the case where the current remains
-+		 * TASK_INTERRUPTIBLE. try_to_freeze() expects
-+		 * the current to be TASK_RUNNING.
-+		 */
-+		__set_current_state(TASK_RUNNING);
-+	}
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 6e6cb19c81f59..b899a7b7fa935 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -278,6 +278,13 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+ 	u32 smr;
+ 	int i;
  
- 	try_to_freeze();
- 	cond_resched();
++	/*
++	 * MSM8998 LPASS SMMU reports 13 context banks, but accessing
++	 * the last context bank crashes the system.
++	 */
++	if (of_device_is_compatible(smmu->dev->of_node, "qcom,msm8998-smmu-v2") && smmu->num_context_banks == 13)
++		smmu->num_context_banks = 12;
++
+ 	/*
+ 	 * Some platforms support more than the Arm SMMU architected maximum of
+ 	 * 128 stream matching groups. For unknown reasons, the additional
 -- 
 2.43.0
 
