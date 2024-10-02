@@ -1,74 +1,73 @@
-Return-Path: <stable+bounces-80572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787CC98DF2F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:30:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBAD98DF54
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9A11C243A8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 533341F27048
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697B51D0BA8;
-	Wed,  2 Oct 2024 15:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6101D0B87;
+	Wed,  2 Oct 2024 15:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Ns+AVoih"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="cpn2ewxX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BB223C9
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3F91D0E1B
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:35:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727882953; cv=none; b=DM3DpBtGfSeuVyJNIcD1esxw7ZujM1Lr9MhYsLYbNFkDtPUeyRRGcYv1BgLpNt3+4caKm8vmPGxsvgretW2JItojonnxujrtQpi8tukrDXlDQPX73C0YtaeOCTL0ohXnGBdN+GMq5eHvperXczUSHy3JL/S/UpF83ud6b8Jn0do=
+	t=1727883346; cv=none; b=ZbuOzBYe6UHLgXmsGWFaQbwf8fX0PpPu6uFJoYbHA9+zuNEnnIsdtV4QlyLOo8qIa657/sY1fHVnV75kuJOSo0Vl3ealEJ0/x5e1GJJftSPV0a+QQG82sNs4nh+VTLwVg+EKwUsQSufSY0MgjGgJwOry0HQT5+BCpdtuHhNfsjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727882953; c=relaxed/simple;
-	bh=RIQqVpmD98rk8cw0rX6CMBIy2c2HMiD50Q4AOR5xrS0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pzhgb4FsuuH8OX9LNPweRMKo3ttrPGHvpiFUSkTpgRLEgbgVQ6qfPLwKTpWW3W/aHobWIzSvELAm4fAwX6jDS9HQKbcImuvMjihblDqSsZTJkNJFjZv5RtBYZLIOtcjz5nBQkOOzhjSGfArOvSkJ0gmIdKqLvMO7WQi/qVmJXx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Ns+AVoih; arc=none smtp.client-ip=209.85.166.171
+	s=arc-20240116; t=1727883346; c=relaxed/simple;
+	bh=/T82ZBHNKOiqS6QgrGyPfq3j1c08/n/R932sr6t7O4g=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=aifZh5Otwc2mcX855oqKI7Cf2je5tbLOfz6Tgmpyqx5SOp9iKxsXmwoyeJUuhj+K2YCKo7VtAtSSNqq8PDh7E1McRxO9qybYE2LT8Xg0VpT+1lOwurPQv3aSRl0eodqBI3XseHPll+dD7gxY39Qev0NnFb13nC31Cttg12tq82w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=cpn2ewxX; arc=none smtp.client-ip=209.85.166.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3a34460a45eso34006065ab.3
-        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 08:29:11 -0700 (PDT)
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-82aa6be8457so35993439f.0
+        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 08:35:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1727882951; x=1728487751; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x/6M+qes7zXTUVlM+gyvBxSlZYYBhmtiTmQsEyciSuE=;
-        b=Ns+AVoihux49ULeWqOgQqkLcCtTh56hEFHZqm/5gifYtla6xELAFTtv0C1cgSnJtyS
-         TyCgIZzt7dUsHKLNcUv5EhNSyulr46BTVymJUnkSGQsq6yOFLU5W/i31LDPbLf5b73Kn
-         SwLqtKB//SlzNkhNDOksuJoBapYJl8NPvJzus8LzpHKNm6+S9Ocwga8lGHyblVwsojFC
-         TJh2mXSRZsZScJIRoCzxwZLITOfNKbGCjw41zp4iQubVHos8JH6pGe+7Ex+gzUs84BzC
-         pFUEK3Clpf3bdriQgg/4BLv9agbba7NI0zwnPpBFQJVl138sryB1+Gpvlaf6+uToj9I3
-         T+kA==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1727883344; x=1728488144; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8a5UprsfZnVpKb9fT2kDrurhIm9j0639eg6PzaQzp5o=;
+        b=cpn2ewxXvRvsCBbT7jzjsgCVh2+Ba/wDjcQ/YbcJCu8YtaqqnuxmSGjXsRQ0EI6dGS
+         eyveHV2/W5zbtCGRJNXB2ab9OQyGYqy7WcYaUMwtykDY7S/mOYZVOnRu2CZuRCelysJy
+         uer/Cp/G2kPJxWrDz0c3hklfQ+rB7MDzol48TSRC/TCxZGW1l7iCP68Rf8SZG5S8AMPU
+         IRONVRdETv8gfxJPOk6F3Uacxg30CbUA73cajci4aC9QintJPDFzX+H1ajgIoor8osgZ
+         5gHJAFu4QwfSRhRQW+kAKOqENpMxPeVXd3Zyl8enl5XCq8D55WMcYxa/MBrnXi1N4Gqb
+         dHLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727882951; x=1728487751;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x/6M+qes7zXTUVlM+gyvBxSlZYYBhmtiTmQsEyciSuE=;
-        b=fCif+N8ZAkwqH5tgZlHUPMbpLmC7FtSTJGLWInckHDBh2h6wSRZMCuCd1IHh39jrtj
-         VjL4yqALTxS1xI0xTlYdM32inDX3DCOT8yAQPQaEt4aRPxMrkDxt2X7vQu1UmZpMKzxO
-         nZSR9Q9/yVQt4eqcyLhrO5qb84EW8BRxdwNl5D7XD9S22NVva3FyOUrLOM30pBPVlBND
-         DNxvvc35ITwWqGqzmeKmQawe2s2YVmoVkKbrGMTFyeP8NWYLP3vMFWLodPzQW2JLP1r7
-         b1HQQ9nkv18Lki6IFBfxdaXOdyLkotMwPpePMQRC9skwtFFjSAhAxp+vKZmsn5RXKqhv
-         tXsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW/2TDyC+QtO40NwV6QTo9kqa5Z5IELG7VGZpV3/CVzeEhMk3dlTkYPb3Z0ZkLSzucONba93TM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ0hzZ+k0MgIB+iTkTaMwt/SyeDEuahob9lNda2AIcqFoExz3C
-	+XxaytiudeoYx2MpiC1Bquwtgd6CpbiLh55KhzpS+2Fo8+tf0LHrAKhIsZZ/IwE=
-X-Google-Smtp-Source: AGHT+IFRG3OfaxVvfmQoDLeVl49PRb2iLOrVXoZvMsgISxySL9vW7HzeTwAphuvGn1NUeZklF21QkA==
-X-Received: by 2002:a05:6e02:2161:b0:3a0:8d60:8ba4 with SMTP id e9e14a558f8ab-3a3659441c6mr35108335ab.16.1727882950950;
-        Wed, 02 Oct 2024 08:29:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727883344; x=1728488144;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8a5UprsfZnVpKb9fT2kDrurhIm9j0639eg6PzaQzp5o=;
+        b=H/sx2iQxbydlhWWfwbVxXZdRD2+VbOmhIQ0lui5gCmWs+mgFHet5Xoq3mFWDWg7Wio
+         RZyqw2fVrRq2rEU3oy9eD+2fhUckwwuYzJgItOT+whrE5dlJfroZRxYQJg3GMsmSE5NJ
+         BzBU3Z+iDmQl01AZ/uGtX8PmDpjx4gvEoGU9GXjWeW5JhwLc2+4WTMAxuBY6Y1tQv/Fv
+         BkkGERgTlVOde4PWGBUKqflw5aoUgAb8+4zaW52JfRQ0uASKXdu7HTjChLlHPbTwekcy
+         7hzpKGqUOAOutvQ8+8SNy/nadCKfOIBDnXkPOv0o6/8cOMugpXjOa+IHSEorZF6gcA5Q
+         6IEg==
+X-Gm-Message-State: AOJu0YwLru9d685bzAgFkeI2suVi1e2nkplQE/Qb048lDUADqL4Y91ex
+	oEc48+EmSO4JOVYwQnmiOIvg1kmwRGx+l+mAzWriTL15xefXZU/QDRgj0r2Vvd9/ANVVmqecfdd
+	UCv0=
+X-Google-Smtp-Source: AGHT+IE2Nt2s+kSv7a6xDw5guMNHknOR/PEQ0GG/HA8oShTOtSoB0kY5D4Km3IwVS81EY8RUQUszXw==
+X-Received: by 2002:a05:6602:1514:b0:7f6:8489:2679 with SMTP id ca18e2360f4ac-834e76da85cmr1443039f.8.1727883343856;
+        Wed, 02 Oct 2024 08:35:43 -0700 (PDT)
 Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d8888e37e2sm3150948173.140.2024.10.02.08.29.10
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-834936e34acsm335485839f.32.2024.10.02.08.35.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Oct 2024 08:29:10 -0700 (PDT)
-Message-ID: <f02b4d72-796f-434d-b612-c37f02184f00@kernel.dk>
-Date: Wed, 2 Oct 2024 09:29:09 -0600
+        Wed, 02 Oct 2024 08:35:43 -0700 (PDT)
+Message-ID: <4cdd1f7f-a753-40af-bde5-11bb584a052b@kernel.dk>
+Date: Wed, 2 Oct 2024 09:35:42 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,39 +75,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15,6.1 0/3] Fix block integrity violation of kobject
- rules
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- stable@vger.kernel.org
-Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- Christoph Hellwig <hch@infradead.org>,
- "Martin K . Petersen" <martin.petersen@oracle.com>, kernel-dev@igalia.com
-References: <20241002140123.2311471-1-cascardo@igalia.com>
 Content-Language: en-US
+To: stable <stable@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20241002140123.2311471-1-cascardo@igalia.com>
+Subject: Missing 6.11-stable patch
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 10/2/24 8:01 AM, Thadeu Lima de Souza Cascardo wrote:
-> integrity_kobj did not have a release function and with
-> CONFIG_DEBUG_KOBJECT_RELEASE, a use-after-free would be triggered as its
-> holding struct gendisk would be freed without relying on its refcount.
-> 
-> Thomas Weißschuh (3):
->   blk-integrity: use sysfs_emit
->   blk-integrity: convert to struct device_attribute
->   blk-integrity: register sysfs attributes on struct device
-> 
->  block/blk-integrity.c  | 175 ++++++++++++++---------------------------
->  block/blk.h            |  10 +--
->  block/genhd.c          |  12 +--
->  include/linux/blkdev.h |   3 -
->  4 files changed, 66 insertions(+), 134 deletions(-)
+Hi,
 
-Looks fine to backport, thanks.
+Arguably the most important block stable patch I don't see in the
+most recent review series sent out, which is odd because it's
+certainly marked with fixes and a stable tag. It's this one:
+
+commit e3accac1a976e65491a9b9fba82ce8ddbd3d2389
+Author: Damien Le Moal <dlemoal@kernel.org>
+Date:   Tue Sep 17 22:32:31 2024 +0900
+
+    block: Fix elv_iosched_local_module handling of "none" scheduler
+
+and it really must go into -stable asap as it's fixing a real issue
+that I've had multiple users email me about. Can we get this added
+to the current 6.11-stable series so we don't miss another release?
+
+It's also quite possible that I'm blind and it is indeed in the queue
+or already there, but for the life of me I can't see it.
 
 -- 
 Jens Axboe
+
 
 
