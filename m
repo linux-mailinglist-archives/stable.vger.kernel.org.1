@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFC698DCE8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F267698DA7A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7911F25EA6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AB2B1F214D2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC56B1D0E01;
-	Wed,  2 Oct 2024 14:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05D71D0E3B;
+	Wed,  2 Oct 2024 14:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rs4Iln/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnsB5xk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFF51D0786;
-	Wed,  2 Oct 2024 14:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8911D0F6C;
+	Wed,  2 Oct 2024 14:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880044; cv=none; b=bFyQ02N8toB90DN1okYA1atEV0Lq04C3BCCtTucHdBM4VlCJeWGkHMq5D6MD6LaI5B44/XiFQL096uINJq0L4si9unbrEGiOntNgB/5JTbyUskOL1k++41rLFcwf+u936kRkS42c3Y70VHiXt87RF8WOw8ErhRnFvC+RfwdF8lg=
+	t=1727878586; cv=none; b=pXRW3CkTreMm1Z87b81ijJ7Kw1SDmCS9N84ClDFd6yp9pIl2P4N6sVDuGkIoLv4Bks/KaP3WxSrd1Qis+I/k+MEo/GXNsL3jhrSLdQFa2Kru8EKR5LErhtrGTpRT0dYEm4CEY1hoCMgrrcOaKKnUqCL95qfdhagARqUX1NtK914=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880044; c=relaxed/simple;
-	bh=oeFOStyacAjBlnqPJ0mmpDncBwUPdOQoOYRT0xK5dEQ=;
+	s=arc-20240116; t=1727878586; c=relaxed/simple;
+	bh=2Yp+WrjLDEi3Kfx3euyh2a5YCAm3rNxACFpbYect6zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n4nt65PVey1PQcWhai9UdVywQLG6ptWrRRy6FDLW2UGRS2D5izahbgvOgLbwkoOfe397XRV5ZeIBs59Kg0GpcIl3KOPXh04H8xPZChr+tBDBSXg42JdCZV+Zy/CZx4Xvz5ReF/Zy/AmtfADMszrEadC/TjM1hRBbqQ/j/c1zS9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rs4Iln/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A53EFC4CEC2;
-	Wed,  2 Oct 2024 14:40:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TsdO0SplTUvYBVX76/sSUF+QmB+ubUiaFsiNsMy36DgZnIe3DnPvqhFePUWDFcUP4TSq8gvJyP7qtYxFOJAJtYxiADm3rxMehadPz+pjCxDuOd5mQxO1eVM6KHcBMwo17rOV8FLpnjZinugovNzCmIFjgLknfvS382HrzlS1zE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnsB5xk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02619C4CEC2;
+	Wed,  2 Oct 2024 14:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880044;
-	bh=oeFOStyacAjBlnqPJ0mmpDncBwUPdOQoOYRT0xK5dEQ=;
+	s=korg; t=1727878586;
+	bh=2Yp+WrjLDEi3Kfx3euyh2a5YCAm3rNxACFpbYect6zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rs4Iln/fkx/hHY7DBTXXGtNWtYLOB+NtxAWrID7gmAmmlzqqNBLv84SWNf9nYyknF
-	 sb30FYNDMxo2miDdtV5FJu0arKKtOIVWcdkCyTUf/K0yq+2HrV7YcURh/Qqt9B9BaJ
-	 DWFqB91xaKUBItFp5U3REQkQ5qTfX1UjI1qpZObY=
+	b=MnsB5xk+cu1rTV3rKKYYT8QsLF0G9pwVPTmd9SeL0BKFPF/ykM7ilPjSB36EjfFKR
+	 EAU0XZhdG3q3UI57U+maV+5O46PAAh73X+kiKdcDFupf1TOdQJreLHJmeksVf1HM97
+	 OERTavQHRLlDa1K8mpJ7Jj10coW0gXobYs7fIgSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 324/538] riscv: Fix fp alignment bug in perf_callchain_user()
-Date: Wed,  2 Oct 2024 14:59:23 +0200
-Message-ID: <20241002125805.217204794@linuxfoundation.org>
+	Matthew W Carlis <mattc@purestorage.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.10 464/634] PCI: Clear the LBMS bit after a link retrain
+Date: Wed,  2 Oct 2024 14:59:24 +0200
+Message-ID: <20241002125829.418507755@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +64,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 22ab08955ea13be04a8efd20cc30890e0afaa49c ]
+commit 8037ac08c2bbb3186f83a5a924f52d1048dbaec5 upstream.
 
-The standard RISC-V calling convention said:
-	"The stack grows downward and the stack pointer is always
-	kept 16-byte aligned".
+The LBMS bit, where implemented, is set by hardware either in response
+to the completion of retraining caused by writing 1 to the Retrain Link
+bit or whenever hardware has changed the link speed or width in attempt
+to correct unreliable link operation.  It is never cleared by hardware
+other than by software writing 1 to the bit position in the Link Status
+register and we never do such a write.
 
-So perf_callchain_user() should check whether 16-byte aligned for fp.
+We currently have two places, namely apply_bad_link_workaround() and
+pcie_failed_link_retrain() in drivers/pci/controller/dwc/pcie-tegra194.c
+and drivers/pci/quirks.c respectively where we check the state of the LBMS
+bit and neither is interested in the state of the bit resulting from the
+completion of retraining, both check for a link fault.
 
-Link: https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf
+And in particular pcie_failed_link_retrain() causes issues consequently, by
+trying to retrain a link where there's no downstream device anymore and the
+state of 1 in the LBMS bit has been retained from when there was a device
+downstream that has since been removed.
 
-Fixes: dbeb90b0c1eb ("riscv: Add perf callchain support")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Björn Töpel <bjorn@kernel.org>
-Link: https://lore.kernel.org/r/20240708032847.2998158-2-ruanjinjie@huawei.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clear the LBMS bit then at the conclusion of pcie_retrain_link(), so that
+we have a single place that controls it and that our code can track link
+speed or width changes resulting from unreliable link operation.
+
+Fixes: a89c82249c37 ("PCI: Work around PCIe link training failures")
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091133140.61955@angie.orcam.me.uk
+Reported-by: Matthew W Carlis <mattc@purestorage.com>
+Link: https://lore.kernel.org/r/20240806000659.30859-1-mattc@purestorage.com/
+Link: https://lore.kernel.org/r/20240722193407.23255-1-mattc@purestorage.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.5+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/perf_callchain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/perf_callchain.c b/arch/riscv/kernel/perf_callchain.c
-index 3348a61de7d99..2932791e93882 100644
---- a/arch/riscv/kernel/perf_callchain.c
-+++ b/arch/riscv/kernel/perf_callchain.c
-@@ -62,7 +62,7 @@ void perf_callchain_user(struct perf_callchain_entry_ctx *entry,
- 	perf_callchain_store(entry, regs->epc);
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4647,7 +4647,15 @@ int pcie_retrain_link(struct pci_dev *pd
+ 		pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
+ 	}
  
- 	fp = user_backtrace(entry, fp, regs->ra);
--	while (fp && !(fp & 0x3) && entry->nr < entry->max_stack)
-+	while (fp && !(fp & 0x7) && entry->nr < entry->max_stack)
- 		fp = user_backtrace(entry, fp, 0);
+-	return pcie_wait_for_link_status(pdev, use_lt, !use_lt);
++	rc = pcie_wait_for_link_status(pdev, use_lt, !use_lt);
++
++	/*
++	 * Clear LBMS after a manual retrain so that the bit can be used
++	 * to track link speed or width changes made by hardware itself
++	 * in attempt to correct unreliable link operation.
++	 */
++	pcie_capability_write_word(pdev, PCI_EXP_LNKSTA, PCI_EXP_LNKSTA_LBMS);
++	return rc;
  }
  
--- 
-2.43.0
-
+ /**
 
 
 
