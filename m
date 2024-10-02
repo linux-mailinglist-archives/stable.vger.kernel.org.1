@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E448598D91D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDF898D5F3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD22B287A64
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09323280CE5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BAE1D1E67;
-	Wed,  2 Oct 2024 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8421D0174;
+	Wed,  2 Oct 2024 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1IwC9gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfE1VcoX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E24C1D04BE;
-	Wed,  2 Oct 2024 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374FE29CE7;
+	Wed,  2 Oct 2024 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877785; cv=none; b=tNWGZvCFNXizwbaWGBCYUoljQTyi8AwbGsHXaQzKMeyHnjxNc8BPg8qM1S7lhs/wS14wdt5iH44HKaT3HAWfybck+/Lom9y4vx74/V93GZ5ZLYOyKLpKIfEt9jlYR4NHcup/SDCbhrtfY71jIj9scBnca5NST3yqC0m6iYQaP/s=
+	t=1727876095; cv=none; b=PeaMkmBq6ryCnYN1wY3ZkddvDHO2W9HGY12Pcmw6WZIhBjXoL8uNr55yXMxk3tUzj9M4hUgDv4fhfJK+/yX6LQIGNosE5bgpTc1LKxCcrXN688pKYZQcwhXVdbcQKdSTplCxQ2GYKGnaBOOcAHXS1BgOlwfm5M9+ZfIA8zzPd1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877785; c=relaxed/simple;
-	bh=W/VsAF18/Gz1pjNiRRpZFmSip3NWgw/mRjlT8aSGDY0=;
+	s=arc-20240116; t=1727876095; c=relaxed/simple;
+	bh=SBpBNAL6Y3mJFnwjytMJdu9DF8ccXsingF32jl7n1vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNDvCv6iR8oz2170nZWJPeAvONFOzEZUQ4q4BkUVAfTmJEvod2zdue5Sri32S6QKxsLRCJZ2uImkbcbTP0oVUUOAjL/qtVJ6PCEvDGkBmV+7vM47f0LfZIRsgHfrYuLjNrYm23FX+LrE7VFmdvkbIPJ6wWR6KKdZJ0CE6oomY2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1IwC9gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFD4C4CEC2;
-	Wed,  2 Oct 2024 14:03:04 +0000 (UTC)
+	 MIME-Version; b=pVXPOls0as2PZsgcjqHHC0KTLEkhnIESGaOepq6JyElH7gjbjOpiaXfSUrfrXlgzKFmwxiaIuyDdxV70mSVOdbpAd4g2UuhvZ/aZr+ZaxQ+RW1Ca5iJ1S9dsG6Z0/zPX22xIlYqfTzvNiI8xybPFqfYTDVxwXC/IrMsdqQd66/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfE1VcoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AA2C4CEC5;
+	Wed,  2 Oct 2024 13:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877785;
-	bh=W/VsAF18/Gz1pjNiRRpZFmSip3NWgw/mRjlT8aSGDY0=;
+	s=korg; t=1727876095;
+	bh=SBpBNAL6Y3mJFnwjytMJdu9DF8ccXsingF32jl7n1vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g1IwC9gxNjMKoQPxirAlgCvbjxs5/yVbTVD/YMdl0XBHfRQWC6LbaM2X6sxTycRQC
-	 TzibdeP9L/SeLCyFrMhuVIfR5H24kwgqw1QDFZYBi9jXxhSBa1z4s7qmqmYJVr7ag3
-	 zItoOekGk5ziafgj1CvENSUvQt/jLyyKXwnl6ODY=
+	b=YfE1VcoXvhqD7MSm+BXoq42GsKBQr+OlayqIZRe1WJPROWYm/wWqlQilLzLxdXjTt
+	 MWitDynILafPw2C4lfuoiWPfJ1zB3HOlK5Yy1sGM3XTzPbL4PksyqSkMyUFVfjqGYb
+	 2vxHhp4HGjNM77YrvRQVvK4uH16CeFIiM3VkXi20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 193/634] jfs: fix out-of-bounds in dbNextAG() and diAlloc()
-Date: Wed,  2 Oct 2024 14:54:53 +0200
-Message-ID: <20241002125818.723577196@linuxfoundation.org>
+Subject: [PATCH 6.11 296/695] selftests/bpf: fix to avoid __msg tag de-duplication by clang
+Date: Wed,  2 Oct 2024 14:54:54 +0200
+Message-ID: <20241002125834.255651308@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit e63866a475562810500ea7f784099bfe341e761a ]
+[ Upstream commit f00bb757ed630affc951691ddaff206039cbb7ee ]
 
-In dbNextAG() , there is no check for the case where bmp->db_numag is
-greater or same than MAXAG due to a polluted image, which causes an
-out-of-bounds. Therefore, a bounds check should be added in dbMount().
+__msg, __regex and __xlated tags are based on
+__attribute__((btf_decl_tag("..."))) annotations.
 
-And in dbNextAG(), a check for the case where agpref is greater than
-bmp->db_numag should be added, so an out-of-bounds exception should be
-prevented.
+Clang de-duplicates such annotations, e.g. the following
+two sequences of tags are identical in final BTF:
 
-Additionally, a check for the case where agno is greater or same than
-MAXAG should be added in diAlloc() to prevent out-of-bounds.
+    /* seq A */            /* seq B */
+    __tag("foo")           __tag("foo")
+    __tag("bar")           __tag("bar")
+    __tag("foo")
 
-Reported-by: Jeongjun Park <aha310510@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fix this by adding a unique suffix for each tag using __COUNTER__
+pre-processor macro. E.g. here is a new definition for __msg:
+
+    #define __msg(msg) \
+      __attribute__((btf_decl_tag("comment:test_expect_msg=" XSTR(__COUNTER__) "=" msg)))
+
+Using this definition the "seq A" from example above is translated to
+BTF as follows:
+
+    [..] DECL_TAG 'comment:test_expect_msg=0=foo' type_id=X component_idx=-1
+    [..] DECL_TAG 'comment:test_expect_msg=1=bar' type_id=X component_idx=-1
+    [..] DECL_TAG 'comment:test_expect_msg=2=foo' type_id=X component_idx=-1
+
+Surprisingly, this bug affects a single existing test:
+verifier_spill_fill/old_stack_misc_vs_cur_ctx_ptr,
+where sequence of identical messages was expected in the log.
+
+Fixes: 537c3f66eac1 ("selftests/bpf: add generic BPF program tester-loader")
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20240820102357.3372779-4-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 ++--
- fs/jfs/jfs_imap.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/progs/bpf_misc.h  | 15 +++---
+ .../selftests/bpf/progs/verifier_spill_fill.c |  8 ++--
+ tools/testing/selftests/bpf/test_loader.c     | 47 ++++++++++++++-----
+ 3 files changed, 48 insertions(+), 22 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 5713994328cbc..0625d1c0d0649 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -187,7 +187,7 @@ int dbMount(struct inode *ipbmap)
- 	}
+diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
+index a225cd87897c4..4f10297437341 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_misc.h
++++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
+@@ -2,6 +2,9 @@
+ #ifndef __BPF_MISC_H__
+ #define __BPF_MISC_H__
  
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag) {
-+	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
-@@ -652,7 +652,7 @@ int dbNextAG(struct inode *ipbmap)
- 	 * average free space.
- 	 */
- 	for (i = 0 ; i < bmp->db_numag; i++, agpref++) {
--		if (agpref == bmp->db_numag)
-+		if (agpref >= bmp->db_numag)
- 			agpref = 0;
++#define XSTR(s) STR(s)
++#define STR(s) #s
++
+ /* This set of attributes controls behavior of the
+  * test_loader.c:test_loader__run_subtests().
+  *
+@@ -68,15 +71,15 @@
+  *                   Several __arch_* annotations could be specified at once.
+  *                   When test case is not run on current arch it is marked as skipped.
+  */
+-#define __msg(msg)		__attribute__((btf_decl_tag("comment:test_expect_msg=" msg)))
+-#define __regex(regex)		__attribute__((btf_decl_tag("comment:test_expect_regex=" regex)))
+-#define __xlated(msg)		__attribute__((btf_decl_tag("comment:test_expect_xlated=" msg)))
++#define __msg(msg)		__attribute__((btf_decl_tag("comment:test_expect_msg=" XSTR(__COUNTER__) "=" msg)))
++#define __regex(regex)		__attribute__((btf_decl_tag("comment:test_expect_regex=" XSTR(__COUNTER__) "=" regex)))
++#define __xlated(msg)		__attribute__((btf_decl_tag("comment:test_expect_xlated=" XSTR(__COUNTER__) "=" msg)))
+ #define __failure		__attribute__((btf_decl_tag("comment:test_expect_failure")))
+ #define __success		__attribute__((btf_decl_tag("comment:test_expect_success")))
+ #define __description(desc)	__attribute__((btf_decl_tag("comment:test_description=" desc)))
+-#define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" msg)))
+-#define __regex_unpriv(regex)	__attribute__((btf_decl_tag("comment:test_expect_regex_unpriv=" regex)))
+-#define __xlated_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_xlated_unpriv=" msg)))
++#define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
++#define __regex_unpriv(regex)	__attribute__((btf_decl_tag("comment:test_expect_regex_unpriv=" XSTR(__COUNTER__) "=" regex)))
++#define __xlated_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_xlated_unpriv=" XSTR(__COUNTER__) "=" msg)))
+ #define __failure_unpriv	__attribute__((btf_decl_tag("comment:test_expect_failure_unpriv")))
+ #define __success_unpriv	__attribute__((btf_decl_tag("comment:test_expect_success_unpriv")))
+ #define __log_level(lvl)	__attribute__((btf_decl_tag("comment:test_log_level="#lvl)))
+diff --git a/tools/testing/selftests/bpf/progs/verifier_spill_fill.c b/tools/testing/selftests/bpf/progs/verifier_spill_fill.c
+index 85e48069c9e61..d4b99c3b4719b 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_spill_fill.c
++++ b/tools/testing/selftests/bpf/progs/verifier_spill_fill.c
+@@ -1213,10 +1213,10 @@ __success  __log_level(2)
+  * - once for path entry - label 2;
+  * - once for path entry - label 1 - label 2.
+  */
+-__msg("r1 = *(u64 *)(r10 -8)")
+-__msg("exit")
+-__msg("r1 = *(u64 *)(r10 -8)")
+-__msg("exit")
++__msg("8: (79) r1 = *(u64 *)(r10 -8)")
++__msg("9: (95) exit")
++__msg("from 2 to 7")
++__msg("8: safe")
+ __msg("processed 11 insns")
+ __flag(BPF_F_TEST_STATE_FREQ)
+ __naked void old_stack_misc_vs_cur_ctx_ptr(void)
+diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
+index 12b0c41e8d64c..0f59bc33a666c 100644
+--- a/tools/testing/selftests/bpf/test_loader.c
++++ b/tools/testing/selftests/bpf/test_loader.c
+@@ -215,6 +215,35 @@ static void update_flags(int *flags, int flag, bool clear)
+ 		*flags |= flag;
+ }
  
- 		if (atomic_read(&bmp->db_active[agpref]))
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 1407feccbc2d0..a360b24ed320c 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -1360,7 +1360,7 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
- 	/* get the ag number of this iag */
- 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
- 	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
--	if (agno < 0 || agno > dn_numag)
-+	if (agno < 0 || agno > dn_numag || agno >= MAXAG)
- 		return -EIO;
- 
- 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
++/* Matches a string of form '<pfx>[^=]=.*' and returns it's suffix.
++ * Used to parse btf_decl_tag values.
++ * Such values require unique prefix because compiler does not add
++ * same __attribute__((btf_decl_tag(...))) twice.
++ * Test suite uses two-component tags for such cases:
++ *
++ *   <pfx> __COUNTER__ '='
++ *
++ * For example, two consecutive __msg tags '__msg("foo") __msg("foo")'
++ * would be encoded as:
++ *
++ *   [18] DECL_TAG 'comment:test_expect_msg=0=foo' type_id=15 component_idx=-1
++ *   [19] DECL_TAG 'comment:test_expect_msg=1=foo' type_id=15 component_idx=-1
++ *
++ * And the purpose of this function is to extract 'foo' from the above.
++ */
++static const char *skip_dynamic_pfx(const char *s, const char *pfx)
++{
++	const char *msg;
++
++	if (strncmp(s, pfx, strlen(pfx)) != 0)
++		return NULL;
++	msg = s + strlen(pfx);
++	msg = strchr(msg, '=');
++	if (!msg)
++		return NULL;
++	return msg + 1;
++}
++
+ enum arch {
+ 	ARCH_X86_64	= 0x1,
+ 	ARCH_ARM64	= 0x2,
+@@ -290,38 +319,32 @@ static int parse_test_spec(struct test_loader *tester,
+ 		} else if (strcmp(s, TEST_TAG_AUXILIARY_UNPRIV) == 0) {
+ 			spec->auxiliary = true;
+ 			spec->mode_mask |= UNPRIV;
+-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_MSG_PFX)) {
+-			msg = s + sizeof(TEST_TAG_EXPECT_MSG_PFX) - 1;
++		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_MSG_PFX))) {
+ 			err = push_msg(msg, NULL, &spec->priv.expect_msgs);
+ 			if (err)
+ 				goto cleanup;
+ 			spec->mode_mask |= PRIV;
+-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_MSG_PFX_UNPRIV)) {
+-			msg = s + sizeof(TEST_TAG_EXPECT_MSG_PFX_UNPRIV) - 1;
++		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_MSG_PFX_UNPRIV))) {
+ 			err = push_msg(msg, NULL, &spec->unpriv.expect_msgs);
+ 			if (err)
+ 				goto cleanup;
+ 			spec->mode_mask |= UNPRIV;
+-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_REGEX_PFX)) {
+-			msg = s + sizeof(TEST_TAG_EXPECT_REGEX_PFX) - 1;
++		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_REGEX_PFX))) {
+ 			err = push_msg(NULL, msg, &spec->priv.expect_msgs);
+ 			if (err)
+ 				goto cleanup;
+ 			spec->mode_mask |= PRIV;
+-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_REGEX_PFX_UNPRIV)) {
+-			msg = s + sizeof(TEST_TAG_EXPECT_REGEX_PFX_UNPRIV) - 1;
++		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_REGEX_PFX_UNPRIV))) {
+ 			err = push_msg(NULL, msg, &spec->unpriv.expect_msgs);
+ 			if (err)
+ 				goto cleanup;
+ 			spec->mode_mask |= UNPRIV;
+-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_XLATED_PFX)) {
+-			msg = s + sizeof(TEST_TAG_EXPECT_XLATED_PFX) - 1;
++		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_XLATED_PFX))) {
+ 			err = push_msg(msg, NULL, &spec->priv.expect_xlated);
+ 			if (err)
+ 				goto cleanup;
+ 			spec->mode_mask |= PRIV;
+-		} else if (str_has_pfx(s, TEST_TAG_EXPECT_XLATED_PFX_UNPRIV)) {
+-			msg = s + sizeof(TEST_TAG_EXPECT_XLATED_PFX_UNPRIV) - 1;
++		} else if ((msg = skip_dynamic_pfx(s, TEST_TAG_EXPECT_XLATED_PFX_UNPRIV))) {
+ 			err = push_msg(msg, NULL, &spec->unpriv.expect_xlated);
+ 			if (err)
+ 				goto cleanup;
 -- 
 2.43.0
 
