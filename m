@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-80089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B36F98DBC4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE14C98D943
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 235FAB27AF9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9136D1F2165C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E831D278B;
-	Wed,  2 Oct 2024 14:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A624A1D1F53;
+	Wed,  2 Oct 2024 14:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXIBmXwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MclIaNqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE5C1D0E06;
-	Wed,  2 Oct 2024 14:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657771D1F4B;
+	Wed,  2 Oct 2024 14:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879352; cv=none; b=PcfPrtyL2NyrghyW/lH/lXnk6LKPL6H2JW6TApDCMmPYIg4Rrcm1LdNodksqZlL1XWT1/FGWPPNtJZSMbEP1wVOmUiYg1tIbCNz3t/g2d6leeXezjLU+ks83x8nUliux+oTfKqYt407YAHa6pJOhTEzS1xKSCJ+9fil4PvQ9uNU=
+	t=1727877884; cv=none; b=SDpUNr6iRThcIFaCWxxPUZVRbdxNzB3bqCdKyv33brJcs/qUF0YuwfcyrYXZCVD3KcwcHnJ2w6QqKUXVxxlTk51PWM8PEex9EVQrd+8oBomjDRyvsEZQUmbhFyzllRGKwwKq0XbdrvdN6imGhhpXRhpKeyo7i+3P748vwSgjBQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879352; c=relaxed/simple;
-	bh=lcgmMQjj9+gMJcdXvhPLrshe7nPfHuVzCHwfpdtWJDg=;
+	s=arc-20240116; t=1727877884; c=relaxed/simple;
+	bh=FDwlzqn8Fi+mdwLOVqE1FrbgnsK4qIFhXxuI3OfzZqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5qT0L4BGP92YWAzrAjQlbysiRITDvEUK3a9uLJ3sqEJD2LvFaGlEejd1IgmH0vP9uBLcnxVsbQyFHzrp6JyVlk+6k+FTc96isKhkZ2D/HKn2OoC93aRnYsZCi22UNClxP3QFsYalKnMor4jp9aiqZy+oKoZ6fVGCF9xj3u8Hsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXIBmXwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AD8C4CEC2;
-	Wed,  2 Oct 2024 14:29:12 +0000 (UTC)
+	 MIME-Version; b=PALc3ryyO+bq2BSBVzq/ZfUG0Rs0H4+zWRlpPLHHCTCTzHS9rdUM0eerviOLsllxB1H1gjMw2yk9ooVvBytWUE8/uqcvizTRSsin3uGc/Tmn02hm9P/wcU1Q5ROSlNA/zFa8BfQLKqvFoR2owsB4nu6qCmuzX71GBWuoTYBOiR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MclIaNqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A13C4CED2;
+	Wed,  2 Oct 2024 14:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879352;
-	bh=lcgmMQjj9+gMJcdXvhPLrshe7nPfHuVzCHwfpdtWJDg=;
+	s=korg; t=1727877883;
+	bh=FDwlzqn8Fi+mdwLOVqE1FrbgnsK4qIFhXxuI3OfzZqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXIBmXwukhW3M9a7E9Dp4W9AOrwg/VKXTFFDh2EWc9wVd81lNhnhPK9wHElsPfHTp
-	 SDfLyZxC8Wbcgf+U4jkT1Ex4KlOL7sBPc3CsVU62mI2g18+JXh0NHM8tmCbjNar4tU
-	 3ylZ4vcyXrC5TqDeGRzuIz/E28IunM0cfwPCFqxc=
+	b=MclIaNqpxa3TBF4ffqU/OSjWRhZvVpAf3g96JSjic1Ar+HhEMcRNBqJTfr7np48um
+	 HqYzFhrDLkt796vYL3Djq71cQKcGVmG7rUlkIO6WHfw/njyiJKEhtT+UezKs+B14fb
+	 5reTxpQUs4ucz7saCsnYP9TN8AIQQJXQm0O5cwhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Riyan Dhiman <riyandhiman14@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Josh Don <joshdon@google.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/538] block: fix potential invalid pointer dereference in blk_add_partition
+Subject: [PATCH 6.10 227/634] sched/fair: Make SCHED_IDLE entity be preempted in strict hierarchy
 Date: Wed,  2 Oct 2024 14:55:27 +0200
-Message-ID: <20241002125755.698162032@linuxfoundation.org>
+Message-ID: <20241002125820.059303470@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Riyan Dhiman <riyandhiman14@gmail.com>
+From: Tianchen Ding <dtcccc@linux.alibaba.com>
 
-[ Upstream commit 26e197b7f9240a4ac301dd0ad520c0c697c2ea7d ]
+[ Upstream commit faa42d29419def58d3c3e5b14ad4037f0af3b496 ]
 
-The blk_add_partition() function initially used a single if-condition
-(IS_ERR(part)) to check for errors when adding a partition. This was
-modified to handle the specific case of -ENXIO separately, allowing the
-function to proceed without logging the error in this case. However,
-this change unintentionally left a path where md_autodetect_dev()
-could be called without confirming that part is a valid pointer.
+Consider the following cgroup:
 
-This commit separates the error handling logic by splitting the
-initial if-condition, improving code readability and handling specific
-error scenarios explicitly. The function now distinguishes the general
-error case from -ENXIO without altering the existing behavior of
-md_autodetect_dev() calls.
+                       root
+                        |
+             ------------------------
+             |                      |
+       normal_cgroup            idle_cgroup
+             |                      |
+   SCHED_IDLE task_A           SCHED_NORMAL task_B
 
-Fixes: b72053072c0b (block: allow partitions on host aware zone devices)
-Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240911132954.5874-1-riyandhiman14@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+According to the cgroup hierarchy, A should preempt B. But current
+check_preempt_wakeup_fair() treats cgroup se and task separately, so B
+will preempt A unexpectedly.
+Unify the wakeup logic by {c,p}se_is_idle only. This makes SCHED_IDLE of
+a task a relative policy that is effective only within its own cgroup,
+similar to the behavior of NICE.
+
+Also fix se_is_idle() definition when !CONFIG_FAIR_GROUP_SCHED.
+
+Fixes: 304000390f88 ("sched: Cgroup SCHED_IDLE support")
+Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Josh Don <joshdon@google.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20240626023505.1332596-1-dtcccc@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index 6b2ef9977617a..fc0ab5d8ab705 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -574,9 +574,11 @@ static bool blk_add_partition(struct gendisk *disk,
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 483c137b9d3d7..3f631816c8fbb 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -511,7 +511,7 @@ static int cfs_rq_is_idle(struct cfs_rq *cfs_rq)
  
- 	part = add_partition(disk, p, from, size, state->parts[p].flags,
- 			     &state->parts[p].info);
--	if (IS_ERR(part) && PTR_ERR(part) != -ENXIO) {
--		printk(KERN_ERR " %s: p%d could not be added: %pe\n",
--		       disk->disk_name, p, part);
-+	if (IS_ERR(part)) {
-+		if (PTR_ERR(part) != -ENXIO) {
-+			printk(KERN_ERR " %s: p%d could not be added: %pe\n",
-+			       disk->disk_name, p, part);
-+		}
- 		return true;
- 	}
+ static int se_is_idle(struct sched_entity *se)
+ {
+-	return 0;
++	return task_has_idle_policy(task_of(se));
+ }
  
+ #endif	/* CONFIG_FAIR_GROUP_SCHED */
+@@ -8381,16 +8381,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+ 	if (test_tsk_need_resched(curr))
+ 		return;
+ 
+-	/* Idle tasks are by definition preempted by non-idle tasks. */
+-	if (unlikely(task_has_idle_policy(curr)) &&
+-	    likely(!task_has_idle_policy(p)))
+-		goto preempt;
+-
+-	/*
+-	 * Batch and idle tasks do not preempt non-idle tasks (their preemption
+-	 * is driven by the tick):
+-	 */
+-	if (unlikely(p->policy != SCHED_NORMAL) || !sched_feat(WAKEUP_PREEMPTION))
++	if (!sched_feat(WAKEUP_PREEMPTION))
+ 		return;
+ 
+ 	find_matching_se(&se, &pse);
+@@ -8400,7 +8391,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+ 	pse_is_idle = se_is_idle(pse);
+ 
+ 	/*
+-	 * Preempt an idle group in favor of a non-idle group (and don't preempt
++	 * Preempt an idle entity in favor of a non-idle entity (and don't preempt
+ 	 * in the inverse case).
+ 	 */
+ 	if (cse_is_idle && !pse_is_idle)
+@@ -8408,9 +8399,14 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+ 	if (cse_is_idle != pse_is_idle)
+ 		return;
+ 
++	/*
++	 * BATCH and IDLE tasks do not preempt others.
++	 */
++	if (unlikely(p->policy != SCHED_NORMAL))
++		return;
++
+ 	cfs_rq = cfs_rq_of(se);
+ 	update_curr(cfs_rq);
+-
+ 	/*
+ 	 * XXX pick_eevdf(cfs_rq) != se ?
+ 	 */
 -- 
 2.43.0
 
