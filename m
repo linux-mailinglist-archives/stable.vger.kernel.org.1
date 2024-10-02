@@ -1,109 +1,144 @@
-Return-Path: <stable+bounces-80573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBAD98DF54
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:36:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BA598DF7C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 533341F27048
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:36:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453FF1F25456
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6101D0B87;
-	Wed,  2 Oct 2024 15:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8402B1D0E12;
+	Wed,  2 Oct 2024 15:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="cpn2ewxX"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="no/O8AVb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ikPAbI7q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3F91D0E1B
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4C41D0B9B;
+	Wed,  2 Oct 2024 15:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727883346; cv=none; b=ZbuOzBYe6UHLgXmsGWFaQbwf8fX0PpPu6uFJoYbHA9+zuNEnnIsdtV4QlyLOo8qIa657/sY1fHVnV75kuJOSo0Vl3ealEJ0/x5e1GJJftSPV0a+QQG82sNs4nh+VTLwVg+EKwUsQSufSY0MgjGgJwOry0HQT5+BCpdtuHhNfsjc=
+	t=1727883823; cv=none; b=QNFoob0PAnSNcR14RIgYNEIj3jalyK1ldnVVmfqkpsPTXjuMxTlQdHNINllE6TauOkkc2QEgxNcgTC8DsdqCmTlLdMZPJsixe/5Nc+eTlEaWTgVSFfTmRuN5ekIoqwrurZqvO8+cm5gEYwiZSDjmFddUw9eI7v1moGTzBE3qr5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727883346; c=relaxed/simple;
-	bh=/T82ZBHNKOiqS6QgrGyPfq3j1c08/n/R932sr6t7O4g=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=aifZh5Otwc2mcX855oqKI7Cf2je5tbLOfz6Tgmpyqx5SOp9iKxsXmwoyeJUuhj+K2YCKo7VtAtSSNqq8PDh7E1McRxO9qybYE2LT8Xg0VpT+1lOwurPQv3aSRl0eodqBI3XseHPll+dD7gxY39Qev0NnFb13nC31Cttg12tq82w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=cpn2ewxX; arc=none smtp.client-ip=209.85.166.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-82aa6be8457so35993439f.0
-        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 08:35:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1727883344; x=1728488144; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8a5UprsfZnVpKb9fT2kDrurhIm9j0639eg6PzaQzp5o=;
-        b=cpn2ewxXvRvsCBbT7jzjsgCVh2+Ba/wDjcQ/YbcJCu8YtaqqnuxmSGjXsRQ0EI6dGS
-         eyveHV2/W5zbtCGRJNXB2ab9OQyGYqy7WcYaUMwtykDY7S/mOYZVOnRu2CZuRCelysJy
-         uer/Cp/G2kPJxWrDz0c3hklfQ+rB7MDzol48TSRC/TCxZGW1l7iCP68Rf8SZG5S8AMPU
-         IRONVRdETv8gfxJPOk6F3Uacxg30CbUA73cajci4aC9QintJPDFzX+H1ajgIoor8osgZ
-         5gHJAFu4QwfSRhRQW+kAKOqENpMxPeVXd3Zyl8enl5XCq8D55WMcYxa/MBrnXi1N4Gqb
-         dHLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727883344; x=1728488144;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8a5UprsfZnVpKb9fT2kDrurhIm9j0639eg6PzaQzp5o=;
-        b=H/sx2iQxbydlhWWfwbVxXZdRD2+VbOmhIQ0lui5gCmWs+mgFHet5Xoq3mFWDWg7Wio
-         RZyqw2fVrRq2rEU3oy9eD+2fhUckwwuYzJgItOT+whrE5dlJfroZRxYQJg3GMsmSE5NJ
-         BzBU3Z+iDmQl01AZ/uGtX8PmDpjx4gvEoGU9GXjWeW5JhwLc2+4WTMAxuBY6Y1tQv/Fv
-         BkkGERgTlVOde4PWGBUKqflw5aoUgAb8+4zaW52JfRQ0uASKXdu7HTjChLlHPbTwekcy
-         7hzpKGqUOAOutvQ8+8SNy/nadCKfOIBDnXkPOv0o6/8cOMugpXjOa+IHSEorZF6gcA5Q
-         6IEg==
-X-Gm-Message-State: AOJu0YwLru9d685bzAgFkeI2suVi1e2nkplQE/Qb048lDUADqL4Y91ex
-	oEc48+EmSO4JOVYwQnmiOIvg1kmwRGx+l+mAzWriTL15xefXZU/QDRgj0r2Vvd9/ANVVmqecfdd
-	UCv0=
-X-Google-Smtp-Source: AGHT+IE2Nt2s+kSv7a6xDw5guMNHknOR/PEQ0GG/HA8oShTOtSoB0kY5D4Km3IwVS81EY8RUQUszXw==
-X-Received: by 2002:a05:6602:1514:b0:7f6:8489:2679 with SMTP id ca18e2360f4ac-834e76da85cmr1443039f.8.1727883343856;
-        Wed, 02 Oct 2024 08:35:43 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-834936e34acsm335485839f.32.2024.10.02.08.35.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Oct 2024 08:35:43 -0700 (PDT)
-Message-ID: <4cdd1f7f-a753-40af-bde5-11bb584a052b@kernel.dk>
-Date: Wed, 2 Oct 2024 09:35:42 -0600
+	s=arc-20240116; t=1727883823; c=relaxed/simple;
+	bh=eupZP83d8Rmmq6bvh6rWw7nX5eY6CPD82pltJdGDeBo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=p54fQgFcJ6p20lysOZ5TqR0brInsYFnlEg6mq6VqMyXkEDKxpL8EbfrxBZRyH4/ckp/CBPxth3qfnAz/w/SVtA14+245NHA1zth4xnqfN2vXRZ0XN8OWBLbrLGEZsKIdcKILN+6jyZVhj85Q288vtxyt9UtkANi/+Z+B6gt2JxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=no/O8AVb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ikPAbI7q; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 02 Oct 2024 15:43:39 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1727883820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tB7D0Yxk4vEL7tQjeogv+MpND1wlqBrOliwrobX+fbM=;
+	b=no/O8AVbFCsgQhU9oq8Rk0xf0Ygo+GeJ7Yz1qL+O5wUPzWjMch0aTjo/yrcwv30Z2nh99B
+	/Ys/ls4sOt4R3jeuWU3I8iQv3He7f0+SZV8WQqXX1VQJcsyx2ncjt0CRi6p4zZsBKMPRXe
+	WUsaT7Y9oaHNbYwQb3xH6O7Ffxzv3AQq/7DpcQkkvgdTLfbVo4X+zeZno5ULYE2Pw1Zn/k
+	wZ+USsEhKTyR7C0YaReLGe5e+ue7YEAW0PFUpER6LamDx/VfV2aaxNPYvW2NXVAaS+h9Hj
+	U0pO4/3sukHwkpZOTiIdsD8SexR/JhZBFVDj4/XJ73J9sQsftwhG8iWEMcGyow==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1727883820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tB7D0Yxk4vEL7tQjeogv+MpND1wlqBrOliwrobX+fbM=;
+	b=ikPAbI7qnTPctzFsnhSY9g4253M7ozKUyjTt9y+vIell59o2o/6UXY/sMCIAVr/ebK1F6O
+	qzljChUGJ8wsQZBQ==
+From: "tip-bot2 for Charlie Jenkins" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/sifive-plic: Return error code on failure
+Cc: kernel test robot <lkp@intel.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Anup Patel <anup@brainfault.org>, Alexandre Ghiti <alexghiti@rivosinc.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To:
+ <20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com>
+References:
+ <20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable <stable@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Jens Axboe <axboe@kernel.dk>
-Subject: Missing 6.11-stable patch
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <172788381949.1442.6238243346847777696.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Hi,
+The following commit has been merged into the irq/urgent branch of tip:
 
-Arguably the most important block stable patch I don't see in the
-most recent review series sent out, which is odd because it's
-certainly marked with fixes and a stable tag. It's this one:
+Commit-ID:     6eabf656048d904d961584de2e1d45bc0854f9fb
+Gitweb:        https://git.kernel.org/tip/6eabf656048d904d961584de2e1d45bc0854f9fb
+Author:        Charlie Jenkins <charlie@rivosinc.com>
+AuthorDate:    Tue, 03 Sep 2024 16:36:19 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 02 Oct 2024 15:15:33 +02:00
 
-commit e3accac1a976e65491a9b9fba82ce8ddbd3d2389
-Author: Damien Le Moal <dlemoal@kernel.org>
-Date:   Tue Sep 17 22:32:31 2024 +0900
+irqchip/sifive-plic: Return error code on failure
 
-    block: Fix elv_iosched_local_module handling of "none" scheduler
+Set error to -ENOMEM if kcalloc() fails or if irq_domain_add_linear()
+fails inside of plic_probe() instead of returning 0.
 
-and it really must go into -stable asap as it's fixing a real issue
-that I've had multiple users email me about. Can we get this added
-to the current 6.11-stable series so we don't miss another release?
+Fixes: 4d936f10ff80 ("irqchip/sifive-plic: Probe plic driver early for Allwinner D1 platform")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240903-correct_error_codes_sifive_plic-v1-1-d929b79663a2@rivosinc.com
+Closes: https://lore.kernel.org/r/202409031122.yBh8HrxA-lkp@intel.com/
+---
+ drivers/irqchip/irq-sifive-plic.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-It's also quite possible that I'm blind and it is indeed in the queue
-or already there, but for the life of me I can't see it.
-
--- 
-Jens Axboe
-
-
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 2f6ef5c..0b730e3 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -626,8 +626,10 @@ static int plic_probe(struct fwnode_handle *fwnode)
+ 
+ 		handler->enable_save = kcalloc(DIV_ROUND_UP(nr_irqs, 32),
+ 					       sizeof(*handler->enable_save), GFP_KERNEL);
+-		if (!handler->enable_save)
++		if (!handler->enable_save) {
++			error = -ENOMEM;
+ 			goto fail_cleanup_contexts;
++		}
+ done:
+ 		for (hwirq = 1; hwirq <= nr_irqs; hwirq++) {
+ 			plic_toggle(handler, hwirq, 0);
+@@ -639,8 +641,10 @@ done:
+ 
+ 	priv->irqdomain = irq_domain_create_linear(fwnode, nr_irqs + 1,
+ 						   &plic_irqdomain_ops, priv);
+-	if (WARN_ON(!priv->irqdomain))
++	if (WARN_ON(!priv->irqdomain)) {
++		error = -ENOMEM;
+ 		goto fail_cleanup_contexts;
++	}
+ 
+ 	/*
+ 	 * We can have multiple PLIC instances so setup global state
 
