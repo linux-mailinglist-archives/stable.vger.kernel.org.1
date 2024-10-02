@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9B198D4FC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA8698D7FE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD3E51C21E26
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5059A1C22B5F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370A81D094D;
-	Wed,  2 Oct 2024 13:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E1A1D04BE;
+	Wed,  2 Oct 2024 13:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQUnV2Y5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiIHZmAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82E71D0946;
-	Wed,  2 Oct 2024 13:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B01D0499;
+	Wed,  2 Oct 2024 13:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875527; cv=none; b=mWQCXhL1aqymNauyKXtUIeEgmSdzA9+l3VLy2yZDCJDFJo+EpN0vVBMfTjY06TB4IsXgpOgEqI6eKGSz8Q0Kqe6so2ylmlh6CVoTx8dGJb3EQgJpf1WsGVW1Z8c+eAGLYAPiUjewxZA3MjmjBV3SVy9fi3zOa4tNBywvSW8EH+4=
+	t=1727877309; cv=none; b=U+mKmvbpF0VI3y8quj4aKKfO7VdW4NjtJhDteN0Um7u8zUq4Zrtjup7iVGS7ZdF5XTtoQGjfF8t6iLSVu8h2i5hnUuD6WvUusG3nsZg6zgRUYQZjmADQQd6igVD0nv3ZlyBxUUGc1SHdbuEug6VEBIUYzRgeYOWRjLohYVweMQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875527; c=relaxed/simple;
-	bh=8bozVNXKHXqJTHT1H28SA2L1q32TJQb8Em3tnS/e8cA=;
+	s=arc-20240116; t=1727877309; c=relaxed/simple;
+	bh=UYmcXzp8B2aPWu6cUpJGKIvbFoS3E7oxHeUI9yFWwPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/HnsBJrXWDp3EJdozqvVg3p6YBnrnqp2lGOsERdinNNhz1RAjchqTx4OxGoK025cmNO6iSx0dIsRjZtZlM0Yx9ufCXUTjx2jJkVmXJGfdT3Y8x400IHPDzMIaE6j1P3e3dGWwIpV8/NcSGcm519p5Zit+gYiVfPkg6i0Maqx1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQUnV2Y5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ED8C4CECD;
-	Wed,  2 Oct 2024 13:25:26 +0000 (UTC)
+	 MIME-Version; b=UQhWzBa2nJhpXevyomkN6GA8lXjIEGkvIuQprIDmuWvZgpB61/zWCG00KFgLGrFdYJVbNBW3weNX3LX7oSu608toFSA2jd/ht4dtnoxT/bxY5MxU1gr/QK/jP4A5tNN7+H830T7HpXWvjOj6twH9LmH8YLLK7uBUblzUva37iko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiIHZmAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E936C4AF1D;
+	Wed,  2 Oct 2024 13:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875526;
-	bh=8bozVNXKHXqJTHT1H28SA2L1q32TJQb8Em3tnS/e8cA=;
+	s=korg; t=1727877309;
+	bh=UYmcXzp8B2aPWu6cUpJGKIvbFoS3E7oxHeUI9yFWwPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQUnV2Y5KFFoJO1Ix11NQo9tzt0OioW0MhjdKpOKFvCphX6XYjAuUUK+Xn3Xd25dN
-	 PbQloxsm2uZG55KNg3iSZFkzy89BEX+mlV1Z10ZDrOS8fTM+T/ZCiLGw2E4tPuFnTb
-	 uQ2xcPamgpZ9rEDzKn67BeARwZNDLs8yHehr228E=
+	b=yiIHZmAyDgjN5CVotT6Gzae2fACVIk919Y3idZy6tSO6TwESyVB4syUjfQe6yvije
+	 Bu/Kdjx09FztFkrmHzKQxSuzMr6EsdFw7YkePtTL1mAl1mpaADhB295MDZSIlhnT3N
+	 dLdCvCJHh+T6qs4Hy9fXsJDZHU2GFUF8+9mytuxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Riyan Dhiman <riyandhiman14@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 132/695] block: fix potential invalid pointer dereference in blk_add_partition
+Subject: [PATCH 6.10 030/634] thermal: core: Fix rounding of delay jiffies
 Date: Wed,  2 Oct 2024 14:52:10 +0200
-Message-ID: <20241002125827.750909854@linuxfoundation.org>
+Message-ID: <20241002125812.286065359@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Riyan Dhiman <riyandhiman14@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 26e197b7f9240a4ac301dd0ad520c0c697c2ea7d ]
+[ Upstream commit 8144dbe68c493baa412d78f41a57e90a6461f6c3 ]
 
-The blk_add_partition() function initially used a single if-condition
-(IS_ERR(part)) to check for errors when adding a partition. This was
-modified to handle the specific case of -ENXIO separately, allowing the
-function to proceed without logging the error in this case. However,
-this change unintentionally left a path where md_autodetect_dev()
-could be called without confirming that part is a valid pointer.
+Using round_jiffies() in thermal_set_delay_jiffies() is invalid because
+its argument should be time in the future in absolute jiffies and it
+computes the result with respect to the current jiffies value at the
+invocation time.  Fortunately, in the majority of cases it does not
+make any difference due to the time_is_after_jiffies() check in
+round_jiffies_common().
 
-This commit separates the error handling logic by splitting the
-initial if-condition, improving code readability and handling specific
-error scenarios explicitly. The function now distinguishes the general
-error case from -ENXIO without altering the existing behavior of
-md_autodetect_dev() calls.
+While using round_jiffies_relative() instead of round_jiffies() might
+reflect the intent a bit better, it still would not be defensible
+because that function should be called when the timer is about to be
+set and it is not suitable for pre-computation of delay values.
 
-Fixes: b72053072c0b (block: allow partitions on host aware zone devices)
-Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240911132954.5874-1-riyandhiman14@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Accordingly, drop thermal_set_delay_jiffies() altogether, simply
+convert polling_delay and passive_delay to jiffies during thermal
+zone initialization and make thermal_zone_device_set_polling() call
+round_jiffies_relative() on the delay if it is greather than 1 second.
+
+Fixes: 17d399cd9c89 ("thermal/core: Precompute the delays from msecs to jiffies")
+Fixes: e5f2cda61d06 ("thermal/core: Move thermal_set_delay_jiffies to static")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/1994438.PYKUYFuaPT@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/partitions/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/thermal/thermal_core.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index ab76e64f0f6c3..5bd7a603092ea 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -555,9 +555,11 @@ static bool blk_add_partition(struct gendisk *disk,
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 99a8c06f6964d..d0e71698b3562 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -323,11 +323,15 @@ static void thermal_zone_broken_disable(struct thermal_zone_device *tz)
+ static void thermal_zone_device_set_polling(struct thermal_zone_device *tz,
+ 					    unsigned long delay)
+ {
+-	if (delay)
+-		mod_delayed_work(system_freezable_power_efficient_wq,
+-				 &tz->poll_queue, delay);
+-	else
++	if (!delay) {
+ 		cancel_delayed_work(&tz->poll_queue);
++		return;
++	}
++
++	if (delay > HZ)
++		delay = round_jiffies_relative(delay);
++
++	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, delay);
+ }
  
- 	part = add_partition(disk, p, from, size, state->parts[p].flags,
- 			     &state->parts[p].info);
--	if (IS_ERR(part) && PTR_ERR(part) != -ENXIO) {
--		printk(KERN_ERR " %s: p%d could not be added: %pe\n",
--		       disk->disk_name, p, part);
-+	if (IS_ERR(part)) {
-+		if (PTR_ERR(part) != -ENXIO) {
-+			printk(KERN_ERR " %s: p%d could not be added: %pe\n",
-+			       disk->disk_name, p, part);
-+		}
- 		return true;
+ static void thermal_zone_recheck(struct thermal_zone_device *tz, int error)
+@@ -1327,13 +1331,6 @@ void thermal_cooling_device_unregister(struct thermal_cooling_device *cdev)
+ }
+ EXPORT_SYMBOL_GPL(thermal_cooling_device_unregister);
+ 
+-static void thermal_set_delay_jiffies(unsigned long *delay_jiffies, int delay_ms)
+-{
+-	*delay_jiffies = msecs_to_jiffies(delay_ms);
+-	if (delay_ms > 1000)
+-		*delay_jiffies = round_jiffies(*delay_jiffies);
+-}
+-
+ int thermal_zone_get_crit_temp(struct thermal_zone_device *tz, int *temp)
+ {
+ 	const struct thermal_trip_desc *td;
+@@ -1470,8 +1467,8 @@ thermal_zone_device_register_with_trips(const char *type,
+ 		td->threshold = INT_MAX;
  	}
  
+-	thermal_set_delay_jiffies(&tz->passive_delay_jiffies, passive_delay);
+-	thermal_set_delay_jiffies(&tz->polling_delay_jiffies, polling_delay);
++	tz->polling_delay_jiffies = msecs_to_jiffies(polling_delay);
++	tz->passive_delay_jiffies = msecs_to_jiffies(passive_delay);
+ 	tz->recheck_delay_jiffies = THERMAL_RECHECK_DELAY;
+ 
+ 	/* sys I/F */
 -- 
 2.43.0
 
