@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6C198DA59
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA3998DCEE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2292F1C238C0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51119B28E86
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD721D2F52;
-	Wed,  2 Oct 2024 14:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D00B1D0DE1;
+	Wed,  2 Oct 2024 14:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKluwvI2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb1FpX6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C4B1D1F5A;
-	Wed,  2 Oct 2024 14:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD68E3232;
+	Wed,  2 Oct 2024 14:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878517; cv=none; b=OPnxAprynbwL0xzycyxd4KtYixvaaqu8UMd86vVT4dNaSWfUwjkaZmlDLeQAswRtQm9iw9zR5VbH7DaiXQUuvkqLnHNzAl0IaqCGiH+yMQUQSM8YUR1f7zbEzITwALGVpZ2H56mW7ab2vx/9XZWoD+Bh6FTftmlfMJJO/kHZHIg=
+	t=1727879974; cv=none; b=sxQZz9AMViymUHvbTesZbFXhh2xH9L4DPCnFe5Y3Ph/spMCn8DB1+onfGf245gs7jCqENMnVBjxIHowDnhS6Qsz4CW2B7JAB/LdxIDNwPy7uVR2lRveUUDBVt3+Jg5pCHbkx2HHn6Ifsuu2xOhHlY2Y9CmhremqZPuYwS3V4GNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878517; c=relaxed/simple;
-	bh=ivT0M+R6wR5UnDYmmAZQRriVGmdcJyMucJACPhL3I/Y=;
+	s=arc-20240116; t=1727879974; c=relaxed/simple;
+	bh=Z7LV14vWwvJ5W0dQZR4YKfeXkA1U8iZIUzPPOb9wRUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hm5i3b0g+jIkYuzsu6CRsCGZTITWgDJ51Icng9OE/CL28qFi+MTxz/3UXZk69C4IOZM2XAj13J6nRpswwIjQ0NbV5DZlSYODTozxBd/z5zPPCD9du4yfpC4BytTgR5eNShHjtVp/GOsGHj+g+VTSV0vzqdhawwq1JITzEtD4kQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKluwvI2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF7CC4CECD;
-	Wed,  2 Oct 2024 14:15:16 +0000 (UTC)
+	 MIME-Version; b=qzoICizPhSty41j++PJW+jzH1FmY+wSlH76gtiVjxCQ3qZs/JFwyAEvDV1dqgBvR3tBLeRaWhAOmtVgpKumbKS3oLEe3orbczZRE2c5y4dkaTnSXZyv3yhh8NsYoIcSN85G54DtAzZ59gRHbRVB9lWXlHF/LHfYm92PldBHW2cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb1FpX6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA99C4CEC2;
+	Wed,  2 Oct 2024 14:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878516;
-	bh=ivT0M+R6wR5UnDYmmAZQRriVGmdcJyMucJACPhL3I/Y=;
+	s=korg; t=1727879974;
+	bh=Z7LV14vWwvJ5W0dQZR4YKfeXkA1U8iZIUzPPOb9wRUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKluwvI2F/XujZtstfhuLTNmKNFrAglBwMcOfOyNcrsD+OrmWd5KgnMA+FF2vtpo+
-	 lQKeTZvShPP1bF65Gwrty5TzOXSO1sTAn8dnnafyjcH4sALBSq56fEQiAJ6ATigCoz
-	 D6lSs6vowwz6+wLr7bWTF4YEJSbvTrUjF4ejS3X8=
+	b=Cb1FpX6GfuhgU1yEy7vjkyObxSv9UZ1XJ+Zj02/y8CSVfABA7+P7DPEsxMrbdhzUq
+	 1w1ynq2ctLZsLJpTRa1y2SI0Ias9/xPB567ohzawiUXnNygxmiuIZ1rqzNi5iEH4PR
+	 12kZ1jZO/UT32iwUBbIZAJF6ymFRJ/nOjcoR4ZFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 409/634] spi: atmel-quadspi: Undo runtime PM changes at driver exit time
+Subject: [PATCH 6.6 270/538] clk: qcom: dispcc-sm8550: fix several supposed typos
 Date: Wed,  2 Oct 2024 14:58:29 +0200
-Message-ID: <20241002125827.251489356@linuxfoundation.org>
+Message-ID: <20241002125802.914605219@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 438efb23f9581659495b85f1f6c7d5946200660c ]
+[ Upstream commit 7b6a4b907297b28727933493b9e0c95494504634 ]
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time unless driver
-initially enabled pm_runtime with devm_pm_runtime_enable()
-(which handles it for you).
+Fix seveal odd-looking places in SM8550's dispcc driver:
 
-Hence, call pm_runtime_dont_use_autosuspend() at driver exit time
-to fix it.
+- duplicate entries in disp_cc_parent_map_4 and disp_cc_parent_map_5
+- using &disp_cc_mdss_dptx0_link_div_clk_src as a source for
+  disp_cc_mdss_dptx1_usb_router_link_intf_clk
 
-Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240906023956.1004440-1-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The SM8650 driver has been used as a reference.
+
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-1-5c4a3128c40b@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/dispcc-sm8550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 5aaff3bee1b78..466c01b31123b 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -726,6 +726,7 @@ static void atmel_qspi_remove(struct platform_device *pdev)
- 	clk_unprepare(aq->pclk);
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index b9edeb2a221dc..e868c5c426096 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -196,7 +196,7 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
+ static const struct parent_map disp_cc_parent_map_4[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_DP0_PHY_PLL_LINK_CLK, 1 },
+-	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 2 },
++	{ P_DP0_PHY_PLL_VCO_DIV_CLK, 2 },
+ 	{ P_DP3_PHY_PLL_VCO_DIV_CLK, 3 },
+ 	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 4 },
+ 	{ P_DP2_PHY_PLL_VCO_DIV_CLK, 6 },
+@@ -213,7 +213,7 @@ static const struct clk_parent_data disp_cc_parent_data_4[] = {
  
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- }
+ static const struct parent_map disp_cc_parent_map_5[] = {
+ 	{ P_BI_TCXO, 0 },
+-	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 4 },
++	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 2 },
+ 	{ P_DSI1_PHY_PLL_OUT_BYTECLK, 4 },
+ };
  
 -- 
 2.43.0
