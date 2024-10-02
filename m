@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091EC98DB38
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36C598DDAE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7201C23755
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53D7DB22636
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E91C1D1505;
-	Wed,  2 Oct 2024 14:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689991D048E;
+	Wed,  2 Oct 2024 14:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjdi2kYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j43q3l9J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC41D14FB;
-	Wed,  2 Oct 2024 14:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D0763CB;
+	Wed,  2 Oct 2024 14:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879054; cv=none; b=I+88pNG6GvDGHxGiOVk9v/dNd+BpolJdbp922f5OfdWTGQKFSipmyj8LePX6A9J8FYwSeyTgpQzLn46rVfcqH0VOZkWrurTd13HnJ8j5aFyBfUXQe2w9uZCWSIYntepgRGJ56EGMf99cVxOHtz72WuTTBaNBZek6egIU2sjMfLk=
+	t=1727880513; cv=none; b=mlXTxV8N+lDX8u/Z5pX4Xw5mdzSnMk4kWe+nuzIS/ugDPFFQu28WTiiortRGYZmA2SnR06pQRjDWnlecFPvxlrZIBSXul3EtXfwWKWmOjMS+1MO9aAMfAVADg0RWfEPdqYsq7wLbemrYZVOsVk96L5RacRpdlNabCart5WKjzu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879054; c=relaxed/simple;
-	bh=nmog2kAJ45ykvaotC2rRr7SH/PlB1SMdr1s3yu1qNxM=;
+	s=arc-20240116; t=1727880513; c=relaxed/simple;
+	bh=UaXoDjYuSFXr93BmOtBbGnA/ymjtpsajw6roOfc6Ec8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/3i3aVSPev5Art0flXiS2FfMpbBGbGm6vPLtpW5quZdwNKtaso2N871EavH3Uni6mg8SCYPjZMNjjbK8w9DfSKRytvxOMG7KXHRK6YAs7LT+ie7zFwo9799/HILm1dnNFBqbyrofzdqDfUH2tGOs5cYlhXo4vuQa1IgRdnT42c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjdi2kYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E07C4CEC2;
-	Wed,  2 Oct 2024 14:24:13 +0000 (UTC)
+	 MIME-Version; b=eP+yq77yGAEpGOyhz3xfe1F0rUfpK2BaE2Bow+w8kiKVwBTrlRKYz5wFDxVNDpjiPhSGZiWP6pSlZZBfqRHXS9gyqaobVxgzICfFYUrAmZ/ukCUjOl8jbSVpHn1QpX7fwK+EO8Rfr48LAazCIj2cbnd9gFRmpzSn0BZ0X/axKCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j43q3l9J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BA2C4CEC2;
+	Wed,  2 Oct 2024 14:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879053;
-	bh=nmog2kAJ45ykvaotC2rRr7SH/PlB1SMdr1s3yu1qNxM=;
+	s=korg; t=1727880512;
+	bh=UaXoDjYuSFXr93BmOtBbGnA/ymjtpsajw6roOfc6Ec8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjdi2kYIQGWol3E9G/aKAeYjfXhvryB2872/Ql6uVdsiO7Tm4idF9UevC5WJvNknz
-	 RIXCsOv/lf/UpkNP+pDDHCMq+0F2rY+XOgYxaEZC0kZeusaiQHh2bQBa5jcyGDG432
-	 sDUFHYbBhAN/iSsz4sS4+ZltPK9T9S3WkDjIBx6g=
+	b=j43q3l9JaS61MB1xnvIeDhJofsNg2KyJa5WOPLLt/rTmaQnL63b+tII22cKMEl8DH
+	 pxzOyyUCUQ69GNtMGQL61vRKJ975IP79n4kBhObHKAYxfiboVMf5nuPxAxFtCOiHHd
+	 IGbP4KqKaPRpGppErdL0RievqYi2jwCRVpcpx7AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.10 623/634] spi: fspi: add support for imx8ulp
-Date: Wed,  2 Oct 2024 15:02:03 +0200
-Message-ID: <20241002125835.717530712@linuxfoundation.org>
+	Tomoki Sekiyama <tomoki.sekiyama@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 485/538] usb: yurex: Replace snprintf() with the safer scnprintf() variant
+Date: Wed,  2 Oct 2024 15:02:04 +0200
+Message-ID: <20241002125811.586119169@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Lee Jones <lee@kernel.org>
 
-commit 9228956a620553d7fd17f703a37a26c91e4d92ab upstream.
+[ Upstream commit 86b20af11e84c26ae3fde4dcc4f490948e3f8035 ]
 
-The flexspi on imx8ulp only has 16 LUTs, different with others which
-have up to 32 LUTs.
+There is a general misunderstanding amongst engineers that {v}snprintf()
+returns the length of the data *actually* encoded into the destination
+array.  However, as per the C99 standard {v}snprintf() really returns
+the length of the data that *would have been* written if there were
+enough space for it.  This misunderstanding has led to buffer-overruns
+in the past.  It's generally considered safer to use the {v}scnprintf()
+variants in their place (or even sprintf() in simple cases).  So let's
+do that.
 
-Add a separate compatible string and nxp_fspi_devtype_data to support
-flexspi on imx8ulp.
+Whilst we're at it, let's define some magic numbers to increase
+readability and ease of maintenance.
 
-Fixes: ef89fd56bdfc ("arm64: dts: imx8ulp: add flexspi node")
-Cc: stable@kernel.org
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240905094338.1986871-4-haibo.chen@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lwn.net/Articles/69419/
+Link: https://github.com/KSPP/linux/issues/105
+Cc: Tomoki Sekiyama <tomoki.sekiyama@gmail.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20231213164246.1021885-9-lee@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 93907620b308 ("USB: misc: yurex: fix race between read and write")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/usb/misc/yurex.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -371,6 +371,15 @@ static struct nxp_fspi_devtype_data imx8
- 	.little_endian = true,  /* little-endian    */
- };
+diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
+index c640f98d20c54..5a13cddace0e6 100644
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -34,6 +34,8 @@
+ #define YUREX_BUF_SIZE		8
+ #define YUREX_WRITE_TIMEOUT	(HZ*2)
  
-+static struct nxp_fspi_devtype_data imx8ulp_data = {
-+	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
-+	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
-+	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
-+	.quirks = 0,
-+	.lut_num = 16,
-+	.little_endian = true,  /* little-endian    */
-+};
++#define MAX_S64_STRLEN 20 /* {-}922337203685477580{7,8} */
 +
- struct nxp_fspi {
- 	void __iomem *iobase;
- 	void __iomem *ahb_addr;
-@@ -1297,6 +1306,7 @@ static const struct of_device_id nxp_fsp
- 	{ .compatible = "nxp,imx8mp-fspi", .data = (void *)&imx8mm_data, },
- 	{ .compatible = "nxp,imx8qxp-fspi", .data = (void *)&imx8qxp_data, },
- 	{ .compatible = "nxp,imx8dxl-fspi", .data = (void *)&imx8dxl_data, },
-+	{ .compatible = "nxp,imx8ulp-fspi", .data = (void *)&imx8ulp_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, nxp_fspi_dt_ids);
+ /* table of devices that work with this driver */
+ static struct usb_device_id yurex_table[] = {
+ 	{ USB_DEVICE(YUREX_VENDOR_ID, YUREX_PRODUCT_ID) },
+@@ -401,7 +403,7 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
+ {
+ 	struct usb_yurex *dev;
+ 	int len = 0;
+-	char in_buffer[20];
++	char in_buffer[MAX_S64_STRLEN];
+ 	unsigned long flags;
+ 
+ 	dev = file->private_data;
+@@ -412,14 +414,14 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
+ 		return -ENODEV;
+ 	}
+ 
++	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
++		return -EIO;
++
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	len = snprintf(in_buffer, 20, "%lld\n", dev->bbu);
++	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+ 	mutex_unlock(&dev->io_mutex);
+ 
+-	if (WARN_ON_ONCE(len >= sizeof(in_buffer)))
+-		return -EIO;
+-
+ 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
