@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-80312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E2C98DCDE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BE998DA65
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D738F1F25E3A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1172D1F2165C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D461D0DDF;
-	Wed,  2 Oct 2024 14:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BEC1D0E30;
+	Wed,  2 Oct 2024 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRjVf7T3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIf4XD93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2804F1D0414;
-	Wed,  2 Oct 2024 14:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75DE1D0E2C;
+	Wed,  2 Oct 2024 14:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880006; cv=none; b=rHek2KuF+e5piitgsaJ1/MXfuTMERWLFy5wZNq9/aW9Q0T7ijwlB5NNw6oClklMTVQPFBBBDNPf1d8ZbH1ViQZcflUTCJ4xbElYIVuUAf5rDGIMtzisbdFR43aNALatp+bmwFjcpByi9O+uZyn+8XQc4YY9GVB+WD3pcuAtyUmM=
+	t=1727878548; cv=none; b=SmIdU8GBjtVsV7F3st7h7Pg1eLwtGzMSuCe9/NWv053tSrUnvC2QmQVuxc7qVVaFBn0nz7caQDuwFk0MN2VpByT2abUovSBpSaPTqNzldinKa5eOl39lCrZzchTszkuDugwDut3Hrv4K6BD9Yx9f+hNG15wt6Q9Wbky55bCKsrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880006; c=relaxed/simple;
-	bh=iknfz9wcYnU90P40pVuekyz9I0YpnEUZmyed2Um5Z8A=;
+	s=arc-20240116; t=1727878548; c=relaxed/simple;
+	bh=kgnvcHTaocHVlYofO3+y42somCHAf4flv2M3kZ3ukxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evLEzLiowFRh0lStXJdu3sbgxGSR83Nl312ALsCnjQMMi/s3QqydPOcQ7EGykFGnFHFNFt6m9dfz+dc+q6Cqa3MRyGPA+zRCp6VbNf98w17JXb6eAQhllQnawl79BhxkuysZloNrhBeReeDUk9pxcJ7eNOcIsOlHkjrKrN3zNRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRjVf7T3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8688C4CEC2;
-	Wed,  2 Oct 2024 14:40:05 +0000 (UTC)
+	 MIME-Version; b=OUoi3nfjQ5JY9qvNcLlgWyFYaKT9mat1FVJaxZklwcSL0O0X7+YGicJFV8C/X5+4qk0IMKXskJZ3geQVA6MpDHwV4z5oWTBP8AHP6uVQn5+he3SDOT7nSErq7rWnMPjhU6baq7E1oybuFrYP9oYVhhrv/6LUre9cCG1IkqziDEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIf4XD93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B7AC4CEC2;
+	Wed,  2 Oct 2024 14:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880006;
-	bh=iknfz9wcYnU90P40pVuekyz9I0YpnEUZmyed2Um5Z8A=;
+	s=korg; t=1727878548;
+	bh=kgnvcHTaocHVlYofO3+y42somCHAf4flv2M3kZ3ukxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HRjVf7T37UxmvFKBoP3IGRHPTdldgQAHppUplUjKAV0r5x1C+dP8pyv2L/BsX39Ts
-	 +dNcY7iw4m5YRfQpeCQ7vym6n8VNoNN0pwiyxCxvVYyvf27k+WXLGo97Zyoa3OSnbl
-	 B5S6ZgstD5gku7O9XhoN77SProz5qC/OVVljnGno=
+	b=jIf4XD93LTg5d1dMannIpCvOejWKqFp0iSUwu3U806YP3Et5AcTQyq9r9j9mhNCeu
+	 de1E6QlJb5ea2e6dD3lC0tknfPF9h678mkVw2vWIdw58UZsygTuwqjzGwpz2Gg/lCL
+	 OLzfFr6WwjYrCOhCd5IvFU8FaHxS4HphW4DGa1vM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Xu <chengyou@linux.alibaba.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 312/538] RDMA/erdma: Return QP state in erdma_query_qp
-Date: Wed,  2 Oct 2024 14:59:11 +0200
-Message-ID: <20241002125804.732878424@linuxfoundation.org>
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 452/634] io_uring: check for presence of task_work rather than TIF_NOTIFY_SIGNAL
+Date: Wed,  2 Oct 2024 14:59:12 +0200
+Message-ID: <20241002125828.943323180@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Xu <chengyou@linux.alibaba.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit e77127ff6416b17e0b3e630ac46ee5c9a6570f57 ]
+commit 04beb6e0e08c30c6f845f50afb7d7953603d7a6f upstream.
 
-Fix qp_state and cur_qp_state to return correct values in
-struct ib_qp_attr.
+If some part of the kernel adds task_work that needs executing, in terms
+of signaling it'll generally use TWA_SIGNAL or TWA_RESUME. Those two
+directly translate to TIF_NOTIFY_SIGNAL or TIF_NOTIFY_RESUME, and can
+be used for a variety of use case outside of task_work.
 
-Fixes: 155055771704 ("RDMA/erdma: Add verbs implementation")
-Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
-Link: https://patch.msgid.link/20240902112920.58749-4-chengyou@linux.alibaba.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, io_cqring_wait_schedule() only tests explicitly for
+TIF_NOTIFY_SIGNAL. This means it can miss if task_work got added for
+the task, but used a different kind of signaling mechanism (or none at
+all). Normally this doesn't matter as any task_work will be run once
+the task exits to userspace, except if:
+
+1) The ring is setup with DEFER_TASKRUN
+2) The local work item may generate normal task_work
+
+For condition 2, this can happen when closing a file and it's the final
+put of that file, for example. This can cause stalls where a task is
+waiting to make progress inside io_cqring_wait(), but there's nothing else
+that will wake it up. Hence change the "should we schedule or loop around"
+check to check for the presence of task_work explicitly, rather than just
+TIF_NOTIFY_SIGNAL as the mechanism. While in there, also change the
+ordering of what type of task_work first in terms of ordering, to both
+make it consistent with other task_work runs in io_uring, but also to
+better handle the case of defer task_work generating normal task_work,
+like in the above example.
+
+Reported-by: Jan Hendrik Farr <kernel@jfarr.cc>
+Link: https://github.com/axboe/liburing/issues/1235
+Cc: stable@vger.kernel.org
+Fixes: 846072f16eed ("io_uring: mimimise io_cqring_wait_schedule")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/erdma/erdma_verbs.c | 25 ++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
-index c317947563fbc..b010c4209ea38 100644
---- a/drivers/infiniband/hw/erdma/erdma_verbs.c
-+++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
-@@ -1540,11 +1540,31 @@ int erdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask,
- 	return ret;
- }
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2401,7 +2401,7 @@ static inline int io_cqring_wait_schedul
+ 		return 1;
+ 	if (unlikely(!llist_empty(&ctx->work_llist)))
+ 		return 1;
+-	if (unlikely(test_thread_flag(TIF_NOTIFY_SIGNAL)))
++	if (unlikely(task_work_pending(current)))
+ 		return 1;
+ 	if (unlikely(task_sigpending(current)))
+ 		return -EINTR;
+@@ -2502,9 +2502,9 @@ static int io_cqring_wait(struct io_ring
+ 		 * If we got woken because of task_work being processed, run it
+ 		 * now rather than let the caller do another wait loop.
+ 		 */
+-		io_run_task_work();
+ 		if (!llist_empty(&ctx->work_llist))
+ 			io_run_local_work(ctx, nr_wait);
++		io_run_task_work();
  
-+static enum ib_qp_state query_qp_state(struct erdma_qp *qp)
-+{
-+	switch (qp->attrs.state) {
-+	case ERDMA_QP_STATE_IDLE:
-+		return IB_QPS_INIT;
-+	case ERDMA_QP_STATE_RTR:
-+		return IB_QPS_RTR;
-+	case ERDMA_QP_STATE_RTS:
-+		return IB_QPS_RTS;
-+	case ERDMA_QP_STATE_CLOSING:
-+		return IB_QPS_ERR;
-+	case ERDMA_QP_STATE_TERMINATE:
-+		return IB_QPS_ERR;
-+	case ERDMA_QP_STATE_ERROR:
-+		return IB_QPS_ERR;
-+	default:
-+		return IB_QPS_ERR;
-+	}
-+}
-+
- int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
- 		   int qp_attr_mask, struct ib_qp_init_attr *qp_init_attr)
- {
--	struct erdma_qp *qp;
- 	struct erdma_dev *dev;
-+	struct erdma_qp *qp;
- 
- 	if (ibqp && qp_attr && qp_init_attr) {
- 		qp = to_eqp(ibqp);
-@@ -1571,6 +1591,9 @@ int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
- 
- 	qp_init_attr->cap = qp_attr->cap;
- 
-+	qp_attr->qp_state = query_qp_state(qp);
-+	qp_attr->cur_qp_state = query_qp_state(qp);
-+
- 	return 0;
- }
- 
--- 
-2.43.0
-
+ 		/*
+ 		 * Non-local task_work will be run on exit to userspace, but
 
 
 
