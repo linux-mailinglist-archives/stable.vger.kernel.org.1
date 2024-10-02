@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-78861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC93B98D554
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD08198D8BC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6F11F21959
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 022341C23082
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAA316F84F;
-	Wed,  2 Oct 2024 13:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263491D0E1C;
+	Wed,  2 Oct 2024 14:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU8cTUAV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVMO6nqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9E61D0403;
-	Wed,  2 Oct 2024 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90A01D094D;
+	Wed,  2 Oct 2024 14:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875743; cv=none; b=l3h3rnQvHxh+X6q3GMFtOQ1nM8MeTbCiQG+Tr6MytiPOlFWrp8Z/+K0604RWugXJwixebsUm4LF5NK9aGmRTMI0rzUp1I7jek/wc2b7KYry8ggcBKWfXLcd0502NJYd/9UW4cFmeM1FwTGq6/1XkTb/HoGuf7sG6aFs29CAoa0U=
+	t=1727877613; cv=none; b=EoQUnWmclO9+zH1hzcUmcEGtC26XncBKYrmVZcfoKOeAQ4GrxJNQyAQ2LLIGtWEhBWOKysZYvGr/OMBvuUNavHFJUl/Iffuvm5XO0HCzZbJMyIhtB2hZARyVaN/Ol28ulIYs47HVrvsxMPiAjOTVKCvD/U/ppIkzruurL3eBm/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875743; c=relaxed/simple;
-	bh=QwZttdrryEXkIrkxEy/18LIzjcxoy/FBu/ha61NnZz4=;
+	s=arc-20240116; t=1727877613; c=relaxed/simple;
+	bh=AtoL2QiH64IQf4Lb3/5f2TkPm1DMMpursYF/w4b3cXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKUV1DgtCq5X2rZ66GDveH0zZO5RngF7Yx0lfVxxxG/gbaVQHWNhWcIiokRDNN9n/UwxWMTxRQEL2eRt3SwpCW0srZAurzqh1D5q+s2F/3yb9+D7PaWZP0y24/5DydlGD8CgRuMMUReGxH/VSZ5Tz8JrhTSoay+1TzIczKooXXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU8cTUAV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51594C4CECD;
-	Wed,  2 Oct 2024 13:29:02 +0000 (UTC)
+	 MIME-Version; b=paoMm/3lxyjpF6B8P1CqifqHWPS9KpblfnaL+HNiFmKFrDrZT+nW2EsH0AefhKb4Z14ZYuPaYIv5c5ilQL+dy0k0SZ8tmcpPvyRtW98Njip6hVR4PlFernlE3+nsZMOaGfPeOwyJHO3d8MYfOzbp7OI/mxdg1CdQ5hEgAjYA9K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVMO6nqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C09AC4CEC2;
+	Wed,  2 Oct 2024 14:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875742;
-	bh=QwZttdrryEXkIrkxEy/18LIzjcxoy/FBu/ha61NnZz4=;
+	s=korg; t=1727877613;
+	bh=AtoL2QiH64IQf4Lb3/5f2TkPm1DMMpursYF/w4b3cXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AU8cTUAVGC5afTTBLqQqozj17I/UyZVmsIPv73BW+l5MGOzkQcqcIYOwMvUEUI0Ic
-	 vsn2IyHi0pwIuOaORbwX+YVH/6eNv+HqnUU710f6PILsJfmdvwIEmtsJzE3EdwpMnt
-	 vO0oVKJeIKPdMsk3eIBMbRDNRJ1qBZHRbfLXWeAg=
+	b=fVMO6nqi/ff4kXwBWILKABE43O2BS3XjV9B+ztPyqsS6ALNhFUjubcpsQ1jtpRKBT
+	 cy8NQ4kTtE695DTSE7oBq01Hy+fSItPIJ+RD0LqduVdo3f2DxayyV5MTw0W4MA+CVT
+	 39M0Qyf5nukLojNqB7uM2YGR+P3ElPWZciqBXV70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 205/695] drm/amd/display: Reset VRR config during resume
+Subject: [PATCH 6.10 103/634] nbd: fix race between timeout and normal completion
 Date: Wed,  2 Oct 2024 14:53:23 +0200
-Message-ID: <20241002125830.644689558@linuxfoundation.org>
+Message-ID: <20241002125815.181671347@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit df18a4de9e77ad92c472fd1eb0fb1255d52dd4cd ]
+[ Upstream commit c9ea57c91f03bcad415e1a20113bdb2077bcf990 ]
 
-[Why]
-After resume the system, the new_crtc_state->vrr_infopacket does not
-synchronize with the current state.  It will affect the
-update_freesync_state_on_stream() does not update the state correctly.
+If request timetout is handled by nbd_requeue_cmd(), normal completion
+has to be stopped for avoiding to complete this requeued request, other
+use-after-free can be triggered.
 
-The previous patch causes a PSR SU regression that cannot let panel go
-into self-refresh mode.
+Fix the race by clearing NBD_CMD_INFLIGHT in nbd_requeue_cmd(), meantime
+make sure that cmd->lock is grabbed for clearing the flag and the
+requeue.
 
-[How]
-Reset the VRR config during resume to force update the VRR config later.
-
-Fixes: eb6dfbb7a9c6 ("drm/amd/display: Reset freesync config before update new state")
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Fixes: 2895f1831e91 ("nbd: don't clear 'NBD_CMD_INFLIGHT' flag if request is not completed")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240830034145.1827742-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/block/nbd.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 511d46d38d6af..ba5f98bd7b391 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -176,6 +176,7 @@ MODULE_FIRMWARE(FIRMWARE_DCN_401_DMUB);
- static int amdgpu_dm_init(struct amdgpu_device *adev);
- static void amdgpu_dm_fini(struct amdgpu_device *adev);
- static bool is_freesync_video_mode(const struct drm_display_mode *mode, struct amdgpu_dm_connector *aconnector);
-+static void reset_freesync_config_for_crtc(struct dm_crtc_state *new_crtc_state);
- 
- static enum drm_mode_subconnector get_subconnector_type(struct dc_link *link)
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index b87aa80a46dda..0e8ddf30563d0 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -181,6 +181,17 @@ static void nbd_requeue_cmd(struct nbd_cmd *cmd)
  {
-@@ -3239,8 +3240,11 @@ static int dm_resume(void *handle)
- 	drm_connector_list_iter_end(&iter);
+ 	struct request *req = blk_mq_rq_from_pdu(cmd);
  
- 	/* Force mode set in atomic commit */
--	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i)
-+	for_each_new_crtc_in_state(dm->cached_state, crtc, new_crtc_state, i) {
- 		new_crtc_state->active_changed = true;
-+		dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
-+		reset_freesync_config_for_crtc(dm_new_crtc_state);
-+	}
- 
- 	/*
- 	 * atomic_check is expected to create the dc states. We need to release
++	lockdep_assert_held(&cmd->lock);
++
++	/*
++	 * Clear INFLIGHT flag so that this cmd won't be completed in
++	 * normal completion path
++	 *
++	 * INFLIGHT flag will be set when the cmd is queued to nbd next
++	 * time.
++	 */
++	__clear_bit(NBD_CMD_INFLIGHT, &cmd->flags);
++
+ 	if (!test_and_set_bit(NBD_CMD_REQUEUED, &cmd->flags))
+ 		blk_mq_requeue_request(req, true);
+ }
+@@ -480,8 +491,8 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req)
+ 					nbd_mark_nsock_dead(nbd, nsock, 1);
+ 				mutex_unlock(&nsock->tx_lock);
+ 			}
+-			mutex_unlock(&cmd->lock);
+ 			nbd_requeue_cmd(cmd);
++			mutex_unlock(&cmd->lock);
+ 			nbd_config_put(nbd);
+ 			return BLK_EH_DONE;
+ 		}
 -- 
 2.43.0
 
