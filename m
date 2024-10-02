@@ -1,99 +1,280 @@
-Return-Path: <stable+bounces-78658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8609B98D3D8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:58:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBE598D692
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A49951C216A1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:58:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79AC4B20819
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FB71D0418;
-	Wed,  2 Oct 2024 12:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E1F1D0793;
+	Wed,  2 Oct 2024 13:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TWNtZfPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv5aOTfE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F0A1D0142
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 12:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508041D04A8;
+	Wed,  2 Oct 2024 13:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727873901; cv=none; b=j7VQ9Df8nWAF1EpDqiAebuOgI+TZpSx7SVWCLkKFEDOdhHY/G8QBUZxyXjbiRJeDT9yWiJgQkdifWLqDFva3yi0UWJZ81dYdzbBZZWkisSl/MGTVsCs+FFEir9TXpJv+GSRAwMjBLisE7BPhLKaYgU+QB4MNLLyz08dHrSwlqZ8=
+	t=1727876436; cv=none; b=ICxBJ47OUl4uP4aHuYCz51M/WcF0TTIjm0ZDcYVvN+iVLNxwiXdtQhuwdax5s0hGEAYUYQQXfjairS7eGV90ZVPkKmyouXDv/mDsS+/U/gUybug6s7BpyBpqkC7t9ptGtRJKwyoPxod5HLIjLhFD38O8V6AHbl8XB2u6cQxKQPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727873901; c=relaxed/simple;
-	bh=iUr5ekUOIEryz1dQKI6ncLZxwuHeTD41wyXBbrWZwTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=K6X7xOOu3scrLtWTe4ndEIIZz83f76sSg3QG/Pb30QUASsp9W4FL13RXGLbQSqwh/cB96WAExAj2dWP4w4UwTGJDU0cIT4Kq+vSVcZHDB5NVvu+wlxHrhqmb0JrAqSuntbiPoSRa7Y+/OqtibkaMXHdnLmL0sgOb58uhOyGZilM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TWNtZfPb; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727873900; x=1759409900;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=iUr5ekUOIEryz1dQKI6ncLZxwuHeTD41wyXBbrWZwTQ=;
-  b=TWNtZfPbD38SfsLFqP4AOuikmY579UViyNaN5z0fE6Us12BEdORlBHZH
-   BnkNpPRFenKnfRCF/8ZUkhFXt330mf9SDxiWqgLwuZaAEQRfOtcLSSYUF
-   9yZ85Pk6cwKYmxMnWV+6haWxx8XPzuj6uggARfDDGkHr0YAVUDFAq5YoK
-   X1cq+itG5VHcJSdIp8wAaK70Q7emjqeDItCTJ8rS05Z7lGHxqjwkNX4EW
-   +5zYlFkDy+e+rHd2mKWQIgm3trhlPfguLyTXkUA6Yi6JWdFTjfpsclKrL
-   cZG7K2trFlLqmxf209AcFvPzYsgYgHLV1km6ZjxmNIDCq6ZS5wvV9hVcH
-   Q==;
-X-CSE-ConnectionGUID: cngim/3fQ3G6o/0QaGM9pA==
-X-CSE-MsgGUID: VMpVNFW9QpyD7kNex6SAGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="26909797"
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; 
-   d="scan'208";a="26909797"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 05:58:20 -0700
-X-CSE-ConnectionGUID: ypLcYIksTR6gjPp5G4F0LA==
-X-CSE-MsgGUID: 6qoCunAxQ3a5VmuVMg6aQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; 
-   d="scan'208";a="78411547"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 02 Oct 2024 05:58:18 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1svyvn-000S2t-2c;
-	Wed, 02 Oct 2024 12:58:15 +0000
-Date: Wed, 2 Oct 2024 20:57:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Josua Mayer <josua@solid-run.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] arm64: dts: marvell: cn9130-sr-som: fix cp0 mdio0 mdio
- pin numbers
-Message-ID: <Zv1DMJsA-sf7gN-k@5b378fdd06de>
+	s=arc-20240116; t=1727876436; c=relaxed/simple;
+	bh=8WnY/tD+wAbf5sdM8yecu199A5iNjnQNTlDvKwqoGPM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dBHHemag8a424C/cx2lmxw4hk6wRAM4ucol4m9ssJVdrv4BCgNntywfgk+X9MB9rq1wSGEhh0eOuuJGDm5y0TTeQ1YM7ekfswoWmgVbNfPSn3EsCe0v/kvcZsj+HwxGMpB3s/Yfl2jEQ1yKoTliIrZ5Rj5b9eJLfhulrq0sMjEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv5aOTfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD238C4CEC5;
+	Wed,  2 Oct 2024 13:40:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727876436;
+	bh=8WnY/tD+wAbf5sdM8yecu199A5iNjnQNTlDvKwqoGPM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Xv5aOTfEgFpK13pnjjkSDuU33onQjWwfrExEVaBjO9jGaEfHBPgND58V9+7xYHp8g
+	 e1PjtlXYjfZnkW7v0iyTjhtbBsTUX5xFBlGXf3PT0drclnbWehyUTlsYccHo+DOe9Z
+	 cWFhSYKa6lDo6tnIV8T0ZAXlbbnE8xyr8a7mDlKY=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 443/695] f2fs: get rid of online repaire on corrupted directory
+Date: Wed,  2 Oct 2024 14:57:21 +0200
+Message-ID: <20241002125840.140196823@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241002-cn9130-som-mdio-v1-1-0942be4dc550@solid-run.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
-Thanks for your patch.
+------------------
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+From: Chao Yu <chao@kernel.org>
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+[ Upstream commit 884ee6dc85b959bc152f15bca80c30f06069e6c4 ]
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] arm64: dts: marvell: cn9130-sr-som: fix cp0 mdio0 mdio pin numbers
-Link: https://lore.kernel.org/stable/20241002-cn9130-som-mdio-v1-1-0942be4dc550%40solid-run.com
+syzbot reports a f2fs bug as below:
 
+kernel BUG at fs/f2fs/inode.c:896!
+RIP: 0010:f2fs_evict_inode+0x1598/0x15c0 fs/f2fs/inode.c:896
+Call Trace:
+ evict+0x532/0x950 fs/inode.c:704
+ dispose_list fs/inode.c:747 [inline]
+ evict_inodes+0x5f9/0x690 fs/inode.c:797
+ generic_shutdown_super+0x9d/0x2d0 fs/super.c:627
+ kill_block_super+0x44/0x90 fs/super.c:1696
+ kill_f2fs_super+0x344/0x690 fs/f2fs/super.c:4898
+ deactivate_locked_super+0xc4/0x130 fs/super.c:473
+ cleanup_mnt+0x41f/0x4b0 fs/namespace.c:1373
+ task_work_run+0x24f/0x310 kernel/task_work.c:228
+ ptrace_notify+0x2d2/0x380 kernel/signal.c:2402
+ ptrace_report_syscall include/linux/ptrace.h:415 [inline]
+ ptrace_report_syscall_exit include/linux/ptrace.h:477 [inline]
+ syscall_exit_work+0xc6/0x190 kernel/entry/common.c:173
+ syscall_exit_to_user_mode_prepare kernel/entry/common.c:200 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:205 [inline]
+ syscall_exit_to_user_mode+0x279/0x370 kernel/entry/common.c:218
+ do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0010:f2fs_evict_inode+0x1598/0x15c0 fs/f2fs/inode.c:896
+
+Online repaire on corrupted directory in f2fs_lookup() can generate
+dirty data/meta while racing w/ readonly remount, it may leave dirty
+inode after filesystem becomes readonly, however, checkpoint() will
+skips flushing dirty inode in a state of readonly mode, result in
+above panic.
+
+Let's get rid of online repaire in f2fs_lookup(), and leave the work
+to fsck.f2fs.
+
+Fixes: 510022a85839 ("f2fs: add F2FS_INLINE_DOTS to recover missing dot dentries")
+Reported-by: syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a7b20f061ff2d56a@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/f2fs.h          | 11 -------
+ fs/f2fs/namei.c         | 68 -----------------------------------------
+ include/linux/f2fs_fs.h |  2 +-
+ 3 files changed, 1 insertion(+), 80 deletions(-)
+
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 5fcacc8df80ea..40e96d577982c 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -785,7 +785,6 @@ enum {
+ 	FI_NEED_IPU,		/* used for ipu per file */
+ 	FI_ATOMIC_FILE,		/* indicate atomic file */
+ 	FI_DATA_EXIST,		/* indicate data exists */
+-	FI_INLINE_DOTS,		/* indicate inline dot dentries */
+ 	FI_SKIP_WRITES,		/* should skip data page writeback */
+ 	FI_OPU_WRITE,		/* used for opu per file */
+ 	FI_DIRTY_FILE,		/* indicate regular/symlink has dirty pages */
+@@ -3047,7 +3046,6 @@ static inline void __mark_inode_dirty_flag(struct inode *inode,
+ 			return;
+ 		fallthrough;
+ 	case FI_DATA_EXIST:
+-	case FI_INLINE_DOTS:
+ 	case FI_PIN_FILE:
+ 	case FI_COMPRESS_RELEASED:
+ 		f2fs_mark_inode_dirty_sync(inode, true);
+@@ -3171,8 +3169,6 @@ static inline void get_inline_info(struct inode *inode, struct f2fs_inode *ri)
+ 		set_bit(FI_INLINE_DENTRY, fi->flags);
+ 	if (ri->i_inline & F2FS_DATA_EXIST)
+ 		set_bit(FI_DATA_EXIST, fi->flags);
+-	if (ri->i_inline & F2FS_INLINE_DOTS)
+-		set_bit(FI_INLINE_DOTS, fi->flags);
+ 	if (ri->i_inline & F2FS_EXTRA_ATTR)
+ 		set_bit(FI_EXTRA_ATTR, fi->flags);
+ 	if (ri->i_inline & F2FS_PIN_FILE)
+@@ -3193,8 +3189,6 @@ static inline void set_raw_inline(struct inode *inode, struct f2fs_inode *ri)
+ 		ri->i_inline |= F2FS_INLINE_DENTRY;
+ 	if (is_inode_flag_set(inode, FI_DATA_EXIST))
+ 		ri->i_inline |= F2FS_DATA_EXIST;
+-	if (is_inode_flag_set(inode, FI_INLINE_DOTS))
+-		ri->i_inline |= F2FS_INLINE_DOTS;
+ 	if (is_inode_flag_set(inode, FI_EXTRA_ATTR))
+ 		ri->i_inline |= F2FS_EXTRA_ATTR;
+ 	if (is_inode_flag_set(inode, FI_PIN_FILE))
+@@ -3275,11 +3269,6 @@ static inline int f2fs_exist_data(struct inode *inode)
+ 	return is_inode_flag_set(inode, FI_DATA_EXIST);
+ }
+ 
+-static inline int f2fs_has_inline_dots(struct inode *inode)
+-{
+-	return is_inode_flag_set(inode, FI_INLINE_DOTS);
+-}
+-
+ static inline int f2fs_is_mmap_file(struct inode *inode)
+ {
+ 	return is_inode_flag_set(inode, FI_MMAP_FILE);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 38b4750475db6..57d46e1439ded 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -457,62 +457,6 @@ struct dentry *f2fs_get_parent(struct dentry *child)
+ 	return d_obtain_alias(f2fs_iget(child->d_sb, ino));
+ }
+ 
+-static int __recover_dot_dentries(struct inode *dir, nid_t pino)
+-{
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(dir);
+-	struct qstr dot = QSTR_INIT(".", 1);
+-	struct f2fs_dir_entry *de;
+-	struct page *page;
+-	int err = 0;
+-
+-	if (f2fs_readonly(sbi->sb)) {
+-		f2fs_info(sbi, "skip recovering inline_dots inode (ino:%lu, pino:%u) in readonly mountpoint",
+-			  dir->i_ino, pino);
+-		return 0;
+-	}
+-
+-	if (!S_ISDIR(dir->i_mode)) {
+-		f2fs_err(sbi, "inconsistent inode status, skip recovering inline_dots inode (ino:%lu, i_mode:%u, pino:%u)",
+-			  dir->i_ino, dir->i_mode, pino);
+-		set_sbi_flag(sbi, SBI_NEED_FSCK);
+-		return -ENOTDIR;
+-	}
+-
+-	err = f2fs_dquot_initialize(dir);
+-	if (err)
+-		return err;
+-
+-	f2fs_balance_fs(sbi, true);
+-
+-	f2fs_lock_op(sbi);
+-
+-	de = f2fs_find_entry(dir, &dot, &page);
+-	if (de) {
+-		f2fs_put_page(page, 0);
+-	} else if (IS_ERR(page)) {
+-		err = PTR_ERR(page);
+-		goto out;
+-	} else {
+-		err = f2fs_do_add_link(dir, &dot, NULL, dir->i_ino, S_IFDIR);
+-		if (err)
+-			goto out;
+-	}
+-
+-	de = f2fs_find_entry(dir, &dotdot_name, &page);
+-	if (de)
+-		f2fs_put_page(page, 0);
+-	else if (IS_ERR(page))
+-		err = PTR_ERR(page);
+-	else
+-		err = f2fs_do_add_link(dir, &dotdot_name, NULL, pino, S_IFDIR);
+-out:
+-	if (!err)
+-		clear_inode_flag(dir, FI_INLINE_DOTS);
+-
+-	f2fs_unlock_op(sbi);
+-	return err;
+-}
+-
+ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
+ 		unsigned int flags)
+ {
+@@ -522,7 +466,6 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
+ 	struct dentry *new;
+ 	nid_t ino = -1;
+ 	int err = 0;
+-	unsigned int root_ino = F2FS_ROOT_INO(F2FS_I_SB(dir));
+ 	struct f2fs_filename fname;
+ 
+ 	trace_f2fs_lookup_start(dir, dentry, flags);
+@@ -558,17 +501,6 @@ static struct dentry *f2fs_lookup(struct inode *dir, struct dentry *dentry,
+ 		goto out;
+ 	}
+ 
+-	if ((dir->i_ino == root_ino) && f2fs_has_inline_dots(dir)) {
+-		err = __recover_dot_dentries(dir, root_ino);
+-		if (err)
+-			goto out_iput;
+-	}
+-
+-	if (f2fs_has_inline_dots(inode)) {
+-		err = __recover_dot_dentries(inode, dir->i_ino);
+-		if (err)
+-			goto out_iput;
+-	}
+ 	if (IS_ENCRYPTED(dir) &&
+ 	    (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
+ 	    !fscrypt_has_permitted_context(dir, inode)) {
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index 01bee2b289c2a..c68e37201a12a 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -278,7 +278,7 @@ struct node_footer {
+ #define F2FS_INLINE_DATA	0x02	/* file inline data flag */
+ #define F2FS_INLINE_DENTRY	0x04	/* file inline dentry flag */
+ #define F2FS_DATA_EXIST		0x08	/* file inline data exist flag */
+-#define F2FS_INLINE_DOTS	0x10	/* file having implicit dot dentries */
++#define F2FS_INLINE_DOTS	0x10	/* file having implicit dot dentries (obsolete) */
+ #define F2FS_EXTRA_ATTR		0x20	/* file having extra attribute */
+ #define F2FS_PIN_FILE		0x40	/* file should not be gced */
+ #define F2FS_COMPRESS_RELEASED	0x80	/* file released compressed blocks */
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
 
 
 
