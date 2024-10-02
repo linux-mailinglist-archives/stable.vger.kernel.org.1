@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A864298DC95
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC82698DA20
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2AF1C20A24
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 187C5B24987
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A711D1740;
-	Wed,  2 Oct 2024 14:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D9E1D0786;
+	Wed,  2 Oct 2024 14:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uL2vyfUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkYTc/YC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CAE1D0DD7;
-	Wed,  2 Oct 2024 14:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339D21D04B4;
+	Wed,  2 Oct 2024 14:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879781; cv=none; b=ju6T1PEBRZngtm8QTJXVQnET4kLwEghfXANXWiCuCW1cjadwM+ive4l1ZBdRV5BopSIHJvMrDKngw8A4HdIS5WC9ypa3L9TxVOGanwq1gdHm9IU4rnA6OzYuOni3XgHmh6jHu21r8pId/HMhjN5DsuqmV2pnXn7j7bOpQLyr1Do=
+	t=1727878426; cv=none; b=FLn1UDCSnG1NR1yy2pGEv3VLjumfTup1dD7jL3uqTt7qpDrSTuKuNm9nRqBwjEk1r7jBF400bsrgJaf/aWaG6CleqioytVm6dwGkQnFxlwXMMlJdhO5WhDITzMpjKdIS/UQvRpi39dTm4a8RG/v4pZzo3/koaf459G4Fja6/WxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879781; c=relaxed/simple;
-	bh=S8iSLxfhfUGVvOq4stUucp6Cm5zl4/KQzKQPjT0PMIE=;
+	s=arc-20240116; t=1727878426; c=relaxed/simple;
+	bh=b7OfM2A2nME7ke3pfTH8aLsnv2uhXjiCkuczSx62fB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BL5MgW01KCJA/eAgx4wCC/rtv3w0VLDhzHCZzyy6pwn+2KBiH3SotVe8ZIhJuiP/kYiFRz6NmUcZJtzRVO+b9mgMUbsCv4gdZCYWMzx1ueXEzIGcKRy4teIv++IrANS9QFiq3cT7S6OAs7gaIlgO8CgF5pdC5Ta3YIL0sT7a8FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uL2vyfUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB754C4CEC2;
-	Wed,  2 Oct 2024 14:36:20 +0000 (UTC)
+	 MIME-Version; b=VZ4B0Y4Dx4wqITVgJ3ZQfIYJf4hYSrqQGdfPIcT9crZxhW5F/14PASkXIgWOQO+KYGONAHf2ZbHBrSNI/LyPERQP2ZCB/GkGErdfTsvYUQGHZ5+VG2T0BBcjCNBSq/VsTDhgSUq9MJyBLoxRk2vZ9MmIIEeIE3f/6TCZFe3hMb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkYTc/YC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE330C4CEC2;
+	Wed,  2 Oct 2024 14:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879781;
-	bh=S8iSLxfhfUGVvOq4stUucp6Cm5zl4/KQzKQPjT0PMIE=;
+	s=korg; t=1727878426;
+	bh=b7OfM2A2nME7ke3pfTH8aLsnv2uhXjiCkuczSx62fB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uL2vyfUpujjP0DCQpGrLaEfUUbjRZzzJJFDP8w6w9aW4DF0ZrBNLzW/lLhYNEJj+R
-	 bA8qKFVgutfto3DGyeb0zyHWBDY6qPLLMN60+gRLZYf6REx7RwBlq1GcxCq2yUEUJA
-	 BGW0Vvh5+MzWqr9SmzZJsy+kz1PWm7sclHfRr7ks=
+	b=wkYTc/YCBgezU9+D4BGIEGI07diQ7HJE/peUz2jkzbEG0yK3dszZul6/bQNU8MhZW
+	 dRWlHnReDanYCRDO+Ko8ysltEZoPTguj19Exesh8PDgGywYCZek5cdwymADyhCybcR
+	 Mm5me+oa4LM7nY8X7bqGl4L/a54ooDInVs+cj/PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/538] ext4: return error on ext4_find_inline_entry
+Subject: [PATCH 6.10 368/634] RDMA/mlx5: Fix counter update on MR cache mkey creation
 Date: Wed,  2 Oct 2024 14:57:48 +0200
-Message-ID: <20241002125801.291644904@linuxfoundation.org>
+Message-ID: <20241002125825.621849333@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit 4d231b91a944f3cab355fce65af5871fb5d7735b ]
+[ Upstream commit 6f5cd6ac9a4201e4ba6f10b76a9da8044d6e38b0 ]
 
-In case of errors when reading an inode from disk or traversing inline
-directory entries, return an error-encoded ERR_PTR instead of returning
-NULL. ext4_find_inline_entry only caller, __ext4_find_entry already returns
-such encoded errors.
+After an mkey is created, update the counter for pending mkeys before
+reshceduling the work that is filling the cache.
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://patch.msgid.link/20240821152324.3621860-3-cascardo@igalia.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: c6b72f5d82b1 ("ext4: avoid OOB when system.data xattr changes underneath the filesystem")
+Rescheduling the work with a full MR cache entry and a wrong 'pending'
+counter will cause us to miss disabling the fill_to_high_water flag.
+Thus leaving the cache full but with an indication that it's still
+needs to be filled up to it's full size (2 * limit).
+Next time an mkey will be taken from the cache, we'll unnecessarily
+continue the process of filling the cache to it's full size.
+
+Fixes: 57e7071683ef ("RDMA/mlx5: Implement mkeys management via LIFO queue")
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/0f44f462ba22e45f72cb3d0ec6a748634086b8d0.1725362530.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index a604aa1d23aed..7adc6634d5234 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -1670,8 +1670,9 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
- 	void *inline_start;
- 	int inline_size;
+diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
+index d3c1f63791a2b..a03557c8416e8 100644
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -211,9 +211,9 @@ static void create_mkey_callback(int status, struct mlx5_async_work *context)
  
--	if (ext4_get_inode_loc(dir, &iloc))
--		return NULL;
-+	ret = ext4_get_inode_loc(dir, &iloc);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
- 	down_read(&EXT4_I(dir)->xattr_sem);
- 	if (!ext4_has_inline_data(dir)) {
-@@ -1702,7 +1703,10 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
- 
- out:
- 	brelse(iloc.bh);
--	iloc.bh = NULL;
-+	if (ret < 0)
-+		iloc.bh = ERR_PTR(ret);
-+	else
-+		iloc.bh = NULL;
- out_find:
- 	up_read(&EXT4_I(dir)->xattr_sem);
- 	return iloc.bh;
+ 	spin_lock_irqsave(&ent->mkeys_queue.lock, flags);
+ 	push_mkey_locked(ent, mkey_out->mkey);
++	ent->pending--;
+ 	/* If we are doing fill_to_high_water then keep going. */
+ 	queue_adjust_cache_locked(ent);
+-	ent->pending--;
+ 	spin_unlock_irqrestore(&ent->mkeys_queue.lock, flags);
+ 	kfree(mkey_out);
+ }
 -- 
 2.43.0
 
