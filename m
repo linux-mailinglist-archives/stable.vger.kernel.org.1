@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D265298DA62
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0516098DCDD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FFDA1C2386E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1E21F25DFF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F651D0DE8;
-	Wed,  2 Oct 2024 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27181D0E2B;
+	Wed,  2 Oct 2024 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rY9ZktWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUWAm18b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6151D0DD6;
-	Wed,  2 Oct 2024 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BA51D0DE3;
+	Wed,  2 Oct 2024 14:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878540; cv=none; b=R4eI8LtP8xRGDHOomlvoV5dmMlc3p5cpkjeSVJiA3Au2+pT9P35dxuYNkXg/OzkrLV/mi68gz9kgjDTxC304kCbWzMWx8UWE0YOtH614jTdddIDp3lAdwYVBnHC6vvSV2tiu2sXwYEpcu0growXu6T+rErL12Zr703dHVH53bog=
+	t=1727880001; cv=none; b=O2YIYR6n/YAxpqjBjGv508OOZ58brkJ1U7822Eo9nhj5FeqAnC+cifwyH+T6MQi8GO+taB56sBoFq839IU6UzU6RUK6AB5osR047ChUs01CdU+r5Cc4ew9rnVP4m85GZBApRF7XzolI4kzddva6nm61zg5VXDa2RZgJNOPeqlH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878540; c=relaxed/simple;
-	bh=juHw6+hCY1+y86H0XuqCVYqZf181AYYh0+vcvBGNp4Y=;
+	s=arc-20240116; t=1727880001; c=relaxed/simple;
+	bh=fsSEvDePjKJAFzndN4QvMv5jTw+bHLTqG/Oub76Iaew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJdNecQHNiGXbyup8jS573jQPKlVTdCyMm4Vjf/l1NQEGI2gYgPIBygUGO4r+d/cEp48oy6/BdIBQZPAmn6O5xBbt8m4KR5br2KxvpKeVkwH+zxjpMiKhKvllsMIGkx4Plp/LhBVRgCMQ4/Uq0M/MmyvDRR093ZE4BKIMKIsI2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rY9ZktWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA303C4CEC2;
-	Wed,  2 Oct 2024 14:15:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UFpmLSmksxHKUar238QfYVULmgXfgC0c0hP/JXCBLjlWcW3y1rfrrDlsQWid19pqcQcKpUhwDbO2yNZyAs0ImBe6XGzHA4KhwT5U0vRx0sgFRU2QHH5aJIRhKy29EGLhjq/KxCrpvD1XuXykbdl7Y/lZOvMdrsdxCpVtAWo9ZR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUWAm18b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296E8C4CEC2;
+	Wed,  2 Oct 2024 14:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878540;
-	bh=juHw6+hCY1+y86H0XuqCVYqZf181AYYh0+vcvBGNp4Y=;
+	s=korg; t=1727880001;
+	bh=fsSEvDePjKJAFzndN4QvMv5jTw+bHLTqG/Oub76Iaew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rY9ZktWdPjXYefeubVBU++ClsRVaIMApHOhKsERGP9Z6lIuJevcuKI9LVoIfV5qEG
-	 CrIn/kyfKYfyS6fPd+LwFI4QigmtfuMiUprYqaiZuUW8QqJR9VuJ85VtD4v9I8dZsn
-	 G848lCoaDxX8NeMotLy5dmEJHe9oiVnZ857IanVk=
+	b=AUWAm18bP1mUDCW9f8sAcmQuHeC91xnFwoPhA4FHCKmJdttE75fj3g+H4k8Pc3f+c
+	 N2WO3bhlT2N68Gs5+YiIatjiC23mnZampWCpYk2iQxNn+GVadyXqMuwocyEXqaZFvE
+	 cvu33MYIE3c0+d1bRKOJHItttTClKWf5yWf9tShA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 449/634] selftests: netfilter: Avoid hanging ipvs.sh
-Date: Wed,  2 Oct 2024 14:59:09 +0200
-Message-ID: <20241002125828.822330796@linuxfoundation.org>
+Subject: [PATCH 6.6 311/538] PCI: kirin: Fix buffer overflow in kirin_pcie_parse_port()
+Date: Wed,  2 Oct 2024 14:59:10 +0200
+Message-ID: <20241002125804.693829163@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-[ Upstream commit fc786304ad9803e8bb86b8599bc64d1c1746c75f ]
+[ Upstream commit c500a86693a126c9393e602741e348f80f1b0fc5 ]
 
-If the client can't reach the server, the latter remains listening
-forever. Kill it after 5s of waiting.
+Within kirin_pcie_parse_port(), the pcie->num_slots is compared to
+pcie->gpio_id_reset size (MAX_PCI_SLOTS) which is correct and would lead
+to an overflow.
 
-Fixes: 867d2190799a ("selftests: netfilter: add ipvs test script")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Thus, fix condition to pcie->num_slots + 1 >= MAX_PCI_SLOTS and move
+pcie->num_slots increment below the if-statement to avoid out-of-bounds
+array access.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: b22dbbb24571 ("PCI: kirin: Support PERST# GPIOs for HiKey970 external PEX 8606 bridge")
+Link: https://lore.kernel.org/linux-pci/20240903115823.30647-1-adiupina@astralinux.ru
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/netfilter/ipvs.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-kirin.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/ipvs.sh b/tools/testing/selftests/net/netfilter/ipvs.sh
-index 4ceee9fb39495..d3edb16cd4b3f 100755
---- a/tools/testing/selftests/net/netfilter/ipvs.sh
-+++ b/tools/testing/selftests/net/netfilter/ipvs.sh
-@@ -97,7 +97,7 @@ cleanup() {
- }
+diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
+index 2ee146767971c..421697ec7591d 100644
+--- a/drivers/pci/controller/dwc/pcie-kirin.c
++++ b/drivers/pci/controller/dwc/pcie-kirin.c
+@@ -415,12 +415,12 @@ static int kirin_pcie_parse_port(struct kirin_pcie *pcie,
+ 			if (pcie->gpio_id_reset[i] < 0)
+ 				continue;
  
- server_listen() {
--	ip netns exec "$ns2" socat -u -4 TCP-LISTEN:8080,reuseaddr STDOUT > "${outfile}" &
-+	ip netns exec "$ns2" timeout 5 socat -u -4 TCP-LISTEN:8080,reuseaddr STDOUT > "${outfile}" &
- 	server_pid=$!
- 	sleep 0.2
- }
+-			pcie->num_slots++;
+-			if (pcie->num_slots > MAX_PCI_SLOTS) {
++			if (pcie->num_slots + 1 >= MAX_PCI_SLOTS) {
+ 				dev_err(dev, "Too many PCI slots!\n");
+ 				ret = -EINVAL;
+ 				goto put_node;
+ 			}
++			pcie->num_slots++;
+ 
+ 			ret = of_pci_get_devfn(child);
+ 			if (ret < 0) {
 -- 
 2.43.0
 
