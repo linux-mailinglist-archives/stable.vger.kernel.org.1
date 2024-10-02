@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-78767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3A998D4D6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D3F98D4EA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C152D1C21D79
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D436B21B92
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8CF1D048B;
-	Wed,  2 Oct 2024 13:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B293A1D048E;
+	Wed,  2 Oct 2024 13:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FydeEMzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGkqTXnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680D41D0434;
-	Wed,  2 Oct 2024 13:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701EC1D0429;
+	Wed,  2 Oct 2024 13:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875471; cv=none; b=MZGrT7Pk7PMfvuUM5T4A2A3IOARDxgexjRkF4aXh4Eiwn4KihwXXLOAk4r49EA29u5rvcTBim86j+xQshw5UGBj2+iARzyItOOtAGbRoa9Tw9+x2VqyQOWEiFBob6QgdDbmBO1DIKBV5yyXUQ0i3sO2w9EATFxte3Fn1+lTDuAo=
+	t=1727875489; cv=none; b=TmFAV3698Moy0HAZXSsezJwtioGBbpRe/LWvyXZfmMiLRfyYCOtjUB/6xof5FsOUtOp5RgEiX7rEdluE0X/Y/6SXNz7c45Vl/LCILvG5bOHMlBLURjZGxRtR2Nic6HNz2TZBeiseOqCBrZvKbHRcDn4HiZNWIe3mtvEZIsA06Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875471; c=relaxed/simple;
-	bh=Jx6wZHv1MhWCEqfYOVWu0T2d7zNSvgJSDbLbQmV6DpE=;
+	s=arc-20240116; t=1727875489; c=relaxed/simple;
+	bh=m6dK6KIBYaqcD8RSar094R7YVhWs3gmodrekg7psDAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGeWu85bzrz6lvFLew1JbzmR/BclSnu7HgkIWPzgJW7mzghZlMjK6CoQZe+IBVnRygUYBZysKEgFeNnAuJLWmKX76cRtNGLxwVoV21zl8K+PwJlKTOSKjYHRHX/hFo6Y2wAkWXurrQIr6Ocvlra2xlI4p5Lpct45+1CIfx18PyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FydeEMzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4288C4CECD;
-	Wed,  2 Oct 2024 13:24:30 +0000 (UTC)
+	 MIME-Version; b=W1GiFyowaCkIXOdXyqd57BFRjx1cLwJ2MUQYHfuB4nBlA4pX/UQAPUOJx+0v04PdQUl135B8K9jV8JUkyQqctNcq3yiUbUU52hbtSg/28jzw9B6M+MIfjgh0p9blhWi48q4bhYxSEZ+VoMS+yGvNOTP7ZY/l5CfgCJyerMBBzik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGkqTXnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9736EC4CEC5;
+	Wed,  2 Oct 2024 13:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875471;
-	bh=Jx6wZHv1MhWCEqfYOVWu0T2d7zNSvgJSDbLbQmV6DpE=;
+	s=korg; t=1727875489;
+	bh=m6dK6KIBYaqcD8RSar094R7YVhWs3gmodrekg7psDAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FydeEMzRq3Lo1DgHSLxc2i8E6f8IAyu0d9ySvN28NYhN7b5aM/jFHj3IVfCDScIzM
-	 dpUzwr7WtSAswo7vYshcqa2Zd/xOXnoMD5QVEsoSQyMKfBmj6O/XS+AqA/xy5q6Lpl
-	 Osoe+GdZUgKitWxDJn2hWjqv7eruflAqQlO5iQLM=
+	b=IGkqTXnlw7K64Jo1Z7jvKEhPr5RyRtATpzX6vbVzm20T17As3dOniabUhd443w2tS
+	 0BlfCpGkXPabJdvCT5Wy1mSIL6EAllL8X6fMlj66j0MzsbY/tpYzM/ICnNnEkBQPGc
+	 v3Sq2a3MpO3Koji7bsKfzIz/oBf3xxFBznNXn4qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weili Qian <qianweili@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Rex Lu <rex.lu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 085/695] crypto: hisilicon/qm - inject error before stopping queue
-Date: Wed,  2 Oct 2024 14:51:23 +0200
-Message-ID: <20241002125825.873443363@linuxfoundation.org>
+Subject: [PATCH 6.11 086/695] wifi: mt76: mt7996: fix handling mbss enable/disable
+Date: Wed,  2 Oct 2024 14:51:24 +0200
+Message-ID: <20241002125825.913061998@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,106 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Weili Qian <qianweili@huawei.com>
+From: Rex Lu <rex.lu@mediatek.com>
 
-[ Upstream commit b04f06fc0243600665b3b50253869533b7938468 ]
+[ Upstream commit ded1a6d9e13a32d4e8bef0c63accf49b9415ff5f ]
 
-The master ooo cannot be completely closed when the
-accelerator core reports memory error. Therefore, the driver
-needs to inject the qm error to close the master ooo. Currently,
-the qm error is injected after stopping queue, memory may be
-released immediately after stopping queue, causing the device to
-access the released memory. Therefore, error is injected to close master
-ooo before stopping queue to ensure that the device does not access
-the released memory.
+When mbss was previously enabled, the TLV needs to be included when
+disabling it again, in order to clear the firmware state.
 
-Fixes: 6c6dd5802c2d ("crypto: hisilicon/qm - add controller reset interface")
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: a7908d5b61e5 ("wifi: mt76: mt7996: fix non-main BSS no beacon issue for MBSS scenario")
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20240816094635.2391-9-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c | 47 ++++++++++++++++++-----------------
- 1 file changed, 24 insertions(+), 23 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index b2b5f15abdf72..07983af9e3e22 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -4015,6 +4015,28 @@ static int qm_set_vf_mse(struct hisi_qm *qm, bool set)
- 	return -ETIMEDOUT;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index daef014954d02..c4c60c60155d3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -822,7 +822,7 @@ mt7996_mcu_bss_mbssid_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 	struct bss_info_uni_mbssid *mbssid;
+ 	struct tlv *tlv;
  
-+static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
-+{
-+	u32 nfe_enb = 0;
-+
-+	/* Kunpeng930 hardware automatically close master ooo when NFE occurs */
-+	if (qm->ver >= QM_HW_V3)
-+		return;
-+
-+	if (!qm->err_status.is_dev_ecc_mbit &&
-+	    qm->err_status.is_qm_ecc_mbit &&
-+	    qm->err_ini->close_axi_master_ooo) {
-+		qm->err_ini->close_axi_master_ooo(qm);
-+	} else if (qm->err_status.is_dev_ecc_mbit &&
-+		   !qm->err_status.is_qm_ecc_mbit &&
-+		   !qm->err_ini->close_axi_master_ooo) {
-+		nfe_enb = readl(qm->io_base + QM_RAS_NFE_ENABLE);
-+		writel(nfe_enb & QM_RAS_NFE_MBIT_DISABLE,
-+		       qm->io_base + QM_RAS_NFE_ENABLE);
-+		writel(QM_ECC_MBIT, qm->io_base + QM_ABNORMAL_INT_SET);
-+	}
-+}
-+
- static int qm_vf_reset_prepare(struct hisi_qm *qm,
- 			       enum qm_stop_reason stop_reason)
- {
-@@ -4079,6 +4101,8 @@ static int qm_controller_reset_prepare(struct hisi_qm *qm)
- 		return ret;
- 	}
+-	if (!vif->bss_conf.bssid_indicator)
++	if (!vif->bss_conf.bssid_indicator && enable)
+ 		return;
  
-+	qm_dev_ecc_mbit_handle(qm);
-+
- 	/* PF obtains the information of VF by querying the register. */
- 	qm_cmd_uninit(qm);
- 
-@@ -4125,28 +4149,6 @@ static int qm_master_ooo_check(struct hisi_qm *qm)
- 	return ret;
- }
- 
--static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
--{
--	u32 nfe_enb = 0;
--
--	/* Kunpeng930 hardware automatically close master ooo when NFE occurs */
--	if (qm->ver >= QM_HW_V3)
--		return;
--
--	if (!qm->err_status.is_dev_ecc_mbit &&
--	    qm->err_status.is_qm_ecc_mbit &&
--	    qm->err_ini->close_axi_master_ooo) {
--		qm->err_ini->close_axi_master_ooo(qm);
--	} else if (qm->err_status.is_dev_ecc_mbit &&
--		   !qm->err_status.is_qm_ecc_mbit &&
--		   !qm->err_ini->close_axi_master_ooo) {
--		nfe_enb = readl(qm->io_base + QM_RAS_NFE_ENABLE);
--		writel(nfe_enb & QM_RAS_NFE_MBIT_DISABLE,
--		       qm->io_base + QM_RAS_NFE_ENABLE);
--		writel(QM_ECC_MBIT, qm->io_base + QM_ABNORMAL_INT_SET);
--	}
--}
--
- static int qm_soft_reset_prepare(struct hisi_qm *qm)
- {
- 	struct pci_dev *pdev = qm->pdev;
-@@ -4171,7 +4173,6 @@ static int qm_soft_reset_prepare(struct hisi_qm *qm)
- 		return ret;
- 	}
- 
--	qm_dev_ecc_mbit_handle(qm);
- 	ret = qm_master_ooo_check(qm);
- 	if (ret)
- 		return ret;
+ 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_11V_MBSSID, sizeof(*mbssid));
 -- 
 2.43.0
 
