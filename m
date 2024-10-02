@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0FB98D963
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE0B98DBEF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74A281C23189
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 758E91F24D9D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA021D0F53;
-	Wed,  2 Oct 2024 14:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0521D0E0D;
+	Wed,  2 Oct 2024 14:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYblVy+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhWAMYBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892271D07B8;
-	Wed,  2 Oct 2024 14:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E441D0493;
+	Wed,  2 Oct 2024 14:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877971; cv=none; b=s69w/EuOGI+onhbcQmR9wYkwS3F9qGv4PhAP3YxWWJe13j5fx6SKmhuxOblyTyd0EKoVXHHDMMAmMDmxJbbO5qlYehZ45CBk/uGDwldTl6bEcUUi5ulQyDP2Lrje9Qu0RFFFLM6oyR4OYmmtelEp9zeyU3tr+jnEaX9Mfh6k9js=
+	t=1727879440; cv=none; b=qasadYR0VzrQPXQlIaNLi904/IZQ5DrOmEdanpdwv0EK49b2mZ26u6VpZ75xpyEjn5Q0EWwastXkEnePHFpEyhTFvwTqbJhkxV0GyBwGYd1n/DbzUYrLP6PziZmE7RIz9CoGGIC8lzlpIq5baITDH+i4Qbbih/I469xFqpEznQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877971; c=relaxed/simple;
-	bh=gZrEb5pu5chfO/GEBV/1+bYE5BoAL8k5ngCk1vZW/AE=;
+	s=arc-20240116; t=1727879440; c=relaxed/simple;
+	bh=Ldy1VtWrHE0TVOQY/nFfZoTX224+46yOJcLXggGKWno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ON/MdWhoyhvWAsX5TQKkj0QB4YTLPyryFJy1OxIZ6TRGUM8ZXtLDXbWuVJAO2mWjjlXULrQ8RCGD4/iTBoSSbDIDbDKy1UNB/aS6jtmNOHSBdVcT127UcMrRMw0VNvWHNP6a9/o3mWzZperLdXzOoan5RCvfl2Zkd4fwStjndZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYblVy+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C0BC4CEC2;
-	Wed,  2 Oct 2024 14:06:10 +0000 (UTC)
+	 MIME-Version; b=TzRIIzfRfK/Chbn/ekboQ7BvqaJUUf/B0Cxh7HrW0Y6TSfaWL+3tF2QbJpUMCyfHNYZDiLzfICJnuCwuGvMpjvEzKd5vMWBHF7Mz17kEAf797Ki8Plv9jeNYD1l0a8ECWlUI8ThuIv097pw7Pui6WRwHMC1zdfflLHxc8OCTtGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhWAMYBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6381CC4CEC2;
+	Wed,  2 Oct 2024 14:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877971;
-	bh=gZrEb5pu5chfO/GEBV/1+bYE5BoAL8k5ngCk1vZW/AE=;
+	s=korg; t=1727879439;
+	bh=Ldy1VtWrHE0TVOQY/nFfZoTX224+46yOJcLXggGKWno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYblVy+JEbQbzKFlcFJdymX9IPrCSn0hV+LIULE+kxzZTwvLTqpQXr65S9mutWUmE
-	 LYO5MSJ2eu1VOVFqAXhcZWbobodJbFyGfsBhF4esa+4o4QqARih5+Tme0him53Q+Ye
-	 ZlmzdSph3nxe11NWUCJkFK29giZDoCaF7He8L8jE=
+	b=PhWAMYBkiVD0QT8NX2OrFX3yt4nhB3v7RWuNQTA87IABR/gFMT5wIrl3rhPPwyI5m
+	 Sa4nnatqcnsLbyhu4OILcYfmBKGU2yPs5VT1V5ll3SEtfEMBKlZ4Tb9RlNfkMoM1s7
+	 EzPIZQsz1916D/l3b37jzjzHZ9Kt6/3GuLvs55Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	tangbin <tangbin@cmss.chinamobile.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 257/634] selftests/bpf: Fix C++ compile error from missing _Bool type
-Date: Wed,  2 Oct 2024 14:55:57 +0200
-Message-ID: <20241002125821.244647975@linuxfoundation.org>
+Subject: [PATCH 6.6 119/538] ASoC: loongson: fix error release
+Date: Wed,  2 Oct 2024 14:55:58 +0200
+Message-ID: <20241002125756.943877737@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: tangbin <tangbin@cmss.chinamobile.com>
 
-[ Upstream commit aa95073fd290b5b3e45f067fa22bb25e59e1ff7c ]
+[ Upstream commit 97688a9c5b1fd2b826c682cdfa36d411a5c99828 ]
 
-While building, bpftool makes a skeleton from test_core_extern.c, which
-itself includes <stdbool.h> and uses the 'bool' type. However, the skeleton
-test_core_extern.skel.h generated *does not* include <stdbool.h> or use the
-'bool' type, instead using the C-only '_Bool' type. Compiling test_cpp.cpp
-with g++ 12.3 for mips64el/musl-libc then fails with error:
+In function loongson_card_parse_of(), when get device_node
+'codec' failed, the function of_node_put(codec) should not
+be invoked, thus fix error release.
 
-  In file included from test_cpp.cpp:9:
-  test_core_extern.skel.h:45:17: error: '_Bool' does not name a type
-     45 |                 _Bool CONFIG_BOOL;
-        |                 ^~~~~
-
-This was likely missed previously because glibc uses a GNU extension for
-<stdbool.h> with C++ (#define _Bool bool), not supported by musl libc.
-
-Normally, a C fragment would include <stdbool.h> and use the 'bool' type,
-and thus cleanly work after import by C++. The ideal fix would be for
-'bpftool gen skeleton' to output the correct type/include supporting C++,
-but in the meantime add a conditional define as above.
-
-Fixes: 7c8dce4b1661 ("bpftool: Make skeleton C code compilable with C++ compiler")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/6fc1dd28b8bda49e51e4f610bdc9d22f4455632d.1722244708.git.tony.ambardar@gmail.com
+Fixes: d24028606e76 ("ASoC: loongson: Add Loongson ASoC Sound Card Support")
+Signed-off-by: tangbin <tangbin@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20240903090620.6276-1-tangbin@cmss.chinamobile.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_cpp.cpp | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/loongson/loongson_card.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_cpp.cpp b/tools/testing/selftests/bpf/test_cpp.cpp
-index dde0bb16e782e..abc2a56ab2616 100644
---- a/tools/testing/selftests/bpf/test_cpp.cpp
-+++ b/tools/testing/selftests/bpf/test_cpp.cpp
-@@ -6,6 +6,10 @@
- #include <bpf/libbpf.h>
- #include <bpf/bpf.h>
- #include <bpf/btf.h>
-+
-+#ifndef _Bool
-+#define _Bool bool
-+#endif
- #include "test_core_extern.skel.h"
- #include "struct_ops_module.skel.h"
+diff --git a/sound/soc/loongson/loongson_card.c b/sound/soc/loongson/loongson_card.c
+index 406ee8db1a3c5..8cc54aedd0024 100644
+--- a/sound/soc/loongson/loongson_card.c
++++ b/sound/soc/loongson/loongson_card.c
+@@ -127,8 +127,8 @@ static int loongson_card_parse_of(struct loongson_card_data *data)
+ 	codec = of_get_child_by_name(dev->of_node, "codec");
+ 	if (!codec) {
+ 		dev_err(dev, "audio-codec property missing or invalid\n");
+-		ret = -EINVAL;
+-		goto err;
++		of_node_put(cpu);
++		return -EINVAL;
+ 	}
  
+ 	for (i = 0; i < card->num_links; i++) {
 -- 
 2.43.0
 
