@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-78860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516AB98D553
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB6F98D55E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83E681C21B33
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FEA81C21E73
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D991D0437;
-	Wed,  2 Oct 2024 13:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3815C1D0788;
+	Wed,  2 Oct 2024 13:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MS0vlOov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MF6xQWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61141D0403;
-	Wed,  2 Oct 2024 13:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A361D042F;
+	Wed,  2 Oct 2024 13:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875739; cv=none; b=dBr5kjy2GiHFqL+aRn0BiLn5qr2APHXP6jxiDT/mPxisdCzo4URjsSNOMSVwrSnWM4/jwQ3cQv2XkVkzsrbB3l5CcaMlVTtk99NrzWC8s6oaF1qyK571u0Ylgu5QwILqyC33HKPE6OOH5+c+QIjfJMn59GqjwCgs+02tniQbMSU=
+	t=1727875772; cv=none; b=jyUwPZsoJmWjBxBUwwR3pLcvqTLAB+oNJXIXZp1kOrSAj/C3unNo7pxbBJEj5OTL9XcX9Yvoywufvwc+RzqC/sqhNl8M0TcimdgH6IohtsGhbC42aiY4pYrSVKOO+VXJlU/+aNg5oB33DmyzKMJCiMgFCGGmnGnsBTiU2ztzg5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875739; c=relaxed/simple;
-	bh=ivqNWrCXfWST40KD1DgNixEaoC7DRiLNOaIa6pFvsJ8=;
+	s=arc-20240116; t=1727875772; c=relaxed/simple;
+	bh=5k9I4ZqmwhiBgm6309ClYRFWNhEWWI6jNDmSWSYKvSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXzYwe/+ssbFL3VijeW+3vN5VNoveK25pnPfxOX/acPoRpwed583XiW2nmqAyeJu02SVIJZ6lPiT97vI4zn2tkUAsvVxKZdkszyEhgFWJXbsrYJXDRIxWIsqUj2aShh5z1gpy3UqrHKHs5S8+k06cFf+6nsWbODKFJKKldGXgZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MS0vlOov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB3EC4CEC5;
-	Wed,  2 Oct 2024 13:28:59 +0000 (UTC)
+	 MIME-Version; b=XzVuZ19n19IFs92DQSqZfdQVXkQ2ErllfVOnmkxkvJA77sUHABmb3x6+Jrn6LyLD7yags2rq7K/9I+xbuahhJ6kA50Z5QHFRX8BpTblZ+yz1K52K2Ms62isNlVJBLfDYf5tWwh6Kxu9XnjoS5xoIHAbXxPuMohUI54WLVhEHFa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MF6xQWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C2FC4CEC5;
+	Wed,  2 Oct 2024 13:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875739;
-	bh=ivqNWrCXfWST40KD1DgNixEaoC7DRiLNOaIa6pFvsJ8=;
+	s=korg; t=1727875771;
+	bh=5k9I4ZqmwhiBgm6309ClYRFWNhEWWI6jNDmSWSYKvSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MS0vlOovDW3W7G3eFMJGMgASqoBQ8u9gRySvIMgh2xcNyWIoEJJk7tv3X1LlpGJYs
-	 tEbfe5ubbUKiI287ZpXABbRzUpzOdN98X+BkG1b1ggQuyAooXyLNZwsDEUA3mg3130
-	 DEF1yC6RKfznXqHvxY7klrp+FDDYbyMkYV2PC7tg=
+	b=0MF6xQWmWP2IwoMk1gkHY9ine+jCTaDITBkIonzteuEmWkZtQ/BKoTqd8QktXMEec
+	 8oFSkuoEHyYKLncJxmhnP9IDj503GG8475S8PqSgS5CHVoAr9F/i2bEJAsI++dXGHt
+	 SRcqgnAZl4+0hS9oNQJwrKGS070Wk33iHV6B63/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Charles Han <hanchunchao@inspur.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 187/695] iommu/amd: Do not set the D bit on AMD v2 table entries
-Date: Wed,  2 Oct 2024 14:53:05 +0200
-Message-ID: <20241002125829.935234983@linuxfoundation.org>
+Subject: [PATCH 6.11 188/695] mtd: powernv: Add check devm_kasprintf() returned value
+Date: Wed,  2 Oct 2024 14:53:06 +0200
+Message-ID: <20241002125829.974934849@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -67,36 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 2910a7fa1be090fc7637cef0b2e70bcd15bf5469 ]
+[ Upstream commit 395999829880a106bb95f0ce34e6e4c2b43c6a5d ]
 
-The manual says that bit 6 is IGN for all Page-Table Base Address
-pointers, don't set it.
+devm_kasprintf() can return a NULL pointer on failure but this
+returned value is not checked.
 
-Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/14-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: acfe63ec1c59 ("mtd: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240828092427.128177-1-hanchunchao@inspur.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/io_pgtable_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/devices/powernv_flash.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
-index 6088822180e1e..f9227cbf75dfe 100644
---- a/drivers/iommu/amd/io_pgtable_v2.c
-+++ b/drivers/iommu/amd/io_pgtable_v2.c
-@@ -51,7 +51,7 @@ static inline u64 set_pgtable_attr(u64 *page)
- 	u64 prot;
- 
- 	prot = IOMMU_PAGE_PRESENT | IOMMU_PAGE_RW | IOMMU_PAGE_USER;
--	prot |= IOMMU_PAGE_ACCESS | IOMMU_PAGE_DIRTY;
-+	prot |= IOMMU_PAGE_ACCESS;
- 
- 	return (iommu_virt_to_phys(page) | prot);
- }
+diff --git a/drivers/mtd/devices/powernv_flash.c b/drivers/mtd/devices/powernv_flash.c
+index 66044f4f5bade..10cd1d9b48859 100644
+--- a/drivers/mtd/devices/powernv_flash.c
++++ b/drivers/mtd/devices/powernv_flash.c
+@@ -207,6 +207,9 @@ static int powernv_flash_set_driver_info(struct device *dev,
+ 	 * get them
+ 	 */
+ 	mtd->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFP", dev->of_node);
++	if (!mtd->name)
++		return -ENOMEM;
++
+ 	mtd->type = MTD_NORFLASH;
+ 	mtd->flags = MTD_WRITEABLE;
+ 	mtd->size = size;
 -- 
 2.43.0
 
