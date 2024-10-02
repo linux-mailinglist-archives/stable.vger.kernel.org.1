@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0F298D8FC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D4198D5B3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA59286C55
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A843E1C20EDF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD74D1D0BA6;
-	Wed,  2 Oct 2024 14:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458CA1D04BA;
+	Wed,  2 Oct 2024 13:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvLPHAkw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hr0+Tvd7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2BF1D0956;
-	Wed,  2 Oct 2024 14:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E0A1D04B8;
+	Wed,  2 Oct 2024 13:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877736; cv=none; b=MfcOF/j1QCjc71Zr+p4IldYIu7fFyO0MYoPcWnE30dRggqfx36Tx30q1Y3fmhUblGFbj9UPdq7dEKgUOorkZqwOsJQztJCJbVOizYqyF2Hh6FIj33sLd/OC1OPtJrjzgep7meUTOFZaEP/srhQkhQlnIMsMCJq32QZ0bga0A3zU=
+	t=1727875958; cv=none; b=HXa4OMtNybrg1JofLTvSi9v6lnKlipetDH3zyyoACaM2oPhek3Tu0VqK2HUUwzW+j3yU2glZIJHXd4qAXJZfespxU4H3TkESKFD1q+rN1100s1taWlZ26HB7pJAhAGbYQrN+olMJ+jNWDs8bEKJlImEku5BZbtfenvqYSGicBPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877736; c=relaxed/simple;
-	bh=PaWOj4iuXVMqOeJq/OiJFdLHaOQgZkwSHw+IDMIydIM=;
+	s=arc-20240116; t=1727875958; c=relaxed/simple;
+	bh=7m1Nxn+aJzGDk+wibEhTFCACFd2UVjSEkOi1kgFGOR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzQZdBGruviwvDkgTDcADNKtzs+KeIkDFp41gZTYfkbmjM4002Lpf8JQDfRdvEPrCv9nsVBVmkNfDsrZVdzKuEQ4mAGZiwYCp4aIVQj8kpMsS0XoyZX8zvJRTO/mxK/2QonIj+0fcsneTViOz8bzdFIDHSU8KorGXN8ZWYCTiJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvLPHAkw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68A5C4CEC2;
-	Wed,  2 Oct 2024 14:02:15 +0000 (UTC)
+	 MIME-Version; b=PbrXafndNW6U8rWXZra/b2bZYoc9H1ZxQbmfSSlgPrlPHMYa27HsjD9gGWkEwOfqgWNayrO+TDrqWXQuu9f8l1l6i7qar1JQMdrhuxD8UFrKOCw52Gh/UajHBv/GwxN6udSR6txvjhi+wNtS8aDBnchEsYzpdNIztTGgyeA/NI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hr0+Tvd7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E27AC4CECD;
+	Wed,  2 Oct 2024 13:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877736;
-	bh=PaWOj4iuXVMqOeJq/OiJFdLHaOQgZkwSHw+IDMIydIM=;
+	s=korg; t=1727875957;
+	bh=7m1Nxn+aJzGDk+wibEhTFCACFd2UVjSEkOi1kgFGOR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvLPHAkwViLev7iiyyE3S0RzvCZpMd6IVJmH/EXMhdmIDX+NAPu9nthi7HO5MKkIy
-	 kxqMzOUST+XH1lxsOQKx85tTF0oN+u2tumIFQv/Vj/bqMpDGIyWf3//RUSN9ql+48i
-	 kg7z3Zfs4//qngmecYOMi8wZGP6bA4xvOf/c0k6g=
+	b=hr0+Tvd7Vqxu8OSW4ZBiw6rYeXBPV//qpoymDKDyMH7yyzo7GH5SawjBONOJteM2e
+	 yXHRoP3LZJGEPN65On9k+/SHaRD5aP/nyQhqLrpwItrQ5FrXHJg9bLC4BEiKCfKzHA
+	 LFVMv4jEWgZ2r6XmjA9je7GY+07S+0TomkiCXfvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 177/634] iommu/arm-smmu-qcom: apply num_context_bank fixes for SDM630 / SDM660
+Subject: [PATCH 6.11 279/695] selftests/bpf: Fix errors compiling crypto_sanity.c with musl libc
 Date: Wed,  2 Oct 2024 14:54:37 +0200
-Message-ID: <20241002125818.094900722@linuxfoundation.org>
+Message-ID: <20241002125833.581685526@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 19eb465c969f3d6ed1b98506d3e470e863b41e16 ]
+[ Upstream commit 9822be702fe6e1c3e0933ef4b68a8c56683d930d ]
 
-The Qualcomm SDM630 / SDM660 platform requires the same kind of
-workaround as MSM8998: some IOMMUs have context banks reserved by
-firmware / TZ, touching those banks resets the board.
+Remove a redundant include of '<linux/in6.h>', whose needed definitions are
+already provided by 'test_progs.h'. This avoids errors seen compiling for
+mips64el/musl-libc:
 
-Apply the num_context_bank workaround to those two SMMU devices in order
-to allow them to be used by Linux.
+  In file included from .../arpa/inet.h:9,
+                   from ./test_progs.h:17,
+                   from prog_tests/crypto_sanity.c:10:
+  .../netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+     23 | struct in6_addr {
+        |        ^~~~~~~~
+  In file included from crypto_sanity.c:7:
+  .../linux/in6.h:33:8: note: originally defined here
+     33 | struct in6_addr {
+        |        ^~~~~~~~
+  .../netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+     34 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../linux/in6.h:50:8: note: originally defined here
+     50 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+     42 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+  .../linux/in6.h:60:8: note: originally defined here
+     60 | struct ipv6_mreq {
+        |        ^~~~~~~~~
 
-Fixes: b812834b5329 ("iommu: arm-smmu-qcom: Add sdm630/msm8998 compatibles for qcom quirks")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20240907-sdm660-wifi-v1-1-e316055142f8@linaro.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 91541ab192fc ("selftests: bpf: crypto skcipher algo selftests")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://lore.kernel.org/bpf/911293968f424ad7b462d8805aeb3baee8f4985b.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/crypto_sanity.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index eff090b1f4fc7..ccca410c94816 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -286,8 +286,15 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- 	 * MSM8998 LPASS SMMU reports 13 context banks, but accessing
- 	 * the last context bank crashes the system.
- 	 */
--	if (of_device_is_compatible(smmu->dev->of_node, "qcom,msm8998-smmu-v2") && smmu->num_context_banks == 13)
-+	if (of_device_is_compatible(smmu->dev->of_node, "qcom,msm8998-smmu-v2") &&
-+	    smmu->num_context_banks == 13) {
- 		smmu->num_context_banks = 12;
-+	} else if (of_device_is_compatible(smmu->dev->of_node, "qcom,sdm630-smmu-v2")) {
-+		if (smmu->num_context_banks == 21) /* SDM630 / SDM660 A2NOC SMMU */
-+			smmu->num_context_banks = 7;
-+		else if (smmu->num_context_banks == 14) /* SDM630 / SDM660 LPASS SMMU */
-+			smmu->num_context_banks = 13;
-+	}
+diff --git a/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c b/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
+index b1a3a49a822a7..42bd07f7218dc 100644
+--- a/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
++++ b/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
+@@ -4,7 +4,6 @@
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <net/if.h>
+-#include <linux/in6.h>
+ #include <linux/if_alg.h>
  
- 	/*
- 	 * Some platforms support more than the Arm SMMU architected maximum of
-@@ -350,6 +357,11 @@ static int qcom_adreno_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
- 	/* Support for 16K pages is advertised on some SoCs, but it doesn't seem to work */
- 	smmu->features &= ~ARM_SMMU_FEAT_FMT_AARCH64_16K;
- 
-+	/* TZ protects several last context banks, hide them from Linux */
-+	if (of_device_is_compatible(smmu->dev->of_node, "qcom,sdm630-smmu-v2") &&
-+	    smmu->num_context_banks == 5)
-+		smmu->num_context_banks = 2;
-+
- 	return 0;
- }
- 
+ #include "test_progs.h"
 -- 
 2.43.0
 
