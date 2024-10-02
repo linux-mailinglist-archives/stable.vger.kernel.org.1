@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-78917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3055698D59C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA0F98D8D2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A77271F22031
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:32:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9D721F2183A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF811D0B82;
-	Wed,  2 Oct 2024 13:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C1C1D0DCE;
+	Wed,  2 Oct 2024 14:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7LTUFPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxJhs/a6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE51D0B87;
-	Wed,  2 Oct 2024 13:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7901D1D0E39;
+	Wed,  2 Oct 2024 14:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875906; cv=none; b=hi40JxaM1MhJOwz+uqneChhVcGFSAUvgs/+NkNZxknKqayjnVDC27J8H/7KKZunHHxpd+5qN+Bs/N4jS8JH2dTXvDQ3bnRAf1GoUzpDqW2KYByin9sICm8+dj79bcRcp7tg4HIhxRkhF/HQMPFYSqv44BgIqX/MpKUn09z/7w0c=
+	t=1727877666; cv=none; b=W0foqgrGxFIhwwXU3YK/AhtUrWJOY1eomUws88zsyp7dTIV8IE+CPfwtkgvTgw+5P92V7bwQh2a7UcwLKJ6YM8akOdgO3EiZrFwtBAN5ZBOBRhrHGJ+Vc2/qx6aXpKN0XtgONjrA0/OptTEr1epHslG0/2X067Nbd2v5X2TasDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875906; c=relaxed/simple;
-	bh=kUvUDoGBs4TBGfwJF9iWwR5AuEXv+n2rOEGKWADvsA4=;
+	s=arc-20240116; t=1727877666; c=relaxed/simple;
+	bh=xsmePFoEX/zD9+IKj2pqZYDpJk7hvYkNhSRpVNG5vhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snbH0CI8Fw+1RuDOEZqp3mWLJhG2T26vS0Xn7JLzl8dN3xZWeedRozMwWxL21ey0INpNAzJcRjS68CVkIArqrqtJxIASEOZ61oNApZVYJtwyeIhQ+hu1TUGMgMSAGjFF8QATPPafny/xNC6a62gB1taYeWzfCHX/TxRIR+G3bVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7LTUFPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE5CC4CECE;
-	Wed,  2 Oct 2024 13:31:45 +0000 (UTC)
+	 MIME-Version; b=I3WKqhOD6RcV2PNsrjJlQWfddQml2Ye2EfDw9c6RPb506lxJ8JmFaOZDxmJWbDVqcNXZpVu82/kGEfbASKAV5YYYDNCECIKkPmYrVFS8mue3Z3ahsBk6QCCl3l3NqU7rb6r0WMvGDmztM+b4mq0last6UtvKDI7aGljEGnajJ5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxJhs/a6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1F2C4CEC2;
+	Wed,  2 Oct 2024 14:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875905;
-	bh=kUvUDoGBs4TBGfwJF9iWwR5AuEXv+n2rOEGKWADvsA4=;
+	s=korg; t=1727877666;
+	bh=xsmePFoEX/zD9+IKj2pqZYDpJk7hvYkNhSRpVNG5vhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7LTUFPC7l/raB4yCk7lBB1+l1QX/yf/pYs02faKtnrMx74Z4hMJG3VT3Vkrz2RkM
-	 k4Si9l0BvSaT/hYQDqHzE9//AjsgbrJw+5vQ/i63C1vLxGUoDzyYCfP11DTdLiFrKe
-	 MFvY0dCgbiWoXhtl7eEvIKbjuupdlht051EUHt1k=
+	b=pxJhs/a6rjZcl+ZHTSh6Icj31OXwVQu6LR6xPQapYW7clmAsyrf8KpmEQdI6f6K2t
+	 XqJH53R4Fao7hhe0dxbXJE2VYU02FwIb4JfuI/WyeW5jyR+5xqZ3rMSlrVy/FTUFbS
+	 khg5AiTrxXUITfo4COf30RvNWXbKsQnEq9lWrqxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Josh Don <joshdon@google.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stan Johnson <userm57@yahoo.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 254/695] sched/fair: Make SCHED_IDLE entity be preempted in strict hierarchy
+Subject: [PATCH 6.10 152/634] m68k: Fix kernel_clone_args.flags in m68k_clone()
 Date: Wed,  2 Oct 2024 14:54:12 +0200
-Message-ID: <20241002125832.586420546@linuxfoundation.org>
+Message-ID: <20241002125817.110447880@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchen Ding <dtcccc@linux.alibaba.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit faa42d29419def58d3c3e5b14ad4037f0af3b496 ]
+[ Upstream commit 09b3d870faa7bc3e96c0978ab3cf4e96e4b15571 ]
 
-Consider the following cgroup:
+Stan Johnson recently reported a failure from the 'dump' command:
 
-                       root
-                        |
-             ------------------------
-             |                      |
-       normal_cgroup            idle_cgroup
-             |                      |
-   SCHED_IDLE task_A           SCHED_NORMAL task_B
+  DUMP: Date of this level 0 dump: Fri Aug  9 23:37:15 2024
+  DUMP: Dumping /dev/sda (an unlisted file system) to /dev/null
+  DUMP: Label: none
+  DUMP: Writing 10 Kilobyte records
+  DUMP: mapping (Pass I) [regular files]
+  DUMP: mapping (Pass II) [directories]
+  DUMP: estimated 3595695 blocks.
+  DUMP: Context save fork fails in parent 671
 
-According to the cgroup hierarchy, A should preempt B. But current
-check_preempt_wakeup_fair() treats cgroup se and task separately, so B
-will preempt A unexpectedly.
-Unify the wakeup logic by {c,p}se_is_idle only. This makes SCHED_IDLE of
-a task a relative policy that is effective only within its own cgroup,
-similar to the behavior of NICE.
+The dump program uses the clone syscall with the CLONE_IO flag, that is,
+flags == 0x80000000. When that value is promoted from long int to u64 by
+m68k_clone(), it undergoes sign-extension. The new value includes
+CLONE_INTO_CGROUP so the validation in cgroup_css_set_fork() fails and
+the syscall returns -EBADF. Avoid sign-extension by casting to u32.
 
-Also fix se_is_idle() definition when !CONFIG_FAIR_GROUP_SCHED.
-
-Fixes: 304000390f88 ("sched: Cgroup SCHED_IDLE support")
-Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Josh Don <joshdon@google.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20240626023505.1332596-1-dtcccc@linux.alibaba.com
+Reported-by: Stan Johnson <userm57@yahoo.com>
+Closes: https://lists.debian.org/debian-68k/2024/08/msg00000.html
+Fixes: 6aabc1facdb2 ("m68k: Implement copy_thread_tls()")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/3463f1e5d4e95468dc9f3368f2b78ffa7b72199b.1723335149.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ arch/m68k/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 9057584ec06de..82ff874953b55 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -511,7 +511,7 @@ static int cfs_rq_is_idle(struct cfs_rq *cfs_rq)
- 
- static int se_is_idle(struct sched_entity *se)
+diff --git a/arch/m68k/kernel/process.c b/arch/m68k/kernel/process.c
+index 2584e94e21346..fda7eac23f872 100644
+--- a/arch/m68k/kernel/process.c
++++ b/arch/m68k/kernel/process.c
+@@ -117,7 +117,7 @@ asmlinkage int m68k_clone(struct pt_regs *regs)
  {
--	return 0;
-+	return task_has_idle_policy(task_of(se));
- }
- 
- #endif	/* CONFIG_FAIR_GROUP_SCHED */
-@@ -8381,16 +8381,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
- 	if (test_tsk_need_resched(curr))
- 		return;
- 
--	/* Idle tasks are by definition preempted by non-idle tasks. */
--	if (unlikely(task_has_idle_policy(curr)) &&
--	    likely(!task_has_idle_policy(p)))
--		goto preempt;
--
--	/*
--	 * Batch and idle tasks do not preempt non-idle tasks (their preemption
--	 * is driven by the tick):
--	 */
--	if (unlikely(p->policy != SCHED_NORMAL) || !sched_feat(WAKEUP_PREEMPTION))
-+	if (!sched_feat(WAKEUP_PREEMPTION))
- 		return;
- 
- 	find_matching_se(&se, &pse);
-@@ -8400,7 +8391,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
- 	pse_is_idle = se_is_idle(pse);
- 
- 	/*
--	 * Preempt an idle group in favor of a non-idle group (and don't preempt
-+	 * Preempt an idle entity in favor of a non-idle entity (and don't preempt
- 	 * in the inverse case).
- 	 */
- 	if (cse_is_idle && !pse_is_idle)
-@@ -8408,9 +8399,14 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
- 	if (cse_is_idle != pse_is_idle)
- 		return;
- 
-+	/*
-+	 * BATCH and IDLE tasks do not preempt others.
-+	 */
-+	if (unlikely(p->policy != SCHED_NORMAL))
-+		return;
-+
- 	cfs_rq = cfs_rq_of(se);
- 	update_curr(cfs_rq);
--
- 	/*
- 	 * XXX pick_eevdf(cfs_rq) != se ?
- 	 */
+ 	/* regs will be equal to current_pt_regs() */
+ 	struct kernel_clone_args args = {
+-		.flags		= regs->d1 & ~CSIGNAL,
++		.flags		= (u32)(regs->d1) & ~CSIGNAL,
+ 		.pidfd		= (int __user *)regs->d3,
+ 		.child_tid	= (int __user *)regs->d4,
+ 		.parent_tid	= (int __user *)regs->d3,
 -- 
 2.43.0
 
