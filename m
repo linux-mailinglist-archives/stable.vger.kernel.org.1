@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-80402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B359498DD3F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CA098DAD6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76C67281468
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51FE28344A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A96D1D1E78;
-	Wed,  2 Oct 2024 14:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB511D1E90;
+	Wed,  2 Oct 2024 14:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPtS1qX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiSUTAz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2521EA80;
-	Wed,  2 Oct 2024 14:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29941D0E17;
+	Wed,  2 Oct 2024 14:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880269; cv=none; b=T4s4z9AKkryM/Y8q2lIwHAZQWyozTewXFB2Vk15Z4XXsDXK8VyC0og1pgBCNuVCdJxB3yZLlI7lKjKRhRc++ttGFoK5D8Vd9hgPrXwE7sQlLuRtLSQ6cfdnNWr2haSisYxmUELmYLyXgqk+dP7QBafzTPmm2a8RtPINoR/tqiFs=
+	t=1727878817; cv=none; b=T0tpJynTJDpARgmrefpXNIiAHFAVaaQLBbC3s75aJJrLOi6YhbME2ef2xYxEbhdf27t1JQRuvl+aIHQa457jIe+sCuFQl+PYW3ujQFq+nu5Gu/bmW6N47twENcxIBMs/cs2nyig5bO+SgJxxC0YmYCL1OeD5RlPHtTdc+3+CmK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880269; c=relaxed/simple;
-	bh=GC+ZFzu/wk/e4lsraOJSXPdaB0+e2vxpYinOL4EXxLg=;
+	s=arc-20240116; t=1727878817; c=relaxed/simple;
+	bh=7fIIMg5axESI7hs27mn0Zzv5yYO+Bgs3pE6Xa4Vz3ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHr33Chd1TZ972EGgFK6Zp7rhFxJr9EnhXmFn2uj/7HCPd27E4IuUScsDowL6V1L69QYEUJD7XKzF/yZzUqUe9mCzOze65KlVmkYGBwoRD3OxbYTMiy5QFkDQKGF5wT7GniBVVeanx8uoYzF7Zfg4f9djaTEriff2BhIRJeDZnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPtS1qX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45481C4CEC2;
-	Wed,  2 Oct 2024 14:44:29 +0000 (UTC)
+	 MIME-Version; b=NRxR6GUD4Gv6c2r8gA8I7NliuL/woh7Vqr8X+WMymNed633jhz/TCuD2mv+bQQp0gpR/HljkUEWaOeLFNNQ1LYB7P7rL5+EqjtnDPrPILR2a0HCM35uA02NjhrkkCIqHvRj3AxKe1Y5Dc0JXcvvU4j9++EIPrmCzY10CjYNeMTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiSUTAz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07086C4CEC2;
+	Wed,  2 Oct 2024 14:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880269;
-	bh=GC+ZFzu/wk/e4lsraOJSXPdaB0+e2vxpYinOL4EXxLg=;
+	s=korg; t=1727878817;
+	bh=7fIIMg5axESI7hs27mn0Zzv5yYO+Bgs3pE6Xa4Vz3ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPtS1qX45gEzW1RavDwxNbxlll2flzDRPK2xTP3A6JnS9/wzkdX8hQlWN1kEXl7C7
-	 ZFjnMmd8WlVct7NuPkwBG2OoYKH0tSpgCO6nWoh1adGPLNCQ9R5mlV4peGvkO7ixaV
-	 1oflVVPrhBV3T5ecc0BejvLdv3HUKjM60v2FZp6g=
+	b=jiSUTAz5fhvrX5Tg80WKes2lFxEwsqgr7XxVXERMWnCGpCL55hrXR23Ff+IIR+1OO
+	 jWM+ckGKC0cFdC2U9WJ/ivxvL/2eQwAIBf2zQ7reGF1I2yIwOna/Lgg85jpFyZL+h/
+	 71j6lI8ZI10N/bKSgNaJSY8TkmkEFYJkBdzpEKXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 371/538] netfilter: nf_reject_ipv6: fix nf_reject_ip6_tcphdr_put()
-Date: Wed,  2 Oct 2024 15:00:10 +0200
-Message-ID: <20241002125807.074083322@linuxfoundation.org>
+	Stan Johnson <userm57@yahoo.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 511/634] scsi: mac_scsi: Revise printk(KERN_DEBUG ...) messages
+Date: Wed,  2 Oct 2024 15:00:11 +0200
+Message-ID: <20241002125831.276294692@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,196 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 9c778fe48d20ef362047e3376dee56d77f8500d4 ]
+commit 5ec4f820cb9766e4583df947150a6febce8da794 upstream.
 
-syzbot reported that nf_reject_ip6_tcphdr_put() was possibly sending
-garbage on the four reserved tcp bits (th->res1)
+After a bus fault, capture and log the chip registers immediately, if the
+NDEBUG_PSEUDO_DMA macro is defined. Remove some printk(KERN_DEBUG ...)
+messages that aren't needed any more.  Don't skip the debug message when
+bytes == 0. Show all of the byte counters in the debug messages.
 
-Use skb_put_zero() to clear the whole TCP header,
-as done in nf_reject_ip_tcphdr_put()
-
-BUG: KMSAN: uninit-value in nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255
-  nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255
-  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-  do_softirq+0x9a/0x100 kernel/softirq.c:455
-  __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:382
-  local_bh_enable include/linux/bottom_half.h:33 [inline]
-  rcu_read_unlock_bh include/linux/rcupdate.h:908 [inline]
-  __dev_queue_xmit+0x2692/0x5610 net/core/dev.c:4450
-  dev_queue_xmit include/linux/netdevice.h:3105 [inline]
-  neigh_resolve_output+0x9ca/0xae0 net/core/neighbour.c:1565
-  neigh_output include/net/neighbour.h:542 [inline]
-  ip6_finish_output2+0x2347/0x2ba0 net/ipv6/ip6_output.c:141
-  __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
-  ip6_finish_output+0xbb8/0x14b0 net/ipv6/ip6_output.c:226
-  NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-  ip6_output+0x356/0x620 net/ipv6/ip6_output.c:247
-  dst_output include/net/dst.h:450 [inline]
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_xmit+0x1ba6/0x25d0 net/ipv6/ip6_output.c:366
-  inet6_csk_xmit+0x442/0x530 net/ipv6/inet6_connection_sock.c:135
-  __tcp_transmit_skb+0x3b07/0x4880 net/ipv4/tcp_output.c:1466
-  tcp_transmit_skb net/ipv4/tcp_output.c:1484 [inline]
-  tcp_connect+0x35b6/0x7130 net/ipv4/tcp_output.c:4143
-  tcp_v6_connect+0x1bcc/0x1e40 net/ipv6/tcp_ipv6.c:333
-  __inet_stream_connect+0x2ef/0x1730 net/ipv4/af_inet.c:679
-  inet_stream_connect+0x6a/0xd0 net/ipv4/af_inet.c:750
-  __sys_connect_file net/socket.c:2061 [inline]
-  __sys_connect+0x606/0x690 net/socket.c:2078
-  __do_sys_connect net/socket.c:2088 [inline]
-  __se_sys_connect net/socket.c:2085 [inline]
-  __x64_sys_connect+0x91/0xe0 net/socket.c:2085
-  x64_sys_call+0x27a5/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:43
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
-  nf_reject_ip6_tcphdr_put+0x60c/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:249
-  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-
-Uninit was stored to memory at:
-  nf_reject_ip6_tcphdr_put+0x2ca/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:231
-  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:3998 [inline]
-  slab_alloc_node mm/slub.c:4041 [inline]
-  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4084
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:583
-  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:674
-  alloc_skb include/linux/skbuff.h:1320 [inline]
-  nf_send_reset6+0x98d/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:327
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-
-Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://patch.msgid.link/20240913170615.3670897-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.15+
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/7573c79f4e488fc00af2b8a191e257ca945e0409.1723001788.git.fthain@linux-m68k.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/nf_reject_ipv6.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/scsi/mac_scsi.c |   42 ++++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 71d692728230e..690d1c0476913 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -223,33 +223,23 @@ void nf_reject_ip6_tcphdr_put(struct sk_buff *nskb,
- 			      const struct tcphdr *oth, unsigned int otcplen)
- {
- 	struct tcphdr *tcph;
--	int needs_ack;
+--- a/drivers/scsi/mac_scsi.c
++++ b/drivers/scsi/mac_scsi.c
+@@ -286,13 +286,14 @@ static inline int macscsi_pread(struct N
+ 	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
+ 	                              BASR_DRQ | BASR_PHASE_MATCH,
+ 	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
+-		int bytes;
++		int bytes, chunk_bytes;
  
- 	skb_reset_transport_header(nskb);
--	tcph = skb_put(nskb, sizeof(struct tcphdr));
-+	tcph = skb_put_zero(nskb, sizeof(struct tcphdr));
- 	/* Truncate to length (no data) */
- 	tcph->doff = sizeof(struct tcphdr)/4;
- 	tcph->source = oth->dest;
- 	tcph->dest = oth->source;
+ 		if (macintosh_config->ident == MAC_MODEL_IIFX)
+ 			write_ctrl_reg(hostdata, CTRL_HANDSHAKE_MODE |
+ 			                         CTRL_INTERRUPTS_ENABLE);
  
- 	if (oth->ack) {
--		needs_ack = 0;
- 		tcph->seq = oth->ack_seq;
--		tcph->ack_seq = 0;
- 	} else {
--		needs_ack = 1;
- 		tcph->ack_seq = htonl(ntohl(oth->seq) + oth->syn + oth->fin +
- 				      otcplen - (oth->doff<<2));
--		tcph->seq = 0;
-+		tcph->ack = 1;
+-		bytes = mac_pdma_recv(s, d, min(hostdata->pdma_residual, 512));
++		chunk_bytes = min(hostdata->pdma_residual, 512);
++		bytes = mac_pdma_recv(s, d, chunk_bytes);
+ 
+ 		if (bytes > 0) {
+ 			d += bytes;
+@@ -302,23 +303,23 @@ static inline int macscsi_pread(struct N
+ 		if (hostdata->pdma_residual == 0)
+ 			goto out;
+ 
+-		if (NCR5380_poll_politely2(hostdata, STATUS_REG, SR_REQ, SR_REQ,
+-		                           BUS_AND_STATUS_REG, BASR_ACK,
+-		                           BASR_ACK, 0) < 0)
+-			scmd_printk(KERN_DEBUG, hostdata->connected,
+-			            "%s: !REQ and !ACK\n", __func__);
+ 		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
+ 			goto out;
+ 
+ 		if (bytes == 0)
+ 			udelay(MAC_PDMA_DELAY);
+ 
+-		if (bytes >= 0)
++		if (bytes > 0)
+ 			continue;
+ 
+-		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
+-		         "%s: bus error (%d/%d)\n", __func__, d - dst, len);
+ 		NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
++		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
++			 "%s: bus error [%d/%d] (%d/%d)\n",
++			 __func__, d - dst, len, bytes, chunk_bytes);
++
++		if (bytes == 0)
++			continue;
++
+ 		result = -1;
+ 		goto out;
  	}
+@@ -345,13 +346,14 @@ static inline int macscsi_pwrite(struct
+ 	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
+ 	                              BASR_DRQ | BASR_PHASE_MATCH,
+ 	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
+-		int bytes;
++		int bytes, chunk_bytes;
  
--	/* Reset flags */
--	((u_int8_t *)tcph)[13] = 0;
- 	tcph->rst = 1;
--	tcph->ack = needs_ack;
--	tcph->window = 0;
--	tcph->urg_ptr = 0;
--	tcph->check = 0;
+ 		if (macintosh_config->ident == MAC_MODEL_IIFX)
+ 			write_ctrl_reg(hostdata, CTRL_HANDSHAKE_MODE |
+ 			                         CTRL_INTERRUPTS_ENABLE);
  
- 	/* Adjust TCP checksum */
- 	tcph->check = csum_ipv6_magic(&ipv6_hdr(nskb)->saddr,
--- 
-2.43.0
-
+-		bytes = mac_pdma_send(s, d, min(hostdata->pdma_residual, 512));
++		chunk_bytes = min(hostdata->pdma_residual, 512);
++		bytes = mac_pdma_send(s, d, chunk_bytes);
+ 
+ 		if (bytes > 0) {
+ 			s += bytes;
+@@ -370,23 +372,23 @@ static inline int macscsi_pwrite(struct
+ 			goto out;
+ 		}
+ 
+-		if (NCR5380_poll_politely2(hostdata, STATUS_REG, SR_REQ, SR_REQ,
+-		                           BUS_AND_STATUS_REG, BASR_ACK,
+-		                           BASR_ACK, 0) < 0)
+-			scmd_printk(KERN_DEBUG, hostdata->connected,
+-			            "%s: !REQ and !ACK\n", __func__);
+ 		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
+ 			goto out;
+ 
+ 		if (bytes == 0)
+ 			udelay(MAC_PDMA_DELAY);
+ 
+-		if (bytes >= 0)
++		if (bytes > 0)
+ 			continue;
+ 
+-		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
+-		         "%s: bus error (%d/%d)\n", __func__, s - src, len);
+ 		NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
++		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
++			 "%s: bus error [%d/%d] (%d/%d)\n",
++			 __func__, s - src, len, bytes, chunk_bytes);
++
++		if (bytes == 0)
++			continue;
++
+ 		result = -1;
+ 		goto out;
+ 	}
 
 
 
