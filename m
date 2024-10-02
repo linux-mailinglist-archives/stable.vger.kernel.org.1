@@ -1,166 +1,177 @@
-Return-Path: <stable+bounces-78647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B60F98D2BA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E117898D2BF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AFA6284B76
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:08:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71ED6284B95
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7561CF5F7;
-	Wed,  2 Oct 2024 12:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E141CF5F7;
+	Wed,  2 Oct 2024 12:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="kUU5GykY"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b="mbS+9rps"
 X-Original-To: stable@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC091CF5E9;
-	Wed,  2 Oct 2024 12:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DF51CF5E9
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 12:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727870904; cv=none; b=lZHKKCkINcs9DxABAPkzxqg0ivrw0lJgQiVf9A25YgaFvgYQg0vYaWbe/D0FTqXVxSP+Zy1V3eHN7FPZaTjzelJecmRFW1/m3KkaK625XMI4qctrvklRqnANiVE+PvxKlbB+HGB9R1hg507d7OIGCHP8XfOLIh/ssMAjNVcXzjU=
+	t=1727870955; cv=none; b=ubXML4SBPuLzN0dIhfMtbx5Hz+y8g5Dymb7H2VFQM0pMWToOKE1ZzVNgndPJlFrGA08fT4f5m3K5iohZ1OLzjfS3PtW3K9oEZX642XGmP0EF6hf9Ti3RsOY2k6z6KP+ZasoEm5CfgfsNyTJ3dNT8NQdQKEuo6Laxja7+MRxP34c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727870904; c=relaxed/simple;
-	bh=HF9gz9cxrtZHNXVfCdvFAGxweX1II3r/tm/pbiXkiv8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JTM47LiMp8Bjpc0SRaAiai2BAY1hSvNdSwTkZZ3DAUt4mCemDijoKmItUnXbYJbHz79SL21fFSqx352QwPZeuC4rg/fKANz3RHx//F4ZxQzR42gwIMxbA3/h3m+woQxJmdoKhYUlunWutMnLbGyifycjqo3P80Kq6fLZG4r4QCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=kUU5GykY; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 809AC89080;
-	Wed,  2 Oct 2024 14:08:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727870898;
-	bh=0JG7OQOTRkzyuh9OdleZmDit4I1RGWrnOFEmIqhEZTM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kUU5GykYmQcwr2E3a5J0zltE7sIjHkrhD87rXvbbPQa2L7xq/N41iCba7u9JEbQsk
-	 s2OUM61cGLH50QMqNDhMd19fSOW025fJ+1Jp6kMyi1XuZcmMiiilfscgXESAD/5c3p
-	 2A78tQoLmSUWeETfvwSRsgh8UIDtyqMowfHhOM0qfmBX05fGPQwX51Kpj4k8MY1LpT
-	 UjOYXP6enPx11V7vzHCPu4krxIVjSt7rTxaKg8i2ZG1BTdTMruNjRqVQf7w5DqOt+M
-	 V1Ai1s2mPrw8ixO+i0yss2pwHQmQGNt9XvxH1TKaL1gFkcU4G5kMBiUDc6EN2xQUkB
-	 h/wOCHagUQyUg==
-Message-ID: <6b5c27ad-7f9b-4989-ada3-fbebb9537737@denx.de>
-Date: Wed, 2 Oct 2024 13:56:48 +0200
+	s=arc-20240116; t=1727870955; c=relaxed/simple;
+	bh=mlsMNhqU/iu0d6dO6AV1BICgWqhbUAZXZcmCifrsFAA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n2+7bncBfbM/e2GtVrenkwtsTmXPL1VkvYp1xpZ1ZbZ3urt+oYBizWmp1Hf9mBWErmsDO6hE7tBby6vYCWG6VSwjvGURInKpLNbLrvs1qbktPCZWJcLpOjeEmlrWJzc23tQuVJyFUgLk6Bw2ZWMXt6HQmK/XZ/znZ7i78ZI7Puo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=georgmueller@gmx.net header.b=mbS+9rps; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1727870944; x=1728475744; i=georgmueller@gmx.net;
+	bh=RZ3zzDe6nMoi0MlcMQViX9yZmZpbpYVdX7N2qDSmby0=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=mbS+9rps8VpEV8EWn9FwiruHTDPv/LKZCsR/qnZYJ8P3Rn0PHfLesc7k77LMN2sW
+	 1R5WZA18GxclgwwPUXRL/MfXbmbTVzUfxLYnUWLJTZstOjJfNJ3onip0D3RS5tF9j
+	 SMoGNaIVRgKXXeOz8eQTy9yFAUadM0MUZ1FncGP29lYfwSxqrbdsl1lcAtgVxVFe7
+	 Vxk6YsuJHEh69Mfy33WjmCVMcS6mqQm1reGOMPKF4Nayidr83OeSdmEB19Nxu8HkJ
+	 8Wl2Dgl/WHfnsJwQKGxJGs0dptNiOQmpMNj+tSMexRgHw6/6zHxiRqEwjRd/h1agh
+	 CZwjD16DY796UBlCvw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from nb-georg.intra.allegro-packets.com ([80.153.205.84]) by
+ mail.gmx.net (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MvbBu-1s4p0j3onu-00wgqa; Wed, 02 Oct 2024 14:09:03 +0200
+From: =?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
+	Helmut Grohne <helmut@freexian.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	=?UTF-8?q?Georg=20M=C3=BCller?= <georgmueller@gmx.net>
+Subject: [PATCH] wifi: mt76: do not run mt76_unregister_device() on unregistered hw
+Date: Wed,  2 Oct 2024 14:06:24 +0200
+Message-ID: <20241002120721.1324759-1-georgmueller@gmx.net>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <2024100221-flight-whenever-eedb@gregkh>
+References: <2024100221-flight-whenever-eedb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: linux-serial@vger.kernel.org,
- Christoph Niedermaier <cniedermaier@dh-electronics.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Esben Haabendal <esben@geanix.com>, Fabio Estevam <festevam@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Lino Sanfilippo
- <l.sanfilippo@kunbus.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Rickard x Andersson <rickaran@axis.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Stefan Eichenberger <stefan.eichenberger@toradex.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20241002041125.155643-1-marex@denx.de>
- <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:5kfWSNSkMyfA7ZsXuFXYmis/a2RvcoLs09kSSsSueWiLr1fW3Yo
+ Zzj5ymMpcNI6UPTXTTX4CSpOtQXg+5pEwrllh7hOJanVddhmhz+YMpScY+ctV/iEZUZjNvc
+ YuCk11KyGHq4JlvnDJRCNKf9F8bLQuhTbuEARc5ROXmJdF1PsSOwkMrLj0DhM+ZlwSLXbM4
+ 7UB3LV/z9+TcZYmRjpnGg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:KMoVEegJc6w=;hoTo9oKL9Szh7cus9no8Xag3xbv
+ FKm3F1b5uHdjtBcAov0ERMnK425PWdwH4lGbKWVIbCa64VJccrpC2hW9ETjbNxsYtkGIhdRP9
+ u1bIhXzum47RK8QLP/2Eoq0pmOhTrpCkYP38MVvi2cCMvrXBtt4Q5TJrvALKKcXkr4zo3ArwN
+ gN0nvKR857CEcxBXlyz8ZsMM9J2KLTmiOkO5jhYdJed7tlrTHkFQMQlQbNTs/OSnMDIhOhHRC
+ wcNuu9bJVxQWe0RN2ZpuHLnpXjQUzx0Sod5N6GtGhNpbTOZF/xQhk1c+Ap6+uuzzT2xLCMHWw
+ 160B1fD1Zwcegc7quIbGepANAH26vGYbtjakawIsTbpH+0TI7gCx/q5jyWEja3z2XtiA12Ycc
+ LddYgRkI8Z3iV1wCMVGflLP71riw6gqHw8JXVISgV+N9VzrpdKpPezCbHQzlxd6dxQopmFzhC
+ Lzbtn05io4D3zICwK5MLJwLG77ypKfKN2Nm3Vxipc45QTp3/w1eMdcIvstiyds+7j1eJ4Hdua
+ MrWGjidORrNA5AmRBwyo2DAEuVBk9E9aUFntW7jTXU8/bQCvdt136+6QFAutd+gYVB/occn8J
+ n6e229AQ0ZZhxVzhEi39AcfM9/ICxCqBq/CnT2pqmu3jAMPfvriVyaIWRaqw5vVgRFPFPmLSd
+ JR80lEKNYrIF22mE+p8pwzzAtc+9FJnYgNM/0VW91BtE8guyF+aFLU0vnjDIzIzCwpJnxr2mx
+ GTFLynHFAw6bdq2zg5dRHCNWONfoLBInn8U/UiFekXheMtelyZQ/5+4ri3TWdpSfx9WM6fqfz
+ 83/h2JCU4QuDJm8qUYrILMTQ==
 
-On 10/2/24 9:49 AM, Uwe Kleine-König wrote:
-> On Wed, Oct 02, 2024 at 06:11:16AM +0200, Marek Vasut wrote:
->> When sending data using DMA at high baudrate (4 Mbdps in local test case) to
->> a device with small RX buffer which keeps asserting RTS after every received
->> byte, it is possible that the iMX UART driver would not recognize the falling
->> edge of RTS input signal and get stuck, unable to transmit any more data.
->>
->> This condition happens when the following sequence of events occur:
->> - imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
->>    control signal status into sport->old_status using imx_uart_get_hwmctrl().
->>    The RTSS/TIOCM_CTS bit is of interest here (*).
->> - DMA transfer occurs, the remote device asserts RTS signal after each byte.
->>    The i.MX UART driver recognizes each such RTS signal change, raises an
->>    interrupt with USR1 register RTSD bit set, which leads to invocation of
->>    __imx_uart_rtsint(), which calls uart_handle_cts_change().
->>    - If the RTS signal is deasserted, uart_handle_cts_change() clears
->>      port->hw_stopped and unblocks the port for further data transfers.
->>    - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
->>      and blocks the port for further data transfers. This may occur as the
->>      last interrupt of a transfer, which means port->hw_stopped remains set
->>      and the port remains blocked (**).
->> - Any further data transfer attempts will trigger imx_uart_mctrl_check(),
->>    which will read current status of UART control signals by calling
->>    imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
->>    - If current status differs from sport->old_status for RTS signal,
->>      uart_handle_cts_change() is called and possibly unblocks the port
->>      by clearing port->hw_stopped .
->>    - If current status does not differ from sport->old_status for RTS
->>      signal, no action occurs. This may occur in case prior snapshot (*)
->>      was taken before any transfer so the RTS is deasserted, current
->>      snapshot (***) was taken after a transfer and therefore RTS is
->>      deasserted again, which means current status and sport->old_status
->>      are identical. In case (**) triggered when RTS got asserted, and
->>      made port->hw_stopped set, the port->hw_stopped will remain set
->>      because no change on RTS line is recognized by this driver and
->>      uart_handle_cts_change() is not called from here to unblock the
->>      port->hw_stopped.
->>
->> Update sport->old_status in __imx_uart_rtsint() accordingly to make
->> imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
->> and TIOCM_RI bits in sport->old_status do not suffer from this problem.
-> 
-> Why is that? Just because these don't stop transmission?
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-If imx_uart_mctrl_check() does not detect the RTS asserted->deasserted 
-transition, it will never call uart_handle_cts_change(), which will 
-never clear port->hw_stopped and the port will remain stopped 
-indefinitely, and never be able to transmit more data AFTER this event 
-happens (port close/open will reset the flag too, but that is undesired 
-workaround).
+commit 41130c32f3a18fcc930316da17f3a5f3bc326aa1 upstream.
 
->> Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
->> Signed-off-by: Marek Vasut <marex@denx.de>
->> ---
->>   drivers/tty/serial/imx.c | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
->> index 67d4a72eda770..3ad7f42790ef9 100644
->> --- a/drivers/tty/serial/imx.c
->> +++ b/drivers/tty/serial/imx.c
->> @@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
->>   
->>   	imx_uart_writel(sport, USR1_RTSD, USR1);
->>   	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
->> +	if (usr1 & USR1_RTSS)
->> +		sport->old_status |= TIOCM_CTS;
->> +	else
->> +		sport->old_status &= ~TIOCM_CTS;
->>   	uart_handle_cts_change(&sport->port, usr1);
->>   	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
-> 
-> I didn't grab the whole picture, but I think this deserves a code
-> comment.
+Trying to probe a mt7921e pci card without firmware results in a
+successful probe where ieee80211_register_hw hasn't been called. When
+removing the driver, ieee802111_unregister_hw is called unconditionally
+leading to a kernel NULL pointer dereference.
+Fix the issue running mt76_unregister_device routine just for registered
+hw.
 
-Added in V2.
+Link: https://bugs.debian.org/1029116
+Link: https://bugs.kali.org/view.php?id=3D8140
+Reported-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+Fixes: 1c71e03afe4b ("mt76: mt7921: move mt7921_init_hw in a dedicated wor=
+k")
+Tested-by: Helmut Grohne <helmut@freexian.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Signed-off-by: Georg M=C3=BCller <georgmueller@gmx.net>
+Link: https://lore.kernel.org/r/be3457d82f4e44bb71a22b2b5db27b644a37b1e1.1=
+677107277.git.lorenzo@kernel.org
+=2D--
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 8 ++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     | 1 +
+ 2 files changed, 9 insertions(+)
 
-> Would it make sense to replace the current code in __imx_uart_rtsint by
-> a call to imx_uart_mctrl_check()?
-No, the __imx_uart_rtsint() only handles RTS state change interrupt and 
-no other interrupts, so calling imx_uart_mctrl_check() would handle 
-other unrelated signals for no reason and make the interrupt handler 
-slower. I don't think this is an improvement.
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/w=
+ireless/mediatek/mt76/mac80211.c
+index 6de13d641438..82fce4b1d581 100644
+=2D-- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -522,6 +522,7 @@ int mt76_register_phy(struct mt76_phy *phy, bool vht,
+ 	if (ret)
+ 		return ret;
+
++	set_bit(MT76_STATE_REGISTERED, &phy->state);
+ 	phy->dev->phys[phy->band_idx] =3D phy;
+
+ 	return 0;
+@@ -532,6 +533,9 @@ void mt76_unregister_phy(struct mt76_phy *phy)
+ {
+ 	struct mt76_dev *dev =3D phy->dev;
+
++	if (!test_bit(MT76_STATE_REGISTERED, &phy->state))
++		return;
++
+ 	mt76_tx_status_check(dev, true);
+ 	ieee80211_unregister_hw(phy->hw);
+ 	dev->phys[phy->band_idx] =3D NULL;
+@@ -654,6 +658,7 @@ int mt76_register_device(struct mt76_dev *dev, bool vh=
+t,
+ 		return ret;
+
+ 	WARN_ON(mt76_worker_setup(hw, &dev->tx_worker, NULL, "tx"));
++	set_bit(MT76_STATE_REGISTERED, &phy->state);
+ 	sched_set_fifo_low(dev->tx_worker.task);
+
+ 	return 0;
+@@ -664,6 +669,9 @@ void mt76_unregister_device(struct mt76_dev *dev)
+ {
+ 	struct ieee80211_hw *hw =3D dev->hw;
+
++	if (!test_bit(MT76_STATE_REGISTERED, &dev->phy.state))
++		return;
++
+ 	if (IS_ENABLED(CONFIG_MT76_LEDS))
+ 		mt76_led_cleanup(dev);
+ 	mt76_tx_status_check(dev, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wirel=
+ess/mediatek/mt76/mt76.h
+index 60c9f9c56a4f..5b03e3b33d54 100644
+=2D-- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -388,6 +388,7 @@ struct mt76_tx_cb {
+
+ enum {
+ 	MT76_STATE_INITIALIZED,
++	MT76_STATE_REGISTERED,
+ 	MT76_STATE_RUNNING,
+ 	MT76_STATE_MCU_RUNNING,
+ 	MT76_SCANNING,
+=2D-
+2.46.2
+
 
