@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55B698D9E8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A3C98DC87
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232091C231DA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3821C20FE1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EAD1CFEB3;
-	Wed,  2 Oct 2024 14:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE271D2795;
+	Wed,  2 Oct 2024 14:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQn0g0cJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5r615Yu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EB51D0B94;
-	Wed,  2 Oct 2024 14:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482C93D994;
+	Wed,  2 Oct 2024 14:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878297; cv=none; b=nqxWR/hYmn6qW+omBW1IiSKFUid17fpxzV4ZseiX/Ux6byrprSUsj3f5TPqJg4JmzSPGUnD+Ofva3omEfpHr2ePA7q23rAeh+NHDnCfamRv6B6nrVEsSkqtYKglB/sr1BAafI+wdk5V9uT8JgF0ljs8mMxUGkAkk/6Trsj+o0Ms=
+	t=1727879752; cv=none; b=NmuqK884LgvVjuk2Ca3iH1WBM53YwWP2SElWKwq+ZPfiaMSr8GrIwnjla5KSsC2qRGORI1lCooGhkbWGYr2msHzKkKf3sWz9VcM5yz/w1L0L3lS/Y6Q9hz8T1ES6LngV6F1v7J5knCVI6qoF5VPrKm8LOoyiIHOZJWPbpRrm+YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878297; c=relaxed/simple;
-	bh=BE9nzc/ReFYIib1RqDZjaVKvqrfgMkS9GOPHiKuzQgo=;
+	s=arc-20240116; t=1727879752; c=relaxed/simple;
+	bh=z/T7CXFLfelAeeDxCHMEke4rzzCOschEH0fJ+sUvYx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PMTw39szyGdZ+XhHt8n1zYDt+oUSfqUtggKM92m4Nji9c2sY+RgAgjciRxtsnISJUlCy6Ljd3apML1lSdyWlbOmlI15pFNGNrk067a5GV1E8vGDDz+z6yuqPs97nWwamZeCeF2fQhEx2dkC3RqTxmZeDoEVKchfiR7y2yoNKQXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQn0g0cJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E60DC4CEC2;
-	Wed,  2 Oct 2024 14:11:36 +0000 (UTC)
+	 MIME-Version; b=nrqrSuOI6nIh90+kzbxAnaZBkX66OvhsC54w0Pgj+JHUwWEEnaKWvzu1c5KaJhQA/HU3z/FKgn7rQpJDzTxemlrkKmu9Odv7onzFIAq7yRxQbpYjp7Ro+ivReLPyLxrGXSNgz9IhSH11A4ugIEdureN+eZ3KfZRsfiSwue/9nyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5r615Yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68EBC4CEC2;
+	Wed,  2 Oct 2024 14:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878296;
-	bh=BE9nzc/ReFYIib1RqDZjaVKvqrfgMkS9GOPHiKuzQgo=;
+	s=korg; t=1727879752;
+	bh=z/T7CXFLfelAeeDxCHMEke4rzzCOschEH0fJ+sUvYx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQn0g0cJX05qnht9M52AcpuzMeUzX0DYFC1JZ4KofzgFfsCV5+xriqD/sJN5qj9lm
-	 dZz67fHQqUpQFpgtn2S+lUM/Kj+ZUEiN3QcHiPqXEJ4odJ5u/96OGk4CiqftR67pzY
-	 s1hrF4ao6FgRLakf5aGd0zhnOIe2H4hWG+le7Lws=
+	b=y5r615YukMSLvLtv2GJRyu0ysJuY6hH5TVTX7FAEaZvAokEje/vkxs5r6QF861rEP
+	 UC3W9ns6vdEEACwWR6XcmPpLE5VyEYnLFgbhR2E2fpNPdh4hZIJgDZ2WgTQxKyecR+
+	 xd5c+k0IwDwK1GMIaw1zABsJ4FblKJOV129xfcxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Jiawei Ye <jiawei.ye@foxmail.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 364/634] dt-bindings: PCI: layerscape-pci: Replace fsl,lx2160a-pcie with fsl,lx2160ar2-pcie
+Subject: [PATCH 6.6 225/538] smackfs: Use rcu_assign_pointer() to ensure safe assignment in smk_set_cipso
 Date: Wed,  2 Oct 2024 14:57:44 +0200
-Message-ID: <20241002125825.463812305@linuxfoundation.org>
+Message-ID: <20241002125801.135108957@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jiawei Ye <jiawei.ye@foxmail.com>
 
-[ Upstream commit 1a1bf58897d20fc38b454dfecd2771e142d36966 ]
+[ Upstream commit 2749749afa071f8a0e405605de9da615e771a7ce ]
 
-The fsl,lx2160a-pcie compatible is used for mobivel according to the
-Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt file.
+In the `smk_set_cipso` function, the `skp->smk_netlabel.attr.mls.cat`
+field is directly assigned to a new value without using the appropriate
+RCU pointer assignment functions. According to RCU usage rules, this is
+illegal and can lead to unpredictable behavior, including data
+inconsistencies and impossible-to-diagnose memory corruption issues.
 
-Whereas the fsl,layerscape-pcie is used for DesignWare PCIe controller binding.
+This possible bug was identified using a static analysis tool developed
+by myself, specifically designed to detect RCU-related issues.
 
-So change it to fsl,lx2160ar2-pcie and allow a fall back to fsl,ls2088a-pcie.
+To address this, the assignment is now done using rcu_assign_pointer(),
+which ensures that the pointer assignment is done safely, with the
+necessary memory barriers and synchronization. This change prevents
+potential RCU dereference issues by ensuring that the `cat` field is
+safely updated while still adhering to RCU's requirements.
 
-While at it, sort compatible string.
-
-Fixes: 24cd7ecb3886 ("dt-bindings: PCI: layerscape-pci: Convert to YAML format")
-Link: https://lore.kernel.org/linux-pci/20240826-2160r2-v1-1-106340d538d6@nxp.com
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 0817534ff9ea ("smackfs: Fix use-after-free in netlbl_catmap_walk()")
+Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/pci/fsl,layerscape-pcie.yaml     | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ security/smack/smackfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
-index 793986c5af7ff..daeab5c0758d1 100644
---- a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
-@@ -22,18 +22,20 @@ description:
- 
- properties:
-   compatible:
--    enum:
--      - fsl,ls1021a-pcie
--      - fsl,ls2080a-pcie
--      - fsl,ls2085a-pcie
--      - fsl,ls2088a-pcie
--      - fsl,ls1088a-pcie
--      - fsl,ls1046a-pcie
--      - fsl,ls1043a-pcie
--      - fsl,ls1012a-pcie
--      - fsl,ls1028a-pcie
--      - fsl,lx2160a-pcie
--
-+    oneOf:
-+      - enum:
-+          - fsl,ls1012a-pcie
-+          - fsl,ls1021a-pcie
-+          - fsl,ls1028a-pcie
-+          - fsl,ls1043a-pcie
-+          - fsl,ls1046a-pcie
-+          - fsl,ls1088a-pcie
-+          - fsl,ls2080a-pcie
-+          - fsl,ls2085a-pcie
-+          - fsl,ls2088a-pcie
-+      - items:
-+          - const: fsl,lx2160ar2-pcie
-+          - const: fsl,ls2088a-pcie
-   reg:
-     maxItems: 2
- 
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index e22aad7604e8a..5dd1e164f9b13 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -932,7 +932,7 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 	}
+ 	if (rc >= 0) {
+ 		old_cat = skp->smk_netlabel.attr.mls.cat;
+-		skp->smk_netlabel.attr.mls.cat = ncats.attr.mls.cat;
++		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
+ 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+ 		synchronize_rcu();
+ 		netlbl_catmap_free(old_cat);
 -- 
 2.43.0
 
