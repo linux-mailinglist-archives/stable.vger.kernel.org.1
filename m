@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1EC98D929
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA86498D5AD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 049FFB23D80
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC7E81C20FBD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08CA1D0B84;
-	Wed,  2 Oct 2024 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EDC1D07AE;
+	Wed,  2 Oct 2024 13:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYg3xIra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLOhZJHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA401D0957;
-	Wed,  2 Oct 2024 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9799629CE7;
+	Wed,  2 Oct 2024 13:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877808; cv=none; b=oTcLUOhr2sNPS4MKlmVclLwtzTbsJGacCc0QISsKA/B3VP4WxEzwDQo7yxiKyA0bV1WDFw8i0mHFqIwP2ia6ZWq9FE3UNnQrbG78HXTIxeS1rbQJ2FMzeRChfwILPay0i79c5JcynKefrQfPEx5d7YBOuQC1JXh40xEmSCQieh8=
+	t=1727875940; cv=none; b=iol6HO2041Z8jiiWm5ewnqdnzWmZnAbVilbz6w0c8NQITEtbyvE6Ok5AI1F80yJ7htNwCH6o7x6FVz1GjeepyyZcdR6qlxxhNAv+rGqkAYD69GxBOke+P8+3yYGt20mUJoEs/18iCQjdwEEu/YDMyDZlmAM3GgVBsXwrqgNMiaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877808; c=relaxed/simple;
-	bh=VrlQGIoDRX9hfNNglen4GROOUYMslZFqvQELuD4g284=;
+	s=arc-20240116; t=1727875940; c=relaxed/simple;
+	bh=/JtWb4jgtOHyapfiTbHw6r/UG1FbPx+RoyxyLJW8S6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEwXMfx2sFhOwlgsduic/0ASONwBf0nsl2IzH5ZwRZbD19qSkGfD/ulHnNOBSx50nTUBwJ6mrjIWElX+AwMy93Uxs+QeJfpk6a3r1t3MYehWLlfFaZcYX+AMhqcyG3O5ljJdvYL92Msn6FQGkvod8fi62s1HhcRWVHr7cqEgmyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYg3xIra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1642BC4CEC2;
-	Wed,  2 Oct 2024 14:03:27 +0000 (UTC)
+	 MIME-Version; b=IIgs22QNoN38LlqEbp59KljO4znYBuBNhZmfKs7hgozau09knSdiIXp6q3ewp0egcJolbaJH7qFxERZ+77EloI/QQwLHsZhG9EMern6RWcf5Hpi6WjH2oPKs+NIUjd2tL9bELnXt2nd29vfXlGCQ1eVu7pdzgD/W55OJXn+HAAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLOhZJHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABDFC4CECF;
+	Wed,  2 Oct 2024 13:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877808;
-	bh=VrlQGIoDRX9hfNNglen4GROOUYMslZFqvQELuD4g284=;
+	s=korg; t=1727875940;
+	bh=/JtWb4jgtOHyapfiTbHw6r/UG1FbPx+RoyxyLJW8S6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYg3xIra5EH380JJDcZqNmxp9gOHVX2TkduRKP1PbDG3isLqGEJbJfuQ5cO6gYRAW
-	 NCCrLk/n6DQJ5Fq77UHIBaFLCWfMbFMo3iszQwkFEeI0NjIcpSOPm3CClngY+58ugE
-	 0lcbv0cvvCeBrnCoyY8+A2Y7ftvPVda4sbkMJLDk=
+	b=uLOhZJHH9SXA/XDh9PmcNcMw99bcA5fyp8PC/sc1G5ypAg3hJo9Gr0iuBPwGjwzCT
+	 Srvo/ZfuRQLC8yPgzcGapWD1xQsunlkIdxuvYIIOXqaSe0k/WsqXWaSathLn+xI4g1
+	 E2KuH27JIj+g93sy1JlH7S753Ix3/mDgCV6XmBzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 170/634] mtd: powernv: Add check devm_kasprintf() returned value
-Date: Wed,  2 Oct 2024 14:54:30 +0200
-Message-ID: <20241002125817.820622949@linuxfoundation.org>
+Subject: [PATCH 6.11 273/695] selftests/bpf: Fix compiling kfree_skb.c with musl-libc
+Date: Wed,  2 Oct 2024 14:54:31 +0200
+Message-ID: <20241002125833.342541929@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 395999829880a106bb95f0ce34e6e4c2b43c6a5d ]
+[ Upstream commit bae9a5ce7d3a9b3a9e07b31ab9e9c58450e3e9fd ]
 
-devm_kasprintf() can return a NULL pointer on failure but this
-returned value is not checked.
+The GNU version of 'struct tcphdr' with member 'doff' is not exposed by
+musl headers unless _GNU_SOURCE is defined. Add this definition to fix
+errors seen compiling for mips64el/musl-libc:
 
-Fixes: acfe63ec1c59 ("mtd: Convert to using %pOFn instead of device_node.name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240828092427.128177-1-hanchunchao@inspur.com
+  In file included from kfree_skb.c:2:
+  kfree_skb.c: In function 'on_sample':
+  kfree_skb.c:45:30: error: 'struct tcphdr' has no member named 'doff'
+     45 |         if (CHECK(pkt_v6->tcp.doff != 5, "check_tcp",
+        |                              ^
+
+Fixes: 580d656d80cf ("selftests/bpf: Add kfree_skb raw_tp test")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/e2d8cedc790959c10d6822a51f01a7a3616bea1b.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/powernv_flash.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/kfree_skb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/devices/powernv_flash.c b/drivers/mtd/devices/powernv_flash.c
-index 66044f4f5bade..10cd1d9b48859 100644
---- a/drivers/mtd/devices/powernv_flash.c
-+++ b/drivers/mtd/devices/powernv_flash.c
-@@ -207,6 +207,9 @@ static int powernv_flash_set_driver_info(struct device *dev,
- 	 * get them
- 	 */
- 	mtd->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFP", dev->of_node);
-+	if (!mtd->name)
-+		return -ENOMEM;
-+
- 	mtd->type = MTD_NORFLASH;
- 	mtd->flags = MTD_WRITEABLE;
- 	mtd->size = size;
+diff --git a/tools/testing/selftests/bpf/prog_tests/kfree_skb.c b/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
+index c07991544a789..34f8822fd2219 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
++++ b/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include <network_helpers.h>
+ #include "kfree_skb.skel.h"
 -- 
 2.43.0
 
