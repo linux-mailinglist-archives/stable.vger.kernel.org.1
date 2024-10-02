@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CA098DAD6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6A598DD5C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51FE28344A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F3CB275C2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB511D1E90;
-	Wed,  2 Oct 2024 14:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2041D1E81;
+	Wed,  2 Oct 2024 14:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiSUTAz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDOjSOuA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29941D0E17;
-	Wed,  2 Oct 2024 14:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB37F1EA80;
+	Wed,  2 Oct 2024 14:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878817; cv=none; b=T0tpJynTJDpARgmrefpXNIiAHFAVaaQLBbC3s75aJJrLOi6YhbME2ef2xYxEbhdf27t1JQRuvl+aIHQa457jIe+sCuFQl+PYW3ujQFq+nu5Gu/bmW6N47twENcxIBMs/cs2nyig5bO+SgJxxC0YmYCL1OeD5RlPHtTdc+3+CmK0=
+	t=1727880272; cv=none; b=kYbDxlY9cmkhGLaKu4seXBHRhHNA5V+BPmK4nFoKqjl0AZYahKccK/hxgq10ckwRl4oeWTGkS4aW0cH8zXZCzeAFneASI64kiAXpSfUofh9I+U3wqFqTYbYEno7evpSSzOwPKLgnRsYqbEKXAgdW6KzcM22IiAVix4lQeF8IWTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878817; c=relaxed/simple;
-	bh=7fIIMg5axESI7hs27mn0Zzv5yYO+Bgs3pE6Xa4Vz3ms=;
+	s=arc-20240116; t=1727880272; c=relaxed/simple;
+	bh=QxpEGR9iwpczMkHUNdcLS3wzxgnG+Y1ACDEYl2Dn8VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRxR6GUD4Gv6c2r8gA8I7NliuL/woh7Vqr8X+WMymNed633jhz/TCuD2mv+bQQp0gpR/HljkUEWaOeLFNNQ1LYB7P7rL5+EqjtnDPrPILR2a0HCM35uA02NjhrkkCIqHvRj3AxKe1Y5Dc0JXcvvU4j9++EIPrmCzY10CjYNeMTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiSUTAz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07086C4CEC2;
-	Wed,  2 Oct 2024 14:20:16 +0000 (UTC)
+	 MIME-Version; b=LPAFczoG4KTgzRhRVwyWPV2Tu2sz5AiY3vTRtF/BOWMV0tr+J/+HzwHM3DgkjhAZxVgI4tDX6idSpjhARdEPmSojNPNZbibbj7whR28obJoi5eQyV6LZsl3imAcuryv4yPNyanc4Dst3QwyjlrejHeB69uEQSBGwp/tPcWYO/pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDOjSOuA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCFAC4CEC2;
+	Wed,  2 Oct 2024 14:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878817;
-	bh=7fIIMg5axESI7hs27mn0Zzv5yYO+Bgs3pE6Xa4Vz3ms=;
+	s=korg; t=1727880272;
+	bh=QxpEGR9iwpczMkHUNdcLS3wzxgnG+Y1ACDEYl2Dn8VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jiSUTAz5fhvrX5Tg80WKes2lFxEwsqgr7XxVXERMWnCGpCL55hrXR23Ff+IIR+1OO
-	 jWM+ckGKC0cFdC2U9WJ/ivxvL/2eQwAIBf2zQ7reGF1I2yIwOna/Lgg85jpFyZL+h/
-	 71j6lI8ZI10N/bKSgNaJSY8TkmkEFYJkBdzpEKXw=
+	b=sDOjSOuAm8Cg5Z6NET0X6PQvlzuYXDX/VugxJE6GradaPrpNkDKfQvcKCbuyOILxj
+	 a2yc39Omibw53ZImfV0LDj0rp/SkbLxQGdcPdlwFtRrAeKVDj+bBxMVYfWqB75G019
+	 qdTIYtLaGblMk5eaejGBPoDD9Ieay5HUW6PC99Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stan Johnson <userm57@yahoo.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 511/634] scsi: mac_scsi: Revise printk(KERN_DEBUG ...) messages
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 372/538] net: seeq: Fix use after free vulnerability in ether3 Driver Due to Race Condition
 Date: Wed,  2 Oct 2024 15:00:11 +0200
-Message-ID: <20241002125831.276294692@linuxfoundation.org>
+Message-ID: <20241002125807.113834727@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-commit 5ec4f820cb9766e4583df947150a6febce8da794 upstream.
+[ Upstream commit b5109b60ee4fcb2f2bb24f589575e10cc5283ad4 ]
 
-After a bus fault, capture and log the chip registers immediately, if the
-NDEBUG_PSEUDO_DMA macro is defined. Remove some printk(KERN_DEBUG ...)
-messages that aren't needed any more.  Don't skip the debug message when
-bytes == 0. Show all of the byte counters in the debug messages.
+In the ether3_probe function, a timer is initialized with a callback
+function ether3_ledoff, bound to &prev(dev)->timer. Once the timer is
+started, there is a risk of a race condition if the module or device
+is removed, triggering the ether3_remove function to perform cleanup.
+The sequence of operations that may lead to a UAF bug is as follows:
 
-Cc: stable@vger.kernel.org # 5.15+
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/7573c79f4e488fc00af2b8a191e257ca945e0409.1723001788.git.fthain@linux-m68k.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU0                                    CPU1
+
+                      |  ether3_ledoff
+ether3_remove         |
+  free_netdev(dev);   |
+  put_devic           |
+  kfree(dev);         |
+ |  ether3_outw(priv(dev)->regs.config2 |= CFG2_CTRLO, REG_CONFIG2);
+                      | // use dev
+
+Fix it by ensuring that the timer is canceled before proceeding with
+the cleanup in ether3_remove.
+
+Fixes: 6fd9c53f7186 ("net: seeq: Convert timers to use timer_setup()")
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Link: https://patch.msgid.link/20240915144045.451-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mac_scsi.c |   42 ++++++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/seeq/ether3.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/mac_scsi.c
-+++ b/drivers/scsi/mac_scsi.c
-@@ -286,13 +286,14 @@ static inline int macscsi_pread(struct N
- 	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
- 	                              BASR_DRQ | BASR_PHASE_MATCH,
- 	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
--		int bytes;
-+		int bytes, chunk_bytes;
+diff --git a/drivers/net/ethernet/seeq/ether3.c b/drivers/net/ethernet/seeq/ether3.c
+index c672f92d65e97..9319a2675e7b6 100644
+--- a/drivers/net/ethernet/seeq/ether3.c
++++ b/drivers/net/ethernet/seeq/ether3.c
+@@ -847,9 +847,11 @@ static void ether3_remove(struct expansion_card *ec)
+ {
+ 	struct net_device *dev = ecard_get_drvdata(ec);
  
- 		if (macintosh_config->ident == MAC_MODEL_IIFX)
- 			write_ctrl_reg(hostdata, CTRL_HANDSHAKE_MODE |
- 			                         CTRL_INTERRUPTS_ENABLE);
++	ether3_outw(priv(dev)->regs.config2 |= CFG2_CTRLO, REG_CONFIG2);
+ 	ecard_set_drvdata(ec, NULL);
  
--		bytes = mac_pdma_recv(s, d, min(hostdata->pdma_residual, 512));
-+		chunk_bytes = min(hostdata->pdma_residual, 512);
-+		bytes = mac_pdma_recv(s, d, chunk_bytes);
- 
- 		if (bytes > 0) {
- 			d += bytes;
-@@ -302,23 +303,23 @@ static inline int macscsi_pread(struct N
- 		if (hostdata->pdma_residual == 0)
- 			goto out;
- 
--		if (NCR5380_poll_politely2(hostdata, STATUS_REG, SR_REQ, SR_REQ,
--		                           BUS_AND_STATUS_REG, BASR_ACK,
--		                           BASR_ACK, 0) < 0)
--			scmd_printk(KERN_DEBUG, hostdata->connected,
--			            "%s: !REQ and !ACK\n", __func__);
- 		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
- 			goto out;
- 
- 		if (bytes == 0)
- 			udelay(MAC_PDMA_DELAY);
- 
--		if (bytes >= 0)
-+		if (bytes > 0)
- 			continue;
- 
--		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
--		         "%s: bus error (%d/%d)\n", __func__, d - dst, len);
- 		NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
-+		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
-+			 "%s: bus error [%d/%d] (%d/%d)\n",
-+			 __func__, d - dst, len, bytes, chunk_bytes);
-+
-+		if (bytes == 0)
-+			continue;
-+
- 		result = -1;
- 		goto out;
- 	}
-@@ -345,13 +346,14 @@ static inline int macscsi_pwrite(struct
- 	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
- 	                              BASR_DRQ | BASR_PHASE_MATCH,
- 	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
--		int bytes;
-+		int bytes, chunk_bytes;
- 
- 		if (macintosh_config->ident == MAC_MODEL_IIFX)
- 			write_ctrl_reg(hostdata, CTRL_HANDSHAKE_MODE |
- 			                         CTRL_INTERRUPTS_ENABLE);
- 
--		bytes = mac_pdma_send(s, d, min(hostdata->pdma_residual, 512));
-+		chunk_bytes = min(hostdata->pdma_residual, 512);
-+		bytes = mac_pdma_send(s, d, chunk_bytes);
- 
- 		if (bytes > 0) {
- 			s += bytes;
-@@ -370,23 +372,23 @@ static inline int macscsi_pwrite(struct
- 			goto out;
- 		}
- 
--		if (NCR5380_poll_politely2(hostdata, STATUS_REG, SR_REQ, SR_REQ,
--		                           BUS_AND_STATUS_REG, BASR_ACK,
--		                           BASR_ACK, 0) < 0)
--			scmd_printk(KERN_DEBUG, hostdata->connected,
--			            "%s: !REQ and !ACK\n", __func__);
- 		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
- 			goto out;
- 
- 		if (bytes == 0)
- 			udelay(MAC_PDMA_DELAY);
- 
--		if (bytes >= 0)
-+		if (bytes > 0)
- 			continue;
- 
--		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
--		         "%s: bus error (%d/%d)\n", __func__, s - src, len);
- 		NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
-+		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
-+			 "%s: bus error [%d/%d] (%d/%d)\n",
-+			 __func__, s - src, len, bytes, chunk_bytes);
-+
-+		if (bytes == 0)
-+			continue;
-+
- 		result = -1;
- 		goto out;
- 	}
+ 	unregister_netdev(dev);
++	del_timer_sync(&priv(dev)->timer);
+ 	free_netdev(dev);
+ 	ecard_release_resources(ec);
+ }
+-- 
+2.43.0
+
 
 
 
