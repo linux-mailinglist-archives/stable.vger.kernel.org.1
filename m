@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A991098D8E0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1272C98D5A2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3BE1F221AF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39D3288D6B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8F51D0DE6;
-	Wed,  2 Oct 2024 14:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDB41D0BAE;
+	Wed,  2 Oct 2024 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhRqtDB3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSnHBg7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B7F1D0DDC;
-	Wed,  2 Oct 2024 14:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCDC1D04A3;
+	Wed,  2 Oct 2024 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877701; cv=none; b=qg+JHaYduBnSunRR+nZ21NKAjAYpOVnyv7lhojfOGFBhmh1GUAXvP8oha/R8Bsj2lWPrOKH081vYnqpKSxc94eU5LDLelB96JAb9ZAErci8wtZOxXzmAXtA3+VLDq6W3OPkB3vtMDqTYe++8ZtWXWujBzFvtQX71o5exxyCXQ5g=
+	t=1727875914; cv=none; b=nURGCJVmytJIyOKEHbjzzNhgu2r8uB1RY1+sUc9nKzUVDKlzgW86HKMnEazUofHoMSFDGDoZptSG4GPb71DBfnb9/6FiHrIv6xfpqg3DnGL6a+l4uiI45FH2ONEtkJPxs8PGHSh7TiQF/AgWmatEu9gVLqkdEnNlEgQLpJjPeGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877701; c=relaxed/simple;
-	bh=zdUA2EF/IRN5YYbmw/CWK8AMjM/lRLtC+7PCztvctw4=;
+	s=arc-20240116; t=1727875914; c=relaxed/simple;
+	bh=eGM9e+i8BwsW/xldjvNOYHDr0f5Y0xhDhHnL5tXGipo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBtTKVX7Rg7UytkloypW11smDibAZpb4QSh6wIYwyhLczxevVAchLO0Bm3pmoZhtBALrt+oOIHWiJrjoEh1cESrLvwfnjNLbOTbnhW+v+YqbXZoYsOWpDkGVRQAuhc1W3nSuWIPTB9TsS5W/Goq9TkIyBzKXGqaoziSZRkuyd7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhRqtDB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84965C4CEC5;
-	Wed,  2 Oct 2024 14:01:40 +0000 (UTC)
+	 MIME-Version; b=qcruoh3ApR8BB6herrzQHhBq1bnrf011XmFQ4bF0u5uYDcpOzHawJgL2aS34Golh2YotLemE9NbJxknjNwS/tUSa8JZGr21/HDp1yIy9kOlU0dKvQUBzxnhO8HlhT/AO/93HlZ4P6w0Lsl1EvfZKPa32xeC+y3m4UbDbI4LA5i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSnHBg7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14743C4CECD;
+	Wed,  2 Oct 2024 13:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877700;
-	bh=zdUA2EF/IRN5YYbmw/CWK8AMjM/lRLtC+7PCztvctw4=;
+	s=korg; t=1727875914;
+	bh=eGM9e+i8BwsW/xldjvNOYHDr0f5Y0xhDhHnL5tXGipo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhRqtDB3n+w+saJYrIvLrCn6Mb71cXi+h+p9bPFHazR6/OaEQcu6CvpHQrzTJcVtX
-	 LPiMjJRgx0B0fRZmXSQnLmcUvtd90gdcqFqOPN2OXsliBiCxp9QZOzSozb1LyreVWb
-	 FYjEULtRljMZNFtBHBh2YJ4iNCE2OLP038NBH+No=
+	b=oSnHBg7Ss1cLVYhfLvhrYn+kWRyR6W5SqqEaG6ikg3aFjN0TMZlv5UlcJtOCqoVmn
+	 coElZzubAgBkpznbsZ/UIYIJwzEIm09vpSXG/z5JOgtf0A2JFHUUf9zEkHd/KTzkE4
+	 YTUZvuA4nlMe9sPkz6OJvy22EnSPWA8vaDvHNur4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Helge Deller <deller@gmx.de>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 163/634] fbdev: hpfb: Fix an error handling path in hpfb_dio_probe()
+Subject: [PATCH 6.11 265/695] selftests/bpf: Fix compile error from rlim_t in sk_storage_map.c
 Date: Wed,  2 Oct 2024 14:54:23 +0200
-Message-ID: <20241002125817.545374262@linuxfoundation.org>
+Message-ID: <20241002125833.025932598@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit aa578e897520f32ae12bec487f2474357d01ca9c ]
+[ Upstream commit d393f9479d4aaab0fa4c3caf513f28685e831f13 ]
 
-If an error occurs after request_mem_region(), a corresponding
-release_mem_region() should be called, as already done in the remove
-function.
+Cast 'rlim_t' argument to match expected type of printf() format and avoid
+compile errors seen building for mips64el/musl-libc:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Helge Deller <deller@gmx.de>
+  In file included from map_tests/sk_storage_map.c:20:
+  map_tests/sk_storage_map.c: In function 'test_sk_storage_map_stress_free':
+  map_tests/sk_storage_map.c:414:56: error: format '%lu' expects argument of type 'long unsigned int', but argument 2 has type 'rlim_t' {aka 'long long unsigned int'} [-Werror=format=]
+    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
+        |                                                        ^~~~~~~~~~~~~~~~~~~~~~~
+    415 |                       rlim_new.rlim_cur, errno);
+        |                       ~~~~~~~~~~~~~~~~~
+        |                               |
+        |                               rlim_t {aka long long unsigned int}
+  ./test_maps.h:12:24: note: in definition of macro 'CHECK'
+     12 |                 printf(format);                                         \
+        |                        ^~~~~~
+  map_tests/sk_storage_map.c:414:68: note: format string is defined here
+    414 |                 CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
+        |                                                                  ~~^
+        |                                                                    |
+        |                                                                    long unsigned int
+        |                                                                  %llu
+  cc1: all warnings being treated as errors
+
+Fixes: 51a0e301a563 ("bpf: Add BPF_MAP_TYPE_SK_STORAGE test to test_maps")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/1e00a1fa7acf91b4ca135c4102dc796d518bad86.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/hpfb.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/map_tests/sk_storage_map.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/hpfb.c b/drivers/video/fbdev/hpfb.c
-index 66fac8e5393e0..a1144b1509826 100644
---- a/drivers/video/fbdev/hpfb.c
-+++ b/drivers/video/fbdev/hpfb.c
-@@ -345,6 +345,7 @@ static int hpfb_dio_probe(struct dio_dev *d, const struct dio_device_id *ent)
- 	if (hpfb_init_one(paddr, vaddr)) {
- 		if (d->scode >= DIOII_SCBASE)
- 			iounmap((void *)vaddr);
-+		release_mem_region(d->resource.start, resource_size(&d->resource));
- 		return -ENOMEM;
+diff --git a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
+index 18405c3b7cee9..af10c309359a7 100644
+--- a/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
++++ b/tools/testing/selftests/bpf/map_tests/sk_storage_map.c
+@@ -412,7 +412,7 @@ static void test_sk_storage_map_stress_free(void)
+ 		rlim_new.rlim_max = rlim_new.rlim_cur + 128;
+ 		err = setrlimit(RLIMIT_NOFILE, &rlim_new);
+ 		CHECK(err, "setrlimit(RLIMIT_NOFILE)", "rlim_new:%lu errno:%d",
+-		      rlim_new.rlim_cur, errno);
++		      (unsigned long) rlim_new.rlim_cur, errno);
  	}
- 	return 0;
+ 
+ 	err = do_sk_storage_map_stress_free();
 -- 
 2.43.0
 
