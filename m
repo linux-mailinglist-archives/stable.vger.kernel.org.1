@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6A598DD5C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9181A98DAD8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F3CB275C2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56F18283532
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2041D1E81;
-	Wed,  2 Oct 2024 14:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88631D1E92;
+	Wed,  2 Oct 2024 14:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDOjSOuA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SplvdZc2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB37F1EA80;
-	Wed,  2 Oct 2024 14:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B841D0E17;
+	Wed,  2 Oct 2024 14:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880272; cv=none; b=kYbDxlY9cmkhGLaKu4seXBHRhHNA5V+BPmK4nFoKqjl0AZYahKccK/hxgq10ckwRl4oeWTGkS4aW0cH8zXZCzeAFneASI64kiAXpSfUofh9I+U3wqFqTYbYEno7evpSSzOwPKLgnRsYqbEKXAgdW6KzcM22IiAVix4lQeF8IWTk=
+	t=1727878820; cv=none; b=nE8gfK69lBAfKLlkfkeFRWXWWv/U9vu3wOvHIc39UrphIyaSqWBYZbmWjckZvGE3wZh0f5hMiyJmhwLmTiIffRuhiP5edPDlerVxURas6Ldx5hSPPbDYHI7pG1W/1RcMNy0mF5k//TaAlD75Zu2zWWJySXSV6oblQ/uyVpdOwto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880272; c=relaxed/simple;
-	bh=QxpEGR9iwpczMkHUNdcLS3wzxgnG+Y1ACDEYl2Dn8VI=;
+	s=arc-20240116; t=1727878820; c=relaxed/simple;
+	bh=emoxkLko99186gYkA+xb/qAwTQL2c2FUmlF22axZo+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPAFczoG4KTgzRhRVwyWPV2Tu2sz5AiY3vTRtF/BOWMV0tr+J/+HzwHM3DgkjhAZxVgI4tDX6idSpjhARdEPmSojNPNZbibbj7whR28obJoi5eQyV6LZsl3imAcuryv4yPNyanc4Dst3QwyjlrejHeB69uEQSBGwp/tPcWYO/pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDOjSOuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCFAC4CEC2;
-	Wed,  2 Oct 2024 14:44:32 +0000 (UTC)
+	 MIME-Version; b=hOUoqd702vTBOA0RCgWZc4bZ0VybeC6M3XDNrSkzxZpO8DpneC/PYZr6Ym1ynt8hWat4IFZmLb0MzrZH9haqbC2BmJKettv24No2eajwXeOVeCajq5EGr9fsO8FHm5NIpbU/0ta39OqMYmwGTQOZGQ2IolCXLP2wgiUDThPS80I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SplvdZc2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E12C4CEC2;
+	Wed,  2 Oct 2024 14:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880272;
-	bh=QxpEGR9iwpczMkHUNdcLS3wzxgnG+Y1ACDEYl2Dn8VI=;
+	s=korg; t=1727878820;
+	bh=emoxkLko99186gYkA+xb/qAwTQL2c2FUmlF22axZo+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDOjSOuAm8Cg5Z6NET0X6PQvlzuYXDX/VugxJE6GradaPrpNkDKfQvcKCbuyOILxj
-	 a2yc39Omibw53ZImfV0LDj0rp/SkbLxQGdcPdlwFtRrAeKVDj+bBxMVYfWqB75G019
-	 qdTIYtLaGblMk5eaejGBPoDD9Ieay5HUW6PC99Zs=
+	b=SplvdZc22mPbhJ2pcwN1aq9+FNygIX3gngG1QBWzSOkRZQdhxAn73Xgi3CLB++Cb8
+	 +M+JpNheEqVIjfRC9adcn6Uw8V1wZu/NIRbGg8klSPUK5KozjxsT9d+3mf/HDvNOIw
+	 T+9gU6ktzfqVhFawsbPT6Z2HEooHIcPkrGze4a34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 372/538] net: seeq: Fix use after free vulnerability in ether3 Driver Due to Race Condition
-Date: Wed,  2 Oct 2024 15:00:11 +0200
-Message-ID: <20241002125807.113834727@linuxfoundation.org>
+	Stan Johnson <userm57@yahoo.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 512/634] scsi: mac_scsi: Refactor polling loop
+Date: Wed,  2 Oct 2024 15:00:12 +0200
+Message-ID: <20241002125831.316742933@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit b5109b60ee4fcb2f2bb24f589575e10cc5283ad4 ]
+commit 5545c3165cbc98615fe65a44f41167cbb557e410 upstream.
 
-In the ether3_probe function, a timer is initialized with a callback
-function ether3_ledoff, bound to &prev(dev)->timer. Once the timer is
-started, there is a risk of a race condition if the module or device
-is removed, triggering the ether3_remove function to perform cleanup.
-The sequence of operations that may lead to a UAF bug is as follows:
+Before the error handling can be revised, some preparation is needed.
+Refactor the polling loop with a new function, macscsi_wait_for_drq().
+This function will gain more call sites in the next patch.
 
-CPU0                                    CPU1
-
-                      |  ether3_ledoff
-ether3_remove         |
-  free_netdev(dev);   |
-  put_devic           |
-  kfree(dev);         |
- |  ether3_outw(priv(dev)->regs.config2 |= CFG2_CTRLO, REG_CONFIG2);
-                      | // use dev
-
-Fix it by ensuring that the timer is canceled before proceeding with
-the cleanup in ether3_remove.
-
-Fixes: 6fd9c53f7186 ("net: seeq: Convert timers to use timer_setup()")
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Link: https://patch.msgid.link/20240915144045.451-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.15+
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/6a5ffabb4290c0d138c6d285fda8fa3902e926f0.1723001788.git.fthain@linux-m68k.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/seeq/ether3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/mac_scsi.c |   80 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 42 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/net/ethernet/seeq/ether3.c b/drivers/net/ethernet/seeq/ether3.c
-index c672f92d65e97..9319a2675e7b6 100644
---- a/drivers/net/ethernet/seeq/ether3.c
-+++ b/drivers/net/ethernet/seeq/ether3.c
-@@ -847,9 +847,11 @@ static void ether3_remove(struct expansion_card *ec)
+--- a/drivers/scsi/mac_scsi.c
++++ b/drivers/scsi/mac_scsi.c
+@@ -208,8 +208,6 @@ __setup("mac5380=", mac_scsi_setup);
+ 		".previous                     \n" \
+ 		: "+a" (addr), "+r" (n), "+r" (result) : "a" (io))
+ 
+-#define MAC_PDMA_DELAY		32
+-
+ static inline int mac_pdma_recv(void __iomem *io, unsigned char *start, int n)
  {
- 	struct net_device *dev = ecard_get_drvdata(ec);
- 
-+	ether3_outw(priv(dev)->regs.config2 |= CFG2_CTRLO, REG_CONFIG2);
- 	ecard_set_drvdata(ec, NULL);
- 
- 	unregister_netdev(dev);
-+	del_timer_sync(&priv(dev)->timer);
- 	free_netdev(dev);
- 	ecard_release_resources(ec);
+ 	unsigned char *addr = start;
+@@ -274,6 +272,36 @@ static inline void write_ctrl_reg(struct
+ 	out_be32(hostdata->io + (CTRL_REG << 4), value);
  }
--- 
-2.43.0
-
+ 
++static inline int macscsi_wait_for_drq(struct NCR5380_hostdata *hostdata)
++{
++	unsigned int n = 1; /* effectively multiplies NCR5380_REG_POLL_TIME */
++	unsigned char basr;
++
++again:
++	basr = NCR5380_read(BUS_AND_STATUS_REG);
++
++	if (!(basr & BASR_PHASE_MATCH))
++		return 1;
++
++	if (basr & BASR_IRQ)
++		return -1;
++
++	if (basr & BASR_DRQ)
++		return 0;
++
++	if (n-- == 0) {
++		NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
++		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
++			 "%s: DRQ timeout\n", __func__);
++		return -1;
++	}
++
++	NCR5380_poll_politely2(hostdata,
++			       BUS_AND_STATUS_REG, BASR_DRQ, BASR_DRQ,
++			       BUS_AND_STATUS_REG, BASR_PHASE_MATCH, 0, 0);
++	goto again;
++}
++
+ static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
+                                 unsigned char *dst, int len)
+ {
+@@ -283,9 +311,7 @@ static inline int macscsi_pread(struct N
+ 
+ 	hostdata->pdma_residual = len;
+ 
+-	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
+-	                              BASR_DRQ | BASR_PHASE_MATCH,
+-	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
++	while (macscsi_wait_for_drq(hostdata) == 0) {
+ 		int bytes, chunk_bytes;
+ 
+ 		if (macintosh_config->ident == MAC_MODEL_IIFX)
+@@ -295,19 +321,16 @@ static inline int macscsi_pread(struct N
+ 		chunk_bytes = min(hostdata->pdma_residual, 512);
+ 		bytes = mac_pdma_recv(s, d, chunk_bytes);
+ 
++		if (macintosh_config->ident == MAC_MODEL_IIFX)
++			write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
++
+ 		if (bytes > 0) {
+ 			d += bytes;
+ 			hostdata->pdma_residual -= bytes;
+ 		}
+ 
+ 		if (hostdata->pdma_residual == 0)
+-			goto out;
+-
+-		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
+-			goto out;
+-
+-		if (bytes == 0)
+-			udelay(MAC_PDMA_DELAY);
++			break;
+ 
+ 		if (bytes > 0)
+ 			continue;
+@@ -321,16 +344,9 @@ static inline int macscsi_pread(struct N
+ 			continue;
+ 
+ 		result = -1;
+-		goto out;
++		break;
+ 	}
+ 
+-	scmd_printk(KERN_ERR, hostdata->connected,
+-	            "%s: phase mismatch or !DRQ\n", __func__);
+-	NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
+-	result = -1;
+-out:
+-	if (macintosh_config->ident == MAC_MODEL_IIFX)
+-		write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
+ 	return result;
+ }
+ 
+@@ -343,9 +359,7 @@ static inline int macscsi_pwrite(struct
+ 
+ 	hostdata->pdma_residual = len;
+ 
+-	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
+-	                              BASR_DRQ | BASR_PHASE_MATCH,
+-	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
++	while (macscsi_wait_for_drq(hostdata) == 0) {
+ 		int bytes, chunk_bytes;
+ 
+ 		if (macintosh_config->ident == MAC_MODEL_IIFX)
+@@ -355,6 +369,9 @@ static inline int macscsi_pwrite(struct
+ 		chunk_bytes = min(hostdata->pdma_residual, 512);
+ 		bytes = mac_pdma_send(s, d, chunk_bytes);
+ 
++		if (macintosh_config->ident == MAC_MODEL_IIFX)
++			write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
++
+ 		if (bytes > 0) {
+ 			s += bytes;
+ 			hostdata->pdma_residual -= bytes;
+@@ -369,15 +386,9 @@ static inline int macscsi_pwrite(struct
+ 				            "%s: Last Byte Sent timeout\n", __func__);
+ 				result = -1;
+ 			}
+-			goto out;
++			break;
+ 		}
+ 
+-		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
+-			goto out;
+-
+-		if (bytes == 0)
+-			udelay(MAC_PDMA_DELAY);
+-
+ 		if (bytes > 0)
+ 			continue;
+ 
+@@ -390,16 +401,9 @@ static inline int macscsi_pwrite(struct
+ 			continue;
+ 
+ 		result = -1;
+-		goto out;
++		break;
+ 	}
+ 
+-	scmd_printk(KERN_ERR, hostdata->connected,
+-	            "%s: phase mismatch or !DRQ\n", __func__);
+-	NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
+-	result = -1;
+-out:
+-	if (macintosh_config->ident == MAC_MODEL_IIFX)
+-		write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
+ 	return result;
+ }
+ 
 
 
 
