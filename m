@@ -1,118 +1,167 @@
-Return-Path: <stable+bounces-78591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED3098CB0B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 04:07:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5675E98CBEE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 06:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 502C71C21A24
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 02:07:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D03131F25B6F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 04:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E2533EC;
-	Wed,  2 Oct 2024 02:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E70914A90;
+	Wed,  2 Oct 2024 04:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFYdmsac"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="FLSll4gW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C90637;
-	Wed,  2 Oct 2024 02:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F6511185;
+	Wed,  2 Oct 2024 04:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727834823; cv=none; b=ltigP+LxyjWBQ7cz+mMS+D683aCDiCyf5L7AMHj/4vdcTmaKtRcPEAxCx3tO50f6euDFoMyeJXhtFs4S2KIoJs0CSA1mM6wgm5bo+TXkVM1UKczmwv3Lr8TiAwbz97dPq63Z47UYYjEnsb7UEzAIkonDM+jOMKtvrDiLSDrqQrw=
+	t=1727842309; cv=none; b=FQNrzxLcloyg6Dd3dUNsOZ3Fj0yoNuuNsr9sRdsO8Da4pqX0JJBAsPByr9Z9wRIQSCtcZ2dHReSr6MDnQISB0534myJoMSpE2OkiPB/7DQu6Zi6osKI4X3HtUoHtWoYKzpPRZ9E3q+h4B+pd4efjvXqqr5jVgYnvGEqYcI52ivM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727834823; c=relaxed/simple;
-	bh=fWahksiwWy8BWmjGXrDX1HY0fkbgJUXbBpvPlngMTD0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J4eRjg5nSq6LvjBl1OXJ5UiwJKGt++hwavpKhSCDjHgX9+JqzMG/YdmHq98V5T8ch62rbkx5qUILw7cvE+4AQ12qNJPdpdAk6KkWUa9AqgGTNPosIonnPp5YbfeTPULbtkXxV3WkD5ePM/VfIOZvMYwuAknYQ5A9FV+TzXL6a0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFYdmsac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA0AC4CEC6;
-	Wed,  2 Oct 2024 02:07:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727834823;
-	bh=fWahksiwWy8BWmjGXrDX1HY0fkbgJUXbBpvPlngMTD0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JFYdmsac1TQQAO7ep4Er+4M+d+Ledyr651v6gzJwFCU/TKn+4z9t+9kjhMKL8JZCh
-	 ynU6UQR6Z//7Muf2k9MmyPVGwuByi6MyDIQucfEJzd9B0CC8Umk6vxj/MBzKB9IY9F
-	 0rANbHp3lNo8bRaaF9Rkwx9uCLvmvF44MrwGZXuHfmm/T10Qxtb2IvhvFxb5Tf7oq4
-	 gYgUX8spVoPC9wQhPO5yb6gQpxFXh7PoLbn5euvcINYGe1fU+qxgUpIB6JyqnNtAVO
-	 VKNvK46ib9p67UYzziFSjoZUtf/8P+TkAfEQ6J7ZTUxcHhMJCzVO8wIA1xvZus7DZ4
-	 SGsIpbCueX1MQ==
-Date: Tue, 1 Oct 2024 21:07:00 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Douglas Anderson <dianders@chromium.org>, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	stable@vger.kernel.org, Aniket Randive <quic_arandive@quicinc.com>
-Subject: Re: [PATCH v2 1/7] serial: qcom-geni: fix premature receiver enable
-Message-ID: <ocfbiqmspqlulnxjs7lmmdyq65f2u5dogksqqkmhdq55m3gqyj@7ryn4vrjzemc>
-References: <20241001125033.10625-1-johan+linaro@kernel.org>
- <20241001125033.10625-2-johan+linaro@kernel.org>
- <b7c9b01a-3bf7-44f2-be8d-24ef5f3fce74@quicinc.com>
+	s=arc-20240116; t=1727842309; c=relaxed/simple;
+	bh=KRDX7NDyFkfGwAgj6TWGQt/j4+qO5MdL2S5X8YHmj3c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VWCn4gJOo90FiQbgt3GJ/Bv42MjVWN7n8AnjccScm00G7+pU8a5DtJHcaFeM2WFIT1PTNwTsg/MTz+3rSnqpjY1sKpyN/h/iV1HvDSj5Uv92joCJrlFo8wyzxMmiW1YKQQUPMAaQY1Xu/g7Arv+Klztoj+ZVzItubfgfR2HCt4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=FLSll4gW; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 62EE08891B;
+	Wed,  2 Oct 2024 06:11:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727842299;
+	bh=KsfCFPP9nTCpb//a/vdl5dqro4qgVsCPuSJPDSKiUYo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FLSll4gWgWB0uH7B7uob6PMd7yP6nFa1lp5oQ7wZv7HpmS2k22acWrbi2hRCHLoVJ
+	 VtKzBMvxsUf1ygiDi+uu0Tg2RudrFufmeHsbhzc9Ty0zABOi8VkiMO3dtKRpaqItIP
+	 U6anGNDYce9kg4EQVDbSL9cLLtFh23BGXvIx40CxbtmiKmKMTiAwdvP9lI0JpmSljq
+	 j/QLR4CfzJ4z9TZo2QXAhkXTF+c6uxH+98+Pj5t2pPCVDEkfPLtfQah4HlyXiRY+uB
+	 UoHZfaN7OfzKN4HE19OMc+e1EhP+RdHpIvBemfp12EY36PcR+nZXc6+A0MKwy0AinW
+	 1SAvUYdKx66oA==
+From: Marek Vasut <marex@denx.de>
+To: linux-serial@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Esben Haabendal <esben@geanix.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Rickard x Andersson <rickaran@axis.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
+Date: Wed,  2 Oct 2024 06:11:16 +0200
+Message-ID: <20241002041125.155643-1-marex@denx.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b7c9b01a-3bf7-44f2-be8d-24ef5f3fce74@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Tue, Oct 01, 2024 at 07:20:36PM GMT, Mukesh Kumar Savaliya wrote:
-> Thanks Johan for the fixes.
-> 
-> On 10/1/2024 6:20 PM, Johan Hovold wrote:
-> > The receiver should not be enabled until the port is opened so drop the
-> > bogus call to start rx from the setup code which is shared with the
-> > console implementation.
-> > 
-> > This was added for some confused implementation of hibernation support,
-> > but the receiver must not be started unconditionally as the port may not
-> > have been open when hibernating the system.
-> > 
-> > Fixes: 35781d8356a2 ("tty: serial: qcom-geni-serial: Add support for Hibernation feature")
-> > Cc:stable@vger.kernel.org	# 6.2
-> > Cc: Aniket Randive<quic_arandive@quicinc.com>
-> > Signed-off-by: Johan Hovold<johan+linaro@kernel.org>
-> > ---
-> >   drivers/tty/serial/qcom_geni_serial.c | 1 -
-> >   1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-> > index 6f0db310cf69..9ea6bd09e665 100644
-> > --- a/drivers/tty/serial/qcom_geni_serial.c
-> > +++ b/drivers/tty/serial/qcom_geni_serial.c
-> > @@ -1152,7 +1152,6 @@ static int qcom_geni_serial_port_setup(struct uart_port *uport)
-> >   			       false, true, true);
-> >   	geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
-> >   	geni_se_select_mode(&port->se, port->dev_data->mode);
-> > -	qcom_geni_serial_start_rx(uport);
-> Does it mean hibernation will break now ? Not sure if its tested with
-> hibernation. I can see this call was added to port_setup specifically for
-> hibernation but now after removing it, where is it getting fixed ?
+When sending data using DMA at high baudrate (4 Mbdps in local test case) to
+a device with small RX buffer which keeps asserting RTS after every received
+byte, it is possible that the iMX UART driver would not recognize the falling
+edge of RTS input signal and get stuck, unable to transmit any more data.
 
-Can you explain how you're testing hibernation and on which platform
-this is done? I'd like to add this to my set of tests, but last time I
-tested I couldn't find a platform where we survived the restore
-processes (it's been a while though).
+This condition happens when the following sequence of events occur:
+- imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
+  control signal status into sport->old_status using imx_uart_get_hwmctrl().
+  The RTSS/TIOCM_CTS bit is of interest here (*).
+- DMA transfer occurs, the remote device asserts RTS signal after each byte.
+  The i.MX UART driver recognizes each such RTS signal change, raises an
+  interrupt with USR1 register RTSD bit set, which leads to invocation of
+  __imx_uart_rtsint(), which calls uart_handle_cts_change().
+  - If the RTS signal is deasserted, uart_handle_cts_change() clears
+    port->hw_stopped and unblocks the port for further data transfers.
+  - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
+    and blocks the port for further data transfers. This may occur as the
+    last interrupt of a transfer, which means port->hw_stopped remains set
+    and the port remains blocked (**).
+- Any further data transfer attempts will trigger imx_uart_mctrl_check(),
+  which will read current status of UART control signals by calling
+  imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
+  - If current status differs from sport->old_status for RTS signal,
+    uart_handle_cts_change() is called and possibly unblocks the port
+    by clearing port->hw_stopped .
+  - If current status does not differ from sport->old_status for RTS
+    signal, no action occurs. This may occur in case prior snapshot (*)
+    was taken before any transfer so the RTS is deasserted, current
+    snapshot (***) was taken after a transfer and therefore RTS is
+    deasserted again, which means current status and sport->old_status
+    are identical. In case (**) triggered when RTS got asserted, and
+    made port->hw_stopped set, the port->hw_stopped will remain set
+    because no change on RTS line is recognized by this driver and
+    uart_handle_cts_change() is not called from here to unblock the
+    port->hw_stopped.
 
-> I think RX will not be initialized after hibernation.
+Update sport->old_status in __imx_uart_rtsint() accordingly to make
+imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
+and TIOCM_RI bits in sport->old_status do not suffer from this problem.
 
-qcom_geni_serial_port_setup() is invoked in multiple places, how come
-we don't perform this hibernation-specific operation in
-qcom_geni_serial_sys_hib_resume()? (And why is it called hib_resume when
-the kernel nomenclature for what it does is "restore"?)
+Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Esben Haabendal <esben@geanix.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Rickard x Andersson <rickaran@axis.com>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-serial@vger.kernel.org
+Cc: stable@vger.kernel.org
+---
+ drivers/tty/serial/imx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Regards,
-Bjorn
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 67d4a72eda770..3ad7f42790ef9 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
+ 
+ 	imx_uart_writel(sport, USR1_RTSD, USR1);
+ 	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
++	if (usr1 & USR1_RTSS)
++		sport->old_status |= TIOCM_CTS;
++	else
++		sport->old_status &= ~TIOCM_CTS;
+ 	uart_handle_cts_change(&sport->port, usr1);
+ 	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+ 
+-- 
+2.45.2
 
-> >   	port->setup = true;
-> >   	return 0;
-> > -- 2.45.2
 
