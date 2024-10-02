@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-79953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D0B98DB0E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD0A98DD82
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C68561C211AC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DDA21C23822
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF171D048E;
-	Wed,  2 Oct 2024 14:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03581D14EA;
+	Wed,  2 Oct 2024 14:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1SjI+/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZT2ncq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7AF1D0412;
-	Wed,  2 Oct 2024 14:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8BA1D0438;
+	Wed,  2 Oct 2024 14:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878952; cv=none; b=Te9pu2EAneUbas8YvvT2w+oEAVUc9MMzTiP5UofcVGoFH+Hxz4bGaFp6a6phrXpi7RAXK9EjHzKQyWTaO5NYVk6V0VEhwoJca8E8Ek9PwGW9k9JKQIF/3/olKV1VTymFL5gCN+Mu7ym08ylmuWJsBcd9Sy5ZADWeg80r305zhSE=
+	t=1727880416; cv=none; b=ZDg10zJCss9/brPGdoNdkO8Ihpbmz1GJYqm4UCFu2/4q2wdvwXWTh/BReD1ILB1/NZKceehjIpbVm97i259hXef0ar+27C3SSVBMOgl9JepRfPRJ/6vu7bGToTLp7dlbbqyBFc5tcJU8HY6VTtOiDCeWV88Us7ozoFCJhtal7YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878952; c=relaxed/simple;
-	bh=ebdABd7XazoCiDK4pfQdqxjvKOCf0HbORPfi6bIMmGk=;
+	s=arc-20240116; t=1727880416; c=relaxed/simple;
+	bh=MCtMhi/DWxFrGB5vWb2C8bIiG4sxKzeip+R2wrnXD6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1VtyYXSqZGFxZhVIaxuvVCrgY8GquKdF5Tnn8/sJmwmcTxa9xVyO52R7ZZzN5Kprp04wT5GHxCfGKRBLl1hvO+JnImalvz4medleMeVCotOb2URdz7a1yATmSgubrUmZO7E7HO9U/1ApfrZqoNKmAy9Uzf+iKjEV+5967t3CVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1SjI+/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1387EC4CEC2;
-	Wed,  2 Oct 2024 14:22:31 +0000 (UTC)
+	 MIME-Version; b=DyQ9JEGmpmO6rfMEnE48HWGoKEn1mc/enOrC3Sc+QrREKlg2Z378cEq1+CxO6OgJjBT3Z8o7sW6YGeN6c6GVTR5wtGRZ8QXdmvmOLd9dsukag7Q6x7i9DXBboV6kniMK+j1hCJYTlEEtOPSnio9IfOdQ2i+m4QzfZg3XnQQGPzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZT2ncq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB96C4CEC2;
+	Wed,  2 Oct 2024 14:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878952;
-	bh=ebdABd7XazoCiDK4pfQdqxjvKOCf0HbORPfi6bIMmGk=;
+	s=korg; t=1727880416;
+	bh=MCtMhi/DWxFrGB5vWb2C8bIiG4sxKzeip+R2wrnXD6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1SjI+/NRKFtjXdtSLKum2Hblc4Cn06YQ0Nbk6TtKfesUgHCWEsMKpvU0v34ITnxL
-	 FsYBzueRvUtU7xjsg/zVinM6abTN2jrheg9xLBrSHS4W66O3r/xlwxFDJYUY95IPdN
-	 u0uadxC8wSk2DViSoa98rgs2rhcRvxcJRDpeGaz0=
+	b=nZT2ncq5lOT9oIC2gHLFQgfssCmbc9njIg/W2sM9YVm8XYif09FzCGq1S4lPevcPX
+	 jDH3o1KorLFTigxaHNv3MP7wYBJQONV+yPktyJTo7jD0QLynXnHMp9nxbwdXMrxgcl
+	 2Sv1fgY9tpDl+aHDwwExJ9/YRTL6aidmLpNyejvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Parthiban Nallathambi <parthiban@linumiz.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.10 589/634] ARM: dts: imx6ull-seeed-npi: fix fsl,pins property in tscgrp pinctrl
-Date: Wed,  2 Oct 2024 15:01:29 +0200
-Message-ID: <20241002125834.364080177@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 451/538] perf/x86/intel/pt: Fix sampling synchronization
+Date: Wed,  2 Oct 2024 15:01:30 +0200
+Message-ID: <20241002125810.243575764@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 3dedd4889cfc2851444a1f7626b293c0bfd1e42c upstream.
+commit d92792a4b26e50b96ab734cbe203d8a4c932a7a9 upstream.
 
-The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
-configuration was not applied.  Fixes dtbs_check warnings:
+pt_event_snapshot_aux() uses pt->handle_nmi to determine if tracing
+needs to be stopped, however tracing can still be going because
+pt->handle_nmi is set to zero before tracing is stopped in pt_event_stop,
+whereas pt_event_snapshot_aux() requires that tracing must be stopped in
+order to copy a sample of trace from the buffer.
 
-  imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pins' is a required property
-  imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
+Instead call pt_config_stop() always, which anyway checks config for
+RTIT_CTL_TRACEEN and does nothing if it is already clear.
 
+Note pt_event_snapshot_aux() can continue to use pt->handle_nmi to
+determine if the trace needs to be restarted afterwards.
+
+Fixes: 25e8920b301c ("perf/x86/intel/pt: Add sampling support")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Fixes: e3b5697195c8 ("ARM: dts: imx6ull: add seeed studio NPi dev board")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Parthiban Nallathambi <parthiban@linumiz.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Link: https://lkml.kernel.org/r/20240715160712.127117-2-adrian.hunter@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi     | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/events/intel/pt.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
-index 6bb12e0bbc7e..50654dbf62e0 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
-@@ -339,14 +339,14 @@ MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x120b0
- 	};
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -1602,6 +1602,7 @@ static void pt_event_stop(struct perf_ev
+ 	 * see comment in intel_pt_interrupt().
+ 	 */
+ 	WRITE_ONCE(pt->handle_nmi, 0);
++	barrier();
  
- 	pinctrl_uart1: uart1grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
- 		>;
- 	};
+ 	pt_config_stop(event);
  
- 	pinctrl_uart2: uart2grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
- 			MX6UL_PAD_UART2_CTS_B__UART2_DCE_CTS	0x1b0b1
-@@ -355,7 +355,7 @@ MX6UL_PAD_UART2_RTS_B__UART2_DCE_RTS	0x1b0b1
- 	};
+@@ -1653,11 +1654,10 @@ static long pt_event_snapshot_aux(struct
+ 		return 0;
  
- 	pinctrl_uart3: uart3grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
- 			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
-@@ -364,21 +364,21 @@ MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
- 	};
+ 	/*
+-	 * Here, handle_nmi tells us if the tracing is on
++	 * There is no PT interrupt in this mode, so stop the trace and it will
++	 * remain stopped while the buffer is copied.
+ 	 */
+-	if (READ_ONCE(pt->handle_nmi))
+-		pt_config_stop(event);
+-
++	pt_config_stop(event);
+ 	pt_read_offset(buf);
+ 	pt_update_head(pt);
  
- 	pinctrl_uart4: uart4grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX	0x1b0b1
- 		>;
- 	};
+@@ -1669,11 +1669,10 @@ static long pt_event_snapshot_aux(struct
+ 	ret = perf_output_copy_aux(&pt->handle, handle, from, to);
  
- 	pinctrl_uart5: uart5grp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_UART5_TX_DATA__UART5_DCE_TX	0x1b0b1
- 			MX6UL_PAD_UART5_RX_DATA__UART5_DCE_RX	0x1b0b1
- 		>;
- 	};
+ 	/*
+-	 * If the tracing was on when we turned up, restart it.
+-	 * Compiler barrier not needed as we couldn't have been
+-	 * preempted by anything that touches pt->handle_nmi.
++	 * Here, handle_nmi tells us if the tracing was on.
++	 * If the tracing was on, restart it.
+ 	 */
+-	if (pt->handle_nmi)
++	if (READ_ONCE(pt->handle_nmi))
+ 		pt_config_start(event);
  
- 	pinctrl_usb_otg1_id: usbotg1idgrp {
--		fsl,pin = <
-+		fsl,pins = <
- 			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
- 		>;
- 	};
--- 
-2.46.2
-
+ 	return ret;
 
 
 
