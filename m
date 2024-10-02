@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE1998DBD3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3F298D977
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC85C1C23CDA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FCEC1F2340E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66E81D07B0;
-	Wed,  2 Oct 2024 14:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F31E1D1310;
+	Wed,  2 Oct 2024 14:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gixfT8Pu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6IQ6RPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A0D1D0438;
-	Wed,  2 Oct 2024 14:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBF21D1302;
+	Wed,  2 Oct 2024 14:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879387; cv=none; b=lzcI4vv/AFdFs0PZHYzrbTsDcp+MdE7MoiCTdPIlAQ+VNJ7ZJUP8MEIu7cD0vmp6zSENsIpufBTVMaY6YyHSf47vfTz89bAcAHWpC19i5b2f0J3VMlm0xdNHMoTA1Gc6qqkuf5vGaktEoVYKvJ/ETtyptEzZaN1D61hYETnJKEQ=
+	t=1727878016; cv=none; b=HAMtrUTd5AMi+Cf06WHkifQK9lXgVOimhdhfKr6lTXQ/SuumnwdX7bRXiXNgp/FC534+wT/chPq18goXiel+Dio8tobxlHlMg0je8TDl8K9+TgWgUrQc4/ZcO8JVnpy49sCwwt2knwqavYqIPS9hh9SBjySiWfAB1g8mxRtay1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879387; c=relaxed/simple;
-	bh=kan7scXuJgH5oey2u31V/zvzx+lHBxkUkFntGhAyBXQ=;
+	s=arc-20240116; t=1727878016; c=relaxed/simple;
+	bh=hPGqaxhLI537nNSHojhXs+jAo7eXflYF6UFiyh471F0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6DMuRMFSQR4ZOyaVt1q8FOkIxysw993ozLQSxHAD8t1tpJx0T+dYSHQw4QGgz1+Eyja/5LWwpt5WU7fZHWEhrABkEvUMn5B72FtKDi+fpkfq1yjT8pF/R/pnwEkblB5xKdZwtUWBBtwPrdCdyqFj8xZLKs429bpGyc1WMPeMpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gixfT8Pu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F201C4CEC2;
-	Wed,  2 Oct 2024 14:29:46 +0000 (UTC)
+	 MIME-Version; b=HDi2ffSMBB7LVexTfGABdsoMMsvrhHARNe3uufb04JzVMg6p1ONNY8/HsURF2dmnt/SPhdEacw4ILovuokKp5M5vD11owEFrAVsdZGuKRciKv8j48lJkFghbIqrsV3UeF+hC1jIlqYuLD+h1BsYpBN+5IokBZ9amgaUONRvZF0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6IQ6RPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C64BC4CECE;
+	Wed,  2 Oct 2024 14:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879387;
-	bh=kan7scXuJgH5oey2u31V/zvzx+lHBxkUkFntGhAyBXQ=;
+	s=korg; t=1727878015;
+	bh=hPGqaxhLI537nNSHojhXs+jAo7eXflYF6UFiyh471F0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gixfT8PuJl9mUiJooz0aAxmJ5k+qePpXNf666ZHAMDfr3aonXr9+iMCcjBCcTT34m
-	 hGA4N7XADFB3rh9Ph1sXEbqFUY9V9aT7kEWLsQxY/tTNjvqHNljP2qgYeqK4RQumck
-	 gKsDL+McWx7nP/8YRp1OhI+MqykeLqHN+Q4eYGWI=
+	b=j6IQ6RPmcSQLrzVuJI3DXNXvdfvY7wP8lFc2J+B6dF4f2nzg8gTU8aSZPdeDfOYrr
+	 q9xLub0MmQwa9MuBhxR1GfE5CTLbfp1ZLdjfpjpEHmn6ErIUFHeo6AZNKO/ZRACPbw
+	 e2ac96H0zQI+AoW2Alct+G2RNq34bRIyYATXaULU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/538] spi: bcmbca-hsspi: Fix missing pm_runtime_disable()
+Subject: [PATCH 6.10 241/634] selftests/bpf: Fix missing ARRAY_SIZE() definition in bench.c
 Date: Wed,  2 Oct 2024 14:55:41 +0200
-Message-ID: <20241002125756.258497607@linuxfoundation.org>
+Message-ID: <20241002125820.613059901@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 4439a2e92cb89028b22c5d7ba1b99e75d7d889f6 ]
+[ Upstream commit d44c93fc2f5a0c47b23fa03d374e45259abd92d2 ]
 
-The pm_runtime_disable() is missing in remove function, use
-devm_pm_runtime_enable() to fix it. So the pm_runtime_disable() in
-the probe error path can also be removed.
+Add a "bpf_util.h" include to avoid the following error seen compiling for
+mips64el with musl libc:
 
-Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Link: https://patch.msgid.link/20240826124903.3429235-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  bench.c: In function 'find_benchmark':
+  bench.c:590:25: error: implicit declaration of function 'ARRAY_SIZE' [-Werror=implicit-function-declaration]
+    590 |         for (i = 0; i < ARRAY_SIZE(benchs); i++) {
+        |                         ^~~~~~~~~~
+  cc1: all warnings being treated as errors
+
+Fixes: 8e7c2a023ac0 ("selftests/bpf: Add benchmark runner infrastructure")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/bc4dde77dfcd17a825d8f28f72f3292341966810.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcmbca-hsspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/bench.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
-index 9f64afd8164ea..4965bc86d7f52 100644
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -546,12 +546,14 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 			goto out_put_host;
- 	}
+diff --git a/tools/testing/selftests/bpf/bench.c b/tools/testing/selftests/bpf/bench.c
+index 627b74ae041b5..90dc3aca32bd8 100644
+--- a/tools/testing/selftests/bpf/bench.c
++++ b/tools/testing/selftests/bpf/bench.c
+@@ -10,6 +10,7 @@
+ #include <sys/sysinfo.h>
+ #include <signal.h>
+ #include "bench.h"
++#include "bpf_util.h"
+ #include "testing_helpers.h"
  
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		goto out_put_host;
- 
- 	ret = sysfs_create_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
- 	if (ret) {
- 		dev_err(&pdev->dev, "couldn't register sysfs group\n");
--		goto out_pm_disable;
-+		goto out_put_host;
- 	}
- 
- 	/* register and we are done */
-@@ -565,8 +567,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 
- out_sysgroup_disable:
- 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
--out_pm_disable:
--	pm_runtime_disable(&pdev->dev);
- out_put_host:
- 	spi_controller_put(host);
- out_disable_pll_clk:
+ struct env env = {
 -- 
 2.43.0
 
