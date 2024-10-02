@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-80557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F28498DE67
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:07:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE71B98DE68
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D3D1C21EAC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:07:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FC4283357
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C511D014A;
-	Wed,  2 Oct 2024 15:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45D61D079C;
+	Wed,  2 Oct 2024 15:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="djk0WXg+"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="O7qKoA4I"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283EC155346
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E8510E9
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727881625; cv=none; b=ZYrc8eOND7uvU39xvg8XSM+76Tds/ctWUQXI1b+OE6KQ+o3pEtC0TfhJTATui1UcyIvC7SabME8MKP5yFfTOWeAcYh+pLguNZQEx125r0FFDuADWgv8OlEu9lDbgKDWk6z4+HBL0h/Q46KXL4cVbN8DI9tp9nJwZjBtQdAbNMkU=
+	t=1727881629; cv=none; b=R/dY51rf39L+CP4fZ45LDuPGSbxRSqvEl8ZO8LkI43my7pvtoAOCiyGs3yKeNcRnV3h9M2pFxd27H25J1wvSRnOFmn8VgdbNY15J6tpWkUIM3IZ3SkAJJyL7hPIe9C7ohtgphLB91yyGK75C4W8LN+giIVe0betgWKvCWzSAurw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727881625; c=relaxed/simple;
-	bh=pxxAsM11c0jxEhfgtMerfn1vN7UQ2ClqEgmz7xXhDvo=;
+	s=arc-20240116; t=1727881629; c=relaxed/simple;
+	bh=3KALkW0oGqBz08HTKBreMmHBr6GZ6op6k8xWj2EkqkA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=anDXD1GPSU3aJOB3O6+PKnkAr2cPyohdQEQvLT42Wjuda8slqN3U1kJvAvhY0U/moqAFsWJxfWxkS+0JxdgJ4I+845MQVqm5NcK0qzi9AW4ICtTb0NlVzmTJfgR5CBJ95bNo+lMcJAQWaLl2bKMiYpxKIvAJfw8D8iGaa9kKAJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=djk0WXg+; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version; b=nR3HPF8x1JsHLpGxFGQN0cHOz0jKp0HJVili2cNA9ZGbC7gPXW2m/mhNBnzXtyXkvrc/wmQ61KIpx6qpOkTOujQNHBXbzEExu9x5EFgGNR4Uf1J3wgPGjtUhYL4XXKPlXsFIIy+/vWV1TGtp4hh6t+zkR25Ufv0rYKDw8ODys+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=O7qKoA4I; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Cd4WC011628;
-	Wed, 2 Oct 2024 15:06:54 GMT
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Cd47r011627;
+	Wed, 2 Oct 2024 15:06:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=L
-	7I+TwG5y2gH/go+Syk2lCOQ9zwFAzvaA2zbPOeF7qg=; b=djk0WXg+sHNKtDpWx
-	6nwqX2IadcQZs0GBAvetzjM7Pm8ewiYDTMi7jidg1obOrRwkAooosma0t5S+DdvA
-	BNsGDMwQEsgiKJQ9PIWwLkarLidFgbZpj2odtzuV209Y97jNkFUYRiWdg/H9Tzg3
-	9H/bRtXXDngPABfqDQGJ1QxTEiWaZhUXP+3jc7cgOLs7JIoIqtFrEJ3QVKMO4LbB
-	q3hBW3ZpVAP7kmLvoRmDDgNFeH77D+siR1xvRIbduGfJai8KLtkR/pcjiuBEz04D
-	IzGs/81AmU73Q1FwCpPKa48IDO0mTSYvM6PdcWq3O/ZxKvSlrAxW/yiI7fLJg8vg
-	SGK5A==
+	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=a
+	eJ4jIsAATKVjeF6d6quJtHzhoxm7LWB2mMp7y4EzHE=; b=O7qKoA4Ip95fgZm1P
+	jUrW6AkdCvWQgVp6mMcv+/P8k3cvbqtivQpOlB2RSnMurRTxr6mkoK54PKciAJ15
+	M5WJgNguVT2Tq4Kzi88eEkSp5bIZxVS/QOCCKJ/dwiW1qN9yp5vR+NXLDfQlBL1U
+	qa+oxN6m90RrjroGtZ+UcV2ALAkl0D1uK8R1kh1xeEqofaUujDFxkBbL1uQzdfLm
+	PnUNAeah8ssdUuyjhHEnW1X/ogAykOXGTX3u+bZkjkg9fcqpP28zrpo096Ps5/RV
+	W4vKFCFJ2rrbbpjwn8PeQ4yHg/z+LM8sgmcYFj/67VSIIDABkVj5HOxypLf2h0GE
+	W8tvw==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8k39p67-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8k39p6c-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:06:54 +0000 (GMT)
+	Wed, 02 Oct 2024 15:06:58 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492Eemlu017481;
-	Wed, 2 Oct 2024 15:06:53 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492EHffR017330;
+	Wed, 2 Oct 2024 15:06:57 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x888y0n8-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x888y0sp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:06:52 +0000
+	Wed, 02 Oct 2024 15:06:57 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492F1lZO012831;
-	Wed, 2 Oct 2024 15:06:52 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492F1lZQ012831;
+	Wed, 2 Oct 2024 15:06:56 GMT
 Received: from localhost.localdomain (dhcp-10-175-43-118.vpn.oracle.com [10.175.43.118])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x888xyse-7;
-	Wed, 02 Oct 2024 15:06:51 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x888xyse-8;
+	Wed, 02 Oct 2024 15:06:56 +0000
 From: Vegard Nossum <vegard.nossum@oracle.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, pavel@denx.de, cengiz.can@canonical.com,
@@ -68,9 +68,9 @@ Cc: stable@vger.kernel.org, pavel@denx.de, cengiz.can@canonical.com,
         ajay.kaher@broadcom.com, zsm@chromium.org, dan.carpenter@linaro.org,
         shivani.agarwal@broadcom.com, Pablo Neira Ayuso <pablo@netfilter.org>,
         Vegard Nossum <vegard.nossum@oracle.com>
-Subject: [PATCH RFC 6.6.y 06/15] netfilter: nf_tables: fix memleak in map from abort path
-Date: Wed,  2 Oct 2024 17:05:57 +0200
-Message-Id: <20241002150606.11385-7-vegard.nossum@oracle.com>
+Subject: [PATCH RFC 6.6.y 07/15] netfilter: nf_tables: restore set elements when delete set fails
+Date: Wed,  2 Oct 2024 17:05:58 +0200
+Message-Id: <20241002150606.11385-8-vegard.nossum@oracle.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241002150606.11385-1-vegard.nossum@oracle.com>
 References: <20241002150606.11385-1-vegard.nossum@oracle.com>
@@ -88,100 +88,316 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spam
  bulkscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
  definitions=main-2410020109
-X-Proofpoint-GUID: Nfhf_TKWvw9phRZ4Aa5_XDiyTpai9EZz
-X-Proofpoint-ORIG-GUID: Nfhf_TKWvw9phRZ4Aa5_XDiyTpai9EZz
+X-Proofpoint-GUID: aLWoVdQW85kPAtKzvEukcJcvSdBW91fX
+X-Proofpoint-ORIG-GUID: aLWoVdQW85kPAtKzvEukcJcvSdBW91fX
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 86a1471d7cde792941109b93b558b5dc078b9ee9 ]
+From abort path, nft_mapelem_activate() needs to restore refcounters to
+the original state. Currently, it uses the set->ops->walk() to iterate
+over these set elements. The existing set iterator skips inactive
+elements in the next generation, this does not work from the abort path
+to restore the original state since it has to skip active elements
+instead (not inactive ones).
 
-The delete set command does not rely on the transaction object for
-element removal, therefore, a combination of delete element + delete set
-from the abort path could result in restoring twice the refcount of the
-mapping.
+This patch moves the check for inactive elements to the set iterator
+callback, then it reverses the logic for the .activate case which
+needs to skip active elements.
 
-Check for inactive element in the next generation for the delete element
-command in the abort path, skip restoring state if next generation bit
-has been already cleared. This is similar to the activate logic using
-the set walk iterator.
+Toggle next generation bit for elements when delete set command is
+invoked and call nft_clear() from .activate (abort) path to restore the
+next generation bit.
 
-[ 6170.286929] ------------[ cut here ]------------
-[ 6170.286939] WARNING: CPU: 6 PID: 790302 at net/netfilter/nf_tables_api.c:2086 nf_tables_chain_destroy+0x1f7/0x220 [nf_tables]
-[ 6170.287071] Modules linked in: [...]
-[ 6170.287633] CPU: 6 PID: 790302 Comm: kworker/6:2 Not tainted 6.9.0-rc3+ #365
-[ 6170.287768] RIP: 0010:nf_tables_chain_destroy+0x1f7/0x220 [nf_tables]
-[ 6170.287886] Code: df 48 8d 7d 58 e8 69 2e 3b df 48 8b 7d 58 e8 80 1b 37 df 48 8d 7d 68 e8 57 2e 3b df 48 8b 7d 68 e8 6e 1b 37 df 48 89 ef eb c4 <0f> 0b 48 83 c4 08 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 0f
-[ 6170.287895] RSP: 0018:ffff888134b8fd08 EFLAGS: 00010202
-[ 6170.287904] RAX: 0000000000000001 RBX: ffff888125bffb28 RCX: dffffc0000000000
-[ 6170.287912] RDX: 0000000000000003 RSI: ffffffffa20298ab RDI: ffff88811ebe4750
-[ 6170.287919] RBP: ffff88811ebe4700 R08: ffff88838e812650 R09: fffffbfff0623a55
-[ 6170.287926] R10: ffffffff8311d2af R11: 0000000000000001 R12: ffff888125bffb10
-[ 6170.287933] R13: ffff888125bffb10 R14: dead000000000122 R15: dead000000000100
-[ 6170.287940] FS:  0000000000000000(0000) GS:ffff888390b00000(0000) knlGS:0000000000000000
-[ 6170.287948] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 6170.287955] CR2: 00007fd31fc00710 CR3: 0000000133f60004 CR4: 00000000001706f0
-[ 6170.287962] Call Trace:
-[ 6170.287967]  <TASK>
-[ 6170.287973]  ? __warn+0x9f/0x1a0
-[ 6170.287986]  ? nf_tables_chain_destroy+0x1f7/0x220 [nf_tables]
-[ 6170.288092]  ? report_bug+0x1b1/0x1e0
-[ 6170.287986]  ? nf_tables_chain_destroy+0x1f7/0x220 [nf_tables]
-[ 6170.288092]  ? report_bug+0x1b1/0x1e0
-[ 6170.288104]  ? handle_bug+0x3c/0x70
-[ 6170.288112]  ? exc_invalid_op+0x17/0x40
-[ 6170.288120]  ? asm_exc_invalid_op+0x1a/0x20
-[ 6170.288132]  ? nf_tables_chain_destroy+0x2b/0x220 [nf_tables]
-[ 6170.288243]  ? nf_tables_chain_destroy+0x1f7/0x220 [nf_tables]
-[ 6170.288366]  ? nf_tables_chain_destroy+0x2b/0x220 [nf_tables]
-[ 6170.288483]  nf_tables_trans_destroy_work+0x588/0x590 [nf_tables]
+The splat below shows an object in mappings memleak:
 
-Fixes: 591054469b3e ("netfilter: nf_tables: revisit chain/object refcounting from elements")
+[43929.457523] ------------[ cut here ]------------
+[43929.457532] WARNING: CPU: 0 PID: 1139 at include/net/netfilter/nf_tables.h:1237 nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[...]
+[43929.458014] RIP: 0010:nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[43929.458076] Code: 83 f8 01 77 ab 49 8d 7c 24 08 e8 37 5e d0 de 49 8b 6c 24 08 48 8d 7d 50 e8 e9 5c d0 de 8b 45 50 8d 50 ff 89 55 50 85 c0 75 86 <0f> 0b eb 82 0f 0b eb b3 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90
+[43929.458081] RSP: 0018:ffff888140f9f4b0 EFLAGS: 00010246
+[43929.458086] RAX: 0000000000000000 RBX: ffff8881434f5288 RCX: dffffc0000000000
+[43929.458090] RDX: 00000000ffffffff RSI: ffffffffa26d28a7 RDI: ffff88810ecc9550
+[43929.458093] RBP: ffff88810ecc9500 R08: 0000000000000001 R09: ffffed10281f3e8f
+[43929.458096] R10: 0000000000000003 R11: ffff0000ffff0000 R12: ffff8881434f52a0
+[43929.458100] R13: ffff888140f9f5f4 R14: ffff888151c7a800 R15: 0000000000000002
+[43929.458103] FS:  00007f0c687c4740(0000) GS:ffff888390800000(0000) knlGS:0000000000000000
+[43929.458107] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[43929.458111] CR2: 00007f58dbe5b008 CR3: 0000000123602005 CR4: 00000000001706f0
+[43929.458114] Call Trace:
+[43929.458118]  <TASK>
+[43929.458121]  ? __warn+0x9f/0x1a0
+[43929.458127]  ? nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[43929.458188]  ? report_bug+0x1b1/0x1e0
+[43929.458196]  ? handle_bug+0x3c/0x70
+[43929.458200]  ? exc_invalid_op+0x17/0x40
+[43929.458211]  ? nft_setelem_data_deactivate+0xd7/0xf0 [nf_tables]
+[43929.458271]  ? nft_setelem_data_deactivate+0xe4/0xf0 [nf_tables]
+[43929.458332]  nft_mapelem_deactivate+0x24/0x30 [nf_tables]
+[43929.458392]  nft_rhash_walk+0xdd/0x180 [nf_tables]
+[43929.458453]  ? __pfx_nft_rhash_walk+0x10/0x10 [nf_tables]
+[43929.458512]  ? rb_insert_color+0x2e/0x280
+[43929.458520]  nft_map_deactivate+0xdc/0x1e0 [nf_tables]
+[43929.458582]  ? __pfx_nft_map_deactivate+0x10/0x10 [nf_tables]
+[43929.458642]  ? __pfx_nft_mapelem_deactivate+0x10/0x10 [nf_tables]
+[43929.458701]  ? __rcu_read_unlock+0x46/0x70
+[43929.458709]  nft_delset+0xff/0x110 [nf_tables]
+[43929.458769]  nft_flush_table+0x16f/0x460 [nf_tables]
+[43929.458830]  nf_tables_deltable+0x501/0x580 [nf_tables]
+
+Fixes: 628bd3e49cba ("netfilter: nf_tables: drop map element references from preparation phase")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-(cherry picked from commit 86a1471d7cde792941109b93b558b5dc078b9ee9)
-[Vegard: CVE-2024-27011; fixed conflicts due to missing commits
+(cherry picked from commit e79b47a8615d42c68aaeb68971593333667382ed)
+[Vegard: CVE-2024-27012; fixed conflicts due to missing commits
  0e1ea651c9717ddcd8e0648d8468477a31867b0a ("netfilter: nf_tables: shrink
  memory consumption of set elements") and
  9dad402b89e81a0516bad5e0ac009b7a0a80898f ("netfilter: nf_tables: expose
  opaque set element as struct nft_elem_priv") so we pass the correct types
- and values to nft_setelem_active_next() + nft_set_elem_ext()]
+ and values to nft_setelem_data_deactivate(), nft_setelem_validate(),
+ nft_set_elem_ext(), etc.]
 Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 ---
- net/netfilter/nf_tables_api.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c  | 41 ++++++++++++++++++++++++++++++----
+ net/netfilter/nft_set_bitmap.c |  4 +---
+ net/netfilter/nft_set_hash.c   |  8 ++-----
+ net/netfilter/nft_set_pipapo.c |  5 +----
+ net/netfilter/nft_set_rbtree.c |  4 +---
+ 5 files changed, 42 insertions(+), 20 deletions(-)
 
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index da5684e3fd08c..88824fa67c534 100644
+index 88824fa67c534..d380e8f0f40eb 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -7055,6 +7055,16 @@ void nft_data_hold(const struct nft_data *data, enum nft_data_types type)
+@@ -594,6 +594,12 @@ static int nft_mapelem_deactivate(const struct nft_ctx *ctx,
+ 				  const struct nft_set_iter *iter,
+ 				  struct nft_set_elem *elem)
+ {
++	struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
++
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
++	nft_set_elem_change_active(ctx->net, set, ext);
+ 	nft_setelem_data_deactivate(ctx->net, set, elem);
+ 
+ 	return 0;
+@@ -619,6 +625,7 @@ static void nft_map_catchall_deactivate(const struct nft_ctx *ctx,
+ 			continue;
+ 
+ 		elem.priv = catchall->elem;
++		nft_set_elem_change_active(ctx->net, set, ext);
+ 		nft_setelem_data_deactivate(ctx->net, set, &elem);
+ 		break;
  	}
+@@ -3820,6 +3827,9 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+ 	const struct nft_data *data;
+ 	int err;
+ 
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_FLAGS) &&
+ 	    *nft_set_ext_flags(ext) & NFT_SET_ELEM_INTERVAL_END)
+ 		return 0;
+@@ -3843,19 +3853,22 @@ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set)
+ {
+-	u8 genmask = nft_genmask_next(ctx->net);
++	struct nft_set_iter dummy_iter = {
++		.genmask	= nft_genmask_next(ctx->net),
++	};
+ 	struct nft_set_elem_catchall *catchall;
+ 	struct nft_set_elem elem;
++
+ 	struct nft_set_ext *ext;
+ 	int ret = 0;
+ 
+ 	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+-		if (!nft_set_elem_active(ext, genmask))
++		if (!nft_set_elem_active(ext, dummy_iter.genmask))
+ 			continue;
+ 
+ 		elem.priv = catchall->elem;
+-		ret = nft_setelem_validate(ctx, set, NULL, &elem);
++		ret = nft_setelem_validate(ctx, set, &dummy_iter, &elem);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+@@ -5347,6 +5360,11 @@ static int nf_tables_bind_check_setelem(const struct nft_ctx *ctx,
+ 					const struct nft_set_iter *iter,
+ 					struct nft_set_elem *elem)
+ {
++	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
++
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
+ 	return nft_setelem_data_validate(ctx, set, elem);
  }
  
-+static int nft_setelem_active_next(const struct net *net,
-+				   const struct nft_set *set,
-+				   struct nft_set_elem *elem)
-+{
-+	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
-+	u8 genmask = nft_genmask_next(net);
+@@ -5441,6 +5459,13 @@ static int nft_mapelem_activate(const struct nft_ctx *ctx,
+ 				const struct nft_set_iter *iter,
+ 				struct nft_set_elem *elem)
+ {
++	struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
 +
-+	return nft_set_elem_active(ext, genmask);
-+}
++	/* called from abort path, reverse check to undo changes. */
++	if (nft_set_elem_active(ext, iter->genmask))
++		return 0;
 +
- static void nft_setelem_data_activate(const struct net *net,
- 				      const struct nft_set *set,
- 				      struct nft_set_elem *elem)
-@@ -10532,8 +10542,10 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 		case NFT_MSG_DESTROYSETELEM:
- 			te = (struct nft_trans_elem *)trans->data;
++	nft_clear(ctx->net, ext);
+ 	nft_setelem_data_activate(ctx->net, set, elem);
  
--			nft_setelem_data_activate(net, te->set, &te->elem);
--			nft_setelem_activate(net, te->set, &te->elem);
-+			if (!nft_setelem_active_next(net, te->set, &te->elem)) {
-+				nft_setelem_data_activate(net, te->set, &te->elem);
-+				nft_setelem_activate(net, te->set, &te->elem);
-+			}
- 			if (!nft_setelem_is_catchall(te->set, &te->elem))
- 				te->set->ndeact--;
+ 	return 0;
+@@ -5459,6 +5484,7 @@ static void nft_map_catchall_activate(const struct nft_ctx *ctx,
+ 		if (!nft_set_elem_active(ext, genmask))
+ 			continue;
+ 
++		nft_clear(ctx->net, ext);
+ 		elem.priv = catchall->elem;
+ 		nft_setelem_data_activate(ctx->net, set, &elem);
+ 		break;
+@@ -5733,6 +5759,9 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
+ 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_set_dump_args *args;
+ 
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
+ 	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
+ 		return 0;
+ 
+@@ -6500,7 +6529,7 @@ static void nft_setelem_activate(struct net *net, struct nft_set *set,
+ 	struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 
+ 	if (nft_setelem_is_catchall(set, elem)) {
+-		nft_set_elem_change_active(net, set, ext);
++		nft_clear(net, ext);
+ 	} else {
+ 		set->ops->activate(net, set, elem);
+ 	}
+@@ -7188,9 +7217,13 @@ static int nft_setelem_flush(const struct nft_ctx *ctx,
+ 			     const struct nft_set_iter *iter,
+ 			     struct nft_set_elem *elem)
+ {
++	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_trans *trans;
+ 	int err;
+ 
++	if (!nft_set_elem_active(ext, iter->genmask))
++		return 0;
++
+ 	trans = nft_trans_alloc_gfp(ctx, NFT_MSG_DELSETELEM,
+ 				    sizeof(struct nft_trans_elem), GFP_ATOMIC);
+ 	if (!trans)
+diff --git a/net/netfilter/nft_set_bitmap.c b/net/netfilter/nft_set_bitmap.c
+index 1e5e7a181e0bc..cbf7f7825f1b8 100644
+--- a/net/netfilter/nft_set_bitmap.c
++++ b/net/netfilter/nft_set_bitmap.c
+@@ -171,7 +171,7 @@ static void nft_bitmap_activate(const struct net *net,
+ 	nft_bitmap_location(set, nft_set_ext_key(&be->ext), &idx, &off);
+ 	/* Enter 11 state. */
+ 	priv->bitmap[idx] |= (genmask << off);
+-	nft_set_elem_change_active(net, set, &be->ext);
++	nft_clear(net, &be->ext);
+ }
+ 
+ static bool nft_bitmap_flush(const struct net *net,
+@@ -223,8 +223,6 @@ static void nft_bitmap_walk(const struct nft_ctx *ctx,
+ 	list_for_each_entry_rcu(be, &priv->list, head) {
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (!nft_set_elem_active(&be->ext, iter->genmask))
+-			goto cont;
+ 
+ 		elem.priv = be;
+ 
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 2013de934cef0..3a96d4a77a228 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -189,7 +189,7 @@ static void nft_rhash_activate(const struct net *net, const struct nft_set *set,
+ {
+ 	struct nft_rhash_elem *he = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &he->ext);
++	nft_clear(net, &he->ext);
+ }
+ 
+ static bool nft_rhash_flush(const struct net *net,
+@@ -277,8 +277,6 @@ static void nft_rhash_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (!nft_set_elem_active(&he->ext, iter->genmask))
+-			goto cont;
+ 
+ 		elem.priv = he;
+ 
+@@ -587,7 +585,7 @@ static void nft_hash_activate(const struct net *net, const struct nft_set *set,
+ {
+ 	struct nft_hash_elem *he = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &he->ext);
++	nft_clear(net, &he->ext);
+ }
+ 
+ static bool nft_hash_flush(const struct net *net,
+@@ -641,8 +639,6 @@ static void nft_hash_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 		hlist_for_each_entry_rcu(he, &priv->table[i], node) {
+ 			if (iter->count < iter->skip)
+ 				goto cont;
+-			if (!nft_set_elem_active(&he->ext, iter->genmask))
+-				goto cont;
+ 
+ 			elem.priv = he;
+ 
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 22407e7e0b51e..334958ef8d66c 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1766,7 +1766,7 @@ static void nft_pipapo_activate(const struct net *net,
+ {
+ 	struct nft_pipapo_elem *e = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &e->ext);
++	nft_clear(net, &e->ext);
+ }
+ 
+ /**
+@@ -2068,9 +2068,6 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ 		e = f->mt[r].e;
+ 
+-		if (!nft_set_elem_active(&e->ext, iter->genmask))
+-			goto cont;
+-
+ 		elem.priv = e;
+ 
+ 		iter->err = iter->fn(ctx, set, iter, &elem);
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 5bf5572e945cc..afbda7e3fd048 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -527,7 +527,7 @@ static void nft_rbtree_activate(const struct net *net,
+ {
+ 	struct nft_rbtree_elem *rbe = elem->priv;
+ 
+-	nft_set_elem_change_active(net, set, &rbe->ext);
++	nft_clear(net, &rbe->ext);
+ }
+ 
+ static bool nft_rbtree_flush(const struct net *net,
+@@ -596,8 +596,6 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
+ 
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (!nft_set_elem_active(&rbe->ext, iter->genmask))
+-			goto cont;
+ 
+ 		elem.priv = rbe;
  
 -- 
 2.34.1
