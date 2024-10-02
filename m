@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D5F98DD95
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219C498DB27
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FFC2282D78
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9233EB27184
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116131D1731;
-	Wed,  2 Oct 2024 14:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8821D0951;
+	Wed,  2 Oct 2024 14:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHl/NzUM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9sjwkmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07461D0E3E;
-	Wed,  2 Oct 2024 14:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD6C198A1A;
+	Wed,  2 Oct 2024 14:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880477; cv=none; b=XTEW8eiWZgtaHZp3O07s4llW8+t/XuQoXmwyJTic90d6m+dc1BVPHeqGKhRJH3MoHxAxncx/2Fl0nZXCWlVwG95WLnzDZI/vFjryf3jdtKNdPH04r+U7RqZpuz9I2SHelhqVc2qaNNnPZlK3Vhgbv0JhjrGwf6wcylaa6vE/Zsg=
+	t=1727879018; cv=none; b=d0I4zOcBRBWDEUNMeVRC2eLs5yrLi2cmGKyW6mvHD8SM5iR7ZIRUL7tS6YSh5NkUWKVVFJuEsiQiZytCbdMHEFiriM5ZrMEHyv4qHjAeCuMO1UGmM5WCEFaqD/oc7q+uTQrh2w1qEbuqTUskVIG81qWanZzceIRCpZP4ew0vvEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880477; c=relaxed/simple;
-	bh=l1bk/kbAfOVAFw1kafaNYi7jGIBzVnci7QAXoabBCpY=;
+	s=arc-20240116; t=1727879018; c=relaxed/simple;
+	bh=zLIZ8uXvllxf4kOqywkBzpJILNSpYuAkJDEqBhnYRvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPjN4GkpeQiLxiqIufldHvexK5Bpr0WRUuoVCP+tO3tgQA+LM+/R2EroWgUSy7G2uhHPIKPr899GZdqOACmZgAOK9mzyiOISGkmdlVDPAG9CciN8TBaSfVakoWVT3SHi5fCgEXykWbwd5aSPpsSzRMQH+UlbHM0G3dtnU+PlM/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHl/NzUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D40C4CECF;
-	Wed,  2 Oct 2024 14:47:57 +0000 (UTC)
+	 MIME-Version; b=AfRcEoE4D0TmWGUB9n3/tIifnmNTnHJcJYM7V+QeVHRCMtzSBrB7BsqILkorUuTwpxivchRZdEei7YbdHJHnfoQa8rLx3FAXRWKZ30p7T1Kbr5w4sE4xVtp9mzRFKP4K5WmW0G76TAAYzsEoCs08K+l8M8TOeg7NEY1/CFn9uk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9sjwkmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170D9C4CEC2;
+	Wed,  2 Oct 2024 14:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880477;
-	bh=l1bk/kbAfOVAFw1kafaNYi7jGIBzVnci7QAXoabBCpY=;
+	s=korg; t=1727879018;
+	bh=zLIZ8uXvllxf4kOqywkBzpJILNSpYuAkJDEqBhnYRvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHl/NzUM4YrAk10tYPOBtkDRCAC75tN7jNRGevozSnq6kGkM8hMammFHYH3+nPvV+
-	 E3xNszlEjRadHk6aMZ9nKT3Ha023CYJ1qSrMhnq7HYFU5xcMexU42FSmotZ+UvMto5
-	 lIm9ZHjW4ndHpDlK2F+STnJRaBz5R+fZxSpc/ong=
+	b=I9sjwkmP5fgGEo/Oemw//fAwtc64Tu6cK99yc6sM+THLaHOeycl49r02rLovSEQmc
+	 +x6BphDjIlsBJwqrQHAArBZeTTfqEU2S/1w66GeMlmA5sumA/deN+JuacXoOsvZvRX
+	 teg09L/bGqH6eJKM9UEkihLC4dRu0C1hBOaAEkKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 440/538] bus: mhi: host: pci_generic: Fix the name for the Telit FE990A
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>
+Subject: [PATCH 6.10 579/634] EDAC/igen6: Fix conversion of system address to physical memory address
 Date: Wed,  2 Oct 2024 15:01:19 +0200
-Message-ID: <20241002125809.807370519@linuxfoundation.org>
+Message-ID: <20241002125833.971622340@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-commit bfc5ca0fd1ea7aceae0b682fa4bd8079c52f96c8 upstream.
+commit 0ad875f442e95d69a1145a38aabac2fd29984fe3 upstream.
 
-Add a mhi_pci_dev_info struct specific for the Telit FE990A modem in
-order to use the correct product name.
+The conversion of system address to physical memory address (as viewed by
+the memory controller) by igen6_edac is incorrect when the system address
+is above the TOM (Total amount Of populated physical Memory) for Elkhart
+Lake and Ice Lake (Neural Network Processor). Fix this conversion.
 
-Cc: stable@vger.kernel.org # 6.1+
-Fixes: 0724869ede9c ("bus: mhi: host: pci_generic: add support for Telit FE990 modem")
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240820080439.837666-1-fabio.porcedda@gmail.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/stable/20240814061011.43545-1-qiuxu.zhuo%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/edac/igen6_edac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -578,6 +578,15 @@ static const struct mhi_pci_dev_info mhi
- 	.mru_default = 32768,
- };
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -311,7 +311,7 @@ static u64 ehl_err_addr_to_imc_addr(u64
+ 	if (igen6_tom <= _4GB)
+ 		return eaddr + igen6_tolud - _4GB;
  
-+static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
-+	.name = "telit-fe990a",
-+	.config = &modem_telit_fn990_config,
-+	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
-+	.dma_data_width = 32,
-+	.sideband_wake = false,
-+	.mru_default = 32768,
-+};
-+
- /* Keep the list sorted based on the PID. New VID should be added as the last entry */
- static const struct pci_device_id mhi_pci_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
-@@ -595,9 +604,9 @@ static const struct pci_device_id mhi_pc
- 	/* Telit FN990 */
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
- 		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
--	/* Telit FE990 */
-+	/* Telit FE990A */
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
--		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-+		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
- 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QUECTEL, 0x1001), /* EM120R-GL (sdx24) */
+-	if (eaddr < _4GB)
++	if (eaddr >= igen6_tom)
+ 		return eaddr + igen6_tolud - igen6_tom;
+ 
+ 	return eaddr;
 
 
 
