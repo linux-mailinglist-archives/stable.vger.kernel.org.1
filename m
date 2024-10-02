@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D46198D7B6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:52:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F19698D7C2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8EE71F217AE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:52:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FEF1C225C1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226371D040F;
-	Wed,  2 Oct 2024 13:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC021D04BA;
+	Wed,  2 Oct 2024 13:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI/fx7Jg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bA1v/FC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AFB29CE7;
-	Wed,  2 Oct 2024 13:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B98D1D04A2;
+	Wed,  2 Oct 2024 13:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877141; cv=none; b=n/3jS9opVtH1LHX1CnU5rpBNe32SarPFi0YsUWWB9P8xn8LSVG4GoWPMHo/yUJ3uSx+N/xMKIMRD3ikAO58ZhpJKbTrL/wMLER9QvIip7C+QjV6eiY5uQl7m2FksfW74EUJiWelTXH0d0ArXD20S6DyZEQIZdxi7vq/dNMel7SQ=
+	t=1727877174; cv=none; b=RcPHW7gQ6PkMwQ4rLMqzFuz1VxA2Mjw5X9cVNIkfv2f467G7RQWyUZNILuc+ae6VXyMFIoBz8XPf1bD3YnLlqHV9FzIRY9IXpA2daeF+HLVk/Quzhd753TYquietMn97jYa7mP80LOpBtyMDJaXfmW6bab27YSvlux78XPX4jEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877141; c=relaxed/simple;
-	bh=jJKV48uNLl+13YX23yE80sei8GzIF92w8m05xqkZCsU=;
+	s=arc-20240116; t=1727877174; c=relaxed/simple;
+	bh=nznfNvb1rnfor1LKSS0Kj5/+lYOKMvNYHd2iBTqVpAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovPLdfyreVlrejmq5DIp9QU/tzC8jUOWnvrV5JgHpoHNJjfjLauzWIDQYsgVAiUEM8CmDu28923TgCkVt8XYHF5QQpCZwL5F/HHz5NuLTzQfHARsfy8AL0VUjemdZPYGdP7Gt61znppMTiKYv5xUsDmCGUNayz7SBjnekXZIAHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI/fx7Jg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB97C4CEC2;
-	Wed,  2 Oct 2024 13:52:21 +0000 (UTC)
+	 MIME-Version; b=eYmKtMChXkdlMDPMdiJqayDn8GIL38t1fqGIbJAqpaHMBozd6a07enb+kUhitLE6D8ggr1Foo45IDRPTEkHqyoK8Y0EmpHYzZpJaDwifeFdT2a3fPd4/jFfgljU/aRlRSx47lF0LsPN7td3pZGKJB2RymlicORdUypGBqWVv040=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bA1v/FC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063C4C4CED2;
+	Wed,  2 Oct 2024 13:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877141;
-	bh=jJKV48uNLl+13YX23yE80sei8GzIF92w8m05xqkZCsU=;
+	s=korg; t=1727877174;
+	bh=nznfNvb1rnfor1LKSS0Kj5/+lYOKMvNYHd2iBTqVpAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YI/fx7JgvaPLXImp7fucQh95bQvGzxdi8n1e+GgqhPhV21uwCsP4CWc9JlDCI52tF
-	 V1AtbycI1BkphUJchUZQmlkTrm/Ir1lySBnAJE8fOvYNGC5qqAk+dkvuNICXo5O/77
-	 fleU+USSj4UCdXQjtL4hzmLhNmNZhzQmThJjYTfA=
+	b=bA1v/FC5DCak/qQWARE0tR8smRGTyAxu1OArg0dZ6juAGFfhW48m6rqf9Bb/z0iZj
+	 5UKbWBgjrvUGZEso2nQeiGNg4/ZQd4i6Nn5j4ZbQRZWIdK8/8266SJx0wbxJbeuoBN
+	 sQpaEF5S/E6VYCv+/1bx4flQAwYCDA7UzDX5FqpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 661/695] soc: versatile: realview: fix memory leak during device remove
-Date: Wed,  2 Oct 2024 15:00:59 +0200
-Message-ID: <20241002125848.894421411@linuxfoundation.org>
+Subject: [PATCH 6.11 662/695] soc: versatile: realview: fix soc_dev leak during device remove
+Date: Wed,  2 Oct 2024 15:01:00 +0200
+Message-ID: <20241002125848.934169516@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -68,42 +68,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 1c4f26a41f9d052f334f6ae629e01f598ed93508 ]
+[ Upstream commit c774f2564c0086c23f5269fd4691f233756bf075 ]
 
-If device is unbound, the memory allocated for soc_dev_attr should be
-freed to prevent leaks.
+If device is unbound, the soc_dev should be unregistered to prevent
+memory leak.
 
+Fixes: a2974c9c1f83 ("soc: add driver for the ARM RealView")
+Cc: stable@vger.kernel.org
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-2-ff4b35abed83@linaro.org
+Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-3-ff4b35abed83@linaro.org
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: c774f2564c00 ("soc: versatile: realview: fix soc_dev leak during device remove")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/versatile/soc-realview.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/soc/versatile/soc-realview.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/soc/versatile/soc-realview.c b/drivers/soc/versatile/soc-realview.c
-index c6876d232d8fd..d304ee69287af 100644
+index d304ee69287af..cf91abe07d38d 100644
 --- a/drivers/soc/versatile/soc-realview.c
 +++ b/drivers/soc/versatile/soc-realview.c
-@@ -93,7 +93,7 @@ static int realview_soc_probe(struct platform_device *pdev)
- 	if (IS_ERR(syscon_regmap))
- 		return PTR_ERR(syscon_regmap);
+@@ -4,6 +4,7 @@
+  *
+  * Author: Linus Walleij <linus.walleij@linaro.org>
+  */
++#include <linux/device.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+@@ -81,6 +82,13 @@ static struct attribute *realview_attrs[] = {
  
--	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
-+	soc_dev_attr = devm_kzalloc(&pdev->dev, sizeof(*soc_dev_attr), GFP_KERNEL);
- 	if (!soc_dev_attr)
- 		return -ENOMEM;
+ ATTRIBUTE_GROUPS(realview);
  
-@@ -106,10 +106,9 @@ static int realview_soc_probe(struct platform_device *pdev)
- 	soc_dev_attr->family = "Versatile";
- 	soc_dev_attr->custom_attr_group = realview_groups[0];
- 	soc_dev = soc_device_register(soc_dev_attr);
--	if (IS_ERR(soc_dev)) {
--		kfree(soc_dev_attr);
-+	if (IS_ERR(soc_dev))
++static void realview_soc_socdev_release(void *data)
++{
++	struct soc_device *soc_dev = data;
++
++	soc_device_unregister(soc_dev);
++}
++
+ static int realview_soc_probe(struct platform_device *pdev)
+ {
+ 	struct regmap *syscon_regmap;
+@@ -109,6 +117,11 @@ static int realview_soc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(soc_dev))
  		return -ENODEV;
--	}
+ 
++	ret = devm_add_action_or_reset(&pdev->dev, realview_soc_socdev_release,
++				       soc_dev);
++	if (ret)
++		return ret;
 +
  	ret = regmap_read(syscon_regmap, REALVIEW_SYS_ID_OFFSET,
  			  &realview_coreid);
