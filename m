@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-79704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDA198D9CC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E582498D9DA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99892898BD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FCA7281634
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1F51D1E96;
-	Wed,  2 Oct 2024 14:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667631D0B93;
+	Wed,  2 Oct 2024 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEA0OASK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REG9ikRw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861791E52C;
-	Wed,  2 Oct 2024 14:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F701D1F4E;
+	Wed,  2 Oct 2024 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878230; cv=none; b=MPJkYLcNjrfFDHJBUO+SOPtAXLQngm2/S/3JMBqmpzaNOwGTIw4XtWlaslIZkMDyxck6nx/eOIznXhBOZyvxkOepI0abwZZzQGbI7KdnWxFreCw6w+LXjmcQL3xlRB+6U2bIbTHzVlTOodnfFAtuQwTHdQFuCvfQGJtw0CFhqQM=
+	t=1727878262; cv=none; b=jBsoqqar++8xFMqmd92B0aYZFyCmTtpu5CAmzCToW9Hq03HPAhNg3Ye7mULaElOWJVreCUR3BH3MIIAeYx2/M6b2oYTtGfvKPLDMfkfXW95nIBVfPOUV/CSVdGKVoiArwmZi7K6CZHHYOUJW+XXO7oCWwpf1WtudJXoKurkp+5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878230; c=relaxed/simple;
-	bh=hrEmYMS3VIsd7esPDHwHOngSbtaFs91tiLZ3LggP/7w=;
+	s=arc-20240116; t=1727878262; c=relaxed/simple;
+	bh=/bc+cnrSYAj/bOqfqG4QvRS1cOP+ovQA7ofF6k5L8xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TLgrTI2b8Z0mL+MGPfpEskEiSIB7VgKRv55/i9lleAO40ZxMR3FA/YsP1AevZDu5GcLtA2bjXcZYN0Lzsix2LpR0zVJ/EkTyRfZ5OVBggD0FXU9jz+BgU1g253i47+930hBSdJ7bDDxokbnLa6MFHtKKjg88U8/TpG4oQfHxCpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEA0OASK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD56C4CEC2;
-	Wed,  2 Oct 2024 14:10:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ubqo0m+HqZB1rg+8cYjfFsMg6hZrZBugMUEPN76xHpne/o3pHhJxGWEVaSUXERqmvuj6u1Aey1Xy9EEWLs/i7iXD34U9sZHH9SNicRQ3iX0fOJDuTTSyqJA8MAvIvAlXRCCdGNOxtGdpV4SHNCfSFVEteelkumRQYYfOK4Dm03c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REG9ikRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C19C4CEC2;
+	Wed,  2 Oct 2024 14:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878230;
-	bh=hrEmYMS3VIsd7esPDHwHOngSbtaFs91tiLZ3LggP/7w=;
+	s=korg; t=1727878262;
+	bh=/bc+cnrSYAj/bOqfqG4QvRS1cOP+ovQA7ofF6k5L8xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEA0OASKhCfGUxVs2vlBwThPPBynVzHqzsFA51Hq+ttLLtEqhV3x9pBex0K23xLlM
-	 NOijE52FbTFACUvVU/QUh3+/2kyZL5U+pZGVetVmdAy3tJ7zs4TXjuGiyXxzIGZ45j
-	 ClPFSCGRuuTuv23H6sB20Eddr+NdBF3F+LV6YGCg=
+	b=REG9ikRwV4JWHIXSLurNnlEVfmyB0rgZ9GaG5a0ntoaduugy43vSTFQ7HcnFywg1X
+	 3WcGz6Ltp0Tq+krHdMklAt38UMO8ASba7kP2aZhbGJILAO1n/kejRT3W3aXIaK6STv
+	 +wnQxEpU+qSLML74EepbZVNBGjQDR/+YEn7x3ltQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 335/634] PCI: keystone: Fix if-statement expression in ks_pcie_quirk()
-Date: Wed,  2 Oct 2024 14:57:15 +0200
-Message-ID: <20241002125824.327122943@linuxfoundation.org>
+Subject: [PATCH 6.10 336/634] media: staging: media: starfive: camss: Drop obsolete return value documentation
+Date: Wed,  2 Oct 2024 14:57:16 +0200
+Message-ID: <20241002125824.366146593@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -69,40 +67,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 6188a1c762eb9bbd444f47696eda77a5eae6207a ]
+[ Upstream commit 044fcf738a56d915514e2d651333395b3f8daa62 ]
 
-This code accidentally uses && where || was intended.  It potentially
-results in a NULL dereference.
+Recently the function stfcamss_remove() was changed to not return a
+value. Drop the documentation of the return value in the kernel doc.
 
-Thus, fix the if-statement expression to use the correct condition.
-
-Fixes: 86f271f22bbb ("PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)")
-Link: https://lore.kernel.org/linux-pci/1b762a93-e1b2-4af3-8c04-c8843905c279@stanley.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Fixes: b1f3677aebe5 ("media: staging: media: starfive: camss: Convert to platform remove callback returning void")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/starfive/camss/stf-camss.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 483c954065135..d911f0e521da0 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -577,7 +577,7 @@ static void ks_pcie_quirk(struct pci_dev *dev)
- 	 */
- 	if (pci_match_id(am6_pci_devids, bridge)) {
- 		bridge_dev = pci_get_host_bridge_device(dev);
--		if (!bridge_dev && !bridge_dev->parent)
-+		if (!bridge_dev || !bridge_dev->parent)
- 			return;
- 
- 		ks_pcie = dev_get_drvdata(bridge_dev->parent);
+diff --git a/drivers/staging/media/starfive/camss/stf-camss.c b/drivers/staging/media/starfive/camss/stf-camss.c
+index fecd3e67c7a1d..b6d34145bc191 100644
+--- a/drivers/staging/media/starfive/camss/stf-camss.c
++++ b/drivers/staging/media/starfive/camss/stf-camss.c
+@@ -358,8 +358,6 @@ static int stfcamss_probe(struct platform_device *pdev)
+ /*
+  * stfcamss_remove - Remove STFCAMSS platform device
+  * @pdev: Pointer to STFCAMSS platform device
+- *
+- * Always returns 0.
+  */
+ static void stfcamss_remove(struct platform_device *pdev)
+ {
 -- 
 2.43.0
 
