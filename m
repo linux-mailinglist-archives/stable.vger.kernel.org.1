@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-78697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0298A98D483
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC4898D484
 	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80342B20D68
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:21:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64A28281C9D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3A91D0437;
-	Wed,  2 Oct 2024 13:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE1F1D041D;
+	Wed,  2 Oct 2024 13:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ITIZ2KR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G708zGvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA64F1CF5EE;
-	Wed,  2 Oct 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0691CF5EE;
+	Wed,  2 Oct 2024 13:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875261; cv=none; b=hcvnaAv3ua0SbIYRtUa7vQEHsexgzOdoKbCJ/GyROEdhBKdn3sy1oFxHfOxCuTtXCPd/wtavhlmTHHojMc0GnYQFJBFSfyfvv+vgGlAduV7yWcfjNxp5LW7exPYumrSJ5oO6VmpusNQ/RmVBXonuPmHhxTLzgEAGDEgD0gcgduU=
+	t=1727875266; cv=none; b=bCXSsyAUZCKwKCKVrsGp6bV+Nvxg7PCcVhfoq8aJaPbn8mPl7QHPCGA/AJpitlW1TiyeqtmPN7bBCOqVNMsJIcgQSUjxa2uQ1DsO+tbFrmsHNVZMXcHHP3lsj+5ieSzRikYuc3YXo6wf0lUynYx/Lqioy1anTKWBxa7pBfOCRJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875261; c=relaxed/simple;
-	bh=rcL5ZXqt8qTXcZ+qOeudJwkR93oYumYFLycef1OF1gs=;
+	s=arc-20240116; t=1727875266; c=relaxed/simple;
+	bh=BzaDUY0vsX7mlUN4bqSQ0TM8IAENS77sWbCZwJsyzx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKElhhPisjX50S7OICMKtVnyEWJcLZLen2J4xGGBUr2aZkrGKOLhiM174FV7CHyL9tRTqnxEZhxrEeQNuO+67ucLf0W5tb4nQpdzJYO31N5idzAs+KS6ue6iItQDus5tmKmnjh0WIkz3cA0dooXhdeBCUhJdKeEzZ9IVPoGmPEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ITIZ2KR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75611C4CEC5;
-	Wed,  2 Oct 2024 13:21:00 +0000 (UTC)
+	 MIME-Version; b=umH3OnwxEzIP1DDEwEMfZqv871njY8yBocOlWPXZx49yzO5tS+z815qTUKNgEQo1Q2MgT1HR1q9k/snwQy0+23VNCju5hR+YTCXMvVqn20RTXR6mDl6v/cBtfT1bbts89qqUPBZ39kqhY3YEoSAyfIkLLCtb5Bw3MtCq/IrZnVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G708zGvF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DE7C4CECD;
+	Wed,  2 Oct 2024 13:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875260;
-	bh=rcL5ZXqt8qTXcZ+qOeudJwkR93oYumYFLycef1OF1gs=;
+	s=korg; t=1727875266;
+	bh=BzaDUY0vsX7mlUN4bqSQ0TM8IAENS77sWbCZwJsyzx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ITIZ2KRizf1r5nHa63Wnj/mpQ351DvOKVATGwR6hEnnQIdh+bBlZ3JSU+boVSwOM
-	 3O0Zt43dVG02UgttIbzF8Nml7NdxGL12kQLhweqwa33fET8MlqYShpthfbwTl6GVFU
-	 uT+rP2t/KQPy8T1Z0nQAeCI4o4JFB0+0o0LX2KNI=
+	b=G708zGvFStwvecs8YqyhcNNwHxZqsF1PY/zl/U4Vth6LT6Vh6EzKq/e8yNvoTRrdG
+	 v1nGb1ugMZbeLzx6buc1yHC3T7sAs09kEECAS32m3jPEI7XBdBBuy20s4jAkpAmISs
+	 obSuaK8lSiIp9kNXVo/nr3CxV9ag8FNg9JzJp8B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
-	Xin Zeng <xin.zeng@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Esther Shimanovich <eshimanovich@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 043/695] crypto: qat - fix "Full Going True" macro definition
-Date: Wed,  2 Oct 2024 14:50:41 +0200
-Message-ID: <20241002125824.208755421@linuxfoundation.org>
+Subject: [PATCH 6.11 044/695] ACPI: video: force native for Apple MacbookPro9,2
+Date: Wed,  2 Oct 2024 14:50:42 +0200
+Message-ID: <20241002125824.248466148@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -68,40 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-[ Upstream commit 694a6f594817462942acbb1a35b1f7d61e2d49e7 ]
+[ Upstream commit 7dc918daaf2994963690171584ba423f28724df5 ]
 
-The macro `ADF_RP_INT_SRC_SEL_F_RISE_MASK` is currently set to the value
-`0100b` which means "Empty Going False". This might cause an incorrect
-restore of the bank state during live migration.
+It used to be that the MacbookPro9,2 used its native intel backlight
+device until the following commit was introduced:
 
-Fix the definition of the macro to properly represent the "Full Going
-True" state which is encoded as `0011b`.
+commit b1d36e73cc1c ("drm/i915: Don't register backlight when another
+backlight should be used (v2)")
 
-Fixes: bbfdde7d195f ("crypto: qat - add bank save and restore flows")
-Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
-Reviewed-by: Xin Zeng <xin.zeng@intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This commit forced this model to use its firmware acpi_video backlight
+device instead.
+
+That worked fine until an additional commit was added:
+
+commit 92714006eb4d ("drm/i915/backlight: Do not bump min brightness
+to max on enable")
+
+That commit uncovered a bug in the MacbookPro 9,2's acpi_video
+backlight firmware; the backlight does not come back up after resume.
+
+Add DMI quirk to select the working native intel interface instead
+so that the backlight successfully comes back up after resume.
+
+Fixes: 92714006eb4d ("drm/i915/backlight: Do not bump min brightness to max on enable")
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240806-acpi-video-quirk-v1-1-369d8f7abc59@chromium.org
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h
-index 8b10926cedbac..e8c53bd76f1bd 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h
-@@ -83,7 +83,7 @@
- #define ADF_WQM_CSR_RPRESETSTS(bank)	(ADF_WQM_CSR_RPRESETCTL(bank) + 4)
- 
- /* Ring interrupt */
--#define ADF_RP_INT_SRC_SEL_F_RISE_MASK	BIT(2)
-+#define ADF_RP_INT_SRC_SEL_F_RISE_MASK	GENMASK(1, 0)
- #define ADF_RP_INT_SRC_SEL_F_FALL_MASK	GENMASK(2, 0)
- #define ADF_RP_INT_SRC_SEL_RANGE_WIDTH	4
- #define ADF_COALESCED_POLL_TIMEOUT_US	(1 * USEC_PER_SEC)
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 674b9db7a1ef8..75a5f559402f8 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -549,6 +549,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookAir9,1"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Apple MacBook Pro 9,2 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro9,2"),
++		},
++	},
+ 	{
+ 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
+ 	 .callback = video_detect_force_native,
 -- 
 2.43.0
 
