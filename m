@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF26F98D5C2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3019598D8D8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29C17B20A53
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91411F22602
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA74F1D096E;
-	Wed,  2 Oct 2024 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042521D12FF;
+	Wed,  2 Oct 2024 14:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo9N/fHh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOYI2nSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A837F1D078B;
-	Wed,  2 Oct 2024 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D5F1D0DE2;
+	Wed,  2 Oct 2024 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875989; cv=none; b=ZeCq8QFOex+4WXXHtm0HoxTvzQBvgpEvqyE/Q9jxLLaE94N6sLiUfDQBLewoQq2qAWb/LUDACahGRabKpVM52RyYl2kOYgzJVNpkHu6nkC0odbW9KKx4xwUwK1fqoclXzO+MnmljeuXJPs5dh3XsmWUZuCj8DGaG63hMoKpS1Co=
+	t=1727877680; cv=none; b=a7k5bpOoFgu0JnpeiLF0ebO/0sqYzmnxmUhxbbVInFh8tKuA0waSFxe6z41FzCsFRpdqc1birm5Bvn1XbUO09GPgPFwUJ8CeR9TyE+t7fykMlKnnOtE/nJ6q1xWKTY4THXuYiFl6PNxmwZzpOogDlL4upCL84djVhd+vEbvHZ8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875989; c=relaxed/simple;
-	bh=QM6S8tYvQ3/mBgSLdkU66sVO7RcfgbXHHOQknzBRrN8=;
+	s=arc-20240116; t=1727877680; c=relaxed/simple;
+	bh=qNmFLgq4/Da4FKKzsoTTbtLhPaO+9bd2DgVNcrLMPbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCGNq63oLkM5udtTE3VCFfiaQc8gQ/9gD1D4ypaIqilzLqV6zXdIUuZaSdg7T9LyBEAkPQKE1yXmvHUnLO/xq1xAudV3dhF9YYyyIcBvWHsYdzDU5Mu2fMdyjx1BlHxM5Od2jmPxc0TE9gKbCtZtgyU5fNGdJs5tYuzWin9GjTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo9N/fHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7A0C4CEC5;
-	Wed,  2 Oct 2024 13:33:09 +0000 (UTC)
+	 MIME-Version; b=IU3jKGRVbApSWNJXHAdit8XK9Exr/syCINt5xiWt78DT06mQFe0P/x8ssx2zoDdIOnWRtZKO6ihz73/1WcfATLey0dtyiFRW6Mb7K4F3MnSzRIOqLBKFQU6oTCHFF8ExN/bQMAyP7KpGkjz9lB7ToJHlaDU0+Z4h+3XxQwLzlqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOYI2nSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC02C4CEC5;
+	Wed,  2 Oct 2024 14:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875989;
-	bh=QM6S8tYvQ3/mBgSLdkU66sVO7RcfgbXHHOQknzBRrN8=;
+	s=korg; t=1727877680;
+	bh=qNmFLgq4/Da4FKKzsoTTbtLhPaO+9bd2DgVNcrLMPbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xo9N/fHh9jGpOcI3tcLZsA8egqVrrqkjJX9cO0q256sGyzaypw74QYANajkPtNiwr
-	 9p0DyMNvPQc2aHnCiZkxtoRMwLmsQiR3tpX/1D+6CS/ilmrb7IHLiaMfxBFjQwtiVS
-	 UhV+BREQBKGMwC6ZgXLDc8C/dizyf56NpswNUVFI=
+	b=cOYI2nSszF1ai0sK2K/D+q/fwSTdBWKB71yyTWfVQQF8AOs3jMRShB4Vj5CXSOLiq
+	 nn6b5MvVILHqolIxOwoQtoZZXBbFVKNENFbx7W8SqZO3EhCMpA6xzVbCXhmNl9wKjf
+	 jqhOVeIwpasMYus3+FSoDRPwTzgAOuJV6HSg2SJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 259/695] selftests/bpf: Workaround strict bpf_lsm return value check.
+Subject: [PATCH 6.10 157/634] hwmon: (max16065) Remove use of i2c_match_id()
 Date: Wed,  2 Oct 2024 14:54:17 +0200
-Message-ID: <20241002125832.786550852@linuxfoundation.org>
+Message-ID: <20241002125817.307865134@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit aa8ebb270c66cea1f56a25d0f938036e91ad085a ]
+[ Upstream commit 5a71654b398e3471f0169c266a3587cf09e1200c ]
 
-test_progs-no_alu32 -t libbpf_get_fd_by_id_opts
-is being rejected by the verifier with the following error
-due to compiler optimization:
+The function i2c_match_id() is used to fetch the matching ID from
+the i2c_device_id table. This is often used to then retrieve the
+matching driver_data. This can be done in one step with the helper
+i2c_get_match_data().
 
-6: (67) r0 <<= 62                     ; R0_w=scalar(smax=0x4000000000000000,umax=0xc000000000000000,smin32=0,smax32=umax32=0,var_off=(0x0; 0xc000000000000000))
-7: (c7) r0 s>>= 63                    ; R0_w=scalar(smin=smin32=-1,smax=smax32=0)
-;  @ test_libbpf_get_fd_by_id_opts.c:0
-8: (57) r0 &= -13                     ; R0_w=scalar(smax=0x7ffffffffffffff3,umax=0xfffffffffffffff3,smax32=0x7ffffff3,umax32=0xfffffff3,var_off=(0x0; 0xfffffffffffffff3))
-; int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode) @ test_libbpf_get_fd_by_id_opts.c:27
-9: (95) exit
-At program exit the register R0 has smax=9223372036854775795 should have been in [-4095, 0]
+This helper has a couple other benefits:
+ * It doesn't need the i2c_device_id passed in so we do not need
+   to have that forward declared, allowing us to remove those or
+   move the i2c_device_id table down to its more natural spot
+   with the other module info.
+ * It also checks for device match data, which allows for OF and
+   ACPI based probing. That means we do not have to manually check
+   those first and can remove those checks.
 
-Workaround by adding barrier().
-Eventually the verifier will be able to recognize it.
-
-Fixes: 5d99e198be27 ("bpf, lsm: Add check for BPF LSM return value")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240403203633.914389-20-afd@ti.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 119abf7d1815 ("hwmon: (max16065) Fix alarm attributes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c  | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/max16065.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-index f5ac5f3e89196..568816307f712 100644
---- a/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-+++ b/tools/testing/selftests/bpf/progs/test_libbpf_get_fd_by_id_opts.c
-@@ -31,6 +31,7 @@ int BPF_PROG(check_access, struct bpf_map *map, fmode_t fmode)
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index e392529de098e..5b2a174c6bad3 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -494,8 +494,6 @@ static const struct attribute_group max16065_max_group = {
+ 	.is_visible = max16065_secondary_is_visible,
+ };
  
- 	if (fmode & FMODE_WRITE)
- 		return -EACCES;
-+	barrier();
+-static const struct i2c_device_id max16065_id[];
+-
+ static int max16065_probe(struct i2c_client *client)
+ {
+ 	struct i2c_adapter *adapter = client->adapter;
+@@ -506,7 +504,7 @@ static int max16065_probe(struct i2c_client *client)
+ 	bool have_secondary;		/* true if chip has secondary limits */
+ 	bool secondary_is_max = false;	/* secondary limits reflect max */
+ 	int groups = 0;
+-	const struct i2c_device_id *id = i2c_match_id(max16065_id, client);
++	enum chips chip = (uintptr_t)i2c_get_match_data(client);
  
- 	return 0;
- }
+ 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA
+ 				     | I2C_FUNC_SMBUS_READ_WORD_DATA))
+@@ -519,9 +517,9 @@ static int max16065_probe(struct i2c_client *client)
+ 	data->client = client;
+ 	mutex_init(&data->update_lock);
+ 
+-	data->num_adc = max16065_num_adc[id->driver_data];
+-	data->have_current = max16065_have_current[id->driver_data];
+-	have_secondary = max16065_have_secondary[id->driver_data];
++	data->num_adc = max16065_num_adc[chip];
++	data->have_current = max16065_have_current[chip];
++	have_secondary = max16065_have_secondary[chip];
+ 
+ 	if (have_secondary) {
+ 		val = i2c_smbus_read_byte_data(client, MAX16065_SW_ENABLE);
 -- 
 2.43.0
 
