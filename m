@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D11E98D526
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA1598D85C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46CAD1C20F11
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3D691C22D2C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBEA1D042F;
-	Wed,  2 Oct 2024 13:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6161D04A2;
+	Wed,  2 Oct 2024 13:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaJ9OCuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caZC/NIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695D31CF284;
-	Wed,  2 Oct 2024 13:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3FF1D0420;
+	Wed,  2 Oct 2024 13:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875643; cv=none; b=gWolbYEZcupTpTpDQqQXZOG49kPRGr6tytzrNlNz2E+ev6uchgDe3TcYWlGZRhhmi5naR/LgJTaDOKAl6jvdzmKZIfiCoLVA4aVQu/yyk2Wixn3p7C7DrE8JiMfbLYYs7gZ7jhMeDSeKHYrYpQC4a7oAGUTpTdGPQKZoRBEkVbU=
+	t=1727877503; cv=none; b=GG5eqibjdH7KgGsDkM2J8ll0cLVLMtiMvupFRFnQTHmbya2reZJA55+OckSD09mA4lWYf0yf+VlMhzKDt0tWWWSIAijyGKPBlNnFBmokz1zM7HTlQGXsOZNLeVnBHN8Sig3cR2tWUBNQ4lg2TzSEY5SmeKroojUO9LqA1OM5JbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875643; c=relaxed/simple;
-	bh=ZEbWzWeYRWvBHpSN7nDGWb6KXAAMPLC4CUK9ZFGyERE=;
+	s=arc-20240116; t=1727877503; c=relaxed/simple;
+	bh=XFnNRpXeSLszDlMgkCcs17GyJ34vGqQRRboYHMnTfzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpDoQhQDZYl9g9zgtViiWMMz+XcvxYEoy+1J9owD/w7OxCVi63+1BRiBEez33pefRZk1UwNp0xvk7zqUeZjHIsQ9u2tZEzkyohggU/Zi0sevr3tBvEA3JVz8WTVtPoBbwHoS8NRiP4YboZ6nBTG95v7sCxcfH2KXy1/EEGVtEFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaJ9OCuE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E734FC4CECD;
-	Wed,  2 Oct 2024 13:27:22 +0000 (UTC)
+	 MIME-Version; b=Ha3og6JOV9nkI4GyYgO60FNtCxpFqHvzw5koB8nusRdV7JyizxtAJ/FuzSwjPXd0ik4kQXzZag/V1u8qo4C/q5Fkutfqgierk4gtHtdOZFFDBASoYdZ3InOUg/YxAY2UjOQGdCWlq0+w9UV4XI6dqrweHGmA7xLQ7JCINykqwkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caZC/NIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4A4C4CEC2;
+	Wed,  2 Oct 2024 13:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875643;
-	bh=ZEbWzWeYRWvBHpSN7nDGWb6KXAAMPLC4CUK9ZFGyERE=;
+	s=korg; t=1727877503;
+	bh=XFnNRpXeSLszDlMgkCcs17GyJ34vGqQRRboYHMnTfzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QaJ9OCuEQauFKC3FMOJZfVfHN0SCy09Ps0qO7gfgls7iyOyAZveRaQpu9rz1giS+3
-	 I6GSpZJmdSk2296+/uoalU91rA/irN13n3pvT5Gemg/PB8mE56XV4h2sX/v5Bvpu9C
-	 ItNRXPFR2nzaRLDUV7CIZo0nIZ9a7uCM6/zwqRu0=
+	b=caZC/NIXzt/BrY7DeuL/DGb35COwJnm2FA7yrpfVbiEurJpOoyENeasHlXsA3SYCl
+	 Gz5Lnchhe0TGB25g9/4f4s6aIYJKaEDPDHuQcKCe4DjB4WYD1DzNibK3KA3HRoTKjJ
+	 wXEcBn1cqmQwZnXFAJmkAtLm7AsqpEw/TYgxllw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 171/695] selftests/ftrace: Fix eventfs ownership testcase to find mount point
+Subject: [PATCH 6.10 069/634] wifi: mt76: mt7996: fix EHT beamforming capability check
 Date: Wed,  2 Oct 2024 14:52:49 +0200
-Message-ID: <20241002125829.298124917@linuxfoundation.org>
+Message-ID: <20241002125813.830446869@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit f0a6ecebd858658df213d114b0530f8f0b96e396 ]
+[ Upstream commit 9ca65757f0a5b393a7737d37f377d5daf91716af ]
 
-Fix eventfs ownership testcase to find mount point if stat -c "%m" failed.
-This can happen on the system based on busybox. In this case, this will
-try to use the current working directory, which should be a tracefs top
-directory (and eventfs is mounted as a part of tracefs.)
-If it does not work, the test is skipped as UNRESOLVED because of
-the environmental problem.
+If a VIF acts as a beamformer, it should check peer's beamformee
+capability, and vice versa.
 
-Fixes: ee9793be08b1 ("tracing/selftests: Add ownership modification tests for eventfs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: ba01944adee9 ("wifi: mt76: mt7996: add EHT beamforming support")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20240816094635.2391-7-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/00basic/test_ownership.tc          | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc b/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc
-index c45094d1e1d2d..803efd7b56c77 100644
---- a/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc
-+++ b/tools/testing/selftests/ftrace/test.d/00basic/test_ownership.tc
-@@ -6,6 +6,18 @@ original_group=`stat -c "%g" .`
- original_owner=`stat -c "%u" .`
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 7220bcee6fae9..656199161e591 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1429,10 +1429,10 @@ mt7996_is_ebf_supported(struct mt7996_phy *phy, struct ieee80211_vif *vif,
  
- mount_point=`stat -c '%m' .`
-+
-+# If stat -c '%m' does not work (e.g. busybox) or failed, try to use the
-+# current working directory (which should be a tracefs) as the mount point.
-+if [ ! -d "$mount_point" ]; then
-+	if mount | grep -qw $PWD ; then
-+		mount_point=$PWD
-+	else
-+		# If PWD doesn't work, that is an environmental problem.
-+		exit_unresolved
-+	fi
-+fi
-+
- mount_options=`mount | grep "$mount_point" | sed -e 's/.*(\(.*\)).*/\1/'`
+ 		if (bfee)
+ 			return vif->bss_conf.eht_su_beamformee &&
+-			       EHT_PHY(CAP0_SU_BEAMFORMEE, pe->phy_cap_info[0]);
++			       EHT_PHY(CAP0_SU_BEAMFORMER, pe->phy_cap_info[0]);
+ 		else
+ 			return vif->bss_conf.eht_su_beamformer &&
+-			       EHT_PHY(CAP0_SU_BEAMFORMER, pe->phy_cap_info[0]);
++			       EHT_PHY(CAP0_SU_BEAMFORMEE, pe->phy_cap_info[0]);
+ 	}
  
- # find another owner and group that is not the original
+ 	if (sta->deflink.he_cap.has_he) {
 -- 
 2.43.0
 
