@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-80405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FDB98DD42
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7676198DD24
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BDE328120B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F3F728593C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE54E1D0E3E;
-	Wed,  2 Oct 2024 14:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569091D1512;
+	Wed,  2 Oct 2024 14:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnlHPct/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5EGuXOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA6A19752C;
-	Wed,  2 Oct 2024 14:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC511D0DD7;
+	Wed,  2 Oct 2024 14:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880278; cv=none; b=MP/PzoAqAX5Uh44Rkrmq9AptUIFkuXxB8RqrNhZVrZ156vtTYFj0qaSMEIWlcUYjZkRBiXXFdulOihTXimOWyLYbzTnMGHQRTLI1DZvlz6jiHl+LkCXVGjzN5luT/3Qv6YttlSAkieITbcNL7DQXlhZq3NfKh5u3DyrnxThoRSI=
+	t=1727880185; cv=none; b=Q4seS420N/8/8+SW4dDGv5PO5rayu2cx9ugTrWOunI1at3ovYHrzUcjARBVlKU6M49SJWc7AxhiJZGgE+mXjGB2In91ojZ90I/qbwgWPNNvUSI8PhwS7b4lEYVS8/OP7p20JKdJUKfFzhd/HKZUTgILUQZ6KLUZjIWwW9Flmh+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880278; c=relaxed/simple;
-	bh=+iqzidG4+zR2i8gKwF7XRV9DA59pMo4fmC60onNJ928=;
+	s=arc-20240116; t=1727880185; c=relaxed/simple;
+	bh=QMSB7HXiafFRnF2HKMZEQZxDlgUDmGKHl1+VkXcawnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkTyUTtYBvo3Bi/O2MYtcZDlJU9oe+dqrsj1vHhiEsk65qutc1ExUPJ2Noxa6wrd6fcbM/dp97lqiwFRLVK9Tm81LLwxvhyPYGRR5GEDEMOcIdjwiV4SneRs/pww+jliXiZzxcGsDzECgk1F+6xjLNPzYBSKxmLz/RwJA0k/pFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnlHPct/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1401BC4CEC2;
-	Wed,  2 Oct 2024 14:44:37 +0000 (UTC)
+	 MIME-Version; b=Bfw0x66tKTKkdW0k974GdB/y1qOYxlTGWGdygXHhFT2Kk/Ykw5R6vGt0O72YBe95n+0zKnzItpIQmSwSLpSI72Hkyy4Gp4pH6G4S+spWUvuFnbfibpFltFMdCYHJEO44df/JK2voXxUclvz80B4nVtnl81o6Z/qp73eVTYjj8A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5EGuXOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A84C4CEC5;
+	Wed,  2 Oct 2024 14:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880278;
-	bh=+iqzidG4+zR2i8gKwF7XRV9DA59pMo4fmC60onNJ928=;
+	s=korg; t=1727880184;
+	bh=QMSB7HXiafFRnF2HKMZEQZxDlgUDmGKHl1+VkXcawnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnlHPct/2dZTbuVF/nnwKZZ/KWB9JdRIGumtx89qBDw/ImQNE70urbgVpziQUUx9U
-	 8TOyaYXYCvlvma4SFQckiQBLGXxnsj5j0FlLq6VbFCxvoNRjSArKDUXFFUSruJjxuD
-	 7LvQuVEgjtcS2ZuolzQ8I6tvlSw52cefGhKIISHE=
+	b=C5EGuXOg2bwpoM8AujimJfkG5/jqR1Ge7Sk8GUJ/YsZoGhf5pA5gXDQsCjCGWsj6l
+	 uIiPHhbA327UjyeD84X59NFTD28TX0WhhY+gfI8vyyDl08AO0Ec84l/iumYQ92SPGh
+	 rgjaX8/Dl7HH4zELtSAmblayuNESoxERL6Pfj5CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Georgi Djakov <djakov@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yanfei Xu <yanfei.xu@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 364/538] interconnect: icc-clk: Add missed num_nodes initialization
-Date: Wed,  2 Oct 2024 15:00:03 +0200
-Message-ID: <20241002125806.793859720@linuxfoundation.org>
+Subject: [PATCH 6.6 365/538] cxl/pci: Fix to record only non-zero ranges
+Date: Wed,  2 Oct 2024 15:00:04 +0200
+Message-ID: <20241002125806.834472510@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -67,46 +68,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Yanfei Xu <yanfei.xu@intel.com>
 
-[ Upstream commit c801ed86840ec38b2a9bcafeee3d7c9e14c743f3 ]
+[ Upstream commit 55e268694e8b07026c88191f9b6949b6887d9ce3 ]
 
-With the new __counted_by annotation, the "num_nodes" struct member must
-be set before accessing the "nodes" array. This initialization was done
-in other places where a new struct icc_onecell_data is allocated, but this
-case in icc_clk_register() was missed. Set "num_nodes" after allocation.
+The function cxl_dvsec_rr_decode() retrieves and records DVSEC ranges
+into info->dvsec_range[], regardless of whether it is non-zero range,
+and the variable info->ranges indicates the number of non-zero ranges.
+However, in cxl_hdm_decode_init(), the validation for
+info->dvsec_range[] occurs in a for loop that iterates based on
+info->ranges. It may result in zero range to be validated but non-zero
+range not be validated, in turn, the number of allowed ranges is to be
+0. Address it by only record non-zero ranges.
 
-Fixes: dd4904f3b924 ("interconnect: qcom: Annotate struct icc_onecell_data with __counted_by")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20240716214819.work.328-kees@kernel.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+This fix is not urgent as it requires a configuration that zeroes out
+the first dvsec range while populating the second. This has not been
+observed, but it is theoretically possible. If this gets picked up for
+-stable, no harm done, but there is no urgency to backport.
+
+Fixes: 560f78559006 ("cxl/pci: Retrieve CXL DVSEC memory info")
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://patch.msgid.link/20240828084231.1378789-2-yanfei.xu@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/icc-clk.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/cxl/core/pci.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/interconnect/icc-clk.c b/drivers/interconnect/icc-clk.c
-index d787f2ea36d97..a91df709cfb2f 100644
---- a/drivers/interconnect/icc-clk.c
-+++ b/drivers/interconnect/icc-clk.c
-@@ -87,6 +87,7 @@ struct icc_provider *icc_clk_register(struct device *dev,
- 	onecell = devm_kzalloc(dev, struct_size(onecell, nodes, 2 * num_clocks), GFP_KERNEL);
- 	if (!onecell)
- 		return ERR_PTR(-ENOMEM);
-+	onecell->num_nodes = 2 * num_clocks;
+diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+index c963cd9e88d16..6edfd05466737 100644
+--- a/drivers/cxl/core/pci.c
++++ b/drivers/cxl/core/pci.c
+@@ -388,10 +388,6 @@ int cxl_dvsec_rr_decode(struct device *dev, int d,
  
- 	qp = devm_kzalloc(dev, struct_size(qp, clocks, num_clocks), GFP_KERNEL);
- 	if (!qp)
-@@ -133,8 +134,6 @@ struct icc_provider *icc_clk_register(struct device *dev,
- 		onecell->nodes[j++] = node;
+ 		size |= temp & CXL_DVSEC_MEM_SIZE_LOW_MASK;
+ 		if (!size) {
+-			info->dvsec_range[i] = (struct range) {
+-				.start = 0,
+-				.end = CXL_RESOURCE_NONE,
+-			};
+ 			continue;
+ 		}
+ 
+@@ -409,12 +405,10 @@ int cxl_dvsec_rr_decode(struct device *dev, int d,
+ 
+ 		base |= temp & CXL_DVSEC_MEM_BASE_LOW_MASK;
+ 
+-		info->dvsec_range[i] = (struct range) {
++		info->dvsec_range[ranges++] = (struct range) {
+ 			.start = base,
+ 			.end = base + size - 1
+ 		};
+-
+-		ranges++;
  	}
  
--	onecell->num_nodes = j;
--
- 	ret = icc_provider_register(provider);
- 	if (ret)
- 		goto err;
+ 	info->ranges = ranges;
 -- 
 2.43.0
 
