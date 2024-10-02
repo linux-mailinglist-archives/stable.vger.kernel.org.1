@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F61898D4F8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFB498D82E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66A6C284E50
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 388E51F23877
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566BD1D07A7;
-	Wed,  2 Oct 2024 13:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA971D094A;
+	Wed,  2 Oct 2024 13:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOqhdGxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHjJtKuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F7B1D079E;
-	Wed,  2 Oct 2024 13:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D481D07A3;
+	Wed,  2 Oct 2024 13:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875524; cv=none; b=QpbEZ+j6vF/rNDTLFaDGV1iMIwN1aUs51GofX5wKCY/t8aloX5orybveN5TbAmyB8qEmrsHuT/VX8sExeJEfnSkDTa0R4G1UQH4U3Vf+Jqg0r35yEFCCG7+rBm73OahCKngK0SGJVik77OGuwNtfej0Rcb1PTgjsvyEv0wPJGfs=
+	t=1727877410; cv=none; b=Qu/b4PWiXPSGPj4j9eoXrQoqZWSmXhTbIq6IlxYaWlKnPtRpUoR3jHiEfitqwiEc55ChEnatlnEK7uaLKk3DpyX37sumAvxnR76KIrONrBUVc2Piul7t9E1gSfVIGy3p04DdEjtl7bVQV2Cyrb/ujeb63KjQvWiU8elYojWGfsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875524; c=relaxed/simple;
-	bh=LBMcDDnHFTW8sRyfYP4yOzxXBWKVQOidWNhGRNkR/UY=;
+	s=arc-20240116; t=1727877410; c=relaxed/simple;
+	bh=qHwd5Rgq5sJow0VzR2XbP5rO8Lwlq4QiK3owG3XjFks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cq4GTPaLi4Jmh/bh/t47w/7W/Ha4d3SAOqfFKZ3hXO+bebKZs6LsLX0/+sZB7bgkYoM/B0hBJGjiYQGXJ1g2FKWTDe1eZJd6ENNZZUbKRRZjXi84FG0lCDMX0fgH6zQCXwbSpFoBdasz3E+LrHLjiOVjdqPWbV8iVXv/aymdim0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOqhdGxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E05C4CECD;
-	Wed,  2 Oct 2024 13:25:23 +0000 (UTC)
+	 MIME-Version; b=kidxcZvDtHsDJMG3N1q7HCnWUDMjpi+hoSutN9tTcPqw7WHPZIXC0H7vhF81jlxtcg4ZxNgZ+SyT/FTWXoy1Pamqy3nAHREFbDzFVMdEZku4Cg5GBhkZPv/u/Lit+E4xqgJ9D9Y7LRe3ONfwPQxQsRdI45v+jj0ww91SuykuXEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHjJtKuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121DCC4CECE;
+	Wed,  2 Oct 2024 13:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875523;
-	bh=LBMcDDnHFTW8sRyfYP4yOzxXBWKVQOidWNhGRNkR/UY=;
+	s=korg; t=1727877410;
+	bh=qHwd5Rgq5sJow0VzR2XbP5rO8Lwlq4QiK3owG3XjFks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOqhdGxgX6R57Oo+i461BnxlEaC50EishiZw14bu47yXEk8crMDCLCKm2DdFwdwtZ
-	 ncJtySFojatll5ioi9rbOE1aPWcHnlY5EBVspBp92FsB0f2YAv+iGybyc5MPBL3luz
-	 kTApgmxMv4ErQ6zHDE1R08lXw9QhfKaM52Q/zqUo=
+	b=VHjJtKuEJZIT7MGRB27QpBwlNyiywpvKwx+TYsOZqDBZQfZqQDQdFJc64sS51iujm
+	 B2nBpQyZzmokdqUDCrrAtfM9DPzC0BBqFhyPOUvVThCXbZSpf+vSx8t9NSAoFF+vZP
+	 mxZ+HrUzUDVTimdSGKjTJceh+4UOlQFx2Jdj6WuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 131/695] io_uring/io-wq: inherit cpuset of cgroup in io worker
+Subject: [PATCH 6.10 029/634] thermal: core: Fold two functions into their respective callers
 Date: Wed,  2 Oct 2024 14:52:09 +0200
-Message-ID: <20241002125827.710258244@linuxfoundation.org>
+Message-ID: <20241002125812.246933950@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 84eacf177faa605853c58e5b1c0d9544b88c16fd ]
+[ Upstream commit a8bbe6f10f78f85243ff821432c5d798a6d99ed4 ]
 
-The io worker threads are userland threads that just never exit to the
-userland. By that, they are also assigned to a cgroup (the group of the
-creating task).
+Fold bind_cdev() into __thermal_cooling_device_register() and bind_tz()
+into thermal_zone_device_register_with_trips() to reduce code bloat and
+make it somewhat easier to follow the code flow.
 
-When creating a new io worker, this worker should inherit the cpuset
-of the cgroup.
+No intentional functional impact.
 
-Fixes: da64d6db3bd3 ("io_uring: One wqe per wq")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240910171157.166423-3-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/2962184.e9J7NaK4W3@rjwysocki.net
+Stable-dep-of: 8144dbe68c49 ("thermal: core: Fix rounding of delay jiffies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/thermal_core.c | 55 ++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 36 deletions(-)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index c7055a8895d7e..a38f36b680604 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1168,7 +1168,7 @@ struct io_wq *io_wq_create(unsigned bounded, struct io_wq_data *data)
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index b8d889ef4fa5e..99a8c06f6964d 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -988,20 +988,6 @@ void print_bind_err_msg(struct thermal_zone_device *tz,
+ 		tz->type, cdev->type, ret);
+ }
  
- 	if (!alloc_cpumask_var(&wq->cpu_mask, GFP_KERNEL))
- 		goto err;
--	cpumask_copy(wq->cpu_mask, cpu_possible_mask);
-+	cpuset_cpus_allowed(data->task, wq->cpu_mask);
- 	wq->acct[IO_WQ_ACCT_BOUND].max_workers = bounded;
- 	wq->acct[IO_WQ_ACCT_UNBOUND].max_workers =
- 				task_rlimit(current, RLIMIT_NPROC);
+-static void bind_cdev(struct thermal_cooling_device *cdev)
+-{
+-	int ret;
+-	struct thermal_zone_device *pos = NULL;
+-
+-	list_for_each_entry(pos, &thermal_tz_list, node) {
+-		if (pos->ops.bind) {
+-			ret = pos->ops.bind(pos, cdev);
+-			if (ret)
+-				print_bind_err_msg(pos, cdev, ret);
+-		}
+-	}
+-}
+-
+ /**
+  * __thermal_cooling_device_register() - register a new thermal cooling device
+  * @np:		a pointer to a device tree node.
+@@ -1097,7 +1083,13 @@ __thermal_cooling_device_register(struct device_node *np,
+ 	list_add(&cdev->node, &thermal_cdev_list);
+ 
+ 	/* Update binding information for 'this' new cdev */
+-	bind_cdev(cdev);
++	list_for_each_entry(pos, &thermal_tz_list, node) {
++		if (pos->ops.bind) {
++			ret = pos->ops.bind(pos, cdev);
++			if (ret)
++				print_bind_err_msg(pos, cdev, ret);
++		}
++	}
+ 
+ 	list_for_each_entry(pos, &thermal_tz_list, node)
+ 		if (atomic_cmpxchg(&pos->need_update, 1, 0))
+@@ -1335,25 +1327,6 @@ void thermal_cooling_device_unregister(struct thermal_cooling_device *cdev)
+ }
+ EXPORT_SYMBOL_GPL(thermal_cooling_device_unregister);
+ 
+-static void bind_tz(struct thermal_zone_device *tz)
+-{
+-	int ret;
+-	struct thermal_cooling_device *pos = NULL;
+-
+-	if (!tz->ops.bind)
+-		return;
+-
+-	mutex_lock(&thermal_list_lock);
+-
+-	list_for_each_entry(pos, &thermal_cdev_list, node) {
+-		ret = tz->ops.bind(tz, pos);
+-		if (ret)
+-			print_bind_err_msg(tz, pos, ret);
+-	}
+-
+-	mutex_unlock(&thermal_list_lock);
+-}
+-
+ static void thermal_set_delay_jiffies(unsigned long *delay_jiffies, int delay_ms)
+ {
+ 	*delay_jiffies = msecs_to_jiffies(delay_ms);
+@@ -1542,13 +1515,23 @@ thermal_zone_device_register_with_trips(const char *type,
+ 	}
+ 
+ 	mutex_lock(&thermal_list_lock);
++
+ 	mutex_lock(&tz->lock);
+ 	list_add_tail(&tz->node, &thermal_tz_list);
+ 	mutex_unlock(&tz->lock);
+-	mutex_unlock(&thermal_list_lock);
+ 
+ 	/* Bind cooling devices for this zone */
+-	bind_tz(tz);
++	if (tz->ops.bind) {
++		struct thermal_cooling_device *cdev;
++
++		list_for_each_entry(cdev, &thermal_cdev_list, node) {
++			result = tz->ops.bind(tz, cdev);
++			if (result)
++				print_bind_err_msg(tz, cdev, result);
++		}
++	}
++
++	mutex_unlock(&thermal_list_lock);
+ 
+ 	thermal_zone_device_init(tz);
+ 	/* Update the new thermal zone and mark it as already updated. */
 -- 
 2.43.0
 
