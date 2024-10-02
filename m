@@ -1,142 +1,128 @@
-Return-Path: <stable+bounces-80584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32C798E09C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8641098E0CD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E02B91C22DE8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B74571C23D35
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C8E1D0E0D;
-	Wed,  2 Oct 2024 16:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED241D0F6F;
+	Wed,  2 Oct 2024 16:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZoiHGrrK"
+	dkim=pass (1024-bit key) header.d=collabora.co.uk header.i=andrew.shadura@collabora.co.uk header.b="HW86Wa3q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89F51CF2B6
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 16:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727886374; cv=none; b=S2fmWM1z3W7PR1707vrcCcia+wm0QE4VayJ5kpy3u8cvgZ90WhnJ03JdiADhskyeAm196Uma5rKJ9IrXvvoSl1VIPYytS4/UNFwCGr5fEmCTBtU5npV74sPn5jI+HwaAX0YD5+GPpEIieungud6yiHCjN+dP7y4FMjyIe3alDG4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727886374; c=relaxed/simple;
-	bh=+OEkMmtAuA13Ik6W+IiUtOdVkPtn02rQmhinDlsA3u8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IhkwGCrmj+oNK6roaAdQS/1V7DRrj+d/sXTDv6O5qsHjI25M4KNM+Bh/r/vlvFipl1NEPCJjmnWAXCnYn16ofvX2+jsdD3hYC3ddnP8O0AcUrb3CFPHl3xM/gxHluJoGFpkY49kUss4a348CFCc2yu+wigrj/b5sPOTj6bugElE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZoiHGrrK; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37cd3419937so12112f8f.0
-        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 09:26:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727886371; x=1728491171; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GHNMsaLcHGh/o5gx2U7ezAd14bPFEkHNqmqsriZg1sM=;
-        b=ZoiHGrrKkDaCe14edpd5hx67NMy77It7pjHAXjOxeN7UdTulTxttqFgz/biszpqmwh
-         JmpF4MLX8PYY8wcF9ZCM+qcjnzpgceeK4amR/8g9QewJM4ybAQ0o4eDUpOUazbMkk7Sr
-         T4KpHBZ9Rui554sx11mWRBmCrY+Qrb3gZ5BK/IDHg2c7mFyisiBdwosPyTwx+Ch/RIVI
-         1AXMAhNUNmdBzeuKEQsq8OMeXrtJGNSpcRsHRYzAOlh6MBFk5qn3Ck5x63PDIAkYUmtG
-         38NuRQ7Azi+3qXAV+9tZOwJ4YR+Fy7iIfdONU+nVpivIF0GNOtZcAGMzKihmPQ926IqT
-         HpvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727886371; x=1728491171;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GHNMsaLcHGh/o5gx2U7ezAd14bPFEkHNqmqsriZg1sM=;
-        b=JYZB5KtTxLYivNl+nrJ5OPieNA2pIUMoeaL0RWjvOd+jwVMg8+VOsht5n6oNfop1lb
-         8+xLx2kxxfCiDHM6wDkBWaD+jHDQxma+iv0iYk4CxD732RkMT8TObh2Um2joH24UdzO9
-         TcJBM9eXBGNkUyEdMlLy3dwrQMWHw/fGrBpoRhEq18p7ED9ZxjV+w/JZAe0M5szPO6BT
-         PhZVljZD5p+M1ZcOdai8X90pvO4Ti/xApOkDuBYboGsfLLMW1TI5uh3kkVCPNu9EakUm
-         bDsddDP1g7/ytGPP2l8QlRIbbDGOycfxaZ9w09TjjMdCQxPFstlDkS+Pml6t220ofva8
-         qJow==
-X-Forwarded-Encrypted: i=1; AJvYcCXTLZUz/1EUwMh5av0m7fzU7VImOxZnXwWE1mQ7lSyPjl9vGHsRYsm+dSyAHZU1RuZiAil09gw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySdnJcClE2WeJ1E4ZDf95nWZAWbbnW3GzrUXX+9WFDJXqc7X/s
-	7U9YYkCjz4m/Yfm+R/2fk7WUx8JlZ9TaZEDuhmEhbtdSIjL9Ilt3L7hFaacYYBs=
-X-Google-Smtp-Source: AGHT+IGTRDbRPgOM3296bwAyMhHTQb/Ij5csrF/cP3ASlXfxTEpcZpjwYZaQ4foC4FGXkiOV8oTo+A==
-X-Received: by 2002:adf:eb8b:0:b0:37c:cd57:d91a with SMTP id ffacd0b85a97d-37cfb8b63b3mr2088941f8f.12.1727886370907;
-        Wed, 02 Oct 2024 09:26:10 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd5752a09sm14154511f8f.108.2024.10.02.09.26.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 09:26:10 -0700 (PDT)
-Date: Wed, 2 Oct 2024 19:26:06 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Vegard Nossum <vegard.nossum@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	pavel@denx.de, cengiz.can@canonical.com, mheyne@amazon.de,
-	mngyadam@amazon.com, kuntal.nayak@broadcom.com,
-	ajay.kaher@broadcom.com, zsm@chromium.org,
-	shivani.agarwal@broadcom.com,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: Re: [PATCH RFC 6.6.y 01/15] ubifs: ubifs_symlink: Fix memleak of
- inode->i_link in error path
-Message-ID: <5095e302-333e-4b8f-a6a5-c9ffc002c023@stanley.mountain>
-References: <20241002150606.11385-1-vegard.nossum@oracle.com>
- <20241002150606.11385-2-vegard.nossum@oracle.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC4F747F;
+	Wed,  2 Oct 2024 16:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727886584; cv=pass; b=OyRLwn2ITvTVMJ07XJrfki0GEHSSsJMWOynfe2Vh6XT4LKd6VSqQmsd28Thukim2AMENiLyeoG0SzVAe7yrdx9+eW0ACFDDlW7RQKZW3m8sereFLutPAsKwdL4ThVLEsM82lKWPyTrvkx83hs/9sJ5Ek86pzC9WGBVpLbbfCqRM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727886584; c=relaxed/simple;
+	bh=J7Oty3o/K3RrC/jrJ9NeNcBCMFHtxP3Bq1EaNprdJ/M=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=uh2Apt8zELb1XE3jcciGRX8jChsWUL9xHYf+DKgowql59Gn9LS1QxMCWU2AIOLL60zJ/i0ecCHrpY/jj2XQyAJwtybjkOvVRPU+XDWV5hPJ16XShCLMB1sRGgxWM1g47L6YDMQOYOcMZBPdQ3kN35D7liFXpueHmE+hJ9vtP54Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk; spf=pass smtp.mailfrom=collabora.co.uk; dkim=pass (1024-bit key) header.d=collabora.co.uk header.i=andrew.shadura@collabora.co.uk header.b=HW86Wa3q; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.co.uk
+ARC-Seal: i=1; a=rsa-sha256; t=1727886564; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=EzOUeQicp6nxxQhp8BIUW2/cQFmML5GpWG66Fyi8va5IA+GNHqpnH3zLUocTfVkH4cksEXCXdXn/37x+PTfZZIv3dDqSd/8Aj90LAnVaux41dhRmS/yeZXbb/Wv9rNJEnLGI7Ekyn8oIrtuKyTWY8kH6hy1S7lWqTdEGOvoDV78=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1727886564; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GD6WWExqoFLh8h4694B5y/62qjyl+p80bzUUEQu9+3g=; 
+	b=NdiTSMePjq0KiJSbLY9s1msX0rqSuSUOS4S+I3aXs1Z+EJyheeMn6nk/Pd5+Lf8CD7uON6c7TcImNM2pEwz6msfIWC0bfKGIhHpH54v72h/yUZAyvPCRXEbUV2HUFmsdYFpyrnqCwJU0NDc2xs8RcNHeeTHO/gP35LVqKdyQYwk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.co.uk;
+	spf=pass  smtp.mailfrom=andrew.shadura@collabora.co.uk;
+	dmarc=pass header.from=<andrew.shadura@collabora.co.uk>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1727886564;
+	s=zoho; d=collabora.co.uk; i=andrew.shadura@collabora.co.uk;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=GD6WWExqoFLh8h4694B5y/62qjyl+p80bzUUEQu9+3g=;
+	b=HW86Wa3qNg1aINouSYeGWLTtx1Dohez/BEZV3EudFYycK/UgLrjogPfyGuVkABs2
+	6gmx77o7IHkTj1810zz5T6AvXe+SCsDgnERleDkQe5jKYCrW0gd2NEcBsKYryJwtQM2
+	haPW4C/qlZtmf3Dxng9MVC1zDW8yNJnDhcMnAbPA=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 172788656284725.120871860829993; Wed, 2 Oct 2024 09:29:22 -0700 (PDT)
+Date: Wed, 02 Oct 2024 18:29:22 +0200
+From: Andrej Shadura <andrew.shadura@collabora.co.uk>
+To: "Nathan Chancellor" <nathan@kernel.org>
+Cc: "linux-bluetooth" <linux-bluetooth@vger.kernel.org>,
+	"Justin Stitt" <justinstitt@google.com>,
+	"llvm" <llvm@lists.linux.dev>, "kernel" <kernel@collabora.com>,
+	"George Burgess" <gbiv@chromium.org>,
+	"stable" <stable@vger.kernel.org>
+Message-ID: <1924e1095d0.c47411862290357.1483149348602527002@collabora.co.uk>
+In-Reply-To: <20241002152227.GA3292493@thelio-3990X>
+References: <20241002141217.663070-1-andrew.shadura@collabora.co.uk>
+ <20241002152227.GA3292493@thelio-3990X>
+Subject: Re: [PATCH] Bluetooth: Fix type of len in
+ rfcomm_sock_{bind,getsockopt_old}()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241002150606.11385-2-vegard.nossum@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-On Wed, Oct 02, 2024 at 05:05:52PM +0200, Vegard Nossum wrote:
-> From: Zhihao Cheng <chengzhihao1@huawei.com>
-> 
-> [ Upstream commit 6379b44cdcd67f5f5d986b73953e99700591edfa ]
-> 
-> For error handling path in ubifs_symlink(), inode will be marked as
-> bad first, then iput() is invoked. If inode->i_link is initialized by
-> fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
-> be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
-> handling path, because make_bad_inode() has changed 'inode->i_mode' as
-> 'S_IFREG'.
-> Following kmemleak is easy to be reproduced by injecting error in
-> ubifs_jnl_update() when doing symlink in encryption scenario:
->  unreferenced object 0xffff888103da3d98 (size 8):
->   comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
->   backtrace:
->    kmemdup+0x32/0x70
->    __fscrypt_encrypt_symlink+0xed/0x1c0
->    ubifs_symlink+0x210/0x300 [ubifs]
->    vfs_symlink+0x216/0x360
->    do_symlinkat+0x11a/0x190
->    do_syscall_64+0x3b/0xe0
-> There are two ways fixing it:
->  1. Remove make_bad_inode() in error handling path. We can do that
->     because ubifs_evict_inode() will do same processes for good
->     symlink inode and bad symlink inode, for inode->i_nlink checking
->     is before is_bad_inode().
->  2. Free inode->i_link before marking inode bad.
-> Method 2 is picked, it has less influence, personally, I think.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
-> Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-> Suggested-by: Eric Biggers <ebiggers@kernel.org>
-> Reviewed-by: Eric Biggers <ebiggers@google.com>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> (cherry picked from commit 6379b44cdcd67f5f5d986b73953e99700591edfa)
+Hi Nathan,
 
-There isn't really a point to doing a cherry-pick -x if the information is
-already included at the top.  I am surprised that you're on cherry-picking from
-the 6.10.y tree, though.  Most stable patches are clean backports so it mostly
-doesn't matter either way.
+On 02/10/2024 17:22, Nathan Chancellor wrote:
+> Hi Andrej,
+>=20
+> On Wed, Oct 02, 2024 at 04:12:17PM +0200, Andrej Shadura wrote:
+>> Commit 9bf4e919ccad worked around an issue introduced after an innocuous
+>> optimisation change in LLVM main:
+>>
+>>> len is defined as an 'int' because it is assigned from
+>>> '__user int *optlen'. However, it is clamped against the result of
+>>> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
+>>> platforms). This is done with min_t() because min() requires compatible
+>>> types, which results in both len and the result of sizeof() being caste=
+d
+>>> to 'unsigned int', meaning len changes signs and the result of sizeof()
+>>> is truncated. From there, len is passed to copy_to_user(), which has a
+>>> third parameter type of 'unsigned long', so it is widened and changes
+>>> signs again. This excessive casting in combination with the KCSAN
+>>> instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
+>>> call, failing the build.
+>>
+>> The same issue occurs in rfcomm in functions rfcomm_sock_bind and
+>> rfcomm_sock_getsockopt_old.
 
-regards,
-dan carpenter
+> Was this found by inspection or is there an actual instance of the same
+> warning? For what it's worth, I haven't seen a warning from this file in
+> any of my build tests.
+
+We=E2=80=99ve seen build errors in rfcomm in the Chromium OS 4.14 kernel.
+
+>> Change the type of len to size_t in both rfcomm_sock_bind and
+>> rfcomm_sock_getsockopt_old and replace min_t() with min().
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_get=
+sockopt_old()")
+
+> I am not sure that I totally agree with this Fixes tag since I did not
+> have a warning to fix but I guess it makes sense to help with
+> backporting.
+
+It=E2=80=99s a shame there isn=E2=80=99t a Complements: or Improves: tag :)
+
+--=20
+Cheers,
+   Andrej
 
 
