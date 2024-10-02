@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-79145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33B698D6D1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84EE98D6FF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:45:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21ECC1C215DD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70DD6283BCE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F261D0436;
-	Wed,  2 Oct 2024 13:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285CB1D096F;
+	Wed,  2 Oct 2024 13:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEf4Cb6g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpjHbKnx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648D91D0164;
-	Wed,  2 Oct 2024 13:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71C91D0960;
+	Wed,  2 Oct 2024 13:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876571; cv=none; b=A7AWWh+Z8G8LbBUplTQ7SYzon/KzYH7ynATZAp73X/1YeS34/n/MOkb0ihhZw3BHxpkkFBLFPAQo1D056L/IzwPKT2Brezv/A/5YHOz38Rn6MbmlHU78GAUuM32CD0re3COX69tcIsZHP1vO/wMJHGTao9ZemDDWb9iRFN9AKv0=
+	t=1727876691; cv=none; b=ebIJkB7b69xTp/8SAidnKFv340Gad5lH1gaAceOal+sVoQtCFyKHo1xKNY0Tp36I2Sx2pDSapNzqRPG15fK1DMfPjb4K29rF33+RzV18QEb50H5SfrMbFiKuX5NLYg0bDSNOnpfrbc11nSLZQ/M6jk5httb9yMJgevNfgnuKMLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876571; c=relaxed/simple;
-	bh=MdzNeRMdahOq/ZHtp6GMIcH9MCQaWcOXdJ0cdzEI3WU=;
+	s=arc-20240116; t=1727876691; c=relaxed/simple;
+	bh=QTuOqCZCfV44omaSQ0RnTQT818Z8sC3u2wYVOVsvJ0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZhYPGoPEjD/iLeisHNSR4UjA6W991RUhDs8cf42EKq6qh1gSykqSCI0lAMnXHj/HZ+TqLicmgPYJPzNRVi1mf0swMesnLuWZqohXrwZj4wtaHFuboj2IWtzoiYrMnMysFSr7QjrWshbzCr5htTyqeGlJro+akJ2gKrXZsuapoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEf4Cb6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B34C4CEC5;
-	Wed,  2 Oct 2024 13:42:50 +0000 (UTC)
+	 MIME-Version; b=aU/7R3DfzTzQLTpgUV1MT+kGE4gsGe5KyXivHX8eL4Md8Pza593qMDarB6V6diKWMCskRfaTZuFbIxG4i6uGfcxxXJ3/NPzFfCmUGPrG6QMrkVwpRInwDk7Zq5MSQ7iviu49ixwgj9cl6gb4S1JhZEWQ7oRZiiscfl4rnbwcFzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpjHbKnx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFB6C4CEC5;
+	Wed,  2 Oct 2024 13:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876571;
-	bh=MdzNeRMdahOq/ZHtp6GMIcH9MCQaWcOXdJ0cdzEI3WU=;
+	s=korg; t=1727876691;
+	bh=QTuOqCZCfV44omaSQ0RnTQT818Z8sC3u2wYVOVsvJ0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEf4Cb6gpr4EytAI7gDC8R6BYPnEeekQybLooCq7qPZyjGtz6ckwB9Vumvfm/1V7f
-	 gB/6J7Ycm+MaOfDF1KC6M7BGjorgG/PDuZ8bMDg3fMi2NnUYZst0Vh8JiHh23i6NSc
-	 ceo40sdayDJW0DJShYS7XfGrX5OHyHrXuLkmn+0o=
+	b=MpjHbKnxN1C7G1ggZvWK16NoqnH2GgPhlh05miFjxLbFLCj5/1nZQR2bPM3Vy6gsq
+	 uX33uz62v8L19fgo+3XRqgATkTthnyOZc/cSbhC+o9P4AngMNOQzQhTTV1K57zPXir
+	 3d4LQZbMkz66phThDRrkqMKWBfk4CBapJY9TPJbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenbo Li <liwenbo.martin@bytedance.com>,
-	Jiahui Cen <cenjiahui@bytedance.com>,
-	Ying Fang <fangying.tommy@bytedance.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Furong Xu <0x1207@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 488/695] virtio_net: Fix mismatched buf address when unmapping for small packets
-Date: Wed,  2 Oct 2024 14:58:06 +0200
-Message-ID: <20241002125841.948344486@linuxfoundation.org>
+Subject: [PATCH 6.11 489/695] net: stmmac: set PP_FLAG_DMA_SYNC_DEV only if XDP is enabled
+Date: Wed,  2 Oct 2024 14:58:07 +0200
+Message-ID: <20241002125841.988368119@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -69,64 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wenbo Li <liwenbo.martin@bytedance.com>
+From: Furong Xu <0x1207@gmail.com>
 
-[ Upstream commit c11a49d58ad229a1be1ebe08a2b68fedf83db6c8 ]
+[ Upstream commit b514c47ebf41a6536551ed28a05758036e6eca7c ]
 
-Currently, the virtio-net driver will perform a pre-dma-mapping for
-small or mergeable RX buffer. But for small packets, a mismatched address
-without VIRTNET_RX_PAD and xdp_headroom is used for unmapping.
+Commit 5fabb01207a2 ("net: stmmac: Add initial XDP support") sets
+PP_FLAG_DMA_SYNC_DEV flag for page_pool unconditionally,
+page_pool_recycle_direct() will call page_pool_dma_sync_for_device()
+on every page even the page is not going to be reused by XDP program.
 
-That will result in unsynchronized buffers when SWIOTLB is enabled, for
-example, when running as a TDX guest.
+When XDP is not enabled, the page which holds the received buffer
+will be recycled once the buffer is copied into new SKB by
+skb_copy_to_linear_data(), then the MAC core will never reuse this
+page any longer. Always setting PP_FLAG_DMA_SYNC_DEV wastes CPU cycles
+on unnecessary calling of page_pool_dma_sync_for_device().
 
-This patch unifies the address passed to the virtio core as the address of
-the virtnet header and fixes the mismatched buffer address.
+After this patch, up to 9% noticeable performance improvement was observed
+on certain platforms.
 
-Changes from v2: unify the buf that passed to the virtio core in small
-and merge mode.
-Changes from v1: Use ctx to get xdp_headroom.
-
-Fixes: 295525e29a5b ("virtio_net: merge dma operations when filling mergeable buffers")
-Signed-off-by: Wenbo Li <liwenbo.martin@bytedance.com>
-Signed-off-by: Jiahui Cen <cenjiahui@bytedance.com>
-Signed-off-by: Ying Fang <fangying.tommy@bytedance.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20240919081351.51772-1-liwenbo.martin@bytedance.com
+Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Link: https://patch.msgid.link/20240919121028.1348023-1-0x1207@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 6f4781ec2b369..f8131f92a3928 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1807,6 +1807,11 @@ static struct sk_buff *receive_small(struct net_device *dev,
- 	struct page *page = virt_to_head_page(buf);
- 	struct sk_buff *skb;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index f3a1b179aaeac..95d3d1081727f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2022,7 +2022,7 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+ 	rx_q->queue_index = queue;
+ 	rx_q->priv_data = priv;
  
-+	/* We passed the address of virtnet header to virtio-core,
-+	 * so truncate the padding.
-+	 */
-+	buf -= VIRTNET_RX_PAD + xdp_headroom;
-+
- 	len -= vi->hdr_len;
- 	u64_stats_add(&stats->bytes, len);
- 
-@@ -2422,8 +2427,9 @@ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
- 	if (unlikely(!buf))
- 		return -ENOMEM;
- 
--	virtnet_rq_init_one_sg(rq, buf + VIRTNET_RX_PAD + xdp_headroom,
--			       vi->hdr_len + GOOD_PACKET_LEN);
-+	buf += VIRTNET_RX_PAD + xdp_headroom;
-+
-+	virtnet_rq_init_one_sg(rq, buf, vi->hdr_len + GOOD_PACKET_LEN);
- 
- 	err = virtqueue_add_inbuf_ctx(rq->vq, rq->sg, 1, buf, ctx, gfp);
- 	if (err < 0) {
+-	pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
++	pp_params.flags = PP_FLAG_DMA_MAP | (xdp_prog ? PP_FLAG_DMA_SYNC_DEV : 0);
+ 	pp_params.pool_size = dma_conf->dma_rx_size;
+ 	num_pages = DIV_ROUND_UP(dma_conf->dma_buf_sz, PAGE_SIZE);
+ 	pp_params.order = ilog2(num_pages);
 -- 
 2.43.0
 
