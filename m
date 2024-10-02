@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-78877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E7E98D564
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBAB98D845
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444F82885A2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFDB71F23318
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A091D0426;
-	Wed,  2 Oct 2024 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777431D0B8F;
+	Wed,  2 Oct 2024 13:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+D4fV/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zC6x4cW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D0016F84F;
-	Wed,  2 Oct 2024 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BCF1D04BA;
+	Wed,  2 Oct 2024 13:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875789; cv=none; b=Ts74965TKxU1nlJOc/y9welQw5aBn3PcPhaxC1+rnBXUJgrbh1J8VxgFJjmgn4cqE7RNS4u807bwvcTdK9FJ2ag8HjwhrhmlyTOkJbttO6wImvTd/6Jp51e9dUVEYscMbtse4vp+32NcUakJRUGFfpFJsQ8iAWtbx/nuvWnFqqA=
+	t=1727877468; cv=none; b=az166GD/n6IzdACYMXrS4n0sedUNPq2f4S5TSEGoMnbQu0Uz/JEkdv9Zxyz9hFDyboDz2yMqUC/t8B8itoKoTS0nmzHcCcZ5wt0uT1zurqc+O9T4+/C9idcpHu2DdraV10WqxHmxC20Qa6YLdqic3HdhEkkloBg4zQqBs/SjgxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875789; c=relaxed/simple;
-	bh=5oujHb+UQf57YzOxPaBmfQk7/tLN7cBNUyFN4O7/CxE=;
+	s=arc-20240116; t=1727877468; c=relaxed/simple;
+	bh=t09Nzovgu2SJBsdu/Ql0ZklBuEn5dF4F/jvIPsLqqBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJE4hIfrcSc6zIIP3df+03DQB5szcY/MFndZjyS0DexrD9HVL02cfOv6ImP7hCzUdcjl+Ob57lPab3ixtaTLqFQIbbUDyt08k0LKy0iEJMyEJQy+IyRmcqL8p2MvKkxVPyTJDJJhvzhCqWzpM7GC3ONcXJ11f32D8tbu/jWbnkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+D4fV/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4100C4CEC5;
-	Wed,  2 Oct 2024 13:29:48 +0000 (UTC)
+	 MIME-Version; b=T2xD7U7i1SR3Q2hXILUvDOqiZuzwjACvZFC647kzF07w4rvMa6ztFKPJB6ZQ/QeFRo2r8M4V5qXgZuQ61QjjwznF2KdEjmrY2Pb/c4cobFffOfD8ip9wOvOSL6PItfOq5GBGZt/9dB2Km8SUkYRAv00s4fblSWFxfxVvb6s4xMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zC6x4cW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A8EC4AF19;
+	Wed,  2 Oct 2024 13:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875789;
-	bh=5oujHb+UQf57YzOxPaBmfQk7/tLN7cBNUyFN4O7/CxE=;
+	s=korg; t=1727877468;
+	bh=t09Nzovgu2SJBsdu/Ql0ZklBuEn5dF4F/jvIPsLqqBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+D4fV/n34Dj5qtqqodAk966zaaNRnxWA5eE0w3kumxBvXiShaNokXdzKNrfLjN/L
-	 nmZubl6GSeSifa1eQhLfgBIzkserOflvJaAxw0imX/CFASjZsDrWilRIjfrn4xEE4T
-	 qD6YTXJDOnP20qCen2AtW9cC66WCgQ4ACwPeU6gQ=
+	b=zC6x4cW+yj13jOM1BP2gCgJCvtCrz0UD4PTWqwwSgZs/aP60p9zvKvCqcikboAu4f
+	 cpdg8BCl9g/mOirVCD4FGUO2Ma7rECJaUGcbmi10B287fxABJNAN9joHBbIZqK0Z4w
+	 dGGokYdXyWwjxmNOnceXZ5Crrv6qEhbqHmFNC8NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	syzbot+3d602af7549af539274e@syzkaller.appspotmail.com,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Lukasz Majewski <lukma@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 190/695] mtd: rawnand: mtk: Use for_each_child_of_node_scoped()
+Subject: [PATCH 6.10 088/634] net: hsr: Use the seqnr lock for frames received via interlink port.
 Date: Wed,  2 Oct 2024 14:53:08 +0200
-Message-ID: <20241002125830.053874773@linuxfoundation.org>
+Message-ID: <20241002125814.584618155@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 8795952679494b111b7b2ba08bb54ac408daca3b ]
+[ Upstream commit 430d67bdcb04ee8502c2b10dcbaced4253649189 ]
 
-Avoids the need for manual cleanup of_node_put() in early exits
-from the loop.
+syzbot reported that the seqnr_lock is not acquire for frames received
+over the interlink port. In the interlink case a new seqnr is generated
+and assigned to the frame.
+Frames, which are received over the slave port have already a sequence
+number assigned so the lock is not required.
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240826094328.2991664-8-ruanjinjie@huawei.com
-Stable-dep-of: 2073ae37d550 ("mtd: rawnand: mtk: Fix init error path")
+Acquire the hsr_priv::seqnr_lock during in the invocation of
+hsr_forward_skb() if a packet has been received from the interlink port.
+
+Reported-by: syzbot+3d602af7549af539274e@syzkaller.appspotmail.com
+Closes: https://groups.google.com/g/syzkaller-bugs/c/KppVvGviGg4/m/EItSdCZdBAAJ
+Fixes: 5055cccfc2d1c ("net: hsr: Provide RedBox support (HSR-SAN)")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Lukasz Majewski <lukma@denx.de>
+Tested-by: Lukasz Majewski <lukma@denx.de>
+Link: https://patch.msgid.link/20240906132816.657485-2-bigeasy@linutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/mtk_nand.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/hsr/hsr_slave.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
-index 17477bb2d48ff..d65e6371675bb 100644
---- a/drivers/mtd/nand/raw/mtk_nand.c
-+++ b/drivers/mtd/nand/raw/mtk_nand.c
-@@ -1432,15 +1432,12 @@ static int mtk_nfc_nand_chip_init(struct device *dev, struct mtk_nfc *nfc,
- static int mtk_nfc_nand_chips_init(struct device *dev, struct mtk_nfc *nfc)
- {
- 	struct device_node *np = dev->of_node;
--	struct device_node *nand_np;
- 	int ret;
+diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+index af6cf64a00e08..464f683e016db 100644
+--- a/net/hsr/hsr_slave.c
++++ b/net/hsr/hsr_slave.c
+@@ -67,7 +67,16 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
+ 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
+ 	skb_reset_mac_len(skb);
  
--	for_each_child_of_node(np, nand_np) {
-+	for_each_child_of_node_scoped(np, nand_np) {
- 		ret = mtk_nfc_nand_chip_init(dev, nfc, nand_np);
--		if (ret) {
--			of_node_put(nand_np);
-+		if (ret)
- 			return ret;
--		}
- 	}
+-	hsr_forward_skb(skb, port);
++	/* Only the frames received over the interlink port will assign a
++	 * sequence number and require synchronisation vs other sender.
++	 */
++	if (port->type == HSR_PT_INTERLINK) {
++		spin_lock_bh(&hsr->seqnr_lock);
++		hsr_forward_skb(skb, port);
++		spin_unlock_bh(&hsr->seqnr_lock);
++	} else {
++		hsr_forward_skb(skb, port);
++	}
  
- 	return 0;
+ finish_consume:
+ 	return RX_HANDLER_CONSUMED;
 -- 
 2.43.0
 
