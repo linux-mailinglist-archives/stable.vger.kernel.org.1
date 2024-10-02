@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080A998D927
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5915598D5AA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5A821F21DA2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10CBA1F21EA4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C381D0977;
-	Wed,  2 Oct 2024 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD801D0484;
+	Wed,  2 Oct 2024 13:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQf3FeHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+I+oMUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F111D0499;
-	Wed,  2 Oct 2024 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED28D1D0436;
+	Wed,  2 Oct 2024 13:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877805; cv=none; b=NzPJtSzxDIQ7CnY1m3GTXRKYNefWGcfe68Syu9cA98XDl1jPEVE7TEpZbTW8ivI3a9EaVoJUlb/U+ThY0cD2HAR4MatETUYHnyrE2B2xrz/+IrBOscUQKNHhxqkszM4rUeg9+C6d/M7J5f4MuxXiSZpWijv9R/il4I+gRHyL1JQ=
+	t=1727875932; cv=none; b=EQ1Xm8W9WiIcLfZcMHj6RbnWd1Tz1NggxroMpDocsQX2/mAaUkBT2mMp57hK55aTMXKxRcac5iqXISX7KWirr5zM0YAuDSugaK+seMumcLykNfc2DI1hYUJJ3h9WCwiRSMycKKrQyQgsJA3NaHpgRTK8HNlwF5q2TMLu0kqG+jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877805; c=relaxed/simple;
-	bh=g9tDrD1UyJYRTv2Z5NVqMwqzZH7IGIWI9l+w5eGYr+0=;
+	s=arc-20240116; t=1727875932; c=relaxed/simple;
+	bh=eF3C69mejIibvF8Om1huzs6AaUPqBXF2AMfwDBih9Og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+/x6Di+81VwbPezU0jzPzCnCl1d6ZAGrSI2b/stOfxphT9Nbp67SIjxCVMbaCQnL1LkcHfV8gdG5pV48LRhTyNaFJDlJnVBuKY8Vrhni3smtW9ZT40LWTQ9UEANfnejymm7APe/GJrEH71l5WL075evO/m4rofwI+hlqFfLvqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQf3FeHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30197C4CEC2;
-	Wed,  2 Oct 2024 14:03:25 +0000 (UTC)
+	 MIME-Version; b=Rw73cGVWUu0mb912h0l84QW3AWoCS2oFN+FT4bws+FycFWDg88QrTy8X41jU6EAEhNiK1gLsOHQFnLgTEki5zHjDS032PspdMVmk9bI4wZX2xuiUHaukFb8+SD2tRMW7BIqELLmVcIwljZ5iPje2cotSjTQwKDzZiDKUP4hUTIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+I+oMUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709DBC4CEC5;
+	Wed,  2 Oct 2024 13:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877805;
-	bh=g9tDrD1UyJYRTv2Z5NVqMwqzZH7IGIWI9l+w5eGYr+0=;
+	s=korg; t=1727875931;
+	bh=eF3C69mejIibvF8Om1huzs6AaUPqBXF2AMfwDBih9Og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQf3FeHM9XYqoDDxIu9adPzkamw56gRYZlAv0aX/X7Ttvn8+54ag6jqmq/1HA2zJb
-	 KHfH3pFcE3lU6eRWxbQ9O3QqxAVpeJFkPWmUunGb4yVyNc2GA/zrIaWbtmOk7XKnYb
-	 qR662DJdlizXTq/F+0Kb2taNPw2wCsncFNaiarBM=
+	b=r+I+oMUkne6+46JW/RQsgA7GykAhZnd3P26A7SqjU7rWTuoTnvT1PamWIOx2nS1Cf
+	 XBjf3Qr7sjSkUq6/COVPuEZDMPHqzj2rAdhK2Hg/lkbJfvsDukpStpbtPJR901C/zi
+	 GYt2FLvCellZnG10KACsWHbe2eNWxmamdYbGd1jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 169/634] iommu/amd: Do not set the D bit on AMD v2 table entries
+Subject: [PATCH 6.11 271/695] selftests/bpf: Fix include of <sys/fcntl.h>
 Date: Wed,  2 Oct 2024 14:54:29 +0200
-Message-ID: <20241002125817.781029483@linuxfoundation.org>
+Message-ID: <20241002125833.264678997@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 2910a7fa1be090fc7637cef0b2e70bcd15bf5469 ]
+[ Upstream commit 21f0b0af977203220ad58aff95e372151288ec47 ]
 
-The manual says that bit 6 is IGN for all Page-Table Base Address
-pointers, don't set it.
+Update ns_current_pid_tgid.c to use '#include <fcntl.h>' and avoid compile
+error against mips64el/musl libc:
 
-Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/14-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+  In file included from .../prog_tests/ns_current_pid_tgid.c:14:
+  .../include/sys/fcntl.h:1:2: error: #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-Werror=cpp]
+      1 | #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
+        |  ^~~~~~~
+  cc1: all warnings being treated as errors
+
+Fixes: 09c02d553c49 ("bpf, selftests: Fold test_current_pid_tgid_new_ns into test_progs.")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/8bdc869749177b575025bf69600a4ce591822609.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/io_pgtable_v2.c | 2 +-
+ tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
-index acfe79b326293..743f417b281d4 100644
---- a/drivers/iommu/amd/io_pgtable_v2.c
-+++ b/drivers/iommu/amd/io_pgtable_v2.c
-@@ -51,7 +51,7 @@ static inline u64 set_pgtable_attr(u64 *page)
- 	u64 prot;
+diff --git a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+index e72d75d6baa71..c29787e092d66 100644
+--- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
++++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+@@ -11,7 +11,7 @@
+ #include <sched.h>
+ #include <sys/wait.h>
+ #include <sys/mount.h>
+-#include <sys/fcntl.h>
++#include <fcntl.h>
+ #include "network_helpers.h"
  
- 	prot = IOMMU_PAGE_PRESENT | IOMMU_PAGE_RW | IOMMU_PAGE_USER;
--	prot |= IOMMU_PAGE_ACCESS | IOMMU_PAGE_DIRTY;
-+	prot |= IOMMU_PAGE_ACCESS;
- 
- 	return (iommu_virt_to_phys(page) | prot);
- }
+ #define STACK_SIZE (1024 * 1024)
 -- 
 2.43.0
 
