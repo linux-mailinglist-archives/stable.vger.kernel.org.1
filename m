@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-79185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7877C98D6FE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:45:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967A298D6DE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB0351C22636
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:45:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 433251F213FC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752191D096B;
-	Wed,  2 Oct 2024 13:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA181D0E03;
+	Wed,  2 Oct 2024 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWbn8NvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tNjeGXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FBD1D094A;
-	Wed,  2 Oct 2024 13:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B43C1D0E01;
+	Wed,  2 Oct 2024 13:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876689; cv=none; b=hk0AsgXvPBRLPzzNq9cWs/4tPGRB9e0Joyq36QrZ2bYhjZ3zN80vT88X/N4UXWVpDDGCmNNfGmSZYQI4oZ6cMaJwSAslxy04fDLZwz0EHUBKKl8P3ZEGZqQOaq9N9aq9i8hkKhMVNgjHgF2nclQMkQ6Ltu72KmaiwpmUDubPMGw=
+	t=1727876599; cv=none; b=cbvYb7xWcdVKZKOTQ10MnkIU5AocEPm9NkebZRgy42BQskiEuLtBB2ZBfZjO019HszAqQLEV8G25JfjgHvEuaUobcRqLGAmVWVEPQhz/hAUKSq9/KWgZTSdmSuPNwjYcoYi/fqmds/WxG7mNxeol5WPte+eYdQclgdsQuSQI5AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876689; c=relaxed/simple;
-	bh=4lAA3N3SkjijY1qQOCLhz2A7O2c8VHN5n2LmBZR4A3g=;
+	s=arc-20240116; t=1727876599; c=relaxed/simple;
+	bh=P+vbVypkIndtbl+jZ4+FaEr5tBKz+1PNi1yi/XX9m+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOVdJmMgkhCx/f98UtOhuC2c7sXROrGMkyVVeug6sVNbl+Ie10Dg1pyrb91vfEylH69mmca1LN4sRmMQsNLf+nzoLuQFOX3JepYNmWt/brz/fx2EP+1QnOpakCkHVSvYDx41JTIN29dS4+c5zzJnAUI1FIAdvo7jP9RkB6KtDI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWbn8NvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A95EC4CEC5;
-	Wed,  2 Oct 2024 13:44:48 +0000 (UTC)
+	 MIME-Version; b=HrRWqIeK60akorkSRF053TGr26st3hL6moFiTvHUdN81qSg/ysPsIr6eLmOBg26sZ5uM1QnAmJuqFgHe3KDMgYxEXHqTfo+i/wxVeE8vpz5kYU+1+YWfH7bRxuiluubHhqwKcDFkavqOfQooWyMhMV4KyJmzlbtCGHH/iiBr/eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tNjeGXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8FBC4CEC5;
+	Wed,  2 Oct 2024 13:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876688;
-	bh=4lAA3N3SkjijY1qQOCLhz2A7O2c8VHN5n2LmBZR4A3g=;
+	s=korg; t=1727876597;
+	bh=P+vbVypkIndtbl+jZ4+FaEr5tBKz+1PNi1yi/XX9m+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWbn8NvUqyjfoJ2kXxA9fSn+rQOBYq/D7iywIemWs7ItWaOZMWoyQAokcBy8uXQHw
-	 3gRJIY3rbkdkm5PC+OLOKsp4Y8504vjRYx9HiOCQ1db4ovABTfSld9KRS1Da3Q471X
-	 1W/Qtwp5hju0W1UxCKc5zY2/CJQuDiiS44f+9Qt4=
+	b=0tNjeGXKmwnuAX3NsnLSlzhfCBvYAT/ENfWAMyLUsbuBBBF+9nAzCCiGZ+jrryaC7
+	 nIc0sPTtK1Vj5kDkteoxYVSQRm8LDKgQEQKVCshU+Z4nQ6bEEOthvvEh4hrIo1GbN+
+	 DlWtG5ad/NWHkwzZUAiULZB1nMH/8AtcnkU6ovpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangyun <yangyun50@huawei.com>,
-	Bernd Schubert <bschubert@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.11 498/695] fuse: use exclusive lock when FUSE_I_CACHE_IO_MODE is set
-Date: Wed,  2 Oct 2024 14:58:16 +0200
-Message-ID: <20241002125842.352137085@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	David Hildenbrand <david@redhat.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 499/695] mm: migrate: annotate data-race in migrate_folio_unmap()
+Date: Wed,  2 Oct 2024 14:58:17 +0200
+Message-ID: <20241002125842.395408026@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,35 +70,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: yangyun <yangyun50@huawei.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 2f3d8ff457982f4055fe8f7bf19d3821ba22c376 upstream.
+commit 8001070cfbec5cd4ea00b8b48ea51df91122f265 upstream.
 
-This may be a typo. The comment has said shared locks are
-not allowed when this bit is set. If using shared lock, the
-wait in `fuse_file_cached_io_open` may be forever.
+I found a report from syzbot [1]
 
-Fixes: 205c1d802683 ("fuse: allow parallel dio writes with FUSE_DIRECT_IO_ALLOW_MMAP")
-CC: stable@vger.kernel.org # v6.9
-Signed-off-by: yangyun <yangyun50@huawei.com>
-Reviewed-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+This report shows that the value can be changed, but in reality, the
+value of __folio_set_movable() cannot be changed because it holds the
+folio refcount.
+
+Therefore, it is appropriate to add an annotate to make KCSAN
+ignore that data-race.
+
+[1]
+
+==================================================================
+BUG: KCSAN: data-race in __filemap_remove_folio / migrate_pages_batch
+
+write to 0xffffea0004b81dd8 of 8 bytes by task 6348 on cpu 0:
+ page_cache_delete mm/filemap.c:153 [inline]
+ __filemap_remove_folio+0x1ac/0x2c0 mm/filemap.c:233
+ filemap_remove_folio+0x6b/0x1f0 mm/filemap.c:265
+ truncate_inode_folio+0x42/0x50 mm/truncate.c:178
+ shmem_undo_range+0x25b/0xa70 mm/shmem.c:1028
+ shmem_truncate_range mm/shmem.c:1144 [inline]
+ shmem_evict_inode+0x14d/0x530 mm/shmem.c:1272
+ evict+0x2f0/0x580 fs/inode.c:731
+ iput_final fs/inode.c:1883 [inline]
+ iput+0x42a/0x5b0 fs/inode.c:1909
+ dentry_unlink_inode+0x24f/0x260 fs/dcache.c:412
+ __dentry_kill+0x18b/0x4c0 fs/dcache.c:615
+ dput+0x5c/0xd0 fs/dcache.c:857
+ __fput+0x3fb/0x6d0 fs/file_table.c:439
+ ____fput+0x1c/0x30 fs/file_table.c:459
+ task_work_run+0x13a/0x1a0 kernel/task_work.c:228
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xbe/0x130 kernel/entry/common.c:218
+ do_syscall_64+0xd6/0x1c0 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffffea0004b81dd8 of 8 bytes by task 6342 on cpu 1:
+ __folio_test_movable include/linux/page-flags.h:699 [inline]
+ migrate_folio_unmap mm/migrate.c:1199 [inline]
+ migrate_pages_batch+0x24c/0x1940 mm/migrate.c:1797
+ migrate_pages_sync mm/migrate.c:1963 [inline]
+ migrate_pages+0xff1/0x1820 mm/migrate.c:2072
+ do_mbind mm/mempolicy.c:1390 [inline]
+ kernel_mbind mm/mempolicy.c:1533 [inline]
+ __do_sys_mbind mm/mempolicy.c:1607 [inline]
+ __se_sys_mbind+0xf76/0x1160 mm/mempolicy.c:1603
+ __x64_sys_mbind+0x78/0x90 mm/mempolicy.c:1603
+ x64_sys_call+0x2b4d/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:238
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xc9/0x1c0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0xffff888127601078 -> 0x0000000000000000
+
+Link: https://lkml.kernel.org/r/20240924130053.107490-1-aha310510@gmail.com
+Fixes: 7e2a5e5ab217 ("mm: migrate: use __folio_test_movable()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |    2 +-
+ mm/migrate.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1345,7 +1345,7 @@ static bool fuse_dio_wr_exclusive_lock(s
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1118,7 +1118,7 @@ static int migrate_folio_unmap(new_folio
+ 	int rc = -EAGAIN;
+ 	int old_page_state = 0;
+ 	struct anon_vma *anon_vma = NULL;
+-	bool is_lru = !__folio_test_movable(src);
++	bool is_lru = data_race(!__folio_test_movable(src));
+ 	bool locked = false;
+ 	bool dst_locked = false;
  
- 	/* shared locks are not allowed with parallel page cache IO */
- 	if (test_bit(FUSE_I_CACHE_IO_MODE, &fi->state))
--		return false;
-+		return true;
- 
- 	/* Parallel dio beyond EOF is not supported, at least for now. */
- 	if (fuse_io_past_eof(iocb, from))
 
 
 
