@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2015498D680
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:42:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81D698D651
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492CD1C21C99
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:42:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0D3C285AA5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D311D0DD4;
-	Wed,  2 Oct 2024 13:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0821D07BD;
+	Wed,  2 Oct 2024 13:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InPN/DmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMz2LAKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5551D0DCE;
-	Wed,  2 Oct 2024 13:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13A91D04AD;
+	Wed,  2 Oct 2024 13:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876389; cv=none; b=lu0n0Ea6Igr1xKLAqexyVf+CzFx3bwSqev2UWSrQ1JKp6zj6L59rH3V80ecKV4bcWy80g1f70k8hfiqEZqqwGOfPLNHSa572UFbPQmxXQfgkA937ZdiPvkSr34a8P9rEEN+JyRNbBwIagXgE4HDyUE1VQ3FiyVB0o6x1YkuiMF0=
+	t=1727876298; cv=none; b=lOB6lE8Oi8vw3rluOFyIlP0JeqctYa/mTUK++ZkBwxbk8Q+xhYGZpGE8qW0kr718ZtvNEay9XhM6jcyk0Hc57tVej8/Mr3f/iiP/0nFwy7BdnnQzQSis4ZuXIPoFY4S8t8jhR5PmmoRHYSany2ORzuslV6jOO9n3VY6p2M4RSAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876389; c=relaxed/simple;
-	bh=b2nXVYfmSr0hBljKTmG9awfXvFDcA8T8IPfMdcaqe9Q=;
+	s=arc-20240116; t=1727876298; c=relaxed/simple;
+	bh=ualhNfpoc/4qUX2obKhjRUOfB96skSVcCyjbSAxnX2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hp27nLn6qCUXU0A4AW6t++UIr3S14xBZWoMdzDjZzS+ENNeyVnZDIHTsPaaOeDzaRYcJiHLQWePbghesBD4qxpYK36a+LCpgl+gRIo5V6g72FMmCOY1jDWPKkHjEWKSNv2hfezelRziJtBRWJjxtxxZ7QjSAhzdJDuhN6jn9SZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InPN/DmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01246C4CEC5;
-	Wed,  2 Oct 2024 13:39:48 +0000 (UTC)
+	 MIME-Version; b=cDiGBN/X0eAZ5s/e8ztKUD/glCdO4FTk89SvdXB69c46PZ5NxTZLsQpOPus6EyN6yqQX/aJjBf0DS1xJXbF/F3k/KfgNEi29F+RoySRYhj8+E4/+CQU7Gv1gXUv9JlS/p0ZytYspoaKuqtqyxSZ5OVXXXgOkpurfDTEpTzy18e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMz2LAKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CF0C4CEC5;
+	Wed,  2 Oct 2024 13:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876389;
-	bh=b2nXVYfmSr0hBljKTmG9awfXvFDcA8T8IPfMdcaqe9Q=;
+	s=korg; t=1727876298;
+	bh=ualhNfpoc/4qUX2obKhjRUOfB96skSVcCyjbSAxnX2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InPN/DmXbcxcjsnQjctNkg9UD9mUa+wharDAZeIrw14U4jxNAWMU8HdiIQmIuFSb8
-	 CR17x1FryuPEC31jjSgRD0S/iHHF9vrKLgnpb/+BbmqU1IKLgNEJmEJxgT0/0w8nMN
-	 82+LGDRb5EBzzqphL6aJs1iCKLLR1BpuWqqLzE/M=
+	b=aMz2LAKgWFKtnGoLmah9s2DgSFoYdBaTgP8pmCuunxhV9lcVdLMozHDu8PwDcvnd1
+	 wUuX6QuSGQMTTBEv+jhyRrEZkg54Pi+WjrDf/GJbfuhY3Xq4WdxoPBzMcbBojFYUwL
+	 4kVrcqYM3Bqqa1NIUwehPn3Qb1l/JJt8MIPd/pSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Youzhong Yang <youzhong@gmail.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 396/695] nfsd: remove unneeded EEXIST error check in nfsd_do_file_acquire
-Date: Wed,  2 Oct 2024 14:56:34 +0200
-Message-ID: <20241002125838.263287616@linuxfoundation.org>
+Subject: [PATCH 6.11 397/695] nfsd: fix refcount leak when file is unhashed after being found
+Date: Wed,  2 Oct 2024 14:56:35 +0200
+Message-ID: <20241002125838.303136061@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -69,10 +69,11 @@ Content-Transfer-Encoding: 8bit
 
 From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 81a95c2b1d605743220f28db04b8da13a65c4059 ]
+[ Upstream commit 8a7926176378460e0d91e02b03f0ff20a8709a60 ]
 
-Given that we do the search and insertion while holding the i_lock, I
-don't think it's possible for us to get EEXIST here. Remove this case.
+If we wait_for_construction and find that the file is no longer hashed,
+and we're going to retry the open, the old nfsd_file reference is
+currently leaked. Put the reference before retrying.
 
 Fixes: c6593366c0bf ("nfsd: don't kill nfsd_files because of lease break error")
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
@@ -80,22 +81,21 @@ Tested-by: Youzhong Yang <youzhong@gmail.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/nfsd/filecache.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index f4704f5d40867..f09d96ff20652 100644
+index f09d96ff20652..e2e248032bfd0 100644
 --- a/fs/nfsd/filecache.c
 +++ b/fs/nfsd/filecache.c
-@@ -1035,8 +1035,6 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (likely(ret == 0))
- 		goto open_file;
- 
--	if (ret == -EEXIST)
--		goto retry;
- 	trace_nfsd_file_insert_err(rqstp, inode, may_flags, ret);
- 	status = nfserr_jukebox;
- 	goto construction_err;
+@@ -1049,6 +1049,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			status = nfserr_jukebox;
+ 			goto construction_err;
+ 		}
++		nfsd_file_put(nf);
+ 		open_retry = false;
+ 		fh_put(fhp);
+ 		goto retry;
 -- 
 2.43.0
 
