@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999F798D9A6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69EE98DC45
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9228B2243C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5C11F262BF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A661D0491;
-	Wed,  2 Oct 2024 14:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A7A1D0F59;
+	Wed,  2 Oct 2024 14:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oSgEHsN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kLfdZ78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA11E1D079C;
-	Wed,  2 Oct 2024 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98D01D0F4F;
+	Wed,  2 Oct 2024 14:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878132; cv=none; b=IOzQMljlLtob+qh+fN5qwE7fw9XHUfAcHP1ysgJGrbDTNk4jE792bwAHdVZ0CgA6Hsu6rLpmmfhrJI0QtyDHWthAAIDFjN7xnTGMh37SlmaURGSaTlGIXupnwZE6k8eKyBrrp896G7mNAvQYYfnJiTYC62/vdCBFr2JrqEAH+tg=
+	t=1727879596; cv=none; b=aOfBKF3hj8yUoa0u6D3pgqVhTnxiY2rGx+WdohlpceFgnoyqi0SCvtXsx8whiJ0MHKbJMpUc7/CSTfIDRoIit37jmEFGDhbzRSpuXbPbDFkIjHsSwSFA/zAv/MFgGZWycW9LEbZffOmVNW9LubxsVYwzZnvp9Bv74jmcUu8ko7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878132; c=relaxed/simple;
-	bh=nkP+nYx7XaDefkYQWf5CyEmYolCMf9IMekO5dUt83NE=;
+	s=arc-20240116; t=1727879596; c=relaxed/simple;
+	bh=9oOU2CalN9IAn1V0GDL8ttwMZLfWrXEMG/KtcvUzx8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1LIqlDx/Ff7VJ5v4yKzjD6c3yyVUCaRSNJs5OwdazGQdl0ucarEiFhocZjJUDVDX9wMeYP21hMAWtgkhf/uwwwHP3Pm7tuUvGE69fxHfxbq+32VB3YFwJ8QxxaGkKT/Qjx9eW6MYWMBocEnXbDtkkBF4+jPz6/ebDeqLSPuNtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oSgEHsN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15838C4CEC2;
-	Wed,  2 Oct 2024 14:08:51 +0000 (UTC)
+	 MIME-Version; b=ckSeOFpOaF6s5CTa0Hn0AVyh7l6cPZVgp01HZNtsb3fxWlTfYH/Fc5Gio1VbwxIx8EZRFIF2Vv3EB4W+/wHjxvYX/Jm4Xd/Y+QIJSIp4EPazvgzg1HKgWap1wE44zoJiHTt2V+9N92tfsb2INMS5xRweODeiul/qVwGBZv3OBTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kLfdZ78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D23C4CEC2;
+	Wed,  2 Oct 2024 14:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878132;
-	bh=nkP+nYx7XaDefkYQWf5CyEmYolCMf9IMekO5dUt83NE=;
+	s=korg; t=1727879596;
+	bh=9oOU2CalN9IAn1V0GDL8ttwMZLfWrXEMG/KtcvUzx8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1oSgEHsN6iV93y6WxJXw1BOyz6RusQemZf+q4Cvl7tHqW3TVx2KkJz6ab2OTyyevI
-	 cbZitBoM5BjrPME5uALxLTnvwEr735QJRyF6WnnFINmzd+21QATp/l+Yn1bl7DrnEd
-	 f1dQ/G4+X+Zun6iqUv+zr47t0X7vMh5hmXLO3RgA=
+	b=2kLfdZ784+0GCBeeWSf4Z/BlgiMCGHSRgzd+0dmEi5sl+WHnGcUAimRywv7mfK0TG
+	 8eGyv66DFMrlr0A9JIDP0QdC4yovb14X4c6nQ5bAvfPVfvZ0RBu6e9HGOVOCNkmTRT
+	 ke/xvhPao4YWyaAQtkSWp/tGhOE7mLEOT4FiW50U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Li <pengfei.li_1@nxp.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
+	Jan Beulich <jbeulich@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 313/634] clk: imx: fracn-gppll: fix fractional part of PLL getting lost
+Subject: [PATCH 6.6 174/538] xen: add capability to remap non-RAM pages to different PFNs
 Date: Wed,  2 Oct 2024 14:56:53 +0200
-Message-ID: <20241002125823.460416936@linuxfoundation.org>
+Message-ID: <20241002125759.125162668@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengfei Li <pengfei.li_1@nxp.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 7622f888fca125ae46f695edf918798ebc0506c5 ]
+[ Upstream commit d05208cf7f05420ad10cc7f9550f91d485523659 ]
 
-Fractional part of PLL gets lost after re-enabling the PLL. the
-MFN can NOT be automatically loaded when doing frac PLL enable/disable,
-So when re-enable PLL, configure mfn explicitly.
+When running as a Xen PV dom0 it can happen that the kernel is being
+loaded to a guest physical address conflicting with the host memory
+map.
 
-Fixes: 1b26cb8a77a4 ("clk: imx: support fracn gppll")
-Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-5-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+In order to be able to resolve this conflict, add the capability to
+remap non-RAM areas to different guest PFNs. A function to use this
+remapping information for other purposes than doing the remap will be
+added when needed.
+
+As the number of conflicts should be rather low (currently only
+machines with max. 1 conflict are known), save the remap data in a
+small statically allocated array.
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-fracn-gppll.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/xen/p2m.c     | 63 ++++++++++++++++++++++++++++++++++++++++++
+ arch/x86/xen/xen-ops.h |  3 ++
+ 2 files changed, 66 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
-index 44462ab50e513..1becba2b62d0b 100644
---- a/drivers/clk/imx/clk-fracn-gppll.c
-+++ b/drivers/clk/imx/clk-fracn-gppll.c
-@@ -291,6 +291,10 @@ static int clk_fracn_gppll_prepare(struct clk_hw *hw)
- 	if (val & POWERUP_MASK)
- 		return 0;
+diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
+index 4c2bf989edafc..6cb8dae768fad 100644
+--- a/arch/x86/xen/p2m.c
++++ b/arch/x86/xen/p2m.c
+@@ -80,6 +80,7 @@
+ #include <asm/xen/hypervisor.h>
+ #include <xen/balloon.h>
+ #include <xen/grant_table.h>
++#include <xen/hvc-console.h>
  
-+	if (pll->flags & CLK_FRACN_GPPLL_FRACN)
-+		writel_relaxed(readl_relaxed(pll->base + PLL_NUMERATOR),
-+			       pll->base + PLL_NUMERATOR);
+ #include "multicalls.h"
+ #include "xen-ops.h"
+@@ -794,6 +795,68 @@ int clear_foreign_p2m_mapping(struct gnttab_unmap_grant_ref *unmap_ops,
+ 	return ret;
+ }
+ 
++/* Remapped non-RAM areas */
++#define NR_NONRAM_REMAP 4
++static struct nonram_remap {
++	phys_addr_t maddr;
++	phys_addr_t paddr;
++	size_t size;
++} xen_nonram_remap[NR_NONRAM_REMAP] __ro_after_init;
++static unsigned int nr_nonram_remap __ro_after_init;
 +
- 	val |= CLKMUX_BYPASS;
- 	writel_relaxed(val, pll->base + PLL_CTRL);
++/*
++ * Do the real remapping of non-RAM regions as specified in the
++ * xen_nonram_remap[] array.
++ * In case of an error just crash the system.
++ */
++void __init xen_do_remap_nonram(void)
++{
++	unsigned int i;
++	unsigned int remapped = 0;
++	const struct nonram_remap *remap = xen_nonram_remap;
++	unsigned long pfn, mfn, end_pfn;
++
++	for (i = 0; i < nr_nonram_remap; i++) {
++		end_pfn = PFN_UP(remap->paddr + remap->size);
++		pfn = PFN_DOWN(remap->paddr);
++		mfn = PFN_DOWN(remap->maddr);
++		while (pfn < end_pfn) {
++			if (!set_phys_to_machine(pfn, mfn))
++				panic("Failed to set p2m mapping for pfn=%lx mfn=%lx\n",
++				       pfn, mfn);
++
++			pfn++;
++			mfn++;
++			remapped++;
++		}
++
++		remap++;
++	}
++
++	pr_info("Remapped %u non-RAM page(s)\n", remapped);
++}
++
++/*
++ * Add a new non-RAM remap entry.
++ * In case of no free entry found, just crash the system.
++ */
++void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
++				 unsigned long size)
++{
++	BUG_ON((maddr & ~PAGE_MASK) != (paddr & ~PAGE_MASK));
++
++	if (nr_nonram_remap == NR_NONRAM_REMAP) {
++		xen_raw_console_write("Number of required E820 entry remapping actions exceed maximum value\n");
++		BUG();
++	}
++
++	xen_nonram_remap[nr_nonram_remap].maddr = maddr;
++	xen_nonram_remap[nr_nonram_remap].paddr = paddr;
++	xen_nonram_remap[nr_nonram_remap].size = size;
++
++	nr_nonram_remap++;
++}
++
+ #ifdef CONFIG_XEN_DEBUG_FS
+ #include <linux/debugfs.h>
+ #include "debugfs.h"
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index f46a1dd3624da..a6a21dd055270 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -43,6 +43,9 @@ void xen_mm_unpin_all(void);
+ #ifdef CONFIG_X86_64
+ void __init xen_relocate_p2m(void);
+ #endif
++void __init xen_do_remap_nonram(void);
++void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
++				 unsigned long size);
  
+ void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
+ 				   const char *component);
 -- 
 2.43.0
 
