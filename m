@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2086298D942
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B36F98DBC4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD35A2885F1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 235FAB27AF9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6644E1D1F51;
-	Wed,  2 Oct 2024 14:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E831D278B;
+	Wed,  2 Oct 2024 14:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NAVY2BV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXIBmXwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F6F1D1F4B;
-	Wed,  2 Oct 2024 14:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE5C1D0E06;
+	Wed,  2 Oct 2024 14:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877881; cv=none; b=A1ytwQdfmVxuHocwZpVhOQorpa+yaed+oqybDeopgwHylGwdwkY0O3ZnudlpHeZ4skQf7p3LcKyGJR4tMOaM2aK/hXYsihf8m+mWhgVc4ChBt+kObId0t4YTrGYpqTWMK/aIdBJcqhWhFuBQL2wHHsOhgPAm3fpuwhbK7I+oDuc=
+	t=1727879352; cv=none; b=PcfPrtyL2NyrghyW/lH/lXnk6LKPL6H2JW6TApDCMmPYIg4Rrcm1LdNodksqZlL1XWT1/FGWPPNtJZSMbEP1wVOmUiYg1tIbCNz3t/g2d6leeXezjLU+ks83x8nUliux+oTfKqYt407YAHa6pJOhTEzS1xKSCJ+9fil4PvQ9uNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877881; c=relaxed/simple;
-	bh=j5V+QpZ74sY61fVzfgzTxBubwqeiiNj/o1WhLzgC2zo=;
+	s=arc-20240116; t=1727879352; c=relaxed/simple;
+	bh=lcgmMQjj9+gMJcdXvhPLrshe7nPfHuVzCHwfpdtWJDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoXhyTU91MI7cH+wCGT+XER8OZfOUdm/IPlK65iMEKD1mAiR/4jQAjIllbWB9kYTD5wuUMiYd74uTMs4joJkMD6OuoCzbS962I7FaHPRdtBHiD3dPFq3195IKsw74LdNxBDvpN3x2wWzy6g4RDjOmYLyMGoKL/h90XpXsRzDnJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NAVY2BV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F15DC4CECE;
-	Wed,  2 Oct 2024 14:04:40 +0000 (UTC)
+	 MIME-Version; b=m5qT0L4BGP92YWAzrAjQlbysiRITDvEUK3a9uLJ3sqEJD2LvFaGlEejd1IgmH0vP9uBLcnxVsbQyFHzrp6JyVlk+6k+FTc96isKhkZ2D/HKn2OoC93aRnYsZCi22UNClxP3QFsYalKnMor4jp9aiqZy+oKoZ6fVGCF9xj3u8Hsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXIBmXwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AD8C4CEC2;
+	Wed,  2 Oct 2024 14:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877881;
-	bh=j5V+QpZ74sY61fVzfgzTxBubwqeiiNj/o1WhLzgC2zo=;
+	s=korg; t=1727879352;
+	bh=lcgmMQjj9+gMJcdXvhPLrshe7nPfHuVzCHwfpdtWJDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NAVY2BVWKrlvRE9OR6B85bRtZTDAZG/v5j5xV0DcdBdUd8BLgCiPNIc3dedizjCf
-	 urGwzEW/eQWYIspIQ84HpCFXfutbbO9Dg2uRHtsT+vA0ZHqxDF9OjFSZLezk/a9dmS
-	 gUM+cwbKSl/gBKQBwI+C5HA+mhoFWiaxBaCWTJys=
+	b=SXIBmXwukhW3M9a7E9Dp4W9AOrwg/VKXTFFDh2EWc9wVd81lNhnhPK9wHElsPfHTp
+	 SDfLyZxC8Wbcgf+U4jkT1Ex4KlOL7sBPc3CsVU62mI2g18+JXh0NHM8tmCbjNar4tU
+	 3ylZ4vcyXrC5TqDeGRzuIz/E28IunM0cfwPCFqxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Riyan Dhiman <riyandhiman14@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 226/634] tpm: Clean up TPM space after command failure
-Date: Wed,  2 Oct 2024 14:55:26 +0200
-Message-ID: <20241002125820.019905123@linuxfoundation.org>
+Subject: [PATCH 6.6 088/538] block: fix potential invalid pointer dereference in blk_add_partition
+Date: Wed,  2 Oct 2024 14:55:27 +0200
+Message-ID: <20241002125755.698162032@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Riyan Dhiman <riyandhiman14@gmail.com>
 
-[ Upstream commit e3aaebcbb7c6b403416f442d1de70d437ce313a7 ]
+[ Upstream commit 26e197b7f9240a4ac301dd0ad520c0c697c2ea7d ]
 
-tpm_dev_transmit prepares the TPM space before attempting command
-transmission. However if the command fails no rollback of this
-preparation is done. This can result in transient handles being leaked
-if the device is subsequently closed with no further commands performed.
+The blk_add_partition() function initially used a single if-condition
+(IS_ERR(part)) to check for errors when adding a partition. This was
+modified to handle the specific case of -ENXIO separately, allowing the
+function to proceed without logging the error in this case. However,
+this change unintentionally left a path where md_autodetect_dev()
+could be called without confirming that part is a valid pointer.
 
-Fix this by flushing the space in the event of command transmission
-failure.
+This commit separates the error handling logic by splitting the
+initial if-condition, improving code readability and handling specific
+error scenarios explicitly. The function now distinguishes the general
+error case from -ENXIO without altering the existing behavior of
+md_autodetect_dev() calls.
 
-Fixes: 745b361e989a ("tpm: infrastructure for TPM spaces")
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: b72053072c0b (block: allow partitions on host aware zone devices)
+Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240911132954.5874-1-riyandhiman14@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm-dev-common.c | 2 ++
- drivers/char/tpm/tpm2-space.c     | 3 +++
- 2 files changed, 5 insertions(+)
+ block/partitions/core.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
-index 30b4c288c1bbc..c3fbbf4d3db79 100644
---- a/drivers/char/tpm/tpm-dev-common.c
-+++ b/drivers/char/tpm/tpm-dev-common.c
-@@ -47,6 +47,8 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
+diff --git a/block/partitions/core.c b/block/partitions/core.c
+index 6b2ef9977617a..fc0ab5d8ab705 100644
+--- a/block/partitions/core.c
++++ b/block/partitions/core.c
+@@ -574,9 +574,11 @@ static bool blk_add_partition(struct gendisk *disk,
  
- 	if (!ret)
- 		ret = tpm2_commit_space(chip, space, buf, &len);
-+	else
-+		tpm2_flush_space(chip);
+ 	part = add_partition(disk, p, from, size, state->parts[p].flags,
+ 			     &state->parts[p].info);
+-	if (IS_ERR(part) && PTR_ERR(part) != -ENXIO) {
+-		printk(KERN_ERR " %s: p%d could not be added: %pe\n",
+-		       disk->disk_name, p, part);
++	if (IS_ERR(part)) {
++		if (PTR_ERR(part) != -ENXIO) {
++			printk(KERN_ERR " %s: p%d could not be added: %pe\n",
++			       disk->disk_name, p, part);
++		}
+ 		return true;
+ 	}
  
- out_rc:
- 	return ret ? ret : len;
-diff --git a/drivers/char/tpm/tpm2-space.c b/drivers/char/tpm/tpm2-space.c
-index 4892d491da8da..25a66870c165c 100644
---- a/drivers/char/tpm/tpm2-space.c
-+++ b/drivers/char/tpm/tpm2-space.c
-@@ -169,6 +169,9 @@ void tpm2_flush_space(struct tpm_chip *chip)
- 	struct tpm_space *space = &chip->work_space;
- 	int i;
- 
-+	if (!space)
-+		return;
-+
- 	for (i = 0; i < ARRAY_SIZE(space->context_tbl); i++)
- 		if (space->context_tbl[i] && ~space->context_tbl[i])
- 			tpm2_flush_context(chip, space->context_tbl[i]);
 -- 
 2.43.0
 
