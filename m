@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C5498D0C8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:05:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FA098D0CC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486121F237FB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CE6A284576
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93801E493F;
-	Wed,  2 Oct 2024 10:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCAB1E4937;
+	Wed,  2 Oct 2024 10:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRmLgG7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GudcHoIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C491CCB31
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB88C1E2033
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727863554; cv=none; b=fnPF5zOQ30LHZhTzaYFjoZ9YIdTT62GxHGTixw7BSo4Y07bLBp6w4/T/JI2R36P6J5YWy85Mn65Vg5uTlDc9044Cn7GjoSlT39cWnwXDV8FpEqcsff27mWcMBHBG7SrPs4Z76G6vlUg51o19WJaE7626Bjz52d40ZSesTamJf0g=
+	t=1727863649; cv=none; b=ZRhUnCwa/ruymBHxXWiAMxB847FNX14Z71zvTZSljDn9ZCduqpNtLfJMjReoLbyAj7S9Xo5GXZakICDf+Z16GEvd1RgeM3i8mD3/mK95kf/kTBq5LP7+PzGXwjXxvpnllp3C5c2Rg47GtQrOvE7sKptpLORT4ESrdxx33h9DTRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727863554; c=relaxed/simple;
-	bh=8LDD16dgsjQDlB3XmQU5LlYKYZOpUxk9zhjQhgJeYJs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c9p0i7fSqyyvMW3PIvro9eIYwJ9qESEHH++Wv946mBSUEwCpVjkZv//9TURSsTx97ILT1MUbZ6iUKMI+87w1Q1UiOBHGQXSqcKx6faWNte5Zq+gYvCW0ZDf/9zvFobgCqTk56A0qdldQo8y75lOpF1WxtBwlC7Pq2J7U14xgSs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRmLgG7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7D2C4CECE;
-	Wed,  2 Oct 2024 10:05:53 +0000 (UTC)
+	s=arc-20240116; t=1727863649; c=relaxed/simple;
+	bh=ecl02q1nqSgMB2+9fBQhjI7BE8zqHpNnS1qWR7EPB8k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qhSqmb/fzz1DePLT3nXKr7CFjmKs0RulGQOY0beljLokZ4ERis2Q4JYtBTUyHbkHRJRi68NqZodMrTTQhv+VqlA8U1IoHc143JuRT7sRjhus1cMbbIZCRaMPqzhP2NrAWFKVgZj+FbEQC4btdCyyX82JwH3Vg8hWJnmsrI6hLFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GudcHoIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D081FC4CEC5;
+	Wed,  2 Oct 2024 10:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727863554;
-	bh=8LDD16dgsjQDlB3XmQU5LlYKYZOpUxk9zhjQhgJeYJs=;
+	s=korg; t=1727863649;
+	bh=ecl02q1nqSgMB2+9fBQhjI7BE8zqHpNnS1qWR7EPB8k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fRmLgG7mQ2tRKdiFdKhMOvcbBLYd5aQjDIacSwNIEGqVjWGayMgaMVkAAHSxCXoXK
-	 H4ItbcSsx/UQ7Aq6Iu3HYZg+w7zF0sa3Tmx0XArUYM9L/ad4iLUD4S3DOC0NxGa1fx
-	 p7vXX4U6YraCHrI/Iw/+rLMqEITurvWf4oL5ksuo=
-Subject: FAILED: patch "[PATCH] bpf: Fix use-after-free in bpf_uprobe_multi_link_attach()" failed to apply to 6.10-stable tree
-To: oleg@redhat.com,andrii@kernel.org,jolsa@kernel.org,peterz@infradead.org
+	b=GudcHoIuCIAmrCnpkwpbQ3+tAzAe899QiJgMJGpO78fpNCO2FT20B3/hs0Pj+E84Q
+	 eAfQfo9/fTLWf6YRENThk6ngyu/8LyVz0e3QUSwqIlVnmWXdbIkvGGMrE8J+lLPUOC
+	 FdrFhNnOTGoM/tK8GQiYZ8NrLk3YNigVEwG2Rm4g=
+Subject: FAILED: patch "[PATCH] lockdep: fix deadlock issue between lockdep and rcu" failed to apply to 5.4-stable tree
+To: zhiguo.niu@unisoc.com,boqun.feng@gmail.com,bvanassche@acm.org,cmllamas@google.com,longman@redhat.com,paulmck@kernel.org,xuewen.yan@unisoc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 12:05:51 +0200
-Message-ID: <2024100250-celibacy-doubling-466e@gregkh>
+Date: Wed, 02 Oct 2024 12:07:26 +0200
+Message-ID: <2024100226-unselfish-triangle-e5eb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,28 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5fe6e308abaea082c20fbf2aa5df8e14495622cf
+git cherry-pick -x a6f88ac32c6e63e69c595bfae220d8641704c9b7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100250-celibacy-doubling-466e@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100226-unselfish-triangle-e5eb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-5fe6e308abae ("bpf: Fix use-after-free in bpf_uprobe_multi_link_attach()")
-3c83a9ad0295 ("uprobes: make uprobe_register() return struct uprobe *")
-e04332ebc8ac ("uprobes: kill uprobe_register_refctr()")
-db61e6a4eee5 ("selftests/bpf: fix uprobe.path leak in bpf_testmod")
-f42a58ffb8bb ("selftests/bpf: Add uretprobe syscall test for regs changes")
-3e8e25761a40 ("selftests/bpf: Add uretprobe syscall test for regs integrity")
+a6f88ac32c6e ("lockdep: fix deadlock issue between lockdep and rcu")
+61cc4534b655 ("locking/lockdep: Avoid potential access of invalid memory in lock_class")
+248efb2158f1 ("locking/lockdep: Rework lockdep_lock")
+10476e630422 ("locking/lockdep: Fix bad recursion pattern")
+25016bd7f4ca ("locking/lockdep: Avoid recursion in lockdep_count_{for,back}ward_deps()")
 
 thanks,
 
@@ -82,56 +81,215 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5fe6e308abaea082c20fbf2aa5df8e14495622cf Mon Sep 17 00:00:00 2001
-From: Oleg Nesterov <oleg@redhat.com>
-Date: Tue, 13 Aug 2024 17:25:24 +0200
-Subject: [PATCH] bpf: Fix use-after-free in bpf_uprobe_multi_link_attach()
+From a6f88ac32c6e63e69c595bfae220d8641704c9b7 Mon Sep 17 00:00:00 2001
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Date: Thu, 20 Jun 2024 22:54:34 +0000
+Subject: [PATCH] lockdep: fix deadlock issue between lockdep and rcu
 
-If bpf_link_prime() fails, bpf_uprobe_multi_link_attach() goes to the
-error_free label and frees the array of bpf_uprobe's without calling
-bpf_uprobe_unregister().
+There is a deadlock scenario between lockdep and rcu when
+rcu nocb feature is enabled, just as following call stack:
 
-This leaks bpf_uprobe->uprobe and worse, this frees bpf_uprobe->consumer
-without removing it from the uprobe->consumers list.
+     rcuop/x
+-000|queued_spin_lock_slowpath(lock = 0xFFFFFF817F2A8A80, val = ?)
+-001|queued_spin_lock(inline) // try to hold nocb_gp_lock
+-001|do_raw_spin_lock(lock = 0xFFFFFF817F2A8A80)
+-002|__raw_spin_lock_irqsave(inline)
+-002|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F2A8A80)
+-003|wake_nocb_gp_defer(inline)
+-003|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F30B680)
+-004|__call_rcu_common(inline)
+-004|call_rcu(head = 0xFFFFFFC082EECC28, func = ?)
+-005|call_rcu_zapped(inline)
+-005|free_zapped_rcu(ch = ?)// hold graph lock
+-006|rcu_do_batch(rdp = 0xFFFFFF817F245680)
+-007|nocb_cb_wait(inline)
+-007|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F245680)
+-008|kthread(_create = 0xFFFFFF80803122C0)
+-009|ret_from_fork(asm)
 
-Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
-Closes: https://lore.kernel.org/all/000000000000382d39061f59f2dd@google.com/
-Reported-by: syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com
+     rcuop/y
+-000|queued_spin_lock_slowpath(lock = 0xFFFFFFC08291BBC8, val = 0)
+-001|queued_spin_lock()
+-001|lockdep_lock()
+-001|graph_lock() // try to hold graph lock
+-002|lookup_chain_cache_add()
+-002|validate_chain()
+-003|lock_acquire
+-004|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F211D80)
+-005|lock_timer_base(inline)
+-006|mod_timer(inline)
+-006|wake_nocb_gp_defer(inline)// hold nocb_gp_lock
+-006|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F2A8680)
+-007|__call_rcu_common(inline)
+-007|call_rcu(head = 0xFFFFFFC0822E0B58, func = ?)
+-008|call_rcu_hurry(inline)
+-008|rcu_sync_call(inline)
+-008|rcu_sync_func(rhp = 0xFFFFFFC0822E0B58)
+-009|rcu_do_batch(rdp = 0xFFFFFF817F266680)
+-010|nocb_cb_wait(inline)
+-010|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F266680)
+-011|kthread(_create = 0xFFFFFF8080363740)
+-012|ret_from_fork(asm)
+
+rcuop/x and rcuop/y are rcu nocb threads with the same nocb gp thread.
+This patch release the graph lock before lockdep call_rcu.
+
+Fixes: a0b0fd53e1e6 ("locking/lockdep: Free lock classes that are no longer in use")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240813152524.GA7292@redhat.com
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Carlos Llamas <cmllamas@google.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20240620225436.3127927-1-cmllamas@google.com
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 4e391daafa64..90cd30e9723e 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -3484,17 +3484,20 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 						    &uprobes[i].consumer);
- 		if (IS_ERR(uprobes[i].uprobe)) {
- 			err = PTR_ERR(uprobes[i].uprobe);
--			bpf_uprobe_unregister(uprobes, i);
--			goto error_free;
-+			link->cnt = i;
-+			goto error_unregister;
- 		}
- 	}
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 266f57f36f69..b172ead28f1c 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -6186,25 +6186,27 @@ static struct pending_free *get_pending_free(void)
+ static void free_zapped_rcu(struct rcu_head *cb);
  
- 	err = bpf_link_prime(&link->link, &link_primer);
- 	if (err)
--		goto error_free;
-+		goto error_unregister;
+ /*
+- * Schedule an RCU callback if no RCU callback is pending. Must be called with
+- * the graph lock held.
+- */
+-static void call_rcu_zapped(struct pending_free *pf)
++* See if we need to queue an RCU callback, must called with
++* the lockdep lock held, returns false if either we don't have
++* any pending free or the callback is already scheduled.
++* Otherwise, a call_rcu() must follow this function call.
++*/
++static bool prepare_call_rcu_zapped(struct pending_free *pf)
+ {
+ 	WARN_ON_ONCE(inside_selftest());
  
- 	return bpf_link_settle(&link_primer);
+ 	if (list_empty(&pf->zapped))
+-		return;
++		return false;
  
-+error_unregister:
-+	bpf_uprobe_unregister(uprobes, link->cnt);
+ 	if (delayed_free.scheduled)
+-		return;
++		return false;
+ 
+ 	delayed_free.scheduled = true;
+ 
+ 	WARN_ON_ONCE(delayed_free.pf + delayed_free.index != pf);
+ 	delayed_free.index ^= 1;
+ 
+-	call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
++	return true;
+ }
+ 
+ /* The caller must hold the graph lock. May be called from RCU context. */
+@@ -6230,6 +6232,7 @@ static void free_zapped_rcu(struct rcu_head *ch)
+ {
+ 	struct pending_free *pf;
+ 	unsigned long flags;
++	bool need_callback;
+ 
+ 	if (WARN_ON_ONCE(ch != &delayed_free.rcu_head))
+ 		return;
+@@ -6241,14 +6244,18 @@ static void free_zapped_rcu(struct rcu_head *ch)
+ 	pf = delayed_free.pf + (delayed_free.index ^ 1);
+ 	__free_zapped_classes(pf);
+ 	delayed_free.scheduled = false;
+-
+-	/*
+-	 * If there's anything on the open list, close and start a new callback.
+-	 */
+-	call_rcu_zapped(delayed_free.pf + delayed_free.index);
+-
++	need_callback =
++		prepare_call_rcu_zapped(delayed_free.pf + delayed_free.index);
+ 	lockdep_unlock();
+ 	raw_local_irq_restore(flags);
 +
- error_free:
- 	kvfree(uprobes);
- 	kfree(link);
++	/*
++	* If there's pending free and its callback has not been scheduled,
++	* queue an RCU callback.
++	*/
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
++
+ }
+ 
+ /*
+@@ -6288,6 +6295,7 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
+ {
+ 	struct pending_free *pf;
+ 	unsigned long flags;
++	bool need_callback;
+ 
+ 	init_data_structures_once();
+ 
+@@ -6295,10 +6303,11 @@ static void lockdep_free_key_range_reg(void *start, unsigned long size)
+ 	lockdep_lock();
+ 	pf = get_pending_free();
+ 	__lockdep_free_key_range(pf, start, size);
+-	call_rcu_zapped(pf);
++	need_callback = prepare_call_rcu_zapped(pf);
+ 	lockdep_unlock();
+ 	raw_local_irq_restore(flags);
+-
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
+ 	/*
+ 	 * Wait for any possible iterators from look_up_lock_class() to pass
+ 	 * before continuing to free the memory they refer to.
+@@ -6392,6 +6401,7 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
+ 	struct pending_free *pf;
+ 	unsigned long flags;
+ 	int locked;
++	bool need_callback = false;
+ 
+ 	raw_local_irq_save(flags);
+ 	locked = graph_lock();
+@@ -6400,11 +6410,13 @@ static void lockdep_reset_lock_reg(struct lockdep_map *lock)
+ 
+ 	pf = get_pending_free();
+ 	__lockdep_reset_lock(pf, lock);
+-	call_rcu_zapped(pf);
++	need_callback = prepare_call_rcu_zapped(pf);
+ 
+ 	graph_unlock();
+ out_irq:
+ 	raw_local_irq_restore(flags);
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
+ }
+ 
+ /*
+@@ -6448,6 +6460,7 @@ void lockdep_unregister_key(struct lock_class_key *key)
+ 	struct pending_free *pf;
+ 	unsigned long flags;
+ 	bool found = false;
++	bool need_callback = false;
+ 
+ 	might_sleep();
+ 
+@@ -6468,11 +6481,14 @@ void lockdep_unregister_key(struct lock_class_key *key)
+ 	if (found) {
+ 		pf = get_pending_free();
+ 		__lockdep_free_key_range(pf, key, 1);
+-		call_rcu_zapped(pf);
++		need_callback = prepare_call_rcu_zapped(pf);
+ 	}
+ 	lockdep_unlock();
+ 	raw_local_irq_restore(flags);
+ 
++	if (need_callback)
++		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
++
+ 	/* Wait until is_dynamic_key() has finished accessing k->hash_entry. */
+ 	synchronize_rcu();
+ }
 
 
