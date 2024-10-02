@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-79883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5634E98DABF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E29198DD2C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 098741F25089
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2986A286108
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69B91D0BAD;
-	Wed,  2 Oct 2024 14:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE9D1D172B;
+	Wed,  2 Oct 2024 14:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNZ7HsIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpuVj0ZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55A41CF7D4;
-	Wed,  2 Oct 2024 14:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF9C1EA80;
+	Wed,  2 Oct 2024 14:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878746; cv=none; b=bp4Fj/pMPJOn0H0K1DkZZRzTcqZ49eLXa5lkGQ2Fz+kQvVA0HxGeYTK7r2lf4R3mTsrHy2TWtXHY4lTZDzOMZQZHH2c6Uar0h8sxVGGE6+HLRS6EroAq5pwFrhneySXbwagZQ+HA84PV8/YLrK8Nih0xVMxGlrsIHQ77zu4hTTE=
+	t=1727880205; cv=none; b=h051KDp+LeEOBdr99DE9mGsOxLciHzwTateF/nN5luXnpzOK487C4UFL9BN/hUOf/rnrDMjpKekXWCbp4Y1sBxPRhmA1K2im/hPsKjbAo8vn9IWzlSXQKlOE2r8c5iRYGXsm37Bzr4xy9Vzt7JOp12e/uJDZPgT5wAjyCJsw8tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878746; c=relaxed/simple;
-	bh=1u8hHB9f9VWguE2oUJW40Pr1A50pE1mWkOoZHIbb6RU=;
+	s=arc-20240116; t=1727880205; c=relaxed/simple;
+	bh=5/QiAqC67ubYdEF1FkVD87bLBK8X2hYpPxenQLalh/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6GfFJwF960SGxW5mYJurZSd/4++u2JOmFoioDN7d1p5Gx8WnodkGtRnnDJusgk1/wlvzH3o8Mo2Ezuf1TgKMCK8CpVfLyodVNEeWnT2urMmgwHI0LCyZtIwLpTlkC0S3SebH8I//1K/1ewpTZX0jim62E27EY5CHORCzzlHJPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNZ7HsIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAE0C4CECD;
-	Wed,  2 Oct 2024 14:19:06 +0000 (UTC)
+	 MIME-Version; b=Ltkw9JIKXKfEvgwhpLsq4+erWHtAExuIH0+ZYf2I5AonE+ZSECOvIwqF2LnLzhJUX+X0go+CtLqCU7ncTG4ZHv5u7UTfWJcZAd9nuq3RFTuMrbeUdc0QFDaaP9aZAjAahf72MRxpT9BKzceg7g171QBlGKSsjw+6wIvipCWmO1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpuVj0ZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF7BC4CEC2;
+	Wed,  2 Oct 2024 14:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878746;
-	bh=1u8hHB9f9VWguE2oUJW40Pr1A50pE1mWkOoZHIbb6RU=;
+	s=korg; t=1727880205;
+	bh=5/QiAqC67ubYdEF1FkVD87bLBK8X2hYpPxenQLalh/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNZ7HsIAn0BFOyMcHI1YHGaWUJ5R7vm+1fBtsR1wAhwCgASMNA92Achh+N62SdsHK
-	 YMWj34fQloLk7V1xCfq5oJwUeONH6MluAaHsUCEMWjG+iRmbkQlYhLDlPpNw5NuGjn
-	 /94qClUE/1eAclgGsNl1ZV2ZoeW4JxzZbm2A6Wyk=
+	b=QpuVj0ZYi6IUg+hAT0rlcQcgrT4zZo+aBL+lTQtv8CVy5iG4F0uXeXc6eF031jfrk
+	 mMSFhT6mCcu043NErakho6hk0SdE7YMYVWvBTZBHSh1GHvvUaCA4ZbuPWxBF2EjEDg
+	 AQdGU+GwAiVpHUVA6C4MEH+4XO7wgzvLQtEIIBCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.10 519/634] USB: appledisplay: close race between probe and completion handler
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 380/538] netfilter: ctnetlink: compile ctnetlink_label_size with CONFIG_NF_CONNTRACK_EVENTS
 Date: Wed,  2 Oct 2024 15:00:19 +0200
-Message-ID: <20241002125831.594802881@linuxfoundation.org>
+Message-ID: <20241002125807.430784235@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Simon Horman <horms@kernel.org>
 
-commit 8265d06b7794493d82c5c21a12d7ba43eccc30cb upstream.
+[ Upstream commit e1f1ee0e9ad8cbe660f5c104e791c5f1a7cf4c31 ]
 
-There is a small window during probing when IO is running
-but the backlight is not registered. Processing events
-during that time will crash. The completion handler
-needs to check for a backlight before scheduling work.
+Only provide ctnetlink_label_size when it is used,
+which is when CONFIG_NF_CONNTRACK_EVENTS is configured.
 
-The bug is as old as the driver.
+Flagged by clang-18 W=1 builds as:
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240912123317.1026049-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+.../nf_conntrack_netlink.c:385:19: warning: unused function 'ctnetlink_label_size' [-Wunused-function]
+  385 | static inline int ctnetlink_label_size(const struct nf_conn *ct)
+      |                   ^~~~~~~~~~~~~~~~~~~~
+
+The condition on CONFIG_NF_CONNTRACK_LABELS being removed by
+this patch guards compilation of non-trivial implementations
+of ctnetlink_dump_labels() and ctnetlink_label_size().
+
+However, this is not necessary as each of these functions
+will always return 0 if CONFIG_NF_CONNTRACK_LABELS is not defined
+as each function starts with the equivalent of:
+
+	struct nf_conn_labels *labels = nf_ct_labels_find(ct);
+
+	if (!labels)
+		return 0;
+
+And nf_ct_labels_find always returns NULL if CONFIG_NF_CONNTRACK_LABELS
+is not enabled.  So I believe that the compiler optimises the code away
+in such cases anyway.
+
+Found by inspection.
+Compile tested only.
+
+Originally splitted in two patches, Pablo Neira Ayuso collapsed them and
+added Fixes: tag.
+
+Fixes: 0ceabd83875b ("netfilter: ctnetlink: deliver labels to userspace")
+Link: https://lore.kernel.org/netfilter-devel/20240909151712.GZ2097826@kernel.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/appledisplay.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/misc/appledisplay.c
-+++ b/drivers/usb/misc/appledisplay.c
-@@ -107,7 +107,12 @@ static void appledisplay_complete(struct
- 	case ACD_BTN_BRIGHT_UP:
- 	case ACD_BTN_BRIGHT_DOWN:
- 		pdata->button_pressed = 1;
--		schedule_delayed_work(&pdata->work, 0);
-+		/*
-+		 * there is a window during which no device
-+		 * is registered
-+		 */
-+		if (pdata->bd )
-+			schedule_delayed_work(&pdata->work, 0);
- 		break;
- 	case ACD_BTN_NONE:
- 	default:
-@@ -202,6 +207,7 @@ static int appledisplay_probe(struct usb
- 	const struct usb_device_id *id)
- {
- 	struct backlight_properties props;
-+	struct backlight_device *backlight;
- 	struct appledisplay *pdata;
- 	struct usb_device *udev = interface_to_usbdev(iface);
- 	struct usb_endpoint_descriptor *endpoint;
-@@ -272,13 +278,14 @@ static int appledisplay_probe(struct usb
- 	memset(&props, 0, sizeof(struct backlight_properties));
- 	props.type = BACKLIGHT_RAW;
- 	props.max_brightness = 0xff;
--	pdata->bd = backlight_device_register(bl_name, NULL, pdata,
-+	backlight = backlight_device_register(bl_name, NULL, pdata,
- 					      &appledisplay_bl_data, &props);
--	if (IS_ERR(pdata->bd)) {
-+	if (IS_ERR(backlight)) {
- 		dev_err(&iface->dev, "Backlight registration failed\n");
--		retval = PTR_ERR(pdata->bd);
-+		retval = PTR_ERR(backlight);
- 		goto error;
- 	}
-+	pdata->bd = backlight;
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 4dab45039f349..282e9644f6fdd 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -381,7 +381,7 @@ static int ctnetlink_dump_secctx(struct sk_buff *skb, const struct nf_conn *ct)
+ #define ctnetlink_dump_secctx(a, b) (0)
+ #endif
  
- 	/* Try to get brightness */
- 	brightness = appledisplay_bl_get_brightness(pdata->bd);
+-#ifdef CONFIG_NF_CONNTRACK_LABELS
++#ifdef CONFIG_NF_CONNTRACK_EVENTS
+ static inline int ctnetlink_label_size(const struct nf_conn *ct)
+ {
+ 	struct nf_conn_labels *labels = nf_ct_labels_find(ct);
+@@ -390,6 +390,7 @@ static inline int ctnetlink_label_size(const struct nf_conn *ct)
+ 		return 0;
+ 	return nla_total_size(sizeof(labels->bits));
+ }
++#endif
+ 
+ static int
+ ctnetlink_dump_labels(struct sk_buff *skb, const struct nf_conn *ct)
+@@ -410,10 +411,6 @@ ctnetlink_dump_labels(struct sk_buff *skb, const struct nf_conn *ct)
+ 
+ 	return 0;
+ }
+-#else
+-#define ctnetlink_dump_labels(a, b) (0)
+-#define ctnetlink_label_size(a)	(0)
+-#endif
+ 
+ #define master_tuple(ct) &(ct->master->tuplehash[IP_CT_DIR_ORIGINAL].tuple)
+ 
+-- 
+2.43.0
+
 
 
 
