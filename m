@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-79936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A9298DAFA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3216398DD70
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF7561F22727
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC6511F20EF1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192BC1D0E3C;
-	Wed,  2 Oct 2024 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB771D0BA2;
+	Wed,  2 Oct 2024 14:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9vyXwgC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oX/Ah1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBFB1D0DCE;
-	Wed,  2 Oct 2024 14:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1C11E892;
+	Wed,  2 Oct 2024 14:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878902; cv=none; b=X9PKlWORWoUtfK1vyx6+PuYUHN8G/4pOdvU0jlndmkPYRyGwCectyoPq6Nw/gh2X/4LIu7Yx7/iugBImxQch+/KssWBhOG6tE6xvn1dnwUOPwgKMS0harZkLHdY1F4AHv3Z8SMdvzNBvtno70ENRSLR5NKZFB9NVq+sZYeo7qsI=
+	t=1727880381; cv=none; b=Rvvw4K7BLt91dEm1b0sN8McpowTbdwsr096yxUzPM6MEmS0NXQxITC/DN3gcuxOM5Icw3/PdE91m1YvFA7iOnGEyZwQ20Z+YZ66Id0GQa/Dhx/00qIDNXW2Gi9f5BNJjAw+fgNttHTWbAfry0ofGfDAtcae14HCD5OiahxfvCLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878902; c=relaxed/simple;
-	bh=FjpizDC3vO5B9UymyD2fi/6tWBCCA1ZJXp2xMI5zGVg=;
+	s=arc-20240116; t=1727880381; c=relaxed/simple;
+	bh=qscSwTWx9A+5hogXvyq3asQq/oSPRKTbME92byQcW9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBkxWaoYvtsn2ZZk+SFWTT9eVANMqIiaaRY/OubNUC6gYycCf6mK+tItnKZI/dYpBfW442kC6jfuHtlxluWWIueO+r7oSg83Jgyr1NTt3Lx3WQXtqcC2izkUlF3TvgnXp4bSQbawxc+ZoP6wuhaXVxUFmCjvLVrAtLdX7dZjmyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9vyXwgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A60C4CEC5;
-	Wed,  2 Oct 2024 14:21:41 +0000 (UTC)
+	 MIME-Version; b=LWZz4A7qK1FiUn1XoNPgrY0f4xeC0W9mIDOHIrB7fswcXrFKFA2P4l+H1OFkON9VLlBEMzrB+zhH1z6+GGOMNDr7/Dh7kWDMRjzBjzcOYmqhWR32nbBhWLq0W11HvB8a5/Euamn0B6PCVLdNZNsLaTaVhJ/C99HwXpsHzuY5+/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oX/Ah1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1B0C4CEC2;
+	Wed,  2 Oct 2024 14:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878902;
-	bh=FjpizDC3vO5B9UymyD2fi/6tWBCCA1ZJXp2xMI5zGVg=;
+	s=korg; t=1727880381;
+	bh=qscSwTWx9A+5hogXvyq3asQq/oSPRKTbME92byQcW9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9vyXwgCYPJsEBQeVOPMXH83sp2a6DoxT3AOhB1DHQ7KjIC0H7siMJJwLX9O6gcor
-	 mEjf6GpgQ6UKp+xHne+dkiTbjYmRUM6f47/+PGjUk1S7wBCZ7if9CFk5WQl7Q1WIEC
-	 WNTb84W/0OedgnbO4jsdFaZ2rI3j1odmsuQ9Civ8=
+	b=0oX/Ah1/8rKGcd/ZiwcxTcP+UDkQdHlpLFcLFssGyWWR9uaFhWDZkSJBQx6PrRBfS
+	 W5nvKKDTrE3xPp5HpHgKi08zV+eomQ9reTIIjWTR9vPypvNtoWFYsjNPRPBMkbgcDd
+	 VKQ85+oN+hPsdPU42Y9fIbhBt2v3O06ZkKd5UODM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	D Scott Phillips <scott@os.amperecomputing.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.10 570/634] arm64: errata: Enable the AC03_CPU_38 workaround for ampere1a
-Date: Wed,  2 Oct 2024 15:01:10 +0200
-Message-ID: <20241002125833.614089763@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 432/538] usbnet: fix cyclical race on disconnect with work queue
+Date: Wed,  2 Oct 2024 15:01:11 +0200
+Message-ID: <20241002125809.492023021@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +61,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: D Scott Phillips <scott@os.amperecomputing.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit db0d8a84348b876df7c4276f0cbce5df3b769f5f upstream.
+commit 04e906839a053f092ef53f4fb2d610983412b904 upstream.
 
-The ampere1a cpu is affected by erratum AC04_CPU_10 which is the same
-bug as AC03_CPU_38. Add ampere1a to the AC03_CPU_38 workaround midr list.
+The work can submit URBs and the URBs can schedule the work.
+This cycle needs to be broken, when a device is to be stopped.
+Use a flag to do so.
+This is a design issue as old as the driver.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240827211701.2216719-1-scott@os.amperecomputing.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/20240919123525.688065-1-oneukum@suse.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/Kconfig                          |    2 +-
- arch/arm64/include/asm/cputype.h            |    2 ++
- arch/arm64/kernel/cpu_errata.c              |   10 +++++++++-
- 4 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/usb/usbnet.c   |   37 ++++++++++++++++++++++++++++---------
+ include/linux/usb/usbnet.h |   15 +++++++++++++++
+ 2 files changed, 43 insertions(+), 9 deletions(-)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -55,6 +55,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Ampere         | AmpereOne       | AC03_CPU_38     | AMPERE_ERRATUM_AC03_CPU_38  |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Ampere         | AmpereOne AC04  | AC04_CPU_10     | AMPERE_ERRATUM_AC03_CPU_38  |
-++----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
- +----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -422,7 +422,7 @@ config AMPERE_ERRATUM_AC03_CPU_38
- 	default y
- 	help
- 	  This option adds an alternative code sequence to work around Ampere
--	  erratum AC03_CPU_38 on AmpereOne.
-+	  errata AC03_CPU_38 and AC04_CPU_10 on AmpereOne.
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -464,10 +464,15 @@ static enum skb_state defer_bh(struct us
+ void usbnet_defer_kevent (struct usbnet *dev, int work)
+ {
+ 	set_bit (work, &dev->flags);
+-	if (!schedule_work (&dev->kevent))
+-		netdev_dbg(dev->net, "kevent %s may have been dropped\n", usbnet_event_names[work]);
+-	else
+-		netdev_dbg(dev->net, "kevent %s scheduled\n", usbnet_event_names[work]);
++	if (!usbnet_going_away(dev)) {
++		if (!schedule_work(&dev->kevent))
++			netdev_dbg(dev->net,
++				   "kevent %s may have been dropped\n",
++				   usbnet_event_names[work]);
++		else
++			netdev_dbg(dev->net,
++				   "kevent %s scheduled\n", usbnet_event_names[work]);
++	}
+ }
+ EXPORT_SYMBOL_GPL(usbnet_defer_kevent);
  
- 	  The affected design reports FEAT_HAFDBS as not implemented in
- 	  ID_AA64MMFR1_EL1.HAFDBS, but (V)TCR_ELx.{HA,HD} are not RES0
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -143,6 +143,7 @@
- #define APPLE_CPU_PART_M2_AVALANCHE_MAX	0x039
+@@ -535,7 +540,8 @@ static int rx_submit (struct usbnet *dev
+ 			tasklet_schedule (&dev->bh);
+ 			break;
+ 		case 0:
+-			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
++			if (!usbnet_going_away(dev))
++				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
+ 		}
+ 	} else {
+ 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
+@@ -843,9 +849,18 @@ int usbnet_stop (struct net_device *net)
  
- #define AMPERE_CPU_PART_AMPERE1		0xAC3
-+#define AMPERE_CPU_PART_AMPERE1A	0xAC4
- 
- #define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
- 
-@@ -212,6 +213,7 @@
- #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
- #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
- #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
-+#define MIDR_AMPERE1A MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1A)
- #define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
- 
- /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -456,6 +456,14 @@ static const struct midr_range erratum_s
- };
- #endif
- 
-+#ifdef CONFIG_AMPERE_ERRATUM_AC03_CPU_38
-+static const struct midr_range erratum_ac03_cpu_38_list[] = {
-+	MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-+	MIDR_ALL_VERSIONS(MIDR_AMPERE1A),
-+	{},
-+};
-+#endif
+ 	/* deferred work (timer, softirq, task) must also stop */
+ 	dev->flags = 0;
+-	del_timer_sync (&dev->delay);
+-	tasklet_kill (&dev->bh);
++	del_timer_sync(&dev->delay);
++	tasklet_kill(&dev->bh);
+ 	cancel_work_sync(&dev->kevent);
 +
- const struct arm64_cpu_capabilities arm64_errata[] = {
- #ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
- 	{
-@@ -772,7 +780,7 @@ const struct arm64_cpu_capabilities arm6
- 	{
- 		.desc = "AmpereOne erratum AC03_CPU_38",
- 		.capability = ARM64_WORKAROUND_AMPERE_AC03_CPU_38,
--		ERRATA_MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-+		ERRATA_MIDR_RANGE_LIST(erratum_ac03_cpu_38_list),
- 	},
- #endif
- 	{
++	/* We have cyclic dependencies. Those calls are needed
++	 * to break a cycle. We cannot fall into the gaps because
++	 * we have a flag
++	 */
++	tasklet_kill(&dev->bh);
++	del_timer_sync(&dev->delay);
++	cancel_work_sync(&dev->kevent);
++
+ 	if (!pm)
+ 		usb_autopm_put_interface(dev->intf);
+ 
+@@ -1171,7 +1186,8 @@ fail_halt:
+ 					   status);
+ 		} else {
+ 			clear_bit (EVENT_RX_HALT, &dev->flags);
+-			tasklet_schedule (&dev->bh);
++			if (!usbnet_going_away(dev))
++				tasklet_schedule(&dev->bh);
+ 		}
+ 	}
+ 
+@@ -1196,7 +1212,8 @@ fail_halt:
+ 			usb_autopm_put_interface(dev->intf);
+ fail_lowmem:
+ 			if (resched)
+-				tasklet_schedule (&dev->bh);
++				if (!usbnet_going_away(dev))
++					tasklet_schedule(&dev->bh);
+ 		}
+ 	}
+ 
+@@ -1559,6 +1576,7 @@ static void usbnet_bh (struct timer_list
+ 	} else if (netif_running (dev->net) &&
+ 		   netif_device_present (dev->net) &&
+ 		   netif_carrier_ok(dev->net) &&
++		   !usbnet_going_away(dev) &&
+ 		   !timer_pending(&dev->delay) &&
+ 		   !test_bit(EVENT_RX_PAUSED, &dev->flags) &&
+ 		   !test_bit(EVENT_RX_HALT, &dev->flags)) {
+@@ -1606,6 +1624,7 @@ void usbnet_disconnect (struct usb_inter
+ 	usb_set_intfdata(intf, NULL);
+ 	if (!dev)
+ 		return;
++	usbnet_mark_going_away(dev);
+ 
+ 	xdev = interface_to_usbdev (intf);
+ 
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -76,8 +76,23 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++/* This one is special, as it indicates that the device is going away
++ * there are cyclic dependencies between tasklet, timer and bh
++ * that must be broken
++ */
++#		define EVENT_UNPLUG		31
+ };
+ 
++static inline bool usbnet_going_away(struct usbnet *ubn)
++{
++	return test_bit(EVENT_UNPLUG, &ubn->flags);
++}
++
++static inline void usbnet_mark_going_away(struct usbnet *ubn)
++{
++	set_bit(EVENT_UNPLUG, &ubn->flags);
++}
++
+ static inline struct usb_driver *driver_of(struct usb_interface *intf)
+ {
+ 	return to_usb_driver(intf->dev.driver);
 
 
 
