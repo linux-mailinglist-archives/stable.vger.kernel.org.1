@@ -1,153 +1,244 @@
-Return-Path: <stable+bounces-80592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B20898E27F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:30:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3516198E285
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5E861F22EB1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:30:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4BDA28719A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0952141B3;
-	Wed,  2 Oct 2024 18:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C0C2141B6;
+	Wed,  2 Oct 2024 18:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELzIQ8EH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P3gYsRiA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BCF2141A7;
-	Wed,  2 Oct 2024 18:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C612141BF;
+	Wed,  2 Oct 2024 18:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727893802; cv=none; b=AcOHfsk765cEuwrazqifSAm3FZJ9fA3DKGT8j7SC2ByZvV5sM9Ax42yFsERnVe2lRWB7XSLyR38nKtCyR19KKtNVz84shcHRa23GKEqQ6JcMKZV4TRYAlDsUz1p8NeocUsaPiqXL1QWeCO9B+8dzPeoKq9GBG9+ypFTeCu85dsE=
+	t=1727893850; cv=none; b=W7jlShf293vNJAOfsu3rK6BZ97XMJwnstFfE/bws3PyPOUe3rM9ifWsyVLYDV4Z1XZh9OU+JLB6SYwBrmtDrbAVM/mBK1C0619lbaNqgwlZQhkrll6Rn3MMaSDnYfvsEyWWJFRXfLaMDvNfLAcrqB/lleOMuI5Lr6ALBh7nz5AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727893802; c=relaxed/simple;
-	bh=P2MjDm1SN0x3b5tnAomYzVdaFhjGbleDAu4vzeZ6ZHE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VIMIlCH4u0Yv8X6lZnPv8GxGgclPg6LG6I7PPgdV3Rg233vd0dfwFz0IvZEbD4fMUYJ/TScvo8LLX0ZkYjeb3bgFG5QOD+5VTEIDKbi67CMqwuz82idlOXUDTcuw1F7gUZoE8j6Sg/degwp68Zfwg8izwXYhGwcQZMXqoP0JOUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ELzIQ8EH; arc=none smtp.client-ip=209.85.216.41
+	s=arc-20240116; t=1727893850; c=relaxed/simple;
+	bh=fM8zcIN6ZzgFzJMi8vX85wRIXm/I6mt/k2t8S8BjaWE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r1S3eO/yTbpd9sAWQTV5I0y8cg7nxLveHUreUOdZm370SbbMN+D4IXR8UE+lyXMFdEH7OA+PhbLbNBDq4v4Jtnd+ZfsCu2i4lu+gmsVzfVSQKpIcbYJONVoYcU5ukJM5k181d2E08DjWq3hECWTztgrnbXqNBqCKY95QqvOV6Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P3gYsRiA; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2e0afd945d4so138003a91.0;
-        Wed, 02 Oct 2024 11:30:00 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fabb837ddbso1459181fa.1;
+        Wed, 02 Oct 2024 11:30:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727893800; x=1728498600; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=7zhsFXQusMHM53EByh0P9YIQHAS+japZwN0YyNhFrxE=;
-        b=ELzIQ8EHHTEujIiONndU7bos5W2aNKd0c+Ccan4+lqMOZHBiD5TfZAIzfSZKPBHOQO
-         X4KZBhhDefg9+WZHrfSvUWoW/nHa102c5mCC4FYk16D181lZiKDey84gUqvo7FFs9xXp
-         SgBMPS2ghnPTWR2o1fa6KUIO98riofedNimCNicjmG/KmUxPstp70jpO4uxbShBsszNM
-         4efkfT1Wf7Q4Bxou6kXeB+Xp6J6NJAr5YkdHeMQkkgoaCj+VzCW5RViItqB8uxMb+VOO
-         HK0onrB8m3ubpU2Z9GX4VKCd9IRK7G/5u4jq08WmmB3ccNDqorENznGxi6Q66ZQBO0e0
-         xhVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727893800; x=1728498600;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1727893846; x=1728498646; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7zhsFXQusMHM53EByh0P9YIQHAS+japZwN0YyNhFrxE=;
-        b=QeVzIQ51sPcHe0yIE7G/4rAbB4UdoFPlEOrE9zGPOUMLlIET5vAahqBaVx32AbNRai
-         OXXxgJWm0Dznl5fX1g0IIjzNHpfJ85fPyLYETEA7AqNZXp1VPTdLI4xTCDybzZKUWHXo
-         XlfAYP58msmpgBhZSAr4KUukdKoU5KyD0Me3yukEQOuxuzyXicgVMznIw0fON/PScwMT
-         he7grYzS12NP5vfI7OKYY4sKY4AdNv3REkR6K9Lp/9bQAUj9fV8HBXMhh3Ax/b8MRfJp
-         ynnkH7eOHyMTWbTmXWzmfw+p+wG/P4gF3B9KV9n/eQZSHR7TpWgRg+5gxtP2eMgiJJL6
-         4tPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOeHkc++XvSLc27sceyHhLptu7lttRdeMccgaxokrusNmfUylFTrAmrZvcFWBptUAuvOFonrnQGfyzYkg=@vger.kernel.org, AJvYcCUiHcBfdb3d/MRoDwSEBV9XHJM2PD3LK02l5nhjgAPblLkkFu/pLqRjGPOz58Yjq3kDteXwtrjq@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLV1arM/yRt3kARap311vThEag/3PO5jC5McCyMtirj4C3uMtB
-	Vr2ObaMwX+zgxo5R05eOYZ8OLyRyC1aMbO752UNrofA+27zjfa6V
-X-Google-Smtp-Source: AGHT+IH9GQR6e0fqfWnF4PdyEH0C8X6sFRz2WuJnpbA94ByXIxykmvfK4GquVJPXkHBdm9A9RYOnGQ==
-X-Received: by 2002:a17:90a:e395:b0:2c8:5cb7:54e5 with SMTP id 98e67ed59e1d1-2e1849009b1mr4710727a91.32.1727893799844;
-        Wed, 02 Oct 2024 11:29:59 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e18f540fe7sm1945853a91.8.2024.10.02.11.29.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Oct 2024 11:29:58 -0700 (PDT)
-Message-ID: <31a8d658-99f1-4457-b5e3-242f750b5e42@gmail.com>
-Date: Wed, 2 Oct 2024 11:29:56 -0700
+        bh=nCJKQj92YUp9lYjcAYVWHDwb92zO+RIIleVkehLxHkk=;
+        b=P3gYsRiAtUVVXAR/FICWNFJf17M+FZZnMPwpEUw7V78TR7+OfpS7X4cCd10rjhlOik
+         D9tM6+SNVXAxytYdB2+e6oYx8r6C9YleH+53gm343roBBpodBIUmH5It5Zkc0SEV1dWo
+         qDG9/Mr0U0IIUbRaJP3tMDAAtlfr2Kvr8W5uylvoGWqIxG8HefLLmDkjGNPpH2sIKup1
+         8ZdJ4EhLTWe7JdrojlXypjXtGPe4f82gkAxXfDBtZZSgxcTh0thfQ/9vRD18QEBnbuHt
+         W9IxyypVg8R5AAqjPhnOUpCvghUz4c1M2UDPoeFltkgEBNxWAnqOe9fcbk2lsP7eXkqk
+         Gi9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727893846; x=1728498646;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nCJKQj92YUp9lYjcAYVWHDwb92zO+RIIleVkehLxHkk=;
+        b=OKuXh9eWDA693AuJes+9c496BHbXq/Ush6DLpkmoBqjcfr7spfATBjK2it8ZtZAqRu
+         CGincM7FR98TtKFbA9wttI5uYdP7k/TSQoIOOIlBqUEGA6NeTuLWtu1W29l8ZeJH7GVx
+         wuKqkfYMu2eu0x8DyWa3FmgkJgLftaUDyMYJnYnZh+DQuft/A4b2Ej6QyAHaFCG08iIF
+         hRACPRAE/l6gDkiJ4wMgjRmYYMVgo4C04YeQiK6g/PcaUEkStz+1/zQglW1amw08J8EE
+         wlgerAZljhwNyVWBJbb6sdifkhiRBgLd19qfrv8EJcbDu1bxs/cDuNc0ir+VZZ/JaLS6
+         bOlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFlr2Mk2dxLw+enenJWqRxwXb7lCpmBffcPyp6G11Ppuo46yYgT7AfdGDhiCzw1KVcYbistY6+Xsl/100=@vger.kernel.org, AJvYcCVgeMNqA88kIn2r2Z3GJzgleEdnXGoaiLeAWCfe+lgokhqgr39BBlLbNx9tEO4aUU+9Og/SIy4w@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAIjruae/gt6Z7kYZombpMBxcvn1ROjNwV3gzyqbaQPH4tKfUL
+	Cdc+aLYi3niepGmucNIhRQ1cnKZu98puXNrWH3lxVpGMJg9m47Q9MQbfHqFmZs9O/0xWLk5mGb2
+	hzMuBlvJM5NhuLDStthOdtghCACA=
+X-Google-Smtp-Source: AGHT+IGejH4I7ojpQ9eTpLEzvNUqv6TXekoWAianOs0i1fVMU1e8y3mYHlllAqf3VecKFG7Of/ZhNSRZbPNVMb8b5yo=
+X-Received: by 2002:a05:651c:2105:b0:2fa:c0c2:d311 with SMTP id
+ 38308e7fff4ca-2fae10226e4mr37736171fa.5.1727893845890; Wed, 02 Oct 2024
+ 11:30:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.11 000/695] 6.11.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20241002125822.467776898@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <87y137nxqs.fsf@yhuang6-desk2.ccr.corp.intel.com> <20241002015754.969-1-21cnbao@gmail.com>
+In-Reply-To: <20241002015754.969-1-21cnbao@gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 3 Oct 2024 02:30:29 +0800
+Message-ID: <CAMgjq7D5qoFEK9Omvd5_Zqs6M+TEoG03+2i_mhuP5CQPSOPrmQ@mail.gmail.com>
+Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
+ swapcache_prepare fails
+To: Barry Song <21cnbao@gmail.com>
+Cc: ying.huang@intel.com, akpm@linux-foundation.org, chrisl@kernel.org, 
+	david@redhat.com, hannes@cmpxchg.org, hughd@google.com, 
+	kaleshsingh@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	liyangouwen1@oppo.com, mhocko@suse.com, minchan@kernel.org, sj@kernel.org, 
+	stable@vger.kernel.org, surenb@google.com, v-songbaohua@oppo.com, 
+	willy@infradead.org, yosryahmed@google.com, yuzhao@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/2/24 05:49, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.11.2 release.
-> There are 695 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 04 Oct 2024 12:56:13 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Wed, Oct 2, 2024 at 10:02=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Wed, Oct 2, 2024 at 8:43=E2=80=AFAM Huang, Ying <ying.huang@intel.com>=
+ wrote:
+> >
+> > Barry Song <21cnbao@gmail.com> writes:
+> >
+> > > On Tue, Oct 1, 2024 at 7:43=E2=80=AFAM Huang, Ying <ying.huang@intel.=
+com> wrote:
+> > >>
+> > >> Barry Song <21cnbao@gmail.com> writes:
+> > >>
+> > >> > On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@in=
+tel.com> wrote:
+> > >> >>
+> > >> >> Hi, Barry,
+> > >> >>
+> > >> >> Barry Song <21cnbao@gmail.com> writes:
+> > >> >>
+> > >> >> > From: Barry Song <v-songbaohua@oppo.com>
+> > >> >> >
+> > >> >> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache=
+")
+> > >> >> > introduced an unconditional one-tick sleep when `swapcache_prep=
+are()`
+> > >> >> > fails, which has led to reports of UI stuttering on latency-sen=
+sitive
+> > >> >> > Android devices. To address this, we can use a waitqueue to wak=
+e up
+> > >> >> > tasks that fail `swapcache_prepare()` sooner, instead of always
+> > >> >> > sleeping for a full tick. While tasks may occasionally be woken=
+ by an
+> > >> >> > unrelated `do_swap_page()`, this method is preferable to two sc=
+enarios:
+> > >> >> > rapid re-entry into page faults, which can cause livelocks, and
+> > >> >> > multiple millisecond sleeps, which visibly degrade user experie=
+nce.
+> > >> >>
+> > >> >> In general, I think that this works.  Why not extend the solution=
+ to
+> > >> >> cover schedule_timeout_uninterruptible() in __read_swap_cache_asy=
+nc()
+> > >> >> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  To avo=
+id
+> > >> >
+> > >> > Hi Ying,
+> > >> > Thanks for your comments.
+> > >> > I feel extending the solution to __read_swap_cache_async() should =
+be done
+> > >> > in a separate patch. On phones, I've never encountered any issues =
+reported
+> > >> > on that path, so it might be better suited for an optimization rat=
+her than a
+> > >> > hotfix?
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Hi Barry and Ying,
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+For the __read_swap_cache_async case, I'm not really against adding a
+similar workqueue, but if no one is really suffering from it, and if
+the workqueue do causes extra overhead, maybe we can ignore it for the
+__read_swap_cache_async case now, and I plan to resent the following
+patch:
+https://lore.kernel.org/linux-mm/20240326185032.72159-9-ryncsn@gmail.com/#r
+
+It removed all schedule_timeout_uninterruptible workaround and other
+similar things, and the performance will go even higher.
+
+> > >>
+> > >> Yes.  It's fine to do that in another patch as optimization.
+> > >
+> > > Ok. I'll prepare a separate patch for optimizing that path.
+> >
+> > Thanks!
+> >
+> > >>
+> > >> >> overhead to call wake_up() when there's no task waiting, we can u=
+se an
+> > >> >> atomic to count waiting tasks.
+> > >> >
+> > >> > I'm not sure it's worth adding the complexity, as wake_up() on an =
+empty
+> > >> > waitqueue should have a very low cost on its own?
+> > >>
+> > >> wake_up() needs to call spin_lock_irqsave() unconditionally on a glo=
+bal
+> > >> shared lock.  On systems with many CPUs (such servers), this may cau=
+se
+> > >> severe lock contention.  Even the cache ping-pong may hurt performan=
+ce
+> > >> much.
+> > >
+> > > I understand that cache synchronization was a significant issue befor=
+e
+> > > qspinlock, but it seems to be less of a concern after its implementat=
+ion.
+> >
+> > Unfortunately, qspinlock cannot eliminate cache ping-pong issue, as
+> > discussed in the following thread.
+> >
+> > https://lore.kernel.org/lkml/20220510192708.GQ76023@worktop.programming=
+.kicks-ass.net/
+> >
+> > > However, using a global atomic variable would still trigger cache bro=
+adcasts,
+> > > correct?
+> >
+> > We can only change the atomic variable to non-zero when
+> > swapcache_prepare() returns non-zero, and call wake_up() when the atomi=
+c
+> > variable is non-zero.  Because swapcache_prepare() returns 0 most times=
+,
+> > the atomic variable is 0 most times.  If we don't change the value of
+> > atomic variable, cache ping-pong will not be triggered.
+>
+> yes. this can be implemented by adding another atomic variable.
+>
+> >
+> > Hi, Kairui,
+> >
+> > Do you have some test cases to test parallel zram swap-in?  If so, that
+> > can be used to verify whether cache ping-pong is an issue and whether i=
+t
+> > can be fixed via a global atomic variable.
+> >
+>
+> Yes, Kairui please run a test on your machine with lots of cores before
+> and after adding a global atomic variable as suggested by Ying. I am
+> sorry I don't have a server machine.
+
+I just had a try with the build kernel test which I used for the
+allocator patch series, with -j64, 1G memcg on my local branch:
+
+Without the patch:
+2677.63user 9100.43system 3:33.15elapsed 5452%CPU (0avgtext+0avgdata
+863284maxresident)k
+2671.40user 8969.07system 3:33.67elapsed 5447%CPU (0avgtext+0avgdata
+863316maxresident)k
+2673.66user 8973.90system 3:33.18elapsed 5463%CPU (0avgtext+0avgdata
+863284maxresident)k
+
+With the patch:
+2655.05user 9134.21system 3:35.63elapsed 5467%CPU (0avgtext+0avgdata
+863288maxresident)k
+2652.57user 9104.87system 3:35.07elapsed 5466%CPU (0avgtext+0avgdata
+863272maxresident)k
+2665.44user 9155.97system 3:35.92elapsed 5474%CPU (0avgtext+0avgdata
+863316maxresident)k
+
+Only three test runs, the main bottleneck for the test is still some
+other locks (list_lru lock, swap cgroup lock etc), but it does show
+the performance seems a bit lower. Could be considered a trivial
+amount of overhead so I think it's acceptable for the SYNC_IO path.
 
