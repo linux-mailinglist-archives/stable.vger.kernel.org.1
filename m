@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BC098D910
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC0598D5EE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3A8A2874F3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EBFE1C210ED
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501BB1D1756;
-	Wed,  2 Oct 2024 14:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97E31D0791;
+	Wed,  2 Oct 2024 13:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5ugapE2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIByOZEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5EE1D043E;
-	Wed,  2 Oct 2024 14:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62B51D0788;
+	Wed,  2 Oct 2024 13:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877771; cv=none; b=OvwvpqCRj8S4w2txYjisJ8LGveb/kYV1uViYva+WZpyZ+qJcxNyCQStzpIXGPJmiKD+jfxWfMIQs02FCNqeGETQh0pBq1u6R9R/HA6S78s0GD+zvfkOH7naxV6cWsx3cnx/REGd3XeFsG8t5uA43T3E7pVwpODMspgciIKmWdlU=
+	t=1727876080; cv=none; b=hx4sTW1leqKZqBAstgi1i/bA7pso5YcyUhMNSv0CkdvIT5sZZla3bLyWiV9o1GoEohFYHtL94A81OcVpomV5UVZdMjALTylYZ6+n8nmUXqUDHmX0aDYdlg66RuqTCosDzKM9w+M026cZsf7ZI6G+Yrz4SZHn9pX4QRAy9PER2Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877771; c=relaxed/simple;
-	bh=EwTO7CfBZ9tBsA0/hCvguoorqmpQv1EjtXQ2LvaOqDA=;
+	s=arc-20240116; t=1727876080; c=relaxed/simple;
+	bh=zhsHDZLAPv1Foyc+yFDh7985Pc3VAG42QOE0PFzumzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkDJbe5tzSJ9sjIiocsrJKx1Tw8OTUKr57O6Rsgy33gTb048dEpley7RY7qYItS1muxhp1ToJIgSc0MGXsAAMIR704q8snpcD8IsHVnO4f1ctSRBy0UgF47ifWEwbY75Wl/GyUrQdOUi9HDt/CnYQkT+QocUPo2QRQTsSPaCwIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5ugapE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA2FC4CED3;
-	Wed,  2 Oct 2024 14:02:50 +0000 (UTC)
+	 MIME-Version; b=Bj5/4n1LxjL3Xd9Mz2gSXiKeX5gnAtS/MmgUMcjRKXRhtKKNsLrq7SwgXQwbP9Ea4aiSk3UD94/kyYMU3BFYEZr9AMuGCTmbKvU1q0dQcaWCgou5JYD8RFLfI+CEbpyE07IWSFDUcKrrFv6eNQ7uAEI8SeEyb7koB0stHx0b9mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIByOZEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256DFC4CEC5;
+	Wed,  2 Oct 2024 13:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877770;
-	bh=EwTO7CfBZ9tBsA0/hCvguoorqmpQv1EjtXQ2LvaOqDA=;
+	s=korg; t=1727876080;
+	bh=zhsHDZLAPv1Foyc+yFDh7985Pc3VAG42QOE0PFzumzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5ugapE2D9BNgzmYsM2F3JCb2vMkLOl/skCCrkNfM99YIOHPK0L0osykKrlntdzVW
-	 4GMrc4QzdCWDYD+xAnKz8bBcPIj+PE355qj1l2sDRgH3lfH+ITJeDjwyEsvzhfxfuU
-	 mZoixgs9kHspC+ECl5J9apwbIMa+xANtQZ/nknfQ=
+	b=eIByOZEILnKVbyqWjR/tevdP0emwg4oraSiQMSmo1MQV8KPFDpROPsYknAyEZDpeF
+	 wJkmqUpu3+iEUgg9nwDzhwPeb8xxK1eEFyrj3FNmt0j+WY1wWZ5F7yk3bjnH8UfzHD
+	 yWIHcMHFHlV86h4eyO3DbNc4Z4CruaFj1wEpTM10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Jiangshan Yi <yijiangshan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Qiang Wang <wangqiang1@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 188/634] drm/rockchip: dw_hdmi: Fix reading EDID when using a forced mode
-Date: Wed,  2 Oct 2024 14:54:48 +0200
-Message-ID: <20241002125818.527246513@linuxfoundation.org>
+Subject: [PATCH 6.11 291/695] samples/bpf: Fix compilation errors with cf-protection option
+Date: Wed,  2 Oct 2024 14:54:49 +0200
+Message-ID: <20241002125834.055681229@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Jiangshan Yi <yijiangshan@kylinos.cn>
 
-[ Upstream commit a5d024541ec466f428e6c514577d511a40779c7b ]
+[ Upstream commit fdf1c728fac541891ef1aa773bfd42728626769c ]
 
-EDID cannot be read on RK3328 until after read_hpd has been called and
-correct io voltage has been configured based on connection status.
+Currently, compiling the bpf programs will result the compilation errors
+with the cf-protection option as follows in arm64 and loongarch64 machine
+when using gcc 12.3.1 and clang 17.0.6. This commit fixes the compilation
+errors by limited the cf-protection option only used in x86 platform.
 
-When a forced mode is used, e.g. video=1920x1080@60e, the connector
-detect ops, that in turn normally calls the read_hpd, never gets called.
+[root@localhost linux]# make M=samples/bpf
+	......
+  CLANG-bpf  samples/bpf/xdp2skb_meta_kern.o
+error: option 'cf-protection=return' cannot be specified on this target
+error: option 'cf-protection=branch' cannot be specified on this target
+2 errors generated.
+  CLANG-bpf  samples/bpf/syscall_tp_kern.o
+error: option 'cf-protection=return' cannot be specified on this target
+error: option 'cf-protection=branch' cannot be specified on this target
+2 errors generated.
+	......
 
-This result in reading EDID to fail in connector get_modes ops.
-
-Call dw_hdmi_rk3328_read_hpd at end of dw_hdmi_rk3328_setup_hpd to
-correct io voltage and allow reading EDID after setup_hpd.
-
-Fixes: 1c53ba8f22a1 ("drm/rockchip: dw_hdmi: add dw-hdmi support for the rk3328")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240615170417.3134517-5-jonas@kwiboo.se
+Fixes: 34f6e38f58db ("samples/bpf: fix warning with ignored-attributes")
+Reported-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Qiang Wang <wangqiang1@kylinos.cn>
+Link: https://lore.kernel.org/bpf/20240815135524.140675-1-13667453960@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ samples/bpf/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index fe33092abbe7d..aae48e906af11 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -434,6 +434,8 @@ static void dw_hdmi_rk3328_setup_hpd(struct dw_hdmi *dw_hdmi, void *data)
- 		HIWORD_UPDATE(RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK,
- 			      RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK |
- 			      RK3328_HDMI_HPD_IOE));
-+
-+	dw_hdmi_rk3328_read_hpd(dw_hdmi, data);
- }
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 3e003dd6bea09..dca56aa360ff3 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -169,6 +169,10 @@ BPF_EXTRA_CFLAGS += -I$(srctree)/arch/mips/include/asm/mach-generic
+ endif
+ endif
  
- static const struct dw_hdmi_phy_ops rk3228_hdmi_phy_ops = {
++ifeq ($(ARCH), x86)
++BPF_EXTRA_CFLAGS += -fcf-protection
++endif
++
+ TPROGS_CFLAGS += -Wall -O2
+ TPROGS_CFLAGS += -Wmissing-prototypes
+ TPROGS_CFLAGS += -Wstrict-prototypes
+@@ -405,7 +409,7 @@ $(obj)/%.o: $(src)/%.c
+ 		-Wno-gnu-variable-sized-type-not-at-end \
+ 		-Wno-address-of-packed-member -Wno-tautological-compare \
+ 		-Wno-unknown-warning-option $(CLANG_ARCH_ARGS) \
+-		-fno-asynchronous-unwind-tables -fcf-protection \
++		-fno-asynchronous-unwind-tables \
+ 		-I$(srctree)/samples/bpf/ -include asm_goto_workaround.h \
+ 		-O2 -emit-llvm -Xclang -disable-llvm-passes -c $< -o - | \
+ 		$(OPT) -O2 -mtriple=bpf-pc-linux | $(LLVM_DIS) | \
 -- 
 2.43.0
 
