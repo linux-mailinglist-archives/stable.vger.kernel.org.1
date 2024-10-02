@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-78875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AE898D562
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8668698D599
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CA828853D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80101C20EDF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9B41D043B;
-	Wed,  2 Oct 2024 13:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7DA1D0491;
+	Wed,  2 Oct 2024 13:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjCKnL4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OL0dSygO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02AA16F84F;
-	Wed,  2 Oct 2024 13:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB891D0488;
+	Wed,  2 Oct 2024 13:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875784; cv=none; b=rbkaounEfWGVdKJ8TmmKcLNljOsI6XGf7PhSl749LZC3jL8iuPNxGRaVLKuEsMsXPHOm8ysyUa4ukuQF91szS7On17nh6jtk1aOHlmJsiN7vABxi+IY9wC1eClmPavCJ/3QHI/zwT0ht8i2ku1LgzY9dgghIA0r5vcT9s0mjP6Q=
+	t=1727875902; cv=none; b=Vt6mppDePE4+95tVvwsf9LxbmSKcHO/5HQBLeO/cxbPTTIiaePbJGTZfGBxmYtacup8ZEOq/FNWT7cllDJrCq0FC0BUWIAmYTSnNcInGLVrOCMfVZOuXWirrr4oeois2YKC06KY0uO2i4WzStIiGXNnt7psnktolK5qoRm++7IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875784; c=relaxed/simple;
-	bh=71R5oilGVpzuACevIIyf3CCLCdSM5im5f0qjvRpAVmA=;
+	s=arc-20240116; t=1727875902; c=relaxed/simple;
+	bh=pMkwREKYvcj9tQbQHANJF5MDLlzvGqsWtbOIEHiTSwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G/SPZ2UY7VbWhDI54XJagNwtbX7ZYMx/QVXRihqq32u+fOosFdmdeBjWtv8ehxBZ39MSdaRIV9iypouv8Y9fMt9CPmUhFk6BZ5tjbBTwTbfx8emwGHicGtz9s2xDGqSVKOFKUsOuTCRZuJ15XJK4JAi4ppa+v3JbPqiU11A2nps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjCKnL4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17996C4CEC5;
-	Wed,  2 Oct 2024 13:29:42 +0000 (UTC)
+	 MIME-Version; b=qFBUeloQ3Zpmjz6lTKVfc7FqBIBFWny4xAzExyqR98RZ9TCKSP8sVXAIQTXO6RBtfqtl5PLnYHjMStV3QOypYUxvk7rRPVbJSdcxJxGpalwJP9mYc7eTJHtVIYwnM0wX6ryns+hrHcw308KvOjN4QEZtIbctM83b2SbRueY0tkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OL0dSygO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F48EC4CEC5;
+	Wed,  2 Oct 2024 13:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875783;
-	bh=71R5oilGVpzuACevIIyf3CCLCdSM5im5f0qjvRpAVmA=;
+	s=korg; t=1727875902;
+	bh=pMkwREKYvcj9tQbQHANJF5MDLlzvGqsWtbOIEHiTSwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjCKnL4Zx80ue9Gyi1Q3dqpiGj5v7H5mwpti0E22c0ytnYSXrlRV0pCxtgNasnWcq
-	 6IY8Pi7XHoB3YpeqppZHU3yixXjzhcnYoAdmqNVOntS98FI29dFirYGwHc+SKcSpYm
-	 RSwJIQSLs2gHWNVgESKCQEl9IggBvT15fns3ZScs=
+	b=OL0dSygOX8gQdG0HjzRvSQN+8PKI7RfYus1/NWMQgAjuAP7OdpTR3gynfb8l+AOw2
+	 KtvQ+NYGFgO9L0FFRPxDVrlV3rmZ5bAlYY+yXOsmwxA7gaLWz7azbJFZatfhStAEae
+	 VYYMX7cUb55ZgydgWaqwPxPspwqkOhfSl3ZPWrjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 218/695] drm/vc4: hdmi: Handle error case of pm_runtime_resume_and_get
-Date: Wed,  2 Oct 2024 14:53:36 +0200
-Message-ID: <20241002125831.163407313@linuxfoundation.org>
+Subject: [PATCH 6.11 219/695] scsi: elx: libefc: Fix potential use after free in efc_nport_vport_del()
+Date: Wed,  2 Oct 2024 14:53:37 +0200
+Message-ID: <20241002125831.202587822@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -61,63 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f1a54e860b1bc8d824925b5a77f510913880e8d6 ]
+[ Upstream commit 2e4b02fad094976763af08fec2c620f4f8edd9ae ]
 
-The commit 0f5251339eda ("drm/vc4: hdmi: Make sure the controller is
-powered in detect") introduced the necessary power management handling
-to avoid register access while controller is powered down.
-Unfortunately it just print a warning if pm_runtime_resume_and_get()
-fails and proceed anyway.
+The kref_put() function will call nport->release if the refcount drops to
+zero.  The nport->release release function is _efc_nport_free() which frees
+"nport".  But then we dereference "nport" on the next line which is a use
+after free.  Re-order these lines to avoid the use after free.
 
-This could happen during suspend to idle. So we must assume it is unsafe
-to access the HDMI register. So bail out properly.
-
-Fixes: 0f5251339eda ("drm/vc4: hdmi: Make sure the controller is powered in detect")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240821214052.6800-3-wahrenst@gmx.net
+Fixes: fcd427303eb9 ("scsi: elx: libefc: SLI and FC PORT state machine interfaces")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/b666ab26-6581-4213-9a3d-32a9147f0399@stanley.mountain
+Reviewed-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/scsi/elx/libefc/efc_nport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index d57c4a5948c89..cb424604484f1 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -429,6 +429,7 @@ static int vc4_hdmi_connector_detect_ctx(struct drm_connector *connector,
- {
- 	struct vc4_hdmi *vc4_hdmi = connector_to_vc4_hdmi(connector);
- 	enum drm_connector_status status = connector_status_disconnected;
-+	int ret;
- 
- 	/*
- 	 * NOTE: This function should really take vc4_hdmi->mutex, but
-@@ -441,7 +442,12 @@ static int vc4_hdmi_connector_detect_ctx(struct drm_connector *connector,
- 	 * the lock for now.
- 	 */
- 
--	WARN_ON(pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev));
-+	ret = pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev);
-+	if (ret) {
-+		drm_err_once(connector->dev, "Failed to retain HDMI power domain: %d\n",
-+			     ret);
-+		return connector_status_unknown;
-+	}
- 
- 	if (vc4_hdmi->hpd_gpio) {
- 		if (gpiod_get_value_cansleep(vc4_hdmi->hpd_gpio))
+diff --git a/drivers/scsi/elx/libefc/efc_nport.c b/drivers/scsi/elx/libefc/efc_nport.c
+index 2e83a667901fe..1a7437f4328e8 100644
+--- a/drivers/scsi/elx/libefc/efc_nport.c
++++ b/drivers/scsi/elx/libefc/efc_nport.c
+@@ -705,9 +705,9 @@ efc_nport_vport_del(struct efc *efc, struct efc_domain *domain,
+ 	spin_lock_irqsave(&efc->lock, flags);
+ 	list_for_each_entry(nport, &domain->nport_list, list_entry) {
+ 		if (nport->wwpn == wwpn && nport->wwnn == wwnn) {
+-			kref_put(&nport->ref, nport->release);
+ 			/* Shutdown this NPORT */
+ 			efc_sm_post_event(&nport->sm, EFC_EVT_SHUTDOWN, NULL);
++			kref_put(&nport->ref, nport->release);
+ 			break;
+ 		}
+ 	}
 -- 
 2.43.0
 
