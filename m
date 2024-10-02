@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB55398D50C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2F998D808
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF4DD2859A9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56EA7280E59
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33D01D0480;
-	Wed,  2 Oct 2024 13:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1B71D04BE;
+	Wed,  2 Oct 2024 13:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOMgjCwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3kwEe/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDCE1D043C;
-	Wed,  2 Oct 2024 13:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997F81D043E;
+	Wed,  2 Oct 2024 13:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875570; cv=none; b=etz7MSAzLFKJzQF4030hJUdRQV1KFnYbW3+pf3xFWehiMR2P3fwpfxnjOEPcb9RDxIr0tMhlI5CFqQOMkpUH5xT+FvVrbBCiC3ddMM/KamMBgbuYC5lEaISTEaGlmcLexyYkMoDV6At2MiAPTUUT6iAnGlkAqDQlvIu/qk8kx7k=
+	t=1727877326; cv=none; b=UnSjOGGwm/Xxd3rY33adQp4ljSN9L+oLoITLCWrBlT2OSYru5KlTBrYTwbWLSUoMEaugN/7RFKSL1KjTMY6ddwz5dE6mgCT5GaolgZe/p3s3BTXXJgEXKyMpkb02+zNCqmKZ/RVkIvs/8ZnNN4lPcEA1w1tiSbxeBf1r0KgY9+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875570; c=relaxed/simple;
-	bh=6atKlorYMMGUkljL2JmGKDEbUbd0Jv6QEADLjewtrzA=;
+	s=arc-20240116; t=1727877326; c=relaxed/simple;
+	bh=eu+neNZs/HjtvEDU0vZNM5fNBKJn9X/46IgeE865+fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8tkQKt3pF/Qw9rR7fN6gtAXaAcJ2udzQ0kE0qjhNSWvptR5SUvbLlUY/v6XQtfpd4s6QGc2W1zOjykjQNWcWAQcL0cpoOftE54iuPg9MruA8Ch9/9HvMC9MYHVWTBGsSUyErcHVeeIFF0uXKFFVKi4VdJv+H0yhx/DHO82Ew/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOMgjCwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AB9C4CEC5;
-	Wed,  2 Oct 2024 13:26:09 +0000 (UTC)
+	 MIME-Version; b=elwsOl7ENIvArPZvJeoBgt/r+L0O1AfRibzROsuHFdjQ5dYC7Gkp2LZfn5UsSzNjy6uGRTWERqRynovs4Ut3F1z3FI0HdIPy1YXq5DQZP4sIcjp0AIIcKfzRN4eDevLM9URiGgVvD7p31bgJdpSnEXHiHXg0mJ2XOVJsFo0xQ3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3kwEe/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FC7C4CECE;
+	Wed,  2 Oct 2024 13:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875570;
-	bh=6atKlorYMMGUkljL2JmGKDEbUbd0Jv6QEADLjewtrzA=;
+	s=korg; t=1727877326;
+	bh=eu+neNZs/HjtvEDU0vZNM5fNBKJn9X/46IgeE865+fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QOMgjCwqbGw7DX59zua3Gho0tN9ZZOdp6meXCP+CGjG2WhGQ2hKRJ8n7DTPViws5d
-	 kQqEK6s3QvnKIoecswDvrbhqG+WChQIXrVJUqgwd2qoIHVPFoSyDzpDAIF7GXk6s1/
-	 dcukWJf31F47uL7t4sxdo+hsE2uxNs+zNGay4vKo=
+	b=E3kwEe/rJGixHbqQO9cJzl+VJC1UH2YbVb3r+jwS+7dqMsEx7WA8FMDF+pY1MFmoQ
+	 bgRmhbzn+CdLEjWUgHGvyimuWu8bVma+4a7riyVTewicozB00WreM1vk0v8BnX8da5
+	 2KV1PlR3J789gNo+cvNAYv/h3Gi4NducDnXpz1Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 146/695] arm64: dts: rockchip: Correct vendor prefix for Hardkernel ODROID-M1
+Subject: [PATCH 6.10 044/634] wifi: mac80211: Check for missing VHT elements only for 5 GHz
 Date: Wed,  2 Oct 2024 14:52:24 +0200
-Message-ID: <20241002125828.311727776@linuxfoundation.org>
+Message-ID: <20241002125812.841987455@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 735065e774dcfc62e38df01a535862138b6c92ed ]
+[ Upstream commit 67bb124cd9ae38870667e4f9c876ef8e0f82ec44 ]
 
-The vendor prefix for Hardkernel ODROID-M1 is incorrectly listed as
-rockchip. Use the proper hardkernel vendor prefix for this board, while
-at it also drop the redundant soc prefix.
+Check for missing VHT Capabilities and VHT Operation elements in
+association response frame only for 5 GHz links.
 
-Fixes: fd3583267703 ("arm64: dts: rockchip: Add Hardkernel ODROID-M1 board")
-Reviewed-by: Aurelien Jarno <aurelien@aurel32.net>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240827211825.1419820-3-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 310c8387c638 ("wifi: mac80211: clean up connection process")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240827103920.dd711282d543.Iaba245cebc52209b0499d5bab7d8a8ef1df9dd65@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mlme.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-index a337f547caf53..6a02db4f073f2 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-odroid-m1.dts
-@@ -13,7 +13,7 @@
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 51b00ff7edf15..1faf4d7c115f0 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4317,7 +4317,7 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 	    ((assoc_data->wmm && !elems->wmm_param) ||
+ 	     (link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HT &&
+ 	      (!elems->ht_cap_elem || !elems->ht_operation)) ||
+-	     (link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT &&
++	     (is_5ghz && link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT &&
+ 	      (!elems->vht_cap_elem || !elems->vht_operation)))) {
+ 		const struct cfg80211_bss_ies *ies;
+ 		struct ieee802_11_elems *bss_elems;
+@@ -4365,19 +4365,22 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 			sdata_info(sdata,
+ 				   "AP bug: HT operation missing from AssocResp\n");
+ 		}
+-		if (!elems->vht_cap_elem && bss_elems->vht_cap_elem &&
+-		    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT) {
+-			elems->vht_cap_elem = bss_elems->vht_cap_elem;
+-			sdata_info(sdata,
+-				   "AP bug: VHT capa missing from AssocResp\n");
+-		}
+-		if (!elems->vht_operation && bss_elems->vht_operation &&
+-		    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT) {
+-			elems->vht_operation = bss_elems->vht_operation;
+-			sdata_info(sdata,
+-				   "AP bug: VHT operation missing from AssocResp\n");
+-		}
  
- / {
- 	model = "Hardkernel ODROID-M1";
--	compatible = "rockchip,rk3568-odroid-m1", "rockchip,rk3568";
-+	compatible = "hardkernel,odroid-m1", "rockchip,rk3568";
++		if (is_5ghz) {
++			if (!elems->vht_cap_elem && bss_elems->vht_cap_elem &&
++			    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT) {
++				elems->vht_cap_elem = bss_elems->vht_cap_elem;
++				sdata_info(sdata,
++					   "AP bug: VHT capa missing from AssocResp\n");
++			}
++
++			if (!elems->vht_operation && bss_elems->vht_operation &&
++			    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_VHT) {
++				elems->vht_operation = bss_elems->vht_operation;
++				sdata_info(sdata,
++					   "AP bug: VHT operation missing from AssocResp\n");
++			}
++		}
+ 		kfree(bss_elems);
+ 	}
  
- 	aliases {
- 		ethernet0 = &gmac0;
 -- 
 2.43.0
 
