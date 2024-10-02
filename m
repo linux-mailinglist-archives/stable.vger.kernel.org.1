@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A50298D8F0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C653D98D579
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 497431F218ED
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E2561F21F96
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E691E1D279E;
-	Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61D71D016B;
+	Wed,  2 Oct 2024 13:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19bYc7GA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9XAyP+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55101D07B7;
-	Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766EF29CE7;
+	Wed,  2 Oct 2024 13:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877718; cv=none; b=kvQOni8ip88g7ewA+Tx1gmYtpRGY7o3MsCYxnTM2ZxljkX49MJj+NrAF2PVUwQKtQmTbZZ5bcg5mbDlOffPrHVgoUvqZP2iP0GLW2HCnEaoW8OOqYM0zjoc4bG1A92LivvvoWWe79HHFDyNKIoO2p2eyKrZ19JUIgXr+NuVN03o=
+	t=1727875847; cv=none; b=dHx7ak/mD+QEZix+r8dhVj/EI0JbAB40wc46MSo1GaOyi81lnoCVjWpbsuQwM993By+BoGgt6PMaO4+tw0c25Oi0BlRWYYgqMG4J2lVi9y3yUJsaz2rjeWZbVzfiQ27mvUczh1fBCf0YA5DEI4rh6aN9d6f0/WNmklEv6Hwczss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877718; c=relaxed/simple;
-	bh=CLlSacbeFZwubProGPbiS2ADnpPaDxWvGLYn1Kabdr8=;
+	s=arc-20240116; t=1727875847; c=relaxed/simple;
+	bh=ukyRDo88wlhFcBSyZA/JF9wLZ30UZPDr132stwP6Wwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEP4J/vpHf3CyaGVivLemBLdPRXQWHxAiCp4hR0dB3Qa64R8QcGUOC3Cfap+XDrLss5kqZ+R3CL9cVRIfINPJjO8meNXuEg3LjpzbbX43ir5XAvmCdE+EIf5HBGD9jJ8T/5Y2DRjOOcb+ZGHeXiV4uI6SWh+vU02A/4/Vs6b4WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19bYc7GA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F26C4CEC2;
-	Wed,  2 Oct 2024 14:01:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L40t/zmjli+aGAMOV2fxPYqIv3fDjABZCDUxRI+fJ2JddeLvXMeQVpqv2k/RnU5XCoJ9oaVtbyNea7ZaWXOMPMfXAAnus0eSpx0WrUlUayNbjaOvO4+ufghSzjBpF70/G9vU9Y4AA+Lo29EIlsnorZ1ecCeh2OTK4yKhoTq9H9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9XAyP+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5FCC4CECD;
+	Wed,  2 Oct 2024 13:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877718;
-	bh=CLlSacbeFZwubProGPbiS2ADnpPaDxWvGLYn1Kabdr8=;
+	s=korg; t=1727875847;
+	bh=ukyRDo88wlhFcBSyZA/JF9wLZ30UZPDr132stwP6Wwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19bYc7GAhe16NBWuWPtYATpT673rSP/cYGVt+u6jV1TEdQCDPUpara8crR6QpYWC5
-	 cZW3ahJpmAr/NBgYnJnUXElH5OH0mlFza8Cwh3Xkr84GcXAt/ZCeRg3t/aYZlYhBaH
-	 6JzUslsqQbxo6Y/RkZkaUV+WhfNtJ2yz1N62lJGM=
+	b=a9XAyP+TTkpCtNeFIMzmm2g70svAU+Z10DJrjHe6ShMMtypsin95OsQIVlxVKtfaf
+	 RINyu1/VQC9P3+Npscqri5mOs8pyRUtjcLiHkAWlAFRjhD9L1DEKX6/YKXZVZpQDN7
+	 KE0zrAxbIX9V3r2yp/8M+GlLHd7/iaAsAvJyHen4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Lang Yu <lang.yu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 139/634] reset: berlin: fix OF node leak in probe() error path
+Subject: [PATCH 6.11 241/695] drm/amdgpu: fix invalid fence handling in amdgpu_vm_tlb_flush
 Date: Wed,  2 Oct 2024 14:53:59 +0200
-Message-ID: <20241002125816.594171780@linuxfoundation.org>
+Message-ID: <20241002125832.071880163@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Lang Yu <lang.yu@amd.com>
 
-[ Upstream commit 5f58a88cc91075be38cec69b7cb70aaa4ba69e8b ]
+[ Upstream commit 4453808d9eab0461dea338e89372ffc4a3c50acc ]
 
-Driver is leaking OF node reference on memory allocation failure.
-Acquire the OF node reference after memory allocation to fix this and
-keep it simple.
+CPU based update doesn't produce a fence, handle such cases properly.
 
-Fixes: aed6f3cadc86 ("reset: berlin: convert to a platform driver")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-1-03f6d834f8c0@linaro.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Fixes: d8a3f0a0348d ("drm/amdgpu: implement TLB flush fence")
+Signed-off-by: Lang Yu <lang.yu@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/reset-berlin.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/reset/reset-berlin.c b/drivers/reset/reset-berlin.c
-index 2537ec05eceef..578fe867080ce 100644
---- a/drivers/reset/reset-berlin.c
-+++ b/drivers/reset/reset-berlin.c
-@@ -68,13 +68,14 @@ static int berlin_reset_xlate(struct reset_controller_dev *rcdev,
- 
- static int berlin2_reset_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index a060c28f0877c..119eebeb16b7f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -902,10 +902,12 @@ amdgpu_vm_tlb_flush(struct amdgpu_vm_update_params *params,
  {
--	struct device_node *parent_np = of_get_parent(pdev->dev.of_node);
-+	struct device_node *parent_np;
- 	struct berlin_reset_priv *priv;
+ 	struct amdgpu_vm *vm = params->vm;
  
- 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
+-	if (!fence || !*fence)
++	tlb_cb->vm = vm;
++	if (!fence || !*fence) {
++		amdgpu_vm_tlb_seq_cb(NULL, &tlb_cb->cb);
+ 		return;
++	}
  
-+	parent_np = of_get_parent(pdev->dev.of_node);
- 	priv->regmap = syscon_node_to_regmap(parent_np);
- 	of_node_put(parent_np);
- 	if (IS_ERR(priv->regmap))
+-	tlb_cb->vm = vm;
+ 	if (!dma_fence_add_callback(*fence, &tlb_cb->cb,
+ 				    amdgpu_vm_tlb_seq_cb)) {
+ 		dma_fence_put(vm->last_tlb_flush);
 -- 
 2.43.0
 
