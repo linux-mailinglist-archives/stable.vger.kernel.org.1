@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-80387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA6E98DD68
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C06898DAC6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AE0FB29A8B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3C001F25399
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D20A1D174F;
-	Wed,  2 Oct 2024 14:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EA81D1E6E;
+	Wed,  2 Oct 2024 14:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCxu1sC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6aZd86+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ED91D0B99;
-	Wed,  2 Oct 2024 14:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442F51D0E12;
+	Wed,  2 Oct 2024 14:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880226; cv=none; b=Hxblr345cxtRpSV5I9mHjbX86uw5qMdKE3sFhHutY4eu9Yg+cHtTSUDpNyP069YXvzwXNtOZXpkck9GKClKQI5FgQOp7MdD1SKK26casRqUa6h52Z2UDhwX4YkdrPdJ8otsM0GwFRoolrpDSYJK2KlNbXFAwoxy+VDYW4mZfwjM=
+	t=1727878770; cv=none; b=t0FBLY0K8kZWlCLFgoEiIvBo+rvwWB6VetiPbv6+Cg3hYwsqONNrueumD1BQVVa4DlFCZY74zRKhxABckhuq4LGLsJdfTkNg9PzDnohtfdC7ZmGsU9MM8ELVkTwY56RpiaPPIXR9NBvoem2/dN1+cU6q4UWdX59yusdfzmurkBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880226; c=relaxed/simple;
-	bh=zid43ne4mlTfAIaPdwQmanhZxZdUuEKbHT1BoMsQwcI=;
+	s=arc-20240116; t=1727878770; c=relaxed/simple;
+	bh=Fw/tS6atXG/tPCgmHWUOP5LnmZfWVF9vf+PojPhqo7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akDysyHn5WUUNLAcIIABGgcTA8HSoaZZDU3IhDskaOec1fRRtZC3wPV863qTS3uvtz5wSXgwuVJYj05tE+AXy5qP8caMXj7u3cPNcPJmetmUXMI44VWRx6Ei7Q8dHBJ/bMXzDRmmJ4cugcsfLnhZ81AXLYXWLaTO/MR18mzmYSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCxu1sC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B81C4CEC2;
-	Wed,  2 Oct 2024 14:43:45 +0000 (UTC)
+	 MIME-Version; b=brCBzSNndhV1Lve7JqPDDtMOhSwCKwHrQnOjoWuaqNNAdFpeifBLj1NatWbKrk2B3tuWn7N3bHqa5SmvZWLMtn085DVGlJU1wneX4tgLGH9+bN1j7sMcOeIA0YU+TC3EQ0WFQU6sTLrzBckdyMDAPj8f7MImK4eDdazua474F/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6aZd86+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C21C4CEC2;
+	Wed,  2 Oct 2024 14:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880226;
-	bh=zid43ne4mlTfAIaPdwQmanhZxZdUuEKbHT1BoMsQwcI=;
+	s=korg; t=1727878769;
+	bh=Fw/tS6atXG/tPCgmHWUOP5LnmZfWVF9vf+PojPhqo7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCxu1sC2hDzOyxlBjEMmuWOEcla/OPoirMwm/UvysI7zA941zwdTFMpoGBlt21KGJ
-	 8N59wCe2buZOweKOvhfcsv9b2P3r21tqcp+XYYPSRqUNy7vy8hR2KJTF+0xYiicQi6
-	 vc3T8HBgMkPLbjhDjCv2SyAhFR4e3L+YubXsZGXc=
+	b=n6aZd86+cM5XZClb4OqPRHJiZwe8GtnqQ357cLpb7JPW8VxD/w9LKy8p+cKUg9r0E
+	 8QE8om3d15bRuXvMkEDofjLyMYPV917gt8bypxAuzGSw7tLN92dyBQPfalPlXF5mtu
+	 udjUgL2LW3pu3xaVtGWhlOgkysfLyQdonQ6UreRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.6 386/538] drm/vmwgfx: Prevent unmapping active read buffers
-Date: Wed,  2 Oct 2024 15:00:25 +0200
-Message-ID: <20241002125807.667158491@linuxfoundation.org>
+	Tomas Marek <tomas.marek@elrest.cz>
+Subject: [PATCH 6.10 526/634] usb: dwc2: drd: fix clock gating on USB role switch
+Date: Wed,  2 Oct 2024 15:00:26 +0200
+Message-ID: <20241002125831.866592432@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Tomas Marek <tomas.marek@elrest.cz>
 
-commit aba07b9a0587f50e5d3346eaa19019cf3f86c0ea upstream.
+commit 2c6b6afa59e78bebcb65bbc8a76b3459f139547c upstream.
 
-The kms paths keep a persistent map active to read and compare the cursor
-buffer. These maps can race with each other in simple scenario where:
-a) buffer "a" mapped for update
-b) buffer "a" mapped for compare
-c) do the compare
-d) unmap "a" for compare
-e) update the cursor
-f) unmap "a" for update
-At step "e" the buffer has been unmapped and the read contents is bogus.
+The dwc2_handle_usb_suspend_intr() function disables gadget clocks in USB
+peripheral mode when no other power-down mode is available (introduced by
+commit 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_intr function.")).
+However, the dwc2_drd_role_sw_set() USB role update handler attempts to
+read DWC2 registers if the USB role has changed while the USB is in suspend
+mode (when the clocks are gated). This causes the system to hang.
 
-Prevent unmapping of active read buffers by simply keeping a count of
-how many paths have currently active maps and unmap only when the count
-reaches 0.
+Release the gadget clocks before handling the USB role update.
 
-Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and CursorBypass 4")
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.19+
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240816183332.31961-2-zack.rusin@broadcom.com
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-[Shivani: Modified to apply on v6.6.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Fixes: 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_intr function.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tomas Marek <tomas.marek@elrest.cz>
+Link: https://lore.kernel.org/r/20240906055025.25057-1-tomas.marek@elrest.cz
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c |   13 +++++++++++--
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.h |    3 +++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/usb/dwc2/drd.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -331,6 +331,8 @@ void *vmw_bo_map_and_cache(struct vmw_bo
- 	void *virtual;
- 	int ret;
+--- a/drivers/usb/dwc2/drd.c
++++ b/drivers/usb/dwc2/drd.c
+@@ -127,6 +127,15 @@ static int dwc2_drd_role_sw_set(struct u
+ 			role = USB_ROLE_DEVICE;
+ 	}
  
-+	atomic_inc(&vbo->map_count);
++	if ((IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL) ||
++	     IS_ENABLED(CONFIG_USB_DWC2_DUAL_ROLE)) &&
++	     dwc2_is_device_mode(hsotg) &&
++	     hsotg->lx_state == DWC2_L2 &&
++	     hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
++	     hsotg->bus_suspended &&
++	     !hsotg->params.no_clock_gating)
++		dwc2_gadget_exit_clock_gating(hsotg, 0);
 +
- 	virtual = ttm_kmap_obj_virtual(&vbo->map, &not_used);
- 	if (virtual)
- 		return virtual;
-@@ -353,11 +355,17 @@ void *vmw_bo_map_and_cache(struct vmw_bo
-  */
- void vmw_bo_unmap(struct vmw_bo *vbo)
- {
-+	int map_count;
-+
- 	if (vbo->map.bo == NULL)
- 		return;
- 
--	ttm_bo_kunmap(&vbo->map);
--	vbo->map.bo = NULL;
-+	map_count = atomic_dec_return(&vbo->map_count);
-+
-+	if (!map_count) {
-+		ttm_bo_kunmap(&vbo->map);
-+		vbo->map.bo = NULL;
-+	}
- }
- 
- 
-@@ -390,6 +398,7 @@ static int vmw_bo_init(struct vmw_privat
- 	BUILD_BUG_ON(TTM_MAX_BO_PRIORITY <= 3);
- 	vmw_bo->tbo.priority = 3;
- 	vmw_bo->res_tree = RB_ROOT;
-+	atomic_set(&vmw_bo->map_count, 0);
- 
- 	params->size = ALIGN(params->size, PAGE_SIZE);
- 	drm_gem_private_object_init(vdev, &vmw_bo->tbo.base, params->size);
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-@@ -68,6 +68,8 @@ struct vmw_bo_params {
-  * @map: Kmap object for semi-persistent mappings
-  * @res_tree: RB tree of resources using this buffer object as a backing MOB
-  * @res_prios: Eviction priority counts for attached resources
-+ * @map_count: The number of currently active maps. Will differ from the
-+ * cpu_writers because it includes kernel maps.
-  * @cpu_writers: Number of synccpu write grabs. Protected by reservation when
-  * increased. May be decreased without reservation.
-  * @dx_query_ctx: DX context if this buffer object is used as a DX query MOB
-@@ -86,6 +88,7 @@ struct vmw_bo {
- 	struct rb_root res_tree;
- 	u32 res_prios[TTM_MAX_BO_PRIORITY];
- 
-+	atomic_t map_count;
- 	atomic_t cpu_writers;
- 	/* Not ref-counted.  Protected by binding_mutex */
- 	struct vmw_resource *dx_query_ctx;
+ 	if (role == USB_ROLE_HOST) {
+ 		already = dwc2_ovr_avalid(hsotg, true);
+ 	} else if (role == USB_ROLE_DEVICE) {
 
 
 
