@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-78828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3192C98D528
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9AC98D85F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7997B2867A1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC776B22BA9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C354E1D0403;
-	Wed,  2 Oct 2024 13:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E761D0493;
+	Wed,  2 Oct 2024 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5Ws3caX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lY/+hp5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826BC16F84F;
-	Wed,  2 Oct 2024 13:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CD01D0420;
+	Wed,  2 Oct 2024 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875646; cv=none; b=tRBmF5U7iRzaB0q02aeEQQlhKVu9jpQNmPAaIqMnrGBbUdFCOmE5JajlPC7Ga38Ljx9yO05itMpRJqQeB+98/GIyVP7FavMGjqrwTBGvJpIAHHNnUrfdL4tKWPXugSppOSahqHIB+/LigWsh2Z1uWS85qaq2HDHGOWlMMUV2UcQ=
+	t=1727877506; cv=none; b=jIYy+OH8OCtYJrTmJjVCjK4GmBWJSxShlYfNgnDqksfxY5tO5TC/PNzTmSkakVokmciEb7nsmUd++OwZT3ZJfIl/4KUh6UBM5Ne0sTk+HmEBcDhYU1+pyysTsw6j7+4LOlU6Mkt4mg1rpkX7Hn9B8jWxZUdIjDrnWJAMgzSbTOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875646; c=relaxed/simple;
-	bh=hWJMOdBvjfu6KyizDCprh4deoo/X6oPvDt5sAWrG8SY=;
+	s=arc-20240116; t=1727877506; c=relaxed/simple;
+	bh=a16YELHmCqQ56ngzZB7L7zUu1YGW5dq9ZTHFVcZhiM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D4BGf97Jz6VBW3+ZZ3DM2TKCiXjBn9BLiseiZg5nXtqfNnIL1E+BZfiAQIAcy6SOqXv/hWgI6+EYqX9OK0FGC/30GHRMm39gIbJqs+TUFwJa2RTzXbP3wxKYGPxmvNijIxCPnyK8iPFKNVQU264IcQvxJRmqkDEOt5sT19Hi2yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5Ws3caX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53E0C4CEC5;
-	Wed,  2 Oct 2024 13:27:25 +0000 (UTC)
+	 MIME-Version; b=iA5AjMSqxwuMKiwz6uTVcFLsdHDU8YHHAZpbHXFb35OoWx7xPy/tKY7PLE+Uvg6hg0JRFUCeK4PjbsyG+nOBVZemIxT5UjTNVAQEdjLYMI5QmeASgjrwK3mdzwPK7d6bi5+AKyTklCK298yAwzIin+Xum2ajlQoRQOKtqkdOLg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lY/+hp5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F87C4CEC2;
+	Wed,  2 Oct 2024 13:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875646;
-	bh=hWJMOdBvjfu6KyizDCprh4deoo/X6oPvDt5sAWrG8SY=;
+	s=korg; t=1727877506;
+	bh=a16YELHmCqQ56ngzZB7L7zUu1YGW5dq9ZTHFVcZhiM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5Ws3caXMJNUz8ENbqtJ77HEOod9effVfvqN3kNuHMYyvdPCxpew5mOJl7JoZ3HZk
-	 lOdtiykMbTesZH+fkWpkyK73Cx/Tm+TrH5AwqqTGQ6pYgwcgJPUAMuy05iriKUQfTL
-	 4HhGzrDGj0eBXoH1Cub+GrJ3p0ZJKHYA/ctAS8Gs=
+	b=lY/+hp5XHXREzdJKwpgXeNUOXUfDGJv/w1re1QeCLYgKbNXyBPR+GugGOrUAPpkqG
+	 n4in/hBSFYtO9b62gJiDSXSAeBNpnXqUEosoXGwSeWuc1YMexQapU5A4G19HokiG0g
+	 AnAJet09Mejo+5QYhLQCCunCGjzBJ8LQegSoqwWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Reinette Chatre <reinette.chatre@intel.com>,
+	"Molina Sabido, Gerardo" <gerardo.molina.sabido@intel.com>,
+	Aaron Lu <aaron.lu@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Zhimin Luo <zhimin.luo@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 172/695] selftests:resctrl: Fix build failure on archs without __cpuid_count()
+Subject: [PATCH 6.10 070/634] x86/sgx: Fix deadlock in SGX NUMA node search
 Date: Wed,  2 Oct 2024 14:52:50 +0200
-Message-ID: <20241002125829.338091490@linuxfoundation.org>
+Message-ID: <20241002125813.870626473@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuah Khan <skhan@linuxfoundation.org>
+From: Aaron Lu <aaron.lu@intel.com>
 
-[ Upstream commit 7beaf1da074f7ea25454d6c11da142c3892d3c4e ]
+[ Upstream commit 9c936844010466535bd46ea4ce4656ef17653644 ]
 
-When resctrl is built on architectures without __cpuid_count()
-support, build fails. resctrl uses __cpuid_count() defined in
-kselftest.h.
+When the current node doesn't have an EPC section configured by firmware
+and all other EPC sections are used up, CPU can get stuck inside the
+while loop that looks for an available EPC page from remote nodes
+indefinitely, leading to a soft lockup. Note how nid_of_current will
+never be equal to nid in that while loop because nid_of_current is not
+set in sgx_numa_mask.
 
-Even though the problem is seen while building resctrl on aarch64,
-this error can be seen on any platform that doesn't support CPUID.
+Also worth mentioning is that it's perfectly fine for the firmware not
+to setup an EPC section on a node. While setting up an EPC section on
+each node can enhance performance, it is not a requirement for
+functionality.
 
-CPUID is a x86/x86-64 feature and code paths with CPUID asm commands
-will fail to build on all other architectures.
+Rework the loop to start and end on *a* node that has SGX memory. This
+avoids the deadlock looking for the current SGX-lacking node to show up
+in the loop when it never will.
 
-All others tests call __cpuid_count() do so from x86/x86_64 code paths
-when _i386__ or __x86_64__ are defined. resctrl is an exception.
-
-Fix the problem by defining __cpuid_count() only when __i386__ or
-__x86_64__ are defined in kselftest.h and changing resctrl to call
-__cpuid_count() only when __i386__ or __x86_64__ are defined.
-
-In file included from resctrl.h:24,
-                 from cat_test.c:11:
-In function ‘arch_supports_noncont_cat’,
-    inlined from ‘noncont_cat_run_test’ at cat_test.c:326:6:
-../kselftest.h:74:9: error: impossible constraint in ‘asm’
-   74 |         __asm__ __volatile__ ("cpuid\n\t"                               \
-      |         ^~~~~~~
-cat_test.c:304:17: note: in expansion of macro ‘__cpuid_count’
-  304 |                 __cpuid_count(0x10, 1, eax, ebx, ecx, edx);
-      |                 ^~~~~~~~~~~~~
-../kselftest.h:74:9: error: impossible constraint in ‘asm’
-   74 |         __asm__ __volatile__ ("cpuid\n\t"                               \
-      |         ^~~~~~~
-cat_test.c:306:17: note: in expansion of macro ‘__cpuid_count’
-  306 |                 __cpuid_count(0x10, 2, eax, ebx, ecx, edx);
-
-Fixes: ae638551ab64 ("selftests/resctrl: Add non-contiguous CBMs CAT test")
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Closes: https://lore.kernel.org/lkml/20240809071059.265914-1-usama.anjum@collabora.com/
-Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 901ddbb9ecf5 ("x86/sgx: Add a basic NUMA allocation scheme to sgx_alloc_epc_page()")
+Reported-by: "Molina Sabido, Gerardo" <gerardo.molina.sabido@intel.com>
+Signed-off-by: Aaron Lu <aaron.lu@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Zhimin Luo <zhimin.luo@intel.com>
+Link: https://lore.kernel.org/all/20240905080855.1699814-2-aaron.lu%40intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest.h        | 2 ++
- tools/testing/selftests/resctrl/cat_test.c | 7 +++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/sgx/main.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
-index b8967b6e29d50..e195ec1568599 100644
---- a/tools/testing/selftests/kselftest.h
-+++ b/tools/testing/selftests/kselftest.h
-@@ -61,6 +61,7 @@
- #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
- #endif
- 
-+#if defined(__i386__) || defined(__x86_64__) /* arch */
- /*
-  * gcc cpuid.h provides __cpuid_count() since v4.4.
-  * Clang/LLVM cpuid.h provides  __cpuid_count() since v3.4.0.
-@@ -75,6 +76,7 @@
- 			      : "=a" (a), "=b" (b), "=c" (c), "=d" (d)	\
- 			      : "0" (level), "2" (count))
- #endif
-+#endif /* end arch */
- 
- /* define kselftest exit codes */
- #define KSFT_PASS  0
-diff --git a/tools/testing/selftests/resctrl/cat_test.c b/tools/testing/selftests/resctrl/cat_test.c
-index 742782438ca3b..94cfdba5308d8 100644
---- a/tools/testing/selftests/resctrl/cat_test.c
-+++ b/tools/testing/selftests/resctrl/cat_test.c
-@@ -290,12 +290,12 @@ static int cat_run_test(const struct resctrl_test *test, const struct user_param
- 
- static bool arch_supports_noncont_cat(const struct resctrl_test *test)
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 27892e57c4ef9..6aeeb43dd3f6a 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -475,24 +475,25 @@ struct sgx_epc_page *__sgx_alloc_epc_page(void)
  {
--	unsigned int eax, ebx, ecx, edx;
+ 	struct sgx_epc_page *page;
+ 	int nid_of_current = numa_node_id();
+-	int nid = nid_of_current;
++	int nid_start, nid;
+ 
+-	if (node_isset(nid_of_current, sgx_numa_mask)) {
+-		page = __sgx_alloc_epc_page_from_node(nid_of_current);
+-		if (page)
+-			return page;
+-	}
 -
- 	/* AMD always supports non-contiguous CBM. */
- 	if (get_vendor() == ARCH_AMD)
- 		return true;
+-	/* Fall back to the non-local NUMA nodes: */
+-	while (true) {
+-		nid = next_node_in(nid, sgx_numa_mask);
+-		if (nid == nid_of_current)
+-			break;
++	/*
++	 * Try local node first. If it doesn't have an EPC section,
++	 * fall back to the non-local NUMA nodes.
++	 */
++	if (node_isset(nid_of_current, sgx_numa_mask))
++		nid_start = nid_of_current;
++	else
++		nid_start = next_node_in(nid_of_current, sgx_numa_mask);
  
-+#if defined(__i386__) || defined(__x86_64__) /* arch */
-+	unsigned int eax, ebx, ecx, edx;
- 	/* Intel support for non-contiguous CBM needs to be discovered. */
- 	if (!strcmp(test->resource, "L3"))
- 		__cpuid_count(0x10, 1, eax, ebx, ecx, edx);
-@@ -305,6 +305,9 @@ static bool arch_supports_noncont_cat(const struct resctrl_test *test)
- 		return false;
- 
- 	return ((ecx >> 3) & 1);
-+#endif /* end arch */
++	nid = nid_start;
++	do {
+ 		page = __sgx_alloc_epc_page_from_node(nid);
+ 		if (page)
+ 			return page;
+-	}
 +
-+	return false;
- }
++		nid = next_node_in(nid, sgx_numa_mask);
++	} while (nid != nid_start);
  
- static int noncont_cat_run_test(const struct resctrl_test *test,
+ 	return ERR_PTR(-ENOMEM);
+ }
 -- 
 2.43.0
 
