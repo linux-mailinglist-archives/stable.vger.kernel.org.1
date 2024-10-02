@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B55D98DC8A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:42:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B10498D9EB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 183E3B20DBA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6AF71F26E8E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685CE1D279C;
-	Wed,  2 Oct 2024 14:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096E61D0F4F;
+	Wed,  2 Oct 2024 14:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVoGVfXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuDruCXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EC43D994;
-	Wed,  2 Oct 2024 14:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93001D0DE5;
+	Wed,  2 Oct 2024 14:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879758; cv=none; b=iYDbmkGezqMdlTpvbiHfwe8w6OwgV2gE3vifS1Wo7h6zpoLxdZ45qiCA+qE4VECdmH9zbyESF42/Fudb1bz9AwhuqJ1m3xaDIyd5ZqILTF40fRpR0bUMIrgKsR4SZ9VJZWN7tkbz8PO/WDK1jULxU3lm45SecJBYcGvko+9gZAQ=
+	t=1727878302; cv=none; b=hXcQRNqXqyx2wmA360diH0LK7bRWP59rDu1Un0mpeakOFc259YxE0W7l02u7siKzNfbMlqWGY6eFKTcYVgYt4XZiLj68q6OAgGejvUylr7ifXkwahwd7lIvGos0gpejetuBH8F+y/Xrf5ktmbCbe9tNbgfTHr2eM53u6sQt4spU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879758; c=relaxed/simple;
-	bh=RYX7POblfESKBfN97aePO8VC5Tiqbea2TECbBKFz6q4=;
+	s=arc-20240116; t=1727878302; c=relaxed/simple;
+	bh=9XPN5iD4BXOKyzqWb1zxybw/vqYIu1cR1OesPA4rUSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwxWre911ouNO9FXC9ISWFsbOzBL+/Yq1qJr81ADIqDa94gj9IyOhPPYpt+zxYnU7arr2Up9fRIRnQAoZak1OjViHnHcpsegN0YtfmM+unLAksdb6uMI5A0GDIm1sbMc1vDeHXEY1M6QGQ5rH0vfGN2VLD/ACMO0bX4xVq6iSD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVoGVfXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DEAC4CEC2;
-	Wed,  2 Oct 2024 14:35:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RmxkcnCoc01OvUPFwfcCs21uD2R0oWmV5X5U3Wk+k/a/A8oGQdS+VRACyGlUe8ga3E2qLvir1XXOODgsX5Kkb1OX99JdMEU1n/1+AnhKIG0t2v4yLVZLDiGjbVE2JIU7mYVnTAM2CHyizt6HpnZ/GGdbahLfsTU8V4kKggxkQGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuDruCXR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7E1C4CEC2;
+	Wed,  2 Oct 2024 14:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879758;
-	bh=RYX7POblfESKBfN97aePO8VC5Tiqbea2TECbBKFz6q4=;
+	s=korg; t=1727878302;
+	bh=9XPN5iD4BXOKyzqWb1zxybw/vqYIu1cR1OesPA4rUSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVoGVfXkO5M0lBojFkuHq96YI0xVL4RR5Z09lqgMGBWU0rvSppLMG+etANLlua9oR
-	 W/0K7CfZbRjk26pz0XKlDZi9V3yxyezJvCG4U2u8VQVJIq4etZCDog+E6EKZ9Nj+N8
-	 jN3lMJBdZt2SvTXHvrM4z6FUITdUKwKiLQKUj8Ss=
+	b=vuDruCXRj+Y7YC/c8QL7B/hgUKnK7rIDT1jJnSkEgB0iWYeFQIqf0gGJEO+BUhtOK
+	 PV2lU51X6+rUh5h30uzk8TCgnoNLukqGlI2AgEcWn9RDqnbQhfGSVoqYBFPTAd9a/0
+	 vQFExwvNKTnDRZnvpJh/xoYYeC2eoiQnuOqRK+1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/538] ext4: avoid potential buffer_head leak in __ext4_new_inode()
+Subject: [PATCH 6.10 366/634] PCI: kirin: Fix buffer overflow in kirin_pcie_parse_port()
 Date: Wed,  2 Oct 2024 14:57:46 +0200
-Message-ID: <20241002125801.213403105@linuxfoundation.org>
+Message-ID: <20241002125825.542260102@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-[ Upstream commit 227d31b9214d1b9513383cf6c7180628d4b3b61f ]
+[ Upstream commit c500a86693a126c9393e602741e348f80f1b0fc5 ]
 
-If a group is marked EXT4_GROUP_INFO_IBITMAP_CORRUPT after it's inode
-bitmap buffer_head was successfully verified, then __ext4_new_inode()
-will get a valid inode_bitmap_bh of a corrupted group from
-ext4_read_inode_bitmap() in which case inode_bitmap_bh misses a release.
-Hnadle "IS_ERR(inode_bitmap_bh)" and group corruption separately like
-how ext4_free_inode() does to avoid buffer_head leak.
+Within kirin_pcie_parse_port(), the pcie->num_slots is compared to
+pcie->gpio_id_reset size (MAX_PCI_SLOTS) which is correct and would lead
+to an overflow.
 
-Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://patch.msgid.link/20240820132234.2759926-3-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Thus, fix condition to pcie->num_slots + 1 >= MAX_PCI_SLOTS and move
+pcie->num_slots increment below the if-statement to avoid out-of-bounds
+array access.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: b22dbbb24571 ("PCI: kirin: Support PERST# GPIOs for HiKey970 external PEX 8606 bridge")
+Link: https://lore.kernel.org/linux-pci/20240903115823.30647-1-adiupina@astralinux.ru
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ialloc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-kirin.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
-index b4699a415c210..d7d89133ed368 100644
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -1054,12 +1054,13 @@ struct inode *__ext4_new_inode(struct mnt_idmap *idmap,
- 		brelse(inode_bitmap_bh);
- 		inode_bitmap_bh = ext4_read_inode_bitmap(sb, group);
- 		/* Skip groups with suspicious inode tables */
--		if (((!(sbi->s_mount_state & EXT4_FC_REPLAY))
--		     && EXT4_MB_GRP_IBITMAP_CORRUPT(grp)) ||
--		    IS_ERR(inode_bitmap_bh)) {
-+		if (IS_ERR(inode_bitmap_bh)) {
- 			inode_bitmap_bh = NULL;
- 			goto next_group;
- 		}
-+		if (!(sbi->s_mount_state & EXT4_FC_REPLAY) &&
-+		    EXT4_MB_GRP_IBITMAP_CORRUPT(grp))
-+			goto next_group;
+diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
+index d5523f3021024..deab1e653b9a3 100644
+--- a/drivers/pci/controller/dwc/pcie-kirin.c
++++ b/drivers/pci/controller/dwc/pcie-kirin.c
+@@ -412,12 +412,12 @@ static int kirin_pcie_parse_port(struct kirin_pcie *pcie,
+ 			if (pcie->gpio_id_reset[i] < 0)
+ 				continue;
  
- repeat_in_this_group:
- 		ret2 = find_inode_bit(sb, group, inode_bitmap_bh, &ino);
+-			pcie->num_slots++;
+-			if (pcie->num_slots > MAX_PCI_SLOTS) {
++			if (pcie->num_slots + 1 >= MAX_PCI_SLOTS) {
+ 				dev_err(dev, "Too many PCI slots!\n");
+ 				ret = -EINVAL;
+ 				goto put_node;
+ 			}
++			pcie->num_slots++;
+ 
+ 			ret = of_pci_get_devfn(child);
+ 			if (ret < 0) {
 -- 
 2.43.0
 
