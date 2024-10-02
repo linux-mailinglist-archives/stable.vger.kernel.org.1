@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DACB98D9FC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AB398DC99
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EABCB23167
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070F31C214E1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EAA1D0DE6;
-	Wed,  2 Oct 2024 14:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32A21D0797;
+	Wed,  2 Oct 2024 14:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ms30U3OI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8ZT7ef6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810871D042F;
-	Wed,  2 Oct 2024 14:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E051EB21;
+	Wed,  2 Oct 2024 14:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878337; cv=none; b=KxvBM63r1egzEHbKCXkeL6tjBiKj6rRtkcVI6FiFyHaJHRoNbtwiPREInp5dVjpEwS8AAuHGETg4CMtsoafO14goTiMAmc1UlM0wth+h9EaVkrJCLu878c2ekhHMJeu4artxp4f5v7777oLcPgYObhdi99F3uuWRF4WGezZ5qTg=
+	t=1727879793; cv=none; b=FEzo4dSJIvN7UQkRFgRo0itAVDSfRNDEDabz0pDhGMcCHHiR3zextjXfhWKY3IqZ5mCFebd+aaxlgAX2MKStzqmcoUNC7apPW5q3gu/uYUbHA2fijQGsUfwnfEpO+uRALazlotRVKmkAaV+rgggRRj7BNC0CMFCROBEleDFqID4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878337; c=relaxed/simple;
-	bh=0xe8bwdUpvalwVBUAEGB9mCZ7wtRWcOhWIN2GIZhI8o=;
+	s=arc-20240116; t=1727879793; c=relaxed/simple;
+	bh=1dHUELthxZL/AbgNpy54dmROXs7MP2iKbsoXepgRDXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4OOxgySucqtWYIPCkqStLu9j7cVYP4USyjMPcU1BETFb7hDiQV12Tt1qkKMFjQnD+qlJauEPpX3o1VlCIudu9wRslmRgrIsMkkeO4QV4gm9X+pIeCe/h9C8WoYLRjOn9WYXRKrHhogoyI/qsUknu0XAgrRbRG87N30rnd3Sk/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ms30U3OI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACF4C4CEC5;
-	Wed,  2 Oct 2024 14:12:16 +0000 (UTC)
+	 MIME-Version; b=aPAO5eQHH6WtFNq1YE2kE6t6EEbu82MSCQSDGxLigDwvKFtfw7i97TvAnar+ccKYIATI3RZ0jrAtf1413k1HKwD8eTsXWlmfFVwrrs+/6n3SJdENdSwMrDwSa9ROdYUnM5Vj0uDHp7NJzxq9tUQ2Q9zzM+yYEyiB2aV1hh5SPA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8ZT7ef6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E89C4CEC2;
+	Wed,  2 Oct 2024 14:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878337;
-	bh=0xe8bwdUpvalwVBUAEGB9mCZ7wtRWcOhWIN2GIZhI8o=;
+	s=korg; t=1727879793;
+	bh=1dHUELthxZL/AbgNpy54dmROXs7MP2iKbsoXepgRDXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ms30U3OIwdyuVEkeR2MpqtgQ4ye1Si7mmuYf7WXAmodhW3m+aSwfS3ZBRCLemQzc5
-	 FIo++YS24R0s8YTZRiXbz0yyNNg7ZG2JgG85HuiUTUooAS8ywLZ+19tccMXBYWpABu
-	 K6OJP3o5ve9OvdNaGpzdnAAoawSfdTL41BhE7n0k=
+	b=m8ZT7ef64gQJ218uFur6aTHFWr0lZTf5CXZS4z+uM7Itn4yliCXEP7YTU5kl+U088
+	 B79CA8QrkEPVmcZFyPoB17xyE/Xvc6Gtoyt5RJEK+DPtqNy7Cfn5RsSwOhb7jA44PO
+	 NUHsvmZwRgOO6579fcdBRaFGAvcFB/VZz3IGfJVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 380/634] RDMA/hns: Fix restricted __le16 degrades to integer issue
+Subject: [PATCH 6.6 241/538] nilfs2: fix potential oob read in nilfs_btree_check_delete()
 Date: Wed,  2 Oct 2024 14:58:00 +0200
-Message-ID: <20241002125826.099037183@linuxfoundation.org>
+Message-ID: <20241002125801.763158803@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit f4ccc0a2a0c5977540f519588636b5bc81aae2db ]
+[ Upstream commit f9c96351aa6718b42a9f42eaf7adce0356bdb5e8 ]
 
-Fix sparse warnings: restricted __le16 degrades to integer.
+The function nilfs_btree_check_delete(), which checks whether degeneration
+to direct mapping occurs before deleting a b-tree entry, causes memory
+access outside the block buffer when retrieving the maximum key if the
+root node has no entries.
 
-Fixes: 5a87279591a1 ("RDMA/hns: Support hns HW stats")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202409080508.g4mNSLwy-lkp@intel.com/
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20240909065331.3950268-1-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This does not usually happen because b-tree mappings with 0 child nodes
+are never created by mkfs.nilfs2 or nilfs2 itself.  However, it can happen
+if the b-tree root node read from a device is configured that way, so fix
+this potential issue by adding a check for that case.
+
+Link: https://lkml.kernel.org/r/20240904081401.16682-4-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nilfs2/btree.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 349b68d7e7db6..24e906b9d3ae1 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -1681,8 +1681,8 @@ static int hns_roce_hw_v2_query_counter(struct hns_roce_dev *hr_dev,
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index dac090c162a7a..dbd27a44632fa 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -1659,13 +1659,16 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
+ 	int nchildren, ret;
  
- 	for (i = 0; i < HNS_ROCE_HW_CNT_TOTAL && i < *num_counters; i++) {
- 		bd_idx = i / CNT_PER_DESC;
--		if (!(desc[bd_idx].flag & HNS_ROCE_CMD_FLAG_NEXT) &&
--		    bd_idx != HNS_ROCE_HW_CNT_TOTAL / CNT_PER_DESC)
-+		if (bd_idx != HNS_ROCE_HW_CNT_TOTAL / CNT_PER_DESC &&
-+		    !(desc[bd_idx].flag & cpu_to_le16(HNS_ROCE_CMD_FLAG_NEXT)))
- 			break;
+ 	root = nilfs_btree_get_root(btree);
++	nchildren = nilfs_btree_node_get_nchildren(root);
++	if (unlikely(nchildren == 0))
++		return 0;
++
+ 	switch (nilfs_btree_height(btree)) {
+ 	case 2:
+ 		bh = NULL;
+ 		node = root;
+ 		break;
+ 	case 3:
+-		nchildren = nilfs_btree_node_get_nchildren(root);
+ 		if (nchildren > 1)
+ 			return 0;
+ 		ptr = nilfs_btree_node_get_ptr(root, nchildren - 1,
+@@ -1674,12 +1677,12 @@ static int nilfs_btree_check_delete(struct nilfs_bmap *btree, __u64 key)
+ 		if (ret < 0)
+ 			return ret;
+ 		node = (struct nilfs_btree_node *)bh->b_data;
++		nchildren = nilfs_btree_node_get_nchildren(node);
+ 		break;
+ 	default:
+ 		return 0;
+ 	}
  
- 		cnt_data = (__le64 *)&desc[bd_idx].data[0];
+-	nchildren = nilfs_btree_node_get_nchildren(node);
+ 	maxkey = nilfs_btree_node_get_key(node, nchildren - 1);
+ 	nextmaxkey = (nchildren > 1) ?
+ 		nilfs_btree_node_get_key(node, nchildren - 2) : 0;
 -- 
 2.43.0
 
