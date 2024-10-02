@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-79914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E5498DAE0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FC198DD8B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B419284411
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 225D5B21F12
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A1B1D2702;
-	Wed,  2 Oct 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478D1D1F51;
+	Wed,  2 Oct 2024 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCdjErx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLAmmca/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335673232;
-	Wed,  2 Oct 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F3A1D0F4B;
+	Wed,  2 Oct 2024 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878838; cv=none; b=eujZElheJwa13/vdYa2FgnGY3mP6pcOYyCGfyV18Njmx9l0B78lppRJ/znq95+E6Es4jKF6DsHYOf3j6B93hE03xlnE7sd9U6Wnrv6ESS5hT01R1SRw/mCaKzSgVN8ND6kghn43IAQw1JcIg2uUTh+qVeM7R+bz/fsCyBWNWuRY=
+	t=1727880296; cv=none; b=h66AR8PpPXwOe+9sFz9O7HGhMwEdqoSy4eKjcNMUbYy0gsgbPIWWDVt2biELmuQdGgCeQJxe/hGz5aGoUhLT1YFD+cC+ptDpY2cuXy/D4OrO/QnUikmlrmH3SJ+aCndKou8vbPHeEW8G4jjZ0syxqsYdpCEPyvPOBFShGMTPwSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878838; c=relaxed/simple;
-	bh=smvh3AxK6Ml9D98/tLic3BJ1ftlSpYaTlGuzfLda8Ro=;
+	s=arc-20240116; t=1727880296; c=relaxed/simple;
+	bh=o05PyZPdRlinMX1ryPZCXTzQ6jcC/pthCFVLJcAWFRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXFaZgDWjKfsGfm00P3SpfUcH6njC4uptfFXPLHMfH0d58wYn7FxdfeAs2Y3Vq4SS32zoTqtkOVSfDc0VzaFf7SbFb8ZwC3ergMgkp+GP+1Mf+p8Qt56frIxqP2Oa3nSDYz356SVEwQJTBDDfgg10AhytIgkGLLuat9UxhaW6Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCdjErx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE11BC4CEC2;
-	Wed,  2 Oct 2024 14:20:37 +0000 (UTC)
+	 MIME-Version; b=Nou942N7ElkSgl/sVNpCyfgepxFUqE51xaWDymyX74y7uqkoZGLej+pDWgt2Ily04FWre8FocCUDbVuP3x13f2/Qv+dvZIiMOnXaqQ0epyceJWZdqG4y/iy3uzD1fANMT+2rp9Inw0NNONPb6SAvMoofDz0GCsHOJhlJYKCVSao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLAmmca/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3DDC4CEC2;
+	Wed,  2 Oct 2024 14:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878838;
-	bh=smvh3AxK6Ml9D98/tLic3BJ1ftlSpYaTlGuzfLda8Ro=;
+	s=korg; t=1727880296;
+	bh=o05PyZPdRlinMX1ryPZCXTzQ6jcC/pthCFVLJcAWFRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCdjErx2p2Gfo3zzRAruD2XU4udxY7KP9H0QiIuNV1RAT1H0pA79fNXqt9FpXxjBR
-	 VznoEb9nlUmRWWR87LTuD/F4JirbNeplW3N57XRD0+GGhitEJWD2x1kCgeMwiv/L+2
-	 P+0l8z7HeSiH4PbQYvY330GEKP/R53vS3QM0xLZM=
+	b=FLAmmca/VL2PCo6UwlKpgIM8n/YlDkAIOdSqVwAEVicNIbvTAD7ctQiF3l0WfSVKa
+	 r2RpZqKiqVSp9U8xh+SXo0Ap1D9YSkTkVQIuuSpUKdZ4oszPTFI/DK1u91QZWVwYlO
+	 imjLp7a9IVPxuf2aNb93KOa+UF51B/mpx87lHsZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.10 550/634] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 411/538] KVM: x86: Enforce x2APICs must-be-zero reserved ICR bits
 Date: Wed,  2 Oct 2024 15:00:50 +0200
-Message-ID: <20241002125832.820127591@linuxfoundation.org>
+Message-ID: <20241002125808.657281963@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit f503ae90c7355e8506e68498fe84c1357894cd5b upstream.
+commit 71bf395a276f0578d19e0ae137a7d1d816d08e0e upstream.
 
-Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
-routine adding an sta interface to the mt7996 driver.
+Inject a #GP on a WRMSR(ICR) that attempts to set any reserved bits that
+are must-be-zero on both Intel and AMD, i.e. any reserved bits other than
+the BUSY bit, which Intel ignores and basically says is undefined.
 
-Found by code review.
+KVM's xapic_state_test selftest has been fudging the bug since commit
+4b88b1a518b3 ("KVM: selftests: Enhance handling WRMSR ICR register in
+x2APIC mode"), which essentially removed the testcase instead of fixing
+the bug.
+
+WARN if the nodecode path triggers a #GP, as the CPU is supposed to check
+reserved bits for ICR when it's partially virtualized.
 
 Cc: stable@vger.kernel.org
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20240813081242.3991814-1-make24@iscas.ac.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20240719235107.3023592-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/lapic.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_
- 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
- 	u8 snd_dim, sts;
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2460,7 +2460,7 @@ void kvm_apic_write_nodecode(struct kvm_
+ 	 * maybe-unecessary write, and both are in the noise anyways.
+ 	 */
+ 	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
+-		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
++		WARN_ON_ONCE(kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR)));
+ 	else
+ 		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
+ }
+@@ -3153,8 +3153,21 @@ int kvm_lapic_set_vapic_addr(struct kvm_
+ 	return 0;
+ }
  
-+	if (!vc)
-+		return;
++#define X2APIC_ICR_RESERVED_BITS (GENMASK_ULL(31, 20) | GENMASK_ULL(17, 16) | BIT(13))
 +
- 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
+ int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
+ {
++	if (data & X2APIC_ICR_RESERVED_BITS)
++		return 1;
++
++	/*
++	 * The BUSY bit is reserved on both Intel and AMD in x2APIC mode, but
++	 * only AMD requires it to be zero, Intel essentially just ignores the
++	 * bit.  And if IPI virtualization (Intel) or x2AVIC (AMD) is enabled,
++	 * the CPU performs the reserved bits checks, i.e. the underlying CPU
++	 * behavior will "win".  Arbitrarily clear the BUSY bit, as there is no
++	 * sane way to provide consistent behavior with respect to hardware.
++	 */
+ 	data &= ~APIC_ICR_BUSY;
  
- 	mt7996_mcu_sta_sounding_rate(bf);
+ 	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
 
 
 
