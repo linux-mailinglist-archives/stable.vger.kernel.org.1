@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E6E98D8AF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:04:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FB798D56F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BE42B20ACC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C1141F211F4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3322A1D26E0;
-	Wed,  2 Oct 2024 14:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F01F1D0437;
+	Wed,  2 Oct 2024 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUTUv23A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNfafmeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9441D2238;
-	Wed,  2 Oct 2024 14:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAA718DF60;
+	Wed,  2 Oct 2024 13:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877602; cv=none; b=MzIEk/Rbt8293vExuImuqKlsg5a4pGu1eTcXYr/aojq3CHnA0Bxtgyo48QaliVV0i2p9aVdeG6Qy6V48ArpqXwPCS59iGXW2ymbMssruHk7OPNRXRv0MDzetcYMwWUEFZH9/hN2DsaSt8Pg8dN6AT73ci/Gh6y4HotJtMboGdk8=
+	t=1727875818; cv=none; b=ubr1vOq/OqtBq+XD+NpCJf/YRyzZKRRQA2NmXYUBI6KnKqNOa67Qf9wZh0HKFUeBohCjzy1KVMHxCdQt/gO48ocKEnCzDPNdCufYPphdjBFCpISN6OYYrWN1/CTNg4DmACG5HNtfvHlKn8U7NV+Qg15GQ4DlnyFCLD8xWN7tE5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877602; c=relaxed/simple;
-	bh=4FToqmGSC4jYghxtThe1Om225Ze4iK0MMY0bfaOsEYI=;
+	s=arc-20240116; t=1727875818; c=relaxed/simple;
+	bh=TOuSSwrRkKps5iMVYxbqb1xICn/lEZMvGXdrft/S+3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2QwFTg7gX/Ltms3X9XaXcF7qdVWa3oOgRpyUKaOx3xowy2XwX0cUHdmBPsxlrYhy9ebANCvuQwl8CjyBiRbU8hZVOpHoVw2+B8s8LzfaYy0W1Y03sDcA2qAtzvkDWIzRPntgm9wQakLwBfg7q20T04IqUSud/BTAsu5U6l0XjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUTUv23A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3038AC4CECD;
-	Wed,  2 Oct 2024 14:00:01 +0000 (UTC)
+	 MIME-Version; b=aeXz5F1P9LbwNvLCoUissfPpiovk+4EuXFKoaT094+amqKc2FpbA4C1YZglEgBfj8hSSK+z/9No5gTqZ6GiPgq1evfDXVTBaAoHzMohsoS6L6TTq6f8K8PKb+SyAAack42bgJ6FYGhwZq/5euOHiaI6fs1n+UEKNLRgVTzzC05k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNfafmeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9062C4CECD;
+	Wed,  2 Oct 2024 13:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877601;
-	bh=4FToqmGSC4jYghxtThe1Om225Ze4iK0MMY0bfaOsEYI=;
+	s=korg; t=1727875818;
+	bh=TOuSSwrRkKps5iMVYxbqb1xICn/lEZMvGXdrft/S+3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUTUv23Aq28sW4N5TUD0fby9hc6OlLmDpIZPG3g6yAeuGBjEsKbAvbtcqRFftbXVP
-	 wtgiok1Gi6zFEuJ1urna6fJmHHPq5cJJN5Jw/HIrzAp/QnnES6tF6WqUuFQ/0NXuQ3
-	 5PCFqElNkxKakhCnEgBZuHQq7ClureSD8H+KGKhw=
+	b=kNfafmeJFLysb/APYWK1U6XmIe2terCMr3CwVDwctTHqcN36rZiusUl5rD0KtfdaJ
+	 bfCXBx92iXOwNkW80jTlLMtyusZ+N7xD3rXNs9VeUDVktQWGJ2oWo2CQthJHbWwNfY
+	 QQIXrUfGNoP0joRYhC5gehmO8tX1X13o28u0zggY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 129/634] arm64: tegra: Correct location of power-sensors for IGX Orin
-Date: Wed,  2 Oct 2024 14:53:49 +0200
-Message-ID: <20241002125816.202963445@linuxfoundation.org>
+Subject: [PATCH 6.11 232/695] drm/msm/a5xx: fix races in preemption evaluation stage
+Date: Wed,  2 Oct 2024 14:53:50 +0200
+Message-ID: <20241002125831.712202469@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-[ Upstream commit b93679b8f165467e1584f9b23055db83f45c32ce ]
+[ Upstream commit ce050f307ad93bcc5958d0dd35fc276fd394d274 ]
 
-The power-sensors are located on the carrier board and not the
-module board and so update the IGX Orin device-tree files to fix this.
+On A5XX GPUs when preemption is used it's invietable to enter a soft
+lock-up state in which GPU is stuck at empty ring-buffer doing nothing.
+This appears as full UI lockup and not detected as GPU hang (because
+it's not). This happens due to not triggering preemption when it was
+needed. Sometimes this state can be recovered by some new submit but
+generally it won't happen because applications are waiting for old
+submits to retire.
 
-Fixes: 9152ed09309d ("arm64: tegra: Add power-sensors for Tegra234 boards")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+One of the reasons why this happens is a race between a5xx_submit and
+a5xx_preempt_trigger called from IRQ during submit retire. Former thread
+updates ring->cur of previously empty and not current ring right after
+latter checks it for emptiness. Then both threads can just exit because
+for first one preempt_state wasn't NONE yet and for second one all rings
+appeared to be empty.
+
+To prevent such situations from happening we need to establish guarantee
+for preempt_trigger to make decision after each submit or retire. To
+implement this we serialize preemption initiation using spinlock. If
+switch is already in progress we need to re-trigger preemption when it
+finishes.
+
+Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
+Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/612045/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/nvidia/tegra234-p3701-0008.dtsi  | 33 -------------------
- .../boot/dts/nvidia/tegra234-p3740-0002.dtsi  | 33 +++++++++++++++++++
- 2 files changed, 33 insertions(+), 33 deletions(-)
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.h     |  1 +
+ drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 24 +++++++++++++++++++++--
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
-index 553fa4ba1cd48..62c4fdad0b600 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
-@@ -44,39 +44,6 @@
- 			status = "okay";
- 		};
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.h b/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
+index c7187bcc5e908..b4d06ca3e499d 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.h
+@@ -36,6 +36,7 @@ struct a5xx_gpu {
+ 	uint64_t preempt_iova[MSM_GPU_MAX_RINGS];
  
--		i2c@c250000 {
--			power-sensor@41 {
--				compatible = "ti,ina3221";
--				reg = <0x41>;
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				input@0 {
--					reg = <0x0>;
--					label = "CVB_ATX_12V";
--					shunt-resistor-micro-ohms = <2000>;
--				};
--
--				input@1 {
--					reg = <0x1>;
--					label = "CVB_ATX_3V3";
--					shunt-resistor-micro-ohms = <2000>;
--				};
--
--				input@2 {
--					reg = <0x2>;
--					label = "CVB_ATX_5V";
--					shunt-resistor-micro-ohms = <2000>;
--				};
--			};
--
--			power-sensor@44 {
--				compatible = "ti,ina219";
--				reg = <0x44>;
--				shunt-resistor = <2000>;
--			};
--		};
--
- 		rtc@c2a0000 {
- 			status = "okay";
- 		};
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
-index 527f2f3aee3ad..377f518bd3e57 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
-@@ -183,6 +183,39 @@
- 			phy-names = "usb2-0", "usb2-1", "usb2-2", "usb2-3",
- 				"usb3-0", "usb3-1", "usb3-2";
- 		};
-+
-+		i2c@c250000 {
-+			power-sensor@41 {
-+				compatible = "ti,ina3221";
-+				reg = <0x41>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				input@0 {
-+					reg = <0x0>;
-+					label = "CVB_ATX_12V";
-+					shunt-resistor-micro-ohms = <2000>;
-+				};
-+
-+				input@1 {
-+					reg = <0x1>;
-+					label = "CVB_ATX_3V3";
-+					shunt-resistor-micro-ohms = <2000>;
-+				};
-+
-+				input@2 {
-+					reg = <0x2>;
-+					label = "CVB_ATX_5V";
-+					shunt-resistor-micro-ohms = <2000>;
-+				};
-+			};
-+
-+			power-sensor@44 {
-+				compatible = "ti,ina219";
-+				reg = <0x44>;
-+				shunt-resistor = <2000>;
-+			};
-+		};
- 	};
+ 	atomic_t preempt_state;
++	spinlock_t preempt_start_lock;
+ 	struct timer_list preempt_timer;
  
- 	vdd_3v3_dp: regulator-vdd-3v3-dp {
+ 	struct drm_gem_object *shadow_bo;
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+index 67a8ef4adf6b6..c65b34a4a8cc2 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+@@ -97,12 +97,19 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
+ 	if (gpu->nr_rings == 1)
+ 		return;
+ 
++	/*
++	 * Serialize preemption start to ensure that we always make
++	 * decision on latest state. Otherwise we can get stuck in
++	 * lower priority or empty ring.
++	 */
++	spin_lock_irqsave(&a5xx_gpu->preempt_start_lock, flags);
++
+ 	/*
+ 	 * Try to start preemption by moving from NONE to START. If
+ 	 * unsuccessful, a preemption is already in flight
+ 	 */
+ 	if (!try_preempt_state(a5xx_gpu, PREEMPT_NONE, PREEMPT_START))
+-		return;
++		goto out;
+ 
+ 	/* Get the next ring to preempt to */
+ 	ring = get_next_ring(gpu);
+@@ -127,9 +134,11 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
+ 		set_preempt_state(a5xx_gpu, PREEMPT_ABORT);
+ 		update_wptr(gpu, a5xx_gpu->cur_ring);
+ 		set_preempt_state(a5xx_gpu, PREEMPT_NONE);
+-		return;
++		goto out;
+ 	}
+ 
++	spin_unlock_irqrestore(&a5xx_gpu->preempt_start_lock, flags);
++
+ 	/* Make sure the wptr doesn't update while we're in motion */
+ 	spin_lock_irqsave(&ring->preempt_lock, flags);
+ 	a5xx_gpu->preempt[ring->id]->wptr = get_wptr(ring);
+@@ -152,6 +161,10 @@ void a5xx_preempt_trigger(struct msm_gpu *gpu)
+ 
+ 	/* And actually start the preemption */
+ 	gpu_write(gpu, REG_A5XX_CP_CONTEXT_SWITCH_CNTL, 1);
++	return;
++
++out:
++	spin_unlock_irqrestore(&a5xx_gpu->preempt_start_lock, flags);
+ }
+ 
+ void a5xx_preempt_irq(struct msm_gpu *gpu)
+@@ -188,6 +201,12 @@ void a5xx_preempt_irq(struct msm_gpu *gpu)
+ 	update_wptr(gpu, a5xx_gpu->cur_ring);
+ 
+ 	set_preempt_state(a5xx_gpu, PREEMPT_NONE);
++
++	/*
++	 * Try to trigger preemption again in case there was a submit or
++	 * retire during ring switch
++	 */
++	a5xx_preempt_trigger(gpu);
+ }
+ 
+ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
+@@ -300,5 +319,6 @@ void a5xx_preempt_init(struct msm_gpu *gpu)
+ 		}
+ 	}
+ 
++	spin_lock_init(&a5xx_gpu->preempt_start_lock);
+ 	timer_setup(&a5xx_gpu->preempt_timer, a5xx_preempt_timer, 0);
+ }
 -- 
 2.43.0
 
