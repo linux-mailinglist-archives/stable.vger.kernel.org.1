@@ -1,89 +1,90 @@
-Return-Path: <stable+bounces-80564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE54198DEDA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:24:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD9C98DE94
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 389D4B269EE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:13:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902F81C22B4F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913EA1D0792;
-	Wed,  2 Oct 2024 15:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B921D0B93;
+	Wed,  2 Oct 2024 15:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="K/Oj5qaQ"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aNFB676W"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CB81D096A
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0491D0B97
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727881987; cv=none; b=ehotMsGKUtotkS253TtT4PH5Lv2LSLhVFfvb1WE3LOhHGsT3NBYk7sooVqETAVEcylypSremkm1YpEC0qcM+VXZHXCJ6rCNogGvTf3rCnCnQbI9MuDIihBVPCNHLYdhpmJ+aTEBSsAjTPHXoAeSTertp9b8onbRV1Xr0egyxMMU=
+	t=1727882020; cv=none; b=g1lMcndA67ZnlRdXX3QdxD546BIDPCDHvrw0rMm6WNu3ZzOnGnsQeZss3O47S3DgkMk4q1qkTGUZOcmc9BrVctY44KI9jHavAn5P8OfzJ/Ufqgimq5qMA3S2S9MlrnRik5kR8Cb8IKW/P6OPtttk9zztGPmLfdY0uV0OBwZdSos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727881987; c=relaxed/simple;
-	bh=EESOGGdg37oswwsuhRL+x2SZR4TI55L3Nhu2C7Nbm44=;
+	s=arc-20240116; t=1727882020; c=relaxed/simple;
+	bh=Bq2isIoUKS0rDsCDCe6SujXKyZlu0uAedmAiTpvh96Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lAqqKGfLrOjn0ZQsHnBIexEr7V3WwtAcqIAkyjqkCIQY9R8yMieR/fUFWx1AURkbVOL4PYvydSWU4mKF+mKgNFCkt8cG19l9tHSox9qivp6kVPE614dNDON/IEisAB1GLjwnO+Th6wZIUt1zrwOjH67Kp09UIM7nROL3nGaXuiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=K/Oj5qaQ; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version:Content-Type; b=RlgHh4FsG8lQ4a0b9D1x4YKaPuyptNljP3wp7QIS+PkvVixeS0r77qopdWuWs3iifuzp1T5cogelT+HWW5k4duiT0aiN0YfbQhn/Ls0FUftDOnmCK9tnge1euvpdbMHY6eoxg5AQFBQPAHVs/WcFCjPw11igqGtqn+wZPn/JfEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aNFB676W; arc=none smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Cd956016927;
-	Wed, 2 Oct 2024 15:12:54 GMT
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492Cd4FE011655;
+	Wed, 2 Oct 2024 15:13:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=+
-	msH5oJUxqeZqcoda9cjcNipAuVr7tHgUnZHh/Mm9Fo=; b=K/Oj5qaQYVpm3v0w3
-	ev/6EQbUMsoAvdhvUiWZ4N3MXBdX6y/aM4HiYnoGV5OLVf1btPQgT4tpERS8+FpT
-	5XC74GuCLrkqp/nfiKvNrS7PVHlbrY16Qohc5sumpUJEdm/JKwxT4yDS5i3OiXpA
-	E471j+n4gZKekPqyU/06yEIKf/Dt0p67MIdDbXoGxz2NYGew6OOgF9g4DhUgLi5a
-	uErXZFWB9TUZ5XM9GtzVdKYOf2dWE8rUXa/JgEIz5++mz51L0KkwzecrQVSqhKJW
-	FYp4SxtCjn4ylKNhZ9W2CYNz1b00keOl+bCDUZc/vHALqgx/vr+aUAFXfheBBriC
-	Mg9UQ==
+	:mime-version:content-type:content-transfer-encoding; s=
+	corp-2023-11-20; bh=GLg5ev2maIfh8+m+PapeyWJ9Qdey8XbXVVyEhSC0iA4=; b=
+	aNFB676WpUzl2j3Z0Et88Yx3azme67uSLCNZXXvQEyMrpUOscMS/TilWLMfgF4fI
+	ddeH7nwWk8Cn10yuobxhM5Zmgx+ZFZ/x1J9yWsF165wppKrmiOxS3qWtUHwRyu4a
+	P5cjfDtFJ0YQtSg3++ihSRy1WtsK2Amtt3VASs1MElpUaFdtmDzSN++J23dE3/LC
+	yl60YuhdLTu5eUnq745clPMrkqkpPfIEeG5wvqWcR5GMKohs8xy4CRVw1VNjtROm
+	5W1Nk9wc2vzfz59uDl1odq5OSuW74LZ46VEiLkaG52paQ5ETLwdAz1Fj5w7MYpBb
+	h3KWVv9Db95U8w755SgwSw==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x9dt1mxt-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x8k39psg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:12:54 +0000 (GMT)
+	Wed, 02 Oct 2024 15:13:29 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492EI7BG028440;
-	Wed, 2 Oct 2024 15:12:53 GMT
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 492EYo7g028438;
+	Wed, 2 Oct 2024 15:13:28 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x8897a3w-1
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x8897a99-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Oct 2024 15:12:53 +0000
+	Wed, 02 Oct 2024 15:13:02 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492FCqrT028673;
-	Wed, 2 Oct 2024 15:12:52 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 492FCqrV028673;
+	Wed, 2 Oct 2024 15:13:02 GMT
 Received: from localhost.localdomain (dhcp-10-175-43-118.vpn.oracle.com [10.175.43.118])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x88979xb-1;
-	Wed, 02 Oct 2024 15:12:51 +0000
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x88979xb-2;
+	Wed, 02 Oct 2024 15:13:01 +0000
 From: Vegard Nossum <vegard.nossum@oracle.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, pavel@denx.de, cengiz.can@canonical.com,
         mheyne@amazon.de, mngyadam@amazon.com, kuntal.nayak@broadcom.com,
         ajay.kaher@broadcom.com, zsm@chromium.org, dan.carpenter@linaro.org,
-        shivani.agarwal@broadcom.com, Chen Yu <yu.c.chen@intel.com>,
-        Md Iqbal Hossain <md.iqbal.hossain@intel.com>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
+        shivani.agarwal@broadcom.com, Mark Pearson <mpearson-lenovo@squebb.ca>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
         Vegard Nossum <vegard.nossum@oracle.com>
-Subject: [PATCH RFC 6.6.y 11/15] efi/unaccepted: touch soft lockup during memory accept
-Date: Wed,  2 Oct 2024 17:12:32 +0200
-Message-Id: <20241002151236.11787-1-vegard.nossum@oracle.com>
+Subject: [PATCH RFC 6.6.y 12/15] platform/x86: think-lmi: Fix password opcode ordering for workstations
+Date: Wed,  2 Oct 2024 17:12:33 +0200
+Message-Id: <20241002151236.11787-2-vegard.nossum@oracle.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241002150606.11385-1-vegard.nossum@oracle.com>
+In-Reply-To: <20241002151236.11787-1-vegard.nossum@oracle.com>
 References: <20241002150606.11385-1-vegard.nossum@oracle.com>
+ <20241002151236.11787-1-vegard.nossum@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
@@ -91,104 +92,70 @@ X-Proofpoint-Virus-Version: vendor=baseguard
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 malwarescore=0
  mlxlogscore=999 phishscore=0 suspectscore=0 spamscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
- definitions=main-2410020110
-X-Proofpoint-GUID: P9Zbi3t9Q6MveGvsgV0GJS0lQNwGfAwj
-X-Proofpoint-ORIG-GUID: P9Zbi3t9Q6MveGvsgV0GJS0lQNwGfAwj
+ definitions=main-2410020111
+X-Proofpoint-GUID: bQLn5R5l-TQHYdcDqfdTSLY6pxbaBNOQ
+X-Proofpoint-ORIG-GUID: bQLn5R5l-TQHYdcDqfdTSLY6pxbaBNOQ
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 1c5a1627f48105cbab81d25ec2f72232bfaa8185 ]
+[ Upstream commit 6f7d0f5fd8e440c3446560100ac4ff9a55eec340 ]
 
-Commit 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by
-parallel memory acceptance") has released the spinlock so other CPUs can
-do memory acceptance in parallel and not triggers softlockup on other
-CPUs.
+The Lenovo workstations require the password opcode to be run before
+the attribute value is changed (if Admin password is enabled).
 
-However the softlock up was intermittent shown up if the memory of the
-TD guest is large, and the timeout of softlockup is set to 1 second:
+Tested on some Thinkpads to confirm they are OK with this order too.
 
- RIP: 0010:_raw_spin_unlock_irqrestore
- Call Trace:
- ? __hrtimer_run_queues
- <IRQ>
- ? hrtimer_interrupt
- ? watchdog_timer_fn
- ? __sysvec_apic_timer_interrupt
- ? __pfx_watchdog_timer_fn
- ? sysvec_apic_timer_interrupt
- </IRQ>
- ? __hrtimer_run_queues
- <TASK>
- ? hrtimer_interrupt
- ? asm_sysvec_apic_timer_interrupt
- ? _raw_spin_unlock_irqrestore
- ? __sysvec_apic_timer_interrupt
- ? sysvec_apic_timer_interrupt
- accept_memory
- try_to_accept_memory
- do_huge_pmd_anonymous_page
- get_page_from_freelist
- __handle_mm_fault
- __alloc_pages
- __folio_alloc
- ? __tdx_hypercall
- handle_mm_fault
- vma_alloc_folio
- do_user_addr_fault
- do_huge_pmd_anonymous_page
- exc_page_fault
- ? __do_huge_pmd_anonymous_page
- asm_exc_page_fault
- __handle_mm_fault
-
-When the local irq is enabled at the end of accept_memory(), the
-softlockup detects that the watchdog on single CPU has not been fed for
-a while. That is to say, even other CPUs will not be blocked by
-spinlock, the current CPU might be stunk with local irq disabled for a
-while, which hurts not only nmi watchdog but also softlockup.
-
-Chao Gao pointed out that the memory accept could be time costly and
-there was similar report before. Thus to avoid any softlocup detection
-during this stage, give the softlockup a flag to skip the timeout check
-at the end of accept_memory(), by invoking touch_softlockup_watchdog().
-
-Reported-by: Md Iqbal Hossain <md.iqbal.hossain@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by parallel memory acceptance")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-(cherry picked from commit 1c5a1627f48105cbab81d25ec2f72232bfaa8185)
-[Harshit: CVE-2024-36936; Minor conflict resolution due to header file
- differences due to missing commit: 7cd34dd3c9bf ("efi/unaccepted: do not
- let /proc/vmcore try to access unaccepted memory") in 6.6.y]
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Fixes: 640a5fa50a42 ("platform/x86: think-lmi: Opcode support")
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240209152359.528919-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+(cherry picked from commit 6f7d0f5fd8e440c3446560100ac4ff9a55eec340)
+[Harshit: CVE-2024-26836; Resolve conflicts due to missing commit:
+ 318d97849fc2 ("platform/x86: think-lmi: Add bulk save feature") which is
+ not in 6.6.y]
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 ---
- drivers/firmware/efi/unaccepted_memory.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/think-lmi.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-index 79fb687bb90f9..6c3d84d9bcc16 100644
---- a/drivers/firmware/efi/unaccepted_memory.c
-+++ b/drivers/firmware/efi/unaccepted_memory.c
-@@ -3,6 +3,7 @@
- #include <linux/efi.h>
- #include <linux/memblock.h>
- #include <linux/spinlock.h>
-+#include <linux/nmi.h>
- #include <asm/unaccepted_memory.h>
- 
- /* Protects unaccepted memory bitmap and accepting_list */
-@@ -148,6 +149,9 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 	}
- 
- 	list_del(&range.list);
+diff --git a/drivers/platform/x86/think-lmi.c b/drivers/platform/x86/think-lmi.c
+index aee869769843f..2396decdb3cb3 100644
+--- a/drivers/platform/x86/think-lmi.c
++++ b/drivers/platform/x86/think-lmi.c
+@@ -1021,7 +1021,16 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 		 * Note - this sets the variable and then the password as separate
+ 		 * WMI calls. Function tlmi_save_bios_settings will error if the
+ 		 * password is incorrect.
++		 * Workstation's require the opcode to be set before changing the
++		 * attribute.
+ 		 */
++		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
++			ret = tlmi_opcode_setting("WmiOpcodePasswordAdmin",
++						  tlmi_priv.pwd_admin->password);
++			if (ret)
++				goto out;
++		}
 +
-+	touch_softlockup_watchdog();
-+
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
+ 		set_str = kasprintf(GFP_KERNEL, "%s,%s;", setting->display_name,
+ 				    new_setting);
+ 		if (!set_str) {
+@@ -1033,13 +1042,6 @@ static ssize_t current_value_store(struct kobject *kobj,
+ 		if (ret)
+ 			goto out;
  
+-		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
+-			ret = tlmi_opcode_setting("WmiOpcodePasswordAdmin",
+-						  tlmi_priv.pwd_admin->password);
+-			if (ret)
+-				goto out;
+-		}
+-
+ 		ret = tlmi_save_bios_settings("");
+ 	} else { /* old non-opcode based authentication method (deprecated) */
+ 		if (tlmi_priv.pwd_admin->valid && tlmi_priv.pwd_admin->password[0]) {
 -- 
 2.34.1
 
