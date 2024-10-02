@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9071898DC48
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3A898D9A7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 121A1B2618B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E8028991A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFEF1D0F77;
-	Wed,  2 Oct 2024 14:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22CB1D1745;
+	Wed,  2 Oct 2024 14:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6ikKfhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jagsnwSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1511CF5FB;
-	Wed,  2 Oct 2024 14:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7134F1D0488;
+	Wed,  2 Oct 2024 14:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879605; cv=none; b=SQasCwdyE7vr85PJzIzOuJIycygKH67pGy2rOxUtABxTGbHRz1CAg5xbDrO08btAQ7RZZoqTlEQ6JTEd55/9y2KXb3ELdCj5KNSIvSECF5Se6jpvcX+BRcLww+pVcIcr/Y16HwyoiQNaMVWHLRQ6HlewkGLq6GySoLyOSQP+8es=
+	t=1727878141; cv=none; b=P4Hr5ZvR9nL7dudDVz3kM+cw0aB4Nbl8BxIghONspQEZ8O/01wqcYBcr0PylEPZFUpHoIsbjsM00T3JR8/iCl66uJ52IwWxkRqDd/ceevIP1XzH95LOQddIv56ZHXzJ8VuVKIQMKx1GfyldDcNzuGfj1tbd/leFiAWfuHN5BwCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879605; c=relaxed/simple;
-	bh=KJ2lwR+1cam7wqe0pFjKIYt38Bp63NtBtp3CvvFYwO8=;
+	s=arc-20240116; t=1727878141; c=relaxed/simple;
+	bh=w99OtR9hPYGOvhNtm6EBqFTNzQymOg3nRjD8uGEYPvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzgAo+gFRQvdGAWg/WoT0vPztuejYooMtOpdyuDC65++iLuWLmKT7/kK9Vyfn9ISmHsvsd+G11tFMkmNRPDQqxugZFH90f1ifPAQfUSH79LQpe6NKxycs7uh4MSN2FY0C0dd1rkkRsBfFvd6HZcYa0tkHcOzg/ea8ZVUbg47kuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6ikKfhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C118FC4CEC2;
-	Wed,  2 Oct 2024 14:33:24 +0000 (UTC)
+	 MIME-Version; b=m0yTGTsMQU4hHnlmVRrAnbFJeM8sk9fhOkqJPfEt88fNus7aI2yK6UyZJ5FzZqVF3EiOQ9dNMqLkwqYFuKPCuDTAQ7eICgBfPL1gy5NOsPiVX7we6cfuSiWJfMqWdrEUGonwYYn5hrk0x1DTwtUwSpwKrkgu1jerumrNyfrTouo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jagsnwSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3D5C4CEC2;
+	Wed,  2 Oct 2024 14:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879605;
-	bh=KJ2lwR+1cam7wqe0pFjKIYt38Bp63NtBtp3CvvFYwO8=;
+	s=korg; t=1727878141;
+	bh=w99OtR9hPYGOvhNtm6EBqFTNzQymOg3nRjD8uGEYPvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6ikKfhFwuHwl7Y+JXDbB0mEbrtmxWXidEVQHEMaJa0QySOOuyS44hFV6AVeZemYn
-	 pOL/ujHprSgnhJfwejGGtIgN1zoud7a6YdzlLaWRR65q0fdY7UMbYGGc6Ro3/pa7ZI
-	 lzDDxkgCIi4wZkeqJ2WPWNWhdd+rIeuiJYPvLBq8=
+	b=jagsnwSM0glZzQCJRcX5bCdtYJ+P8HjmZb4YOPPzW2kcXF82G769AZsNygvDVg2qy
+	 jSXo8zenAhrNNsotCXVCw9yAfDTTQ4qDvB5LeOUXwLKozPpJpha5DAF+AcLmt4rcmq
+	 D5CxPemSWCgrSqA40jWZ/fyk3PorsS6ka6Ac3/Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/538] xen/swiotlb: fix allocated size
+Subject: [PATCH 6.10 316/634] clk: imx: imx8qxp: Parent should be initialized earlier than the clock
 Date: Wed,  2 Oct 2024 14:56:56 +0200
-Message-ID: <20241002125759.243168873@linuxfoundation.org>
+Message-ID: <20241002125823.578353469@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit c3dea3d54f4d399f8044547f0f1abdccbdfb0fee ]
+[ Upstream commit 766c386c16c9899461b83573a06380d364c6e261 ]
 
-The allocated size in xen_swiotlb_alloc_coherent() and
-xen_swiotlb_free_coherent() is calculated wrong for the case of
-XEN_PAGE_SIZE not matching PAGE_SIZE. Fix that.
+The initialization order of SCU clocks affects the sequence of SCU clock
+resume. If there are no other effects, the earlier the initialization,
+the earlier the resume. During SCU clock resume, the clock rate is
+restored. As SCFW guidelines, configure the parent clock rate before
+configuring the child rate.
 
-Fixes: 7250f422da04 ("xen-swiotlb: use actually allocated size on check physical continuous")
-Reported-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: babfaa9556d7 ("clk: imx: scu: add more scu clocks")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-15-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/swiotlb-xen.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-imx8qxp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index 892f87300e2cd..6d0d1c8a508bf 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -146,7 +146,7 @@ xen_swiotlb_alloc_coherent(struct device *dev, size_t size,
- 	void *ret;
+diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
+index 16710eef641ba..83f2e8bd6d506 100644
+--- a/drivers/clk/imx/clk-imx8qxp.c
++++ b/drivers/clk/imx/clk-imx8qxp.c
+@@ -170,8 +170,8 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
+ 	imx_clk_scu("pwm_clk",   IMX_SC_R_LCD_0_PWM_0, IMX_SC_PM_CLK_PER);
+ 	imx_clk_scu("elcdif_pll", IMX_SC_R_ELCDIF_PLL, IMX_SC_PM_CLK_PLL);
+ 	imx_clk_scu2("lcd_clk", lcd_sels, ARRAY_SIZE(lcd_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_PER);
+-	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
+ 	imx_clk_scu("lcd_pxl_bypass_div_clk", IMX_SC_R_LCD_0, IMX_SC_PM_CLK_BYPASS);
++	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
  
- 	/* Align the allocation to the Xen page size */
--	size = 1UL << (order + XEN_PAGE_SHIFT);
-+	size = ALIGN(size, XEN_PAGE_SIZE);
+ 	/* Audio SS */
+ 	imx_clk_scu("audio_pll0_clk", IMX_SC_R_AUDIO_PLL_0, IMX_SC_PM_CLK_PLL);
+@@ -213,11 +213,11 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
+ 	imx_clk_scu2("dc0_disp1_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC1);
+ 	imx_clk_scu("dc0_bypass1_clk", IMX_SC_R_DC_0_VIDEO1, IMX_SC_PM_CLK_BYPASS);
  
- 	ret = (void *)__get_free_pages(flags, get_order(size));
- 	if (!ret)
-@@ -178,7 +178,7 @@ xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	int order = get_order(size);
+-	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
+-	imx_clk_scu2("dc1_disp1_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC1);
+ 	imx_clk_scu("dc1_pll0_clk", IMX_SC_R_DC_1_PLL_0, IMX_SC_PM_CLK_PLL);
+ 	imx_clk_scu("dc1_pll1_clk", IMX_SC_R_DC_1_PLL_1, IMX_SC_PM_CLK_PLL);
+ 	imx_clk_scu("dc1_bypass0_clk", IMX_SC_R_DC_1_VIDEO0, IMX_SC_PM_CLK_BYPASS);
++	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
++	imx_clk_scu2("dc1_disp1_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC1);
+ 	imx_clk_scu("dc1_bypass1_clk", IMX_SC_R_DC_1_VIDEO1, IMX_SC_PM_CLK_BYPASS);
  
- 	/* Convert the size to actually allocated. */
--	size = 1UL << (order + XEN_PAGE_SHIFT);
-+	size = ALIGN(size, XEN_PAGE_SIZE);
- 
- 	if (WARN_ON_ONCE(dma_handle + size - 1 > dev->coherent_dma_mask) ||
- 	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size)))
+ 	/* MIPI-LVDS SS */
 -- 
 2.43.0
 
