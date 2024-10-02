@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-79739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFD798D9F9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6A198DC97
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A901F27373
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E81C1C2091E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC37E1D0E38;
-	Wed,  2 Oct 2024 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036BF1D174B;
+	Wed,  2 Oct 2024 14:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUGQ+7jo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGu2Qy7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B171D0792;
-	Wed,  2 Oct 2024 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E3C1CF7D4;
+	Wed,  2 Oct 2024 14:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878331; cv=none; b=LBT9BEjxqIL+FxQj7yqIl1EYId8ipaH/xboVnILmZ6quiAbZw3W89O5fOCM2yxg0rKdptPpAVJpNuA2667huuHKnYclRTnztW42gIk7cT6+a7nBK99Qmwljziw9RwpWrQPfqEjht53tASM0HJZNie7vqFqPSRNKSBzdDdO1CC1M=
+	t=1727879787; cv=none; b=AcfqPokqqQ+N34OoNmQIiHpyJMBnBkrHOmTubdS71vEuvm1wUb4Uda+sMy4FtEnDhA8x+fnUlSDYvpIo4BgqAOCDdItVzQD/HJA9Rr4uAmZxRDaF8DjgPocjehTtH7dKWjNla5qSbS1P1LDwCJYbh2B9KeBlqDgVn6ePrk2ZaFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878331; c=relaxed/simple;
-	bh=KKYtYRflm24f6/zcHL01COV6CQ8LeF7mlX5AQLg2IO8=;
+	s=arc-20240116; t=1727879787; c=relaxed/simple;
+	bh=oRD5dnKDm7D41oAQtfzV0Nh/ZULD9hb32Ok3q/DLB1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HwS05uJAE0xNIg1DbAAerm2jfxt8Y/MCc8C5tZbYZaAGrq2YVr8UCP8LrlR6ygTTjM86mAH3JxEOsebFisbmKxngJxHAMXSMs8zIekqO1aAPJuQMZciwSv6jrrH9k0u5293FYV1RYut0h6dKWiDoD69U+O4CT9bnkKRNEToV1zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUGQ+7jo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D30C4CEC2;
-	Wed,  2 Oct 2024 14:12:11 +0000 (UTC)
+	 MIME-Version; b=OVJ8Mu29tA1mujueAftI9q3QYpuHSRgu1nEA/widDXVpTKvdELeSiHiZvKo+/rk5H0ynNdwJaIzbQha7ls0wtblODCq0LF09MvuSr0sBQAI1m915s+OsRKbRJ6H7/e1J0KLXOXuJxa2T+mAj3sR23ErTcg6QWUii56bn7C6dFhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGu2Qy7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE1EC4CEC2;
+	Wed,  2 Oct 2024 14:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878331;
-	bh=KKYtYRflm24f6/zcHL01COV6CQ8LeF7mlX5AQLg2IO8=;
+	s=korg; t=1727879787;
+	bh=oRD5dnKDm7D41oAQtfzV0Nh/ZULD9hb32Ok3q/DLB1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUGQ+7joRKnEWDEz7SY6T1U70EI8/H048QR2ooBNZPtxSaf3hsbfw0mq0UcK+D4K+
-	 VMMr7mNJulg7Mn/NXjFThXqiHuvKaXPgT/FglYtlYdzyJzKjQtwTP5hT3ZMhvi+o3k
-	 B8yt7M6gDWLOKP+Ek/kW6xHUl3WP2dqrTy61mkLw=
+	b=ZGu2Qy7DkfamNe+0gG1zYxDmopE5Pk8kzCY5tO2qqPZjuI7kiqGRLOhsbRhvyMqeb
+	 94rwdSIbLaP7JJYIiOLzyNVgRwCT8g+zoJERjNKyHqLyilzxGD2ktq8zZIR0Y//ZA/
+	 64m/EVriXwqB4du3abNBhYrMaetyQ2O/DfzE/Ghg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 378/634] RDMA/hns: Fix 1bit-ECC recovery address in non-4K OS
+Subject: [PATCH 6.6 239/538] nilfs2: fix potential null-ptr-deref in nilfs_btree_insert()
 Date: Wed,  2 Oct 2024 14:57:58 +0200
-Message-ID: <20241002125826.018289311@linuxfoundation.org>
+Message-ID: <20241002125801.684440077@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit ce196f6297c7f3ab7780795e40efd6c521f60c8b ]
+[ Upstream commit 9403001ad65ae4f4c5de368bdda3a0636b51d51a ]
 
-The 1bit-ECC recovery address read from HW only contain bits 64:12, so
-it should be fixed left-shifted 12 bits when used.
+Patch series "nilfs2: fix potential issues with empty b-tree nodes".
 
-Currently, the driver will shift the address left by PAGE_SHIFT when
-used, which is wrong in non-4K OS.
+This series addresses three potential issues with empty b-tree nodes that
+can occur with corrupted filesystem images, including one recently
+discovered by syzbot.
 
-Fixes: 2de949abd6a5 ("RDMA/hns: Recover 1bit-ECC error of RAM on chip")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20240906093444.3571619-8-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This patch (of 3):
+
+If a b-tree is broken on the device, and the b-tree height is greater than
+2 (the level of the root node is greater than 1) even if the number of
+child nodes of the b-tree root is 0, a NULL pointer dereference occurs in
+nilfs_btree_prepare_insert(), which is called from nilfs_btree_insert().
+
+This is because, when the number of child nodes of the b-tree root is 0,
+nilfs_btree_do_lookup() does not set the block buffer head in any of
+path[x].bp_bh, leaving it as the initial value of NULL, but if the level
+of the b-tree root node is greater than 1, nilfs_btree_get_nonroot_node(),
+which accesses the buffer memory of path[x].bp_bh, is called.
+
+Fix this issue by adding a check to nilfs_btree_root_broken(), which
+performs sanity checks when reading the root node from the device, to
+detect this inconsistency.
+
+Thanks to Lizhi Xu for trying to solve the bug and clarifying the cause
+early on.
+
+Link: https://lkml.kernel.org/r/20240904081401.16682-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240902084101.138971-1-lizhi.xu@windriver.com
+Link: https://lkml.kernel.org/r/20240904081401.16682-2-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9bff4c7b992038a7409f
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/btree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 5483d04b3ab7e..349b68d7e7db6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -6285,7 +6285,7 @@ static u64 fmea_get_ram_res_addr(u32 res_type, __le64 *data)
- 	    res_type == ECC_RESOURCE_SCCC)
- 		return le64_to_cpu(*data);
- 
--	return le64_to_cpu(*data) << PAGE_SHIFT;
-+	return le64_to_cpu(*data) << HNS_HW_PAGE_SHIFT;
- }
- 
- static int fmea_recover_others(struct hns_roce_dev *hr_dev, u32 res_type,
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 598f058670595..fa51ed649968e 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -381,7 +381,8 @@ static int nilfs_btree_root_broken(const struct nilfs_btree_node *node,
+ 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
+ 		     level >= NILFS_BTREE_LEVEL_MAX ||
+ 		     nchildren < 0 ||
+-		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX)) {
++		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX ||
++		     (nchildren == 0 && level > NILFS_BTREE_LEVEL_NODE_MIN))) {
+ 		nilfs_crit(inode->i_sb,
+ 			   "bad btree root (ino=%lu): level = %d, flags = 0x%x, nchildren = %d",
+ 			   inode->i_ino, level, flags, nchildren);
 -- 
 2.43.0
 
