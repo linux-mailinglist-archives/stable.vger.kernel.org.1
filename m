@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1939698DA1B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89B5498DCC9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41D581C22761
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A4F6B291DB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DA91D07B2;
-	Wed,  2 Oct 2024 14:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083B01D2B0A;
+	Wed,  2 Oct 2024 14:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8lIyuC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZFE6E6I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DA21D0955;
-	Wed,  2 Oct 2024 14:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EC71D2238;
+	Wed,  2 Oct 2024 14:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878414; cv=none; b=QvCcBuuqIsnYDpVIfxHZOcrFNi6ZYEajRo/jbTNmpV7GZzEnqJLKK+1VlmWbuflF/QUZpuEsFCPzO7InzUa3grHAKkCBuohn/VutOJql4blcIfBe4/q4AF1MIUB1n9w5NEp5ETlzmglFwQSS0pN9t5Vp8/DQmanw1iWpslPqqW4=
+	t=1727879869; cv=none; b=igudDvWxXp6Ghm1P2EXmOrg5WRdrD6Sx6INB59L2HwoL9lY+nFAx0/CWGm3HVojQ+C7nFPc5426hxRfX/jHEWGLxfMdaZX/Wdfli0fy9OD7YYJolDu47UQJvc/rTAvfZkXJYCKehS6HrPm6CBEvly3yPEKq6A5R0hxzqcQEz37o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878414; c=relaxed/simple;
-	bh=EUeLEtmGPlwaYtPM1v/fMihqUB/sSa90bG5RsxEfuhA=;
+	s=arc-20240116; t=1727879869; c=relaxed/simple;
+	bh=mYtExGgUHzkESnQFbhBRqATKiTUXZHtvVjVaLKUKD7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGbRKhUh4pH4n0kYckGXnWShYJEwmqYZAXDThHgVSSufWAJ8EbTNecWsHO/qhKUpHUIKggHgrUIBK2jHQIDyFNN5O2fypa5FvoW+6fveuJwxlCjMF30dkj0j9HCuvPkS5tgIeLunsGqBzE4I5XEHqhJiQJUtHetQKtN7H7rjCk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8lIyuC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBDBC4CEC2;
-	Wed,  2 Oct 2024 14:13:33 +0000 (UTC)
+	 MIME-Version; b=AG1o2WpUce4PJZ1burRwB0dfZTv7cwkzRu+ZJbsHjsnRx5CxG8kgSidDJi/JB+0fK9FBdjNcozH74GOYJdyeusNNs95Zie+1/3/BKHzjD16B8yF6uLtulkCG/tdkveLB0vGUinauzLnRGoeBdDE43Ve41y8agt05V9dj1gv6jzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZFE6E6I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDE5C4CECD;
+	Wed,  2 Oct 2024 14:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878414;
-	bh=EUeLEtmGPlwaYtPM1v/fMihqUB/sSa90bG5RsxEfuhA=;
+	s=korg; t=1727879869;
+	bh=mYtExGgUHzkESnQFbhBRqATKiTUXZHtvVjVaLKUKD7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8lIyuC070HoaMYCE/R6o8KmeEPWHgCMn9Sp8YH6nhFuvZ95IG3fG1KmViYey73go
-	 NlvIrBcbA9dj+/PMmRD2VRpfXlMUl9pjwMLqhWdH2CyzVGM369W6SPqrBfWciCzZsz
-	 o3Q9UQ8GINHJ4JBIAJsh4lscOsyznSI6MLDa8HTk=
+	b=PZFE6E6IalfWvEbdRPA3AtA9R/7KgYbOtK1TUI5uqTwJilGWjkMmtyq5YLqUPG6a8
+	 aPuet9TEqW2/o5a9hYS0II5td62mCj+kBUN4Ggt+DTsVsP6czcYl0RohMqWtNYdjmq
+	 7Xmh3bIp28KUywD4ig+j8OH+ZuKTkrY+upeczDdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wenglianfa <wenglianfa@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Raghavendra K T <raghavendra.kt@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 374/634] RDMA/hns: Fix Use-After-Free of rsv_qp on HIP08
+Subject: [PATCH 6.6 235/538] sched/numa: Move up the access pid reset logic
 Date: Wed,  2 Oct 2024 14:57:54 +0200
-Message-ID: <20241002125825.861185627@linuxfoundation.org>
+Message-ID: <20241002125801.527879720@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wenglianfa <wenglianfa@huawei.com>
+From: Raghavendra K T <raghavendra.kt@amd.com>
 
-[ Upstream commit fd8489294dd2beefb70f12ec4f6132aeec61a4d0 ]
+[ Upstream commit 2e2675db1906ac04809f5399bf1f5e30d56a6f3e ]
 
-Currently rsv_qp is freed before ib_unregister_device() is called
-on HIP08. During the time interval, users can still dereg MR and
-rsv_qp will be used in this process, leading to a UAF. Move the
-release of rsv_qp after calling ib_unregister_device() to fix it.
+Recent NUMA hinting faulting activity is reset approximately every
+VMA_PID_RESET_PERIOD milliseconds. However, if the current task has not
+accessed a VMA then the reset check is missed and the reset is potentially
+deferred forever. Check if the PID activity information should be reset
+before checking if the current task recently trapped a NUMA hinting fault.
 
-Fixes: 70f92521584f ("RDMA/hns: Use the reserved loopback QPs to free MR before destroying MPT")
-Signed-off-by: wenglianfa <wenglianfa@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20240906093444.3571619-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[ mgorman@techsingularity.net: Rewrite changelog ]
+
+Suggested-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231010083143.19593-5-mgorman@techsingularity.net
+Stable-dep-of: f22cde4371f3 ("sched/numa: Fix the vma scan starving issue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index a166b476977f1..2225c9cc63661 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -2972,6 +2972,9 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7c5f6e94b3cdc..07363b73ccdcc 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3335,16 +3335,7 @@ static void task_numa_work(struct callback_head *work)
+ 			continue;
+ 		}
  
- static void hns_roce_v2_exit(struct hns_roce_dev *hr_dev)
- {
-+	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08)
-+		free_mr_exit(hr_dev);
-+
- 	hns_roce_function_clear(hr_dev);
- 
- 	if (!hr_dev->is_vf)
-@@ -6951,9 +6954,6 @@ static void __hns_roce_hw_v2_uninit_instance(struct hnae3_handle *handle,
- 	hr_dev->state = HNS_ROCE_DEVICE_STATE_UNINIT;
- 	hns_roce_handle_device_err(hr_dev);
- 
--	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08)
--		free_mr_exit(hr_dev);
+-		/* Do not scan the VMA if task has not accessed */
+-		if (!vma_is_accessed(vma)) {
+-			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_PID_INACTIVE);
+-			continue;
+-		}
 -
- 	hns_roce_exit(hr_dev);
- 	kfree(hr_dev->priv);
- 	ib_dealloc_device(&hr_dev->ib_dev);
+-		/*
+-		 * RESET access PIDs regularly for old VMAs. Resetting after checking
+-		 * vma for recent access to avoid clearing PID info before access..
+-		 */
++		/* RESET access PIDs regularly for old VMAs. */
+ 		if (mm->numa_scan_seq &&
+ 				time_after(jiffies, vma->numab_state->pids_active_reset)) {
+ 			vma->numab_state->pids_active_reset = vma->numab_state->pids_active_reset +
+@@ -3353,6 +3344,12 @@ static void task_numa_work(struct callback_head *work)
+ 			vma->numab_state->pids_active[1] = 0;
+ 		}
+ 
++		/* Do not scan the VMA if task has not accessed */
++		if (!vma_is_accessed(vma)) {
++			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_PID_INACTIVE);
++			continue;
++		}
++
+ 		do {
+ 			start = max(start, vma->vm_start);
+ 			end = ALIGN(start + (pages << PAGE_SHIFT), HPAGE_SIZE);
 -- 
 2.43.0
 
