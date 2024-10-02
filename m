@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-80472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DED698DD92
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E2898DB25
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C05E41C23BA6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA3531C20F8F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED9D1D151B;
-	Wed,  2 Oct 2024 14:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CE81D0E00;
+	Wed,  2 Oct 2024 14:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoQe2cqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivkNLeDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7F51EB21;
-	Wed,  2 Oct 2024 14:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B932E1D096F;
+	Wed,  2 Oct 2024 14:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880472; cv=none; b=rVZrfDLUdvr4jg6pba0Gc1qw4pme0+V5wm6u/Qa9FzXYnsnKV8dVdIXuAN44HnIEy21q4zACV7Z4W8d+ZFR5ZqFyfYH2k0Gz7U20/Yg1VihMow8eF08peXo1s3Bb52oPJg+mVFLWznfuuNoX8Xps1alz20mlM4Kj1SsZMhyAsnw=
+	t=1727879012; cv=none; b=Alvy7nD4uj7RMyWpXDFMt1HRp7SNtmHl0Qu9yCzgr0H+wv77sbsYAI0OEElqIrN6tcyKrLXrsEQigt6WwRMQt/9C/EFm08OxU1p4q4OoM0avfCHzbwJC6rmwqoMB+jQFPwOCUF5OlXs8FjuaNTM4rAZ3fUvkXZSWgwQlWy8nSfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880472; c=relaxed/simple;
-	bh=+easFohQk2Whb/1xife9TrU+OKHyBX4dhNtHesBARQI=;
+	s=arc-20240116; t=1727879012; c=relaxed/simple;
+	bh=Dz20YdJ46jF2Q219eIjdhm1WwR8E+d3JTa9IdF+N/xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYG4zs2FqGytRhjrifqp/zCFamYDStAoWFARLI+KhJoRkrWXE2dWBY9uCpuFoCfE2fIt6uuc0HP18JiuAmeuTQ2MO8VD26cypR4Rka1v5H0uoih7jNGtAM48irOBaOd9OT6BEs3hFHH/DajELe0Zm5/qA5AtRkaxXtusdEAQX7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoQe2cqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B523C4CEC2;
-	Wed,  2 Oct 2024 14:47:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WvjJgIQgnGOEAXO0ItXnBYz+i2rIa3TWjXnl49w778UgOu8bsrDPOj3z2XefDmg7DNc+Y/jaBb8nk+YX7BJa1Q0Ou+D0GRUvnRMERr0I0DY3JCs/ClqsgU8jA0S1uiYmcS9OM9kK+H/mrjAa4o8nMf2bVhc6Cscp/eEUAIYSOzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivkNLeDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42961C4CEC5;
+	Wed,  2 Oct 2024 14:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880471;
-	bh=+easFohQk2Whb/1xife9TrU+OKHyBX4dhNtHesBARQI=;
+	s=korg; t=1727879012;
+	bh=Dz20YdJ46jF2Q219eIjdhm1WwR8E+d3JTa9IdF+N/xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IoQe2cquhfeExIi393TMYeAHtsoopcFkUuKeKYE95jgl0kk624PWYx5EMM3tzGQIW
-	 s+rvkxwgLHJVMEsPEcPFT0dN6Fc0qPamtvgG8oRHkThXW+4//lfmv0i+LwDhp1vQ9h
-	 0ADi/KPSW+oOMzr7QFtYyB7xQfbb8cGth+v94eGQ=
+	b=ivkNLeDixyi8NgPDLZ+QqkJXLmaDYQXkWntnF2rFKD97XVYEPFS9gj+V2uZcvOPSC
+	 qmOYp4GjN10mhRxyQZpL9s1nmaLyv9Qdp7dEV4Bog+9JaI/Le0tkUm71qIyrLlYeWb
+	 cAEIcHrKC/bn4R9AJ9DavSFOyiw+6oM2uB6hx3J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Marek <tomas.marek@elrest.cz>
-Subject: [PATCH 6.6 438/538] usb: dwc2: drd: fix clock gating on USB role switch
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Christian Brauner <brauner@kernel.org>,
+	James Morris <jmorris@namei.org>,
+	Jann Horn <jannh@google.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.10 577/634] fs: Fix file_set_fowner LSM hook inconsistencies
 Date: Wed,  2 Oct 2024 15:01:17 +0200
-Message-ID: <20241002125809.727884959@linuxfoundation.org>
+Message-ID: <20241002125833.891568684@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,52 +67,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Marek <tomas.marek@elrest.cz>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit 2c6b6afa59e78bebcb65bbc8a76b3459f139547c upstream.
+commit 26f204380a3c182e5adf1a798db0724d6111b597 upstream.
 
-The dwc2_handle_usb_suspend_intr() function disables gadget clocks in USB
-peripheral mode when no other power-down mode is available (introduced by
-commit 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_intr function.")).
-However, the dwc2_drd_role_sw_set() USB role update handler attempts to
-read DWC2 registers if the USB role has changed while the USB is in suspend
-mode (when the clocks are gated). This causes the system to hang.
+The fcntl's F_SETOWN command sets the process that handle SIGIO/SIGURG
+for the related file descriptor.  Before this change, the
+file_set_fowner LSM hook was always called, ignoring the VFS logic which
+may not actually change the process that handles SIGIO (e.g. TUN, TTY,
+dnotify), nor update the related UID/EUID.
 
-Release the gadget clocks before handling the USB role update.
+Moreover, because security_file_set_fowner() was called without lock
+(e.g. f_owner.lock), concurrent F_SETOWN commands could result to a race
+condition and inconsistent LSM states (e.g. SELinux's fown_sid) compared
+to struct fown_struct's UID/EUID.
 
-Fixes: 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_intr function.")
+This change makes sure the LSM states are always in sync with the VFS
+state by moving the security_file_set_fowner() call close to the
+UID/EUID updates and using the same f_owner.lock .
+
+Rename f_modown() to __f_setown() to simplify code.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Tomas Marek <tomas.marek@elrest.cz>
-Link: https://lore.kernel.org/r/20240906055025.25057-1-tomas.marek@elrest.cz
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: James Morris <jmorris@namei.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Ondrej Mosnacek <omosnace@redhat.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Serge E. Hallyn <serge@hallyn.com>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/drd.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/fcntl.c |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/dwc2/drd.c
-+++ b/drivers/usb/dwc2/drd.c
-@@ -127,6 +127,15 @@ static int dwc2_drd_role_sw_set(struct u
- 			role = USB_ROLE_DEVICE;
- 	}
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -87,8 +87,8 @@ static int setfl(int fd, struct file * f
+ 	return error;
+ }
  
-+	if ((IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL) ||
-+	     IS_ENABLED(CONFIG_USB_DWC2_DUAL_ROLE)) &&
-+	     dwc2_is_device_mode(hsotg) &&
-+	     hsotg->lx_state == DWC2_L2 &&
-+	     hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
-+	     hsotg->bus_suspended &&
-+	     !hsotg->params.no_clock_gating)
-+		dwc2_gadget_exit_clock_gating(hsotg, 0);
-+
- 	if (role == USB_ROLE_HOST) {
- 		already = dwc2_ovr_avalid(hsotg, true);
- 	} else if (role == USB_ROLE_DEVICE) {
+-static void f_modown(struct file *filp, struct pid *pid, enum pid_type type,
+-                     int force)
++void __f_setown(struct file *filp, struct pid *pid, enum pid_type type,
++		int force)
+ {
+ 	write_lock_irq(&filp->f_owner.lock);
+ 	if (force || !filp->f_owner.pid) {
+@@ -98,19 +98,13 @@ static void f_modown(struct file *filp,
+ 
+ 		if (pid) {
+ 			const struct cred *cred = current_cred();
++			security_file_set_fowner(filp);
+ 			filp->f_owner.uid = cred->uid;
+ 			filp->f_owner.euid = cred->euid;
+ 		}
+ 	}
+ 	write_unlock_irq(&filp->f_owner.lock);
+ }
+-
+-void __f_setown(struct file *filp, struct pid *pid, enum pid_type type,
+-		int force)
+-{
+-	security_file_set_fowner(filp);
+-	f_modown(filp, pid, type, force);
+-}
+ EXPORT_SYMBOL(__f_setown);
+ 
+ int f_setown(struct file *filp, int who, int force)
+@@ -146,7 +140,7 @@ EXPORT_SYMBOL(f_setown);
+ 
+ void f_delown(struct file *filp)
+ {
+-	f_modown(filp, NULL, PIDTYPE_TGID, 1);
++	__f_setown(filp, NULL, PIDTYPE_TGID, 1);
+ }
+ 
+ pid_t f_getown(struct file *filp)
 
 
 
