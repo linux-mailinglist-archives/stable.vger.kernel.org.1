@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-79323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A14B98D7AA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:51:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5ACA98D77F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BFFA1C222B4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:51:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 973EC281ED2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB301D078E;
-	Wed,  2 Oct 2024 13:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1A91D0164;
+	Wed,  2 Oct 2024 13:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB+fplJv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLC/yezs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8DC1D0781;
-	Wed,  2 Oct 2024 13:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD5C17B421;
+	Wed,  2 Oct 2024 13:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877106; cv=none; b=GuQcZfQcm35gi+6nBNcwoxeYTe1OBjmZmMSajOT1pY9MnezuZgwgjx2DOv9eN8TUgeN5dMp5tD4OA9yjpQ5IWYZWsEPagSQ4m89ougSvotAopmDUZffnlOkXDoe3xvt+BmxRqlq/CnyBluHcie5H3azBDmTtWC7egeCw/uIFN30=
+	t=1727877009; cv=none; b=Mvc84y2oLIrcWOdHMqzdCDWYk0CTffg0yhBHUwNj06Dc7DuzBGop+CPOMraFZkLTY2WX28dJ329r8rNRm1schNdpnmAzBurTas7cct6D3UYTRnNJlCel0hrav3SzVy00ztiJbTzxphuUBwUsaahiRx4/j9O1fnAs1nEWFxzZZZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877106; c=relaxed/simple;
-	bh=dpuer8eqspx51IOhSvX2pbBC0PWvLROEZpdfXuS7XXk=;
+	s=arc-20240116; t=1727877009; c=relaxed/simple;
+	bh=vrnNAYdeHwC0iBcuYjugwC0S0iyV9cGXWZpHi73jSPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYxi2vnUUW5svCjKBfc+ea8VBIP3nZLAiVUHMXjSIxSwJC/aR9qSkrWhzaswZ5J2MnDNdVTFNgq6+0SOi32UYjVRc7KIK8eQ1GexIxyGnDBN0gA6Y3PvPyxG5WXz2GcYQD1hrvKXes/KEQJMkU2aMt+3BSRS0CywrhWEcZ0Edm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB+fplJv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0947C4CEC2;
-	Wed,  2 Oct 2024 13:51:45 +0000 (UTC)
+	 MIME-Version; b=R0NPpQw3q75Cifk/7GGthsJwkgC+FhXSbAME1MLE1GGMHYT6QCvo1hQuuMtK7o6xaY57rz1bssb6Km+UBUZPh+mDY2rCnaFiFOEkYr8h1LRzJr+7sJrXHzVIooHXksoSRtsah30B1tKvd6uC84jeTHt+G1WO8HDinkbJa5QcLQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLC/yezs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38219C4CEC2;
+	Wed,  2 Oct 2024 13:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877106;
-	bh=dpuer8eqspx51IOhSvX2pbBC0PWvLROEZpdfXuS7XXk=;
+	s=korg; t=1727877009;
+	bh=vrnNAYdeHwC0iBcuYjugwC0S0iyV9cGXWZpHi73jSPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gB+fplJvTB07sDderto1KXERr3hmEsjngbDOw2dB5uxY8ZJEyP68HfLiXTy0gu0cm
-	 ENgtvcZr6lR0wGmKEmFXhMkhRKvNNcNzg0R2hcYH9dRR3YsouuJihXzOOIxFrhSBxk
-	 im2bj+DGg95hUN3aqQeDsLVr0figO3CwfFgOmHpM=
+	b=RLC/yezs+Qp9IQee4MDY7G2NcgNGfRsuTl3u2eLC0yIUt4WtKKkveQ6ZYG45Z2zVZ
+	 Y+9j2AnQCBBVXHY5sC34FWaj6bVhDwxl68xN2WU/WqlJBAltCit5Uzi7l7cimU930m
+	 zhGMmPhJTh/oVtbDMOehqOIdx7GCzAiUr5JaCodA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.11 625/695] debugobjects: Fix conditions in fill_pool()
-Date: Wed,  2 Oct 2024 15:00:23 +0200
-Message-ID: <20241002125847.460426861@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.11 626/695] btrfs: fix race setting file private on concurrent lseek using same fd
+Date: Wed,  2 Oct 2024 15:00:24 +0200
+Message-ID: <20241002125847.500535244@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -65,50 +66,147 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 684d28feb8546d1e9597aa363c3bfcf52fe250b7 upstream.
+commit 7ee85f5515e86a4e2a2f51969795920733912bad upstream.
 
-fill_pool() uses 'obj_pool_min_free' to decide whether objects should be
-handed back to the kmem cache. But 'obj_pool_min_free' records the lowest
-historical value of the number of objects in the object pool and not the
-minimum number of objects which should be kept in the pool.
+When doing concurrent lseek(2) system calls against the same file
+descriptor, using multiple threads belonging to the same process, we have
+a short time window where a race happens and can result in a memory leak.
 
-Use 'debug_objects_pool_min_level' instead, which holds the minimum number
-which was scaled to the number of CPUs at boot time.
+The race happens like this:
 
-[ tglx: Massage change log ]
+1) A program opens a file descriptor for a file and then spawns two
+   threads (with the pthreads library for example), lets call them
+   task A and task B;
 
-Fixes: d26bf5056fc0 ("debugobjects: Reduce number of pool_lock acquisitions in fill_pool()")
-Fixes: 36c4ead6f6df ("debugobjects: Add global free list and the counter")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240904133944.2124-3-thunder.leizhen@huawei.com
+2) Task A calls lseek with SEEK_DATA or SEEK_HOLE and ends up at
+   file.c:find_desired_extent() while holding a read lock on the inode;
+
+3) At the start of find_desired_extent(), it extracts the file's
+   private_data pointer into a local variable named 'private', which has
+   a value of NULL;
+
+4) Task B also calls lseek with SEEK_DATA or SEEK_HOLE, locks the inode
+   in shared mode and enters file.c:find_desired_extent(), where it also
+   extracts file->private_data into its local variable 'private', which
+   has a NULL value;
+
+5) Because it saw a NULL file private, task A allocates a private
+   structure and assigns to the file structure;
+
+6) Task B also saw a NULL file private so it also allocates its own file
+   private and then assigns it to the same file structure, since both
+   tasks are using the same file descriptor.
+
+   At this point we leak the private structure allocated by task A.
+
+Besides the memory leak, there's also the detail that both tasks end up
+using the same cached state record in the private structure (struct
+btrfs_file_private::llseek_cached_state), which can result in a
+use-after-free problem since one task can free it while the other is
+still using it (only one task took a reference count on it). Also, sharing
+the cached state is not a good idea since it could result in incorrect
+results in the future - right now it should not be a problem because it
+end ups being used only in extent-io-tree.c:count_range_bits() where we do
+range validation before using the cached state.
+
+Fix this by protecting the private assignment and check of a file while
+holding the inode's spinlock and keep track of the task that allocated
+the private, so that it's used only by that task in order to prevent
+user-after-free issues with the cached state record as well as potentially
+using it incorrectly in the future.
+
+Fixes: 3c32c7212f16 ("btrfs: use cached state when looking for delalloc ranges with lseek")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/debugobjects.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/btrfs_inode.h |    1 +
+ fs/btrfs/ctree.h       |    2 ++
+ fs/btrfs/file.c        |   34 +++++++++++++++++++++++++++++++---
+ 3 files changed, 34 insertions(+), 3 deletions(-)
 
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -142,13 +142,14 @@ static void fill_pool(void)
- 	 * READ_ONCE()s pair with the WRITE_ONCE()s in pool_lock critical
- 	 * sections.
+--- a/fs/btrfs/btrfs_inode.h
++++ b/fs/btrfs/btrfs_inode.h
+@@ -152,6 +152,7 @@ struct btrfs_inode {
+ 	 * logged_trans), to access/update delalloc_bytes, new_delalloc_bytes,
+ 	 * defrag_bytes, disk_i_size, outstanding_extents, csum_bytes and to
+ 	 * update the VFS' inode number of bytes used.
++	 * Also protects setting struct file::private_data.
  	 */
--	while (READ_ONCE(obj_nr_tofree) && (READ_ONCE(obj_pool_free) < obj_pool_min_free)) {
-+	while (READ_ONCE(obj_nr_tofree) &&
-+	       READ_ONCE(obj_pool_free) < debug_objects_pool_min_level) {
- 		raw_spin_lock_irqsave(&pool_lock, flags);
+ 	spinlock_t lock;
+ 
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -459,6 +459,8 @@ struct btrfs_file_private {
+ 	void *filldir_buf;
+ 	u64 last_index;
+ 	struct extent_state *llseek_cached_state;
++	/* Task that allocated this structure. */
++	struct task_struct *owner_task;
+ };
+ 
+ static inline u32 BTRFS_LEAF_DATA_SIZE(const struct btrfs_fs_info *info)
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -3485,7 +3485,7 @@ static bool find_desired_extent_in_hole(
+ static loff_t find_desired_extent(struct file *file, loff_t offset, int whence)
+ {
+ 	struct btrfs_inode *inode = BTRFS_I(file->f_mapping->host);
+-	struct btrfs_file_private *private = file->private_data;
++	struct btrfs_file_private *private;
+ 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+ 	struct extent_state *cached_state = NULL;
+ 	struct extent_state **delalloc_cached_state;
+@@ -3513,7 +3513,19 @@ static loff_t find_desired_extent(struct
+ 	    inode_get_bytes(&inode->vfs_inode) == i_size)
+ 		return i_size;
+ 
+-	if (!private) {
++	spin_lock(&inode->lock);
++	private = file->private_data;
++	spin_unlock(&inode->lock);
++
++	if (private && private->owner_task != current) {
++		/*
++		 * Not allocated by us, don't use it as its cached state is used
++		 * by the task that allocated it and we don't want neither to
++		 * mess with it nor get incorrect results because it reflects an
++		 * invalid state for the current task.
++		 */
++		private = NULL;
++	} else if (!private) {
+ 		private = kzalloc(sizeof(*private), GFP_KERNEL);
  		/*
- 		 * Recheck with the lock held as the worker thread might have
- 		 * won the race and freed the global free list already.
+ 		 * No worries if memory allocation failed.
+@@ -3521,7 +3533,23 @@ static loff_t find_desired_extent(struct
+ 		 * lseek SEEK_HOLE/DATA calls to a file when there's delalloc,
+ 		 * so everything will still be correct.
  		 */
--		while (obj_nr_tofree && (obj_pool_free < obj_pool_min_free)) {
-+		while (obj_nr_tofree && (obj_pool_free < debug_objects_pool_min_level)) {
- 			obj = hlist_entry(obj_to_free.first, typeof(*obj), node);
- 			hlist_del(&obj->node);
- 			WRITE_ONCE(obj_nr_tofree, obj_nr_tofree - 1);
+-		file->private_data = private;
++		if (private) {
++			bool free = false;
++
++			private->owner_task = current;
++
++			spin_lock(&inode->lock);
++			if (file->private_data)
++				free = true;
++			else
++				file->private_data = private;
++			spin_unlock(&inode->lock);
++
++			if (free) {
++				kfree(private);
++				private = NULL;
++			}
++		}
+ 	}
+ 
+ 	if (private)
 
 
 
