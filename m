@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-79454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C9AC98D85F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD4B98D529
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC776B22BA9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3487B286800
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E761D0493;
-	Wed,  2 Oct 2024 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9001D0412;
+	Wed,  2 Oct 2024 13:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lY/+hp5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9lBVAhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CD01D0420;
-	Wed,  2 Oct 2024 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCA61CF28B;
+	Wed,  2 Oct 2024 13:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877506; cv=none; b=jIYy+OH8OCtYJrTmJjVCjK4GmBWJSxShlYfNgnDqksfxY5tO5TC/PNzTmSkakVokmciEb7nsmUd++OwZT3ZJfIl/4KUh6UBM5Ne0sTk+HmEBcDhYU1+pyysTsw6j7+4LOlU6Mkt4mg1rpkX7Hn9B8jWxZUdIjDrnWJAMgzSbTOg=
+	t=1727875649; cv=none; b=szF0In270MoZz63MocNDpCVy1PPweI/WaTpunFKQZohfjTFw/HnWkaYJKORuVhMAICjmeHTawI9kI/N63C+F+tsrG3q8QenqwxfLj02CD0fmzwjQWvO4SbnK1jDDu+DdzZdippaXdAp0aWV3HBthx0qBcC6oyH2X1JD2NWgIn2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877506; c=relaxed/simple;
-	bh=a16YELHmCqQ56ngzZB7L7zUu1YGW5dq9ZTHFVcZhiM8=;
+	s=arc-20240116; t=1727875649; c=relaxed/simple;
+	bh=s/cBXKqtDKuA36yCe/dB8yyKKPc/W1p7K7g7rxlZ/jA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iA5AjMSqxwuMKiwz6uTVcFLsdHDU8YHHAZpbHXFb35OoWx7xPy/tKY7PLE+Uvg6hg0JRFUCeK4PjbsyG+nOBVZemIxT5UjTNVAQEdjLYMI5QmeASgjrwK3mdzwPK7d6bi5+AKyTklCK298yAwzIin+Xum2ajlQoRQOKtqkdOLg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lY/+hp5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F87C4CEC2;
-	Wed,  2 Oct 2024 13:58:25 +0000 (UTC)
+	 MIME-Version; b=lzbNJ3AKNPO4rb380riXoaGT0urRluwHQGTO1Mg71RxOumGTfR5RsTLpkahf3rsawtnFCONjWHHJ4oUMTJ6nR7kwLM+xENasNC8KgYzsCwxy2WMn/R1S0g7Plaw3y1fwBhporkUM0uKSENUzQJMtLjOj0XTnm0NbIbfS050YBwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9lBVAhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A51BC4CEC5;
+	Wed,  2 Oct 2024 13:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877506;
-	bh=a16YELHmCqQ56ngzZB7L7zUu1YGW5dq9ZTHFVcZhiM8=;
+	s=korg; t=1727875649;
+	bh=s/cBXKqtDKuA36yCe/dB8yyKKPc/W1p7K7g7rxlZ/jA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lY/+hp5XHXREzdJKwpgXeNUOXUfDGJv/w1re1QeCLYgKbNXyBPR+GugGOrUAPpkqG
-	 n4in/hBSFYtO9b62gJiDSXSAeBNpnXqUEosoXGwSeWuc1YMexQapU5A4G19HokiG0g
-	 AnAJet09Mejo+5QYhLQCCunCGjzBJ8LQegSoqwWE=
+	b=n9lBVAhhIEWaODI2GOCqcbTWD/G+7FkH5LfklwBEx3nb6CcMOo88dlc5sb3rUKT2j
+	 dzFscHrkLYMbKLzzmxQSMLUZLnY04g4LmkkEwk/c+qz6X2Q6DlkNZHb0xvZwqa9HrO
+	 82li8c8VMs9Ie1V0I16deSchzq2zty03uXMNDWCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Molina Sabido, Gerardo" <gerardo.molina.sabido@intel.com>,
-	Aaron Lu <aaron.lu@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Zhimin Luo <zhimin.luo@intel.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 070/634] x86/sgx: Fix deadlock in SGX NUMA node search
-Date: Wed,  2 Oct 2024 14:52:50 +0200
-Message-ID: <20241002125813.870626473@linuxfoundation.org>
+Subject: [PATCH 6.11 173/695] cgroup/pids: Avoid spurious event notification
+Date: Wed,  2 Oct 2024 14:52:51 +0200
+Message-ID: <20241002125829.376897713@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Lu <aaron.lu@intel.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit 9c936844010466535bd46ea4ce4656ef17653644 ]
+[ Upstream commit d72a00a8485d1cb11ac1a57bf89b02cbd3a405bf ]
 
-When the current node doesn't have an EPC section configured by firmware
-and all other EPC sections are used up, CPU can get stuck inside the
-while loop that looks for an available EPC page from remote nodes
-indefinitely, leading to a soft lockup. Note how nid_of_current will
-never be equal to nid in that while loop because nid_of_current is not
-set in sgx_numa_mask.
+Currently when a process in a group forks and fails due to it's
+parent's max restriction, all the cgroups from 'pids_forking' to root
+will generate event notifications but only the cgroups from
+'pids_over_limit' to root will increase the counter of PIDCG_MAX.
 
-Also worth mentioning is that it's perfectly fine for the firmware not
-to setup an EPC section on a node. While setting up an EPC section on
-each node can enhance performance, it is not a requirement for
-functionality.
+Consider this scenario: there are 4 groups A, B, C,and D, the
+relationships are as follows, and user is watching on C.pids.events.
 
-Rework the loop to start and end on *a* node that has SGX memory. This
-avoids the deadlock looking for the current SGX-lacking node to show up
-in the loop when it never will.
+root->A->B->C->D
 
-Fixes: 901ddbb9ecf5 ("x86/sgx: Add a basic NUMA allocation scheme to sgx_alloc_epc_page()")
-Reported-by: "Molina Sabido, Gerardo" <gerardo.molina.sabido@intel.com>
-Signed-off-by: Aaron Lu <aaron.lu@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Zhimin Luo <zhimin.luo@intel.com>
-Link: https://lore.kernel.org/all/20240905080855.1699814-2-aaron.lu%40intel.com
+When a process in D forks and fails due to B.max restriction, the
+user will get a spurious event notification because when he wakes up
+and reads C.pids.events, he will find that the content has not changed.
+
+To address this issue, only the cgroups from 'pids_over_limit' to root
+will have their PIDCG_MAX counters increased and event notifications
+generated.
+
+Fixes: 385a635cacfe ("cgroup/pids: Make event counters hierarchical")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/main.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ kernel/cgroup/pids.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index 27892e57c4ef9..6aeeb43dd3f6a 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -475,24 +475,25 @@ struct sgx_epc_page *__sgx_alloc_epc_page(void)
+diff --git a/kernel/cgroup/pids.c b/kernel/cgroup/pids.c
+index f5cb0ec45b9dd..34aa63d7c9c65 100644
+--- a/kernel/cgroup/pids.c
++++ b/kernel/cgroup/pids.c
+@@ -244,7 +244,6 @@ static void pids_event(struct pids_cgroup *pids_forking,
+ 		       struct pids_cgroup *pids_over_limit)
  {
- 	struct sgx_epc_page *page;
- 	int nid_of_current = numa_node_id();
--	int nid = nid_of_current;
-+	int nid_start, nid;
+ 	struct pids_cgroup *p = pids_forking;
+-	bool limit = false;
  
--	if (node_isset(nid_of_current, sgx_numa_mask)) {
--		page = __sgx_alloc_epc_page_from_node(nid_of_current);
--		if (page)
--			return page;
--	}
--
--	/* Fall back to the non-local NUMA nodes: */
--	while (true) {
--		nid = next_node_in(nid, sgx_numa_mask);
--		if (nid == nid_of_current)
--			break;
-+	/*
-+	 * Try local node first. If it doesn't have an EPC section,
-+	 * fall back to the non-local NUMA nodes.
-+	 */
-+	if (node_isset(nid_of_current, sgx_numa_mask))
-+		nid_start = nid_of_current;
-+	else
-+		nid_start = next_node_in(nid_of_current, sgx_numa_mask);
+ 	/* Only log the first time limit is hit. */
+ 	if (atomic64_inc_return(&p->events_local[PIDCG_FORKFAIL]) == 1) {
+@@ -252,20 +251,17 @@ static void pids_event(struct pids_cgroup *pids_forking,
+ 		pr_cont_cgroup_path(p->css.cgroup);
+ 		pr_cont("\n");
+ 	}
+-	cgroup_file_notify(&p->events_local_file);
+ 	if (!cgroup_subsys_on_dfl(pids_cgrp_subsys) ||
+-	    cgrp_dfl_root.flags & CGRP_ROOT_PIDS_LOCAL_EVENTS)
++	    cgrp_dfl_root.flags & CGRP_ROOT_PIDS_LOCAL_EVENTS) {
++		cgroup_file_notify(&p->events_local_file);
+ 		return;
++	}
  
-+	nid = nid_start;
-+	do {
- 		page = __sgx_alloc_epc_page_from_node(nid);
- 		if (page)
- 			return page;
--	}
-+
-+		nid = next_node_in(nid, sgx_numa_mask);
-+	} while (nid != nid_start);
+-	for (; parent_pids(p); p = parent_pids(p)) {
+-		if (p == pids_over_limit) {
+-			limit = true;
+-			atomic64_inc(&p->events_local[PIDCG_MAX]);
+-			cgroup_file_notify(&p->events_local_file);
+-		}
+-		if (limit)
+-			atomic64_inc(&p->events[PIDCG_MAX]);
++	atomic64_inc(&pids_over_limit->events_local[PIDCG_MAX]);
++	cgroup_file_notify(&pids_over_limit->events_local_file);
  
- 	return ERR_PTR(-ENOMEM);
++	for (p = pids_over_limit; parent_pids(p); p = parent_pids(p)) {
++		atomic64_inc(&p->events[PIDCG_MAX]);
+ 		cgroup_file_notify(&p->events_file);
+ 	}
  }
 -- 
 2.43.0
