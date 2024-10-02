@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0957298D95A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873D998DBE5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B512B1F2165C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DF1CB280B6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0A11D0E31;
-	Wed,  2 Oct 2024 14:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A171D150B;
+	Wed,  2 Oct 2024 14:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzWgLgBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zA/BGCDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB9D1D094A;
-	Wed,  2 Oct 2024 14:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3270B79D0;
+	Wed,  2 Oct 2024 14:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877942; cv=none; b=NdMHpY2K6G2N2FijO0c6JkzrZQ5Pi5aF+DEz2bWikSEy9M/rcpk+8wWGk5hCVEQzUlaYyu9sKw4xE1iirJ1QEJCS8wG1XPN13BIlxe5LeIAs1o0xiSF5XSpawL3zFA9p1T884vkrk3EJxcowByTrbxDeBIybuGzRWV62GMBwCmg=
+	t=1727879408; cv=none; b=oav/KnP4mOy5do6OZkLAYBRwppnVd/HQQ2CJvtHlO7896MCWmsOpsciRc3aDEPb3zDCWSpsH6ZEFK5iwCgydL26EjSXvdMecvoiyZZh35hbNu/uEm1dEvp8YChkQNj2xX1un87t5NB02ZHoUL+qdVmEbxSNa50T69EOck3cFKbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877942; c=relaxed/simple;
-	bh=TeVGkDiBVR+SO6Mbgh+1/3xxDDzqN+vJlGd8cvIEY2E=;
+	s=arc-20240116; t=1727879408; c=relaxed/simple;
+	bh=nI2IZdYi+kDTX5LCGlAdeqtwM7dHdLnCnAjqrmyblGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4qW7e8+g2oFqK0selCoV+vOdwVa9iwRLGhmtHiSwDzamMdMXsTbVxtlLO7mGG+evod72/6odvta/+h98SPOGvGfihNp9yBN1jCvK/Z6CwF9ohUlYu/bXCJO7VNADdkzQOGGU79JkxWGOZuaLFY2se/2eEEz/NErreglqvwcGVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzWgLgBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B85C4CEC2;
-	Wed,  2 Oct 2024 14:05:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gWEv3G5YprNuT/JIL3uT0dP+dmZo0A2ofBJVj8SRlNU9ShlfevikQvoZ0r/iVCw74paPaMttZN2zz1frS++vwyPSgq8LMprWd6gahapKhMm9Ev/X9zMPCok3x0TgKc1YQ9C37MpSQ/AVO6aooHyBwWhOLIETwUA1c80lKA/Tckg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zA/BGCDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B62DC4CECD;
+	Wed,  2 Oct 2024 14:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877942;
-	bh=TeVGkDiBVR+SO6Mbgh+1/3xxDDzqN+vJlGd8cvIEY2E=;
+	s=korg; t=1727879407;
+	bh=nI2IZdYi+kDTX5LCGlAdeqtwM7dHdLnCnAjqrmyblGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzWgLgBu4vI9OWG4HwbIjqF9sQiNX4pw2DAMZXbOYdiBeq1LmRufktaO1AYVoYmFJ
-	 HK/FlJeJI9w2IjdqPdYHUYxlu12dq3ESe7IUBY39MTxlwgZVt5Lo6JB0DDKBlWOCO8
-	 W2dEJYZPhYR6jFpsfhevDF8HeU1NGlWf6xJhCYkI=
+	b=zA/BGCDxWmZN3X29koftlFmmzThxkKy2PY47TsWyaIG80VdFAbMcxIrK0+Y/rjxAP
+	 oZASX6Fh8BZxf+ZtRAUsYp8eH4n12dAsq26Ti5EvmFhmr+VEsC0BPwyw34r0Ls1+Xg
+	 DF0RqjKbObNOWjt0acJetyV5ZGEFUf/VktRsPlMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 248/634] selftests/bpf: Fix compiling tcp_rtt.c with musl-libc
+Subject: [PATCH 6.6 109/538] arm64: dts: mediatek: mt8195: Correct clock order for dp_intf*
 Date: Wed,  2 Oct 2024 14:55:48 +0200
-Message-ID: <20241002125820.887048818@linuxfoundation.org>
+Message-ID: <20241002125756.535287982@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 18826fb0b79c3c3cd1fe765d85f9c6f1a902c722 ]
+[ Upstream commit 51bc68debab9e30b50c6352315950f3cfc309b32 ]
 
-The GNU version of 'struct tcp_info' in 'netinet/tcp.h' is not exposed by
-musl headers unless _GNU_SOURCE is defined.
+The clocks for dp_intf* device nodes are given in the wrong order,
+causing the binding validation to fail.
 
-Add this definition to fix errors seen compiling for mips64el/musl-libc:
-
-  tcp_rtt.c: In function 'wait_for_ack':
-  tcp_rtt.c:24:25: error: storage size of 'info' isn't known
-     24 |         struct tcp_info info;
-        |                         ^~~~
-  tcp_rtt.c:24:25: error: unused variable 'info' [-Werror=unused-variable]
-  cc1: all warnings being treated as errors
-
-Fixes: 1f4f80fed217 ("selftests/bpf: test_progs: convert test_tcp_rtt")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/f2329767b15df206f08a5776d35a47c37da855ae.1721713597.git.tony.ambardar@gmail.com
+Fixes: 6c2503b5856a ("arm64: dts: mt8195: Add dp-intf nodes")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20240802070951.1086616-1-wenst@chromium.org
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tcp_rtt.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-index f2b99d95d9160..c38784c1c066e 100644
---- a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
- #include <test_progs.h>
- #include "cgroup_helpers.h"
- #include "network_helpers.h"
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 20e6d90cc4118..d21ba00a5bd5d 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -2766,10 +2766,10 @@ dp_intf0: dp-intf@1c015000 {
+ 			compatible = "mediatek,mt8195-dp-intf";
+ 			reg = <0 0x1c015000 0 0x1000>;
+ 			interrupts = <GIC_SPI 657 IRQ_TYPE_LEVEL_HIGH 0>;
+-			clocks = <&vdosys0  CLK_VDO0_DP_INTF0>,
+-				 <&vdosys0 CLK_VDO0_DP_INTF0_DP_INTF>,
++			clocks = <&vdosys0 CLK_VDO0_DP_INTF0_DP_INTF>,
++				 <&vdosys0  CLK_VDO0_DP_INTF0>,
+ 				 <&apmixedsys CLK_APMIXED_TVDPLL1>;
+-			clock-names = "engine", "pixel", "pll";
++			clock-names = "pixel", "engine", "pll";
+ 			status = "disabled";
+ 		};
+ 
+@@ -3036,10 +3036,10 @@ dp_intf1: dp-intf@1c113000 {
+ 			reg = <0 0x1c113000 0 0x1000>;
+ 			interrupts = <GIC_SPI 513 IRQ_TYPE_LEVEL_HIGH 0>;
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+-			clocks = <&vdosys1 CLK_VDO1_DP_INTF0_MM>,
+-				 <&vdosys1 CLK_VDO1_DPINTF>,
++			clocks = <&vdosys1 CLK_VDO1_DPINTF>,
++				 <&vdosys1 CLK_VDO1_DP_INTF0_MM>,
+ 				 <&apmixedsys CLK_APMIXED_TVDPLL2>;
+-			clock-names = "engine", "pixel", "pll";
++			clock-names = "pixel", "engine", "pll";
+ 			status = "disabled";
+ 		};
+ 
 -- 
 2.43.0
 
