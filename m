@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-79657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B648898D991
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAE098DC34
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82B81C223E3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50CCE1C24067
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B545D1D0BAC;
-	Wed,  2 Oct 2024 14:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373941D0DDD;
+	Wed,  2 Oct 2024 14:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OllS4116"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4gi+8qP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725A31D0956;
-	Wed,  2 Oct 2024 14:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57F41CFED1;
+	Wed,  2 Oct 2024 14:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878082; cv=none; b=AHpWxs7qWXGwtAbfchMq/26/+e6zqHwExGMVTyWthmJfmZdzdwWoghUsAPUGZjPGGBVozsy3BU6qAVedMinLKsJSZ6Q8qSB+/RosYsLSnnhu4ivVnNCPw097t/Qw7FBwoCWye6Mmq3kug4dm9RFLoqYkxPl2OJtNDCbAsMxyONc=
+	t=1727879553; cv=none; b=BKvmCtWxI8hQh0z2NHC0i0n8YnY3TTsw4JqaVOZ8klD00h1QuoELbihimKtnbfy2waQYnlb/GBqOGH9JlKrf/8SkEKKstVhY+bEUUAONnuaPWVAA9NJ/8rgMTDsJURFbGc9IFur58pH0jk6/Vi+os4BRwl+itFAWlZ68Ai/qGO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878082; c=relaxed/simple;
-	bh=ar8OiwV6/4JkkXnDI0OaYIrASnDElHa3Y5dCi9T1KMY=;
+	s=arc-20240116; t=1727879553; c=relaxed/simple;
+	bh=tqSVdVl5tJwpkQ8GgN6hL+cWkxcwNWSfy/GXxsEYhIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=saWx2ceWMu9fmgPm3AFd4qtW4UGxN/P35Mgx+Jcd6SgGT1a8GG7o9i6qUUWdVvgnotFqPjxQdVxANumJbiyRd07uyRNZolshxGmUy/QNhRM74l4h5GuJ59QWbRGQHxsc73MuG4tWjjJff+3OlSZi4e1efgYvUyToJmRC1K/uFL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OllS4116; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF39CC4CEC5;
-	Wed,  2 Oct 2024 14:08:01 +0000 (UTC)
+	 MIME-Version; b=fxi284W5kgFgzqcOsX+JT8/234SfPWURm3b047GfRVWeZtrIckUm+cBBeF77XZ0gSvbuUsIbop1G/FovyM4DjhojRjgVNXPa6nxZ1ovmDCKTXnRBdnJO+C6XsDmiBji10hy7/dXZPYJcRj4AR26VU9a7GufBMWcyBYS/1xoa4H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4gi+8qP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3FDC4CEC2;
+	Wed,  2 Oct 2024 14:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878082;
-	bh=ar8OiwV6/4JkkXnDI0OaYIrASnDElHa3Y5dCi9T1KMY=;
+	s=korg; t=1727879552;
+	bh=tqSVdVl5tJwpkQ8GgN6hL+cWkxcwNWSfy/GXxsEYhIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OllS4116Q7v8lA0rtKAzG45AuVPC4bhuy9aC7cGrP7dA6YcDpX2ufqkPaGGg6uYOM
-	 rOIHgsSKYjTpw37BR+xgdnjmCZVBvkH/C8Z8D+XDNk3Ra94hiE6fZ98/crt04KldcS
-	 FhwUt+bezyuF66S93+x/WlSQaGx7/SHlmQRWYGs4=
+	b=g4gi+8qPMHBdiPFUOnSRvkOkOq8+hvPDj2jyHR7J6+0rOJC4femf4dS6LiBHPWGjY
+	 OoPT0OeuXZeEP6NvGPlHFo/POvwVS+WSmY26+m9WgOvtludiQs1q3dj3vreAQtXyzX
+	 mcRyouyVf/I4gRcuTqZ/LOkjU18WW+Dk8oy/hFE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 295/634] perf lock contention: Change stack_id type to s32
-Date: Wed,  2 Oct 2024 14:56:35 +0200
-Message-ID: <20241002125822.756512082@linuxfoundation.org>
+Subject: [PATCH 6.6 157/538] powerpc/vdso: Inconditionally use CFUNC macro
+Date: Wed,  2 Oct 2024 14:56:36 +0200
+Message-ID: <20241002125758.450456355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 040c0f887fdcfe747a3f63c94e9cd29e9ed0b872 ]
+[ Upstream commit 65948b0e716a47382731889ee6bbb18642b8b003 ]
 
-The bpf_get_stackid() helper returns a signed type to check whether it
-failed to get a stacktrace or not.  But it saved the result in u32 and
-checked if the value is negative.
+During merge of commit 4e991e3c16a3 ("powerpc: add CFUNC assembly
+label annotation") a fallback version of CFUNC macro was added at
+the last minute, so it can be used inconditionally.
 
-      376         if (needs_callstack) {
-      377                 pelem->stack_id = bpf_get_stackid(ctx, &stacks,
-      378                                                   BPF_F_FAST_STACK_CMP | stack_skip);
-  --> 379                 if (pelem->stack_id < 0)
-
-  ./tools/perf/util/bpf_skel/lock_contention.bpf.c:379 contention_begin()
-  warn: unsigned 'pelem->stack_id' is never less than zero.
-
-Let's change the type to s32 instead.
-
-Fixes: 6d499a6b3d90277d ("perf lock: Print the number of lost entries for BPF")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240812172533.2015291-1-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 4e991e3c16a3 ("powerpc: add CFUNC assembly label annotation")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/0fa863f2f69b2ca4094ae066fcf1430fb31110c9.1724313540.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf_skel/lock_data.h       | 4 ++--
- tools/perf/util/bpf_skel/vmlinux/vmlinux.h | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/vdso/gettimeofday.S | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tools/perf/util/bpf_skel/lock_data.h b/tools/perf/util/bpf_skel/lock_data.h
-index 36af11faad03c..de12892f992f8 100644
---- a/tools/perf/util/bpf_skel/lock_data.h
-+++ b/tools/perf/util/bpf_skel/lock_data.h
-@@ -7,11 +7,11 @@ struct tstamp_data {
- 	u64 timestamp;
- 	u64 lock;
- 	u32 flags;
--	u32 stack_id;
-+	s32 stack_id;
- };
- 
- struct contention_key {
--	u32 stack_id;
-+	s32 stack_id;
- 	u32 pid;
- 	u64 lock_addr_or_cgroup;
- };
-diff --git a/tools/perf/util/bpf_skel/vmlinux/vmlinux.h b/tools/perf/util/bpf_skel/vmlinux/vmlinux.h
-index e9028235d7717..d818e30c54571 100644
---- a/tools/perf/util/bpf_skel/vmlinux/vmlinux.h
-+++ b/tools/perf/util/bpf_skel/vmlinux/vmlinux.h
-@@ -15,6 +15,7 @@
- 
- typedef __u8 u8;
- typedef __u32 u32;
-+typedef __s32 s32;
- typedef __u64 u64;
- typedef __s64 s64;
- 
+diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
+index 48fc6658053aa..894cb939cd2b3 100644
+--- a/arch/powerpc/kernel/vdso/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso/gettimeofday.S
+@@ -38,11 +38,7 @@
+ 	.else
+ 	addi		r4, r5, VDSO_DATA_OFFSET
+ 	.endif
+-#ifdef __powerpc64__
+ 	bl		CFUNC(DOTSYM(\funct))
+-#else
+-	bl		\funct
+-#endif
+ 	PPC_LL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+ #ifdef __powerpc64__
+ 	PPC_LL		r2, PPC_MIN_STKFRM + STK_GOT(r1)
 -- 
 2.43.0
 
