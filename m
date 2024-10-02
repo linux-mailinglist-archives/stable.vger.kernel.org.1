@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2F098D83D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7C898D854
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0F91F2398F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A52A1C22CDA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E9B1D07BC;
-	Wed,  2 Oct 2024 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273731D0955;
+	Wed,  2 Oct 2024 13:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/OOX7MO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQb+blHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1652198837;
-	Wed,  2 Oct 2024 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2781D04B4;
+	Wed,  2 Oct 2024 13:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877450; cv=none; b=To4w/3Yv4sYveo+LvLD9LYlFP4Zf8vLWL/rndDx6exAnTQbOH0lxFov5JSAVj6OATKJ3s8dczCeuGhpqMXLBfnJ5Y9xcK6hPymhHziIKiXxDJ6Qskj4QAXk9WtmcRWoy7VbaRHOiCPOYhb4Dw2+21O2wmnPjZWpKL0M8VI2P5/o=
+	t=1727877482; cv=none; b=Xdhr/hoVqTPAzTFnoeyzzNZcl30moqp2TSmsuYzkiajqsLA/w3JI05wOVUXytrtl4CQ9BB6h2sO1YUJo6whtGa61enMov4hP8iAFFmQN/rowBudbNSKa5F9tw0dx1ue5XfbQmdeJceEoT19S3fQFfNCLeu3X45TA1h6X3LtPHx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877450; c=relaxed/simple;
-	bh=oRvfH7DQkBIgGeRFNxhWwrx6+D1czkncSdY3Vxrpkgw=;
+	s=arc-20240116; t=1727877482; c=relaxed/simple;
+	bh=1lIvZkWkWLHW8ppICaPEh8Cjr0f7rcUdnDS+1GjYf8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fol6Q+MQp5zt4vCB8Jy3KKSK7pqJgZltjr5cWRWinrxc04ccGsth7wzDYjxDyFU3v2haulJI2h5rU/6PgX60n7xxuMrHBvRDeDihsVX0H9V1yR0p9O/oiIgJ3LaVdkZf7DazSFWzCp1UPp+rcrOeNLUo4PLSDR+pjrcboszEMAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/OOX7MO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296B5C4AF09;
-	Wed,  2 Oct 2024 13:57:29 +0000 (UTC)
+	 MIME-Version; b=huFDs+Z2UuVq5RkEX/M+nJjC725UJUpj50M3Lsf34pDCfHvTn5TiPfxo/4etW2AHMzlS9AVrEqOQmehXTBUyAYBf/JdFvAxQdTDstgb+LOxZGZwbE3VIuH5u6b06iegaJ2XjtV50UohyViTGEpCLFZW3MMu6E+yqVItweA365Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQb+blHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4780BC4CECD;
+	Wed,  2 Oct 2024 13:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877450;
-	bh=oRvfH7DQkBIgGeRFNxhWwrx6+D1czkncSdY3Vxrpkgw=;
+	s=korg; t=1727877482;
+	bh=1lIvZkWkWLHW8ppICaPEh8Cjr0f7rcUdnDS+1GjYf8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/OOX7MObJ9aY9iNhud+hLPNWdp8MkX50QoHeAquSrWw1tS8EXzSUSVUET0NqXdEc
-	 5BR02Ojo9u06E8URo5cIGwztiqwzs7Ki7K2t+Dj7/UqGNb0fR8/YcHSmLpHMoQoL6B
-	 jrZ7uL5gxK8x+O/ADdZgz5X/r0O6i/fXOZmNHosI=
+	b=DQb+blHX4nVOA9Zpn6b/bjQjQ1xGhl4CheNzwesrB+BnQPptdPr0/5Wv4kx6XrzA+
+	 tbx0nifAGDyppU9EKi8Tr0x8Yr/AsqUY4ERGzKU47hho4LhXulI10pb5FiScjiT4fL
+	 uxx0Jb08k7sIUC5rPnKbqCEam8cbEEb8MkGK2I+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 065/634] wifi: mt76: mt7996: use hweight16 to get correct tx antenna
-Date: Wed,  2 Oct 2024 14:52:45 +0200
-Message-ID: <20241002125813.674122121@linuxfoundation.org>
+Subject: [PATCH 6.10 066/634] wifi: mt76: mt7996: fix traffic delay when switching back to working channel
+Date: Wed,  2 Oct 2024 14:52:46 +0200
+Message-ID: <20241002125813.712710904@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -69,36 +69,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit f98c3de92bb05dac4a4969df8a4595ed380b4604 ]
+[ Upstream commit 376200f095d0c3a7096199b336204698d7086279 ]
 
-The chainmask is u16 so using hweight8 cannot get correct tx_ant.
-Without this patch, the tx_ant of band 2 would be -1 and lead to the
-following issue:
-BUG: KASAN: stack-out-of-bounds in mt7996_mcu_add_sta+0x12e0/0x16e0 [mt7996e]
+During scanning, UNI_CHANNEL_RX_PATH tag is necessary for the firmware to
+properly stop and resume MAC TX queue. Without this tag, HW needs more time
+to resume traffic when switching back to working channel.
 
 Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
 Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20240816094635.2391-1-shayne.chen@mediatek.com
+Link: https://patch.msgid.link/20240816094635.2391-2-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 2c85786778009..7220bcee6fae9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1653,7 +1653,7 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
- {
- 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
- 	struct mt7996_phy *phy = mvif->phy;
--	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
-+	int tx_ant = hweight16(phy->mt76->chainmask) - 1;
- 	struct sta_rec_bf *bf;
- 	struct tlv *tlv;
- 	static const u8 matrix[4][4] = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 7c97140d8255a..15d880ef0d922 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -307,6 +307,10 @@ int mt7996_set_channel(struct mt7996_phy *phy)
+ 	if (ret)
+ 		goto out;
+ 
++	ret = mt7996_mcu_set_chan_info(phy, UNI_CHANNEL_RX_PATH);
++	if (ret)
++		goto out;
++
+ 	ret = mt7996_dfs_init_radar_detector(phy);
+ 	mt7996_mac_cca_stats_reset(phy);
+ 
 -- 
 2.43.0
 
