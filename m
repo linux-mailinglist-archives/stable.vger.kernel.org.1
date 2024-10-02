@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6DA98DD14
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D358098DAA7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5491C23559
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A5471F21DDC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518731D1504;
-	Wed,  2 Oct 2024 14:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBD71D095B;
+	Wed,  2 Oct 2024 14:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3ZqIfYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHEEQRlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A6E1D0BBC;
-	Wed,  2 Oct 2024 14:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF95B1D0488;
+	Wed,  2 Oct 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880138; cv=none; b=PonHW/IVfKwDcmXUMQMC5TBGKJ1QfaxgmZxbGfvC6+SdijFHzMMW7bs9oIJziHQ0eEgrrtEvOzgs5d0uOS+5qS5owS2BMaMk+yQ6sqoki0e5bT7vm0QcWJeM1HP8puJPMmcmI2GNWPiRHfQrpl/lIX5kQ6xzH6ilWQlBGXmXLTA=
+	t=1727878678; cv=none; b=sZapJBm0zEtZjJS0ZSVySxjbk8LN8KthQG3NA4MBoU97jG+frTYAUJpnGjk2MZ0/iowrCRbt92U9apCUYRAZVzwS1hj8g3zz9qdry8lsVEvEl28YuQhdcb0TAA9//mO2Tgv2mcVAeaQt0t9PqAr3kbhjuszHov6ZD1r+c6s4xUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880138; c=relaxed/simple;
-	bh=Svv0sFwkeUP+gI6UhtJVb165L6fNcpsi0bFZC35Xvmo=;
+	s=arc-20240116; t=1727878678; c=relaxed/simple;
+	bh=Ic8trJeLeQwOvNugt14e2igm6N5ZasAjaWQY32AlnoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFZEwJin1vDyDoAMZVIlTwi1XVgeu1J8XJzNkUJ+1c45vlp7UEYolzMGCiUos9O17KlQcadceUfhuJG2D3ODmgW5hKBRxzdaVhiWy3YE00hSwTdgprrC8oaxZ6sxMQ4vmWPjze2R9CS4K73EPvB8P1466qfcna3jr7GnAF0ZeaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3ZqIfYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4B0C4CEC2;
-	Wed,  2 Oct 2024 14:42:17 +0000 (UTC)
+	 MIME-Version; b=oZpn9H4eQ4QWIAw+4hQu7L4KnrL58ohMUXOJvIW10cWaeyuMn+LBFJTArWRrThy8oMvPCAuAoQ7sPxwn67y7qMrJDNWSU46oEA9V8nw8/7olFmv+5KTaqpJXu6piEMbGXXpqGoXdHszkfLcCFj9FRO6jItHFunPyT8ib3T1fB88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHEEQRlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FB9C4CEC2;
+	Wed,  2 Oct 2024 14:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880137;
-	bh=Svv0sFwkeUP+gI6UhtJVb165L6fNcpsi0bFZC35Xvmo=;
+	s=korg; t=1727878678;
+	bh=Ic8trJeLeQwOvNugt14e2igm6N5ZasAjaWQY32AlnoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3ZqIfYvl3dMulwx7fcAczSQg7T9Nzs4uf6sAfFR6zLpwdDuA3COH4iUl5IeH/C2R
-	 R/0/JaaT20v/sLQT1pwSdwSUq7atQcywYMTYSFhKgM4vwi5QjtM4cTdQc2aw1N1BP7
-	 DRcZ++aHWX8zWON6AusifCcs/HbIykO7qjBqCK2E=
+	b=jHEEQRlZ5KRAJgXHirQidLp4Id9yiV6OiqzfcFRhKSvwynk+s8Yv/nyan3HUQueOY
+	 +u4MtDEA5Uec/CxppFguAefXPk7/yMx6PBZmUwAQZ0S/LCK5oK86cmSttY3qian5O2
+	 zVFWCz8Fxzg1Aomu99wnR01ebhdqeKul9yzHhLlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 356/538] ABI: testing: fix admv8818 attr description
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 495/634] drm/amd/display: Validate backlight caps are sane
 Date: Wed,  2 Oct 2024 14:59:55 +0200
-Message-ID: <20241002125806.479083027@linuxfoundation.org>
+Message-ID: <20241002125830.637581358@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 7d34b4ad8cd2867b130b5b8d7d76d0d6092bd019 ]
+commit 327e62f47eb57ae5ff63de82b0815557104e439a upstream.
 
-Fix description of the filter_mode_available attribute by pointing to
-the correct name of the attribute that can be written with valid values.
+Currently amdgpu takes backlight caps provided by the ACPI tables
+on systems as is.  If the firmware sets maximums that are too low
+this means that users don't get a good experience.
 
-Fixes: bf92d87d7c67 ("iio:filter:admv8818: Add sysfs ABI documentation")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Link: https://patch.msgid.link/20240702081851.4663-1-antoniu.miclaus@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To avoid having to maintain a quirk list of such systems, do a sanity
+check on the values.  Check that the spread is at least half of the
+values that amdgpu would use if no ACPI table was found and if not
+use the amdgpu defaults.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3020
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-index 31dbb390573ff..c431f0a13cf50 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-@@ -3,7 +3,7 @@ KernelVersion:
- Contact:	linux-iio@vger.kernel.org
- Description:
- 		Reading this returns the valid values that can be written to the
--		on_altvoltage0_mode attribute:
-+		filter_mode attribute:
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4149,6 +4149,7 @@ static int amdgpu_dm_mode_config_init(st
  
- 		- auto -> Adjust bandpass filter to track changes in input clock rate.
- 		- manual -> disable/unregister the clock rate notifier / input clock tracking.
--- 
-2.43.0
-
+ #define AMDGPU_DM_DEFAULT_MIN_BACKLIGHT 12
+ #define AMDGPU_DM_DEFAULT_MAX_BACKLIGHT 255
++#define AMDGPU_DM_MIN_SPREAD ((AMDGPU_DM_DEFAULT_MAX_BACKLIGHT - AMDGPU_DM_DEFAULT_MIN_BACKLIGHT) / 2)
+ #define AUX_BL_DEFAULT_TRANSITION_TIME_MS 50
+ 
+ static void amdgpu_dm_update_backlight_caps(struct amdgpu_display_manager *dm,
+@@ -4163,6 +4164,21 @@ static void amdgpu_dm_update_backlight_c
+ 		return;
+ 
+ 	amdgpu_acpi_get_backlight_caps(&caps);
++
++	/* validate the firmware value is sane */
++	if (caps.caps_valid) {
++		int spread = caps.max_input_signal - caps.min_input_signal;
++
++		if (caps.max_input_signal > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
++		    caps.min_input_signal < AMDGPU_DM_DEFAULT_MIN_BACKLIGHT ||
++		    spread > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
++		    spread < AMDGPU_DM_MIN_SPREAD) {
++			DRM_DEBUG_KMS("DM: Invalid backlight caps: min=%d, max=%d\n",
++				      caps.min_input_signal, caps.max_input_signal);
++			caps.caps_valid = false;
++		}
++	}
++
+ 	if (caps.caps_valid) {
+ 		dm->backlight_caps[bl_idx].caps_valid = true;
+ 		if (caps.aux_support)
 
 
 
