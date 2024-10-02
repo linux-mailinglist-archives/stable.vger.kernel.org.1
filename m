@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF53998D955
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DFD98DBD4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20551C231EB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43EE61F21E02
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCD11D0DD5;
-	Wed,  2 Oct 2024 14:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFC81D0B9E;
+	Wed,  2 Oct 2024 14:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHtNQu4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xflSlUpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1881D0DC4;
-	Wed,  2 Oct 2024 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8301D0438;
+	Wed,  2 Oct 2024 14:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877927; cv=none; b=ZNcL5bQGgg9EdXjry/G+KC5urmelBL5jQW2jWl+Uo9mwl3lQQOWP5DKzLniRZBxmOb7FfFRKZIx67fak1CYxjcHBAGr+N7zRtY8AsAF64MSJvc6AFJ+3Vqczpti44X3aAMjmASeBeuAGAZetQj1PjDYTRdLg34RduguLiF525K4=
+	t=1727879393; cv=none; b=PEMpKkGPtENNtgx6o5kVcM4NGuVrk9rmtORRiBOLKhYSaSqs2Z1Vxs7V82Y4VenE8ZkBo4krwsY8x6Zoz79dUAaG25YOXA4EPfZTqnfRtwAy6ioGxM07SgHn70s2/1EzkndIkmicHqnVJP6Ngn5TtR08x6F8X+NB3GfhKVOtVWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877927; c=relaxed/simple;
-	bh=83qNzhrZHNI8VWMFEYvDviYnxOEti1Eoh3L1DVNbqac=;
+	s=arc-20240116; t=1727879393; c=relaxed/simple;
+	bh=AZOsf4thOLpiBHuEsZqVnlS5L9vuOOrqhYJTpLCM038=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uqn8b+TptAxcP7jZXwOVkQJVFGkL4zmj3JXnWO9oYQ23Nz48qm2LsfvLq6i2ZLj+a6VYrhnI3xEiNqhL/BghziPbyiQzkUV/WXF2kBfClzVTiRxAdLAM1YIlJnxxwS4CmJY+X5OwAGxnHycOFDqgxNnYjW3ZMfnCMyYjGf2YWpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHtNQu4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444EAC4CEC2;
-	Wed,  2 Oct 2024 14:05:27 +0000 (UTC)
+	 MIME-Version; b=ZEUW5cOdXmN05xRWB5uijrQsmQ5midLynrhcjoClechdKXVdkvo4/SmED6YSKwqq8emUZD18feNhw6HNYqDqycuWg9Z5HC4S2Ot3OtUYpLL7bx/aphCyOJUetd7N1JG161V2zLV8ZJjLfKCCphJKCMxSfupLgt0qzztUnvnoFJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xflSlUpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C528FC4CEC2;
+	Wed,  2 Oct 2024 14:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877927;
-	bh=83qNzhrZHNI8VWMFEYvDviYnxOEti1Eoh3L1DVNbqac=;
+	s=korg; t=1727879393;
+	bh=AZOsf4thOLpiBHuEsZqVnlS5L9vuOOrqhYJTpLCM038=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHtNQu4biy4wIGOO2ZnQjKKcFflx0EHWCmOi/S4epOufzBv5/VF8ulDIHyOOrcVGy
-	 ehY7SOJHBZLVX+QI5g9QONkNN8W7BraTIjNCxTHXEzGYuzK5MGvP4g27Gwt6tKRRc2
-	 neA8nGED342Kk3dQ8vk7DDoFwhzgvcpFQGxM+uDI=
+	b=xflSlUpuc/jYRXqJlgwuMfRsziK0uoYiQkY+bDVN9q3efYTnPhm57PgAbzfyWLdIO
+	 Clmk48Db0/YdRegoiqRsnmitWJ+KsWWqqZ3s99z2n+PEI8equN0ePVATVTX0qVnkWa
+	 35hFfoASB05YCdrfuCEB6sH0+GDLVtnSnMGIF5OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 243/634] selftests/bpf: Fix missing BUILD_BUG_ON() declaration
+Subject: [PATCH 6.6 104/538] ARM: dts: imx7d-zii-rmu2: fix Ethernet PHY pinctrl property
 Date: Wed,  2 Oct 2024 14:55:43 +0200
-Message-ID: <20241002125820.690472647@linuxfoundation.org>
+Message-ID: <20241002125756.338136336@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6495eb79ca7d15bd87c38d77307e8f9b6b7bf4ef ]
+[ Upstream commit 0e49cfe364dea4345551516eb2fe53135a10432b ]
 
-Explicitly include '<linux/build_bug.h>' to fix errors seen compiling with
-gcc targeting mips64el/musl-libc:
+There is no "fsl,phy" property in pin controller pincfg nodes:
 
-  user_ringbuf.c: In function 'test_user_ringbuf_loop':
-  user_ringbuf.c:426:9: error: implicit declaration of function 'BUILD_BUG_ON' [-Werror=implicit-function-declaration]
-    426 |         BUILD_BUG_ON(total_samples <= c_max_entries);
-        |         ^~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,pins' is a required property
+  imx7d-zii-rmu2.dtb: pinctrl@302c0000: enet1phyinterruptgrp: 'fsl,phy' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Fixes: e5a9df51c746 ("selftests/bpf: Add selftests validating the user ringbuf")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/b28575f9221ec54871c46a2e87612bb4bbf46ccd.1721713597.git.tony.ambardar@gmail.com
+Fixes: f496e6750083 ("ARM: dts: Add ZII support for ZII i.MX7 RMU2 board")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/user_ringbuf.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-index e51721df14fc1..dfff6feac12c3 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-@@ -4,6 +4,7 @@
- #define _GNU_SOURCE
- #include <linux/compiler.h>
- #include <linux/ring_buffer.h>
-+#include <linux/build_bug.h>
- #include <pthread.h>
- #include <stdio.h>
- #include <stdlib.h>
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
+index 521493342fe97..8f5566027c25a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx7d-zii-rmu2.dts
+@@ -350,7 +350,7 @@ MX7D_PAD_SD3_RESET_B__SD3_RESET_B	0x59
+ 
+ &iomuxc_lpsr {
+ 	pinctrl_enet1_phy_interrupt: enet1phyinterruptgrp {
+-		fsl,phy = <
++		fsl,pins = <
+ 			MX7D_PAD_LPSR_GPIO1_IO02__GPIO1_IO2	0x08
+ 		>;
+ 	};
 -- 
 2.43.0
 
