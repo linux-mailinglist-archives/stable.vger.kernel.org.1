@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F86B98D9CE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B62C98DC6C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27009289471
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D1A2831B7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16941A08A4;
-	Wed,  2 Oct 2024 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611931D2226;
+	Wed,  2 Oct 2024 14:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Reyovwmn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4/kclCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2281D0DC3;
-	Wed,  2 Oct 2024 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161E31D1312;
+	Wed,  2 Oct 2024 14:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878236; cv=none; b=kyPHOiigBCjsZeKcYkG3IyapxgAYEtI/WqJdPfGRX4VM2BkMimmcxzlc40cNzGPyX2cnAGVQDEk+73uP6JGNsCsNqu5GX5Wt9f4zCJsDuNxGeLip5qgzdBtQRX2cbn5OeG/N2OTTburv8Q9TUQu0FnDl/sg/2NiJZ4RDitFxBPQ=
+	t=1727879691; cv=none; b=leOIqwU8bwlP62D38kJ20YvHzrXpZvCAJ47u4jrTvr+48Q4MP6rKke+AVVmB/DIQCGOS+D1YzjMfZjC8sjDyLmaiTkPD7IOXkck15KHzDltusB8pS0ry+fKSqgfe33lmyyXPznOJ6eeYIBiu11/E5CBgXARo90/f0IaSXtoiofI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878236; c=relaxed/simple;
-	bh=6imlpnFljCAzh84I/PMq15m7F2Tn6/bPyEXB8gXjf1A=;
+	s=arc-20240116; t=1727879691; c=relaxed/simple;
+	bh=SeO4TITlCVUtU0c8z41ElG3v8JAI29pGHeSyq0N6tXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiDVf6Ov59AotL0CyvkRxVr+zEukDpkQw14/mRESfrxbI0IekIi6EajEqKjgMe7qAmgZz1Tt2CtKOnLDaj3air0WtCVBbgjNxGbsth+YuAXCb6CAKjypFTXFmqoSwb5SkIQtNaEeJNtHMsOygsF5RwMXmGx2Yl0yfHoEneml6cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Reyovwmn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88985C4CECD;
-	Wed,  2 Oct 2024 14:10:35 +0000 (UTC)
+	 MIME-Version; b=FFaZezit5I6ag5CBiY1CqLDEINALmSSkSAnfRXnEsVk5EUY+G2DDx0kxe9J64TgPb67GnBdctVmdZjs47P2dN69MJAajD98KTM3HALvr7mN2+SdtJF7ONYj5FnizgidjHlxVc5KLPYVdsJxbrtn97Ki7j8kl0yobJJ/Yb/bujwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4/kclCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BCAC4CEC5;
+	Wed,  2 Oct 2024 14:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878235;
-	bh=6imlpnFljCAzh84I/PMq15m7F2Tn6/bPyEXB8gXjf1A=;
+	s=korg; t=1727879691;
+	bh=SeO4TITlCVUtU0c8z41ElG3v8JAI29pGHeSyq0N6tXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Reyovwmnyq5WYddmX77U+75GH1IVcTpVkYEnS1MiznwYmAkAzPxnz/2whh3B8yJ3m
-	 YxTlNftzt2WsMn0czTr077hyww2LDxdDN3fYOZBU+f0Y9dwXlBSPGzgj4Fwf5zGuuq
-	 R9ynnH8dxCx5KcZtFV8oOkAt8qb2AcG2mi44DWV0=
+	b=E4/kclCtV6P8BT5Qwg7Z/PX0PevOCTndwsGJwNn0Y0d3KPO8XFJfrNTFKmI+qr6X6
+	 KeNQIuSsHRvCPtCRMBHTKV3ysJvBFpRaMb5dFvCfGtWpVBtBr3G0MnahMxlgGbGYa3
+	 7KoUpzSGmzVdX4ma19BnXwwY+BHbb0qy6+tabdxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 345/634] PCI: xilinx-nwl: Clean up clock on probe failure/removal
+Subject: [PATCH 6.6 206/538] selftests/bpf: Fix errors compiling decap_sanity.c with musl libc
 Date: Wed,  2 Oct 2024 14:57:25 +0200
-Message-ID: <20241002125824.717713183@linuxfoundation.org>
+Message-ID: <20241002125800.386455864@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit cfd67903977b13f63340a4eb5a1cc890994f2c62 ]
+[ Upstream commit 1b00f355130a5dfc38a01ad02458ae2cb2ebe609 ]
 
-Make sure we turn off the clock on probe failure and device removal.
+Remove a redundant include of '<linux/in6.h>', whose needed definitions are
+already provided by 'test_progs.h'. This avoids errors seen compiling for
+mips64el/musl-libc:
 
-Fixes: de0a01f52966 ("PCI: xilinx-nwl: Enable the clock through CCF")
-Link: https://lore.kernel.org/r/20240531161337.864994-6-sean.anderson@linux.dev
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+  In file included from .../arpa/inet.h:9,
+                   from ./test_progs.h:17,
+                   from prog_tests/decap_sanity.c:9:
+  .../netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+     23 | struct in6_addr {
+        |        ^~~~~~~~
+  In file included from decap_sanity.c:7:
+  .../linux/in6.h:33:8: note: originally defined here
+     33 | struct in6_addr {
+        |        ^~~~~~~~
+  .../netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+     34 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../linux/in6.h:50:8: note: originally defined here
+     50 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+     42 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+  .../linux/in6.h:60:8: note: originally defined here
+     60 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+
+Fixes: 70a00e2f1dba ("selftests/bpf: Test bpf_skb_adjust_room on CHECKSUM_PARTIAL")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/e986ba2d7edccd254b54f7cd049b98f10bafa8c3.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-xilinx-nwl.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/decap_sanity.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
-index 1e15852153d6c..2f1bb2e8a840e 100644
---- a/drivers/pci/controller/pcie-xilinx-nwl.c
-+++ b/drivers/pci/controller/pcie-xilinx-nwl.c
-@@ -779,6 +779,7 @@ static int nwl_pcie_probe(struct platform_device *pdev)
- 		return -ENODEV;
+diff --git a/tools/testing/selftests/bpf/prog_tests/decap_sanity.c b/tools/testing/selftests/bpf/prog_tests/decap_sanity.c
+index 5c0ebe6ba8667..95ea5a6a5f18d 100644
+--- a/tools/testing/selftests/bpf/prog_tests/decap_sanity.c
++++ b/tools/testing/selftests/bpf/prog_tests/decap_sanity.c
+@@ -4,7 +4,6 @@
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <net/if.h>
+-#include <linux/in6.h>
  
- 	pcie = pci_host_bridge_priv(bridge);
-+	platform_set_drvdata(pdev, pcie);
- 
- 	pcie->dev = dev;
- 
-@@ -801,13 +802,13 @@ static int nwl_pcie_probe(struct platform_device *pdev)
- 	err = nwl_pcie_bridge_init(pcie);
- 	if (err) {
- 		dev_err(dev, "HW Initialization failed\n");
--		return err;
-+		goto err_clk;
- 	}
- 
- 	err = nwl_pcie_init_irq_domain(pcie);
- 	if (err) {
- 		dev_err(dev, "Failed creating IRQ Domain\n");
--		return err;
-+		goto err_clk;
- 	}
- 
- 	bridge->sysdata = pcie;
-@@ -817,11 +818,24 @@ static int nwl_pcie_probe(struct platform_device *pdev)
- 		err = nwl_pcie_enable_msi(pcie);
- 		if (err < 0) {
- 			dev_err(dev, "failed to enable MSI support: %d\n", err);
--			return err;
-+			goto err_clk;
- 		}
- 	}
- 
--	return pci_host_probe(bridge);
-+	err = pci_host_probe(bridge);
-+	if (!err)
-+		return 0;
-+
-+err_clk:
-+	clk_disable_unprepare(pcie->clk);
-+	return err;
-+}
-+
-+static void nwl_pcie_remove(struct platform_device *pdev)
-+{
-+	struct nwl_pcie *pcie = platform_get_drvdata(pdev);
-+
-+	clk_disable_unprepare(pcie->clk);
- }
- 
- static struct platform_driver nwl_pcie_driver = {
-@@ -831,5 +845,6 @@ static struct platform_driver nwl_pcie_driver = {
- 		.of_match_table = nwl_pcie_of_match,
- 	},
- 	.probe = nwl_pcie_probe,
-+	.remove_new = nwl_pcie_remove,
- };
- builtin_platform_driver(nwl_pcie_driver);
+ #include "test_progs.h"
+ #include "network_helpers.h"
 -- 
 2.43.0
 
