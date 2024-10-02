@@ -1,74 +1,57 @@
-Return-Path: <stable+bounces-79664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AE998D99B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4206098DC3A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96A3BB21E63
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E61F1F21F98
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE2E1D2719;
-	Wed,  2 Oct 2024 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC151CFEB3;
+	Wed,  2 Oct 2024 14:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZ+A/itm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJhX6JNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BED21D173A;
-	Wed,  2 Oct 2024 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678251D0487;
+	Wed,  2 Oct 2024 14:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878103; cv=none; b=fVF3gcSvJ+VEvhfvHTy62kWCih8vXSyGdkw99Z1MdJaZNa7D108EflgiRNQ6yBpVPLjua6pnX8wCEC4eXu0qMYmuHx9yjAvQYhq1R0bvYS9sCPCMotkHdnJUhzB22fMzBU6Solw+72P8eoukLPa5O3v2yRn6pSipm1TPZJaFS8c=
+	t=1727879570; cv=none; b=BDsFZneCS3i0PQYn4kmBCo6wW5R/u9lxHLIctIhox4bng0qCaFCHfOZXRJ0CAwCb9q/xxqWNAbpRoYFcpvdLVDN895JmUSt9Sk6+G3JVT9V7GRSE5PH+rrofcOGBu5SZovNbp+IWWOjzO3PqqEmlYK8K7qSWqf5snN8Vfi5E9DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878103; c=relaxed/simple;
-	bh=PEWPy8V0j2R8Ma0vbp1WyFa6NS7RM3Iyq99tJmdVm/s=;
+	s=arc-20240116; t=1727879570; c=relaxed/simple;
+	bh=u9DuwXbHdMMRnmlyfJtZwZBoHqz2nhZVggufw8VYqUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+UclUUNT8Vdhd3ew46Zpx6dUOrlHeKJ1kN/66GfW4D7/wf+FZ0Q8Xy2A/LsYYGeeSn1raDF5eWf9Bcz4//NlNU2w39De4I4Az7XoTl0NApPtC4va7kRXyX5bilq9sTVVkPBoKdN1BBB/8vq00e1WFS9l32o5PSLhFWqLSgccAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZ+A/itm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7A0C4CECD;
-	Wed,  2 Oct 2024 14:08:22 +0000 (UTC)
+	 MIME-Version; b=q//7RNuj2xacCv8+gWfm5OrZjIzoOyigWUwdutKeydxIH4tfPh1S7eivGXtmfi+fL6lTFerYvj7f0AsZkpcZMGaFJgNT4k3ZYKtFc4/er2p1oKAwNe5GIcoAYPTZfIeJHXMcgVUe0freBxNyIgx8YtGeoXtA07BdVbRZExudgSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJhX6JNM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EA3C4CEC2;
+	Wed,  2 Oct 2024 14:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878103;
-	bh=PEWPy8V0j2R8Ma0vbp1WyFa6NS7RM3Iyq99tJmdVm/s=;
+	s=korg; t=1727879570;
+	bh=u9DuwXbHdMMRnmlyfJtZwZBoHqz2nhZVggufw8VYqUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZ+A/itmR//DtlvVWwux9ukfNbi/B9sVJBnwHQabmd0W0G+t2DsoLZ7OchmDyOmAE
-	 QQtBxAclyaAsvxDw7/uZjOSab37QqccEIufEwxwvcY5D0fNP8J9GOCfWHA2wFgYEY5
-	 WNyDL4dNuHmMQvnTnZW6KgNql+no+8yG5OksuIIA=
+	b=SJhX6JNMdhb3JaDi2is/MGMEagCu7DV74pQ1Qlzo3M8WRQQyTEDOM311CHsUORghE
+	 NQYqVB+mCdfZOjtUBoHSQh9VUObIM7gF4U1bARTzvkDQ57iuU2RowYuGGgTpC7ZTY0
+	 KgZpPHnUCmhtjxNiZRz4808omBiLfEEFrDNUgAMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lasse Collin <lasse.collin@tukaani.org>,
-	Sam James <sam@gentoo.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Joel Stanley <joel@jms.id.au>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Jubin Zhong <zhongjubin@huawei.com>,
-	Jules Maselbas <jmaselbas@zdiv.net>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Rui Li <me@lirui.org>,
-	Simon Glass <sjg@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.10 272/634] xz: cleanup CRC32 edits from 2018
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Matthias Brugger <matthias.bgg@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 133/538] mtd: rawnand: mtk: Fix init error path
 Date: Wed,  2 Oct 2024 14:56:12 +0200
-Message-ID: <20241002125821.836213755@linuxfoundation.org>
+Message-ID: <20241002125757.489488142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,80 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lasse Collin <lasse.collin@tukaani.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 2ee96abef214550d9e92f5143ee3ac1fd1323e67 ]
+[ Upstream commit 2073ae37d550ea32e8545edaa94ef10b4fef7235 ]
 
-In 2018, a dependency on <linux/crc32poly.h> was added to avoid
-duplicating the same constant in multiple files.  Two months later it was
-found to be a bad idea and the definition of CRC32_POLY_LE macro was moved
-into xz_private.h to avoid including <linux/crc32poly.h>.
+Reviewing a series converting the for_each_chil_of_node() loops into
+their _scoped variants made me realize there was no cleanup of the
+already registered NAND devices upon error which may leak memory on
+systems with more than a chip when this error occurs. We should call the
+_nand_chips_cleanup() function when this happens.
 
-xz_private.h is a wrong place for it too.  Revert back to the upstream
-version which has the poly in xz_crc32_init() in xz_crc32.c.
-
-Link: https://lkml.kernel.org/r/20240721133633.47721-10-lasse.collin@tukaani.org
-Fixes: faa16bc404d7 ("lib: Use existing define with polynomial")
-Fixes: 242cdad873a7 ("lib/xz: Put CRC32_POLY_LE in xz_private.h")
-Signed-off-by: Lasse Collin <lasse.collin@tukaani.org>
-Reviewed-by: Sam James <sam@gentoo.org>
-Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Joel Stanley <joel@jms.id.au>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Jubin Zhong <zhongjubin@huawei.com>
-Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Rui Li <me@lirui.org>
-Cc: Simon Glass <sjg@chromium.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1d6b1e464950 ("mtd: mediatek: driver for MTK Smart Device")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Matthias Brugger <matthias.bgg@kernel.org>
+Link: https://lore.kernel.org/linux-mtd/20240826153019.67106-2-miquel.raynal@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/xz/xz_crc32.c   | 2 +-
- lib/xz/xz_private.h | 4 ----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/mtd/nand/raw/mtk_nand.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/xz/xz_crc32.c b/lib/xz/xz_crc32.c
-index 88a2c35e1b597..5627b00fca296 100644
---- a/lib/xz/xz_crc32.c
-+++ b/lib/xz/xz_crc32.c
-@@ -29,7 +29,7 @@ STATIC_RW_DATA uint32_t xz_crc32_table[256];
+diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
+index 3fb32a59fdf61..161a409ca4ed2 100644
+--- a/drivers/mtd/nand/raw/mtk_nand.c
++++ b/drivers/mtd/nand/raw/mtk_nand.c
+@@ -1453,8 +1453,10 @@ static int mtk_nfc_nand_chips_init(struct device *dev, struct mtk_nfc *nfc)
  
- XZ_EXTERN void xz_crc32_init(void)
- {
--	const uint32_t poly = CRC32_POLY_LE;
-+	const uint32_t poly = 0xEDB88320;
+ 	for_each_child_of_node_scoped(np, nand_np) {
+ 		ret = mtk_nfc_nand_chip_init(dev, nfc, nand_np);
+-		if (ret)
++		if (ret) {
++			mtk_nfc_nand_chips_cleanup(nfc);
+ 			return ret;
++		}
+ 	}
  
- 	uint32_t i;
- 	uint32_t j;
-diff --git a/lib/xz/xz_private.h b/lib/xz/xz_private.h
-index bf1e94ec7873c..d9fd49b45fd75 100644
---- a/lib/xz/xz_private.h
-+++ b/lib/xz/xz_private.h
-@@ -105,10 +105,6 @@
- #	endif
- #endif
- 
--#ifndef CRC32_POLY_LE
--#define CRC32_POLY_LE 0xedb88320
--#endif
--
- /*
-  * Allocate memory for LZMA2 decoder. xz_dec_lzma2_reset() must be used
-  * before calling xz_dec_lzma2_run().
+ 	return 0;
 -- 
 2.43.0
 
