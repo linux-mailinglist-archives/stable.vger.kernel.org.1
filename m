@@ -1,249 +1,166 @@
-Return-Path: <stable+bounces-78646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0564B98D267
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B60F98D2BA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B673B2845B2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 11:46:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AFA6284B76
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727F6200121;
-	Wed,  2 Oct 2024 11:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7561CF5F7;
+	Wed,  2 Oct 2024 12:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iz1lJff6"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="kUU5GykY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EB01E4924
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 11:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC091CF5E9;
+	Wed,  2 Oct 2024 12:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727869552; cv=none; b=eQj4Q9kNPY8iUSDsxydkUrPWnf/mDxW5V6fc7GnuQdeVj2skjNpp/78lAU5pXqhpm7L/h3New5uVtzUqkVASQPQrS4iaRaOq+fNLPYNwbeF8zOPGhiKcZGBKIkRwsHPaHtknZa5qGUGS1hRexrgogvSjr2cE2tB8JRplLp0W3ZE=
+	t=1727870904; cv=none; b=lZHKKCkINcs9DxABAPkzxqg0ivrw0lJgQiVf9A25YgaFvgYQg0vYaWbe/D0FTqXVxSP+Zy1V3eHN7FPZaTjzelJecmRFW1/m3KkaK625XMI4qctrvklRqnANiVE+PvxKlbB+HGB9R1hg507d7OIGCHP8XfOLIh/ssMAjNVcXzjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727869552; c=relaxed/simple;
-	bh=Vro/iY6IOMYaRP9k8X8Q2e35AzaTy0Vy0XVf9dHpFDw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NqbbMcuvFXBDeoCouUufMXnseGNQS6jVUq7grnmGC2RWLtCIlaUrUW8pIVpbrBhwK8VA/lqUSMUWHnB8CHBesIfO2rK8kfgbdO93A2zhje/0b+2TDekkcecWsnCFBnTg0TLdeQqRg1Kqtr4lEd1ImIRYtfbObEVtG0Qzdv1ct8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iz1lJff6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1F8C4CEC5;
-	Wed,  2 Oct 2024 11:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727869551;
-	bh=Vro/iY6IOMYaRP9k8X8Q2e35AzaTy0Vy0XVf9dHpFDw=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Iz1lJff60KV1s2N3KuOI9Dvi9WdxhDuecBBNB3Act1T30XtKUkFyDhk3P0XIg9dQa
-	 c11O4L9foL0w11Pm0TbEfOROQ3WpovEuTsHFBrjabauN5Oxw2PvO0oEEe6OR66uwnt
-	 /ggjc6Bma1ySkruNntu3Db1eczwU6wsqBS2/dzaU=
-Subject: FAILED: patch "[PATCH] block, bfq: fix procress reference leakage for bfqq in merge" failed to apply to 4.19-stable tree
-To: yukuai3@huawei.com,axboe@kernel.dk
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 13:45:34 +0200
-Message-ID: <2024100234-dizzy-backlands-30eb@gregkh>
+	s=arc-20240116; t=1727870904; c=relaxed/simple;
+	bh=HF9gz9cxrtZHNXVfCdvFAGxweX1II3r/tm/pbiXkiv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JTM47LiMp8Bjpc0SRaAiai2BAY1hSvNdSwTkZZ3DAUt4mCemDijoKmItUnXbYJbHz79SL21fFSqx352QwPZeuC4rg/fKANz3RHx//F4ZxQzR42gwIMxbA3/h3m+woQxJmdoKhYUlunWutMnLbGyifycjqo3P80Kq6fLZG4r4QCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=kUU5GykY; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 809AC89080;
+	Wed,  2 Oct 2024 14:08:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727870898;
+	bh=0JG7OQOTRkzyuh9OdleZmDit4I1RGWrnOFEmIqhEZTM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kUU5GykYmQcwr2E3a5J0zltE7sIjHkrhD87rXvbbPQa2L7xq/N41iCba7u9JEbQsk
+	 s2OUM61cGLH50QMqNDhMd19fSOW025fJ+1Jp6kMyi1XuZcmMiiilfscgXESAD/5c3p
+	 2A78tQoLmSUWeETfvwSRsgh8UIDtyqMowfHhOM0qfmBX05fGPQwX51Kpj4k8MY1LpT
+	 UjOYXP6enPx11V7vzHCPu4krxIVjSt7rTxaKg8i2ZG1BTdTMruNjRqVQf7w5DqOt+M
+	 V1Ai1s2mPrw8ixO+i0yss2pwHQmQGNt9XvxH1TKaL1gFkcU4G5kMBiUDc6EN2xQUkB
+	 h/wOCHagUQyUg==
+Message-ID: <6b5c27ad-7f9b-4989-ada3-fbebb9537737@denx.de>
+Date: Wed, 2 Oct 2024 13:56:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] serial: imx: Update mctrl old_status on RTSD interrupt
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: linux-serial@vger.kernel.org,
+ Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Esben Haabendal <esben@geanix.com>, Fabio Estevam <festevam@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Lino Sanfilippo
+ <l.sanfilippo@kunbus.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Rickard x Andersson <rickaran@axis.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <20241002041125.155643-1-marex@denx.de>
+ <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <hgxxa2qsyr6c5jbzofzaarqkty4uccdtrteun5qlwyc66yqnbq@vb7xyeskjhhy>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
+On 10/2/24 9:49 AM, Uwe Kleine-König wrote:
+> On Wed, Oct 02, 2024 at 06:11:16AM +0200, Marek Vasut wrote:
+>> When sending data using DMA at high baudrate (4 Mbdps in local test case) to
+>> a device with small RX buffer which keeps asserting RTS after every received
+>> byte, it is possible that the iMX UART driver would not recognize the falling
+>> edge of RTS input signal and get stuck, unable to transmit any more data.
+>>
+>> This condition happens when the following sequence of events occur:
+>> - imx_uart_mctrl_check() is called at some point and takes a snapshot of UART
+>>    control signal status into sport->old_status using imx_uart_get_hwmctrl().
+>>    The RTSS/TIOCM_CTS bit is of interest here (*).
+>> - DMA transfer occurs, the remote device asserts RTS signal after each byte.
+>>    The i.MX UART driver recognizes each such RTS signal change, raises an
+>>    interrupt with USR1 register RTSD bit set, which leads to invocation of
+>>    __imx_uart_rtsint(), which calls uart_handle_cts_change().
+>>    - If the RTS signal is deasserted, uart_handle_cts_change() clears
+>>      port->hw_stopped and unblocks the port for further data transfers.
+>>    - If the RTS is asserted, uart_handle_cts_change() sets port->hw_stopped
+>>      and blocks the port for further data transfers. This may occur as the
+>>      last interrupt of a transfer, which means port->hw_stopped remains set
+>>      and the port remains blocked (**).
+>> - Any further data transfer attempts will trigger imx_uart_mctrl_check(),
+>>    which will read current status of UART control signals by calling
+>>    imx_uart_get_hwmctrl() (***) and compare it with sport->old_status .
+>>    - If current status differs from sport->old_status for RTS signal,
+>>      uart_handle_cts_change() is called and possibly unblocks the port
+>>      by clearing port->hw_stopped .
+>>    - If current status does not differ from sport->old_status for RTS
+>>      signal, no action occurs. This may occur in case prior snapshot (*)
+>>      was taken before any transfer so the RTS is deasserted, current
+>>      snapshot (***) was taken after a transfer and therefore RTS is
+>>      deasserted again, which means current status and sport->old_status
+>>      are identical. In case (**) triggered when RTS got asserted, and
+>>      made port->hw_stopped set, the port->hw_stopped will remain set
+>>      because no change on RTS line is recognized by this driver and
+>>      uart_handle_cts_change() is not called from here to unblock the
+>>      port->hw_stopped.
+>>
+>> Update sport->old_status in __imx_uart_rtsint() accordingly to make
+>> imx_uart_mctrl_check() detect such RTS change. Note that TIOCM_CAR
+>> and TIOCM_RI bits in sport->old_status do not suffer from this problem.
+> 
+> Why is that? Just because these don't stop transmission?
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+If imx_uart_mctrl_check() does not detect the RTS asserted->deasserted 
+transition, it will never call uart_handle_cts_change(), which will 
+never clear port->hw_stopped and the port will remain stopped 
+indefinitely, and never be able to transmit more data AFTER this event 
+happens (port close/open will reset the flag too, but that is undesired 
+workaround).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+>> Fixes: ceca629e0b48 ("[ARM] 2971/1: i.MX uart handle rts irq")
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> ---
+>>   drivers/tty/serial/imx.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+>> index 67d4a72eda770..3ad7f42790ef9 100644
+>> --- a/drivers/tty/serial/imx.c
+>> +++ b/drivers/tty/serial/imx.c
+>> @@ -762,6 +762,10 @@ static irqreturn_t __imx_uart_rtsint(int irq, void *dev_id)
+>>   
+>>   	imx_uart_writel(sport, USR1_RTSD, USR1);
+>>   	usr1 = imx_uart_readl(sport, USR1) & USR1_RTSS;
+>> +	if (usr1 & USR1_RTSS)
+>> +		sport->old_status |= TIOCM_CTS;
+>> +	else
+>> +		sport->old_status &= ~TIOCM_CTS;
+>>   	uart_handle_cts_change(&sport->port, usr1);
+>>   	wake_up_interruptible(&sport->port.state->port.delta_msr_wait);
+> 
+> I didn't grab the whole picture, but I think this deserves a code
+> comment.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 73aeab373557fa6ee4ae0b742c6211ccd9859280
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100234-dizzy-backlands-30eb@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Added in V2.
 
-Possible dependencies:
-
-73aeab373557 ("block, bfq: fix procress reference leakage for bfqq in merge chain")
-9778369a2d6c ("block, bfq: split sync bfq_queues on a per-actuator basis")
-246cf66e300b ("block, bfq: fix uaf for bfqq in bfq_exit_icq_bfqq")
-337366e02b37 ("block, bfq: replace 0/1 with false/true in bic apis")
-64dc8c732f5c ("block, bfq: fix possible uaf for 'bfqq->bic'")
-dc469ba2e790 ("block/bfq: Use the new blk_opf_t type")
-4e54a2493e58 ("bfq: Get rid of __bio_blkcg() usage")
-09f871868080 ("bfq: Track whether bfq_group is still online")
-ea591cd4eb27 ("bfq: Update cgroup information before merging bio")
-3bc5e683c67d ("bfq: Split shared queues on move between cgroups")
-f6bad159f5d5 ("block/bfq-iosched.c: use "false" rather than "BLK_RW_ASYNC"")
-a0725c22cd84 ("bfq: use bfq_bic_lookup in bfq_limit_depth")
-1f18b7005b49 ("bfq: Limit waker detection in time")
-76f1df88bbc2 ("bfq: Limit number of requests consumed by each cgroup")
-44dfa279f117 ("bfq: Store full bitmap depth in bfq_data")
-ae0f1a732f4a ("blk-mq: Stop using pointers for blk_mq_tags bitmap tags")
-e155b0c238b2 ("blk-mq: Use shared tags for shared sbitmap support")
-645db34e5050 ("blk-mq: Refactor and rename blk_mq_free_map_and_{requests->rqs}()")
-63064be150e4 ("blk-mq: Add blk_mq_alloc_map_and_rqs()")
-a7e7388dced4 ("blk-mq: Add blk_mq_tag_update_sched_shared_sbitmap()")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 73aeab373557fa6ee4ae0b742c6211ccd9859280 Mon Sep 17 00:00:00 2001
-From: Yu Kuai <yukuai3@huawei.com>
-Date: Mon, 9 Sep 2024 21:41:49 +0800
-Subject: [PATCH] block, bfq: fix procress reference leakage for bfqq in merge
- chain
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Original state:
-
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \--------------\ \-------------\ \-------------\|
-                           V               V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               1               2               4
-
-After commit 0e456dba86c7 ("block, bfq: choose the last bfqq from merge
-chain in bfq_setup_cooperator()"), if P1 issues a new IO:
-
-Without the patch:
-
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \------------------------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-bfqq3 will be used to handle IO from P1, this is not expected, IO
-should be redirected to bfqq4;
-
-With the patch:
-
-          -------------------------------------------
-          |                                         |
-        Process 1       Process 2       Process 3   |   Process 4
-         (BIC1)          (BIC2)          (BIC3)     |    (BIC4)
-                           |               |        |      |
-                            \-------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-IO is redirected to bfqq4, however, procress reference of bfqq3 is still
-2, while there is only P2 using it.
-
-Fix the problem by calling bfq_merge_bfqqs() for each bfqq in the merge
-chain. Also change bfqq_merge_bfqqs() to return new_bfqq to simplify
-code.
-
-Fixes: 0e456dba86c7 ("block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240909134154.954924-3-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index d5d39974c674..f4192d5411d2 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -3129,10 +3129,12 @@ void bfq_release_process_ref(struct bfq_data *bfqd, struct bfq_queue *bfqq)
- 	bfq_put_queue(bfqq);
- }
- 
--static void
--bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
--		struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
-+static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
-+					 struct bfq_io_cq *bic,
-+					 struct bfq_queue *bfqq)
- {
-+	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
-+
- 	bfq_log_bfqq(bfqd, bfqq, "merging with queue %lu",
- 		(unsigned long)new_bfqq->pid);
- 	/* Save weight raising and idle window of the merged queues */
-@@ -3226,6 +3228,8 @@ bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
- 	bfq_reassign_last_bfqq(bfqq, new_bfqq);
- 
- 	bfq_release_process_ref(bfqd, bfqq);
-+
-+	return new_bfqq;
- }
- 
- static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
-@@ -3261,14 +3265,8 @@ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
- 		 * fulfilled, i.e., bic can be redirected to new_bfqq
- 		 * and bfqq can be put.
- 		 */
--		bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq,
--				new_bfqq);
--		/*
--		 * If we get here, bio will be queued into new_queue,
--		 * so use new_bfqq to decide whether bio and rq can be
--		 * merged.
--		 */
--		bfqq = new_bfqq;
-+		while (bfqq != new_bfqq)
-+			bfqq = bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq);
- 
- 		/*
- 		 * Change also bqfd->bio_bfqq, as
-@@ -5705,9 +5703,7 @@ bfq_do_early_stable_merge(struct bfq_data *bfqd, struct bfq_queue *bfqq,
- 	 * state before killing it.
- 	 */
- 	bfqq->bic = bic;
--	bfq_merge_bfqqs(bfqd, bic, bfqq, new_bfqq);
--
--	return new_bfqq;
-+	return bfq_merge_bfqqs(bfqd, bic, bfqq);
- }
- 
- /*
-@@ -6162,6 +6158,7 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 	bool waiting, idle_timer_disabled = false;
- 
- 	if (new_bfqq) {
-+		struct bfq_queue *old_bfqq = bfqq;
- 		/*
- 		 * Release the request's reference to the old bfqq
- 		 * and make sure one is taken to the shared queue.
-@@ -6178,18 +6175,18 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 		 * new_bfqq.
- 		 */
- 		if (bic_to_bfqq(RQ_BIC(rq), true,
--				bfq_actuator_index(bfqd, rq->bio)) == bfqq)
--			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
--					bfqq, new_bfqq);
-+				bfq_actuator_index(bfqd, rq->bio)) == bfqq) {
-+			while (bfqq != new_bfqq)
-+				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
-+		}
- 
--		bfq_clear_bfqq_just_created(bfqq);
-+		bfq_clear_bfqq_just_created(old_bfqq);
- 		/*
- 		 * rq is about to be enqueued into new_bfqq,
- 		 * release rq reference on bfqq
- 		 */
--		bfq_put_queue(bfqq);
-+		bfq_put_queue(old_bfqq);
- 		rq->elv.priv[1] = new_bfqq;
--		bfqq = new_bfqq;
- 	}
- 
- 	bfq_update_io_thinktime(bfqd, bfqq);
-
+> Would it make sense to replace the current code in __imx_uart_rtsint by
+> a call to imx_uart_mctrl_check()?
+No, the __imx_uart_rtsint() only handles RTS state change interrupt and 
+no other interrupts, so calling imx_uart_mctrl_check() would handle 
+other unrelated signals for no reason and make the interrupt handler 
+slower. I don't think this is an improvement.
 
