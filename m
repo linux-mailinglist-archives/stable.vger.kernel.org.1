@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-79899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA3698DACE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9ACD98DD39
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C89151F25667
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A42128542B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81A31D1E8D;
-	Wed,  2 Oct 2024 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEBA1D1E6B;
+	Wed,  2 Oct 2024 14:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QId5KZ1W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVys0SKX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641EE1D0DC8;
-	Wed,  2 Oct 2024 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBD01D1E65;
+	Wed,  2 Oct 2024 14:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878794; cv=none; b=GJsaB9GIY5GQpuoi488tICgC0Jh662W3OhB8b/L4kD4VTV28UfA5OhnUNI26edvcU4q990iekjRZ70v7JmdlCAaYS6/2teWzTPwOzpp0IciGSLcGj2zfh3zCqAAje7dsYQ2dNqGkIO50T1mdZe9NKkqpE7BhiDAVPF0agyxqcbA=
+	t=1727880252; cv=none; b=uPjaHPL0Z6HAk3ZIl8lmcxJk9IXIwMlzUBDZufslcPeb82+DOoMpkBCCSoNxwazFFdLtS6997yZjXnUuPLMuQTfq0PCeSiuVwg0QsMq4P2rzjyphHKP7/W5QAMUSiCD4vcaAbnsWFzy19chgMwBpMnOHSoB8nvtygZ20CjbNTPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878794; c=relaxed/simple;
-	bh=oCRHmbKyv6TvfgZOrHuuY+DOl2VMNPfJXi6OVm12nBI=;
+	s=arc-20240116; t=1727880252; c=relaxed/simple;
+	bh=TTQepycjUsVn10h9nIOSpJScldsJVLzryPGPnpWyZmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KShgou1HYXxefuGrJTSYcu8Bl7+3ZIyx5eIJ/tBWyJ2TXyH2cMWts2g42FGX8Foouonw76EwgwtoiQibigqSGI7U+XR46kcmSo3EoqGT+OfIlyguwzZMJnjLLFxCvdetIReb9YyF2LB8Nd7SCqPF+pOSJmamIczkUTmkcEKAAW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QId5KZ1W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E1CC4CEC2;
-	Wed,  2 Oct 2024 14:19:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h+3kiYmOt2iYoqjmPY0aMMjT4FZT0Hqvk5gf4CHcBiX0mB4lDii1wt7DKIsiOrENjflKq/4A+y+vgClvZ2Cnf6qv5umeRCpjjV74imzCSmxTVmcSOJY97z3YINB9+qEpBGG5pGCRMpZYmo1//4V+yL9PPvBROM6IYSdgrJHG7ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVys0SKX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86A9C4CEC2;
+	Wed,  2 Oct 2024 14:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878794;
-	bh=oCRHmbKyv6TvfgZOrHuuY+DOl2VMNPfJXi6OVm12nBI=;
+	s=korg; t=1727880252;
+	bh=TTQepycjUsVn10h9nIOSpJScldsJVLzryPGPnpWyZmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QId5KZ1WjtlRsxloY9brn/TLX5+jCh8HH/6+JahZXCqc9aXuQBJdeQG/gRIj5LsZn
-	 xpsQ0wkzShfauQi/ti1qHqyw3A8vQlHZV7FF8Cxk1EdkphqE1fGMVKi5ctZTNoXtyI
-	 /ZcRfkxDoNUGZnUPhE8n7o5f0Z+rEZ3wU/V+kLQI=
+	b=vVys0SKX/uoROFRA2TAhE8sXbJQeG5aqoDYFXMQAh33uVgRzXbeYYUBxzZ+TGKie+
+	 Q4qK9BEXb3BfVPlB82nf+tg86b23myAzVmNPk8Q14od42k4U/mAhk9O7TzU6JGwfAE
+	 tEGnVn8AMHwnkLlj8WNcb45WngkgFbcZR89qgiKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.10 533/634] xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and freeing them.
+	Matthew W Carlis <mattc@purestorage.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.6 394/538] PCI: Clear the LBMS bit after a link retrain
 Date: Wed,  2 Oct 2024 15:00:33 +0200
-Message-ID: <20241002125832.146733836@linuxfoundation.org>
+Message-ID: <20241002125807.986277653@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,60 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit f81dfa3b57c624c56f2bff171c431bc7f5b558f2 upstream.
+commit 8037ac08c2bbb3186f83a5a924f52d1048dbaec5 upstream.
 
-PCI xHC host should be stopped and xhci driver memory freed before putting
-host to PCI D3 state during PCI remove callback.
+The LBMS bit, where implemented, is set by hardware either in response
+to the completion of retraining caused by writing 1 to the Retrain Link
+bit or whenever hardware has changed the link speed or width in attempt
+to correct unreliable link operation.  It is never cleared by hardware
+other than by software writing 1 to the bit position in the Link Status
+register and we never do such a write.
 
-Hosts with XHCI_SPURIOUS_WAKEUP quirk did this the wrong way around
-and set the host to D3 before calling usb_hcd_pci_remove(dev), which will
-access the host to stop it, and then free xhci.
+We currently have two places, namely apply_bad_link_workaround() and
+pcie_failed_link_retrain() in drivers/pci/controller/dwc/pcie-tegra194.c
+and drivers/pci/quirks.c respectively where we check the state of the LBMS
+bit and neither is interested in the state of the bit resulting from the
+completion of retraining, both check for a link fault.
 
-Fixes: f1f6d9a8b540 ("xhci: don't dereference a xhci member after removing xhci")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240905143300.1959279-12-mathias.nyman@linux.intel.com
+And in particular pcie_failed_link_retrain() causes issues consequently, by
+trying to retrain a link where there's no downstream device anymore and the
+state of 1 in the LBMS bit has been retained from when there was a device
+downstream that has since been removed.
+
+Clear the LBMS bit then at the conclusion of pcie_retrain_link(), so that
+we have a single place that controls it and that our code can track link
+speed or width changes resulting from unreliable link operation.
+
+Fixes: a89c82249c37 ("PCI: Work around PCIe link training failures")
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091133140.61955@angie.orcam.me.uk
+Reported-by: Matthew W Carlis <mattc@purestorage.com>
+Link: https://lore.kernel.org/r/20240806000659.30859-1-mattc@purestorage.com/
+Link: https://lore.kernel.org/r/20240722193407.23255-1-mattc@purestorage.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.5+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/pci/pci.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -662,8 +662,10 @@ put_runtime_pm:
- static void xhci_pci_remove(struct pci_dev *dev)
- {
- 	struct xhci_hcd *xhci;
-+	bool set_power_d3;
- 
- 	xhci = hcd_to_xhci(pci_get_drvdata(dev));
-+	set_power_d3 = xhci->quirks & XHCI_SPURIOUS_WAKEUP;
- 
- 	xhci->xhc_state |= XHCI_STATE_REMOVING;
- 
-@@ -676,11 +678,11 @@ static void xhci_pci_remove(struct pci_d
- 		xhci->shared_hcd = NULL;
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5017,7 +5017,15 @@ int pcie_retrain_link(struct pci_dev *pd
+ 		pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
  	}
  
-+	usb_hcd_pci_remove(dev);
+-	return pcie_wait_for_link_status(pdev, use_lt, !use_lt);
++	rc = pcie_wait_for_link_status(pdev, use_lt, !use_lt);
 +
- 	/* Workaround for spurious wakeups at shutdown with HSW */
--	if (xhci->quirks & XHCI_SPURIOUS_WAKEUP)
-+	if (set_power_d3)
- 		pci_set_power_state(dev, PCI_D3hot);
--
--	usb_hcd_pci_remove(dev);
++	/*
++	 * Clear LBMS after a manual retrain so that the bit can be used
++	 * to track link speed or width changes made by hardware itself
++	 * in attempt to correct unreliable link operation.
++	 */
++	pcie_capability_write_word(pdev, PCI_EXP_LNKSTA, PCI_EXP_LNKSTA_LBMS);
++	return rc;
  }
  
- /*
+ /**
 
 
 
