@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145CD98D5A9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9538598D91E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3C31C21520
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C75DA1C22D32
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452DF1D07A3;
-	Wed,  2 Oct 2024 13:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB921D07BC;
+	Wed,  2 Oct 2024 14:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ag8BCtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHZwfWGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0135018DF60;
-	Wed,  2 Oct 2024 13:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3621D04BE;
+	Wed,  2 Oct 2024 14:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875929; cv=none; b=pv4peBQzvkqHt+jNw2cmdiA+LCzaYhzbEpPmQQCAblFrGRaF7iXKo+qZ1IYcv9ZC+pVnNo0XKU9FpEoBRDSmwlN2k0jrJfr7bEjlh+OKySU+PWA/PGvAEEydOa6WbO7hp1Pe02NzDlb7XFjGAUth+vORldlPFtLrC2xttZAnW9c=
+	t=1727877791; cv=none; b=uKPes3RMgQxHe0HaHc1tv7BQtx8klRSZcAsJlE7/7IzmLUMSn+BrvOJKOrIQyxAtsvdGY/rLJqu57GtREbOlP11NIEUORHjXZv2MNMBaPz8eBQQ1FjksIH4qdjGIVvPzyqf8aKVIMwAdIj2sbRi1l7XbemHztBJ2UNUsTXNfNX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875929; c=relaxed/simple;
-	bh=GXc+yTNVXHQWdGFVV97v0JXLAET1O+9LCVptQn3nQRM=;
+	s=arc-20240116; t=1727877791; c=relaxed/simple;
+	bh=9hc6e392OpQsjou00FXVbMHHJu8IwUx0F3t3j6Lu2WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFEaGabfbCsB5l9d0U/K/o+geD683CWxMtpcOdyuu1fc8kJdFJDqIGyEz/xpUx8OaZ8FM7Mz+id8GdQNABgcip5sMeEaHJOU+mEM+eVcAl9JJw0v9cb2bs+tjVPsx54FeKNqCT5DiF/IbgLVQuIDV5Fs/vAFL2tznCHz1i3EuFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ag8BCtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E498C4CEC5;
-	Wed,  2 Oct 2024 13:32:08 +0000 (UTC)
+	 MIME-Version; b=S08V1ySmkCh8iQP7ViNNkSH5gIRFe/+RuOAnNX3MvzssEBztS6evMkH1ly57mWTtf9VZQZTzoCEy1WgyvNVKyCozB6LK/ITwz6iemEBhB79IO8F3t9Dd8Skx9hedh4gYUbtCptbM+sd5AiR8r8Ly/7BjhhdYcT6qMSph/vJIryM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHZwfWGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8A5C4CEC2;
+	Wed,  2 Oct 2024 14:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875928;
-	bh=GXc+yTNVXHQWdGFVV97v0JXLAET1O+9LCVptQn3nQRM=;
+	s=korg; t=1727877790;
+	bh=9hc6e392OpQsjou00FXVbMHHJu8IwUx0F3t3j6Lu2WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ag8BCtHeijuo/hGTmSXwapxlYjwyji20+AzMA223l3z7BAUiwunvq6KFnkdio4Lp
-	 /7NlBf1FTAId2ib3VPXECV3Nzh2RiS/TMehBnuJaKpcQkV6AJfV6V7e1/kYT96m+QT
-	 8PMDfnN9mInBbY0ls4jhIsi7bVDs6ytPCVO8GFg8=
+	b=VHZwfWGUoCfp7OivUPXfmCtzH8Sazq/m5/vrdsAujI9mB7+TlpP12zddsUBc68gOs
+	 w11WpWn4BGL5MuOkuGYFnL/3QcnfgolaxsRbOG92mo7EPe1vG1h6T6SP/5SUyFXsuK
+	 OTq5y2mzF7Rfrp295rh9E/Uzk2WAW5/aUQ6/oh3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 270/695] selftests/bpf: Fix missing BUILD_BUG_ON() declaration
+Subject: [PATCH 6.10 168/634] iommu/amd: Set the pgsize_bitmap correctly
 Date: Wed,  2 Oct 2024 14:54:28 +0200
-Message-ID: <20241002125833.225354489@linuxfoundation.org>
+Message-ID: <20241002125817.740293935@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 6495eb79ca7d15bd87c38d77307e8f9b6b7bf4ef ]
+[ Upstream commit 7a41dcb52f9de6079621fc31c3b84c7fc290934b ]
 
-Explicitly include '<linux/build_bug.h>' to fix errors seen compiling with
-gcc targeting mips64el/musl-libc:
+When using io_pgtable the correct pgsize_bitmap is stored in the cfg, both
+v1_alloc_pgtable() and v2_alloc_pgtable() set it correctly.
 
-  user_ringbuf.c: In function 'test_user_ringbuf_loop':
-  user_ringbuf.c:426:9: error: implicit declaration of function 'BUILD_BUG_ON' [-Werror=implicit-function-declaration]
-    426 |         BUILD_BUG_ON(total_samples <= c_max_entries);
-        |         ^~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+This fixes a bug where the v2 pgtable had the wrong pgsize as
+protection_domain_init_v2() would set it and then do_iommu_domain_alloc()
+immediately resets it.
 
-Fixes: e5a9df51c746 ("selftests/bpf: Add selftests validating the user ringbuf")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/b28575f9221ec54871c46a2e87612bb4bbf46ccd.1721713597.git.tony.ambardar@gmail.com
+Remove the confusing ops.pgsize_bitmap since that is not used if the
+driver sets domain.pgsize_bitmap.
+
+Fixes: 134288158a41 ("iommu/amd: Add domain_alloc_user based domain allocation")
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/3-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/user_ringbuf.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/amd/iommu.c | 28 ++++------------------------
+ 1 file changed, 4 insertions(+), 24 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-index e51721df14fc1..dfff6feac12c3 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-@@ -4,6 +4,7 @@
- #define _GNU_SOURCE
- #include <linux/compiler.h>
- #include <linux/ring_buffer.h>
-+#include <linux/build_bug.h>
- #include <pthread.h>
- #include <stdio.h>
- #include <stdlib.h>
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index edbd4ca1451a8..833637ffae39f 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2271,26 +2271,11 @@ void protection_domain_free(struct protection_domain *domain)
+ 	kfree(domain);
+ }
+ 
+-static int protection_domain_init_v1(struct protection_domain *domain)
+-{
+-	domain->pd_mode = PD_MODE_V1;
+-	return 0;
+-}
+-
+-static int protection_domain_init_v2(struct protection_domain *pdom)
+-{
+-	pdom->pd_mode = PD_MODE_V2;
+-	pdom->domain.pgsize_bitmap = AMD_IOMMU_PGSIZES_V2;
+-
+-	return 0;
+-}
+-
+ struct protection_domain *protection_domain_alloc(unsigned int type)
+ {
+ 	struct io_pgtable_ops *pgtbl_ops;
+ 	struct protection_domain *domain;
+ 	int pgtable;
+-	int ret;
+ 
+ 	domain = kzalloc(sizeof(*domain), GFP_KERNEL);
+ 	if (!domain)
+@@ -2326,18 +2311,14 @@ struct protection_domain *protection_domain_alloc(unsigned int type)
+ 
+ 	switch (pgtable) {
+ 	case AMD_IOMMU_V1:
+-		ret = protection_domain_init_v1(domain);
++		domain->pd_mode = PD_MODE_V1;
+ 		break;
+ 	case AMD_IOMMU_V2:
+-		ret = protection_domain_init_v2(domain);
++		domain->pd_mode = PD_MODE_V2;
+ 		break;
+ 	default:
+-		ret = -EINVAL;
+-		break;
+-	}
+-
+-	if (ret)
+ 		goto out_err;
++	}
+ 
+ 	pgtbl_ops = alloc_io_pgtable_ops(pgtable, &domain->iop.pgtbl_cfg, domain);
+ 	if (!pgtbl_ops)
+@@ -2390,10 +2371,10 @@ static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
+ 	domain->domain.geometry.aperture_start = 0;
+ 	domain->domain.geometry.aperture_end   = dma_max_address();
+ 	domain->domain.geometry.force_aperture = true;
++	domain->domain.pgsize_bitmap = domain->iop.iop.cfg.pgsize_bitmap;
+ 
+ 	if (iommu) {
+ 		domain->domain.type = type;
+-		domain->domain.pgsize_bitmap = iommu->iommu.ops->pgsize_bitmap;
+ 		domain->domain.ops = iommu->iommu.ops->default_domain_ops;
+ 
+ 		if (dirty_tracking)
+@@ -2852,7 +2833,6 @@ const struct iommu_ops amd_iommu_ops = {
+ 	.device_group = amd_iommu_device_group,
+ 	.get_resv_regions = amd_iommu_get_resv_regions,
+ 	.is_attach_deferred = amd_iommu_is_attach_deferred,
+-	.pgsize_bitmap	= AMD_IOMMU_PGSIZES,
+ 	.def_domain_type = amd_iommu_def_domain_type,
+ 	.dev_enable_feat = amd_iommu_dev_enable_feature,
+ 	.dev_disable_feat = amd_iommu_dev_disable_feature,
 -- 
 2.43.0
 
