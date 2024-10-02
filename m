@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F267698DA7A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D879F98DCEF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AB2B1F214D2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144601C203D5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05D71D0E3B;
-	Wed,  2 Oct 2024 14:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2421D0F67;
+	Wed,  2 Oct 2024 14:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnsB5xk+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0knsuAIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8911D0F6C;
-	Wed,  2 Oct 2024 14:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578E61D551;
+	Wed,  2 Oct 2024 14:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878586; cv=none; b=pXRW3CkTreMm1Z87b81ijJ7Kw1SDmCS9N84ClDFd6yp9pIl2P4N6sVDuGkIoLv4Bks/KaP3WxSrd1Qis+I/k+MEo/GXNsL3jhrSLdQFa2Kru8EKR5LErhtrGTpRT0dYEm4CEY1hoCMgrrcOaKKnUqCL95qfdhagARqUX1NtK914=
+	t=1727880047; cv=none; b=MS0NJaNt2F3GdExbS+QjlenjodDdiKthbJjKFis0TriZSl0Fs+FNkqFjye8NkueIQ5guRMO+59eCD5kCKVF/G1hc6B7F9oQERAC2pNwjn8C032YGsqv1GhvbTwdnl6YCDEpcdBjkBCqj97uewNFkTwAfNjITUnzOQ0F20pU7Jmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878586; c=relaxed/simple;
-	bh=2Yp+WrjLDEi3Kfx3euyh2a5YCAm3rNxACFpbYect6zg=;
+	s=arc-20240116; t=1727880047; c=relaxed/simple;
+	bh=CY55P4g2wRBCeA+vN4eg/uF7XZ+lxQFfmBB9M/ttFF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TsdO0SplTUvYBVX76/sSUF+QmB+ubUiaFsiNsMy36DgZnIe3DnPvqhFePUWDFcUP4TSq8gvJyP7qtYxFOJAJtYxiADm3rxMehadPz+pjCxDuOd5mQxO1eVM6KHcBMwo17rOV8FLpnjZinugovNzCmIFjgLknfvS382HrzlS1zE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnsB5xk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02619C4CEC2;
-	Wed,  2 Oct 2024 14:16:25 +0000 (UTC)
+	 MIME-Version; b=ccJ+ml6i5vpYZBcX97JIzAT8+qdh8bmAdgWw7Il3MrqG5xfDLf9zHOWurjr6Z7y70eE3P9sRowDOIHIf55P25m/z5r/KFSkoOvzrxSzlTz6DR+DYhCgOlT2YJH1pPyDOpN+0312KJ0setxXlGDkBLRHhka6/iBm24AXu84bLEJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0knsuAIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A3FC4CECF;
+	Wed,  2 Oct 2024 14:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878586;
-	bh=2Yp+WrjLDEi3Kfx3euyh2a5YCAm3rNxACFpbYect6zg=;
+	s=korg; t=1727880046;
+	bh=CY55P4g2wRBCeA+vN4eg/uF7XZ+lxQFfmBB9M/ttFF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnsB5xk+cu1rTV3rKKYYT8QsLF0G9pwVPTmd9SeL0BKFPF/ykM7ilPjSB36EjfFKR
-	 EAU0XZhdG3q3UI57U+maV+5O46PAAh73X+kiKdcDFupf1TOdQJreLHJmeksVf1HM97
-	 OERTavQHRLlDa1K8mpJ7Jj10coW0gXobYs7fIgSo=
+	b=0knsuAIMXkgFEJcv4ePQ1wzbXlBr1BBO+WqptxBm82nqA/qZA0bAiaXFvmQU1rqc7
+	 3bcJoNGHmLV2JArSpBuW20+SsifI3OqdVt1mDsEW1ygVKY6eyh6f3YefWZr8C3jdSK
+	 H0CFeQDxe4F/bIwgvandYR98xrBO9HWPt2iqkmK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew W Carlis <mattc@purestorage.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.10 464/634] PCI: Clear the LBMS bit after a link retrain
+	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 325/538] RDMA/cxgb4: Added NULL check for lookup_atid
 Date: Wed,  2 Oct 2024 14:59:24 +0200
-Message-ID: <20241002125829.418507755@linuxfoundation.org>
+Message-ID: <20241002125805.258376799@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
 
-commit 8037ac08c2bbb3186f83a5a924f52d1048dbaec5 upstream.
+[ Upstream commit e766e6a92410ca269161de059fff0843b8ddd65f ]
 
-The LBMS bit, where implemented, is set by hardware either in response
-to the completion of retraining caused by writing 1 to the Retrain Link
-bit or whenever hardware has changed the link speed or width in attempt
-to correct unreliable link operation.  It is never cleared by hardware
-other than by software writing 1 to the bit position in the Link Status
-register and we never do such a write.
+The lookup_atid() function can return NULL if the ATID is
+invalid or does not exist in the identifier table, which
+could lead to dereferencing a null pointer without a
+check in the `act_establish()` and `act_open_rpl()` functions.
+Add a NULL check to prevent null pointer dereferencing.
 
-We currently have two places, namely apply_bad_link_workaround() and
-pcie_failed_link_retrain() in drivers/pci/controller/dwc/pcie-tegra194.c
-and drivers/pci/quirks.c respectively where we check the state of the LBMS
-bit and neither is interested in the state of the bit resulting from the
-completion of retraining, both check for a link fault.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-And in particular pcie_failed_link_retrain() causes issues consequently, by
-trying to retrain a link where there's no downstream device anymore and the
-state of 1 in the LBMS bit has been retained from when there was a device
-downstream that has since been removed.
-
-Clear the LBMS bit then at the conclusion of pcie_retrain_link(), so that
-we have a single place that controls it and that our code can track link
-speed or width changes resulting from unreliable link operation.
-
-Fixes: a89c82249c37 ("PCI: Work around PCIe link training failures")
-Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091133140.61955@angie.orcam.me.uk
-Reported-by: Matthew W Carlis <mattc@purestorage.com>
-Link: https://lore.kernel.org/r/20240806000659.30859-1-mattc@purestorage.com/
-Link: https://lore.kernel.org/r/20240722193407.23255-1-mattc@purestorage.com/
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.5+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cfdda9d76436 ("RDMA/cxgb4: Add driver for Chelsio T4 RNIC")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+Link: https://patch.msgid.link/20240912145844.77516-1-m.lobanov@rosalinux.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/cxgb4/cm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4647,7 +4647,15 @@ int pcie_retrain_link(struct pci_dev *pd
- 		pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
- 	}
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index 040ba2224f9ff..b3757c6a0457a 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -1222,6 +1222,8 @@ static int act_establish(struct c4iw_dev *dev, struct sk_buff *skb)
+ 	int ret;
  
--	return pcie_wait_for_link_status(pdev, use_lt, !use_lt);
-+	rc = pcie_wait_for_link_status(pdev, use_lt, !use_lt);
+ 	ep = lookup_atid(t, atid);
++	if (!ep)
++		return -EINVAL;
+ 
+ 	pr_debug("ep %p tid %u snd_isn %u rcv_isn %u\n", ep, tid,
+ 		 be32_to_cpu(req->snd_isn), be32_to_cpu(req->rcv_isn));
+@@ -2279,6 +2281,9 @@ static int act_open_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
+ 	int ret = 0;
+ 
+ 	ep = lookup_atid(t, atid);
++	if (!ep)
++		return -EINVAL;
 +
-+	/*
-+	 * Clear LBMS after a manual retrain so that the bit can be used
-+	 * to track link speed or width changes made by hardware itself
-+	 * in attempt to correct unreliable link operation.
-+	 */
-+	pcie_capability_write_word(pdev, PCI_EXP_LNKSTA, PCI_EXP_LNKSTA_LBMS);
-+	return rc;
- }
- 
- /**
+ 	la = (struct sockaddr_in *)&ep->com.local_addr;
+ 	ra = (struct sockaddr_in *)&ep->com.remote_addr;
+ 	la6 = (struct sockaddr_in6 *)&ep->com.local_addr;
+-- 
+2.43.0
+
 
 
 
