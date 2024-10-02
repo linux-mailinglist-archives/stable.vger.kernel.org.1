@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB55D98DAB2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC25898DD1E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D173B24E4D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E38C1F213E1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3AE1D172E;
-	Wed,  2 Oct 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BEE1D1515;
+	Wed,  2 Oct 2024 14:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjJWWxG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssiRf3j4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E56A1D172C;
-	Wed,  2 Oct 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0981D150F;
+	Wed,  2 Oct 2024 14:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878708; cv=none; b=gHRy6B765ZTKtH8UW+0hcjl7B1c2tBZxYQQKpCedWtQEH9bMNDcvCW7YPhInG1x9Ej1BxgPaZpZ9YMQrriNeZehpGMY+S84quOkbBoUKTrUfGGp9gRZ9LE7OpVZxqYpnmQS/YgtqBsyCZQFYvz8mp4D3146lGnozi63X/tC+oeU=
+	t=1727880173; cv=none; b=UCUym5ZmZreDLuhzNmMpTGTz/SP63gygrivcBflEfldvZNT53I6mNiucXRdaOEMshkAKEfc+KSSR1pgB7JGZTkX/rPwupItz0yrMJwJgvomkeXgJE/aOwPiabX+SYJmVZ3sPkRYNcSDEkXfiZIDLgcsZnSqrMA2G5+PsvKjioCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878708; c=relaxed/simple;
-	bh=QwSeQgzx5PvZzDIVasN1mjz/pxI+AJLzRysl4/xEL5M=;
+	s=arc-20240116; t=1727880173; c=relaxed/simple;
+	bh=esRzHWybCOLC7XG2XQJj9x0RuGxN/PHG5xmYQYC9AZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRTSvkF4zi42q2stEZquHvVojEvdSmtSOsxgE+3aTm1qkAfzaUNlo5+gQllJSs7lML7O9pXC9s6epniR4H3Su5dlD8A9/Vi7nL3I8XYCbY4ysk/rQsyuiyrFY8jBJV86KJZc1u7I5G5RdLm/7oUrgxtFT6q8aA9TqW78q6a4RoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjJWWxG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5CEC4CEC2;
-	Wed,  2 Oct 2024 14:18:27 +0000 (UTC)
+	 MIME-Version; b=tXwjhT1m5gkFEdWowD/zR+YaG2c4NYaZq/dIrvU05PWu1J3LJ4wF4mZYyoKQTfHhH9yfKVcOM0472LbWwk2hJpj2mctP8V6WCv28HRVS164m/KLHrUmcZMnl9cToGbEZGQWYrbVGaZVh/ixmaAi3WDjbeylLcDMQSRTbJsJZS70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssiRf3j4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B15BC4CEC2;
+	Wed,  2 Oct 2024 14:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878708;
-	bh=QwSeQgzx5PvZzDIVasN1mjz/pxI+AJLzRysl4/xEL5M=;
+	s=korg; t=1727880172;
+	bh=esRzHWybCOLC7XG2XQJj9x0RuGxN/PHG5xmYQYC9AZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjJWWxG3RPRNd5dSl/5AwlRrmcwVJESDuMXchTM2huSA3yz3gdVHXpfIwMdM1YNMY
-	 49YRYXRuUGt7YmNzUTh6unT9ecGzxWkdMH2uxYTb4v/v/hQ6Hf1x7XYQziI58RqhSF
-	 5YEKwq1bacHJSJivHCh/snIAdyghjA6CS32l0QRY=
+	b=ssiRf3j4fOfg3wSwZ8J8YQGWXjEywN5LoCvk1GzHkhb4y9KBJAt11G77IGEJCBS3N
+	 xZ7W3MTVzi2ARlX/h7LEol7Ltwji7q9JFqxhW0jXmpsIX010N9SHkjjgP2lZ3noZCe
+	 8Hd3q9DoHDs7zbN0TcYcJrq6JTLIkVdWNzKBSOQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.10 475/634] soc: fsl: cpm1: qmc: Update TRNSYNC only in transparent mode
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 336/538] f2fs: fix to avoid racing in between read and OPU dio write
 Date: Wed,  2 Oct 2024 14:59:35 +0200
-Message-ID: <20241002125829.856020771@linuxfoundation.org>
+Message-ID: <20241002125805.694809051@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Chao Yu <chao@kernel.org>
 
-commit c3cc3e69b33fee3d276895e0e2d1a8fb37ea5d0e upstream.
+[ Upstream commit 0cac51185e65dc2a20686184e02f3cafc99eb202 ]
 
-The TRNSYNC feature is available (and enabled) only in transparent mode.
+If lfs mode is on, buffered read may race w/ OPU dio write as below,
+it may cause buffered read hits unwritten data unexpectly, and for
+dio read, the race condition exists as well.
 
-Since commit 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries
-at channel start() and stop()") TRNSYNC register is updated in
-transparent and hdlc mode. In hdlc mode, the address of the TRNSYNC
-register is used by the QMC for other internal purpose. Even if no weird
-results were observed in hdlc mode, touching this register in this mode
-is wrong.
+Thread A			Thread B
+- f2fs_file_write_iter
+ - f2fs_dio_write_iter
+  - __iomap_dio_rw
+   - f2fs_iomap_begin
+    - f2fs_map_blocks
+     - __allocate_data_block
+      - allocated blkaddr #x
+       - iomap_dio_submit_bio
+				- f2fs_file_read_iter
+				 - filemap_read
+				  - f2fs_read_data_folio
+				   - f2fs_mpage_readpages
+				    - f2fs_map_blocks
+				     : get blkaddr #x
+				    - f2fs_submit_read_bio
+				IRQ
+				- f2fs_read_end_io
+				 : read IO on blkaddr #x complete
+IRQ
+- iomap_dio_bio_end_io
+ : direct write IO on blkaddr #x complete
 
-Update TRNSYNC only in transparent mode.
+In LFS mode, if there is inflight dio, let's wait for its completion,
+this policy won't cover all race cases, however it is a tradeoff which
+avoids abusing lock around IO paths.
 
-Fixes: 7cc9bda9c163 ("soc: fsl: cpm1: qmc: Handle timeslot entries at channel start() and stop()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20240808071132.149251-2-herve.codina@bootlin.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f847c699cff3 ("f2fs: allow out-place-update for direct IO in LFS mode")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/qmc.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ fs/f2fs/file.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 76bb496305a0..bacabf731dcb 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -940,11 +940,13 @@ static int qmc_chan_start_rx(struct qmc_chan *chan)
- 		goto end;
- 	}
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 81e342bd993c2..8c4c5c6c1ac64 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4541,6 +4541,10 @@ static ssize_t f2fs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 		f2fs_trace_rw_file_path(iocb->ki_filp, iocb->ki_pos,
+ 					iov_iter_count(to), READ);
  
--	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
--	if (ret) {
--		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
--			chan->id, ret);
--		goto end;
-+	if (chan->mode == QMC_TRANSPARENT) {
-+		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
-+		if (ret) {
-+			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
-+				chan->id, ret);
-+			goto end;
-+		}
- 	}
- 
- 	/* Restart the receiver */
-@@ -982,11 +984,13 @@ static int qmc_chan_start_tx(struct qmc_chan *chan)
- 		goto end;
- 	}
- 
--	ret = qmc_setup_chan_trnsync(chan->qmc, chan);
--	if (ret) {
--		dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
--			chan->id, ret);
--		goto end;
-+	if (chan->mode == QMC_TRANSPARENT) {
-+		ret = qmc_setup_chan_trnsync(chan->qmc, chan);
-+		if (ret) {
-+			dev_err(chan->qmc->dev, "chan %u: setup TRNSYNC failed (%d)\n",
-+				chan->id, ret);
-+			goto end;
-+		}
- 	}
- 
- 	/*
++	/* In LFS mode, if there is inflight dio, wait for its completion */
++	if (f2fs_lfs_mode(F2FS_I_SB(inode)))
++		inode_dio_wait(inode);
++
+ 	if (f2fs_should_use_dio(inode, iocb, to)) {
+ 		ret = f2fs_dio_read_iter(iocb, to);
+ 	} else {
 -- 
-2.46.2
+2.43.0
 
 
 
