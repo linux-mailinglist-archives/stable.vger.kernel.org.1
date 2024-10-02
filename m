@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A747698D953
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375F198DBC2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22EFC1F21ED7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFA98B27A08
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEBD1D2700;
-	Wed,  2 Oct 2024 14:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2342C1D2790;
+	Wed,  2 Oct 2024 14:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJjs+hCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+nKoawl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC771D26FE;
-	Wed,  2 Oct 2024 14:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B511D2789;
+	Wed,  2 Oct 2024 14:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877922; cv=none; b=lKdFckFwRVRO9/3h67bbgryXArNbUIeJvmoRgZBAH6fqmAQWSEik/INYO8vqQoVxzVA6cIc4pjTzfLT0u3knUw6RtY/pt/VQcUdYfXn/TIH2woXvYlmWmJNUhnqMZSJ1Uj3IjfMhzJAP7PGHH7OaD6ybNWpCWa/OH+0luPQlWNw=
+	t=1727879349; cv=none; b=a93Eu4i733GbjMNzhr6fsPGkAsm35Ba7eflXAi0o1heC81+fki7qVsguz/8imoNpceMWJio5yzmefye7CNnw/JNNRpIi9h51ujTo90fm+lrQYlYSnqpGaBBauD8RhAfCor463oqfm9ebOO30Mo6BP3XmH7fIjlpu5Ftyfxy1MCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877922; c=relaxed/simple;
-	bh=f3R7qUrauKXJn+4t8heDqzHm2TF5QPB2lRZcUqj1b0Q=;
+	s=arc-20240116; t=1727879349; c=relaxed/simple;
+	bh=/7KJkOMSnlsE9Ge/3tRbJpaZhDquOuPMC2xG5z0Qsxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOs/KgV6tgaLcKDc6nzoc3hqXJUcV8PrTT/92Z0JTxbYJp3q5KbRJz5ux6OZArjRJJJRHpZIhHmqFWPgtHLEPkm4FBWsuHWNLLgM4tbRXpQ9wfUJOWe7RCB7hcvmwWp7v9jAxv2j7Q4yUgazvHFKH20OA6zCIb6LromgJr9wxdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJjs+hCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73749C4CEC2;
-	Wed,  2 Oct 2024 14:05:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rjc+KQhBRApkHc+D9l9bT8NUKdj5Nye18HlRSch5KwVbobgnBjnYRP+2pX/U6f+Tdeo5ZifIrTNStr/ZMgU0/uwLyj23O2dPs3GKX0KxDbbZEF2r37W52wNMlo20YdkalGyQxRfPdhG5TJQQjblvUlZdijPXjrWtZ9MbpmYvCWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+nKoawl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64693C4CEC2;
+	Wed,  2 Oct 2024 14:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877921;
-	bh=f3R7qUrauKXJn+4t8heDqzHm2TF5QPB2lRZcUqj1b0Q=;
+	s=korg; t=1727879349;
+	bh=/7KJkOMSnlsE9Ge/3tRbJpaZhDquOuPMC2xG5z0Qsxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJjs+hCMJ6S8WLnLgST5iyL8NvOXgq5RyxnAipPrqbE4hHYkD6kjCpfdtzgPEwhmN
-	 BwUei8g5olsiUsJ3D+1ZTzedlmZLybTJm3xeX1Myf9YMDRXnQl4wO4mJ7IIMywmtVM
-	 FBJe4FHst1Xt+OKenvkJrn44SC9WJ0pPlFpvrX2c=
+	b=C+nKoawlJsch97qAutE4qMMqqfi9g4aHOEniscjLxd8cWEY5NEEd8bAlURCZ83kQ7
+	 IQVP3YJKLikl3O167sAMTSRQFZOUE8ZbhU37v1f7RmDDj5opO6ILqHNFl3iVYjQxog
+	 1RjOzGtEJN+vJC7UZRGI6g8aILQd49zLepuWwBm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robdclark@chromium.org>,
+	Jiawei Ye <jiawei.ye@foxmail.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 199/634] drm/msm: Use a7xx family directly in gpu_state
-Date: Wed,  2 Oct 2024 14:54:59 +0200
-Message-ID: <20241002125818.960636457@linuxfoundation.org>
+Subject: [PATCH 6.6 061/538] wifi: wilc1000: fix potential RCU dereference issue in wilc_parse_join_bss_param
+Date: Wed,  2 Oct 2024 14:55:00 +0200
+Message-ID: <20241002125754.616939342@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,176 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Connor Abbott <cwabbott0@gmail.com>
+From: Jiawei Ye <jiawei.ye@foxmail.com>
 
-[ Upstream commit db75ef03d72ea75515f5282fe8a4925ae8373fe1 ]
+[ Upstream commit 6d7c6ae1efb1ff68bc01d79d94fdf0388f86cdd8 ]
 
-With a7xx, we need to import a new header for each new generation and
-switch to a different list of registers, instead of making
-backwards-compatible changes. Using the helpers inadvertently made a750
-use the a740 list of registers, instead use the family directly to fix
-this.
+In the `wilc_parse_join_bss_param` function, the TSF field of the `ies`
+structure is accessed after the RCU read-side critical section is
+unlocked. According to RCU usage rules, this is illegal. Reusing this
+pointer can lead to unpredictable behavior, including accessing memory
+that has been updated or causing use-after-free issues.
 
-Fixes: f3f8207d8aed ("drm/msm: Add devcoredump support for a750")
-Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/607392/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+This possible bug was identified using a static analysis tool developed
+by myself, specifically designed to detect RCU-related issues.
+
+To address this, the TSF value is now stored in a local variable
+`ies_tsf` before the RCU lock is released. The `param->tsf_lo` field is
+then assigned using this local variable, ensuring that the TSF value is
+safely accessed.
+
+Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
+Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/tencent_466225AA599BA49627FB26F707EE17BC5407@qq.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 41 ++++++++++-----------
- 1 file changed, 20 insertions(+), 21 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/hif.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index 789a11416f7a4..f2030e521a03a 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -388,18 +388,18 @@ static void a7xx_get_debugbus_blocks(struct msm_gpu *gpu,
- 	const u32 *debugbus_blocks, *gbif_debugbus_blocks;
- 	int i;
+diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
+index e4bb3ea6e2267..25e881ee727cd 100644
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -381,6 +381,7 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
+ 	struct wilc_join_bss_param *param;
+ 	u8 rates_len = 0;
+ 	int ies_len;
++	u64 ies_tsf;
+ 	int ret;
  
--	if (adreno_is_a730(adreno_gpu)) {
-+	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		debugbus_blocks = gen7_0_0_debugbus_blocks;
- 		debugbus_blocks_count = ARRAY_SIZE(gen7_0_0_debugbus_blocks);
- 		gbif_debugbus_blocks = a7xx_gbif_debugbus_blocks;
- 		gbif_debugbus_blocks_count = ARRAY_SIZE(a7xx_gbif_debugbus_blocks);
--	} else if (adreno_is_a740_family(adreno_gpu)) {
-+	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
- 		debugbus_blocks = gen7_2_0_debugbus_blocks;
- 		debugbus_blocks_count = ARRAY_SIZE(gen7_2_0_debugbus_blocks);
- 		gbif_debugbus_blocks = a7xx_gbif_debugbus_blocks;
- 		gbif_debugbus_blocks_count = ARRAY_SIZE(a7xx_gbif_debugbus_blocks);
- 	} else {
--		BUG_ON(!adreno_is_a750(adreno_gpu));
-+		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
- 		debugbus_blocks = gen7_9_0_debugbus_blocks;
- 		debugbus_blocks_count = ARRAY_SIZE(gen7_9_0_debugbus_blocks);
- 		gbif_debugbus_blocks = gen7_9_0_gbif_debugbus_blocks;
-@@ -509,7 +509,7 @@ static void a6xx_get_debugbus(struct msm_gpu *gpu,
- 		const struct a6xx_debugbus_block *cx_debugbus_blocks;
- 
- 		if (adreno_is_a7xx(adreno_gpu)) {
--			BUG_ON(!(adreno_is_a730(adreno_gpu) || adreno_is_a740_family(adreno_gpu)));
-+			BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
- 			cx_debugbus_blocks = a7xx_cx_debugbus_blocks;
- 			nr_cx_debugbus_blocks = ARRAY_SIZE(a7xx_cx_debugbus_blocks);
- 		} else {
-@@ -660,11 +660,11 @@ static void a7xx_get_dbgahb_clusters(struct msm_gpu *gpu,
- 	const struct gen7_sptp_cluster_registers *dbgahb_clusters;
- 	unsigned dbgahb_clusters_size;
- 
--	if (adreno_is_a730(adreno_gpu)) {
-+	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		dbgahb_clusters = gen7_0_0_sptp_clusters;
- 		dbgahb_clusters_size = ARRAY_SIZE(gen7_0_0_sptp_clusters);
- 	} else {
--		BUG_ON(!adreno_is_a740_family(adreno_gpu));
-+		BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
- 		dbgahb_clusters = gen7_2_0_sptp_clusters;
- 		dbgahb_clusters_size = ARRAY_SIZE(gen7_2_0_sptp_clusters);
+ 	param = kzalloc(sizeof(*param), GFP_KERNEL);
+@@ -396,6 +397,7 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
+ 		return NULL;
  	}
-@@ -818,14 +818,14 @@ static void a7xx_get_clusters(struct msm_gpu *gpu,
- 	const struct gen7_cluster_registers *clusters;
- 	unsigned clusters_size;
+ 	ies_len = ies->len;
++	ies_tsf = ies->tsf;
+ 	rcu_read_unlock();
  
--	if (adreno_is_a730(adreno_gpu)) {
-+	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		clusters = gen7_0_0_clusters;
- 		clusters_size = ARRAY_SIZE(gen7_0_0_clusters);
--	} else if (adreno_is_a740_family(adreno_gpu)) {
-+	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
- 		clusters = gen7_2_0_clusters;
- 		clusters_size = ARRAY_SIZE(gen7_2_0_clusters);
- 	} else {
--		BUG_ON(!adreno_is_a750(adreno_gpu));
-+		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
- 		clusters = gen7_9_0_clusters;
- 		clusters_size = ARRAY_SIZE(gen7_9_0_clusters);
- 	}
-@@ -893,7 +893,7 @@ static void a7xx_get_shader_block(struct msm_gpu *gpu,
- 	if (WARN_ON(datasize > A6XX_CD_DATA_SIZE))
- 		return;
- 
--	if (adreno_is_a730(adreno_gpu)) {
-+	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		gpu_rmw(gpu, REG_A7XX_SP_DBG_CNTL, GENMASK(1, 0), 3);
- 	}
- 
-@@ -923,7 +923,7 @@ static void a7xx_get_shader_block(struct msm_gpu *gpu,
- 		datasize);
- 
- out:
--	if (adreno_is_a730(adreno_gpu)) {
-+	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		gpu_rmw(gpu, REG_A7XX_SP_DBG_CNTL, GENMASK(1, 0), 0);
- 	}
- }
-@@ -956,14 +956,14 @@ static void a7xx_get_shaders(struct msm_gpu *gpu,
- 	unsigned num_shader_blocks;
- 	int i;
- 
--	if (adreno_is_a730(adreno_gpu)) {
-+	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		shader_blocks = gen7_0_0_shader_blocks;
- 		num_shader_blocks = ARRAY_SIZE(gen7_0_0_shader_blocks);
--	} else if (adreno_is_a740_family(adreno_gpu)) {
-+	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
- 		shader_blocks = gen7_2_0_shader_blocks;
- 		num_shader_blocks = ARRAY_SIZE(gen7_2_0_shader_blocks);
- 	} else {
--		BUG_ON(!adreno_is_a750(adreno_gpu));
-+		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
- 		shader_blocks = gen7_9_0_shader_blocks;
- 		num_shader_blocks = ARRAY_SIZE(gen7_9_0_shader_blocks);
- 	}
-@@ -1348,14 +1348,14 @@ static void a7xx_get_registers(struct msm_gpu *gpu,
- 	const u32 *pre_crashdumper_regs;
- 	const struct gen7_reg_list *reglist;
- 
--	if (adreno_is_a730(adreno_gpu)) {
-+	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		reglist = gen7_0_0_reg_list;
- 		pre_crashdumper_regs = gen7_0_0_pre_crashdumper_gpu_registers;
--	} else if (adreno_is_a740_family(adreno_gpu)) {
-+	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
- 		reglist = gen7_2_0_reg_list;
- 		pre_crashdumper_regs = gen7_0_0_pre_crashdumper_gpu_registers;
- 	} else {
--		BUG_ON(!adreno_is_a750(adreno_gpu));
-+		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
- 		reglist = gen7_9_0_reg_list;
- 		pre_crashdumper_regs = gen7_9_0_pre_crashdumper_gpu_registers;
- 	}
-@@ -1405,8 +1405,7 @@ static void a7xx_get_post_crashdumper_registers(struct msm_gpu *gpu,
- 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
- 	const u32 *regs;
- 
--	BUG_ON(!(adreno_is_a730(adreno_gpu) || adreno_is_a740_family(adreno_gpu) ||
--		 adreno_is_a750(adreno_gpu)));
-+	BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
- 	regs = gen7_0_0_post_crashdumper_registers;
- 
- 	a7xx_get_ahb_gpu_registers(gpu,
-@@ -1514,11 +1513,11 @@ static void a7xx_get_indexed_registers(struct msm_gpu *gpu,
- 	const struct a6xx_indexed_registers *indexed_regs;
- 	int i, indexed_count, mempool_count;
- 
--	if (adreno_is_a730(adreno_gpu) || adreno_is_a740_family(adreno_gpu)) {
-+	if (adreno_gpu->info->family <= ADRENO_7XX_GEN2) {
- 		indexed_regs = a7xx_indexed_reglist;
- 		indexed_count = ARRAY_SIZE(a7xx_indexed_reglist);
- 	} else {
--		BUG_ON(!adreno_is_a750(adreno_gpu));
-+		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
- 		indexed_regs = gen7_9_0_cp_indexed_reg_list;
- 		indexed_count = ARRAY_SIZE(gen7_9_0_cp_indexed_reg_list);
- 	}
+ 	param->beacon_period = cpu_to_le16(bss->beacon_interval);
+@@ -451,7 +453,7 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
+ 				    IEEE80211_P2P_ATTR_ABSENCE_NOTICE,
+ 				    (u8 *)&noa_attr, sizeof(noa_attr));
+ 	if (ret > 0) {
+-		param->tsf_lo = cpu_to_le32(ies->tsf);
++		param->tsf_lo = cpu_to_le32(ies_tsf);
+ 		param->noa_enabled = 1;
+ 		param->idx = noa_attr.index;
+ 		if (noa_attr.oppps_ctwindow & IEEE80211_P2P_OPPPS_ENABLE_BIT) {
 -- 
 2.43.0
 
