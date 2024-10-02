@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-79495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5555A98D8C2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DEFE98D54D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE4C1F213EC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C73C1C21E73
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB5B1D0F4A;
-	Wed,  2 Oct 2024 14:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF4F1D0945;
+	Wed,  2 Oct 2024 13:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm1gXXDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJ2uFnFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10B31D0F41;
-	Wed,  2 Oct 2024 14:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9C61D07BD;
+	Wed,  2 Oct 2024 13:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877626; cv=none; b=qLLcn1389ZBOpdb+DtJpigczIsKsJ9V83btE/d6ibCACGdUDZPkv9Im7e5PPqN63VdTACJZX+53Njs/xKLzEMkr1LV4QET6O2gt/7QMsrW2xk0F4GSbXcAYNy1P7jjXS7eglKoFoqRNME5reIRhMC1H9q2sES7D7hF/+Chuf7KU=
+	t=1727875725; cv=none; b=QDI3UDoGsD5OYkYPb3qN8BLYABhuWP4wP+F91U+A/vZXGDcKrFaHNAv3ZX0X+ANmDoG+ggdH163t1aE/VMu6BDgzYRgmuySf94qaKrN2YJMR3hs4Ic32xH6J87Wm2K3xt1d/57R3dGf6iLpZUqibgJfm3BZ0FF1HC8bIq+V9Es4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877626; c=relaxed/simple;
-	bh=4JL2rOLu6x6kBlN1a+XuwuM4b38vayZyj9plswc0bvw=;
+	s=arc-20240116; t=1727875725; c=relaxed/simple;
+	bh=g1DvcwJtdf0CUZECgdxPcatULhs1qnTOVBA4AFHtWOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6TEvSVLE59H1mY/UnkM2QO2tp/ZlCB/ALpIhuIM0Unafuxne/pxcqTORyk4zLKtzJmasKZQ/vxYw0xkheuzvxuxlHu9EQYQIxCpCAZNUrIs/p+rXkeT2rdKr9dxBpejAvVJX6odMdf7hVOjwSJN4H1Z7utpGvTnh1M+WQuNH58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm1gXXDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1595DC4CEC5;
-	Wed,  2 Oct 2024 14:00:24 +0000 (UTC)
+	 MIME-Version; b=njhvhzDebRXwiZ63jN1f3oZYsyXLy1NAfIt2bqJYskuyt6QC9sJeS92CmuVsqpz8yP/cWWgPS8Hn3cch5LK2+sTCoGnA+Gz6zosDiQcZ6BC4IDfUybRgbuUHdulSBPRqklaqnOkf3h2Xmwi/i76EBY1gGvYGf+Alf7C13fGiQcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJ2uFnFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB47EC4CEC5;
+	Wed,  2 Oct 2024 13:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877625;
-	bh=4JL2rOLu6x6kBlN1a+XuwuM4b38vayZyj9plswc0bvw=;
+	s=korg; t=1727875725;
+	bh=g1DvcwJtdf0CUZECgdxPcatULhs1qnTOVBA4AFHtWOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zm1gXXDvxNJI1qNPqmFTFP8Z7Pm2qGz5Fo5VjRR/U6WsnqnTw35Js4///FD7HLQOk
-	 G5qhVufz34YjSCTVga3jnB2uywuEAnJIf/k7ovv+OsG/rsKhaZOfWdqE+haBlu8XN/
-	 2r0uQgNh1HhFKEWg6HEpbM6h19Va/+6Z4U9uQZic=
+	b=LJ2uFnFRjm/gCQkXbn+rm6ci8eBZ4sTcDALb0jS0bnMnuoPUM18ElruBZ0xRI2iZ2
+	 y3GxjKYPoqt0B2NaXQPznb61VrTs0mXJRFsFWUHS14GRkmz8Tni0dZete/rGejRUjn
+	 PUs6y4p68w+NeXB5/FiTw5dUgtBMvOMTAgyZfMMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dries De Winter <ddewinter@synamedia.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 097/634] xsk: fix batch alloc API on non-coherent systems
-Date: Wed,  2 Oct 2024 14:53:17 +0200
-Message-ID: <20241002125814.938605417@linuxfoundation.org>
+Subject: [PATCH 6.11 200/695] drm/amd/display: free bo used for dmub bounding box
+Date: Wed,  2 Oct 2024 14:53:18 +0200
+Message-ID: <20241002125830.447248003@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +66,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit 4144a1059b47e821c82c3c82eb23a4c7312dce3a ]
+[ Upstream commit f59549c7e705be0087d08bc116ccc767b86d8362 ]
 
-In cases when synchronizing DMA operations is necessary,
-xsk_buff_alloc_batch() returns a single buffer instead of the requested
-count. This puts the pressure on drivers that use batch API as they have
-to check for this corner case on their side and take care of allocations
-by themselves, which feels counter productive. Let us improve the core
-by looping over xp_alloc() @max times when slow path needs to be taken.
+fix a memleak introduced by not removing the buffer object for use with
+early dmub bounding box value storage
 
-Another issue with current interface, as spotted and fixed by Dries, was
-that when driver called xsk_buff_alloc_batch() with @max == 0, for slow
-path case it still allocated and returned a single buffer, which should
-not happen. By introducing the logic from first paragraph we kill two
-birds with one stone and address this problem as well.
-
-Fixes: 47e4075df300 ("xsk: Batched buffer allocation for the pool")
-Reported-and-tested-by: Dries De Winter <ddewinter@synamedia.com>
-Co-developed-by: Dries De Winter <ddewinter@synamedia.com>
-Signed-off-by: Dries De Winter <ddewinter@synamedia.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://patch.msgid.link/20240911191019.296480-1-maciej.fijalkowski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 234e94555800 ("drm/amd/display: Enable copying of bounding box data from VBIOS DMUB")
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk_buff_pool.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index c0e0204b96304..b0f24ebd05f0b 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -623,20 +623,31 @@ static u32 xp_alloc_reused(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u3
- 	return nb_entries;
- }
- 
--u32 xp_alloc_batch(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u32 max)
-+static u32 xp_alloc_slow(struct xsk_buff_pool *pool, struct xdp_buff **xdp,
-+			 u32 max)
- {
--	u32 nb_entries1 = 0, nb_entries2;
-+	int i;
- 
--	if (unlikely(pool->dev && dma_dev_need_sync(pool->dev))) {
-+	for (i = 0; i < max; i++) {
- 		struct xdp_buff *buff;
- 
--		/* Slow path */
- 		buff = xp_alloc(pool);
--		if (buff)
--			*xdp = buff;
--		return !!buff;
-+		if (unlikely(!buff))
-+			return i;
-+		*xdp = buff;
-+		xdp++;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 1e069fa5211ee..511d46d38d6af 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1740,7 +1740,7 @@ static struct dml2_soc_bb *dm_dmub_get_vbios_bounding_box(struct amdgpu_device *
+ 		/* Send the chunk */
+ 		ret = dm_dmub_send_vbios_gpint_command(adev, send_addrs[i], chunk, 30000);
+ 		if (ret != DMUB_STATUS_OK)
+-			/* No need to free bb here since it shall be done unconditionally <elsewhere> */
++			/* No need to free bb here since it shall be done in dm_sw_fini() */
+ 			return NULL;
  	}
  
-+	return max;
-+}
+@@ -2489,8 +2489,17 @@ static int dm_sw_init(void *handle)
+ static int dm_sw_fini(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
++	struct dal_allocation *da;
 +
-+u32 xp_alloc_batch(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u32 max)
-+{
-+	u32 nb_entries1 = 0, nb_entries2;
-+
-+	if (unlikely(pool->dev && dma_dev_need_sync(pool->dev)))
-+		return xp_alloc_slow(pool, xdp, max);
-+
- 	if (unlikely(pool->free_list_cnt)) {
- 		nb_entries1 = xp_alloc_reused(pool, xdp, max);
- 		if (nb_entries1 == max)
++	list_for_each_entry(da, &adev->dm.da_list, list) {
++		if (adev->dm.bb_from_dmub == (void *) da->cpu_ptr) {
++			amdgpu_bo_free_kernel(&da->bo, &da->gpu_addr, &da->cpu_ptr);
++			list_del(&da->list);
++			kfree(da);
++			break;
++		}
++	}
+ 
+-	kfree(adev->dm.bb_from_dmub);
+ 	adev->dm.bb_from_dmub = NULL;
+ 
+ 	kfree(adev->dm.dmub_fb_info);
 -- 
 2.43.0
 
