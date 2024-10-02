@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21A698D89F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:03:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED3198D596
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68E131F24A5F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:03:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07872288D6F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB06E1D1E91;
-	Wed,  2 Oct 2024 13:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1E61D0957;
+	Wed,  2 Oct 2024 13:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dm8GHwoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiA2K7SJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695B31D1E8C;
-	Wed,  2 Oct 2024 13:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE381D0956;
+	Wed,  2 Oct 2024 13:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877584; cv=none; b=HfsUFaQ2hDiWjZpkoQxDBdrs2iofHIQuRqwv33tFtKhZql0d41ls9asswKsmeMS3PJJwzrXp/QJxiZ5y7lWrh1YlJgGemjPWiHCNechFYxp6P3Fx40hSt657S2sLufyca1fkWMNPCUzZBNmPIEiGTIUZnE8gXCSWhzsaB76bS2U=
+	t=1727875897; cv=none; b=mjNE3uAFac2Yl+0gMfXQ9i8ZdHZCr+Ao11+NMv7mvKt4nmhcjmEWP1uCCRXIcAiQbgcf1NYx7xzwiRcrXzilOXtXCUxQXizvybSMaQbTBqGi/7lXf0MJPIXM76xTUH7U/7He0mEaAstRSc+02YruWCqqgJW7Y07MCAQdZPuH7Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877584; c=relaxed/simple;
-	bh=kKb50PgaCqrT0B5QWDd5ctutAqfI7ZDddLbeXeI8itk=;
+	s=arc-20240116; t=1727875897; c=relaxed/simple;
+	bh=Oz3diKBAv1GtTZx+ItJb+pDTkYXV9mrxCC8/ecASXvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3pDQZDFq0YSQXKSaDwQ9yghkjVTjKfDiMPQVqJlM+axRveSSpF11xC4NYpGiUusXDN+KiCJL/+GRlxcXFYOjKbYTQ0eFjS6OunpAFEzAmmJMKLbNUaiQirhUxhUpLk8CGS/lL4KOzOeGTXZsTDL91Xw2qxDAvR9fk9rVkPeIRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dm8GHwoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95451C4CEC2;
-	Wed,  2 Oct 2024 13:59:43 +0000 (UTC)
+	 MIME-Version; b=HiOQlKJATQW5vrxeIPF6nm5geeV1URRFC0gGVup2dtoZKAovOiVPwuq4huoSjY71pI4WXZkTIsAi33QrMER8lkAYv7OtU5qeAQYSFq3U6TRlTWX6bYo2dqnfyY2MfBqWW57ihYoZMdPNjAZMERNYh3HfNBgUKkLoWu8RL0t1m6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiA2K7SJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76689C4CECE;
+	Wed,  2 Oct 2024 13:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877584;
-	bh=kKb50PgaCqrT0B5QWDd5ctutAqfI7ZDddLbeXeI8itk=;
+	s=korg; t=1727875896;
+	bh=Oz3diKBAv1GtTZx+ItJb+pDTkYXV9mrxCC8/ecASXvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dm8GHwoPndQV8XzyG7plc2WaY3bm8oirVCxYKL2yfxoWi4Y11wcs/KbCCBCdskKFm
-	 bJFAsYSJXrREZfcZUkF9BSCQkGpKdmlw4TW21j6MW8EA729E+JooaHOtyHf5yEMyvI
-	 06CJWAOyxk+yNi2pzy8w6K5ElRw/zTdYnwK3+elo=
+	b=xiA2K7SJJ9kJI6FujaeRcIFopu+YPZyfjd8O2EoA0H5rjhyGrc/VveeaASNJ+qPF/
+	 fmFlS5/H16rK3MwphSrCt+fVJx1s7e6bBPPHTnxVynAagGGAkoyuQraoB3BHC72qTv
+	 Ojr32BjMetme3dWNkG0AO+dUtHh8qOdCpspHJc84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 124/634] arm64: dts: renesas: r9a08g045: Correct GICD and GICR sizes
-Date: Wed,  2 Oct 2024 14:53:44 +0200
-Message-ID: <20241002125816.007301657@linuxfoundation.org>
+Subject: [PATCH 6.11 227/695] drm/msm: Dump correct dbgahb clusters on a750
+Date: Wed,  2 Oct 2024 14:53:45 +0200
+Message-ID: <20241002125831.516138625@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Connor Abbott <cwabbott0@gmail.com>
 
-[ Upstream commit ec9532628eb9d82282b8e52fd9c4a3800d87feec ]
+[ Upstream commit d8c17d7aadc2463a395f9340f44c7c34399f1d48 ]
 
-The RZ/G3S SoC is equipped with the GIC-600. The GICD is 64KiB + 64KiB
-for the MBI alias (in total 128KiB), and the GICR is 128KiB per CPU.
+This was missed thanks to the family mixup fixed in the previous commit.
 
-Despite the RZ/G3S SoC being single-core, it has two instances of GICR.
-
-Fixes: e20396d65b959 ("arm64: dts: renesas: Add initial DTSI for RZ/G3S SoC")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/20240730122436.350013-2-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: f3f8207d8aed ("drm/msm: Add devcoredump support for a750")
+Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/607393/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r9a08g045.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a08g045.dtsi b/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
-index a2adc4e27ce97..17609d81af294 100644
---- a/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
-@@ -269,8 +269,8 @@
- 			#interrupt-cells = <3>;
- 			#address-cells = <0>;
- 			interrupt-controller;
--			reg = <0x0 0x12400000 0 0x40000>,
--			      <0x0 0x12440000 0 0x60000>;
-+			reg = <0x0 0x12400000 0 0x20000>,
-+			      <0x0 0x12440000 0 0x40000>;
- 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
- 		};
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index f2030e521a03a..0fcae53c0b140 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -663,10 +663,13 @@ static void a7xx_get_dbgahb_clusters(struct msm_gpu *gpu,
+ 	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
+ 		dbgahb_clusters = gen7_0_0_sptp_clusters;
+ 		dbgahb_clusters_size = ARRAY_SIZE(gen7_0_0_sptp_clusters);
+-	} else {
+-		BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
++	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
+ 		dbgahb_clusters = gen7_2_0_sptp_clusters;
+ 		dbgahb_clusters_size = ARRAY_SIZE(gen7_2_0_sptp_clusters);
++	} else {
++		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
++		dbgahb_clusters = gen7_9_0_sptp_clusters;
++		dbgahb_clusters_size = ARRAY_SIZE(gen7_9_0_sptp_clusters);
+ 	}
  
+ 	a6xx_state->dbgahb_clusters = state_kcalloc(a6xx_state,
 -- 
 2.43.0
 
