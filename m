@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620FA98DD3E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BF098DAD5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9444C1C22149
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EEF01C235A8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246931D1E69;
-	Wed,  2 Oct 2024 14:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABE21D223E;
+	Wed,  2 Oct 2024 14:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaADlp3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C46Np6mP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74951EA80;
-	Wed,  2 Oct 2024 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD5C1D0E24;
+	Wed,  2 Oct 2024 14:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880266; cv=none; b=G6EZFgMWCpYooZLpnomjwZhMA+OyLq0f8GhxEsA6mHMdR1YRdjzTOYpm2iB8icQ9szOvqFr3+9HygIS2Pa78ETuGzpGhrYlCBG4VEkwcskS8Q4UziYZWlbNUYGob+UP1k4ECIHjimwM6Md22eK7G9C8MSOVSfyQmtzX7ubnlQxY=
+	t=1727878812; cv=none; b=OwHUs4h22Q9whmuuzANnrJ6seC5+7LfSXV+JPWk253HSXFE4fPIrjC7HTLb/gR/BgJwTIHNSux8ABdEBLmyn7Znu70Aavd01hr0syla09BO9cUJ47Jnz0DzhPCRe/xyRcZlhZ9uKv78ce3J78J7YFqE2lZGh/4Klb+qabjGdHvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880266; c=relaxed/simple;
-	bh=bYl6RRW5eFsKSDzRrFVyQFYWF7vhP7Ygh1iQFGRQ988=;
+	s=arc-20240116; t=1727878812; c=relaxed/simple;
+	bh=70XUcbSN/RtfdKwC8JwpfKPGXvvpVk1BwcpolGFeeEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dt8lxdOe8EIC4zIbL8eer5iVyNpDFoO/nXth+90qveVr8OzFBHyuImOU3fQOPFb9HFGGIovY/Y/7RktAoDqECnA1smbGJBPOdMX0NzbXYs+kMMvtF6l48QeIyGV/BM41eyGTo0YGXTOd24LleZjhviTKTXfg4Hm2OuClsPxZ/XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaADlp3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D44C4CEC2;
-	Wed,  2 Oct 2024 14:44:26 +0000 (UTC)
+	 MIME-Version; b=p57XYXwczBxJv2dAfPyseS6aC+WU73mjje+16S1n6iD/rBPOLC83KVvs3iRlmtyJxpMORD2vzuD3mr79oWiKzCdBLDxlgUWFg5jHku+NyxN1XEj4b5PRL/lwvj+IOEmCaYc+tGPxfUs9yXCcOU5mAaC8ui55g7pzi4IzPyRTePc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C46Np6mP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F764C4CEC2;
+	Wed,  2 Oct 2024 14:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880266;
-	bh=bYl6RRW5eFsKSDzRrFVyQFYWF7vhP7Ygh1iQFGRQ988=;
+	s=korg; t=1727878811;
+	bh=70XUcbSN/RtfdKwC8JwpfKPGXvvpVk1BwcpolGFeeEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaADlp3SVQBgrmfLSmCo0qqF/v3nPK4JnK7LlvzlD8SlZOe2QoQFaUW4D1t/l/l5s
-	 3+4kjAeqzxvCsp7IbFXwcAyk5EgqkxmQDXCygERjSfN0C6sDTpYGLI4MmR4rHLfXJo
-	 lANy3Ybc4aJiEDidLr8i+mqfhBDL01TdBerqkRkw=
+	b=C46Np6mP/w64fEzE/yvp+Wl9hT5cPqJr0W0PaqX0O9iMQaRfuseMXeIVIxBdSnw51
+	 X/bx4EivFUjmeEQ1dDoy+CZ3mfkHyeMljmY50r4ZX+SI/Tq9CSfBMCsvyYDmzoKBWe
+	 7n92e1g9yoGG42YsAyUxV2JzFxl8uDRi638DiiJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 370/538] net: xilinx: axienet: Fix packet counting
+	Manish Pandey <quic_mapa@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 509/634] scsi: ufs: qcom: Update MODE_MAX cfg_bw value
 Date: Wed,  2 Oct 2024 15:00:09 +0200
-Message-ID: <20241002125807.033416563@linuxfoundation.org>
+Message-ID: <20241002125831.195718519@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Manish Pandey <quic_mapa@quicinc.com>
 
-[ Upstream commit 5a6caa2cfabb559309b5ce29ee7c8e9ce1a9a9df ]
+commit 0c40f079f1c808e7e480c795a79009f200366eb1 upstream.
 
-axienet_free_tx_chain returns the number of DMA descriptors it's
-handled. However, axienet_tx_poll treats the return as the number of
-packets. When scatter-gather SKBs are enabled, a single packet may use
-multiple DMA descriptors, which causes incorrect packet counts. Fix this
-by explicitly keepting track of the number of packets processed as
-separate from the DMA descriptors.
+Commit 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect bandwidth
+values for Gear 5") updated the ufs_qcom_bw_table for Gear 5. However, it
+missed updating the cfg_bw value for the max mode.
 
-Budget does not affect the number of Tx completions we can process for
-NAPI, so we use the ring size as the limit instead of budget. As we no
-longer return the number of descriptors processed to axienet_tx_poll, we
-now update tx_bd_ci in axienet_free_tx_chain.
+Hence update the cfg_bw value for the max mode for UFS 4.x devices.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20240913145156.2283067-1-sean.anderson@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8db8f6ce556a ("scsi: ufs: qcom: Add missing interconnect bandwidth values for Gear 5")
+Cc: stable@vger.kernel.org
+Signed-off-by: Manish Pandey <quic_mapa@quicinc.com>
+Link: https://lore.kernel.org/r/20240903063709.4335-1-quic_mapa@quicinc.com
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 23 +++++++++++--------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/ufs/host/ufs-qcom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index f869d61e3b867..62c10eb4f0adf 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -652,15 +652,15 @@ static int axienet_device_reset(struct net_device *ndev)
-  *
-  * Would either be called after a successful transmit operation, or after
-  * there was an error when setting up the chain.
-- * Returns the number of descriptors handled.
-+ * Returns the number of packets handled.
-  */
- static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
- 				 int nr_bds, bool force, u32 *sizep, int budget)
- {
- 	struct axidma_bd *cur_p;
- 	unsigned int status;
-+	int i, packets = 0;
- 	dma_addr_t phys;
--	int i;
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -93,7 +93,7 @@ static const struct __ufs_qcom_bw_table
+ 	[MODE_HS_RB][UFS_HS_G3][UFS_LANE_2] = { 1492582,	204800 },
+ 	[MODE_HS_RB][UFS_HS_G4][UFS_LANE_2] = { 2915200,	409600 },
+ 	[MODE_HS_RB][UFS_HS_G5][UFS_LANE_2] = { 5836800,	819200 },
+-	[MODE_MAX][0][0]		    = { 7643136,	307200 },
++	[MODE_MAX][0][0]		    = { 7643136,	819200 },
+ };
  
- 	for (i = 0; i < nr_bds; i++) {
- 		cur_p = &lp->tx_bd_v[(first_bd + i) % lp->tx_bd_num];
-@@ -679,8 +679,10 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
- 				 (cur_p->cntrl & XAXIDMA_BD_CTRL_LENGTH_MASK),
- 				 DMA_TO_DEVICE);
- 
--		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK))
-+		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK)) {
- 			napi_consume_skb(cur_p->skb, budget);
-+			packets++;
-+		}
- 
- 		cur_p->app0 = 0;
- 		cur_p->app1 = 0;
-@@ -696,7 +698,13 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
- 			*sizep += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
- 	}
- 
--	return i;
-+	if (!force) {
-+		lp->tx_bd_ci += i;
-+		if (lp->tx_bd_ci >= lp->tx_bd_num)
-+			lp->tx_bd_ci %= lp->tx_bd_num;
-+	}
-+
-+	return packets;
- }
- 
- /**
-@@ -747,13 +755,10 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
- 	u32 size = 0;
- 	int packets;
- 
--	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, budget, false, &size, budget);
-+	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, lp->tx_bd_num, false,
-+					&size, budget);
- 
- 	if (packets) {
--		lp->tx_bd_ci += packets;
--		if (lp->tx_bd_ci >= lp->tx_bd_num)
--			lp->tx_bd_ci %= lp->tx_bd_num;
--
- 		u64_stats_update_begin(&lp->tx_stat_sync);
- 		u64_stats_add(&lp->tx_packets, packets);
- 		u64_stats_add(&lp->tx_bytes, size);
--- 
-2.43.0
-
+ static void ufs_qcom_get_default_testbus_cfg(struct ufs_qcom_host *host);
 
 
 
