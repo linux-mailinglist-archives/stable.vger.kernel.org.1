@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-78975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8519998D5EB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3813398D936
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CEC51F24431
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F531F23299
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7621F1D07AC;
-	Wed,  2 Oct 2024 13:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F641D0E0F;
+	Wed,  2 Oct 2024 14:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2moHFLj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYaC4Ewf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317A31D0786;
-	Wed,  2 Oct 2024 13:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6441D0DC3;
+	Wed,  2 Oct 2024 14:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876075; cv=none; b=O7gOKEq5NN0AqJMjbterX/zWAD6bA3aAb9uV/Ix/h8irIDen2dw9y/b45zYLkHXAtnNMPJgTbcKZt4Tfuiehc/z6dd+Kx3d41B6nAKF1HdQNSdSx6fnot5cd2+RVzvOTTjr3hZXfWWmsA0+TwcRPMqXQ0SX3zBjEJi9FaVRaMJA=
+	t=1727877849; cv=none; b=eMFVmTN7E+8GKLq3aaDOuJbPPgqHV+72mGhgJgJHfh2Vd61RCmXkiXm3spmrHn22McGo/ISh0DFGaiCr0IUi0lOijKeBE9bpynZFNVbKyQs7orMGM23ceztSbGPpybsB6W/k+2D3YJnxQXGdg5TXhYa3KEzqD2LuD67O3iyxuZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876075; c=relaxed/simple;
-	bh=eoQCjwku+tYr9djYfyOCBruKEaew1cgVxxvqQveXq/Q=;
+	s=arc-20240116; t=1727877849; c=relaxed/simple;
+	bh=kJPzDIsOyPavXjf1wluvBuWrqc4BmOwhf424WRrNSos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGJluuEVxJrTtUQJZZNeFSp+cFIWUgyGBlXFcL6TaiDIEdIfeLdLAI7qwwlPRpvb7jldBRIB0xQIl/jOsllM6Pl9s/Yi1jFRDfwXpQN13Sr+I+ZZn9+RgnE1QuN3buCo5Cmcec5bq51GR34XXheUDTR4q4x3aSB40cSSDa3rwpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2moHFLj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61470C4CEC5;
-	Wed,  2 Oct 2024 13:34:34 +0000 (UTC)
+	 MIME-Version; b=XfWhCVdVEaWhUqemikt5H6Mw8W520Sj25q08igLBIm7Z31h6VdVk2t1dJogVRTh9r84jhEogw0EziJ4lzoDdWOrjVdkteiiS97o4BnYjiam2HBy6z3lH4QXSmGWVgwYIPmyTcnT8arEPfiGIG8oihUATfk7PLruc4rqQJfFA6sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYaC4Ewf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA39C4CEC2;
+	Wed,  2 Oct 2024 14:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876074;
-	bh=eoQCjwku+tYr9djYfyOCBruKEaew1cgVxxvqQveXq/Q=;
+	s=korg; t=1727877849;
+	bh=kJPzDIsOyPavXjf1wluvBuWrqc4BmOwhf424WRrNSos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2moHFLjH6iWLiI0FD833T6slAYKiirNCJ2oytWVUQjEmCoWd21ytHo/W1DQ6CbIY
-	 LfcAJLbIOA/54jzA8eXyylXt2aAWfq8vpGXEz571i7yWS3d8B6B914guhTBMrko1GD
-	 kchUdauE/3PpuuLcL+JVFVMj1UcwfFwFkUGJSwKI=
+	b=VYaC4EwfTzUFtLir3ktjAGYZm9OS5/SybR4YK3/wjITVBYLMWe7iBFAooa8G0hNqv
+	 dGM8h05omBurF4oPZsSn40H/S38prKp7nc/P95jKgoZmZljCBRseExfutm+cQlH5Bm
+	 PoJTGs6+6DCwdKpAkN3Bp1lBSh7tmGE1iouZJZgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yu <yu.c.chen@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Hongyan Xia <hongyan.xia2@arm.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Joshua Dickens <joshua.dickens@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 318/695] sched/pelt: Use rq_clock_task() for hw_pressure
+Subject: [PATCH 6.10 216/634] HID: wacom: Support sequence numbers smaller than 16-bit
 Date: Wed,  2 Oct 2024 14:55:16 +0200
-Message-ID: <20241002125835.144992421@linuxfoundation.org>
+Message-ID: <20241002125819.628938506@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-[ Upstream commit 84d265281d6cea65353fc24146280e0d86ac50cb ]
+[ Upstream commit 359673ea3a203611b4f6d0f28922a4b9d2cfbcc8 ]
 
-commit 97450eb90965 ("sched/pelt: Remove shift of thermal clock")
-removed the decay_shift for hw_pressure. This commit uses the
-sched_clock_task() in sched_tick() while it replaces the
-sched_clock_task() with rq_clock_pelt() in __update_blocked_others().
-This could bring inconsistence. One possible scenario I can think of
-is in ___update_load_sum():
+The current dropped packet reporting assumes that all sequence numbers
+are 16 bits in length. This results in misleading "Dropped" messages if
+the hardware uses fewer bits. For example, if a tablet uses only 8 bits
+to store its sequence number, once it rolls over from 255 -> 0, the
+driver will still be expecting a packet "256". This patch adjusts the
+logic to reset the next expected packet to logical_minimum whenever
+it overflows beyond logical_maximum.
 
-  u64 delta = now - sa->last_update_time
-
-'now' could be calculated by rq_clock_pelt() from
-__update_blocked_others(), and last_update_time was calculated by
-rq_clock_task() previously from sched_tick(). Usually the former
-chases after the latter, it cause a very large 'delta' and brings
-unexpected behavior.
-
-Fixes: 97450eb90965 ("sched/pelt: Remove shift of thermal clock")
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Hongyan Xia <hongyan.xia2@arm.com>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20240827112607.181206-1-yu.c.chen@intel.com
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Tested-by: Joshua Dickens <joshua.dickens@wacom.com>
+Fixes: 6d09085b38e5 ("HID: wacom: Adding Support for new usages")
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_wac.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d87e5e95f4a76..1d2cbdb162a67 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9365,9 +9365,10 @@ static bool __update_blocked_others(struct rq *rq, bool *done)
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index d84740be96426..8cf82a5f3a5bf 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -2492,9 +2492,14 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
+ 		wacom_wac->hid_data.barrelswitch3 = value;
+ 		return;
+ 	case WACOM_HID_WD_SEQUENCENUMBER:
+-		if (wacom_wac->hid_data.sequence_number != value)
+-			hid_warn(hdev, "Dropped %hu packets", (unsigned short)(value - wacom_wac->hid_data.sequence_number));
++		if (wacom_wac->hid_data.sequence_number != value) {
++			int sequence_size = field->logical_maximum - field->logical_minimum + 1;
++			int drop_count = (value - wacom_wac->hid_data.sequence_number) % sequence_size;
++			hid_warn(hdev, "Dropped %d packets", drop_count);
++		}
+ 		wacom_wac->hid_data.sequence_number = value + 1;
++		if (wacom_wac->hid_data.sequence_number > field->logical_maximum)
++			wacom_wac->hid_data.sequence_number = field->logical_minimum;
+ 		return;
+ 	}
  
- 	hw_pressure = arch_scale_hw_pressure(cpu_of(rq));
- 
-+	/* hw_pressure doesn't care about invariance */
- 	decayed = update_rt_rq_load_avg(now, rq, curr_class == &rt_sched_class) |
- 		  update_dl_rq_load_avg(now, rq, curr_class == &dl_sched_class) |
--		  update_hw_load_avg(now, rq, hw_pressure) |
-+		  update_hw_load_avg(rq_clock_task(rq), rq, hw_pressure) |
- 		  update_irq_load_avg(rq, 0);
- 
- 	if (others_have_blocked(rq))
 -- 
 2.43.0
 
