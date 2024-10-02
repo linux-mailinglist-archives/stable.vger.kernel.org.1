@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E8D98D52F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8759F98D833
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D351F22C01
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B98541C20F6C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8800D1D0485;
-	Wed,  2 Oct 2024 13:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FCE1D0965;
+	Wed,  2 Oct 2024 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL9rJtvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZTeAivS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4783E1CF28B;
-	Wed,  2 Oct 2024 13:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B68198A1A;
+	Wed,  2 Oct 2024 13:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875658; cv=none; b=rYixJ4hvmrF2sFDiLTWPEG7ky/rIgEuy46mc9m82qTgW3OLO5YyJFUgJdlH0DxRF+ZkXTcQPx6jp4QAuRoWOt27DL15su11c7lfQqbLy2X4c6wld2EkOwV2noDam6XW5N8T86J/cydNze7YaXIhq+rQulgsWA050Jj2F78HUctE=
+	t=1727877422; cv=none; b=Mr6Zk2Wu13+gzCvG+rwD5eE5diWKQBoRbZe+XzhqRVhUeuIZw5JscKopn2C6mL/rNE3gPOuCZ++gz6uvhSBO47c/f510+ljWxxaGD4LKS7wuuUHtYdmCOTT/Uf70Qk8ctYaCitNYb3heefaOF6SkTiUHrE/37BGo3ssUiVuCUIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875658; c=relaxed/simple;
-	bh=Leg9bqWEtb7mUybWziAi7F3xlg+BO/4H/4p5d7qcqRA=;
+	s=arc-20240116; t=1727877422; c=relaxed/simple;
+	bh=W+awzUbrQKy1I75TK2d2qf2vQkZySW3bjuX+kzNbYYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2iqvAys5djfDaG1oRRX5hFh5DzPVIZtptzoQsU3tA0VwJM1PXidWx7z+Q/SKZLS/bgaR8xM1Tq8KXshriX3DpyLjaNZu7Oda0XputS4DtVVZTRd18r8Nb1fFPveVehbMKJ0JW10r7+dEBAAox29IpyTse309h21zCANODaHFoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL9rJtvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59FBC4CEC5;
-	Wed,  2 Oct 2024 13:27:37 +0000 (UTC)
+	 MIME-Version; b=hiz5H0WNidWThspoRhxhRVSxECT1UBsxMz10LY1Ej4w8T0SOsJbMUQkzeGtG0DsTrTuygF8MF9SqGGRNLm9mvfvJ0nzBKPmCG8RjjIurSdSNxrBd6PZPzGLBCyyDIXk57r32U8u6A5jr7hCYDUs8jmdVV0ZYtiiqyGMQLgnKkP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZTeAivS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB4CC4CED5;
+	Wed,  2 Oct 2024 13:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875658;
-	bh=Leg9bqWEtb7mUybWziAi7F3xlg+BO/4H/4p5d7qcqRA=;
+	s=korg; t=1727877422;
+	bh=W+awzUbrQKy1I75TK2d2qf2vQkZySW3bjuX+kzNbYYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gL9rJtvyR5aTKhCWbLNhlvFs0w6/qLdc9dXSKspVPkdMAk1H6LY66+9Gfp7GMryGc
-	 S8JMUQlW8bdejHrLEetJcPnT9NxmC763z8Ia+Yx9rrUTbcdNys9DUhHWmeQyY00EG6
-	 aP45JKMo3jYYgbG9QNZjDyC5PrR4jNGqAbvkHXQs=
+	b=eZTeAivScj9BsiLD3zjzye2UAR5bpV7STDRrIrU8lHGRzFB1JCj+vRRUU0YDIqOPY
+	 u96gFegBbWmVqZGB0j7vrRnsIiMrb1UfRPvg9DC7tUuS0xl0KARCzBpgMwKI2npYUY
+	 Bj8nL2OfMjEAnfIk2FvUZWyDeLd9A3QJjV7EskxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Will Deacon <will@kernel.org>,
+	Weili Qian <qianweili@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 176/695] iommu/arm-smmu: Un-demote unhandled-fault msg
-Date: Wed,  2 Oct 2024 14:52:54 +0200
-Message-ID: <20241002125829.497861277@linuxfoundation.org>
+Subject: [PATCH 6.10 075/634] crypto: hisilicon/qm - inject error before stopping queue
+Date: Wed,  2 Oct 2024 14:52:55 +0200
+Message-ID: <20241002125814.068638562@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Weili Qian <qianweili@huawei.com>
 
-[ Upstream commit 98db56e4900837e4d5d3892b332dca76c8c9f68a ]
+[ Upstream commit b04f06fc0243600665b3b50253869533b7938468 ]
 
-Previously this was dev_err_ratelimited() but it got changed to a
-ratelimited dev_dbg().  Change it back to dev_err().
+The master ooo cannot be completely closed when the
+accelerator core reports memory error. Therefore, the driver
+needs to inject the qm error to close the master ooo. Currently,
+the qm error is injected after stopping queue, memory may be
+released immediately after stopping queue, causing the device to
+access the released memory. Therefore, error is injected to close master
+ooo before stopping queue to ensure that the device does not access
+the released memory.
 
-Fixes: d525b0af0c3b ("iommu/arm-smmu: Pretty-print context fault related regs")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Link: https://lore.kernel.org/r/20240809172716.10275-1-robdclark@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 6c6dd5802c2d ("crypto: hisilicon/qm - add controller reset interface")
+Signed-off-by: Weili Qian <qianweili@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/hisilicon/qm.c | 47 ++++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-index 723273440c211..8321962b37148 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -417,7 +417,7 @@ void arm_smmu_read_context_fault_info(struct arm_smmu_device *smmu, int idx,
- void arm_smmu_print_context_fault_info(struct arm_smmu_device *smmu, int idx,
- 				       const struct arm_smmu_context_fault_info *cfi)
- {
--	dev_dbg(smmu->dev,
-+	dev_err(smmu->dev,
- 		"Unhandled context fault: fsr=0x%x, iova=0x%08lx, fsynr=0x%x, cbfrsynra=0x%x, cb=%d\n",
- 		cfi->fsr, cfi->iova, cfi->fsynr, cfi->cbfrsynra, idx);
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index d51f0dc64affc..da562ceaaf277 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -4020,6 +4020,28 @@ static int qm_set_vf_mse(struct hisi_qm *qm, bool set)
+ 	return -ETIMEDOUT;
+ }
  
++static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
++{
++	u32 nfe_enb = 0;
++
++	/* Kunpeng930 hardware automatically close master ooo when NFE occurs */
++	if (qm->ver >= QM_HW_V3)
++		return;
++
++	if (!qm->err_status.is_dev_ecc_mbit &&
++	    qm->err_status.is_qm_ecc_mbit &&
++	    qm->err_ini->close_axi_master_ooo) {
++		qm->err_ini->close_axi_master_ooo(qm);
++	} else if (qm->err_status.is_dev_ecc_mbit &&
++		   !qm->err_status.is_qm_ecc_mbit &&
++		   !qm->err_ini->close_axi_master_ooo) {
++		nfe_enb = readl(qm->io_base + QM_RAS_NFE_ENABLE);
++		writel(nfe_enb & QM_RAS_NFE_MBIT_DISABLE,
++		       qm->io_base + QM_RAS_NFE_ENABLE);
++		writel(QM_ECC_MBIT, qm->io_base + QM_ABNORMAL_INT_SET);
++	}
++}
++
+ static int qm_vf_reset_prepare(struct hisi_qm *qm,
+ 			       enum qm_stop_reason stop_reason)
+ {
+@@ -4084,6 +4106,8 @@ static int qm_controller_reset_prepare(struct hisi_qm *qm)
+ 		return ret;
+ 	}
+ 
++	qm_dev_ecc_mbit_handle(qm);
++
+ 	/* PF obtains the information of VF by querying the register. */
+ 	qm_cmd_uninit(qm);
+ 
+@@ -4130,28 +4154,6 @@ static int qm_master_ooo_check(struct hisi_qm *qm)
+ 	return ret;
+ }
+ 
+-static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
+-{
+-	u32 nfe_enb = 0;
+-
+-	/* Kunpeng930 hardware automatically close master ooo when NFE occurs */
+-	if (qm->ver >= QM_HW_V3)
+-		return;
+-
+-	if (!qm->err_status.is_dev_ecc_mbit &&
+-	    qm->err_status.is_qm_ecc_mbit &&
+-	    qm->err_ini->close_axi_master_ooo) {
+-		qm->err_ini->close_axi_master_ooo(qm);
+-	} else if (qm->err_status.is_dev_ecc_mbit &&
+-		   !qm->err_status.is_qm_ecc_mbit &&
+-		   !qm->err_ini->close_axi_master_ooo) {
+-		nfe_enb = readl(qm->io_base + QM_RAS_NFE_ENABLE);
+-		writel(nfe_enb & QM_RAS_NFE_MBIT_DISABLE,
+-		       qm->io_base + QM_RAS_NFE_ENABLE);
+-		writel(QM_ECC_MBIT, qm->io_base + QM_ABNORMAL_INT_SET);
+-	}
+-}
+-
+ static int qm_soft_reset_prepare(struct hisi_qm *qm)
+ {
+ 	struct pci_dev *pdev = qm->pdev;
+@@ -4176,7 +4178,6 @@ static int qm_soft_reset_prepare(struct hisi_qm *qm)
+ 		return ret;
+ 	}
+ 
+-	qm_dev_ecc_mbit_handle(qm);
+ 	ret = qm_master_ooo_check(qm);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
