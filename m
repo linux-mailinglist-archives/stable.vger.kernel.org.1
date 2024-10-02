@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E89698D0D2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:08:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA3B98D0D7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:09:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0FF6B237F9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:08:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65862284499
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 10:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2088B1E493E;
-	Wed,  2 Oct 2024 10:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A921E493F;
+	Wed,  2 Oct 2024 10:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6GeK6pQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWJGZeR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A011E2033
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F371E493E
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 10:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727863708; cv=none; b=U34WtHzZ7fshwcRie0lkG7cHYhERIO9XiWJMZJe5OlFzRMvcu7HH1XKG4/EqzmTlo2YEC7VDMdKYW28BrElGpX05wVXcTUe0kCoaRu6BEmEiokgPXrWyPauCGtDM/gW5Mcvt8vXkorzeGn0Iz0jvfubDGyp7jsOYNcMkJ/aruEo=
+	t=1727863749; cv=none; b=PlikNMr8rz7XbNaHxJzFQsIF7vyweS3RIEgWsmgQEss1DyXEZ14hb1DL6Az8NcngVj4gxx65GgqWGbRg4rEpKj1t0jP0svOkSE552nnO7Rdlwd+n00IVTwE7ZXC4I3q0dqhLlgdqjprTQzkHpNEqaE8rX7lxZURXNIb1Hw/USSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727863708; c=relaxed/simple;
-	bh=ow/sRCgSi+qqgp9WpHBRd8nSqLsFo2qR8NQQ2RUJaD4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ccW2i8VP7Pk0h3IJRedBVrE7h4b4GPv1YfP2wsUY43bCgH6wnPszgDvYWdLqgnoIwSkUvIBbjem6yhBEtjMF8p3yVumeYb+roT9T946bKl6uXoebw/U9qqeSYIVJD3xQu7aqOdQFg3M4rmMzN1QMTh//ieC4oFyavMTGfxcIcfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6GeK6pQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA404C4CEC5;
-	Wed,  2 Oct 2024 10:08:27 +0000 (UTC)
+	s=arc-20240116; t=1727863749; c=relaxed/simple;
+	bh=++BXNq5qbHrd6+ak5Q1Muah1LLsp76amA+YxLIJydd0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SqrPP7gY9avJEip602p27czUhmHWONSKb89/o1Vh/Slr76CzaNUan0yIcf/3bQBTiXvkU/+h6uonqDlqSjgaBsQY+keWODoQp6KvdMUa6qmaZLmdlUku4EDSPZe/ra7pM7olGXajyyDGl1OcvIVEtSV9M9ieP5LYKtoiWAnIwXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWJGZeR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2E5C4CECD;
+	Wed,  2 Oct 2024 10:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727863708;
-	bh=ow/sRCgSi+qqgp9WpHBRd8nSqLsFo2qR8NQQ2RUJaD4=;
+	s=korg; t=1727863748;
+	bh=++BXNq5qbHrd6+ak5Q1Muah1LLsp76amA+YxLIJydd0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=h6GeK6pQuiEbAVnadHThqZWrHoyWcUbOGS2mCW4Iz28dSm6HJUib982IbJeyNmWQR
-	 Bj/ejVtOz0b/8TyM2AqLv+i527aQ/q+7LVuzzA1tNnhjIGpOkcDDXAyVe5/edBQpln
-	 Jh0oGRVgINzvCgZWuB2FKioWAOVuZUZOJ+UwkI44=
-Subject: FAILED: patch "[PATCH] selftest mm/mseal: fix" failed to apply to 6.10-stable tree
-To: jeffxu@chromium.org,Liam.Howlett@oracle.com,akpm@linux-foundation.org,dave.hansen@intel.com,lorenzo.stoakes@oracle.com,mpe@ellerman.id.au,pedro.falcato@gmail.com,stable@vger.kernel.org,vbabka@suse.cz,willy@infradead.org
+	b=bWJGZeR/GMDape94WEpeJzZDqZQSsTQLP3NuFR3s5IA+llmw4Onr1JD4pHyhxSxZ+
+	 PmjjJShDAoDyv8MKkr3RbpV6wLbgzoyiwndEBLTVCALg7ocUaSAG7HuBcpXL7hLHCv
+	 HSeLKO51i2u3xHekEPm4tSCUY7q2bBUX4luBSPFQ=
+Subject: FAILED: patch "[PATCH] mm/codetag: fix pgalloc_tag_split()" failed to apply to 6.11-stable tree
+To: yuzhao@google.com,akpm@linux-foundation.org,kent.overstreet@linux.dev,muchun.song@linux.dev,stable@vger.kernel.org,surenb@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 12:08:20 +0200
-Message-ID: <2024100220-poppy-baggage-6f39@gregkh>
+Date: Wed, 02 Oct 2024 12:09:05 +0200
+Message-ID: <2024100205-snowsuit-agony-4387@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.11-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
 git checkout FETCH_HEAD
-git cherry-pick -x 072cd213b75eb01fcf40eff898f8d5c008ce1457
+git cherry-pick -x 95599ef684d01136a8b77c16a7c853496786e173
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100220-poppy-baggage-6f39@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100205-snowsuit-agony-4387@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
 Possible dependencies:
 
-072cd213b75e ("selftest mm/mseal: fix test_seal_mremap_move_dontunmap_anyaddr")
+95599ef684d0 ("mm/codetag: fix pgalloc_tag_split()")
+cf54f310d0d3 ("mm/hugetlb: use __GFP_COMP for gigantic folios")
+c0f398c3b2cf ("mm/hugetlb_vmemmap: batch HVO work when demoting")
 
 thanks,
 
@@ -77,199 +79,188 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 072cd213b75eb01fcf40eff898f8d5c008ce1457 Mon Sep 17 00:00:00 2001
-From: Jeff Xu <jeffxu@chromium.org>
-Date: Wed, 7 Aug 2024 21:23:20 +0000
-Subject: [PATCH] selftest mm/mseal: fix
- test_seal_mremap_move_dontunmap_anyaddr
+From 95599ef684d01136a8b77c16a7c853496786e173 Mon Sep 17 00:00:00 2001
+From: Yu Zhao <yuzhao@google.com>
+Date: Thu, 5 Sep 2024 22:21:07 -0600
+Subject: [PATCH] mm/codetag: fix pgalloc_tag_split()
 
-the syscall remap accepts following:
+The current assumption is that a large folio can only be split into
+order-0 folios.  That is not the case for hugeTLB demotion, nor for THP
+split: see commit c010d47f107f ("mm: thp: split huge page to any lower
+order pages").
 
-mremap(src, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, dst)
+When a large folio is split into ones of a lower non-zero order, only the
+new head pages should be tagged.  Tagging tail pages can cause imbalanced
+"calls" counters, since only head pages are untagged by pgalloc_tag_sub()
+and the "calls" counts on tail pages are leaked, e.g.,
 
-when the src is sealed, the call will fail with error code:
-EPERM
+  # echo 2048kB >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote_size
+  # echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+  # time echo 700 >/sys/kernel/mm/hugepages/hugepages-1048576kB/demote
+  # echo 0 >/sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+  # grep alloc_gigantic_folio /proc/allocinfo
 
-Previously, the test uses hard-coded 0xdeaddead as dst, and it
-will fail on the system with newer glibc installed.
+Before this patch:
+  0  549427200  mm/hugetlb.c:1549 func:alloc_gigantic_folio
 
-This patch removes test's dependency on glibc for mremap(), also
-fix the test and remove the hardcoded address.
+  real  0m2.057s
+  user  0m0.000s
+  sys   0m2.051s
 
-Link: https://lkml.kernel.org/r/20240807212320.2831848-1-jeffxu@chromium.org
-Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
-Signed-off-by: Jeff Xu <jeffxu@chromium.org>
-Reported-by: Pedro Falcato <pedro.falcato@gmail.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+After this patch:
+  0          0  mm/hugetlb.c:1549 func:alloc_gigantic_folio
+
+  real  0m1.711s
+  user  0m0.000s
+  sys   0m1.704s
+
+Not tagging tail pages also improves the splitting time, e.g., by about
+15% when demoting 1GB hugeTLB folios to 2MB ones, as shown above.
+
+Link: https://lkml.kernel.org/r/20240906042108.1150526-2-yuzhao@google.com
+Fixes: be25d1d4e822 ("mm: create new codetag references during page splitting")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
-index 7eec3f0152e3..bd0bfda7aae7 100644
---- a/tools/testing/selftests/mm/mseal_test.c
-+++ b/tools/testing/selftests/mm/mseal_test.c
-@@ -110,6 +110,16 @@ static int sys_madvise(void *start, size_t len, int types)
- 	return sret;
- }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index b0ff06d18c71..6bb778cbaabf 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4084,4 +4084,34 @@ void vma_pgtable_walk_end(struct vm_area_struct *vma);
  
-+static void *sys_mremap(void *addr, size_t old_len, size_t new_len,
-+	unsigned long flags, void *new_addr)
+ int reserve_mem_find_by_name(const char *name, phys_addr_t *start, phys_addr_t *size);
+ 
++#ifdef CONFIG_MEM_ALLOC_PROFILING
++static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
 +{
-+	void *sret;
++	int i;
++	struct alloc_tag *tag;
++	unsigned int nr_pages = 1 << new_order;
 +
-+	errno = 0;
-+	sret = (void *) syscall(__NR_mremap, addr, old_len, new_len, flags, new_addr);
-+	return sret;
++	if (!mem_alloc_profiling_enabled())
++		return;
++
++	tag = pgalloc_tag_get(&folio->page);
++	if (!tag)
++		return;
++
++	for (i = nr_pages; i < (1 << old_order); i += nr_pages) {
++		union codetag_ref *ref = get_page_tag_ref(folio_page(folio, i));
++
++		if (ref) {
++			/* Set new reference to point to the original tag */
++			alloc_tag_ref_set(ref, tag);
++			put_page_tag_ref(ref);
++		}
++	}
 +}
++#else /* !CONFIG_MEM_ALLOC_PROFILING */
++static inline void pgalloc_tag_split(struct folio *folio, int old_order, int new_order)
++{
++}
++#endif /* CONFIG_MEM_ALLOC_PROFILING */
 +
- static int sys_pkey_alloc(unsigned long flags, unsigned long init_val)
- {
- 	int ret = syscall(__NR_pkey_alloc, flags, init_val);
-@@ -1115,12 +1125,12 @@ static void test_seal_mremap_shrink(bool seal)
+ #endif /* _LINUX_MM_H */
+diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
+index 207f0c83c8e9..59a3deb792a8 100644
+--- a/include/linux/pgalloc_tag.h
++++ b/include/linux/pgalloc_tag.h
+@@ -80,36 +80,6 @@ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr)
  	}
- 
- 	/* shrink from 4 pages to 2 pages. */
--	ret2 = mremap(ptr, size, 2 * page_size, 0, 0);
-+	ret2 = sys_mremap(ptr, size, 2 * page_size, 0, 0);
- 	if (seal) {
--		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
-+		FAIL_TEST_IF_FALSE(ret2 == (void *) MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
--		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
-+		FAIL_TEST_IF_FALSE(ret2 != (void *) MAP_FAILED);
- 
- 	}
- 
-@@ -1147,7 +1157,7 @@ static void test_seal_mremap_expand(bool seal)
- 	}
- 
- 	/* expand from 2 page to 4 pages. */
--	ret2 = mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
-+	ret2 = sys_mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
-@@ -1180,7 +1190,7 @@ static void test_seal_mremap_move(bool seal)
- 	}
- 
- 	/* move from ptr to fixed address. */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
-@@ -1299,7 +1309,7 @@ static void test_seal_mremap_shrink_fixed(bool seal)
- 	}
- 
- 	/* mremap to move and shrink to fixed address */
--	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
-+	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
- 			newAddr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
-@@ -1330,7 +1340,7 @@ static void test_seal_mremap_expand_fixed(bool seal)
- 	}
- 
- 	/* mremap to move and expand to fixed address */
--	ret2 = mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
-+	ret2 = sys_mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
- 			newAddr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
-@@ -1361,7 +1371,7 @@ static void test_seal_mremap_move_fixed(bool seal)
- 	}
- 
- 	/* mremap to move to fixed address */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
-@@ -1390,14 +1400,13 @@ static void test_seal_mremap_move_fixed_zero(bool seal)
- 	/*
- 	 * MREMAP_FIXED can move the mapping to zero address
- 	 */
--	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
-+	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
- 			0);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
- 		FAIL_TEST_IF_FALSE(ret2 == 0);
--
- 	}
- 
- 	REPORT_TEST_PASS();
-@@ -1420,13 +1429,13 @@ static void test_seal_mremap_move_dontunmap(bool seal)
- 	}
- 
- 	/* mremap to move, and don't unmap src addr. */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
-+		/* kernel will allocate a new address */
- 		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
--
- 	}
- 
- 	REPORT_TEST_PASS();
-@@ -1434,7 +1443,7 @@ static void test_seal_mremap_move_dontunmap(bool seal)
- 
- static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
- {
--	void *ptr;
-+	void *ptr, *ptr2;
- 	unsigned long page_size = getpagesize();
- 	unsigned long size = 4 * page_size;
- 	int ret;
-@@ -1449,24 +1458,30 @@ static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
- 	}
- 
- 	/*
--	 * The 0xdeaddead should not have effect on dest addr
--	 * when MREMAP_DONTUNMAP is set.
-+	 * The new address is any address that not allocated.
-+	 * use allocate/free to similate that.
- 	 */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
--			0xdeaddead);
-+	setup_single_address(size, &ptr2);
-+	FAIL_TEST_IF_FALSE(ptr2 != (void *)-1);
-+	ret = sys_munmap(ptr2, size);
-+	FAIL_TEST_IF_FALSE(!ret);
-+
-+	/*
-+	 * remap to any address.
-+	 */
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
-+			(void *) ptr2);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
--		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
--		FAIL_TEST_IF_FALSE((long)ret2 != 0xdeaddead);
--
-+		/* remap success and return ptr2 */
-+		FAIL_TEST_IF_FALSE(ret2 ==  ptr2);
- 	}
- 
- 	REPORT_TEST_PASS();
  }
  
+-static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
+-{
+-	int i;
+-	struct page_ext *first_page_ext;
+-	struct page_ext *page_ext;
+-	union codetag_ref *ref;
+-	struct alloc_tag *tag;
 -
- static void test_seal_merge_and_split(void)
+-	if (!mem_alloc_profiling_enabled())
+-		return;
+-
+-	first_page_ext = page_ext = page_ext_get(page);
+-	if (unlikely(!page_ext))
+-		return;
+-
+-	ref = codetag_ref_from_page_ext(page_ext);
+-	if (!ref->ct)
+-		goto out;
+-
+-	tag = ct_to_alloc_tag(ref->ct);
+-	page_ext = page_ext_next(page_ext);
+-	for (i = 1; i < nr; i++) {
+-		/* Set new reference to point to the original tag */
+-		alloc_tag_ref_set(codetag_ref_from_page_ext(page_ext), tag);
+-		page_ext = page_ext_next(page_ext);
+-	}
+-out:
+-	page_ext_put(first_page_ext);
+-}
+-
+ static inline struct alloc_tag *pgalloc_tag_get(struct page *page)
  {
- 	void *ptr;
+ 	struct alloc_tag *tag = NULL;
+@@ -142,7 +112,6 @@ static inline void clear_page_tag_ref(struct page *page) {}
+ static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
+ 				   unsigned int nr) {}
+ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
+-static inline void pgalloc_tag_split(struct page *page, unsigned int nr) {}
+ static inline struct alloc_tag *pgalloc_tag_get(struct page *page) { return NULL; }
+ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr) {}
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index f15f7faf2a63..cc2872f12030 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3226,7 +3226,7 @@ static void __split_huge_page(struct page *page, struct list_head *list,
+ 	/* Caller disabled irqs, so they are still disabled here */
+ 
+ 	split_page_owner(head, order, new_order);
+-	pgalloc_tag_split(head, 1 << order);
++	pgalloc_tag_split(folio, order, new_order);
+ 
+ 	/* See comment in __split_huge_page_tail() */
+ 	if (folio_test_anon(folio)) {
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 3faf5aad142d..a8624c07d8bf 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3778,7 +3778,7 @@ static long demote_free_hugetlb_folios(struct hstate *src, struct hstate *dst,
+ 		list_del(&folio->lru);
+ 
+ 		split_page_owner(&folio->page, huge_page_order(src), huge_page_order(dst));
+-		pgalloc_tag_split(&folio->page, 1 <<  huge_page_order(src));
++		pgalloc_tag_split(folio, huge_page_order(src), huge_page_order(dst));
+ 
+ 		for (i = 0; i < pages_per_huge_page(src); i += pages_per_huge_page(dst)) {
+ 			struct page *page = folio_page(folio, i);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 74f13f676985..874e006f3d1c 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2776,7 +2776,7 @@ void split_page(struct page *page, unsigned int order)
+ 	for (i = 1; i < (1 << order); i++)
+ 		set_page_refcounted(page + i);
+ 	split_page_owner(page, order, 0);
+-	pgalloc_tag_split(page, 1 << order);
++	pgalloc_tag_split(page_folio(page), order, 0);
+ 	split_page_memcg(page, order, 0);
+ }
+ EXPORT_SYMBOL_GPL(split_page);
+@@ -4974,7 +4974,7 @@ static void *make_alloc_exact(unsigned long addr, unsigned int order,
+ 		struct page *last = page + nr;
+ 
+ 		split_page_owner(page, order, 0);
+-		pgalloc_tag_split(page, 1 << order);
++		pgalloc_tag_split(page_folio(page), order, 0);
+ 		split_page_memcg(page, order, 0);
+ 		while (page < --last)
+ 			set_page_refcounted(last);
 
 
