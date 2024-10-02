@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-80377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006DA98DD28
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A269D98DABD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DC131F230CC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A46B1F24B02
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4DB1D1726;
-	Wed,  2 Oct 2024 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA011D1754;
+	Wed,  2 Oct 2024 14:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebJcnwpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mz+hfQtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85CB1EA80;
-	Wed,  2 Oct 2024 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD47B1D1752;
+	Wed,  2 Oct 2024 14:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880196; cv=none; b=Rk1FCSZE2adyjVMYco8fWwBIJ2hWlX0mrCshKeaQd+LT0R4S5VT38jeCyizjWSo7fzf7xtYNRMcDCXb5aDvOF5S4HIQqrrKGNuUPdHyI0q+jvRln0bz72HRBtMh91u2vngkL4CFam1B1/DYxgRlJnyN+kjCvOJ1n1SKzxMsyi7g=
+	t=1727878740; cv=none; b=eS2SiPhcQwoDhRrrzX3i4LuM1cfzjY6mwkpOboZWo4xaaFx1shp0q+uOaxeiF+tegk8jkHWW0h0FjF0zVEQu8FmXpzVu14DIJOwqCArbdOw+BGDwZkQZ3TwrPoS7yJqGeK6D+HAVIZWVPjLZi7FINouXTQ7IHN8FlopmPUy0R4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880196; c=relaxed/simple;
-	bh=mqWCILg/ruJipzg0dKu38lx3DrhAgJcR9g1r5xc5XSs=;
+	s=arc-20240116; t=1727878740; c=relaxed/simple;
+	bh=Oy69riVdUbQltVhI7hoejnLjRIsARA5mC6nLiv2QiQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dd3MT++rkyCda8lgbpaj6E0k5zbEPlR0m0rUq0DcXUMwOqZmxTy3qayE3yD25HdWOcR7gpfM9UttEHiXa5fg88AWTCpdH2xRtdazVBM/hGphv5AJYklKIDfEoTo/aDorvsrvc+Si5kVPE1ePqWHHGBICSySM8RVFTTP0GzvYCWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebJcnwpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD05C4CEC2;
-	Wed,  2 Oct 2024 14:43:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HMyMGPy1yTj9OzvcL76zZYcIy6IC2aAdr+aAd3E6LNmxnFTWmAYvNspc/hh2/PWrxkzFd3auGmi1C9sS6zjA87Ljs0v3WNn5/jxlOmXMUcwjgBCGCHDcRqgfPXZ5zh60nnGcSo//doyp4J1b3/cA5ZMVpoj8FXjwk7JLgAWikpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mz+hfQtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5462EC4CEC2;
+	Wed,  2 Oct 2024 14:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880196;
-	bh=mqWCILg/ruJipzg0dKu38lx3DrhAgJcR9g1r5xc5XSs=;
+	s=korg; t=1727878740;
+	bh=Oy69riVdUbQltVhI7hoejnLjRIsARA5mC6nLiv2QiQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebJcnwpQ/QvMQwyb7FeJQG3qhKWlVifoxk0XrGH3ip9XFMNsvGyEOumr5BrtayUfa
-	 /+Fu8x5+DXuFAIc8ZXu3cocU4lI4lCkE1pBfLEBJYYBDiR8rXVVcyFiMLBaeRR2JHS
-	 kXpdwe2mVUsvpbe/DTVNF/awPx/cr0YyaSJMbsdw=
+	b=mz+hfQtJjWv58MubSBLfMRwwMmxpxdeJBxrNQaa+dk4SPyZq+6ACZcHlMmeMHGNb9
+	 led2XpwibIozUoT7nf4uBI2jlY6VA+I7vJ4/UK0g8hHgbJc1RHGEkJeVaeqIVZuS/5
+	 euhB5vmOlvvTte+rhNLw/72p/xfZKHKnew7Yqbz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenbo Li <liwenbo.martin@bytedance.com>,
-	Jiahui Cen <cenjiahui@bytedance.com>,
-	Ying Fang <fangying.tommy@bytedance.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 377/538] virtio_net: Fix mismatched buf address when unmapping for small packets
-Date: Wed,  2 Oct 2024 15:00:16 +0200
-Message-ID: <20241002125807.312193216@linuxfoundation.org>
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>
+Subject: [PATCH 6.10 517/634] arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled
+Date: Wed,  2 Oct 2024 15:00:17 +0200
+Message-ID: <20241002125831.516319313@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenbo Li <liwenbo.martin@bytedance.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit c11a49d58ad229a1be1ebe08a2b68fedf83db6c8 ]
+commit 09d385679487c58f0859c1ad4f404ba3df2f8830 upstream.
 
-Currently, the virtio-net driver will perform a pre-dma-mapping for
-small or mergeable RX buffer. But for small packets, a mismatched address
-without VIRTNET_RX_PAD and xdp_headroom is used for unmapping.
+USB 3.0 on xhci1 is not used, as the controller shares the same PHY as
+pcie1. The latter is enabled to support the M.2 PCIe WLAN card on this
+design.
 
-That will result in unsynchronized buffers when SWIOTLB is enabled, for
-example, when running as a TDX guest.
+Mark USB 3.0 as disabled on this controller using the
+"mediatek,u3p-dis-msk" property.
 
-This patch unifies the address passed to the virtio core as the address of
-the virtnet header and fixes the mismatched buffer address.
-
-Changes from v2: unify the buf that passed to the virtio core in small
-and merge mode.
-Changes from v1: Use ctx to get xdp_headroom.
-
-Fixes: 295525e29a5b ("virtio_net: merge dma operations when filling mergeable buffers")
-Signed-off-by: Wenbo Li <liwenbo.martin@bytedance.com>
-Signed-off-by: Jiahui Cen <cenjiahui@bytedance.com>
-Signed-off-by: Ying Fang <fangying.tommy@bytedance.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://patch.msgid.link/20240919081351.51772-1-liwenbo.martin@bytedance.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Nícolas F. R. A. Prado <nfraprado@collabora.com> #KernelCI
+Closes: https://lore.kernel.org/all/9fce9838-ef87-4d1b-b3df-63e1ddb0ec51@notapiano/
+Fixes: b6267a396e1c ("arm64: dts: mediatek: cherry: Enable T-PHYs and USB XHCI controllers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240731034411.371178-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index bc01f2dafa948..2da3be3fb9423 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1269,6 +1269,11 @@ static struct sk_buff *receive_small(struct net_device *dev,
- 	struct page *page = virt_to_head_page(buf);
- 	struct sk_buff *skb;
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -1359,6 +1359,7 @@
+ 	rx-fifo-depth = <3072>;
+ 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
+ 	vbus-supply = <&usb_vbus>;
++	mediatek,u3p-dis-msk = <1>;
+ };
  
-+	/* We passed the address of virtnet header to virtio-core,
-+	 * so truncate the padding.
-+	 */
-+	buf -= VIRTNET_RX_PAD + xdp_headroom;
-+
- 	len -= vi->hdr_len;
- 	u64_stats_add(&stats->bytes, len);
- 
-@@ -1859,8 +1864,9 @@ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
- 	if (unlikely(!buf))
- 		return -ENOMEM;
- 
--	virtnet_rq_init_one_sg(rq, buf + VIRTNET_RX_PAD + xdp_headroom,
--			       vi->hdr_len + GOOD_PACKET_LEN);
-+	buf += VIRTNET_RX_PAD + xdp_headroom;
-+
-+	virtnet_rq_init_one_sg(rq, buf, vi->hdr_len + GOOD_PACKET_LEN);
- 
- 	err = virtqueue_add_inbuf_ctx(rq->vq, rq->sg, 1, buf, ctx, gfp);
- 	if (err < 0) {
--- 
-2.43.0
-
+ &xhci2 {
 
 
 
