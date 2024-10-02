@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E52198D8D4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D906398D5C5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D71AEB24177
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B502288EB0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9017C1D12E2;
-	Wed,  2 Oct 2024 14:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976591D0798;
+	Wed,  2 Oct 2024 13:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAjSNLQE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2dKb5Ju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2351D0F47;
-	Wed,  2 Oct 2024 14:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EF21D04B6;
+	Wed,  2 Oct 2024 13:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877663; cv=none; b=ZxIGf9Fl7O1tIHszwtzdgIlUdNmLUtRQ3HcKuq2JVghpijf9qMyBXHg/ZMtP31msvd33rH/x0Llu7HxzIfG/e+mzvYhGqlGLPM8di4efu+dookef8iQY/RPFkc8RXpfOPS6daK19VdOE9DUAJD8P4b/eqiwCRCuK3h3nJAgnMak=
+	t=1727876001; cv=none; b=piF1le1vcW1sPbXNyRbES9JuBMPWK9V7kZdc09gRTTGIbTv06npd8+Y1Om25pmsULP2QlY34GMLwe+J3mCfQZ2dbFGZkeyQO3BbEsse4vUhiCDuURQM9D3ftW8C6cWGDB0zjpKgB7AOouSzJKaJSxE1M65kGZDk8r4/7EQDb7QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877663; c=relaxed/simple;
-	bh=FA+PJbYrEKVvbneZ8Xkds+A/MQU0sdNT2ryL8bNxmEU=;
+	s=arc-20240116; t=1727876001; c=relaxed/simple;
+	bh=IUTvbI02bD0h3uKCoQpBDEai3wkUvodo/b20fLhzvhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKPKIpPu26A04VN+shKwzC/TM0FExqK8jmvAqMtvI5yfnV1AtzB9l5b+7Kyg5ArTBtwlOS6PktepVR9Mmz+L6rtikl3AZ1n/MsDK6k5xqoQjS8E6Sf/u2yHCUox+BwVvHEu+jTHyG4dzRD9INel6z8iUc7F/5mT1mr8YLX7ockw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAjSNLQE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C933FC4CEC2;
-	Wed,  2 Oct 2024 14:01:02 +0000 (UTC)
+	 MIME-Version; b=qcOe9kvbXE+9+NGVTomglAVzRtYph477tdAgr27zeJCIaKzRAwrSssUhhwLcFzJPrDgAZG5rzr/5noPeYYuOXLEM+ihm9hREPTKsBo1mIonNV/2l4eVxxm1bTvZ1vgalKlzAVdEMbHDqdmxZW+lL867sz9tdmVwOmvEAmr0FrRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2dKb5Ju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C90C4CEC5;
+	Wed,  2 Oct 2024 13:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877663;
-	bh=FA+PJbYrEKVvbneZ8Xkds+A/MQU0sdNT2ryL8bNxmEU=;
+	s=korg; t=1727876001;
+	bh=IUTvbI02bD0h3uKCoQpBDEai3wkUvodo/b20fLhzvhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAjSNLQE2tbfTwgzjUhnMaA/T24LnGSj3XpvmRhgG5yxMJuvwV82TfpxdPNIdQX26
-	 djVtIeNLH368LDYcn1Pgprx08IomKKi5DCCbVb9clQDPuWA3OS+SgKnO4ti+k/sWlu
-	 bn6v2boAw7OJBOdGXqsY6t2rBtbizl7KpbnRWEKw=
+	b=F2dKb5Ju4GBxtS1ZJ132jsll/t71o5LKXwj8z36UvWyL8zBnSpgwGp3CFJYHLEvS9
+	 V7TzO5vc94P9PuUkEcFhWhJ3MbyHZJC5vfEEkCNvezN7wameYxQjKaxKhZQhLG+FlR
+	 tOYNtMp1HWoNb8aWJygodN3S1X4tsujIFJt7VBVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Jonathan McDowell <noodles@meta.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 151/634] x86/boot/64: Strip percpu address space when setting up GDT descriptors
+Subject: [PATCH 6.11 253/695] tpm: Clean up TPM space after command failure
 Date: Wed,  2 Oct 2024 14:54:11 +0200
-Message-ID: <20241002125817.070554225@linuxfoundation.org>
+Message-ID: <20241002125832.547289036@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Jonathan McDowell <noodles@meta.com>
 
-[ Upstream commit b51207dc02ec3aeaa849e419f79055d7334845b6 ]
+[ Upstream commit e3aaebcbb7c6b403416f442d1de70d437ce313a7 ]
 
-init_per_cpu_var() returns a pointer in the percpu address space while
-rip_rel_ptr() expects a pointer in the generic address space.
+tpm_dev_transmit prepares the TPM space before attempting command
+transmission. However if the command fails no rollback of this
+preparation is done. This can result in transient handles being leaked
+if the device is subsequently closed with no further commands performed.
 
-When strict address space checks are enabled, GCC's named address space
-checks fail:
+Fix this by flushing the space in the event of command transmission
+failure.
 
-  asm.h:124:63: error: passing argument 1 of 'rip_rel_ptr' from
-                       pointer to non-enclosed address space
-
-Add a explicit cast to remove address space of the returned pointer.
-
-Fixes: 11e36b0f7c21 ("x86/boot/64: Load the final kernel GDT during early boot directly, remove startup_gdt[]")
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240819083334.148536-1-ubizjak@gmail.com
+Fixes: 745b361e989a ("tpm: infrastructure for TPM spaces")
+Signed-off-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/head64.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/tpm/tpm-dev-common.c | 2 ++
+ drivers/char/tpm/tpm2-space.c     | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index a817ed0724d1e..4b9d4557fc94a 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -559,10 +559,11 @@ void early_setup_idt(void)
-  */
- void __head startup_64_setup_gdt_idt(void)
- {
-+	struct desc_struct *gdt = (void *)(__force unsigned long)init_per_cpu_var(gdt_page.gdt);
- 	void *handler = NULL;
+diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
+index 30b4c288c1bbc..c3fbbf4d3db79 100644
+--- a/drivers/char/tpm/tpm-dev-common.c
++++ b/drivers/char/tpm/tpm-dev-common.c
+@@ -47,6 +47,8 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
  
- 	struct desc_ptr startup_gdt_descr = {
--		.address = (unsigned long)&RIP_REL_REF(init_per_cpu_var(gdt_page.gdt)),
-+		.address = (unsigned long)&RIP_REL_REF(*gdt),
- 		.size    = GDT_SIZE - 1,
- 	};
+ 	if (!ret)
+ 		ret = tpm2_commit_space(chip, space, buf, &len);
++	else
++		tpm2_flush_space(chip);
  
+ out_rc:
+ 	return ret ? ret : len;
+diff --git a/drivers/char/tpm/tpm2-space.c b/drivers/char/tpm/tpm2-space.c
+index 4892d491da8da..25a66870c165c 100644
+--- a/drivers/char/tpm/tpm2-space.c
++++ b/drivers/char/tpm/tpm2-space.c
+@@ -169,6 +169,9 @@ void tpm2_flush_space(struct tpm_chip *chip)
+ 	struct tpm_space *space = &chip->work_space;
+ 	int i;
+ 
++	if (!space)
++		return;
++
+ 	for (i = 0; i < ARRAY_SIZE(space->context_tbl); i++)
+ 		if (space->context_tbl[i] && ~space->context_tbl[i])
+ 			tpm2_flush_context(chip, space->context_tbl[i]);
 -- 
 2.43.0
 
