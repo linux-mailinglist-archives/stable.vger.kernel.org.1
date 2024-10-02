@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-79572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5833198D930
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4C898D5DE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CC582880FC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 975CD1C21BEE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086711D0B90;
-	Wed,  2 Oct 2024 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B226F1D07A2;
+	Wed,  2 Oct 2024 13:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILcrYELs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkc0bN5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94031D0B8E;
-	Wed,  2 Oct 2024 14:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECCE1D0174;
+	Wed,  2 Oct 2024 13:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877834; cv=none; b=borDmphzX+a15Xk8VUxtT4rMRW0OfJnRbcxlLal00/oOoutI2V2HyMRWRaCx5WgUEn12unJzdZOMa3HQ2KuZaSQiXkJrRu/jt3smZHgFYjF1HQAQFwUNTkYEhLqKioYPmlZOY53fH1tAKfKWdPRk8Cnxs4UcaUBbSvM/wCAqhNk=
+	t=1727876057; cv=none; b=Ka5kjO/YmhVXb1mt/4vo1nAGm6Rkc/A/XJXV9TsM5GLugxMbXHhWvT6W5PE3q4jAbeeh8DvcfvRL/DNx7NeG9oxW4iB7F6bOpodpSz5HY5kabI+Cd0MRlkeXfDupGbPrMz97QQR9NI65LxYv84Fka8uDouqt/HikmYyTstljOWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877834; c=relaxed/simple;
-	bh=8XGBvRM+/Gq7UKE2Ycm+D8rzWS1c+njYVPWX+LxQXSU=;
+	s=arc-20240116; t=1727876057; c=relaxed/simple;
+	bh=AF+FCp6GAh/eLUIjSwTf9FBL37PBMYLUryElwhqCHKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gp/IUDbJ7JWGyUfFE5PNWimDLB2Dfos81L/2az/ePEXELKKXUjJ3HrEOZ/R+k+BlgLKrWH2O+Jp/yhGnzynaBJ6jz3IHTBDuRZSxtvpgbP4AQ/qITB105+1X59Y5rkyMvyGCZOSsSWbe7Xe8li//BjI16tpm3G4kvu37RdJgIm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILcrYELs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C1FC4CEC2;
-	Wed,  2 Oct 2024 14:03:54 +0000 (UTC)
+	 MIME-Version; b=r60PBXzXaXhVYTrzildm/MhGQffaeEE8f72kYGZcXuV9+HcgPkjGqqe1BJKNt/3JDFWfNS8U2bBv8elMuz5T4YgVcipKp80siof/5b6lVwAo6CN6EuLZuq7NOdIqlcB+5AMq0vWMGSgv8i27oHAThFlgM9K8FG9gZry7IPLiSY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkc0bN5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A479C4CED5;
+	Wed,  2 Oct 2024 13:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877834;
-	bh=8XGBvRM+/Gq7UKE2Ycm+D8rzWS1c+njYVPWX+LxQXSU=;
+	s=korg; t=1727876056;
+	bh=AF+FCp6GAh/eLUIjSwTf9FBL37PBMYLUryElwhqCHKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILcrYELs19t1MWYimUxQ3mMrJIfh6tj0EK+0+SO/F5at4SaUOOCR6a3l/1eqh40Vt
-	 73co8EzPM5caTAI26I+6rAs1Al+Ipq+2si7XAtU9lCQTdRmsJQveWAvSFg3vKnz8uu
-	 2HxB/R+/Uo6z0yDpYARfT6Kc0i7P1FXDKNmEYCoY=
+	b=kkc0bN5WDDBRCb5nK0bg2qHp3za8INh0IrPfOE+bUttnO39W5bJart1a+3vxtdshk
+	 FowZVSMgus3nnSgX2rWGAPWqB44Mzq/PNBZxke/ckQPF3nY7KVp6kodEAh6YcvFrir
+	 rJbUvyttYizZnKFIdm5N0pKsjrJCJKX7xf4pvx5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 211/634] platform/x86: ideapad-laptop: Make the scope_guard() clear of its scope
+Subject: [PATCH 6.11 313/695] ext4: check stripe size compatibility on remount as well
 Date: Wed,  2 Oct 2024 14:55:11 +0200
-Message-ID: <20241002125819.433123550@linuxfoundation.org>
+Message-ID: <20241002125834.944386857@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,155 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit a093cb667c3ff5eadd4b23ddf996d9ccae9b7ac6 ]
+[ Upstream commit ee85e0938aa8f9846d21e4d302c3cf6a2a75110d ]
 
-First of all, it's a bit counterintuitive to have something like
+We disable stripe size in __ext4_fill_super if it is not a multiple of
+the cluster ratio however this check is missed when trying to remount.
+This can leave us with cases where stripe < cluster_ratio after
+remount:set making EXT4_B2C(sbi->s_stripe) become 0 that can cause some
+unforeseen bugs like divide by 0.
 
-	int err;
-	...
-	scoped_guard(...)
-		err = foo(...);
-	if (err)
-		return err;
+Fix that by adding the check in remount path as well.
 
-Second, with a particular kernel configuration and compiler version in
-one of such cases the objtool is not happy:
-
-  ideapad-laptop.o: warning: objtool: .text.fan_mode_show: unexpected end of section
-
-I'm not an expert on all this, but the theory is that compiler and
-linker in this case can't understand that 'result' variable will be
-always initialized as long as no error has been returned. Assigning
-'result' to a dummy value helps with this. Note, that fixing the
-scoped_guard() scope (as per above) does not make issue gone.
-
-That said, assign dummy value and make the scope_guard() clear of its scope.
-For the sake of consistency do it in the entire file.
-
-Fixes: 7cc06e729460 ("platform/x86: ideapad-laptop: add a mutex to synchronize VPC commands")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408290219.BrPO8twi-lkp@intel.com/
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240829165105.1609180-1-andriy.shevchenko@linux.intel.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reported-by: syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com
+Tested-by: syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com
+Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Fixes: c3defd99d58c ("ext4: treat stripe in block unit")
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/3a493bb503c3598e25dcfbed2936bb2dff3fece7.1725002410.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c | 48 +++++++++++++++------------
- 1 file changed, 27 insertions(+), 21 deletions(-)
+ fs/ext4/super.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index 490815917adec..32293df50bb1c 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -422,13 +422,14 @@ static ssize_t camera_power_show(struct device *dev,
- 				 char *buf)
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index e72145c4ae5a0..7e73e13741d1e 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5165,6 +5165,18 @@ static int ext4_block_group_meta_init(struct super_block *sb, int silent)
+ 	return 0;
+ }
+ 
++/*
++ * It's hard to get stripe aligned blocks if stripe is not aligned with
++ * cluster, just disable stripe and alert user to simplify code and avoid
++ * stripe aligned allocation which will rarely succeed.
++ */
++static bool ext4_is_stripe_incompatible(struct super_block *sb, unsigned long stripe)
++{
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
++	return (stripe > 0 && sbi->s_cluster_ratio > 1 &&
++		stripe % sbi->s_cluster_ratio != 0);
++}
++
+ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
  {
- 	struct ideapad_private *priv = dev_get_drvdata(dev);
--	unsigned long result;
-+	unsigned long result = 0;
- 	int err;
+ 	struct ext4_super_block *es = NULL;
+@@ -5272,13 +5284,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 		goto failed_mount3;
  
--	scoped_guard(mutex, &priv->vpc_mutex)
-+	scoped_guard(mutex, &priv->vpc_mutex) {
- 		err = read_ec_data(priv->adev->handle, VPCCMD_R_CAMERA, &result);
--	if (err)
--		return err;
-+		if (err)
-+			return err;
+ 	sbi->s_stripe = ext4_get_stripe_size(sbi);
+-	/*
+-	 * It's hard to get stripe aligned blocks if stripe is not aligned with
+-	 * cluster, just disable stripe and alert user to simpfy code and avoid
+-	 * stripe aligned allocation which will rarely successes.
+-	 */
+-	if (sbi->s_stripe > 0 && sbi->s_cluster_ratio > 1 &&
+-	    sbi->s_stripe % sbi->s_cluster_ratio != 0) {
++	if (ext4_is_stripe_incompatible(sb, sbi->s_stripe)) {
+ 		ext4_msg(sb, KERN_WARNING,
+ 			 "stripe (%lu) is not aligned with cluster size (%u), "
+ 			 "stripe is disabled",
+@@ -6441,6 +6447,15 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
+ 
+ 	}
+ 
++	if ((ctx->spec & EXT4_SPEC_s_stripe) &&
++	    ext4_is_stripe_incompatible(sb, ctx->s_stripe)) {
++		ext4_msg(sb, KERN_WARNING,
++			 "stripe (%lu) is not aligned with cluster size (%u), "
++			 "stripe is disabled",
++			 ctx->s_stripe, sbi->s_cluster_ratio);
++		ctx->s_stripe = 0;
 +	}
- 
- 	return sysfs_emit(buf, "%d\n", !!result);
- }
-@@ -445,10 +446,11 @@ static ssize_t camera_power_store(struct device *dev,
- 	if (err)
- 		return err;
- 
--	scoped_guard(mutex, &priv->vpc_mutex)
-+	scoped_guard(mutex, &priv->vpc_mutex) {
- 		err = write_ec_cmd(priv->adev->handle, VPCCMD_W_CAMERA, state);
--	if (err)
--		return err;
-+		if (err)
-+			return err;
-+	}
- 
- 	return count;
- }
-@@ -496,13 +498,14 @@ static ssize_t fan_mode_show(struct device *dev,
- 			     char *buf)
- {
- 	struct ideapad_private *priv = dev_get_drvdata(dev);
--	unsigned long result;
-+	unsigned long result = 0;
- 	int err;
- 
--	scoped_guard(mutex, &priv->vpc_mutex)
-+	scoped_guard(mutex, &priv->vpc_mutex) {
- 		err = read_ec_data(priv->adev->handle, VPCCMD_R_FAN, &result);
--	if (err)
--		return err;
-+		if (err)
-+			return err;
-+	}
- 
- 	return sysfs_emit(buf, "%lu\n", result);
- }
-@@ -522,10 +525,11 @@ static ssize_t fan_mode_store(struct device *dev,
- 	if (state > 4 || state == 3)
- 		return -EINVAL;
- 
--	scoped_guard(mutex, &priv->vpc_mutex)
-+	scoped_guard(mutex, &priv->vpc_mutex) {
- 		err = write_ec_cmd(priv->adev->handle, VPCCMD_W_FAN, state);
--	if (err)
--		return err;
-+		if (err)
-+			return err;
-+	}
- 
- 	return count;
- }
-@@ -605,13 +609,14 @@ static ssize_t touchpad_show(struct device *dev,
- 			     char *buf)
- {
- 	struct ideapad_private *priv = dev_get_drvdata(dev);
--	unsigned long result;
-+	unsigned long result = 0;
- 	int err;
- 
--	scoped_guard(mutex, &priv->vpc_mutex)
-+	scoped_guard(mutex, &priv->vpc_mutex) {
- 		err = read_ec_data(priv->adev->handle, VPCCMD_R_TOUCHPAD, &result);
--	if (err)
--		return err;
-+		if (err)
-+			return err;
-+	}
- 
- 	priv->r_touchpad_val = result;
- 
-@@ -630,10 +635,11 @@ static ssize_t touchpad_store(struct device *dev,
- 	if (err)
- 		return err;
- 
--	scoped_guard(mutex, &priv->vpc_mutex)
-+	scoped_guard(mutex, &priv->vpc_mutex) {
- 		err = write_ec_cmd(priv->adev->handle, VPCCMD_W_TOUCHPAD, state);
--	if (err)
--		return err;
-+		if (err)
-+			return err;
-+	}
- 
- 	priv->r_touchpad_val = state;
- 
++
+ 	/*
+ 	 * Changing the DIOREAD_NOLOCK or DELALLOC mount options may cause
+ 	 * two calls to ext4_should_dioread_nolock() to return inconsistent
 -- 
 2.43.0
 
