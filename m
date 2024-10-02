@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-80170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E18F98DC40
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE92998D9A1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46DC61C238A7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BCFA1F25208
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB931D0945;
-	Wed,  2 Oct 2024 14:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9291D174A;
+	Wed,  2 Oct 2024 14:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgZaaPK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOIQ/kxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5C91D040D;
-	Wed,  2 Oct 2024 14:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DB01D1745;
+	Wed,  2 Oct 2024 14:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879588; cv=none; b=eHQKs10S4yU53wHWNUJIsdRpoSqwn1O9kp5EXTR0gm3MsNJ+50zRaraMY0QQV7nSyhJTqYr7fuz5uS9Y4/Dic9ZddwIaqGfAb+VCqC/ATksV2K3j9xRmDhv+rdBY4G584TmyfgWCw8d9b7Yir+gcCIOLrLZTJbl8TiKDknEq+WQ=
+	t=1727878123; cv=none; b=mhF6PVQX4UCjrvlLZQdL2+yetqv9Nd8sV643dCkFDRWBEzbvSHtAXTEChlUsIM0+MAGgG6eIw9wVOeAIuGpz/zUST8512b/lym5oYnc0E2OTkqsZx4skGguCHJhTQPNH9Fs3NQYzm6b+JTOc0ZUC+9hjWBaMfpXt+JxdobY4i3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879588; c=relaxed/simple;
-	bh=StVlStby0O32JQCKN5l3p+1vXrc7LRVj3DOFjFgixTE=;
+	s=arc-20240116; t=1727878123; c=relaxed/simple;
+	bh=v/i9abZ4KiWZlI0xf4+EvRN1kYYPldr9khXiqluXHv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZW5ZxQ9lZQvJ7m3yZZaIAh+Q/Fixw1jUwTmxkMPoOwWtRKUw/YXDeMRPy3HQm0grK5YV99Vr3JxFunHsijX9NMvaVa503p9HqvHzZBN3MjTgCGIp5TeECrJIASqkTNNj15jo+UzE+vO9WUgKof13nvK/JbVQlmtEKokDGzJ5pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgZaaPK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E9FC4CEC2;
-	Wed,  2 Oct 2024 14:33:07 +0000 (UTC)
+	 MIME-Version; b=XYzzmUrLGGGSyVvmrTQ1bmHgdHqSukhNZj1wIaGS/vy8Sn/7HwU7qGXrBqSuCofXPu8pY5bkBVJeDRXmh0eisoDzleQf7+l0LTm0KXCeuok4+EPp6WW78/uWidRvGUiL0TF3p7PlC8JANJojtbWRsuCvGxltv8vN4gIkHuOL5fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOIQ/kxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29258C4CEC2;
+	Wed,  2 Oct 2024 14:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879587;
-	bh=StVlStby0O32JQCKN5l3p+1vXrc7LRVj3DOFjFgixTE=;
+	s=korg; t=1727878123;
+	bh=v/i9abZ4KiWZlI0xf4+EvRN1kYYPldr9khXiqluXHv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgZaaPK1GkMUpf02kow8URKVip13Ks3L6ctC2KxdpkVobeGPADlcYn0NEi5fFxozP
-	 Lc8cJd2lZshKzr4J3fFEiPf38UCIGK0Ii0rHNzO9JauMYHjOwtmdwXRsiS7qbpS3oh
-	 O+ugySgdJIWi+dP1BXaq9JD217lTg1a8FXREUMAI=
+	b=kOIQ/kxwR1pi77YGVOCh4pwEcllkJ6EhAzW+6SpcGUsY/Sa+us3t5OkkYWh6O1p0s
+	 LH6JuxzGch4cUzk2HiJAy7tsGPYUUGbOPAlnO0B206zdsPXNMH0DHdM0vm38Oa0LvV
+	 WFN+2kzhDK/JMXSjqnEuRDH2lKf1AE0b9qGulwLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <David.Laight@aculab.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 6.6 171/538] minmax: avoid overly complex min()/max() macro arguments in xen
+	Ye Li <ye.li@nxp.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 310/634] clk: imx: composite-8m: Enable gate clk with mcore_booted
 Date: Wed,  2 Oct 2024 14:56:50 +0200
-Message-ID: <20241002125759.005508366@linuxfoundation.org>
+Message-ID: <20241002125823.344242918@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit e8432ac802a028eaee6b1e86383d7cd8e9fb8431 ]
+[ Upstream commit 8f32e9dd0916eb3fd4bcf550ed1d04542a65cb9e ]
 
-We have some very fancy min/max macros that have tons of sanity checking
-to warn about mixed signedness etc.
+Bootloader might disable some CCM ROOT Slices. So if mcore_booted set with
+display CCM ROOT disabled by Bootloader, kernel display BLK CTRL driver
+imx8m_blk_ctrl_driver_init may hang the system because the BUS clk is
+disabled.
 
-This is all things that a sane compiler should warn about, but there are
-no sane compiler interfaces for this, and '-Wsign-compare' is broken [1]
-and not useful.
+Add back gate ops, but with disable doing nothing, then the CCM ROOT
+will be enabled when used.
 
-So then we compensate (some would say over-compensate) by doing the
-checks manually with some truly horrid macro games.
-
-And no, we can't just use __builtin_types_compatible_p(), because the
-whole question of "does it make sense to compare these two values" is a
-lot more complicated than that.
-
-For example, it makes a ton of sense to compare unsigned values with
-simple constants like "5", even if that is indeed a signed type.  So we
-have these very strange macros to try to make sensible type checking
-decisions on the arguments to 'min()' and 'max()'.
-
-But that can cause enormous code expansion if the min()/max() macros are
-used with complicated expressions, and particularly if you nest these
-things so that you get the first big expansion then expanded again.
-
-The xen setup.c file ended up ballooning to over 50MB of preprocessed
-noise that takes 15s to compile (obviously depending on the build host),
-largely due to one single line.
-
-So let's split that one single line to just be simpler.  I think it ends
-up being more legible to humans too at the same time.  Now that single
-file compiles in under a second.
-
-Reported-and-reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Link: https://lore.kernel.org/all/c83c17bb-be75-4c67-979d-54eee38774c6@lucifer.local/
-Link: https://staticthinking.wordpress.com/2023/07/25/wsign-compare-is-garbage/ [1]
-Cc: David Laight <David.Laight@aculab.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Fixes: bb7e897b002a ("clk: imx8m: check mcore_booted before register clk")
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-2-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/setup.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/imx/clk-composite-8m.c | 53 +++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
-index d44d6d8b33195..d2073df5c5624 100644
---- a/arch/x86/xen/setup.c
-+++ b/arch/x86/xen/setup.c
-@@ -691,6 +691,7 @@ char * __init xen_memory_setup(void)
- 	struct xen_memory_map memmap;
- 	unsigned long max_pages;
- 	unsigned long extra_pages = 0;
-+	unsigned long maxmem_pages;
- 	int i;
- 	int op;
+diff --git a/drivers/clk/imx/clk-composite-8m.c b/drivers/clk/imx/clk-composite-8m.c
+index 8cc07d056a838..f187582ba4919 100644
+--- a/drivers/clk/imx/clk-composite-8m.c
++++ b/drivers/clk/imx/clk-composite-8m.c
+@@ -204,6 +204,34 @@ static const struct clk_ops imx8m_clk_composite_mux_ops = {
+ 	.determine_rate = imx8m_clk_composite_mux_determine_rate,
+ };
  
-@@ -762,8 +763,8 @@ char * __init xen_memory_setup(void)
- 	 * Make sure we have no memory above max_pages, as this area
- 	 * isn't handled by the p2m management.
- 	 */
--	extra_pages = min3(EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM)),
--			   extra_pages, max_pages - max_pfn);
-+	maxmem_pages = EXTRA_MEM_RATIO * min(max_pfn, PFN_DOWN(MAXMEM));
-+	extra_pages = min3(maxmem_pages, extra_pages, max_pages - max_pfn);
- 	i = 0;
- 	addr = xen_e820_table.entries[0].addr;
- 	size = xen_e820_table.entries[0].size;
++static int imx8m_clk_composite_gate_enable(struct clk_hw *hw)
++{
++	struct clk_gate *gate = to_clk_gate(hw);
++	unsigned long flags;
++	u32 val;
++
++	spin_lock_irqsave(gate->lock, flags);
++
++	val = readl(gate->reg);
++	val |= BIT(gate->bit_idx);
++	writel(val, gate->reg);
++
++	spin_unlock_irqrestore(gate->lock, flags);
++
++	return 0;
++}
++
++static void imx8m_clk_composite_gate_disable(struct clk_hw *hw)
++{
++	/* composite clk requires the disable hook */
++}
++
++static const struct clk_ops imx8m_clk_composite_gate_ops = {
++	.enable = imx8m_clk_composite_gate_enable,
++	.disable = imx8m_clk_composite_gate_disable,
++	.is_enabled = clk_gate_is_enabled,
++};
++
+ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+ 					const char * const *parent_names,
+ 					int num_parents, void __iomem *reg,
+@@ -217,6 +245,7 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+ 	struct clk_mux *mux;
+ 	const struct clk_ops *divider_ops;
+ 	const struct clk_ops *mux_ops;
++	const struct clk_ops *gate_ops;
+ 
+ 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
+ 	if (!mux)
+@@ -257,20 +286,22 @@ struct clk_hw *__imx8m_clk_hw_composite(const char *name,
+ 	div->flags = CLK_DIVIDER_ROUND_CLOSEST;
+ 
+ 	/* skip registering the gate ops if M4 is enabled */
+-	if (!mcore_booted) {
+-		gate = kzalloc(sizeof(*gate), GFP_KERNEL);
+-		if (!gate)
+-			goto free_div;
+-
+-		gate_hw = &gate->hw;
+-		gate->reg = reg;
+-		gate->bit_idx = PCG_CGC_SHIFT;
+-		gate->lock = &imx_ccm_lock;
+-	}
++	gate = kzalloc(sizeof(*gate), GFP_KERNEL);
++	if (!gate)
++		goto free_div;
++
++	gate_hw = &gate->hw;
++	gate->reg = reg;
++	gate->bit_idx = PCG_CGC_SHIFT;
++	gate->lock = &imx_ccm_lock;
++	if (!mcore_booted)
++		gate_ops = &clk_gate_ops;
++	else
++		gate_ops = &imx8m_clk_composite_gate_ops;
+ 
+ 	hw = clk_hw_register_composite(NULL, name, parent_names, num_parents,
+ 			mux_hw, mux_ops, div_hw,
+-			divider_ops, gate_hw, &clk_gate_ops, flags);
++			divider_ops, gate_hw, gate_ops, flags);
+ 	if (IS_ERR(hw))
+ 		goto free_gate;
+ 
 -- 
 2.43.0
 
