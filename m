@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-80416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257DB98DD51
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAB598DD53
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B891C22768
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 997FF1F235B8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E4B1CABF;
-	Wed,  2 Oct 2024 14:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED241D07BA;
+	Wed,  2 Oct 2024 14:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/u5cHmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laXSJrNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B555863CB;
-	Wed,  2 Oct 2024 14:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE458F5E;
+	Wed,  2 Oct 2024 14:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880310; cv=none; b=SQg40Z2AYAIvh97U8SDEbPLkA7jTjq3tad4aDBYiQqXILQAeby9voWMlwSQoq9p+CAJsQRBzcMiS24+isOAJhbbZWScW595iEzcabACNKQ/WxGDrbYT8Lb6VRNP/l/ugIbGnz/sf2UrkwwAg8vW3AORAQGfM6BgHLGES42Zyoeo=
+	t=1727880316; cv=none; b=cVU/NL+SbX5wws23RKOV6Ya1M0ZLcSdr+o9+stqhWF9VKluWg8IgntPXnjhIHBkmgYXTxzbgwiWZABiENKelCfXRpE0SqMrttiw1vxbuvw4kM6pUw0XJ6djNYvUr5tzy7K5outOGIhs6ro3/8HcjJ6PcSm1GdmK0j4aA4Sx6qnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880310; c=relaxed/simple;
-	bh=eFvYxuUmIS55UcP8WYlWtzQ2oSzZQ0bwd08X8I9jIyM=;
+	s=arc-20240116; t=1727880316; c=relaxed/simple;
+	bh=7ILexRbqPVX7dvU2EdN/nj5uHiEoy7TqHVo68i2WgIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwKow3TwKnEEpSh4t9gRMDOxmXM8WKSqrM9aAxuqp47IfpK1NFBhSTGhl5ttL9DAhEYmiLAbxJvfO8SXSHb2O7xLLitH8ll8Ec8O4+xcKaPXuewDppqyQsiGqAhWvdLX5ElnFXtC/acnSPESSH2iLp6iaHwigaU+O+PS0m9ZTks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/u5cHmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4114FC4CEC2;
-	Wed,  2 Oct 2024 14:45:10 +0000 (UTC)
+	 MIME-Version; b=DHYZgKhxbJ1o71NuLSiLsegI5lpyV2JuGgqC6fpzAUtHjY6aVqTVCdi9vM9/74r83xR+wCJHwSBbhc1VrzQCv2S3GuU3LNsV9dR3wfJuqyF/RpsZJiEKv/FT0mLDUFzm/zyQgr4jel7UrFiR1VRDFhuq5zwffSvuirvzHs+dBTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laXSJrNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44580C4CEC2;
+	Wed,  2 Oct 2024 14:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880310;
-	bh=eFvYxuUmIS55UcP8WYlWtzQ2oSzZQ0bwd08X8I9jIyM=;
+	s=korg; t=1727880316;
+	bh=7ILexRbqPVX7dvU2EdN/nj5uHiEoy7TqHVo68i2WgIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/u5cHmRgApRrvRmPx+X0XToy1DkJELZ2ejKYtbjetkCvCHfXKzv1ekTA21U9EaR6
-	 MlVz4KhDR2CcoqQ4eY8muSVO3pEFeia5EYylruklSXW1D5ih6N61L/S+mhHp9yUh1H
-	 t5z+TlrrDcM3LpbJN67Xu07X3xbbvm4Cn2+4woK0=
+	b=laXSJrNJzL1i8Nt2SSS6js2dznTRvkfi1KYcJKgNKA1NHF4/Mgl34T5lBuDVOBQ5R
+	 zk+4xJXClFH3FfNttXYYv7cEPBOn+h1h6CTVsst8gYbA1zuFQg4eRNn8TrWzpeEinE
+	 aPUYyDsooaivsABRRDZ2Da0Rv/Nhdxy+1/V76sUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Harry Wentland <harry.wentland@amd.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Anthony Koo <anthony.koo@amd.com>,
-	Robin Chen <robin.chen@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 416/538] drm/amd/display: Round calculated vtotal
-Date: Wed,  2 Oct 2024 15:00:55 +0200
-Message-ID: <20241002125808.853324237@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 417/538] drm/amd/display: Validate backlight caps are sane
+Date: Wed,  2 Oct 2024 15:00:56 +0200
+Message-ID: <20241002125808.892301087@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -69,38 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Robin Chen <robin.chen@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit c03fca619fc687338a3b6511fdbed94096abdf79 upstream.
+commit 327e62f47eb57ae5ff63de82b0815557104e439a upstream.
 
-[WHY]
-The calculated vtotal may has 1 line deviation. To get precisely
-vtotal number, round the vtotal result.
+Currently amdgpu takes backlight caps provided by the ACPI tables
+on systems as is.  If the firmware sets maximums that are too low
+this means that users don't get a good experience.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Anthony Koo <anthony.koo@amd.com>
-Signed-off-by: Robin Chen <robin.chen@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+To avoid having to maintain a quirk list of such systems, do a sanity
+check on the values.  Check that the spread is at least half of the
+values that amdgpu would use if no ACPI table was found and if not
+use the amdgpu defaults.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3020
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/modules/freesync/freesync.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-+++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-@@ -133,7 +133,7 @@ unsigned int mod_freesync_calc_v_total_f
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4037,6 +4037,7 @@ static int amdgpu_dm_mode_config_init(st
  
- 	v_total = div64_u64(div64_u64(((unsigned long long)(
- 			frame_duration_in_ns) * (stream->timing.pix_clk_100hz / 10)),
--			stream->timing.h_total), 1000000);
-+			stream->timing.h_total) + 500000, 1000000);
+ #define AMDGPU_DM_DEFAULT_MIN_BACKLIGHT 12
+ #define AMDGPU_DM_DEFAULT_MAX_BACKLIGHT 255
++#define AMDGPU_DM_MIN_SPREAD ((AMDGPU_DM_DEFAULT_MAX_BACKLIGHT - AMDGPU_DM_DEFAULT_MIN_BACKLIGHT) / 2)
+ #define AUX_BL_DEFAULT_TRANSITION_TIME_MS 50
  
- 	/* v_total cannot be less than nominal */
- 	if (v_total < stream->timing.v_total) {
+ static void amdgpu_dm_update_backlight_caps(struct amdgpu_display_manager *dm,
+@@ -4051,6 +4052,21 @@ static void amdgpu_dm_update_backlight_c
+ 		return;
+ 
+ 	amdgpu_acpi_get_backlight_caps(&caps);
++
++	/* validate the firmware value is sane */
++	if (caps.caps_valid) {
++		int spread = caps.max_input_signal - caps.min_input_signal;
++
++		if (caps.max_input_signal > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
++		    caps.min_input_signal < AMDGPU_DM_DEFAULT_MIN_BACKLIGHT ||
++		    spread > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
++		    spread < AMDGPU_DM_MIN_SPREAD) {
++			DRM_DEBUG_KMS("DM: Invalid backlight caps: min=%d, max=%d\n",
++				      caps.min_input_signal, caps.max_input_signal);
++			caps.caps_valid = false;
++		}
++	}
++
+ 	if (caps.caps_valid) {
+ 		dm->backlight_caps[bl_idx].caps_valid = true;
+ 		if (caps.aux_support)
 
 
 
