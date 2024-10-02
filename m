@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-79931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496FB98DAF5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882BB98DAF7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECD2A1F22578
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA5F91C21E92
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8BE1D0E1E;
-	Wed,  2 Oct 2024 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA241D0E32;
+	Wed,  2 Oct 2024 14:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qa8rwwNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLxbikRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB551CFEB3;
-	Wed,  2 Oct 2024 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4721D0E2F;
+	Wed,  2 Oct 2024 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878888; cv=none; b=Q1hzevlohIswqaUo3F0/vRBPytuo0uhANEndg3moPVud/ulslKtl1XxfQdX0IJNOmnMAhgx2I3VcoqaBEEuo4WhR2Ie1tCezyCESnPs/PoUp9jO3SGHPVFew8f+gq3lhkveq7Jk8VyDSFkLoLiZtAem130QsbBog0AHX3Ro6erE=
+	t=1727878894; cv=none; b=d3F9qQay2FvjFCzW4YpT8rarrQN8AGdmvaVVEPthM2PKeF2hhlIXpMNLqBjEC/urtH6EfXuNBYbDr2NAUjOGbdFj16WqQfLXcaZCxNLIMGe058dfKD2V0KWJKHhwnXRO42s8xwAw5mEzwL5p/TGGfuAu7OAioQazG1j7BWL1IcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878888; c=relaxed/simple;
-	bh=jB+LR2fGKcLrzUgEo/xrQqzn26qMtImwoIhAVRERY1c=;
+	s=arc-20240116; t=1727878894; c=relaxed/simple;
+	bh=3rT1wMPotvTgRWuNZKgGb1rxRea4dYxuE3Q3n35G7Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tgi2p+Na2r6R4Q27REGUXAO6C4lRhk3lG9YE+g86W4c4rGbLfFZcu26OcVjIbRMu+32cASl3kDcJWJRtb8AvnLywmX6TQ0W0byh6Ajq8S9ovqPHNBFeJv2TY9c1hM5azjv/hjAnYFAzbHb75PyNnu1YX7u0jZ1Yky8Xs2gnjUMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qa8rwwNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D41C4CEC5;
-	Wed,  2 Oct 2024 14:21:27 +0000 (UTC)
+	 MIME-Version; b=ubC/b7HgINWh9503brOYXoT2VSdFJ50amGSKMV51NA1P3Htn8WiQWyfPsgSLGf+vPma5qKi+N2ZTxebT6iNrwHjzB9VcUJ/dDkwO8sgRefFYMUaAIfzyDpTFSBBe+pvx1op+y82o2TsdxEmv5JtIn07XZq62mYjJ0kQOpvh1PnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLxbikRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A3CC4CEC5;
+	Wed,  2 Oct 2024 14:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878887;
-	bh=jB+LR2fGKcLrzUgEo/xrQqzn26qMtImwoIhAVRERY1c=;
+	s=korg; t=1727878893;
+	bh=3rT1wMPotvTgRWuNZKgGb1rxRea4dYxuE3Q3n35G7Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qa8rwwNak1007VORzwodoI8MG4nKiaORJGMqymT+Qf2KrJODw5kvcgncM2ZKrzQ91
-	 qsv3FafRe/OOCGwZQEldPYtQRxIJw+7V0C9CWLxXBDj3TMRcgqmS5IJUZEZ7j9ES9a
-	 lOTntantQO7+A2GjEpBOoy15724h1kCLkBXOJqEM=
+	b=cLxbikRW61gCqKRfiwFBCuHYybJZSLPvWehk/ejVgyehTm7MkoNdHJnjutyJHJdZm
+	 GCJLN4ViUD35hFEumain5h+06pZHXz/yEwDTcOApfjnROPFNb0Gf8m4f3RB3x6Vg98
+	 aBnSmljulLx8vskjjPqxPWXmpFKI1VXKIV+YZZTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Guoqing Jiang <guoqing.jiang@canonical.com>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.10 566/634] hwrng: mtk - Use devm_pm_runtime_enable
-Date: Wed,  2 Oct 2024 15:01:06 +0200
-Message-ID: <20241002125833.456631791@linuxfoundation.org>
+Subject: [PATCH 6.10 567/634] hwrng: bcm2835 - Add missing clk_disable_unprepare in bcm2835_rng_init
+Date: Wed,  2 Oct 2024 15:01:07 +0200
+Message-ID: <20241002125833.495967699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -66,38 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@canonical.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-commit 78cb66caa6ab5385ac2090f1aae5f3c19e08f522 upstream.
+commit d57e2f7cffd57fe2800332dec768ec1b67a4159f upstream.
 
-Replace pm_runtime_enable with the devres-enabled version which
-can trigger pm_runtime_disable.
+Add the missing clk_disable_unprepare() before return in
+bcm2835_rng_init().
 
-Otherwise, the below appears during reload driver.
-
-mtk_rng 1020f000.rng: Unbalanced pm_runtime_enable!
-
-Fixes: 81d2b34508c6 ("hwrng: mtk - add runtime PM support")
+Fixes: e5f9f41d5e62 ("hwrng: bcm2835 - add reset support")
 Cc: <stable@vger.kernel.org>
-Suggested-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Guoqing Jiang <guoqing.jiang@canonical.com>
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/mtk-rng.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/hw_random/bcm2835-rng.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/char/hw_random/mtk-rng.c
-+++ b/drivers/char/hw_random/mtk-rng.c
-@@ -142,7 +142,7 @@ static int mtk_rng_probe(struct platform
- 	dev_set_drvdata(&pdev->dev, priv);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
--	pm_runtime_enable(&pdev->dev);
-+	devm_pm_runtime_enable(&pdev->dev);
+--- a/drivers/char/hw_random/bcm2835-rng.c
++++ b/drivers/char/hw_random/bcm2835-rng.c
+@@ -94,8 +94,10 @@ static int bcm2835_rng_init(struct hwrng
+ 		return ret;
  
- 	dev_info(&pdev->dev, "registered RNG driver\n");
+ 	ret = reset_control_reset(priv->reset);
+-	if (ret)
++	if (ret) {
++		clk_disable_unprepare(priv->clk);
+ 		return ret;
++	}
  
+ 	if (priv->mask_interrupts) {
+ 		/* mask the interrupt */
 
 
 
