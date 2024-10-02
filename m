@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-79643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BC798D980
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FBC98DC21
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:38:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54191F22DA1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B561F257EE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5641D14E7;
-	Wed,  2 Oct 2024 14:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73511D3590;
+	Wed,  2 Oct 2024 14:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3PpToXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFV8mtNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D244F1D07B7;
-	Wed,  2 Oct 2024 14:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740FD1D358C;
+	Wed,  2 Oct 2024 14:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878041; cv=none; b=rBwg6O8ZehWfKdKwaoW1eq+ZhtxcWpZrkUPtMeNUjKuMgR6TVYzOVfkHADow/OhF9gdtOBQkx4X+P1nQNPnvxL+FWmrczrHOCqYKB8NG3ST7BVO8HZxAxw7yPsZFjACgB6urDX5ykbBjDmWiN3mh/CoS2A1LbbzNyB4LRsVV1bg=
+	t=1727879506; cv=none; b=WDLo2Tg9Qu3oL8J5GXbnW55upUhkHNIu6eWckMY5iN2uF03E3+K7RHwm37Vi+lbxCx+CFwG/JMo6IeM0wSjt+Iv3IncDjWh/iRiPIPAcMm9CdYgJVtmuv5Nx2nabxvwexNKRtzIRfwI/gg5r9msilq8n0ZxBgVzQ9IlY8YUBFc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878041; c=relaxed/simple;
-	bh=LmCqgLrbq1ALJ0WPraIoQJkP6RSjyn7mBrTbmGnM738=;
+	s=arc-20240116; t=1727879506; c=relaxed/simple;
+	bh=VmID93sDalZuN0Fj8fA6yZkNqlGGYxVNNxasvkxvb8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOlw6sAKoDXQr6gPY0EtpELzXzeogqCuDlb+KtypGkf4D1LXIhDdn7k/Tr40FHz2vxc/CvSEOWLY4xBm0G3NTBf7iZ0Oo0zkYfcnS3faL5ZaLZBegET2UzgwCmF43p3fWhXee/fqeCemT7IEh2TK/S0BvGtRG1eL/OJufcmMeSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3PpToXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D71C4CEC2;
-	Wed,  2 Oct 2024 14:07:21 +0000 (UTC)
+	 MIME-Version; b=fS1hOFVIvsiR0W/Ha/5HjE2Nd08drE0oCHi0/2cdyCLE9apS20W3txFJ/VuF7YID5JZ1xuUKIQc8sOcMyhI/crn9qqmuZXbYLNlWH2xShiOwU715UvQ7CUiRpy1SO6UHU3NYveJ7XrRL16H3K8pofHT4b8otLwEV5B1PAlaoLNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFV8mtNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13F9C4CEC2;
+	Wed,  2 Oct 2024 14:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878041;
-	bh=LmCqgLrbq1ALJ0WPraIoQJkP6RSjyn7mBrTbmGnM738=;
+	s=korg; t=1727879506;
+	bh=VmID93sDalZuN0Fj8fA6yZkNqlGGYxVNNxasvkxvb8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f3PpToXAt/pWarBs/bOT+Br3PcyXaDJlVbWYxWsMruWkOJ71LxSS9Ho52OpzwSKuM
-	 hcELyf84gN2Po85TJH+kiZpOKRDHyLYbgG5c35Y0ZFzbWd6MQpklTgtVt04Q8KqyyH
-	 bqSDaHBZALp2gBmi1JaunreQOrtj58nBjY8gb7pM=
+	b=xFV8mtNZL30IyapXVkVz7t6ueFWrAkCX1o/WXA8c1fI8WsyqO2L5yOxjTWwqD8QET
+	 pZInAEEORkhVT9EHewGI24M7OzVbpsgMNfKKtgYTUwRM3G6QZw7tD1i3xyimZSHwwM
+	 RAzKY/azd1pI3t8mvaG1M6qNxcfMEcr/TqffixUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Gilbert Wu <Gilbert.Wu@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 282/634] ext4: check stripe size compatibility on remount as well
+Subject: [PATCH 6.6 143/538] scsi: smartpqi: revert propagate-the-multipath-failure-to-SML-quickly
 Date: Wed,  2 Oct 2024 14:56:22 +0200
-Message-ID: <20241002125822.242385256@linuxfoundation.org>
+Message-ID: <20241002125757.886140538@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +66,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Gilbert Wu <Gilbert.Wu@microchip.com>
 
-[ Upstream commit ee85e0938aa8f9846d21e4d302c3cf6a2a75110d ]
+[ Upstream commit f1393d52e6cda9c20f12643cbecf1e1dc357e0e2 ]
 
-We disable stripe size in __ext4_fill_super if it is not a multiple of
-the cluster ratio however this check is missed when trying to remount.
-This can leave us with cases where stripe < cluster_ratio after
-remount:set making EXT4_B2C(sbi->s_stripe) become 0 that can cause some
-unforeseen bugs like divide by 0.
+Correct a rare multipath failure issue by reverting commit 94a68c814328
+("scsi: smartpqi: Quickly propagate path failures to SCSI midlayer") [1].
 
-Fix that by adding the check in remount path as well.
+Reason for revert: The patch propagated the path failure to SML quickly
+when one of the path fails during IO and AIO path gets disabled for a
+multipath device.
 
-Reported-by: syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com
-Tested-by: syzbot+1ad8bac5af24d01e2cbd@syzkaller.appspotmail.com
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Fixes: c3defd99d58c ("ext4: treat stripe in block unit")
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/3a493bb503c3598e25dcfbed2936bb2dff3fece7.1725002410.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+But it created a new issue: when creating a volume on an encryption-enabled
+controller, the firmware reports the AIO path is disabled, which cause the
+driver to report a path failure to SML for a multipath device.
+
+There will be a new fix to handle "Illegal request" and "Invalid field in
+parameter list" on RAID path when the AIO path is disabled on a multipath
+device.
+
+[1] https://lore.kernel.org/all/164375209313.440833.9992416628621839233.stgit@brunhilda.pdev.net/
+
+Fixes: 94a68c814328 ("scsi: smartpqi: Quickly propagate path failures to SCSI midlayer")
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: Gilbert Wu <Gilbert.Wu@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20240711194704.982400-4-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 20 ++------------------
+ 1 file changed, 2 insertions(+), 18 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index c682fb927b64b..edc692984404d 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5177,6 +5177,18 @@ static int ext4_block_group_meta_init(struct super_block *sb, int silent)
- 	return 0;
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 868453b18c9ae..2ae64cda8bc9e 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -2355,14 +2355,6 @@ static inline void pqi_mask_device(u8 *scsi3addr)
+ 	scsi3addr[3] |= 0xc0;
  }
  
-+/*
-+ * It's hard to get stripe aligned blocks if stripe is not aligned with
-+ * cluster, just disable stripe and alert user to simplify code and avoid
-+ * stripe aligned allocation which will rarely succeed.
-+ */
-+static bool ext4_is_stripe_incompatible(struct super_block *sb, unsigned long stripe)
-+{
-+	struct ext4_sb_info *sbi = EXT4_SB(sb);
-+	return (stripe > 0 && sbi->s_cluster_ratio > 1 &&
-+		stripe % sbi->s_cluster_ratio != 0);
-+}
-+
- static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+-static inline bool pqi_is_multipath_device(struct pqi_scsi_dev *device)
+-{
+-	if (pqi_is_logical_device(device))
+-		return false;
+-
+-	return (device->path_map & (device->path_map - 1)) != 0;
+-}
+-
+ static inline bool pqi_expose_device(struct pqi_scsi_dev *device)
  {
- 	struct ext4_super_block *es = NULL;
-@@ -5284,13 +5296,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
- 		goto failed_mount3;
+ 	return !device->is_physical_device || !pqi_skip_device(device->scsi3addr);
+@@ -3259,14 +3251,12 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
+ 	int residual_count;
+ 	int xfer_count;
+ 	bool device_offline;
+-	struct pqi_scsi_dev *device;
  
- 	sbi->s_stripe = ext4_get_stripe_size(sbi);
--	/*
--	 * It's hard to get stripe aligned blocks if stripe is not aligned with
--	 * cluster, just disable stripe and alert user to simpfy code and avoid
--	 * stripe aligned allocation which will rarely successes.
--	 */
--	if (sbi->s_stripe > 0 && sbi->s_cluster_ratio > 1 &&
--	    sbi->s_stripe % sbi->s_cluster_ratio != 0) {
-+	if (ext4_is_stripe_incompatible(sb, sbi->s_stripe)) {
- 		ext4_msg(sb, KERN_WARNING,
- 			 "stripe (%lu) is not aligned with cluster size (%u), "
- 			 "stripe is disabled",
-@@ -6453,6 +6459,15 @@ static int __ext4_remount(struct fs_context *fc, struct super_block *sb)
+ 	scmd = io_request->scmd;
+ 	error_info = io_request->error_info;
+ 	host_byte = DID_OK;
+ 	sense_data_length = 0;
+ 	device_offline = false;
+-	device = scmd->device->hostdata;
  
- 	}
- 
-+	if ((ctx->spec & EXT4_SPEC_s_stripe) &&
-+	    ext4_is_stripe_incompatible(sb, ctx->s_stripe)) {
-+		ext4_msg(sb, KERN_WARNING,
-+			 "stripe (%lu) is not aligned with cluster size (%u), "
-+			 "stripe is disabled",
-+			 ctx->s_stripe, sbi->s_cluster_ratio);
-+		ctx->s_stripe = 0;
-+	}
-+
- 	/*
- 	 * Changing the DIOREAD_NOLOCK or DELALLOC mount options may cause
- 	 * two calls to ext4_should_dioread_nolock() to return inconsistent
+ 	switch (error_info->service_response) {
+ 	case PQI_AIO_SERV_RESPONSE_COMPLETE:
+@@ -3291,14 +3281,8 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
+ 			break;
+ 		case PQI_AIO_STATUS_AIO_PATH_DISABLED:
+ 			pqi_aio_path_disabled(io_request);
+-			if (pqi_is_multipath_device(device)) {
+-				pqi_device_remove_start(device);
+-				host_byte = DID_NO_CONNECT;
+-				scsi_status = SAM_STAT_CHECK_CONDITION;
+-			} else {
+-				scsi_status = SAM_STAT_GOOD;
+-				io_request->status = -EAGAIN;
+-			}
++			scsi_status = SAM_STAT_GOOD;
++			io_request->status = -EAGAIN;
+ 			break;
+ 		case PQI_AIO_STATUS_NO_PATH_TO_DEVICE:
+ 		case PQI_AIO_STATUS_INVALID_DEVICE:
 -- 
 2.43.0
 
