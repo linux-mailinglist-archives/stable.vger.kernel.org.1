@@ -1,133 +1,131 @@
-Return-Path: <stable+bounces-80601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C04698E3B1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 21:47:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2CE098E3C3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 21:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BED301C2104A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 19:47:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A6F283F6A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 19:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6F5215F77;
-	Wed,  2 Oct 2024 19:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EC7216A0D;
+	Wed,  2 Oct 2024 19:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=perex.cz header.i=@perex.cz header.b="VsJEua+5"
+	dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b="xeao0JIc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail1.perex.cz (mail1.perex.cz [77.48.224.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE84212F11;
-	Wed,  2 Oct 2024 19:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.48.224.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3286A216A06
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 19:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727898451; cv=none; b=USLVzG7TMoYTP/RMaapNNXbS0knHjkSbyn4DaMJtm3X0OFKrsCLvA6s0UXznWZnA1XntNK+5FNyOJ1PWiAMEqnug4NRaMX9d/KB1Z0hnN2UwJ/qW1ZsnRj9QOtHgQUm4lKbd/avGL7eANl25S0dnbNVXxw2HDVU1EG1hTfLACkk=
+	t=1727899091; cv=none; b=fG4TQZsjA8PBdjEOPWse3SqfyxucR80wKniUibPMrKfdk5T5kyenSWIjPdTxiu8HD2aLStpZ2uWA3leGdb+UCk7+RYBNAvgnBKTuLDguYOyoR/M3+/regpMIjwIpjwldAAKBnFQ+8qXTb7lL3cmO8BUa/O5RCz5ZrWpKR1help0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727898451; c=relaxed/simple;
-	bh=xhIFKx/Rm8gePB1jFjZajV0yAyHEMq0/GsqiYf/7suw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oONhGcK6s4EU1DP/j5oT0iYJSOZvoUZ1gSei+geyR7jdhXnaLFEy5qKzu6UYbB2EwA+27oNyhHKBb4vjH6xxCqrHaf3w9S8jJbIhmch4CZ2uE4MqqMlfCo4Iw567x2OQEICcTI4U7t5KZNVv3rjsfcQFrD9GHfRc3opUqr1gGMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=perex.cz; spf=pass smtp.mailfrom=perex.cz; dkim=pass (1024-bit key) header.d=perex.cz header.i=@perex.cz header.b=VsJEua+5; arc=none smtp.client-ip=77.48.224.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=perex.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perex.cz
-Received: from mail1.perex.cz (localhost [127.0.0.1])
-	by smtp1.perex.cz (Perex's E-mail Delivery System) with ESMTP id D39B54484;
-	Wed,  2 Oct 2024 21:47:22 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.perex.cz D39B54484
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perex.cz; s=default;
-	t=1727898442; bh=e7m9WypdoKbYnXQvxkh+6Tqrg4ZaxLQTqcDhZCcfmG8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VsJEua+522DdJqnpdC661JohOIzuBaL17nuBwL3LeCALaemn9jsOSN03kT4Rvbsdh
-	 Fq0bgJZaUHIrSuKmaf6Y0c+Q2e9XrhKHgu1OPzixKrerylXk48+W0Im08NcvKSgwkZ
-	 pVrM7bDpY7zyJE34awJBer26dE4UY+cOY/ENB+/c=
-Received: from p1gen4.perex-int.cz (unknown [192.168.100.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: perex)
-	by mail1.perex.cz (Perex's E-mail Delivery System) with ESMTPSA;
-	Wed,  2 Oct 2024 21:47:17 +0200 (CEST)
-From: Jaroslav Kysela <perex@perex.cz>
-To: Linux Sound ML <linux-sound@vger.kernel.org>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>
-Subject: [PATCH] ALSA: core: add isascii() check to card ID generator
-Date: Wed,  2 Oct 2024 21:46:49 +0200
-Message-ID: <20241002194649.1944696-1-perex@perex.cz>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1727899091; c=relaxed/simple;
+	bh=FZvT0DvIN6rDZY2K7NeI70Si1D2y6eDzt439Y+VYuo0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FL7AbxNBtu7pj0RAnNJ98xUc4GfJa3yLQ5srghp+fKIZQU44z5YnSRmba+zZ6bpwnNc0DJkraUc5snU+JOiI5rSaKW8w6scMWOvWBC03aB5XMnZL710tPeunL53uK40oBe+iL/Z/NbHa2YoMS7LJ+iKYgz8zu9X1O+QZJkxeY+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com; spf=none smtp.mailfrom=batbytes.com; dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b=xeao0JIc; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=batbytes.com
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7a9ac2d50ffso22396785a.1
+        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 12:58:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=batbytes-com.20230601.gappssmtp.com; s=20230601; t=1727899089; x=1728503889; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bKBi/49Hk49zeYze675qyaPFtzkiIePzc8OgUXDE7Hs=;
+        b=xeao0JIcNIb2vNFKiAVdSrr0VWcFMvOBAAhmYeep6keXojicON5Scy0Kq0GibTwTM8
+         0Jfy+zB7tKPlN4KQJxCpsqGp4bAgERniuEHH0AcvN/PobX+saukP38U2g5DNqYyCJhkA
+         +ru/l8jQYJV3PZ/ujo2XuH2C3F3kaTUfmLZ8j7yuyWn6wYqSPG8aRVBvzVjkWII9Vq4N
+         Ly6g+T7T/MLSOBHwCiJuHsiDqCGzypaf76GnEgO1ycZaWXiwFXFew1B5/6FbScZ1J5ag
+         LwNiGIt70udr36IBjh2WFOmcMg4BPqZBkuU0xn0txlPi17AjahaQpEObsfHfaUvsP5um
+         mRpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727899089; x=1728503889;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bKBi/49Hk49zeYze675qyaPFtzkiIePzc8OgUXDE7Hs=;
+        b=GKRzksbSMrV9D1pcbdwiu+ub4LZGFU6nGVhF2WB98GHJ2BFjkZOGzU9WIToK68vQtJ
+         ZZRlw4QrOyLguUhiiWjOyhSFs8vEHFEq/EuYx4b8+AjcvnAGNbX3oxoVHDfyae3DJxHL
+         yjcT7hISdp606BDsJfH5WR+zgvjZjS5/pB5x5JJ0TpEQFD7ZCNMzFbZRQ3ifmsDc/Pfj
+         h7dAhJvcRXbD7qJy+2EvuOY65RsgZiq67UnKUN+/Hi56dG/Fx3MSk6L6xg643OVwmJ9u
+         yF14nCnFwjzF3FL/Sf5UpPRy3yRIZdSLy6GgIUWPoNU/tzuQOlRdW9zSD7Yze8HPEdht
+         YSjQ==
+X-Gm-Message-State: AOJu0Yx2nuoOKlI9uvG4X3mtnKJurGKsFeMhm+WnkJDh11LVqoNYZYIf
+	QBjEf7VDv5hBM5PIvibJIkuskh05/FvOGn5uh6Syg9RC35GZ82NFhZIQiLvlUld6HeXyqqpDwBc
+	=
+X-Google-Smtp-Source: AGHT+IHVaW520RJeIfp96qMB5eHpsFf/CYFR8dZlqKcX1ELRzDMCPMHKWWbYHv4LhcjpXEQ4Kv5leg==
+X-Received: by 2002:a05:620a:462c:b0:7a9:a356:a5dd with SMTP id af79cd13be357-7ae67e479femr149663785a.20.1727899088963;
+        Wed, 02 Oct 2024 12:58:08 -0700 (PDT)
+Received: from batbytes.com ([216.212.123.7])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae377bc91asm651102085a.25.2024.10.02.12.58.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 12:58:08 -0700 (PDT)
+From: Patrick Donnelly <batrick@batbytes.com>
+To: pdonnell@redhat.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] ceph: fix cap ref leak via netfs init_request
+Date: Wed,  2 Oct 2024 15:58:02 -0400
+Message-ID: <20241002195806.33220-1-batrick@batbytes.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The card identifier should contain only safe ASCII characters. The isalnum()
-returns true also for characters for non-ASCII characters.
+From: Patrick Donnelly <pdonnell@redhat.com>
 
-Buglink: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4135
-Link: https://lore.kernel.org/linux-sound/yk3WTvKkwheOon_LzZlJ43PPInz6byYfBzpKkbasww1yzuiMRqn7n6Y8vZcXB-xwFCu_vb8hoNjv7DTNwH5TWjpEuiVsyn9HPCEXqwF4120=@protonmail.com/
+Log recovered from a user's cluster:
+
+    <7>[ 5413.970692] ceph:  get_cap_refs 00000000958c114b ret 1 got Fr
+    <7>[ 5413.970695] ceph:  start_read 00000000958c114b, no cache cap
+    ...
+    <7>[ 5473.934609] ceph:   my wanted = Fr, used = Fr, dirty -
+    <7>[ 5473.934616] ceph:  revocation: pAsLsXsFr -> pAsLsXs (revoking Fr)
+    <7>[ 5473.934632] ceph:  __ceph_caps_issued 00000000958c114b cap 00000000f7784259 issued pAsLsXs
+    <7>[ 5473.934638] ceph:  check_caps 10000000e68.fffffffffffffffe file_want - used Fr dirty - flushing - issued pAsLsXs revoking Fr retain pAsLsXsFsr  AUTHONLY NOINVAL FLUSH_FORCE
+
+The MDS subsequently complains that the kernel client is late releasing caps.
+
+Closes: https://tracker.ceph.com/issues/67008
+Fixes: 2504470854f8 ("ceph: Make ceph_init_request() check caps on readahead")
+Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
 Cc: stable@vger.kernel.org
-Reported-by: Barnabás Pőcze <pobrn@protonmail.com>
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
 ---
- sound/core/init.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/ceph/addr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/init.c b/sound/core/init.c
-index b92aa7103589..114fb87de990 100644
---- a/sound/core/init.c
-+++ b/sound/core/init.c
-@@ -654,13 +654,19 @@ void snd_card_free(struct snd_card *card)
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 53fef258c2bc..702c6a730b70 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -489,8 +489,11 @@ static int ceph_init_request(struct netfs_io_request *rreq, struct file *file)
+ 	rreq->io_streams[0].sreq_max_len = fsc->mount_options->rsize;
+ 
+ out:
+-	if (ret < 0)
++	if (ret < 0) {
++		if (got)
++			ceph_put_cap_refs(ceph_inode(inode), got);
+ 		kfree(priv);
++	}
+ 
+ 	return ret;
  }
- EXPORT_SYMBOL(snd_card_free);
- 
-+/* check, if the character is in the valid ASCII range */
-+static inline bool safe_ascii_char(char c)
-+{
-+	return isascii(c) && isalnum(c);
-+}
-+
- /* retrieve the last word of shortname or longname */
- static const char *retrieve_id_from_card_name(const char *name)
- {
- 	const char *spos = name;
- 
- 	while (*name) {
--		if (isspace(*name) && isalnum(name[1]))
-+		if (isspace(*name) && safe_ascii_char(name[1]))
- 			spos = name + 1;
- 		name++;
- 	}
-@@ -687,12 +693,12 @@ static void copy_valid_id_string(struct snd_card *card, const char *src,
- {
- 	char *id = card->id;
- 
--	while (*nid && !isalnum(*nid))
-+	while (*nid && !safe_ascii_char(*nid))
- 		nid++;
- 	if (isdigit(*nid))
- 		*id++ = isalpha(*src) ? *src : 'D';
- 	while (*nid && (size_t)(id - card->id) < sizeof(card->id) - 1) {
--		if (isalnum(*nid))
-+		if (safe_ascii_char(*nid))
- 			*id++ = *nid;
- 		nid++;
- 	}
-@@ -787,7 +793,7 @@ static ssize_t id_store(struct device *dev, struct device_attribute *attr,
- 
- 	for (idx = 0; idx < copy; idx++) {
- 		c = buf[idx];
--		if (!isalnum(c) && c != '_' && c != '-')
-+		if (!safe_ascii_char(c) && c != '_' && c != '-')
- 			return -EINVAL;
- 	}
- 	memcpy(buf1, buf, copy);
+
+base-commit: e32cde8d2bd7d251a8f9b434143977ddf13dcec6
 -- 
-2.46.0
+Patrick Donnelly, Ph.D.
+He / Him / His
+Red Hat Partner Engineer
+IBM, Inc.
+GPG: 19F28A586F808C2402351B93C3301A3E258DD79D
 
 
