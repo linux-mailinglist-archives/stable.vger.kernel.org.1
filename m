@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-79288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6007298D77E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:50:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B1798D755
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09DD91F21768
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:50:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 817361F24A84
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DD41CF5C6;
-	Wed,  2 Oct 2024 13:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DB31D0156;
+	Wed,  2 Oct 2024 13:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJWt56Sj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iILKiMQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3080817B421;
-	Wed,  2 Oct 2024 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546752BAF9;
+	Wed,  2 Oct 2024 13:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877007; cv=none; b=Og3MLHNypDJVgfZVHVAv0ccqgEX6L2rAHIHnBKkdcj0A1FEssJp9Lu0Ha9mrkfn6tAGiJhUE16Qi7CAm+LwKYUsv40kGzVzuB2V5fBWhQLdLdempCvqW6m/3Ami1vX0f7RG2Wo4gLefo7PhbNXnnLXJ9A1jtT956irpxSb46uZY=
+	t=1727876904; cv=none; b=cVvedu6TfWhQSxJmc+rftrqTL9obg7tILcy8Radm3kGUISv/QC92E94FB0G+Wd6sSkoNX4uvzv25ufbGeSiEDvzccwA9AuWBly4C9wTa0UBuO9KAmQpGk22TamMh78OpuNMzlQLZDUrQDI1G3K7Q5f2obfBWBnfM2SgSSVrDlmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877007; c=relaxed/simple;
-	bh=t/Af4udjVTtVxvkA7qO35Wm8pQB1KRAlcPfN/69Laug=;
+	s=arc-20240116; t=1727876904; c=relaxed/simple;
+	bh=DTVQOW/ZlMjMyYwK9bzOOypPtfRgIaLzbE3baiLMdKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlplbHrfnG9YMw1Pd7U30xzaFRs07fSsMRYkG+AOp3uCANtmrtNgy52blmtCGUr/mP4YIjaD02INE53Zl4DzJYKdTRZs5FSWniSbWfkANAUz9VE6T3pgt/cRg+ycCnXHBdXBnv+x5rmtd2PgkDiNQg6LwLzoOihJa1fnxfY7Dgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJWt56Sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668A6C4CEC2;
-	Wed,  2 Oct 2024 13:50:06 +0000 (UTC)
+	 MIME-Version; b=Sh7QUyn8JOM/hIOi8BNZxzkItGhYs0QCLUh9jMtgU6swNAPUCBqGdq08QKstwN1e6vVa7b/AM+8hc7UOoBEZlzZXgUOLK/lgSI0jfKEx5D518FkvaMfX0iZj60Sn/nJSeuKCz5RZBnl0YOHwFhbohLZuaa1axF634d0eiVaoO78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iILKiMQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1360C4CEC2;
+	Wed,  2 Oct 2024 13:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877006;
-	bh=t/Af4udjVTtVxvkA7qO35Wm8pQB1KRAlcPfN/69Laug=;
+	s=korg; t=1727876904;
+	bh=DTVQOW/ZlMjMyYwK9bzOOypPtfRgIaLzbE3baiLMdKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJWt56Sjnno1m4hyFpvfcjWZ0TXT7qFX9nuaJEgzQT7HasNs9+RKh4Qu7qA1/mmKm
-	 MjwklxHZKzBnoW1w5BUU4rHvNHlPAWWTv7qPhcFGOTriWYKCaR6FdAbJs69jpbtOI6
-	 /WHpGZeUjq2US7LzBWeHZpRsizwagjFFZy5meAB0=
+	b=iILKiMQe5A2sW9Rg0GC3H7LvZRvels8q6ojOvXr887HqvzhGfd2fS3f2zWPKdLC3+
+	 kCPMjRG4wQ9b2o2FmrNHlMc21OzwBno4F8gkfL6XxLeu1faz1Uk8kYRYShgelQxCTY
+	 PIKcGxY/IbSab/U+h5xfPg2Qici5R84dAGLf1XPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.11 591/695] bus: mhi: host: pci_generic: Update EDL firmware path for Foxconn modems
-Date: Wed,  2 Oct 2024 14:59:49 +0200
-Message-ID: <20241002125846.100508169@linuxfoundation.org>
+Subject: [PATCH 6.11 592/695] bus: mhi: host: pci_generic: Fix the name for the Telit FE990A
+Date: Wed,  2 Oct 2024 14:59:50 +0200
+Message-ID: <20241002125846.141155059@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -65,79 +65,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit a7bc66fe8093b48e86386cf73dd601feaaa7949c upstream.
+commit bfc5ca0fd1ea7aceae0b682fa4bd8079c52f96c8 upstream.
 
-Foxconn uses a unique firmware for their MHI based modems. So the generic
-firmware from Qcom won't work. Hence, update the EDL firmware path to
-include the 'foxconn' subdirectory based on the modem SoC so that the
-Foxconn specific firmware could be used.
+Add a mhi_pci_dev_info struct specific for the Telit FE990A modem in
+order to use the correct product name.
 
-Respective firmware will be upstreamed to linux-firmware repo.
-
-Cc: stable@vger.kernel.org # 6.11
-Fixes: bf30a75e6e00 ("bus: mhi: host: Add support for Foxconn SDX72 modems")
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org # 6.1+
+Fixes: 0724869ede9c ("bus: mhi: host: pci_generic: add support for Telit FE990 modem")
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240725022941.65948-1-slark_xiao@163.com
-[mani: Reworded the subject and description]
+Link: https://lore.kernel.org/r/20240820080439.837666-1-fabio.porcedda@gmail.com
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/bus/mhi/host/pci_generic.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 --- a/drivers/bus/mhi/host/pci_generic.c
 +++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -433,8 +433,7 @@ static const struct mhi_controller_confi
+@@ -677,6 +677,15 @@ static const struct mhi_pci_dev_info mhi
+ 	.mru_default = 32768,
+ };
  
- static const struct mhi_pci_dev_info mhi_foxconn_sdx55_info = {
- 	.name = "foxconn-sdx55",
--	.fw = "qcom/sdx55m/sbl1.mbn",
--	.edl = "qcom/sdx55m/edl.mbn",
-+	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
- 	.config = &modem_foxconn_sdx55_config,
- 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
- 	.dma_data_width = 32,
-@@ -444,8 +443,7 @@ static const struct mhi_pci_dev_info mhi
- 
- static const struct mhi_pci_dev_info mhi_foxconn_t99w175_info = {
- 	.name = "foxconn-t99w175",
--	.fw = "qcom/sdx55m/sbl1.mbn",
--	.edl = "qcom/sdx55m/edl.mbn",
-+	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
- 	.config = &modem_foxconn_sdx55_config,
- 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
- 	.dma_data_width = 32,
-@@ -455,8 +453,7 @@ static const struct mhi_pci_dev_info mhi
- 
- static const struct mhi_pci_dev_info mhi_foxconn_dw5930e_info = {
- 	.name = "foxconn-dw5930e",
--	.fw = "qcom/sdx55m/sbl1.mbn",
--	.edl = "qcom/sdx55m/edl.mbn",
-+	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
- 	.config = &modem_foxconn_sdx55_config,
- 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
- 	.dma_data_width = 32,
-@@ -502,7 +499,7 @@ static const struct mhi_pci_dev_info mhi
- 
- static const struct mhi_pci_dev_info mhi_foxconn_t99w515_info = {
- 	.name = "foxconn-t99w515",
--	.edl = "fox/sdx72m/edl.mbn",
-+	.edl = "qcom/sdx72m/foxconn/edl.mbn",
- 	.edl_trigger = true,
- 	.config = &modem_foxconn_sdx72_config,
- 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
-@@ -513,7 +510,7 @@ static const struct mhi_pci_dev_info mhi
- 
- static const struct mhi_pci_dev_info mhi_foxconn_dw5934e_info = {
- 	.name = "foxconn-dw5934e",
--	.edl = "fox/sdx72m/edl.mbn",
-+	.edl = "qcom/sdx72m/foxconn/edl.mbn",
- 	.edl_trigger = true,
- 	.config = &modem_foxconn_sdx72_config,
- 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
++static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
++	.name = "telit-fe990a",
++	.config = &modem_telit_fn990_config,
++	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
++	.dma_data_width = 32,
++	.sideband_wake = false,
++	.mru_default = 32768,
++};
++
+ /* Keep the list sorted based on the PID. New VID should be added as the last entry */
+ static const struct pci_device_id mhi_pci_id_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
+@@ -694,9 +703,9 @@ static const struct pci_device_id mhi_pc
+ 	/* Telit FN990 */
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
+ 		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
+-	/* Telit FE990 */
++	/* Telit FE990A */
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
+-		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
++		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
 
 
 
