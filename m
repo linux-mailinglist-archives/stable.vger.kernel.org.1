@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-79140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD1198D6CC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F2498D6CE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6C51F24360
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 702BA1F2425D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083C11D07A6;
-	Wed,  2 Oct 2024 13:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50111D0B8A;
+	Wed,  2 Oct 2024 13:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evCINygi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXJWBrkN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15531D079F;
-	Wed,  2 Oct 2024 13:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9448E1D079F;
+	Wed,  2 Oct 2024 13:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876556; cv=none; b=DPgJmpOszPl2gsr0Z0iQljveIgizkd041Gh35dmbL8XROVQBRgwF9n6hn2qJBeWOhy+DoWAX/X0tp0o8Bn1QMTQHy06FaiOQwRCXR2j7L3DOPGZHsgbU3nFqsooANrbY65hpMNOxqFOqeSMwyuD433OsDFr6gO2BbpbrVmnRI0o=
+	t=1727876562; cv=none; b=hwOVkwKeJzySxnpxU9iYu1bDQeYWvbHCqWAhb6l6BykbyJnOLiviJKvw6Qe589bO+AwkUTBZQFkFBx4KTxHK+7IIpc0jI3/4pzFTcVUG7uJ9ajDsfR0z6Pq+BMraBIX2NgP5rJbnUC0mIvIEyay59E0jQw8Cn1gWFq9hQOP6bpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876556; c=relaxed/simple;
-	bh=MxeOZjjDIunHkLZ3OLM/wn9WItA/C/4Wq8b68/CC+xc=;
+	s=arc-20240116; t=1727876562; c=relaxed/simple;
+	bh=G8Jvhzn39B5EPwGTX7kMUcyelUfeoLYSacg7BRL7m1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CykvSdikiHuPBb+2DBo66V5NXrJU8pE5anyl+PFjP1vkRaeERrvHWjT3bU+ywTWnul49T9RkD6zRNl22ez6qcTdU+bTwL9pwPg07PGHVGOurJapLJID7ZiD4na1iuRsOzXegRBT/c/BcbkEOfOin7J6wR94nF6diH+hv0Or9XTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evCINygi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39252C4CECE;
-	Wed,  2 Oct 2024 13:42:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ix0jWHGcPoHG2IN4duzf0sxK8pOqKUC3+VqQCrP43DjRfORXLnitLYk9uyhHFAyOCgZQwoLliKj1PE3S5wg2QZszW67rpfwY5Lh+qjgcoaeVpC3w9Dg5QC2quCtoFWD9pjiS7RdJYe+5pUqV27BuJhbHHR0f9jjPdSUvdzvhIV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXJWBrkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10457C4CECD;
+	Wed,  2 Oct 2024 13:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876556;
-	bh=MxeOZjjDIunHkLZ3OLM/wn9WItA/C/4Wq8b68/CC+xc=;
+	s=korg; t=1727876562;
+	bh=G8Jvhzn39B5EPwGTX7kMUcyelUfeoLYSacg7BRL7m1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evCINygiifPNGxXTH7wcRmZhhKwgfvgaRTjo4jvcqQ45sJmd0W3zv6UATxkwS96vL
-	 VyVtlAXfZSNv0EFI4MUGSZIg/jkWuwfunucp0SbZhY6bhVPaS0tQpk147CcN2MKv01
-	 oVB1KX7EijTl09bFYxSa3qkec/aYY0gWdBmi8Pdg=
+	b=KXJWBrkNl6FuPHTPeMjRPwbp6iyeE6evsnhJiml5ZeGjCkaMASkMOQ/qiktLQx4+u
+	 35g8hONvj/j9kexw1w4wj9FCQ/losCFnvsiIXRz8WC5VhyHGSfVdTO4lExCNsefQcr
+	 y0MXa+I8nMrkyK2syIIJrP+eq5YPxJNEKOG5bidY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Paul Barker <paul.barker.ct@bp.renesas.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 484/695] net: phy: aquantia: fix applying active_low bit after reset
-Date: Wed,  2 Oct 2024 14:58:02 +0200
-Message-ID: <20241002125841.789831281@linuxfoundation.org>
+Subject: [PATCH 6.11 485/695] net: ravb: Fix maximum TX frame size for GbEth devices
+Date: Wed,  2 Oct 2024 14:58:03 +0200
+Message-ID: <20241002125841.829412998@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -61,56 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Paul Barker <paul.barker.ct@bp.renesas.com>
 
-[ Upstream commit 6f9defaf99122d1af9c2562181c77bc99be0672d ]
+[ Upstream commit 1d63864299cafa7c8cbde56491c9932afdbff7ea ]
 
-for_each_set_bit was used wrongly in aqr107_config_init() when iterating
-over LEDs. Drop misleading 'index' variable and call
-aqr_phy_led_active_low_set() for each set bit representing an LED which
-is driven by VDD instead of GND pin.
+The datasheets for all SoCs using the GbEth IP specify a maximum
+transmission frame size of 1.5 kByte. I've confirmed through internal
+discussions that support for 1522 byte frames has been validated, which
+allows us to support the default MTU of 1500 bytes after reserving space
+for the Ethernet header, frame checksums and an optional VLAN tag.
 
-Fixes: 61578f679378 ("net: phy: aquantia: add support for PHY LEDs")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/9b1f0cd91f4cda54c8be56b4fe780480baf4aa0f.1726580902.git.daniel@makrotopia.org
+Fixes: 2e95e08ac009 ("ravb: Add rx_max_buf_size to struct ravb_hw_info")
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/aquantia/aquantia_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/renesas/ravb.h      | 1 +
+ drivers/net/ethernet/renesas/ravb_main.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/aquantia/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-index 57b8b8f400fd4..4d156d406bab9 100644
---- a/drivers/net/phy/aquantia/aquantia_main.c
-+++ b/drivers/net/phy/aquantia/aquantia_main.c
-@@ -489,7 +489,7 @@ static int aqr107_config_init(struct phy_device *phydev)
- {
- 	struct aqr107_priv *priv = phydev->priv;
- 	u32 led_active_low;
--	int ret, index = 0;
-+	int ret;
+diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
+index 9893c91af1050..a7de5cf6b3174 100644
+--- a/drivers/net/ethernet/renesas/ravb.h
++++ b/drivers/net/ethernet/renesas/ravb.h
+@@ -1052,6 +1052,7 @@ struct ravb_hw_info {
+ 	netdev_features_t net_features;
+ 	int stats_len;
+ 	u32 tccr_mask;
++	u32 tx_max_frame_size;
+ 	u32 rx_max_frame_size;
+ 	u32 rx_buffer_size;
+ 	u32 rx_desc_size;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index c02fb296bf7d7..471a68b0146ed 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2674,6 +2674,7 @@ static const struct ravb_hw_info ravb_gen2_hw_info = {
+ 	.net_features = NETIF_F_RXCSUM,
+ 	.stats_len = ARRAY_SIZE(ravb_gstrings_stats),
+ 	.tccr_mask = TCCR_TSRQ0 | TCCR_TSRQ1 | TCCR_TSRQ2 | TCCR_TSRQ3,
++	.tx_max_frame_size = SZ_2K,
+ 	.rx_max_frame_size = SZ_2K,
+ 	.rx_buffer_size = SZ_2K +
+ 			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
+@@ -2696,6 +2697,7 @@ static const struct ravb_hw_info ravb_gen3_hw_info = {
+ 	.net_features = NETIF_F_RXCSUM,
+ 	.stats_len = ARRAY_SIZE(ravb_gstrings_stats),
+ 	.tccr_mask = TCCR_TSRQ0 | TCCR_TSRQ1 | TCCR_TSRQ2 | TCCR_TSRQ3,
++	.tx_max_frame_size = SZ_2K,
+ 	.rx_max_frame_size = SZ_2K,
+ 	.rx_buffer_size = SZ_2K +
+ 			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
+@@ -2721,6 +2723,7 @@ static const struct ravb_hw_info ravb_gen4_hw_info = {
+ 	.net_features = NETIF_F_RXCSUM,
+ 	.stats_len = ARRAY_SIZE(ravb_gstrings_stats),
+ 	.tccr_mask = TCCR_TSRQ0 | TCCR_TSRQ1 | TCCR_TSRQ2 | TCCR_TSRQ3,
++	.tx_max_frame_size = SZ_2K,
+ 	.rx_max_frame_size = SZ_2K,
+ 	.rx_buffer_size = SZ_2K +
+ 			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
+@@ -2770,6 +2773,7 @@ static const struct ravb_hw_info gbeth_hw_info = {
+ 	.net_features = NETIF_F_RXCSUM | NETIF_F_HW_CSUM,
+ 	.stats_len = ARRAY_SIZE(ravb_gstrings_stats_gbeth),
+ 	.tccr_mask = TCCR_TSRQ0,
++	.tx_max_frame_size = 1522,
+ 	.rx_max_frame_size = SZ_8K,
+ 	.rx_buffer_size = SZ_2K,
+ 	.rx_desc_size = sizeof(struct ravb_rx_desc),
+@@ -2981,7 +2985,7 @@ static int ravb_probe(struct platform_device *pdev)
+ 	priv->avb_link_active_low =
+ 		of_property_read_bool(np, "renesas,ether-link-active-low");
  
- 	/* Check that the PHY interface type is compatible */
- 	if (phydev->interface != PHY_INTERFACE_MODE_SGMII &&
-@@ -516,10 +516,9 @@ static int aqr107_config_init(struct phy_device *phydev)
+-	ndev->max_mtu = info->rx_max_frame_size -
++	ndev->max_mtu = info->tx_max_frame_size -
+ 		(ETH_HLEN + VLAN_HLEN + ETH_FCS_LEN);
+ 	ndev->min_mtu = ETH_MIN_MTU;
  
- 	/* Restore LED polarity state after reset */
- 	for_each_set_bit(led_active_low, &priv->leds_active_low, AQR_MAX_LEDS) {
--		ret = aqr_phy_led_active_low_set(phydev, index, led_active_low);
-+		ret = aqr_phy_led_active_low_set(phydev, led_active_low, true);
- 		if (ret)
- 			return ret;
--		index++;
- 	}
- 
- 	return 0;
 -- 
 2.43.0
 
