@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CED98D5D7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C9B98D92F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF7D91C22110
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C98FF1C2311F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2874E1D049A;
-	Wed,  2 Oct 2024 13:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E611D1E80;
+	Wed,  2 Oct 2024 14:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpBGSM6Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK3mklg4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F8D1D04A2;
-	Wed,  2 Oct 2024 13:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97E91D0BAE;
+	Wed,  2 Oct 2024 14:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876050; cv=none; b=OFQp7yKtGru3W+Q2rfdcyl75IdeI2VQyAcBuIPCy38Mv1ht/rvVt92dmXUhJAtXAEBl8brkc+2aX3mU0rySb8QKeSoQDXvHst3DjubluS/uNIQ+jT8QV5KnuFmlLz68bDXfgXCGv6LS2WWZDVMnZsOzW3EXByrtYiIeonlUE9wM=
+	t=1727877829; cv=none; b=SGijLvj3Xhi4eQn4h+mc7Hh7BZi/9u3pDQCMfmlOmW3sg4AE3d0iFG4C6N0HERAwT0LKMB410H+P8H6eNcghqYrKnMhFRYWK9BUAxkL5vLtm5DNyGWBJYuHQZtxB9E5h7moXc2hzX2VhN2XOvu0W+6ncYjTZDn1vD4pv0xedXaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876050; c=relaxed/simple;
-	bh=vqR06KLURAZ1Z5k6VkX3JCm1J2SAuz/DX4ON+0nOVjs=;
+	s=arc-20240116; t=1727877829; c=relaxed/simple;
+	bh=VA/qLN5H4O2a9zlk7oGh/PQZ+iUXPv+K8RwyFT8xtCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OzarXAo0AsDhJsvOUbJpku4pH/K3XF2RIeEzTbOjQGLc3aqZgBsniNRjCoWPPTc3/32Ujn9wAJSzzBBM8IH1VhULCG+ixHHbnb72QaG2CRhpx65s7rrVOeDg3kMRcwMu67MKHzNhmY03qR+6rOW77pfqgAna5LTlqUcCOO1cBqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpBGSM6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F138C4CED4;
-	Wed,  2 Oct 2024 13:34:10 +0000 (UTC)
+	 MIME-Version; b=J+i5mZTL+YKtttKpCFqGdUWWPDOI9c60GFf58qT3970WybJHt2p7wgwvxIHC3qqRYiGUjhqeJFLSW+jewEPReKc9uuzr/3y4/InVE7AENIuY6exIqXQiD5CrKCiH+sWdyTOTe7sj5uii9q0i0uATC9J7Zc0W61qA+M0r873/IRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gK3mklg4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60263C4CEC5;
+	Wed,  2 Oct 2024 14:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876050;
-	bh=vqR06KLURAZ1Z5k6VkX3JCm1J2SAuz/DX4ON+0nOVjs=;
+	s=korg; t=1727877828;
+	bh=VA/qLN5H4O2a9zlk7oGh/PQZ+iUXPv+K8RwyFT8xtCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpBGSM6YIzj+n9JBMstWfLQW1vs3sAcbN3kB85mTvUuPhXqpZElCOZtfVGeXyEM+D
-	 SYVBsa4H1OVP0lTTPQIhsMnGcjaoPZxlZvHTpAbDoFyO3qMd68acfpAiGREBJwYPqN
-	 sO9jbfvYSWJjc8cVcSNF672Sna7y9k54FVNo8ZN0=
+	b=gK3mklg4t+wPhsjFpAd5Mnudt+vmxMWHa/e5UeYsO2/fsj+NxRMBqNEox7ByZrVLC
+	 rfa/UU4J59EgVrgm2rH1QU/pEKuxnI1dxk02XaTlkWjbWzmJeAEsRIohTgiWLujT6L
+	 hmDlrHtY4wGP4qQh/fgm5E4mTtN+moDs6o3oc3/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 311/695] ext4: return error on ext4_find_inline_entry
+Subject: [PATCH 6.10 209/634] drm/msm/dsi: correct programming sequence for SM8350 / SM8450
 Date: Wed,  2 Oct 2024 14:55:09 +0200
-Message-ID: <20241002125834.863965892@linuxfoundation.org>
+Message-ID: <20241002125819.354767502@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 4d231b91a944f3cab355fce65af5871fb5d7735b ]
+[ Upstream commit 1328cb7c34bf6d056df9ff694ee5194537548258 ]
 
-In case of errors when reading an inode from disk or traversing inline
-directory entries, return an error-encoded ERR_PTR instead of returning
-NULL. ext4_find_inline_entry only caller, __ext4_find_entry already returns
-such encoded errors.
+According to the display-drivers, 5nm DSI PLL (v4.2, v4.3) have
+different boundaries for pll_clock_inverters programming. Follow the
+vendor code and use correct values.
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://patch.msgid.link/20240821152324.3621860-3-cascardo@igalia.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: c6b72f5d82b1 ("ext4: avoid OOB when system.data xattr changes underneath the filesystem")
+Fixes: 2f9ae4e395ed ("drm/msm/dsi: add support for DSI-PHY on SM8350 and SM8450")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/606947/
+Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-3-1149dd8399fe@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index e7a09a99837b9..7b98b1bf1dc94 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -1669,8 +1669,9 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
- 	void *inline_start;
- 	int inline_size;
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+index 82d015aa2d634..29aa91238bc47 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
+@@ -135,7 +135,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
+ 			config->pll_clock_inverters = 0x00;
+ 		else
+ 			config->pll_clock_inverters = 0x40;
+-	} else {
++	} else if (pll->phy->cfg->quirks & DSI_PHY_7NM_QUIRK_V4_1) {
+ 		if (pll_freq <= 1000000000ULL)
+ 			config->pll_clock_inverters = 0xa0;
+ 		else if (pll_freq <= 2500000000ULL)
+@@ -144,6 +144,16 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
+ 			config->pll_clock_inverters = 0x00;
+ 		else
+ 			config->pll_clock_inverters = 0x40;
++	} else {
++		/* 4.2, 4.3 */
++		if (pll_freq <= 1000000000ULL)
++			config->pll_clock_inverters = 0xa0;
++		else if (pll_freq <= 2500000000ULL)
++			config->pll_clock_inverters = 0x20;
++		else if (pll_freq <= 3500000000ULL)
++			config->pll_clock_inverters = 0x00;
++		else
++			config->pll_clock_inverters = 0x40;
+ 	}
  
--	if (ext4_get_inode_loc(dir, &iloc))
--		return NULL;
-+	ret = ext4_get_inode_loc(dir, &iloc);
-+	if (ret)
-+		return ERR_PTR(ret);
- 
- 	down_read(&EXT4_I(dir)->xattr_sem);
- 	if (!ext4_has_inline_data(dir)) {
-@@ -1701,7 +1702,10 @@ struct buffer_head *ext4_find_inline_entry(struct inode *dir,
- 
- out:
- 	brelse(iloc.bh);
--	iloc.bh = NULL;
-+	if (ret < 0)
-+		iloc.bh = ERR_PTR(ret);
-+	else
-+		iloc.bh = NULL;
- out_find:
- 	up_read(&EXT4_I(dir)->xattr_sem);
- 	return iloc.bh;
+ 	config->decimal_div_start = dec;
 -- 
 2.43.0
 
