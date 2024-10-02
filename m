@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22EC98DCFE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5227798DAB7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 923752864BB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C50C8B2606B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2691D12FF;
-	Wed,  2 Oct 2024 14:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175621D1737;
+	Wed,  2 Oct 2024 14:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3Ah5rzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbvCnbyx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A501D1302;
-	Wed,  2 Oct 2024 14:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E211D172C;
+	Wed,  2 Oct 2024 14:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880087; cv=none; b=VI+lKjvQwU5X+Udhrxx0Ludl0hUa1tXbbq65Sdd4yXIiRkGttIZjmMFY3jcv9f6viybq7/c5mPFVPWnz1hiB8ZwsKnmHfHAjD4QnnuLQaLndXpMex5Ip/Tu8eop7eKbSkIhAuLw9K1xVuw7bIqBCe27bnGIyo85tt0Zrgyvj/As=
+	t=1727878719; cv=none; b=NmvQlzSFq4cvlSNn0R8fANQ5iy7YhwJGyhF8nZxNkNmnxxtaLfkKCrrG4GTvvuVP0TB1aDOIgWFfCFkgeG3gBH4tiXWv6cmhp1EI5B9P6UbRoi1bW4yqzRoRmUDxBY62om1NPzsDARnMHEZOiveJP4f4VX9NNS4zRt00Y3i15Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880087; c=relaxed/simple;
-	bh=aN9oDsQHx7h0kE7f71xYUw9XtKiodbWXQ0w+qnWRbik=;
+	s=arc-20240116; t=1727878719; c=relaxed/simple;
+	bh=lV+3An1Lb85tnfarReNR0QrIYy0fVy68cqPlk3cBv+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sdzc/YSE0R78BRIUIGg8qbPcg9lWi9jHeOXYiU6sGuiIUndQ4axpl01Rp1nky3hIqBA3lzNMS4x6JZBlCYCy+q0jCedZm6wqy5EDeSm4wusZFMDvJp9unHnjQfeYlCxI4N2CWPQs7Y6k50SEsqiLRMfta89u9JcsfKWmRboGVV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3Ah5rzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571C4C4CEC2;
-	Wed,  2 Oct 2024 14:41:27 +0000 (UTC)
+	 MIME-Version; b=YTdKPnPn4sUk6clusQJc9lmmJaFUxxSiPkPv0MxbclpD8Ohh+WNXG2j4DH4eJS9al7DMEsCtyj3XVFtX0bqqZc8TH36gTmUsr9x+2/HGXv/sIGdhYimfwTszj8CQsrLmbNLDE+w9kWo3HiHd9q0ykIMbcYmVzx4mR7TrEdLdARA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbvCnbyx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED8DC4CEC2;
+	Wed,  2 Oct 2024 14:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880087;
-	bh=aN9oDsQHx7h0kE7f71xYUw9XtKiodbWXQ0w+qnWRbik=;
+	s=korg; t=1727878719;
+	bh=lV+3An1Lb85tnfarReNR0QrIYy0fVy68cqPlk3cBv+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3Ah5rzbnmUP9fWjrgdj2YQKggrsHObWTPbwDVWoanFDx8NUul5eyHxFA3JIJCr9z
-	 YzQXkbUWFATDwnoZT0pH4uALfGRCkXSVLBctgu6rQ6NrJzgmOvY1qZIj5XdjBjXPBH
-	 P0Lr1pCZJvgWXGabJnErlnTrsZVGk+/cQM7+P/uk=
+	b=pbvCnbyxGpTdPJvdTLNUWVWPWBd7hsksO60IRWcZW8Bq14phGyzyDu75RCpWorxy7
+	 EgLYLOH3jgis9NB9IeBIAP8IQ7EA+lkd5vPeqLZJIvUT4C3GAbQH5pu/c8R/Ms7E9/
+	 7TponRX3i0lk3CvsuFzMfU/grBFjxPAOMCtIjoSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 340/538] f2fs: support .shutdown in f2fs_sops
+	Eliav Bar-ilan <eliavb@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.10 479/634] iommu/amd: Fix argument order in amd_iommu_dev_flush_pasid_all()
 Date: Wed,  2 Oct 2024 14:59:39 +0200
-Message-ID: <20241002125805.851835964@linuxfoundation.org>
+Message-ID: <20241002125830.012135411@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,167 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Eliav Bar-ilan <eliavb@nvidia.com>
 
-[ Upstream commit ee745e4736fbf33079d0d0808e1343c2280fd59a ]
+commit 8386207f37e98453e1de3f51e50eeeea089103f9 upstream.
 
-Support .shutdown callback in f2fs_sops, then, it can be called to
-shut down the file system when underlying block device is marked dead.
+An incorrect argument order calling amd_iommu_dev_flush_pasid_pages()
+causes improper flushing of the IOMMU, leaving the old value of GCR3 from
+a previous process attached to the same PASID.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: c7f114d864ac ("f2fs: fix to avoid use-after-free in f2fs_stop_gc_thread()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The function has the signature:
+
+void amd_iommu_dev_flush_pasid_pages(struct iommu_dev_data *dev_data,
+				     ioasid_t pasid, u64 address, size_t size)
+
+Correct the argument order.
+
+Cc: stable@vger.kernel.org
+Fixes: 474bf01ed9f0 ("iommu/amd: Add support for device based TLB invalidation")
+Signed-off-by: Eliav Bar-ilan <eliavb@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/0-v1-fc6bc37d8208+250b-amd_pasid_flush_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |  2 ++
- fs/f2fs/file.c  | 70 ++++++++++++++++++++++++++++++-------------------
- fs/f2fs/super.c |  6 +++++
- 3 files changed, 51 insertions(+), 27 deletions(-)
+ drivers/iommu/amd/iommu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index f7a8259b9180f..2059a24a330b2 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3507,6 +3507,8 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 		 struct iattr *attr);
- int f2fs_truncate_hole(struct inode *inode, pgoff_t pg_start, pgoff_t pg_end);
- void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count);
-+int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
-+							bool readonly);
- int f2fs_precache_extents(struct inode *inode);
- int f2fs_fileattr_get(struct dentry *dentry, struct fileattr *fa);
- int f2fs_fileattr_set(struct mnt_idmap *idmap,
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 2f08bf7f29621..085008b208020 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2256,34 +2256,13 @@ static int f2fs_ioc_abort_atomic_write(struct file *filp)
- 	return ret;
- }
- 
--static int f2fs_ioc_shutdown(struct file *filp, unsigned long arg)
-+int f2fs_do_shutdown(struct f2fs_sb_info *sbi, unsigned int flag,
-+							bool readonly)
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -1550,8 +1550,8 @@ void amd_iommu_dev_flush_pasid_pages(str
+ void amd_iommu_dev_flush_pasid_all(struct iommu_dev_data *dev_data,
+ 				   ioasid_t pasid)
  {
--	struct inode *inode = file_inode(filp);
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	struct super_block *sb = sbi->sb;
--	__u32 in;
- 	int ret = 0;
- 
--	if (!capable(CAP_SYS_ADMIN))
--		return -EPERM;
--
--	if (get_user(in, (__u32 __user *)arg))
--		return -EFAULT;
--
--	if (in != F2FS_GOING_DOWN_FULLSYNC) {
--		ret = mnt_want_write_file(filp);
--		if (ret) {
--			if (ret == -EROFS) {
--				ret = 0;
--				f2fs_stop_checkpoint(sbi, false,
--						STOP_CP_REASON_SHUTDOWN);
--				trace_f2fs_shutdown(sbi, in, ret);
--			}
--			return ret;
--		}
--	}
--
--	switch (in) {
-+	switch (flag) {
- 	case F2FS_GOING_DOWN_FULLSYNC:
- 		ret = freeze_bdev(sb->s_bdev);
- 		if (ret)
-@@ -2317,6 +2296,9 @@ static int f2fs_ioc_shutdown(struct file *filp, unsigned long arg)
- 		goto out;
- 	}
- 
-+	if (readonly)
-+		goto out;
-+
- 	f2fs_stop_gc_thread(sbi);
- 	f2fs_stop_discard_thread(sbi);
- 
-@@ -2325,10 +2307,44 @@ static int f2fs_ioc_shutdown(struct file *filp, unsigned long arg)
- 
- 	f2fs_update_time(sbi, REQ_TIME);
- out:
--	if (in != F2FS_GOING_DOWN_FULLSYNC)
--		mnt_drop_write_file(filp);
- 
--	trace_f2fs_shutdown(sbi, in, ret);
-+	trace_f2fs_shutdown(sbi, flag, ret);
-+
-+	return ret;
-+}
-+
-+static int f2fs_ioc_shutdown(struct file *filp, unsigned long arg)
-+{
-+	struct inode *inode = file_inode(filp);
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-+	__u32 in;
-+	int ret;
-+	bool need_drop = false, readonly = false;
-+
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	if (get_user(in, (__u32 __user *)arg))
-+		return -EFAULT;
-+
-+	if (in != F2FS_GOING_DOWN_FULLSYNC) {
-+		ret = mnt_want_write_file(filp);
-+		if (ret) {
-+			if (ret != -EROFS)
-+				return ret;
-+
-+			/* fallback to nosync shutdown for readonly fs */
-+			in = F2FS_GOING_DOWN_NOSYNC;
-+			readonly = true;
-+		} else {
-+			need_drop = true;
-+		}
-+	}
-+
-+	ret = f2fs_do_shutdown(sbi, in, readonly);
-+
-+	if (need_drop)
-+		mnt_drop_write_file(filp);
- 
- 	return ret;
- }
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index e022d8233c0a5..d12603c3b5f50 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2543,6 +2543,11 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
- 	return err;
+-	amd_iommu_dev_flush_pasid_pages(dev_data, 0,
+-					CMD_INV_IOMMU_ALL_PAGES_ADDRESS, pasid);
++	amd_iommu_dev_flush_pasid_pages(dev_data, pasid, 0,
++					CMD_INV_IOMMU_ALL_PAGES_ADDRESS);
  }
  
-+static void f2fs_shutdown(struct super_block *sb)
-+{
-+	f2fs_do_shutdown(F2FS_SB(sb), F2FS_GOING_DOWN_NOSYNC, false);
-+}
-+
- #ifdef CONFIG_QUOTA
- static bool f2fs_need_recovery(struct f2fs_sb_info *sbi)
- {
-@@ -3142,6 +3147,7 @@ static const struct super_operations f2fs_sops = {
- 	.unfreeze_fs	= f2fs_unfreeze,
- 	.statfs		= f2fs_statfs,
- 	.remount_fs	= f2fs_remount,
-+	.shutdown	= f2fs_shutdown,
- };
- 
- #ifdef CONFIG_FS_ENCRYPTION
--- 
-2.43.0
-
+ void amd_iommu_domain_flush_complete(struct protection_domain *domain)
 
 
 
