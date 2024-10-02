@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BB798D941
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D0198DBBF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A84111F21BA5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1E101F2305C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6B11D1E9C;
-	Wed,  2 Oct 2024 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E911D2206;
+	Wed,  2 Oct 2024 14:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XR6GmH0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3hclTdf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A27C1D0E1A;
-	Wed,  2 Oct 2024 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086191D14E4;
+	Wed,  2 Oct 2024 14:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877878; cv=none; b=IyBK0S9rKJH7YBepV7qPemPBNJh1MZ944E0+33MVTPzL5PLAQTqxHsqnbPuFxJaxN5cjwjOKu7ibK8Jd3QAcGMPrM27/45Gbi5zmBrZLE3UOmGqn79oyE+wHq385YHrxP6MHwnebMFjwfn1G0jW8nLDEb4Zm3VwaQNrU+KK+SkU=
+	t=1727879344; cv=none; b=MqCcatzl7uWnMDgZH4HH+5xvgHkGu97mnnDRSyHLmt/FeJmAe8Uc1Yq8nucHogNGYvWD8GTQ90lO4/1h2nuSk0OtaBbgXIluWrsWbx1qc0cRxVdTz5EYytmzXb7ZahDqjVhgEM7o+SzkS2nndUnkwQU5Axk21gVF3n6ngVMyMso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877878; c=relaxed/simple;
-	bh=X2+KYgL4E7tW54xDwWfNIrIEGuD7hYXw/exO9Se+Pt4=;
+	s=arc-20240116; t=1727879344; c=relaxed/simple;
+	bh=FSYNh6cVQ0h90i9qc8DyKKOqqLBa4RNhOK7IAHItU04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJ4XoMUsZC2lXmUiM2tghgPMu2vBgZepKa9KSUnpfPOh8D4HnEM+XF6pyOVnfG3/IVziDQ4vu/k/qzdX+NxCkJA6z3Z7xu2DAinP+kjElZmCGoUWKi1JA7NsxsCZT1ATUT9IcajKQqg5/EfCE53zgIV+elYt2iADbrIvu9TqUMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XR6GmH0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA82BC4CEC2;
-	Wed,  2 Oct 2024 14:04:37 +0000 (UTC)
+	 MIME-Version; b=Jqy9zsVrg0/FJJzpuyugHTDorYAEXBtAIj3KO7K2n8hh0OI3Ofi8FhxmJH7mtq1/ZIJuImDctNLPZKCSDFXgOhhEylTw5SylsBqZc29s6Iqy+5kslDNswRIttdlI+LJBvr9cbRtwZ2/mmLtdj2S2RGujlt9i3J1z8jJkkRUFZ3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3hclTdf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83373C4CEC5;
+	Wed,  2 Oct 2024 14:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877878;
-	bh=X2+KYgL4E7tW54xDwWfNIrIEGuD7hYXw/exO9Se+Pt4=;
+	s=korg; t=1727879343;
+	bh=FSYNh6cVQ0h90i9qc8DyKKOqqLBa4RNhOK7IAHItU04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XR6GmH0KLXbXI9jDs00/pcK/vvkWhlWTZ/xaMfOjOHzjqVdTArR1FO2PFxFjsYgMU
-	 6VA8krWtApiSHC5n6sMQPC5D4wrPi/XAVgp8qrJcn1nFj+KAUHb93zJPTusl/AWQgk
-	 7AJNeFFtzhjKcikQ+hRE+hcAi2EaG2EFGOD3JEEw=
+	b=M3hclTdfy6nbY74mOmOeByBG+f5j7zZnhDIkpRFGM3BGY+eScITPJKWcZ7JcXasqG
+	 LMeY2ed/TVz70PIDWSxh2JEVZNNfBw/rTSD+xmAWP/LDJdB98XbbbdZbsWJ5JgDV85
+	 V8Uwn+1hQQLk+H++yM+p/Dl0aeZfMgTkACxVURSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 225/634] xen/swiotlb: fix allocated size
+Subject: [PATCH 6.6 086/538] io_uring/io-wq: inherit cpuset of cgroup in io worker
 Date: Wed,  2 Oct 2024 14:55:25 +0200
-Message-ID: <20241002125819.980522955@linuxfoundation.org>
+Message-ID: <20241002125755.618585433@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
 
-[ Upstream commit c3dea3d54f4d399f8044547f0f1abdccbdfb0fee ]
+[ Upstream commit 84eacf177faa605853c58e5b1c0d9544b88c16fd ]
 
-The allocated size in xen_swiotlb_alloc_coherent() and
-xen_swiotlb_free_coherent() is calculated wrong for the case of
-XEN_PAGE_SIZE not matching PAGE_SIZE. Fix that.
+The io worker threads are userland threads that just never exit to the
+userland. By that, they are also assigned to a cgroup (the group of the
+creating task).
 
-Fixes: 7250f422da04 ("xen-swiotlb: use actually allocated size on check physical continuous")
-Reported-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+When creating a new io worker, this worker should inherit the cpuset
+of the cgroup.
+
+Fixes: da64d6db3bd3 ("io_uring: One wqe per wq")
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Link: https://lore.kernel.org/r/20240910171157.166423-3-felix.moessbauer@siemens.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/swiotlb-xen.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/io-wq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
-index 7a6f1f007527c..5e83d1e0bd184 100644
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -146,7 +146,7 @@ xen_swiotlb_alloc_coherent(struct device *dev, size_t size,
- 	void *ret;
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 2df8d98738498..a1e31723c9ed6 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -1170,7 +1170,7 @@ struct io_wq *io_wq_create(unsigned bounded, struct io_wq_data *data)
  
- 	/* Align the allocation to the Xen page size */
--	size = 1UL << (order + XEN_PAGE_SHIFT);
-+	size = ALIGN(size, XEN_PAGE_SIZE);
- 
- 	ret = (void *)__get_free_pages(flags, get_order(size));
- 	if (!ret)
-@@ -178,7 +178,7 @@ xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
- 	int order = get_order(size);
- 
- 	/* Convert the size to actually allocated. */
--	size = 1UL << (order + XEN_PAGE_SHIFT);
-+	size = ALIGN(size, XEN_PAGE_SIZE);
- 
- 	if (WARN_ON_ONCE(dma_handle + size - 1 > dev->coherent_dma_mask) ||
- 	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size)))
+ 	if (!alloc_cpumask_var(&wq->cpu_mask, GFP_KERNEL))
+ 		goto err;
+-	cpumask_copy(wq->cpu_mask, cpu_possible_mask);
++	cpuset_cpus_allowed(data->task, wq->cpu_mask);
+ 	wq->acct[IO_WQ_ACCT_BOUND].max_workers = bounded;
+ 	wq->acct[IO_WQ_ACCT_UNBOUND].max_workers =
+ 				task_rlimit(current, RLIMIT_NPROC);
 -- 
 2.43.0
 
