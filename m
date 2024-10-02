@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25DC098D25A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:45:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0397498D260
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E368A283576
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 11:45:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 353611C21A0A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 11:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41D2201244;
-	Wed,  2 Oct 2024 11:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F697205E16;
+	Wed,  2 Oct 2024 11:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joTWp5EI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRMHlprw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF604200131
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 11:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBB71EC017
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 11:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727869523; cv=none; b=P6PMZviopQ9xiG59L0HzcS038NyxielRRVPRK4iSKV8V/u53YsYoVdaHKwHSS0cmbiLGC6LywIzyzAMysRNKeLWE+Yj8YR1t/svsJY3w90XNvKTVawEAkoOWYWBLYJbuUhqWx8dDVpUDIx8YiP3wJodfT2UYW3EVxPnf2Kj2wdY=
+	t=1727869527; cv=none; b=qE1FLPAs6eilwRygF0MqgOkTHm4KNvTqP2yTaveENljZSItfU/BFZQ/E8A/UT2DELOAvZBXT9C54NYjHcYla0FlH757jzcK8xKP7lfetYer9QD0F0VPWyKkXOMb1Cb5EpgGUmIDHLsF0RFdQkQ5B/qfNBswN5eo+oa2Wn/nfa7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727869523; c=relaxed/simple;
-	bh=aFcFmT232fBoiBH3+smrm8bC1MEPfNARowvFnVCxhz0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FMO3V5LATGlmHgS9P4whcSgzPwacHBW6llxcRzRf31incdI0VUqAsrcxtDg0srIsC0674Ws5cSBuOAcslRxCFqCjRFal0nZKEiXx3cA5nps3BrSE/RwPo2RzefSozHKmHbIY6ZSKdNhhaziL7XQ1/M657KcDW2F5akaX/RZ0G+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joTWp5EI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B90C4CECE;
-	Wed,  2 Oct 2024 11:45:22 +0000 (UTC)
+	s=arc-20240116; t=1727869527; c=relaxed/simple;
+	bh=u9wGlJSKjAX9YlBbb38czA/NaooxjVWuFBdcD4WnDAI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Tul7+zi9yp2+0NzQwgr+v3mTL3CXPYJhBU1pLilnhurBokSRISKVO3j3BVoELUk9s5Qxe5LSXlJxA2QY0+H2XB7uQeN0Ex/YnOlAV1wtbe2tH8hWMfTeUcZ51vH+UZESxL9kXxcBuWWA99M9s9YHYXOmkxMurYJnuP7EzUKIBrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRMHlprw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E59C4CEC5;
+	Wed,  2 Oct 2024 11:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727869523;
-	bh=aFcFmT232fBoiBH3+smrm8bC1MEPfNARowvFnVCxhz0=;
+	s=korg; t=1727869526;
+	bh=u9wGlJSKjAX9YlBbb38czA/NaooxjVWuFBdcD4WnDAI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=joTWp5EIHd9ijAUGXJt5xShiXsOMcumu8wrRdblKK3pPS7E72cvVvVWM89KVXki0R
-	 IBLyxtNmi8D1c4Qojv0rsUYYJtg6po5HMpw+7MnX2XRW8GQu2DHJCrDl+Y9raSbl/F
-	 MWxam4emUBRDdpKVurylj7luYzJ35Og9uMfW8G5o=
-Subject: FAILED: patch "[PATCH] block, bfq: fix uaf for accessing waker_bfqq after splitting" failed to apply to 6.1-stable tree
+	b=bRMHlprwk7NHTCXrk/4JK54KIYCE2ls9+S6Z8dwyGSt9dAxbPfqfHUGOepRygcWQY
+	 YCNEfJH+4va99nBkd3vkDM+ywc8lWcBG+YOSguzo68xgt3MhzvMIohrDNSuFC4qVLI
+	 fDoRP68BU3OZYv4iOH4fqlLWtaIoPIaXnKQXRFTU=
+Subject: FAILED: patch "[PATCH] block, bfq: fix uaf for accessing waker_bfqq after splitting" failed to apply to 5.15-stable tree
 To: yukuai3@huawei.com,axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 02 Oct 2024 13:45:20 +0200
-Message-ID: <2024100220-swagger-freehand-6d91@gregkh>
+Date: Wed, 02 Oct 2024 13:45:21 +0200
+Message-ID: <2024100221-pang-residue-68ad@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1ba0403ac6447f2d63914fb760c44a3b19c44eaf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100220-swagger-freehand-6d91@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100221-pang-residue-68ad@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,18 @@ a61230470c8c ("block, bfq: move io_cq-persistent bfqq data into a dedicated stru
 337366e02b37 ("block, bfq: replace 0/1 with false/true in bic apis")
 64dc8c732f5c ("block, bfq: fix possible uaf for 'bfqq->bic'")
 a1795c2ccb1e ("bfq: fix waker_bfqq inconsistency crash")
+dc469ba2e790 ("block/bfq: Use the new blk_opf_t type")
+f950667356ce ("bfq: Relax waker detection for shared queues")
+4e54a2493e58 ("bfq: Get rid of __bio_blkcg() usage")
+09f871868080 ("bfq: Track whether bfq_group is still online")
+ea591cd4eb27 ("bfq: Update cgroup information before merging bio")
+3bc5e683c67d ("bfq: Split shared queues on move between cgroups")
+70456e5210f4 ("bfq: Avoid false marking of bic as stably merged")
+f6bad159f5d5 ("block/bfq-iosched.c: use "false" rather than "BLK_RW_ASYNC"")
+a0725c22cd84 ("bfq: use bfq_bic_lookup in bfq_limit_depth")
+1f18b7005b49 ("bfq: Limit waker detection in time")
+76f1df88bbc2 ("bfq: Limit number of requests consumed by each cgroup")
+44dfa279f117 ("bfq: Store full bitmap depth in bfq_data")
 
 thanks,
 
