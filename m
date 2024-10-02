@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-79878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2682598DAB9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045DF98DD4B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58CF71C227FB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36A64B2740F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF4F1D1743;
-	Wed,  2 Oct 2024 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6C61D0DD7;
+	Wed,  2 Oct 2024 14:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AsGsvkMK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC2uAFq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8431D0426;
-	Wed,  2 Oct 2024 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5A1405FB;
+	Wed,  2 Oct 2024 14:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878731; cv=none; b=k+PHoDnBA2iujKh+uNmrKwnb/k3iVvlCCFHCzXn43Qm5hKc6TYg5sRZa43sTHkwsR/pzmXJkniLURVxEKQrIdC7yrCxp/FZDkqXG42XYrS006JtHzWcM09N0x8epblZ2K/E4IShfyjHeBnDI81MQPTFKZi0hvGFgFpDFDU0PyAg=
+	t=1727880190; cv=none; b=fjjAZjY4pPITMaeb20AYqatJBSF2Y8ThM68tbcUXb/z+ybXsNiMPozt3L4j0gueXSsbHIqRitWJqAhmGuzktwoNEHi7tjPW8YRs4AdriwBKVf2tF5v9c2Nuf3DKD1lNNXjz7udBqvLUovVhEoNusDCP3Qy50ss9CnOtagkGMl0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878731; c=relaxed/simple;
-	bh=9m+9FuLVZnu2RHATmju/8lpOTFLUMyXyNkAmynF8rjw=;
+	s=arc-20240116; t=1727880190; c=relaxed/simple;
+	bh=T1LS6C7meFnU40TyU6c2pBg3OStmIxCQyUIxmbYjjkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U8RtLTDl7UCU9HCD0YaJdJgTZJFpnZ1BBB7RAkEHoqTTeUcfNbUatqyU76fJi1onYKUNDeThev90KsmAERQ2hdOIhbI+vMRcbLW4rnd4E4pdr0dHuKe6ocsPlT9E9zVkXDGE2SuiCKjNRTTapTxcPmb9k6Ecuwwjt3BJnQwKWCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsGsvkMK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F2AC4CEC2;
-	Wed,  2 Oct 2024 14:18:50 +0000 (UTC)
+	 MIME-Version; b=pMxYn0h6bmMHqWlkUi8B8oGYagA4k7IyTuGwcvXwmWeTIwb2yIZ/YZ6hnVthaEXd80hy4Ufzd6sX6iwkhEcMSQOQZT598ItEdWqjc/+rknBYME5S54GMuN7eTbInO7/YJqKYnc6g4ZbKc7++ZUP7JSwY8efA/jJ4UFwmtqwmN3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC2uAFq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07464C4CEC2;
+	Wed,  2 Oct 2024 14:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878731;
-	bh=9m+9FuLVZnu2RHATmju/8lpOTFLUMyXyNkAmynF8rjw=;
+	s=korg; t=1727880190;
+	bh=T1LS6C7meFnU40TyU6c2pBg3OStmIxCQyUIxmbYjjkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsGsvkMKVN2ZFue8d1NKMDIk8dlcGUcXNChWkedo7toGfIUvH5cjZljeRQczATYmA
-	 /S/qofZEvpE3LqL80dySZoRl6Ge5GR+NJv47nfONgfQFAhqVLcN7Q32FR+Mwc5yS6C
-	 +65ObdhKjYITkZPJH4A8xzNfzuOqZfi8lahjsUNg=
+	b=PC2uAFq66Xw8q/J0uy4EACpryQofhEagR1zS/gzQkoF/tQS3r9QKw5U9XNXKAo7o1
+	 mAQ8zuiQKpfdmxclbywRL0DaHbSkgn3oGlsH/TcJ2A+uuETYXtt7rlOgLo4PBywacr
+	 vniG6+qOGn42HNtn+LbLPCw5ymTj0JyJ4OUOQteQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.10 514/634] can: esd_usb: Remove CAN_CTRLMODE_3_SAMPLES for CAN-USB/3-FD
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Jeffery Hugo <quic_jhugo@quicinc.com>,
+	Carl Vanderlip <quic_carlv@quicinc.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 375/538] net: qrtr: Update packets cloning when broadcasting
 Date: Wed,  2 Oct 2024 15:00:14 +0200
-Message-ID: <20241002125831.397046998@linuxfoundation.org>
+Message-ID: <20241002125807.233811677@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +63,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Mätje <stefan.maetje@esd.eu>
+From: Youssef Samir <quic_yabdulra@quicinc.com>
 
-commit 75b3189540578f96b4996e4849b6649998f49455 upstream.
+[ Upstream commit f011b313e8ebd5b7abd8521b5119aecef403de45 ]
 
-Remove the CAN_CTRLMODE_3_SAMPLES announcement for CAN-USB/3-FD devices
-because these devices don't support it.
+When broadcasting data to multiple nodes via MHI, using skb_clone()
+causes all nodes to receive the same header data. This can result in
+packets being discarded by endpoints, leading to lost data.
 
-The hardware has a Microchip SAM E70 microcontroller that uses a Bosch
-MCAN IP core as CAN FD controller. But this MCAN core doesn't support
-triple sampling.
+This issue occurs when a socket is closed, and a QRTR_TYPE_DEL_CLIENT
+packet is broadcasted. All nodes receive the same destination node ID,
+causing the node connected to the client to discard the packet and
+remain unaware of the client's deletion.
 
-Fixes: 80662d943075 ("can: esd_usb: Add support for esd CAN-USB/3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20240904222740.2985864-2-stefan.maetje@esd.eu
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace skb_clone() with pskb_copy(), to create a separate copy of
+the header for each sk_buff.
+
+Fixes: bdabad3e363d ("net: Add Qualcomm IPC router")
+Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Reviewed-by: Jeffery Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
+Link: https://patch.msgid.link/20240916170858.2382247-1-quic_yabdulra@quicinc.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/esd_usb.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/qrtr/af_qrtr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -3,7 +3,7 @@
-  * CAN driver for esd electronics gmbh CAN-USB/2, CAN-USB/3 and CAN-USB/Micro
-  *
-  * Copyright (C) 2010-2012 esd electronic system design gmbh, Matthias Fuchs <socketcan@esd.eu>
-- * Copyright (C) 2022-2023 esd electronics gmbh, Frank Jungclaus <frank.jungclaus@esd.eu>
-+ * Copyright (C) 2022-2024 esd electronics gmbh, Frank Jungclaus <frank.jungclaus@esd.eu>
-  */
+diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+index 41ece61eb57ab..00c51cf693f3d 100644
+--- a/net/qrtr/af_qrtr.c
++++ b/net/qrtr/af_qrtr.c
+@@ -884,7 +884,7 @@ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
  
- #include <linux/can.h>
-@@ -1116,9 +1116,6 @@ static int esd_usb_3_set_bittiming(struc
- 	if (priv->can.ctrlmode & CAN_CTRLMODE_LISTENONLY)
- 		flags |= ESD_USB_3_BAUDRATE_FLAG_LOM;
- 
--	if (priv->can.ctrlmode & CAN_CTRLMODE_3_SAMPLES)
--		flags |= ESD_USB_3_BAUDRATE_FLAG_TRS;
--
- 	baud_x->nom.brp = cpu_to_le16(nom_bt->brp & (nom_btc->brp_max - 1));
- 	baud_x->nom.sjw = cpu_to_le16(nom_bt->sjw & (nom_btc->sjw_max - 1));
- 	baud_x->nom.tseg1 = cpu_to_le16((nom_bt->prop_seg + nom_bt->phase_seg1)
-@@ -1219,7 +1216,6 @@ static int esd_usb_probe_one_net(struct
- 	switch (le16_to_cpu(dev->udev->descriptor.idProduct)) {
- 	case ESD_USB_CANUSB3_PRODUCT_ID:
- 		priv->can.clock.freq = ESD_USB_3_CAN_CLOCK;
--		priv->can.ctrlmode_supported |= CAN_CTRLMODE_3_SAMPLES;
- 		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
- 		priv->can.bittiming_const = &esd_usb_3_nom_bittiming_const;
- 		priv->can.data_bittiming_const = &esd_usb_3_data_bittiming_const;
+ 	mutex_lock(&qrtr_node_lock);
+ 	list_for_each_entry(node, &qrtr_all_nodes, item) {
+-		skbn = skb_clone(skb, GFP_KERNEL);
++		skbn = pskb_copy(skb, GFP_KERNEL);
+ 		if (!skbn)
+ 			break;
+ 		skb_set_owner_w(skbn, skb->sk);
+-- 
+2.43.0
+
 
 
 
