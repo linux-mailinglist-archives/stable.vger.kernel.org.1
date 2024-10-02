@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-80133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1E298DBFE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E0198DBD2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C420A281213
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77E3B1C23D03
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804FF1D1E7A;
-	Wed,  2 Oct 2024 14:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4791D1D0B8B;
+	Wed,  2 Oct 2024 14:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeBk4Vmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muuHZvix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5491D1E8B;
-	Wed,  2 Oct 2024 14:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E501D0488;
+	Wed,  2 Oct 2024 14:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879480; cv=none; b=TU0zFTIoSdBVdG6BYxyCkyrbw66wZL3SFYuJxmfAFw6O1XZD+if7Q/WxuMXJSMy5UfbQ32Wq0rpjNFZjjCJcKyRSV3Dt6dirRFsl0CF9IYimS5m4FMFOudH0TXwx+ZsYFzJmFlZ9tZypK/db2GTec9xeHB0d6qrypkahwP6ZQkY=
+	t=1727879385; cv=none; b=hOYUluIzkw0dpo8H+KSGEddZPirrSPk2q7gIBU7gbjilvL/MkdiASm85nxDoLlTGv6cwEDMDGW/gsfhmlfS4BdGeW6wNmRIFhn7NTOVCDMSUxu2aDRpOPBIqD351mfr9EWzqnsqzaoXVZ1RaHJe3TGHqiWMIt1Ypuj+zpCfLt7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879480; c=relaxed/simple;
-	bh=o9NAXaFUdV+CSOBWxfDe0WTt7HtIGt1FVLACXes4EVw=;
+	s=arc-20240116; t=1727879385; c=relaxed/simple;
+	bh=t44MCUISRYo7DW060qDAJmlY71tO36twyrf4EEhCT+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWIilOseWcGaT64j2kY0h3TCI/tBk+yoc2o7NdMS0loSQGXdQPZb7YuuyHcRRBBa2eyNlc2kZ8w3PAhyNUJcC7/cz/3rYMDVedJ1qSF6d3DaDyfyzNDKFfnUoj5z9/kgQuoFOv0G0mJpOT5J44fji0wTyyIRsPn7Z31bFmGnaz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeBk4Vmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95B0C4CEC2;
-	Wed,  2 Oct 2024 14:31:19 +0000 (UTC)
+	 MIME-Version; b=RhOOpR2jNhfU59uk5oUYGwzMmK455v7YsdJ7GeRMRAYb4T4yMkAAljyej8fwRu0pEVy4uU/4xF2vqdrXoRG3pql1lTAhJ2+m4S9Mkpt2ffXOCyxKftSYBml2pi4lcfPVoVKCso+KycoVQ3HGiG1QDVy8eBPLRwSUGn0yUgCYQrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muuHZvix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C48C4CEC2;
+	Wed,  2 Oct 2024 14:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879480;
-	bh=o9NAXaFUdV+CSOBWxfDe0WTt7HtIGt1FVLACXes4EVw=;
+	s=korg; t=1727879384;
+	bh=t44MCUISRYo7DW060qDAJmlY71tO36twyrf4EEhCT+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeBk4Vmv30HTdFM0nANVBQj8JnO3icts994GXup52oD5YuyeKGyGHqGj69S7agsBu
-	 mO1yiwO0/LSlnEpkMasVxA16J/mPSPRuWhofBX1aVH0HOBZFY3S9GkmBL1gWS/rRGS
-	 62JlRLRChxNHwrlV4PuCD7nC6ZGP5dzUo9LY+EPk=
+	b=muuHZvixK5pKL+O75D7y56kSqEMcp8aq9H0g3wJvqYpoMNBd36qwH5X1zBw21n0by
+	 8QYtg1/xjeN3rHTii7lf6E/s2x22yUv2ep1a+Ds7qYq4wKNNGGX+zVryOpYMvvg0Ny
+	 8WOIoKkEWE1Ie37Nre3b2pgg/ySXOtCrhP0ud01U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/538] firmware: arm_scmi: Fix double free in OPTEE transport
-Date: Wed,  2 Oct 2024 14:55:31 +0200
-Message-ID: <20241002125755.859749465@linuxfoundation.org>
+Subject: [PATCH 6.6 093/538] spi: ppc4xx: Avoid returning 0 when failed to parse and map IRQ
+Date: Wed,  2 Oct 2024 14:55:32 +0200
+Message-ID: <20241002125755.900912560@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -68,43 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e98dba934b2fc587eafb83f47ad64d9053b18ae0 ]
+[ Upstream commit 7781f1d120fec8624fc654eda900fc8748262082 ]
 
-Channels can be shared between protocols, avoid freeing the same channel
-descriptors twice when unloading the stack.
+0 is incorrect error code when failed to parse and map IRQ.
+Replace OF specific old API for IRQ retrieval with a generic
+one to fix this issue.
 
-Fixes: 5f90f189a052 ("firmware: arm_scmi: Add optee transport")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Tested-by: Peng Fan <peng.fan@nxp.com>  #i.MX95 19x19 EVK
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Message-Id: <20240812173340.3912830-2-cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 0f245463b01e ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20240814144525.2648450-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/optee.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/spi/spi-ppc4xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/optee.c b/drivers/firmware/arm_scmi/optee.c
-index e123de6e8c67a..aa02392265d32 100644
---- a/drivers/firmware/arm_scmi/optee.c
-+++ b/drivers/firmware/arm_scmi/optee.c
-@@ -467,6 +467,13 @@ static int scmi_optee_chan_free(int id, void *p, void *data)
- 	struct scmi_chan_info *cinfo = p;
- 	struct scmi_optee_channel *channel = cinfo->transport_info;
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 0d698580194e9..1381563941fe3 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -26,7 +26,6 @@
+ #include <linux/errno.h>
+ #include <linux/wait.h>
+ #include <linux/of_address.h>
+-#include <linux/of_irq.h>
+ #include <linux/of_platform.h>
+ #include <linux/interrupt.h>
+ #include <linux/delay.h>
+@@ -410,9 +409,10 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	}
  
-+	/*
-+	 * Different protocols might share the same chan info, so a previous
-+	 * call might have already freed the structure.
-+	 */
-+	if (!channel)
-+		return 0;
-+
- 	mutex_lock(&scmi_optee_private->mu);
- 	list_del(&channel->link);
- 	mutex_unlock(&scmi_optee_private->mu);
+ 	/* Request IRQ */
+-	hw->irqnum = irq_of_parse_and_map(np, 0);
+-	if (hw->irqnum <= 0)
++	ret = platform_get_irq(op, 0);
++	if (ret < 0)
+ 		goto free_host;
++	hw->irqnum = ret;
+ 
+ 	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
+ 			  0, "spi_ppc4xx_of", (void *)hw);
 -- 
 2.43.0
 
