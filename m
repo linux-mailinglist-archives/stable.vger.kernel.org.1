@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-80535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFF298DDE1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A27398DDFE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B7B1F23A5D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 764F51F24027
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95F81D0E24;
-	Wed,  2 Oct 2024 14:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AE71D0E1C;
+	Wed,  2 Oct 2024 14:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1xCtXTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTM/t47o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7254A19409E;
-	Wed,  2 Oct 2024 14:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B01D0798;
+	Wed,  2 Oct 2024 14:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880656; cv=none; b=MKG4x9q+zfwQB+9stogGncddvgg5SOGrI0rb8gBjNjkWAN8PS1tJNEjkmMPFpLJm50/hdfoPB67EpCaQmmfMIc87QGLL2ymW02B1ue0J4Eqe192ngcKZGiTURmsWhs4RyK0nMGETFrGaKtBOmjJg55vW3BGdyyfNHi843QkiP50=
+	t=1727880694; cv=none; b=LloQ4yNHMqd0phkt7WrzGkQEhxjg9p9uduTFlbpluJpSEb2WSnZgqJF25TWhvq0hxRKr9zwLraUxehXQkM4xi9Qq2g5RZihvDxx3Z8JhHypEoEfW1nEyQog56NPTr0DR06l/whY7b7rV8P60XTuT4RxCYW05inEUmZuR36oqAR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880656; c=relaxed/simple;
-	bh=bv5lzDlU8SY8aDhyNu+h0skpzQ8R6s9H4KUSLAAnnjM=;
+	s=arc-20240116; t=1727880694; c=relaxed/simple;
+	bh=betsIHgmaRoYKcqJtdny2fx9FQpAYdev0KXdTVxcHtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t3E6c1c63jptYw/864cD2pI+31L3KqS9DecNB0J2xkauZwZRJ3ZdzG9g8TWJAU4MAZf4l5tvpaUkC48dunly8hQZGEwirdM1euGDXiDtvMX4SCqZRQom9d6MQORB+/sYDD13i8ZGrwI14xEfXRak63K8ZItjr0v0beXSuaOoL7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1xCtXTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFEDC4CECE;
-	Wed,  2 Oct 2024 14:50:55 +0000 (UTC)
+	 MIME-Version; b=gpTPLUIyPNBZl/lmAPFRDpcLqFAq2CQhuJWhUENmP72+R3Zik/x6dNqrgJbysDsYIxtusAIBY697xD48rVCp3Njbku+JWHf1UVltrP7Tj1IIYFXO3//wV7PojGg+2X+4jksMFg82WCL5wNzZH7RWw0Tc0V3oLTdr2Z4UqEzmFSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTM/t47o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AF5C4CEE5;
+	Wed,  2 Oct 2024 14:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880656;
-	bh=bv5lzDlU8SY8aDhyNu+h0skpzQ8R6s9H4KUSLAAnnjM=;
+	s=korg; t=1727880694;
+	bh=betsIHgmaRoYKcqJtdny2fx9FQpAYdev0KXdTVxcHtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1xCtXTQxoU9tcVMvnfXbOKu6snoy35QJuiHitzEXSHeP3hPbTnC7+filU8zuD2mh
-	 AhmBRFkLjbYnE+PleSWxm5fyJWWQpJeHCVWiqZGiQ9ndtnFRXvdqBQXOrE/H2jg9fk
-	 Bby0lmofHCMPbMTcmGSraQVN3jI+BGTimPJ7ciRc=
+	b=UTM/t47o/PvJiZSy7Zk2xSApF6f9qk0RomUuCLq3MdMZ+8ESWnQgCBXZXNi2eodgk
+	 ZZz1AKgrtDqpcv+ob51UDEKdKGkv6UmWIIf0oKfOxD0VWvnSTDLQXegPdy/x4acFYW
+	 ojDSPKw0Y7dtcp230C/Ub9/OC9wd0rCjotVzyZPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 532/538] iio: magnetometer: ak8975: Fix Unexpected device error
-Date: Wed,  2 Oct 2024 15:02:51 +0200
-Message-ID: <20241002125813.444276400@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.6 533/538] wifi: brcmfmac: add linefeed at end of file
+Date: Wed,  2 Oct 2024 15:02:52 +0200
+Message-ID: <20241002125813.483216731@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -61,87 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-commit 848f68c760ab1e14a9046ea6e45e3304ab9fa50b upstream.
+commit 26f0dc8a705ae182eaa126cef0a9870d1a87a5ac upstream.
 
-Explicity specify array indices to fix mapping between
-asahi_compass_chipset and ak_def_array.
-While at it, remove unneeded AKXXXX.
+The following sparse warning was reported:
 
-Fixes: 4f9ea93afde1 ("iio: magnetometer: ak8975: Convert enum->pointer for data in the match tables")
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231001-ak_magnetometer-v1-1-09bf3b8798a3@apitzsch.eu
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c:432:49:
+  warning: no newline at end of file
+
+Fixes: 31343230abb1 ("wifi: brcmfmac: export firmware interface functions")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/20240125165128.7e43a1f3@kernel.org/
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240128093057.164791-2-arend.vanspriel@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/magnetometer/ak8975.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -204,7 +204,6 @@ static long ak09912_raw_to_gauss(u16 dat
- 
- /* Compatible Asahi Kasei Compass parts */
- enum asahi_compass_chipset {
--	AKXXXX		= 0,
- 	AK8975,
- 	AK8963,
- 	AK09911,
-@@ -248,7 +247,7 @@ struct ak_def {
- };
- 
- static const struct ak_def ak_def_array[] = {
--	{
-+	[AK8975] = {
- 		.type = AK8975,
- 		.raw_to_gauss = ak8975_raw_to_gauss,
- 		.range = 4096,
-@@ -273,7 +272,7 @@ static const struct ak_def ak_def_array[
- 			AK8975_REG_HYL,
- 			AK8975_REG_HZL},
- 	},
--	{
-+	[AK8963] = {
- 		.type = AK8963,
- 		.raw_to_gauss = ak8963_09911_raw_to_gauss,
- 		.range = 8190,
-@@ -298,7 +297,7 @@ static const struct ak_def ak_def_array[
- 			AK8975_REG_HYL,
- 			AK8975_REG_HZL},
- 	},
--	{
-+	[AK09911] = {
- 		.type = AK09911,
- 		.raw_to_gauss = ak8963_09911_raw_to_gauss,
- 		.range = 8192,
-@@ -323,7 +322,7 @@ static const struct ak_def ak_def_array[
- 			AK09912_REG_HYL,
- 			AK09912_REG_HZL},
- 	},
--	{
-+	[AK09912] = {
- 		.type = AK09912,
- 		.raw_to_gauss = ak09912_raw_to_gauss,
- 		.range = 32752,
-@@ -348,7 +347,7 @@ static const struct ak_def ak_def_array[
- 			AK09912_REG_HYL,
- 			AK09912_REG_HZL},
- 	},
--	{
-+	[AK09916] = {
- 		.type = AK09916,
- 		.raw_to_gauss = ak09912_raw_to_gauss,
- 		.range = 32752,
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
+@@ -429,4 +429,4 @@ s32 brcmf_fil_xtlv_data_get(struct brcmf
+ 	mutex_unlock(&drvr->proto_block);
+ 	return err;
+ }
+-BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_xtlv_data_get);
+\ No newline at end of file
++BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_xtlv_data_get);
 
 
 
