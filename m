@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7033E98D9EA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B55D98DC8A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FD58285962
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 183E3B20DBA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C5F1D2211;
-	Wed,  2 Oct 2024 14:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685CE1D279C;
+	Wed,  2 Oct 2024 14:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sK/KVewf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVoGVfXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDB21D0E3A;
-	Wed,  2 Oct 2024 14:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EC43D994;
+	Wed,  2 Oct 2024 14:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878299; cv=none; b=TzDm8NqBo245fJmJN4z7Oivm1r3bY5+YjE22BzlCZFCmbXSgpwCfsrwEja4JWt7k6dx5XKZWA6NLTp/zk1ILYMkuXb7T3g8MqUQAXY9uynEdc/B5nJ0zjThhtelAejsQNIoSx2fThRNy3OkbAuPjc446I6cfbq3ePgXahkW3HcM=
+	t=1727879758; cv=none; b=iYDbmkGezqMdlTpvbiHfwe8w6OwgV2gE3vifS1Wo7h6zpoLxdZ45qiCA+qE4VECdmH9zbyESF42/Fudb1bz9AwhuqJ1m3xaDIyd5ZqILTF40fRpR0bUMIrgKsR4SZ9VJZWN7tkbz8PO/WDK1jULxU3lm45SecJBYcGvko+9gZAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878299; c=relaxed/simple;
-	bh=B/GsG17Vc6WaDgShk5V4fdJiWk+IP/7mGzb70tqKVfE=;
+	s=arc-20240116; t=1727879758; c=relaxed/simple;
+	bh=RYX7POblfESKBfN97aePO8VC5Tiqbea2TECbBKFz6q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rC6Rbicp2Wwr+J9i7B5L7uLcXitJcYItEputzmBzfwkuBh+YVOIQ7Ro7rqZcC0kXOBdIo9j0rNwTReNSdit2+YHRpxtgb0llamyYjeqcBSjRoJC9jkJKFOBZtsPhX5MfVv9wiqnaDrRB5p4d9/hxhTaqA2Uv4u6NjzGD7qPjmqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sK/KVewf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A74C4CEC5;
-	Wed,  2 Oct 2024 14:11:39 +0000 (UTC)
+	 MIME-Version; b=YwxWre911ouNO9FXC9ISWFsbOzBL+/Yq1qJr81ADIqDa94gj9IyOhPPYpt+zxYnU7arr2Up9fRIRnQAoZak1OjViHnHcpsegN0YtfmM+unLAksdb6uMI5A0GDIm1sbMc1vDeHXEY1M6QGQ5rH0vfGN2VLD/ACMO0bX4xVq6iSD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVoGVfXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DEAC4CEC2;
+	Wed,  2 Oct 2024 14:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878299;
-	bh=B/GsG17Vc6WaDgShk5V4fdJiWk+IP/7mGzb70tqKVfE=;
+	s=korg; t=1727879758;
+	bh=RYX7POblfESKBfN97aePO8VC5Tiqbea2TECbBKFz6q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sK/KVewfjNnC2T558EMnI3qVqfCpMK9ALw+j41GTCPigjgRG4RDzDvQ4dAMaK40bP
-	 z/mmqOzN+MFdxLphvVhqnzQ4Agv/+Jb59r/dOlewZ7BHJlihAur9oVKdgVMl7PaQHr
-	 g2Pgi3ZIguEOVyqyl8MJTZicmVucF5uGW+uzvznc=
+	b=nVoGVfXkO5M0lBojFkuHq96YI0xVL4RR5Z09lqgMGBWU0rvSppLMG+etANLlua9oR
+	 W/0K7CfZbRjk26pz0XKlDZi9V3yxyezJvCG4U2u8VQVJIq4etZCDog+E6EKZ9Nj+N8
+	 jN3lMJBdZt2SvTXHvrM4z6FUITdUKwKiLQKUj8Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 365/634] iommufd: Check the domain owner of the parent before creating a nesting domain
-Date: Wed,  2 Oct 2024 14:57:45 +0200
-Message-ID: <20241002125825.502839485@linuxfoundation.org>
+Subject: [PATCH 6.6 227/538] ext4: avoid potential buffer_head leak in __ext4_new_inode()
+Date: Wed,  2 Oct 2024 14:57:46 +0200
+Message-ID: <20241002125801.213403105@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 73183ad6ea51029d04b098286dcee98d715015f1 ]
+[ Upstream commit 227d31b9214d1b9513383cf6c7180628d4b3b61f ]
 
-This check was missed, before we can pass a struct iommu_domain to a
-driver callback we need to validate that the domain was created by that
-driver.
+If a group is marked EXT4_GROUP_INFO_IBITMAP_CORRUPT after it's inode
+bitmap buffer_head was successfully verified, then __ext4_new_inode()
+will get a valid inode_bitmap_bh of a corrupted group from
+ext4_read_inode_bitmap() in which case inode_bitmap_bh misses a release.
+Hnadle "IS_ERR(inode_bitmap_bh)" and group corruption separately like
+how ext4_free_inode() does to avoid buffer_head leak.
 
-Fixes: bd529dbb661d ("iommufd: Add a nested HW pagetable object")
-Link: https://patch.msgid.link/r/0-v1-c8770519edde+1a-iommufd_nesting_ops_jgg@nvidia.com
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 9008a58e5dce ("ext4: make the bitmap read routines return real error codes")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://patch.msgid.link/20240820132234.2759926-3-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/hw_pagetable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/ialloc.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/hw_pagetable.c b/drivers/iommu/iommufd/hw_pagetable.c
-index a9f1fe44c4c0b..21f0d8cbd7aad 100644
---- a/drivers/iommu/iommufd/hw_pagetable.c
-+++ b/drivers/iommu/iommufd/hw_pagetable.c
-@@ -215,7 +215,8 @@ iommufd_hwpt_nested_alloc(struct iommufd_ctx *ictx,
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index b4699a415c210..d7d89133ed368 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -1054,12 +1054,13 @@ struct inode *__ext4_new_inode(struct mnt_idmap *idmap,
+ 		brelse(inode_bitmap_bh);
+ 		inode_bitmap_bh = ext4_read_inode_bitmap(sb, group);
+ 		/* Skip groups with suspicious inode tables */
+-		if (((!(sbi->s_mount_state & EXT4_FC_REPLAY))
+-		     && EXT4_MB_GRP_IBITMAP_CORRUPT(grp)) ||
+-		    IS_ERR(inode_bitmap_bh)) {
++		if (IS_ERR(inode_bitmap_bh)) {
+ 			inode_bitmap_bh = NULL;
+ 			goto next_group;
+ 		}
++		if (!(sbi->s_mount_state & EXT4_FC_REPLAY) &&
++		    EXT4_MB_GRP_IBITMAP_CORRUPT(grp))
++			goto next_group;
  
- 	if (flags || !user_data->len || !ops->domain_alloc_user)
- 		return ERR_PTR(-EOPNOTSUPP);
--	if (parent->auto_domain || !parent->nest_parent)
-+	if (parent->auto_domain || !parent->nest_parent ||
-+	    parent->common.domain->owner != ops)
- 		return ERR_PTR(-EINVAL);
- 
- 	hwpt_nested = __iommufd_object_alloc(
+ repeat_in_this_group:
+ 		ret2 = find_inode_bit(sb, group, inode_bitmap_bh, &ino);
 -- 
 2.43.0
 
