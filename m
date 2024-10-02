@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD5798DA50
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:20:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBCD98DCEC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ED132818D0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:20:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9533FB23A19
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8601D0BA5;
-	Wed,  2 Oct 2024 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5191D07B7;
+	Wed,  2 Oct 2024 14:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FT6uFa3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq2Hirmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8BF1D27BD;
-	Wed,  2 Oct 2024 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2543232;
+	Wed,  2 Oct 2024 14:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878505; cv=none; b=Gsys7DWyRPvi8hhwVjYPbWnlTlZOaEkeGRQP4oy6FQ+LzLmpo5tYcFKrnaBsFKZSoCr+aasXiap2PBZ2Zk/BSwlywh4WY9dDDwTLy68tVnFliCndtuPhqNNwF/cGGo3e/Lw1gujobE4c06DPmFJ8ecRA1l2ecdvcMwlIejvcnAI=
+	t=1727879984; cv=none; b=dfSrC+Rd0T72r3fRPNqx41NbYJS7Eadn7OU+KKlilrtexnbnMaCr+jRLhbAmj5e0cLA4KVE13HZAeQSAKNYii0M0lJjxDFm6vNso3reWDua0fSmT3KzBjDWB2gvC79oIbD8uX4QZa3LpgAzQzR6Tjcr2HK95OAIa2D4bmSyvy0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878505; c=relaxed/simple;
-	bh=6207k04Jb8ZpJ35hEdGGiU4fPhWJ8MuCvselOKb3oKM=;
+	s=arc-20240116; t=1727879984; c=relaxed/simple;
+	bh=FoOAaoJdUeEXPH084RqWHn8XKqsJPQ1Z8HRVtldUp7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thgVOslUzwJzInOIsZaHheC+5MUi8GNER9lNgmbL/J8eiKMvoWo9DFgCReeD2mKdr4dPrX5gNNSsGxlfkK3OKgTy52lKtM7prEhZZdLh7g2562mTLRfhThdLAgg4SMQSRCw3UMeyuHJ1s2sZm9wZ3pUKcFaqAUImfjzGsUg0hLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FT6uFa3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81BBC4CEC2;
-	Wed,  2 Oct 2024 14:15:04 +0000 (UTC)
+	 MIME-Version; b=uL+iaSvyRBbiwxSmIkcemeQu8skXUvG6JghOXgPSq9+j47uflcCpBp92pq5eaiU+QVGIM6r+g/28ckRbIFmp1PCUeKPdUgPG3RT2SRQz52qfCQQgaUME9dzB8kg7fVaJCX2lqyq2tohza4fkjJBIRh3a4eleFAIWrD6C6t5kmIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq2Hirmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A68C4CEC5;
+	Wed,  2 Oct 2024 14:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878505;
-	bh=6207k04Jb8ZpJ35hEdGGiU4fPhWJ8MuCvselOKb3oKM=;
+	s=korg; t=1727879984;
+	bh=FoOAaoJdUeEXPH084RqWHn8XKqsJPQ1Z8HRVtldUp7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FT6uFa3SA8IUUWm2q6XbiL4Zjq2bbI7v2/T8OvMZJGvOWSak5bxHNSaKbVBFw66NB
-	 sp7tJrmobHvhyc6mhlEiSA09anvuPKD2bHEiWQng8W0afsqILdMjVXdaY8QG2AVW7m
-	 N08fVhRtFd2eJA8YkWzmerAuLW3tmibI4CtiP5Yw=
+	b=Cq2Hirmn0JOm8YhXLFulE3YVdx5iT9UrxHO1QJCTXY6HWQOF8bAvzXJdCvyS66qKF
+	 zt3f72TQEBzMlRTj38Biie7Dl0u8WgfjhS6EqAH4j9plnicEdfM8UcyxqYZ0P0LVGJ
+	 AVUcM1Kx9CvyGZhYrDtuiSRSWA9lEMQnCpK3YYMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 435/634] net: xilinx: axienet: Fix packet counting
-Date: Wed,  2 Oct 2024 14:58:55 +0200
-Message-ID: <20241002125828.272337288@linuxfoundation.org>
+Subject: [PATCH 6.6 297/538] pinctrl: single: fix missing error code in pcs_probe()
+Date: Wed,  2 Oct 2024 14:58:56 +0200
+Message-ID: <20241002125804.137991048@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 5a6caa2cfabb559309b5ce29ee7c8e9ce1a9a9df ]
+[ Upstream commit cacd8cf79d7823b07619865e994a7916fcc8ae91 ]
 
-axienet_free_tx_chain returns the number of DMA descriptors it's
-handled. However, axienet_tx_poll treats the return as the number of
-packets. When scatter-gather SKBs are enabled, a single packet may use
-multiple DMA descriptors, which causes incorrect packet counts. Fix this
-by explicitly keepting track of the number of packets processed as
-separate from the DMA descriptors.
+If pinctrl_enable() fails in pcs_probe(), it should return the error code.
 
-Budget does not affect the number of Tx completions we can process for
-NAPI, so we use the ring size as the limit instead of budget. As we no
-longer return the number of descriptors processed to axienet_tx_poll, we
-now update tx_bd_ci in axienet_free_tx_chain.
-
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20240913145156.2283067-1-sean.anderson@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8f773bfbdd42 ("pinctrl: single: fix possible memory leak when pinctrl_enable() fails")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://lore.kernel.org/20240819024625.154441-1-yangyingliang@huaweicloud.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 23 +++++++++++--------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ drivers/pinctrl/pinctrl-single.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 00b1a4cf7c4be..f1d928644b824 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -674,15 +674,15 @@ static int axienet_device_reset(struct net_device *ndev)
-  *
-  * Would either be called after a successful transmit operation, or after
-  * there was an error when setting up the chain.
-- * Returns the number of descriptors handled.
-+ * Returns the number of packets handled.
-  */
- static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
- 				 int nr_bds, bool force, u32 *sizep, int budget)
- {
- 	struct axidma_bd *cur_p;
- 	unsigned int status;
-+	int i, packets = 0;
- 	dma_addr_t phys;
--	int i;
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index bbe7cc894b1a1..6c670203b3ac2 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1918,7 +1918,8 @@ static int pcs_probe(struct platform_device *pdev)
  
- 	for (i = 0; i < nr_bds; i++) {
- 		cur_p = &lp->tx_bd_v[(first_bd + i) % lp->tx_bd_num];
-@@ -701,8 +701,10 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
- 				 (cur_p->cntrl & XAXIDMA_BD_CTRL_LENGTH_MASK),
- 				 DMA_TO_DEVICE);
+ 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
  
--		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK))
-+		if (cur_p->skb && (status & XAXIDMA_BD_STS_COMPLETE_MASK)) {
- 			napi_consume_skb(cur_p->skb, budget);
-+			packets++;
-+		}
+-	if (pinctrl_enable(pcs->pctl))
++	ret = pinctrl_enable(pcs->pctl);
++	if (ret)
+ 		goto free;
  
- 		cur_p->app0 = 0;
- 		cur_p->app1 = 0;
-@@ -718,7 +720,13 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
- 			*sizep += status & XAXIDMA_BD_STS_ACTUAL_LEN_MASK;
- 	}
- 
--	return i;
-+	if (!force) {
-+		lp->tx_bd_ci += i;
-+		if (lp->tx_bd_ci >= lp->tx_bd_num)
-+			lp->tx_bd_ci %= lp->tx_bd_num;
-+	}
-+
-+	return packets;
- }
- 
- /**
-@@ -891,13 +899,10 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
- 	u32 size = 0;
- 	int packets;
- 
--	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, budget, false, &size, budget);
-+	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, lp->tx_bd_num, false,
-+					&size, budget);
- 
- 	if (packets) {
--		lp->tx_bd_ci += packets;
--		if (lp->tx_bd_ci >= lp->tx_bd_num)
--			lp->tx_bd_ci %= lp->tx_bd_num;
--
- 		u64_stats_update_begin(&lp->tx_stat_sync);
- 		u64_stats_add(&lp->tx_packets, packets);
- 		u64_stats_add(&lp->tx_bytes, size);
+ 	return 0;
 -- 
 2.43.0
 
