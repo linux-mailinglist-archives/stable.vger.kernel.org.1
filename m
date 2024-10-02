@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C78E98D9A4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8145498DC47
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF0951C22F14
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3A401C24046
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA2E1D0794;
-	Wed,  2 Oct 2024 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAF61D0F71;
+	Wed,  2 Oct 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baWmpcNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrDB0T70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786B61D049F;
-	Wed,  2 Oct 2024 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E251CF5FB;
+	Wed,  2 Oct 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878135; cv=none; b=SclMS2Ee+iXw6KmDgKODjcxFgtrG/hN/I4VkoD9DAB52pO3o4FJh3Ynaaj4CnMl81QA49hblQDxPEoFO2yZpj9YkHTcLFVOEVCeBUjTKbyKcKcxpIbKKuCbCW9UFORWYEbX+WNAo+VJH86TmP8t+BjBXZOuBel/vvREMTxkYIq4=
+	t=1727879602; cv=none; b=cQ+WkU1vIj+E7wxyBvKdqR7wOMQXuQNRxwp9V+Jp2toqdUAnznLPKYD+FHPKIZmqJ9zaBXIArlJLD9mgqP+3eSOAhwhuAh5cmnPonx7GWZC5fiwWIvlqIiKHx3gZGfY24xxr3Tk9oMbXXBYx8qOnJghzrumsXLV1ABku+Xf29JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878135; c=relaxed/simple;
-	bh=B/QtTIVlCoX9JPIGo1yjrJQ1AI8azbJkC8CldNF0Npo=;
+	s=arc-20240116; t=1727879602; c=relaxed/simple;
+	bh=CA53wqkXDHHi4j490I+zrqPunO/XAOIWlqjHQ4M9Gh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XF0RwLoZiyH/TvQKv5yUu6Zhwo5AZ2Mr1JPav42k8dqCGg/bCukdVlWQbgdim8vPsrpYlq13o8ZgCbyZufJDLDwKves0F2oQ78K+AsnW8KHxGL6rh3LaQrnj6udNARHbdzX9O4sbMa1avIonpxQasYHYbBLjVOp+Fznlpm74fRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baWmpcNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9D3C4CEC2;
-	Wed,  2 Oct 2024 14:08:54 +0000 (UTC)
+	 MIME-Version; b=Di9EQ3DcC48OdOuRyYLJsQsTsmi18QFHvXDWWOU6UTQ1LEUKffcf6PtlDahmWs2jev6Li1iZMENP6xSzcZAujIc/1B7PiH+EDEo9Z0taDgjWBTeV0ssPSyOB7bFGa70USR08qSaLsQ0nDyc56EAdC56K/HG2TzZTujQnR98TXfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrDB0T70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E61C4CECE;
+	Wed,  2 Oct 2024 14:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878135;
-	bh=B/QtTIVlCoX9JPIGo1yjrJQ1AI8azbJkC8CldNF0Npo=;
+	s=korg; t=1727879602;
+	bh=CA53wqkXDHHi4j490I+zrqPunO/XAOIWlqjHQ4M9Gh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=baWmpcNbmRB23FZpC24cIe/zR19SgrJlsSOeT7oBpMdnvTRamper+32UL1ab9Ob/Y
-	 DB/bXzTSjBWnRRk+AB6SCu7xnbf/KW7aQrYTnQ6rNGtPJ0Il+B1xc+hH0PFaFKbYMf
-	 WiM0Etc1QoecglXDlaxrD1nyrzHH8mKdwVEXYolY=
+	b=UrDB0T70mTX22vBlRFQAJQddJ+X0ix7fT6mHXpmQe9SfmQi5NmBFfbksEp3Q9Xq0K
+	 HcBJOCZtR3Xoc1WSBEL9JZp2MWMFeJbj1WtnRAKbZ5vy7/G5fJ0oIUg8g5KbZ+KKMk
+	 6XsPHJi6AGiPX0LXgJ7ftxxkXoXZ+EIuBXw/HohE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 314/634] clk: imx: imx8mp: fix clock tree update of TF-A managed clocks
-Date: Wed,  2 Oct 2024 14:56:54 +0200
-Message-ID: <20241002125823.499220717@linuxfoundation.org>
+Subject: [PATCH 6.6 176/538] xen/swiotlb: add alignment check for dma buffers
+Date: Wed,  2 Oct 2024 14:56:55 +0200
+Message-ID: <20241002125759.203469347@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 3d29036853b9cb07ac49e8261fca82a940be5c41 ]
+[ Upstream commit 9f40ec84a7976d95c34e7cc070939deb103652b0 ]
 
-On the i.MX8M*, the TF-A exposes a SiP (Silicon Provider) service
-for DDR frequency scaling. The imx8m-ddrc-devfreq driver calls the
-SiP and then does clk_set_parent on the DDR muxes to synchronize
-the clock tree.
+When checking a memory buffer to be consecutive in machine memory,
+the alignment needs to be checked, too. Failing to do so might result
+in DMA memory not being aligned according to its requested size,
+leading to error messages like:
 
-since commit 936c383673b9 ("clk: imx: fix composite peripheral flags"),
-these TF-A managed muxes have SET_PARENT_GATE set, which results
-in imx8m-ddrc-devfreq's clk_set_parent after SiP failing with -EBUSY:
+  4xxx 0000:2b:00.0: enabling device (0140 -> 0142)
+  4xxx 0000:2b:00.0: Ring address not aligned
+  4xxx 0000:2b:00.0: Failed to initialise service qat_crypto
+  4xxx 0000:2b:00.0: Resetting device qat_dev0
+  4xxx: probe of 0000:2b:00.0 failed with error -14
 
-clk_set_parent(dram_apb_src, sys1_pll_40m);(busfreq-imx8mq.c)
-
-commit 926bf91248dd
-("clk: imx8m: fix clock tree update of TF-A managed clocks") adds this
-method and enables 8mm, 8mn and 8mq. i.MX8MP also needs it.
-
-This is safe to do, because updating the Linux clock tree to reflect
-reality will always be glitch-free.
-
-Another reason to this patch is that powersave image BT music
-requires dram to be 400MTS, so clk_set_parent(dram_alt_src,
-sys1_pll_800m); is required. Without this patch, it will not succeed.
-
-Fixes: 936c383673b9 ("clk: imx: fix composite peripheral flags")
-Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-7-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fixes: 9435cce87950 ("xen/swiotlb: Add support for 64KB page granularity")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/xen/swiotlb-xen.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 670aa2bab3017..e561ff7b135fb 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -551,8 +551,8 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index 0e6c6c25d154f..892f87300e2cd 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -78,9 +78,15 @@ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
+ {
+ 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
+ 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
++	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
  
- 	hws[IMX8MP_CLK_IPG_ROOT] = imx_clk_hw_divider2("ipg_root", "ahb_root", ccm_base + 0x9080, 0, 1);
+ 	next_bfn = pfn_to_bfn(xen_pfn);
  
--	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
--	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
-+	hws[IMX8MP_CLK_DRAM_ALT] = imx8m_clk_hw_fw_managed_composite("dram_alt", imx8mp_dram_alt_sels, ccm_base + 0xa000);
-+	hws[IMX8MP_CLK_DRAM_APB] = imx8m_clk_hw_fw_managed_composite_critical("dram_apb", imx8mp_dram_apb_sels, ccm_base + 0xa080);
- 	hws[IMX8MP_CLK_VPU_G1] = imx8m_clk_hw_composite("vpu_g1", imx8mp_vpu_g1_sels, ccm_base + 0xa100);
- 	hws[IMX8MP_CLK_VPU_G2] = imx8m_clk_hw_composite("vpu_g2", imx8mp_vpu_g2_sels, ccm_base + 0xa180);
- 	hws[IMX8MP_CLK_CAN1] = imx8m_clk_hw_composite("can1", imx8mp_can1_sels, ccm_base + 0xa200);
++	/* If buffer is physically aligned, ensure DMA alignment. */
++	if (IS_ALIGNED(p, algn) &&
++	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
++		return 1;
++
+ 	for (i = 1; i < nr_pages; i++)
+ 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
+ 			return 1;
 -- 
 2.43.0
 
