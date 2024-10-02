@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-80058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0366C98DB9F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:33:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EB698DBD1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A20621F221B2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:33:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBB30281364
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1081D094D;
-	Wed,  2 Oct 2024 14:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049E31D0B82;
+	Wed,  2 Oct 2024 14:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTCLhuRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqXGcn81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8931D12E0;
-	Wed,  2 Oct 2024 14:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B876B1D0438;
+	Wed,  2 Oct 2024 14:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879262; cv=none; b=eEX+CSZ9vIbezadDqbHUYekiDUiElWZ36fCikcXBVNn3Te1NI5sKOsrDnHN00AdMmMT9qzDrYO/yI47oBysdHH0Wf3x98FJJC/u6WmJjOANAu4jQLZ9OqZUzb9ru6WeI67J+8ECkEI5dxO5CZrgtkAJks2wpKLhVMpHIFSYSq0k=
+	t=1727879381; cv=none; b=YYOpqoInlb/Jz38EzJFnkRhDTD5UUGg7bOoK2Vfh2BaGA4CIXW2eXhi+yGrpVx6a9nGi3oEqKZpYa70PdKbOzhT4wqciOtisA+xKjNwrKlbgbx3koHxu0eFhF5+buhDztmrr1waJcxF4e+ilReug7dgalJcAkgeUKrr0VyuJtk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879262; c=relaxed/simple;
-	bh=KN0XLnyCiMpUeMvFHmNsP25z/9diYinDVuQSYhuzQQ0=;
+	s=arc-20240116; t=1727879381; c=relaxed/simple;
+	bh=XpIrk0rhbQim73QgHh9eh6tOORqa4Ri8N187UIR0QAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYEZDv4ypx9R7ff6f4ILx7dmqq+yshe8gNGDsB+Be+HsdjUKMKoPXFGjJGKIr3UyIKXb7VsnrJPduUpmFEvsgOyOI8hrFJShVmV11W1PRit27K6YOlLiJo0ydhGCSWAXiIp15J8KYjVVP/blWrcwU2e6HtEecMzxC2RXt4tv/3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTCLhuRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DD4C4CEC2;
-	Wed,  2 Oct 2024 14:27:41 +0000 (UTC)
+	 MIME-Version; b=VDf6IuNox6pe6WqgFuAZayQySCxY+AX1bmX0xA3fOg9dbFkk2n6PjUCot4TyZBuseIBdgexsdwFUyo3dljpaS4uUxb8mR5cARumrNfBAlhMkwXdygNLRJdrqSSJF50S4/kFLnVhfzkPHZUgcRXIXik0ro16lASdGGMB7S6IZ6fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqXGcn81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6C4C4CEC2;
+	Wed,  2 Oct 2024 14:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879261;
-	bh=KN0XLnyCiMpUeMvFHmNsP25z/9diYinDVuQSYhuzQQ0=;
+	s=korg; t=1727879381;
+	bh=XpIrk0rhbQim73QgHh9eh6tOORqa4Ri8N187UIR0QAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTCLhuRLq0wv3ksQu9eo0J7ZktYNvzJQhC9FKfQQuT92xZiTDi3vhHGCu68LMXiGi
-	 ul77fGk8WfAmg96gXjU8fUZ5KW9Rgy+kG543NgUtk8sZlxhXdDsR96YTdfRHuoA4eP
-	 aOrrGrtQCufSGCdOD4AcwTfCDeIXcuLzOhHrLB60=
+	b=ZqXGcn81iyMsienSoP08nuvnC77kD+AuSN9Wys4rDzTnkHseUEZixHpaBm7ei8r2h
+	 LZHUolJK7jSb7eOc9rsYb1Og3FAlN+PcXwD/r+tl+eS6N0g2eIRomGeSJzqlP0BObw
+	 pCtyGkfntaoZ6UjfJMDETydT2kacG7BKiSOvaUUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/538] wifi: mt76: mt7996: ensure 4-byte alignment for beacon commands
-Date: Wed,  2 Oct 2024 14:54:56 +0200
-Message-ID: <20241002125754.453301344@linuxfoundation.org>
+Subject: [PATCH 6.6 058/538] wifi: mt76: mt7996: fix uninitialized TLV data
+Date: Wed,  2 Oct 2024 14:54:57 +0200
+Message-ID: <20241002125754.494886376@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -67,80 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 5d197d37809b220616a0fb00856b9eeeafe1f69e ]
+[ Upstream commit 9e461f4a2329109571f4b10f9bcad28d07e6ebb3 ]
 
-If TLV includes beacon content, its length might not be 4-byte aligned.
-Make sure the length is aligned before sending beacon commands to FW.
+Use skb_put_zero instead of skb_put
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Link: https://patch.msgid.link/20240827093011.18621-23-nbd@nbd.name
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Stable-dep-of: 9e461f4a2329 ("wifi: mt76: mt7996: fix uninitialized TLV data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 14 +++++---------
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.h |  4 ++--
- 2 files changed, 7 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 325bbe3415c25..6d9a92cafe484 100644
+index 6d9a92cafe484..b50743f7e030b 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -520,13 +520,10 @@ void mt7996_mcu_rx_event(struct mt7996_dev *dev, struct sk_buff *skb)
+@@ -520,7 +520,7 @@ void mt7996_mcu_rx_event(struct mt7996_dev *dev, struct sk_buff *skb)
  static struct tlv *
  mt7996_mcu_add_uni_tlv(struct sk_buff *skb, u16 tag, u16 len)
  {
--	struct tlv *ptlv, tlv = {
--		.tag = cpu_to_le16(tag),
--		.len = cpu_to_le16(len),
--	};
-+	struct tlv *ptlv = skb_put(skb, len);
+-	struct tlv *ptlv = skb_put(skb, len);
++	struct tlv *ptlv = skb_put_zero(skb, len);
  
--	ptlv = skb_put(skb, len);
--	memcpy(ptlv, &tlv, sizeof(tlv));
-+	ptlv->tag = cpu_to_le16(tag);
-+	ptlv->len = cpu_to_le16(len);
- 
- 	return ptlv;
- }
-@@ -2072,7 +2069,7 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw,
- 	info = IEEE80211_SKB_CB(skb);
- 	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, phy->mt76->band_idx);
- 
--	len = sizeof(*bcn) + MT_TXD_SIZE + skb->len;
-+	len = ALIGN(sizeof(*bcn) + MT_TXD_SIZE + skb->len, 4);
- 	tlv = mt7996_mcu_add_uni_tlv(rskb, UNI_BSS_INFO_BCN_CONTENT, len);
- 	bcn = (struct bss_bcn_content_tlv *)tlv;
- 	bcn->enable = en;
-@@ -2141,8 +2138,7 @@ int mt7996_mcu_beacon_inband_discov(struct mt7996_dev *dev,
- 	info->band = band;
- 	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, phy->mt76->band_idx);
- 
--	len = sizeof(*discov) + MT_TXD_SIZE + skb->len;
--
-+	len = ALIGN(sizeof(*discov) + MT_TXD_SIZE + skb->len, 4);
- 	tlv = mt7996_mcu_add_uni_tlv(rskb, UNI_BSS_INFO_OFFLOAD, len);
- 
- 	discov = (struct bss_inband_discovery_tlv *)tlv;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-index dc8d0a30c707c..58504b80eae8b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-@@ -587,10 +587,10 @@ enum {
- 					 sizeof(struct sta_rec_hdr_trans) +	\
- 					 sizeof(struct tlv))
- 
--#define MT7996_MAX_BEACON_SIZE		1342
-+#define MT7996_MAX_BEACON_SIZE		1338
- #define MT7996_BEACON_UPDATE_SIZE	(sizeof(struct bss_req_hdr) +		\
- 					 sizeof(struct bss_bcn_content_tlv) +	\
--					 MT_TXD_SIZE +				\
-+					 4 + MT_TXD_SIZE +			\
- 					 sizeof(struct bss_bcn_cntdwn_tlv) +	\
- 					 sizeof(struct bss_bcn_mbss_tlv))
- #define MT7996_MAX_BSS_OFFLOAD_SIZE	(MT7996_MAX_BEACON_SIZE +		\
+ 	ptlv->tag = cpu_to_le16(tag);
+ 	ptlv->len = cpu_to_le16(len);
 -- 
 2.43.0
 
