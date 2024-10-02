@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD30C98DC49
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84BF398D9A8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F883B28938
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4112898BA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3D81D0DDF;
-	Wed,  2 Oct 2024 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB761D174B;
+	Wed,  2 Oct 2024 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4KKg4SG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ai9U1UW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF1A1D0F65;
-	Wed,  2 Oct 2024 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E74E1D0488;
+	Wed,  2 Oct 2024 14:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879608; cv=none; b=JYPLjrLPuIOTUWKRCR6x0mYHml5y7bhbc1C+kwIEnDWdmHeXf2jYF0f9Mx6jagPo150jw3K+vZhLhk3nnYH/mWqhKsGksfnspxvr9mY+HXBhAWIJWh+oIabqRC0Fo8Nhxa9m5qLUL9XdM4d7wokAejTIqjQB7/KssKrE7DhyXbs=
+	t=1727878144; cv=none; b=AunXzbd6EmhBDr98Vy5SHWf7Cfp9WA3OfeleCdWSnFTKhdOV9RJzM7W0eN2j90aMk8iDevPRtwkv3sTYgaTuqaEPVuvhuwuJivns8sLzU8XpY7kR9MLoHGHgWXL/zzlujNuSRMjWA/cPQeTtKVCK7rliIJezH2EtwgKDs6BPDyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879608; c=relaxed/simple;
-	bh=iKElZcifeQJIKr18naoEFdUzyA+UydXqMo+kYA+rO7E=;
+	s=arc-20240116; t=1727878144; c=relaxed/simple;
+	bh=N7IxAtEBNZAcgziCom0gehKAVi1LBEQ8C5QN3Tk1k8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UA1rLs9WbgDAoKt4mnWMrSeqsEr//0sYnokxuzFAcjQVGqEHA90YVItFQq4N73ywdIhsAlyC2/iGWGEoICZeeRIUNolc/tZwKyEHVtDsHxDsFvGIcG15e9I9HWqJ8Hko/MqoRXPn1kTgVWDypI/RGiPONl2k+xGrJrCTB98/6QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4KKg4SG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B487AC4CEC5;
-	Wed,  2 Oct 2024 14:33:27 +0000 (UTC)
+	 MIME-Version; b=b026ZBDF7SqomNdDS2QTnJUqHam1RitsJOmwX8FT2LdET7EIezqLFYs5kKxFpRsCHG81xg6Fpr1ponkVDshzX/cyMZxPA7FFhTJj4SGDXQbhO7RzFv0fzLjXfBQf2+P9BcygvBX8blGofM5ZS/aEFTXyMTV9z/gihZCikPD7NrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ai9U1UW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D680BC4CEC2;
+	Wed,  2 Oct 2024 14:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879608;
-	bh=iKElZcifeQJIKr18naoEFdUzyA+UydXqMo+kYA+rO7E=;
+	s=korg; t=1727878144;
+	bh=N7IxAtEBNZAcgziCom0gehKAVi1LBEQ8C5QN3Tk1k8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4KKg4SGrZfqXJ7T4f3fja+gSzpqyNhe+CvoD4X3Ma8gwR4saIAmQpwzqjKSgG/tL
-	 B80UxU+sYd056vSJOy+QK9ChMMqGnNNzb6MoLjmwNPVTN2QGWERtQSDKS87fWqI2kG
-	 d8WzqaoyoOa1ny+0VysHUDweH+QOZVaF0YKVsnvA=
+	b=2ai9U1UWsPSGKDy/mtoEFzCV8DSkXlyDO7Wwct6pm+JBhJ365psMQ5iSySFBJD1Y8
+	 mB/PG9oSTla9b+JjtXedC64e02av6hinA4CS5s+Q74PhffxH8DEt60p5C0PWHCTEwe
+	 Qej0HH6w0MRUwK/xmyVygLDa8TLQdRPhq3aTJTdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/538] tpm: Clean up TPM space after command failure
+Subject: [PATCH 6.10 317/634] quota: avoid missing put_quota_format when DQUOT_SUSPENDED is passed
 Date: Wed,  2 Oct 2024 14:56:57 +0200
-Message-ID: <20241002125759.282198033@linuxfoundation.org>
+Message-ID: <20241002125823.617420720@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit e3aaebcbb7c6b403416f442d1de70d437ce313a7 ]
+[ Upstream commit d16a5f852025be546b6e4ceef15899db3490f4d7 ]
 
-tpm_dev_transmit prepares the TPM space before attempting command
-transmission. However if the command fails no rollback of this
-preparation is done. This can result in transient handles being leaked
-if the device is subsequently closed with no further commands performed.
+Avoid missing put_quota_format when DQUOT_SUSPENDED is passed to
+dquot_load_quota_sb.
 
-Fix this by flushing the space in the event of command transmission
-failure.
-
-Fixes: 745b361e989a ("tpm: infrastructure for TPM spaces")
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://patch.msgid.link/20240715130534.2112678-2-shikemeng@huaweicloud.com
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Fixes: d44c57663723 ("quota: Remove BUG_ON in dquot_load_quota_sb()")
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm-dev-common.c | 2 ++
- drivers/char/tpm/tpm2-space.c     | 3 +++
- 2 files changed, 5 insertions(+)
+ fs/quota/dquot.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
-index 30b4c288c1bbc..c3fbbf4d3db79 100644
---- a/drivers/char/tpm/tpm-dev-common.c
-+++ b/drivers/char/tpm/tpm-dev-common.c
-@@ -47,6 +47,8 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 627eb2f72ef37..23fcf9e9d6c55 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2408,7 +2408,7 @@ static int vfs_setup_quota_inode(struct inode *inode, int type)
+ int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
+ 	unsigned int flags)
+ {
+-	struct quota_format_type *fmt = find_quota_format(format_id);
++	struct quota_format_type *fmt;
+ 	struct quota_info *dqopt = sb_dqopt(sb);
+ 	int error;
  
- 	if (!ret)
- 		ret = tpm2_commit_space(chip, space, buf, &len);
-+	else
-+		tpm2_flush_space(chip);
+@@ -2418,6 +2418,7 @@ int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
+ 	if (WARN_ON_ONCE(flags & DQUOT_SUSPENDED))
+ 		return -EINVAL;
  
- out_rc:
- 	return ret ? ret : len;
-diff --git a/drivers/char/tpm/tpm2-space.c b/drivers/char/tpm/tpm2-space.c
-index 363afdd4d1d30..d4d1007fe8117 100644
---- a/drivers/char/tpm/tpm2-space.c
-+++ b/drivers/char/tpm/tpm2-space.c
-@@ -166,6 +166,9 @@ void tpm2_flush_space(struct tpm_chip *chip)
- 	struct tpm_space *space = &chip->work_space;
- 	int i;
- 
-+	if (!space)
-+		return;
-+
- 	for (i = 0; i < ARRAY_SIZE(space->context_tbl); i++)
- 		if (space->context_tbl[i] && ~space->context_tbl[i])
- 			tpm2_flush_context(chip, space->context_tbl[i]);
++	fmt = find_quota_format(format_id);
+ 	if (!fmt)
+ 		return -ESRCH;
+ 	if (!sb->dq_op || !sb->s_qcop ||
 -- 
 2.43.0
 
