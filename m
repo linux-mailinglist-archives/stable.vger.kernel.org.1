@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA098DD07
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1361398DA66
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6448DB294DB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A711C23808
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532601D0E1E;
-	Wed,  2 Oct 2024 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109401D0E29;
+	Wed,  2 Oct 2024 14:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SqA8HNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6Hd0zEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8181D096E;
-	Wed,  2 Oct 2024 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27E31CFEB3;
+	Wed,  2 Oct 2024 14:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880009; cv=none; b=SwmH7avj88EnLTHUGkBL965m2jTAJauGAZNAo89Dw2Gw/LPrV6TNOC/HpSRTTUspRj69wWe8ynfISjguWi2DzdCZHq9KTlq3eMHuPHxcEh5o2CYxyMQTUDmDIKepfMWQ5Yf1vLXb7/kIswHARx4YtEpY39aNg49Qys6LuwUHfk0=
+	t=1727878551; cv=none; b=YM5XEye9q4QUaZsJqJDvVpxa6TF2NHp/hGcBjFP6GbPyRWH3ZjC8EoLnm5/GmlQVbmEk/+Fy/NLu5eJxcWO8s0jfBF8eMoknmKOjoyCNfZTx98jvnqiy+GiQJwTwc8ZCIYE/gGTXN2j/GE3LWXIClF5Q+ESrJ/hZbZx3sIBYepU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880009; c=relaxed/simple;
-	bh=pGp97DpmRADn31TnHbo6FLB5AZD/MEfRJn3dJiBAsQA=;
+	s=arc-20240116; t=1727878551; c=relaxed/simple;
+	bh=KZYnsib3zO9Vp0aX+v/B30ED7IrUCkJApoH2874TUbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTwZy0cCzzvLS0sD3Hu+EZP+VN/OYp8vIR5ELjNkmU/VDg7VTmtEfuBbudyMIaJreKwq/wsKRX1aMVL90gApu0BdOPQvgO7DFemTDL/geijFdkYdM5+zFaWFFpYk9Jg9sk2akksYyLS5gLxNlRpR2K09XWXNGT2HiLRW0/gHTi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SqA8HNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB1EC4CEC2;
-	Wed,  2 Oct 2024 14:40:08 +0000 (UTC)
+	 MIME-Version; b=fSaDmrs3vYjFbOWRIdHnKoWr3WlEOzT/DlEn6Y2c5/v1YNtOzZEUidlThY9aF/M1A29lgW9BEL1z167rBshevRJ8TuzPsggaKG4aQ99eVDg/G/Ldc7dydXztamTkxFmydLnIJ7HR+ldfdmd0CG7V0EzHy7uWuMATxwQ4pQBDnZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6Hd0zEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C0BC4CEC2;
+	Wed,  2 Oct 2024 14:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880008;
-	bh=pGp97DpmRADn31TnHbo6FLB5AZD/MEfRJn3dJiBAsQA=;
+	s=korg; t=1727878551;
+	bh=KZYnsib3zO9Vp0aX+v/B30ED7IrUCkJApoH2874TUbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1SqA8HNOxVTPkb0maFbZ1Ej3iBTFhUXvrbfJbpSXbMKoqNVxNF+8C8VmZ5eY9VTdE
-	 +ReXy7zirAJLT1t4D5Ses7y05L3mNAw3VJa5cSheIvwdBTvV8TgE4fZENznbtwj8tp
-	 mr/JFEu5soeUNHfU9ERGPuQivmfX+6SmAcPd4rF0=
+	b=R6Hd0zEde/UFPN+CfrUYQ4JG5AhN/ZNOWeNWTubLm4PyHPo7o6IKw9TTbvKuEDeVR
+	 uLppfM+t2/174fERH9TjWic9R0eAFC581MXRuPIY27Ui0GSiRPH0XAwYABCNty9RX0
+	 1E/r27WdyhqqbQG5xX2LM91i1tg1K395Skkot+rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/538] RDMA/mlx5: Limit usage of over-sized mkeys from the MR cache
-Date: Wed,  2 Oct 2024 14:59:12 +0200
-Message-ID: <20241002125804.772544059@linuxfoundation.org>
+	yangyun <yangyun50@huawei.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.10 453/634] fuse: use exclusive lock when FUSE_I_CACHE_IO_MODE is set
+Date: Wed,  2 Oct 2024 14:59:13 +0200
+Message-ID: <20241002125828.983105275@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: yangyun <yangyun50@huawei.com>
 
-[ Upstream commit ee6d57a2e13d11ce9050cfc3e3b69ef707a44a63 ]
+commit 2f3d8ff457982f4055fe8f7bf19d3821ba22c376 upstream.
 
-When searching the MR cache for suitable cache entries, don't use mkeys
-larger than twice the size required for the MR.
-This should ensure the usage of mkeys closer to the minimal required size
-and reduce memory waste.
+This may be a typo. The comment has said shared locks are
+not allowed when this bit is set. If using shared lock, the
+wait in `fuse_file_cached_io_open` may be forever.
 
-On driver init we create entries for mkeys with clear attributes and
-powers of 2 sizes from 4 to the max supported size.
-This solves the issue for anyone using mkeys that fit these
-requirements.
-
-In the use case where an MR is registered with different attributes,
-like an access flag we can't UMR, we'll create a new cache entry to store
-it upon dereg.
-Without this fix, any later registration with same attributes and smaller
-size will use the newly created cache entry and it's mkeys, disregarding
-the memory waste of using mkeys larger than required.
-
-For example, one worst-case scenario can be when registering and
-deregistering a 1GB mkey with ATS enabled which will cause the creation of
-a new cache entry to hold those type of mkeys. A user registering a 4k MR
-with ATS will end up using the new cache entry and an mkey that can
-support a 1GB MR, thus wasting x250k memory than actually needed in the HW.
-
-Additionally, allow all small registration to use the smallest size
-cache entry that is initialized on driver load even if size is larger
-than twice the required size.
-
-Fixes: 73d09b2fe833 ("RDMA/mlx5: Introduce mlx5r_cache_rb_key")
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/8ba3a6e3748aace2026de8b83da03aba084f78f4.1725362530.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 205c1d802683 ("fuse: allow parallel dio writes with FUSE_DIRECT_IO_ALLOW_MMAP")
+CC: stable@vger.kernel.org # v6.9
+Signed-off-by: yangyun <yangyun50@huawei.com>
+Reviewed-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/fuse/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index 50a1786231c77..9e465cf99733e 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -48,6 +48,7 @@ enum {
- 	MAX_PENDING_REG_MR = 8,
- };
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index b8afeca12487..1b5cd46c8225 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -1345,7 +1345,7 @@ static bool fuse_dio_wr_exclusive_lock(struct kiocb *iocb, struct iov_iter *from
  
-+#define MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS 4
- #define MLX5_UMR_ALIGN 2048
+ 	/* shared locks are not allowed with parallel page cache IO */
+ 	if (test_bit(FUSE_I_CACHE_IO_MODE, &fi->state))
+-		return false;
++		return true;
  
- static void
-@@ -715,6 +716,7 @@ mkey_cache_ent_from_rb_key(struct mlx5_ib_dev *dev,
- {
- 	struct rb_node *node = dev->cache.rb_root.rb_node;
- 	struct mlx5_cache_ent *cur, *smallest = NULL;
-+	u64 ndescs_limit;
- 	int cmp;
- 
- 	/*
-@@ -733,10 +735,18 @@ mkey_cache_ent_from_rb_key(struct mlx5_ib_dev *dev,
- 			return cur;
- 	}
- 
-+	/*
-+	 * Limit the usage of mkeys larger than twice the required size while
-+	 * also allowing the usage of smallest cache entry for small MRs.
-+	 */
-+	ndescs_limit = max_t(u64, rb_key.ndescs * 2,
-+			     MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS);
-+
- 	return (smallest &&
- 		smallest->rb_key.access_mode == rb_key.access_mode &&
- 		smallest->rb_key.access_flags == rb_key.access_flags &&
--		smallest->rb_key.ats == rb_key.ats) ?
-+		smallest->rb_key.ats == rb_key.ats &&
-+		smallest->rb_key.ndescs <= ndescs_limit) ?
- 		       smallest :
- 		       NULL;
- }
-@@ -986,7 +996,7 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
- 	mlx5_mkey_cache_debugfs_init(dev);
- 	mutex_lock(&cache->rb_lock);
- 	for (i = 0; i <= mkey_cache_max_order(dev); i++) {
--		rb_key.ndescs = 1 << (i + 2);
-+		rb_key.ndescs = MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS << i;
- 		ent = mlx5r_cache_create_ent_locked(dev, rb_key, true);
- 		if (IS_ERR(ent)) {
- 			ret = PTR_ERR(ent);
+ 	/* Parallel dio beyond EOF is not supported, at least for now. */
+ 	if (fuse_io_past_eof(iocb, from))
 -- 
-2.43.0
+2.46.2
 
 
 
