@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6779498D836
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D7598D532
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 124651F2100D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA4B11C20F11
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD221D049F;
-	Wed,  2 Oct 2024 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248181CF28B;
+	Wed,  2 Oct 2024 13:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFrOc2EN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iztk50Rz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8AF1D0BB3;
-	Wed,  2 Oct 2024 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D764F16F84F;
+	Wed,  2 Oct 2024 13:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877430; cv=none; b=rtR0YCuhu1sDBDSE+F0Pg2dxYHupY+pk/pd3jx5T7y+3Gl0SVLIJJLzeHKz+vNQyLw57zuHdfnXNUQRkvJxGAEK4PK9BfgEAR0CqSGtmajoc02oeSPvqHShkJq48FbYaGUAkgqaGsJBaC9p0fXo8n/9Ph9OoxRT2O4T7Zskydck=
+	t=1727875666; cv=none; b=WpnTh6S6IiBAoDYCe+hDADTwRQt4D+c3HEK6i/Z2Ay2gBxXtPwrIHSLaZUeyQfn5ywuuh/SSohSI1/e5lIbSnJWEcUrBnHdracI0D6Gwe4ICqL9V6WYcNiogyKjtBz4TXnOd7A5xET5WiOFb4nWEtFi26HZGJlzZ+yneC69QfdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877430; c=relaxed/simple;
-	bh=hirYk8uImJ47DZIrbVykZDL9H3cT2AkyBUkGVbjKCuo=;
+	s=arc-20240116; t=1727875666; c=relaxed/simple;
+	bh=rl1FpMc82aE5+ta6BColVsgtkn5qHo+WPNSbAPkgU3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VeAAfkd9eFB9EMbVzcyMXeDkljWfeOr0oHWq8/CgrzKHsdvrfn2dvvYwge0TWTUBLLJ7LW3gxFhR8h3Xk8oMEylcAcs6fRvZnBPsMacWEPvfBAIUycobx+TPcT7YW155sZoIEVxIsBiHPTvX2EJdD2bR9GQz1ZWW0KaGaVvw3jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFrOc2EN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56E0C4CEF0;
-	Wed,  2 Oct 2024 13:57:09 +0000 (UTC)
+	 MIME-Version; b=cHFMOnMgbjoFMk6H3SpxTO3LPfLP9IZ3re1ljbXA9bDCJjk1Ryz3GwmVCZyMiEemwE3vP++CFMi8pWQr6k9bMrV/EjbHOfmCdYzoQJs7bke52DP7d4nBrlO3Xnju8nm99qn4neeAQPLJNyDJqtPG815+SAqRVjgkZnBPxHP/C98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iztk50Rz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DFEC4CEC5;
+	Wed,  2 Oct 2024 13:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877430;
-	bh=hirYk8uImJ47DZIrbVykZDL9H3cT2AkyBUkGVbjKCuo=;
+	s=korg; t=1727875666;
+	bh=rl1FpMc82aE5+ta6BColVsgtkn5qHo+WPNSbAPkgU3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PFrOc2ENx17tHUvOkXDUMv/devncMTjQ7/7EWVX3QvsMuJlQxoCDB5h1i+r1Eq86+
-	 49QnS6EysAsrVWCfU3mUkWzb7w0/7+YG5PfsFE/zOtMLwJQJI9CHtK7a2uud9r/jYJ
-	 S4zfBT866OzSWBPaXd9Fp/SCmZgkAVRa+BPR+nGw=
+	b=Iztk50RzQiUUEGvgWwbH0IrPegCx7HvkGiBacePjNj44CQY2KlZkxGhtXtTzwBL0l
+	 FVB8LXsCZcMEudV6JPWeiG47h+UTZ9QDYsG6PfCKNnaRm2E3xZByGj3fzdJRUqhltC
+	 rk2WOwmEB8Dd85r2UYwlrU6rJgxh8+jGDiP7u+kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rex Lu <rex.lu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Yuntao Liu <liuyuntao12@huawei.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 076/634] wifi: mt76: mt7996: fix handling mbss enable/disable
-Date: Wed,  2 Oct 2024 14:52:56 +0200
-Message-ID: <20241002125814.107635453@linuxfoundation.org>
+Subject: [PATCH 6.11 179/695] hwmon: (ntc_thermistor) fix module autoloading
+Date: Wed,  2 Oct 2024 14:52:57 +0200
+Message-ID: <20241002125829.616758184@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rex Lu <rex.lu@mediatek.com>
+From: Yuntao Liu <liuyuntao12@huawei.com>
 
-[ Upstream commit ded1a6d9e13a32d4e8bef0c63accf49b9415ff5f ]
+[ Upstream commit b6964d66a07a9003868e428a956949e17ab44d7e ]
 
-When mbss was previously enabled, the TLV needs to be included when
-disabling it again, in order to clear the firmware state.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from of_device_id table.
 
-Fixes: a7908d5b61e5 ("wifi: mt76: mt7996: fix non-main BSS no beacon issue for MBSS scenario")
-Signed-off-by: Rex Lu <rex.lu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20240816094635.2391-9-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 9e8269de100d ("hwmon: (ntc_thermistor) Add DT with IIO support to NTC thermistor driver")
+Signed-off-by: Yuntao Liu <liuyuntao12@huawei.com>
+Message-ID: <20240815083021.756134-1-liuyuntao12@huawei.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/ntc_thermistor.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 656199161e591..161ebf54a46e3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -822,7 +822,7 @@ mt7996_mcu_bss_mbssid_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 	struct bss_info_uni_mbssid *mbssid;
- 	struct tlv *tlv;
+diff --git a/drivers/hwmon/ntc_thermistor.c b/drivers/hwmon/ntc_thermistor.c
+index ef75b63f5894e..b5352900463fb 100644
+--- a/drivers/hwmon/ntc_thermistor.c
++++ b/drivers/hwmon/ntc_thermistor.c
+@@ -62,6 +62,7 @@ static const struct platform_device_id ntc_thermistor_id[] = {
+ 	[NTC_SSG1404001221]   = { "ssg1404_001221",  TYPE_NCPXXWB473 },
+ 	[NTC_LAST]            = { },
+ };
++MODULE_DEVICE_TABLE(platform, ntc_thermistor_id);
  
--	if (!vif->bss_conf.bssid_indicator)
-+	if (!vif->bss_conf.bssid_indicator && enable)
- 		return;
- 
- 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_11V_MBSSID, sizeof(*mbssid));
+ /*
+  * A compensation table should be sorted by the values of .ohm
 -- 
 2.43.0
 
