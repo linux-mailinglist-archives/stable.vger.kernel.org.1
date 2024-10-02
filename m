@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-79886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C6798DAC2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D8698DAC3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 247E91C22FCB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C94CF1C22E94
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A351D175A;
-	Wed,  2 Oct 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846D91D1E65;
+	Wed,  2 Oct 2024 14:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3LGzErg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejMiCJER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EB31CF7D4;
-	Wed,  2 Oct 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417FE1D1E61;
+	Wed,  2 Oct 2024 14:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878755; cv=none; b=DeH6lWjNtn899QtdrkphIzgYfAmnupk9B1r4wz15Gstmh2uti1GUwQk+ItAG5bz/VVGOfzbTl9aUKtJIVvZNYg0EpBdbO8TyS9fBplsjpxWuoCmhSNM+VIdlOYF7L7KiYfF8yagKi+5KNblMXdWqjms6wjeUslFm2ov0Ipjyi/M=
+	t=1727878761; cv=none; b=ShhpmdzPHhJuUJO9S5lEGk+eWH6SGBLREul4FwIAUbhJlCkaPtasbPakqRt7c7RvjbZf/qx+3p/SZicDX9K1ynBoaNS3YbWbiqbaOqo9RiGdpr4xl7gliWBXioNsoczXivtkgtmYAwA20axXU3Ky+kt/e/cqmLpr/SXxPh7tQVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878755; c=relaxed/simple;
-	bh=1KRMTPn5bdeTg0a8KxKjhGLdStyLBXMrbsTqdDlkt74=;
+	s=arc-20240116; t=1727878761; c=relaxed/simple;
+	bh=8yq8n9mFq1jNS9b+ppr7eRKrC4OpyuB+PZIOnBdrkMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giWi4PEkp1vmsMhEM3dYHBzXy7FW1umAP/S65dxofGQ5xb0kYOUNvE3m0Jic+Q1Apac71BOJ9WxtWdavv86/dWEeizRUWRdOfXej9UUyMlgarHpwdsLLoVL1UFkWZ7tOkaIeBdldM48hN86MxpVbD/FUTfF9D0eX4BawD9qnuYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3LGzErg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28F9C4CEC2;
-	Wed,  2 Oct 2024 14:19:14 +0000 (UTC)
+	 MIME-Version; b=STzy/mYNF3Pfr+i7lJYdMQvplIijaziwH5OIWaEePYnwKvUaLElc4fia4TeTzMCk5YVpwUB35aVWxZHPttpCVEV39uGbdB+lOX82zj1LUxZfSr1MdX6N9JF4CYyuutrpLZ6AKVre9JuKWnutzCbqC5RCAh3KKC4Ar41g1jlo1B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejMiCJER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A9BC4CEC2;
+	Wed,  2 Oct 2024 14:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878755;
-	bh=1KRMTPn5bdeTg0a8KxKjhGLdStyLBXMrbsTqdDlkt74=;
+	s=korg; t=1727878761;
+	bh=8yq8n9mFq1jNS9b+ppr7eRKrC4OpyuB+PZIOnBdrkMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3LGzErgjQosWkcnMpkC+yNA8uddvvph0QT6rvZP4OHrDF02FAR6LxEek+kagcWMa
-	 AomRuvtafVosY7JQWCD/0zYVOWt1INGNAYs2I+pXJaJpqM2nwdAuZEnZ9AGwOcv0qm
-	 KAuizhE4aq1GSdFrlNHX+nTaln4xqCIHNXefNkY8=
+	b=ejMiCJERHazfU2C+PKW8cMPUuyIJJtTNoByIWURI+wqj2LCyiJacNVUuysjMFrgcE
+	 +ZgJwORz+yAzlKcHdx5cMB58j00i51ib+yQVx0uRtp170C5e+hxnFydEloP2ZL22HC
+	 wstB7BBQEtBO9PhZ0Cs5vZxaXKrE+mqKeoaHvJc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.10 522/634] USB: misc: yurex: fix race between read and write
-Date: Wed,  2 Oct 2024 15:00:22 +0200
-Message-ID: <20241002125831.710867399@linuxfoundation.org>
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.10 523/634] usb: cdnsp: Fix incorrect usb_request status
+Date: Wed,  2 Oct 2024 15:00:23 +0200
+Message-ID: <20241002125831.749464062@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -64,58 +65,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit 93907620b308609c72ba4b95b09a6aa2658bb553 upstream.
+commit 1702bec4477cc7d31adb4a760d14d33fac928b7a upstream.
 
-The write code path touches the bbu member in a non atomic manner
-without taking the spinlock. Fix it.
+Fix changes incorrect usb_request->status returned during disabling
+endpoints. Before fix the status returned during dequeuing requests
+while disabling endpoint was ECONNRESET.
+Patch change it to ESHUTDOWN.
 
-The bug is as old as the driver.
+Patch fixes issue detected during testing UVC gadget.
+During stopping streaming the class starts dequeuing usb requests and
+controller driver returns the -ECONNRESET status. After completion
+requests the class or application "uvc-gadget" try to queue this
+request again. Changing this status to ESHUTDOWN cause that UVC assumes
+that endpoint is disabled, or device is disconnected and stops
+re-queuing usb requests.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240912132126.1034743-1-oneukum@suse.com
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+cc: stable@vger.kernel.org
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB9538E8CA7A2096AAF6A3718FDD9E2@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/yurex.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/usb/cdns3/cdnsp-ring.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -404,7 +404,6 @@ static ssize_t yurex_read(struct file *f
- 	struct usb_yurex *dev;
- 	int len = 0;
- 	char in_buffer[MAX_S64_STRLEN];
--	unsigned long flags;
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -718,7 +718,8 @@ int cdnsp_remove_request(struct cdnsp_de
+ 	seg = cdnsp_trb_in_td(pdev, cur_td->start_seg, cur_td->first_trb,
+ 			      cur_td->last_trb, hw_deq);
  
- 	dev = file->private_data;
- 
-@@ -419,9 +418,9 @@ static ssize_t yurex_read(struct file *f
- 		return -EIO;
+-	if (seg && (pep->ep_state & EP_ENABLED))
++	if (seg && (pep->ep_state & EP_ENABLED) &&
++	    !(pep->ep_state & EP_DIS_IN_RROGRESS))
+ 		cdnsp_find_new_dequeue_state(pdev, pep, preq->request.stream_id,
+ 					     cur_td, &deq_state);
+ 	else
+@@ -736,7 +737,8 @@ int cdnsp_remove_request(struct cdnsp_de
+ 	 * During disconnecting all endpoint will be disabled so we don't
+ 	 * have to worry about updating dequeue pointer.
+ 	 */
+-	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING) {
++	if (pdev->cdnsp_state & CDNSP_STATE_DISCONNECT_PENDING ||
++	    pep->ep_state & EP_DIS_IN_RROGRESS) {
+ 		status = -ESHUTDOWN;
+ 		ret = cdnsp_cmd_set_deq(pdev, pep, &deq_state);
  	}
- 
--	spin_lock_irqsave(&dev->lock, flags);
-+	spin_lock_irq(&dev->lock);
- 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
--	spin_unlock_irqrestore(&dev->lock, flags);
-+	spin_unlock_irq(&dev->lock);
- 	mutex_unlock(&dev->io_mutex);
- 
- 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
-@@ -511,8 +510,11 @@ static ssize_t yurex_write(struct file *
- 			__func__, retval);
- 		goto error;
- 	}
--	if (set && timeout)
-+	if (set && timeout) {
-+		spin_lock_irq(&dev->lock);
- 		dev->bbu = c2;
-+		spin_unlock_irq(&dev->lock);
-+	}
- 	return timeout ? count : -EIO;
- 
- error:
 
 
 
