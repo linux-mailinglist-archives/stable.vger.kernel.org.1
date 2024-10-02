@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-80023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DA498DB6A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD32898DBA5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D71181C23A30
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:31:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E58821C23BFF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047431D1E9C;
-	Wed,  2 Oct 2024 14:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026CD1D12EB;
+	Wed,  2 Oct 2024 14:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1PuIXTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KL0q9ieL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B618419752C;
-	Wed,  2 Oct 2024 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E111D0DF5;
+	Wed,  2 Oct 2024 14:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879159; cv=none; b=rjxGQ1KL8I1+NAFwX0ZGVe8SbLdbVNXfZSnNl9Wfy0juPjzZ1QpUJMQoWaIvS9xgxUoCR2ZOTZy6U/Xe5N3LZdmS8Y6pWA1o6PMw8dCTUjwF0v417Aw8a0IG97wl2NpKj47muwpZt25lwSi/85P0gk2sPC+VtvwDu8DktRjZoAw=
+	t=1727879282; cv=none; b=gadSkdrKTdDBuph0wLmzHFUiitMYrmu0gFK+6yHZfLxEQbMaxVpSw6duglbj4vwHYt5SVS9HExPmM26rF3QOnimqqe6/SIyJ+JSxs2XF7QDPz8viBwDIwW8OYlbQvoKbZSZFrS33f1Ucuoh6le397hnpHtDLmglElPmfFZ55fjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879159; c=relaxed/simple;
-	bh=a1YgrOW9MIIuXdp89HtqjOycoHaQgJoTr0qnGGr1m4U=;
+	s=arc-20240116; t=1727879282; c=relaxed/simple;
+	bh=4or7EhgzLpDRsy4Y7jH2ojaGACWywkZheakL3YWNqXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSg+ijE1r9jnmqRJ16lCs6Hm4SkifRVHyfbLTReYCfojWYHD+hHeqYpS9ixf/IpNXR0FPy/zZHeS8vlcM/MPaO7nQCun9/eXB/fAAllfbJTyRzNI2tbAop3j0NKnHtW3W0EBe1oa2HZillHV22/J1v9lPx3kEc9NLNyOvovmf80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1PuIXTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382D6C4CEC2;
-	Wed,  2 Oct 2024 14:25:59 +0000 (UTC)
+	 MIME-Version; b=a6DEJwafJ0ljgNxG/VyHXQWtaTWCp4Zojkgmy0bj5Y/YXrpzuMSrXizT6KFAUQqW0u8RM79G4V0MBcVHzDx7StOMkQdFxy0C6XqgRrhK/K3fzzT8RF3jIT79/TSsAkn8s6Die9rxmLN62abMg7ywafUgpnCtl2QMZOsN9r/0skw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KL0q9ieL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34293C4CEC2;
+	Wed,  2 Oct 2024 14:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879159;
-	bh=a1YgrOW9MIIuXdp89HtqjOycoHaQgJoTr0qnGGr1m4U=;
+	s=korg; t=1727879282;
+	bh=4or7EhgzLpDRsy4Y7jH2ojaGACWywkZheakL3YWNqXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1PuIXTndBVc8s/a7Xcnz7MfO9V58NyVEClVbBk7ZRgDKAXYvpQEmnkpjj7lnRI8E
-	 KaVHHypumn0HcgcJ4VY6A4lbMJP4pfvdbNLcj2/jdks08KAnfDSQruVK/fdG1O9JaG
-	 4o6Nxbo470I69OnXZiIbghlTA5Zu/Eg1KuMNJhXQ=
+	b=KL0q9ieL8hWCsCwjViBwapgICgcUx4C63+AjVVz5NeOB5IFEXf7PgtBZGxF6EQ3Ih
+	 pqf42MF9ELy7y3+uJf1BSfj0Hcz7lVO77otdxnsLZeylIdaxv9AdwQ4Ma2jm7HJ/aZ
+	 LnTt/ZPQ2BBiDXG/z3d7ab1egGwAnPgLyG0lSqPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Golan Ben Ami <golan.ben.ami@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/538] wifi: mac80211: dont use rate mask for offchannel TX either
-Date: Wed,  2 Oct 2024 14:54:22 +0200
-Message-ID: <20241002125752.929311136@linuxfoundation.org>
+Subject: [PATCH 6.6 024/538] wifi: iwlwifi: remove AX101, AX201 and AX203 support from LNL
+Date: Wed,  2 Oct 2024 14:54:23 +0200
+Message-ID: <20241002125752.970948907@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -67,115 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Golan Ben Ami <golan.ben.ami@intel.com>
 
-[ Upstream commit e7a7ef9a0742dbd0818d5b15fba2c5313ace765b ]
+[ Upstream commit 6adae0b081454393ca5f7363fd3c7379c8e2a7a1 ]
 
-Like the commit ab9177d83c04 ("wifi: mac80211: don't use rate mask for
-scanning"), ignore incorrect settings to avoid no supported rate warning
-reported by syzbot.
+LNL is the codename for the upcoming Series 2 Core Ultra
+processors designed by Intel. AX101, AX201 and AX203 devices
+are not shiped on LNL platforms, so don't support them.
 
-The syzbot did bisect and found cause is commit 9df66d5b9f45 ("cfg80211:
-fix default HE tx bitrate mask in 2G band"), which however corrects
-bitmask of HE MCS and recognizes correctly settings of empty legacy rate
-plus HE MCS rate instead of returning -EINVAL.
-
-As suggestions [1], follow the change of SCAN TX to consider this case of
-offchannel TX as well.
-
-[1] https://lore.kernel.org/linux-wireless/6ab2dc9c3afe753ca6fdcdd1421e7a1f47e87b84.camel@sipsolutions.net/T/#m2ac2a6d2be06a37c9c47a3d8a44b4f647ed4f024
-
-Reported-by: syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-wireless/000000000000fdef8706191a3f7b@google.com/
-Fixes: 9df66d5b9f45 ("cfg80211: fix default HE tx bitrate mask in 2G band")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240729074816.20323-1-pkshih@realtek.com
+Signed-off-by: Golan Ben Ami <golan.ben.ami@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240613171043.f24a228dfd96.I989a2d3f1513211bc49ac8143ee4e9e341e1ee67@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 8131dd52810d ("wifi: iwlwifi: config: label 'gl' devices as discrete")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h    | 7 ++++---
- net/mac80211/offchannel.c | 1 +
- net/mac80211/rate.c       | 2 +-
- net/mac80211/scan.c       | 2 +-
- net/mac80211/tx.c         | 2 +-
- 5 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 32 ++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index a39bd4169f292..47ade676565db 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -936,8 +936,9 @@ enum mac80211_tx_info_flags {
-  *	of their QoS TID or other priority field values.
-  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly internally
-  *	for sequence number assignment
-- * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
-- *	due to scanning, not in normal operation on the interface.
-+ * @IEEE80211_TX_CTRL_DONT_USE_RATE_MASK: Don't use rate mask for this frame
-+ *	which is transmitted due to scanning or offchannel TX, not in normal
-+ *	operation on the interface.
-  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
-  *	frame should be transmitted on the specific link. This really is
-  *	only relevant for frames that do not have data present, and is
-@@ -958,7 +959,7 @@ enum mac80211_tx_control_flags {
- 	IEEE80211_TX_CTRL_NO_SEQNO		= BIT(7),
- 	IEEE80211_TX_CTRL_DONT_REORDER		= BIT(8),
- 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	= BIT(9),
--	IEEE80211_TX_CTRL_SCAN_TX		= BIT(10),
-+	IEEE80211_TX_CTRL_DONT_USE_RATE_MASK	= BIT(10),
- 	IEEE80211_TX_CTRL_MLO_LINK		= 0xf0000000,
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index dea4d6478b4f4..365e19314f2ca 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -504,7 +504,37 @@ static const struct pci_device_id iwl_hw_card_ids[] = {
+ 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
+-	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0000, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0090, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0094, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0098, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x009C, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00C0, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00C4, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00E0, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00E4, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00E8, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00EC, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0100, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0110, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0114, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0118, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x011C, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0310, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0314, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0510, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0A10, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1671, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1672, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1771, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1772, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1791, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1792, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x4090, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x40C4, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x40E0, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x4110, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x4314, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
  
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index 5bedd9cef414d..2517a5521a578 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -940,6 +940,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
- 	}
- 
- 	IEEE80211_SKB_CB(skb)->flags = flags;
-+	IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
- 
- 	skb->dev = sdata->dev;
- 
-diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
-index 3cf252418bd38..78e7ac6c0af0b 100644
---- a/net/mac80211/rate.c
-+++ b/net/mac80211/rate.c
-@@ -890,7 +890,7 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
- 	if (ieee80211_is_tx_data(skb))
- 		rate_control_apply_mask(sdata, sta, sband, dest, max_rates);
- 
--	if (!(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX))
-+	if (!(info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK))
- 		mask = sdata->rc_rateidx_mask[info->band];
- 
- 	if (dest[0].idx < 0)
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 3d68db738cde4..b58d061333c52 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -636,7 +636,7 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
- 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
- 		}
- 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
--		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_SCAN_TX;
-+		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
- 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
- 	}
- }
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 415e951e4138a..45a093d3f1fa7 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -706,7 +706,7 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
- 	txrc.skb = tx->skb;
- 	txrc.reported_rate.idx = -1;
- 
--	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX)) {
-+	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK)) {
- 		txrc.rate_idx_mask = ~0;
- 	} else {
- 		txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
+ /* Sc devices */
 -- 
 2.43.0
 
