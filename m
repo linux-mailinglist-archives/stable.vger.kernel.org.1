@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83A298D51A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3EB98D821
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFCE81C215CA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E53D41F215BE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E14B1D014A;
-	Wed,  2 Oct 2024 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE241D0796;
+	Wed,  2 Oct 2024 13:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSa73O5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2S+VV9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D82B1D0403;
-	Wed,  2 Oct 2024 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAB61D016E;
+	Wed,  2 Oct 2024 13:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875611; cv=none; b=b56l9bUGm56uZsisfl3RGHt+ITlhngcb2hg4O3Sq3q0xG7EIxtRvNONjGrPxATnQUmEAmEsjh0nfpPwY3z4ilvUDX+63onomjclGYgqfMs2BDrpqqdsLHC4gtGekJTw8JnCqSuE+qWEbZrDX0PDRl3cKeL2Wz+SJfZTYC4MXLrw=
+	t=1727877379; cv=none; b=Q5MNLQGJA6iJrMqGvYnMueDXJigK1rfdBsvGkWv1XFDIKOdjqstipPoDpFV4JP3eEkRpSfIP5lrRdV44A/Ftclqf8Rrr+UMTKAtBxBfQe9i2H4zHBT7PS5G0NJOj+PDD45Qn6Q1HTlPqSPNvvYaM8elWbS+5/QDVaNxcp0SBSEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875611; c=relaxed/simple;
-	bh=Fa2o0rhrjxY0JGnOexv/j6mQEqXq7BZ9kRGHPK94OoQ=;
+	s=arc-20240116; t=1727877379; c=relaxed/simple;
+	bh=4pXRf0He6k3p4f1xDkZ0K/JycomVIXmuHiGRJPJBzk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1L1RjjCYQMJY16op2k0p52Ha6C7i3sKU2SGi7e9Yw7mX8QWMBSgS3ZmLWFfUmdhOvHEELTaS0YmYeuCCtJ//MdKmrkA4jefvLCJSX+wDzIuDK67hkVC29vqK8eb+I88I5MlR6fLMZpfyUqtkGBYqxz1ucV6FhoLtQDCud3jFMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSa73O5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D65C4CECF;
-	Wed,  2 Oct 2024 13:26:50 +0000 (UTC)
+	 MIME-Version; b=HC+gHJW0AZsAOSzQ5QYzv6VIBW0iDo8HHXNH8oFdnLA4lP4roBvquxLnweSNfoMETns/K0LuR+Pkrcm/lLkB8wlu70aupIriKFogJQQORgBjjDnj5NkE+bwDxY/hXRj/8673Zu7aAVcBfwW1v9KMClSW+fYNHNuMKHwkaMEOodM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2S+VV9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB96FC4CEC2;
+	Wed,  2 Oct 2024 13:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875611;
-	bh=Fa2o0rhrjxY0JGnOexv/j6mQEqXq7BZ9kRGHPK94OoQ=;
+	s=korg; t=1727877379;
+	bh=4pXRf0He6k3p4f1xDkZ0K/JycomVIXmuHiGRJPJBzk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSa73O5OrrAMXwNmCwzSbzXg6YmVr+hiYjPdKOyX+xPtA2NDJijYaayb8bL0+7fhJ
-	 RahiyORqOG3M04o8eT9/2HHkAZkCUY6ggq7H529H3G1TMeQrRTu1ebo+Rj/cKmVsBC
-	 Pdxc2qnuzH+viTs8mCgicHGJbmsG/Nk885SGx1I4=
+	b=N2S+VV9G9zF0rYSF9x8vL5oTIsAnJuqI/9qrwF3kJUy6Bc1/O3GrJyrE4FB0ltzlU
+	 OrrQ2sGbPZfO/MjOIcTDz9bJ/v5y5DeNViC9GZWRr0RjbmzbE/Zzuwn+BZHQ6Ogv4o
+	 ng+R3IiQ/9XFvZZ8TLhITp/ApaGDELIiPg6Jnr+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 161/695] ASoC: rt5682s: Return devm_of_clk_add_hw_provider to transfer the error
-Date: Wed,  2 Oct 2024 14:52:39 +0200
-Message-ID: <20241002125828.902461013@linuxfoundation.org>
+Subject: [PATCH 6.10 060/634] perf/arm-cmn: Ensure dtm_idx is big enough
+Date: Wed,  2 Oct 2024 14:52:40 +0200
+Message-ID: <20241002125813.476216259@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 3ff810b9bebe5578a245cfa97c252ab602e703f1 ]
+[ Upstream commit 359414b33e00bae91e4eabf3e4ef8e76024c7673 ]
 
-Return devm_of_clk_add_hw_provider() in order to transfer the error, if it
-fails due to resource allocation failure or device tree clock provider
-registration failure.
+While CMN_MAX_DIMENSION was bumped to 12 for CMN-650, that only supports
+up to a 10x10 mesh, so bumping dtm_idx to 256 bits at the time worked
+out OK in practice. However CMN-700 did finally support up to 144 XPs,
+and thus needs a worst-case 288 bits of dtm_idx for an aggregated XP
+event on a maxed-out config. Oops.
 
-Fixes: bdd229ab26be ("ASoC: rt5682s: Add driver for ALC5682I-VS codec")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20240717115436.3449492-1-make24@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/e771b358526a0d7fc06efee2c3a2fdc0c9f51d44.1725296395.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5682s.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/perf/arm-cmn.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5682s.c b/sound/soc/codecs/rt5682s.c
-index f50f196d700d7..ce2e88e066f3e 100644
---- a/sound/soc/codecs/rt5682s.c
-+++ b/sound/soc/codecs/rt5682s.c
-@@ -2828,7 +2828,9 @@ static int rt5682s_register_dai_clks(struct snd_soc_component *component)
- 		}
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index f33fd110081c3..058ea798b669b 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -35,6 +35,9 @@
+ #define CMN_MAX_XPS			(CMN_MAX_DIMENSION * CMN_MAX_DIMENSION)
+ #define CMN_MAX_DTMS			(CMN_MAX_XPS + (CMN_MAX_DIMENSION - 1) * 4)
  
- 		if (dev->of_node) {
--			devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, dai_clk_hw);
-+			ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, dai_clk_hw);
-+			if (ret)
-+				return ret;
- 		} else {
- 			ret = devm_clk_hw_register_clkdev(dev, dai_clk_hw,
- 							  init.name, dev_name(dev));
++/* Currently XPs are the node type we can have most of; others top out at 128 */
++#define CMN_MAX_NODES_PER_EVENT		CMN_MAX_XPS
++
+ /* The CFG node has various info besides the discovery tree */
+ #define CMN_CFGM_PERIPH_ID_01		0x0008
+ #define CMN_CFGM_PID0_PART_0		GENMASK_ULL(7, 0)
+@@ -565,7 +568,7 @@ static void arm_cmn_debugfs_init(struct arm_cmn *cmn, int id) {}
+ 
+ struct arm_cmn_hw_event {
+ 	struct arm_cmn_node *dn;
+-	u64 dtm_idx[4];
++	u64 dtm_idx[DIV_ROUND_UP(CMN_MAX_NODES_PER_EVENT * 2, 64)];
+ 	s8 dtc_idx[CMN_MAX_DTCS];
+ 	u8 num_dns;
+ 	u8 dtm_offset;
 -- 
 2.43.0
 
