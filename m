@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-80002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17DA98DB4C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:30:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C19EF98DDBF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 317DEB2750F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:30:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E247E1C23156
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1914D1D0BBB;
-	Wed,  2 Oct 2024 14:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94931D0F5D;
+	Wed,  2 Oct 2024 14:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhzDpYL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DdzmI7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDE51D0493;
-	Wed,  2 Oct 2024 14:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848E61D0F5A;
+	Wed,  2 Oct 2024 14:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879098; cv=none; b=cgOMJhzkrK4jd18g8loKbq0su37NkKw6oAgIqrXNA2UW0fiWlG+2Quw4OvyEplHOX3VJetKF3Oavj9LilKGQOtUoVbIIImKkFOuzULIyGBH/v73+Jvyg8y8IRyfBgYkSeW+sjuh4u5fobJ3Y+5v5YRFbNFIAPWrB+xuggIwVHrs=
+	t=1727880565; cv=none; b=a92MaHJKUDN4XMERMU5tIQ33YnRajGCuGlSD/fNaSJhpdZ3RQ/GLMDm49HUxvPcA25W+CLovkt95F9eoQ3qw60DXEuzYm9rOxn9iod/qKB5gDFjE3jZNLJjLXB0wL5vHeYjLf8XiWsGvxVYcd8WoKVc1TnYTdKnh8tf6/wVJafY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879098; c=relaxed/simple;
-	bh=fWn9gL+u1KSYKEquw0j6Y5Apj/kMYVFErSyV04s7Oaw=;
+	s=arc-20240116; t=1727880565; c=relaxed/simple;
+	bh=Z/MBlxx08emoqCyEF0INVVvFPsKFTTdhdMwpl0Sy0jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upH5KDPTL6tQOTqZu4sQQexnlYJCy1J2xNcyxE8F/42i8lMWKRqQnREZpfXO7pS594x9CLFFzGcotX98kA9guKRSYnuzJG7M/kcuw9FW37YSWlOinv7hrdOS5NQpRnscGNqkVjKjN595ldq3GPNg3mimpXshPTwpXTNpt/bh0L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhzDpYL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E383C4CEC2;
-	Wed,  2 Oct 2024 14:24:57 +0000 (UTC)
+	 MIME-Version; b=pjLENjFzcJfZzDtiobvX/MCwSEnWVc9e3YR9thr/s3Ogy64KOhpaoljKJ1onmsnc2oNLhARWYW1oXD0x3FGZn7gNse2XgLLLGjBODneHNgUlddWIKY9J3sCU6esyMG2M69BdWsYLP3dy9QNkP6mIOF7xVaLc4EVbwSvUyKEOJsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DdzmI7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F709C4CEC2;
+	Wed,  2 Oct 2024 14:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879098;
-	bh=fWn9gL+u1KSYKEquw0j6Y5Apj/kMYVFErSyV04s7Oaw=;
+	s=korg; t=1727880565;
+	bh=Z/MBlxx08emoqCyEF0INVVvFPsKFTTdhdMwpl0Sy0jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhzDpYL4dnchwb2YdyAN+Wgd0hL7H5kJVRiGUSePwl8aiarn1vdFV8UBOHOC9ijGS
-	 DbSMqIzcYcmH5WxXw8L2RnjoXuy7MjmFpYbO1j9fbHr2UtrxtJylMx3TNclqomziFo
-	 Kiy2A0vDUf/IEEMjoUuoIG6U5h6mD+inOae4uWvQ=
+	b=2DdzmI7CcUw+cIeH9/zMM2aF6C8oiUPbxPeSQPMd1v9jJ9L7bJfqlpCFsA7Cd88OV
+	 ndqaiSDRxqa6kB5MUrbbx6YA1x6QgpStNutW9VL7MHm7t02ZsTyoUvlsmcDyftrnRU
+	 cSzJR4yafWv51jONLzlgBN6CLf/xkBnwFPRwOz0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 610/634] idpf: fix netdev Tx queue stop/wake
-Date: Wed,  2 Oct 2024 15:01:50 +0200
-Message-ID: <20241002125835.195558081@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Qingqing Zhou <quic_qqzhou@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 472/538] arm64: dts: qcom: sa8775p: Mark APPS and PCIe SMMUs as DMA coherent
+Date: Wed,  2 Oct 2024 15:01:51 +0200
+Message-ID: <20241002125811.075519340@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,150 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Qingqing Zhou <quic_qqzhou@quicinc.com>
 
-[ Upstream commit e4b398dd82f5d5867bc5f442c43abc8fba30ed2c ]
+commit 421688265d7f5d3ff4211982e7231765378bb64f upstream.
 
-netif_txq_maybe_stop() returns -1, 0, or 1, while
-idpf_tx_maybe_stop_common() says it returns 0 or -EBUSY. As a result,
-there sometimes are Tx queue timeout warnings despite that the queue
-is empty or there is at least enough space to restart it.
-Make idpf_tx_maybe_stop_common() inline and returning true or false,
-handling the return of netif_txq_maybe_stop() properly. Use a correct
-goto in idpf_tx_maybe_stop_splitq() to avoid stopping the queue or
-incrementing the stops counter twice.
+The SMMUs on sa8775p are cache-coherent. GPU SMMU is marked as such,
+mark the APPS and PCIe ones as well.
 
-Fixes: 6818c4d5b3c2 ("idpf: add splitq start_xmit")
-Fixes: a5ab9ee0df0b ("idpf: add singleq start_xmit and napi poll")
-Cc: stable@vger.kernel.org # 6.7+
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
+Fixes: 2dba7a613a6e ("arm64: dts: qcom: sa8775p: add the pcie smmu node")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Qingqing Zhou <quic_qqzhou@quicinc.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20240723075948.9545-1-quic_qqzhou%40quicinc.com
+Link: https://lore.kernel.org/r/20240725072117.22425-1-quic_qqzhou@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/intel/idpf/idpf_singleq_txrx.c   |  4 +++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 35 +++++--------------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  9 ++++-
- 3 files changed, 21 insertions(+), 27 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index 8630db24f63a7..5e5fa2d0aa4d1 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -369,6 +369,10 @@ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
- 				      IDPF_TX_DESCS_FOR_CTX)) {
- 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -1951,6 +1951,7 @@
+ 			reg = <0x0 0x15000000 0x0 0x100000>;
+ 			#iommu-cells = <2>;
+ 			#global-interrupts = <2>;
++			dma-coherent;
  
-+		u64_stats_update_begin(&tx_q->stats_sync);
-+		u64_stats_inc(&tx_q->q_stats.q_busy);
-+		u64_stats_update_end(&tx_q->stats_sync);
-+
- 		return NETDEV_TX_BUSY;
- 	}
+ 			interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
+@@ -2089,6 +2090,7 @@
+ 			reg = <0x0 0x15200000 0x0 0x80000>;
+ 			#iommu-cells = <2>;
+ 			#global-interrupts = <2>;
++			dma-coherent;
  
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 7b06ca7b9732a..9b7e67d0f38be 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -2149,29 +2149,6 @@ void idpf_tx_splitq_build_flow_desc(union idpf_tx_flex_desc *desc,
- 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
- }
- 
--/**
-- * idpf_tx_maybe_stop_common - 1st level check for common Tx stop conditions
-- * @tx_q: the queue to be checked
-- * @size: number of descriptors we want to assure is available
-- *
-- * Returns 0 if stop is not needed
-- */
--int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size)
--{
--	struct netdev_queue *nq;
--
--	if (likely(IDPF_DESC_UNUSED(tx_q) >= size))
--		return 0;
--
--	u64_stats_update_begin(&tx_q->stats_sync);
--	u64_stats_inc(&tx_q->q_stats.q_busy);
--	u64_stats_update_end(&tx_q->stats_sync);
--
--	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
--
--	return netif_txq_maybe_stop(nq, IDPF_DESC_UNUSED(tx_q), size, size);
--}
--
- /**
-  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
-  * @tx_q: the queue to be checked
-@@ -2183,7 +2160,7 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
- 				     unsigned int descs_needed)
- {
- 	if (idpf_tx_maybe_stop_common(tx_q, descs_needed))
--		goto splitq_stop;
-+		goto out;
- 
- 	/* If there are too many outstanding completions expected on the
- 	 * completion queue, stop the TX queue to give the device some time to
-@@ -2202,10 +2179,12 @@ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
- 	return 0;
- 
- splitq_stop:
-+	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
-+
-+out:
- 	u64_stats_update_begin(&tx_q->stats_sync);
- 	u64_stats_inc(&tx_q->q_stats.q_busy);
- 	u64_stats_update_end(&tx_q->stats_sync);
--	netif_stop_subqueue(tx_q->netdev, tx_q->idx);
- 
- 	return -EBUSY;
- }
-@@ -2228,7 +2207,11 @@ void idpf_tx_buf_hw_update(struct idpf_tx_queue *tx_q, u32 val,
- 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
- 	tx_q->next_to_use = val;
- 
--	idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED);
-+	if (idpf_tx_maybe_stop_common(tx_q, IDPF_TX_DESC_NEEDED)) {
-+		u64_stats_update_begin(&tx_q->stats_sync);
-+		u64_stats_inc(&tx_q->q_stats.q_busy);
-+		u64_stats_update_end(&tx_q->stats_sync);
-+	}
- 
- 	/* Force memory writes to complete before letting h/w
- 	 * know there are new descriptors to fetch.  (Only
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 5b3f19200255a..214a24e684634 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -1148,7 +1148,6 @@ void idpf_tx_dma_map_error(struct idpf_tx_queue *txq, struct sk_buff *skb,
- 			   struct idpf_tx_buf *first, u16 ring_idx);
- unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
- 					 struct sk_buff *skb);
--int idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q, unsigned int size);
- void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue);
- netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
- 				  struct idpf_tx_queue *tx_q);
-@@ -1157,4 +1156,12 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
- 				      u16 cleaned_count);
- int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
- 
-+static inline bool idpf_tx_maybe_stop_common(struct idpf_tx_queue *tx_q,
-+					     u32 needed)
-+{
-+	return !netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
-+					  IDPF_DESC_UNUSED(tx_q),
-+					  needed, needed);
-+}
-+
- #endif /* !_IDPF_TXRX_H_ */
--- 
-2.43.0
-
+ 			interrupts = <GIC_SPI 920 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 921 IRQ_TYPE_LEVEL_HIGH>,
 
 
 
