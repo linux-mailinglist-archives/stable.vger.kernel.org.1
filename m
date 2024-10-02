@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0F798D975
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE2F98DBFD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B6CC2898A3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42881F24249
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B2C1D12FC;
-	Wed,  2 Oct 2024 14:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A461D1E89;
+	Wed,  2 Oct 2024 14:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNB9h3Lx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkf9IjaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8A019F411;
-	Wed,  2 Oct 2024 14:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F441D223C;
+	Wed,  2 Oct 2024 14:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878013; cv=none; b=T95zIsGZI5t+r6eGLj2EYhlj3HmlEPMpM05a3AQxX5LbYJx8XszACWcNW8SUC6NaBE210Uk57BOro1NvI2ZbiXIa03fEtHLC5ab/WvIQU5kNBsiZD2F3EmOJ0OXDscUPPZP5+/2icEVmydzwXABqLh7ZtwwMLXY0WYBiFZhGF2U=
+	t=1727879477; cv=none; b=O8BRbozyEjp/+FNV6IMImzt0URp6q7XQmi1EQO2IAbVxkP5y7c9ziP+sYQR7b8a21nQfKxu+7mn5yJxofD0/V/axEtdbUJfrSphRxGYpydxqYPQEa6ly0viVmCbVvBI5I9ygxzrPiqgfHzelg3zEHDo7PDlkmHpGTsndzXE8PQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878013; c=relaxed/simple;
-	bh=/AlohaC9M0xaWlzgvmGv/g58xFAXvBjgIaquBQocN1U=;
+	s=arc-20240116; t=1727879477; c=relaxed/simple;
+	bh=c8vm5i/zZ13iM98a5JGfRoDowCHodDWT5cgIvajAg4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTpQi7bhy8wOC7jRiLV+wMGGA7Pj4W83rPyv9ESL2FUaAt3CvNHbNxN8tZuzuD7lHcrMZPg/x5p02o26Cd8S+Q/YWWGGwz8pibF2gfWV/TFDAFPi3r8CUfeNvYw6HvRJrR/q8V2cjPD5HF/Cwuu1SMrhqFRrmOUjm4mdShbHsgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNB9h3Lx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0B6C4CECE;
-	Wed,  2 Oct 2024 14:06:51 +0000 (UTC)
+	 MIME-Version; b=buqWwW5E2VGZmsft7RCC9rghchfkN7dpEl6sUuhtDBKdqsM3tDAxLnsHufMn2nSCNrMyyOBcp24r7heVd1M3lZiAUHo8z2mt1c7wk482iom8qV11Gk+oYzZiUBizzuA9ILwLtfIBjm5cTERS7lbi9xo8cNIQ1zSvm90yRS6z2qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkf9IjaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84D1C4CEC2;
+	Wed,  2 Oct 2024 14:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878012;
-	bh=/AlohaC9M0xaWlzgvmGv/g58xFAXvBjgIaquBQocN1U=;
+	s=korg; t=1727879477;
+	bh=c8vm5i/zZ13iM98a5JGfRoDowCHodDWT5cgIvajAg4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNB9h3LxyTa/HSPkMTKlElT8/koV9NrgaUv9xAhEI1Rv338O8EZ0QJZgCi9pSifWD
-	 Yj0mFxmmx5RHjKokQ080zDQWxKk9y0xkg85vVYdyihlqdRY8ZMoi0ckdLgpMqfFZnf
-	 aM7L4pg+U38seLaafTgVc3/e2NocAegjeDhpN/+Y=
+	b=hkf9IjaDNO6ir+lsddanXv5hBSUJd5KyqOwZHS4zIbupy6HHFcO8B4O/CIsQ5pZ58
+	 0O56Iaa1L4L+kPrA5buKpNKNTBnYNVLg5JFrVJRpjxPIWDBHPwyP6+3X/7ZSbsqQcd
+	 GYL/jDKJjsBrY5BU8//fxZrNRVWY4Mo6LNKfLS8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 240/634] selftests/bpf: Drop unneeded error.h includes
+Subject: [PATCH 6.6 101/538] arm64: dts: ti: k3-j721e-beagleboneai64: Fix reversed C6x carveout locations
 Date: Wed,  2 Oct 2024 14:55:40 +0200
-Message-ID: <20241002125820.573081238@linuxfoundation.org>
+Message-ID: <20241002125756.218784422@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 69f409469c9b1515a5db40d5a36fda372376fa2d ]
+[ Upstream commit 1a314099b7559690fe23cdf3300dfff6e830ecb1 ]
 
-The addition of general support for unprivileged tests in test_loader.c
-breaks building test_verifier on non-glibc (e.g. musl) systems, due to the
-inclusion of glibc extension '<error.h>' in 'unpriv_helpers.c'. However,
-the header is actually not needed, so remove it to restore building.
+The DMA carveout for the C6x core 0 is at 0xa6000000 and core 1 is at
+0xa7000000. These are reversed in DT. While both C6x can access either
+region, so this is not normally a problem, but if we start restricting
+the memory each core can access (such as with firewalls) the cores
+accessing the regions for the wrong core will not work. Fix this here.
 
-Similarly for sk_lookup.c and flow_dissector.c, error.h is not necessary
-and causes problems, so drop them.
-
-Fixes: 1d56ade032a4 ("selftests/bpf: Unprivileged tests for test_loader.c")
-Fixes: 0ab5539f8584 ("selftests/bpf: Tests for BPF_SK_LOOKUP attach point")
-Fixes: 0905beec9f52 ("selftests/bpf: run flow dissector tests in skb-less mode")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/5664367edf5fea4f3f4b4aec3b182bcfc6edff9c.1721713597.git.tony.ambardar@gmail.com
+Fixes: fae14a1cb8dd ("arm64: dts: ti: Add k3-j721e-beagleboneai64")
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240801181232.55027-2-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 -
- tools/testing/selftests/bpf/prog_tests/sk_lookup.c      | 1 -
- tools/testing/selftests/bpf/unpriv_helpers.c            | 1 -
- 3 files changed, 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-index 9e5f38739104b..9625e6d217913 100644
---- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-+++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <test_progs.h>
- #include <network_helpers.h>
--#include <error.h>
- #include <linux/if_tun.h>
- #include <sys/uio.h>
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+index 2f954729f3533..7897323376a5b 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+@@ -123,7 +123,7 @@ main_r5fss1_core1_memory_region: r5f-memory@a5100000 {
+ 			no-map;
+ 		};
  
-diff --git a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-index de2466547efe0..a1ab0af004549 100644
---- a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-@@ -18,7 +18,6 @@
- #include <arpa/inet.h>
- #include <assert.h>
- #include <errno.h>
--#include <error.h>
- #include <fcntl.h>
- #include <sched.h>
- #include <stdio.h>
-diff --git a/tools/testing/selftests/bpf/unpriv_helpers.c b/tools/testing/selftests/bpf/unpriv_helpers.c
-index b6d016461fb02..220f6a9638134 100644
---- a/tools/testing/selftests/bpf/unpriv_helpers.c
-+++ b/tools/testing/selftests/bpf/unpriv_helpers.c
-@@ -2,7 +2,6 @@
+-		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
++		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa6000000 0x00 0x100000>;
+ 			no-map;
+@@ -135,7 +135,7 @@ c66_0_memory_region: c66-memory@a6100000 {
+ 			no-map;
+ 		};
  
- #include <stdbool.h>
- #include <stdlib.h>
--#include <error.h>
- #include <stdio.h>
- #include <string.h>
- #include <unistd.h>
+-		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
++		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
+ 			compatible = "shared-dma-pool";
+ 			reg = <0x00 0xa7000000 0x00 0x100000>;
+ 			no-map;
 -- 
 2.43.0
 
