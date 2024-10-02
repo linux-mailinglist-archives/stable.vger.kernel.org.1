@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-79891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C06898DAC6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCCA98DD41
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3C001F25399
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CE41B256FA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EA81D1E6E;
-	Wed,  2 Oct 2024 14:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED7F1D174E;
+	Wed,  2 Oct 2024 14:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6aZd86+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flVikb/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442F51D0E12;
-	Wed,  2 Oct 2024 14:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F021EA80;
+	Wed,  2 Oct 2024 14:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878770; cv=none; b=t0FBLY0K8kZWlCLFgoEiIvBo+rvwWB6VetiPbv6+Cg3hYwsqONNrueumD1BQVVa4DlFCZY74zRKhxABckhuq4LGLsJdfTkNg9PzDnohtfdC7ZmGsU9MM8ELVkTwY56RpiaPPIXR9NBvoem2/dN1+cU6q4UWdX59yusdfzmurkBg=
+	t=1727880229; cv=none; b=rWihprYWyRDoz9+8BqsDGA6nm/RKQtPXGvu5jieOgYER5EGMHGnB8Sl3UU3ApKdCtjvudg55opZjFL5nIYAvpFsTub/S96gMwLrmaUL49o9OCvjger8PSgwq5MZATLsuvx00/ELgP9hV/Hlm4Y9Mr10XbbLM7IZCcm3yhYCE5+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878770; c=relaxed/simple;
-	bh=Fw/tS6atXG/tPCgmHWUOP5LnmZfWVF9vf+PojPhqo7U=;
+	s=arc-20240116; t=1727880229; c=relaxed/simple;
+	bh=UJKzMlut2T3knkrXvh69WzYhDSsQ4kJqYFrklnEs20Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brCBzSNndhV1Lve7JqPDDtMOhSwCKwHrQnOjoWuaqNNAdFpeifBLj1NatWbKrk2B3tuWn7N3bHqa5SmvZWLMtn085DVGlJU1wneX4tgLGH9+bN1j7sMcOeIA0YU+TC3EQ0WFQU6sTLrzBckdyMDAPj8f7MImK4eDdazua474F/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6aZd86+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C21C4CEC2;
-	Wed,  2 Oct 2024 14:19:29 +0000 (UTC)
+	 MIME-Version; b=IDpCFbKEa7cx0AZb3iUwP1aGhHmvVPbT03EZtGoERJ40gz3DoAYBaSqtB91UFwDJXrVWmmK4H9f3QG/xJbJ/Lle6tGAeALKk4AEgq6RyxwMxvC9h4Q19oN8xkSyRkRkxJfyEschyo4wCVhC8JnoTOktcnQTBYiSrfsqBT22+98s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flVikb/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C94DC4CEC2;
+	Wed,  2 Oct 2024 14:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878769;
-	bh=Fw/tS6atXG/tPCgmHWUOP5LnmZfWVF9vf+PojPhqo7U=;
+	s=korg; t=1727880228;
+	bh=UJKzMlut2T3knkrXvh69WzYhDSsQ4kJqYFrklnEs20Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6aZd86+cM5XZClb4OqPRHJiZwe8GtnqQ357cLpb7JPW8VxD/w9LKy8p+cKUg9r0E
-	 8QE8om3d15bRuXvMkEDofjLyMYPV917gt8bypxAuzGSw7tLN92dyBQPfalPlXF5mtu
-	 udjUgL2LW3pu3xaVtGWhlOgkysfLyQdonQ6UreRM=
+	b=flVikb/E/ojMRKK5DkmE6wKxW8eHRIIv5P3NlM86/zvrD+xCBTgRdK6gMcqLz2ge1
+	 MlGKJtMQ0vzpOpkA0lraRbwhQdtZnwvYyn6pfFtZHOBpolavEv+c71cnR0SIqLNSj7
+	 FwSsTOW08g4c0jC78JUDZNVzQ/4HgYJ7KemRHYeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Marek <tomas.marek@elrest.cz>
-Subject: [PATCH 6.10 526/634] usb: dwc2: drd: fix clock gating on USB role switch
+	Duanqiang Wen <duanqiangwen@net-swift.com>
+Subject: [PATCH 6.6 387/538] [PATCH net] Revert "net: libwx: fix alloc msix vectors failed"
 Date: Wed,  2 Oct 2024 15:00:26 +0200
-Message-ID: <20241002125831.866592432@linuxfoundation.org>
+Message-ID: <20241002125807.707245884@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Marek <tomas.marek@elrest.cz>
+From: Duanqiang Wen <duanqiangwen@net-swift.com>
 
-commit 2c6b6afa59e78bebcb65bbc8a76b3459f139547c upstream.
+This reverts commit 69197dfc64007b5292cc960581548f41ccd44828.
+commit 937d46ecc5f9 ("net: wangxun: add ethtool_ops for
+channel number") changed NIC misc irq from most significant
+bit to least significant bit, the former condition is not
+required to apply this patch, because we only need to set
+irq affinity for NIC queue irq vectors.
+this patch is required after commit 937d46ecc5f9 ("net: wangxun:
+add ethtool_ops for channel number") was applied, so this is only
+relevant to 6.6.y branch.
 
-The dwc2_handle_usb_suspend_intr() function disables gadget clocks in USB
-peripheral mode when no other power-down mode is available (introduced by
-commit 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_intr function.")).
-However, the dwc2_drd_role_sw_set() USB role update handler attempts to
-read DWC2 registers if the USB role has changed while the USB is in suspend
-mode (when the clocks are gated). This causes the system to hang.
-
-Release the gadget clocks before handling the USB role update.
-
-Fixes: 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_intr function.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tomas Marek <tomas.marek@elrest.cz>
-Link: https://lore.kernel.org/r/20240906055025.25057-1-tomas.marek@elrest.cz
+Signed-off-by: Duanqiang Wen <duanqiangwen@net-swift.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/drd.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc2/drd.c
-+++ b/drivers/usb/dwc2/drd.c
-@@ -127,6 +127,15 @@ static int dwc2_drd_role_sw_set(struct u
- 			role = USB_ROLE_DEVICE;
- 	}
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -1585,7 +1585,7 @@ static void wx_set_num_queues(struct wx
+  */
+ static int wx_acquire_msix_vectors(struct wx *wx)
+ {
+-	struct irq_affinity affd = { .pre_vectors = 1 };
++	struct irq_affinity affd = {0, };
+ 	int nvecs, i;
  
-+	if ((IS_ENABLED(CONFIG_USB_DWC2_PERIPHERAL) ||
-+	     IS_ENABLED(CONFIG_USB_DWC2_DUAL_ROLE)) &&
-+	     dwc2_is_device_mode(hsotg) &&
-+	     hsotg->lx_state == DWC2_L2 &&
-+	     hsotg->params.power_down == DWC2_POWER_DOWN_PARAM_NONE &&
-+	     hsotg->bus_suspended &&
-+	     !hsotg->params.no_clock_gating)
-+		dwc2_gadget_exit_clock_gating(hsotg, 0);
-+
- 	if (role == USB_ROLE_HOST) {
- 		already = dwc2_ovr_avalid(hsotg, true);
- 	} else if (role == USB_ROLE_DEVICE) {
+ 	nvecs = min_t(int, num_online_cpus(), wx->mac.max_msix_vectors);
 
 
 
