@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-79523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3818B98D8E2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A1A98D574
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB181C23147
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308201C21DC0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFBF1D0F5E;
-	Wed,  2 Oct 2024 14:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C0B1D0173;
+	Wed,  2 Oct 2024 13:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYrR5jAG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcB+trE3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12A71D0792;
-	Wed,  2 Oct 2024 14:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E7718DF60;
+	Wed,  2 Oct 2024 13:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877706; cv=none; b=Fq+w8pr6MMJP+iuf4zzdpanvSSjXhLfKBkKanI78Ti9qFO/g4y5v005pi85r30TxStXwdxzT5ZkGcOaRcUrhijEw8z6Q7PJpDP+zXp0PnQi86wG53lKipCgA8CDSCYkgJYbOZGWEXdLzqEBcM9P1DstcpQ0nNxkCGCESlLqXleY=
+	t=1727875833; cv=none; b=QheSsIXMjQRaBGX9qvBi8peeDUb8BwwLHBectQSxEUf/T4RmaGjHxMz0SvJNGA+jZSeguNZ7Am8LWLT6XmQ+4uMY6AHNl5hTlfS+5HAa2Pr2aEi26dykLz/5m4k0Z6YPSNsfAeKppL/5iQDG/QSTQ73bizDQVMQQwmVqLazhfTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877706; c=relaxed/simple;
-	bh=rlbL9dBtiyVMtx90eQUaKiRMoxf47BemxHdlORWzuEQ=;
+	s=arc-20240116; t=1727875833; c=relaxed/simple;
+	bh=KE0G2wD90JTvScnCC9N0hire1Rjut9xQxLEp4C2+qkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cv/z/83Pj4VNnuH6dL16fmZ1uZC5eXIjIawAgqAuxPWQ0AGtYfoY5yaGbG4VmCmecXAYqrTka/RyzAvcBMZ2sQ0lbDmOMCKZRsqieSjk0MQzgHvp2xz16utJQbkXzvZK4x42UrXUccl9O4JgPO+aSLeyyncDUPB9Kf2bX+VgWlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYrR5jAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D4FC4CEC5;
-	Wed,  2 Oct 2024 14:01:46 +0000 (UTC)
+	 MIME-Version; b=WMmmeog8WGBM67sAKofSnRNKrwIpRyYtEMRVlveZJoOBdsgK25hk6chOglFFwLianGbZ54lDHH/phubuApIC1l0CSa/PCSMjNo8nR54MPK5g4w15BtUMoFzQ8qLDKoWcAmYueAB/ULQ4EQuwvfGG34WVUj4ohG7+Bv/TSy81gwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcB+trE3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74502C4CEC5;
+	Wed,  2 Oct 2024 13:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877706;
-	bh=rlbL9dBtiyVMtx90eQUaKiRMoxf47BemxHdlORWzuEQ=;
+	s=korg; t=1727875832;
+	bh=KE0G2wD90JTvScnCC9N0hire1Rjut9xQxLEp4C2+qkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYrR5jAG+tjUe4xZhvW2hl4as10jlQhtskhDY0D8lQuL1f2gdcp3Y0J066Bz9KAVz
-	 mCx0GT7iFMWzLty1RB0N6JKjLTKmAqxqL5HZnVVzEsRt3YJmcdGL6P4Ltjg5n3QK0T
-	 fKawsLzHl6r4ENHh0RoUa+o+zWuVlANzi9HFyIdQ=
+	b=gcB+trE3WphCEVmyoAQY7KV2JSK1Qp/ahZbjzhQigRAmm5688kJf+Cn++1a/FfUWe
+	 9ckJ9/u5Cdq3edrLnudJs70HiU44i9ajcoLprYogbOv73CkpYrD7vck2UZ5s+BUzkj
+	 r2tLRFZ6mIErZjTWQKHtf+bbiJ1vSNQZWc+R33HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sherry Yang <sherry.yang@oracle.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 135/634] ARM: dts: microchip: sama7g5: Fix RTT clock
+Subject: [PATCH 6.11 237/695] drm/msm: fix %s null argument error
 Date: Wed,  2 Oct 2024 14:53:55 +0200
-Message-ID: <20241002125816.437662372@linuxfoundation.org>
+Message-ID: <20241002125831.907470870@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+From: Sherry Yang <sherry.yang@oracle.com>
 
-[ Upstream commit 867bf1923200e6ad82bad0289f43bf20b4ac7ff9 ]
+[ Upstream commit 25b85075150fe8adddb096db8a4b950353045ee1 ]
 
-According to datasheet, Chapter 34. Clock Generator, section 34.2,
-Embedded characteristics, source clock for RTT is the TD_SLCK, registered
-with ID 1 by the slow clock controller driver. Fix RTT clock.
+The following build error was triggered because of NULL string argument:
 
-Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
-Link: https://lore.kernel.org/r/20240826165320.3068359-1-claudiu.beznea@tuxon.dev
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c: In function 'mdp5_smp_dump':
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
+BUILDSTDERR:   352 |                         drm_printf(p, "%s:%d\t%d\t%s\n",
+BUILDSTDERR:       |                                                   ^~
+BUILDSTDERR: drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c:352:51: error: '%s' directive argument is null [-Werror=format-overflow=]
+
+This happens from the commit a61ddb4393ad ("drm: enable (most) W=1
+warnings by default across the subsystem"). Using "(null)" instead
+to fix it.
+
+Fixes: bc5289eed481 ("drm/msm/mdp5: add debugfs to show smp block status")
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/611071/
+Link: https://lore.kernel.org/r/20240827165337.1075904-1-sherry.yang@oracle.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/sama7g5.dtsi | 2 +-
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/microchip/sama7g5.dtsi b/arch/arm/boot/dts/microchip/sama7g5.dtsi
-index 75778be126a3d..17bcdcf0cf4a0 100644
---- a/arch/arm/boot/dts/microchip/sama7g5.dtsi
-+++ b/arch/arm/boot/dts/microchip/sama7g5.dtsi
-@@ -272,7 +272,7 @@
- 			compatible = "microchip,sama7g5-rtt", "microchip,sam9x60-rtt", "atmel,at91sam9260-rtt";
- 			reg = <0xe001d020 0x30>;
- 			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
--			clocks = <&clk32k 0>;
-+			clocks = <&clk32k 1>;
- 		};
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
+index 3a7f7edda96b2..500b7dc895d05 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c
+@@ -351,7 +351,7 @@ void mdp5_smp_dump(struct mdp5_smp *smp, struct drm_printer *p,
  
- 		clk32k: clock-controller@e001d050 {
+ 			drm_printf(p, "%s:%d\t%d\t%s\n",
+ 				pipe2name(pipe), j, inuse,
+-				plane ? plane->name : NULL);
++				plane ? plane->name : "(null)");
+ 
+ 			total += inuse;
+ 		}
 -- 
 2.43.0
 
