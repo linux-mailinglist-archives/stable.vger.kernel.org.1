@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-79281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F4898D776
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A14B98D7AA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9590A1C2291C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:49:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BFFA1C222B4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6661D0427;
-	Wed,  2 Oct 2024 13:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB301D078E;
+	Wed,  2 Oct 2024 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK6BvsdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gB+fplJv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D701D0164;
-	Wed,  2 Oct 2024 13:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8DC1D0781;
+	Wed,  2 Oct 2024 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876986; cv=none; b=gq/4a9Cr6AbmMjJHL6r85TAFek3pFrvYsUame2SymHT+5etpnUcgsKCGimrE9C1LAO4JzixEuA8NWpyNJg8PCC8eFg4BSLg+Z4X5KbnGiZl+Rjjf3XlAjnUdNJ7vnWvz3XrbgFZi/aWAMqWabMmKuaA7LMRzkiAs7L+WWqEnUoc=
+	t=1727877106; cv=none; b=GuQcZfQcm35gi+6nBNcwoxeYTe1OBjmZmMSajOT1pY9MnezuZgwgjx2DOv9eN8TUgeN5dMp5tD4OA9yjpQ5IWYZWsEPagSQ4m89ougSvotAopmDUZffnlOkXDoe3xvt+BmxRqlq/CnyBluHcie5H3azBDmTtWC7egeCw/uIFN30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876986; c=relaxed/simple;
-	bh=lJynDomH8fWiGMcIRCNpMecJaDiH/hG0rk7pneYSysY=;
+	s=arc-20240116; t=1727877106; c=relaxed/simple;
+	bh=dpuer8eqspx51IOhSvX2pbBC0PWvLROEZpdfXuS7XXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oEYdHbmA+Z+leepuSBzS0sdIhglBswGuc9fwcFAXL2ceRitZViAIavAQmoi9YuKmgYbyrtMiMirUoevV92YNQvwzkVvDePmKDZ89ymr30DvCavLBXtfgWty4vFACEuwecaEinuCdV5EN7sEQOpbJLT/xJYbDw7MWKPMtyFQ1h+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK6BvsdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4142C4CEC2;
-	Wed,  2 Oct 2024 13:49:45 +0000 (UTC)
+	 MIME-Version; b=nYxi2vnUUW5svCjKBfc+ea8VBIP3nZLAiVUHMXjSIxSwJC/aR9qSkrWhzaswZ5J2MnDNdVTFNgq6+0SOi32UYjVRc7KIK8eQ1GexIxyGnDBN0gA6Y3PvPyxG5WXz2GcYQD1hrvKXes/KEQJMkU2aMt+3BSRS0CywrhWEcZ0Edm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gB+fplJv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0947C4CEC2;
+	Wed,  2 Oct 2024 13:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876986;
-	bh=lJynDomH8fWiGMcIRCNpMecJaDiH/hG0rk7pneYSysY=;
+	s=korg; t=1727877106;
+	bh=dpuer8eqspx51IOhSvX2pbBC0PWvLROEZpdfXuS7XXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK6BvsdAk+H1hI4iiWsKrqZsmxqA5HO2N1poDtnow724Gsd5uytQ8Ie8H+8+UpY7M
-	 YaMO3nTq6PHTpKkPv0zopcuDCtAB2t4nwC5P90eE+hNnxAGlBLTeNEDSFbwl9HLXKF
-	 usC5nLcxgEpz3zeMCxyHP1JedUPReSrszCq3z8Xk=
+	b=gB+fplJvTB07sDderto1KXERr3hmEsjngbDOw2dB5uxY8ZJEyP68HfLiXTy0gu0cm
+	 ENgtvcZr6lR0wGmKEmFXhMkhRKvNNcNzg0R2hcYH9dRR3YsouuJihXzOOIxFrhSBxk
+	 im2bj+DGg95hUN3aqQeDsLVr0figO3CwfFgOmHpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.11 624/695] debugfs show actual source in /proc/mounts
-Date: Wed,  2 Oct 2024 15:00:22 +0200
-Message-ID: <20241002125847.419400054@linuxfoundation.org>
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.11 625/695] debugobjects: Fix conditions in fill_pool()
+Date: Wed,  2 Oct 2024 15:00:23 +0200
+Message-ID: <20241002125847.460426861@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -59,61 +59,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Aurèle La France <tsi@tuyoix.net>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-commit 3a987b88a42593875f6345188ca33731c7df728c upstream.
+commit 684d28feb8546d1e9597aa363c3bfcf52fe250b7 upstream.
 
-After its conversion to the new mount API, debugfs displays "none" in
-/proc/mounts instead of the actual source.  Fix this by recognising its
-"source" mount option.
+fill_pool() uses 'obj_pool_min_free' to decide whether objects should be
+handed back to the kmem cache. But 'obj_pool_min_free' records the lowest
+historical value of the number of objects in the object pool and not the
+minimum number of objects which should be kept in the pool.
 
-Signed-off-by: Marc Aurèle La France <tsi@tuyoix.net>
-Link: https://lore.kernel.org/r/e439fae2-01da-234b-75b9-2a7951671e27@tuyoix.net
-Fixes: a20971c18752 ("vfs: Convert debugfs to use the new mount API")
-Cc: stable@vger.kernel.org # 6.10.x: 49abee5991e1: debugfs: Convert to new uid/gid option parsing helpers
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Use 'debug_objects_pool_min_level' instead, which holds the minimum number
+which was scaled to the number of CPUs at boot time.
+
+[ tglx: Massage change log ]
+
+Fixes: d26bf5056fc0 ("debugobjects: Reduce number of pool_lock acquisitions in fill_pool()")
+Fixes: 36c4ead6f6df ("debugobjects: Add global free list and the counter")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240904133944.2124-3-thunder.leizhen@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/debugfs/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ lib/debugobjects.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -89,12 +89,14 @@ enum {
- 	Opt_uid,
- 	Opt_gid,
- 	Opt_mode,
-+	Opt_source,
- };
- 
- static const struct fs_parameter_spec debugfs_param_specs[] = {
- 	fsparam_gid	("gid",		Opt_gid),
- 	fsparam_u32oct	("mode",	Opt_mode),
- 	fsparam_uid	("uid",		Opt_uid),
-+	fsparam_string	("source",	Opt_source),
- 	{}
- };
- 
-@@ -126,6 +128,12 @@ static int debugfs_parse_param(struct fs
- 	case Opt_mode:
- 		opts->mode = result.uint_32 & S_IALLUGO;
- 		break;
-+	case Opt_source:
-+		if (fc->source)
-+			return invalfc(fc, "Multiple sources specified");
-+		fc->source = param->string;
-+		param->string = NULL;
-+		break;
- 	/*
- 	 * We might like to report bad mount options here;
- 	 * but traditionally debugfs has ignored all mount options
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -142,13 +142,14 @@ static void fill_pool(void)
+ 	 * READ_ONCE()s pair with the WRITE_ONCE()s in pool_lock critical
+ 	 * sections.
+ 	 */
+-	while (READ_ONCE(obj_nr_tofree) && (READ_ONCE(obj_pool_free) < obj_pool_min_free)) {
++	while (READ_ONCE(obj_nr_tofree) &&
++	       READ_ONCE(obj_pool_free) < debug_objects_pool_min_level) {
+ 		raw_spin_lock_irqsave(&pool_lock, flags);
+ 		/*
+ 		 * Recheck with the lock held as the worker thread might have
+ 		 * won the race and freed the global free list already.
+ 		 */
+-		while (obj_nr_tofree && (obj_pool_free < obj_pool_min_free)) {
++		while (obj_nr_tofree && (obj_pool_free < debug_objects_pool_min_level)) {
+ 			obj = hlist_entry(obj_to_free.first, typeof(*obj), node);
+ 			hlist_del(&obj->node);
+ 			WRITE_ONCE(obj_nr_tofree, obj_nr_tofree - 1);
 
 
 
