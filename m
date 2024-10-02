@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-79141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FF098D6CD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FDE98D6D2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF1C1F240BA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 441B31C2265D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7A51D0B86;
-	Wed,  2 Oct 2024 13:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53BE1D07B0;
+	Wed,  2 Oct 2024 13:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9V97djb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOUlhQ16"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294D1D079E;
-	Wed,  2 Oct 2024 13:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F881D0786;
+	Wed,  2 Oct 2024 13:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876559; cv=none; b=uTe0Cdfj7tw4/hEq5+6dg2sApN5tvglIncJoBBkGpbdVwmQxsPq2RpLYKfy4Qtl71vEgUDYWCXwv5YaXln+qIGQbUMiVZ0h0jGbI/yFkk/F239vjjjKuyqhoZ5MpAvYCM5+TU6MpDI2gGfnKsAmhJosJcx8Cm8fuhGFcsSDToJ4=
+	t=1727876574; cv=none; b=NjcvR+wGYOEustmYUpQLcWnSwjeTKZ1cDJnUeH7OCi0vTvXJkkQA4TZFFHE3FimH5KySRkcea/Yg76prAXQ4mCBIVDz6qRNNfUy7UOKLIga5wn3YbQsd4IKL6njrKIW8h9yrFYyIqRToi6wWjFO5okXIP/6uDEw8hxcFq41vdKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876559; c=relaxed/simple;
-	bh=HA7xc5AfffQB3FkV+e5B3G1WmfhSey8mtFvm6wDGsVk=;
+	s=arc-20240116; t=1727876574; c=relaxed/simple;
+	bh=5ggDRUF/cn17mRNuJ0ZMiip0jp2larOUMVh7aIAb2/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmaarQ2aUrq/MwOTKuSbGl2pqqKQyGievW4j31j1gV5gbS3h+kmeVzJpE3JPHkx8NP9fGJmm5H2R2Ua2yIjfLN5yzmDV6ws4xAFSdQ1IhEP5QQU4D7VB6uR0bp8exZO6En0bNzT+rPFzdrIkcRxQ86IUEQ/0930Vqp+Ov0Zrbqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9V97djb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A48CC4CEC5;
-	Wed,  2 Oct 2024 13:42:38 +0000 (UTC)
+	 MIME-Version; b=pO3HYk1MXaNvZuMPcNWbfuf8zkQ0HJrrkQkAZqOzJbZWhXo03hZkViRal8UcKY/3LXnXAaDwn2ANUnZWcDB2tji7Enm7a0Yui4P1UvVBerYJ/ykrJLU85wA256bjkKBaXShb2Pfwh+7KLMcZ73Gh1Qq3QasjM1bCw6RsW6LdXKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOUlhQ16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D260DC4CEC5;
+	Wed,  2 Oct 2024 13:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876559;
-	bh=HA7xc5AfffQB3FkV+e5B3G1WmfhSey8mtFvm6wDGsVk=;
+	s=korg; t=1727876574;
+	bh=5ggDRUF/cn17mRNuJ0ZMiip0jp2larOUMVh7aIAb2/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9V97djb+A3WofDWV5mP/bweAC4vSGfCnoo2dTqZFG74U4inHZeEy9EDdq96IiOB7
-	 rPbpAvKf2pzQ4Lx9rDccbix6ltBq7S2PuJm5xMFH2t+tlez/YqQEjh7rKbySHzOnEP
-	 WXsdtdxMdCmarhMSO8jJnq5dYnONUC9r7MZ1QHa4=
+	b=TOUlhQ16GD4SUtYTMfrgcbSOiafNNOpqF5KgFHy06nS5SvK24SisjIQr1iGcdgB0R
+	 VPGRpB7qdl88bPoca0ClonF1Ctz6J5sVWv4SlZT4lvhv5lu54BaUPbZgNV7VFKM0Yr
+	 ZyFS557h2z/KgxGsqsVoE22YI52IZnVphnd52YR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 458/695] iio: chemical: bme680: Fix read/write ops to device by adding mutexes
-Date: Wed,  2 Oct 2024 14:57:36 +0200
-Message-ID: <20241002125840.738422719@linuxfoundation.org>
+Subject: [PATCH 6.11 459/695] iio: magnetometer: ak8975: drop incorrect AK09116 compatible
+Date: Wed,  2 Oct 2024 14:57:37 +0200
+Message-ID: <20241002125840.777213150@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,75 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 77641e5a477d428335cd094b88ac54e09ccb70f4 ]
+[ Upstream commit da6e3160df230692bbd48a6d52318035f19595e2 ]
 
-Add mutexes in the {read/write}_raw() functions of the device to guard the
-read/write of data from/to the device. This is necessary because for any
-operation other than temperature, multiple reads need to take place from
-the device. Even though regmap has a locking by itself, it won't protect us
-from multiple applications trying to read at the same time temperature and
-pressure since the pressure reading includes an internal temperature
-reading and there is nothing to ensure that this temperature+pressure
-reading will happen sequentially without any other operation interfering
-in the meantime.
+All compatibles in this binding without prefixes were deprecated, so
+adding a new deprecated one after some time is not allowed, because it
+defies the core logic of deprecating things.
 
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://patch.msgid.link/20240609233826.330516-2-vassilisamir@gmail.com
+Drop the AK09916 vendorless compatible.
+
+Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240806053016.6401-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/bme680_core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iio/magnetometer/ak8975.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 500f56834b01f..a6bf689833dad 100644
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -10,6 +10,7 @@
-  */
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/module.h>
-@@ -52,6 +53,7 @@ struct bme680_calib {
- struct bme680_data {
- 	struct regmap *regmap;
- 	struct bme680_calib bme680;
-+	struct mutex lock; /* Protect multiple serial R/W ops to device. */
- 	u8 oversampling_temp;
- 	u8 oversampling_press;
- 	u8 oversampling_humid;
-@@ -827,6 +829,8 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
- {
- 	struct bme680_data *data = iio_priv(indio_dev);
- 
-+	guard(mutex)(&data->lock);
-+
- 	switch (mask) {
- 	case IIO_CHAN_INFO_PROCESSED:
- 		switch (chan->type) {
-@@ -871,6 +875,8 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
- {
- 	struct bme680_data *data = iio_priv(indio_dev);
- 
-+	guard(mutex)(&data->lock);
-+
- 	if (val2 != 0)
- 		return -EINVAL;
- 
-@@ -967,6 +973,7 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
- 		name = bme680_match_acpi_device(dev);
- 
- 	data = iio_priv(indio_dev);
-+	mutex_init(&data->lock);
- 	dev_set_drvdata(dev, indio_dev);
- 	data->regmap = regmap;
- 	indio_dev->name = name;
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index dd466c5fa6214..ccbebe5b66cde 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -1081,7 +1081,6 @@ static const struct of_device_id ak8975_of_match[] = {
+ 	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
+ 	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
+ 	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
+-	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, ak8975_of_match);
 -- 
 2.43.0
 
