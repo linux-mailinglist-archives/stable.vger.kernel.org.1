@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-79850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E8D98DA9A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:23:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B97698DD44
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40EB8283FBD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:23:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31C6BB29864
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE15B1D2F6A;
-	Wed,  2 Oct 2024 14:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2851D07B0;
+	Wed,  2 Oct 2024 14:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0DJq1oO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFmt1EVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEF71D2F66;
-	Wed,  2 Oct 2024 14:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02A11D0968;
+	Wed,  2 Oct 2024 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878649; cv=none; b=GoQb4jYfMhzA7s6mojANOD0RvWP4QqVgepwYjwLHkbMmX7Nt51TScNdYENN0G7cQHMJAafumoxo/iWEqddsGMIQOxMJPeq1x5WG1kX4IqsEhlOdswB1YoGIqUKhLYFhKV6iZTQw1uLI7Hl2gV6Sbo1Z5duNgBfpu/Nelv0p2gC8=
+	t=1727880111; cv=none; b=FbyG7rrpGupIaNTHL48c04n9MI81+KYFpzUe4e46AJ3g39ftwm5k+TwdeYxt+YKdRnVpwopHXzNK5XqVSVvOKQ/ihWzobt0c/TUnx0HwKQSOnWk6/b5W8f18b1i49P42nueJeYXMWKk1IIhVEoDuvvOeEejk6swYYtjHfzOd7kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878649; c=relaxed/simple;
-	bh=FPvosmGT0xqYy0LaGXuojqPYqniRBXZq2/kNWFKBaaU=;
+	s=arc-20240116; t=1727880111; c=relaxed/simple;
+	bh=DeM5dKPCJCqJnhQeDk/t0dcJOzFIzN4QZoR85LZW4uU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEKWmhQZFBTv6cPAexrXI63uzhtHwxGKWB4jdzX9rVA8yGtzi2P8wNb4FcbHXSkSy6Q/d8uqBD/RtMLw6f553PUUrIKn7FJew7IY+TuSLKKg9Zam2nMyj/WEwm50LjpMA0L6qK0+87oChw6S8Fljsc67/OpTmpVZQtXu5r1Q5r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0DJq1oO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C49C4CECF;
-	Wed,  2 Oct 2024 14:17:28 +0000 (UTC)
+	 MIME-Version; b=cuIYWTA4wsh2kgYquCG+UrnXtJOzrwqMUU4IokTx1UVp8CGX2E4ScVxFFomRSNJLXi8v966ZB1u7soyd0vmj09imurh2jThozUQiN3YWmAb4WfpBXQwJhN6iaZtAsQNG/8tvi6fTXGmtD+lfoS2eSvBwaa0v0aDnoHJl//v+BVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFmt1EVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491B6C4CECD;
+	Wed,  2 Oct 2024 14:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878649;
-	bh=FPvosmGT0xqYy0LaGXuojqPYqniRBXZq2/kNWFKBaaU=;
+	s=korg; t=1727880111;
+	bh=DeM5dKPCJCqJnhQeDk/t0dcJOzFIzN4QZoR85LZW4uU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0DJq1oOP3PISV6cGQUJyUgZUZWCkmun6VcsezEbH9mO9j/OEZeMQ3jt9TcKBx1ZO
-	 fcXa3xMloOTQMdIe97e0hsRiwHSHYPvwuCWbdj71YD3uaWucGmRUF6V0UXYadyqEAl
-	 D8UGKBdmImMIkTgz6x0pPB97QLpmFEU2NDPKxAVU=
+	b=bFmt1EVJV/YFMZ15yRKeLxLrfyR+xdgy99WkK8Wtxfb2QaHhDVFiCkDjgIznp8VyA
+	 Bzl/bcZ0ny/I1T9cYTN7eVnAjzdPSAHtVgY5339LyFA6Cyc4qJ5klnACu/ggRDoPC9
+	 bIJG0b2rXOGSWFrQeWTgel9oNLBi+ZGH8bDdDiUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.10 486/634] KVM: x86: Enforce x2APICs must-be-zero reserved ICR bits
-Date: Wed,  2 Oct 2024 14:59:46 +0200
-Message-ID: <20241002125830.285912269@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 348/538] spi: atmel-quadspi: Undo runtime PM changes at driver exit time
+Date: Wed,  2 Oct 2024 14:59:47 +0200
+Message-ID: <20241002125806.166322009@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 71bf395a276f0578d19e0ae137a7d1d816d08e0e upstream.
+[ Upstream commit 438efb23f9581659495b85f1f6c7d5946200660c ]
 
-Inject a #GP on a WRMSR(ICR) that attempts to set any reserved bits that
-are must-be-zero on both Intel and AMD, i.e. any reserved bits other than
-the BUSY bit, which Intel ignores and basically says is undefined.
+It's important to undo pm_runtime_use_autosuspend() with
+pm_runtime_dont_use_autosuspend() at driver exit time unless driver
+initially enabled pm_runtime with devm_pm_runtime_enable()
+(which handles it for you).
 
-KVM's xapic_state_test selftest has been fudging the bug since commit
-4b88b1a518b3 ("KVM: selftests: Enhance handling WRMSR ICR register in
-x2APIC mode"), which essentially removed the testcase instead of fixing
-the bug.
+Hence, call pm_runtime_dont_use_autosuspend() at driver exit time
+to fix it.
 
-WARN if the nodecode path triggers a #GP, as the CPU is supposed to check
-reserved bits for ICR when it's partially virtualized.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240719235107.3023592-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240906023956.1004440-1-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2470,7 +2470,7 @@ void kvm_apic_write_nodecode(struct kvm_
- 	 * maybe-unecessary write, and both are in the noise anyways.
- 	 */
- 	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
--		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
-+		WARN_ON_ONCE(kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR)));
- 	else
- 		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
- }
-@@ -3183,8 +3183,21 @@ int kvm_lapic_set_vapic_addr(struct kvm_
- 	return 0;
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 4cc4f32ca4490..af0464999af1f 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -726,6 +726,7 @@ static void atmel_qspi_remove(struct platform_device *pdev)
+ 	clk_unprepare(aq->pclk);
+ 
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
  }
  
-+#define X2APIC_ICR_RESERVED_BITS (GENMASK_ULL(31, 20) | GENMASK_ULL(17, 16) | BIT(13))
-+
- int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
- {
-+	if (data & X2APIC_ICR_RESERVED_BITS)
-+		return 1;
-+
-+	/*
-+	 * The BUSY bit is reserved on both Intel and AMD in x2APIC mode, but
-+	 * only AMD requires it to be zero, Intel essentially just ignores the
-+	 * bit.  And if IPI virtualization (Intel) or x2AVIC (AMD) is enabled,
-+	 * the CPU performs the reserved bits checks, i.e. the underlying CPU
-+	 * behavior will "win".  Arbitrarily clear the BUSY bit, as there is no
-+	 * sane way to provide consistent behavior with respect to hardware.
-+	 */
- 	data &= ~APIC_ICR_BUSY;
- 
- 	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
+-- 
+2.43.0
+
 
 
 
