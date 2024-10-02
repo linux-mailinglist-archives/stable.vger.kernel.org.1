@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66FB98D904
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC2898D5B6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2101F21213
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169AC1F2320A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179921D0E01;
-	Wed,  2 Oct 2024 14:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1498376;
+	Wed,  2 Oct 2024 13:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhJsHFYP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQ7YXmMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB10F1D0DF2;
-	Wed,  2 Oct 2024 14:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A022D1D049A;
+	Wed,  2 Oct 2024 13:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877744; cv=none; b=Zbdkmjlakgj6iFGGjpWZt+71xRuYw797Q0TBy//9yzCHH8MpeknkXLNTiW3LclTTgivRVBSm1EuKVb8l1FtV82APWI8NKvC7JDwuR4lPfl0Zao5kr5NCE9CF5Pun5GEOsKcJ0bI0LAGNigDWTR891GmJNEmHrEJJ9wRjV/gO+O0=
+	t=1727875966; cv=none; b=ES15vfLQX74MpTW+ssPjwfwBrRaVvyTl+HFv/Oz3/0ZCi1LEeLqCHN3eJmeY+CQv1UD/rYK5k7/VCYR0f14RV3GXTrRrDNrpyFQw4HcXEu89ObZtiiGzljNrdYRK3+pzcN6sGwJNSDPvWL1j1X48huyjVdIqUKvFxQAnCgnvQaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877744; c=relaxed/simple;
-	bh=AOAu6gpmNmTzLGEIf5gqV3VCvfn29BVcwSFYEPJeNEY=;
+	s=arc-20240116; t=1727875966; c=relaxed/simple;
+	bh=ppLV3Pfswbm5O8mPvJYPhT5Q7NDjq6L4GDYlJg4pulY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+uTgwtiZJq4Rj0Mdzq42X7ct1akKGD+42HIUnd+t/n9QaIhfDFt12bojMfTIfAGefUWF9L3hI0AUo8+NSkRjuzUJmPmA9zdFzNc5/h/OJCYLCX7Q1y+VvPbFulin7LHQo/Ikf8hHfEb6teCfVBi0Fclhgv1OZ5Szr15hWu5m+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhJsHFYP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523B2C4CEC5;
-	Wed,  2 Oct 2024 14:02:24 +0000 (UTC)
+	 MIME-Version; b=MuMan1lJsSwy563VlE/CRJLAoSd7dkmTkEJCEHDTh2xPPYJqFcdYUbGZtbVWlcjnBN6w3GV9fszQM/c1S6J4JnKGvH2fmvcG/FbYyKQG6k/9VV/YmVVanWQNt3JZQGuiuocGBLStp9rLQnP/t8x8kiZ831nOBSM1alkJ0TSEX4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQ7YXmMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C05C4CEC5;
+	Wed,  2 Oct 2024 13:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877744;
-	bh=AOAu6gpmNmTzLGEIf5gqV3VCvfn29BVcwSFYEPJeNEY=;
+	s=korg; t=1727875966;
+	bh=ppLV3Pfswbm5O8mPvJYPhT5Q7NDjq6L4GDYlJg4pulY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhJsHFYPz/WrycQjrZPtr5yMn/iU/XE8KjUB4Z5RT1TJS6fS2cRI8ODCnrfTSWEXe
-	 aEgRUCxVzQPxDHFWBtuLfH86FiznU7X9BUOj/3LrO3mPY/v1RZV/Hnu7fpMPNGvs0L
-	 pF2Juj9KS6OXoelHOYLDczbFs0OYtG9+l9lJ8/fc=
+	b=SQ7YXmMZKnlExgznh/aor15Wkj8KQQBWeM9/zn77cGLe4bcMBP6AmBxy09WYOaPd5
+	 Y+h9Z3SZRnTOdenN3jKUHSl/5YEXke3P1dU8P9znj1ljG/CH881c0bJ2zS2oMEQAa2
+	 lVxr2+LONOghtqggZlcvHW4JGgqdSmuS7bnN24U0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea@microchip.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 180/634] drm/stm: ltdc: check memory returned by devm_kzalloc()
+Subject: [PATCH 6.11 282/695] selftests/bpf: Fix arg parsing in veristat, test_progs
 Date: Wed,  2 Oct 2024 14:54:40 +0200
-Message-ID: <20241002125818.213241135@linuxfoundation.org>
+Message-ID: <20241002125833.702867718@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit fd39730c58890cd7f0a594231e19bb357f28877c ]
+[ Upstream commit 03bfcda1fbc37ef34aa21d2b9e09138335afc6ee ]
 
-devm_kzalloc() can fail and return NULL pointer. Check its return status.
-Identified with Coccinelle (kmerr.cocci script).
+Current code parses arguments with strtok_r() using a construct like
 
-Fixes: 484e72d3146b ("drm/stm: ltdc: add support of ycbcr pixel formats")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Acked-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230531072854.142629-1-claudiu.beznea@microchip.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+    char *state = NULL;
+    while ((next = strtok_r(state ? NULL : input, ",", &state))) {
+        ...
+    }
+
+where logic assumes the 'state' var can distinguish between first and
+subsequent strtok_r() calls, and adjusts parameters accordingly. However,
+'state' is strictly internal context for strtok_r() and no such assumptions
+are supported in the man page. Moreover, the exact behaviour of 'state'
+depends on the libc implementation, making the above code fragile.
+
+Indeed, invoking "./test_progs -t <test_name>" on mips64el/musl will hang,
+with the above code in an infinite loop.
+
+Similarly, we see strange behaviour running 'veristat' on mips64el/musl:
+
+    $ ./veristat -e file,prog,verdict,insns -C two-ok add-failure
+    Can't specify more than 9 stats
+
+Rewrite code using a counter to distinguish between strtok_r() calls.
+
+Fixes: 61ddff373ffa ("selftests/bpf: Improve by-name subtest selection logic in prog_tests")
+Fixes: 394169b079b5 ("selftests/bpf: add comparison mode to veristat")
+Fixes: c8bc5e050976 ("selftests/bpf: Add veristat tool for mass-verifying BPF object files")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/392d8bf5559f85fa37926c1494e62312ef252c3d.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/stm/ltdc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/bpf/testing_helpers.c | 4 ++--
+ tools/testing/selftests/bpf/veristat.c        | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/stm/ltdc.c b/drivers/gpu/drm/stm/ltdc.c
-index 5576fdae49623..5aec1e58c968c 100644
---- a/drivers/gpu/drm/stm/ltdc.c
-+++ b/drivers/gpu/drm/stm/ltdc.c
-@@ -1580,6 +1580,8 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
- 			       ARRAY_SIZE(ltdc_drm_fmt_ycbcr_sp) +
- 			       ARRAY_SIZE(ltdc_drm_fmt_ycbcr_fp)) *
- 			       sizeof(*formats), GFP_KERNEL);
-+	if (!formats)
-+		return NULL;
+diff --git a/tools/testing/selftests/bpf/testing_helpers.c b/tools/testing/selftests/bpf/testing_helpers.c
+index d5379a0e6da80..4230420ef2940 100644
+--- a/tools/testing/selftests/bpf/testing_helpers.c
++++ b/tools/testing/selftests/bpf/testing_helpers.c
+@@ -220,13 +220,13 @@ int parse_test_list(const char *s,
+ 		    bool is_glob_pattern)
+ {
+ 	char *input, *state = NULL, *test_spec;
+-	int err = 0;
++	int err = 0, cnt = 0;
  
- 	for (i = 0; i < ldev->caps.pix_fmt_nb; i++) {
- 		drm_fmt = ldev->caps.pix_fmt_drm[i];
+ 	input = strdup(s);
+ 	if (!input)
+ 		return -ENOMEM;
+ 
+-	while ((test_spec = strtok_r(state ? NULL : input, ",", &state))) {
++	while ((test_spec = strtok_r(cnt++ ? NULL : input, ",", &state))) {
+ 		err = insert_test(set, test_spec, is_glob_pattern);
+ 		if (err)
+ 			break;
+diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
+index b2854238d4a0e..fd9780082ff48 100644
+--- a/tools/testing/selftests/bpf/veristat.c
++++ b/tools/testing/selftests/bpf/veristat.c
+@@ -784,13 +784,13 @@ static int parse_stat(const char *stat_name, struct stat_specs *specs)
+ static int parse_stats(const char *stats_str, struct stat_specs *specs)
+ {
+ 	char *input, *state = NULL, *next;
+-	int err;
++	int err, cnt = 0;
+ 
+ 	input = strdup(stats_str);
+ 	if (!input)
+ 		return -ENOMEM;
+ 
+-	while ((next = strtok_r(state ? NULL : input, ",", &state))) {
++	while ((next = strtok_r(cnt++ ? NULL : input, ",", &state))) {
+ 		err = parse_stat(next, specs);
+ 		if (err) {
+ 			free(input);
+@@ -1493,7 +1493,7 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
+ 	while (fgets(line, sizeof(line), f)) {
+ 		char *input = line, *state = NULL, *next;
+ 		struct verif_stats *st = NULL;
+-		int col = 0;
++		int col = 0, cnt = 0;
+ 
+ 		if (!header) {
+ 			void *tmp;
+@@ -1511,7 +1511,7 @@ static int parse_stats_csv(const char *filename, struct stat_specs *specs,
+ 			*stat_cntp += 1;
+ 		}
+ 
+-		while ((next = strtok_r(state ? NULL : input, ",\n", &state))) {
++		while ((next = strtok_r(cnt++ ? NULL : input, ",\n", &state))) {
+ 			if (header) {
+ 				/* for the first line, set up spec stats */
+ 				err = parse_stat(next, specs);
 -- 
 2.43.0
 
