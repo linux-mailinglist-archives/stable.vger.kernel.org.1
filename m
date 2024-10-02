@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3A898D9A7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD30C98DC49
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E8028991A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F883B28938
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22CB1D1745;
-	Wed,  2 Oct 2024 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3D81D0DDF;
+	Wed,  2 Oct 2024 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jagsnwSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4KKg4SG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7134F1D0488;
-	Wed,  2 Oct 2024 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF1A1D0F65;
+	Wed,  2 Oct 2024 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878141; cv=none; b=P4Hr5ZvR9nL7dudDVz3kM+cw0aB4Nbl8BxIghONspQEZ8O/01wqcYBcr0PylEPZFUpHoIsbjsM00T3JR8/iCl66uJ52IwWxkRqDd/ceevIP1XzH95LOQddIv56ZHXzJ8VuVKIQMKx1GfyldDcNzuGfj1tbd/leFiAWfuHN5BwCQ=
+	t=1727879608; cv=none; b=JYPLjrLPuIOTUWKRCR6x0mYHml5y7bhbc1C+kwIEnDWdmHeXf2jYF0f9Mx6jagPo150jw3K+vZhLhk3nnYH/mWqhKsGksfnspxvr9mY+HXBhAWIJWh+oIabqRC0Fo8Nhxa9m5qLUL9XdM4d7wokAejTIqjQB7/KssKrE7DhyXbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878141; c=relaxed/simple;
-	bh=w99OtR9hPYGOvhNtm6EBqFTNzQymOg3nRjD8uGEYPvM=;
+	s=arc-20240116; t=1727879608; c=relaxed/simple;
+	bh=iKElZcifeQJIKr18naoEFdUzyA+UydXqMo+kYA+rO7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0yTGTsMQU4hHnlmVRrAnbFJeM8sk9fhOkqJPfEt88fNus7aI2yK6UyZJ5FzZqVF3EiOQ9dNMqLkwqYFuKPCuDTAQ7eICgBfPL1gy5NOsPiVX7we6cfuSiWJfMqWdrEUGonwYYn5hrk0x1DTwtUwSpwKrkgu1jerumrNyfrTouo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jagsnwSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3D5C4CEC2;
-	Wed,  2 Oct 2024 14:09:00 +0000 (UTC)
+	 MIME-Version; b=UA1rLs9WbgDAoKt4mnWMrSeqsEr//0sYnokxuzFAcjQVGqEHA90YVItFQq4N73ywdIhsAlyC2/iGWGEoICZeeRIUNolc/tZwKyEHVtDsHxDsFvGIcG15e9I9HWqJ8Hko/MqoRXPn1kTgVWDypI/RGiPONl2k+xGrJrCTB98/6QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4KKg4SG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B487AC4CEC5;
+	Wed,  2 Oct 2024 14:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878141;
-	bh=w99OtR9hPYGOvhNtm6EBqFTNzQymOg3nRjD8uGEYPvM=;
+	s=korg; t=1727879608;
+	bh=iKElZcifeQJIKr18naoEFdUzyA+UydXqMo+kYA+rO7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jagsnwSM0glZzQCJRcX5bCdtYJ+P8HjmZb4YOPPzW2kcXF82G769AZsNygvDVg2qy
-	 jSXo8zenAhrNNsotCXVCw9yAfDTTQ4qDvB5LeOUXwLKozPpJpha5DAF+AcLmt4rcmq
-	 D5CxPemSWCgrSqA40jWZ/fyk3PorsS6ka6Ac3/Kk=
+	b=R4KKg4SGrZfqXJ7T4f3fja+gSzpqyNhe+CvoD4X3Ma8gwR4saIAmQpwzqjKSgG/tL
+	 B80UxU+sYd056vSJOy+QK9ChMMqGnNNzb6MoLjmwNPVTN2QGWERtQSDKS87fWqI2kG
+	 d8WzqaoyoOa1ny+0VysHUDweH+QOZVaF0YKVsnvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Jonathan McDowell <noodles@meta.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 316/634] clk: imx: imx8qxp: Parent should be initialized earlier than the clock
-Date: Wed,  2 Oct 2024 14:56:56 +0200
-Message-ID: <20241002125823.578353469@linuxfoundation.org>
+Subject: [PATCH 6.6 178/538] tpm: Clean up TPM space after command failure
+Date: Wed,  2 Oct 2024 14:56:57 +0200
+Message-ID: <20241002125759.282198033@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Jonathan McDowell <noodles@meta.com>
 
-[ Upstream commit 766c386c16c9899461b83573a06380d364c6e261 ]
+[ Upstream commit e3aaebcbb7c6b403416f442d1de70d437ce313a7 ]
 
-The initialization order of SCU clocks affects the sequence of SCU clock
-resume. If there are no other effects, the earlier the initialization,
-the earlier the resume. During SCU clock resume, the clock rate is
-restored. As SCFW guidelines, configure the parent clock rate before
-configuring the child rate.
+tpm_dev_transmit prepares the TPM space before attempting command
+transmission. However if the command fails no rollback of this
+preparation is done. This can result in transient handles being leaked
+if the device is subsequently closed with no further commands performed.
 
-Fixes: babfaa9556d7 ("clk: imx: scu: add more scu clocks")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240607133347.3291040-15-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fix this by flushing the space in the event of command transmission
+failure.
+
+Fixes: 745b361e989a ("tpm: infrastructure for TPM spaces")
+Signed-off-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8qxp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/char/tpm/tpm-dev-common.c | 2 ++
+ drivers/char/tpm/tpm2-space.c     | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
-index 16710eef641ba..83f2e8bd6d506 100644
---- a/drivers/clk/imx/clk-imx8qxp.c
-+++ b/drivers/clk/imx/clk-imx8qxp.c
-@@ -170,8 +170,8 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
- 	imx_clk_scu("pwm_clk",   IMX_SC_R_LCD_0_PWM_0, IMX_SC_PM_CLK_PER);
- 	imx_clk_scu("elcdif_pll", IMX_SC_R_ELCDIF_PLL, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu2("lcd_clk", lcd_sels, ARRAY_SIZE(lcd_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_PER);
--	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
- 	imx_clk_scu("lcd_pxl_bypass_div_clk", IMX_SC_R_LCD_0, IMX_SC_PM_CLK_BYPASS);
-+	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
+diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
+index 30b4c288c1bbc..c3fbbf4d3db79 100644
+--- a/drivers/char/tpm/tpm-dev-common.c
++++ b/drivers/char/tpm/tpm-dev-common.c
+@@ -47,6 +47,8 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
  
- 	/* Audio SS */
- 	imx_clk_scu("audio_pll0_clk", IMX_SC_R_AUDIO_PLL_0, IMX_SC_PM_CLK_PLL);
-@@ -213,11 +213,11 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
- 	imx_clk_scu2("dc0_disp1_clk", dc0_sels, ARRAY_SIZE(dc0_sels), IMX_SC_R_DC_0, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc0_bypass1_clk", IMX_SC_R_DC_0_VIDEO1, IMX_SC_PM_CLK_BYPASS);
+ 	if (!ret)
+ 		ret = tpm2_commit_space(chip, space, buf, &len);
++	else
++		tpm2_flush_space(chip);
  
--	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
--	imx_clk_scu2("dc1_disp1_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc1_pll0_clk", IMX_SC_R_DC_1_PLL_0, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu("dc1_pll1_clk", IMX_SC_R_DC_1_PLL_1, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu("dc1_bypass0_clk", IMX_SC_R_DC_1_VIDEO0, IMX_SC_PM_CLK_BYPASS);
-+	imx_clk_scu2("dc1_disp0_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC0);
-+	imx_clk_scu2("dc1_disp1_clk", dc1_sels, ARRAY_SIZE(dc1_sels), IMX_SC_R_DC_1, IMX_SC_PM_CLK_MISC1);
- 	imx_clk_scu("dc1_bypass1_clk", IMX_SC_R_DC_1_VIDEO1, IMX_SC_PM_CLK_BYPASS);
+ out_rc:
+ 	return ret ? ret : len;
+diff --git a/drivers/char/tpm/tpm2-space.c b/drivers/char/tpm/tpm2-space.c
+index 363afdd4d1d30..d4d1007fe8117 100644
+--- a/drivers/char/tpm/tpm2-space.c
++++ b/drivers/char/tpm/tpm2-space.c
+@@ -166,6 +166,9 @@ void tpm2_flush_space(struct tpm_chip *chip)
+ 	struct tpm_space *space = &chip->work_space;
+ 	int i;
  
- 	/* MIPI-LVDS SS */
++	if (!space)
++		return;
++
+ 	for (i = 0; i < ARRAY_SIZE(space->context_tbl); i++)
+ 		if (space->context_tbl[i] && ~space->context_tbl[i])
+ 			tpm2_flush_context(chip, space->context_tbl[i]);
 -- 
 2.43.0
 
