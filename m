@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B4498DB01
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3AB98DD43
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B3F1C220C5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 781261F2304D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906A81D0F58;
-	Wed,  2 Oct 2024 14:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B7A1D1E85;
+	Wed,  2 Oct 2024 14:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNBx1oTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGYpd+nM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCBC1D0DE1;
-	Wed,  2 Oct 2024 14:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F6819752C;
+	Wed,  2 Oct 2024 14:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878923; cv=none; b=DgVUKaqMrYcxnvMSWk77WYZbu1j3FQRzIgrdaGdsBtU0wG8JczP9+gTBX4TgKqyiLg0IZdHaMYQa7EP0H2IopKO0ZqlCV8xqLcFn8dYYb+t4OYXjsbRQyqWP/0Wt5KsR0+PRFwpVszPyrrvF3YjAVapmpoCcF0c1ljs+myMTaBU=
+	t=1727880281; cv=none; b=iXvAq9ZrNLwMTdJCQ1Vu7XkCCGaTpXf0l14DG0S/Sfln+pjW34NBvUh7IslgZn4e9VGdr8TRxWsYQOwtuAzFB1o65NqcOMOa7xROMFBByY3x8YA8x5OkTCvL1/jc4OBB/YHyeKxZ51xiMkchffRuR6p4ptxGnPcNgAcKhWTeQjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878923; c=relaxed/simple;
-	bh=D6bxL+s72jR2Dp4v82TU1jjJargq3J9BFbn/ggO5lYw=;
+	s=arc-20240116; t=1727880281; c=relaxed/simple;
+	bh=YipQxIsvPs5Ie6sRIuON1WjnApoiRgSasgWMLh9Mj60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmjpo83Q4WBSki2iwbsQgq8g2imFHcZSQFLwW2OGnmnfqnqeygrHzkz2tXUkmBL64mR+nBeA9sXVxh6bryhDCXf5ofJNqgkyRg/8zSk/1WNrmp81LoWNNpkCpyBASWZwbncFpFPvQqTTD3xu9a9kq7eqHWUspY6159FOyQAHkK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNBx1oTZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83B9C4CEC2;
-	Wed,  2 Oct 2024 14:22:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cygiIgDxO1kxO8IGznUbm3tbR68zOJIRRM0L0apYSW8cFmHIjVOkmngglyybhJ8wpctMc9HEcVNvgIevDhDIhJ6vODopV5JaU6uyhR/I4Vy6Ja2cPjleLL5I/gOcgzxZEYa+0TURja/l8tB2hBwrcUg0OECzEO4mRH200iP2GMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGYpd+nM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01430C4CEC2;
+	Wed,  2 Oct 2024 14:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878923;
-	bh=D6bxL+s72jR2Dp4v82TU1jjJargq3J9BFbn/ggO5lYw=;
+	s=korg; t=1727880281;
+	bh=YipQxIsvPs5Ie6sRIuON1WjnApoiRgSasgWMLh9Mj60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNBx1oTZtQKatgDHlpOjRkaLGXGczIfIfruVVpwbkq9eHoLTdRZyeEHsJK3m5UEOF
-	 SxCQFWML/q3xDVxKODfbcmvQmUw2Ri92USxeSfOe6B1CZ2SZdDd3r04a0npjRrWkF/
-	 sg9KTaPiv/9rK3I+zzq/RtKSujS5pWg4HdIaomOA=
+	b=uGYpd+nMK+v2Wb+HtDs7YPg1R9inypSYkQ1X0brt4WFQfCx7kU8yKU9DKzfHOtPn7
+	 cLhKNm9j+XodQrdoOM9D3Yi/ZHvwPU2Sb+dzQvDihm0Hi6yT8kLD7W4ldHSg37ix47
+	 x26QMShsRk8ZB1fBT5L40NH5mcRYnS+mpbtGWhcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Kumar Paluri <papaluri@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.10 537/634] crypto: ccp - Properly unregister /dev/sev on sev PLATFORM_STATUS failure
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.6 398/538] PCI: Use an error code with PCIe failed link retraining
 Date: Wed,  2 Oct 2024 15:00:37 +0200
-Message-ID: <20241002125832.304988122@linuxfoundation.org>
+Message-ID: <20241002125808.147340219@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Kumar Paluri <papaluri@amd.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit ce3d2d6b150ba8528f3218ebf0cee2c2c572662d upstream.
+commit 59100eb248c0b15585affa546c7f6834b30eb5a4 upstream.
 
-In case of sev PLATFORM_STATUS failure, sev_get_api_version() fails
-resulting in sev_data field of psp_master nulled out. This later becomes
-a problem when unloading the ccp module because the device has not been
-unregistered (via misc_deregister()) before clearing the sev_data field
-of psp_master. As a result, on reloading the ccp module, a duplicate
-device issue is encountered as can be seen from the dmesg log below.
+Given how the call place in pcie_wait_for_link_delay() got structured now,
+and that pcie_retrain_link() returns a potentially useful error code,
+convert pcie_failed_link_retrain() to return an error code rather than a
+boolean status, fixing handling at the call site mentioned.  Update the
+other call site accordingly.
 
-on reloading ccp module via modprobe ccp
-
-Call Trace:
-  <TASK>
-  dump_stack_lvl+0xd7/0xf0
-  dump_stack+0x10/0x20
-  sysfs_warn_dup+0x5c/0x70
-  sysfs_create_dir_ns+0xbc/0xd
-  kobject_add_internal+0xb1/0x2f0
-  kobject_add+0x7a/0xe0
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? get_device_parent+0xd4/0x1e0
-  ? __pfx_klist_children_get+0x10/0x10
-  device_add+0x121/0x870
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  device_create_groups_vargs+0xdc/0x100
-  device_create_with_groups+0x3f/0x60
-  misc_register+0x13b/0x1c0
-  sev_dev_init+0x1d4/0x290 [ccp]
-  psp_dev_init+0x136/0x300 [ccp]
-  sp_init+0x6f/0x80 [ccp]
-  sp_pci_probe+0x2a6/0x310 [ccp]
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  local_pci_probe+0x4b/0xb0
-  work_for_cpu_fn+0x1a/0x30
-  process_one_work+0x203/0x600
-  worker_thread+0x19e/0x350
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xeb/0x120
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x3c/0x60
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
-  kobject: kobject_add_internal failed for sev with -EEXIST, don't try to register things with the same name in the same directory.
-  ccp 0000:22:00.1: sev initialization failed
-  ccp 0000:22:00.1: psp initialization failed
-  ccp 0000:a2:00.1: no command queues available
-  ccp 0000:a2:00.1: psp enabled
-
-Address this issue by unregistering the /dev/sev before clearing out
-sev_data in case of PLATFORM_STATUS failure.
-
-Fixes: 200664d5237f ("crypto: ccp: Add Secure Encrypted Virtualization (SEV) command support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 1abb47390350 ("Merge branch 'pci/enumeration'")
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091156530.61955@angie.orcam.me.uk
+Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/aa2d1c4e-9961-d54a-00c7-ddf8e858a9b0@linux.intel.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.5+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/pci.c    |    2 +-
+ drivers/pci/pci.h    |    6 +++---
+ drivers/pci/quirks.c |   20 ++++++++++----------
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -2385,6 +2385,8 @@ void sev_pci_init(void)
- 	return;
- 
- err:
-+	sev_dev_destroy(psp_master);
-+
- 	psp_master->sev_data = NULL;
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1208,7 +1208,7 @@ static int pci_dev_wait(struct pci_dev *
+ 		if (delay > PCI_RESET_WAIT) {
+ 			if (retrain) {
+ 				retrain = false;
+-				if (pcie_failed_link_retrain(bridge)) {
++				if (pcie_failed_link_retrain(bridge) == 0) {
+ 					delay = 1;
+ 					continue;
+ 				}
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -530,7 +530,7 @@ void pci_acs_init(struct pci_dev *dev);
+ int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
+ int pci_dev_specific_enable_acs(struct pci_dev *dev);
+ int pci_dev_specific_disable_acs_redir(struct pci_dev *dev);
+-bool pcie_failed_link_retrain(struct pci_dev *dev);
++int pcie_failed_link_retrain(struct pci_dev *dev);
+ #else
+ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
+ 					       u16 acs_flags)
+@@ -545,9 +545,9 @@ static inline int pci_dev_specific_disab
+ {
+ 	return -ENOTTY;
  }
+-static inline bool pcie_failed_link_retrain(struct pci_dev *dev)
++static inline int pcie_failed_link_retrain(struct pci_dev *dev)
+ {
+-	return false;
++	return -ENOTTY;
+ }
+ #endif
+ 
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -78,21 +78,21 @@
+  * again to remove any residual state, ignoring the result as it's supposed
+  * to fail anyway.
+  *
+- * Return TRUE if the link has been successfully retrained.  Return FALSE
++ * Return 0 if the link has been successfully retrained.  Return an error
+  * if retraining was not needed or we attempted a retrain and it failed.
+  */
+-bool pcie_failed_link_retrain(struct pci_dev *dev)
++int pcie_failed_link_retrain(struct pci_dev *dev)
+ {
+ 	static const struct pci_device_id ids[] = {
+ 		{ PCI_VDEVICE(ASMEDIA, 0x2824) }, /* ASMedia ASM2824 */
+ 		{}
+ 	};
+ 	u16 lnksta, lnkctl2;
+-	bool ret = false;
++	int ret = -ENOTTY;
+ 
+ 	if (!pci_is_pcie(dev) || !pcie_downstream_port(dev) ||
+ 	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
+-		return false;
++		return ret;
+ 
+ 	pcie_capability_read_word(dev, PCI_EXP_LNKCTL2, &lnkctl2);
+ 	pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
+@@ -106,13 +106,13 @@ bool pcie_failed_link_retrain(struct pci
+ 		lnkctl2 |= PCI_EXP_LNKCTL2_TLS_2_5GT;
+ 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+ 
+-		ret = pcie_retrain_link(dev, false) == 0;
+-		if (!ret) {
++		ret = pcie_retrain_link(dev, false);
++		if (ret) {
+ 			pci_info(dev, "retraining failed\n");
+ 			pcie_capability_write_word(dev, PCI_EXP_LNKCTL2,
+ 						   oldlnkctl2);
+ 			pcie_retrain_link(dev, true);
+-			return false;
++			return ret;
+ 		}
+ 
+ 		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
+@@ -129,10 +129,10 @@ bool pcie_failed_link_retrain(struct pci
+ 		lnkctl2 |= lnkcap & PCI_EXP_LNKCAP_SLS;
+ 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+ 
+-		ret = pcie_retrain_link(dev, false) == 0;
+-		if (!ret) {
++		ret = pcie_retrain_link(dev, false);
++		if (ret) {
+ 			pci_info(dev, "retraining failed\n");
+-			return false;
++			return ret;
+ 		}
+ 	}
  
 
 
