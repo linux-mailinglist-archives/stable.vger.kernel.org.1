@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-78781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3655498D4F0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4495C98D7F0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494641C21DFA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62C3E1C22AAB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EDD1D0786;
-	Wed,  2 Oct 2024 13:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A099D1D04AD;
+	Wed,  2 Oct 2024 13:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KI+nKuSS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lX3DO6j8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F711D0434;
-	Wed,  2 Oct 2024 13:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD9E1D0438;
+	Wed,  2 Oct 2024 13:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875512; cv=none; b=DbjIQqZk6hO7FewuoR4JR+R5HCEmQu3LZh1zAzLzNHmH+YstlaELM0Mu8Rp2xt/N0CJcp3aGNvXZiSPmX+7x5Uqyo5nDg6fIQch8gPTm29qI6WTBHiEuJ8eQwN4Sgx4IUpXrpzYpK1Oc60h4wI4d3FZU5tpy6DX79JgNxsOLiSE=
+	t=1727877271; cv=none; b=YP3k7z6ug9V87vNvxXG2142z1tXBHA2z94Oq17g2rfHy1Q3kj2MxH+DnfktN7oRaG9FxSOVtRztbrwjvAtAih49wOLDrR8eKXXWoOZ/kVjts4K+ItYQFcbfKpGcz/KxN7WKtTdGmLu81Qog/1UtTmZ+cmEcEIPBIdjcCfbFiWCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875512; c=relaxed/simple;
-	bh=lTv/s9pmey26iLkJ9eU//j2bg0jrppDMLjOW/JUwEtE=;
+	s=arc-20240116; t=1727877271; c=relaxed/simple;
+	bh=vnrV2xqSLbp0WS0vp6t813dUThk50vwcn7D5N8X3Sdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWufyWmeIGH7WOp4x+s93WQTCRt7o9O2z8l1DrWWn6clXrVdKLs60Y/+m0TyEkxucX2Xim5S+z4gPowQRFLUXTxSphXonxqFzMVD0ZFIe6GiZz/V85N/Ym2q5IEHKSdk7N9aVTIMyplqasB5hEzcmsDqOBiu3Dfq83hxB96AeSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KI+nKuSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD92C4CEC5;
-	Wed,  2 Oct 2024 13:25:11 +0000 (UTC)
+	 MIME-Version; b=ts+Fs/fnLrGQ0YMgrQ8vEZc6M7OOiJvLKKwN2p9Y07qeqdeTqhXyrkPozKodHguslTziMjpAxiRA/IWsePgpYMQCVElEZyWeTBruIllUB5/FxV85BjA64J4GxPrZPOC69s/AuM1SE6dPChkYIjikjwhsKHQqPiqj+5G0Lp+Q88M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lX3DO6j8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EECC4CEFE;
+	Wed,  2 Oct 2024 13:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875512;
-	bh=lTv/s9pmey26iLkJ9eU//j2bg0jrppDMLjOW/JUwEtE=;
+	s=korg; t=1727877271;
+	bh=vnrV2xqSLbp0WS0vp6t813dUThk50vwcn7D5N8X3Sdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KI+nKuSSMtVKHfVN5clPvMERtk20fi7b3Azi9XZE7CN8rL4MYWJTSxk/yS6w/NltL
-	 BAlGOXjJse8DNuZGeMWLbj/JTVevrExrYN7je8N8pIB1Ngd6etdG0YBiQOQjsmWY9b
-	 MkYRNDcQCaVeABCJkBoMCE90AORxH1sGcYiEKt1k=
+	b=lX3DO6j8mLd4MfDBi+bgJmAfpeShLxohGqe0ppqG6LLoUE+HOFkh2yVpZ8CjVdqiI
+	 IPWty8yCgy5dw5+pv5CpVbaeB+L5Nti/NRb7QIiDMPwZVmnNLATT4IP5QpdUKtUqyH
+	 67irsdoXgeSBuqZ2de5zejJUliYsgDdvKjIJsXlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com,
-	syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com,
-	syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 127/695] erofs: handle overlapped pclusters out of crafted images properly
-Date: Wed,  2 Oct 2024 14:52:05 +0200
-Message-ID: <20241002125827.548342243@linuxfoundation.org>
+Subject: [PATCH 6.10 026/634] powercap: intel_rapl: Fix off by one in get_rpi()
+Date: Wed,  2 Oct 2024 14:52:06 +0200
+Message-ID: <20241002125812.128871436@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,203 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50 ]
+[ Upstream commit 95f6580352a7225e619551febb83595bcb77ab17 ]
 
-syzbot reported a task hang issue due to a deadlock case where it is
-waiting for the folio lock of a cached folio that will be used for
-cache I/Os.
+The rp->priv->rpi array is either rpi_msr or rpi_tpmi which have
+NR_RAPL_PRIMITIVES number of elements.  Thus the > needs to be >=
+to prevent an off by one access.
 
-After looking into the crafted fuzzed image, I found it's formed with
-several overlapped big pclusters as below:
-
- Ext:   logical offset   |  length :     physical offset    |  length
-   0:        0..   16384 |   16384 :     151552..    167936 |   16384
-   1:    16384..   32768 |   16384 :     155648..    172032 |   16384
-   2:    32768..   49152 |   16384 :  537223168.. 537239552 |   16384
-...
-
-Here, extent 0/1 are physically overlapped although it's entirely
-_impossible_ for normal filesystem images generated by mkfs.
-
-First, managed folios containing compressed data will be marked as
-up-to-date and then unlocked immediately (unlike in-place folios) when
-compressed I/Os are complete.  If physical blocks are not submitted in
-the incremental order, there should be separate BIOs to avoid dependency
-issues.  However, the current code mis-arranges z_erofs_fill_bio_vec()
-and BIO submission which causes unexpected BIO waits.
-
-Second, managed folios will be connected to their own pclusters for
-efficient inter-queries.  However, this is somewhat hard to implement
-easily if overlapped big pclusters exist.  Again, these only appear in
-fuzzed images so let's simply fall back to temporary short-lived pages
-for correctness.
-
-Additionally, it justifies that referenced managed folios cannot be
-truncated for now and reverts part of commit 2080ca1ed3e4 ("erofs: tidy
-up `struct z_erofs_bvec`") for simplicity although it shouldn't be any
-difference.
-
-Reported-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
-Reported-by: syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com
-Reported-by: syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com
-Tested-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/0000000000002fda01061e334873@google.com
-Fixes: 8e6c8fa9f2e9 ("erofs: enable big pcluster feature")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240910070847.3356592-1-hsiangkao@linux.alibaba.com
+Fixes: 98ff639a7289 ("powercap: intel_rapl: Support per Interface primitive information")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://patch.msgid.link/86e3a059-504d-4795-a5ea-4a653f3b41f8@stanley.mountain
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 71 ++++++++++++++++++++++++++----------------------
- 1 file changed, 38 insertions(+), 33 deletions(-)
+ drivers/powercap/intel_rapl_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 424f656cd765e..a0bae499c5ff6 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1428,6 +1428,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 	struct z_erofs_bvec zbv;
- 	struct address_space *mapping;
- 	struct folio *folio;
-+	struct page *page;
- 	int bs = i_blocksize(f->inode);
+diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
+index 8e7f4c0473ab9..9bf9ed9a6a54f 100644
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -740,7 +740,7 @@ static struct rapl_primitive_info *get_rpi(struct rapl_package *rp, int prim)
+ {
+ 	struct rapl_primitive_info *rpi = rp->priv->rpi;
  
- 	/* Except for inplace folios, the entire folio can be used for I/Os */
-@@ -1450,7 +1451,6 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 	 * file-backed folios will be used instead.
- 	 */
- 	if (folio->private == (void *)Z_EROFS_PREALLOCATED_PAGE) {
--		folio->private = 0;
- 		tocache = true;
- 		goto out_tocache;
- 	}
-@@ -1468,7 +1468,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 	}
+-	if (prim < 0 || prim > NR_RAPL_PRIMITIVES || !rpi)
++	if (prim < 0 || prim >= NR_RAPL_PRIMITIVES || !rpi)
+ 		return NULL;
  
- 	folio_lock(folio);
--	if (folio->mapping == mc) {
-+	if (likely(folio->mapping == mc)) {
- 		/*
- 		 * The cached folio is still in managed cache but without
- 		 * a valid `->private` pcluster hint.  Let's reconnect them.
-@@ -1478,41 +1478,44 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
- 			/* compressed_bvecs[] already takes a ref before */
- 			folio_put(folio);
- 		}
--
--		/* no need to submit if it is already up-to-date */
--		if (folio_test_uptodate(folio)) {
--			folio_unlock(folio);
--			bvec->bv_page = NULL;
-+		if (likely(folio->private == pcl))  {
-+			/* don't submit cache I/Os again if already uptodate */
-+			if (folio_test_uptodate(folio)) {
-+				folio_unlock(folio);
-+				bvec->bv_page = NULL;
-+			}
-+			return;
- 		}
--		return;
-+		/*
-+		 * Already linked with another pcluster, which only appears in
-+		 * crafted images by fuzzers for now.  But handle this anyway.
-+		 */
-+		tocache = false;	/* use temporary short-lived pages */
-+	} else {
-+		DBG_BUGON(1); /* referenced managed folios can't be truncated */
-+		tocache = true;
- 	}
--
--	/*
--	 * It has been truncated, so it's unsafe to reuse this one. Let's
--	 * allocate a new page for compressed data.
--	 */
--	DBG_BUGON(folio->mapping);
--	tocache = true;
- 	folio_unlock(folio);
- 	folio_put(folio);
- out_allocfolio:
--	zbv.page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
-+	page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
- 	spin_lock(&pcl->obj.lockref.lock);
--	if (pcl->compressed_bvecs[nr].page) {
--		erofs_pagepool_add(&f->pagepool, zbv.page);
-+	if (unlikely(pcl->compressed_bvecs[nr].page != zbv.page)) {
-+		erofs_pagepool_add(&f->pagepool, page);
- 		spin_unlock(&pcl->obj.lockref.lock);
- 		cond_resched();
- 		goto repeat;
- 	}
--	bvec->bv_page = pcl->compressed_bvecs[nr].page = zbv.page;
--	folio = page_folio(zbv.page);
--	/* first mark it as a temporary shortlived folio (now 1 ref) */
--	folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
-+	bvec->bv_page = pcl->compressed_bvecs[nr].page = page;
-+	folio = page_folio(page);
- 	spin_unlock(&pcl->obj.lockref.lock);
- out_tocache:
- 	if (!tocache || bs != PAGE_SIZE ||
--	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp))
-+	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp)) {
-+		/* turn into a temporary shortlived folio (1 ref) */
-+		folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
- 		return;
-+	}
- 	folio_attach_private(folio, pcl);
- 	/* drop a refcount added by allocpage (then 2 refs in total here) */
- 	folio_put(folio);
-@@ -1647,13 +1650,10 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 		cur = mdev.m_pa;
- 		end = cur + pcl->pclustersize;
- 		do {
--			z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
--			if (!bvec.bv_page)
--				continue;
--
-+			bvec.bv_page = NULL;
- 			if (bio && (cur != last_pa ||
- 				    bio->bi_bdev != mdev.m_bdev)) {
--io_retry:
-+drain_io:
- 				if (!erofs_is_fscache_mode(sb))
- 					submit_bio(bio);
- 				else
-@@ -1666,6 +1666,15 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 				bio = NULL;
- 			}
- 
-+			if (!bvec.bv_page) {
-+				z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
-+				if (!bvec.bv_page)
-+					continue;
-+				if (cur + bvec.bv_len > end)
-+					bvec.bv_len = end - cur;
-+				DBG_BUGON(bvec.bv_len < sb->s_blocksize);
-+			}
-+
- 			if (unlikely(PageWorkingset(bvec.bv_page)) &&
- 			    !memstall) {
- 				psi_memstall_enter(&pflags);
-@@ -1685,13 +1694,9 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
- 				++nr_bios;
- 			}
- 
--			if (cur + bvec.bv_len > end)
--				bvec.bv_len = end - cur;
--			DBG_BUGON(bvec.bv_len < sb->s_blocksize);
- 			if (!bio_add_page(bio, bvec.bv_page, bvec.bv_len,
- 					  bvec.bv_offset))
--				goto io_retry;
--
-+				goto drain_io;
- 			last_pa = cur + bvec.bv_len;
- 			bypass = false;
- 		} while ((cur += bvec.bv_len) < end);
+ 	return &rpi[prim];
 -- 
 2.43.0
 
