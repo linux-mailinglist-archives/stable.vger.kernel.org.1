@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-80328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB22198DCF4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB6E98DA7D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE6C1F283C1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3BE286B0F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8FE1D0F76;
-	Wed,  2 Oct 2024 14:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88F01D2F5F;
+	Wed,  2 Oct 2024 14:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiMgnSPg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqrY2Ld/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5801D0F58;
-	Wed,  2 Oct 2024 14:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B1F1D0E38;
+	Wed,  2 Oct 2024 14:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880053; cv=none; b=OSSPW2kPwZNjMp0Ac272Anq2KGrB2QGThvnwUb4xqh7mRZntsCrzjpfpzWjscrmfxqJAirXzYS6WKfTGzRTT1PcryXcxKQ+SignKq5q9Ul7kQrRchDMkd4diLI8H6enIq7uJqryj1jSmSNS0r2qoIKCvUpVadjwwTaSxGi5HC44=
+	t=1727878589; cv=none; b=gno+ebBWpNQ+Y/3YdGei+N2KgwEefr1iCS6s7744oX7GxPaht0zSAzXaCryJGIIT7w9PIweRl1FsM8DTw5p+oQFh7j/xj9CxIoOkrDeSFGAEGMQnKWsk/TAkvtV8C98h9Zoj2+cSwov9fTw3kdQsKTtLa2kBfl2cQ/AYbs40dPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880053; c=relaxed/simple;
-	bh=JgwZtXbYKQuM+ewMeQOYsD4qPvXE/5CjetsQQxtnTEE=;
+	s=arc-20240116; t=1727878589; c=relaxed/simple;
+	bh=h7Myg3Le0wjLz5yu1MpFC0y4AfMcApowqb+yWZwFlEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVYK1HH7z07Zzz5xkTCx8/7uP7paA6pBsUu8GuBYZg+drfoTkIWkkUL4U1jpyCwWvkQbl2O1e8jGUFUmbVmoIhJ9c0hWZ0KYaoKCT8freA5Rd444NlomVo1wFyLk1HUPXRShdj1BCfU+J5pRSqzIhOF8ReFlkOdtFJuxnHR15g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiMgnSPg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC3FC4CEC2;
-	Wed,  2 Oct 2024 14:40:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qftw/Oo8tBmIXxANv4O8PupCzHOKOQaMRP6+eX4LHGUa+a4KrbK3iH6YNQkh7taAO+AugNuIsM/WOfTq3Eh7QadTSnZPtEZMUDmlyn74LaKBWz542gmTcnEnnbpHWWMOEvcKZLQuv2HJ0sHvI/RojmiE2a88UhIzPWcsyQgWN7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqrY2Ld/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15FCC4CEC2;
+	Wed,  2 Oct 2024 14:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880052;
-	bh=JgwZtXbYKQuM+ewMeQOYsD4qPvXE/5CjetsQQxtnTEE=;
+	s=korg; t=1727878589;
+	bh=h7Myg3Le0wjLz5yu1MpFC0y4AfMcApowqb+yWZwFlEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oiMgnSPgUi1XanzR0CWHON7oazZaJOlCI8f2MzBNaFld12Z6uTgu5rK4lD6ZB6bCb
-	 4sMgye1Wu+jxUjt+wgxagT97kypllxPM+RLrH2IQgn4O+BAQC86YcIk8aEM7zdbTMP
-	 nabZZaJ6h5Yb0BQ6pvGdklV5ll9SgtpW7Abebph8=
+	b=BqrY2Ld/JQmxYgWZaNwmoePiDM/ttk356P3ezYgH9UzOMjhZH4Yu7MnyWEUa97mPG
+	 kL0/tUKXspLLwetbgNT1MWbcMROgTDQGwGnOWJ8Ke1zuCdoUNePvNWZSWhrLJ2eL7o
+	 U9O3jtE3W8KKYqxNDB9pI9SAaEv+5FjmiNgjL2tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@maxima.ru>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 326/538] RDMA/irdma: fix error message in irdma_modify_qp_roce()
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.10 465/634] PCI: dra7xx: Fix threaded IRQ request for "dra7xx-pcie-main" IRQ
 Date: Wed,  2 Oct 2024 14:59:25 +0200
-Message-ID: <20241002125805.297791387@linuxfoundation.org>
+Message-ID: <20241002125829.459256583@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 9f0eafe86ea0a589676209d0cff1a1ed49a037d3 ]
+commit 03f84b3baba7836bdfc162c19288d5ce1aa92890 upstream.
 
-Use a correct field max_dest_rd_atomic instead of max_rd_atomic for the
-error output.
+Commit da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for
+"dra7xx-pcie-main" IRQ") switched from devm_request_irq() to
+devm_request_threaded_irq() for the "dra7xx-pcie-main" interrupt.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Since the primary handler was set to NULL, the "IRQF_ONESHOT" flag
+should have also been set. Fix this.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
-Link: https://lore.kernel.org/stable/20240916165817.14691-1-v.shevtsov%40maxima.ru
-Link: https://patch.msgid.link/20240916165817.14691-1-v.shevtsov@maxima.ru
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for "dra7xx-pcie-main" IRQ")
+Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://lore.kernel.org/linux-pci/20240827122422.985547-2-s-vadapalli@ti.com
+Reported-by: Udit Kumar <u-kumar1@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pci-dra7xx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index ca3e89909ecf4..38cecb28d322e 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -1347,7 +1347,7 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 		if (attr->max_dest_rd_atomic > dev->hw_attrs.max_hw_ird) {
- 			ibdev_err(&iwdev->ibdev,
- 				  "rd_atomic = %d, above max_hw_ird=%d\n",
--				   attr->max_rd_atomic,
-+				   attr->max_dest_rd_atomic,
- 				   dev->hw_attrs.max_hw_ird);
- 			return -EINVAL;
- 		}
--- 
-2.43.0
-
+--- a/drivers/pci/controller/dwc/pci-dra7xx.c
++++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+@@ -850,7 +850,8 @@ static int dra7xx_pcie_probe(struct plat
+ 	dra7xx->mode = mode;
+ 
+ 	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
+-			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
++					IRQF_SHARED | IRQF_ONESHOT,
++					"dra7xx-pcie-main", dra7xx);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request irq\n");
+ 		goto err_gpio;
 
 
 
