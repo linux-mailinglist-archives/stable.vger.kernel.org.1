@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-80095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141CF98DBC9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE5E98D94F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4632A1C23CD4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7E42B2455E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784741D1501;
-	Wed,  2 Oct 2024 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073821D26F9;
+	Wed,  2 Oct 2024 14:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvZhlw/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNZ5yk3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362501D0BA2;
-	Wed,  2 Oct 2024 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77C61D26F3;
+	Wed,  2 Oct 2024 14:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879370; cv=none; b=nXIQANPnl3/jIBAWApNDYYveFd1jjjZd8tK275WgdGH7Kgz/7LaD36ZviIO1FLayIuw1Qx/F6TcmKv5iEebgO7x1sV/rOd0P3cqw3BFEZhHNccHyeed33fVTXaAnygw5DDGlOzb6yjtpHDyICpHAzTXuoYkzVgScbq5Jk0/aoiE=
+	t=1727877907; cv=none; b=WDiwER/rtVGmwlvsIoDbtHE0b2iHJtwwMiATe2uEza6HJ43srn6ge7/NrFBwBb8NgCgxVK20I2dmAipN2Crp9nzR3cdDHxrqsDFWaam+PSo5lRN0VuZAWgQvAcyin9E4dpMd0loF0BVs8PPJ4cI/4P9gP13Q0bIxlesmX0jPyS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879370; c=relaxed/simple;
-	bh=prZb7ly2v13jwJC232QIlFzPBc9WOgg/4kwLSrXJlSM=;
+	s=arc-20240116; t=1727877907; c=relaxed/simple;
+	bh=BgA4oxFulte7abMbnYJdCtXTeRj80p2vNo+Q/+Ylg4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PH9QTI7++O/bYYyH8mu2t/Hm8D3IVN7SSPODbxaO1iQ6rh16uxyFrCE0hqukCNBKtBhU7xSt3LnNGYiUvaP0exlmsIevfEivom/CzbWzRqJoaeNYBY+Uw4hHm13pKq7vLYuRxqD81wGYOeIo4MPSfDTw6L/zsqNlOrAkeNxu6Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvZhlw/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B68C4CEC2;
-	Wed,  2 Oct 2024 14:29:29 +0000 (UTC)
+	 MIME-Version; b=engCRSINhEvlDMLSh0gZQ06WSuamqogvBngCeLjvE8GodVRDWf3osnpIjjLoUi1+TDm7EShRXTPdDgHhzIjYnEVECiHOjCJN7oQyMTkiuZgX5CGshFH6d5Ij7Uzv8ZgMDhqzfVqxLeWM8oopSquon5oLB9+JtB0sCM0J7L7X9fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNZ5yk3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54A1C4CEC2;
+	Wed,  2 Oct 2024 14:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879370;
-	bh=prZb7ly2v13jwJC232QIlFzPBc9WOgg/4kwLSrXJlSM=;
+	s=korg; t=1727877907;
+	bh=BgA4oxFulte7abMbnYJdCtXTeRj80p2vNo+Q/+Ylg4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvZhlw/a1ra93zhxPXcrv4oTAZ2Pzj6S0+sm9VFucNQYBFtUo4rbdif9Y14LW+lIU
-	 ug6rq25n+Wum139KUgS3p8xYkIwgQbmXt+paeSevtSIocFH+FstXF01Woea3wG+9gl
-	 aEY7AQqOsy6y7rgTjZ7lneIy4OhYxc8ECyCr+RWs=
+	b=YNZ5yk3E6E7uWCCnLhEhfOuDQpF2iNB15UVVNJ4uIZP7uV/eHHE7ibFshG6nKgdSE
+	 9WBnI71Pdq+wojv4tRlLv9jACseeFqHgW5IhkjTrRANoGlwBCYDTW74I2Oc+x92SZB
+	 8ovtpFJgIDEKJ8fKNyb3zB211Tu8s8PGyhC29R80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/538] sock_map: Add a cond_resched() in sock_hash_free()
-Date: Wed,  2 Oct 2024 14:55:03 +0200
-Message-ID: <20241002125754.735895899@linuxfoundation.org>
+Subject: [PATCH 6.10 204/634] drm/msm/a5xx: properly clear preemption records on resume
+Date: Wed,  2 Oct 2024 14:55:04 +0200
+Message-ID: <20241002125819.158597168@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-[ Upstream commit b1339be951ad31947ae19bc25cb08769bf255100 ]
+[ Upstream commit 64fd6d01a52904bdbda0ce810a45a428c995a4ca ]
 
-Several syzbot soft lockup reports all have in common sock_hash_free()
+Two fields of preempt_record which are used by CP aren't reset on
+resume: "data" and "info". This is the reason behind faults which happen
+when we try to switch to the ring that was active last before suspend.
+In addition those faults can't be recovered from because we use suspend
+and resume to do so (keeping values of those fields again).
 
-If a map with a large number of buckets is destroyed, we need to yield
-the cpu when needed.
-
-Fixes: 75e68e5bf2c7 ("bpf, sockhash: Synchronize delete from bucket list on map free")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20240906154449.3742932-1-edumazet@google.com
+Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
+Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/612043/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index a37143d181f95..2afac40bb83ca 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1171,6 +1171,7 @@ static void sock_hash_free(struct bpf_map *map)
- 			sock_put(elem->sk);
- 			sock_hash_free_elem(htab, elem);
- 		}
-+		cond_resched();
- 	}
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+index f58dd564d122b..67a8ef4adf6b6 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
+@@ -204,6 +204,8 @@ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
+ 		return;
  
- 	/* wait for psock readers accessing its map link */
+ 	for (i = 0; i < gpu->nr_rings; i++) {
++		a5xx_gpu->preempt[i]->data = 0;
++		a5xx_gpu->preempt[i]->info = 0;
+ 		a5xx_gpu->preempt[i]->wptr = 0;
+ 		a5xx_gpu->preempt[i]->rptr = 0;
+ 		a5xx_gpu->preempt[i]->rbase = gpu->rb[i]->iova;
 -- 
 2.43.0
 
