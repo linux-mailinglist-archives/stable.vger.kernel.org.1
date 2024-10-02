@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-80481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9B898DD9E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836F298DB31
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957FB1C234A1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5CF71C22FFE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4AF1D0DD5;
-	Wed,  2 Oct 2024 14:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71081D2788;
+	Wed,  2 Oct 2024 14:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZAM9SpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABjKwwP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EE81D014A;
-	Wed,  2 Oct 2024 14:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631791D2234;
+	Wed,  2 Oct 2024 14:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880499; cv=none; b=GcfXtE38WMB+92Ja9rRcypMS9zD7JlbDUahNRYRMjMuTBL4z0mcyOw+qUz9N/UderpvUl742kOOIL+KEO7z2hMdxIKOGaq9PCrD2NBrQL+OUuhmydiffLxPnW3/dEQbKSKZh00OGxKL8Xw+NnQnvYx0imyZJJtqUU0QQEim+p6U=
+	t=1727879042; cv=none; b=clF4glKGg745/qIXADDUSz/q4nkos9tbgMyeXtrVt8xmRedTGQL7oN5NYwGHK5JSuB82wxa7/tsPmNaYylG/q8S7qL496vMjgotAYsSX3hGtBCO5JBaXygCAZ23NuENivE7/qQ3JgHdALGagiGff2MoGkjyrbBB7VojMKvy8ess=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880499; c=relaxed/simple;
-	bh=p1Vpmpg1qdqKZ5Ui3v7O+qVvQLiRyuxDpHyJG48GEOw=;
+	s=arc-20240116; t=1727879042; c=relaxed/simple;
+	bh=zlyhEvFma7U5uTCU06O3lJzMGVhmB4j4g1YdTMqL80A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ms0HaqrXUyEz1UIbDxETik+/29AqLcpzoi9cQWN45zcby30xy3xW5QlB2JxGw6ZyCBufE7RQWTNATb3xGr1JpfzUs3aeJDfDPLub4Z8MfHsJZpV6nkbxW/GYfdP8cD3rwN4WI7j46aMkS7GFerx59vnR+0cGjbgRw0k1LUtL32M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZAM9SpW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D56C4CEC2;
-	Wed,  2 Oct 2024 14:48:17 +0000 (UTC)
+	 MIME-Version; b=TbJZNBdhUk3n2CKbsOMNkSsIUQIWENQEDRzWIKkz5DZFdDwjsYBfFqXQcxGCGGPEseCYq2589dL8UBoU5oZJC4RHQuiBEfkgkhSv0JukSzzmte0mF9YYqUPD4iivC0S+3l236rOSWnj/luw7vliAHJzGan+vJbL1ggavi+dFLBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABjKwwP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C9CC4CEC2;
+	Wed,  2 Oct 2024 14:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880498;
-	bh=p1Vpmpg1qdqKZ5Ui3v7O+qVvQLiRyuxDpHyJG48GEOw=;
+	s=korg; t=1727879042;
+	bh=zlyhEvFma7U5uTCU06O3lJzMGVhmB4j4g1YdTMqL80A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZAM9SpWIdOZ0kuVxbH3tIIe8eMZ65Q7uyPo7k2kKlwu4pq/1z6qEVaixF3u8Csnh
-	 CJHAFIZuMWmud6PEeIjx0Aux0Jb8o6qdbSM7X24gk5ZeY5op/VmlMYhXxwDcKd89WI
-	 ZkoUaus4b8JKc1GVoTdePylk2nkTsdneYuKsOXug=
+	b=ABjKwwP2GWXJtcLDkHpW4zFkfHHNylqay5lLYmDqOQ8Pk/VjSRz6SpoZZ6SaKhGsS
+	 HxZkjiOMmPis2+fza7ErpyQhrbHdqzlwXRFrssRd2out+TxC4WqOK3brD034zSoCLW
+	 L9jvViwS1HnxLSwuIQP+P1IlbdBHnQnRC99ZbAQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gafert <christian.gafert@rohde-schwarz.com>,
-	Max Ferger <max.ferger@rohde-schwarz.com>,
-	Van Giang Nguyen <vangiang.nguyen@rohde-schwarz.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 480/538] padata: use integer wrap around to prevent deadlock on seq_nr overflow
+	syzbot+e1c69cadec0f1a078e3d@syzkaller.appspotmail.com,
+	Daniel Yang <danielyangkang@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.10 619/634] exfat: resolve memory leak from exfat_create_upcase_table()
 Date: Wed,  2 Oct 2024 15:01:59 +0200
-Message-ID: <20241002125811.391667434@linuxfoundation.org>
+Message-ID: <20241002125835.551323331@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: VanGiang Nguyen <vangiang.nguyen@rohde-schwarz.com>
+From: Daniel Yang <danielyangkang@gmail.com>
 
-commit 9a22b2812393d93d84358a760c347c21939029a6 upstream.
+commit c290fe508eee36df1640c3cb35dc8f89e073c8a8 upstream.
 
-When submitting more than 2^32 padata objects to padata_do_serial, the
-current sorting implementation incorrectly sorts padata objects with
-overflowed seq_nr, causing them to be placed before existing objects in
-the reorder list. This leads to a deadlock in the serialization process
-as padata_find_next cannot match padata->seq_nr and pd->processed
-because the padata instance with overflowed seq_nr will be selected
-next.
+If exfat_load_upcase_table reaches end and returns -EINVAL,
+allocated memory doesn't get freed and while
+exfat_load_default_upcase_table allocates more memory, leading to a
+memory leak.
 
-To fix this, we use an unsigned integer wrap around to correctly sort
-padata objects in scenarios with integer overflow.
+Here's link to syzkaller crash report illustrating this issue:
+https://syzkaller.appspot.com/text?tag=CrashReport&x=1406c201980000
 
-Fixes: bfde23ce200e ("padata: unbind parallel jobs from specific CPUs")
-Cc: <stable@vger.kernel.org>
-Co-developed-by: Christian Gafert <christian.gafert@rohde-schwarz.com>
-Signed-off-by: Christian Gafert <christian.gafert@rohde-schwarz.com>
-Co-developed-by: Max Ferger <max.ferger@rohde-schwarz.com>
-Signed-off-by: Max Ferger <max.ferger@rohde-schwarz.com>
-Signed-off-by: Van Giang Nguyen <vangiang.nguyen@rohde-schwarz.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reported-by: syzbot+e1c69cadec0f1a078e3d@syzkaller.appspotmail.com
+Fixes: a13d1a4de3b0 ("exfat: move freeing sbi, upcase table and dropping nls into rcu-delayed helper")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniel Yang <danielyangkang@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/padata.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/exfat/nls.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -404,7 +404,8 @@ void padata_do_serial(struct padata_priv
- 	/* Sort in ascending order of sequence number. */
- 	list_for_each_prev(pos, &reorder->list) {
- 		cur = list_entry(pos, struct padata_priv, list);
--		if (cur->seq_nr < padata->seq_nr)
-+		/* Compare by difference to consider integer wrap around */
-+		if ((signed int)(cur->seq_nr - padata->seq_nr) < 0)
- 			break;
- 	}
- 	list_add(&padata->list, pos);
+diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
+index afdf13c34ff5..1ac011088ce7 100644
+--- a/fs/exfat/nls.c
++++ b/fs/exfat/nls.c
+@@ -779,8 +779,11 @@ int exfat_create_upcase_table(struct super_block *sb)
+ 				le32_to_cpu(ep->dentry.upcase.checksum));
+ 
+ 			brelse(bh);
+-			if (ret && ret != -EIO)
++			if (ret && ret != -EIO) {
++				/* free memory from exfat_load_upcase_table call */
++				exfat_free_upcase_table(sbi);
+ 				goto load_default;
++			}
+ 
+ 			/* load successfully */
+ 			return ret;
+-- 
+2.46.2
+
 
 
 
