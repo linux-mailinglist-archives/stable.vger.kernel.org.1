@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B76998D8F3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8747F98D8C3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EABC31F2475E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5032C284DE7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8A31D151E;
-	Wed,  2 Oct 2024 14:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B258D1D0F46;
+	Wed,  2 Oct 2024 14:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMNdctyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhIpQTWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3901D1518;
-	Wed,  2 Oct 2024 14:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707951D278E;
+	Wed,  2 Oct 2024 14:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877724; cv=none; b=fzXH8asuFoozIuMYn3Xb/293CDJwwSXKZKICu6h79D6tmAi439ciO57tR0G+k2TAX65wQQ5JMtWSb5Bno9ZcvKPDgg2BOuf2frOOOp4dDRoGjn2Cv0aASbHFZhNTVvj5hr9ONI5Q4al/I/RHon1t0+XhYzf6HwoSC30ev8fWWvY=
+	t=1727877628; cv=none; b=b4tOxj97xmGUFlDeB8pQGMr888anPVbiSecFJaXiQPd1WeFtiySAxZJWAxHziTR0YeNlmxkwvjPawg/Z71aRRrNjVqdF55CNe4UkDgjHudXds9vJjT3plLQqitIoiPYUc3VSKV3TS0nEQeYr53OJEkdhoW+6SPzo+WfQNlyGIRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877724; c=relaxed/simple;
-	bh=OZCO6dnXpEAGkyflTwr80v3W1BSNjSN8xS5vOqJU0do=;
+	s=arc-20240116; t=1727877628; c=relaxed/simple;
+	bh=f5/wgYfeRLqQ38C4qHvRQ5oiAt2xDHWKA121s4upv0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEdFOdQW25m/bBUeA70UrVl2+NDiL+cp6orE95/4mcVdvEIzrtxAMLVtpsbro40In9Re6Igyjvx7+zL3LXIWWtFmMu1bZk9Q04CWxSdH3px/lxEwKKfK2NbyTNp1x2rr6422ljJJFZroBtsg2b7EGhvhDKUxepbY2shqaWD0mqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMNdctyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088A0C4CEC2;
-	Wed,  2 Oct 2024 14:02:03 +0000 (UTC)
+	 MIME-Version; b=o02SdCYKot7XzocgxLacuZyXXjIHqc+AqnzauAOycWac6VwHl/DRWtfJN8a+0bHIhBUagi3EkRJSLm29TGrr6GZwnD5esPmMg7l5g1QuPNGY6Is5AXbvBir43C4uVQbNbu1DogFzBH5pzQ+sClsI24T6FL9hCjjXud/UnoOJqvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhIpQTWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDD4C4CEC5;
+	Wed,  2 Oct 2024 14:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877724;
-	bh=OZCO6dnXpEAGkyflTwr80v3W1BSNjSN8xS5vOqJU0do=;
+	s=korg; t=1727877628;
+	bh=f5/wgYfeRLqQ38C4qHvRQ5oiAt2xDHWKA121s4upv0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMNdctyKik4WjduzhpoeP+HUVmzk0gxsooTWGl+4ALzu/S4RBW29CU0ad1cxIBaOr
-	 LLIv1Sbkq9OzaN0CT7OMg6sKbq6LThn6EyT+oQKVi5LbYgExhd4X61LFu2SLdCXrBq
-	 +M1JJ9Dk65RmEFy19X0UHOqsMnV+vETG9BgsJV60=
+	b=EhIpQTWVlrMHT9d/I0QQWXogStjxTmiMU0+ZqEEjoCYbKf1XYC2a2t4NS1ZVbwRSD
+	 MJWV8g1eiQ9yT3OOSHYink7vsLnkDnOt7/40BUerAERNKIQb+s23ZF6dSx4QZj/ztj
+	 XUwwVkQ9vRRCqDJRvV0PR8ONoA6lLv2PTEzXenc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andrew Davis <afd@ti.com>,
 	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 131/634] arm64: dts: ti: k3-j721e-sk: Fix reversed C6x carveout locations
-Date: Wed,  2 Oct 2024 14:53:51 +0200
-Message-ID: <20241002125816.281220713@linuxfoundation.org>
+Subject: [PATCH 6.10 132/634] arm64: dts: ti: k3-j721e-beagleboneai64: Fix reversed C6x carveout locations
+Date: Wed,  2 Oct 2024 14:53:52 +0200
+Message-ID: <20241002125816.319825086@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 9f3814a7c06b7c7296cf8c1622078ad71820454b ]
+[ Upstream commit 1a314099b7559690fe23cdf3300dfff6e830ecb1 ]
 
 The DMA carveout for the C6x core 0 is at 0xa6000000 and core 1 is at
 0xa7000000. These are reversed in DT. While both C6x can access either
@@ -76,20 +76,20 @@ region, so this is not normally a problem, but if we start restricting
 the memory each core can access (such as with firewalls) the cores
 accessing the regions for the wrong core will not work. Fix this here.
 
-Fixes: f46d16cf5b43 ("arm64: dts: ti: k3-j721e-sk: Add DDR carveout memory nodes")
+Fixes: fae14a1cb8dd ("arm64: dts: ti: Add k3-j721e-beagleboneai64")
 Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240801181232.55027-1-afd@ti.com
+Link: https://lore.kernel.org/r/20240801181232.55027-2-afd@ti.com
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 4 ++--
+ arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-index 0c4575ad8d7cb..53156b71e4796 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-@@ -119,7 +119,7 @@
+diff --git a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+index a2925555fe818..fb899c99753ec 100644
+--- a/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-beagleboneai64.dts
+@@ -123,7 +123,7 @@
  			no-map;
  		};
  
@@ -98,7 +98,7 @@ index 0c4575ad8d7cb..53156b71e4796 100644
  			compatible = "shared-dma-pool";
  			reg = <0x00 0xa6000000 0x00 0x100000>;
  			no-map;
-@@ -131,7 +131,7 @@
+@@ -135,7 +135,7 @@
  			no-map;
  		};
  
