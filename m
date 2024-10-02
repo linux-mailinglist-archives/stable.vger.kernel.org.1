@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9E398D9CB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8533B98DC65
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB88B23E00
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 438E9284114
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47311D1E8B;
-	Wed,  2 Oct 2024 14:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11921D079C;
+	Wed,  2 Oct 2024 14:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVWsA5Bq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXCS7Z0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE251D014A;
-	Wed,  2 Oct 2024 14:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4521D04A8;
+	Wed,  2 Oct 2024 14:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878221; cv=none; b=eqmnogCAv2unl3mAiNOshHZafQgvPpqYnIKbJKpENnk+YJnziDbYSTCWuJoE94lPqNn64LjRTwmPivQSoQBJq+p7rM7bDUnNaPwVLTujdq+PID6UaKLl67wZ/q7A4WxNOI+uZklZaJezAZRKLDL4saYfVQStgIRqwYJXcc5PziE=
+	t=1727879676; cv=none; b=sZI2GHXHbY2rA6odoV4HKb2ldv3c450X6PlQCRZ/vzzKTnUBaNT7WWhqJu3ZvHktX8yTiv/aM3objpv7Fz+oNgIrlVbrIhRqqs/03K61+TahT5YfpaCNURfUjzTXjOMSnXQYEcxOXi6cBp/4I3XFGqUMmvAueSHgcEGGIjKAhpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878221; c=relaxed/simple;
-	bh=DbCnrTCpPHcMGKtyM7GpKS9MHNjqr0jtjURbSN1WLmw=;
+	s=arc-20240116; t=1727879676; c=relaxed/simple;
+	bh=kjTYPSzfDU8SeZ4Zbe6NwN0VvMSrHkwL65EwshlrVf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDrNDuNLUGo5BducBI2ezHcPyVAIJaIqyxUWEpc+5bRD0D3QF7NyRaprT/BSDMFeaPNbiHkDmhCrLrHcYtxy7+dG1mwhxZAIj9Mh23aepMXwSPvcduHKQKfnO5bOJXVB5WWSRfprxoNN3/Y34mN3Ms8vjouPPlrAuRttLcLv0m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVWsA5Bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05702C4CEC2;
-	Wed,  2 Oct 2024 14:10:20 +0000 (UTC)
+	 MIME-Version; b=a4qkHJ7VjdM0UZBGU3FqLg6rRlVxUP//g6pxGgKlT5ZcBm+/vLQjwq4n3XL0KSrRpZEa6jj1kedEavGIvKXmKz7xfI75Hitz1q8eObYct1lt7tn0RZ3/mX1TeWw6M8D/mjTbIdm3HG5hO9zFz6RhSkx3fjeImO3JmU2hmzOUABE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXCS7Z0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE23C4CEC2;
+	Wed,  2 Oct 2024 14:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878221;
-	bh=DbCnrTCpPHcMGKtyM7GpKS9MHNjqr0jtjURbSN1WLmw=;
+	s=korg; t=1727879676;
+	bh=kjTYPSzfDU8SeZ4Zbe6NwN0VvMSrHkwL65EwshlrVf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVWsA5Bqm4w12Nqli4ZTOc6DgcYcUH8b3JlJ0K8Mvqm1MB7Ro++q/Uk4H0xSSi6Mc
-	 /FOWov8tPfbAZpoqNlvI5YOnNPr3PVElVQPLPyJ9IGzUd94y6+suynKnHL4u3xTkNJ
-	 bMEUcNzUur7WBp+Bfb+scgeBQMXrRbvgJn4Co7Tk=
+	b=PXCS7Z0hBKmOiwGSRVayOEHVw67Nx1m2YhV8Y5m0VWYL8sOQKwrqAt8/prp7cxGK5
+	 CIu5sRWensqLKFB/tW6pKQtNBouClVHGnw/aTIhGQeB0C6yH0NX9tYRuVbEJyy+76t
+	 6LwjjcQ4er8y4q/27wulxPKSVHCz2jYnC5IU6AOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Joshua Dickens <joshua.dickens@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 308/634] clk: imx: clk-audiomix: Correct parent clock for earc_phy and audpll
+Subject: [PATCH 6.6 169/538] HID: wacom: Do not warn about dropped packets for first packet
 Date: Wed,  2 Oct 2024 14:56:48 +0200
-Message-ID: <20241002125823.265539873@linuxfoundation.org>
+Message-ID: <20241002125758.924480356@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-[ Upstream commit d40371a1c963db688b37826adaf5ffdafb0862a1 ]
+[ Upstream commit 84aecf2d251a3359bc78b7c8e58f54b9fc966e89 ]
 
-According to Reference Manual of i.MX8MP
-The parent clock of "earc_phy" is "sai_pll_out_div2",
-The parent clock of "audpll" is "osc_24m".
+The driver currently assumes that the first sequence number it will see
+is going to be 0. This is not a realiable assumption and can break if,
+for example, the tablet has already been running for some time prior to
+the kernel driver connecting to the device. This commit initializes the
+expected sequence number to -1 and will only print the "Dropped" warning
+the it has been updated to a non-negative value.
 
-Add CLK_GATE_PARENT() macro for usage of specifying parent clock.
-
-Fixes: 6cd95f7b151c ("clk: imx: imx8mp: Add audiomix block control")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/1718350923-21392-6-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Tested-by: Joshua Dickens <joshua.dickens@wacom.com>
+Fixes: 6d09085b38e5 ("HID: wacom: Adding Support for new usages")
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp-audiomix.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/hid/wacom_wac.c | 6 +++++-
+ drivers/hid/wacom_wac.h | 2 +-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp-audiomix.c b/drivers/clk/imx/clk-imx8mp-audiomix.c
-index b381d6f784c89..0767d613b68b0 100644
---- a/drivers/clk/imx/clk-imx8mp-audiomix.c
-+++ b/drivers/clk/imx/clk-imx8mp-audiomix.c
-@@ -154,6 +154,15 @@ static const struct clk_parent_data clk_imx8mp_audiomix_pll_bypass_sels[] = {
- 		PDM_SEL, 2, 0						\
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index c3c576641a38e..18b5cd0234d21 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -2368,6 +2368,9 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
+ 		wacom_map_usage(input, usage, field, EV_KEY, BTN_STYLUS3, 0);
+ 		features->quirks &= ~WACOM_QUIRK_PEN_BUTTON3;
+ 		break;
++	case WACOM_HID_WD_SEQUENCENUMBER:
++		wacom_wac->hid_data.sequence_number = -1;
++		break;
  	}
+ }
  
-+#define CLK_GATE_PARENT(gname, cname, pname)						\
-+	{								\
-+		gname"_cg",						\
-+		IMX8MP_CLK_AUDIOMIX_##cname,				\
-+		{ .fw_name = pname, .name = pname }, NULL, 1,		\
-+		CLKEN0 + 4 * !!(IMX8MP_CLK_AUDIOMIX_##cname / 32),	\
-+		1, IMX8MP_CLK_AUDIOMIX_##cname % 32			\
-+	}
-+
- struct clk_imx8mp_audiomix_sel {
- 	const char			*name;
- 	int				clkid;
-@@ -171,14 +180,14 @@ static struct clk_imx8mp_audiomix_sel sels[] = {
- 	CLK_GATE("earc", EARC_IPG),
- 	CLK_GATE("ocrama", OCRAMA_IPG),
- 	CLK_GATE("aud2htx", AUD2HTX_IPG),
--	CLK_GATE("earc_phy", EARC_PHY),
-+	CLK_GATE_PARENT("earc_phy", EARC_PHY, "sai_pll_out_div2"),
- 	CLK_GATE("sdma2", SDMA2_ROOT),
- 	CLK_GATE("sdma3", SDMA3_ROOT),
- 	CLK_GATE("spba2", SPBA2_ROOT),
- 	CLK_GATE("dsp", DSP_ROOT),
- 	CLK_GATE("dspdbg", DSPDBG_ROOT),
- 	CLK_GATE("edma", EDMA_ROOT),
--	CLK_GATE("audpll", AUDPLL_ROOT),
-+	CLK_GATE_PARENT("audpll", AUDPLL_ROOT, "osc_24m"),
- 	CLK_GATE("mu2", MU2_ROOT),
- 	CLK_GATE("mu3", MU3_ROOT),
- 	CLK_PDM,
+@@ -2492,7 +2495,8 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
+ 		wacom_wac->hid_data.barrelswitch3 = value;
+ 		return;
+ 	case WACOM_HID_WD_SEQUENCENUMBER:
+-		if (wacom_wac->hid_data.sequence_number != value) {
++		if (wacom_wac->hid_data.sequence_number != value &&
++		    wacom_wac->hid_data.sequence_number >= 0) {
+ 			int sequence_size = field->logical_maximum - field->logical_minimum + 1;
+ 			int drop_count = (value - wacom_wac->hid_data.sequence_number) % sequence_size;
+ 			hid_warn(hdev, "Dropped %d packets", drop_count);
+diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
+index 57e185f18d53d..61073fe81ead2 100644
+--- a/drivers/hid/wacom_wac.h
++++ b/drivers/hid/wacom_wac.h
+@@ -324,7 +324,7 @@ struct hid_data {
+ 	int bat_connected;
+ 	int ps_connected;
+ 	bool pad_input_event_flag;
+-	unsigned short sequence_number;
++	int sequence_number;
+ 	ktime_t time_delayed;
+ };
+ 
 -- 
 2.43.0
 
