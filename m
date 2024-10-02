@@ -1,76 +1,81 @@
-Return-Path: <stable+bounces-80602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CE098E3C3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 21:58:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A001C98E3EC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 22:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A6F283F6A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 19:58:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD2021C22244
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EC7216A0D;
-	Wed,  2 Oct 2024 19:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40162216A17;
+	Wed,  2 Oct 2024 20:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b="xeao0JIc"
+	dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b="HeNjkTsb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3286A216A06
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 19:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DA1215F79
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 20:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727899091; cv=none; b=fG4TQZsjA8PBdjEOPWse3SqfyxucR80wKniUibPMrKfdk5T5kyenSWIjPdTxiu8HD2aLStpZ2uWA3leGdb+UCk7+RYBNAvgnBKTuLDguYOyoR/M3+/regpMIjwIpjwldAAKBnFQ+8qXTb7lL3cmO8BUa/O5RCz5ZrWpKR1help0=
+	t=1727899702; cv=none; b=Jjm9DEecGdmBehOnk/UpYt58+20xBkAH/5t/zBKocroaj5Bac3ultptDn22O4zAKo3i3WNH/AdGYeDUpIAEjVN29uX45VPbeYHZKWyssFROMUOKchj1tn5OLSptcm3sFvmC4zL0EnHPuTL9bFWnA/5dPhf3//xl19JOSFLW8ARU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727899091; c=relaxed/simple;
-	bh=FZvT0DvIN6rDZY2K7NeI70Si1D2y6eDzt439Y+VYuo0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FL7AbxNBtu7pj0RAnNJ98xUc4GfJa3yLQ5srghp+fKIZQU44z5YnSRmba+zZ6bpwnNc0DJkraUc5snU+JOiI5rSaKW8w6scMWOvWBC03aB5XMnZL710tPeunL53uK40oBe+iL/Z/NbHa2YoMS7LJ+iKYgz8zu9X1O+QZJkxeY+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com; spf=none smtp.mailfrom=batbytes.com; dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b=xeao0JIc; arc=none smtp.client-ip=209.85.222.170
+	s=arc-20240116; t=1727899702; c=relaxed/simple;
+	bh=/l8x0C5y2PsMjSoG8BupX97mLktXgFfrnegJFlrn0f0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iLgjuO8+tNnU0pzpja1ZGRfxMt2P0zQq4Gpgt+mNhSruI6kGyDFGWkXaMsVs4pyGT+cUYAn++kCQXIDX7W3hG9kOU0MzqkMQamW/0NnBGW4QcaAhwVgNuhwFYN3Lsw4dlOAn419hhO6Bw7DBH+4yDDY8ecSaJNNy8MdaHQdrs6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com; spf=none smtp.mailfrom=batbytes.com; dkim=pass (2048-bit key) header.d=batbytes-com.20230601.gappssmtp.com header.i=@batbytes-com.20230601.gappssmtp.com header.b=HeNjkTsb; arc=none smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=batbytes.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=batbytes.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7a9ac2d50ffso22396785a.1
-        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 12:58:09 -0700 (PDT)
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4585e250f9dso874241cf.1
+        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 13:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=batbytes-com.20230601.gappssmtp.com; s=20230601; t=1727899089; x=1728503889; darn=vger.kernel.org;
+        d=batbytes-com.20230601.gappssmtp.com; s=20230601; t=1727899699; x=1728504499; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bKBi/49Hk49zeYze675qyaPFtzkiIePzc8OgUXDE7Hs=;
-        b=xeao0JIcNIb2vNFKiAVdSrr0VWcFMvOBAAhmYeep6keXojicON5Scy0Kq0GibTwTM8
-         0Jfy+zB7tKPlN4KQJxCpsqGp4bAgERniuEHH0AcvN/PobX+saukP38U2g5DNqYyCJhkA
-         +ru/l8jQYJV3PZ/ujo2XuH2C3F3kaTUfmLZ8j7yuyWn6wYqSPG8aRVBvzVjkWII9Vq4N
-         Ly6g+T7T/MLSOBHwCiJuHsiDqCGzypaf76GnEgO1ycZaWXiwFXFew1B5/6FbScZ1J5ag
-         LwNiGIt70udr36IBjh2WFOmcMg4BPqZBkuU0xn0txlPi17AjahaQpEObsfHfaUvsP5um
-         mRpA==
+        bh=JdrIcDotBJl1qT8iyU6P6JS+Nsv6cgpYiBCs53eRkjc=;
+        b=HeNjkTsbB0trdatJ9la117Zg+n28JfchSIB5jQmlCdYpxKaD/TJ97/JWEkH7njYzTk
+         kN2atoFQw4wh1esv+GSzrDPj5qvu3oY7mJ60YIDh9+eW5k4RNQNL4Gj+2jeKXVc/5qXb
+         GLjNAeEiquApHPnxuWkO7K5DMfx/aC8FCPy+VPj4HKlphGgtFB9MtVBYbVS9exT4IDWl
+         Y1nYVtCIESqdq28bugYYOE1qYbnjhazD96qOBI5eGbYhXblTedHk3WwBloejftaeMoxF
+         AsXhILQOdzeDv3+Q+JvV2Xx6s+UQEIuhNTviFLJ2LWTfh+PaI77PaP/Hu0eCTYGTZ/lI
+         jivA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727899089; x=1728503889;
+        d=1e100.net; s=20230601; t=1727899699; x=1728504499;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bKBi/49Hk49zeYze675qyaPFtzkiIePzc8OgUXDE7Hs=;
-        b=GKRzksbSMrV9D1pcbdwiu+ub4LZGFU6nGVhF2WB98GHJ2BFjkZOGzU9WIToK68vQtJ
-         ZZRlw4QrOyLguUhiiWjOyhSFs8vEHFEq/EuYx4b8+AjcvnAGNbX3oxoVHDfyae3DJxHL
-         yjcT7hISdp606BDsJfH5WR+zgvjZjS5/pB5x5JJ0TpEQFD7ZCNMzFbZRQ3ifmsDc/Pfj
-         h7dAhJvcRXbD7qJy+2EvuOY65RsgZiq67UnKUN+/Hi56dG/Fx3MSk6L6xg643OVwmJ9u
-         yF14nCnFwjzF3FL/Sf5UpPRy3yRIZdSLy6GgIUWPoNU/tzuQOlRdW9zSD7Yze8HPEdht
-         YSjQ==
-X-Gm-Message-State: AOJu0Yx2nuoOKlI9uvG4X3mtnKJurGKsFeMhm+WnkJDh11LVqoNYZYIf
-	QBjEf7VDv5hBM5PIvibJIkuskh05/FvOGn5uh6Syg9RC35GZ82NFhZIQiLvlUld6HeXyqqpDwBc
-	=
-X-Google-Smtp-Source: AGHT+IHVaW520RJeIfp96qMB5eHpsFf/CYFR8dZlqKcX1ELRzDMCPMHKWWbYHv4LhcjpXEQ4Kv5leg==
-X-Received: by 2002:a05:620a:462c:b0:7a9:a356:a5dd with SMTP id af79cd13be357-7ae67e479femr149663785a.20.1727899088963;
-        Wed, 02 Oct 2024 12:58:08 -0700 (PDT)
+        bh=JdrIcDotBJl1qT8iyU6P6JS+Nsv6cgpYiBCs53eRkjc=;
+        b=LSZsy309MnDgpTjb7DW2B++mT0EBE33t6nJgbcJO5TpkemSaBT0BMVw8oXHmmFiyvt
+         PzkbKcyGZQRZ/h5I+5T67+RYqp4q3WLDJ2GhY2ZdNPnAoLT5pvUqooUdh5SB+bIQTbgJ
+         DMo/eUpIIE18bo7NHZiOubBuIsQdDISPwCLmcdUdPQ6Za7stmudLnUdeniXV2bpFAG21
+         LvTQYmS2ZpnyAbnh9hK9+zMDGkiY3KdVyEhBGyPomJ70M2pSv6o3E4sm0r/yL2GiLrkn
+         HjPoY/4MO+Fx59mZQtwHquZF7bry9slT6owljhjfNIOVfbnZowCi57/70hL6LNBmudvY
+         zGuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWbBPy3Jr9q1Ua1EYQNzTSy5xmtcOxUFEYa4gawvF68sIt/C3zHTqqikyLsPaE8U1plqIrUTR0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1addp18BwBsqUMknBxvfbyoAVy7qyGF1o/WY8GIrh842Mbn8a
+	MuvVIJDFzQ9yvm1oNw1AmsnlNFFVpAFfSEPESklw04IAKGWaPwIDPLdcnyJVJg==
+X-Google-Smtp-Source: AGHT+IGkjQYOtn2pKwHHuzmH8OBvWnuVydeXrYv2H1wgm0A5PmgFPA3jP9FiD/IZ+W10APNfcN6SLQ==
+X-Received: by 2002:a05:622a:48:b0:458:532e:59d8 with SMTP id d75a77b69052e-45d804f8d60mr62923861cf.36.1727899699335;
+        Wed, 02 Oct 2024 13:08:19 -0700 (PDT)
 Received: from batbytes.com ([216.212.123.7])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae377bc91asm651102085a.25.2024.10.02.12.58.08
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45d7aad57c5sm18352291cf.63.2024.10.02.13.08.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 12:58:08 -0700 (PDT)
+        Wed, 02 Oct 2024 13:08:18 -0700 (PDT)
 From: Patrick Donnelly <batrick@batbytes.com>
-To: pdonnell@redhat.com
-Cc: stable@vger.kernel.org
+To: Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	David Howells <dhowells@redhat.com>
+Cc: Patrick Donnelly <pdonnell@redhat.com>,
+	stable@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: [PATCH] ceph: fix cap ref leak via netfs init_request
-Date: Wed,  2 Oct 2024 15:58:02 -0400
-Message-ID: <20241002195806.33220-1-batrick@batbytes.com>
+Date: Wed,  2 Oct 2024 16:08:04 -0400
+Message-ID: <20241002200805.34376-1-batrick@batbytes.com>
 X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -95,7 +100,7 @@ Log recovered from a user's cluster:
 The MDS subsequently complains that the kernel client is late releasing caps.
 
 Closes: https://tracker.ceph.com/issues/67008
-Fixes: 2504470854f8 ("ceph: Make ceph_init_request() check caps on readahead")
+Fixes: a5c9dc4451394b2854493944dcc0ff71af9705a3 ("ceph: Make ceph_init_request() check caps on readahead")
 Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
 Cc: stable@vger.kernel.org
 ---
