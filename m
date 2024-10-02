@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-79977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA49B98DB2C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3CF98DB03
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9241DB24F54
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A158B26D92
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2201D221D;
-	Wed,  2 Oct 2024 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DA11D0F53;
+	Wed,  2 Oct 2024 14:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4imTCJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7Sx35dX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A201D079C;
-	Wed,  2 Oct 2024 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB9E1D07BC;
+	Wed,  2 Oct 2024 14:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879024; cv=none; b=hXkU//558iqajTHRITDupgkXnCL4LL9Ybe+YSWJ/Hg9a4H5K4PqugsCiClsootTqj3fWLnawPRRNM1OjwFKR+vTixYuuUJ3h3ThD7sPKLUZhtnYVV8fuHhZWeA4l8bnsIN4uujvbMXJ0cEIOTD430dr6NWfbtk75S4ulwOKOLbI=
+	t=1727878926; cv=none; b=LF7s0U+srMHlSuFkWKccJvzqZ/A146RVRD2QrUdnCj0A7pAbtG3J8WaAGo9HTIu8Wo5+XSmspKRbUeOHl2HNImXhU/J4HiVuaSFJouy0jIwXW/33C4msPs4GrWp4tRGMK/t9Rm1FArCm3CEGNgnTViUb3FDOHEvtp5Hus7OPYaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879024; c=relaxed/simple;
-	bh=JAXvxFK0EP2jGE/+miwJNnZzm48O63gZcAaUvYhNsVg=;
+	s=arc-20240116; t=1727878926; c=relaxed/simple;
+	bh=1wAixDPRDmeHhZP4GznKbsDPcXmGzTGyIlHcKEG9GwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XT/p9XIcUzdd2MmjOQUtyzwpUsUbD/fwmvmfvH1NQv3o/3giXGHi9n9U2GfEvcyZ8CHqowAtGlvt9AeD5rSHuRvOohfCSS7jxg2oo4d8tmfy+zUMa7ttOO9pECHoLehOJCoAm8LWjBvvFJ/2gtJQROk88M/7vbnsZczxKmEX9NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4imTCJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217D2C4CEC2;
-	Wed,  2 Oct 2024 14:23:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p55/rlCiJBTYse2HR+aV8VER1Eq8CYTgC1Gp+lOKEZQipahVcUuYdinfARKDp/qzALuC2+Xp7Tv6wnoccJcBWh3R+7RYb6oFwMD6NoqXjaKcPDG6UzYGDQkVl5DJdXC4Bxze5/AIb8WC+DL5rYhrUSYckThZOiwEnvCqTt8jlSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7Sx35dX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC89C4CEC2;
+	Wed,  2 Oct 2024 14:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879024;
-	bh=JAXvxFK0EP2jGE/+miwJNnZzm48O63gZcAaUvYhNsVg=;
+	s=korg; t=1727878926;
+	bh=1wAixDPRDmeHhZP4GznKbsDPcXmGzTGyIlHcKEG9GwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4imTCJF63y202pkbDQOkuqjiONSJBhLFUSd3/MM+qGWKnMRaxqLarTg4984oPuSM
-	 bqtlh7QUporZlfs5zQ+6Jj0mlQj4AbatPQbiBzDyZ1fTpUAN5/jPVenyAAt7++z8xj
-	 QYB/N/uDjFf1uKTCKY096UserwpB0YC8XbGrxjeQ=
+	b=w7Sx35dXwoiI59eNYyg7JUOfQBiBeXBgkdozbYrBJMwgIhsrs6OJPQH/VTu7Fw5Sk
+	 kRN3ATscNgQ6dlSHRmLWEdZFXbwL4rlcKHT5JRKLphsCKDFWUa37sXen59k4iSW7ij
+	 /ZLwT+cr01D5BbgQ24F9+EeNVXr9G6eDKysJVwDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>
-Subject: [PATCH 6.10 571/634] arm64: dts: mediatek: mt8186-corsola: Disable DPI display interface
-Date: Wed,  2 Oct 2024 15:01:11 +0200
-Message-ID: <20241002125833.654659162@linuxfoundation.org>
+	Nikola Radojevic <nikola@radojevic.rs>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.10 572/634] arm64: dts: rockchip: Raise Pinebook Pros panel backlight PWM frequency
+Date: Wed,  2 Oct 2024 15:01:12 +0200
+Message-ID: <20241002125833.693988980@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -68,49 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Dragan Simic <dsimic@manjaro.org>
 
-commit 3079fb09ddac159bd8bb87f6f15b924e265f8d4d upstream.
+commit 8c51521de18755d4112a77a598a348b38d0af370 upstream.
 
-The DPI display interface feeds the external display pipeline. However
-the pipeline representation is currently incomplete. Efforts are still
-under way to come up with a way to represent the "creative" repurposing
-of the DP bridge chip's internal output mux, which is meant to support
-USB type-C orientation changes, to output to one of two type-C ports.
+Increase the frequency of the PWM signal that drives the LED backlight of
+the Pinebook Pro's panel, from about 1.35 KHz (which equals to the PWM
+period of 740,740 ns), to exactly 8 kHz (which equals to the PWM period of
+125,000 ns).  Using a higher PWM frequency for the panel backlight, which
+reduces the flicker, can only be beneficial to the end users' eyes.
 
-Until that is finalized, the external display can't be fully described,
-and thus won't work. Even worse, the half complete graph potentially
-confuses the OS, breaking the internal display as well.
+On top of that, increasing the backlight PWM signal frequency reportedly
+eliminates the buzzing emitted from the Pinebook Pro's built-in speakers
+when certain backlight levels are set, which cause some weird interference
+with some of the components of the Pinebook Pro's audio chain.
 
-Disable the external display interface across the whole Corsola family
-until the DP / USB Type-C muxing graph binding is ready.
+The old value for the backlight PWM period, i.e. 740,740 ns, is pretty much
+an arbitrary value that was selected during the very early bring-up of the
+Pinebook Pro, only because that value seemed to minimize horizontal line
+distortion on the display, which resulted from the old X.org drivers causing
+screen tearing when dragging windows around.  That's no longer an issue, so
+there are no reasons to stick with the old PWM period value.
 
-Reported-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-Closes: https://lore.kernel.org/linux-mediatek/38a703a9-6efb-456a-a248-1dd3687e526d@gmail.com/
-Fixes: 8855d01fb81f ("arm64: dts: mediatek: Add MT8186 Krabby platform based Tentacruel / Tentacool")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Tested-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20240821042836.2631815-1-wenst@chromium.org
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+The lower and the upper backlight PWM frequency limits for the Pinebook Pro's
+panel, according to its datasheet, are 200 Hz and 10 kHz, respectively. [1]
+These changes still leave some headroom, which may have some positive effects
+on the lifetime expectancy of the panel's backlight LEDs.
+
+[1] https://files.pine64.org/doc/datasheet/PinebookPro/NV140FHM-N49_Rev.P0_20160804_201710235838.pdf
+
+Fixes: 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Cc: stable@vger.kernel.org
+Reported-by: Nikola Radojevic <nikola@radojevic.rs>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Tested-by: Nikola Radojević <nikola@radojevic.rs>
+Link: https://lore.kernel.org/r/2a23b6cfd8c0513e5b233b4006ee3d3ed09b824f.1722805655.git.dsimic@manjaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-@@ -321,7 +321,8 @@
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&dpi_pins_default>;
- 	pinctrl-1 = <&dpi_pins_sleep>;
--	status = "okay";
-+	/* TODO Re-enable after DP to Type-C port muxing can be described */
-+	status = "disabled";
- };
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -32,7 +32,7 @@
+ 	backlight: edp-backlight {
+ 		compatible = "pwm-backlight";
+ 		power-supply = <&vcc_12v>;
+-		pwms = <&pwm0 0 740740 0>;
++		pwms = <&pwm0 0 125000 0>;
+ 	};
  
- &dpi_out {
+ 	bat: battery {
 
 
 
