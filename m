@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C316F98DC4E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E2298D9AB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54491B2616E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B6C1C20D47
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F07F1D0DD9;
-	Wed,  2 Oct 2024 14:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF5A1D0949;
+	Wed,  2 Oct 2024 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPGBoB2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpONU/Y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9941D0F7F;
-	Wed,  2 Oct 2024 14:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560301D0795;
+	Wed,  2 Oct 2024 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879620; cv=none; b=h7v06YISjL6mxHKcD+hvON18xpNYFCsguAewcjTS1F1ppTrHsJ55KN2W4xU+M/buYXW4muOFAXNaUUmCTRqoJpQM1CJdVaZieNgmd41C1C3hV2e5gLctwHFuFuiTUav3NP/DbJ9yaT7LU200DSn5RAWgVWjUKWoUmUKqA51uufE=
+	t=1727878161; cv=none; b=dLifaPHKRG1k4abozhKiSCFLbgGri7qeTS/co0VrmNE+8r0IdusU91sUs8ucd5iwABB8r63jPQG9rGqSlgUz/KVwFBnj4y99uA9unAf85Osm5b9APe1BXfMEAmktnNUPiwbl1rhm1MISenidUTSjr74IvolFBMiQdabDFwHrKnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879620; c=relaxed/simple;
-	bh=1bcJRlpIHkDs8pBsJUo5c4z4daakA8HLhG6FDcdYT+8=;
+	s=arc-20240116; t=1727878161; c=relaxed/simple;
+	bh=hnmrm+PtK+vRQHuPUOG9rlVAt9/TK9H3WSrMtKO/eFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwWBemUK+kifyvkJBJMG+C/GgsopUIybuAefUdzagA+tAqMyyocsXgNIAwXpDFjhJxacYLyAB4nv3GWCVGwCPRJTjKN2bJPiycxJa0MP/jDUXVzNB4K/LQmgpfpvRVQP8A1GtlN7KRqJxp06iFrI5QvPHC+/J7VVkx0Py7zFfuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPGBoB2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706F9C4CEC5;
-	Wed,  2 Oct 2024 14:33:39 +0000 (UTC)
+	 MIME-Version; b=YMVyPuog9lciY0cU22klo2Mj7aiXP8j4E8PPgOYZMkdh/7zmJDlznx5o+61v0eJOelOvUnYdG8zs7ebcWyLxIP1MLVeqgMbkm08gObRgzLrSkYGQgA8Z0cq1LFvhJ2+ahh7ZyAut1am4bLgvxUxxDJWcHKZYA0ZC0FWk2nNElwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpONU/Y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20FBC4CEC5;
+	Wed,  2 Oct 2024 14:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879619;
-	bh=1bcJRlpIHkDs8pBsJUo5c4z4daakA8HLhG6FDcdYT+8=;
+	s=korg; t=1727878161;
+	bh=hnmrm+PtK+vRQHuPUOG9rlVAt9/TK9H3WSrMtKO/eFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPGBoB2i2BVnSDQtOECF22y6lNgms3+EFgexJZyE5uvQk1iZ8i+wWkXQjmddTiCjM
-	 gRZp+jzsUUvKppMMMYj5qxPcG+8BBotwBjw6f2i2/07FrZFVAsC/VxQgD4Ezst0NhL
-	 qiUWqRHbPQjRzENpZIE3lu/n/gfy7ubkzt1zrBV0=
+	b=rpONU/Y5xV0VBgoUIyYhpHW4yIE1811Z7C8cJKt94BHe9wsyNpaBmd/+KQ4+OER79
+	 7uO5MCprrE/zSjeNQlNXs016oM9ER4NKfOukCxXmxgTs1RRLktEiRi5/s/7D7DoZWX
+	 uF5etU/vQKXbWNjQOEGFBAXwlZh9QlJPKlUuXe4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/538] selftests/bpf: Fix error linking uprobe_multi on mips
+Subject: [PATCH 6.10 320/634] clk: rockchip: Set parent rate for DCLK_VOP clock on RK3228
 Date: Wed,  2 Oct 2024 14:57:00 +0200
-Message-ID: <20241002125759.401627536@linuxfoundation.org>
+Message-ID: <20241002125823.735433324@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit a5f40d596bff182b4b47547712f540885e8fb17b ]
+[ Upstream commit 1d34b9757523c1ad547bd6d040381f62d74a3189 ]
 
-Linking uprobe_multi.c on mips64el fails due to relocation overflows, when
-the GOT entries required exceeds the default maximum. Add a specific CFLAGS
-(-mxgot) for uprobe_multi.c on MIPS that allows using a larger GOT and
-avoids errors such as:
+Similar to DCLK_LCDC on RK3328, the DCLK_VOP on RK3228 is typically
+parented by the hdmiphy clk and it is expected that the DCLK_VOP and
+hdmiphy clk rate are kept in sync.
 
-  /tmp/ccBTNQzv.o: in function `bench':
-  uprobe_multi.c:49:(.text+0x1d7720): relocation truncated to fit: R_MIPS_GOT_DISP against `uprobe_multi_func_08188'
-  uprobe_multi.c:49:(.text+0x1d7730): relocation truncated to fit: R_MIPS_GOT_DISP against `uprobe_multi_func_08189'
-  ...
-  collect2: error: ld returned 1 exit status
+Use CLK_SET_RATE_PARENT and CLK_SET_RATE_NO_REPARENT flags, same as used
+on RK3328, to make full use of all possible supported display modes.
 
-Fixes: 519dfeaf5119 ("selftests/bpf: Add uprobe_multi test program")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/14eb7b70f8ccef9834874d75eb373cb9292129da.1721692479.git.tony.ambardar@gmail.com
+Fixes: 0a9d4ac08ebc ("clk: rockchip: set the clock ids for RK3228 VOP")
+Fixes: 307a2e9ac524 ("clk: rockchip: add clock controller for rk3228")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20240615170417.3134517-3-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/rockchip/clk-rk3228.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index caede9b574cb1..598cd118dfd65 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -702,6 +702,8 @@ $(OUTPUT)/veristat: $(OUTPUT)/veristat.o
- 	$(call msg,BINARY,,$@)
- 	$(Q)$(CC) $(CFLAGS) $(LDFLAGS) $(filter %.a %.o,$^) $(LDLIBS) -o $@
+diff --git a/drivers/clk/rockchip/clk-rk3228.c b/drivers/clk/rockchip/clk-rk3228.c
+index a24a35553e134..7343d2d7676bc 100644
+--- a/drivers/clk/rockchip/clk-rk3228.c
++++ b/drivers/clk/rockchip/clk-rk3228.c
+@@ -409,7 +409,7 @@ static struct rockchip_clk_branch rk3228_clk_branches[] __initdata = {
+ 			RK2928_CLKSEL_CON(29), 0, 3, DFLAGS),
+ 	DIV(0, "sclk_vop_pre", "sclk_vop_src", 0,
+ 			RK2928_CLKSEL_CON(27), 8, 8, DFLAGS),
+-	MUX(DCLK_VOP, "dclk_vop", mux_dclk_vop_p, 0,
++	MUX(DCLK_VOP, "dclk_vop", mux_dclk_vop_p, CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPARENT,
+ 			RK2928_CLKSEL_CON(27), 1, 1, MFLAGS),
  
-+# Linking uprobe_multi can fail due to relocation overflows on mips.
-+$(OUTPUT)/uprobe_multi: CFLAGS += $(if $(filter mips, $(ARCH)),-mxgot)
- $(OUTPUT)/uprobe_multi: uprobe_multi.c
- 	$(call msg,BINARY,,$@)
- 	$(Q)$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+ 	FACTOR(0, "xin12m", "xin24m", 0, 1, 2),
 -- 
 2.43.0
 
