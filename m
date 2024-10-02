@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-80246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A472198DC9F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF52998DA02
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CDCA1F27DA1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D202868A6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A17D1D1E65;
-	Wed,  2 Oct 2024 14:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC5B1D12F7;
+	Wed,  2 Oct 2024 14:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGbuazjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4MahBqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365E71D1E60;
-	Wed,  2 Oct 2024 14:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B19C1D0420;
+	Wed,  2 Oct 2024 14:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879808; cv=none; b=WF5c0ybaDLlL/QioA8mO0rzY/dKBEQmZ99yrJtRHlZuHV9jcVxi5CEcLEO6gjnzdl8TuVp8xLCxuIPrmVwQ4P/DP/ElxvSs5dvH9T4kMNhhzoMFb5LZckQV6Z6JhqPiA/Ow29zV7cXYsVELpU81QqmG63mPZdhntNjcfz9PXTEU=
+	t=1727878352; cv=none; b=WzQxb9KXy44xGC8wMFxZ9oJ/NCsuHreFctysai4boplpGk5p3N5MA/+Md7FqdCO1MWVGT3Ubu2amnFdsZAU1PkBTMWpfmkkuvnnKsutRwEsQfw+FcPnun858SAnyEjEtviFN9eZvw5FVC7BrsQsBA5G7aeqDP+QU9JuMd0yxcPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879808; c=relaxed/simple;
-	bh=66vRco0kXi6ZUfKE425SzAnNE69CiZOzNfhDXvVgKJw=;
+	s=arc-20240116; t=1727878352; c=relaxed/simple;
+	bh=LGk6lSKHjUflIdDXpB4i31EV75lNo0m5xseQzvbJji4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YionubkFpDgbaMn9pqrHzZ4Vp/uC7NHiG8RZa0cP4WyONz2MNEwAcc7kl1Yt4AmO8aFiXmu+AjBxevyGvdEttEv8ou/6+gMb+ZKH7M9d7JzkqpFyfBWmAkfx9qANx5DL5ID51ClJfOrstknh23N2MolZqMj1z1qL+7U1kDOrlc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGbuazjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827D2C4CEC5;
-	Wed,  2 Oct 2024 14:36:47 +0000 (UTC)
+	 MIME-Version; b=ORfFS6GSr1jjRgb8reaBgFPoA7ald7Od57E4NBxFQN8OCyUThYsx9IEAHYPfo3S1mZ+4phFtBI+6vKR73SmCPb+f7UCOTO8SXmcWA+bVyjSVwPiIUZ3g7iWt1KtL9tCyXKaDg+wl1yTCYDa3aRMk+NsD75lKasXlPk2TVQkgduY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4MahBqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21524C4CEC2;
+	Wed,  2 Oct 2024 14:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879808;
-	bh=66vRco0kXi6ZUfKE425SzAnNE69CiZOzNfhDXvVgKJw=;
+	s=korg; t=1727878352;
+	bh=LGk6lSKHjUflIdDXpB4i31EV75lNo0m5xseQzvbJji4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGbuazjU0st92dojzwjs4D4Y/Fhqci5MlqrrKYzxVrPGPvDfBVIJcJGDHZSPgnJLE
-	 SxsRT5lo9Jb09tDU37Bhel1pZvo0eZPp1ka/h3Z6itRTUM49TzTehpEJtUoyU5Zwm4
-	 EGFpmB7o+bpDsKqvQXDQYHPofVmPUy1IU7NOR55o=
+	b=Y4MahBqx8TaCZ9Q8pYW2cNLM9ESxPCbndZI8s+MmtV3kEz13gJIvzbqbPucjnPRDW
+	 wZxwmdBFbIEi02IQB0Xh3OtwW+d0XK1RTBSxtNy9oknTVee/6FnXvWV2lYR0ROatbD
+	 10iMnv8Fys4vHUjHUrlGvn+92nt7dDoH/UTkFCMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Stephane Eranian <eranian@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/538] perf mem: Free the allocated sort string, fixing a leak
+Subject: [PATCH 6.10 385/634] RDMA/cxgb4: Added NULL check for lookup_atid
 Date: Wed,  2 Oct 2024 14:58:05 +0200
-Message-ID: <20241002125801.961334042@linuxfoundation.org>
+Message-ID: <20241002125826.299684136@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,47 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
 
-[ Upstream commit 3da209bb1177462b6fe8e3021a5527a5a49a9336 ]
+[ Upstream commit e766e6a92410ca269161de059fff0843b8ddd65f ]
 
-The get_sort_order() returns either a new string (from strdup) or NULL
-but it never gets freed.
+The lookup_atid() function can return NULL if the ATID is
+invalid or does not exist in the identifier table, which
+could lead to dereferencing a null pointer without a
+check in the `act_establish()` and `act_open_rpl()` functions.
+Add a NULL check to prevent null pointer dereferencing.
 
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Fixes: 2e7f545096f954a9 ("perf mem: Factor out a function to generate sort order")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: https://lore.kernel.org/r/20240731235505.710436-3-namhyung@kernel.org
-[ Added Fixes tag ]
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: cfdda9d76436 ("RDMA/cxgb4: Add driver for Chelsio T4 RNIC")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+Link: https://patch.msgid.link/20240912145844.77516-1-m.lobanov@rosalinux.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-mem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/cxgb4/cm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/perf/builtin-mem.c b/tools/perf/builtin-mem.c
-index 51499c20da01e..865f321d729b6 100644
---- a/tools/perf/builtin-mem.c
-+++ b/tools/perf/builtin-mem.c
-@@ -372,6 +372,7 @@ static int report_events(int argc, const char **argv, struct perf_mem *mem)
- 		rep_argv[i] = argv[j];
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index 040ba2224f9ff..b3757c6a0457a 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -1222,6 +1222,8 @@ static int act_establish(struct c4iw_dev *dev, struct sk_buff *skb)
+ 	int ret;
  
- 	ret = cmd_report(i, rep_argv);
-+	free(new_sort_order);
- 	free(rep_argv);
- 	return ret;
- }
+ 	ep = lookup_atid(t, atid);
++	if (!ep)
++		return -EINVAL;
+ 
+ 	pr_debug("ep %p tid %u snd_isn %u rcv_isn %u\n", ep, tid,
+ 		 be32_to_cpu(req->snd_isn), be32_to_cpu(req->rcv_isn));
+@@ -2279,6 +2281,9 @@ static int act_open_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
+ 	int ret = 0;
+ 
+ 	ep = lookup_atid(t, atid);
++	if (!ep)
++		return -EINVAL;
++
+ 	la = (struct sockaddr_in *)&ep->com.local_addr;
+ 	ra = (struct sockaddr_in *)&ep->com.remote_addr;
+ 	la6 = (struct sockaddr_in6 *)&ep->com.local_addr;
 -- 
 2.43.0
 
