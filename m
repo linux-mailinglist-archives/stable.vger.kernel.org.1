@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D2198D7E2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9775C98D4E8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BFC21F22CDD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 596CA28170E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D847D1D094A;
-	Wed,  2 Oct 2024 13:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61441D043D;
+	Wed,  2 Oct 2024 13:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY6fggAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/+3MbNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D1C1D0940;
-	Wed,  2 Oct 2024 13:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A991D043E;
+	Wed,  2 Oct 2024 13:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877233; cv=none; b=nO3dz9xnNGafsDocnQhs6h8YbsC8W9BhAINafjctt1NJ/6dV90dkAAUqlo5Ce4oU7Vlq1XYQlBkYGNtjcrngAGV4X71HcZBb/yMvzfI2nWfjxGHoXDS1DuhDxOi4BSElS6aGTv1ywnFU1JI42by+sD/Jx1xehWjwe3bB6cxFLl0=
+	t=1727875486; cv=none; b=ThhAIgRSf2cQrN0+/jN7TBh0D1Pg8ZZZwavflC9LH/RF59onw7t8h3ZgOGkvgJJTImSIRorQPqMFXf/Z6JYnkFOtcmC84UbsPGddvckUq8I7r5eilVzOclBq8Ed/vVVzByrot8DestQZnV3SOp0tjIqFvlSmoxVqO3kjuCfBFNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877233; c=relaxed/simple;
-	bh=uyTifUtuXvcYe++pc0UjFPqBFgGuAOKylZbMrWndHGM=;
+	s=arc-20240116; t=1727875486; c=relaxed/simple;
+	bh=PJIjmgiV8OeOuSG+X15ZDTMLlrWoYOV8iXUNt5Rqx2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyCr9Rve9vk0ONeK9nYAWR+ThXes4mLzFPpM4xm8F52lfbDzLm9p5MjK5U8HDc6Jc6KVC1kaWITbxjgrG1affdERfehW4sUnCEkQrBx77J4al/InWpmiHj7mBBNt78A+jnrRg4TqaEo+NuGW38zZ1NSFWKmsBmqI9zda/yYIeus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY6fggAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5E4C4CED5;
-	Wed,  2 Oct 2024 13:53:52 +0000 (UTC)
+	 MIME-Version; b=dstvzHVQNLZYerWieZwtZHYcUYpnixwS0OzbY2xmgE+Vo7Lx7WJWCnPaNmqJUO/4aOQdqUoUGk8hShf8Z6f9ehyktiiZz+XVXjFOv0yEVTORCheBxPL+cwoZTn5afDVXfHXcv0S6yzwqvETXQD/bAB9rqYg0x8fE2H9fTgi7NXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/+3MbNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE345C4CEC5;
+	Wed,  2 Oct 2024 13:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877233;
-	bh=uyTifUtuXvcYe++pc0UjFPqBFgGuAOKylZbMrWndHGM=;
+	s=korg; t=1727875486;
+	bh=PJIjmgiV8OeOuSG+X15ZDTMLlrWoYOV8iXUNt5Rqx2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XY6fggAuT9jT5def3kgE/pxdBxYfwi1lGbznc6enMRlgdViLj0IRAR8BV6k/Z9Kdc
-	 BF6bSPA4sdSEDJEkmD7J0144aE6Sgt51QotUdtFL2I4D9ov+ZOV5od+QdCd9tlNW2+
-	 +9U+BhiUH6sdmEQ0OMJPTub51+cVTMQqXTZ+4cKk=
+	b=M/+3MbNAsD/2lbHK08687VVJt8mr1VEzNg5ebkMWn1bZ6elSPh3kUVPeFBy4GPnCb
+	 YmPXuA4ryGAVlFJqLhT//8FJyXtuCjP9ONRdIubzI5ssidrfGuNoStah2liJdcJ3lT
+	 triqhEDvJ+lYenK93FGLiTPIaRszTZbXOUjdzyC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Su Hui <suhui@nfschina.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 014/634] wifi: ath12k: fix invalid AMPDU factor calculation in ath12k_peer_assoc_h_he()
+Subject: [PATCH 6.11 116/695] net: tipc: avoid possible garbage value
 Date: Wed,  2 Oct 2024 14:51:54 +0200
-Message-ID: <20241002125811.656978919@linuxfoundation.org>
+Message-ID: <20241002125827.104174244@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit a66de2d0f22b1740f3f9777776ad98c4bee62dff ]
+[ Upstream commit 99655a304e450baaae6b396cb942b9e47659d644 ]
 
-Currently ampdu_factor is wrongly calculated in ath12k_peer_assoc_h_he(), fix it.
+Clang static checker (scan-build) warning:
+net/tipc/bcast.c:305:4:
+The expression is an uninitialized value. The computed value will also
+be garbage [core.uninitialized.Assign]
+  305 |                         (*cong_link_cnt)++;
+      |                         ^~~~~~~~~~~~~~~~~~
 
-This is found during code review.
+tipc_rcast_xmit() will increase cong_link_cnt's value, but cong_link_cnt
+is uninitialized. Although it won't really cause a problem, it's better
+to fix it.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240710021819.87216-1-quic_bqiang@quicinc.com
+Fixes: dca4a17d24ee ("tipc: fix potential hanging after b/rcast changing")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Link: https://patch.msgid.link/20240912110119.2025503-1-suhui@nfschina.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/tipc/bcast.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 7037004ce9771..818ee74cf7a05 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1948,9 +1948,8 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	 * request, then use MAX_AMPDU_LEN_FACTOR as 16 to calculate max_ampdu
- 	 * length.
- 	 */
--	ampdu_factor = (he_cap->he_cap_elem.mac_cap_info[3] &
--			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK) >>
--			IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK;
-+	ampdu_factor = u8_get_bits(he_cap->he_cap_elem.mac_cap_info[3],
-+				   IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK);
+diff --git a/net/tipc/bcast.c b/net/tipc/bcast.c
+index 593846d252143..114fef65f92ea 100644
+--- a/net/tipc/bcast.c
++++ b/net/tipc/bcast.c
+@@ -320,8 +320,8 @@ static int tipc_mcast_send_sync(struct net *net, struct sk_buff *skb,
+ {
+ 	struct tipc_msg *hdr, *_hdr;
+ 	struct sk_buff_head tmpq;
++	u16 cong_link_cnt = 0;
+ 	struct sk_buff *_skb;
+-	u16 cong_link_cnt;
+ 	int rc = 0;
  
- 	if (ampdu_factor) {
- 		if (sta->deflink.vht_cap.vht_supported)
+ 	/* Is a cluster supporting with new capabilities ? */
 -- 
 2.43.0
 
