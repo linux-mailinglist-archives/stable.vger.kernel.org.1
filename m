@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-78943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D4D98D5BE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814EB98D908
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C474A1C22095
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3DA01C22C77
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480DA1D049A;
-	Wed,  2 Oct 2024 13:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83711D0BB0;
+	Wed,  2 Oct 2024 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLA+K+L6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmKbizRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EE51D078E;
-	Wed,  2 Oct 2024 13:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9555E1D0DF7;
+	Wed,  2 Oct 2024 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875981; cv=none; b=Dm/GzzjEH5U1VjYYVpmazMlhbaJj60BUabpeXgNZ8cIN4XegU++R1T+mCxnV/BFvRM5yrSa9KtXYQNT1wPkCgnLT8vzCHjDlYuKgMXLvnMpyuf8vvXG834QEoLz876r4ik552lpr45jQ6OTEi2MO6K4t8voxWAxykahkg0cpEqA=
+	t=1727877756; cv=none; b=IiY9wozrC4u36nhYIvTtBrauPArfRpuDz7BvblMtW7a5DWnBbQ3uJxdtjRNaKnswcLG+aJO9ao/ei13Zd0lvMEwLHDwTNzHOz39BNPzZi/ZzFHpeOavT4S7ue3NILF7dCtTE/EJTzulozyH7A4e8HE2nlREc4mv5lL8XzLEFwn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875981; c=relaxed/simple;
-	bh=mijT2t1vRf9S5xlkoljccBaz81ogKHcNZGtDEWDpcgM=;
+	s=arc-20240116; t=1727877756; c=relaxed/simple;
+	bh=DfiFUGqk9zbAR4XwVchVP6IcJoP4apuTUVNJ8BymfRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzmzGg8pXPeFeo6gBvZYtz7THuCDNV1FxSx/Qea1fnfzoXYrqAs0QbgaXAseJR5Nq37TPsBALC7Y0NQXLRKf2hzAP0HaysT9kquO+lhKoMNG2z2n8+TnSOYLXlsqCC/UpD38zCHrFV0WrwMgga9YyRrgY/tngB1wnkNMxYwn3jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLA+K+L6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAB4C4CEC5;
-	Wed,  2 Oct 2024 13:33:00 +0000 (UTC)
+	 MIME-Version; b=aY3MzOFM96w8rotezDdfqIb7HzkDd6f5ZIWX+HO4iSeilibaZ6KsRWBKmn3tVcD0+Jg5sGiZ+zGobuICKslWXZZarBLKImHTGY18Mlb3pqLF0wTbipWDlxkUcGe1D6qj4+3/tj1o0YkbXvhm++YPO6gHDc1IjdjVTIhzz1uc2No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmKbizRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA80CC4CEC2;
+	Wed,  2 Oct 2024 14:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875980;
-	bh=mijT2t1vRf9S5xlkoljccBaz81ogKHcNZGtDEWDpcgM=;
+	s=korg; t=1727877756;
+	bh=DfiFUGqk9zbAR4XwVchVP6IcJoP4apuTUVNJ8BymfRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLA+K+L6wMzCX5xO90cfFfQQUQboqJ1L/pJuQHAEgu7YU6Td4A+l+DJbk/GcZhhld
-	 iCw90Ow9Gsb56jBAB/qQa345qJpwxVEjZcHAX3dBtwJ6jtv2DDypKMKyvmL5OaaaWr
-	 HpwNA5+K1PblzXvThhe8KlmoJVzU8w+7GMLIMIaM=
+	b=KmKbizRyl35oBv4/ricZaft0g+Ddu0PMNQZIhnK1cGC/FdxjQTqKivwF1jG5nXcKx
+	 9cTxXC0j6+yYrtMI3hwDXlLwWFyiRpFPFBHBd18Gz+t2MkUmvMwWvZ+qgpjTODOYaQ
+	 QEOm90BaPMNmeWq3h9+P1S00w+40J7FJWUuvpuAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Gilbert Wu <Gilbert.Wu@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 286/695] selftests/bpf: Fix compile if backtrace support missing in libc
+Subject: [PATCH 6.10 184/634] scsi: smartpqi: revert propagate-the-multipath-failure-to-SML-quickly
 Date: Wed,  2 Oct 2024 14:54:44 +0200
-Message-ID: <20241002125833.859565605@linuxfoundation.org>
+Message-ID: <20241002125818.370846694@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +66,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Gilbert Wu <Gilbert.Wu@microchip.com>
 
-[ Upstream commit c9a83e76b5a96801a2c7ea0a79ca77c356d8b38d ]
+[ Upstream commit f1393d52e6cda9c20f12643cbecf1e1dc357e0e2 ]
 
-Include GNU <execinfo.h> header only with glibc and provide weak, stubbed
-backtrace functions as a fallback in test_progs.c. This allows for non-GNU
-replacements while avoiding compile errors (e.g. with musl libc) like:
+Correct a rare multipath failure issue by reverting commit 94a68c814328
+("scsi: smartpqi: Quickly propagate path failures to SCSI midlayer") [1].
 
-  test_progs.c:13:10: fatal error: execinfo.h: No such file or directory
-     13 | #include <execinfo.h> /* backtrace */
-        |          ^~~~~~~~~~~~
-  test_progs.c: In function 'crash_handler':
-  test_progs.c:1034:14: error: implicit declaration of function 'backtrace' [-Werror=implicit-function-declaration]
-   1034 |         sz = backtrace(bt, ARRAY_SIZE(bt));
-        |              ^~~~~~~~~
-  test_progs.c:1045:9: error: implicit declaration of function 'backtrace_symbols_fd' [-Werror=implicit-function-declaration]
-   1045 |         backtrace_symbols_fd(bt, sz, STDERR_FILENO);
-        |         ^~~~~~~~~~~~~~~~~~~~
+Reason for revert: The patch propagated the path failure to SML quickly
+when one of the path fails during IO and AIO path gets disabled for a
+multipath device.
 
-Fixes: 9fb156bb82a3 ("selftests/bpf: Print backtrace on SIGSEGV in test_progs")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/aa6dc8e23710cb457b278039d0081de7e7b4847d.1722244708.git.tony.ambardar@gmail.com
+But it created a new issue: when creating a volume on an encryption-enabled
+controller, the firmware reports the AIO path is disabled, which cause the
+driver to report a path failure to SML for a multipath device.
+
+There will be a new fix to handle "Illegal request" and "Invalid field in
+parameter list" on RAID path when the AIO path is disabled on a multipath
+device.
+
+[1] https://lore.kernel.org/all/164375209313.440833.9992416628621839233.stgit@brunhilda.pdev.net/
+
+Fixes: 94a68c814328 ("scsi: smartpqi: Quickly propagate path failures to SCSI midlayer")
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: Gilbert Wu <Gilbert.Wu@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20240711194704.982400-4-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_progs.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 20 ++------------------
+ 1 file changed, 2 insertions(+), 18 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_progs.c b/tools/testing/selftests/bpf/test_progs.c
-index 60c5ec0f6abf6..d5d0cb4eb1975 100644
---- a/tools/testing/selftests/bpf/test_progs.c
-+++ b/tools/testing/selftests/bpf/test_progs.c
-@@ -10,7 +10,6 @@
- #include <sched.h>
- #include <signal.h>
- #include <string.h>
--#include <execinfo.h> /* backtrace */
- #include <sys/sysinfo.h> /* get_nprocs */
- #include <netinet/in.h>
- #include <sys/select.h>
-@@ -19,6 +18,21 @@
- #include <bpf/btf.h>
- #include "json_writer.h"
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 24c7cb285dca0..c1524fb334eb5 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -2354,14 +2354,6 @@ static inline void pqi_mask_device(u8 *scsi3addr)
+ 	scsi3addr[3] |= 0xc0;
+ }
  
-+#ifdef __GLIBC__
-+#include <execinfo.h> /* backtrace */
-+#endif
-+
-+/* Default backtrace funcs if missing at link */
-+__weak int backtrace(void **buffer, int size)
-+{
-+	return 0;
-+}
-+
-+__weak void backtrace_symbols_fd(void *const *buffer, int size, int fd)
-+{
-+	dprintf(fd, "<backtrace not supported>\n");
-+}
-+
- static bool verbose(void)
+-static inline bool pqi_is_multipath_device(struct pqi_scsi_dev *device)
+-{
+-	if (pqi_is_logical_device(device))
+-		return false;
+-
+-	return (device->path_map & (device->path_map - 1)) != 0;
+-}
+-
+ static inline bool pqi_expose_device(struct pqi_scsi_dev *device)
  {
- 	return env.verbosity > VERBOSE_NONE;
+ 	return !device->is_physical_device || !pqi_skip_device(device->scsi3addr);
+@@ -3258,14 +3250,12 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
+ 	int residual_count;
+ 	int xfer_count;
+ 	bool device_offline;
+-	struct pqi_scsi_dev *device;
+ 
+ 	scmd = io_request->scmd;
+ 	error_info = io_request->error_info;
+ 	host_byte = DID_OK;
+ 	sense_data_length = 0;
+ 	device_offline = false;
+-	device = scmd->device->hostdata;
+ 
+ 	switch (error_info->service_response) {
+ 	case PQI_AIO_SERV_RESPONSE_COMPLETE:
+@@ -3290,14 +3280,8 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
+ 			break;
+ 		case PQI_AIO_STATUS_AIO_PATH_DISABLED:
+ 			pqi_aio_path_disabled(io_request);
+-			if (pqi_is_multipath_device(device)) {
+-				pqi_device_remove_start(device);
+-				host_byte = DID_NO_CONNECT;
+-				scsi_status = SAM_STAT_CHECK_CONDITION;
+-			} else {
+-				scsi_status = SAM_STAT_GOOD;
+-				io_request->status = -EAGAIN;
+-			}
++			scsi_status = SAM_STAT_GOOD;
++			io_request->status = -EAGAIN;
+ 			break;
+ 		case PQI_AIO_STATUS_NO_PATH_TO_DEVICE:
+ 		case PQI_AIO_STATUS_INVALID_DEVICE:
 -- 
 2.43.0
 
