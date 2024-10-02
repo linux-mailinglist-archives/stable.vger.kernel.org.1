@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-79287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4113898D77D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:50:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF71298D756
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05477281976
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:50:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D84C31C20EAD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9553E17B421;
-	Wed,  2 Oct 2024 13:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B051D0436;
+	Wed,  2 Oct 2024 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4Z2/X2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qr5s8wJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516F618DF60;
-	Wed,  2 Oct 2024 13:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA012BAF9;
+	Wed,  2 Oct 2024 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877004; cv=none; b=CmkpGtP/qYduInEMtcBfpZfIJZYrY5fQsxkpIvZK/5REPc68LuSDlnshlffxGvO8NnAgAUN/Nz2fGx/G+KBoQ5cnoEaKRRNDv+YMKD/lCbkXNPazHsS2+2aWGQWSqWvUlSW2sxIJ9jgN4akBEcFJY0G1xp1vBEe3Z0rY70oKBUg=
+	t=1727876907; cv=none; b=RhVCFakr8euyxaCjrA7FBHWdYXBLYCskRkkMeRAh+Q5XWivFosWaBjXErm65btQrZ7P/ZjhGjLNj+H8D9iArzyveb4lfYX4FS64whYhZiKHYGCbKdoB2DTsbHuPKh/0ywQ+piPyzPPEhW4bT4k7KTOJ32fyj3Moj7nkxAaGXM/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877004; c=relaxed/simple;
-	bh=gw+mDln4C5kOGMHzROeQO/z1NrCRWAL/ZJirqVhQJ8o=;
+	s=arc-20240116; t=1727876907; c=relaxed/simple;
+	bh=M+px9hTT3wJUz9AJlrOZECohpuRLdWihKT/Af+q/Kc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t8pJ/vtbB7BMNhMX7UvQDgdmUVqIpWSD4vQM/wcAs0X4qQLVQomB9GMs0R6C1OLJIvvTuujjVwEyucRfdz807TuckAl8AM0jamNsGtlUZFt0LF0dqGs9GS+eBf7GdhTs64VOI/zvldIvbO7gFpLNAxfA9JZBVXzQzsAc6MduXW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4Z2/X2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A0C4CEC2;
-	Wed,  2 Oct 2024 13:50:03 +0000 (UTC)
+	 MIME-Version; b=mEv7VW6denpPdTqBjYBnKCzv0MINLYAO87+Nkk/lzCed0K70SGow72XhJtBqmrAHFFYxavqtO7NRqQY1V+YKh4epprGcZHTimYmEAZLzPYqhEDaaqgs6bpthnXuuoEycuytZ1kaXtnsr/lJWzefhWhvc4w8Xv8xXDymon5rTWHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qr5s8wJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA42C4CEC2;
+	Wed,  2 Oct 2024 13:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877003;
-	bh=gw+mDln4C5kOGMHzROeQO/z1NrCRWAL/ZJirqVhQJ8o=;
+	s=korg; t=1727876907;
+	bh=M+px9hTT3wJUz9AJlrOZECohpuRLdWihKT/Af+q/Kc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4Z2/X2BBOOlNotpsqPG3KJatnISOfiz5MPxOuEYCVeoDkErP2RW4T3LukwAOhvYI
-	 OhZd5y1VMbimcoOw/RPM7ncxG/4vWMcYRk81hwehI5q8L3JK+LmWOQgNh1TrwndytF
-	 KMPdnz9MsDO0QqcYOkEhtoO+E5j2N0kTTjNPEBTE=
+	b=Qr5s8wJ8wQ4eYgpq6/9t8scCs7JW6RcqkLeNBzCePJkifg0RexXdsUq08iVyDhYtf
+	 Iz3k/zmLh7wdoX10hy/wo3gfLd6Q43FzghRsDNPAaemmWuzniKyqJsFoSsBs/OXbq2
+	 2Qf/OdxfQy1aQjmqfLxmT+sAV4LK18cPwhGTBctQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Ernesto=20A . =20Fern=C3=A1ndez?=" <ernesto.mnd.fernandez@gmail.com>,
-	Brian Masney <bmasney@redhat.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Pavan Kumar Paluri <papaluri@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.11 600/695] crypto: qcom-rng - fix support for ACPI-based systems
-Date: Wed,  2 Oct 2024 14:59:58 +0200
-Message-ID: <20241002125846.464978751@linuxfoundation.org>
+Subject: [PATCH 6.11 601/695] crypto: ccp - Properly unregister /dev/sev on sev PLATFORM_STATUS failure
+Date: Wed,  2 Oct 2024 14:59:59 +0200
+Message-ID: <20241002125846.504570617@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -61,59 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Pavan Kumar Paluri <papaluri@amd.com>
 
-commit 3e87031a6ce68f13722155497cd511a00b56a2ae upstream.
+commit ce3d2d6b150ba8528f3218ebf0cee2c2c572662d upstream.
 
-The qcom-rng driver supports both ACPI and device tree-based systems.
-ACPI support was broken when the hw_random interface support was added.
-Let's go ahead and fix this by adding the appropriate driver data to the
-ACPI match table, and change the of_device_get_match_data() call to
-device_get_match_data() so that it will also work on ACPI-based systems.
+In case of sev PLATFORM_STATUS failure, sev_get_api_version() fails
+resulting in sev_data field of psp_master nulled out. This later becomes
+a problem when unloading the ccp module because the device has not been
+unregistered (via misc_deregister()) before clearing the sev_data field
+of psp_master. As a result, on reloading the ccp module, a duplicate
+device issue is encountered as can be seen from the dmesg log below.
 
-This fix was boot tested on a Qualcomm Amberwing server (ACPI based) and
-on a Qualcomm SA8775p Automotive Development Board (DT based). I also
-verified that qcom-rng shows up in /proc/crypto on both systems.
+on reloading ccp module via modprobe ccp
 
-Fixes: f29cd5bb64c2 ("crypto: qcom-rng - Add hw_random interface support")
-Reported-by: Ernesto A. Fernández <ernesto.mnd.fernandez@gmail.com>
-Closes: https://lore.kernel.org/linux-arm-msm/20240828184019.GA21181@eaf/
+Call Trace:
+  <TASK>
+  dump_stack_lvl+0xd7/0xf0
+  dump_stack+0x10/0x20
+  sysfs_warn_dup+0x5c/0x70
+  sysfs_create_dir_ns+0xbc/0xd
+  kobject_add_internal+0xb1/0x2f0
+  kobject_add+0x7a/0xe0
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? get_device_parent+0xd4/0x1e0
+  ? __pfx_klist_children_get+0x10/0x10
+  device_add+0x121/0x870
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  device_create_groups_vargs+0xdc/0x100
+  device_create_with_groups+0x3f/0x60
+  misc_register+0x13b/0x1c0
+  sev_dev_init+0x1d4/0x290 [ccp]
+  psp_dev_init+0x136/0x300 [ccp]
+  sp_init+0x6f/0x80 [ccp]
+  sp_pci_probe+0x2a6/0x310 [ccp]
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  local_pci_probe+0x4b/0xb0
+  work_for_cpu_fn+0x1a/0x30
+  process_one_work+0x203/0x600
+  worker_thread+0x19e/0x350
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xeb/0x120
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x3c/0x60
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+  kobject: kobject_add_internal failed for sev with -EEXIST, don't try to register things with the same name in the same directory.
+  ccp 0000:22:00.1: sev initialization failed
+  ccp 0000:22:00.1: psp initialization failed
+  ccp 0000:a2:00.1: no command queues available
+  ccp 0000:a2:00.1: psp enabled
+
+Address this issue by unregistering the /dev/sev before clearing out
+sev_data in case of PLATFORM_STATUS failure.
+
+Fixes: 200664d5237f ("crypto: ccp: Add Secure Encrypted Virtualization (SEV) command support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/qcom-rng.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/ccp/sev-dev.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/crypto/qcom-rng.c
-+++ b/drivers/crypto/qcom-rng.c
-@@ -196,7 +196,7 @@ static int qcom_rng_probe(struct platfor
- 	if (IS_ERR(rng->clk))
- 		return PTR_ERR(rng->clk);
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -2421,6 +2421,8 @@ void sev_pci_init(void)
+ 	return;
  
--	rng->of_data = (struct qcom_rng_of_data *)of_device_get_match_data(&pdev->dev);
-+	rng->of_data = (struct qcom_rng_of_data *)device_get_match_data(&pdev->dev);
+ err:
++	sev_dev_destroy(psp_master);
++
+ 	psp_master->sev_data = NULL;
+ }
  
- 	qcom_rng_dev = rng;
- 	ret = crypto_register_rng(&qcom_rng_alg);
-@@ -247,7 +247,7 @@ static struct qcom_rng_of_data qcom_trng
- };
- 
- static const struct acpi_device_id __maybe_unused qcom_rng_acpi_match[] = {
--	{ .id = "QCOM8160", .driver_data = 1 },
-+	{ .id = "QCOM8160", .driver_data = (kernel_ulong_t)&qcom_prng_ee_of_data },
- 	{}
- };
- MODULE_DEVICE_TABLE(acpi, qcom_rng_acpi_match);
 
 
 
