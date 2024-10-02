@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDFF98D7D8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:53:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8B198D4E0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4377A1C229AE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:53:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 743701F21113
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF721D04B4;
-	Wed,  2 Oct 2024 13:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95951D0945;
+	Wed,  2 Oct 2024 13:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19WtNLb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pepXxjTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E20D29CE7;
-	Wed,  2 Oct 2024 13:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D1D1D07BA;
+	Wed,  2 Oct 2024 13:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877221; cv=none; b=oqwhU0LOyfYOU1ZwxzYdJWyPODGoHyZ1kK+Ih9HXrq/baRoGkmun3VbQzD+R/tDqyu/5otJ8tp2qX36MIXboRYrVq+g+yDDyK9heTXNDuQxBJ5CFnEX7aw9Epr0/mF64Ueh32Ats3A1KjByAJLMm/UvQ1w4e+MWxamU3YwZx/Eo=
+	t=1727875477; cv=none; b=hUZmi3Swh8Ts6DArFZ/z6+KGK8xgz3FGFXPdbwFqgJkoWUjpz3KVjH9eLFtjydTMQDcba0uJIXZT3Nb8T0+3gK39mVc3R06SOBY1E+OILmY2lbJ/avq1BA+OVznXpIoPw/i4a8PM4L5jfIA6TM21hF/tBjqyKC9qP4xWDebXJGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877221; c=relaxed/simple;
-	bh=wmIOh8r6K8fI+cwjxTOjKN5aOC5juZt3FDSfe9sDhaA=;
+	s=arc-20240116; t=1727875477; c=relaxed/simple;
+	bh=Naj36GcSqAasNGyDcXm1Z9Jp65Yb77aaCrMm+V1x5I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwpth8WSNqN5IT744gT+rpaZF6UtJX+1Tv7gFenYFMtvB8q7tbW2gg8meJzlj9s1rN49RlxkV/zciq1PEG1mlUP+ZWqGgRYvZOcD42yO15r8ywQa+jSlnSGv4eltd+s9+ot4nOfEG47goMRXz6XP7IWkFdtYQAeUn+nq/ld1uNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19WtNLb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99866C4CEC5;
-	Wed,  2 Oct 2024 13:53:40 +0000 (UTC)
+	 MIME-Version; b=Xk/psut43HDBTOLjFFrJhFnSeYXnwZGTr+oQlIAG5qeFS/GqtsFV6fCSwIGT7SuRTQ3iMu3IaCG8QsV3TJwuPn+vYlzyKG54zOl4Z/ZE/VaaF3FYi40AMOy0yTl+ZCRF/mTQjk5xyh6hge+fo38X35/RYirVxVj0c0EAjO+AfSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pepXxjTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB867C4CECD;
+	Wed,  2 Oct 2024 13:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877221;
-	bh=wmIOh8r6K8fI+cwjxTOjKN5aOC5juZt3FDSfe9sDhaA=;
+	s=korg; t=1727875477;
+	bh=Naj36GcSqAasNGyDcXm1Z9Jp65Yb77aaCrMm+V1x5I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19WtNLb8dypswjM27Bm96fPsBW53Ts7JduviaS3dQUk+LzA7BVgzqh/Q8BiVth1Hu
-	 C8SXfQNnQcnCQUR+ycQFpPdjrK2h94Jp+VgYknccPCyj1O5gSCICZaHqhr95a73Sj1
-	 xMoiVhVH3j18xypwX6P01+50ENdDsWROgd4+5JRs=
+	b=pepXxjTW2wDwM5Y5YqV2bCT7et/kkC6kAYSwU97WQlKP0hQpq+vs8Zh3MzB/psy+7
+	 3Hnpv5/skyvVxrHwefxRMTFVex3KUMavQxrcwRvTm/oW1idoemH5B5xoySl9624tw9
+	 ua+OCgS6zBgEv1r8dHU/IRsJ7XapID/D2e1/L/0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	En-Wei WU <en-wei.wu@canonical.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 010/634] wifi: brcmfmac: introducing fwil query functions
-Date: Wed,  2 Oct 2024 14:51:50 +0200
-Message-ID: <20241002125811.498394976@linuxfoundation.org>
+Subject: [PATCH 6.11 113/695] r8169: disable ALDPS per default for RTL8125
+Date: Wed,  2 Oct 2024 14:51:51 +0200
+Message-ID: <20241002125826.983925446@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,274 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit c6002b6c05f3edfa12fd25990cc637281f200442 ]
+[ Upstream commit b9c7ac4fe22c608acf6153a3329df2b6b6cd416c ]
 
-When the firmware interface layer was refactored it provided various
-"get" and "set" functions. For the "get" in some cases a parameter
-needed to be passed down to firmware as a key indicating what to
-"get" turning the output parameter of the "get" function into an
-input parameter as well. To accommodate this the "get" function blindly
-copies the parameter which in some places resulted in an uninitialized
-warnings from the compiler. These have been fixed by initializing the
-input parameter in the past. Recently another batch of similar fixes
-were submitted to address clang static checker warnings [1].
+En-Wei reported that traffic breaks if cable is unplugged for more
+than 3s and then re-plugged. This was supposed to be fixed by
+621735f59064 ("r8169: fix rare issue with broken rx after link-down on
+RTL8125"). But apparently this didn't fix the issue for everybody.
+The 3s threshold rang a bell, as this is the delay after which ALDPS
+kicks in. And indeed disabling ALDPS fixes the issue for this user.
+Maybe this fixes the issue in general. In a follow-up step we could
+remove the first fix attempt and see whether anybody complains.
 
-Proposing another solution by introducing a "query" variant which is used
-when the (input) parameter is needed by firmware. The "get" variant will
-only fill the (output) parameter with the result received from firmware
-taking care of proper endianess conversion.
-
-[1] https://lore.kernel.org/all/20240702122450.2213833-1-suhui@nfschina.com/
-
-Fixes: 81f5dcb80830 ("brcmfmac: refactor firmware interface layer.")
-Reported-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240727185617.253210-1-arend.vanspriel@broadcom.com
+Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+Tested-by: En-Wei WU <en-wei.wu@canonical.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/778b9d86-05c4-4856-be59-cde4487b9e52@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../broadcom/brcm80211/brcmfmac/btcoex.c      |  2 +-
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    | 30 +++++++-------
- .../broadcom/brcm80211/brcmfmac/core.c        |  2 +-
- .../broadcom/brcm80211/brcmfmac/feature.c     |  2 +-
- .../broadcom/brcm80211/brcmfmac/fwil.h        | 40 ++++++++++++++-----
- 5 files changed, 48 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/realtek/r8169_phy_config.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-index 7ea2631b80692..00794086cc7c9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-@@ -123,7 +123,7 @@ static s32 brcmf_btcoex_params_read(struct brcmf_if *ifp, u32 addr, u32 *data)
- {
- 	*data = addr;
+diff --git a/drivers/net/ethernet/realtek/r8169_phy_config.c b/drivers/net/ethernet/realtek/r8169_phy_config.c
+index 1f74317beb887..e1e5d9672ae44 100644
+--- a/drivers/net/ethernet/realtek/r8169_phy_config.c
++++ b/drivers/net/ethernet/realtek/r8169_phy_config.c
+@@ -1060,6 +1060,7 @@ static void rtl8125a_2_hw_phy_config(struct rtl8169_private *tp,
+ 	phy_modify_paged(phydev, 0xa86, 0x15, 0x0001, 0x0000);
+ 	rtl8168g_enable_gphy_10m(phydev);
  
--	return brcmf_fil_iovar_int_get(ifp, "btc_params", data);
-+	return brcmf_fil_iovar_int_query(ifp, "btc_params", data);
++	rtl8168g_disable_aldps(phydev);
+ 	rtl8125a_config_eee_phy(phydev);
  }
  
- /**
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 826b768196e28..ccc069ae5e9d8 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -663,8 +663,8 @@ static int brcmf_cfg80211_request_sta_if(struct brcmf_if *ifp, u8 *macaddr)
- 	/* interface_create version 3+ */
- 	/* get supported version from firmware side */
- 	iface_create_ver = 0;
--	err = brcmf_fil_bsscfg_int_get(ifp, "interface_create",
--				       &iface_create_ver);
-+	err = brcmf_fil_bsscfg_int_query(ifp, "interface_create",
-+					 &iface_create_ver);
- 	if (err) {
- 		brcmf_err("fail to get supported version, err=%d\n", err);
- 		return -EOPNOTSUPP;
-@@ -756,8 +756,8 @@ static int brcmf_cfg80211_request_ap_if(struct brcmf_if *ifp)
- 	/* interface_create version 3+ */
- 	/* get supported version from firmware side */
- 	iface_create_ver = 0;
--	err = brcmf_fil_bsscfg_int_get(ifp, "interface_create",
--				       &iface_create_ver);
-+	err = brcmf_fil_bsscfg_int_query(ifp, "interface_create",
-+					 &iface_create_ver);
- 	if (err) {
- 		brcmf_err("fail to get supported version, err=%d\n", err);
- 		return -EOPNOTSUPP;
-@@ -2101,7 +2101,8 @@ brcmf_set_key_mgmt(struct net_device *ndev, struct cfg80211_connect_params *sme)
- 	if (!sme->crypto.n_akm_suites)
- 		return 0;
+@@ -1099,6 +1100,7 @@ static void rtl8125b_hw_phy_config(struct rtl8169_private *tp,
+ 	phy_modify_paged(phydev, 0xbf8, 0x12, 0xe000, 0xa000);
  
--	err = brcmf_fil_bsscfg_int_get(netdev_priv(ndev), "wpa_auth", &val);
-+	err = brcmf_fil_bsscfg_int_get(netdev_priv(ndev),
-+				       "wpa_auth", &val);
- 	if (err) {
- 		bphy_err(drvr, "could not get wpa_auth (%d)\n", err);
- 		return err;
-@@ -2680,7 +2681,7 @@ brcmf_cfg80211_get_tx_power(struct wiphy *wiphy, struct wireless_dev *wdev,
- 	struct brcmf_cfg80211_info *cfg = wiphy_to_cfg(wiphy);
- 	struct brcmf_cfg80211_vif *vif = wdev_to_vif(wdev);
- 	struct brcmf_pub *drvr = cfg->pub;
--	s32 qdbm = 0;
-+	s32 qdbm;
- 	s32 err;
- 
- 	brcmf_dbg(TRACE, "Enter\n");
-@@ -3067,7 +3068,7 @@ brcmf_cfg80211_get_station_ibss(struct brcmf_if *ifp,
- 	struct brcmf_scb_val_le scbval;
- 	struct brcmf_pktcnt_le pktcnt;
- 	s32 err;
--	u32 rate = 0;
-+	u32 rate;
- 	u32 rssi;
- 
- 	/* Get the current tx rate */
-@@ -7046,8 +7047,8 @@ static int brcmf_construct_chaninfo(struct brcmf_cfg80211_info *cfg,
- 			ch.bw = BRCMU_CHAN_BW_20;
- 			cfg->d11inf.encchspec(&ch);
- 			chaninfo = ch.chspec;
--			err = brcmf_fil_bsscfg_int_get(ifp, "per_chan_info",
--						       &chaninfo);
-+			err = brcmf_fil_bsscfg_int_query(ifp, "per_chan_info",
-+							 &chaninfo);
- 			if (!err) {
- 				if (chaninfo & WL_CHAN_RADAR)
- 					channel->flags |=
-@@ -7081,7 +7082,7 @@ static int brcmf_enable_bw40_2g(struct brcmf_cfg80211_info *cfg)
- 
- 	/* verify support for bw_cap command */
- 	val = WLC_BAND_5G;
--	err = brcmf_fil_iovar_int_get(ifp, "bw_cap", &val);
-+	err = brcmf_fil_iovar_int_query(ifp, "bw_cap", &val);
- 
- 	if (!err) {
- 		/* only set 2G bandwidth using bw_cap command */
-@@ -7157,11 +7158,11 @@ static void brcmf_get_bwcap(struct brcmf_if *ifp, u32 bw_cap[])
- 	int err;
- 
- 	band = WLC_BAND_2G;
--	err = brcmf_fil_iovar_int_get(ifp, "bw_cap", &band);
-+	err = brcmf_fil_iovar_int_query(ifp, "bw_cap", &band);
- 	if (!err) {
- 		bw_cap[NL80211_BAND_2GHZ] = band;
- 		band = WLC_BAND_5G;
--		err = brcmf_fil_iovar_int_get(ifp, "bw_cap", &band);
-+		err = brcmf_fil_iovar_int_query(ifp, "bw_cap", &band);
- 		if (!err) {
- 			bw_cap[NL80211_BAND_5GHZ] = band;
- 			return;
-@@ -7170,7 +7171,6 @@ static void brcmf_get_bwcap(struct brcmf_if *ifp, u32 bw_cap[])
- 		return;
- 	}
- 	brcmf_dbg(INFO, "fallback to mimo_bw_cap info\n");
--	mimo_bwcap = 0;
- 	err = brcmf_fil_iovar_int_get(ifp, "mimo_bw_cap", &mimo_bwcap);
- 	if (err)
- 		/* assume 20MHz if firmware does not give a clue */
-@@ -7266,10 +7266,10 @@ static int brcmf_setup_wiphybands(struct brcmf_cfg80211_info *cfg)
- 	struct brcmf_pub *drvr = cfg->pub;
- 	struct brcmf_if *ifp = brcmf_get_ifp(drvr, 0);
- 	struct wiphy *wiphy = cfg_to_wiphy(cfg);
--	u32 nmode = 0;
-+	u32 nmode;
- 	u32 vhtmode = 0;
- 	u32 bw_cap[2] = { WLC_BW_20MHZ_BIT, WLC_BW_20MHZ_BIT };
--	u32 rxchain = 0;
-+	u32 rxchain;
- 	u32 nchain;
- 	int err;
- 	s32 i;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-index bf91b1e1368f0..df53dd1d7e748 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -691,7 +691,7 @@ static int brcmf_net_mon_open(struct net_device *ndev)
- {
- 	struct brcmf_if *ifp = netdev_priv(ndev);
- 	struct brcmf_pub *drvr = ifp->drvr;
--	u32 monitor = 0;
-+	u32 monitor;
- 	int err;
- 
- 	brcmf_dbg(TRACE, "Enter\n");
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-index f23310a77a5d1..0d9ae197fa1ec 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
-@@ -184,7 +184,7 @@ static void brcmf_feat_wlc_version_overrides(struct brcmf_pub *drv)
- static void brcmf_feat_iovar_int_get(struct brcmf_if *ifp,
- 				     enum brcmf_feat_id id, char *name)
- {
--	u32 data = 0;
-+	u32 data;
- 	int err;
- 
- 	/* we need to know firmware error */
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-index a315a7fac6a06..31e080e4da669 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-@@ -96,15 +96,22 @@ static inline
- s32 brcmf_fil_cmd_int_get(struct brcmf_if *ifp, u32 cmd, u32 *data)
- {
- 	s32 err;
--	__le32 data_le = cpu_to_le32(*data);
- 
--	err = brcmf_fil_cmd_data_get(ifp, cmd, &data_le, sizeof(data_le));
-+	err = brcmf_fil_cmd_data_get(ifp, cmd, data, sizeof(*data));
- 	if (err == 0)
--		*data = le32_to_cpu(data_le);
-+		*data = le32_to_cpu(*(__le32 *)data);
- 	brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, *data);
- 
- 	return err;
+ 	rtl8125_legacy_force_mode(phydev);
++	rtl8168g_disable_aldps(phydev);
+ 	rtl8125b_config_eee_phy(phydev);
  }
-+static inline
-+s32 brcmf_fil_cmd_int_query(struct brcmf_if *ifp, u32 cmd, u32 *data)
-+{
-+	__le32 *data_le = (__le32 *)data;
-+
-+	*data_le = cpu_to_le32(*data);
-+	return brcmf_fil_cmd_int_get(ifp, cmd, data);
-+}
  
- s32 brcmf_fil_iovar_data_set(struct brcmf_if *ifp, const char *name,
- 			     const void *data, u32 len);
-@@ -120,14 +127,21 @@ s32 brcmf_fil_iovar_int_set(struct brcmf_if *ifp, const char *name, u32 data)
- static inline
- s32 brcmf_fil_iovar_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
- {
--	__le32 data_le = cpu_to_le32(*data);
- 	s32 err;
- 
--	err = brcmf_fil_iovar_data_get(ifp, name, &data_le, sizeof(data_le));
-+	err = brcmf_fil_iovar_data_get(ifp, name, data, sizeof(*data));
- 	if (err == 0)
--		*data = le32_to_cpu(data_le);
-+		*data = le32_to_cpu(*(__le32 *)data);
- 	return err;
- }
-+static inline
-+s32 brcmf_fil_iovar_int_query(struct brcmf_if *ifp, const char *name, u32 *data)
-+{
-+	__le32 *data_le = (__le32 *)data;
-+
-+	*data_le = cpu_to_le32(*data);
-+	return brcmf_fil_iovar_int_get(ifp, name, data);
-+}
- 
- 
- s32 brcmf_fil_bsscfg_data_set(struct brcmf_if *ifp, const char *name,
-@@ -145,15 +159,21 @@ s32 brcmf_fil_bsscfg_int_set(struct brcmf_if *ifp, const char *name, u32 data)
- static inline
- s32 brcmf_fil_bsscfg_int_get(struct brcmf_if *ifp, const char *name, u32 *data)
- {
--	__le32 data_le = cpu_to_le32(*data);
- 	s32 err;
- 
--	err = brcmf_fil_bsscfg_data_get(ifp, name, &data_le,
--					sizeof(data_le));
-+	err = brcmf_fil_bsscfg_data_get(ifp, name, data, sizeof(*data));
- 	if (err == 0)
--		*data = le32_to_cpu(data_le);
-+		*data = le32_to_cpu(*(__le32 *)data);
- 	return err;
- }
-+static inline
-+s32 brcmf_fil_bsscfg_int_query(struct brcmf_if *ifp, const char *name, u32 *data)
-+{
-+	__le32 *data_le = (__le32 *)data;
-+
-+	*data_le = cpu_to_le32(*data);
-+	return brcmf_fil_bsscfg_int_get(ifp, name, data);
-+}
- 
- s32 brcmf_fil_xtlv_data_set(struct brcmf_if *ifp, const char *name, u16 id,
- 			    void *data, u32 len);
 -- 
 2.43.0
 
