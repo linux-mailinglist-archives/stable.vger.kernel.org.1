@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80EB98DA64
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E2C98DCDE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FFDC284305
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D738F1F25E3A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0531D0E20;
-	Wed,  2 Oct 2024 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D461D0DDF;
+	Wed,  2 Oct 2024 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdy+c7vM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRjVf7T3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC80B1D07AD;
-	Wed,  2 Oct 2024 14:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2804F1D0414;
+	Wed,  2 Oct 2024 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878546; cv=none; b=QX8cqKtIto3Jd3R3yGPr97NKcE9g/wWsA8TC3oBJdnYGOvfolO5+7bQezPlIIRLeL05zRqk7OcEC6THZ8q7gYItJH5Il/HKKm7IA7WbSEtAaVuVnw+CtJG1yZKhCQOPzKDHWuX0PVz8ppSs+mLc8sUrNrAYoOyKzghUuWVfsXKg=
+	t=1727880006; cv=none; b=rHek2KuF+e5piitgsaJ1/MXfuTMERWLFy5wZNq9/aW9Q0T7ijwlB5NNw6oClklMTVQPFBBBDNPf1d8ZbH1ViQZcflUTCJ4xbElYIVuUAf5rDGIMtzisbdFR43aNALatp+bmwFjcpByi9O+uZyn+8XQc4YY9GVB+WD3pcuAtyUmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878546; c=relaxed/simple;
-	bh=dXGfi6Wrd1Jr1E3c6vogkkLcIg20s6jBGRGMAoU/GRs=;
+	s=arc-20240116; t=1727880006; c=relaxed/simple;
+	bh=iknfz9wcYnU90P40pVuekyz9I0YpnEUZmyed2Um5Z8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9OozAzNqN0OA2Db48bf1tq2R7LNR9CkBAJ4Wp2mq+F9sAr9QlkBN69rdVg9qPZDm5suy3hcf8qfarQcV0JNx7xESgw3oHwrsBqUroKrKWYKmGB0xzPyxRpm8bXF/tEE/Oz0tVnhB1gaXJOLgSn2e7XOO0aejlUtvS9Fz60HVsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdy+c7vM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7ECC4CEC2;
-	Wed,  2 Oct 2024 14:15:45 +0000 (UTC)
+	 MIME-Version; b=evLEzLiowFRh0lStXJdu3sbgxGSR83Nl312ALsCnjQMMi/s3QqydPOcQ7EGykFGnFHFNFt6m9dfz+dc+q6Cqa3MRyGPA+zRCp6VbNf98w17JXb6eAQhllQnawl79BhxkuysZloNrhBeReeDUk9pxcJ7eNOcIsOlHkjrKrN3zNRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRjVf7T3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8688C4CEC2;
+	Wed,  2 Oct 2024 14:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878545;
-	bh=dXGfi6Wrd1Jr1E3c6vogkkLcIg20s6jBGRGMAoU/GRs=;
+	s=korg; t=1727880006;
+	bh=iknfz9wcYnU90P40pVuekyz9I0YpnEUZmyed2Um5Z8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hdy+c7vMaNfje94lyECBDNJAqL09NWNh120rLwmxhdIeTPk8LqihDEIXtJh2sKRFC
-	 Po9VAs45bPgfaZZtYnfRpqwexplSjbm5FX8uE3/SFWuO4aK6lzMYtgLadVyX9pYB3L
-	 +wJysZ/zILNLuO7QLRSDiYdQpyD2BWgQE5HXCusI=
+	b=HRjVf7T37UxmvFKBoP3IGRHPTdldgQAHppUplUjKAV0r5x1C+dP8pyv2L/BsX39Ts
+	 +dNcY7iw4m5YRfQpeCQ7vym6n8VNoNN0pwiyxCxvVYyvf27k+WXLGo97Zyoa3OSnbl
+	 B5S6ZgstD5gku7O9XhoN77SProz5qC/OVVljnGno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Sander <r.sander@heinlein-support.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 451/634] io_uring/rw: treat -EOPNOTSUPP for IOCB_NOWAIT like -EAGAIN
+	Cheng Xu <chengyou@linux.alibaba.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 312/538] RDMA/erdma: Return QP state in erdma_query_qp
 Date: Wed,  2 Oct 2024 14:59:11 +0200
-Message-ID: <20241002125828.904019972@linuxfoundation.org>
+Message-ID: <20241002125804.732878424@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Cheng Xu <chengyou@linux.alibaba.com>
 
-commit c0a9d496e0fece67db777bd48550376cf2960c47 upstream.
+[ Upstream commit e77127ff6416b17e0b3e630ac46ee5c9a6570f57 ]
 
-Some file systems, ocfs2 in this case, will return -EOPNOTSUPP for
-an IOCB_NOWAIT read/write attempt. While this can be argued to be
-correct, the usual return value for something that requires blocking
-issue is -EAGAIN.
+Fix qp_state and cur_qp_state to return correct values in
+struct ib_qp_attr.
 
-A refactoring io_uring commit dropped calling kiocb_done() for
-negative return values, which is otherwise where we already do that
-transformation. To ensure we catch it in both spots, check it in
-__io_read() itself as well.
-
-Reported-by: Robert Sander <r.sander@heinlein-support.de>
-Link: https://fosstodon.org/@gurubert@mastodon.gurubert.de/113112431889638440
-Cc: stable@vger.kernel.org
-Fixes: a08d195b586a ("io_uring/rw: split io_read() into a helper")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 155055771704 ("RDMA/erdma: Add verbs implementation")
+Signed-off-by: Cheng Xu <chengyou@linux.alibaba.com>
+Link: https://patch.msgid.link/20240902112920.58749-4-chengyou@linux.alibaba.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/infiniband/hw/erdma/erdma_verbs.c | 25 ++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -856,6 +856,14 @@ static int __io_read(struct io_kiocb *re
+diff --git a/drivers/infiniband/hw/erdma/erdma_verbs.c b/drivers/infiniband/hw/erdma/erdma_verbs.c
+index c317947563fbc..b010c4209ea38 100644
+--- a/drivers/infiniband/hw/erdma/erdma_verbs.c
++++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
+@@ -1540,11 +1540,31 @@ int erdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask,
+ 	return ret;
+ }
  
- 	ret = io_iter_do_read(rw, &io->iter);
- 
-+	/*
-+	 * Some file systems like to return -EOPNOTSUPP for an IOCB_NOWAIT
-+	 * issue, even though they should be returning -EAGAIN. To be safe,
-+	 * retry from blocking context for either.
-+	 */
-+	if (ret == -EOPNOTSUPP && force_nonblock)
-+		ret = -EAGAIN;
++static enum ib_qp_state query_qp_state(struct erdma_qp *qp)
++{
++	switch (qp->attrs.state) {
++	case ERDMA_QP_STATE_IDLE:
++		return IB_QPS_INIT;
++	case ERDMA_QP_STATE_RTR:
++		return IB_QPS_RTR;
++	case ERDMA_QP_STATE_RTS:
++		return IB_QPS_RTS;
++	case ERDMA_QP_STATE_CLOSING:
++		return IB_QPS_ERR;
++	case ERDMA_QP_STATE_TERMINATE:
++		return IB_QPS_ERR;
++	case ERDMA_QP_STATE_ERROR:
++		return IB_QPS_ERR;
++	default:
++		return IB_QPS_ERR;
++	}
++}
 +
- 	if (ret == -EAGAIN || (req->flags & REQ_F_REISSUE)) {
- 		req->flags &= ~REQ_F_REISSUE;
- 		/* If we can poll, just do that. */
+ int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
+ 		   int qp_attr_mask, struct ib_qp_init_attr *qp_init_attr)
+ {
+-	struct erdma_qp *qp;
+ 	struct erdma_dev *dev;
++	struct erdma_qp *qp;
+ 
+ 	if (ibqp && qp_attr && qp_init_attr) {
+ 		qp = to_eqp(ibqp);
+@@ -1571,6 +1591,9 @@ int erdma_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr,
+ 
+ 	qp_init_attr->cap = qp_attr->cap;
+ 
++	qp_attr->qp_state = query_qp_state(qp);
++	qp_attr->cur_qp_state = query_qp_state(qp);
++
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
