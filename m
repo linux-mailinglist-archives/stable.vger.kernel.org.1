@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-80054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4D098DB96
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:32:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC03F98DBA1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A3128334F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:32:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29A05B277FF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670F61D0F55;
-	Wed,  2 Oct 2024 14:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBB61D12E2;
+	Wed,  2 Oct 2024 14:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf8wfHGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTD/gQFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245E01D07A3;
-	Wed,  2 Oct 2024 14:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3AD1D0E2A;
+	Wed,  2 Oct 2024 14:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879250; cv=none; b=KOU6CPID0EVrp9M3npsBWeFMzknB0MkByx2WUQ8IJQCNX8sC7yJS5grC7YbtTlFIpDOvHn1m4Q7ZS0nLYBsfYJzjXdCdjbSbqRgcMQp87TCLrkD0kXOgBGy7uGBVbJIFYTC+g5FcLNWBYWjZ/4ZqzFAlLEBIQ8nL19EVn6hxLCg=
+	t=1727879264; cv=none; b=qUGzKl9MUL4JKunFk/l0mt0uXvnpCgMH3j/WWiq74N7ykI5tvlrP/T+/377GRUFtKXUo0BV+1P7Hil85yxwnq92ScvNsWzww6l85uLOtbEiCrFltt9jNgeZWGs/wYrfDhm7ob/yI+3OOoo5ve7PUs+1ich4UVDqe94WUm/u/umg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879250; c=relaxed/simple;
-	bh=Bi16uHbI22TnRZM6HB2rJNMU00eTQaAPws4O7hUBbAs=;
+	s=arc-20240116; t=1727879264; c=relaxed/simple;
+	bh=B5ulwsaN6vGJZXVuEfeCIbyGLjIiKTLQfJLcrmdaY3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fTwtd/YEqJrOvAmWYlSdn9wwjke7RRZg7+5G2JkemGPotaeRTx9RjD5m7S6HEEb7DfR08QSIbbm+al37iELncPgquSTLAord1/lCQ97uJxdPmsqYdq49J8fmInFVe/CvGuSaAK1e6i/ALxy2Ee1eqMknphc1S8XlpfMaTJaqF5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf8wfHGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F290C4CEC2;
-	Wed,  2 Oct 2024 14:27:29 +0000 (UTC)
+	 MIME-Version; b=LkVQdlCjoktle7xkygKcEGzXRSscabMmOPh7YajhZcnA6nZ0BSAVunAMYx3vyeoMWCU+n5iFwy41aCRNqK/ayMW30opUVw9nYhcqrTTQMCSPwIdSgWoER2Ex26l51cE4SqAfKit7cjuwesgNpddTzejcZiKyQu5Ziy2gXpt2NnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTD/gQFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1D8C4CEC2;
+	Wed,  2 Oct 2024 14:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879250;
-	bh=Bi16uHbI22TnRZM6HB2rJNMU00eTQaAPws4O7hUBbAs=;
+	s=korg; t=1727879264;
+	bh=B5ulwsaN6vGJZXVuEfeCIbyGLjIiKTLQfJLcrmdaY3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qf8wfHGJx0GkufW0K17fciKMFVIQAshAqATwGroBmL0i8Zom7ZCW7D/K6I5j21ON5
-	 2jFs4AliiiEAc2CyiGJcvIw2oMdrTzZou3ZKfMN1XWfQBG5z0iAR9NlKRONfBPzeX4
-	 XqRtmCCftZm3/Ao57otNd4IIJAxn8Ziyunb2D2Uk=
+	b=JTD/gQFFs2E1fYr+1giGPVA5XlXaruTXgezQYkLzjR2e/Lc2gIaM/B6iRvIs87SFn
+	 ayoSpCFYJeGcBh05xnE8WhJOkuvyEqd57z/5/TryDhGvF8CKfsTTcCQ8f7FjxKS25E
+	 KClQ2yAG0FczLqHfNZF/vt9Y+4dGGLZ4WP3IhazM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamlesh Gurudasani <kamlesh@ti.com>,
-	=?UTF-8?q?=C2=A0=20Waiman=20Long?= <longman@redhat.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/538] padata: Honor the callers alignment in case of chunk_size 0
-Date: Wed,  2 Oct 2024 14:54:26 +0200
-Message-ID: <20241002125753.090936299@linuxfoundation.org>
+Subject: [PATCH 6.6 028/538] drivers/perf: hisi_pcie: Record hardware counts correctly
+Date: Wed,  2 Oct 2024 14:54:27 +0200
+Message-ID: <20241002125753.130319786@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -62,53 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamlesh Gurudasani <kamlesh@ti.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit 24cc57d8faaa4060fd58adf810b858fcfb71a02f ]
+[ Upstream commit daecd3373a16a039ad241086e30a1ec46fc9d61f ]
 
-In the case where we are forcing the ps.chunk_size to be at least 1,
-we are ignoring the caller's alignment.
+Currently we set the period and record it as the initial value of the
+counter without checking it's set to the hardware successfully or not.
+However the counter maybe unwritable if the target event is unsupported
+by the device. In such case we will pass user a wrong count:
 
-Move the forcing of ps.chunk_size to be at least 1 before rounding it
-up to caller's alignment, so that caller's alignment is honored.
+[start counts when setting the period]
+hwc->prev_count = 0x8000000000000000
+device.counter_value = 0 // the counter is not set as the period
+[when user reads the counter]
+event->count = device.counter_value - hwc->prev_count
+             = 0x8000000000000000 // wrong. should be 0.
 
-While at it, use max() to force the ps.chunk_size to be at least 1 to
-improve readability.
+Fix this by record the hardware counter counts correctly when setting
+the period.
 
-Fixes: 6d45e1c948a8 ("padata: Fix possible divide-by-0 panic in padata_mt_helper()")
-Signed-off-by: Kamlesh Gurudasani <kamlesh@ti.com>
-Acked-by:  Waiman Long <longman@redhat.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 8404b0fbc7fb ("drivers/perf: hisi: Add driver for HiSilicon PCIe PMU")
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240829090332.28756-2-yangyicong@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/perf/hisilicon/hisi_pcie_pmu.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index 29545dd6dd53d..da788a58d19cf 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -511,9 +511,12 @@ void __init padata_do_multithreaded(struct padata_mt_job *job)
- 	 * thread function.  Load balance large jobs between threads by
- 	 * increasing the number of chunks, guarantee at least the minimum
- 	 * chunk size from the caller, and honor the caller's alignment.
-+	 * Ensure chunk_size is at least 1 to prevent divide-by-0
-+	 * panic in padata_mt_helper().
- 	 */
- 	ps.chunk_size = job->size / (ps.nworks * load_balance_factor);
- 	ps.chunk_size = max(ps.chunk_size, job->min_chunk);
-+	ps.chunk_size = max(ps.chunk_size, 1ul);
- 	ps.chunk_size = roundup(ps.chunk_size, job->align);
+diff --git a/drivers/perf/hisilicon/hisi_pcie_pmu.c b/drivers/perf/hisilicon/hisi_pcie_pmu.c
+index 430ca15373fe2..570ae69c38ec0 100644
+--- a/drivers/perf/hisilicon/hisi_pcie_pmu.c
++++ b/drivers/perf/hisilicon/hisi_pcie_pmu.c
+@@ -458,10 +458,24 @@ static void hisi_pcie_pmu_set_period(struct perf_event *event)
+ 	struct hisi_pcie_pmu *pcie_pmu = to_pcie_pmu(event->pmu);
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	int idx = hwc->idx;
++	u64 orig_cnt, cnt;
++
++	orig_cnt = hisi_pcie_pmu_read_counter(event);
  
- 	/*
+ 	local64_set(&hwc->prev_count, HISI_PCIE_INIT_VAL);
+ 	hisi_pcie_pmu_writeq(pcie_pmu, HISI_PCIE_CNT, idx, HISI_PCIE_INIT_VAL);
+ 	hisi_pcie_pmu_writeq(pcie_pmu, HISI_PCIE_EXT_CNT, idx, HISI_PCIE_INIT_VAL);
++
++	/*
++	 * The counter maybe unwritable if the target event is unsupported.
++	 * Check this by comparing the counts after setting the period. If
++	 * the counts stay unchanged after setting the period then update
++	 * the hwc->prev_count correctly. Otherwise the final counts user
++	 * get maybe totally wrong.
++	 */
++	cnt = hisi_pcie_pmu_read_counter(event);
++	if (orig_cnt == cnt)
++		local64_set(&hwc->prev_count, cnt);
+ }
+ 
+ static void hisi_pcie_pmu_enable_counter(struct hisi_pcie_pmu *pcie_pmu, struct hw_perf_event *hwc)
 -- 
 2.43.0
 
