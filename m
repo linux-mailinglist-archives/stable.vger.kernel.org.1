@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F025D98DB0A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0358398DD76
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54232B21E18
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6031F2252C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4951D1F68;
-	Wed,  2 Oct 2024 14:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7936A1D0E02;
+	Wed,  2 Oct 2024 14:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYJtBOT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkuYVutD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0EA1D1F6F;
-	Wed,  2 Oct 2024 14:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FA61D04B4;
+	Wed,  2 Oct 2024 14:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878941; cv=none; b=YPDL0QEFp140c9P/qxB4u5ZwaQcQE6dBH1IxZao5MzuptGh7+wIH47/Fao45NGbO1GZQq4ooYaau3veUtY6NM66Gvm6xqb6FfuKMrZhkYl5rNYYTX3o9h35sgeq96B19f9AiguZlSSbnnw6cgdwcMJfcZ15zuQQ2qs87wYQNJGU=
+	t=1727880399; cv=none; b=gkPg923MABtn2CZSb8zk3aQWCU+qDtAYNJj2lsE+HGIbxzW2PGLAtHMEtEGIxZ8/iKz9qlkc2q0Jp3orjIdivX1iDXhgV6NT6QaT0CupU+/EpcIKoDGx4W+1bXwFG9BRMSg0cMMdM9+MIdlzsKbOKmpzbthv7BLWmuh0IEseCsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878941; c=relaxed/simple;
-	bh=LO4OsyDWISPp420BIJXIoowgDB3LgYz9wimn4e22veY=;
+	s=arc-20240116; t=1727880399; c=relaxed/simple;
+	bh=MV/qsJiTOBSkhrWy2WHM0dcGKszUOwfvlWXUlN0HQUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r36HJ14MUHnbrv5TF3sAiqGa4DtxhELwxdslWv8aVMYilME50jKCymyIw7ym3gPBpUu8tXZZo60yo5jJupTEEgSgbgSNyyT/+i1OHcWKdM+Zjphj3/mLgpL59fC9dJS7yU1RRrTVTqIjZt/JzGLL3Rxuiizp3JGC08b+8h1kr5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYJtBOT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E19C4CECE;
-	Wed,  2 Oct 2024 14:22:20 +0000 (UTC)
+	 MIME-Version; b=aipk/7Kflz2lX5884VychwYqzvoVOeUNXAsFQVQ2AK210riflTfrG3wzAxtadQKn1mYJpGs/Fp/Tbmy3yg3ty5U8QbcCJzPm4kLey/4lE6Ax3MaGQxD/zhg9kFCrmJOv/515XIh7DUxR7eXPjTjAE8VxZy/MK9XX61nplrxqEa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkuYVutD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28F7C4CEC2;
+	Wed,  2 Oct 2024 14:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878940;
-	bh=LO4OsyDWISPp420BIJXIoowgDB3LgYz9wimn4e22veY=;
+	s=korg; t=1727880399;
+	bh=MV/qsJiTOBSkhrWy2WHM0dcGKszUOwfvlWXUlN0HQUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYJtBOT4UQPPsUeRXC10KR+IbL/N3tTgR3GZ4zuATkktWCRBHxJISRZGtca85Cb40
-	 9nwlxOrOFAeg/ACa1IcUfT1lXhv4ak6twQm5RziHOb0f4V8KplmGk4j6hjgvYGY9DR
-	 ByVE38E0YwU7CEDZqhIqX27bU5gMO/ulWKK0wClg=
+	b=BkuYVutDZqzj5YjufA9NUSTvI/hqr7vn9YrWFIL5NJpK7mjEcDaEN62v8Cf0mFwOO
+	 kJlZ5qQIVNty+mP1foMDo5LKEqFilnfx3wYAlamRdsAuFMxeoQasCOoaHG5UPW97uC
+	 McgENCGJh/lutY0/Ym2dN1mtRFCyCyHFdZuWef2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5446fbf332b0602ede0b@syzkaller.appspotmail.com,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.10 585/634] lsm: add the inode_free_security_rcu() LSM implementation hook
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Philipp Reisner <philipp.reisner@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 446/538] drbd: Fix atomicity violation in drbd_uuid_set_bm()
 Date: Wed,  2 Oct 2024 15:01:25 +0200
-Message-ID: <20241002125834.207180402@linuxfoundation.org>
+Message-ID: <20241002125810.046006809@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,188 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 63dff3e48871b0583be5032ff8fb7260c349a18c upstream.
+commit 2f02b5af3a4482b216e6a466edecf6ba8450fa45 upstream.
 
-The LSM framework has an existing inode_free_security() hook which
-is used by LSMs that manage state associated with an inode, but
-due to the use of RCU to protect the inode, special care must be
-taken to ensure that the LSMs do not fully release the inode state
-until it is safe from a RCU perspective.
+The violation of atomicity occurs when the drbd_uuid_set_bm function is
+executed simultaneously with modifying the value of
+device->ldev->md.uuid[UI_BITMAP]. Consider a scenario where, while
+device->ldev->md.uuid[UI_BITMAP] passes the validity check when its
+value is not zero, the value of device->ldev->md.uuid[UI_BITMAP] is
+written to zero. In this case, the check in drbd_uuid_set_bm might refer
+to the old value of device->ldev->md.uuid[UI_BITMAP] (before locking),
+which allows an invalid value to pass the validity check, resulting in
+inconsistency.
 
-This patch implements a new inode_free_security_rcu() implementation
-hook which is called when it is safe to free the LSM's internal inode
-state.  Unfortunately, this new hook does not have access to the inode
-itself as it may already be released, so the existing
-inode_free_security() hook is retained for those LSMs which require
-access to the inode.
+To address this issue, it is recommended to include the data validity
+check within the locked section of the function. This modification
+ensures that the value of device->ldev->md.uuid[UI_BITMAP] does not
+change during the validation process, thereby maintaining its integrity.
 
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency
+bugs including data races and atomicity violations.
+
+Fixes: 9f2247bb9b75 ("drbd: Protect accesses to the uuid set with a spinlock")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+5446fbf332b0602ede0b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/00000000000076ba3b0617f65cc8@google.com
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Philipp Reisner <philipp.reisner@linbit.com>
+Link: https://lore.kernel.org/r/20240913083504.10549-1-chenqiuji666@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/lsm_hook_defs.h     |    1 +
- security/integrity/ima/ima.h      |    2 +-
- security/integrity/ima/ima_iint.c |   20 ++++++++------------
- security/integrity/ima/ima_main.c |    2 +-
- security/landlock/fs.c            |    9 ++++++---
- security/security.c               |   32 ++++++++++++++++----------------
- 6 files changed, 33 insertions(+), 33 deletions(-)
+ drivers/block/drbd/drbd_main.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -114,6 +114,7 @@ LSM_HOOK(int, 0, path_notify, const stru
- 	 unsigned int obj_type)
- LSM_HOOK(int, 0, inode_alloc_security, struct inode *inode)
- LSM_HOOK(void, LSM_RET_VOID, inode_free_security, struct inode *inode)
-+LSM_HOOK(void, LSM_RET_VOID, inode_free_security_rcu, void *inode_security)
- LSM_HOOK(int, -EOPNOTSUPP, inode_init_security, struct inode *inode,
- 	 struct inode *dir, const struct qstr *qstr, struct xattr *xattrs,
- 	 int *xattr_count)
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -223,7 +223,7 @@ static inline void ima_inode_set_iint(co
- 
- struct ima_iint_cache *ima_iint_find(struct inode *inode);
- struct ima_iint_cache *ima_inode_get(struct inode *inode);
--void ima_inode_free(struct inode *inode);
-+void ima_inode_free_rcu(void *inode_security);
- void __init ima_iintcache_init(void);
- 
- extern const int read_idmap[];
---- a/security/integrity/ima/ima_iint.c
-+++ b/security/integrity/ima/ima_iint.c
-@@ -109,22 +109,18 @@ struct ima_iint_cache *ima_inode_get(str
- }
- 
- /**
-- * ima_inode_free - Called on inode free
-- * @inode: Pointer to the inode
-+ * ima_inode_free_rcu - Called to free an inode via a RCU callback
-+ * @inode_security: The inode->i_security pointer
-  *
-- * Free the iint associated with an inode.
-+ * Free the IMA data associated with an inode.
-  */
--void ima_inode_free(struct inode *inode)
-+void ima_inode_free_rcu(void *inode_security)
+--- a/drivers/block/drbd/drbd_main.c
++++ b/drivers/block/drbd/drbd_main.c
+@@ -3392,10 +3392,12 @@ void drbd_uuid_new_current(struct drbd_d
+ void drbd_uuid_set_bm(struct drbd_device *device, u64 val) __must_hold(local)
  {
--	struct ima_iint_cache *iint;
-+	struct ima_iint_cache **iint_p = inode_security + ima_blob_sizes.lbs_inode;
+ 	unsigned long flags;
+-	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0)
++	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
++	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0) {
++		spin_unlock_irqrestore(&device->ldev->md.uuid_lock, flags);
+ 		return;
++	}
  
--	if (!IS_IMA(inode))
--		return;
--
--	iint = ima_iint_find(inode);
--	ima_inode_set_iint(inode, NULL);
--
--	ima_iint_free(iint);
-+	/* *iint_p should be NULL if !IS_IMA(inode) */
-+	if (*iint_p)
-+		ima_iint_free(*iint_p);
- }
- 
- static void ima_iint_init_once(void *foo)
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -1193,7 +1193,7 @@ static struct security_hook_list ima_hoo
- #ifdef CONFIG_INTEGRITY_ASYMMETRIC_KEYS
- 	LSM_HOOK_INIT(kernel_module_request, ima_kernel_module_request),
- #endif
--	LSM_HOOK_INIT(inode_free_security, ima_inode_free),
-+	LSM_HOOK_INIT(inode_free_security_rcu, ima_inode_free_rcu),
- };
- 
- static const struct lsm_id ima_lsmid = {
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -1207,13 +1207,16 @@ static int current_check_refer_path(stru
- 
- /* Inode hooks */
- 
--static void hook_inode_free_security(struct inode *const inode)
-+static void hook_inode_free_security_rcu(void *inode_security)
- {
-+	struct landlock_inode_security *inode_sec;
-+
- 	/*
- 	 * All inodes must already have been untied from their object by
- 	 * release_inode() or hook_sb_delete().
- 	 */
--	WARN_ON_ONCE(landlock_inode(inode)->object);
-+	inode_sec = inode_security + landlock_blob_sizes.lbs_inode;
-+	WARN_ON_ONCE(inode_sec->object);
- }
- 
- /* Super-block hooks */
-@@ -1637,7 +1640,7 @@ static int hook_file_ioctl_compat(struct
- }
- 
- static struct security_hook_list landlock_hooks[] __ro_after_init = {
--	LSM_HOOK_INIT(inode_free_security, hook_inode_free_security),
-+	LSM_HOOK_INIT(inode_free_security_rcu, hook_inode_free_security_rcu),
- 
- 	LSM_HOOK_INIT(sb_delete, hook_sb_delete),
- 	LSM_HOOK_INIT(sb_mount, hook_sb_mount),
---- a/security/security.c
-+++ b/security/security.c
-@@ -1596,9 +1596,8 @@ int security_inode_alloc(struct inode *i
- 
- static void inode_free_by_rcu(struct rcu_head *head)
- {
--	/*
--	 * The rcu head is at the start of the inode blob
--	 */
-+	/* The rcu head is at the start of the inode blob */
-+	call_void_hook(inode_free_security_rcu, head);
- 	kmem_cache_free(lsm_inode_cache, head);
- }
- 
-@@ -1606,23 +1605,24 @@ static void inode_free_by_rcu(struct rcu
-  * security_inode_free() - Free an inode's LSM blob
-  * @inode: the inode
-  *
-- * Deallocate the inode security structure and set @inode->i_security to NULL.
-+ * Release any LSM resources associated with @inode, although due to the
-+ * inode's RCU protections it is possible that the resources will not be
-+ * fully released until after the current RCU grace period has elapsed.
-+ *
-+ * It is important for LSMs to note that despite being present in a call to
-+ * security_inode_free(), @inode may still be referenced in a VFS path walk
-+ * and calls to security_inode_permission() may be made during, or after,
-+ * a call to security_inode_free().  For this reason the inode->i_security
-+ * field is released via a call_rcu() callback and any LSMs which need to
-+ * retain inode state for use in security_inode_permission() should only
-+ * release that state in the inode_free_security_rcu() LSM hook callback.
-  */
- void security_inode_free(struct inode *inode)
- {
- 	call_void_hook(inode_free_security, inode);
--	/*
--	 * The inode may still be referenced in a path walk and
--	 * a call to security_inode_permission() can be made
--	 * after inode_free_security() is called. Ideally, the VFS
--	 * wouldn't do this, but fixing that is a much harder
--	 * job. For now, simply free the i_security via RCU, and
--	 * leave the current inode->i_security pointer intact.
--	 * The inode will be freed after the RCU grace period too.
--	 */
--	if (inode->i_security)
--		call_rcu((struct rcu_head *)inode->i_security,
--			 inode_free_by_rcu);
-+	if (!inode->i_security)
-+		return;
-+	call_rcu((struct rcu_head *)inode->i_security, inode_free_by_rcu);
- }
- 
- /**
+-	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
+ 	if (val == 0) {
+ 		drbd_uuid_move_history(device);
+ 		device->ldev->md.uuid[UI_HISTORY_START] = device->ldev->md.uuid[UI_BITMAP];
 
 
 
