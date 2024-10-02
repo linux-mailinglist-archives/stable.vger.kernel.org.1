@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-80164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4206098DC3A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D1D98D99C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E61F1F21F98
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4463B2208E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC151CFEB3;
-	Wed,  2 Oct 2024 14:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9C01D173A;
+	Wed,  2 Oct 2024 14:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJhX6JNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCKXIuAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678251D0487;
-	Wed,  2 Oct 2024 14:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A63E1D07B2;
+	Wed,  2 Oct 2024 14:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879570; cv=none; b=BDsFZneCS3i0PQYn4kmBCo6wW5R/u9lxHLIctIhox4bng0qCaFCHfOZXRJ0CAwCb9q/xxqWNAbpRoYFcpvdLVDN895JmUSt9Sk6+G3JVT9V7GRSE5PH+rrofcOGBu5SZovNbp+IWWOjzO3PqqEmlYK8K7qSWqf5snN8Vfi5E9DQ=
+	t=1727878106; cv=none; b=sZBYeXf/RwlauthghnPDU+ZIStCoJfPm2ZHRKMMGYhpxtKFQ5aQL4fqvAe+UBhLjHQI1f4Cw6sjCnHQQtHWlqzClWVEAEoptTwrTyfXgoNI5Y5sd49okgqzF252zcCkagH1r3JVF0l1JhAsZ4nIRpiUX7z+0tjrws6WvI13/VhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879570; c=relaxed/simple;
-	bh=u9DuwXbHdMMRnmlyfJtZwZBoHqz2nhZVggufw8VYqUE=;
+	s=arc-20240116; t=1727878106; c=relaxed/simple;
+	bh=ICJcHN5fisMTPLuJKPWRwWPAVBxV49B5X2X/o8W+3oM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q//7RNuj2xacCv8+gWfm5OrZjIzoOyigWUwdutKeydxIH4tfPh1S7eivGXtmfi+fL6lTFerYvj7f0AsZkpcZMGaFJgNT4k3ZYKtFc4/er2p1oKAwNe5GIcoAYPTZfIeJHXMcgVUe0freBxNyIgx8YtGeoXtA07BdVbRZExudgSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJhX6JNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EA3C4CEC2;
-	Wed,  2 Oct 2024 14:32:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=btVrbiZ8X/JyRNXc/IgA07+Od3c3p5JPIpSU/MiuO1bhMu1jy7wxR90rzDNrau4mW8FjdTncElH84F+UtZXgauEMTTnwuKHUGeskM9XEznTuAoJF1rPZZP6B8c/7dY4xM5TUNwGMMEKA/95b1DJO3/rHIWse7svC+GDx8iQoxnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCKXIuAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFF4C4CEC2;
+	Wed,  2 Oct 2024 14:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879570;
-	bh=u9DuwXbHdMMRnmlyfJtZwZBoHqz2nhZVggufw8VYqUE=;
+	s=korg; t=1727878106;
+	bh=ICJcHN5fisMTPLuJKPWRwWPAVBxV49B5X2X/o8W+3oM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJhX6JNMdhb3JaDi2is/MGMEagCu7DV74pQ1Qlzo3M8WRQQyTEDOM311CHsUORghE
-	 NQYqVB+mCdfZOjtUBoHSQh9VUObIM7gF4U1bARTzvkDQ57iuU2RowYuGGgTpC7ZTY0
-	 KgZpPHnUCmhtjxNiZRz4808omBiLfEEFrDNUgAMs=
+	b=GCKXIuAotZiBVoZETwsLPUfy6/y3KJkTCr/REArmfF+cfIS1e3nXvLqXSimzglx7F
+	 NHTNaEa8D84d9BfwfvIsExwVOMVdj1KKfZOrlIjUi0njOrqetgKbbzLsdd9sD3kGj9
+	 ZCfPhtHuHLJv7i1oAs5VB7oHRBMDvNdliCG7TwgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Matthias Brugger <matthias.bgg@kernel.org>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	David Gow <davidgow@google.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/538] mtd: rawnand: mtk: Fix init error path
-Date: Wed,  2 Oct 2024 14:56:12 +0200
-Message-ID: <20241002125757.489488142@linuxfoundation.org>
+Subject: [PATCH 6.10 273/634] kthread: fix task state in kthread worker if being frozen
+Date: Wed,  2 Oct 2024 14:56:13 +0200
+Message-ID: <20241002125821.876532296@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +66,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 2073ae37d550ea32e8545edaa94ef10b4fef7235 ]
+[ Upstream commit e16c7b07784f3fb03025939c4590b9a7c64970a7 ]
 
-Reviewing a series converting the for_each_chil_of_node() loops into
-their _scoped variants made me realize there was no cleanup of the
-already registered NAND devices upon error which may leak memory on
-systems with more than a chip when this error occurs. We should call the
-_nand_chips_cleanup() function when this happens.
+When analyzing a kernel waring message, Peter pointed out that there is a
+race condition when the kworker is being frozen and falls into
+try_to_freeze() with TASK_INTERRUPTIBLE, which could trigger a
+might_sleep() warning in try_to_freeze().  Although the root cause is not
+related to freeze()[1], it is still worthy to fix this issue ahead.
 
-Fixes: 1d6b1e464950 ("mtd: mediatek: driver for MTK Smart Device")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@kernel.org>
-Link: https://lore.kernel.org/linux-mtd/20240826153019.67106-2-miquel.raynal@bootlin.com
+One possible race scenario:
+
+        CPU 0                                           CPU 1
+        -----                                           -----
+
+        // kthread_worker_fn
+        set_current_state(TASK_INTERRUPTIBLE);
+                                                       suspend_freeze_processes()
+                                                         freeze_processes
+                                                           static_branch_inc(&freezer_active);
+                                                         freeze_kernel_threads
+                                                           pm_nosig_freezing = true;
+        if (work) { //false
+          __set_current_state(TASK_RUNNING);
+
+        } else if (!freezing(current)) //false, been frozen
+
+                      freezing():
+                      if (static_branch_unlikely(&freezer_active))
+                        if (pm_nosig_freezing)
+                          return true;
+          schedule()
+	}
+
+        // state is still TASK_INTERRUPTIBLE
+        try_to_freeze()
+          might_sleep() <--- warning
+
+Fix this by explicitly set the TASK_RUNNING before entering
+try_to_freeze().
+
+Link: https://lore.kernel.org/lkml/Zs2ZoAcUsZMX2B%2FI@chenyu5-mobl2/ [1]
+Link: https://lkml.kernel.org/r/20240827112308.181081-1-yu.c.chen@intel.com
+Fixes: b56c0d8937e6 ("kthread: implement kthread_worker")
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: David Gow <davidgow@google.com>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Mickaël Salaün <mic@digikod.net>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/mtk_nand.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/kthread.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/mtk_nand.c b/drivers/mtd/nand/raw/mtk_nand.c
-index 3fb32a59fdf61..161a409ca4ed2 100644
---- a/drivers/mtd/nand/raw/mtk_nand.c
-+++ b/drivers/mtd/nand/raw/mtk_nand.c
-@@ -1453,8 +1453,10 @@ static int mtk_nfc_nand_chips_init(struct device *dev, struct mtk_nfc *nfc)
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index f7be976ff88af..db4ceb0f503cc 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -845,8 +845,16 @@ int kthread_worker_fn(void *worker_ptr)
+ 		 * event only cares about the address.
+ 		 */
+ 		trace_sched_kthread_work_execute_end(work, func);
+-	} else if (!freezing(current))
++	} else if (!freezing(current)) {
+ 		schedule();
++	} else {
++		/*
++		 * Handle the case where the current remains
++		 * TASK_INTERRUPTIBLE. try_to_freeze() expects
++		 * the current to be TASK_RUNNING.
++		 */
++		__set_current_state(TASK_RUNNING);
++	}
  
- 	for_each_child_of_node_scoped(np, nand_np) {
- 		ret = mtk_nfc_nand_chip_init(dev, nfc, nand_np);
--		if (ret)
-+		if (ret) {
-+			mtk_nfc_nand_chips_cleanup(nfc);
- 			return ret;
-+		}
- 	}
- 
- 	return 0;
+ 	try_to_freeze();
+ 	cond_resched();
 -- 
 2.43.0
 
