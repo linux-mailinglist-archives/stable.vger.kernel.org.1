@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-79573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF79398D932
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D69698D5E4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3DCA1F24F92
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81ED91C217C4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE78F1D0BBC;
-	Wed,  2 Oct 2024 14:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54E71D043E;
+	Wed,  2 Oct 2024 13:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3xU0Aaa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9Ls39dp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDF81D0B8E;
-	Wed,  2 Oct 2024 14:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635A71D0485;
+	Wed,  2 Oct 2024 13:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877837; cv=none; b=ll42yw3X8sRjyceWO+BnLPAHUCCZCfc4FPYZMQvQ6HSpyA540w9JXajmkIWjDN7hoLHtq3CuIpfmtyCHBr8ypbewxYzszoCStYt8Tnr9fVQpTEDfUKxZr+4l79BCM9FTy/6nkACRwPb8RKtsfWD5qca4a79nZvYzLqN7JgLfTbk=
+	t=1727876063; cv=none; b=oI+iQpzVgaYD4pMCO5EfLv/OyFvJy9CejmXA4WOjYbCPnJmwwlrDiFbkZF547ADhytwytpAUF+JrNtxEwkSjB/z5mszI8fecw6CP0U0vCC119W1oZiCa2AcRAmnIVj+a3omZdR9DI0qGR6hEh8bV94TcZ3mPNxN+n/uheMSU0KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877837; c=relaxed/simple;
-	bh=Wy6X+sLeHMjHCSzunhYiHf3PKEgbHRzumg5Oloi7DgA=;
+	s=arc-20240116; t=1727876063; c=relaxed/simple;
+	bh=Z+sJBYXWFB6sv3bZO9uahYYZjyZaedOyfHSMLZ78tgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sQZHGm1BNW1rNaBtv2W+4JWmjHOXJaT+W9Znx9/1PmFaTrIK7aPPJOizw8QcS7bqi3LwCxSijowvREtIqa5N4yfM/n25xwRf+MS5zfbUiAGGr6tA1lWm15hikzQ/yEuZbFRXLetoqrPKLtXyPkO6FUgmYXOFqVGI6W43impuMDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3xU0Aaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF9FC4CEC2;
-	Wed,  2 Oct 2024 14:03:57 +0000 (UTC)
+	 MIME-Version; b=DfASUP1BJgsNoY+vGjTZbnBhZ9S/cZxzZ/bkTgR+06tb9MryezO3cXfKjwzr5cI9gR9HT/Vlg90HwmGNOeRq+QM6xk4JlINBbfEbSFUaUMWDBDjeh1mU/dy5U+MPi+kbTgNH4z/P/NSU3LQK5NLer74AoIzOL4xJfW/lh6wCrQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9Ls39dp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07AAC4CECF;
+	Wed,  2 Oct 2024 13:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877837;
-	bh=Wy6X+sLeHMjHCSzunhYiHf3PKEgbHRzumg5Oloi7DgA=;
+	s=korg; t=1727876063;
+	bh=Z+sJBYXWFB6sv3bZO9uahYYZjyZaedOyfHSMLZ78tgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3xU0AaaRr9XkhFGXcgVt0J32x/psgWvgW63ml0CYBkC0wrn3DrtVJlKZEQxy34ox
-	 3gPPPwJQ4xTDv+QZXuuLQVLwK6JckMId71wRpKoLIFyAGdE1DZVEyUpojvsMiRcZR2
-	 AIYvKQUotcywM1wQfKpOBZTrM56r1F2R1d7JJr6s=
+	b=Y9Ls39dp5CUrtujxuOie2lnyC3RVYK816OLaSNpyKzoyTr1m7Xb6uDFwtBxHZxB0O
+	 tGgnG6EOpuVyLdI234kYngsVenB86wYHCslbFV+jPEVdmx5w+YWXBKRj3A9Sxt6hGq
+	 551LTCInJgVV+764g/dHLanhAa5zlYlSY8+OKquA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 212/634] kselftest: dt: Ignore nodes that have ancestors disabled
-Date: Wed,  2 Oct 2024 14:55:12 +0200
-Message-ID: <20241002125819.472172219@linuxfoundation.org>
+Subject: [PATCH 6.11 315/695] nilfs2: fix potential null-ptr-deref in nilfs_btree_insert()
+Date: Wed,  2 Oct 2024 14:55:13 +0200
+Message-ID: <20241002125835.024854520@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 05144ab7b7eaf531fc728fcb79dcf36b621ff42d ]
+[ Upstream commit 9403001ad65ae4f4c5de368bdda3a0636b51d51a ]
 
-Filter out nodes that have one of its ancestors disabled as they aren't
-expected to probe.
+Patch series "nilfs2: fix potential issues with empty b-tree nodes".
 
-This removes the following false-positive failures on the
-sc7180-trogdor-lazor-limozeen-nots-r5 platform:
+This series addresses three potential issues with empty b-tree nodes that
+can occur with corrupted filesystem images, including one recently
+discovered by syzbot.
 
-/soc@0/geniqup@8c0000/i2c@894000/proximity@28
-/soc@0/geniqup@ac0000/spi@a90000/ec@0
-/soc@0/remoteproc@62400000/glink-edge/apr
-/soc@0/remoteproc@62400000/glink-edge/apr/service@3
-/soc@0/remoteproc@62400000/glink-edge/apr/service@4
-/soc@0/remoteproc@62400000/glink-edge/apr/service@4/clock-controller
-/soc@0/remoteproc@62400000/glink-edge/apr/service@4/dais
-/soc@0/remoteproc@62400000/glink-edge/apr/service@7
-/soc@0/remoteproc@62400000/glink-edge/apr/service@7/dais
-/soc@0/remoteproc@62400000/glink-edge/apr/service@8
-/soc@0/remoteproc@62400000/glink-edge/apr/service@8/routing
-/soc@0/remoteproc@62400000/glink-edge/fastrpc
-/soc@0/remoteproc@62400000/glink-edge/fastrpc/compute-cb@3
-/soc@0/remoteproc@62400000/glink-edge/fastrpc/compute-cb@4
-/soc@0/remoteproc@62400000/glink-edge/fastrpc/compute-cb@5
-/soc@0/spmi@c440000/pmic@0/pon@800/pwrkey
+This patch (of 3):
 
-Fixes: 14571ab1ad21 ("kselftest: Add new test for detecting unprobed Devicetree devices")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20240729-dt-kselftest-parent-disabled-v2-1-d7a001c4930d@collabora.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+If a b-tree is broken on the device, and the b-tree height is greater than
+2 (the level of the root node is greater than 1) even if the number of
+child nodes of the b-tree root is 0, a NULL pointer dereference occurs in
+nilfs_btree_prepare_insert(), which is called from nilfs_btree_insert().
+
+This is because, when the number of child nodes of the b-tree root is 0,
+nilfs_btree_do_lookup() does not set the block buffer head in any of
+path[x].bp_bh, leaving it as the initial value of NULL, but if the level
+of the b-tree root node is greater than 1, nilfs_btree_get_nonroot_node(),
+which accesses the buffer memory of path[x].bp_bh, is called.
+
+Fix this issue by adding a check to nilfs_btree_root_broken(), which
+performs sanity checks when reading the root node from the device, to
+detect this inconsistency.
+
+Thanks to Lizhi Xu for trying to solve the bug and clarifying the cause
+early on.
+
+Link: https://lkml.kernel.org/r/20240904081401.16682-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240902084101.138971-1-lizhi.xu@windriver.com
+Link: https://lkml.kernel.org/r/20240904081401.16682-2-konishi.ryusuke@gmail.com
+Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9bff4c7b992038a7409f
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/dt/test_unprobed_devices.sh | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ fs/nilfs2/btree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/dt/test_unprobed_devices.sh b/tools/testing/selftests/dt/test_unprobed_devices.sh
-index 2d7e70c5ad2d3..5e3f42ef249ee 100755
---- a/tools/testing/selftests/dt/test_unprobed_devices.sh
-+++ b/tools/testing/selftests/dt/test_unprobed_devices.sh
-@@ -34,8 +34,21 @@ nodes_compatible=$(
- 		# Check if node is available
- 		if [[ -e "${node}"/status ]]; then
- 			status=$(tr -d '\000' < "${node}"/status)
--			[[ "${status}" != "okay" && "${status}" != "ok" ]] && continue
-+			if [[ "${status}" != "okay" && "${status}" != "ok" ]]; then
-+				if [ -n "${disabled_nodes_regex}" ]; then
-+					disabled_nodes_regex="${disabled_nodes_regex}|${node}"
-+				else
-+					disabled_nodes_regex="${node}"
-+				fi
-+				continue
-+			fi
- 		fi
-+
-+		# Ignore this node if one of its ancestors was disabled
-+		if [ -n "${disabled_nodes_regex}" ]; then
-+			echo "${node}" | grep -q -E "${disabled_nodes_regex}" && continue
-+		fi
-+
- 		echo "${node}" | sed -e 's|\/proc\/device-tree||'
- 	done | sort
- 	)
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 862bdf23120e8..d390b8ba00d45 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -381,7 +381,8 @@ static int nilfs_btree_root_broken(const struct nilfs_btree_node *node,
+ 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
+ 		     level >= NILFS_BTREE_LEVEL_MAX ||
+ 		     nchildren < 0 ||
+-		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX)) {
++		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX ||
++		     (nchildren == 0 && level > NILFS_BTREE_LEVEL_NODE_MIN))) {
+ 		nilfs_crit(inode->i_sb,
+ 			   "bad btree root (ino=%lu): level = %d, flags = 0x%x, nchildren = %d",
+ 			   inode->i_ino, level, flags, nchildren);
 -- 
 2.43.0
 
