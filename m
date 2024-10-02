@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36A098DBD8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:35:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D4198D956
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C371C23D70
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:35:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB47F1F233F4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D38D1D1720;
-	Wed,  2 Oct 2024 14:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0DD1D0E26;
+	Wed,  2 Oct 2024 14:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUMWJxj8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cY3laI3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C02F1D151B;
-	Wed,  2 Oct 2024 14:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760F1D07AD;
+	Wed,  2 Oct 2024 14:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879396; cv=none; b=sDxiSzHCeSVa8iXubu4SLs0oerQYbyvMm48x5pkMk8SnOctHyUyAEykJwA8nqcyRqbaC/7O/uZiIrXlA6hEN+06Fh6c1e7cHvJ0AEbXzHpv+BzLS3hBcVF7xju4dGOKuHN4i/s1mBMpwUagTUAAhHoKVW093mwX6KeL05/FRWNo=
+	t=1727877930; cv=none; b=X9Da/dUp9UdXKlCBumIsdZ3qQ4Zu1/p4ekjt+JOButnvP1EM228nXvu6yvYJL4UVui5V7jOUN+leoKyxAxtH2NIVfT9yS5MdjtmHnFy6oauL/iIp6uTA1VEc6wwjM09sUq4j8aBbBymilSvGhRU+Jw+cu/zjTUo4VgB66ChNdgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879396; c=relaxed/simple;
-	bh=xsE3oSmyeQqsonVnjqmW2vd+gWBBOcg1umvMJc84y44=;
+	s=arc-20240116; t=1727877930; c=relaxed/simple;
+	bh=TpFGVXto75isKiCOTgDu+BolKifgNj7KJ/5aIvarQXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZP6oV7lnj6GXcoDrLo4OhO3XqGUG5M90rssU63S0BQixk/lHNMobKjAqYUI1FGlprq4u2lDAwkFCiwHLE76dn1kC0alJv13PnqxKD66IX/3S3gmS3fQ1kNzcd3uIyf6Q94cviOYIvVd93jWIkY6reKAV4J6gfC02r+yVkb6oIFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUMWJxj8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD777C4CECD;
-	Wed,  2 Oct 2024 14:29:55 +0000 (UTC)
+	 MIME-Version; b=hWlV0fXHVgPXtEZwHQu+3W+RZ/1qSPWU01aHjeGndLXa/QAE9WyvW+Y6LQm/bOO4WZEwYYPr5Z7utTGhhIwuaOEw8aX4foIBnUtFMYBXD82fBkyZAScjmdPxxYo/X7ayq4GIhZUcsxn5wEwgIACYS5sSMcENXodqBKQ5CFw8u38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cY3laI3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360C0C4CEC2;
+	Wed,  2 Oct 2024 14:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879396;
-	bh=xsE3oSmyeQqsonVnjqmW2vd+gWBBOcg1umvMJc84y44=;
+	s=korg; t=1727877930;
+	bh=TpFGVXto75isKiCOTgDu+BolKifgNj7KJ/5aIvarQXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUMWJxj87fMwA4juDMrzEdsLM4Ow9+G26XMAxQ0OYd6XY/b6rHV61ZtSjYdCPgDhh
-	 Iih5GIQFD4o1qu8csifQkJY0CPvhZ8OE88vJslLcv+qkC37fA6xD7y10Ga69VTg+J+
-	 a6dqKQWdKlChgPxLScd7zBuEkovzIoDHxQKjT7kk=
+	b=cY3laI3dywodAMkA8c1cRI/00PQ7yzgH094TL4LuA23zx4OTRgcFCP4KfYQOqCiPS
+	 Hu7shC5LBFDOiSot0sXfJrgsohy33Jf+3h8wNTVuuaB16VMVP2u0h3QXQ/7LYJhUdC
+	 8ZMx/GKUpWeCjjrz8hs+bdVAnyeCihv8zRT2w9pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/538] ARM: versatile: fix OF node leak in CPUs prepare
+Subject: [PATCH 6.10 244/634] selftests/bpf: Fix include of <sys/fcntl.h>
 Date: Wed,  2 Oct 2024 14:55:44 +0200
-Message-ID: <20241002125756.377817402@linuxfoundation.org>
+Message-ID: <20241002125820.729815944@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit f2642d97f2105ed17b2ece0c597450f2ff95d704 ]
+[ Upstream commit 21f0b0af977203220ad58aff95e372151288ec47 ]
 
-Machine code is leaking OF node reference from of_find_matching_node()
-in realview_smp_prepare_cpus().
+Update ns_current_pid_tgid.c to use '#include <fcntl.h>' and avoid compile
+error against mips64el/musl libc:
 
-Fixes: 5420b4b15617 ("ARM: realview: add an DT SMP boot method")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/20240826054934.10724-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  In file included from .../prog_tests/ns_current_pid_tgid.c:14:
+  .../include/sys/fcntl.h:1:2: error: #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-Werror=cpp]
+      1 | #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
+        |  ^~~~~~~
+  cc1: all warnings being treated as errors
+
+Fixes: 09c02d553c49 ("bpf, selftests: Fold test_current_pid_tgid_new_ns into test_progs.")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/8bdc869749177b575025bf69600a4ce591822609.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-versatile/platsmp-realview.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-versatile/platsmp-realview.c b/arch/arm/mach-versatile/platsmp-realview.c
-index 5d363385c8019..059d796b26bc8 100644
---- a/arch/arm/mach-versatile/platsmp-realview.c
-+++ b/arch/arm/mach-versatile/platsmp-realview.c
-@@ -66,6 +66,7 @@ static void __init realview_smp_prepare_cpus(unsigned int max_cpus)
- 		return;
- 	}
- 	map = syscon_node_to_regmap(np);
-+	of_node_put(np);
- 	if (IS_ERR(map)) {
- 		pr_err("PLATSMP: No syscon regmap\n");
- 		return;
+diff --git a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+index e72d75d6baa71..c29787e092d66 100644
+--- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
++++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
+@@ -11,7 +11,7 @@
+ #include <sched.h>
+ #include <sys/wait.h>
+ #include <sys/mount.h>
+-#include <sys/fcntl.h>
++#include <fcntl.h>
+ #include "network_helpers.h"
+ 
+ #define STACK_SIZE (1024 * 1024)
 -- 
 2.43.0
 
