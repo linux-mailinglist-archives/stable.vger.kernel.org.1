@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-80548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A27398DDFE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CD398DDF9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 764F51F24027
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:55:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99D741F23147
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AE71D0E1C;
-	Wed,  2 Oct 2024 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D1B1D26E0;
+	Wed,  2 Oct 2024 14:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTM/t47o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGE8+VVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B01D0798;
-	Wed,  2 Oct 2024 14:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C671D223C;
+	Wed,  2 Oct 2024 14:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880694; cv=none; b=LloQ4yNHMqd0phkt7WrzGkQEhxjg9p9uduTFlbpluJpSEb2WSnZgqJF25TWhvq0hxRKr9zwLraUxehXQkM4xi9Qq2g5RZihvDxx3Z8JhHypEoEfW1nEyQog56NPTr0DR06l/whY7b7rV8P60XTuT4RxCYW05inEUmZuR36oqAR4=
+	t=1727880679; cv=none; b=k8cY3szOB27SjzCcJT1o1r6fze4g1dxyhoBh4MJjV7J1f5uCPpg3HHXK62rwCVReRId3Aul6aOvqvzHubS3uuSevcKqM4EXOFB05on/f/qXhb8XD0Qd78mp0C1z0cFmuKs3wrj8G48b+7ww0GnNN/xrhAiWZqjQpY5jPVRfZxNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880694; c=relaxed/simple;
-	bh=betsIHgmaRoYKcqJtdny2fx9FQpAYdev0KXdTVxcHtQ=;
+	s=arc-20240116; t=1727880679; c=relaxed/simple;
+	bh=qAK6h08ofvC+Vth9KguoJsdyGt3KaaClVIItv8YXtKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpTPLUIyPNBZl/lmAPFRDpcLqFAq2CQhuJWhUENmP72+R3Zik/x6dNqrgJbysDsYIxtusAIBY697xD48rVCp3Njbku+JWHf1UVltrP7Tj1IIYFXO3//wV7PojGg+2X+4jksMFg82WCL5wNzZH7RWw0Tc0V3oLTdr2Z4UqEzmFSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTM/t47o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AF5C4CEE5;
-	Wed,  2 Oct 2024 14:51:33 +0000 (UTC)
+	 MIME-Version; b=VYSnFrBD3rtyrstk3IiITF+9LRaW5f9c2GkZbiLaq4+rT4edZFVbkif1EApV0JOwapJKQvCoWfjNIqe+ZoAkfiRb/FqGAlinjOLjmwak3r/XJIcRfnvsLRpbol0L889/OxS6cNlz7825OU0zTz7SZ2xLaTzgVfKgeAPrn2HR+Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGE8+VVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D41C4CED8;
+	Wed,  2 Oct 2024 14:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880694;
-	bh=betsIHgmaRoYKcqJtdny2fx9FQpAYdev0KXdTVxcHtQ=;
+	s=korg; t=1727880679;
+	bh=qAK6h08ofvC+Vth9KguoJsdyGt3KaaClVIItv8YXtKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTM/t47o/PvJiZSy7Zk2xSApF6f9qk0RomUuCLq3MdMZ+8ESWnQgCBXZXNi2eodgk
-	 ZZz1AKgrtDqpcv+ob51UDEKdKGkv6UmWIIf0oKfOxD0VWvnSTDLQXegPdy/x4acFYW
-	 ojDSPKw0Y7dtcp230C/Ub9/OC9wd0rCjotVzyZPI=
+	b=wGE8+VVt1TMLFgmIoIbBhclR6iBUWnew4BQI63EXl14xN+kKuD612bjcvJCIlMuVs
+	 6rzhwt3DWmjbcV1p7jMUI8pUhMU43Ekj1vPd9BjnPMweAW4dJaEoZAkXETtp4U/1jO
+	 i5m4F7Zqr6J8Vxxp3F5SfswAB810WhscXOZCIJjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 533/538] wifi: brcmfmac: add linefeed at end of file
-Date: Wed,  2 Oct 2024 15:02:52 +0200
-Message-ID: <20241002125813.483216731@linuxfoundation.org>
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 534/538] libbpf: Ensure undefined bpf_attr field stays 0
+Date: Wed,  2 Oct 2024 15:02:53 +0200
+Message-ID: <20241002125813.523026735@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -66,35 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-commit 26f0dc8a705ae182eaa126cef0a9870d1a87a5ac upstream.
+commit c9f115564561af63db662791e9a35fcf1dfefd2a upstream.
 
-The following sparse warning was reported:
+The commit 9e926acda0c2 ("libbpf: Find correct module BTFs for struct_ops maps and progs.")
+sets a newly added field (value_type_btf_obj_fd) to -1 in libbpf when
+the caller of the libbpf's bpf_map_create did not define this field by
+passing a NULL "opts" or passing in a "opts" that does not cover this
+new field. OPT_HAS(opts, field) is used to decide if the field is
+defined or not:
 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c:432:49:
-  warning: no newline at end of file
+	((opts) && opts->sz >= offsetofend(typeof(*(opts)), field))
 
-Fixes: 31343230abb1 ("wifi: brcmfmac: export firmware interface functions")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/all/20240125165128.7e43a1f3@kernel.org/
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240128093057.164791-2-arend.vanspriel@broadcom.com
+Once OPTS_HAS decided the field is not defined, that field should
+be set to 0. For this particular new field (value_type_btf_obj_fd),
+its corresponding map_flags "BPF_F_VTYPE_BTF_OBJ_FD" is not set.
+Thus, the kernel does not treat it as an fd field.
+
+Fixes: 9e926acda0c2 ("libbpf: Find correct module BTFs for struct_ops maps and progs.")
+Reported-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240124224418.2905133-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c |    2 +-
+ tools/lib/bpf/bpf.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.c
-@@ -429,4 +429,4 @@ s32 brcmf_fil_xtlv_data_get(struct brcmf
- 	mutex_unlock(&drvr->proto_block);
- 	return err;
- }
--BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_xtlv_data_get);
-\ No newline at end of file
-+BRCMF_EXPORT_SYMBOL_GPL(brcmf_fil_xtlv_data_get);
+--- a/tools/lib/bpf/bpf.c
++++ b/tools/lib/bpf/bpf.c
+@@ -192,7 +192,7 @@ int bpf_map_create(enum bpf_map_type map
+ 	attr.btf_key_type_id = OPTS_GET(opts, btf_key_type_id, 0);
+ 	attr.btf_value_type_id = OPTS_GET(opts, btf_value_type_id, 0);
+ 	attr.btf_vmlinux_value_type_id = OPTS_GET(opts, btf_vmlinux_value_type_id, 0);
+-	attr.value_type_btf_obj_fd = OPTS_GET(opts, value_type_btf_obj_fd, -1);
++	attr.value_type_btf_obj_fd = OPTS_GET(opts, value_type_btf_obj_fd, 0);
+ 
+ 	attr.inner_map_fd = OPTS_GET(opts, inner_map_fd, 0);
+ 	attr.map_flags = OPTS_GET(opts, map_flags, 0);
 
 
 
