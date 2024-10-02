@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D0198DDA2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091EC98DB38
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C26C1C23A2E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7201C23755
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD391CABF;
-	Wed,  2 Oct 2024 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E91C1D1505;
+	Wed,  2 Oct 2024 14:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqcVLm1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjdi2kYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845F3232;
-	Wed,  2 Oct 2024 14:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC41D14FB;
+	Wed,  2 Oct 2024 14:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880510; cv=none; b=FNzxLJ5+ycQCUkGvh2pNOrXpeQtDp0OK3EcKj1Pmu1uKjs+XMOBrRe4oq/RpOBbDoXA6sEBb6Z8vxVRwYBmVobCavyH7yYTIlzDdDWnEBGiV935ZYf/Rp61yJQQMDzIIzuuT5DjuhWB0wb/4maURrcIfp/PPj8lou9t0P89iiV4=
+	t=1727879054; cv=none; b=I+88pNG6GvDGHxGiOVk9v/dNd+BpolJdbp922f5OfdWTGQKFSipmyj8LePX6A9J8FYwSeyTgpQzLn46rVfcqH0VOZkWrurTd13HnJ8j5aFyBfUXQe2w9uZCWSIYntepgRGJ56EGMf99cVxOHtz72WuTTBaNBZek6egIU2sjMfLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880510; c=relaxed/simple;
-	bh=H096K4bzy041asc60t+KUn88Jfh9QGmdjCNPp1YWQHo=;
+	s=arc-20240116; t=1727879054; c=relaxed/simple;
+	bh=nmog2kAJ45ykvaotC2rRr7SH/PlB1SMdr1s3yu1qNxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqRGMVWk7RuoQg8kfKtGFStbO+0BGqilrupQvc1Zke3vjM3ulZ+jDViXWnTbCbgEhDLfc6uyMLL4aG0e6E/Ir/ZDd2u4Del/o3gf0AK5mcvauLf1Ca98700+PZIaK4iVeAsxXhLPSYWKLi2cIya+F0QhvHo9Pt2PjbrNBNxHtkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqcVLm1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACA8C4CEC2;
-	Wed,  2 Oct 2024 14:48:29 +0000 (UTC)
+	 MIME-Version; b=r/3i3aVSPev5Art0flXiS2FfMpbBGbGm6vPLtpW5quZdwNKtaso2N871EavH3Uni6mg8SCYPjZMNjjbK8w9DfSKRytvxOMG7KXHRK6YAs7LT+ie7zFwo9799/HILm1dnNFBqbyrofzdqDfUH2tGOs5cYlhXo4vuQa1IgRdnT42c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjdi2kYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E07C4CEC2;
+	Wed,  2 Oct 2024 14:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880509;
-	bh=H096K4bzy041asc60t+KUn88Jfh9QGmdjCNPp1YWQHo=;
+	s=korg; t=1727879053;
+	bh=nmog2kAJ45ykvaotC2rRr7SH/PlB1SMdr1s3yu1qNxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqcVLm1k076a10P4h1K+U8WiUdBGSJZ1rA6wUOHdKNLj7SZe4bsrlTAJg0lLkH4Eq
-	 5o4RKmQQh9CrN8Vx8+9uoR1DLNmNyjbhI3LTXN/Cd20wGoRfPXe1PS7WJ3yjNAdr2W
-	 zANjeKs+lf7YfhRibRGXKraNu3Gvg/SikvahwVXQ=
+	b=vjdi2kYIQGWol3E9G/aKAeYjfXhvryB2872/Ql6uVdsiO7Tm4idF9UevC5WJvNknz
+	 RIXCsOv/lf/UpkNP+pDDHCMq+0F2rY+XOgYxaEZC0kZeusaiQHh2bQBa5jcyGDG432
+	 sDUFHYbBhAN/iSsz4sS4+ZltPK9T9S3WkDjIBx6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 484/538] soc: versatile: realview: fix soc_dev leak during device remove
+	stable@kernel.org,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.10 623/634] spi: fspi: add support for imx8ulp
 Date: Wed,  2 Oct 2024 15:02:03 +0200
-Message-ID: <20241002125811.546797751@linuxfoundation.org>
+Message-ID: <20241002125835.717530712@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit c774f2564c0086c23f5269fd4691f233756bf075 ]
+commit 9228956a620553d7fd17f703a37a26c91e4d92ab upstream.
 
-If device is unbound, the soc_dev should be unregistered to prevent
-memory leak.
+The flexspi on imx8ulp only has 16 LUTs, different with others which
+have up to 32 LUTs.
 
-Fixes: a2974c9c1f83 ("soc: add driver for the ARM RealView")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-3-ff4b35abed83@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a separate compatible string and nxp_fspi_devtype_data to support
+flexspi on imx8ulp.
+
+Fixes: ef89fd56bdfc ("arm64: dts: imx8ulp: add flexspi node")
+Cc: stable@kernel.org
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240905094338.1986871-4-haibo.chen@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/versatile/soc-realview.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/spi/spi-nxp-fspi.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/soc/versatile/soc-realview.c b/drivers/soc/versatile/soc-realview.c
-index d304ee69287af..cf91abe07d38d 100644
---- a/drivers/soc/versatile/soc-realview.c
-+++ b/drivers/soc/versatile/soc-realview.c
-@@ -4,6 +4,7 @@
-  *
-  * Author: Linus Walleij <linus.walleij@linaro.org>
-  */
-+#include <linux/device.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -81,6 +82,13 @@ static struct attribute *realview_attrs[] = {
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -371,6 +371,15 @@ static struct nxp_fspi_devtype_data imx8
+ 	.little_endian = true,  /* little-endian    */
+ };
  
- ATTRIBUTE_GROUPS(realview);
- 
-+static void realview_soc_socdev_release(void *data)
-+{
-+	struct soc_device *soc_dev = data;
++static struct nxp_fspi_devtype_data imx8ulp_data = {
++	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
++	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
++	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
++	.quirks = 0,
++	.lut_num = 16,
++	.little_endian = true,  /* little-endian    */
++};
 +
-+	soc_device_unregister(soc_dev);
-+}
-+
- static int realview_soc_probe(struct platform_device *pdev)
- {
- 	struct regmap *syscon_regmap;
-@@ -109,6 +117,11 @@ static int realview_soc_probe(struct platform_device *pdev)
- 	if (IS_ERR(soc_dev))
- 		return -ENODEV;
- 
-+	ret = devm_add_action_or_reset(&pdev->dev, realview_soc_socdev_release,
-+				       soc_dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_read(syscon_regmap, REALVIEW_SYS_ID_OFFSET,
- 			  &realview_coreid);
- 	if (ret)
--- 
-2.43.0
-
+ struct nxp_fspi {
+ 	void __iomem *iobase;
+ 	void __iomem *ahb_addr;
+@@ -1297,6 +1306,7 @@ static const struct of_device_id nxp_fsp
+ 	{ .compatible = "nxp,imx8mp-fspi", .data = (void *)&imx8mm_data, },
+ 	{ .compatible = "nxp,imx8qxp-fspi", .data = (void *)&imx8qxp_data, },
+ 	{ .compatible = "nxp,imx8dxl-fspi", .data = (void *)&imx8dxl_data, },
++	{ .compatible = "nxp,imx8ulp-fspi", .data = (void *)&imx8ulp_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, nxp_fspi_dt_ids);
 
 
 
