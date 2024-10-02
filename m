@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-79796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EE398DA41
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBDF98DCCE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 798311C237F9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACB001C21C87
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4970C1D26F5;
-	Wed,  2 Oct 2024 14:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE5D1D270D;
+	Wed,  2 Oct 2024 14:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mB6Plygl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRAt7ykD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FB41D26ED;
-	Wed,  2 Oct 2024 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2811D0F4B;
+	Wed,  2 Oct 2024 14:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878491; cv=none; b=MRN9prXQx85pPIyQe/88HkBttmMj65EiZAy3ZY6yN+DjSHCjhZzViEmLU2un8iU2TdObtoN2lrCHiJVbGPSnLlhbGIJbwv6LacNA03YY7ZbXEAO68VsToINt+f1QjF68odI51ZDKZqUd2SIJI5V+m6cS45p5aJ1FugydEgZHL1c=
+	t=1727879951; cv=none; b=tUS+fe+XCDwEpiPGrn0wrCAG5nQjiHTG5A+8WKkLGQF4bRyiI6Y0OA9gcaa8rwUjaFGugwKCuUSri5lZ83ktWMhf12xcim6ZutgoDQ6pg8f1Xv3bmC3M6wVGt4EvtUuV6Z4U0QW7+/pmsQagRDyC1zFRhfh/3fKPMyGLT0mxrYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878491; c=relaxed/simple;
-	bh=jPRY1hEDVmzMmgIUmPP/vz7F0k+8l/fiDt7GQq/VbfE=;
+	s=arc-20240116; t=1727879951; c=relaxed/simple;
+	bh=vyFfkiY/sm+Nl9g0k3kqK0US4jHBgumzCEkQyo4vzq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMOWWkcqB0WU5YfQ59RhvV+iiBv3gdR+eeySRNxCVtBcsPb1tdyg82LvHC7ha7r/CAennTBU5ouqYa/tKNzBZCp13EzOMgws/XMp/m08S2eXblt/jcUgCYpXRfV4YlZYW4VDinuiTNowD2LF7iQtfiJrbEB3w6UDAal73biLntw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mB6Plygl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38159C4CECD;
-	Wed,  2 Oct 2024 14:14:50 +0000 (UTC)
+	 MIME-Version; b=R0EcJ5nOeD4k2Wlvo8RuCeDfKQ+2qECP0UP8BqgDOWRnrZ1T9V0ieznbh4XXMF3yaqZxSDdouvq+CtHRU9tmc0ihjYqkEDW6HsmfYhJmII3W/Ex2qzmfVv7mZWaKK5liL7ScO5kWaN5b1pG5T2TKUg2Epqu3Rb+Ha5C6Eufgglk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRAt7ykD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89DFC4CEC5;
+	Wed,  2 Oct 2024 14:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878490;
-	bh=jPRY1hEDVmzMmgIUmPP/vz7F0k+8l/fiDt7GQq/VbfE=;
+	s=korg; t=1727879951;
+	bh=vyFfkiY/sm+Nl9g0k3kqK0US4jHBgumzCEkQyo4vzq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mB6PlygluxEIrT4EMpCyc93qEYc8JliWKV4v/wUpubZdUB+nMUwgscW1hZGbBIyZD
-	 GfI4Mf58LglX+DAC2Ychy7HvO5B8CK0SyiRVJ6mIK9nJdWt+BWz14zu0XEuuDBKFx8
-	 WyGVzqlZwLmBfHmir9ExjedMzewGxoRK9RF3wIHc=
+	b=JRAt7ykDHvN2R4YmfTb+S/HUYALiYmu5K6jfTWl9d5z8ZUoCmlhX4S2+oybSnHuqQ
+	 Ox993NR5ilsNpfE6tTw2UZWNpqaOBFoFig/wsR+q2SKO6N/3qihj7PtW8z7gsL+Csm
+	 sscq1f17qootgOG13M6WZQMhKYFJMnLVBKlqtCI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 431/634] vhost_vdpa: assign irq bypass producer token correctly
+Subject: [PATCH 6.6 292/538] nvdimm: Fix devs leaks in scan_labels()
 Date: Wed,  2 Oct 2024 14:58:51 +0200
-Message-ID: <20241002125828.113402857@linuxfoundation.org>
+Message-ID: <20241002125803.783347840@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +64,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 02e9e9366fefe461719da5d173385b6685f70319 ]
+[ Upstream commit 62c2aa6b1f565d2fc1ec11a6e9e8336ce37a6426 ]
 
-We used to call irq_bypass_unregister_producer() in
-vhost_vdpa_setup_vq_irq() which is problematic as we don't know if the
-token pointer is still valid or not.
+scan_labels() leaks memory when label scanning fails and it falls back
+to just creating a default "seed" namespace for userspace to configure.
+Root can force the kernel to leak memory.
 
-Actually, we use the eventfd_ctx as the token so the life cycle of the
-token should be bound to the VHOST_SET_VRING_CALL instead of
-vhost_vdpa_setup_vq_irq() which could be called by set_status().
+Allocate the minimum resources unconditionally and release them when
+unneeded to avoid the memory leak.
 
-Fixing this by setting up irq bypass producer's token when handling
-VHOST_SET_VRING_CALL and un-registering the producer before calling
-vhost_vring_ioctl() to prevent a possible use after free as eventfd
-could have been released in vhost_vring_ioctl(). And such registering
-and unregistering will only be done if DRIVER_OK is set.
+A kmemleak reports:
+unreferenced object 0xffff88800dda1980 (size 16):
+  comm "kworker/u10:5", pid 69, jiffies 4294671781
+  hex dump (first 16 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    [<00000000c5dea560>] __kmalloc+0x32c/0x470
+    [<000000009ed43c83>] nd_region_register_namespaces+0x6fb/0x1120 [libnvdimm]
+    [<000000000e07a65c>] nd_region_probe+0xfe/0x210 [libnvdimm]
+    [<000000007b79ce5f>] nvdimm_bus_probe+0x7a/0x1e0 [libnvdimm]
+    [<00000000a5f3da2e>] really_probe+0xc6/0x390
+    [<00000000129e2a69>] __driver_probe_device+0x78/0x150
+    [<000000002dfed28b>] driver_probe_device+0x1e/0x90
+    [<00000000e7048de2>] __device_attach_driver+0x85/0x110
+    [<0000000032dca295>] bus_for_each_drv+0x85/0xe0
+    [<00000000391c5a7d>] __device_attach+0xbe/0x1e0
+    [<0000000026dabec0>] bus_probe_device+0x94/0xb0
+    [<00000000c590d936>] device_add+0x656/0x870
+    [<000000003d69bfaa>] nd_async_device_register+0xe/0x50 [libnvdimm]
+    [<000000003f4c52a4>] async_run_entry_fn+0x2e/0x110
+    [<00000000e201f4b0>] process_one_work+0x1ee/0x600
+    [<000000006d90d5a9>] worker_thread+0x183/0x350
 
-Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Fixes: 2cf1ba9a4d15 ("vhost_vdpa: implement IRQ offloading in vhost_vdpa")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20240816031900.18013-1-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Fixes: 1b40e09a1232 ("libnvdimm: blk labels and namespace instantiation")
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20240819062045.1481298-1-lizhijian@fujitsu.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vdpa.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/nvdimm/namespace_devs.c | 34 ++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 6b9c12acf4381..b3d2a53f9bb77 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -209,11 +209,9 @@ static void vhost_vdpa_setup_vq_irq(struct vhost_vdpa *v, u16 qid)
- 	if (irq < 0)
- 		return;
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index 07177eadc56e8..1ea8c27e8874d 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -1927,12 +1927,16 @@ static int cmp_dpa(const void *a, const void *b)
+ static struct device **scan_labels(struct nd_region *nd_region)
+ {
+ 	int i, count = 0;
+-	struct device *dev, **devs = NULL;
++	struct device *dev, **devs;
+ 	struct nd_label_ent *label_ent, *e;
+ 	struct nd_mapping *nd_mapping = &nd_region->mapping[0];
+ 	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
+ 	resource_size_t map_end = nd_mapping->start + nd_mapping->size - 1;
  
--	irq_bypass_unregister_producer(&vq->call_ctx.producer);
- 	if (!vq->call_ctx.ctx)
- 		return;
- 
--	vq->call_ctx.producer.token = vq->call_ctx.ctx;
- 	vq->call_ctx.producer.irq = irq;
- 	ret = irq_bypass_register_producer(&vq->call_ctx.producer);
- 	if (unlikely(ret))
-@@ -709,6 +707,14 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 			vq->last_avail_idx = vq_state.split.avail_index;
- 		}
- 		break;
-+	case VHOST_SET_VRING_CALL:
-+		if (vq->call_ctx.ctx) {
-+			if (ops->get_status(vdpa) &
-+			    VIRTIO_CONFIG_S_DRIVER_OK)
-+				vhost_vdpa_unsetup_vq_irq(v, idx);
-+			vq->call_ctx.producer.token = NULL;
++	devs = kcalloc(2, sizeof(dev), GFP_KERNEL);
++	if (!devs)
++		return NULL;
++
+ 	/* "safe" because create_namespace_pmem() might list_move() label_ent */
+ 	list_for_each_entry_safe(label_ent, e, &nd_mapping->labels, list) {
+ 		struct nd_namespace_label *nd_label = label_ent->label;
+@@ -1951,12 +1955,14 @@ static struct device **scan_labels(struct nd_region *nd_region)
+ 			goto err;
+ 		if (i < count)
+ 			continue;
+-		__devs = kcalloc(count + 2, sizeof(dev), GFP_KERNEL);
+-		if (!__devs)
+-			goto err;
+-		memcpy(__devs, devs, sizeof(dev) * count);
+-		kfree(devs);
+-		devs = __devs;
++		if (count) {
++			__devs = kcalloc(count + 2, sizeof(dev), GFP_KERNEL);
++			if (!__devs)
++				goto err;
++			memcpy(__devs, devs, sizeof(dev) * count);
++			kfree(devs);
++			devs = __devs;
 +		}
-+		break;
- 	}
  
- 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
-@@ -747,13 +753,16 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 			cb.callback = vhost_vdpa_virtqueue_cb;
- 			cb.private = vq;
- 			cb.trigger = vq->call_ctx.ctx;
-+			vq->call_ctx.producer.token = vq->call_ctx.ctx;
-+			if (ops->get_status(vdpa) &
-+			    VIRTIO_CONFIG_S_DRIVER_OK)
-+				vhost_vdpa_setup_vq_irq(v, idx);
- 		} else {
- 			cb.callback = NULL;
- 			cb.private = NULL;
- 			cb.trigger = NULL;
- 		}
- 		ops->set_vq_cb(vdpa, idx, &cb);
--		vhost_vdpa_setup_vq_irq(v, idx);
- 		break;
+ 		dev = create_namespace_pmem(nd_region, nd_mapping, nd_label);
+ 		if (IS_ERR(dev)) {
+@@ -1983,11 +1989,6 @@ static struct device **scan_labels(struct nd_region *nd_region)
  
- 	case VHOST_SET_VRING_NUM:
-@@ -1421,6 +1430,7 @@ static int vhost_vdpa_open(struct inode *inode, struct file *filep)
- 	for (i = 0; i < nvqs; i++) {
- 		vqs[i] = &v->vqs[i];
- 		vqs[i]->handle_kick = handle_vq_kick;
-+		vqs[i]->call_ctx.ctx = NULL;
- 	}
- 	vhost_dev_init(dev, vqs, nvqs, 0, 0, 0, false,
- 		       vhost_vdpa_process_iotlb_msg);
+ 		/* Publish a zero-sized namespace for userspace to configure. */
+ 		nd_mapping_free_labels(nd_mapping);
+-
+-		devs = kcalloc(2, sizeof(dev), GFP_KERNEL);
+-		if (!devs)
+-			goto err;
+-
+ 		nspm = kzalloc(sizeof(*nspm), GFP_KERNEL);
+ 		if (!nspm)
+ 			goto err;
+@@ -2026,11 +2027,10 @@ static struct device **scan_labels(struct nd_region *nd_region)
+ 	return devs;
+ 
+  err:
+-	if (devs) {
+-		for (i = 0; devs[i]; i++)
+-			namespace_pmem_release(devs[i]);
+-		kfree(devs);
+-	}
++	for (i = 0; devs[i]; i++)
++		namespace_pmem_release(devs[i]);
++	kfree(devs);
++
+ 	return NULL;
+ }
+ 
 -- 
 2.43.0
 
