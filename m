@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-79937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8BC98DAFB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E475798DD69
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 058B4B26D0D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC53528412F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAC11D0F44;
-	Wed,  2 Oct 2024 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502B11D0F4C;
+	Wed,  2 Oct 2024 14:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4eYo9FG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2UUlcD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDEE1D0DCE;
-	Wed,  2 Oct 2024 14:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C84C1D0F48;
+	Wed,  2 Oct 2024 14:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878905; cv=none; b=bntvslwShml1WZAeyKSYfacRumEodlotccJuFWC6c/kksZYrQv8P6ygb0qqq+XCYBy+kxFaY7yvGD8+tCZkh7fLjfpUsVL9qisHpl8zmW1fRt3QYxMRWzS1QQiDGhscMKJS1NSte/PwpwDCZzE2HvWGaRvKMSu92C9tQGRj4HLw=
+	t=1727880364; cv=none; b=dQ3XeEnO4HQ32zJsn56nvDPlJ+jPOKZC6rYQJcwlgrelEc3HuxuXzaEJvaAzGxcv/42NZfmNY5WzUHbimbr/qkoKO8xEafNT2V4gC4NY+svkn6j3TyGBE9Mg8Brg+Re5P62u5Hk7e5Jg1/8R6UR5u5ZH+BHPgf/z9+ZJ9HQ1clE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878905; c=relaxed/simple;
-	bh=G0F95l096NRMl3+a4pzopekYTRDgMrT0TgZzR0LbXsA=;
+	s=arc-20240116; t=1727880364; c=relaxed/simple;
+	bh=5zUXb6Mn5rQNUyiY19MMjU1t5p8f7X9dlUpRYs0GkX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEYpbSLJI1KxcLCzusZx73H6s3MS68BmWqMklzkp4CDeXZDHO3SogEREvu7XVQZZqjugZQaRJF4x6xqHqjQbzLvlTKKN6/V/qhcH9h9QQ75PNeuDGHmbk1s1yOObId5JUgac0pN7pQetyyZonZ+R1xosNH88MJLo1Ywx12ED7fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4eYo9FG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C9AC4CEC5;
-	Wed,  2 Oct 2024 14:21:45 +0000 (UTC)
+	 MIME-Version; b=sC+zz6fhTurTeQHK9c24QLnQ87DzHojAanx8Yq1ddc0N4f4+Rj4cywFGc7MCcRsOguOBwAaRdpnCR9tTyUgBeNaCdM3XqHcIS5mD01adftKR6veUppNDuyftkMvMR2l1cooNzcdR0ZRYxddwaKLP1f6ygTdtHjg8Zj+kVqP5eDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2UUlcD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BC3C4CEC2;
+	Wed,  2 Oct 2024 14:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878905;
-	bh=G0F95l096NRMl3+a4pzopekYTRDgMrT0TgZzR0LbXsA=;
+	s=korg; t=1727880363;
+	bh=5zUXb6Mn5rQNUyiY19MMjU1t5p8f7X9dlUpRYs0GkX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4eYo9FGglRhWz8V49PKexP5jUz0i+WZiTe8/IV4urBC3A3q2wOQ4VJvtej2AaK78
-	 PzlmQQ+F3BaQS1AMo8HzxygRu35T9Sek+DEg52yU8YFC9UyEwJxXFIfsz26TcgyMLE
-	 qQCdYRBgw/gJ9fV65aGeKIn5XPb57/OBbrDcHa+I=
+	b=P2UUlcD0SoDMyJiAZes8CWmMJnlAlANuTcNhrVN5RXKBj/OjgPm2hcMhBkLknf9ty
+	 6ZT2mGQOMd0re6ZDrQdXKRvIJwQcEM9oT+41+CU+Dr1gkMIEns3+93BIEDsuwefIvD
+	 oICqE4SRltmdeh0IXHPDDF3+17F2jpw2FCYjs6ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <me@linux.beauty>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 541/634] ACPI: resource: Do IRQ override on MECHREV GM7XG0M
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.6 402/538] soc: fsl: cpm1: tsa: Fix tsa_write8()
 Date: Wed,  2 Oct 2024 15:00:41 +0200
-Message-ID: <20241002125832.463790283@linuxfoundation.org>
+Message-ID: <20241002125808.306266001@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <me@linux.beauty>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit b53f09ecd602d7b8b7da83b0890cbac500b6a9b9 upstream.
+commit 47a347bae9a491b467ab3543e4725a3e4fbe30f5 upstream.
 
-Listed device need the override for the keyboard to work.
+The tsa_write8() parameter is an u32 value. This is not consistent with
+the function itself. Indeed, tsa_write8() writes an 8bits value.
 
-Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platforms")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Li Chen <me@linux.beauty>
-Link: https://patch.msgid.link/87y15e6n35.wl-me@linux.beauty
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Be consistent and use an u8 parameter value.
+
+Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20240808071132.149251-4-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/soc/fsl/qe/tsa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -555,6 +555,12 @@ static const struct dmi_system_id irq1_l
-  */
- static const struct dmi_system_id irq1_edge_low_force_override[] = {
- 	{
-+		/* MECHREV Jiaolong17KS Series GM7XG0M */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM7XG0M"),
-+		},
-+	},
-+	{
- 		/* XMG APEX 17 (M23) */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GMxBGxx"),
+diff --git a/drivers/soc/fsl/qe/tsa.c b/drivers/soc/fsl/qe/tsa.c
+index 6c5741cf5e9d..53968ea84c88 100644
+--- a/drivers/soc/fsl/qe/tsa.c
++++ b/drivers/soc/fsl/qe/tsa.c
+@@ -140,7 +140,7 @@ static inline void tsa_write32(void __iomem *addr, u32 val)
+ 	iowrite32be(val, addr);
+ }
+ 
+-static inline void tsa_write8(void __iomem *addr, u32 val)
++static inline void tsa_write8(void __iomem *addr, u8 val)
+ {
+ 	iowrite8(val, addr);
+ }
+-- 
+2.46.2
+
 
 
 
