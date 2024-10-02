@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-79377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7CD98D7EE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C3298D519
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986031F22D30
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F145B21C4C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3851D04A2;
-	Wed,  2 Oct 2024 13:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90CF1D04B7;
+	Wed,  2 Oct 2024 13:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHoKou3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3OpBX6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D020829CE7;
-	Wed,  2 Oct 2024 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FAD1D042F;
+	Wed,  2 Oct 2024 13:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877265; cv=none; b=jdM2uIhl6BsSF7IXEw2FCpPFPXv6bumK5S2UYYPHoxWqDjO1zlenyJp7TiF5brABFT03e7qG07TtBALMeCP7Fef+jEb8kSKxI1hBLd6/9P6lg5TTkmnZdqExgPxr2LldGXKLhw83j1AGaC8PqBNhdrRBCDGANAtDc6VWpP1GZ3I=
+	t=1727875602; cv=none; b=bRg8AfHs/67OuY8ifd8Z7+pQodPUor6DtShchg5JeIhja6RFMTk/e3SQabT6NwVX0rmnJJRRhGOjOvF4Wfhxi2O2N6jYf9ILVhKa5RIODVaUEpRW6sk1NnVapYMjXY9RDrqLegDB96NxBp3t1mdztkcc+y1Rq7eowhe6OD1e+LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877265; c=relaxed/simple;
-	bh=WkEJwNd1xhb1RizIkWvvNyilBrs9yKTFIyYm7Npx8FM=;
+	s=arc-20240116; t=1727875602; c=relaxed/simple;
+	bh=tzapE4RTJYy3n0DzT79KUuxUk2NglmmCvubd+yWdbw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlnra5xWQBEVOGrh9n6uXJKoifPc+2G32CRimUrpNZMFeuUF1gUCsyIBAz7VqzbCM7PAll+eDWAYuPvY43IhpmyDj4TtWcKe/Wpryl8Mc27A6sDvKraatT3jdb5DPJAsN4FFxVEbw/d39hS4Ksy68J1/ooEf0bURNc4nrlXmjmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHoKou3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CA7C4CEF2;
-	Wed,  2 Oct 2024 13:54:24 +0000 (UTC)
+	 MIME-Version; b=ca+TDCTk018n4ylnas3kjd0vkpWbXtfjsPSnn1P2MOdbCUa0B6vbnoJ4NRAZZinw3cJpbJ9/thy/22HQottlxnF/5bFUAc14vkuFv3cgpi9PV/An0kBDdNbC1ksd6QtJMtv+LJG39Vu9zOFGW2mNkX3W1eF2tpHp9qjvCn39Ick=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3OpBX6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 261CCC4CECD;
+	Wed,  2 Oct 2024 13:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877265;
-	bh=WkEJwNd1xhb1RizIkWvvNyilBrs9yKTFIyYm7Npx8FM=;
+	s=korg; t=1727875602;
+	bh=tzapE4RTJYy3n0DzT79KUuxUk2NglmmCvubd+yWdbw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHoKou3PLWNLbOPk8uwenb3ATPSJpHHslT4A2e6NxB57SKDb0ZsB06Ws0O8+C879+
-	 q3R8crfE8J01svGZnm/+N9wJVsP/ijOZ7xJNFTTU50Cpd55eAqOT1la0L8SHQiYjpu
-	 c5LNJZABIBCJjlz65APlzB8qoLxWvI9pwZWiYoTI=
+	b=L3OpBX6PRF9ImURauvZ0+DJ21hyp2FLYCHqUo+Q1miVJwX4bUE/kaKTXuyuMvLfyp
+	 1us3NrhLDzTPyD3ikmgZifXBzgte4x1MwRKad3HY/fyeKwYOJO0U8ylhkGHFQo8EXH
+	 3FimBkfPqad4MPA96JkxfNve9o5Pdhr5Ew6TlWkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Christian Brauner <brauner@kernel.org>,
+	liujinbao1 <liujinbao1@xiaomi.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 024/634] autofs: fix missing fput for FSCONFIG_SET_FD
+Subject: [PATCH 6.11 126/695] erofs: fix error handling in z_erofs_init_decompressor
 Date: Wed,  2 Oct 2024 14:52:04 +0200
-Message-ID: <20241002125812.049934612@linuxfoundation.org>
+Message-ID: <20241002125827.506195275@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Sandeep Dhavale <dhavale@google.com>
 
-[ Upstream commit 6a64c5220c5df235448b846aeff3c0660d4cc83e ]
+[ Upstream commit 3fc3e45fcdeaad4b7660b560fcbc827eb733f58e ]
 
-If you pass an fd using FSCONFIG_SET_FD, autofs_parse_fd() "steals" the
-param->file and so the fs_context infrastructure will not do fput() for
-us.
+If we get a failure at the first decompressor init (i = 0),
+the clean up while loop could enter infinite loop due to wrong while
+check. Check the value of i now to see if we need any clean up at all.
 
-Fixes: e6ec453bd0f0 ("autofs: convert autofs to use the new mount api")
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Link: https://lore.kernel.org/r/20240731-fsconfig-fsparam_fd-fixes-v2-1-e7c472224417@cyphar.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 5a7cce827ee9 ("erofs: refine z_erofs_{init,exit}_subsystem()")
+Reported-by: liujinbao1 <liujinbao1@xiaomi.com>
+Signed-off-by: Sandeep Dhavale <dhavale@google.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20240905060027.2388893-1-dhavale@google.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/autofs/inode.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/erofs/decompressor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/autofs/inode.c b/fs/autofs/inode.c
-index 1f5db68636631..bb404bfce036b 100644
---- a/fs/autofs/inode.c
-+++ b/fs/autofs/inode.c
-@@ -172,8 +172,7 @@ static int autofs_parse_fd(struct fs_context *fc, struct autofs_sb_info *sbi,
- 	ret = autofs_check_pipe(pipe);
- 	if (ret < 0) {
- 		errorf(fc, "Invalid/unusable pipe");
--		if (param->type != fs_value_is_file)
--			fput(pipe);
-+		fput(pipe);
- 		return -EBADF;
- 	}
- 
+diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
+index c2253b6a54164..eb318c7ddd80e 100644
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -539,7 +539,7 @@ int __init z_erofs_init_decompressor(void)
+ 	for (i = 0; i < Z_EROFS_COMPRESSION_MAX; ++i) {
+ 		err = z_erofs_decomp[i] ? z_erofs_decomp[i]->init() : 0;
+ 		if (err) {
+-			while (--i)
++			while (i--)
+ 				if (z_erofs_decomp[i])
+ 					z_erofs_decomp[i]->exit();
+ 			return err;
 -- 
 2.43.0
 
