@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333F798D816
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F7598D535
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A99201F22D3A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:56:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12CAB286C90
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF751D07B7;
-	Wed,  2 Oct 2024 13:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20D21D043E;
+	Wed,  2 Oct 2024 13:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9FLjdB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ffs/L3G7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BC61D079D;
-	Wed,  2 Oct 2024 13:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10971D042F;
+	Wed,  2 Oct 2024 13:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877352; cv=none; b=CLPVj2Nyyf161sRr4AepBx4o9EL0+qdwEl7oYBeCIimab0PBOOArUaBUEBYawSltjj2tJIDS8Y+zwZq5Ert5y8QBFjbzHtskDUXlLhIfZEi/ayxnmZKSzdKspZj9rXKdjyTmx735veV3HaOUC6obgQsooK/XQzspDWm425oP0CQ=
+	t=1727875672; cv=none; b=RRFsHajbS+smnmQavpsXxyjlCTYeYCLzEiKgGOeEZc7y/f04WIkY5vlLapmiXubIZrjDnhgmgH3iwfaAnEm9bqm6p0BWdJJrd4h6/IptMJxJSzN4xbhi6rCwWq5BW5iM8cvzK/QR4lhP7zXc/Jeo9gn7gvGVl1Ulvrk9dYl44nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877352; c=relaxed/simple;
-	bh=WjHqUKauRXIkQd41dlLIxELO7v+AZIETxJ0baV110ew=;
+	s=arc-20240116; t=1727875672; c=relaxed/simple;
+	bh=7N0Qu49M7iDcQ+A6BBc/C/FkmBXI2RuiitgUTDyoku4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QpXJLEMgCvMSt4pqn4Xp0aI7TDB4a3aW4FqKfyki5UlEVLYEYbuugzT72/dZUlsdGMgxKpii8REuLvaJQMYScZle0YCAsL/spgxWPOukrwbRBTJV04ERqDgrIakFC4aSJb4oen/6eLsSUdxG2GHeQ6t9BZPBHIJwSmoEDiG7dak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9FLjdB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B35FC4AF09;
-	Wed,  2 Oct 2024 13:55:52 +0000 (UTC)
+	 MIME-Version; b=AG4BZnuz6kmfCOJDGamvm96xRPe3/84v1Sd/QIHivZargpTOKm5VNRTqIfDetNHx2hWB8TA2HeQWE+GYKy6obXIJa6AHMg010HSrPhnT7nUXyZ9D5BIqvHBaBHF5OqNgc4lGq56PIIJOgjJsI5lictiQSB2H268GgbBkkA58FDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ffs/L3G7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38006C4CED2;
+	Wed,  2 Oct 2024 13:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877352;
-	bh=WjHqUKauRXIkQd41dlLIxELO7v+AZIETxJ0baV110ew=;
+	s=korg; t=1727875672;
+	bh=7N0Qu49M7iDcQ+A6BBc/C/FkmBXI2RuiitgUTDyoku4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9FLjdB0JwukCtHXgjZUy99kQ46TtxWTLvanmFTiagz3UbE9whUZ6ERpHGHuMNFaD
-	 iKJJkkaSdIGjUQ11uOHTvBUxVABbs0jtv+BZ00T/EMzJF655fnFMSyEIcTdFdSLAPI
-	 NhREjSqGqm+4Ru2r4oqS3WPswCkhuvUJMA1H5ysw=
+	b=Ffs/L3G7WtG26bTkyuzBfkFnW1R3USoJ/hHV2YBzz1kN61kOKfbBj5Y3vcghCmpZe
+	 TFERZPWnEoVu0J0paU+eAyH6nuB3VEk3YUifa8sYT8mW6aEnjQZZ/zgDEuQw4k4+tI
+	 DILidirL8AfE1cq5jAWVDk5mVEHEw8TuNCd1DrjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 052/634] ACPI: CPPC: Fix MASK_VAL() usage
+Subject: [PATCH 6.11 154/695] ARM: versatile: fix OF node leak in CPUs prepare
 Date: Wed,  2 Oct 2024 14:52:32 +0200
-Message-ID: <20241002125813.158611345@linuxfoundation.org>
+Message-ID: <20241002125828.626769578@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,149 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 60949b7b805424f21326b450ca4f1806c06d982e ]
+[ Upstream commit f2642d97f2105ed17b2ece0c597450f2ff95d704 ]
 
-MASK_VAL() was added as a way to handle bit_offset and bit_width for
-registers located in system memory address space. However, while suited
-for reading, it does not work for writing and result in corrupted
-registers when writing values with bit_offset > 0. Moreover, when a
-register is collocated with another one at the same address but with a
-different mask, the current code results in the other registers being
-overwritten with 0s. The write procedure for SYSTEM_MEMORY registers
-should actually read the value, mask it, update it and write it with the
-updated value. Moreover, since registers can be located in the same
-word, we must take care of locking the access before doing it. We should
-potentially use a global lock since we don't know in if register
-addresses aren't shared with another _CPC package but better not
-encourage vendors to do so. Assume that registers can use the same word
-inside a _CPC package and thus, use a per _CPC package lock.
+Machine code is leaking OF node reference from of_find_matching_node()
+in realview_smp_prepare_cpus().
 
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Link: https://patch.msgid.link/20240826101648.95654-1-cleger@rivosinc.com
-[ rjw: Dropped redundant semicolon ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 5420b4b15617 ("ARM: realview: add an DT SMP boot method")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/20240826054934.10724-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 43 ++++++++++++++++++++++++++++++++++++----
- include/acpi/cppc_acpi.h |  2 ++
- 2 files changed, 41 insertions(+), 4 deletions(-)
+ arch/arm/mach-versatile/platsmp-realview.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 1d857978f5f40..2a588e4ed4af4 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -170,8 +170,11 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
- #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
- 
- /* Shift and apply the mask for CPC reads/writes */
--#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-+#define MASK_VAL_READ(reg, val) (((val) >> (reg)->bit_offset) &				\
- 					GENMASK(((reg)->bit_width) - 1, 0))
-+#define MASK_VAL_WRITE(reg, prev_val, val)						\
-+	((((val) & GENMASK(((reg)->bit_width) - 1, 0)) << (reg)->bit_offset) |		\
-+	((prev_val) & ~(GENMASK(((reg)->bit_width) - 1, 0) << (reg)->bit_offset)))	\
- 
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
-@@ -857,6 +860,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
- 
- 	/* Store CPU Logical ID */
- 	cpc_ptr->cpu_id = pr->id;
-+	spin_lock_init(&cpc_ptr->rmw_lock);
- 
- 	/* Parse PSD data for this CPU */
- 	ret = acpi_get_psd(cpc_ptr, handle);
-@@ -1062,7 +1066,7 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+diff --git a/arch/arm/mach-versatile/platsmp-realview.c b/arch/arm/mach-versatile/platsmp-realview.c
+index 6965a1de727b0..d38b2e174257e 100644
+--- a/arch/arm/mach-versatile/platsmp-realview.c
++++ b/arch/arm/mach-versatile/platsmp-realview.c
+@@ -70,6 +70,7 @@ static void __init realview_smp_prepare_cpus(unsigned int max_cpus)
+ 		return;
  	}
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		*val = MASK_VAL(reg, *val);
-+		*val = MASK_VAL_READ(reg, *val);
- 
- 	return 0;
- }
-@@ -1071,9 +1075,11 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- {
- 	int ret_val = 0;
- 	int size;
-+	u64 prev_val;
- 	void __iomem *vaddr = NULL;
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
-+	struct cpc_desc *cpc_desc;
- 
- 	size = GET_BIT_WIDTH(reg);
- 
-@@ -1106,8 +1112,34 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
- 				val, size);
- 
--	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		val = MASK_VAL(reg, val);
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
-+		if (!cpc_desc) {
-+			pr_debug("No CPC descriptor for CPU:%d\n", cpu);
-+			return -ENODEV;
-+		}
-+
-+		spin_lock(&cpc_desc->rmw_lock);
-+		switch (size) {
-+		case 8:
-+			prev_val = readb_relaxed(vaddr);
-+			break;
-+		case 16:
-+			prev_val = readw_relaxed(vaddr);
-+			break;
-+		case 32:
-+			prev_val = readl_relaxed(vaddr);
-+			break;
-+		case 64:
-+			prev_val = readq_relaxed(vaddr);
-+			break;
-+		default:
-+			spin_unlock(&cpc_desc->rmw_lock);
-+			return -EFAULT;
-+		}
-+		val = MASK_VAL_WRITE(reg, prev_val, val);
-+		val |= prev_val;
-+	}
- 
- 	switch (size) {
- 	case 8:
-@@ -1134,6 +1166,9 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		break;
- 	}
- 
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-+		spin_unlock(&cpc_desc->rmw_lock);
-+
- 	return ret_val;
- }
- 
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index 930b6afba6f4d..e1720d9306669 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -64,6 +64,8 @@ struct cpc_desc {
- 	int cpu_id;
- 	int write_cmd_status;
- 	int write_cmd_id;
-+	/* Lock used for RMW operations in cpc_write() */
-+	spinlock_t rmw_lock;
- 	struct cpc_register_resource cpc_regs[MAX_CPC_REG_ENT];
- 	struct acpi_psd_package domain_info;
- 	struct kobject kobj;
+ 	map = syscon_node_to_regmap(np);
++	of_node_put(np);
+ 	if (IS_ERR(map)) {
+ 		pr_err("PLATSMP: No syscon regmap\n");
+ 		return;
 -- 
 2.43.0
 
