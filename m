@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-79438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B0598D840
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516AB98D553
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04D111C22B5A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83E681C21B33
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26F51D0B84;
-	Wed,  2 Oct 2024 13:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D991D0437;
+	Wed,  2 Oct 2024 13:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a49Uvgz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MS0vlOov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1561D079A;
-	Wed,  2 Oct 2024 13:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61141D0403;
+	Wed,  2 Oct 2024 13:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877459; cv=none; b=DJvtpNf2PfW8S7HrV6DRBYqiKcG8NvHay5AReIVJXCL84GNIHOWCt4k+yKXuod7KRtjRvL49GbcfmEwsw2mhLao0aWozWd9y+XPjaW6jC2v7SpaO8vdBzZHh8Y/IpCfM+88SfrGV5U7/imhCby1d0hlKo58QiKHwMau7nzHtbok=
+	t=1727875739; cv=none; b=dBr5kjy2GiHFqL+aRn0BiLn5qr2APHXP6jxiDT/mPxisdCzo4URjsSNOMSVwrSnWM4/jwQ3cQv2XkVkzsrbB3l5CcaMlVTtk99NrzWC8s6oaF1qyK571u0Ylgu5QwILqyC33HKPE6OOH5+c+QIjfJMn59GqjwCgs+02tniQbMSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877459; c=relaxed/simple;
-	bh=7DSRFC8IWyxI1G/nDh5Y21gqJNdDePSg/lRjJk6nR9g=;
+	s=arc-20240116; t=1727875739; c=relaxed/simple;
+	bh=ivqNWrCXfWST40KD1DgNixEaoC7DRiLNOaIa6pFvsJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RL3dizfxl4T1dSpHXVSPytCTFyJUxkeei/HJJt5kn+sNi4OTmu5jceGiG7KlEZNQtudKMSZB3M4m0S3SOJzs8bLtlIVSYmiqiT/Sj/sm906BkosJ4lZDFL+bP5Z14i92xMejrW8qdZlEoZ9PqQyrg0zrJHQkGPMa8HJgEIQEb4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a49Uvgz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC552C4AF0E;
-	Wed,  2 Oct 2024 13:57:38 +0000 (UTC)
+	 MIME-Version; b=QXzYwe/+ssbFL3VijeW+3vN5VNoveK25pnPfxOX/acPoRpwed583XiW2nmqAyeJu02SVIJZ6lPiT97vI4zn2tkUAsvVxKZdkszyEhgFWJXbsrYJXDRIxWIsqUj2aShh5z1gpy3UqrHKHs5S8+k06cFf+6nsWbODKFJKKldGXgZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MS0vlOov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB3EC4CEC5;
+	Wed,  2 Oct 2024 13:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877459;
-	bh=7DSRFC8IWyxI1G/nDh5Y21gqJNdDePSg/lRjJk6nR9g=;
+	s=korg; t=1727875739;
+	bh=ivqNWrCXfWST40KD1DgNixEaoC7DRiLNOaIa6pFvsJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a49Uvgz9HTMnj0ao1N55a/BtTOnxicS+2bVKryYoYwbaiAYg+pM1Da1LsQv0VMyqF
-	 abw1AlN9dXNUtBv2olew80ja2Z5UpkV93SoRwnIJP4EjuLDUJjbO8ZLnXD0tDwzyDB
-	 hoQLqGkP7GAbMZsXGm3YTF0rapAJ24ENPMNQuc2w=
+	b=MS0vlOovDW3W7G3eFMJGMgASqoBQ8u9gRySvIMgh2xcNyWIoEJJk7tv3X1LlpGJYs
+	 tEbfe5ubbUKiI287ZpXABbRzUpzOdN98X+BkG1b1ggQuyAooXyLNZwsDEUA3mg3130
+	 DEF1yC6RKfznXqHvxY7klrp+FDDYbyMkYV2PC7tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 085/634] Bluetooth: hci_core: Fix sending MGMT_EV_CONNECT_FAILED
+Subject: [PATCH 6.11 187/695] iommu/amd: Do not set the D bit on AMD v2 table entries
 Date: Wed,  2 Oct 2024 14:53:05 +0200
-Message-ID: <20241002125814.466172874@linuxfoundation.org>
+Message-ID: <20241002125829.935234983@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit d47da6bd4cfa982fe903f33423b9e2ec541e9496 ]
+[ Upstream commit 2910a7fa1be090fc7637cef0b2e70bcd15bf5469 ]
 
-If HCI_CONN_MGMT_CONNECTED has been set then the event shall be
-HCI_CONN_MGMT_DISCONNECTED.
+The manual says that bit 6 is IGN for all Page-Table Base Address
+pointers, don't set it.
 
-Fixes: b644ba336997 ("Bluetooth: Update device_connected and device_found events to latest API")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/14-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |  4 ++--
- net/bluetooth/hci_conn.c         |  6 ++----
- net/bluetooth/mgmt.c             | 13 +++++++++----
- 3 files changed, 13 insertions(+), 10 deletions(-)
+ drivers/iommu/amd/io_pgtable_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index ecb6824e9add8..9cfd1ce0fd36c 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -2258,8 +2258,8 @@ void mgmt_device_disconnected(struct hci_dev *hdev, bdaddr_t *bdaddr,
- 			      bool mgmt_connected);
- void mgmt_disconnect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr,
- 			    u8 link_type, u8 addr_type, u8 status);
--void mgmt_connect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
--			 u8 addr_type, u8 status);
-+void mgmt_connect_failed(struct hci_dev *hdev, struct hci_conn *conn,
-+			 u8 status);
- void mgmt_pin_code_request(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 secure);
- void mgmt_pin_code_reply_complete(struct hci_dev *hdev, bdaddr_t *bdaddr,
- 				  u8 status);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 3c74d171085de..bfa773730f3bd 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -107,8 +107,7 @@ void hci_connect_le_scan_cleanup(struct hci_conn *conn, u8 status)
- 	 * where a timeout + cancel does indicate an actual failure.
- 	 */
- 	if (status && status != HCI_ERROR_UNKNOWN_CONN_ID)
--		mgmt_connect_failed(hdev, &conn->dst, conn->type,
--				    conn->dst_type, status);
-+		mgmt_connect_failed(hdev, conn, status);
+diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
+index 6088822180e1e..f9227cbf75dfe 100644
+--- a/drivers/iommu/amd/io_pgtable_v2.c
++++ b/drivers/iommu/amd/io_pgtable_v2.c
+@@ -51,7 +51,7 @@ static inline u64 set_pgtable_attr(u64 *page)
+ 	u64 prot;
  
- 	/* The connection attempt was doing scan for new RPA, and is
- 	 * in scan phase. If params are not associated with any other
-@@ -1251,8 +1250,7 @@ void hci_conn_failed(struct hci_conn *conn, u8 status)
- 		hci_le_conn_failed(conn, status);
- 		break;
- 	case ACL_LINK:
--		mgmt_connect_failed(hdev, &conn->dst, conn->type,
--				    conn->dst_type, status);
-+		mgmt_connect_failed(hdev, conn, status);
- 		break;
- 	}
+ 	prot = IOMMU_PAGE_PRESENT | IOMMU_PAGE_RW | IOMMU_PAGE_USER;
+-	prot |= IOMMU_PAGE_ACCESS | IOMMU_PAGE_DIRTY;
++	prot |= IOMMU_PAGE_ACCESS;
  
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index ba28907afb3fa..c383eb44d516b 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -9734,13 +9734,18 @@ void mgmt_disconnect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr,
- 	mgmt_pending_remove(cmd);
+ 	return (iommu_virt_to_phys(page) | prot);
  }
- 
--void mgmt_connect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
--			 u8 addr_type, u8 status)
-+void mgmt_connect_failed(struct hci_dev *hdev, struct hci_conn *conn, u8 status)
- {
- 	struct mgmt_ev_connect_failed ev;
- 
--	bacpy(&ev.addr.bdaddr, bdaddr);
--	ev.addr.type = link_to_bdaddr(link_type, addr_type);
-+	if (test_and_clear_bit(HCI_CONN_MGMT_CONNECTED, &conn->flags)) {
-+		mgmt_device_disconnected(hdev, &conn->dst, conn->type,
-+					 conn->dst_type, status, true);
-+		return;
-+	}
-+
-+	bacpy(&ev.addr.bdaddr, &conn->dst);
-+	ev.addr.type = link_to_bdaddr(conn->type, conn->dst_type);
- 	ev.status = mgmt_status(status);
- 
- 	mgmt_event(MGMT_EV_CONNECT_FAILED, hdev, &ev, sizeof(ev), NULL);
 -- 
 2.43.0
 
