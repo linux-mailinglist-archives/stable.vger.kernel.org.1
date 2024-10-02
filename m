@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7894498DB40
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8E898DDAF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B9F81F21D67
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 811DB1C23B7D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D641D1514;
-	Wed,  2 Oct 2024 14:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002ED1D0E20;
+	Wed,  2 Oct 2024 14:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq6OIdyQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03InCylO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918EA1D0940;
-	Wed,  2 Oct 2024 14:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B282B1D0B8D;
+	Wed,  2 Oct 2024 14:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879074; cv=none; b=lfK5Ju07l+58kQ89XjRNvqLeZA4JxI9oHdPpPPAmbWhmpTmBHYBuSVbAkvwjBUjEcrunXQqV0WQBklbRQtE1L6aojA0VVexCHX+okApjolEihG8vZTlCtoA5gTmpAbILeuRPuaRuIWIQzQtYyR0J9HeMN1aTRq05CYtV2+aQoYU=
+	t=1727880530; cv=none; b=mAlf8PfuPWz3GznaOG3PVu0dlDcGI0n7wh11jOMkh3y9gl+VnZIPBWayg2xW3qietFsGS1yladyTfJRK85UD/bb1a1nTvL1ltiN6GYP4ZIx+PiZl/MO4BWUdOXnJCNdyKs6aO3CKr2gscoLLg8f4Z91YNuolW3XugTdV4/TGzDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879074; c=relaxed/simple;
-	bh=hklnWhMm0fZxRql8y9XO3jy8SUV0y1qB6eHMqmM3sQM=;
+	s=arc-20240116; t=1727880530; c=relaxed/simple;
+	bh=7Y9yub6KFmRjkv4IcUgltx5QSTd10FPmTl7gRVmg4mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmTn4k4q5T7N/Sc0elWDmp2mXnfMcT3SyHDWUYUCU91rnMiAUnvUg7d4hjUMDZ+s76ZrSbuUBiK2cupgtJ2zLPDEdklnyUmCrEWFoyVyFcEfvCJO4BvwgofStjh0tjJyPYYuIc6liRUwmQCcI5YiFco0kG6ywYELrYZz2wOKCIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq6OIdyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDEDC4CEC2;
-	Wed,  2 Oct 2024 14:24:33 +0000 (UTC)
+	 MIME-Version; b=eVcFD9Gyfp3Ba2aExrTelLddKyDZeVVo0U3+35dPjLXUe9FJkBqQUDdw74qHLdhPldfag4odin1/uutmGs59c1l0qi5O1rlfhuGHWNPpHUsoDYT5y/cneKijQr/VQ5VC26OatmxtaeDopitlbSxFfI6OQlpqc5jl6jYycWZmqIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03InCylO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECF3C4CEC2;
+	Wed,  2 Oct 2024 14:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879074;
-	bh=hklnWhMm0fZxRql8y9XO3jy8SUV0y1qB6eHMqmM3sQM=;
+	s=korg; t=1727880530;
+	bh=7Y9yub6KFmRjkv4IcUgltx5QSTd10FPmTl7gRVmg4mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lq6OIdyQwXRXdjUmm6pPTtRSkl/rCN0g3KNhX0tz5MojIzVCbIQfDbthS4iujPE5l
-	 oWMgUOgP7yQb9cx7PrWd5pSN3oq0NcaXM/bFEWGiZ0WBJAf/drH12LpYtByJ5jSgn0
-	 WCapQhSOTg/hDEYgCQYcNRo09oUo6waW/zisUzBg=
+	b=03InCylObbB6JrcmuE7XIl6RmiA+mtxEOzTFIPwl/Fvcq6HUoAzKdGKtNJPADVQ1Q
+	 qsjNxMhouOsc8M32ZmK/W3K/0K1sngXWGfNpO5AQQzTgzkP7j75Yy781ZP+dgJiNCd
+	 OAWb9j/7fb779xRUX6R3WlnMutwMuVIPFVxjZ1I4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2dab93857ee95f2eeb08@syzkaller.appspotmail.com,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 629/634] mm: change vmf_anon_prepare() to __vmf_anon_prepare()
+	Ma Ke <make24@iscas.ac.cn>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 490/538] pps: add an error check in parport_attach
 Date: Wed,  2 Oct 2024 15:02:09 +0200
-Message-ID: <20241002125835.952242270@linuxfoundation.org>
+Message-ID: <20241002125811.782561451@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 2a058ab3286d6475b2082b90c2d2182d2fea4b39 upstream.
+[ Upstream commit 62c5a01a5711c8e4be8ae7b6f0db663094615d48 ]
 
-Some callers of vmf_anon_prepare() may not want us to release the per-VMA
-lock ourselves.  Rename vmf_anon_prepare() to __vmf_anon_prepare() and let
-the callers drop the lock when desired.
+In parport_attach, the return value of ida_alloc is unchecked, witch leads
+to the use of an invalid index value.
 
-Also, make vmf_anon_prepare() a wrapper that releases the per-VMA lock
-itself for any callers that don't care.
+To address this issue, index should be checked. When the index value is
+abnormal, the device should be freed.
 
-This is in preparation to fix this bug reported by syzbot:
-https://lore.kernel.org/linux-mm/00000000000067c20b06219fbc26@google.com/
+Found by code review, compile tested only.
 
-Link: https://lkml.kernel.org/r/20240914194243.245-1-vishal.moola@gmail.com
-Fixes: 9acad7ba3e25 ("hugetlb: use vmf_anon_prepare() instead of anon_vma_prepare()")
-Reported-by: syzbot+2dab93857ee95f2eeb08@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/00000000000067c20b06219fbc26@google.com/
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: fb56d97df70e ("pps: client: use new parport device model")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/20240828131814.3034338-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/internal.h |   11 ++++++++++-
- mm/memory.c   |    8 +++-----
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/pps/clients/pps_parport.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -293,7 +293,16 @@ static inline void wake_throttle_isolate
- 		wake_up(wqh);
- }
- 
--vm_fault_t vmf_anon_prepare(struct vm_fault *vmf);
-+vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf);
-+static inline vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
-+{
-+	vm_fault_t ret = __vmf_anon_prepare(vmf);
-+
-+	if (unlikely(ret & VM_FAULT_RETRY))
-+		vma_end_read(vmf->vma);
-+	return ret;
-+}
-+
- vm_fault_t do_swap_page(struct vm_fault *vmf);
- void folio_rotate_reclaimable(struct folio *folio);
- bool __folio_end_writeback(struct folio *folio);
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3226,7 +3226,7 @@ static inline vm_fault_t vmf_can_call_fa
- }
- 
- /**
-- * vmf_anon_prepare - Prepare to handle an anonymous fault.
-+ * __vmf_anon_prepare - Prepare to handle an anonymous fault.
-  * @vmf: The vm_fault descriptor passed from the fault handler.
-  *
-  * When preparing to insert an anonymous page into a VMA from a
-@@ -3240,7 +3240,7 @@ static inline vm_fault_t vmf_can_call_fa
-  * Return: 0 if fault handling can proceed.  Any other value should be
-  * returned to the caller.
-  */
--vm_fault_t vmf_anon_prepare(struct vm_fault *vmf)
-+vm_fault_t __vmf_anon_prepare(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	vm_fault_t ret = 0;
-@@ -3248,10 +3248,8 @@ vm_fault_t vmf_anon_prepare(struct vm_fa
- 	if (likely(vma->anon_vma))
- 		return 0;
- 	if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
--		if (!mmap_read_trylock(vma->vm_mm)) {
--			vma_end_read(vma);
-+		if (!mmap_read_trylock(vma->vm_mm))
- 			return VM_FAULT_RETRY;
--		}
+diff --git a/drivers/pps/clients/pps_parport.c b/drivers/pps/clients/pps_parport.c
+index af972cdc04b53..53e9c304ae0a7 100644
+--- a/drivers/pps/clients/pps_parport.c
++++ b/drivers/pps/clients/pps_parport.c
+@@ -149,6 +149,9 @@ static void parport_attach(struct parport *port)
  	}
- 	if (__anon_vma_prepare(vma))
- 		ret = VM_FAULT_OOM;
+ 
+ 	index = ida_alloc(&pps_client_index, GFP_KERNEL);
++	if (index < 0)
++		goto err_free_device;
++
+ 	memset(&pps_client_cb, 0, sizeof(pps_client_cb));
+ 	pps_client_cb.private = device;
+ 	pps_client_cb.irq_func = parport_irq;
+@@ -159,7 +162,7 @@ static void parport_attach(struct parport *port)
+ 						    index);
+ 	if (!device->pardev) {
+ 		pr_err("couldn't register with %s\n", port->name);
+-		goto err_free;
++		goto err_free_ida;
+ 	}
+ 
+ 	if (parport_claim_or_block(device->pardev) < 0) {
+@@ -187,8 +190,9 @@ static void parport_attach(struct parport *port)
+ 	parport_release(device->pardev);
+ err_unregister_dev:
+ 	parport_unregister_device(device->pardev);
+-err_free:
++err_free_ida:
+ 	ida_free(&pps_client_index, index);
++err_free_device:
+ 	kfree(device);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
