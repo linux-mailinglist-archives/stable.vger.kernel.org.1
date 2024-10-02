@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-80352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EAFB98DD0F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AA098DAA0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3761F283D3E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43F42B231F0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95401D14E3;
-	Wed,  2 Oct 2024 14:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C981D1505;
+	Wed,  2 Oct 2024 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdwE8P/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFR0Lkp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889391D0BA8;
-	Wed,  2 Oct 2024 14:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4D31D07A0;
+	Wed,  2 Oct 2024 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880123; cv=none; b=gXkls14A+Z44V/Ni2c+9a/jGODwyJqnzI1G4G5szra2xRx/2Gpo7DVK3p91uwRwpN7/R0ErPACfzTxbbTL+MBGDzkI988CIWw0qse+IFAgRnmaSclQ7uRGS/x/yClOgyZU1JhACyEG9hkdcMQIBkBYlYkQ4D+7Da6KjzKxOqE68=
+	t=1727878664; cv=none; b=YOsUUanteHswbsafyUwjIaGRsX8Y5qrfSuN8ipoeHnpePMNVTh9EDEOcTc2WO8DYiY3D7Uh0w8ReuZj2rAAUNHLwvB4CBbAZLc7pSfVTbGl6WqiQWYKEwrjLMTUPiOYkfA+ZfQkzJ9O2xTBLM4gYqUAVecATTjTqk7kM1dZJXRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880123; c=relaxed/simple;
-	bh=UZyjfefq6mHRpDx7xfBjYwIrDuEKN3CgF0St63LJnZY=;
+	s=arc-20240116; t=1727878664; c=relaxed/simple;
+	bh=98tfwpIYIjjhob+JhWBKCB4USSVDiwDRMxIyZaCzIcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjdzxruHON8RQRrQoyR99AwP5GupSljVL3UMXQG9SdHMVbUo+HXINQByfM/F827zTZpfauQ/QAegcl5rbngcIKX2oRZFxW26MK4+8heQ3kiQZuXouktvlUl8fEFZoUXO2JwIHnXiiIXCng2U2kdKlZdNC/WEbj54yBEL43f+Tn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdwE8P/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1DBC4CECE;
-	Wed,  2 Oct 2024 14:42:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q8T3RqYjILqbm2JR1yI5UFpZdN0lfY8oBGOLZfZVYZQoHL7t1l884dThXc9zy31SVv3r1YM1XK/TUYbIMII/tMGznVm75fEzUsmIc/hHyqgMuIwSHBGCL+b9MO38LSwbekMGwppKHlVVklLbRxltQC7rCQAzgCPX9JuyVIZvLXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFR0Lkp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28ECC4CEC2;
+	Wed,  2 Oct 2024 14:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880123;
-	bh=UZyjfefq6mHRpDx7xfBjYwIrDuEKN3CgF0St63LJnZY=;
+	s=korg; t=1727878664;
+	bh=98tfwpIYIjjhob+JhWBKCB4USSVDiwDRMxIyZaCzIcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdwE8P/2pyuWCEIeI7hwFRAbea3C6IVWOlAby5LTgimhSKiaSgR8rMx9fTbZ7hWvK
-	 w1J0qRLBSTbXJ2HZrtIRqyTIZvF/DLjVzddcCrtCbJJmtJNW+9mBnYHKQuAdNOlidr
-	 5sh3jFlctTITk0WMOj41dR6HWE1eF1yOQbkrNqT4=
+	b=LFR0Lkp9C/PAARiT/nkcdIWlyUgwjbiFM0SeMddK3XqjrzJdrzlsXE7rGYw8l2zIV
+	 jUUOf7V7Dbhid8DgfvbYRRRPE26Kp1FRg+V+6WKeC2s3KSj6eonvuK/CFeOj1u8tP5
+	 XmoUpslsDMasys3ut8nqqBv1554InF51XUKzyw4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 351/538] spi: atmel-quadspi: Avoid overwriting delay register settings
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 490/634] drm/amdgpu/mes11: reduce timeout
 Date: Wed,  2 Oct 2024 14:59:50 +0200
-Message-ID: <20241002125806.283289301@linuxfoundation.org>
+Message-ID: <20241002125830.443253011@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 329ca3eed4a9a161515a8714be6ba182321385c7 ]
+commit 856265caa94a3c78feaa23ec1acd799fe1989201 upstream.
 
-Previously the MR and SCR registers were just set with the supposedly
-required values, from cached register values (cached reg content
-initialized to zero).
+The firmware timeout is 2s.  Reduce the driver timeout to
+2.1 seconds to avoid back pressure on queue submissions.
 
-All parts fixed here did not consider the current register (cache)
-content, which would make future support of cs_setup, cs_hold, and
-cs_inactive impossible.
-
-Setting SCBR in atmel_qspi_setup() erases a possible DLYBS setting from
-atmel_qspi_set_cs_timing().  The DLYBS setting is applied by ORing over
-the current setting, without resetting the bits first.  All writes to MR
-did not consider possible settings of DLYCS and DLYBCT.
-
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Fixes: f732646d0ccd ("spi: atmel-quadspi: Add support for configuring CS timing")
-Link: https://patch.msgid.link/20240918082744.379610-2-ada@thorsis.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3627
+Fixes: f7c161a4c250 ("drm/amdgpu: increase mes submission timeout")
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/atmel-quadspi.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index af0464999af1f..bf7999ac22c80 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -375,9 +375,9 @@ static int atmel_qspi_set_cfg(struct atmel_qspi *aq,
- 	 * If the QSPI controller is set in regular SPI mode, set it in
- 	 * Serial Memory Mode (SMM).
- 	 */
--	if (aq->mr != QSPI_MR_SMM) {
--		atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
--		aq->mr = QSPI_MR_SMM;
-+	if (!(aq->mr & QSPI_MR_SMM)) {
-+		aq->mr |= QSPI_MR_SMM;
-+		atmel_qspi_write(aq->scr, aq, QSPI_MR);
- 	}
- 
- 	/* Clear pending interrupts */
-@@ -501,7 +501,8 @@ static int atmel_qspi_setup(struct spi_device *spi)
- 	if (ret < 0)
- 		return ret;
- 
--	aq->scr = QSPI_SCR_SCBR(scbr);
-+	aq->scr &= ~QSPI_SCR_SCBR_MASK;
-+	aq->scr |= QSPI_SCR_SCBR(scbr);
- 	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
- 
- 	pm_runtime_mark_last_busy(ctrl->dev.parent);
-@@ -534,6 +535,7 @@ static int atmel_qspi_set_cs_timing(struct spi_device *spi)
- 	if (ret < 0)
- 		return ret;
- 
-+	aq->scr &= ~QSPI_SCR_DLYBS_MASK;
- 	aq->scr |= QSPI_SCR_DLYBS(cs_setup);
- 	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
- 
-@@ -549,8 +551,8 @@ static void atmel_qspi_init(struct atmel_qspi *aq)
- 	atmel_qspi_write(QSPI_CR_SWRST, aq, QSPI_CR);
- 
- 	/* Set the QSPI controller by default in Serial Memory Mode */
--	atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
--	aq->mr = QSPI_MR_SMM;
-+	aq->mr |= QSPI_MR_SMM;
-+	atmel_qspi_write(aq->mr, aq, QSPI_MR);
- 
- 	/* Enable the QSPI controller */
- 	atmel_qspi_write(QSPI_CR_QSPIEN, aq, QSPI_CR);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -155,7 +155,7 @@ static int mes_v11_0_submit_pkt_and_poll
+ 						    int api_status_off)
+ {
+ 	union MESAPI__QUERY_MES_STATUS mes_status_pkt;
+-	signed long timeout = 3000000; /* 3000 ms */
++	signed long timeout = 2100000; /* 2100 ms */
+ 	struct amdgpu_device *adev = mes->adev;
+ 	struct amdgpu_ring *ring = &mes->ring;
+ 	struct MES_API_STATUS *api_status;
 
 
 
