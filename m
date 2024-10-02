@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-80450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E3998DD7B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3446898DB0C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4738A280EE0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 664491C216D8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F811D0488;
-	Wed,  2 Oct 2024 14:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76861D07A3;
+	Wed,  2 Oct 2024 14:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnAvyCKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdksIPrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FE71D0B8C;
-	Wed,  2 Oct 2024 14:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958341D0412;
+	Wed,  2 Oct 2024 14:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880407; cv=none; b=rKW6gZjTmM/1Fz2SYQOEvr7Vwo1YxZk4YpDrP6S4q9yCe5cSGWfwntCqFV7fkifOEHTQi5UyrhnP43QTkdK1q3DqcggniTcYdvmfZN9oUshxlNB7pMMjHQ2QzZcg7X06ovOL2X7Vg1bLlQaqKhAREr8AUBb0kLBaDiQXDsL6OuQ=
+	t=1727878949; cv=none; b=M3B17E7u9Nff6UuAxnhFhJuai3pG+4EsANboTff8RHbI40OU23ACrppU4u2bW4SLHthJkA/k1eWS9Y8FHgY4dk8xLdGYaRYbpFZpdLaCu7PdzT6HhVkN/Bk5BTqTcwm1/mFy1QLY0+Hll8xec8nvxyxHuntbqgtHvfb7zexNHH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880407; c=relaxed/simple;
-	bh=QGeho2CqhOg3KZ9DEptInC7yzmAT4CqXooLnbhQzUfY=;
+	s=arc-20240116; t=1727878949; c=relaxed/simple;
+	bh=Z00XGJ1LYGHwpYqcw7yw6K5f4sMIohAVgie9IRIoKPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLwb2gxDWm0mr4L5l6m9SAcSw1PQPu/tdfrZP3+JdhTpWbgCVdlhn0iEjk6KGa0QsJ+lk97Fjd+JZubMzna89iz88VmEyHIKhU5SYG9XmZF9AUvm9h+PUROxBgceszUkSJMqItx9/2FmEO6xDYCSJ8wrMvBsY11W4DUZYkDjkEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnAvyCKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D7FC4CEC2;
-	Wed,  2 Oct 2024 14:46:47 +0000 (UTC)
+	 MIME-Version; b=lsG+IODzaTOiBKkdYj/Mjq5Oots6UOaxv3g+mjXpxxvaZQtBW/eSUPb+efU02djuowhBLMb/hixSWmfYlblQhKTP4Jh2Zyg3Be67B4zef69Zwc6Hvhoj0F9I4nlJEM/WTEyVh0tckuINiidXRP65f2/iWMONkxTOeCfk3t24DL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdksIPrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CF9C4CEC2;
+	Wed,  2 Oct 2024 14:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880407;
-	bh=QGeho2CqhOg3KZ9DEptInC7yzmAT4CqXooLnbhQzUfY=;
+	s=korg; t=1727878949;
+	bh=Z00XGJ1LYGHwpYqcw7yw6K5f4sMIohAVgie9IRIoKPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BnAvyCKzWo+IRWAzVeu0HARBPV1YOxI6XGfy2pY4j5kY0UOiJEIe4MsDbTZzGH/on
-	 hV2GvDaU90RDEGFWCJFqyv/zKLsVYd4ijq0AwJ6BeOs2ZXQlS+5YGFIRmgENUUaorM
-	 Pfdp4pxt+DDhIfoO7Duzhi3ReUq/Q8JeJ0ic0qQE=
+	b=mdksIPrBSUUtTNRQmQ0S5gdQsEM3tfPvOdMDSbPQ90SRLukMNAwFR7/FqDYmTRENE
+	 3HZ1Q+fwd8H6R4qxlbzzSWE+jYVpsXc2DXeSh041UJjeML2Bnjmpf0UTpWnzKEk94E
+	 ob5vwyZPPX8I/T0rjVb3dw8eaZan0jML52EI31xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 449/538] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.10 588/634] ARM: dts: imx6ul-geam: fix fsl,pins property in tscgrp pinctrl
 Date: Wed,  2 Oct 2024 15:01:28 +0200
-Message-ID: <20241002125810.165441073@linuxfoundation.org>
+Message-ID: <20241002125834.324244843@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit a98cfe6ff15b62f94a44d565607a16771c847bc6 upstream.
+commit 1b0e32753d8550908dff8982410357b5114be78c upstream.
 
-Internal documentation suggest that the TUXEDO Polaris 15 Gen5 AMD might
-have GMxXGxX as the board name instead of GMxXGxx.
+The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+configuration was not applied.  Fixes dtbs_check warnings:
 
-Adding both to be on the safe side.
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pins' is a required property
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240910094008.1601230-1-wse@tuxedocomputers.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: a58e4e608bc8 ("ARM: dts: imx6ul-geam: Add Engicam IMX6UL GEA M6UL initial support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -509,6 +509,12 @@ static const struct dmi_system_id mainge
- 		},
- 	},
- 	{
-+		/* TongFang GMxXGxX/TUXEDO Polaris 15 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
-+		},
-+	},
-+	{
- 		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+@@ -365,7 +365,7 @@
+ 	};
+ 
+ 	pinctrl_tsc: tscgrp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
+ 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
+ 			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
 
 
 
