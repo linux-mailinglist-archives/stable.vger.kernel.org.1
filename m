@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-79842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3B998DA8B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA6598DD03
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E088F2825DE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02BDDB272BA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2701D12FF;
-	Wed,  2 Oct 2024 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112941D0BAA;
+	Wed,  2 Oct 2024 14:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnJHZEwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCLYYDYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1061D12E6;
-	Wed,  2 Oct 2024 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B6B1CF5FB;
+	Wed,  2 Oct 2024 14:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878626; cv=none; b=SHuRVD8sgzoAwKesVF1NsSx76vZvt24V9TZAgYPDhOhYHqezcBqn/CtpAvGgH84ytu5hyz4X6B5PJd1w79lRmn4CtpWrpHm4YXlFFVZKoyBUemklLKdf9Sn1YRLb4HY109XtG4JSRS2EVMB7VkhZE1QQmT4B4GH1Ynk99UPe+NU=
+	t=1727880017; cv=none; b=NgDvTvAp+GNdKne0MIa16C+Cr/Y8uQlICZe5uWx3+rupMF+tB90X3r8YSRqjXfG9/SPUQJdSC1qff8jZ3AT9QiZbdaS5W9yerqeAAd2Rrg2lbfbyooiCxMGZdDEzA2HWYwlTZgw4TfcJ7SLyuMVgC9DobDdtLMcdFNTA2AhzDvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878626; c=relaxed/simple;
-	bh=JqOxiegWuHgMCyYQT2KD0b6vJKSVlhhJVC9NYbHwvN8=;
+	s=arc-20240116; t=1727880017; c=relaxed/simple;
+	bh=xF88x8Ue5+gN/rQM4THMa+ZfOy5Dr3sa5fWufRbsFmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyRqFUMq8CDWV5IakJXSSfjqmXQL84TE9eeFIfxfgkc02ypUKXpcujrxBBlowbe8vUFh7d4wIZv640wGpyGeEU4hp5R9g6OmGhtGo9pwPWHiMum1FqmUIFQna4+KfQgJVUP5DS4tj2iM7+pndFHAMjHoSsM64Gttq3Xc24A8YpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnJHZEwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F00C4CEC2;
-	Wed,  2 Oct 2024 14:17:05 +0000 (UTC)
+	 MIME-Version; b=fWzzbErjwmGjARqJQxPL3FucoQUuEyROAZRuurszMAAa7hnE5tsHYm1pPU7tZpnkFdgMDEpd56hH47XDtUICdiJRkZps4ZgVTmc75/1PH3YTRK3ltaLj7i+hs3Tf4S+Fxi0OYEJoJJKCAsw4HB4w6kWF0IYZjzPRsIMGkyDGYD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCLYYDYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E8C4CEC2;
+	Wed,  2 Oct 2024 14:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878626;
-	bh=JqOxiegWuHgMCyYQT2KD0b6vJKSVlhhJVC9NYbHwvN8=;
+	s=korg; t=1727880017;
+	bh=xF88x8Ue5+gN/rQM4THMa+ZfOy5Dr3sa5fWufRbsFmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnJHZEwQxytxg01xuF4MV16/5c0UaQNcDBGVbj0HfMGdp5h2XVLGf8da5XJA1OW01
-	 1KtARxAYJMv5hGcWMnvnSV8jyRiQ++EDCnru/C016AW2vO7pBbQiVZvdKvUx+eYdTX
-	 oFJ9i9iffRVgCbD6HupHR3Izrlrby34O8GZJkCbk=
+	b=HCLYYDYyGzuXKWgixox+MC+I3Z8tN8uAV4aAJ+haj2HJiG89DB9ZJ649YZV/uQD72
+	 KKtMhn4/B88WUMQWFPcjcmXiFb+euX526Git5+yC3S1moao0TyfwQNQNbXl3PTAoe3
+	 eZquxfZvbLJmgFbE9gXXrA/eM/vQsqNjoaSIULSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 436/634] netfilter: nf_reject_ipv6: fix nf_reject_ip6_tcphdr_put()
-Date: Wed,  2 Oct 2024 14:58:56 +0200
-Message-ID: <20241002125828.311754115@linuxfoundation.org>
+Subject: [PATCH 6.6 298/538] clk: at91: sama7g5: Allocate only the needed amount of memory for PLLs
+Date: Wed,  2 Oct 2024 14:58:57 +0200
+Message-ID: <20241002125804.177560474@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,193 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-[ Upstream commit 9c778fe48d20ef362047e3376dee56d77f8500d4 ]
+[ Upstream commit 2d6e9ee7cb3e79b1713783c633b13af9aeffc90c ]
 
-syzbot reported that nf_reject_ip6_tcphdr_put() was possibly sending
-garbage on the four reserved tcp bits (th->res1)
+The maximum number of PLL components on SAMA7G5 is 3 (one fractional
+part and 2 dividers). Allocate the needed amount of memory for
+sama7g5_plls 2d array. Previous code used to allocate 7 array entries for
+each PLL. While at it, replace 3 with PLL_COMPID_MAX in the loop which
+parses the sama7g5_plls 2d array.
 
-Use skb_put_zero() to clear the whole TCP header,
-as done in nf_reject_ip_tcphdr_put()
-
-BUG: KMSAN: uninit-value in nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255
-  nf_reject_ip6_tcphdr_put+0x688/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:255
-  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-  do_softirq+0x9a/0x100 kernel/softirq.c:455
-  __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:382
-  local_bh_enable include/linux/bottom_half.h:33 [inline]
-  rcu_read_unlock_bh include/linux/rcupdate.h:908 [inline]
-  __dev_queue_xmit+0x2692/0x5610 net/core/dev.c:4450
-  dev_queue_xmit include/linux/netdevice.h:3105 [inline]
-  neigh_resolve_output+0x9ca/0xae0 net/core/neighbour.c:1565
-  neigh_output include/net/neighbour.h:542 [inline]
-  ip6_finish_output2+0x2347/0x2ba0 net/ipv6/ip6_output.c:141
-  __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
-  ip6_finish_output+0xbb8/0x14b0 net/ipv6/ip6_output.c:226
-  NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-  ip6_output+0x356/0x620 net/ipv6/ip6_output.c:247
-  dst_output include/net/dst.h:450 [inline]
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_xmit+0x1ba6/0x25d0 net/ipv6/ip6_output.c:366
-  inet6_csk_xmit+0x442/0x530 net/ipv6/inet6_connection_sock.c:135
-  __tcp_transmit_skb+0x3b07/0x4880 net/ipv4/tcp_output.c:1466
-  tcp_transmit_skb net/ipv4/tcp_output.c:1484 [inline]
-  tcp_connect+0x35b6/0x7130 net/ipv4/tcp_output.c:4143
-  tcp_v6_connect+0x1bcc/0x1e40 net/ipv6/tcp_ipv6.c:333
-  __inet_stream_connect+0x2ef/0x1730 net/ipv4/af_inet.c:679
-  inet_stream_connect+0x6a/0xd0 net/ipv4/af_inet.c:750
-  __sys_connect_file net/socket.c:2061 [inline]
-  __sys_connect+0x606/0x690 net/socket.c:2078
-  __do_sys_connect net/socket.c:2088 [inline]
-  __se_sys_connect net/socket.c:2085 [inline]
-  __x64_sys_connect+0x91/0xe0 net/socket.c:2085
-  x64_sys_call+0x27a5/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:43
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was stored to memory at:
-  nf_reject_ip6_tcphdr_put+0x60c/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:249
-  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-
-Uninit was stored to memory at:
-  nf_reject_ip6_tcphdr_put+0x2ca/0x6c0 net/ipv6/netfilter/nf_reject_ipv6.c:231
-  nf_send_reset6+0xd84/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:344
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:3998 [inline]
-  slab_alloc_node mm/slub.c:4041 [inline]
-  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4084
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:583
-  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:674
-  alloc_skb include/linux/skbuff.h:1320 [inline]
-  nf_send_reset6+0x98d/0x15b0 net/ipv6/netfilter/nf_reject_ipv6.c:327
-  nft_reject_inet_eval+0x3c1/0x880 net/netfilter/nft_reject_inet.c:48
-  expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
-  nft_do_chain+0x438/0x22a0 net/netfilter/nf_tables_core.c:288
-  nft_do_chain_inet+0x41a/0x4f0 net/netfilter/nft_chain_filter.c:161
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK include/linux/netfilter.h:312 [inline]
-  ipv6_rcv+0x29b/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1da/0xa00 net/core/dev.c:5775
-  process_backlog+0x4ad/0xa50 net/core/dev.c:6108
-  __napi_poll+0xe7/0x980 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0xa5a/0x19b0 net/core/dev.c:6963
-  handle_softirqs+0x1ce/0x800 kernel/softirq.c:554
-  __do_softirq+0x14/0x1a kernel/softirq.c:588
-
-Fixes: c8d7b98bec43 ("netfilter: move nf_send_resetX() code to nf_reject_ipvX modules")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://patch.msgid.link/20240913170615.3670897-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: cb783bbbcf54 ("clk: at91: sama7g5: add clock support for sama7g5")
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240714141315.19480-1-claudiu.beznea@tuxon.dev
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nf_reject_ipv6.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/clk/at91/sama7g5.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index dedee264b8f6c..b9457473c176d 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -223,33 +223,23 @@ void nf_reject_ip6_tcphdr_put(struct sk_buff *nskb,
- 			      const struct tcphdr *oth, unsigned int otcplen)
- {
- 	struct tcphdr *tcph;
--	int needs_ack;
+diff --git a/drivers/clk/at91/sama7g5.c b/drivers/clk/at91/sama7g5.c
+index 91b5c6f148196..4e9594714b142 100644
+--- a/drivers/clk/at91/sama7g5.c
++++ b/drivers/clk/at91/sama7g5.c
+@@ -66,6 +66,7 @@ enum pll_component_id {
+ 	PLL_COMPID_FRAC,
+ 	PLL_COMPID_DIV0,
+ 	PLL_COMPID_DIV1,
++	PLL_COMPID_MAX,
+ };
  
- 	skb_reset_transport_header(nskb);
--	tcph = skb_put(nskb, sizeof(struct tcphdr));
-+	tcph = skb_put_zero(nskb, sizeof(struct tcphdr));
- 	/* Truncate to length (no data) */
- 	tcph->doff = sizeof(struct tcphdr)/4;
- 	tcph->source = oth->dest;
- 	tcph->dest = oth->source;
+ /*
+@@ -165,7 +166,7 @@ static struct sama7g5_pll {
+ 	u8 t;
+ 	u8 eid;
+ 	u8 safe_div;
+-} sama7g5_plls[][PLL_ID_MAX] = {
++} sama7g5_plls[][PLL_COMPID_MAX] = {
+ 	[PLL_ID_CPU] = {
+ 		[PLL_COMPID_FRAC] = {
+ 			.n = "cpupll_fracck",
+@@ -1038,7 +1039,7 @@ static void __init sama7g5_pmc_setup(struct device_node *np)
+ 	sama7g5_pmc->chws[PMC_MAIN] = hw;
  
- 	if (oth->ack) {
--		needs_ack = 0;
- 		tcph->seq = oth->ack_seq;
--		tcph->ack_seq = 0;
- 	} else {
--		needs_ack = 1;
- 		tcph->ack_seq = htonl(ntohl(oth->seq) + oth->syn + oth->fin +
- 				      otcplen - (oth->doff<<2));
--		tcph->seq = 0;
-+		tcph->ack = 1;
- 	}
+ 	for (i = 0; i < PLL_ID_MAX; i++) {
+-		for (j = 0; j < 3; j++) {
++		for (j = 0; j < PLL_COMPID_MAX; j++) {
+ 			struct clk_hw *parent_hw;
  
--	/* Reset flags */
--	((u_int8_t *)tcph)[13] = 0;
- 	tcph->rst = 1;
--	tcph->ack = needs_ack;
--	tcph->window = 0;
--	tcph->urg_ptr = 0;
--	tcph->check = 0;
- 
- 	/* Adjust TCP checksum */
- 	tcph->check = csum_ipv6_magic(&ipv6_hdr(nskb)->saddr,
+ 			if (!sama7g5_plls[i][j].n)
 -- 
 2.43.0
 
