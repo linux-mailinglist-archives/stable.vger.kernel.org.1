@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-79406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF2A98D817
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81D198D53B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8EEC2814E5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:56:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390AC286FE3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A90E1D07BA;
-	Wed,  2 Oct 2024 13:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8FA1D0487;
+	Wed,  2 Oct 2024 13:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="168XBQKI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LES6eYlQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1867C1D0973;
-	Wed,  2 Oct 2024 13:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBBF1D0425;
+	Wed,  2 Oct 2024 13:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877356; cv=none; b=Nr+Ts1N6XqqGZ4kb9VDjy6jn5zM9j20DJUjiVlUmSq51zV/ZFshyRUF6lvI4dRTnykqj2tXCoKAXw8nT5MTztGg0P5Vg2MOuK+sDdy6sHBHfSW6AVppOuETU10624wz7BfbRo56jQC6ydJxLUKoW0HKi0S98EII3fpALBxopatY=
+	t=1727875690; cv=none; b=UAZ4LReLMySRCxI3EZyOXSl+va3Y/L3oKUzCJOktvaMUNeEC2zOXSM9vjzg3yf43xrNYyAOui+PqOEIhxnf5lmJgtDUlZpLWcPn5dNWHNh+FDIFIR0lY9Lm1wKI88iS6l+bmN+xpFAAO9PxfnC8TQ5MS9dyBQp/jR6WCKMN/VWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877356; c=relaxed/simple;
-	bh=J8AxghBmY8IUPD8hmPincK1J2INIsLEelwGnSAjjcG0=;
+	s=arc-20240116; t=1727875690; c=relaxed/simple;
+	bh=7cZsu2pN4ZbFNW/1ZEU0Y0gslQQsxZsh3KTa1ZnbSp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+Sf+JadiNzN4DLgr493ZjO9ZXMRzUgbXVONR45hHR0mnFg+L9kt7mnaBFzeeHU2oqx50iK1W3PbKjWcvPHombdJcZ/KhgbQQpEA6KvwwTEn8JJBQaKV/aMv0KmV44k8nL2q935kwRdniFL35FMow2TRKJGN/jewUHizmi8+iyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=168XBQKI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331E2C4CECD;
-	Wed,  2 Oct 2024 13:55:55 +0000 (UTC)
+	 MIME-Version; b=IT2oeNn96WeXv5RjfjmLslrTooC659yxkrmX49Lp7wSY8wJkHD59IulqBN0VS56MtEo52vO2NE2/N3T54q3kcw5NSwWG75JN734/HgoBzznvnVrWl2Ge7xmmzDN9jS/FbYpTD6ikvN/VXSPGNRe8XqF3TMaytXFyhfNB+DF8bjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LES6eYlQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97893C4CEC5;
+	Wed,  2 Oct 2024 13:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877355;
-	bh=J8AxghBmY8IUPD8hmPincK1J2INIsLEelwGnSAjjcG0=;
+	s=korg; t=1727875690;
+	bh=7cZsu2pN4ZbFNW/1ZEU0Y0gslQQsxZsh3KTa1ZnbSp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=168XBQKIE2EAKPMVlbNJ8KdA5jh0OZlkdyFzOoSGWVez2I8egNqrWK1+yUamfDOLl
-	 qiu4/sMdpwiW4T2kbA6Ba8pVcgsj43eR9GbA4ArUxhU2VqflZcHUX8kcdlIz4aFNi7
-	 WvrseVUM0jNzguEy1reAV10rGxMmUY2haOyAIcjI=
+	b=LES6eYlQDI1a6hU+ucMG/KMt5VQR455y/0TLmFLTj5HgZB+fV/BcHGWLJ3+v3bQaA
+	 8ZPQC8J33wKdHggHtIF4BMme85Xq1lPxwFHXii2Ik3ok5mXRAfiKKTBkhacdbjUTVC
+	 wvsNC8PeBuKiFrMwlew1q0HvPIPPgsx+oippi+VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 053/634] netfilter: nf_tables: elements with timeout below CONFIG_HZ never expire
-Date: Wed,  2 Oct 2024 14:52:33 +0200
-Message-ID: <20241002125813.198021242@linuxfoundation.org>
+Subject: [PATCH 6.11 156/695] reset: k210: fix OF node leak in probe() error path
+Date: Wed,  2 Oct 2024 14:52:34 +0200
+Message-ID: <20241002125828.706591797@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e0c47281723f301894c14e6f5cd5884fdfb813f9 ]
+[ Upstream commit b14e40f5dc7cd0dd7e958010e6ca9ad32ff2ddad ]
 
-Element timeout that is below CONFIG_HZ never expires because the
-timeout extension is not allocated given that nf_msecs_to_jiffies64()
-returns 0. Set timeout to the minimum value to honor timeout.
+Driver is leaking OF node reference on memory allocation failure.
+Acquire the OF node reference after memory allocation to fix this and
+keep it simple.
 
-Fixes: 8e1102d5a159 ("netfilter: nf_tables: support timeouts larger than 23 days")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 5a2308da9f60 ("riscv: Add Canaan Kendryte K210 reset controller")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-2-03f6d834f8c0@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/reset/reset-k210.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 41d7faeb101cf..ebf8d4cbbdc35 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4544,7 +4544,7 @@ int nf_msecs_to_jiffies64(const struct nlattr *nla, u64 *result)
- 		return -ERANGE;
+diff --git a/drivers/reset/reset-k210.c b/drivers/reset/reset-k210.c
+index b62a2fd44e4e4..e77e4cca377dc 100644
+--- a/drivers/reset/reset-k210.c
++++ b/drivers/reset/reset-k210.c
+@@ -90,7 +90,7 @@ static const struct reset_control_ops k210_rst_ops = {
+ static int k210_rst_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *parent_np = of_get_parent(dev->of_node);
++	struct device_node *parent_np;
+ 	struct k210_rst *ksr;
  
- 	ms *= NSEC_PER_MSEC;
--	*result = nsecs_to_jiffies64(ms);
-+	*result = nsecs_to_jiffies64(ms) ? : !!ms;
- 	return 0;
- }
+ 	dev_info(dev, "K210 reset controller\n");
+@@ -99,6 +99,7 @@ static int k210_rst_probe(struct platform_device *pdev)
+ 	if (!ksr)
+ 		return -ENOMEM;
  
++	parent_np = of_get_parent(dev->of_node);
+ 	ksr->map = syscon_node_to_regmap(parent_np);
+ 	of_node_put(parent_np);
+ 	if (IS_ERR(ksr->map))
 -- 
 2.43.0
 
