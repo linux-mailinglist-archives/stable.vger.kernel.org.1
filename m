@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BDE98DA4E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:20:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A9998DCD0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2B63285A7C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:20:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D71461C2048D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1AA1D1E8B;
-	Wed,  2 Oct 2024 14:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B50E1D1F5C;
+	Wed,  2 Oct 2024 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bannsSsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rt64KUuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8861CF7CD;
-	Wed,  2 Oct 2024 14:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385F91D094C;
+	Wed,  2 Oct 2024 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878499; cv=none; b=KFOxKoqJSAZFZKoFDlSz5WuwA/fKB4vbXvqF53hBpy9gRxp47GCI5Bxt4LDzFWJK6ifahX2D89jBI5NcQWevg62eVKDhcqsjq9tzuFKLMttZk1Us4GQuQ4B8nLx1dETXZln0UnwbZA6FMwKvTJi3n265Snm9FePfUHl+wF27Yzo=
+	t=1727879957; cv=none; b=MmGO6wJLIV1YVOPvsg1BMHdg8Tm4cmFEBKZCUe8AVGXE0mYQ5kdjeMQtBppOdBcvkAKU9PV+CAda6nX1dmPs+Wg7DWcrhi8hgz4P0N8CowgTXbgRb/rFSjtQMWNRkmWTxrQrMyx5EqnTq93lHnJw69TPddvPDiv6OczwWzfaA5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878499; c=relaxed/simple;
-	bh=/YLnfJYy69FcvkGjN5Hr1eCNTBhpIiNa8FWaMRpZlGY=;
+	s=arc-20240116; t=1727879957; c=relaxed/simple;
+	bh=S4RAIihjn5XDOk9NUrMeSVnbT6Wx5awTp5jazXEPtTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ayNaZI7sG5RWCuOk49tQsJqsTBD8GyKkbNCblCfbNGmHNAkincvo+8HknQt7kT5mSX1tO5q2gfUn/PwJ8FFODL0OitDVVJCt2I+jNMoLJ7oCP2yPzPTyM+1gVU9PEJvCwdg+SSkZOV8QcXF3KBQL6As/9X4JgiDBGS2CIGJ/oNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bannsSsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00620C4CEC2;
-	Wed,  2 Oct 2024 14:14:58 +0000 (UTC)
+	 MIME-Version; b=M+1BGe5Pcz4DjAV0G7Os7bQCm0pIaMkqFQChX+vWyjxf3OtSGTTP47UUdBeE5/Ky35On0ij5SzYHBRwe8o+dz3J3jGaWnNCSIRTBABFQyM6cy3GuZwhFRuZQ2vD/JFLAldjniirN8zhI6p/KTQhhHK1nXld6zHWUjODyKDTqSNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rt64KUuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B350FC4CEC2;
+	Wed,  2 Oct 2024 14:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878499;
-	bh=/YLnfJYy69FcvkGjN5Hr1eCNTBhpIiNa8FWaMRpZlGY=;
+	s=korg; t=1727879957;
+	bh=S4RAIihjn5XDOk9NUrMeSVnbT6Wx5awTp5jazXEPtTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bannsSsyzazi4kqBQreXYh113T6UrTug8ApFLIIsWrmS7XC9BPT8zryUrRuThscOT
-	 D/beyXhk0oL/BT2i/LS0uSiiap/U6ffhJeL8lJaW4bR+vLUM8Zl6g09i5iMFM3x95a
-	 Spf3bBGrtNogZJBvpF1XVFH17jyj6LCuq//Xau00=
+	b=rt64KUuC6IJKYm1xuTwUUw7i05pzHyAKO/AISlA+h8UhWnNMR+BXuAeX9fLhSJ2s5
+	 Y7PSXjQf3pzINrl63WVPAD0K0PyfHhUtNDL9NkctUbAiGpzcSg5EWPooiYukngBUvO
+	 y+gBqY4ZimyNgZvhh8DnWaVTQRM8vZsYfUhXDWhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zdenek Kabelac <zkabelac@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 433/634] Revert "dm: requeue IO if mapping table not yet available"
+Subject: [PATCH 6.6 294/538] PCI: xilinx-nwl: Clean up clock on probe failure/removal
 Date: Wed,  2 Oct 2024 14:58:53 +0200
-Message-ID: <20241002125828.193088927@linuxfoundation.org>
+Message-ID: <20241002125803.863321837@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit c8691cd0fc11197515ed148de0780d927bfca38b ]
+[ Upstream commit cfd67903977b13f63340a4eb5a1cc890994f2c62 ]
 
-This reverts commit fa247089de9936a46e290d4724cb5f0b845600f5.
+Make sure we turn off the clock on probe failure and device removal.
 
-The following sequence of commands causes a livelock - there will be
-workqueue process looping and consuming 100% CPU:
-
-dmsetup create --notable test
-truncate -s 1MiB testdata
-losetup /dev/loop0 testdata
-dmsetup load test --table '0 2048 linear /dev/loop0 0'
-dd if=/dev/zero of=/dev/dm-0 bs=16k count=1 conv=fdatasync
-
-The livelock is caused by the commit fa247089de99. The commit claims that
-it fixes a race condition, however, it is unknown what the actual race
-condition is and what program is involved in the race condition.
-
-When the inactive table is loaded, the nodes /dev/dm-0 and
-/sys/block/dm-0 are created. /dev/dm-0 has zero size at this point. When
-the device is suspended and resumed, the nodes /dev/mapper/test and
-/dev/disk/* are created.
-
-If some program opens a block device before it is created by dmsetup or
-lvm, the program is buggy, so dm could just report an error as it used to
-do before.
-
-Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: fa247089de99 ("dm: requeue IO if mapping table not yet available")
+Fixes: de0a01f52966 ("PCI: xilinx-nwl: Enable the clock through CCF")
+Link: https://lore.kernel.org/r/20240531161337.864994-6-sean.anderson@linux.dev
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-rq.c |  4 +++-
- drivers/md/dm.c    | 11 ++++++++---
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/pci/controller/pcie-xilinx-nwl.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
-index f7e9a3632eb3d..499f8cc8a39fb 100644
---- a/drivers/md/dm-rq.c
-+++ b/drivers/md/dm-rq.c
-@@ -496,8 +496,10 @@ static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
+index 7cf05431d54bc..60afbb51511c3 100644
+--- a/drivers/pci/controller/pcie-xilinx-nwl.c
++++ b/drivers/pci/controller/pcie-xilinx-nwl.c
+@@ -790,6 +790,7 @@ static int nwl_pcie_probe(struct platform_device *pdev)
+ 		return -ENODEV;
  
- 		map = dm_get_live_table(md, &srcu_idx);
- 		if (unlikely(!map)) {
-+			DMERR_LIMIT("%s: mapping table unavailable, erroring io",
-+				    dm_device_name(md));
- 			dm_put_live_table(md, srcu_idx);
--			return BLK_STS_RESOURCE;
-+			return BLK_STS_IOERR;
+ 	pcie = pci_host_bridge_priv(bridge);
++	platform_set_drvdata(pdev, pcie);
+ 
+ 	pcie->dev = dev;
+ 	pcie->ecam_value = NWL_ECAM_VALUE_DEFAULT;
+@@ -813,13 +814,13 @@ static int nwl_pcie_probe(struct platform_device *pdev)
+ 	err = nwl_pcie_bridge_init(pcie);
+ 	if (err) {
+ 		dev_err(dev, "HW Initialization failed\n");
+-		return err;
++		goto err_clk;
+ 	}
+ 
+ 	err = nwl_pcie_init_irq_domain(pcie);
+ 	if (err) {
+ 		dev_err(dev, "Failed creating IRQ Domain\n");
+-		return err;
++		goto err_clk;
+ 	}
+ 
+ 	bridge->sysdata = pcie;
+@@ -829,11 +830,24 @@ static int nwl_pcie_probe(struct platform_device *pdev)
+ 		err = nwl_pcie_enable_msi(pcie);
+ 		if (err < 0) {
+ 			dev_err(dev, "failed to enable MSI support: %d\n", err);
+-			return err;
++			goto err_clk;
  		}
- 		ti = dm_table_find_target(map, 0);
- 		dm_put_live_table(md, srcu_idx);
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 6e15ac4e0845c..a0b4afba8c608 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1880,10 +1880,15 @@ static void dm_submit_bio(struct bio *bio)
- 	struct dm_table *map;
+ 	}
  
- 	map = dm_get_live_table(md, &srcu_idx);
-+	if (unlikely(!map)) {
-+		DMERR_LIMIT("%s: mapping table unavailable, erroring io",
-+			    dm_device_name(md));
-+		bio_io_error(bio);
-+		goto out;
-+	}
+-	return pci_host_probe(bridge);
++	err = pci_host_probe(bridge);
++	if (!err)
++		return 0;
++
++err_clk:
++	clk_disable_unprepare(pcie->clk);
++	return err;
++}
++
++static void nwl_pcie_remove(struct platform_device *pdev)
++{
++	struct nwl_pcie *pcie = platform_get_drvdata(pdev);
++
++	clk_disable_unprepare(pcie->clk);
+ }
  
--	/* If suspended, or map not yet available, queue this IO for later */
--	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
--	    unlikely(!map)) {
-+	/* If suspended, queue this IO for later */
-+	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags))) {
- 		if (bio->bi_opf & REQ_NOWAIT)
- 			bio_wouldblock_error(bio);
- 		else if (bio->bi_opf & REQ_RAHEAD)
+ static struct platform_driver nwl_pcie_driver = {
+@@ -843,5 +857,6 @@ static struct platform_driver nwl_pcie_driver = {
+ 		.of_match_table = nwl_pcie_of_match,
+ 	},
+ 	.probe = nwl_pcie_probe,
++	.remove_new = nwl_pcie_remove,
+ };
+ builtin_platform_driver(nwl_pcie_driver);
 -- 
 2.43.0
 
