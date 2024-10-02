@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-79530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9489B98D8EF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8132C98D8F2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9FA71F24702
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EFB3285DEC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410E81D1512;
-	Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588401D095C;
+	Wed,  2 Oct 2024 14:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="WOnQZg4x"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="gGecSZ/w"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6A01D14F5
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E84F1D27A2
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877718; cv=none; b=GgBBBUGeOiZcHthNJJEivC/pZZ+UPwRjD/1gR2BaG6/KOE8KSLRe4qzkE/qFHu0wf2fwbtPcHBzFKi5W/o/50Y3KYRYqv14dhw77VPm/MxJxvYdnd+ovFMcCuikah8GxujzyYBujW5k6MkBVQaTm+MDcvQxixfeb25dqu18jcvw=
+	t=1727877721; cv=none; b=rnrXhD3DDl/klrm1gIkdDEy2v22YtgSJH+0q9MpuDH9K9eBjTunI52/5mGFkHzq2gf24DuMh+Icc+uRFzfCZzZvBTLvm8SLiZVSGJaihvWFP5SXgSDPh9gRlrMs1cY+wI0RWBBocP12b3/wN6GU7Z8UwKrdd0C8+25Ju00bR6z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877718; c=relaxed/simple;
-	bh=rL0MaoaPRUFNOqhcp1c45TPTF2EMiFWUdnqQcNH+NTI=;
+	s=arc-20240116; t=1727877721; c=relaxed/simple;
+	bh=bcA0OgWVMZKT6kRU0GdFlOCOfvz7uBA0jIvI4F601Qw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t2crOIUOSd/LTSdTY3cAwT0wBw0xgtMvagNDiRLMO6MUxc6/HmOvtJMKPPfu55mLySJqvbEK+3z3nW9mhl44xM5Hoj7C5pBD4D3avklxZuOo4Y6sDKkuypcCvoTW8BzFqkzTQlForq28udbDi66NmliF5W+SKLen14hNEy4WfI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=WOnQZg4x; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version:Content-Type; b=CCoNzNMl5ICWfMASBsP6x8RzJnaGY7kPW8vh04C3fFW5FqTD10huCce0vXkTptmavYa2+U5jt0QPpUojF6Y+5gjDuDmcHsHUHw1/DTgAAOKAa6hYhDdYXkqQlVV3eTxfyubKheXLBPlSOIKJfcx884piKsChK0Ir2jeHzd0bTp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=gGecSZ/w; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,16 +37,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=AMUlgTG0A/opBPXFTsxFfv7mFV+HOzteHoWz27wt99Q=; b=WOnQZg4xEOXNd1c/BCUyGMd9Er
-	5D31u+qsqdZC/Yscx813VN765jsIA6gnesAG3fr90VutKHyNmW5voNXXWTyA4rsqgMu78l0Y11wxM
-	N0mcrSEI7juDuAtNrytCC0B/n8ra2yjcVn5PEuDSIebbxb42tWn4mHhdd5UG7DXlFoxJH1g2BaByA
-	X6XCGidSkQo34raScewlqwYg9Nc9z6OV+foCT3BAoyKevxQlv5O3UYWFYA/Gc39ZIbTat+MA2SsME
-	VCwTLBz3wypReqXyoCAfLswhGfTVmWZQN2OUQI8ebgBCOGwkubBykhpXpP5i/92Oq5oGh01MdHW6R
-	0JX+R2Zw==;
+	bh=uOuJzkGqkFg7kMLGYzh5eI39vj0fU5cUGDCO8Km4xWQ=; b=gGecSZ/woKOKPV1j3D5MTfRMVw
+	eetRtp6PWfep8ff53XcSZaPcCHio5d/F/CgBJtiRzb5+8lFZijZ8HnpkL+EgMltnCbTnwhhy/Tavs
+	CoYkFTfxfpHwfMX3yXBf0hxFX8EjjIGbisxI921AW+SZqTguwYCA2vjm8UeBcMNTYio4/RuurAOr2
+	ALbLSivnh78tKhDq1tq8IBaeFPemcU5zvg5KgjMEbh7lNHVf3TqdCM8SRFXxhGQjTwYmF5t8bQFsI
+	vjvKj3jMZutxkbEr3KJ7k7+WYyIaMoWVPMEVV7U3QWGQqdKP1OoHwrm9qSYp/zmVry3SATrGOCi6/
+	zAodjy4Q==;
 Received: from 179-125-71-238-dinamico.pombonet.net.br ([179.125.71.238] helo=localhost.localdomain)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1svzvN-003tUy-76; Wed, 02 Oct 2024 16:01:53 +0200
+	id 1svzvQ-003tUy-FN; Wed, 02 Oct 2024 16:01:57 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: stable@vger.kernel.org
 Cc: Jens Axboe <axboe@kernel.dk>,
@@ -54,9 +54,9 @@ Cc: Jens Axboe <axboe@kernel.dk>,
 	Christoph Hellwig <hch@infradead.org>,
 	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	kernel-dev@igalia.com
-Subject: [PATCH 5.15 3/3] blk-integrity: register sysfs attributes on struct device
-Date: Wed,  2 Oct 2024 11:01:22 -0300
-Message-Id: <20241002140123.2311471-4-cascardo@igalia.com>
+Subject: [PATCH 6.1 3/3] blk-integrity: register sysfs attributes on struct device
+Date: Wed,  2 Oct 2024 11:01:23 -0300
+Message-Id: <20241002140123.2311471-5-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241002140123.2311471-1-cascardo@igalia.com>
 References: <20241002140123.2311471-1-cascardo@igalia.com>
@@ -88,18 +88,16 @@ Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Link: https://lore.kernel.org/r/20230309-kobj_release-gendisk_integrity-v3-3-ceccb4493c46@weissschuh.net
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 [cascardo: conflict because of constification of integrity_ktype]
-[cascardo: struct gendisk is defined at include/linux/genhd.h]
-[cascardo: there is no blk_trace_attr_group]
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- block/blk-integrity.c | 55 +++----------------------------------------
- block/blk.h           | 10 +-------
- block/genhd.c         | 12 ++++------
- include/linux/genhd.h |  3 ---
+ block/blk-integrity.c  | 55 +++---------------------------------------
+ block/blk.h            | 10 +-------
+ block/genhd.c          | 12 +++------
+ include/linux/blkdev.h |  3 ---
  4 files changed, 8 insertions(+), 72 deletions(-)
 
 diff --git a/block/blk-integrity.c b/block/blk-integrity.c
-index 8868b1e01d58..fbbb38cc9e8a 100644
+index 91a502b01fc7..5276c556a9df 100644
 --- a/block/blk-integrity.c
 +++ b/block/blk-integrity.c
 @@ -212,31 +212,6 @@ bool blk_integrity_merge_bio(struct request_queue *q, struct request *req,
@@ -177,10 +175,10 @@ index 8868b1e01d58..fbbb38cc9e8a 100644
 -	kobject_put(&disk->integrity_kobj);
 -}
 diff --git a/block/blk.h b/block/blk.h
-index aab72194d226..e90a5e348512 100644
+index 9b2f53ff4c37..75316eab0247 100644
 --- a/block/blk.h
 +++ b/block/blk.h
-@@ -130,8 +130,7 @@ static inline bool integrity_req_gap_front_merge(struct request *req,
+@@ -212,8 +212,7 @@ static inline bool integrity_req_gap_front_merge(struct request *req,
  				bip_next->bip_vec[0].bv_offset);
  }
  
@@ -190,7 +188,7 @@ index aab72194d226..e90a5e348512 100644
  #else /* CONFIG_BLK_DEV_INTEGRITY */
  static inline bool blk_integrity_merge_rq(struct request_queue *rq,
  		struct request *r1, struct request *r2)
-@@ -164,13 +163,6 @@ static inline bool bio_integrity_endio(struct bio *bio)
+@@ -246,13 +245,6 @@ static inline bool bio_integrity_endio(struct bio *bio)
  static inline void bio_integrity_free(struct bio *bio)
  {
  }
@@ -205,10 +203,10 @@ index aab72194d226..e90a5e348512 100644
  
  unsigned long blk_rq_timeout(unsigned long timeout);
 diff --git a/block/genhd.c b/block/genhd.c
-index 4d28f1d5f9b0..88d1a6385a24 100644
+index f9e3ecd5ba2f..146ce13b192b 100644
 --- a/block/genhd.c
 +++ b/block/genhd.c
-@@ -467,15 +467,11 @@ int device_add_disk(struct device *parent, struct gendisk *disk,
+@@ -489,15 +489,11 @@ int __must_check device_add_disk(struct device *parent, struct gendisk *disk,
  	 */
  	pm_runtime_set_memalloc_noio(ddev, true);
  
@@ -225,7 +223,7 @@ index 4d28f1d5f9b0..88d1a6385a24 100644
  	}
  	disk->slave_dir = kobject_create_and_add("slaves", &ddev->kobj);
  	if (!disk->slave_dir) {
-@@ -535,8 +531,6 @@ int device_add_disk(struct device *parent, struct gendisk *disk,
+@@ -564,8 +560,6 @@ int __must_check device_add_disk(struct device *parent, struct gendisk *disk,
  	disk->slave_dir = NULL;
  out_put_holder_dir:
  	kobject_put(disk->part0->bd_holder_dir);
@@ -234,7 +232,7 @@ index 4d28f1d5f9b0..88d1a6385a24 100644
  out_del_block_link:
  	if (!sysfs_deprecated)
  		sysfs_remove_link(block_depr, dev_name(ddev));
-@@ -592,7 +586,6 @@ void del_gendisk(struct gendisk *disk)
+@@ -624,7 +618,6 @@ void del_gendisk(struct gendisk *disk)
  	if (WARN_ON_ONCE(!disk_live(disk) && !(disk->flags & GENHD_FL_HIDDEN)))
  		return;
  
@@ -242,30 +240,30 @@ index 4d28f1d5f9b0..88d1a6385a24 100644
  	disk_del_events(disk);
  
  	mutex_lock(&disk->open_mutex);
-@@ -1084,6 +1077,9 @@ static struct attribute_group disk_attr_group = {
- 
- static const struct attribute_group *disk_attr_groups[] = {
+@@ -1160,6 +1153,9 @@ static const struct attribute_group *disk_attr_groups[] = {
  	&disk_attr_group,
+ #ifdef CONFIG_BLK_DEV_IO_TRACE
+ 	&blk_trace_attr_group,
++#endif
 +#ifdef CONFIG_BLK_DEV_INTEGRITY
 +	&blk_integrity_attr_group,
-+#endif
+ #endif
  	NULL
  };
- 
-diff --git a/include/linux/genhd.h b/include/linux/genhd.h
-index 690b7f7996d1..3f49a3a30e9b 100644
---- a/include/linux/genhd.h
-+++ b/include/linux/genhd.h
-@@ -144,9 +144,6 @@ struct gendisk {
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index e255674a9ee7..f77e8785802e 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -163,9 +163,6 @@ struct gendisk {
  	struct timer_rand_state *random;
  	atomic_t sync_io;		/* RAID */
  	struct disk_events *ev;
 -#ifdef  CONFIG_BLK_DEV_INTEGRITY
 -	struct kobject integrity_kobj;
 -#endif	/* CONFIG_BLK_DEV_INTEGRITY */
- #if IS_ENABLED(CONFIG_CDROM)
- 	struct cdrom_device_info *cdi;
- #endif
+ 
+ #ifdef CONFIG_BLK_DEV_ZONED
+ 	/*
 -- 
 2.34.1
 
