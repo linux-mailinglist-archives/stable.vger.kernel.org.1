@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-79825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB1298DA72
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C6898DCE7
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53DF71C23802
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 596C01C2273E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DB11D2206;
-	Wed,  2 Oct 2024 14:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964351D079B;
+	Wed,  2 Oct 2024 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiaqtO68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHREtbFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD661D0F67;
-	Wed,  2 Oct 2024 14:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D061D0951;
+	Wed,  2 Oct 2024 14:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878574; cv=none; b=ucuu4LDQe9DVWFbA7f61AASLx6tNNPPLCM+tOr+1+3//82ynflPvL0D5jOkDrtq5imnSM+W5vW260G1epQwv4vC2VciJkbc+5Hl7EmLLiF5kUwOAbgmIxX5d/vcEDWjdzodlGZq1hbCFhxhl2oD632Cj8lk7jn/MzZjgWZQCXAo=
+	t=1727880038; cv=none; b=sbN1yjTABpa+3/I+m7oUUhZd/GGalZe6LBk+LOXcTHnqs58H33NCxgBsJ4je15ktevojiXw0K6oFNQWx1+/D4YiJkVWS2xb5S3MtTGKZyCpgjOkHqxLrxlD92HXBa6NKF1wAOF9+bdpLS5+XS+xFZin9RO2hdprduzqp5pBXGvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878574; c=relaxed/simple;
-	bh=UMP3vflGRgMllkBCrCGw8iZSrhpWHpqPc13LFU8dX2A=;
+	s=arc-20240116; t=1727880038; c=relaxed/simple;
+	bh=voLNUUMz/9riGRLA6OVQ3qgxEhephDOLveRXuQCy5KI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKmc3k/WCPLlr2Jhu8XlfY27AfuHJam4jzpaefLnh0JvbzNFsxR9qoUTlMpoyzKGZxszzIlL+sXnZm/RdjWI4qVVZODYY6XeACiWMHjPdc1hOkl8AVln0ldmLgF5CrNvYOkOqcRrwGhg47GniQOHm/O0SBhimnlgwvUeTe1AJY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiaqtO68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CCEC4CEC2;
-	Wed,  2 Oct 2024 14:16:14 +0000 (UTC)
+	 MIME-Version; b=ETNKT2yNd5GMseH+OAv86TrdwNHUw0fOPioINsSGT1zGlvP61q8R6W23Nsr+Zt+YbrChE0l3ahzELlLm3ea+YKUfq2g2HWodqM7xze6ZlPNp9gi9whbBHkmH/j2ae9/pHjewAmG8+Cma3pkFnYXNzYu0eu+ppa1LLEm2v4nkkMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHREtbFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FA1C4CECD;
+	Wed,  2 Oct 2024 14:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878574;
-	bh=UMP3vflGRgMllkBCrCGw8iZSrhpWHpqPc13LFU8dX2A=;
+	s=korg; t=1727880038;
+	bh=voLNUUMz/9riGRLA6OVQ3qgxEhephDOLveRXuQCy5KI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiaqtO689KG4b0Mq+i4WkGYlTrPXmeTJGG4WPSXBLGRadAm3Dq8e0OcJDVL0L89M/
-	 9OC+yxeKM2s2wybUSzCymI0GbyTH2OnroRr3WjB6q9mtU3kajCisG2xXG2v85nUgBn
-	 YYGX5Rix2EiVKx11gUhATVcMzyfi1LSRRPQbZ6UE=
+	b=dHREtbFO263/TkN7WWWRbQHqaC8TQj5bIkh3oST5Qp7r+f5a0fbVQFsoG8hzM0iDt
+	 EDIyETyiOTkDNsPBQBmgtDYW6Gc0aZWN9gf4YPVpZZ0KIK6e5qmj/fAMnMOfg3Skwg
+	 PlHTHB3m34IHoUSE+Fjgyi9ZEXnpWfZ1dglKq1xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 460/634] io_uring/sqpoll: do not put cpumask on stack
-Date: Wed,  2 Oct 2024 14:59:20 +0200
-Message-ID: <20241002125829.259547114@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 322/538] RDMA/hns: Fix restricted __le16 degrades to integer issue
+Date: Wed,  2 Oct 2024 14:59:21 +0200
+Message-ID: <20241002125805.138661718@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 7f44beadcc11adb98220556d2ddbe9c97aa6d42d upstream.
+[ Upstream commit f4ccc0a2a0c5977540f519588636b5bc81aae2db ]
 
-Putting the cpumask on the stack is deprecated for a long time (since
-2d3854a37e8), as these can be big. Given that, change the on-stack
-allocation of allowed_mask to be dynamically allocated.
+Fix sparse warnings: restricted __le16 degrades to integer.
 
-Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240916111150.1266191-1-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5a87279591a1 ("RDMA/hns: Support hns HW stats")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202409080508.g4mNSLwy-lkp@intel.com/
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20240909065331.3950268-1-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/sqpoll.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -461,15 +461,22 @@ __cold int io_sq_offload_create(struct i
- 			return 0;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index d226081e1cc03..8066750afab90 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -1653,8 +1653,8 @@ static int hns_roce_hw_v2_query_counter(struct hns_roce_dev *hr_dev,
  
- 		if (p->flags & IORING_SETUP_SQ_AFF) {
--			struct cpumask allowed_mask;
-+			cpumask_var_t allowed_mask;
- 			int cpu = p->sq_thread_cpu;
+ 	for (i = 0; i < HNS_ROCE_HW_CNT_TOTAL && i < *num_counters; i++) {
+ 		bd_idx = i / CNT_PER_DESC;
+-		if (!(desc[bd_idx].flag & HNS_ROCE_CMD_FLAG_NEXT) &&
+-		    bd_idx != HNS_ROCE_HW_CNT_TOTAL / CNT_PER_DESC)
++		if (bd_idx != HNS_ROCE_HW_CNT_TOTAL / CNT_PER_DESC &&
++		    !(desc[bd_idx].flag & cpu_to_le16(HNS_ROCE_CMD_FLAG_NEXT)))
+ 			break;
  
- 			ret = -EINVAL;
- 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
- 				goto err_sqpoll;
--			cpuset_cpus_allowed(current, &allowed_mask);
--			if (!cpumask_test_cpu(cpu, &allowed_mask))
-+			ret = -ENOMEM;
-+			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
- 				goto err_sqpoll;
-+			ret = -EINVAL;
-+			cpuset_cpus_allowed(current, allowed_mask);
-+			if (!cpumask_test_cpu(cpu, allowed_mask)) {
-+				free_cpumask_var(allowed_mask);
-+				goto err_sqpoll;
-+			}
-+			free_cpumask_var(allowed_mask);
- 			sqd->sq_cpu = cpu;
- 		} else {
- 			sqd->sq_cpu = -1;
+ 		cnt_data = (__le64 *)&desc[bd_idx].data[0];
+-- 
+2.43.0
+
 
 
 
