@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2863C98D82B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5387898D505
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7FDE1F20FE2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53EC81C20A09
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E93C1D0DF4;
-	Wed,  2 Oct 2024 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D560C1D096A;
+	Wed,  2 Oct 2024 13:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiRDNn4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MJPh3ks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0C21D07B9;
-	Wed,  2 Oct 2024 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911BD1D0964;
+	Wed,  2 Oct 2024 13:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877396; cv=none; b=LGfmcF1e9IKzgcWheQqbxLT3ZUHOVMed3/iDu4zReSjeOaUBEQc1HRyRLx8SYGlLb3TG+vPlxBUxxCimeSFk/35uSjlD12H/TAwqyGI4Dc84zoMr/GU1G8A7Hap9maDcZZmV9xPZZzWMugPiLpkstKbXKe4Bea0Juxr2MPVwyNo=
+	t=1727875550; cv=none; b=hPcODFtTow/ww2xrXgpIMO1eNf5FxVlHYpX4yEeRxdc8wuO9CvPh1KwKXmuQK3Rao2nGB1v+JHl/9YrIhneBFjNKPm793h4XcjrCOscqImR9kw1cxn//n80yzAf2ctg9CppoRI1x5am4kYEaTuDZiw3UCUV4bWnkY3OHv1A0asc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877396; c=relaxed/simple;
-	bh=xWWZWUoi5SDbmwB1lCljIk/EzBOJr/krGd/yirNV1JE=;
+	s=arc-20240116; t=1727875550; c=relaxed/simple;
+	bh=PmypqS5L7Zhv3wafuTYJ1mK5F0JZncGqxzC5z/sNqfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IG5axM9b0/1qLmtdw3D5WD2N7AAfR98HRWyeqR7LuGnrocBzO7eUrbe59SmJL2/1sTgZrxJGPBBvISL0zn7tl0zre5CcFYbC2eukMrhN5kft9V3giOfkvbcfq0xZO61f41pLg6yM+w+KAWnvxPDqSkVVzUuzMH8DgVdn/NY+l1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiRDNn4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48684C4CED9;
-	Wed,  2 Oct 2024 13:56:36 +0000 (UTC)
+	 MIME-Version; b=WxdmrbCsNAuh0uPVtNXkRZrUusLX8XakZkDRZFSh/YTz/kSTmWDerxKeD+omYtyKEK33Ge3ba8H+6h2zjMm7y3Bg5sRpu/6XvcLsm/V9NzYZTnK9q1JSro8f5mewjtU5REWntON6cNXamZKpHSk/d5l1XHmP4G39OXjtdmKVoAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MJPh3ks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA05C4CECD;
+	Wed,  2 Oct 2024 13:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877396;
-	bh=xWWZWUoi5SDbmwB1lCljIk/EzBOJr/krGd/yirNV1JE=;
+	s=korg; t=1727875550;
+	bh=PmypqS5L7Zhv3wafuTYJ1mK5F0JZncGqxzC5z/sNqfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiRDNn4gvFSQf+TJ5rVUDUw9sBHYZzdq1nK6txhQL4g/0HKMTaDTXrt2N50HdAUq8
-	 9N342b3vs+8MkwhfSlLTw0PsNwOc3lVAxTIgToV+DiWe9QvkIEtnIA1yibbsX3XCzi
-	 CP2hieXkm/NrUWJIpeyPlQRBukAOOR++HnvSKazI=
+	b=0MJPh3ksKJoZsaC7oQ//iQUwUYi6t44VdfrCMcul9UsG/atFFawQu6Z6DqZY6ZiGU
+	 jeSEHurWZ8LUJ0234z84Uqi927QW84Hsdha10zAXcA3Gn6R7R+QiiUNA2Xfp/bQtDq
+	 e8MynmT/L31HCZhp9rmr/rwyqbjFDuFo34PpVlLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esther Shimanovich <eshimanovich@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 036/634] ACPI: video: force native for Apple MacbookPro9,2
-Date: Wed,  2 Oct 2024 14:52:16 +0200
-Message-ID: <20241002125812.523474947@linuxfoundation.org>
+Subject: [PATCH 6.11 139/695] regulator: Return actual error in of_regulator_bulk_get_all()
+Date: Wed,  2 Oct 2024 14:52:17 +0200
+Message-ID: <20241002125828.034538652@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esther Shimanovich <eshimanovich@chromium.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 7dc918daaf2994963690171584ba423f28724df5 ]
+[ Upstream commit 395a41a1d3e377462f3eea8a205ee72be8885ff6 ]
 
-It used to be that the MacbookPro9,2 used its native intel backlight
-device until the following commit was introduced:
+If regulator_get() in of_regulator_bulk_get_all() returns an error, that
+error gets overridden and -EINVAL is always passed out. This masks probe
+deferral requests and likely won't work properly in all cases.
 
-commit b1d36e73cc1c ("drm/i915: Don't register backlight when another
-backlight should be used (v2)")
+Fix this by letting of_regulator_bulk_get_all() return the original
+error code.
 
-This commit forced this model to use its firmware acpi_video backlight
-device instead.
-
-That worked fine until an additional commit was added:
-
-commit 92714006eb4d ("drm/i915/backlight: Do not bump min brightness
-to max on enable")
-
-That commit uncovered a bug in the MacbookPro 9,2's acpi_video
-backlight firmware; the backlight does not come back up after resume.
-
-Add DMI quirk to select the working native intel interface instead
-so that the backlight successfully comes back up after resume.
-
-Fixes: 92714006eb4d ("drm/i915/backlight: Do not bump min brightness to max on enable")
-Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240806-acpi-video-quirk-v1-1-369d8f7abc59@chromium.org
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 27b9ecc7a9ba ("regulator: Add of_regulator_bulk_get_all")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patch.msgid.link/20240822072047.3097740-3-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/regulator/of_regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 674b9db7a1ef8..75a5f559402f8 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -549,6 +549,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookAir9,1"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Apple MacBook Pro 9,2 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro9,2"),
-+		},
-+	},
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
- 	 .callback = video_detect_force_native,
+diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+index 03afc160fc72c..86b680adbf01c 100644
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -777,7 +777,7 @@ int of_regulator_bulk_get_all(struct device *dev, struct device_node *np,
+ 			name[i] = '\0';
+ 			tmp = regulator_get(dev, name);
+ 			if (IS_ERR(tmp)) {
+-				ret = -EINVAL;
++				ret = PTR_ERR(tmp);
+ 				goto error;
+ 			}
+ 			(*consumers)[n].consumer = tmp;
 -- 
 2.43.0
 
