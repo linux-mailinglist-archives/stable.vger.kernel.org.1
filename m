@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-79545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814EB98D908
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6189B98D5F4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3DA01C22C77
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C3211C2229C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83711D0BB0;
-	Wed,  2 Oct 2024 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCB21D0436;
+	Wed,  2 Oct 2024 13:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmKbizRy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k61qBKm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9555E1D0DF7;
-	Wed,  2 Oct 2024 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2EF1D0173;
+	Wed,  2 Oct 2024 13:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877756; cv=none; b=IiY9wozrC4u36nhYIvTtBrauPArfRpuDz7BvblMtW7a5DWnBbQ3uJxdtjRNaKnswcLG+aJO9ao/ei13Zd0lvMEwLHDwTNzHOz39BNPzZi/ZzFHpeOavT4S7ue3NILF7dCtTE/EJTzulozyH7A4e8HE2nlREc4mv5lL8XzLEFwn8=
+	t=1727876098; cv=none; b=M6Xwv05KJgO155/Kpl6XGgIhFo8oyivDuTwDf7iIe80t/hvVQjdPHsy0rCS+bh33Wp8zb7Jk2DoaBdmWkx5agkXL+7kqr5uhlV7juqs8I8gKn4yDlVKhTGtVy4q4bI3MCQelBBCpoF2t4rT9zZ1r84PCr57QsHKdRxd0CdQyR+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877756; c=relaxed/simple;
-	bh=DfiFUGqk9zbAR4XwVchVP6IcJoP4apuTUVNJ8BymfRs=;
+	s=arc-20240116; t=1727876098; c=relaxed/simple;
+	bh=fGIgKd7AxBqMi44NsD7g4NgZ70yJyL8KLKGuImHe4Hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aY3MzOFM96w8rotezDdfqIb7HzkDd6f5ZIWX+HO4iSeilibaZ6KsRWBKmn3tVcD0+Jg5sGiZ+zGobuICKslWXZZarBLKImHTGY18Mlb3pqLF0wTbipWDlxkUcGe1D6qj4+3/tj1o0YkbXvhm++YPO6gHDc1IjdjVTIhzz1uc2No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmKbizRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA80CC4CEC2;
-	Wed,  2 Oct 2024 14:02:35 +0000 (UTC)
+	 MIME-Version; b=FZgOK++BtOYpyc4TIYnVe4NZrO0blfBMEtSmRdXULOsF8GC7HtEFdEL6SVWV+dghMIzSzfPolggVGzUilhz9vSvZmyExCadyNwl50Yk4oF3+g/HdXjQLjuqvAyH7SR3vvKrTqsmir1Q61f8ksfhmXHEVZKcoN9ejezveYcdVO2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k61qBKm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E086C4CEC5;
+	Wed,  2 Oct 2024 13:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877756;
-	bh=DfiFUGqk9zbAR4XwVchVP6IcJoP4apuTUVNJ8BymfRs=;
+	s=korg; t=1727876098;
+	bh=fGIgKd7AxBqMi44NsD7g4NgZ70yJyL8KLKGuImHe4Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmKbizRyl35oBv4/ricZaft0g+Ddu0PMNQZIhnK1cGC/FdxjQTqKivwF1jG5nXcKx
-	 9cTxXC0j6+yYrtMI3hwDXlLwWFyiRpFPFBHBd18Gz+t2MkUmvMwWvZ+qgpjTODOYaQ
-	 QEOm90BaPMNmeWq3h9+P1S00w+40J7FJWUuvpuAI=
+	b=k61qBKm42+2sxrtGu5m/XW0gKl95S2djEs/W2uYpW1rpTwbmmgc0Ukwps4tn7ZnOX
+	 KtN11KUNFkzwrES7QHbn+MmJG2ppXqWV3/NQjvT9ZueaHRUgpnPEAje41VPepfxrWd
+	 DTIYpV9WPPsB+tz6ULrSnrhepDTI/dpeOUqY3zug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Scott Teel <scott.teel@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	Gilbert Wu <Gilbert.Wu@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 184/634] scsi: smartpqi: revert propagate-the-multipath-failure-to-SML-quickly
-Date: Wed,  2 Oct 2024 14:54:44 +0200
-Message-ID: <20241002125818.370846694@linuxfoundation.org>
+Subject: [PATCH 6.11 287/695] selftests/bpf: Fix error compiling tc_redirect.c with musl libc
+Date: Wed,  2 Oct 2024 14:54:45 +0200
+Message-ID: <20241002125833.899085162@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gilbert Wu <Gilbert.Wu@microchip.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit f1393d52e6cda9c20f12643cbecf1e1dc357e0e2 ]
+[ Upstream commit 21c5f4f55da759c7444a1ef13e90b6e6f674eeeb ]
 
-Correct a rare multipath failure issue by reverting commit 94a68c814328
-("scsi: smartpqi: Quickly propagate path failures to SCSI midlayer") [1].
+Linux 5.1 implemented 64-bit time types and related syscalls to address the
+Y2038 problem generally across archs. Userspace handling of Y2038 varies
+with the libc however. While musl libc uses 64-bit time across all 32-bit
+and 64-bit platforms, GNU glibc uses 64-bit time on 64-bit platforms but
+defaults to 32-bit time on 32-bit platforms unless they "opt-in" to 64-bit
+time or explicitly use 64-bit syscalls and time structures.
 
-Reason for revert: The patch propagated the path failure to SML quickly
-when one of the path fails during IO and AIO path gets disabled for a
-multipath device.
+One specific area is the standard setsockopt() call, SO_TIMESTAMPNS option
+used for timestamping, and the related output 'struct timespec'. GNU glibc
+defaults as above, also exposing the SO_TIMESTAMPNS_NEW flag to explicitly
+use a 64-bit call and 'struct __kernel_timespec'. Since these are not
+exposed or needed with musl libc, their use in tc_redirect.c leads to
+compile errors building for mips64el/musl:
 
-But it created a new issue: when creating a volume on an encryption-enabled
-controller, the firmware reports the AIO path is disabled, which cause the
-driver to report a path failure to SML for a multipath device.
+  tc_redirect.c: In function 'rcv_tstamp':
+  tc_redirect.c:425:32: error: 'SO_TIMESTAMPNS_NEW' undeclared (first use in this function); did you mean 'SO_TIMESTAMPNS'?
+    425 |             cmsg->cmsg_type == SO_TIMESTAMPNS_NEW)
+        |                                ^~~~~~~~~~~~~~~~~~
+        |                                SO_TIMESTAMPNS
+  tc_redirect.c:425:32: note: each undeclared identifier is reported only once for each function it appears in
+  tc_redirect.c: In function 'test_inet_dtime':
+  tc_redirect.c:491:49: error: 'SO_TIMESTAMPNS_NEW' undeclared (first use in this function); did you mean 'SO_TIMESTAMPNS'?
+    491 |         err = setsockopt(listen_fd, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
+        |                                                 ^~~~~~~~~~~~~~~~~~
+        |                                                 SO_TIMESTAMPNS
 
-There will be a new fix to handle "Illegal request" and "Invalid field in
-parameter list" on RAID path when the AIO path is disabled on a multipath
-device.
+However, using SO_TIMESTAMPNS_NEW isn't strictly needed, nor is Y2038 being
+explicitly tested. The timestamp checks in tc_redirect.c are simple: the
+packet receive timestamp is non-zero and processed/handled in less than 5
+seconds.
 
-[1] https://lore.kernel.org/all/164375209313.440833.9992416628621839233.stgit@brunhilda.pdev.net/
+Switch to using the standard setsockopt() call and SO_TIMESTAMPNS option to
+ensure compatibility across glibc and musl libc. In the worst-case, there
+is a 5-second window 14 years from now where tc_redirect tests may fail on
+32-bit systems. However, we should reasonably expect glibc to adopt a
+64-bit mandate rather than the current "opt-in" policy before the Y2038
+roll-over.
 
-Fixes: 94a68c814328 ("scsi: smartpqi: Quickly propagate path failures to SCSI midlayer")
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: Gilbert Wu <Gilbert.Wu@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20240711194704.982400-4-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ce6f6cffaeaa ("selftests/bpf: Wait for the netstamp_needed_key static key to be turned on")
+Fixes: c803475fd8dd ("bpf: selftests: test skb->tstamp in redirect_neigh")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/031d656c058b4e55ceae56ef49c4e1729b5090f3.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 20 ++------------------
- 1 file changed, 2 insertions(+), 18 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/tc_redirect.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 24c7cb285dca0..c1524fb334eb5 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -2354,14 +2354,6 @@ static inline void pqi_mask_device(u8 *scsi3addr)
- 	scsi3addr[3] |= 0xc0;
- }
+diff --git a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
+index 327d51f591427..53b8ffc943dce 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
++++ b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
+@@ -471,7 +471,7 @@ static int set_forwarding(bool enable)
  
--static inline bool pqi_is_multipath_device(struct pqi_scsi_dev *device)
--{
--	if (pqi_is_logical_device(device))
--		return false;
--
--	return (device->path_map & (device->path_map - 1)) != 0;
--}
--
- static inline bool pqi_expose_device(struct pqi_scsi_dev *device)
+ static int __rcv_tstamp(int fd, const char *expected, size_t s, __u64 *tstamp)
  {
- 	return !device->is_physical_device || !pqi_skip_device(device->scsi3addr);
-@@ -3258,14 +3250,12 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
- 	int residual_count;
- 	int xfer_count;
- 	bool device_offline;
--	struct pqi_scsi_dev *device;
+-	struct __kernel_timespec pkt_ts = {};
++	struct timespec pkt_ts = {};
+ 	char ctl[CMSG_SPACE(sizeof(pkt_ts))];
+ 	struct timespec now_ts;
+ 	struct msghdr msg = {};
+@@ -495,7 +495,7 @@ static int __rcv_tstamp(int fd, const char *expected, size_t s, __u64 *tstamp)
  
- 	scmd = io_request->scmd;
- 	error_info = io_request->error_info;
- 	host_byte = DID_OK;
- 	sense_data_length = 0;
- 	device_offline = false;
--	device = scmd->device->hostdata;
+ 	cmsg = CMSG_FIRSTHDR(&msg);
+ 	if (cmsg && cmsg->cmsg_level == SOL_SOCKET &&
+-	    cmsg->cmsg_type == SO_TIMESTAMPNS_NEW)
++	    cmsg->cmsg_type == SO_TIMESTAMPNS)
+ 		memcpy(&pkt_ts, CMSG_DATA(cmsg), sizeof(pkt_ts));
  
- 	switch (error_info->service_response) {
- 	case PQI_AIO_SERV_RESPONSE_COMPLETE:
-@@ -3290,14 +3280,8 @@ static void pqi_process_aio_io_error(struct pqi_io_request *io_request)
- 			break;
- 		case PQI_AIO_STATUS_AIO_PATH_DISABLED:
- 			pqi_aio_path_disabled(io_request);
--			if (pqi_is_multipath_device(device)) {
--				pqi_device_remove_start(device);
--				host_byte = DID_NO_CONNECT;
--				scsi_status = SAM_STAT_CHECK_CONDITION;
--			} else {
--				scsi_status = SAM_STAT_GOOD;
--				io_request->status = -EAGAIN;
--			}
-+			scsi_status = SAM_STAT_GOOD;
-+			io_request->status = -EAGAIN;
- 			break;
- 		case PQI_AIO_STATUS_NO_PATH_TO_DEVICE:
- 		case PQI_AIO_STATUS_INVALID_DEVICE:
+ 	pkt_ns = pkt_ts.tv_sec * NSEC_PER_SEC + pkt_ts.tv_nsec;
+@@ -537,9 +537,9 @@ static int wait_netstamp_needed_key(void)
+ 	if (!ASSERT_GE(srv_fd, 0, "start_server"))
+ 		goto done;
+ 
+-	err = setsockopt(srv_fd, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
++	err = setsockopt(srv_fd, SOL_SOCKET, SO_TIMESTAMPNS,
+ 			 &opt, sizeof(opt));
+-	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS_NEW)"))
++	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS)"))
+ 		goto done;
+ 
+ 	cli_fd = connect_to_fd(srv_fd, TIMEOUT_MILLIS);
+@@ -621,9 +621,9 @@ static void test_inet_dtime(int family, int type, const char *addr, __u16 port)
+ 		return;
+ 
+ 	/* Ensure the kernel puts the (rcv) timestamp for all skb */
+-	err = setsockopt(listen_fd, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
++	err = setsockopt(listen_fd, SOL_SOCKET, SO_TIMESTAMPNS,
+ 			 &opt, sizeof(opt));
+-	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS_NEW)"))
++	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS)"))
+ 		goto done;
+ 
+ 	if (type == SOCK_STREAM) {
 -- 
 2.43.0
 
