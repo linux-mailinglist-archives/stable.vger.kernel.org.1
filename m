@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7593598D928
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F42A98D5B0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A83A1F22ADB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF30FB226B8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B738D1D0B8A;
-	Wed,  2 Oct 2024 14:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14981D0403;
+	Wed,  2 Oct 2024 13:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5U+gekz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+OENlmh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CFB1D07BD;
-	Wed,  2 Oct 2024 14:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1EB19D8A3;
+	Wed,  2 Oct 2024 13:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877811; cv=none; b=JYfRnHcQ1rWEyYJojvHdp26Wm/z0DZkHgAROHyzjHxG55Lez7m4t1nx6b1jmjEH2eBrKjmOhw9xfNGGM4aPHL8KfBf9TGz7yb40JZ5h1BL+kSu/S5uVG0LC3ZkDwjtYj0fxZHikeUKJQJeat5gJsWLmv0Phw1cAN+i9jS3ueuq0=
+	t=1727875943; cv=none; b=huZLMoY+1olt+ydUexL0iamx/32GhyII/GuYi+nYvORcOyHXRWZD3rdcUAi3N+5ZI9zr+PfQsm7lnmNy9v5DEcnGZlV+ip85Yzve77SUvEFcAx16CVU5YcAt/k5TBHFudlwk89M8LQtuoqtbdqI72c2kUW8SAtlmq0f0v/LWBAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877811; c=relaxed/simple;
-	bh=6FWHoW7xwV9nb+DJ1C+uv04+X4TzAjlTcFU0k+L5/PQ=;
+	s=arc-20240116; t=1727875943; c=relaxed/simple;
+	bh=QpcYFVa+XW8NhyW6mYaMMMhcavMq8odxaD7F07DpDyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oc2vksOO4Yq1xZ+iYuBIHWc8Xy4H/gJUS1oSMPMS+2pDyBjQGLPGQyRKVBMWzA2dGryjDGYQqZXZUlOepPQjk+0OWM6T3p/ov1PkknKYOg35XJBxMkIULmpAFJHDQyOhgGZfAfyVwiuJpn6w6OemGY5Szr1NGxlufi1HJow5iM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5U+gekz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D68C4CEC2;
-	Wed,  2 Oct 2024 14:03:30 +0000 (UTC)
+	 MIME-Version; b=DG+ODatIVMNTxLlnygpitzJt21GokLBrTSi0ZC6reP49nuYevRfVQTsN02ItdQ3jBR375cFQp6hm9WlIXaygN/GP9vbb9fMgTtOlkBby3YBBNjqTDocBmfn2MqTFjrkv4Rca6Hx/90+qkxnKMqyRuv2Epai3ZaYxpn0XMnto3BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+OENlmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD18C4CEC5;
+	Wed,  2 Oct 2024 13:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877811;
-	bh=6FWHoW7xwV9nb+DJ1C+uv04+X4TzAjlTcFU0k+L5/PQ=;
+	s=korg; t=1727875943;
+	bh=QpcYFVa+XW8NhyW6mYaMMMhcavMq8odxaD7F07DpDyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5U+gekzwR70n9DX8QbXZg3/4PPtv7588thJLbF8yxR/6B7B+2NOhm8vHSIGqsMEa
-	 lFpkmr6Ii2Km0PyrcDm3lsejmOFtc05hGSf6FPE+jm/H9nlvKOmalfrcO5FeMR0v8/
-	 niJ0hlUvyewuEwljIv29m3QKzagWK8DEHKUCI8JU=
+	b=r+OENlmhNqzjKxxVQM4LJDPFGI6z2DL0dFYQzqcXQNpU6nTHU5WfGaIuQ6uleHl01
+	 5lJo7dZaaWsbMH2/GzZnCGwdpn1a9rs4JhrZNl5ALZKuxgzCUtyiYCcOmfF2/Gs1Wb
+	 bEAWIPXX8mZMiQQ7UolvSKmrB6F4IL+f8rF7Hz4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cheng-Jui=20Wang=20 ?= <Cheng-Jui.Wang@mediatek.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 171/634] rcu/nocb: Fix RT throttling hrtimer armed from offline CPU
-Date: Wed,  2 Oct 2024 14:54:31 +0200
-Message-ID: <20241002125817.859752668@linuxfoundation.org>
+Subject: [PATCH 6.11 274/695] selftests/bpf: Fix compiling flow_dissector.c with musl-libc
+Date: Wed,  2 Oct 2024 14:54:32 +0200
+Message-ID: <20241002125833.383138889@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 9139f93209d1ffd7f489ab19dee01b7c3a1a43d2 ]
+[ Upstream commit 5e4c43bcb85973243d7274e0058b6e8f5810e4f7 ]
 
-After a CPU is marked offline and until it reaches its final trip to
-idle, rcuo has several opportunities to be woken up, either because
-a callback has been queued in the meantime or because
-rcutree_report_cpu_dead() has issued the final deferred NOCB wake up.
+The GNU version of 'struct tcphdr' has members 'doff', 'source' and 'dest',
+which are not exposed by musl libc headers unless _GNU_SOURCE is defined.
 
-If RCU-boosting is enabled, RCU kthreads are set to SCHED_FIFO policy.
-And if RT-bandwidth is enabled, the related hrtimer might be armed.
-However this then happens after hrtimers have been migrated at the
-CPUHP_AP_HRTIMERS_DYING stage, which is broken as reported by the
-following warning:
+Add this definition to fix errors seen compiling for mips64el/musl-libc:
 
- Call trace:
-  enqueue_hrtimer+0x7c/0xf8
-  hrtimer_start_range_ns+0x2b8/0x300
-  enqueue_task_rt+0x298/0x3f0
-  enqueue_task+0x94/0x188
-  ttwu_do_activate+0xb4/0x27c
-  try_to_wake_up+0x2d8/0x79c
-  wake_up_process+0x18/0x28
-  __wake_nocb_gp+0x80/0x1a0
-  do_nocb_deferred_wakeup_common+0x3c/0xcc
-  rcu_report_dead+0x68/0x1ac
-  cpuhp_report_idle_dead+0x48/0x9c
-  do_idle+0x288/0x294
-  cpu_startup_entry+0x34/0x3c
-  secondary_start_kernel+0x138/0x158
+  flow_dissector.c:118:30: error: 'struct tcphdr' has no member named 'doff'
+    118 |                         .tcp.doff = 5,
+        |                              ^~~~
+  flow_dissector.c:119:30: error: 'struct tcphdr' has no member named 'source'
+    119 |                         .tcp.source = 80,
+        |                              ^~~~~~
+  flow_dissector.c:120:30: error: 'struct tcphdr' has no member named 'dest'
+    120 |                         .tcp.dest = 8080,
+        |                              ^~~~
 
-Fix this with waking up rcuo using an IPI if necessary. Since the
-existing API to deal with this situation only handles swait queue, rcuo
-is only woken up from offline CPUs if it's not already waiting on a
-grace period. In the worst case some callbacks will just wait for a
-grace period to complete before being assigned to a subsequent one.
-
-Reported-by: "Cheng-Jui Wang (王正睿)" <Cheng-Jui.Wang@mediatek.com>
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
+Fixes: ae173a915785 ("selftests/bpf: support BPF_FLOW_DISSECTOR_F_PARSE_1ST_FRAG")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/8f7ab21a73f678f9cebd32b26c444a686e57414d.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_nocb.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
-index 2d9eed2bf7509..9b485f1060c01 100644
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -220,7 +220,10 @@ static bool __wake_nocb_gp(struct rcu_data *rdp_gp,
- 	raw_spin_unlock_irqrestore(&rdp_gp->nocb_gp_lock, flags);
- 	if (needwake) {
- 		trace_rcu_nocb_wake(rcu_state.name, rdp->cpu, TPS("DoWake"));
--		wake_up_process(rdp_gp->nocb_gp_kthread);
-+		if (cpu_is_offline(raw_smp_processor_id()))
-+			swake_up_one_online(&rdp_gp->nocb_gp_wq);
-+		else
-+			wake_up_process(rdp_gp->nocb_gp_kthread);
- 	}
- 
- 	return needwake;
+diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+index 9625e6d217913..3171047414a7d 100644
+--- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
++++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include <network_helpers.h>
+ #include <linux/if_tun.h>
 -- 
 2.43.0
 
