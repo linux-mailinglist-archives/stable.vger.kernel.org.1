@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-80475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F9798DD96
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A9298DAFA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DA141F26838
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF7561F22727
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ACC1D049A;
-	Wed,  2 Oct 2024 14:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192BC1D0E3C;
+	Wed,  2 Oct 2024 14:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaS1E7GZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9vyXwgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7421D07B5;
-	Wed,  2 Oct 2024 14:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBFB1D0DCE;
+	Wed,  2 Oct 2024 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880480; cv=none; b=n0kythA0GF3ULtrFzORTKdoa6sD55k6OpEwG+Oljb9LdVAOTFl4HMhnwhOKDsssZJjv9eQPYFwFOL4c3ZX+KGiInaSDpoosIVdelsUMmF44M+bvQBzC5ZIrzNuA2XT1or0E3NjJSeW9i1LmblcBP9oDajj9S8jOW2Ue4V60EiYI=
+	t=1727878902; cv=none; b=X9PKlWORWoUtfK1vyx6+PuYUHN8G/4pOdvU0jlndmkPYRyGwCectyoPq6Nw/gh2X/4LIu7Yx7/iugBImxQch+/KssWBhOG6tE6xvn1dnwUOPwgKMS0harZkLHdY1F4AHv3Z8SMdvzNBvtno70ENRSLR5NKZFB9NVq+sZYeo7qsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880480; c=relaxed/simple;
-	bh=7XvoIITYLlCJWaCjskALd19nq7m6PoAo168WQOWwPU8=;
+	s=arc-20240116; t=1727878902; c=relaxed/simple;
+	bh=FjpizDC3vO5B9UymyD2fi/6tWBCCA1ZJXp2xMI5zGVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBZLwVvGGZXnmSFCRzvqwtfUZ1kHFTmrxUMkpSAfKMka5YYzbdfVNxZk5em9PvQSHsZFLBzPPTDkR1An2UKQhPllR3yo3kwf/g2or/mibyNuExAwtwsvsskV0WjcOwfQjHMfRURVJ7iyLQSfsEeKHTBpdA4y6bM8CiL7ow1cgnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaS1E7GZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4376BC4CECE;
-	Wed,  2 Oct 2024 14:48:00 +0000 (UTC)
+	 MIME-Version; b=sBkxWaoYvtsn2ZZk+SFWTT9eVANMqIiaaRY/OubNUC6gYycCf6mK+tItnKZI/dYpBfW442kC6jfuHtlxluWWIueO+r7oSg83Jgyr1NTt3Lx3WQXtqcC2izkUlF3TvgnXp4bSQbawxc+ZoP6wuhaXVxUFmCjvLVrAtLdX7dZjmyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9vyXwgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A60C4CEC5;
+	Wed,  2 Oct 2024 14:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880480;
-	bh=7XvoIITYLlCJWaCjskALd19nq7m6PoAo168WQOWwPU8=;
+	s=korg; t=1727878902;
+	bh=FjpizDC3vO5B9UymyD2fi/6tWBCCA1ZJXp2xMI5zGVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaS1E7GZ857RqIbpFYDGyW7Y06WlzbdN9LqjnRPVwzdOYCFAlSSrLIUf3hv5PI7kH
-	 Ua27pdCggwRtBjqceIkFU/pqh1eYw4Up6pvQqdEsh/jXXMsFx6V3Y3jysCPIMZTbFK
-	 yzZ4wPYWrz6g47T/SsxIaQzx4jqraTPbT+rPhH2M=
+	b=E9vyXwgCYPJsEBQeVOPMXH83sp2a6DoxT3AOhB1DHQ7KjIC0H7siMJJwLX9O6gcor
+	 mEjf6GpgQ6UKp+xHne+dkiTbjYmRUM6f47/+PGjUk1S7wBCZ7if9CFk5WQl7Q1WIEC
+	 WNTb84W/0OedgnbO4jsdFaZ2rI3j1odmsuQ9Civ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 431/538] wifi: rtw88: Fix USB/SDIO devices not transmitting beacons
+	D Scott Phillips <scott@os.amperecomputing.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.10 570/634] arm64: errata: Enable the AC03_CPU_38 workaround for ampere1a
 Date: Wed,  2 Oct 2024 15:01:10 +0200
-Message-ID: <20241002125809.451559140@linuxfoundation.org>
+Message-ID: <20241002125833.614089763@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: D Scott Phillips <scott@os.amperecomputing.com>
 
-commit faa2e484b393c56bc1243dca6676a70bc485f775 upstream.
+commit db0d8a84348b876df7c4276f0cbce5df3b769f5f upstream.
 
-All USB devices supported by rtw88 have the same problem: they don't
-transmit beacons in AP mode. (Some?) SDIO devices are also affected.
-The cause appears to be clearing BIT_EN_BCNQ_DL of REG_FWHW_TXQ_CTRL
-before uploading the beacon reserved page, so don't clear the bit for
-USB and SDIO devices.
+The ampere1a cpu is affected by erratum AC04_CPU_10 which is the same
+bug as AC03_CPU_38. Add ampere1a to the AC03_CPU_38 workaround midr list.
 
-Tested with RTL8811CU and RTL8723DU.
-
-Cc: <stable@vger.kernel.org> # 6.6.x
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/49de73b5-698f-4865-ab63-100e28dfc4a1@gmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240827211701.2216719-1-scott@os.amperecomputing.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/fw.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                          |    2 +-
+ arch/arm64/include/asm/cputype.h            |    2 ++
+ arch/arm64/kernel/cpu_errata.c              |   10 +++++++++-
+ 4 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -1388,10 +1388,12 @@ int rtw_fw_write_data_rsvd_page(struct r
- 	val |= BIT_ENSWBCN >> 8;
- 	rtw_write8(rtwdev, REG_CR + 1, val);
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -55,6 +55,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Ampere         | AmpereOne       | AC03_CPU_38     | AMPERE_ERRATUM_AC03_CPU_38  |
+ +----------------+-----------------+-----------------+-----------------------------+
++| Ampere         | AmpereOne AC04  | AC04_CPU_10     | AMPERE_ERRATUM_AC03_CPU_38  |
+++----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
+ +----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -422,7 +422,7 @@ config AMPERE_ERRATUM_AC03_CPU_38
+ 	default y
+ 	help
+ 	  This option adds an alternative code sequence to work around Ampere
+-	  erratum AC03_CPU_38 on AmpereOne.
++	  errata AC03_CPU_38 and AC04_CPU_10 on AmpereOne.
  
--	val = rtw_read8(rtwdev, REG_FWHW_TXQ_CTRL + 2);
--	bckp[1] = val;
--	val &= ~(BIT_EN_BCNQ_DL >> 16);
--	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, val);
-+	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE) {
-+		val = rtw_read8(rtwdev, REG_FWHW_TXQ_CTRL + 2);
-+		bckp[1] = val;
-+		val &= ~(BIT_EN_BCNQ_DL >> 16);
-+		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, val);
-+	}
+ 	  The affected design reports FEAT_HAFDBS as not implemented in
+ 	  ID_AA64MMFR1_EL1.HAFDBS, but (V)TCR_ELx.{HA,HD} are not RES0
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -143,6 +143,7 @@
+ #define APPLE_CPU_PART_M2_AVALANCHE_MAX	0x039
  
- 	ret = rtw_hci_write_data_rsvd_page(rtwdev, buf, size);
- 	if (ret) {
-@@ -1416,7 +1418,8 @@ restore:
- 	rsvd_pg_head = rtwdev->fifo.rsvd_boundary;
- 	rtw_write16(rtwdev, REG_FIFOPAGE_CTRL_2,
- 		    rsvd_pg_head | BIT_BCN_VALID_V1);
--	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, bckp[1]);
-+	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE)
-+		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, bckp[1]);
- 	rtw_write8(rtwdev, REG_CR + 1, bckp[0]);
+ #define AMPERE_CPU_PART_AMPERE1		0xAC3
++#define AMPERE_CPU_PART_AMPERE1A	0xAC4
  
- 	return ret;
+ #define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
+ 
+@@ -212,6 +213,7 @@
+ #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
+ #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
+ #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
++#define MIDR_AMPERE1A MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1A)
+ #define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
+ 
+ /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -456,6 +456,14 @@ static const struct midr_range erratum_s
+ };
+ #endif
+ 
++#ifdef CONFIG_AMPERE_ERRATUM_AC03_CPU_38
++static const struct midr_range erratum_ac03_cpu_38_list[] = {
++	MIDR_ALL_VERSIONS(MIDR_AMPERE1),
++	MIDR_ALL_VERSIONS(MIDR_AMPERE1A),
++	{},
++};
++#endif
++
+ const struct arm64_cpu_capabilities arm64_errata[] = {
+ #ifdef CONFIG_ARM64_WORKAROUND_CLEAN_CACHE
+ 	{
+@@ -772,7 +780,7 @@ const struct arm64_cpu_capabilities arm6
+ 	{
+ 		.desc = "AmpereOne erratum AC03_CPU_38",
+ 		.capability = ARM64_WORKAROUND_AMPERE_AC03_CPU_38,
+-		ERRATA_MIDR_ALL_VERSIONS(MIDR_AMPERE1),
++		ERRATA_MIDR_RANGE_LIST(erratum_ac03_cpu_38_list),
+ 	},
+ #endif
+ 	{
 
 
 
