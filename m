@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-79885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E8298DAC0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B16398DD2F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9249E1F2516C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E697F1F22F45
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF071D175B;
-	Wed,  2 Oct 2024 14:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE701D1742;
+	Wed,  2 Oct 2024 14:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pYheyM3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1DnKo0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C024A1D07BD;
-	Wed,  2 Oct 2024 14:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DC71974F4;
+	Wed,  2 Oct 2024 14:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878752; cv=none; b=a40Oq0XjYsReF8/p3ofGrGvK+enUPPEvyA5LC2nqleAeMRJ1XsHodcu/GmvyOS5UWWZJSoBvobW6BWdMVUCmxgx3YwG2B1+3TiDDRqSr0Npg3t8yuayYVgEfdYXb51OnJHZm0ribq/O4iQVw9WH2+d5RVYzqbHDQUggQUEL/GgE=
+	t=1727880214; cv=none; b=k/391gDGR2rBnTak+s3Eraa0cVrulJt+c/hiMxCwJQ9FgI49sHsltRjB6sJXT+DbxhPCvDq/I2EzPXv4sg0CA+h9HAnD2wVOVRMnbBKcKbjm7p2BoUDThQb/6jBT4Bm5ABhE4qG2fKOnSxm/8jQ/PJULrDtrxwU9pvY49Tzv4b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878752; c=relaxed/simple;
-	bh=3s3eqUD0KCoWdoy5KxYzUn+tPej742I/0OhilVgBE0c=;
+	s=arc-20240116; t=1727880214; c=relaxed/simple;
+	bh=kS5mLZ/Zv7cKL7Ky5OGIJss0rXoz8LbWhuRAs7DnyHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IIxypSIskO5+6TLMLm4KebWDo0YV+kIB5M7Rql0TIhcBMSLWXkmmS45Lj1fJecMF2J52aEcweFr/+BanrolEDoOA90BZp+KeqrYRqFs5yZv9G7AsczQjP25GhNDQAymYJv/a5NsDIPIN71lGCsTIaCLnfagkVeF3NhpvIa/XOfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pYheyM3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02221C4CEC2;
-	Wed,  2 Oct 2024 14:19:11 +0000 (UTC)
+	 MIME-Version; b=QeQYVnWIJDL1XpAG/yBE6A8c5pa5Sv2SlB8G12MCEMddNLXw8HaRP5bwzCGqaBkgQbifRSEqTerBMaxVOtuISk95Mv6sCqw5OJtDxu7VEf0TOwBmWiO/LsuyPNuE/g3sj4ef7Xkoa9T7+eXluaUuoeBIWyZLuq8C/5Kbppdu/NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1DnKo0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C47DC4CEC2;
+	Wed,  2 Oct 2024 14:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878752;
-	bh=3s3eqUD0KCoWdoy5KxYzUn+tPej742I/0OhilVgBE0c=;
+	s=korg; t=1727880213;
+	bh=kS5mLZ/Zv7cKL7Ky5OGIJss0rXoz8LbWhuRAs7DnyHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pYheyM39OKVHvRxZBIc5w+EIa1mjyhxbflmxIgU5DauZMKhRAuJt8WROYrGWQVNK
-	 dHRBVRduofiTxZ16Rd5CDHWBH6ARX4+8F3C6+eUehef33EAlDY+VyBFGYuGEyxjIKq
-	 vjOvGmoqkMgEfBapUWd6zdL+n+SLp8ck1+M82bMA=
+	b=v1DnKo0dNUDGRCeT/+cpIKalMpWgnFuxyIkQKFPgo8uT1ZOPPMi9q6Osjz8VbMZAQ
+	 1IPfCZ/x7gYUZo/JX+bNO1L/ev4CQAlYUJ+0zNOSQEWKd46vz6aODohlZ1/glBwiFW
+	 +PKmLAst8cwtodkpjy7bps3ZMbhxY3G2UKjDX3Nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.10 521/634] USB: class: CDC-ACM: fix race between get_serial and set_serial
-Date: Wed,  2 Oct 2024 15:00:21 +0200
-Message-ID: <20241002125831.671961577@linuxfoundation.org>
+	Jan Hendrik Farr <kernel@jfarr.cc>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 383/538] io_uring: check for presence of task_work rather than TIF_NOTIFY_SIGNAL
+Date: Wed,  2 Oct 2024 15:00:22 +0200
+Message-ID: <20241002125807.549575663@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit b41c1fa155ba56d125885b0191aabaf3c508d0a3 upstream.
+commit 04beb6e0e08c30c6f845f50afb7d7953603d7a6f upstream.
 
-TIOCGSERIAL is an ioctl. Thus it must be atomic. It returns
-two values. Racing with set_serial it can return an inconsistent
-result. The mutex must be taken.
+If some part of the kernel adds task_work that needs executing, in terms
+of signaling it'll generally use TWA_SIGNAL or TWA_RESUME. Those two
+directly translate to TIF_NOTIFY_SIGNAL or TIF_NOTIFY_RESUME, and can
+be used for a variety of use case outside of task_work.
 
-In terms of logic the bug is as old as the driver. In terms of
-code it goes back to the conversion to the get_serial and
-set_serial methods.
+However, io_cqring_wait_schedule() only tests explicitly for
+TIF_NOTIFY_SIGNAL. This means it can miss if task_work got added for
+the task, but used a different kind of signaling mechanism (or none at
+all). Normally this doesn't matter as any task_work will be run once
+the task exits to userspace, except if:
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Fixes: 99f75a1fcd865 ("cdc-acm: switch to ->[sg]et_serial()")
-Link: https://lore.kernel.org/r/20240912141916.1044393-1-oneukum@suse.com
+1) The ring is setup with DEFER_TASKRUN
+2) The local work item may generate normal task_work
+
+For condition 2, this can happen when closing a file and it's the final
+put of that file, for example. This can cause stalls where a task is
+waiting to make progress inside io_cqring_wait(), but there's nothing else
+that will wake it up. Hence change the "should we schedule or loop around"
+check to check for the presence of task_work explicitly, rather than just
+TIF_NOTIFY_SIGNAL as the mechanism. While in there, also change the
+ordering of what type of task_work first in terms of ordering, to both
+make it consistent with other task_work runs in io_uring, but also to
+better handle the case of defer task_work generating normal task_work,
+like in the above example.
+
+Reported-by: Jan Hendrik Farr <kernel@jfarr.cc>
+Link: https://github.com/axboe/liburing/issues/1235
+Cc: stable@vger.kernel.org
+Fixes: 846072f16eed ("io_uring: mimimise io_cqring_wait_schedule")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/io_uring.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -962,10 +962,12 @@ static int get_serial_info(struct tty_st
- 	struct acm *acm = tty->driver_data;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2514,7 +2514,7 @@ static inline int io_cqring_wait_schedul
+ 		return 1;
+ 	if (unlikely(!llist_empty(&ctx->work_llist)))
+ 		return 1;
+-	if (unlikely(test_thread_flag(TIF_NOTIFY_SIGNAL)))
++	if (unlikely(task_work_pending(current)))
+ 		return 1;
+ 	if (unlikely(task_sigpending(current)))
+ 		return -EINTR;
+@@ -2610,9 +2610,9 @@ static int io_cqring_wait(struct io_ring
+ 		 * If we got woken because of task_work being processed, run it
+ 		 * now rather than let the caller do another wait loop.
+ 		 */
+-		io_run_task_work();
+ 		if (!llist_empty(&ctx->work_llist))
+ 			io_run_local_work(ctx, nr_wait);
++		io_run_task_work();
  
- 	ss->line = acm->minor;
-+	mutex_lock(&acm->port.mutex);
- 	ss->close_delay	= jiffies_to_msecs(acm->port.close_delay) / 10;
- 	ss->closing_wait = acm->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
- 				ASYNC_CLOSING_WAIT_NONE :
- 				jiffies_to_msecs(acm->port.closing_wait) / 10;
-+	mutex_unlock(&acm->port.mutex);
- 	return 0;
- }
- 
+ 		/*
+ 		 * Non-local task_work will be run on exit to userspace, but
 
 
 
