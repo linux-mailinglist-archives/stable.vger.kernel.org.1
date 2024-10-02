@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2447198D572
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F4E98D8D1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8CFCB2106D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FB3F1F21D16
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02071D0485;
-	Wed,  2 Oct 2024 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26A01D0F7D;
+	Wed,  2 Oct 2024 14:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r23RUMm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmaAM+//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7E31D0174;
-	Wed,  2 Oct 2024 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5531D0DDD;
+	Wed,  2 Oct 2024 14:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875824; cv=none; b=bRbTKa9jWgOrjx5RSWjKpnLjEd1cTlVPKVvySlusqx9BZR96xheolV55AXt5ZiFddRr8ue4BeCTBmB1b7aBCTpr4DGoo02yp+4AsB8QCoMpfcN3RAAcKXQmkMWZ3EteskCUzDo5c/RlOi/4aBqK34hmEYUzMdS/E7v8h7MncfE0=
+	t=1727877660; cv=none; b=IRvGLVSmbYFuhecBu5NiyD8ON9pwbqG9TbxMMnfj7wHwT8Ej8tg0zZtrlglTMd5vA6r4Qop8Szl9tIeEy2fn+P3DIqhOEBszpKwFgxN4mnPgEs/3uXbmbFf1je85U7tjQNuX1+qPz6MZHDavi8VMludnVEPbh+DzYwwnZU50EM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875824; c=relaxed/simple;
-	bh=gIqUNGeZRrWZqMVUr/6i9ZU+nRNDXbJvMZ8RMC1cJtE=;
+	s=arc-20240116; t=1727877660; c=relaxed/simple;
+	bh=Qv/d1HcJm0jS649KXDCq3m/0q7YqgTy/FSvgsIBAh58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlJfYTyqQ56EYwXyk3Wb6KFOlXM0ax55yEngBfgcFWW9GxQv6wsTXXgnyuPtrRCin6+iIt94nxT/oGzS4MGaSbSy8Pl/04KfxB4ZsECHIA0+ykX2BQHv7yl//wsEMdkQemHKk+FpInrKzhdmC/NMMOI//OZpKQVqfPyXz30wcK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r23RUMm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC931C4CEC5;
-	Wed,  2 Oct 2024 13:30:23 +0000 (UTC)
+	 MIME-Version; b=SFa+cpdJEDvn0GErvbfNHlFyzY56MSXw2N3Q9WXhlrTWs+i3mFkmV5pw9CZDAXHeR7yGvGD+xYaoTmuFoTchiaKW45yl2NLIod5UqticOSMwxvmhzHSeOHYCATqY1WoiK4HKmD2G/fmZ2XDuLmi+IjgPzwqB9hikLaxYZfaqydg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmaAM+//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC633C4CEC2;
+	Wed,  2 Oct 2024 14:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875824;
-	bh=gIqUNGeZRrWZqMVUr/6i9ZU+nRNDXbJvMZ8RMC1cJtE=;
+	s=korg; t=1727877660;
+	bh=Qv/d1HcJm0jS649KXDCq3m/0q7YqgTy/FSvgsIBAh58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r23RUMm03lBKKzbw7zieWeb/qCRCFzeWFWrkBg8rpHQ/oam2gHS/PqCZV2GgEUEib
-	 c1GJ3KMN7qT3cht9Z6BvTj8ozJQH0nAQtCAmRTlS4NnIYLvTbpJW7psLzCaUnm3ME5
-	 F02Y/wwQHz+nYG5BKLdIQY7Tz6j6g+pDpnB27aik=
+	b=QmaAM+//63zcK/TtT9c/mpO4lZ3slAIYV2QwTUU0hCLKwpH1BayNyehN/YwK4i4Ln
+	 /10VuPgtr9Oojp2AyAKqBH8EUuMDjRGcyUZsmE/2zM2C4Dsw3GsT/g5RdNTkp5nCtO
+	 XZtMK6sywHn9Gnmt3zMV5dYzTGBvzEqeB30PTqdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Corey Minyard <corey@minyard.net>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 234/695] ipmi: docs: dont advertise deprecated sysfs entries
-Date: Wed,  2 Oct 2024 14:53:52 +0200
-Message-ID: <20241002125831.790478088@linuxfoundation.org>
+Subject: [PATCH 6.10 133/634] spi: bcmbca-hsspi: Fix missing pm_runtime_disable()
+Date: Wed,  2 Oct 2024 14:53:53 +0200
+Message-ID: <20241002125816.359357633@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 64dce81f8c373c681e62d5ffe0397c45a35d48a2 ]
+[ Upstream commit 4439a2e92cb89028b22c5d7ba1b99e75d7d889f6 ]
 
-"i2c-adapter" class entries are deprecated since 2009. Switch to the
-proper location.
+The pm_runtime_disable() is missing in remove function, use
+devm_pm_runtime_enable() to fix it. So the pm_runtime_disable() in
+the probe error path can also be removed.
 
-Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
-Closes: https://lore.kernel.org/r/80c4a898-5867-4162-ac85-bdf7c7c68746@gmail.com
-Fixes: 259307074bfc ("ipmi: Add SMBus interface driver (SSIF)")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Message-Id: <20240901090211.3797-2-wsa+renesas@sang-engineering.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Link: https://patch.msgid.link/20240826124903.3429235-2-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/driver-api/ipmi.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcmbca-hsspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/driver-api/ipmi.rst b/Documentation/driver-api/ipmi.rst
-index e224e47b6b094..dfa021eacd63c 100644
---- a/Documentation/driver-api/ipmi.rst
-+++ b/Documentation/driver-api/ipmi.rst
-@@ -540,7 +540,7 @@ at module load time (for a module) with::
- 	alerts_broken
+diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
+index 9f64afd8164ea..4965bc86d7f52 100644
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -546,12 +546,14 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
+ 			goto out_put_host;
+ 	}
  
- The addresses are normal I2C addresses.  The adapter is the string
--name of the adapter, as shown in /sys/class/i2c-adapter/i2c-<n>/name.
-+name of the adapter, as shown in /sys/bus/i2c/devices/i2c-<n>/name.
- It is *NOT* i2c-<n> itself.  Also, the comparison is done ignoring
- spaces, so if the name is "This is an I2C chip" you can say
- adapter_name=ThisisanI2cchip.  This is because it's hard to pass in
+-	pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		goto out_put_host;
+ 
+ 	ret = sysfs_create_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "couldn't register sysfs group\n");
+-		goto out_pm_disable;
++		goto out_put_host;
+ 	}
+ 
+ 	/* register and we are done */
+@@ -565,8 +567,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
+ 
+ out_sysgroup_disable:
+ 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+-out_pm_disable:
+-	pm_runtime_disable(&pdev->dev);
+ out_put_host:
+ 	spi_controller_put(host);
+ out_disable_pll_clk:
 -- 
 2.43.0
 
