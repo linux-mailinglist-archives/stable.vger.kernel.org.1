@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-80477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDAE98DD99
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D8C98DB2D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C0261F26443
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32E31280CFE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD73F1D172C;
-	Wed,  2 Oct 2024 14:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF711D222B;
+	Wed,  2 Oct 2024 14:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pj1VHr83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4jzt6kD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AAC1D07B5;
-	Wed,  2 Oct 2024 14:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784D51D2228;
+	Wed,  2 Oct 2024 14:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880486; cv=none; b=EbSNgohYYDm03xAAJ6yn3Y6Oem3U3uwI5Epr+i7Cl0WiesrY3bQ/iYB0EAfDJr6ticCk9ziCH4UUf0jhdaNSuV00kboaHBuO0U6lSDNeZorMtsfvzaawxwlDNYfJ6jh6Qk2BbnC5GDX82K+rNrWaTrqggijxce73NYaMihUXWx0=
+	t=1727879030; cv=none; b=iOh1Wp16wkZswdE55UWM0D2UltslQMLNb0NIdRwYJNL6JVuq50ELmGdZ/UPqqsby3GpbfwnuEvyEaF/IVEkMD3lA2HeH2GnfzT1PIxBsGPpvs2ECLSzqe8VN+sxzndW2pohGo/uFPgvD7Uj4ARDaTeKLnRG2J/mzyuJ7oDc2jTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880486; c=relaxed/simple;
-	bh=yACnrhl5vCM/T/p0jpQQXg+5thdqUxm/zz8u7BlqfbY=;
+	s=arc-20240116; t=1727879030; c=relaxed/simple;
+	bh=HAe4FdTuFrZXSeYMEJRR7qUvQp0wskHQfGoy4vbqgRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OutItWb4CR+fIhnWf6aiO4b7+rbeuEUWw06Ja9FFY7RlLtpBo4hScI3auVGuLRSGxt8taSp8x23/GEmh4jDj4OjeUuCb86Y+RE/7+r6e+MXkoZoj0TNY7nzPnOVujzKPRVeBaV+T/0a6zKQSXmECoGqUm7nXIwVKupRBVN5LGCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pj1VHr83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17821C4CEC2;
-	Wed,  2 Oct 2024 14:48:05 +0000 (UTC)
+	 MIME-Version; b=CSpNlNnS2EpxYdDTFCXLKhydHrw1gK+uRXAliSABaBjTtWW+G5fazu9srRKG5uVpP7S3+11XWwelYuAdBO6ccNuTe6C8UpKpWz3sHL8x5clMVxumZ9pjHE2ig+R/pJxKXgV0jUW6HqE0/SXxi3Lxo+2lJcWyCjF/zVDYDaLK2jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4jzt6kD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025DDC4CEC2;
+	Wed,  2 Oct 2024 14:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880486;
-	bh=yACnrhl5vCM/T/p0jpQQXg+5thdqUxm/zz8u7BlqfbY=;
+	s=korg; t=1727879030;
+	bh=HAe4FdTuFrZXSeYMEJRR7qUvQp0wskHQfGoy4vbqgRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pj1VHr83DfU94J64viJU5e7c5ki9+YBzLfoSUrPe4kHF8rO4bA0M5QTqorLt8fzJ1
-	 ILzH3CWJmrFjxuvYVQDBHn2lS6D/bx0/Y9wThsNTAUA3DG2KeCHEEWcRgHexWXOsHH
-	 Isaovfbgb/y8j9B88VFOXaUDQedGHdDwWWNXCmVg=
+	b=z4jzt6kDZigJedpU+jmqqHBAilOgu+M6bFJwnDCSLdb+yLhXMJkWKZr+22yipIfDD
+	 1+I/cT64ogIz3ek8nW6o+yctM+xBN8ol746/fo2g6oVREy6e9PKohoaF1GW/n/lcF6
+	 Fe3PhEcDlkF4Gvg54DC5k8F1AD4tulY8Mtesuh1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.6 476/538] nfs: fix memory leak in error path of nfs4_do_reclaim
+	KP Singh <kpsingh@kernel.org>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.10 615/634] bpf: lsm: Set bpf_lsm_blob_sizes.lbs_task to 0
 Date: Wed,  2 Oct 2024 15:01:55 +0200
-Message-ID: <20241002125811.232940422@linuxfoundation.org>
+Message-ID: <20241002125835.393482413@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Song Liu <song@kernel.org>
 
-commit 8f6a7c9467eaf39da4c14e5474e46190ab3fb529 upstream.
+commit 300a90b2cb5d442879e6398920c49aebbd5c8e40 upstream.
 
-Commit c77e22834ae9 ("NFSv4: Fix a potential sleep while atomic in
-nfs4_do_reclaim()") separate out the freeing of the state owners from
-nfs4_purge_state_owners() and finish it outside the rcu lock.
-However, the error path is omitted. As a result, the state owners in
-"freeme" will not be released.
-Fix it by adding freeing in the error path.
+bpf task local storage is now using task_struct->bpf_storage, so
+bpf_lsm_blob_sizes.lbs_task is no longer needed. Remove it to save some
+memory.
 
-Fixes: c77e22834ae9 ("NFSv4: Fix a potential sleep while atomic in nfs4_do_reclaim()")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Cc: stable@vger.kernel.org # v5.3+
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: a10787e6d58c ("bpf: Enable task local storage for tracing programs")
+Cc: stable@vger.kernel.org
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Matt Bobrowski <mattbobrowski@google.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Acked-by: Matt Bobrowski <mattbobrowski@google.com>
+Link: https://lore.kernel.org/r/20240911055508.9588-1-song@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4state.c |    1 +
- 1 file changed, 1 insertion(+)
+ security/bpf/hooks.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -1957,6 +1957,7 @@ restart:
- 				set_bit(ops->owner_flag_bit, &sp->so_flags);
- 				nfs4_put_state_owner(sp);
- 				status = nfs4_recovery_handle_error(clp, status);
-+				nfs4_free_state_owners(&freeme);
- 				return (status != 0) ? status : -EAGAIN;
- 			}
+--- a/security/bpf/hooks.c
++++ b/security/bpf/hooks.c
+@@ -31,7 +31,6 @@ static int __init bpf_lsm_init(void)
  
+ struct lsm_blob_sizes bpf_lsm_blob_sizes __ro_after_init = {
+ 	.lbs_inode = sizeof(struct bpf_storage_blob),
+-	.lbs_task = sizeof(struct bpf_storage_blob),
+ };
+ 
+ DEFINE_LSM(bpf) = {
 
 
 
