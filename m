@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-79912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A6398DADE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8910898DD49
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F102A1F25ADD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 524C2282C0A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEA91D1F4F;
-	Wed,  2 Oct 2024 14:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925451D1E8E;
+	Wed,  2 Oct 2024 14:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfn46vct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKFkIMXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9D11E52C;
-	Wed,  2 Oct 2024 14:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2B21D1E8A;
+	Wed,  2 Oct 2024 14:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878832; cv=none; b=KDECYj2nbr0EyG0wua9WIq5PKKkJhxmY4+zpJFegBGkqysiQdO/0rmmNN6bnQw94ycp4sswODrwPUJboXtf9eWECCSPvIU5Y0rxulipJk1NoM2ZrHMD0gFHWLhi6KzEGhNrNWfkf4tDLd7zNLxEEAVbuacbgr3N9rqpe+6BIlI4=
+	t=1727880290; cv=none; b=cEMKgGFj1KUynkfdlM+LK+1fokFwgwXWx6W7HcHJpHAa7ZlpseVc6vZbzedQiSNb9PiZ1bz535MDEKGGrRaDedKsQ1yMj5qwfM4Abci6dd1Eo07cwj2cJjYk5FDneDf/S6SoVaVQ1RglTc09CyxvjztvIm4l39+ppc/copyxblY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878832; c=relaxed/simple;
-	bh=61MS7Ciugh1Oas7AsRGqRgSj3kgTR5rUutIBA2/G1Bk=;
+	s=arc-20240116; t=1727880290; c=relaxed/simple;
+	bh=Jd7UUMbQgjD6ybpBQHrNmAQJubenuSn79a1DbZE7+IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sifOFtEcFzg7gUcCpy80/FtQhK+4yeNJJR0gedelgUgOb4PrmQuj9mkJdmin17Ir7cvVyoXg3xoCDtZxth6huEmWa8pJsUz3HyYydkjemLRu9YJ+TRtLteufVekiTW/ssXvMlubGCPFEM0udh7kbQipyO6QZ90jVEgYsmWVgkEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfn46vct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F81C4CEC2;
-	Wed,  2 Oct 2024 14:20:31 +0000 (UTC)
+	 MIME-Version; b=g3ncg7/PeIcpJvExBvO8gylEuSW8XfzhnZODwGkelToJFBdCQe3pbLbFhW9qPQuJKWWVyxb//my5klKsjcvdUiXK9Q2wq0eKpkf3VgFTod8vsaS5NP7TnTpXDz4Yzed8JaqMBign8Iinkgv5n/NEz2tQmyRmZmlQdYQ8bc4TmEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKFkIMXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3836C4CECD;
+	Wed,  2 Oct 2024 14:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878832;
-	bh=61MS7Ciugh1Oas7AsRGqRgSj3kgTR5rUutIBA2/G1Bk=;
+	s=korg; t=1727880290;
+	bh=Jd7UUMbQgjD6ybpBQHrNmAQJubenuSn79a1DbZE7+IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yfn46vctjRVb4ZGGQgu0J0w5V2kgj5lm0fkIQ6KAHdPJFxtetI6EUrVv8WrSfHIxP
-	 lcRXGbTHadttyJJ5M8lOYr1CthIky5EYvyml3mGmo7fHAOiLKBuMXOm53NvHWOXOPU
-	 kUufDDon+zzwZCi7Vpl9OQqdul4pp3ss1PsCKjek=
+	b=sKFkIMXcDW/VNgL1WU8nTfdYy7i6AF4csBYY8K7QrhY0+804dLoa1odczkmJH763B
+	 c7ByxlXxMaQRrf/xPV8Fatk95/e2+qYcx0fBnKen2VLAznr2w7H4URoTlHzJ5rEAns
+	 mnsvpz8lWRlXm3L+Oo9HOAPW84XZPKRLKhbIfJe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Felix Fietkau <nbd@nbd.name>,
-	Matthias Brugger <matthias.bgg@gmail.com>
-Subject: [PATCH 6.10 548/634] wifi: mt76: mt7921: Check devm_kasprintf() returned value
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 409/538] Input: i8042 - add another board name for TUXEDO Stellaris Gen5 AMD line
 Date: Wed,  2 Oct 2024 15:00:48 +0200
-Message-ID: <20241002125832.742005141@linuxfoundation.org>
+Message-ID: <20241002125808.579110214@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 1ccc9e476ce76e8577ba4fdbd1f63cb3e3499d38 upstream.
+commit 01eed86d50af9fab27d876fd677b86259ebe9de3 upstream.
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
+There might be devices out in the wild where the board name is GMxXGxx
+instead of GMxXGxX.
 
-Found by code review.
+Adding both to be on the safe side.
 
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: stable@vger.kernel.org
-Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviwed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://patch.msgid.link/20240903014455.4144536-1-make24@iscas.ac.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20240910094008.1601230-2-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/init.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -52,6 +52,8 @@ static int mt7921_thermal_init(struct mt
- 
- 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
- 			      wiphy_name(wiphy));
-+	if (!name)
-+		return -ENOMEM;
- 
- 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
- 						       mt7921_hwmon_groups);
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1138,6 +1138,13 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
