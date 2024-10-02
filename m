@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0369298DC06
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:37:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948D598D99D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADB541F24DBF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:37:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EFFF28937D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5531D1D3185;
-	Wed,  2 Oct 2024 14:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376271D0BB1;
+	Wed,  2 Oct 2024 14:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXk8+KZ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJ5Y1Rs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139CF1D2F79;
-	Wed,  2 Oct 2024 14:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2841D0787;
+	Wed,  2 Oct 2024 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879486; cv=none; b=JotvRPVHHH7mJy9uPSksMks5gSgUNoY8hrykalveZwS6951QaYVvjh0snXg7MO7ADHZaIyGvVcwTK1CIBKIwCq42LWj/RFtDgl/ndNXGA9QxJ6PJc2x4M+qSRR3x4P2iJjwaH6/qUIH3L5ar5gKWX3IM2Mbef1KNDyfZ8c//VG0=
+	t=1727878112; cv=none; b=B1BvDUGd7J2A7RuAAEffdEPLeuLXbBy7OArdHEz7Ja3T3zk+cQb8qXTW+7kYderLmuSkSlSDQuDVdfgLeJ/NRTor3J1tdwP0IYMxqCAOrXTCxjd24pk4amVFUQxcbGMzpZjxFtZNMeE3/R/k2P3eN5PVB7MPc/yOmQNazyYcLgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879486; c=relaxed/simple;
-	bh=vdUslJE0kLMv5O4MeysQSmZVp1JmxdV/mM0gpHK50zU=;
+	s=arc-20240116; t=1727878112; c=relaxed/simple;
+	bh=OBq02CpbuiMIphaBXCNDERm5v7QSKiR9NB1xe25WzNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDDwnlVDKpcu+uFL6+SO2hK7qE98+bb729ub+hvv0l9acwW5J8LHayKcBwIu/xgiYeaDdl/BMG+of5yOkh5XplrG1+KFXYW/sTJvILWx6Ak/9/m9V6WlR9ApJVkHDviylg1yNzuZypEqNGIDqernDhZlVGdfw/RYdzD+OwYUQ9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXk8+KZ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C17C4CEC5;
-	Wed,  2 Oct 2024 14:31:25 +0000 (UTC)
+	 MIME-Version; b=BO6rxLcNxTCHXdKzjqBEqz8WSy9mPweV2ska1fLEqBGIydO8DJGdq9I61Fd/TY3Yx93Rq9fRibJPvCyTWKYygocvb2xv/Is4QuJmQnCNbGW8YDx2M7b1LgvQikErJC8iFBK7gaBQSpSUaQ8iriRgjalBfYYpDqrRxEfIXCchnnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJ5Y1Rs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752AEC4CEC2;
+	Wed,  2 Oct 2024 14:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879486;
-	bh=vdUslJE0kLMv5O4MeysQSmZVp1JmxdV/mM0gpHK50zU=;
+	s=korg; t=1727878111;
+	bh=OBq02CpbuiMIphaBXCNDERm5v7QSKiR9NB1xe25WzNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXk8+KZ1PEIJN5x8EtfbCoOnR5OPyyKLbILKEh4f5y1+uI7HTd9YcfJQzlS6KNL93
-	 WKS6Rf/a66Vj6McOSrHq5xSfGYZipyRcEzF1OZGV5Tgq5vW6aYrL+9U3qXaiQD9fhY
-	 jBmIy6YLM0kpA1bV7u6Gsq1mUuIBd527km3/TYEY=
+	b=TJ5Y1Rs3rd5QbMpet1eFu2z96Db5GJQmarJ3IXTrl+5uKZMryaJngSIE163QBrxV8
+	 fL8XUfGpc8HTmVes5ROEV06/3Rjw89aYY6hYC+/LF2CfjZdPg2kbzxmEfy2e+UzwDn
+	 oBhrmb3cYPX1ihJM/287ZnE+mdkFmX9coegjBQTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Huang Shijie <shijie@os.amperecomputing.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/538] iommu/arm-smmu-qcom: apply num_context_bank fixes for SDM630 / SDM660
+Subject: [PATCH 6.10 275/634] sched/deadline: Fix schedstats vs deadline servers
 Date: Wed,  2 Oct 2024 14:56:15 +0200
-Message-ID: <20241002125757.609507752@linuxfoundation.org>
+Message-ID: <20241002125821.956726152@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Huang Shijie <shijie@os.amperecomputing.com>
 
-[ Upstream commit 19eb465c969f3d6ed1b98506d3e470e863b41e16 ]
+[ Upstream commit 9c602adb799e72ee537c0c7ca7e828c3fe2acad6 ]
 
-The Qualcomm SDM630 / SDM660 platform requires the same kind of
-workaround as MSM8998: some IOMMUs have context banks reserved by
-firmware / TZ, touching those banks resets the board.
+In dl_server_start(), when schedstats is enabled, the following
+happens:
 
-Apply the num_context_bank workaround to those two SMMU devices in order
-to allow them to be used by Linux.
+  dl_server_start()
+    dl_se->dl_server = 1;
+    enqueue_dl_entity()
+      update_stats_enqueue_dl()
+        __schedstats_from_dl_se()
+          dl_task_of()
+            BUG_ON(dl_server(dl_se));
 
-Fixes: b812834b5329 ("iommu: arm-smmu-qcom: Add sdm630/msm8998 compatibles for qcom quirks")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20240907-sdm660-wifi-v1-1-e316055142f8@linaro.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Since only tasks have schedstats and internal entries do not, avoid
+trying to update stats in this case.
+
+Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
+Signed-off-by: Huang Shijie <shijie@os.amperecomputing.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lkml.kernel.org/r/20240829031111.12142-1-shijie@os.amperecomputing.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ kernel/sched/deadline.c | 38 ++++++++++++++++----------------------
+ 1 file changed, 16 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index db2092d5af5eb..d491589360197 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -282,8 +282,15 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- 	 * MSM8998 LPASS SMMU reports 13 context banks, but accessing
- 	 * the last context bank crashes the system.
- 	 */
--	if (of_device_is_compatible(smmu->dev->of_node, "qcom,msm8998-smmu-v2") && smmu->num_context_banks == 13)
-+	if (of_device_is_compatible(smmu->dev->of_node, "qcom,msm8998-smmu-v2") &&
-+	    smmu->num_context_banks == 13) {
- 		smmu->num_context_banks = 12;
-+	} else if (of_device_is_compatible(smmu->dev->of_node, "qcom,sdm630-smmu-v2")) {
-+		if (smmu->num_context_banks == 21) /* SDM630 / SDM660 A2NOC SMMU */
-+			smmu->num_context_banks = 7;
-+		else if (smmu->num_context_banks == 14) /* SDM630 / SDM660 LPASS SMMU */
-+			smmu->num_context_banks = 13;
-+	}
- 
- 	/*
- 	 * Some platforms support more than the Arm SMMU architected maximum of
-@@ -346,6 +353,11 @@ static int qcom_adreno_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
- 	/* Support for 16K pages is advertised on some SoCs, but it doesn't seem to work */
- 	smmu->features &= ~ARM_SMMU_FEAT_FMT_AARCH64_16K;
- 
-+	/* TZ protects several last context banks, hide them from Linux */
-+	if (of_device_is_compatible(smmu->dev->of_node, "qcom,sdm630-smmu-v2") &&
-+	    smmu->num_context_banks == 5)
-+		smmu->num_context_banks = 2;
-+
- 	return 0;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 9bedd148f0075..09faca47e90fb 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1599,46 +1599,40 @@ static inline bool __dl_less(struct rb_node *a, const struct rb_node *b)
+ 	return dl_time_before(__node_2_dle(a)->deadline, __node_2_dle(b)->deadline);
  }
  
+-static inline struct sched_statistics *
++static __always_inline struct sched_statistics *
+ __schedstats_from_dl_se(struct sched_dl_entity *dl_se)
+ {
++	if (!schedstat_enabled())
++		return NULL;
++
++	if (dl_server(dl_se))
++		return NULL;
++
+ 	return &dl_task_of(dl_se)->stats;
+ }
+ 
+ static inline void
+ update_stats_wait_start_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se)
+ {
+-	struct sched_statistics *stats;
+-
+-	if (!schedstat_enabled())
+-		return;
+-
+-	stats = __schedstats_from_dl_se(dl_se);
+-	__update_stats_wait_start(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
++	struct sched_statistics *stats = __schedstats_from_dl_se(dl_se);
++	if (stats)
++		__update_stats_wait_start(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
+ }
+ 
+ static inline void
+ update_stats_wait_end_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se)
+ {
+-	struct sched_statistics *stats;
+-
+-	if (!schedstat_enabled())
+-		return;
+-
+-	stats = __schedstats_from_dl_se(dl_se);
+-	__update_stats_wait_end(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
++	struct sched_statistics *stats = __schedstats_from_dl_se(dl_se);
++	if (stats)
++		__update_stats_wait_end(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
+ }
+ 
+ static inline void
+ update_stats_enqueue_sleeper_dl(struct dl_rq *dl_rq, struct sched_dl_entity *dl_se)
+ {
+-	struct sched_statistics *stats;
+-
+-	if (!schedstat_enabled())
+-		return;
+-
+-	stats = __schedstats_from_dl_se(dl_se);
+-	__update_stats_enqueue_sleeper(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
++	struct sched_statistics *stats = __schedstats_from_dl_se(dl_se);
++	if (stats)
++		__update_stats_enqueue_sleeper(rq_of_dl_rq(dl_rq), dl_task_of(dl_se), stats);
+ }
+ 
+ static inline void
 -- 
 2.43.0
 
