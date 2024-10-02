@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880FE98DB4D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:30:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDE698DDC3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CCB21F21178
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:30:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D96A1C22552
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909BE1D1737;
-	Wed,  2 Oct 2024 14:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A974C1D0F7D;
+	Wed,  2 Oct 2024 14:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3fvcqmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD3hPhy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5065C1D0493;
-	Wed,  2 Oct 2024 14:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632561D0F7E;
+	Wed,  2 Oct 2024 14:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879104; cv=none; b=dL1hNpbZcquJHTerDtGmfIJnxwiBrhlD5xo4nrPQIhFLDCr2DREzDGodJTLRDKTguGwP1KkMC/5tP7YNcZYPb+oMkMfShSQVQOHLVwEgikxv0KZrA+Ot7RKADb3D3lcsFHh8ga/zTlJ2QitGU0s76JkBk7wqGh8BqVftLADo/AM=
+	t=1727880571; cv=none; b=L43aOSDSRvPlUTjvVRqxL5GPAfBw5ei9bhUPNGl2KgniCxp1II/d8YY+dx0nwT7y6gDlnp99XzmZPU1/i01ylpERPtLcLsIQ9ig4kgAR8SAjHOSHM8iv0BJrxxk/aeXv+GBDetbxXncQlhylUwbPU/kU5Ibnl2SGIB1rHOBPUdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879104; c=relaxed/simple;
-	bh=7wyxMDf/oq9WYDG8tcNssZDb0XIYT54DygPINw+Ky+I=;
+	s=arc-20240116; t=1727880571; c=relaxed/simple;
+	bh=7sBf3pYhGVxhCefK+LYGF/NNuJVNtbt6Mx57xkg9osQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EN4YYxLZhiagqNdWDS9dGBTFBy+94vUpbzAMdHx7tESAuWNBnrZvTN/BBoaCDMYc8I9SVAK7M/Wew0y9LPrRomSfoVTDUqJkswGzf7lNszgR2NnYK/IAATKkZkMKLAZQRDbRoQCqwBFefqjHSru9jdIpnBUuRCNdgg3dLfTLPF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3fvcqmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0059C4CEC2;
-	Wed,  2 Oct 2024 14:25:03 +0000 (UTC)
+	 MIME-Version; b=iY95DpWcE3LHX/436CBC8WtnCRt7TdWSqPRk3f6bGeXFe8cEJ7XZjsBok6UKbzLnyrbIYR3y/xqNhGhbd9TH1jRZ42Tkjx7m49As9oC2oJi8/KTaTtLYne4qV0Bi3/XZ4clm/yKbe6Dnv3WdhTDtqjg7hbhsBPCijEhH1RZck7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD3hPhy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB16C4CEC2;
+	Wed,  2 Oct 2024 14:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879104;
-	bh=7wyxMDf/oq9WYDG8tcNssZDb0XIYT54DygPINw+Ky+I=;
+	s=korg; t=1727880571;
+	bh=7sBf3pYhGVxhCefK+LYGF/NNuJVNtbt6Mx57xkg9osQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3fvcqmxwk6ODSR2I3wxHueYQXtKJ/czvo0PpRnZCi0wt7ZRY5mfR5DsJMpBP7G26
-	 IwYs1X21X+SAxXiaWl43JbfivyxVOI7dKqGzBpjs0j3N/0MSp9b/D410bQtueB/1XS
-	 vP4+a+5KY5YdqyYB0DdHfCXbaGrpoOMwQGk0oTjw=
+	b=XD3hPhy1WfE54piHRtll9Ys7ip3b0IdwHglf2oGPxEccR76kfMfrsNFfkdfUeOl7Q
+	 F2Ssuji5H7mjjb1zhN41qQuo3O8IPqEzmq0ytnDqlPZr7kIXXG1ltjZ3RU7iZlhcnp
+	 RzdAxJADHLqxhi9CNyuH4zikSPSiP1plVtxUegyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 612/634] debugfs: Convert to new uid/gid option parsing helpers
-Date: Wed,  2 Oct 2024 15:01:52 +0200
-Message-ID: <20241002125835.274515375@linuxfoundation.org>
+	syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com,
+	Julian Sun <sunjunchao2870@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 474/538] vfs: fix race between evice_inodes() and find_inode()&iput()
+Date: Wed,  2 Oct 2024 15:01:53 +0200
+Message-ID: <20241002125811.154543043@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Julian Sun <sunjunchao2870@gmail.com>
 
-[ Upstream commit 49abee5991e18f14ec822ef53acd173ae58ff594 ]
+commit 88b1afbf0f6b221f6c5bb66cc80cd3b38d696687 upstream.
 
-Convert to new uid/gid option parsing helpers
+Hi, all
 
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/b2f44ee0-3cee-49eb-a416-f26a9306eb56@redhat.com
+Recently I noticed a bug[1] in btrfs, after digged it into
+and I believe it'a race in vfs.
+
+Let's assume there's a inode (ie ino 261) with i_count 1 is
+called by iput(), and there's a concurrent thread calling
+generic_shutdown_super().
+
+cpu0:                              cpu1:
+iput() // i_count is 1
+  ->spin_lock(inode)
+  ->dec i_count to 0
+  ->iput_final()                    generic_shutdown_super()
+    ->__inode_add_lru()               ->evict_inodes()
+      // cause some reason[2]           ->if (atomic_read(inode->i_count)) continue;
+      // return before                  // inode 261 passed the above check
+      // list_lru_add_obj()             // and then schedule out
+   ->spin_unlock()
+// note here: the inode 261
+// was still at sb list and hash list,
+// and I_FREEING|I_WILL_FREE was not been set
+
+btrfs_iget()
+  // after some function calls
+  ->find_inode()
+    // found the above inode 261
+    ->spin_lock(inode)
+   // check I_FREEING|I_WILL_FREE
+   // and passed
+      ->__iget()
+    ->spin_unlock(inode)                // schedule back
+                                        ->spin_lock(inode)
+                                        // check (I_NEW|I_FREEING|I_WILL_FREE) flags,
+                                        // passed and set I_FREEING
+iput()                                  ->spin_unlock(inode)
+  ->spin_lock(inode)			  ->evict()
+  // dec i_count to 0
+  ->iput_final()
+    ->spin_unlock()
+    ->evict()
+
+Now, we have two threads simultaneously evicting
+the same inode, which may trigger the BUG(inode->i_state & I_CLEAR)
+statement both within clear_inode() and iput().
+
+To fix the bug, recheck the inode->i_count after holding i_lock.
+Because in the most scenarios, the first check is valid, and
+the overhead of spin_lock() can be reduced.
+
+If there is any misunderstanding, please let me know, thanks.
+
+[1]: https://lore.kernel.org/linux-btrfs/000000000000eabe1d0619c48986@google.com/
+[2]: The reason might be 1. SB_ACTIVE was removed or 2. mapping_shrinkable()
+return false when I reproduced the bug.
+
+Reported-by: syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=67ba3c42bcbb4665d3ad
+CC: stable@vger.kernel.org
+Fixes: 63997e98a3be ("split invalidate_inodes()")
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+Link: https://lore.kernel.org/r/20240823130730.658881-1-sunjunchao2870@gmail.com
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 3a987b88a425 ("debugfs show actual source in /proc/mounts")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/debugfs/inode.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ fs/inode.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 8fd928899a59e..91521576f5003 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -92,9 +92,9 @@ enum {
- };
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -757,6 +757,10 @@ again:
+ 			continue;
  
- static const struct fs_parameter_spec debugfs_param_specs[] = {
--	fsparam_u32	("gid",		Opt_gid),
-+	fsparam_gid	("gid",		Opt_gid),
- 	fsparam_u32oct	("mode",	Opt_mode),
--	fsparam_u32	("uid",		Opt_uid),
-+	fsparam_uid	("uid",		Opt_uid),
- 	{}
- };
- 
-@@ -102,8 +102,6 @@ static int debugfs_parse_param(struct fs_context *fc, struct fs_parameter *param
- {
- 	struct debugfs_fs_info *opts = fc->s_fs_info;
- 	struct fs_parse_result result;
--	kuid_t uid;
--	kgid_t gid;
- 	int opt;
- 
- 	opt = fs_parse(fc, debugfs_param_specs, param, &result);
-@@ -120,16 +118,10 @@ static int debugfs_parse_param(struct fs_context *fc, struct fs_parameter *param
- 
- 	switch (opt) {
- 	case Opt_uid:
--		uid = make_kuid(current_user_ns(), result.uint_32);
--		if (!uid_valid(uid))
--			return invalf(fc, "Unknown uid");
--		opts->uid = uid;
-+		opts->uid = result.uid;
- 		break;
- 	case Opt_gid:
--		gid = make_kgid(current_user_ns(), result.uint_32);
--		if (!gid_valid(gid))
--			return invalf(fc, "Unknown gid");
--		opts->gid = gid;
-+		opts->gid = result.gid;
- 		break;
- 	case Opt_mode:
- 		opts->mode = result.uint_32 & S_IALLUGO;
--- 
-2.43.0
-
+ 		spin_lock(&inode->i_lock);
++		if (atomic_read(&inode->i_count)) {
++			spin_unlock(&inode->i_lock);
++			continue;
++		}
+ 		if (inode->i_state & (I_NEW | I_FREEING | I_WILL_FREE)) {
+ 			spin_unlock(&inode->i_lock);
+ 			continue;
 
 
 
