@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-80468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F598DD8E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB9B98DB22
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 604B21C23B9C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5555EB23B83
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE1C1D0E17;
-	Wed,  2 Oct 2024 14:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDF01D0968;
+	Wed,  2 Oct 2024 14:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAq2efyX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekZxbGuB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686641EB21;
-	Wed,  2 Oct 2024 14:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE00C1D1319;
+	Wed,  2 Oct 2024 14:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880460; cv=none; b=HJkfbR2lhgrDfGyeW+9t0oocLNy0BwVpuc1C6283/A9QqIxF6xZCE6ZT6bOXL8SiVr2CE1n7/1oUF8/CqbBLu70rxrCtvfLBYqH39SZmvy4h9xvaeUk+DgBIB80XmL6HZ8IQA0Qz2yF388V5wb282BVMdzAbb++xdynnp6YCeoI=
+	t=1727879003; cv=none; b=sNWh53aKekHp68Xy2fqS0CMxXu64sJTYXQrI2bZXN558ZWGSokVnE7OarrdTpcQuESw/bt2sWKrBmh26kJqZOWVm4YZDsYig1nXZDsNN+GPnu1jQ3XbwVSgUCLAqbAlvBaRuPIoiHXCiIVwr6ap9L+DMuTBscWuN/5lL7yNfqGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880460; c=relaxed/simple;
-	bh=XeFO4nsodZNKqGTqfwasz/CkKYVwXpwcKOkZHe2yp9I=;
+	s=arc-20240116; t=1727879003; c=relaxed/simple;
+	bh=zdipsinB0j/tOUOoScmNN8T7eupm6BRLPPvXaZpri60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBRs7y9ltvX89OjjuCH5SCqNTTbMGSJpFK8eJyAEqUYgtwCRivHsXZnQQy2zFpV9K2MILimAHp3CgOfPeGwsSFOjNBKuCaQinQe1J6h5om5tCQP+Db3GcoQeqU28sSvYFCLj6TPoBY6nqyaZ/5xugeOkcDICvIae+yjG0Uj94BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAq2efyX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B347AC4CEC2;
-	Wed,  2 Oct 2024 14:47:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BQ2IO5SyNbNwLEzw7SF4sdTmX1cX+CHogV7CM0tIZuHO8QHN985zo6qLuhYRQ9uTgWUR6h50uSBsjc4M1Byq6rGTQhxx5e87MH04wP3xdUvdofeY0SRiZg5qPgaZ/ECCpGSc1MpJne96NdFINRNfNF9tUvNavMd/4I1IYg2EIEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekZxbGuB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E964C4CECE;
+	Wed,  2 Oct 2024 14:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880460;
-	bh=XeFO4nsodZNKqGTqfwasz/CkKYVwXpwcKOkZHe2yp9I=;
+	s=korg; t=1727879003;
+	bh=zdipsinB0j/tOUOoScmNN8T7eupm6BRLPPvXaZpri60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAq2efyXhMpFO0GC0ByGUXAcuD9qDgxqHko5/wvzQKFFZuLiS4EKegn1hr/OnpESG
-	 1xapvbGtG/Pnqxrkbp37jCAgKPy689dj3YtayD+/6+znRtLwAEd11NkDzV5lBw5FhC
-	 NYZmkUXkrdvGs/iXpRHOvmo/QK6dntivywxsrxM4=
+	b=ekZxbGuBNK7fWCO1N83UQTLLiPlYuxeFTpunHROsW93HyhNNLMcvXBpBM5AMNErRy
+	 zlj2bKVzOivIHKrkw/9AzfP67yG0QQlrxeK0qNJhiG/mAVYn7tHUADFf0j3BzVgrtX
+	 AB7NpOhkYXFBh9JwnSbvfmx9Ct080ggpgb2dj3xA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 465/538] f2fs: fix to check atomic_file in f2fs ioctl interfaces
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 604/634] serial: qcom-geni: fix arg types for qcom_geni_serial_poll_bit()
 Date: Wed,  2 Oct 2024 15:01:44 +0200
-Message-ID: <20241002125810.799266210@linuxfoundation.org>
+Message-ID: <20241002125834.956232805@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit bfe5c02654261bfb8bd9cb174a67f3279ea99e58 upstream.
+[ Upstream commit c2eaf5e01275ae13f1ec5b1434f6c49cfff57430 ]
 
-Some f2fs ioctl interfaces like f2fs_ioc_set_pin_file(),
-f2fs_move_file_range(), and f2fs_defragment_range() missed to
-check atomic_write status, which may cause potential race issue,
-fix it.
+The "offset" passed in should be unsigned since it's always a positive
+offset from our memory mapped IO.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+The "field" should be u32 since we're anding it with a 32-bit value
+read from the device.
+
+Suggested-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240610152420.v4.4.I24a0de52dd7336908df180fa6b698e001f3aff82@changeid
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240906131336.23625-5-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: cc4a0e5754a1 ("serial: qcom-geni: fix console corruption")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2673,7 +2673,8 @@ static int f2fs_defragment_range(struct
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index b88435c0ea507..54052c68555d7 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -266,7 +266,7 @@ static bool qcom_geni_serial_secondary_active(struct uart_port *uport)
+ }
  
- 	inode_lock(inode);
- 
--	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED)) {
-+	if (is_inode_flag_set(inode, FI_COMPRESS_RELEASED) ||
-+		f2fs_is_atomic_file(inode)) {
- 		err = -EINVAL;
- 		goto unlock_out;
- 	}
-@@ -2904,6 +2905,11 @@ static int f2fs_move_file_range(struct f
- 		goto out_unlock;
- 	}
- 
-+	if (f2fs_is_atomic_file(src) || f2fs_is_atomic_file(dst)) {
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
-+
- 	ret = -EINVAL;
- 	if (pos_in + len > src->i_size || pos_in + len < pos_in)
- 		goto out_unlock;
-@@ -3288,6 +3294,11 @@ static int f2fs_ioc_set_pin_file(struct
- 
- 	inode_lock(inode);
- 
-+	if (f2fs_is_atomic_file(inode)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (!pin) {
- 		clear_inode_flag(inode, FI_PIN_FILE);
- 		f2fs_i_gc_failures_write(inode, 0);
+ static bool qcom_geni_serial_poll_bit(struct uart_port *uport,
+-				int offset, int field, bool set)
++				      unsigned int offset, u32 field, bool set)
+ {
+ 	u32 reg;
+ 	struct qcom_geni_serial_port *port;
+-- 
+2.43.0
+
 
 
 
