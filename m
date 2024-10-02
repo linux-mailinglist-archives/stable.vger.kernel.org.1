@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6038298DC5B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BBC98D9C0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2283C286616
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F89C2897D6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621001D0F57;
-	Wed,  2 Oct 2024 14:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983181D278A;
+	Wed,  2 Oct 2024 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J848afxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdkqNlHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209711D04A8;
-	Wed,  2 Oct 2024 14:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5467F1D1E71;
+	Wed,  2 Oct 2024 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879653; cv=none; b=mpquE9zk9y4zJJb9NUcENuorvHBPnr8YP5ImdbEqAoI1fpYTZtmP8saYRXEp7FTr41bRpzod8345rtunijUCQpM0oIwoHznPCwTpIvXvd7WmJnk0GJaqmPjFWABGeWdGNLy7KZ7wAh14fXuBmCer5jeviTa8sRh9PUededz9HsM=
+	t=1727878193; cv=none; b=gp7fP3vdhg0f2MfEP8yQv2HjOovTEpgYvKXuX0UIhOaAiCjS6s12nWzg/i8tqyPR5KMsEegcbOc/nNxCDpxo0n07QPgaL0dMfNrnPF5F9SRqySzwAvxktMb05WiMtPGbul9EwpH+WGt33F28zxt3EINq7E5sMkubxdui2K6MXmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879653; c=relaxed/simple;
-	bh=P8BZEcYveDDt6l9T0R+GSkxXJyUdzqMJGXIWwOe33X8=;
+	s=arc-20240116; t=1727878193; c=relaxed/simple;
+	bh=BA4DRMB9tdZQgpx8DL7QFIt1dfZ3oVDoCbSaIXOmeLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrLM40/A+oeNRd7eBWowCFbkvSnb5bGEGJ4nyQE1ehb4jbXrhxq+ABpqqITnM5+Hly023FO6A7Wd5UggdhtUOZ9mgmXjMsINZvQbltFshkc8hJrq6uQEl5ui56rH+z9+TkQhn1MLJacIYlP1vmyRt4dMmyYY6IGSOOpb4UMoj1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J848afxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7630CC4CEC2;
-	Wed,  2 Oct 2024 14:34:12 +0000 (UTC)
+	 MIME-Version; b=VjEGwI0R4qbsIKMYSEVaZ93gs8hEJl+8u9X0TNecvKd8R/iQQK+9eAU394z2/JCLgaVeHNDDnMoTGgviQQvm97j3Ijfvf2NLCtKssB53uDAq26b8i7EEZl4sUAgcgMxHExc0HJcmgWbEng6D8prIqIIYsE27e+L8/4i1MIXu4Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdkqNlHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D177BC4CEC5;
+	Wed,  2 Oct 2024 14:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879652;
-	bh=P8BZEcYveDDt6l9T0R+GSkxXJyUdzqMJGXIWwOe33X8=;
+	s=korg; t=1727878193;
+	bh=BA4DRMB9tdZQgpx8DL7QFIt1dfZ3oVDoCbSaIXOmeLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J848afxEcoHhsvRPq9lTVbBdPesgZoYU4c6flLpRp15ZAw1A11m5Caywg6vm0/t5+
-	 mz/WbkQhXrX9W9ZYBFUw2sMNpoqngJUtAb0bHz7LYkv98JJFY4YdAI5EBFdG32oLs5
-	 7APjI+eoJ4WpuVxNMqSWPoF6N5DPxBEnJ5DDq8dI=
+	b=TdkqNlHMS2sb3Cj+Nzu5LOrxMjodFh9yVkCSi9uwiFvRopbU6YVSrQz9Azq/N9Ys2
+	 RLdWP0msiAqniad1GhETY9STlYVsXbEXZq7jjQwu4kgZExEoOTHltHcNhLEZqsYzbJ
+	 JLRseLjKuYT2e54U/rI9uh3i6llPE2iXK40yv0b8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tushar Vyavahare <tushar.vyavahare@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/538] selftests/bpf: Implement get_hw_ring_size function to retrieve current and max interface size
+Subject: [PATCH 6.10 330/634] Input: ilitek_ts_i2c - add report id message validation
 Date: Wed,  2 Oct 2024 14:57:10 +0200
-Message-ID: <20241002125759.796305356@linuxfoundation.org>
+Message-ID: <20241002125824.130777551@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tushar Vyavahare <tushar.vyavahare@intel.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit 90a695c3d31e1c9f0adb8c4c80028ed4ea7ed5ab ]
+[ Upstream commit 208989744a6f01bed86968473312d4e650e600b3 ]
 
-Introduce a new function called get_hw_size that retrieves both the
-current and maximum size of the interface and stores this information
-in the 'ethtool_ringparam' structure.
+Ensure that the touchscreen response has correct "report id" byte
+before processing the touch data and discard other messages.
 
-Remove ethtool_channels struct from xdp_hw_metadata.c due to redefinition
-error. Remove unused linux/if.h include from flow_dissector BPF test to
-address CI pipeline failure.
-
-Signed-off-by: Tushar Vyavahare <tushar.vyavahare@intel.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Link: https://lore.kernel.org/bpf/20240402114529.545475-4-tushar.vyavahare@intel.com
-Stable-dep-of: 69f409469c9b ("selftests/bpf: Drop unneeded error.h includes")
+Fixes: 42370681bd46 ("Input: Add support for ILITEK Lego Series")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Link: https://lore.kernel.org/r/20240805085511.43955-3-francesco@dolcini.it
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/network_helpers.c | 24 +++++++++++++++++++
- tools/testing/selftests/bpf/network_helpers.h |  4 ++++
- .../selftests/bpf/prog_tests/flow_dissector.c |  1 -
- tools/testing/selftests/bpf/xdp_hw_metadata.c | 14 -----------
- 4 files changed, 28 insertions(+), 15 deletions(-)
+ drivers/input/touchscreen/ilitek_ts_i2c.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/network_helpers.c b/tools/testing/selftests/bpf/network_helpers.c
-index 0877b60ec81f6..d2acc88752126 100644
---- a/tools/testing/selftests/bpf/network_helpers.c
-+++ b/tools/testing/selftests/bpf/network_helpers.c
-@@ -465,3 +465,27 @@ int get_socket_local_port(int sock_fd)
+diff --git a/drivers/input/touchscreen/ilitek_ts_i2c.c b/drivers/input/touchscreen/ilitek_ts_i2c.c
+index e1849185e18c7..5a807ad723190 100644
+--- a/drivers/input/touchscreen/ilitek_ts_i2c.c
++++ b/drivers/input/touchscreen/ilitek_ts_i2c.c
+@@ -37,6 +37,8 @@
+ #define ILITEK_TP_CMD_GET_MCU_VER			0x61
+ #define ILITEK_TP_CMD_GET_IC_MODE			0xC0
  
- 	return -1;
- }
++#define ILITEK_TP_I2C_REPORT_ID				0x48
 +
-+int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param)
-+{
-+	struct ifreq ifr = {0};
-+	int sockfd, err;
-+
-+	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-+	if (sockfd < 0)
-+		return -errno;
-+
-+	memcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
-+
-+	ring_param->cmd = ETHTOOL_GRINGPARAM;
-+	ifr.ifr_data = (char *)ring_param;
-+
-+	if (ioctl(sockfd, SIOCETHTOOL, &ifr) < 0) {
-+		err = errno;
-+		close(sockfd);
-+		return -err;
+ #define REPORT_COUNT_ADDRESS				61
+ #define ILITEK_SUPPORT_MAX_POINT			40
+ 
+@@ -163,6 +165,11 @@ static int ilitek_process_and_report_v6(struct ilitek_ts_data *ts)
+ 		return error;
+ 	}
+ 
++	if (buf[0] != ILITEK_TP_I2C_REPORT_ID) {
++		dev_err(dev, "get touch info failed. Wrong id: 0x%02X\n", buf[0]);
++		return -EINVAL;
 +	}
 +
-+	close(sockfd);
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/bpf/network_helpers.h b/tools/testing/selftests/bpf/network_helpers.h
-index 5eccc67d1a998..11cbe194769b1 100644
---- a/tools/testing/selftests/bpf/network_helpers.h
-+++ b/tools/testing/selftests/bpf/network_helpers.h
-@@ -9,8 +9,11 @@ typedef __u16 __sum16;
- #include <linux/if_packet.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
-+#include <linux/ethtool.h>
-+#include <linux/sockios.h>
- #include <netinet/tcp.h>
- #include <bpf/bpf_endian.h>
-+#include <net/if.h>
- 
- #define MAGIC_VAL 0x1234
- #define NUM_ITER 100000
-@@ -60,6 +63,7 @@ int make_sockaddr(int family, const char *addr_str, __u16 port,
- 		  struct sockaddr_storage *addr, socklen_t *len);
- char *ping_command(int family);
- int get_socket_local_port(int sock_fd);
-+int get_hw_ring_size(char *ifname, struct ethtool_ringparam *ring_param);
- 
- struct nstoken;
- /**
-diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-index c4773173a4e43..9e5f38739104b 100644
---- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-+++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-@@ -2,7 +2,6 @@
- #include <test_progs.h>
- #include <network_helpers.h>
- #include <error.h>
--#include <linux/if.h>
- #include <linux/if_tun.h>
- #include <sys/uio.h>
- 
-diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/bpf/xdp_hw_metadata.c
-index adb77c1a6a740..79f2da8f6ead6 100644
---- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
-@@ -288,20 +288,6 @@ static int verify_metadata(struct xsk *rx_xsk, int rxq, int server_fd, clockid_t
- 	return 0;
- }
- 
--struct ethtool_channels {
--	__u32	cmd;
--	__u32	max_rx;
--	__u32	max_tx;
--	__u32	max_other;
--	__u32	max_combined;
--	__u32	rx_count;
--	__u32	tx_count;
--	__u32	other_count;
--	__u32	combined_count;
--};
--
--#define ETHTOOL_GCHANNELS	0x0000003c /* Get no of channels */
--
- static int rxq_num(const char *ifname)
- {
- 	struct ethtool_channels ch = {
+ 	report_max_point = buf[REPORT_COUNT_ADDRESS];
+ 	if (report_max_point > ts->max_tp) {
+ 		dev_err(dev, "FW report max point:%d > panel info. max:%d\n",
 -- 
 2.43.0
 
