@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B1498D8D0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1C498D588
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65CB11F21F12
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E7AE288D4B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF931D0F7B;
-	Wed,  2 Oct 2024 14:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC251D0418;
+	Wed,  2 Oct 2024 13:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSeP89Mu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igqpX3WH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB6D1D0DE1;
-	Wed,  2 Oct 2024 14:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E7B1CFECF;
+	Wed,  2 Oct 2024 13:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877657; cv=none; b=l2N1jwr0MIXCFOhzmAs+Kh5CAquSOcJTTPUa2KnJhbq1Xxw+6YO+XVEVcW9DQ0DQKiqmNXx2i6rATQHRTSmtbm1VbgNaayIGaK+QDW3+3duWtUlM7SJB9KsjXg1TKJEkrKBUpfh7mCNEPo49xJy8kty1Unod+Qz3+UemVQjEN0M=
+	t=1727875882; cv=none; b=JufesrEuV0BFuF6N1sNgIaDis/55sXu411yrhPTQCWRww5I6X/MAU5aMKl1vec7o3U9vh0juxSpmdI9pYL+KhApu10U93k2kcHLNnTKsJmzg9PfJCaiiL5jBfuqEp21S5B/E5nJ2YTD0jttSBoXugOhDxI1JQ4uP0CG1bAa/tNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877657; c=relaxed/simple;
-	bh=vAHmIDZO+Myv1o3OwwsVDsM2XQiTNgIdtZ2HJ4M79fs=;
+	s=arc-20240116; t=1727875882; c=relaxed/simple;
+	bh=+scjoCCLN0vLKDqO14ArgMV7B65smzeaTl0J/cdFsY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBVCouFQJlliFbnhWzDJw73y59Bez4cTVA89wV309ywlupM60SZeP3xXqSWpIs8VBmAuLqBqomDQl8XDjPqAdY73f0nACi38MpasDi/2z5I/7Q0O4/LYW8HxeFiowfWvGJlvSX1901njMUlMO2iaDKK9eHfsw3a+raiND8nhA3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSeP89Mu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FFDC4CEC2;
-	Wed,  2 Oct 2024 14:00:56 +0000 (UTC)
+	 MIME-Version; b=qc47wIeYblTwY5ogtk2Ks5i6Zk1xpRicPXCas2qY90bo+a4f781JZDe43bf4UXLUO1ZY4UZzxtk0Es038ePEfi7CQTB1pSz8Qi9c9YY1DtJ2GSxgEJgzSyWu8Z/pzD74Ya+CvVjSCS8dEdB45wfpjZHMQPEuKGGfT/RVYzV5MaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igqpX3WH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71D4C4CEC5;
+	Wed,  2 Oct 2024 13:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877657;
-	bh=vAHmIDZO+Myv1o3OwwsVDsM2XQiTNgIdtZ2HJ4M79fs=;
+	s=korg; t=1727875882;
+	bh=+scjoCCLN0vLKDqO14ArgMV7B65smzeaTl0J/cdFsY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSeP89Mui2e4zPVRHUrsCm69DkzBNI31kuO29SNKvz2I10Qnx+eE5EBH57hZU+llU
-	 H9gLimgOZbehdvxBaZg0nBc6+W3GgAEl0BhCGGpjwWawvskjV8FheRN36neWNLJCU4
-	 UEO5NFbueDzwDyJs8eelJ34JkP7Nqx9bBkJB0wf4=
+	b=igqpX3WHLR2fkkZBq2HInuBMJXuy7MfEGjp9/ZWSc+o2TrfMkxUMYQdbyHQLS4OBD
+	 /YAwVTc0By5RB+fI3FwpzAwbQgM+gvksfDOYaFJ2tgAmxz8MK/6WimBfM9F/2GeUu4
+	 gi4g8xw12ikAZFXZ4go5RQEskpsDbO7N3vpjHq8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 150/634] selftests/ftrace: Fix test to handle both old and new kernels
+Subject: [PATCH 6.11 252/695] xen/swiotlb: fix allocated size
 Date: Wed,  2 Oct 2024 14:54:10 +0200
-Message-ID: <20241002125817.031650924@linuxfoundation.org>
+Message-ID: <20241002125832.507200194@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit c049acee3c71cfc26c739f82617a84e13e471a45 ]
+[ Upstream commit c3dea3d54f4d399f8044547f0f1abdccbdfb0fee ]
 
-The function "scheduler_tick" was renamed to "sched_tick" and a selftest
-that used that function for testing function trace filtering used that
-function as part of the test.
+The allocated size in xen_swiotlb_alloc_coherent() and
+xen_swiotlb_free_coherent() is calculated wrong for the case of
+XEN_PAGE_SIZE not matching PAGE_SIZE. Fix that.
 
-But the change causes it to fail when run on older kernels. As tests
-should not fail on older kernels, add a check to see which name is
-available before testing.
-
-Fixes: 86dd6c04ef9f ("sched/balancing: Rename scheduler_tick() => sched_tick()")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 7250f422da04 ("xen-swiotlb: use actually allocated size on check physical continuous")
+Reported-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/ftrace/func_set_ftrace_file.tc         | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/xen/swiotlb-xen.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_set_ftrace_file.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_set_ftrace_file.tc
-index 073a748b9380a..263f6b798c853 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func_set_ftrace_file.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_set_ftrace_file.tc
-@@ -19,7 +19,14 @@ fail() { # mesg
+diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+index d7fbba8b47003..a337edcf8faf7 100644
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -147,7 +147,7 @@ xen_swiotlb_alloc_coherent(struct device *dev, size_t size,
+ 	void *ret;
  
- FILTER=set_ftrace_filter
- FUNC1="schedule"
--FUNC2="sched_tick"
-+if grep '^sched_tick\b' available_filter_functions; then
-+    FUNC2="sched_tick"
-+elif grep '^scheduler_tick\b' available_filter_functions; then
-+    FUNC2="scheduler_tick"
-+else
-+    exit_unresolved
-+fi
-+
+ 	/* Align the allocation to the Xen page size */
+-	size = 1UL << (order + XEN_PAGE_SHIFT);
++	size = ALIGN(size, XEN_PAGE_SIZE);
  
- ALL_FUNCS="#### all functions enabled ####"
+ 	ret = (void *)__get_free_pages(flags, get_order(size));
+ 	if (!ret)
+@@ -179,7 +179,7 @@ xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
+ 	int order = get_order(size);
  
+ 	/* Convert the size to actually allocated. */
+-	size = 1UL << (order + XEN_PAGE_SHIFT);
++	size = ALIGN(size, XEN_PAGE_SIZE);
+ 
+ 	if (WARN_ON_ONCE(dma_handle + size - 1 > dev->coherent_dma_mask) ||
+ 	    WARN_ON_ONCE(range_straddles_page_boundary(phys, size)))
 -- 
 2.43.0
 
