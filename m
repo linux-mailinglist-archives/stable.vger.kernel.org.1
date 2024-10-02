@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D2798DBB8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C4D98D93C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60189283DC5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1855F1F222FA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933721D131E;
-	Wed,  2 Oct 2024 14:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20301D0BAD;
+	Wed,  2 Oct 2024 14:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1cugmqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4Oa0c84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513AF1D1317;
-	Wed,  2 Oct 2024 14:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB051D0DC3;
+	Wed,  2 Oct 2024 14:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879326; cv=none; b=uvBTYS2UU3+OA6a1DmyBeUQxRZmIV1iAcy3MiLgVOlXkwT/sPuJS3SYg6m+0/scp652TbWvz2qDw5HqLhYZRwGaQUK5I4ACxATtv9rEp9jgWgzeCMR2+a8A4wObVH/mZTHXHf4v04avZlF0aNoi1Eg930SVSdqLHwZpguuNPNl8=
+	t=1727877863; cv=none; b=TvFXsAJSScOLCqH5lU3Kpe6FAnBa4FVy3y4uOO2VM163EHNfr6VZ/8RFl7fKVszRb29AO7ll1dotlwmhYF9CBrrwCwSwlwzGATHlPLWbrxuznE4e20qkAs/R1ED+D41wTA2/ME6J73HMq/xTnAF4sFSpduCmTCIa/UrnnBIVMGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879326; c=relaxed/simple;
-	bh=cFYZR0kbZzUm2s9ArhRmuPeLff1KbO46eAvNh3s/c5U=;
+	s=arc-20240116; t=1727877863; c=relaxed/simple;
+	bh=ZctZ+BpgX1UHN+c8ZalYKlSDjI3FyrbTEqBaM5eBxwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F2c7ss22PTYl8KfiQDfp6zKWT8svem64J9dZxgpNlnUva77xh1uMbXLcdkXU0OJxRUVeafmJobddpkg40/6kYRbLeEF9jwf8Czc0poMnkOADRgAqqEygaAx6LwNqbQ1+bb5PCPuPNjVPWUsgRldgFw0LghHkY2ob9mx6takJuSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1cugmqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15CFC4CED3;
-	Wed,  2 Oct 2024 14:28:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vCj13ngEx79woLLogGYS1n5f0rURSPuQnIIQ14n/ENtJy3pwA6OuObIb0WuirPh2ZkHO7h6iSsfNu/V/U1WyVwfqu+Gwy6ofUtnSokhpuWvonTHkjmEl2X3buF+PakozPQ31Og9c5ANxM7dXjMhFXgWewmf7gTBoy32FlwfOrNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4Oa0c84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2ABC4CEC2;
+	Wed,  2 Oct 2024 14:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879326;
-	bh=cFYZR0kbZzUm2s9ArhRmuPeLff1KbO46eAvNh3s/c5U=;
+	s=korg; t=1727877863;
+	bh=ZctZ+BpgX1UHN+c8ZalYKlSDjI3FyrbTEqBaM5eBxwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1cugmqoRk7OzMCVi5aRDh1nRcT8d8wsbgjXDId7//Jklx5Slm98xJODsL2do60IK
-	 eL8IdB+yN2+5fBgJtHjuE/ZNTTyHUNdhBUgFBaVUZiyoGGhePGpcnjstkDMaxcGHXW
-	 /JgSND+GCPnFET1Jy6rjfWL+oLhhni6G5Ul5HjLk=
+	b=u4Oa0c84/AHZJDJqxofLiwplHiUq9HLCenWID5PVUVAmaRJfBZySkOYcTZ43RXYAt
+	 B6wDUywFgOcWeDyLWo749oMtKMAfibry9B09mVjgl13LhYWMI0LyS0gM0v+uF6zONs
+	 zIXPgleVfD0zidjOnkKZKKFiLWvUoN1TEn5ja1Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Jan Beulich <jbeulich@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/538] block, bfq: dont break merge chain in bfq_split_bfqq()
-Date: Wed,  2 Oct 2024 14:55:19 +0200
-Message-ID: <20241002125755.376926695@linuxfoundation.org>
+Subject: [PATCH 6.10 220/634] xen: introduce generic helper checking for memory map conflicts
+Date: Wed,  2 Oct 2024 14:55:20 +0200
+Message-ID: <20241002125819.785571123@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,137 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 42c306ed723321af4003b2a41bb73728cab54f85 ]
+[ Upstream commit ba88829706e2c5b7238638fc2b0713edf596495e ]
 
-Consider the following scenario:
+When booting as a Xen PV dom0 the memory layout of the dom0 is
+modified to match that of the host, as this requires less changes in
+the kernel for supporting Xen.
 
-    Process 1       Process 2       Process 3       Process 4
-     (BIC1)          (BIC2)          (BIC3)          (BIC4)
-      Λ               |               |                |
-       \-------------\ \-------------\ \--------------\|
-                      V               V                V
-      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-ref    0              1               2                4
+There are some cases, though, which are problematic, as it is the Xen
+hypervisor selecting the kernel's load address plus some other data,
+which might conflict with the host's memory map.
 
-If Process 1 issue a new IO and bfqq2 is found, and then bfq_init_rq()
-decide to spilt bfqq2 by bfq_split_bfqq(). Howerver, procress reference
-of bfqq2 is 1 and bfq_split_bfqq() just clear the coop flag, which will
-break the merge chain.
+These conflicts are detected at boot time and result in a boot error.
+In order to support handling at least some of these conflicts in
+future, introduce a generic helper function which will later gain the
+ability to adapt the memory layout when possible.
 
-Expected result: caller will allocate a new bfqq for BIC1
+Add the missing check for the xen_start_info area.
 
-    Process 1       Process 2       Process 3       Process 4
-     (BIC1)          (BIC2)          (BIC3)          (BIC4)
-                      |               |                |
-                       \-------------\ \--------------\|
-                                      V                V
-      bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-ref    0              0               1                3
+Note that possible p2m map and initrd memory conflicts are handled
+already by copying the data to memory areas not conflicting with the
+memory map. The initial stack allocated by Xen doesn't need to be
+checked, as early boot code is switching to the statically allocated
+initial kernel stack. Initial page tables and the kernel itself will
+be handled later.
 
-Since the condition is only used for the last bfqq4 when the previous
-bfqq2 and bfqq3 are already splited. Fix the problem by checking if
-bfqq is the last one in the merge chain as well.
-
-Fixes: 36eca8948323 ("block, bfq: add Early Queue Merge (EQM)")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240902130329.3787024-4-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/xen/mmu_pv.c  |  5 +----
+ arch/x86/xen/setup.c   | 34 ++++++++++++++++++++++++++++------
+ arch/x86/xen/xen-ops.h |  3 ++-
+ 3 files changed, 31 insertions(+), 11 deletions(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index bdb7ceb680890..2c09c298d8940 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -6725,7 +6725,7 @@ bfq_split_bfqq(struct bfq_io_cq *bic, struct bfq_queue *bfqq)
- {
- 	bfq_log_bfqq(bfqq->bfqd, bfqq, "splitting queue");
+diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+index 54e0d311dcc94..9e9a122c2bcfa 100644
+--- a/arch/x86/xen/mmu_pv.c
++++ b/arch/x86/xen/mmu_pv.c
+@@ -2019,10 +2019,7 @@ void __init xen_reserve_special_pages(void)
  
--	if (bfqq_process_refs(bfqq) == 1) {
-+	if (bfqq_process_refs(bfqq) == 1 && !bfqq->new_bfqq) {
- 		bfqq->pid = current->pid;
- 		bfq_clear_bfqq_coop(bfqq);
- 		bfq_clear_bfqq_split_coop(bfqq);
+ void __init xen_pt_check_e820(void)
+ {
+-	if (xen_is_e820_reserved(xen_pt_base, xen_pt_size)) {
+-		xen_raw_console_write("Xen hypervisor allocated page table memory conflicts with E820 map\n");
+-		BUG();
+-	}
++	xen_chk_is_e820_usable(xen_pt_base, xen_pt_size, "page table");
+ }
+ 
+ static unsigned char dummy_mapping[PAGE_SIZE] __page_aligned_bss;
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index d2073df5c5624..84cbc7ec55811 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -568,7 +568,7 @@ static void __init xen_ignore_unusable(void)
+ 	}
+ }
+ 
+-bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
++static bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size)
+ {
+ 	struct e820_entry *entry;
+ 	unsigned mapcnt;
+@@ -625,6 +625,23 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size)
+ 	return 0;
+ }
+ 
++/*
++ * Check for an area in physical memory to be usable for non-movable purposes.
++ * An area is considered to usable if the used E820 map lists it to be RAM.
++ * In case the area is not usable, crash the system with an error message.
++ */
++void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
++				   const char *component)
++{
++	if (!xen_is_e820_reserved(start, size))
++		return;
++
++	xen_raw_console_write("Xen hypervisor allocated ");
++	xen_raw_console_write(component);
++	xen_raw_console_write(" memory conflicts with E820 map\n");
++	BUG();
++}
++
+ /*
+  * Like memcpy, but with physical addresses for dest and src.
+  */
+@@ -825,11 +842,16 @@ char * __init xen_memory_setup(void)
+ 	 * Failing now is better than running into weird problems later due
+ 	 * to relocating (and even reusing) pages with kernel text or data.
+ 	 */
+-	if (xen_is_e820_reserved(__pa_symbol(_text),
+-				 __pa_symbol(_end) - __pa_symbol(_text))) {
+-		xen_raw_console_write("Xen hypervisor allocated kernel memory conflicts with E820 map\n");
+-		BUG();
+-	}
++	xen_chk_is_e820_usable(__pa_symbol(_text),
++			       __pa_symbol(_end) - __pa_symbol(_text),
++			       "kernel");
++
++	/*
++	 * Check for a conflict of the xen_start_info memory with the target
++	 * E820 map.
++	 */
++	xen_chk_is_e820_usable(__pa(xen_start_info), sizeof(*xen_start_info),
++			       "xen_start_info");
+ 
+ 	/*
+ 	 * Check for a conflict of the hypervisor supplied page tables with
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index 79cf93f2c92f1..f46a1dd3624da 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -44,7 +44,8 @@ void xen_mm_unpin_all(void);
+ void __init xen_relocate_p2m(void);
+ #endif
+ 
+-bool __init xen_is_e820_reserved(phys_addr_t start, phys_addr_t size);
++void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
++				   const char *component);
+ unsigned long __ref xen_chk_extra_mem(unsigned long pfn);
+ void __init xen_inv_extra_mem(void);
+ void __init xen_remap_memory(void);
 -- 
 2.43.0
 
