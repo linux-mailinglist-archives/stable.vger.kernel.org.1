@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D159498D888
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:02:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A0E98D55F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DB71C2130C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 959681F22315
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A221C1D096F;
-	Wed,  2 Oct 2024 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C22A1D04A2;
+	Wed,  2 Oct 2024 13:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zN2pUCPZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLPs3oNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602521D0951;
-	Wed,  2 Oct 2024 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3121CFECF;
+	Wed,  2 Oct 2024 13:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877544; cv=none; b=MghHcLs0ubbdrZ7mMIbFvyX7b5TplYvqU3vVpsEPLbkv47gZZaVWbg+D8eDgvBdgQ0k7JLY13VfOoqLpAGkgIHhQMkwJBurIKu5mlBi6fobp5jmiC7j9wkJXPFUIZ6gdDwoK/fMMH/vibUkQiQjopbdP/uidqVdK4Ns6hGlfGaE=
+	t=1727875774; cv=none; b=DL0SptDQWhXq9DHcw3pmdrXAfscWtHDr+4ofAH6nhG0cnt8oElaHaP2tDxEJn+L/m26gY02CAk9CbkfyjPTMFNeQlepjxXYk+J2BRTo3j9JYuPSOXRbNaoX0jEQiYSmBPkv6UKLoDYRHg8lTyGC4Rg6J6DcVNpegLAxOd9xpKTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877544; c=relaxed/simple;
-	bh=aoVxziZVr3O/XmSZczNQHB2Kye+waosspaVG+3cvOiM=;
+	s=arc-20240116; t=1727875774; c=relaxed/simple;
+	bh=1rOF8mxjt7UM511SoMNg9/zvCclpbmZ4fFsVhxnHF5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R9AqJQ2WXHe7w/C/KhZTtg691+U+EsKhe89DdxMQ03WaqZ+H8JLpqc/C9LnW59h0uq9VFUwPOZdoRKIrg8as67vfLsren3xjosf9sUYRwvDkLkP8Xhrp5mCdd32DK5J4rI90nvE9S31crG1N9DhT5Hp2/gXRpWqjUbyLc5ZGxgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zN2pUCPZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941B0C4CEC5;
-	Wed,  2 Oct 2024 13:59:03 +0000 (UTC)
+	 MIME-Version; b=Q6uFI322F53fkv2gURqLhL+QYfUQYD45LXHy2KySbRLzDplBzKt6iXpyvzP0SNVajtWRU1/VZ/jzFKLq45pMR4OzcNcmQkqmYHo67v5wiudeluH7FuPnyoBNZoCWbOlSCj1tPYwBohdDJSPZ1HfZMzvvgIPftKmDw9Ffm8HYnwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLPs3oNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5261AC4CEC5;
+	Wed,  2 Oct 2024 13:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877544;
-	bh=aoVxziZVr3O/XmSZczNQHB2Kye+waosspaVG+3cvOiM=;
+	s=korg; t=1727875774;
+	bh=1rOF8mxjt7UM511SoMNg9/zvCclpbmZ4fFsVhxnHF5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zN2pUCPZjlOd8vu9+FCpzYa62OyiUdMZgtJh/2jds5o52l4XxICtqjjUILGd3XLUS
-	 QUvVPdWuShXyyQwE9ymQDFAa1uYj/gqYkbYTq6frhMmkV5NRq2QzVeS7DbNF2HhaZw
-	 G0szhL4b+BjiSr4wnjRD7ALMgWSbyAPHU2qSbs3Q=
+	b=mLPs3oNrYlqPIAUo4szOJVX//cScgig1RR+RnsI7rq4ntC9m3eIQejB32Q/hpOn0C
+	 +UIXzvppKcg2q1GOVS73Mn2AzEySoInls0Bbmfy+JhY/WKMQ1slLoyDhX62rMUpgG7
+	 Oi7WiEziB5d7ZFKNJiSrMlZcJigOPtFqvpOu0dwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+	Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 113/634] block, bfq: fix procress reference leakage for bfqq in merge chain
+Subject: [PATCH 6.11 215/695] drm/xe: Move and export xe_hw_engine lookup.
 Date: Wed,  2 Oct 2024 14:53:33 +0200
-Message-ID: <20241002125815.574023053@linuxfoundation.org>
+Message-ID: <20241002125831.045016361@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,161 +61,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 
-[ Upstream commit 73aeab373557fa6ee4ae0b742c6211ccd9859280 ]
+[ Upstream commit 6f20fc09936e786a4ba18f5514fe185e0451ada9 ]
 
-Original state:
+Move and export xe_hw_engine lookup. This is in preparation
+to use this in eudebug code where we want to find active
+engine.
 
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \--------------\ \-------------\ \-------------\|
-                           V               V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               1               2               4
+v2: s/tile/gt due to uapi changes (Mika)
 
-After commit 0e456dba86c7 ("block, bfq: choose the last bfqq from merge
-chain in bfq_setup_cooperator()"), if P1 issues a new IO:
-
-Without the patch:
-
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \------------------------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-bfqq3 will be used to handle IO from P1, this is not expected, IO
-should be redirected to bfqq4;
-
-With the patch:
-
-          -------------------------------------------
-          |                                         |
-        Process 1       Process 2       Process 3   |   Process 4
-         (BIC1)          (BIC2)          (BIC3)     |    (BIC4)
-                           |               |        |      |
-                            \-------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-IO is redirected to bfqq4, however, procress reference of bfqq3 is still
-2, while there is only P2 using it.
-
-Fix the problem by calling bfq_merge_bfqqs() for each bfqq in the merge
-chain. Also change bfqq_merge_bfqqs() to return new_bfqq to simplify
-code.
-
-Fixes: 0e456dba86c7 ("block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240909134154.954924-3-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240729130152.100130-1-mika.kuoppala@linux.intel.com
+Stable-dep-of: 852856e3b6f6 ("drm/xe: Use reserved copy engine for user binds on faulting devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c | 37 +++++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 37 ++++--------------------------
+ drivers/gpu/drm/xe/xe_hw_engine.c  | 31 +++++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_hw_engine.h  |  7 ++++++
+ 3 files changed, 42 insertions(+), 33 deletions(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index 2423e25fc23ae..05372a78cd516 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -3129,10 +3129,12 @@ void bfq_release_process_ref(struct bfq_data *bfqd, struct bfq_queue *bfqq)
- 	bfq_put_queue(bfqq);
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index 9731dcd0b1bde..ddc22a8d9bf5f 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -418,34 +418,6 @@ static int exec_queue_user_extensions(struct xe_device *xe, struct xe_exec_queue
+ 	return 0;
  }
  
--static void
--bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
--		struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
-+static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
-+					 struct bfq_io_cq *bic,
-+					 struct bfq_queue *bfqq)
- {
-+	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
-+
- 	bfq_log_bfqq(bfqd, bfqq, "merging with queue %lu",
- 		(unsigned long)new_bfqq->pid);
- 	/* Save weight raising and idle window of the merged queues */
-@@ -3226,6 +3228,8 @@ bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
- 	bfq_reassign_last_bfqq(bfqq, new_bfqq);
- 
- 	bfq_release_process_ref(bfqd, bfqq);
-+
-+	return new_bfqq;
- }
- 
- static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
-@@ -3261,14 +3265,8 @@ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
- 		 * fulfilled, i.e., bic can be redirected to new_bfqq
- 		 * and bfqq can be put.
- 		 */
--		bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq,
--				new_bfqq);
--		/*
--		 * If we get here, bio will be queued into new_queue,
--		 * so use new_bfqq to decide whether bio and rq can be
--		 * merged.
--		 */
--		bfqq = new_bfqq;
-+		while (bfqq != new_bfqq)
-+			bfqq = bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq);
- 
- 		/*
- 		 * Change also bqfd->bio_bfqq, as
-@@ -5703,9 +5701,7 @@ bfq_do_early_stable_merge(struct bfq_data *bfqd, struct bfq_queue *bfqq,
- 	 * state before killing it.
- 	 */
- 	bfqq->bic = bic;
--	bfq_merge_bfqqs(bfqd, bic, bfqq, new_bfqq);
+-static const enum xe_engine_class user_to_xe_engine_class[] = {
+-	[DRM_XE_ENGINE_CLASS_RENDER] = XE_ENGINE_CLASS_RENDER,
+-	[DRM_XE_ENGINE_CLASS_COPY] = XE_ENGINE_CLASS_COPY,
+-	[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = XE_ENGINE_CLASS_VIDEO_DECODE,
+-	[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = XE_ENGINE_CLASS_VIDEO_ENHANCE,
+-	[DRM_XE_ENGINE_CLASS_COMPUTE] = XE_ENGINE_CLASS_COMPUTE,
+-};
 -
--	return new_bfqq;
-+	return bfq_merge_bfqqs(bfqd, bic, bfqq);
- }
+-static struct xe_hw_engine *
+-find_hw_engine(struct xe_device *xe,
+-	       struct drm_xe_engine_class_instance eci)
+-{
+-	u32 idx;
+-
+-	if (eci.engine_class >= ARRAY_SIZE(user_to_xe_engine_class))
+-		return NULL;
+-
+-	if (eci.gt_id >= xe->info.gt_count)
+-		return NULL;
+-
+-	idx = array_index_nospec(eci.engine_class,
+-				 ARRAY_SIZE(user_to_xe_engine_class));
+-
+-	return xe_gt_hw_engine(xe_device_get_gt(xe, eci.gt_id),
+-			       user_to_xe_engine_class[idx],
+-			       eci.engine_instance, true);
+-}
+-
+ static u32 bind_exec_queue_logical_mask(struct xe_device *xe, struct xe_gt *gt,
+ 					struct drm_xe_engine_class_instance *eci,
+ 					u16 width, u16 num_placements)
+@@ -467,8 +439,7 @@ static u32 bind_exec_queue_logical_mask(struct xe_device *xe, struct xe_gt *gt,
+ 		if (xe_hw_engine_is_reserved(hwe))
+ 			continue;
  
- /*
-@@ -6160,6 +6156,7 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 	bool waiting, idle_timer_disabled = false;
- 
- 	if (new_bfqq) {
-+		struct bfq_queue *old_bfqq = bfqq;
- 		/*
- 		 * Release the request's reference to the old bfqq
- 		 * and make sure one is taken to the shared queue.
-@@ -6176,18 +6173,18 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 		 * new_bfqq.
- 		 */
- 		if (bic_to_bfqq(RQ_BIC(rq), true,
--				bfq_actuator_index(bfqd, rq->bio)) == bfqq)
--			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
--					bfqq, new_bfqq);
-+				bfq_actuator_index(bfqd, rq->bio)) == bfqq) {
-+			while (bfqq != new_bfqq)
-+				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
-+		}
- 
--		bfq_clear_bfqq_just_created(bfqq);
-+		bfq_clear_bfqq_just_created(old_bfqq);
- 		/*
- 		 * rq is about to be enqueued into new_bfqq,
- 		 * release rq reference on bfqq
- 		 */
--		bfq_put_queue(bfqq);
-+		bfq_put_queue(old_bfqq);
- 		rq->elv.priv[1] = new_bfqq;
--		bfqq = new_bfqq;
+-		if (hwe->class ==
+-		    user_to_xe_engine_class[DRM_XE_ENGINE_CLASS_COPY])
++		if (hwe->class == XE_ENGINE_CLASS_COPY)
+ 			logical_mask |= BIT(hwe->logical_instance);
  	}
  
- 	bfq_update_io_thinktime(bfqd, bfqq);
+@@ -497,7 +468,7 @@ static u32 calc_validate_logical_mask(struct xe_device *xe, struct xe_gt *gt,
+ 
+ 			n = j * width + i;
+ 
+-			hwe = find_hw_engine(xe, eci[n]);
++			hwe = xe_hw_engine_lookup(xe, eci[n]);
+ 			if (XE_IOCTL_DBG(xe, !hwe))
+ 				return 0;
+ 
+@@ -576,7 +547,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 			if (XE_IOCTL_DBG(xe, !logical_mask))
+ 				return -EINVAL;
+ 
+-			hwe = find_hw_engine(xe, eci[0]);
++			hwe = xe_hw_engine_lookup(xe, eci[0]);
+ 			if (XE_IOCTL_DBG(xe, !hwe))
+ 				return -EINVAL;
+ 
+@@ -613,7 +584,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 		if (XE_IOCTL_DBG(xe, !logical_mask))
+ 			return -EINVAL;
+ 
+-		hwe = find_hw_engine(xe, eci[0]);
++		hwe = xe_hw_engine_lookup(xe, eci[0]);
+ 		if (XE_IOCTL_DBG(xe, !hwe))
+ 			return -EINVAL;
+ 
+diff --git a/drivers/gpu/drm/xe/xe_hw_engine.c b/drivers/gpu/drm/xe/xe_hw_engine.c
+index 07ed9fd28f195..00ace5fcc284e 100644
+--- a/drivers/gpu/drm/xe/xe_hw_engine.c
++++ b/drivers/gpu/drm/xe/xe_hw_engine.c
+@@ -5,7 +5,10 @@
+ 
+ #include "xe_hw_engine.h"
+ 
++#include <linux/nospec.h>
++
+ #include <drm/drm_managed.h>
++#include <drm/xe_drm.h>
+ 
+ #include "regs/xe_engine_regs.h"
+ #include "regs/xe_gt_regs.h"
+@@ -1135,3 +1138,31 @@ enum xe_force_wake_domains xe_hw_engine_to_fw_domain(struct xe_hw_engine *hwe)
+ {
+ 	return engine_infos[hwe->engine_id].domain;
+ }
++
++static const enum xe_engine_class user_to_xe_engine_class[] = {
++	[DRM_XE_ENGINE_CLASS_RENDER] = XE_ENGINE_CLASS_RENDER,
++	[DRM_XE_ENGINE_CLASS_COPY] = XE_ENGINE_CLASS_COPY,
++	[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = XE_ENGINE_CLASS_VIDEO_DECODE,
++	[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = XE_ENGINE_CLASS_VIDEO_ENHANCE,
++	[DRM_XE_ENGINE_CLASS_COMPUTE] = XE_ENGINE_CLASS_COMPUTE,
++};
++
++struct xe_hw_engine *
++xe_hw_engine_lookup(struct xe_device *xe,
++		    struct drm_xe_engine_class_instance eci)
++{
++	unsigned int idx;
++
++	if (eci.engine_class > ARRAY_SIZE(user_to_xe_engine_class))
++		return NULL;
++
++	if (eci.gt_id >= xe->info.gt_count)
++		return NULL;
++
++	idx = array_index_nospec(eci.engine_class,
++				 ARRAY_SIZE(user_to_xe_engine_class));
++
++	return xe_gt_hw_engine(xe_device_get_gt(xe, eci.gt_id),
++			       user_to_xe_engine_class[idx],
++			       eci.engine_instance, true);
++}
+diff --git a/drivers/gpu/drm/xe/xe_hw_engine.h b/drivers/gpu/drm/xe/xe_hw_engine.h
+index 900c8c9914303..d227ffe557ebf 100644
+--- a/drivers/gpu/drm/xe/xe_hw_engine.h
++++ b/drivers/gpu/drm/xe/xe_hw_engine.h
+@@ -9,6 +9,8 @@
+ #include "xe_hw_engine_types.h"
+ 
+ struct drm_printer;
++struct drm_xe_engine_class_instance;
++struct xe_device;
+ 
+ #ifdef CONFIG_DRM_XE_JOB_TIMEOUT_MIN
+ #define XE_HW_ENGINE_JOB_TIMEOUT_MIN CONFIG_DRM_XE_JOB_TIMEOUT_MIN
+@@ -62,6 +64,11 @@ void xe_hw_engine_print(struct xe_hw_engine *hwe, struct drm_printer *p);
+ void xe_hw_engine_setup_default_lrc_state(struct xe_hw_engine *hwe);
+ 
+ bool xe_hw_engine_is_reserved(struct xe_hw_engine *hwe);
++
++struct xe_hw_engine *
++xe_hw_engine_lookup(struct xe_device *xe,
++		    struct drm_xe_engine_class_instance eci);
++
+ static inline bool xe_hw_engine_is_valid(struct xe_hw_engine *hwe)
+ {
+ 	return hwe->name;
 -- 
 2.43.0
 
