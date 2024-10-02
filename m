@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-78834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2F898D531
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6779498D836
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCA2D1C21665
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 124651F2100D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F001D0425;
-	Wed,  2 Oct 2024 13:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD221D049F;
+	Wed,  2 Oct 2024 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ0TQbGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFrOc2EN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097BB16F84F;
-	Wed,  2 Oct 2024 13:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8AF1D0BB3;
+	Wed,  2 Oct 2024 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875664; cv=none; b=WMfDXiyFjblnD2wrVZy81jWt6kWHa8WT5du/mpczZ/i/DGak0VoMcjuJ9t9olGU2QXR9bizhYEa7RACFPDSXC83HSQCc5894GM3qr/ZwQZD0FT5NYGZcAK/55qemU7oTsEASL7QCu7dSpyHcH4HE6y7N363nLQj5QK4oBkoMCqE=
+	t=1727877430; cv=none; b=rtR0YCuhu1sDBDSE+F0Pg2dxYHupY+pk/pd3jx5T7y+3Gl0SVLIJJLzeHKz+vNQyLw57zuHdfnXNUQRkvJxGAEK4PK9BfgEAR0CqSGtmajoc02oeSPvqHShkJq48FbYaGUAkgqaGsJBaC9p0fXo8n/9Ph9OoxRT2O4T7Zskydck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875664; c=relaxed/simple;
-	bh=Ke73fpBSTBcPwHgL8MZF5HU8ow/Y9/NPq939+UNevL4=;
+	s=arc-20240116; t=1727877430; c=relaxed/simple;
+	bh=hirYk8uImJ47DZIrbVykZDL9H3cT2AkyBUkGVbjKCuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OHGq1pvgcKPOBHf5lLKuMYG0cbX+3FAj/LAL6kJ6aGoqti5Amlz/t4H2maGaTzPC4f920xmoXj3/QSmvIiPm81rTewVRCGpEI7PEewA4kh3IjENxX3vvN8zM+ZKrPxGIvbbrvCYISJguhfSYHUvibzuHuN4qqFNAZwFsxElNwrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ0TQbGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E114C4CEC5;
-	Wed,  2 Oct 2024 13:27:43 +0000 (UTC)
+	 MIME-Version; b=VeAAfkd9eFB9EMbVzcyMXeDkljWfeOr0oHWq8/CgrzKHsdvrfn2dvvYwge0TWTUBLLJ7LW3gxFhR8h3Xk8oMEylcAcs6fRvZnBPsMacWEPvfBAIUycobx+TPcT7YW155sZoIEVxIsBiHPTvX2EJdD2bR9GQz1ZWW0KaGaVvw3jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFrOc2EN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56E0C4CEF0;
+	Wed,  2 Oct 2024 13:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875663;
-	bh=Ke73fpBSTBcPwHgL8MZF5HU8ow/Y9/NPq939+UNevL4=;
+	s=korg; t=1727877430;
+	bh=hirYk8uImJ47DZIrbVykZDL9H3cT2AkyBUkGVbjKCuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQ0TQbGvH8sviws5Xr6YGA/poaYfKXGsfYu9Eu6w8r6V8nWPDn2Odk9tcQmx835bv
-	 NbPl3jon1q9DEHFfP5Qj+y+i6t+476uHmPnXBV2DTTtYE/Rp2I6LyaxbTEs5O+2U1n
-	 OpzSzkDcCctUQVYbL6EOAL0Yu6sWw1fP2EvwCArU=
+	b=PFrOc2ENx17tHUvOkXDUMv/devncMTjQ7/7EWVX3QvsMuJlQxoCDB5h1i+r1Eq86+
+	 49QnS6EysAsrVWCfU3mUkWzb7w0/7+YG5PfsFE/zOtMLwJQJI9CHtK7a2uud9r/jYJ
+	 S4zfBT866OzSWBPaXd9Fp/SCmZgkAVRa+BPR+nGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-mtd@lists.infradead.org,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Rex Lu <rex.lu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 178/695] mtd: slram: insert break after errors in parsing the map
+Subject: [PATCH 6.10 076/634] wifi: mt76: mt7996: fix handling mbss enable/disable
 Date: Wed,  2 Oct 2024 14:52:56 +0200
-Message-ID: <20241002125829.577375847@linuxfoundation.org>
+Message-ID: <20241002125814.107635453@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Rex Lu <rex.lu@mediatek.com>
 
-[ Upstream commit 336c218dd7f0588ed8a7345f367975a00a4f003f ]
+[ Upstream commit ded1a6d9e13a32d4e8bef0c63accf49b9415ff5f ]
 
-GCC 12.3.0 compiler on linux-next next-20240709 tree found the execution
-path in which, due to lazy evaluation, devlength isn't initialised with the
-parsed string:
+When mbss was previously enabled, the TLV needs to be included when
+disabling it again, in order to clear the firmware state.
 
-   289		while (map) {
-   290			devname = devstart = devlength = NULL;
-   291
-   292			if (!(devname = strsep(&map, ","))) {
-   293				E("slram: No devicename specified.\n");
-   294				break;
-   295			}
-   296			T("slram: devname = %s\n", devname);
-   297			if ((!map) || (!(devstart = strsep(&map, ",")))) {
-   298				E("slram: No devicestart specified.\n");
-   299			}
-   300			T("slram: devstart = %s\n", devstart);
- → 301			if ((!map) || (!(devlength = strsep(&map, ",")))) {
-   302				E("slram: No devicelength / -end specified.\n");
-   303			}
- → 304			T("slram: devlength = %s\n", devlength);
-   305			if (parse_cmdline(devname, devstart, devlength) != 0) {
-   306				return(-EINVAL);
-   307			}
-
-Parsing should be finished after map == NULL, so a break is best inserted after
-each E("slram: ... \n") error message.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240711234319.637824-1-mtodorovac69@gmail.com
+Fixes: a7908d5b61e5 ("wifi: mt76: mt7996: fix non-main BSS no beacon issue for MBSS scenario")
+Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20240816094635.2391-9-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/slram.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/slram.c b/drivers/mtd/devices/slram.c
-index 28131a127d065..8297b366a0669 100644
---- a/drivers/mtd/devices/slram.c
-+++ b/drivers/mtd/devices/slram.c
-@@ -296,10 +296,12 @@ static int __init init_slram(void)
- 		T("slram: devname = %s\n", devname);
- 		if ((!map) || (!(devstart = strsep(&map, ",")))) {
- 			E("slram: No devicestart specified.\n");
-+			break;
- 		}
- 		T("slram: devstart = %s\n", devstart);
- 		if ((!map) || (!(devlength = strsep(&map, ",")))) {
- 			E("slram: No devicelength / -end specified.\n");
-+			break;
- 		}
- 		T("slram: devlength = %s\n", devlength);
- 		if (parse_cmdline(devname, devstart, devlength) != 0) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 656199161e591..161ebf54a46e3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -822,7 +822,7 @@ mt7996_mcu_bss_mbssid_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 	struct bss_info_uni_mbssid *mbssid;
+ 	struct tlv *tlv;
+ 
+-	if (!vif->bss_conf.bssid_indicator)
++	if (!vif->bss_conf.bssid_indicator && enable)
+ 		return;
+ 
+ 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_11V_MBSSID, sizeof(*mbssid));
 -- 
 2.43.0
 
