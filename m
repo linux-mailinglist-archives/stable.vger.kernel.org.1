@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6405898D9AD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A7798DC4D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B53A1F25BDE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D34F286620
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B561D1757;
-	Wed,  2 Oct 2024 14:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635031D0DE6;
+	Wed,  2 Oct 2024 14:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caAKr0xb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yslMT1yu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426161D04BE;
-	Wed,  2 Oct 2024 14:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C931D0953;
+	Wed,  2 Oct 2024 14:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878164; cv=none; b=aKPSabbzZTn/lXLg96Qwp0UvIqhFplrJXiwUyi1NIZJOgha8UGGhZFNR0Wh1jh+u4liG6T29cK0Hb5q3wkSi7pQo2BGQKFiJGbId0ELrWjfK5Cv79d5qAA5EjIyh1WfmvQ5WLjrRAyagGEjjP7GNMfnJFzLhOEzGwkrbNjypNf0=
+	t=1727879623; cv=none; b=gLU7Ol7q7GDv8TqFQNkpGQI/7lLjgSp8mHH/G05eliLv4HEPjfy9yDYcupqxHofTr0AUCahULTiYkrzuuX8fADLxWzGw9qnge1y8CTnLZlMvxM9PfTp8XNnqxTU9/SwM5iGstw0ZgYECYm2ZuowobDSB86u+aDeUiNTiIVLTY6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878164; c=relaxed/simple;
-	bh=y06K/m4q+5FdSWiNJ42WDRN4ga8i2zPdF9yMlN8afog=;
+	s=arc-20240116; t=1727879623; c=relaxed/simple;
+	bh=VK8pPoKCMgzastEweajGOfjFiBcyCGhoAu6HkvhPdI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0aLXOCyJvAtDddefvr8blqlOKP3+u8m+crlbqKk/b8cOUQAheSf59HfDObZtbijEOoFZ0wZKuOiACvmfGEp27+bAVRXYM6BVYyovqQc5u0antlZLiSwlrwwwunixLDmI5kQDfPPEDLiZm4WOyd2UQEZxIgE9eI+X2+IMiVmEyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caAKr0xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2D4C4CEC2;
-	Wed,  2 Oct 2024 14:09:23 +0000 (UTC)
+	 MIME-Version; b=Hx871jQLMBRazMcmjzt5TulOfytrvlch5s0xwfbP9Rzzt9oKq/oAgvbwUjphnmyhcEHDGz1+HNTTrM60K1YgQ63MTnQtrmR7gHh18EZCKIrWU+afi/s5G5+Iup3RCFHkm0c1D4ZfKwLDsKT+gZz+teUqDvrYujfQ/metxxs+U30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yslMT1yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9A3C4CECD;
+	Wed,  2 Oct 2024 14:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878164;
-	bh=y06K/m4q+5FdSWiNJ42WDRN4ga8i2zPdF9yMlN8afog=;
+	s=korg; t=1727879622;
+	bh=VK8pPoKCMgzastEweajGOfjFiBcyCGhoAu6HkvhPdI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caAKr0xb9kSSHjC3uLtyaYNx9cKTB2vDcJKQl/OxqGbivuIb0wWUYCousclmGChKQ
-	 GSvYno9q6LmypY20F55Di4kgAiAwv1T6AsxfbiAmf+bhXXPmwyvJzSwWFdjvJYNbAX
-	 nPUP45W5GM8txJV8E7Tu3BcQpD+sedWIBv4ncZn8=
+	b=yslMT1yudFWzXGlqdyf4S+rHL0DE5eqqHeFF3v0nBNzJDLmAwau3pz+5pAVsTAZ1e
+	 G/fm/Tahoza62IYSYOcB2oOJ5BgDHBzH111QKYG0UQB48xrcN1pJyTkmjDl0rxEGaB
+	 3WYHq3WYnVrEu1O+A6TTwe4UvaII4mcYsH0QWmeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Jose E. Marchesi" <jose.marchesi@oracle.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 321/634] clk: qcom: dispcc-sm8550: fix several supposed typos
+Subject: [PATCH 6.6 182/538] bpf: Use -Wno-error in certain tests when building with GCC
 Date: Wed,  2 Oct 2024 14:57:01 +0200
-Message-ID: <20241002125823.774423184@linuxfoundation.org>
+Message-ID: <20241002125759.440864925@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jose E. Marchesi <jose.marchesi@oracle.com>
 
-[ Upstream commit 7b6a4b907297b28727933493b9e0c95494504634 ]
+[ Upstream commit 646751d523587cfd7ebcf1733298ecd470879eda ]
 
-Fix seveal odd-looking places in SM8550's dispcc driver:
+Certain BPF selftests contain code that, albeit being legal C, trigger
+warnings in GCC that cannot be disabled.  This is the case for example
+for the tests
 
-- duplicate entries in disp_cc_parent_map_4 and disp_cc_parent_map_5
-- using &disp_cc_mdss_dptx0_link_div_clk_src as a source for
-  disp_cc_mdss_dptx1_usb_router_link_intf_clk
+  progs/btf_dump_test_case_bitfields.c
+  progs/btf_dump_test_case_namespacing.c
+  progs/btf_dump_test_case_packing.c
+  progs/btf_dump_test_case_padding.c
+  progs/btf_dump_test_case_syntax.c
 
-The SM8650 driver has been used as a reference.
+which contain struct type declarations inside function parameter
+lists.  This is problematic, because:
 
-Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-1-5c4a3128c40b@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+- The BPF selftests are built with -Werror.
+
+- The Clang and GCC compilers sometimes differ when it comes to handle
+  warnings.  in the handling of warnings.  One compiler may emit
+  warnings for code that the other compiles compiles silently, and one
+  compiler may offer the possibility to disable certain warnings, while
+  the other doesn't.
+
+In order to overcome this problem, this patch modifies the
+tools/testing/selftests/bpf/Makefile in order to:
+
+1. Enable the possibility of specifing per-source-file extra CFLAGS.
+   This is done by defining a make variable like:
+
+   <source-filename>-CFLAGS := <whateverflags>
+
+   And then modifying the proper Make rule in order to use these flags
+   when compiling <source-filename>.
+
+2. Use the mechanism above to add -Wno-error to CFLAGS for the
+   following selftests:
+
+   progs/btf_dump_test_case_bitfields.c
+   progs/btf_dump_test_case_namespacing.c
+   progs/btf_dump_test_case_packing.c
+   progs/btf_dump_test_case_padding.c
+   progs/btf_dump_test_case_syntax.c
+
+   Note the corresponding -CFLAGS variables for these files are
+   defined only if the selftests are being built with GCC.
+
+Note that, while compiler pragmas can generally be used to disable
+particular warnings per file, this 1) is only possible for warning
+that actually can be disabled in the command line, i.e. that have
+-Wno-FOO options, and 2) doesn't apply to -Wno-error.
+
+Tested in bpf-next master branch.
+No regressions.
+
+Signed-off-by: Jose E. Marchesi <jose.marchesi@oracle.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240127100702.21549-1-jose.marchesi@oracle.com
+Stable-dep-of: 3ece93a4087b ("selftests/bpf: Fix wrong binary in Makefile log output")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8550.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/Makefile | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
-index 38ecea805503d..56918e2a7734d 100644
---- a/drivers/clk/qcom/dispcc-sm8550.c
-+++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -196,7 +196,7 @@ static const struct clk_parent_data disp_cc_parent_data_3[] = {
- static const struct parent_map disp_cc_parent_map_4[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_DP0_PHY_PLL_LINK_CLK, 1 },
--	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 2 },
-+	{ P_DP0_PHY_PLL_VCO_DIV_CLK, 2 },
- 	{ P_DP3_PHY_PLL_VCO_DIV_CLK, 3 },
- 	{ P_DP1_PHY_PLL_VCO_DIV_CLK, 4 },
- 	{ P_DP2_PHY_PLL_VCO_DIV_CLK, 6 },
-@@ -213,7 +213,7 @@ static const struct clk_parent_data disp_cc_parent_data_4[] = {
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index 598cd118dfd65..397306f5cf911 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -56,6 +56,15 @@ TEST_INST_SUBDIRS := no_alu32
+ ifneq ($(BPF_GCC),)
+ TEST_GEN_PROGS += test_progs-bpf_gcc
+ TEST_INST_SUBDIRS += bpf_gcc
++
++# The following tests contain C code that, although technically legal,
++# triggers GCC warnings that cannot be disabled: declaration of
++# anonymous struct types in function parameter lists.
++progs/btf_dump_test_case_bitfields.c-CFLAGS := -Wno-error
++progs/btf_dump_test_case_namespacing.c-CFLAGS := -Wno-error
++progs/btf_dump_test_case_packing.c-CFLAGS := -Wno-error
++progs/btf_dump_test_case_padding.c-CFLAGS := -Wno-error
++progs/btf_dump_test_case_syntax.c-CFLAGS := -Wno-error
+ endif
  
- static const struct parent_map disp_cc_parent_map_5[] = {
- 	{ P_BI_TCXO, 0 },
--	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 4 },
-+	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 2 },
- 	{ P_DSI1_PHY_PLL_OUT_BYTECLK, 4 },
- };
+ ifneq ($(CLANG_CPUV4),)
+@@ -492,7 +501,8 @@ $(TRUNNER_BPF_OBJS): $(TRUNNER_OUTPUT)/%.bpf.o:				\
+ 		     $(wildcard $(BPFDIR)/*.bpf.h)			\
+ 		     | $(TRUNNER_OUTPUT) $$(BPFOBJ)
+ 	$$(call $(TRUNNER_BPF_BUILD_RULE),$$<,$$@,			\
+-					  $(TRUNNER_BPF_CFLAGS))
++					  $(TRUNNER_BPF_CFLAGS)         \
++					  $$($$<-CFLAGS))
  
+ $(TRUNNER_BPF_SKELS): %.skel.h: %.bpf.o $(BPFTOOL) | $(TRUNNER_OUTPUT)
+ 	$$(call msg,GEN-SKEL,$(TRUNNER_BINARY),$$@)
 -- 
 2.43.0
 
