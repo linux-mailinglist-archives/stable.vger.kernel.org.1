@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-80347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C017B98DD04
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E8D98DA9A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F16041C2197B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40EB8283FBD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7861D0977;
-	Wed,  2 Oct 2024 14:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE15B1D2F6A;
+	Wed,  2 Oct 2024 14:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhEhvwrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0DJq1oO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC721D079C;
-	Wed,  2 Oct 2024 14:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEF71D2F66;
+	Wed,  2 Oct 2024 14:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880109; cv=none; b=n0DZciNxxMMxu3UulnfwGcTroIbh/Ta0CSDRiLPxdnctjJvhVhiyMB5OqDMozWFzn9AsA+5NN+N5O7kp8FsRiVRHInIxXVu3r6j8fq9gm/VCF8pIk+uIu9m5WjVgJ0NSzEoPHHXHg3BoYkwyXTeoc/7ph9vSaJ8++6x2ChB6P54=
+	t=1727878649; cv=none; b=GoQb4jYfMhzA7s6mojANOD0RvWP4QqVgepwYjwLHkbMmX7Nt51TScNdYENN0G7cQHMJAafumoxo/iWEqddsGMIQOxMJPeq1x5WG1kX4IqsEhlOdswB1YoGIqUKhLYFhKV6iZTQw1uLI7Hl2gV6Sbo1Z5duNgBfpu/Nelv0p2gC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880109; c=relaxed/simple;
-	bh=QyWm6Lbw3XT4ZqEOywm5CMzy3TqRSZMxlqQ+OX/HnmQ=;
+	s=arc-20240116; t=1727878649; c=relaxed/simple;
+	bh=FPvosmGT0xqYy0LaGXuojqPYqniRBXZq2/kNWFKBaaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQ/0ozgZuGk/M5YpZoL2xBnql+fWRTaPGEiWuoNKI8K6vhc+l53hB9oEfuvRyyCG5VaPPnmsft4eJoiBfx9f9X+Na+Z6XgyJE4I0DR6ER5svKkxRo5PJc/o2EgFiLiWpd+rQgZ9x4cV3CFHsbtDaQ2JmuZYjP+RkKDN96BYd2sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhEhvwrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6822CC4CECF;
-	Wed,  2 Oct 2024 14:41:48 +0000 (UTC)
+	 MIME-Version; b=qEKWmhQZFBTv6cPAexrXI63uzhtHwxGKWB4jdzX9rVA8yGtzi2P8wNb4FcbHXSkSy6Q/d8uqBD/RtMLw6f553PUUrIKn7FJew7IY+TuSLKKg9Zam2nMyj/WEwm50LjpMA0L6qK0+87oChw6S8Fljsc67/OpTmpVZQtXu5r1Q5r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0DJq1oO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C49C4CECF;
+	Wed,  2 Oct 2024 14:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880108;
-	bh=QyWm6Lbw3XT4ZqEOywm5CMzy3TqRSZMxlqQ+OX/HnmQ=;
+	s=korg; t=1727878649;
+	bh=FPvosmGT0xqYy0LaGXuojqPYqniRBXZq2/kNWFKBaaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhEhvwrGBr7TqbfbBBXojAU+F9j9qOafKHk3lU9VlxIb1W+ZXV7Q8zjfl2xqmufnu
-	 8vQHkQmWWKtyv8lBk/JeEtbXOXyQSmrYylU9ywmeLn/Cr7JNtwMVlh1ADpd8+wrpa3
-	 8eODCBMX97FT+3TbIMph2/WZnvnSHMl3A0oplu58=
+	b=e0DJq1oOP3PISV6cGQUJyUgZUZWCkmun6VcsezEbH9mO9j/OEZeMQ3jt9TcKBx1ZO
+	 fcXa3xMloOTQMdIe97e0hsRiwHSHYPvwuCWbdj71YD3uaWucGmRUF6V0UXYadyqEAl
+	 D8UGKBdmImMIkTgz6x0pPB97QLpmFEU2NDPKxAVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+20d7e439f76bbbd863a7@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 347/538] f2fs: fix to dont set SB_RDONLY in f2fs_handle_critical_error()
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.10 486/634] KVM: x86: Enforce x2APICs must-be-zero reserved ICR bits
 Date: Wed,  2 Oct 2024 14:59:46 +0200
-Message-ID: <20241002125806.127940865@linuxfoundation.org>
+Message-ID: <20241002125830.285912269@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 930c6ab93492c4b15436524e704950b364b2930c ]
+commit 71bf395a276f0578d19e0ae137a7d1d816d08e0e upstream.
 
-syzbot reports a f2fs bug as below:
+Inject a #GP on a WRMSR(ICR) that attempts to set any reserved bits that
+are must-be-zero on both Intel and AMD, i.e. any reserved bits other than
+the BUSY bit, which Intel ignores and basically says is undefined.
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 58 at kernel/rcu/sync.c:177 rcu_sync_dtor+0xcd/0x180 kernel/rcu/sync.c:177
-CPU: 1 UID: 0 PID: 58 Comm: kworker/1:2 Not tainted 6.10.0-syzkaller-12562-g1722389b0d86 #0
-Workqueue: events destroy_super_work
-RIP: 0010:rcu_sync_dtor+0xcd/0x180 kernel/rcu/sync.c:177
-Call Trace:
- percpu_free_rwsem+0x41/0x80 kernel/locking/percpu-rwsem.c:42
- destroy_super_work+0xec/0x130 fs/super.c:282
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
- worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+KVM's xapic_state_test selftest has been fudging the bug since commit
+4b88b1a518b3 ("KVM: selftests: Enhance handling WRMSR ICR register in
+x2APIC mode"), which essentially removed the testcase instead of fixing
+the bug.
 
-As Christian Brauner pointed out [1]: the root cause is f2fs sets
-SB_RDONLY flag in internal function, rather than setting the flag
-covered w/ sb->s_umount semaphore via remount procedure, then below
-race condition causes this bug:
+WARN if the nodecode path triggers a #GP, as the CPU is supposed to check
+reserved bits for ICR when it's partially virtualized.
 
-- freeze_super()
- - sb_wait_write(sb, SB_FREEZE_WRITE)
- - sb_wait_write(sb, SB_FREEZE_PAGEFAULT)
- - sb_wait_write(sb, SB_FREEZE_FS)
-					- f2fs_handle_critical_error
-					 - sb->s_flags |= SB_RDONLY
-- thaw_super
- - thaw_super_locked
-  - sb_rdonly() is true, so it skips
-    sb_freeze_unlock(sb, SB_FREEZE_FS)
-  - deactivate_locked_super
-
-Since f2fs has almost the same logic as ext4 [2] when handling critical
-error in filesystem if it mounts w/ errors=remount-ro option:
-- set CP_ERROR_FLAG flag which indicates filesystem is stopped
-- record errors to superblock
-- set SB_RDONLY falg
-Once we set CP_ERROR_FLAG flag, all writable interfaces can detect the
-flag and stop any further updates on filesystem. So, it is safe to not
-set SB_RDONLY flag, let's remove the logic and keep in line w/ ext4 [3].
-
-[1] https://lore.kernel.org/all/20240729-himbeeren-funknetz-96e62f9c7aee@brauner
-[2] https://lore.kernel.org/all/20240729132721.hxih6ehigadqf7wx@quack3
-[3] https://lore.kernel.org/linux-ext4/20240805201241.27286-1-jack@suse.cz
-
-Fixes: b62e71be2110 ("f2fs: support errors=remount-ro|continue|panic mountoption")
-Reported-by: syzbot+20d7e439f76bbbd863a7@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com/
-Cc: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240719235107.3023592-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/kvm/lapic.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 2bec5176df65d..37fa7e32835a3 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4137,12 +4137,14 @@ void f2fs_handle_critical_error(struct f2fs_sb_info *sbi, unsigned char reason,
- 	}
- 
- 	f2fs_warn(sbi, "Remounting filesystem read-only");
-+
- 	/*
--	 * Make sure updated value of ->s_mount_flags will be visible before
--	 * ->s_flags update
-+	 * We have already set CP_ERROR_FLAG flag to stop all updates
-+	 * to filesystem, so it doesn't need to set SB_RDONLY flag here
-+	 * because the flag should be set covered w/ sb->s_umount semaphore
-+	 * via remount procedure, otherwise, it will confuse code like
-+	 * freeze_super() which will lead to deadlocks and other problems.
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2470,7 +2470,7 @@ void kvm_apic_write_nodecode(struct kvm_
+ 	 * maybe-unecessary write, and both are in the noise anyways.
  	 */
--	smp_wmb();
--	sb->s_flags |= SB_RDONLY;
+ 	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
+-		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
++		WARN_ON_ONCE(kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR)));
+ 	else
+ 		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
+ }
+@@ -3183,8 +3183,21 @@ int kvm_lapic_set_vapic_addr(struct kvm_
+ 	return 0;
  }
  
- static void f2fs_record_error_work(struct work_struct *work)
--- 
-2.43.0
-
++#define X2APIC_ICR_RESERVED_BITS (GENMASK_ULL(31, 20) | GENMASK_ULL(17, 16) | BIT(13))
++
+ int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
+ {
++	if (data & X2APIC_ICR_RESERVED_BITS)
++		return 1;
++
++	/*
++	 * The BUSY bit is reserved on both Intel and AMD in x2APIC mode, but
++	 * only AMD requires it to be zero, Intel essentially just ignores the
++	 * bit.  And if IPI virtualization (Intel) or x2AVIC (AMD) is enabled,
++	 * the CPU performs the reserved bits checks, i.e. the underlying CPU
++	 * behavior will "win".  Arbitrarily clear the BUSY bit, as there is no
++	 * sane way to provide consistent behavior with respect to hardware.
++	 */
+ 	data &= ~APIC_ICR_BUSY;
+ 
+ 	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
 
 
 
