@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-79499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8A998D8C6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 683C098D57E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 485C228556D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F7E288C07
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E5A1CFEB3;
-	Wed,  2 Oct 2024 14:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9E71C9B7E;
+	Wed,  2 Oct 2024 13:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8PvdhTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xt0/kDeZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49961D0E3E;
-	Wed,  2 Oct 2024 14:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C07029CE7;
+	Wed,  2 Oct 2024 13:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877637; cv=none; b=LcwQgWNpMbMUJtVHDVT9abv52Y3fitmxCtAEE0ePaWguFZZthaJ1PXTzTomDDTFrirYTpP0JazQGO1oylK2d78JKGSyYyP8XTA30Wce2k0dmGFwm/llOBZ8sZ2thjBfq15Vu6dbOSxZ39N+AoN41aKbkBASq9ClAjUUfwDqSR44=
+	t=1727875859; cv=none; b=bD5cnsSTFWa6SJEgJAsr/tI1tQ7oIlFEiM0pr9fQYaC0ueEWS5OwbuJpK01oy71oBkXigan4dyaJ31uAva/dk+N7bcLrXcWVKy9lJke4aS/GxXqZuUbLIS/38EZdu0rn8J0YEMqIVLO+V2mEeJK/7ElLlLCsMmSbtNW2vXUM4/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877637; c=relaxed/simple;
-	bh=GP9sCAn1C6fAWpaQyk50YgScyCaKq5/OFvrsqmIqUcQ=;
+	s=arc-20240116; t=1727875859; c=relaxed/simple;
+	bh=G8PvboJzQ2U20ZHWldOTvTaUhm2nChbl8o9+DUaww00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rq7yTyuILlsU7PLa2ZUpH8xgu1s43Sp1V/2t69ewFtoJ+2eTLKcLAbOE/8HwZnnABZpELFQwl97iZ9ne30AA7Nr2+RbwbsPFrYFDZCI+YJajqtVc+dbeSE+0vkEpj8cYNz9OP9rMB3dnkHaUl1KRF84IXtIVahJPIIDLmeRGvig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8PvdhTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAE7C4CEC2;
-	Wed,  2 Oct 2024 14:00:36 +0000 (UTC)
+	 MIME-Version; b=YjjaVph6iCzd8oz2vtPpVB2qPhQzu2uprhXkLjFiME3NOj69nFLSsvqdbv2INlqti5rvN1J53673gK7uWgUYtrBC/iQJN0IKF7J3uZr497w9mNfDiC6kxG+FrFaJCBg6zBu5U1V9hQMdCcg46wjBZgD8KFCDcl5KjBp4bYIaR2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xt0/kDeZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3BCC4CEC5;
+	Wed,  2 Oct 2024 13:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877637;
-	bh=GP9sCAn1C6fAWpaQyk50YgScyCaKq5/OFvrsqmIqUcQ=;
+	s=korg; t=1727875859;
+	bh=G8PvboJzQ2U20ZHWldOTvTaUhm2nChbl8o9+DUaww00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8PvdhTLIJLpWSqD0A2ZtXmcq4DEP+pNooc/8+JJPtIPBxZ2bbTgBA5I5eAsroT/y
-	 Pf1zkqXJglqTZe16aERQutOo2Wp+4riLdyRyh1dDWEe2J0bynbxtjKNnj4SQH6tQlD
-	 G1AjMkQ28cxx8YnVsAJvc6/+PnGGhlmXcCiC/lkc=
+	b=Xt0/kDeZszVJj4ao7TNsNHmwlbidiqBPh8PPV1/qQtgbUjcTB1wk6NFh0Qo1TPeJj
+	 sdmjvXQ3322VV5di3zDL9qpQHAseYjsMpABVCTzZC4DgmfkIW1zk2dwc2/27aSKksU
+	 qJTb5nMG6jvrxu5y77ONmUtjVKpPs15/aIyrYPbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Lutomirski <luto@kernel.org>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 143/634] x86/mm: Use IPIs to synchronize LAM enablement
+Subject: [PATCH 6.11 245/695] ata: libata: Clear DID_TIME_OUT for ATA PT commands with sense data
 Date: Wed,  2 Oct 2024 14:54:03 +0200
-Message-ID: <20241002125816.749875283@linuxfoundation.org>
+Message-ID: <20241002125832.231878137@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosryahmed@google.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 3b299b99556c1753923f8d9bbd9304bcd139282f ]
+[ Upstream commit e5dd410acb34c7341a0a93b429dcf3dabf9e3323 ]
 
-LAM can only be enabled when a process is single-threaded.  But _kernel_
-threads can temporarily use a single-threaded process's mm.
+When ata_qc_complete() schedules a command for EH using
+ata_qc_schedule_eh(), blk_abort_request() will be called, which leads to
+req->q->mq_ops->timeout() / scsi_timeout() being called.
 
-If LAM is enabled by a userspace process while a kthread is using its
-mm, the kthread will not observe LAM enablement (i.e.  LAM will be
-disabled in CR3). This could be fine for the kthread itself, as LAM only
-affects userspace addresses. However, if the kthread context switches to
-a thread in the same userspace process, CR3 may or may not be updated
-because the mm_struct doesn't change (based on pending TLB flushes). If
-CR3 is not updated, the userspace thread will run incorrectly with LAM
-disabled, which may cause page faults when using tagged addresses.
-Example scenario:
+scsi_timeout(), if the LLDD has no abort handler (libata has no abort
+handler), will set host byte to DID_TIME_OUT, and then call
+scsi_eh_scmd_add() to add the command to EH.
 
-CPU 1                                   CPU 2
-/* kthread */
-kthread_use_mm()
-                                        /* user thread */
-                                        prctl_enable_tagged_addr()
-                                        /* LAM enabled on CPU 2 */
-/* LAM disabled on CPU 1 */
-                                        context_switch() /* to CPU 1 */
-/* Switching to user thread */
-switch_mm_irqs_off()
-/* CR3 not updated */
-/* LAM is still disabled on CPU 1 */
+Thus, when commands first enter libata's EH strategy_handler, all the
+commands that have been added to EH will have DID_TIME_OUT set.
 
-Synchronize LAM enablement by sending an IPI to all CPUs running with
-the mm_struct to enable LAM. This makes sure LAM is enabled on CPU 1
-in the above scenario before prctl_enable_tagged_addr() returns and
-userspace starts using tagged addresses, and before it's possible to
-run the userspace process on CPU 1.
+libata has its own flag (AC_ERR_TIMEOUT), that it sets for commands that
+have not received a completion at the time of entering EH.
 
-In switch_mm_irqs_off(), move reading the LAM mask until after
-mm_cpumask() is updated. This ensures that if an outdated LAM mask is
-written to CR3, an IPI is received to update it right after IRQs are
-re-enabled.
+Thus, libata doesn't really care about DID_TIME_OUT at all, and currently
+clears the host byte at the end of EH, in ata_scsi_qc_complete(), before
+scsi_eh_finish_cmd() is called.
 
-[ dhansen: Add a LAM enabling helper and comment it ]
+However, this clearing in ata_scsi_qc_complete() is currently only done
+for commands that are not ATA passthrough commands.
 
-Fixes: 82721d8b25d7 ("x86/mm: Handle LAM on context switch")
-Suggested-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/all/20240702132139.3332013-2-yosryahmed%40google.com
+Since the host byte is visible in the completion that we return to user
+space for ATA passthrough commands, for ATA passthrough commands that got
+completed via EH (commands with sense data), the user will incorrectly see:
+ATA pass-through(16): transport error: Host_status=0x03 [DID_TIME_OUT]
+
+Fix this by moving the clearing of the host byte (which is currently only
+done for commands that are not ATA passthrough commands) from
+ata_scsi_qc_complete() to the start of EH (regardless if the command is
+ATA passthrough or not).
+
+While at it, use the proper helper function to clear the host byte, rather
+than open coding the clearing.
+
+This will make sure that we:
+-Correctly clear DID_TIME_OUT for both ATA passthrough commands and
+ commands that are not ATA passthrough commands.
+-Do not needlessly clear the host byte for commands that did not go via EH.
+ ata_scsi_qc_complete() is called both for commands that are completed
+ normally (without going via EH), and for commands that went via EH,
+ however, only commands that went via EH will have DID_TIME_OUT set.
+
+Fixes: 24aeebbf8ea9 ("scsi: ata: libata: Change ata_eh_request_sense() to not set CHECK_CONDITION")
+Reported-by: Igor Pylypiv <ipylypiv@google.com>
+Closes: https://lore.kernel.org/linux-ide/ZttIN8He8TOZ7Lct@google.com/
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Igor Pylypiv <ipylypiv@google.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process_64.c | 29 ++++++++++++++++++++++++++---
- arch/x86/mm/tlb.c            |  7 +++----
- 2 files changed, 29 insertions(+), 7 deletions(-)
+ drivers/ata/libata-eh.c   | 8 ++++++++
+ drivers/ata/libata-scsi.c | 3 ---
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 6d3d20e3e43a9..d8d582b750d4f 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -798,6 +798,27 @@ static long prctl_map_vdso(const struct vdso_image *image, unsigned long addr)
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 214b935c2ced7..7df9ec9f924c4 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -630,6 +630,14 @@ void ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap,
+ 	list_for_each_entry_safe(scmd, tmp, eh_work_q, eh_entry) {
+ 		struct ata_queued_cmd *qc;
  
- #define LAM_U57_BITS 6
- 
-+static void enable_lam_func(void *__mm)
-+{
-+	struct mm_struct *mm = __mm;
++		/*
++		 * If the scmd was added to EH, via ata_qc_schedule_eh() ->
++		 * scsi_timeout() -> scsi_eh_scmd_add(), scsi_timeout() will
++		 * have set DID_TIME_OUT (since libata does not have an abort
++		 * handler). Thus, to clear DID_TIME_OUT, clear the host byte.
++		 */
++		set_host_byte(scmd, DID_OK);
 +
-+	if (this_cpu_read(cpu_tlbstate.loaded_mm) == mm) {
-+		write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
-+		set_tlbstate_lam_mode(mm);
-+	}
-+}
-+
-+static void mm_enable_lam(struct mm_struct *mm)
-+{
-+	/*
-+	 * Even though the process must still be single-threaded at this
-+	 * point, kernel threads may be using the mm.  IPI those kernel
-+	 * threads if they exist.
-+	 */
-+	on_each_cpu_mask(mm_cpumask(mm), enable_lam_func, mm, true);
-+	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-+}
-+
- static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
- {
- 	if (!cpu_feature_enabled(X86_FEATURE_LAM))
-@@ -814,6 +835,10 @@ static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
- 	if (mmap_write_lock_killable(mm))
- 		return -EINTR;
- 
-+	/*
-+	 * MM_CONTEXT_LOCK_LAM is set on clone.  Prevent LAM from
-+	 * being enabled unless the process is single threaded:
-+	 */
- 	if (test_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags)) {
- 		mmap_write_unlock(mm);
- 		return -EBUSY;
-@@ -830,9 +855,7 @@ static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
- 		return -EINVAL;
+ 		ata_qc_for_each_raw(ap, qc, i) {
+ 			if (qc->flags & ATA_QCFLAG_ACTIVE &&
+ 			    qc->scsicmd == scmd)
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 473e00a58a8b0..fc8d99ea2e581 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1691,9 +1691,6 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ 			set_status_byte(qc->scsicmd, SAM_STAT_CHECK_CONDITION);
+ 	} else if (is_error && !have_sense) {
+ 		ata_gen_ata_sense(qc);
+-	} else {
+-		/* Keep the SCSI ML and status byte, clear host byte. */
+-		cmd->result &= 0x0000ffff;
  	}
  
--	write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
--	set_tlbstate_lam_mode(mm);
--	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-+	mm_enable_lam(mm);
- 
- 	mmap_write_unlock(mm);
- 
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 44ac64f3a047c..a041d2ecd8380 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -503,9 +503,9 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- {
- 	struct mm_struct *prev = this_cpu_read(cpu_tlbstate.loaded_mm);
- 	u16 prev_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
--	unsigned long new_lam = mm_lam_cr3_mask(next);
- 	bool was_lazy = this_cpu_read(cpu_tlbstate_shared.is_lazy);
- 	unsigned cpu = smp_processor_id();
-+	unsigned long new_lam;
- 	u64 next_tlb_gen;
- 	bool need_flush;
- 	u16 new_asid;
-@@ -619,9 +619,7 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- 			cpumask_clear_cpu(cpu, mm_cpumask(prev));
- 		}
- 
--		/*
--		 * Start remote flushes and then read tlb_gen.
--		 */
-+		/* Start receiving IPIs and then read tlb_gen (and LAM below) */
- 		if (next != &init_mm)
- 			cpumask_set_cpu(cpu, mm_cpumask(next));
- 		next_tlb_gen = atomic64_read(&next->context.tlb_gen);
-@@ -633,6 +631,7 @@ void switch_mm_irqs_off(struct mm_struct *unused, struct mm_struct *next,
- 		barrier();
- 	}
- 
-+	new_lam = mm_lam_cr3_mask(next);
- 	set_tlbstate_lam_mode(next);
- 	if (need_flush) {
- 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].ctx_id, next->context.ctx_id);
+ 	ata_qc_done(qc);
 -- 
 2.43.0
 
