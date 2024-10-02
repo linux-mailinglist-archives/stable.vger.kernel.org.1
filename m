@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-79247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0143998D749
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6007298D77E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC0921F247B6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:48:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09DD91F21768
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0721CDFBC;
-	Wed,  2 Oct 2024 13:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DD41CF5C6;
+	Wed,  2 Oct 2024 13:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFNOVSq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJWt56Sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8E829CE7;
-	Wed,  2 Oct 2024 13:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3080817B421;
+	Wed,  2 Oct 2024 13:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876881; cv=none; b=CcFlM5ac8UpOo3fz4Fopx5+co4drC8kbLWky5ktF15b4S6VeEk4mmOpwOiqcwkm34/OKRXTAQJPDOe64G2/wbgTtkM7j/tuhK/ocfPsi0yhxYRXztclH5xiCxRygShc5qexaF4Reu508U7ySXnBjXMq9V52n+/Bc/sCWnmpo1hs=
+	t=1727877007; cv=none; b=Og3MLHNypDJVgfZVHVAv0ccqgEX6L2rAHIHnBKkdcj0A1FEssJp9Lu0Ha9mrkfn6tAGiJhUE16Qi7CAm+LwKYUsv40kGzVzuB2V5fBWhQLdLdempCvqW6m/3Ami1vX0f7RG2Wo4gLefo7PhbNXnnLXJ9A1jtT956irpxSb46uZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876881; c=relaxed/simple;
-	bh=D4J3ZjHWqRqbGAj0p0KAjf3Kqt0nW778CampIwtcr58=;
+	s=arc-20240116; t=1727877007; c=relaxed/simple;
+	bh=t/Af4udjVTtVxvkA7qO35Wm8pQB1KRAlcPfN/69Laug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjERepilJdXhSySDBlxBSbUe4pFAzbuN1IQu1XhNpk05Mnj/jccACwy7zjCBPFWwKgJXy0lqINvOHbD7lcxSjsCJosMwx8d2sT6NQZWDv0oXdZvkz1bgL1giKSkOt62izc6zmo0jBzFMVQ0g3zaKIMFuGlXJ+HqI7hMTHPkmDac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFNOVSq2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D264C4CEC2;
-	Wed,  2 Oct 2024 13:48:00 +0000 (UTC)
+	 MIME-Version; b=HlplbHrfnG9YMw1Pd7U30xzaFRs07fSsMRYkG+AOp3uCANtmrtNgy52blmtCGUr/mP4YIjaD02INE53Zl4DzJYKdTRZs5FSWniSbWfkANAUz9VE6T3pgt/cRg+ycCnXHBdXBnv+x5rmtd2PgkDiNQg6LwLzoOihJa1fnxfY7Dgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJWt56Sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668A6C4CEC2;
+	Wed,  2 Oct 2024 13:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876880;
-	bh=D4J3ZjHWqRqbGAj0p0KAjf3Kqt0nW778CampIwtcr58=;
+	s=korg; t=1727877006;
+	bh=t/Af4udjVTtVxvkA7qO35Wm8pQB1KRAlcPfN/69Laug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFNOVSq2xyMGsvdZouqDs7GdvTgZEyxEUyRDD66MLyo2cGj1PKyvwdPRrsAv0lBaR
-	 CrXdYPHibIbBtKXxmkf3xGF/DI0bKGKpQTBEYU3WRDz6DHFB50eaiKi+ESFGvG4eN/
-	 kBgqv4dNHbhr7qgkUhc4UYngdZgvej53NZV0UdHs=
+	b=OJWt56Sjnno1m4hyFpvfcjWZ0TXT7qFX9nuaJEgzQT7HasNs9+RKh4Qu7qA1/mmKm
+	 MjwklxHZKzBnoW1w5BUU4rHvNHlPAWWTv7qPhcFGOTriWYKCaR6FdAbJs69jpbtOI6
+	 /WHpGZeUjq2US7LzBWeHZpRsizwagjFFZy5meAB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.11 590/695] bus: integrator-lm: fix OF node leak in probe()
-Date: Wed,  2 Oct 2024 14:59:48 +0200
-Message-ID: <20241002125846.061169061@linuxfoundation.org>
+	Slark Xiao <slark_xiao@163.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.11 591/695] bus: mhi: host: pci_generic: Update EDL firmware path for Foxconn modems
+Date: Wed,  2 Oct 2024 14:59:49 +0200
+Message-ID: <20241002125846.100508169@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,34 +65,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Slark Xiao <slark_xiao@163.com>
 
-commit 15a62b81175885b5adfcaf49870466e3603f06c7 upstream.
+commit a7bc66fe8093b48e86386cf73dd601feaaa7949c upstream.
 
-Driver code is leaking OF node reference from of_find_matching_node() in
-probe().
+Foxconn uses a unique firmware for their MHI based modems. So the generic
+firmware from Qcom won't work. Hence, update the EDL firmware path to
+include the 'foxconn' subdirectory based on the modem SoC so that the
+Foxconn specific firmware could be used.
 
-Fixes: ccea5e8a5918 ("bus: Add driver for Integrator/AP logic modules")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://lore.kernel.org/20240826054934.10724-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Respective firmware will be upstreamed to linux-firmware repo.
+
+Cc: stable@vger.kernel.org # 6.11
+Fixes: bf30a75e6e00 ("bus: mhi: host: Add support for Foxconn SDX72 modems")
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240725022941.65948-1-slark_xiao@163.com
+[mani: Reworded the subject and description]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/arm-integrator-lm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/bus/mhi/host/pci_generic.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/bus/arm-integrator-lm.c
-+++ b/drivers/bus/arm-integrator-lm.c
-@@ -85,6 +85,7 @@ static int integrator_ap_lm_probe(struct
- 		return -ENODEV;
- 	}
- 	map = syscon_node_to_regmap(syscon);
-+	of_node_put(syscon);
- 	if (IS_ERR(map)) {
- 		dev_err(dev,
- 			"could not find Integrator/AP system controller\n");
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -433,8 +433,7 @@ static const struct mhi_controller_confi
+ 
+ static const struct mhi_pci_dev_info mhi_foxconn_sdx55_info = {
+ 	.name = "foxconn-sdx55",
+-	.fw = "qcom/sdx55m/sbl1.mbn",
+-	.edl = "qcom/sdx55m/edl.mbn",
++	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
+ 	.config = &modem_foxconn_sdx55_config,
+ 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
+ 	.dma_data_width = 32,
+@@ -444,8 +443,7 @@ static const struct mhi_pci_dev_info mhi
+ 
+ static const struct mhi_pci_dev_info mhi_foxconn_t99w175_info = {
+ 	.name = "foxconn-t99w175",
+-	.fw = "qcom/sdx55m/sbl1.mbn",
+-	.edl = "qcom/sdx55m/edl.mbn",
++	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
+ 	.config = &modem_foxconn_sdx55_config,
+ 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
+ 	.dma_data_width = 32,
+@@ -455,8 +453,7 @@ static const struct mhi_pci_dev_info mhi
+ 
+ static const struct mhi_pci_dev_info mhi_foxconn_dw5930e_info = {
+ 	.name = "foxconn-dw5930e",
+-	.fw = "qcom/sdx55m/sbl1.mbn",
+-	.edl = "qcom/sdx55m/edl.mbn",
++	.edl = "qcom/sdx55m/foxconn/prog_firehose_sdx55.mbn",
+ 	.config = &modem_foxconn_sdx55_config,
+ 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
+ 	.dma_data_width = 32,
+@@ -502,7 +499,7 @@ static const struct mhi_pci_dev_info mhi
+ 
+ static const struct mhi_pci_dev_info mhi_foxconn_t99w515_info = {
+ 	.name = "foxconn-t99w515",
+-	.edl = "fox/sdx72m/edl.mbn",
++	.edl = "qcom/sdx72m/foxconn/edl.mbn",
+ 	.edl_trigger = true,
+ 	.config = &modem_foxconn_sdx72_config,
+ 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
+@@ -513,7 +510,7 @@ static const struct mhi_pci_dev_info mhi
+ 
+ static const struct mhi_pci_dev_info mhi_foxconn_dw5934e_info = {
+ 	.name = "foxconn-dw5934e",
+-	.edl = "fox/sdx72m/edl.mbn",
++	.edl = "qcom/sdx72m/foxconn/edl.mbn",
+ 	.edl_trigger = true,
+ 	.config = &modem_foxconn_sdx72_config,
+ 	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
 
 
 
