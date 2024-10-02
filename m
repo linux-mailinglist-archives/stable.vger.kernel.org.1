@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2A398DC3C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5657098D99A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECD81286575
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BB472898D0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD7F1D048E;
-	Wed,  2 Oct 2024 14:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4001D0DF4;
+	Wed,  2 Oct 2024 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzMTnzty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWqHMimr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FEC1D040D;
-	Wed,  2 Oct 2024 14:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7391D0787;
+	Wed,  2 Oct 2024 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879576; cv=none; b=pSL4qeJ9fAanzMYHKVr8d3wuHTBphkqeUQYPwdRHlnwWQBT4/AEp4VNBlPYJ32ZYgxXT7xK+TwOzha1vwPKotyKDshTOPo2cu6g2PrPalj1hNjohe41Nx6y3tVVA3m3XisDjB8nwX29z/t2/BR/C2KvLrmsE80ONO5JYst1kczA=
+	t=1727878109; cv=none; b=nYexzvVpnNzRmoCiLU8/93c9nN9Q3GN+Nal05XQ11jRxXlfcRnGqJvBZ9u7LTRJqLNjIzrMRjaW4T9WOUwO0WxRrPkgQ2xuBuWoJlvuUK3AgUkuWgOWKhIBvNN9u3ai1POP36lEyEper+JuZhfk4gBvw4/qFQLjm4RnW45bKsjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879576; c=relaxed/simple;
-	bh=zF/sjf3zw3QkUats7a5oo/NwJg16ku0erAtUegOfL3g=;
+	s=arc-20240116; t=1727878109; c=relaxed/simple;
+	bh=IViy3ZG0YHfJoLvfD7PPxGxGzCXdA/uZ88xInLyjojs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qpe7+9et46wbGgLzIBZiY4fbAV+J/BQP7i8ehIYzwT28wktEIvH2NCKzROEwt1wsXS6ryLwSLpfQeEd88o9FQYp2EUX8RH0AEmNrGArzuskkBfO42ciwSevNX/c/26c39k6PivWPFKlVftTHj/d3hxhspQc87jisUVDCFnr94ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzMTnzty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2734C4CECD;
-	Wed,  2 Oct 2024 14:32:55 +0000 (UTC)
+	 MIME-Version; b=kfZwag8l1teOmJo/kvVCkgxFGl+JNEz8+q8i3swFLZODA8+FGcQy673JC8Ca7QSuE1lUr6e191ZGL9vcViSXBUL5+1Tn6HNFvq+9yBFyJ4W/1MPh7F+WOxDRV1d7fNk/pqhWrdavWDcjzypiX3vOg0czEUAYc3axIV0U6uUp7hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWqHMimr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871EDC4CEC2;
+	Wed,  2 Oct 2024 14:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879576;
-	bh=zF/sjf3zw3QkUats7a5oo/NwJg16ku0erAtUegOfL3g=;
+	s=korg; t=1727878108;
+	bh=IViy3ZG0YHfJoLvfD7PPxGxGzCXdA/uZ88xInLyjojs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzMTnztyTzs/GlCmsOYBf0vE2gn3OWSU6N+LCzRfCzWjBpMPU126pqKFNkQQhulEE
-	 y8oTXl7QK3g7qkLy1odZS5oNn4/qJxAqJq/16oU79whZmYbXuyJ8mPZ52wPllpScpF
-	 tA4aiWjuP2rExIvG8asH+1bB1l4GNqwWKtcijceM=
+	b=rWqHMimr3VgjGHiFFibmKyikYGwfKXpA1SqvjeNHurSk0AnFb0YL9Wh3mmkKzOa4p
+	 Gtbs/m5OmFz9PXOTJQCX6NxLoaytNyisMOstxRAFe7coa7hl13O2P97xsYnJlUNKlD
+	 HPMltSBHLs5sFvHgyeIFWgt4udG3DOd19v7RtnQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	yangerkun <yangerkun@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/538] iommu/arm-smmu-qcom: Work around SDM845 Adreno SMMU w/ 16K pages
+Subject: [PATCH 6.10 274/634] ext4: clear EXT4_GROUP_INFO_WAS_TRIMMED_BIT even mount with discard
 Date: Wed,  2 Oct 2024 14:56:14 +0200
-Message-ID: <20241002125757.569381300@linuxfoundation.org>
+Message-ID: <20241002125821.917212305@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: yangerkun <yangerkun@huawei.com>
 
-[ Upstream commit 2d42d3ba443706c9164fa0bef4e5fd1c36bc1bd9 ]
+[ Upstream commit 20cee68f5b44fdc2942d20f3172a262ec247b117 ]
 
-SDM845's Adreno SMMU is unique in that it actually advertizes support
-for 16K (and 32M) pages, which doesn't hold for newer SoCs.
+Commit 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in
+ext4_group_info") speed up fstrim by skipping trim trimmed group. We
+also has the chance to clear trimmed once there exists some block free
+for this group(mount without discard), and the next trim for this group
+will work well too.
 
-This however, seems either broken in the hardware implementation, the
-hypervisor middleware that abstracts the SMMU, or there's a bug in the
-Linux kernel somewhere down the line that nobody managed to track down.
+For mount with discard, we will issue dicard when we free blocks, so
+leave trimmed flag keep alive to skip useless trim trigger from
+userspace seems reasonable. But for some case like ext4 build on
+dm-thinpool(ext4 blocksize 4K, pool blocksize 128K), discard from ext4
+maybe unaligned for dm thinpool, and thinpool will just finish this
+discard(see process_discard_bio when begein equals to end) without
+actually process discard. For this case, trim from userspace can really
+help us to free some thinpool block.
 
-Booting SDM845 with 16K page sizes and drm/msm results in:
+So convert to clear trimmed flag for all case no matter mounted with
+discard or not.
 
-*** gpu fault: ttbr0=0000000000000000 iova=000100000000c000 dir=READ
-type=TRANSLATION source=CP (0,0,0,0)
-
-right after loading the firmware. The GPU then starts spitting out
-illegal intstruction errors, as it's quite obvious that it got a
-bogus pointer.
-
-Moreover, it seems like this issue also concerns other implementations
-of SMMUv2 on Qualcomm SoCs, such as the one on SC7180.
-
-Hide 16K support on such instances to work around this.
-
-Reported-by: Sumit Semwal <sumit.semwal@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240824-topic-845_gpu_smmu-v2-1-a302b8acc052@quicinc.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: 19eb465c969f ("iommu/arm-smmu-qcom: apply num_context_bank fixes for SDM630 / SDM660")
+Fixes: 3d56b8d2c74c ("ext4: Speed up FITRIM by recording flags in ext4_group_info")
+Signed-off-by: yangerkun <yangerkun@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240817085510.2084444-1-yangerkun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/ext4/mballoc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index b899a7b7fa935..db2092d5af5eb 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -341,6 +341,14 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- 	return 0;
- }
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 9dda9cd68ab2f..dfecd25cee4ea 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3887,11 +3887,8 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
+ 	/*
+ 	 * Clear the trimmed flag for the group so that the next
+ 	 * ext4_trim_fs can trim it.
+-	 * If the volume is mounted with -o discard, online discard
+-	 * is supported and the free blocks will be trimmed online.
+ 	 */
+-	if (!test_opt(sb, DISCARD))
+-		EXT4_MB_GRP_CLEAR_TRIMMED(db);
++	EXT4_MB_GRP_CLEAR_TRIMMED(db);
  
-+static int qcom_adreno_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
-+{
-+	/* Support for 16K pages is advertised on some SoCs, but it doesn't seem to work */
-+	smmu->features &= ~ARM_SMMU_FEAT_FMT_AARCH64_16K;
+ 	if (!db->bb_free_root.rb_node) {
+ 		/* No more items in the per group rb tree
+@@ -6515,8 +6512,9 @@ static void ext4_mb_clear_bb(handle_t *handle, struct inode *inode,
+ 					 " group:%u block:%d count:%lu failed"
+ 					 " with %d", block_group, bit, count,
+ 					 err);
+-		} else
+-			EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
++		}
 +
-+	return 0;
-+}
-+
- static void qcom_smmu_write_s2cr(struct arm_smmu_device *smmu, int idx)
- {
- 	struct arm_smmu_s2cr *s2cr = smmu->s2crs + idx;
-@@ -431,6 +439,7 @@ static const struct arm_smmu_impl sdm845_smmu_500_impl = {
++		EXT4_MB_GRP_CLEAR_TRIMMED(e4b.bd_info);
  
- static const struct arm_smmu_impl qcom_adreno_smmu_v2_impl = {
- 	.init_context = qcom_adreno_smmu_init_context,
-+	.cfg_probe = qcom_adreno_smmuv2_cfg_probe,
- 	.def_domain_type = qcom_smmu_def_domain_type,
- 	.alloc_context_bank = qcom_adreno_smmu_alloc_context_bank,
- 	.write_sctlr = qcom_adreno_smmu_write_sctlr,
+ 		ext4_lock_group(sb, block_group);
+ 		mb_free_blocks(inode, &e4b, bit, count_clusters);
 -- 
 2.43.0
 
