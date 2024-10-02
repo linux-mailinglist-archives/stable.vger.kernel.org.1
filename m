@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-80397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DDE98DD3B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2341D98DAD0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24D01F22DA4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEC851F25678
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807E91D1E70;
-	Wed,  2 Oct 2024 14:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651451D1E8C;
+	Wed,  2 Oct 2024 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESDgUc+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIuroV/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC021EA80;
-	Wed,  2 Oct 2024 14:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203961D1E86;
+	Wed,  2 Oct 2024 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880255; cv=none; b=UcYpABh/gP+RIPChKDcaZ/pdtd3+KdkUUXtHlsFk+UlhznvjsNxXJOlW1j3ddal+Nv/gHNug56Ru1eRePvqz1SlQa2sKKXwcCmd8Wb7mZvadvpHOe/w9AmuqK0ocED2N4+9b/lKpPlWSp90/EMnbE2ibPgbgh9Hk77q8pqay5cI=
+	t=1727878797; cv=none; b=ExvdVSX6MN75KRlMOtFUYln5k+Gqhmnm+ZxHYvzQEDi0oshuhpTnVbjt8mtuqwJJJq/VCnfFVt+gLpJaB9K/pArNv5/jnv3f4TXOPlM16ETviA1j/CE/ypwyDGBTusF6SzTazXBNRrxOK79uFhFLWR6BMVY1GbZ+spYv3C+ikkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880255; c=relaxed/simple;
-	bh=RT+qv1Htruml9opTYKkdxRmoR63Lj8fRPLEq2MMwo+U=;
+	s=arc-20240116; t=1727878797; c=relaxed/simple;
+	bh=8mQ/Tk9OdpdTxCG7x+aPNutvtIUTaqHdoCbIJ5+iAO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lEXJFjWviTIxpJzAULjqHv11NQ41w0QuaJ9aFPdMJsKcA63fsxJj0e+sruFZLWXSoqqBJ8nQAm2YYrJ/jKhNjVQNi7640PI9Zw6fmTr95raSP7Dz2k2DZdOX9oEqVIugMutnHB1bguJyMc3uUeI2uqeGGweolX0zlHN+pDsQPKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESDgUc+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4C0C4CEC2;
-	Wed,  2 Oct 2024 14:44:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OPPDxiBQF6bmBwOg4Xhl+gJKzOT+h/cf9gD5VrZ7ILThUwwLKyNJB21UFvvjStpMhcJH6ga7x9ivtqusrnRyA9AJDoSJrcVOIdrNYg1k9pKKqU57PxCimzd4H2oDDvqlgD8QkFB8NoMudez0Qe7+Y4PZ9Z2VpLIiJIzxMrall40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIuroV/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED60C4CECE;
+	Wed,  2 Oct 2024 14:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880255;
-	bh=RT+qv1Htruml9opTYKkdxRmoR63Lj8fRPLEq2MMwo+U=;
+	s=korg; t=1727878797;
+	bh=8mQ/Tk9OdpdTxCG7x+aPNutvtIUTaqHdoCbIJ5+iAO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESDgUc+CWNWbfOeG4spoNAiosjWs1XOlfxZ6cEG0psFDcuBtz6YsNa7JsBO6dTrrv
-	 pjnvJRA3jftVOf18hdfeJXX4qBRXQ3cu+p7N187nSbp2gNzw1ONkKgsKHhmAHI/fQl
-	 nO2va9n96gerhNCEVLk4ddstidkPjFvHb7k4AHhQ=
+	b=aIuroV/XqKyjHZ6GuwIds5EGpLfouNN8aD2qaxdgZfUbuNV3eqP/aawRrwUH0SzLS
+	 DGJHpuUwA6rh3Qdnhnc3kqGmZzxj5cGHFZLbhlMQaLWnTTEU7Oud7+AAQWwrlthQ7n
+	 NqMOqimXUnYankNMrZNU5auTrCdshhEZ/AHmoVBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 395/538] PCI: dra7xx: Fix threaded IRQ request for "dra7xx-pcie-main" IRQ
+	Douglas Anderson <dianders@chromium.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.10 534/634] serial: qcom-geni: fix fifo polling timeout
 Date: Wed,  2 Oct 2024 15:00:34 +0200
-Message-ID: <20241002125808.026436406@linuxfoundation.org>
+Message-ID: <20241002125832.185593827@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +63,121 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 03f84b3baba7836bdfc162c19288d5ce1aa92890 upstream.
+commit c80ee36ac8f9e9c27d8e097a2eaaf198e7534c83 upstream.
 
-Commit da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for
-"dra7xx-pcie-main" IRQ") switched from devm_request_irq() to
-devm_request_threaded_irq() for the "dra7xx-pcie-main" interrupt.
+The qcom_geni_serial_poll_bit() can be used to wait for events like
+command completion and is supposed to wait for the time it takes to
+clear a full fifo before timing out.
 
-Since the primary handler was set to NULL, the "IRQF_ONESHOT" flag
-should have also been set. Fix this.
+As noted by Doug, the current implementation does not account for start,
+stop and parity bits when determining the timeout. The helper also does
+not currently account for the shift register and the two-word
+intermediate transfer register.
 
-Fixes: da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for "dra7xx-pcie-main" IRQ")
-Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/linux-pci/20240827122422.985547-2-s-vadapalli@ti.com
-Reported-by: Udit Kumar <u-kumar1@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org
+A too short timeout can specifically lead to lost characters when
+waiting for a transfer to complete as the transfer is cancelled on
+timeout.
+
+Instead of determining the poll timeout on every call, store the fifo
+timeout when updating it in set_termios() and make sure to take the
+shift and intermediate registers into account. Note that serial core has
+already added a 20 ms margin to the fifo timeout.
+
+Also note that the current uart_fifo_timeout() interface does
+unnecessary calculations on every call and did not exist in earlier
+kernels so only store its result once. This facilitates backports too as
+earlier kernels can derive the timeout from uport->timeout, which has
+since been removed.
+
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
+Cc: stable@vger.kernel.org	# 4.17
+Reported-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240906131336.23625-2-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-dra7xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c |   31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -841,7 +841,8 @@ static int dra7xx_pcie_probe(struct plat
- 	dra7xx->mode = mode;
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -124,7 +124,7 @@ struct qcom_geni_serial_port {
+ 	dma_addr_t tx_dma_addr;
+ 	dma_addr_t rx_dma_addr;
+ 	bool setup;
+-	unsigned int baud;
++	unsigned long poll_timeout_us;
+ 	unsigned long clk_rate;
+ 	void *rx_buf;
+ 	u32 loopback;
+@@ -270,22 +270,13 @@ static bool qcom_geni_serial_poll_bit(st
+ {
+ 	u32 reg;
+ 	struct qcom_geni_serial_port *port;
+-	unsigned int baud;
+-	unsigned int fifo_bits;
+ 	unsigned long timeout_us = 20000;
+ 	struct qcom_geni_private_data *private_data = uport->private_data;
  
- 	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
--			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
-+					IRQF_SHARED | IRQF_ONESHOT,
-+					"dra7xx-pcie-main", dra7xx);
- 	if (ret) {
- 		dev_err(dev, "failed to request irq\n");
- 		goto err_gpio;
+ 	if (private_data->drv) {
+ 		port = to_dev_port(uport);
+-		baud = port->baud;
+-		if (!baud)
+-			baud = 115200;
+-		fifo_bits = port->tx_fifo_depth * port->tx_fifo_width;
+-		/*
+-		 * Total polling iterations based on FIFO worth of bytes to be
+-		 * sent at current baud. Add a little fluff to the wait.
+-		 */
+-		timeout_us = ((fifo_bits * USEC_PER_SEC) / baud) + 500;
++		if (port->poll_timeout_us)
++			timeout_us = port->poll_timeout_us;
+ 	}
+ 
+ 	/*
+@@ -1244,11 +1235,11 @@ static void qcom_geni_serial_set_termios
+ 	unsigned long clk_rate;
+ 	u32 ver, sampling_rate;
+ 	unsigned int avg_bw_core;
++	unsigned long timeout;
+ 
+ 	qcom_geni_serial_stop_rx(uport);
+ 	/* baud rate */
+ 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
+-	port->baud = baud;
+ 
+ 	sampling_rate = UART_OVERSAMPLING;
+ 	/* Sampling rate is halved for IP versions >= 2.5 */
+@@ -1326,9 +1317,21 @@ static void qcom_geni_serial_set_termios
+ 	else
+ 		tx_trans_cfg |= UART_CTS_MASK;
+ 
+-	if (baud)
++	if (baud) {
+ 		uart_update_timeout(uport, termios->c_cflag, baud);
+ 
++		/*
++		 * Make sure that qcom_geni_serial_poll_bitfield() waits for
++		 * the FIFO, two-word intermediate transfer register and shift
++		 * register to clear.
++		 *
++		 * Note that uart_fifo_timeout() also adds a 20 ms margin.
++		 */
++		timeout = jiffies_to_usecs(uart_fifo_timeout(uport));
++		timeout += 3 * timeout / port->tx_fifo_depth;
++		WRITE_ONCE(port->poll_timeout_us, timeout);
++	}
++
+ 	if (!uart_console(uport))
+ 		writel(port->loopback,
+ 				uport->membase + SE_UART_LOOPBACK_CFG);
 
 
 
