@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-78891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E7298D573
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3818B98D8E2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5620B1C21F0F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB181C23147
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0381D0437;
-	Wed,  2 Oct 2024 13:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFBF1D0F5E;
+	Wed,  2 Oct 2024 14:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ooIq56II"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYrR5jAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061B01D0403;
-	Wed,  2 Oct 2024 13:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12A71D0792;
+	Wed,  2 Oct 2024 14:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875830; cv=none; b=XVijN8QhkSXJiaRBZPSqPsJeEHra94JDIiCb6sPCRDp8TSwKA9AKjR8Pt1UoUpmgmtQLR+DGrHyP0pM1pPrtqX77JTq+2DaAoUAV6zSTBySdEdtKz6Zk1udQjyOp/2D3AuZ1PN6VMYQjknVyKX35kGK+s/5IGSr4P0NTabO9VIM=
+	t=1727877706; cv=none; b=Fq+w8pr6MMJP+iuf4zzdpanvSSjXhLfKBkKanI78Ti9qFO/g4y5v005pi85r30TxStXwdxzT5ZkGcOaRcUrhijEw8z6Q7PJpDP+zXp0PnQi86wG53lKipCgA8CDSCYkgJYbOZGWEXdLzqEBcM9P1DstcpQ0nNxkCGCESlLqXleY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875830; c=relaxed/simple;
-	bh=QK7OSkAkbAXRdGw6jxTWhRMQkYNk1JTPlK852Bmj3zE=;
+	s=arc-20240116; t=1727877706; c=relaxed/simple;
+	bh=rlbL9dBtiyVMtx90eQUaKiRMoxf47BemxHdlORWzuEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amuXUuJQXLY5GyRcaIVtM1joXoIa/pRJgjI8cqipYSnXK3QLmT/A/+DmtngIf8C2L6o2/ziP+cKtbT7iQTrWKpvV9j5TTxOKieX/xqlnkJ5UtJktIVvXar33xk7QwFz26xsABXlyY0Z6+raCg+1YQhcsi0l0prBAraEUb2K1OaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ooIq56II; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BCCC4CEC5;
-	Wed,  2 Oct 2024 13:30:29 +0000 (UTC)
+	 MIME-Version; b=cv/z/83Pj4VNnuH6dL16fmZ1uZC5eXIjIawAgqAuxPWQ0AGtYfoY5yaGbG4VmCmecXAYqrTka/RyzAvcBMZ2sQ0lbDmOMCKZRsqieSjk0MQzgHvp2xz16utJQbkXzvZK4x42UrXUccl9O4JgPO+aSLeyyncDUPB9Kf2bX+VgWlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYrR5jAG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D4FC4CEC5;
+	Wed,  2 Oct 2024 14:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875829;
-	bh=QK7OSkAkbAXRdGw6jxTWhRMQkYNk1JTPlK852Bmj3zE=;
+	s=korg; t=1727877706;
+	bh=rlbL9dBtiyVMtx90eQUaKiRMoxf47BemxHdlORWzuEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ooIq56II+/jBOen47rWWQGIUP0e+NVMfVi3J8SghQOPkfev93DSwJ40jxiN+gpD8s
-	 AzgUlL2sdsgabwzhSiFAuHisx+kqGyh39ybq/hqPtd/Xhc94IwKpSJ5JnYAxCHlQPB
-	 hx4Yt4Jptd7BlnvieLS797c+YgmlfdQK3Vgfs12s=
+	b=MYrR5jAG+tjUe4xZhvW2hl4as10jlQhtskhDY0D8lQuL1f2gdcp3Y0J066Bz9KAVz
+	 mCx0GT7iFMWzLty1RB0N6JKjLTKmAqxqL5HZnVVzEsRt3YJmcdGL6P4Ltjg5n3QK0T
+	 fKawsLzHl6r4ENHh0RoUa+o+zWuVlANzi9HFyIdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 236/695] drm/msm/dsi: correct programming sequence for SM8350 / SM8450
-Date: Wed,  2 Oct 2024 14:53:54 +0200
-Message-ID: <20241002125831.868251481@linuxfoundation.org>
+Subject: [PATCH 6.10 135/634] ARM: dts: microchip: sama7g5: Fix RTT clock
+Date: Wed,  2 Oct 2024 14:53:55 +0200
+Message-ID: <20241002125816.437662372@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-[ Upstream commit 1328cb7c34bf6d056df9ff694ee5194537548258 ]
+[ Upstream commit 867bf1923200e6ad82bad0289f43bf20b4ac7ff9 ]
 
-According to the display-drivers, 5nm DSI PLL (v4.2, v4.3) have
-different boundaries for pll_clock_inverters programming. Follow the
-vendor code and use correct values.
+According to datasheet, Chapter 34. Clock Generator, section 34.2,
+Embedded characteristics, source clock for RTT is the TD_SLCK, registered
+with ID 1 by the slow clock controller driver. Fix RTT clock.
 
-Fixes: 2f9ae4e395ed ("drm/msm/dsi: add support for DSI-PHY on SM8350 and SM8450")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/606947/
-Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-3-1149dd8399fe@linaro.org
+Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
+Link: https://lore.kernel.org/r/20240826165320.3068359-1-claudiu.beznea@tuxon.dev
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/microchip/sama7g5.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 3b59137ca6743..031446c87daec 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -135,7 +135,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
- 			config->pll_clock_inverters = 0x00;
- 		else
- 			config->pll_clock_inverters = 0x40;
--	} else {
-+	} else if (pll->phy->cfg->quirks & DSI_PHY_7NM_QUIRK_V4_1) {
- 		if (pll_freq <= 1000000000ULL)
- 			config->pll_clock_inverters = 0xa0;
- 		else if (pll_freq <= 2500000000ULL)
-@@ -144,6 +144,16 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
- 			config->pll_clock_inverters = 0x00;
- 		else
- 			config->pll_clock_inverters = 0x40;
-+	} else {
-+		/* 4.2, 4.3 */
-+		if (pll_freq <= 1000000000ULL)
-+			config->pll_clock_inverters = 0xa0;
-+		else if (pll_freq <= 2500000000ULL)
-+			config->pll_clock_inverters = 0x20;
-+		else if (pll_freq <= 3500000000ULL)
-+			config->pll_clock_inverters = 0x00;
-+		else
-+			config->pll_clock_inverters = 0x40;
- 	}
+diff --git a/arch/arm/boot/dts/microchip/sama7g5.dtsi b/arch/arm/boot/dts/microchip/sama7g5.dtsi
+index 75778be126a3d..17bcdcf0cf4a0 100644
+--- a/arch/arm/boot/dts/microchip/sama7g5.dtsi
++++ b/arch/arm/boot/dts/microchip/sama7g5.dtsi
+@@ -272,7 +272,7 @@
+ 			compatible = "microchip,sama7g5-rtt", "microchip,sam9x60-rtt", "atmel,at91sam9260-rtt";
+ 			reg = <0xe001d020 0x30>;
+ 			interrupts = <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&clk32k 0>;
++			clocks = <&clk32k 1>;
+ 		};
  
- 	config->decimal_div_start = dec;
+ 		clk32k: clock-controller@e001d050 {
 -- 
 2.43.0
 
