@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-80285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA04098DCC7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A619B98DA38
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609D51F21594
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E871B21562
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936F81D2F75;
-	Wed,  2 Oct 2024 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F611D1E61;
+	Wed,  2 Oct 2024 14:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI6qV67z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xutgF8vV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529211D049A;
-	Wed,  2 Oct 2024 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED411D0BBA;
+	Wed,  2 Oct 2024 14:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879923; cv=none; b=oTLBoI1Lc1h9P0VLzdit4zJlFtqL7XMd26Jwz8xvZMQOjvyFJ64MXF9K1LI3eyssjgnblm5riocxivVvthKZ0E/uw0e8QQXlghaY0OCX0ArbPvM/DHPo5hzIPzPCiUZOE168hARfhcYzftkAI2rzxL0B9HXMYOnFl/mMotW2wFc=
+	t=1727878467; cv=none; b=o/olEK8M7SyomEr00hOqHmbHdOuqlulHCJjSMBukpufsbNPrrfgVpIxNH+fHFf4Uc9rG3CV5S91TNnpwVhhczHT8O0soimemFeYf/r487GyCqhmOJXFHoXHLcuxAmOeacZIcDkhvVeiXJOTpITrSzW1H1OPi5XPigyYDTwIb7VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879923; c=relaxed/simple;
-	bh=QxiTuc9QazreoUtN+sIYaSek7qyxwcuaSD8LbJY5bY0=;
+	s=arc-20240116; t=1727878467; c=relaxed/simple;
+	bh=yuVRgoCzjScAK+Aa7j8N7qYY4SQBxwaEA7pRAp5/JvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSbStyITsdto5ub1IhaYN3uHq6KR5xYdTLG6hFH8DLJoHZfIB0E5RwEKYnQjEyKP1xko84SyFOXMO9cjDR0OHKnRtesTjxhFWsDmbwc3S2iFROoH1BTxmK7Goxv1bUGvzCkGz60uyp/FI8LZtwvvHUgjJJUlwrLbz/bDc/7vzAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tI6qV67z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF04CC4CEC2;
-	Wed,  2 Oct 2024 14:38:42 +0000 (UTC)
+	 MIME-Version; b=STfQp2C+mjbM9cXtt+LPrG5tNKKe7Rfzst2AIgiP4HqgL0No1BHKUkkZrB6bTc1a+ukJLOugSfo/mxfZMPxAU5GI4s4rokbexx/a7bOsXgIkvZ+nDv1krQKXBHmzxhLwgjLwVIX5DHaszzgK587q+lSIVlY1yRYlH1v2ml/F3dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xutgF8vV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4B5C4CECD;
+	Wed,  2 Oct 2024 14:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879923;
-	bh=QxiTuc9QazreoUtN+sIYaSek7qyxwcuaSD8LbJY5bY0=;
+	s=korg; t=1727878467;
+	bh=yuVRgoCzjScAK+Aa7j8N7qYY4SQBxwaEA7pRAp5/JvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tI6qV67zrDmChptxeITS7Ez8Yty/nOlDWzy95Ui0KP8eA+fwYyRBROmVhjLHaBrpY
-	 6p3SZPCjlyYJ0tJK2vBAIKhLD16IO70Nof/L8W1Nh2QqKYqhmvOCSrhtPmJhG/1TEN
-	 L1Gn86dEZ0bixf1s71GsXME7LWzDNxopx6E5LGTE=
+	b=xutgF8vVUH/2I/nQzZwpZ4s0BGIeAENNxFtXqmi7AzRVl7ETcYiNsl/k60vI/qbiY
+	 GjHkqJDpMq9qhJcdNQVxDBozzKqFmzJinypA+JeBxYVkYy0iH2q4kGvVqcWAeCjEUp
+	 WwdpCxz+Vh2ipnwxYKFfIbh2UnnbuEzPQsRPaysc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/538] firewire: core: correct range of block for case of switch statement
+Subject: [PATCH 6.10 423/634] serial: 8250: omap: Cleanup on error in request_irq
 Date: Wed,  2 Oct 2024 14:58:43 +0200
-Message-ID: <20241002125803.466057855@linuxfoundation.org>
+Message-ID: <20241002125827.800000714@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Markus Schneider-Pargmann <msp@baylibre.com>
 
-[ Upstream commit ebb9d3ca8f7efc1b6a2f1750d1058eda444883d0 ]
+[ Upstream commit 35e648a16018b747897be2ccc3ce95ff23237bb5 ]
 
-A commit d8527cab6c31 ("firewire: cdev: implement new event to notify
-response subaction with time stamp") adds an additional case,
-FW_CDEV_EVENT_RESPONSE2, into switch statement in complete_transaction().
-However, the range of block is beyond to the case label and reaches
-neibour default label.
+If devm_request_irq fails, the code does not cleanup many things that
+were setup before. Instead of directly returning ret we should jump to
+err.
 
-This commit corrects the range of block. Fortunately, it has few impacts
-in practice since the local variable in the scope under the label is not
-used in codes under default label.
-
-Fixes: d8527cab6c31 ("firewire: cdev: implement new event to notify response subaction with time stamp")
-Link: https://lore.kernel.org/r/20240810070403.36801-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Fixes: fef4f600319e ("serial: 8250: omap: Fix life cycle issues for interrupt handlers")
+Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20240807141227.1093006-4-msp@baylibre.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/core-cdev.c | 2 +-
+ drivers/tty/serial/8250/8250_omap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firewire/core-cdev.c b/drivers/firewire/core-cdev.c
-index 6274b86eb9437..73cc2f2dcbf92 100644
---- a/drivers/firewire/core-cdev.c
-+++ b/drivers/firewire/core-cdev.c
-@@ -598,11 +598,11 @@ static void complete_transaction(struct fw_card *card, int rcode, u32 request_ts
- 		queue_event(client, &e->event, rsp, sizeof(*rsp) + rsp->length, NULL, 0);
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index afef1dd4ddf49..fca5f25d693a7 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1581,7 +1581,7 @@ static int omap8250_probe(struct platform_device *pdev)
+ 	ret = devm_request_irq(&pdev->dev, up.port.irq, omap8250_irq, 0,
+ 			       dev_name(&pdev->dev), priv);
+ 	if (ret < 0)
+-		return ret;
++		goto err;
  
- 		break;
-+	}
- 	default:
- 		WARN_ON(1);
- 		break;
- 	}
--	}
+ 	priv->wakeirq = irq_of_parse_and_map(np, 1);
  
- 	/* Drop the idr's reference */
- 	client_put(client);
 -- 
 2.43.0
 
