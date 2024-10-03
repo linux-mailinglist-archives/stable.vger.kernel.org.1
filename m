@@ -1,214 +1,129 @@
-Return-Path: <stable+bounces-80657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F16798F286
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:27:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A50C98F281
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94A53B20D67
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2931F21AEE
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC2E1A2C32;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865971A0BDB;
 	Thu,  3 Oct 2024 15:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QM8mfQ9R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D+97ZQ+T"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81885DDA8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76211A0719;
 	Thu,  3 Oct 2024 15:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727969265; cv=none; b=a1px9HXl5B/d60yT/hcoMo13rNzUOrE1QFH3pUqfvKuX8jsRqx60WPb0C3/uWqRGCQbH+PpXgLGf0GKizxnMSiHsePZxTEQsqzvDGFBf2FAH07pkGbACKju5thE12MRJKxiLWJPwzGH3FyDC6VTkd7BKxhWiorF8agAKTNyWbDA=
+	t=1727969265; cv=none; b=nOk3YUswPX6BDpPnbwCAp1e5qDttfjE1AR7gQ8kGda6ff1s0VA9SIjfK13L2b98WX3lUSW4JXLojsDre3oFgttYUPc9oKaU5MtdrIjVHhxxkgCBIFsGgG7186BZllEiaynF25PIymdIpoZ+Zzqvh3aMC3vfd1Mvesx9EskSNrdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727969265; c=relaxed/simple;
-	bh=ljRzg7BA3WIQXXWJ7SLsJGKyKBaz/hMwnHxwcHl9MRY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RZDlmD632aVxIL3s0Xr8qASFoc+7adpWv4Wp3asiuhdGV5Pi8YdHbQFwTYWoZHbTLhp8Utaqut5MkjHFeJscyaA/uWXwrUE9IXqEtaQ8wVcLkqXQlolPRES6bwS1AH4ZPp2oH/8kYieloIC3B/v7y0lTUucPROsLlsnx6uW6ULw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QM8mfQ9R; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 493FOYpw004237;
-	Thu, 3 Oct 2024 15:27:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=2
-	ELewwyxSoWoMQHTTzZy+MuRuf83ZiTTwrHrMIVW0WE=; b=QM8mfQ9RJ5Nc8qgt0
-	BJw3b6eNOSPEDOCgty+nBEQW4RxVK6HJv/TgGfmfyW3pmC2g0hOQpS2X5yjyhBu1
-	KFtoTW37rJ4SBp8+BSSPBjDOL8q0yUitLDZvTv4lsQbPPxEZ0d6TY3O5fs8GQsAs
-	0Y+I8kRScgKGqPKiSc4rgLG64Rs3wZAYzzBLzmsacUvsfUNkg0UyonyPq+CsxH//
-	cZZvLKMpo1/sUpDhkp0GkGJBA+62ia9j1ISEC1CfRRQ4tBC10NiWmV4wE2Rqf2HH
-	akXGyVG/THlWgW9tIWHYavnwtz0KaFv2yRxhfBQDf/vJbZ9S4SukLBNh26NygDU2
-	mZQZQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 421wvsr0fk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Oct 2024 15:27:29 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 493FOqpf004690;
-	Thu, 3 Oct 2024 15:27:29 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 421wvsr0fg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Oct 2024 15:27:29 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 493DBxAF014609;
-	Thu, 3 Oct 2024 15:27:27 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41xwmkgba1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Oct 2024 15:27:27 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 493FRRpU27525726
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Oct 2024 15:27:27 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 12D4B58051;
-	Thu,  3 Oct 2024 15:27:27 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3FC5958062;
-	Thu,  3 Oct 2024 15:27:26 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  3 Oct 2024 15:27:26 +0000 (GMT)
-Message-ID: <def4ec2d-584b-405f-9d5e-99267013c3c0@linux.ibm.com>
-Date: Thu, 3 Oct 2024 11:27:25 -0400
+	bh=qsa9Tr36UghnCP9lXSpaAMsZJLGVmYl72voh9q9E3tI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=lezwjKzLMqmzkRLBG81+q9/miRZsoQcJRDkVASAxOi3GEAJOTOQt4jhertLa3f8KD/F3wpcFUgVerHWSX0mpHaaVku9SfCJu4aKY45gLMoyWCzjfkIfQWr8eXP3cXcswrGcQZ8pLdh+Yw4hr4HQWX+M0Aoj2JYjkU6VYi3FVUDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D+97ZQ+T; arc=none smtp.client-ip=209.85.222.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-7a99e8d5df1so111091985a.2;
+        Thu, 03 Oct 2024 08:27:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727969263; x=1728574063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5/dGEqQC57GQUROEFrRin+HCPiuYX6M1Xji3KrbNk7A=;
+        b=D+97ZQ+Tf52/T/DzntL5nI5tkC9mkuytA15IRhbfbCyWmarr02HFxyyfVu3AURnSrl
+         0BJA/Gr3tlumDYroY+J2RLrs0lJ/5x5WO3h+ju4bVBfDqEYTUzYav9Z9z8TPisgQ7b8G
+         9A1apDOX/Z+Agw1QprYxuQBti3dz6XPeT21ySHLJ4dOV00NEDs7Dr/BGyUGSzHp3wqog
+         yfXCagXrzLlXasUdyqCwnII0Es2HA81kG+E0ubS02FjLhdzFys4PsoEOUZR4BJwoUhHW
+         wHUZimu4qjZsPTiBn62y83XiK8SC32MpN2vhOIAcWOC1Z2FCghK3QOfA8ngexymOT6FU
+         aVvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727969263; x=1728574063;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5/dGEqQC57GQUROEFrRin+HCPiuYX6M1Xji3KrbNk7A=;
+        b=w1o43lQhtSoHiVE4Xealv/e57zf+cWjDjtfw6xFKdg9t3th5VnTLdyip1mICxerW+a
+         NUt+Hri4SD7x6GqSLwmCuZIPjB2bhGj99/9dF3JuJjaPr0g8kq6VO49JZ/ZlIMKQRQSZ
+         QWhmEQv0NcOUhltub+ts/nlJROxY8L2YQGo5PxuzdGK7EADEBwZ+fJc53HDFKD3YdGUO
+         naWc55X1XUqh59EG3EKVL90YLfoA6wN7FwwRb4XfvJrjIvmzC4Si1UgTjAj0xwTcqblp
+         li06Ngh8s3ldnaY/dhqKks/lx0JFTlq3QoLLgk8ScbcaqJaROK6vJw9daXewcStphrRg
+         +5qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU++kfiX1905Cc22FgrgaDvcw4vb+ukhJ4yuAwcmAsL6zffuvJSLSNqHfijO4HGIuvTFMNCqdwgalEVp8s=@vger.kernel.org, AJvYcCWCIEd7Txvxb3iqk0+EjzNlJCmB83ya+xaDDVACg5+2GkO/OY1vhHovNKKNTH3uB80a/rUr0lapgivh73iX@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4MnjKa5B5iukCGh5wz2d+PfRm+T/SEuToI9jem9q5xLKq4Zax
+	DV0jrWvL2wus76TtAPFUruvUB9Q0vFZgqNu7aryVA+e2ws6dWCGH
+X-Google-Smtp-Source: AGHT+IHusAAhgTINbI8Xq6hjYClvjuFgNYxmnMzHJ2IBsHBLKRXVnOAN8u7Rvx6/ufQVetfS4EI0/w==
+X-Received: by 2002:a05:620a:1926:b0:7a9:bf31:dbc9 with SMTP id af79cd13be357-7ae626ad92bmr1144156485a.4.1727969262543;
+        Thu, 03 Oct 2024 08:27:42 -0700 (PDT)
+Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae6b39b674sm59232685a.34.2024.10.03.08.27.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Oct 2024 08:27:41 -0700 (PDT)
+From: Gax-c <zichenxie0106@gmail.com>
+To: gregkh@linuxfoundation.org,
+	broonie@kernel.org,
+	lgirdwood@gmail.com,
+	linux-arm-msm@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	rohitkr@codeaurora.org,
+	srinivas.kandagatla@linaro.org
+Cc: stable@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	chenyuan0y@gmail.com,
+	zzjas98@gmail.com,
+	Zichen Xie <zichenxie0106@gmail.com>
+Subject: [PATCH] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
+Date: Thu,  3 Oct 2024 10:27:39 -0500
+Message-Id: <20241003152739.9650-1-zichenxie0106@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2024100358-crewmate-headwear-164e@gregkh>
+References: <2024100358-crewmate-headwear-164e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/5] tpm: Implement tpm2_load_null() rollback
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: James.Bottomley@HansenPartnership.com, roberto.sassu@huawei.com,
-        mapengyu@gmail.com, stable@vger.kernel.org,
-        Mimi Zohar
- <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240921120811.1264985-1-jarkko@kernel.org>
- <20240921120811.1264985-3-jarkko@kernel.org>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20240921120811.1264985-3-jarkko@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DnUEf0_E9NVqc2ko0jHXh3i7J1oP_COR
-X-Proofpoint-ORIG-GUID: eAjAmEvf55TLBkcgn_569FOvdxxojJ-m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-03_06,2024-10-03_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
- bulkscore=0 spamscore=0 priorityscore=1501 mlxscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2410030110
+Content-Transfer-Encoding: 8bit
 
+From: Zichen Xie <zichenxie0106@gmail.com>
 
+A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
+possibly return NULL pointer. NULL Pointer Dereference may be
+triggerred without addtional check.
+Add a NULL check for the returned pointer.
 
-On 9/21/24 8:08 AM, Jarkko Sakkinen wrote:
-> tpm2_load_null() has weak and broken error handling:
-> 
-> - The return value of tpm2_create_primary() is ignored.
-> - Leaks TPM return codes from tpm2_load_context() to the caller.
-> - If the key name comparison succeeds returns previous error
->    instead of zero to the caller.
-> 
-> Implement a proper error rollback.
-> 
-> Cc: stable@vger.kernel.org # v6.10+
-> Fixes: eb24c9788cd9 ("tpm: disable the TPM if NULL name changes")
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
-> v5:
-> - Fix the TPM error code leak from tpm2_load_context().
-> v4:
-> - No changes.
-> v3:
-> - Update log messages. Previously the log message incorrectly stated
->    on load failure that integrity check had been failed, even tho the
->    check is done *after* the load operation.
-> v2:
-> - Refined the commit message.
-> - Reverted tpm2_create_primary() changes. They are not required if
->    tmp_null_key is used as the parameter.
-> ---
->   drivers/char/tpm/tpm2-sessions.c | 43 +++++++++++++++++---------------
->   1 file changed, 23 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-> index 0f09ac33ae99..a856adef18d3 100644
-> --- a/drivers/char/tpm/tpm2-sessions.c
-> +++ b/drivers/char/tpm/tpm2-sessions.c
-> @@ -915,33 +915,36 @@ static int tpm2_parse_start_auth_session(struct tpm2_auth *auth,
->   
->   static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
->   {
-> -	int rc;
->   	unsigned int offset = 0; /* dummy offset for null seed context */
->   	u8 name[SHA256_DIGEST_SIZE + 2];
-> +	u32 tmp_null_key;
-> +	int rc;
->   
->   	rc = tpm2_load_context(chip, chip->null_key_context, &offset,
-> -			       null_key);
-> -	if (rc != -EINVAL)
-> -		return rc;
-> +			       &tmp_null_key);
-> +	if (rc != -EINVAL) {
-> +		if (!rc)
-> +			*null_key = tmp_null_key;
-> +		goto err;
-> +	}
->   
-> -	/* an integrity failure may mean the TPM has been reset */
-> -	dev_err(&chip->dev, "NULL key integrity failure!\n");
-> -	/* check the null name against what we know */
-> -	tpm2_create_primary(chip, TPM2_RH_NULL, NULL, name);
-> -	if (memcmp(name, chip->null_key_name, sizeof(name)) == 0)
-> -		/* name unchanged, assume transient integrity failure */
-> -		return rc;
-> -	/*
-> -	 * Fatal TPM failure: the NULL seed has actually changed, so
-> -	 * the TPM must have been illegally reset.  All in-kernel TPM
-> -	 * operations will fail because the NULL primary can't be
-> -	 * loaded to salt the sessions, but disable the TPM anyway so
-> -	 * userspace programmes can't be compromised by it. > -	 */
-> -	dev_err(&chip->dev, "NULL name has changed, disabling TPM due to interference\n");
-> +	rc = tpm2_create_primary(chip, TPM2_RH_NULL, &tmp_null_key, name);
-> +	if (rc)
-> +		goto err;
-> +
-> +	/* Return the null key if the name has not been changed: */
-> +	if (memcmp(name, chip->null_key_name, sizeof(name)) == 0) {
-> +		*null_key = tmp_null_key;
-> +		return 0;
-> +	}
-> +
-> +	/* Deduce from the name change TPM interference: */
-> +	dev_err(&chip->dev, "the null key integrity check failedh\n");
+Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ sound/soc/qcom/lpass-cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-s/failedh/failed
+diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
+index 5a47f661e0c6..242bc16da36d 100644
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -1242,6 +1242,8 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
+ 	/* Allocation for i2sctl regmap fields */
+ 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
+ 					GFP_KERNEL);
++	if (!drvdata->i2sctl)
++		return -ENOMEM;
+ 
+ 	/* Initialize bitfields for dai I2SCTL register */
+ 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
+-- 
+2.25.1
 
-> +	tpm2_flush_context(chip, tmp_null_key);
->   	chip->flags |= TPM_CHIP_FLAG_DISABLE;
->   
-> -	return rc;
-> +err:
-> +	return rc ? -ENODEV : rc;
-
-return rc ? -ENODEV : 0;
-
->   }
->   
->   /**
 
