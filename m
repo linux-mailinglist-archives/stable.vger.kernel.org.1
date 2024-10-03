@@ -1,149 +1,133 @@
-Return-Path: <stable+bounces-80643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FA698F04B
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:25:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD0798F0B3
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB6DE1F220DD
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 13:25:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2E201F21AB6
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 13:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D085F195962;
-	Thu,  3 Oct 2024 13:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A32C19D065;
+	Thu,  3 Oct 2024 13:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gjAIvCmy"
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="x5Fj9Lgx"
 X-Original-To: stable@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF5B1E495;
-	Thu,  3 Oct 2024 13:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B0819C57E
+	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 13:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727961924; cv=none; b=qtVzpKnYRpjeuWVLaIhaRWDJI1w6F/MXWSnmzYFI8L+R340/n5tH3AZytDGm4DB0Wrfk4l8MCzNvHj+UYX5yFIMEK6eG1tF3xR7zpbNkPsBFPnugSl+dkx7hpsaoINWlL1MMN7ugCLIlmZFxfPRHnR3d/j91ewhBAxHMmUrfS20=
+	t=1727963102; cv=none; b=KVFuoc/IkZt65x5dI7DJ7bmhUHWlzmMO+fK6L0hMgHkRQn/IPYw164/qP+PfzR8zzQIbKdckbWFDfvTjLZUOD6JpPtBbCFSxb5/gUEKCbo2oMtV96+YhGrtKz0+hL827dUbm8lChRNdD5DJbOIsediKnVdD/JjfhO0STo30GLoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727961924; c=relaxed/simple;
-	bh=37Li2jcZeeq53+fzhPuLuodhRdQGGS07//C5RIKdjRU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P955Zw/7m+XcZANzgcd2wSsTgtTnAB2GvV9kdoYs3NNRGU6786oeGdPGf4xQB2jx0CS2yVUE1tIJKgRUkAa1+Bx1wwIRI+TiyyAOAkHFK8s1Rz/4RBgAUA61G6+/2/iAr7RjxbvYnTBSCRbiY+d3jwCvD/iYTeZjsAVqnmi5FPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gjAIvCmy; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 11E0388C78;
-	Thu,  3 Oct 2024 15:25:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1727961920;
-	bh=UQLE2jGTSayd6gs8cpOiqXeOpHuG+5raSNDTLfhZL5Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gjAIvCmyM8Wn/Q9EwVxm22v4CqqTo1sz5Gsu77QD90JBfPHdvMMS8FqoPoo0lXVjU
-	 a1ui2azw1u6X5b3dOkwbdNT2/VfSLPGDiDjkLzez4xuo+5sZu8tsvd+fjFFKyDdyZu
-	 8Yt7vunRUBLLdh9aa3IV9xz19amaH/lkw9aiW6YpJjmRaUX648H6DUbYYFkwPwO5yV
-	 1Kjl0Ybuso+QNaiRZeImwWV1/X4lEJGky7sV5oufrF9D6uTnw4S9lG0YvteXrsgvMI
-	 bzsQ+X/0yFeS40tHqODTjEvmc/yOCuw/aicN/HF6hVvqm1CkgQepRSoxeQ1umzzQZX
-	 40We6LM+Xx27w==
-From: Marek Vasut <marex@denx.de>
-To: linux-wireless@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Kalle Valo <kvalo@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] wifi: wilc1000: Set MAC after operation mode
-Date: Thu,  3 Oct 2024 15:24:17 +0200
-Message-ID: <20241003132504.52233-1-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1727963102; c=relaxed/simple;
+	bh=RD9U78fWEr2OLYZ3hHe/2YSy67zB7CeCkzI3wXX48WM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hiYwyN7g9Q2cNZpKClGMexyQuB74nSFRUdSsYWbfMiFKbqhgb9Oxu14FBBLwXxLsmzPr/xMPcNadEky48RBRxMzusPO+t3HwLhTR0oLlE5DnnmgZSA/eP76HXq/ZTeOFSz2/uFGIa3UmTdMW3yWli4iujZT5ZNkZidaH8daswR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=x5Fj9Lgx; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37cd1ccaf71so1193237f8f.0
+        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 06:45:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1727963099; x=1728567899; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WwqEYZax0+DPVB+o/bD03kfHhlCvltBh2zIbh2geEME=;
+        b=x5Fj9LgxTSx5AcNidou4LGv3bltkp4PLejDiuFwKMAC7vJ3G9nyza/rh+4GE2ErNcH
+         lFepYchrVhd0oKzrJ2XpYd6D56MypMpTly43hGuIAVUne44DukgaKe7JGHosT6wMR27D
+         g/GDWqdpbova69+qTpwkfZ5dBuIiZ/3qrNyYLF25skfFnKjIzL5R4P59oZ6CeygEdQFu
+         s/DxBpOnIJlzksd1QhjANei5NgXFABUHtoN8H8ZB+ZGx17BiGy7a8Jr0VZqnwZzrRsmL
+         LjFSHsaPF6LKKrlLNdaD45A2J7Fkmf9FZAuSxuHDB79iC5u3F/TwaSB7u1idvRNe0PE1
+         FzQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727963099; x=1728567899;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WwqEYZax0+DPVB+o/bD03kfHhlCvltBh2zIbh2geEME=;
+        b=wQWKkl6QCaZ6LEoWDfBsMycL8dyhVYvSjA6MjcfPyt7aGQMR+9rAgmLYdhybhFT0vp
+         TbqJhEBHZj3tY9BqoKVutIZYc7TdV1SakvLfa++VhZ2l2fEDxb9PVrkzKRxhQMkDB2AF
+         vmvoFZqeZPzzzvNyLcByYeMhSTXGOgx3eBmzX6UCDgKsLj1slZHfKzkJ4tWg61fbXfy9
+         ho9x1dFE9zj7QT3oCmJOWpvxg+RKVhT3A2SHxRnAaLTd9g999Cn0y+mGtJeJZFRcqAvp
+         iw5Z64aWStNSacwCRFPXJEUdweHD5W8/xvz35ppEiUJ+Vy8nZGVojFvayp5Fw9mFtu6d
+         GyPA==
+X-Gm-Message-State: AOJu0YxcvvIyDh8vPuSYkv1wg3//LKu/U8ogwAOAtDY0N353GH7qeYu0
+	Hbsu3mgnQiLjolZqKXq8C7RhpUK1GVpnw15KFhxey0wGCeDvhzY+NPkBHID8vUNz2bqVNmlCkup
+	0CDsZsXbQlMytppm87w1argnivLciNnxRfpbfAg==
+X-Google-Smtp-Source: AGHT+IHmzkBQRnjRJ/DhHK4cysIpn8dwbmzLNUFnK46MKOshNcu+lFN6+0HCNvQiySIFkEeJ468TQlxLcdVB1Cj84vU=
+X-Received: by 2002:a5d:550a:0:b0:37c:ccdf:b69b with SMTP id
+ ffacd0b85a97d-37d04a5a005mr2036695f8f.32.1727963098488; Thu, 03 Oct 2024
+ 06:44:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+References: <20241003103209.857606770@linuxfoundation.org>
+In-Reply-To: <20241003103209.857606770@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Thu, 3 Oct 2024 22:44:47 +0900
+Message-ID: <CAKL4bV5zK5k7uX1DhT-3=AiK1XWzsQe-V-d-vXpyJ31NSHOTLg@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/533] 6.6.54-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-It seems it is necessary to set WILC MAC address after operation mode,
-otherwise the MAC address of the WILC MAC is reset back to what is in
-nvmem. This causes a failure to associate with AP after the WILC MAC
-address was overridden by userspace.
+Hi Greg
 
-Test case:
-"
-ap$ cat << EOF > hostap.conf
-interface=wlan0
-ssid=ssid
-hw_mode=g
-channel=6
-wpa=2
-wpa_passphrase=pass
-wpa_key_mgmt=WPA-PSK
-EOF
-ap$ hostapd -d hostap.conf
-ap$ ifconfig wlan0 10.0.0.1
-"
+On Thu, Oct 3, 2024 at 7:33=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.54 release.
+> There are 533 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 05 Oct 2024 10:30:30 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.54-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-"
-sta$ ifconfig wlan0 hw ether 00:11:22:33:44:55
-sta$ wpa_supplicant -i wlan0 -c <(wpa_passphrase ssid pass)
-sta$ ifconfig wlan0 10.0.0.2
-sta$ ping 10.0.0.1 # fails without this patch
-"
+6.6.54-rc2 tested.
 
-AP still indicates SA with original MAC address from nvmem without this patch:
-"
-nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=60:01:23:45:67:89 bssid=ff:ff:ff:ff:ff:ff ...
-                                          ^^^^^^^^^^^^^^^^^
-"
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Fixes: 83d9b54ee5d4 ("wifi: wilc1000: read MAC address from fuse at probe")
-Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: Ajay Singh <ajay.kathat@microchip.com>
-Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Marek Vasut <marex@denx.de>
-Cc: linux-wireless@vger.kernel.org
-Cc: stable@vger.kernel.org
----
-V2: Add TB, Fixes, CC Stable
----
- drivers/net/wireless/microchip/wilc1000/netdev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 9ecf3fb29b558..8bc127c5a538c 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -608,6 +608,9 @@ static int wilc_mac_open(struct net_device *ndev)
- 		return ret;
- 	}
- 
-+	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
-+				vif->idx);
-+
- 	netdev_dbg(ndev, "Mac address: %pM\n", ndev->dev_addr);
- 	ret = wilc_set_mac_address(vif, ndev->dev_addr);
- 	if (ret) {
-@@ -618,9 +621,6 @@ static int wilc_mac_open(struct net_device *ndev)
- 		return ret;
- 	}
- 
--	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
--				vif->idx);
--
- 	mgmt_regs.interface_stypes = vif->mgmt_reg_stypes;
- 	/* so we detect a change */
- 	vif->mgmt_reg_stypes = 0;
--- 
-2.45.2
+[    0.000000] Linux version 6.6.54-rc2rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
+Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Thu Oct  3 21:30:01 JST 2024
 
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
