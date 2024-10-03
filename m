@@ -1,96 +1,96 @@
-Return-Path: <stable+bounces-80679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B718C98F61A
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 20:30:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9490B98F61E
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 20:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FDEE2817D0
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 18:30:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02C46B21EE1
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 18:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B8F768FD;
-	Thu,  3 Oct 2024 18:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B21319E975;
+	Thu,  3 Oct 2024 18:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ckwwNfL7"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Ky77V5bT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6054FAD
-	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 18:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA91E6EB4A
+	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 18:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727980221; cv=none; b=hJQuoxJQ2FB+TQdSbqMfJBWv5ayrksXNaP6f2w5Op7uYG3QW+KYETS2TL59KYrx+YoBjUTNHSZk3SHe3dOthF1JK5KZtHhjwOFirCn2wE6WPqyZyMDWMQXZC8VSEX+8+/HE9AKF3gAy6QH456B+6TQ59TP/mKbQujTkxgKFcjJI=
+	t=1727980231; cv=none; b=dRwsbmX1g9wLmYiHHqEHpmPXqlBEJhH3uIF7nr+5bgzEKnrCrXEt17QVjZg0xuarG20/KUvPJEUPsMB41AFo2Lzlycmi965l6m+aFrdtMkA5IJmxfNTru9PxyVzITUMRzKZlW0gHpDWJs/aCHG5m4EBAcekReYSif0TE0qnXhtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727980221; c=relaxed/simple;
-	bh=Njq0fwvF+5VhnQZ1131zaikWJHtF2S4Q3i8c1LX2lvI=;
+	s=arc-20240116; t=1727980231; c=relaxed/simple;
+	bh=c++Lte/udt0jLRhLlSKN7fA6Bnq9Rxf2y0Cj+HWhPvA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J4LIvkrlSZF6bD9ChRu0nr3WEAGhLPO/zw0kKUb/hQOWLh714BiAkJ6wJ8Y5ZzHREjV4MbSSHOJ+OBW/ehT9eEiHDFeGWH9ZbSmN0TiuQD2FZOuEv9AQBQkUQ0WiJRSMe+irFYoEU9Ym9cTJsW3tLLonNiim5Yr9nF0zQrt+60c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ckwwNfL7; arc=none smtp.client-ip=209.85.167.45
+	 To:Cc:Content-Type; b=LAGMAYO44NbKcndmCYMNWlWqd3lz+ibNYSMjfUYFnU0nStTDigkomRIjG4ydqOu1/JMBA0RhxACo7PtdeyJPCYPTemgjDwfPNpUhrAjfSfeuz7Sc28X0WurHRJePLoU6ihobPbgNLtiMOGBehf0VHTLyjTd8QqtdHxYW/dr03+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Ky77V5bT; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5398b589032so2134853e87.1
-        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 11:30:19 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fad100dd9eso15648091fa.3
+        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 11:30:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727980216; x=1728585016; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1727980226; x=1728585026; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uQhmHIpIANYWDxfaKfnE9P0S3zwxERnpg0mMy9nFKho=;
-        b=ckwwNfL7ImqcVGwCnYmY0CdUmW3wQnerFyrAmvE88W8UgwcMD9ulEz2f+9hXKbFD10
-         R3HC4eLIgq0Ap/P6uVQb3OK5+EhQ1x1M7owRjsLTlXRBSTEpU3NpviLDS18QqpNYPty7
-         9/jx1qnGBxBxrrc/bwgZ4bb1EMzHqZG3E6/cU=
+        bh=c++Lte/udt0jLRhLlSKN7fA6Bnq9Rxf2y0Cj+HWhPvA=;
+        b=Ky77V5bT+NZ4VKyF9ecjsztDbl4sUMB85rtmpfY9RbzwnC9mgGcmj+VCeya9/gfnUu
+         dyeApDNXP4EzK5xS0sx9OcCA1EB/sW1vMMo7woNGNnrzb5fVQWX5HTn5Q0A53nVjxPwj
+         xyC5C9AstbYoLyVC1pWI8F/WGgnbGJQ4QrH48=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727980216; x=1728585016;
+        d=1e100.net; s=20230601; t=1727980226; x=1728585026;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uQhmHIpIANYWDxfaKfnE9P0S3zwxERnpg0mMy9nFKho=;
-        b=PogmoJzXoidLWpHMsBwo/YdicT8nHOpyPtbBfMpypc/zFmf2XsWRv+V1F8i3UbcjEX
-         eDJrDq7AvBc4yjRD4OqElijOJM0OLISxi4CiAIYFVJSmQZ+OAkzEv1Txn7DlvNMQlE7C
-         5T9gIzHJYZo9fw75VuPvwQSKGy6t8SRdvi/cs80SSjACSXDqsw/SrOKM8q1jckvE1MTh
-         WCRcG4YN9eJv8CyVQp7KZE1Kt7uIAA4uFAs5Zqx5njqbrw4aSuIGmuVl9RitMcgBusxo
-         EnFH6t1wnPaapv6hFtXPcxZ6/oIVtyQPWhYgj6lafI2O9PemxpRuXsq6whWMa1oA47hH
-         hR9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUG2Q4xOwkibLOmB2Z/jaOW4CGesAFQBGKXg3z2bRmNFdjjLaQSPUi1pFYUi0e3HjklvlCc5SE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBflgVkW8QXeGWp1vydGq7JYZCbADeHE0RYQqYNflUIihMCdIR
-	fRsDw5nAVWy+7re1qxGY1TIhLVFB8zgZzH8mcLaYwtuFspme1t4kcma4wzGCLUOQQmwhU5lxR4A
-	XIF0n
-X-Google-Smtp-Source: AGHT+IFaS8e8hC0qOHY0DgmZmSq9mkNDF0ugecRTZpW3Rv0oDlahrPICZZ4ISzY7L6o9SUgl8a8W9w==
-X-Received: by 2002:a05:6512:304d:b0:539:8d9b:b61c with SMTP id 2adb3069b0e04-539ab9e5fadmr235745e87.51.1727980216484;
-        Thu, 03 Oct 2024 11:30:16 -0700 (PDT)
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com. [209.85.208.181])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539a82976f7sm236353e87.138.2024.10.03.11.30.15
+        bh=c++Lte/udt0jLRhLlSKN7fA6Bnq9Rxf2y0Cj+HWhPvA=;
+        b=XGxbU4ysGwaNi7I3cEOXTkkP5vpFMbnXAP+lKp34rwXm5GrUqZr4+/5+d6ZaXv3XT2
+         VNY3hlqlZbrNJkiGgfNS6kVChEFRatw7bjoPvS/cJ1VANGbu8oZN4g07Ij53uezjXp1o
+         f6CWPY1Kn5eOclWdoYx0Hpj+XnqI3laR+Y9q0Nb/S1kCmjXq2pAtmDv1ZIEN4SAzDUBq
+         E41ZEYMAklzv6VSPraBBsqAVxT6bfw9LbNCGhjLADWuw7RdYpCpf/hIjIzDy+QTgKvuf
+         5q93TwRvCyIxLM5qxgXopNK9tuu6BL8jUxNaDPusMVWfFEri3bjgYGLzZau+JCJcU+wf
+         Watg==
+X-Forwarded-Encrypted: i=1; AJvYcCXS8suySb9qbFPq3pR7rXErSyKj5sPnfJGS88u/Q483FSt9ned7d4/90YGY6XFy7lWwe1SR+bY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjWwbbOW9mV7JUWxUBRPRLOS8nNZg8w8vC20lhWLclseOvOuNl
+	1fQ4B0ZxbcfpY446vmMTj/Cn8jLlfThoWw+G+QsYJWqNLhkfOuMjU+MshGMgyN6m78WegDbgf9c
+	koD80
+X-Google-Smtp-Source: AGHT+IEWDbUgB0NK9JP5sdv71Qalxo6EghPiefxEMjbECJCvxfVWl/6sRa8NXTfNOQd8Z5BBYFNtXg==
+X-Received: by 2002:a2e:a99d:0:b0:2fa:d84a:bda6 with SMTP id 38308e7fff4ca-2fae10281demr54883541fa.21.1727980226140;
+        Thu, 03 Oct 2024 11:30:26 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2faecc959d0sm2634421fa.114.2024.10.03.11.30.24
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Oct 2024 11:30:15 -0700 (PDT)
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2fabb837ddbso20051781fa.1
-        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 11:30:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXzsrq4nK1qiYV9Ez8xU0yw1Y2FZ8dGryYT/yDlqQt0Rsw22TDBUxxWcHe6rWH8ppVsUVHnvYg=@vger.kernel.org
-X-Received: by 2002:a05:651c:b10:b0:2fa:e52f:4476 with SMTP id
- 38308e7fff4ca-2fae52f46b7mr54095681fa.45.1727980214619; Thu, 03 Oct 2024
- 11:30:14 -0700 (PDT)
+        Thu, 03 Oct 2024 11:30:25 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53959a88668so1676518e87.2
+        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 11:30:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV20vtUTd2Mgq4NVZEKhDd48S3M7YNBPdi4QnIY+TpbcnFuu6oy++wKcxj9qrakrym2ZlW+OCg=@vger.kernel.org
+X-Received: by 2002:a05:6512:2211:b0:539:9155:e8b4 with SMTP id
+ 2adb3069b0e04-539ab85c137mr174931e87.2.1727980224394; Thu, 03 Oct 2024
+ 11:30:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241001125033.10625-1-johan+linaro@kernel.org> <20241001125033.10625-2-johan+linaro@kernel.org>
-In-Reply-To: <20241001125033.10625-2-johan+linaro@kernel.org>
+References: <20241001125033.10625-1-johan+linaro@kernel.org> <20241001125033.10625-3-johan+linaro@kernel.org>
+In-Reply-To: <20241001125033.10625-3-johan+linaro@kernel.org>
 From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 3 Oct 2024 11:29:58 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=V31VFVoTWstVUnC_qDBmaUCb5Xv7pyUxUto7mquR5U4Q@mail.gmail.com>
-Message-ID: <CAD=FV=V31VFVoTWstVUnC_qDBmaUCb5Xv7pyUxUto7mquR5U4Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] serial: qcom-geni: fix premature receiver enable
+Date: Thu, 3 Oct 2024 11:30:08 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UoU5Nd7sW66cjQzor+BP+W_f7uw0MGRaF6y7PH7KRN_g@mail.gmail.com>
+Message-ID: <CAD=FV=UoU5Nd7sW66cjQzor+BP+W_f7uw0MGRaF6y7PH7KRN_g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] serial: qcom-geni: fix shutdown race
 To: Johan Hovold <johan+linaro@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-serial@vger.kernel.org, stable@vger.kernel.org, 
-	Aniket Randive <quic_arandive@quicinc.com>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -99,50 +99,30 @@ Hi,
 On Tue, Oct 1, 2024 at 5:51=E2=80=AFAM Johan Hovold <johan+linaro@kernel.or=
 g> wrote:
 >
-> The receiver should not be enabled until the port is opened so drop the
-> bogus call to start rx from the setup code which is shared with the
-> console implementation.
->
-> This was added for some confused implementation of hibernation support,
-> but the receiver must not be started unconditionally as the port may not
-> have been open when hibernating the system.
+> A commit adding back the stopping of tx on port shutdown failed to add
+> back the locking which had also been removed by commit e83766334f96
+> ("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
+> shutdown").
 
-Could you provide a motivation for your patch in the description? Is
-patch needed for something (perhaps a future patch in the series)? Is
-it fixing a bug? Does it save power? Is the call harmless but cleaner
-to get rid of?
+Hmmm, when I look at that commit it makes me think that the problem
+that commit e83766334f96 ("tty: serial: qcom_geni_serial: No need to
+stop tx/rx on UART shutdown") was fixing was re-introduced by commit
+d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in
+progress at shutdown"). ...and indeed, it was. :(
 
+I can't interact with kgdb if I do this:
 
-> Fixes: 35781d8356a2 ("tty: serial: qcom-geni-serial: Add support for Hibe=
-rnation feature")
-> Cc: stable@vger.kernel.org      # 6.2
-> Cc: Aniket Randive <quic_arandive@quicinc.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->  drivers/tty/serial/qcom_geni_serial.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/q=
-com_geni_serial.c
-> index 6f0db310cf69..9ea6bd09e665 100644
-> --- a/drivers/tty/serial/qcom_geni_serial.c
-> +++ b/drivers/tty/serial/qcom_geni_serial.c
-> @@ -1152,7 +1152,6 @@ static int qcom_geni_serial_port_setup(struct uart_=
-port *uport)
->                                false, true, true);
->         geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
->         geni_se_select_mode(&port->se, port->dev_data->mode);
-> -       qcom_geni_serial_start_rx(uport);
+1. ssh over to DUT
+2. Kill the console process (on ChromeOS stop console-ttyMSM0)
+3. Drop in the debugger (echo g > /proc/sysrq-trigger)
 
-FWIW, I found at least one thing that's broken by your patch. If you
-enable kgdb (but _not_ "kgdboc_earlycon") and then add "kgdbwait" to
-the kernel command line parameters then things will be broken after
-your patch. You'll drop into the debugger but can't interact with it.
-The "kgdboc_earlycon" path handles this because of
-"qcom_geni_serial_enable_early_read()" but it doesn't seem like
-there's anything that handles it for normal kgdb. If you drop in the
-debugger later it'll probably work if you've got an "agetty" running
-because that'll enable the RX path.
+This bug predates your series, but since it touches the same code
+maybe you could fix it at the same time? I will note that commit
+e83766334f96 ("tty: serial: qcom_geni_serial: No need to stop tx/rx on
+UART shutdown") mentions that it wasn't required for FIFO mode--only
+DMA...
+
+Aside from the pre-existing bug, I agree that the locking should be there.
 
 
 -Doug
