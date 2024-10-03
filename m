@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-80659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E07298F2C2
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:41:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CF198F2C9
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F4C12812EB
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24DFE281605
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC541A4F09;
-	Thu,  3 Oct 2024 15:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EF21A705A;
+	Thu,  3 Oct 2024 15:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z821fF6W"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TL4Q4bWR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA0A1A4E98
-	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 15:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A521A4F02
+	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 15:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727970091; cv=none; b=cGS9kRFYLp8rFOGPj7t0D+y7FdK3bo91Ip4ulsAXKfJcKFyDETj2z6A/5L0jIlQ1AXD1A38hMaTm/pbS8dRCbir5D7B7AJbdj21guNHfakZWMGJYLgSQK09ix9pThTqkBKs8mF43vCMPcKfymY6uQNMQprTTMc59HpVcxiwNI9c=
+	t=1727970093; cv=none; b=AgIaaxCD641o9i9eMr8vZut2PcksGn+/i0qEYvkvyEeMgmgu+fm72LeeBtXJrSb7pwSq//JVY0d3r/xkmJHwXQf+f/OTQ6AObNbSYCBXQFBN0nzmaqvJyJsj3POlAKxnwiJrx/2RTHBE0CqZejt05bMAz9VOJoJVYiAVfoPT+OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727970091; c=relaxed/simple;
-	bh=pcjyTEmLvTLN7mCVpCsjGf04ORjVzGFNtci6FstvOro=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=PccdPilzKlq18/Lko4Pf8PkPGSCTHeQBgKSxE7SFCSsYn2xnkBSDiETT+ssP43dwK/6m4CnkbYTrAFtEu1Raes+XFzrNPYe4WpSvIh+zoqwKOm1Yg/Cvo5wqp+r84Ti85HaL5hZ7nzfu3N6KDcnFntLKWbw0bWlSF9R5ZUJKCYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z821fF6W; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1727970093; c=relaxed/simple;
+	bh=vTwVvG8iZlHzHza+YS67mEwp2zyunt+kNzBDYWtFYWc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=K3uBtgHynHxu8axjg0+wpfmtr4S62/PWhySqKG+xXrr8UG9NABqeNipmXN8plFbtNL9WH+a8GRwXeK5wpjkuezsf2dt9m0QSQ8Lw4lgv7nY8npO4uyaNpM8s4769eohh0MSqxcHmp+vdTkgu8DeeBxCDHPVREclddZ+tCX8BgHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TL4Q4bWR; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a7a843bef98so151817866b.2
-        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 08:41:29 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a98f6f777f1so144724366b.2
+        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 08:41:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727970087; x=1728574887; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HYGpz43nPbByYXovI0HrcPnvOdOH3ZAX7U7tj2PnV9Y=;
-        b=Z821fF6WBbCA/pikwCZTmM/say9+VyRKv2QujE7db8wQJbKBjLhYIwDNbfQ3fn79F3
-         xIHbKf5BO7Y5Z1bS1ra68hKwFjELqrSH6ZvtjlEESMVLqSfGjj11CB4SHRmq9yO8Neya
-         vmPvWiwP0zNTXsnMF3U8cHdn3AyjWdTh3Fj8YvdEOH9zu7i18WUwVN6RqjM0d5QR3GxS
-         FYV4Cx19sbmfySvG8w8JxmxspPZVIJdfYmjJR5XAQHEC+AXomDc8p+Yjvk0t1LPhvX+o
-         DzAPu9Yrl3C1l9MJv7WCEZs8PFY0SrcV3TAy8LpJsiKzBhYl+tiVTmSi++vVZ8CiCeVG
-         +qOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727970087; x=1728574887;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=linaro.org; s=google; t=1727970089; x=1728574889; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HYGpz43nPbByYXovI0HrcPnvOdOH3ZAX7U7tj2PnV9Y=;
-        b=s6FXijU9zgFjuClQreo35at7PuWXtL+jWr5cVQPHwlq5ZfOcjny767h3llLGIV+xaR
-         ioYsCqMwoNmFXV4dfHY5D/Uwhteggp3S7oIVBxk2INBXAqr5W9BlEbDxTohPtpQXvPA+
-         x5eBfgQT4r+BrUjS/ydhhrETRsoiqyUqLHP8q18uheuplAs8umG79OSEvzPmA+YS7N/L
-         wRc6A9XSzQa53kGUY1KR60NuotoX+kd+4D0AQrVZNSZXZ2i36xuEnIGVXiinwC0MjaDJ
-         0m8RAGz9yc2r6hBPFuqTMedMY+ur+dM/QPywKV/jDFPdHUcVrGqoIWXvSl83FCt5zM8x
-         r16g==
-X-Forwarded-Encrypted: i=1; AJvYcCV4G1ovUmoNdvM3nsgzfnD3DqNgM0f1c8DUzzb8YFj9UWHtvuEo9DOXuxBfSepNS+CPZcz4dRA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0XrLRMfZNeBSqOp9t/BgCFmEyq2C9dConUYoP65qcDEosRO8j
-	mZZLbIbaUc1Uf7yOE+yReJZUnnJ/Kmzrj+h8D492fs1EKdhQLYx49bhgDe+3NqY=
-X-Google-Smtp-Source: AGHT+IG+LU6Y4ngetxRy+mZULOUURuqVF1BgSNl0H63IzML5pQS1xBtYN+8pvhLeWEbdKorJTVAhAQ==
-X-Received: by 2002:a17:906:f582:b0:a89:f1b9:d391 with SMTP id a640c23a62f3a-a98f824e3a2mr705785966b.14.1727970087536;
-        Thu, 03 Oct 2024 08:41:27 -0700 (PDT)
+        bh=E7nKjwcfTxwC0PwN6GrPgJAgBaaTNk6QSx4URpDS/gc=;
+        b=TL4Q4bWRRiP1qoLuPCXD3dOh8f7piOzc3j/QC/fg7+dMJurG4zzZpFMQuc5LodDfGI
+         Y48u/kKB853zeg9aWe9EekI53lFE89U1xDldaOiIwykkwjyL6SFe4vvdatrFo3C1FEeS
+         /nqgw5MhdUpDHBiH/PBn4Aim3tfOQ+1xD1uoeWUJJZPv40wH9surip0dhbNhD08SZ5VW
+         t3zKtyaEJw4aKW69l1Z75fRYa1euthTu+2d1gmPSjAvEfV8ZcXlyKApTK/VNfJ7iHcCv
+         4YY+Qun7qvdqzavRsnIWcYdJkO12B7CP9wFQWCMP6kTnSuvuM+9YsPwEghcgXisP7EVI
+         46cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727970089; x=1728574889;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E7nKjwcfTxwC0PwN6GrPgJAgBaaTNk6QSx4URpDS/gc=;
+        b=fnI78fGe1kRmKC1fmxwDQfAudfmGsDbqjITHeOcLdyUG/2Ipf1xI63hQeWGZoyzvq7
+         EshdGwNbFCG3yXNJLYMh1SrKPbXJqgFPrYkxcsXvofJIzhOHzQqu7hyQnxnJAg25hwdt
+         3J/rF3C0WQcbgyAkexUvGVmf05M8DETlZPXG5aAx8PICdCgI8VjGUcH7kUQPBr5A7EVi
+         Y59wqlKJ7zT5eNI8YN8mOtv48lj8QvHkxIDVaQo2qVRPgTGX0CdAtO30DfueP7sjig4G
+         H5I2H30ykG4yCWZ67AUAzj5EOLB4qi400SOu1JOXwL/vQRcloWRcAp1PGTWmzwTrn8WG
+         d+uw==
+X-Forwarded-Encrypted: i=1; AJvYcCXBOgI5ewCh+oCmGITAe1aGxoThCA+WtdlLkNw+OQakOEK6AF1jmnH/Ks9Ty2gzYV6+YDzXN8s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUxXSgECe5sdJolLJk47dK9es93dmZzgps/8xbL8v/FLgMqL8M
+	IzFZJPZghZ4iowFGzIrGllCgf4tjwwuRjzRWTtgo2C6kS2sp4Csd5RkPtQVVRoc=
+X-Google-Smtp-Source: AGHT+IG7VzE6KIRS5Oggy5S2KMymWBvAJcUH8H6bPiRroXsOEd0yFu8CHZMFl+zLCXUZVh4IIyvvxg==
+X-Received: by 2002:a17:907:6093:b0:a8a:58c5:78f1 with SMTP id a640c23a62f3a-a98f8201512mr692467466b.11.1727970088513;
+        Thu, 03 Oct 2024 08:41:28 -0700 (PDT)
 Received: from [127.0.0.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99104c4f3fsm98492866b.200.2024.10.03.08.41.26
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99104c4f3fsm98492866b.200.2024.10.03.08.41.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 08:41:27 -0700 (PDT)
+        Thu, 03 Oct 2024 08:41:28 -0700 (PDT)
 From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: [PATCH v4 0/4] ov08x40: Enable use of ov08x40 on Qualcomm X1E80100
- CRD
-Date: Thu, 03 Oct 2024 16:41:24 +0100
-Message-Id: <20241003-b4-master-24-11-25-ov08x40-v4-0-7ee2c45fdc8c@linaro.org>
+Date: Thu, 03 Oct 2024 16:41:25 +0100
+Subject: [PATCH v4 1/4] media: ov08x40: Fix burst write sequence
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,11 +78,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACW7/mYC/43NQQ7CIBCF4asY1o6B6ZSiK+9hXAClSqLFQENqm
- t5d7MJoTIzL/y2+N7HkoneJ7VYTiy775ENfgtYrZs+6PznwbWmGHIlvUYIhuOo0uAhIIARgDSF
- zNRIHKztqGq211MQKcIuu8+OCH46lzz4NId6Xryye619sFsDBUVt3pq1MrfT+4nsdwybEE3u6G
- V+W4Fz8tHCxGrVtpEFuxZdVvVv406qKRaoytrWdUkp+WPM8PwBx2LkVXQEAAA==
-X-Change-ID: 20240926-b4-master-24-11-25-ov08x40-c6f477aaa6a4
+Message-Id: <20241003-b4-master-24-11-25-ov08x40-v4-1-7ee2c45fdc8c@linaro.org>
+References: <20241003-b4-master-24-11-25-ov08x40-v4-0-7ee2c45fdc8c@linaro.org>
+In-Reply-To: <20241003-b4-master-24-11-25-ov08x40-v4-0-7ee2c45fdc8c@linaro.org>
 To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
  Jason Chen <jason.z.chen@intel.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, 
@@ -95,70 +93,85 @@ Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 X-Mailer: b4 0.15-dev-dedf8
 
-Changes in v4:
-- Drops link-frequencies from properties: as discussed here:
-  https://lore.kernel.org/r/Zv6STSKeNNlT83ux@kekkonen.localdomain
-- Link to v3: https://lore.kernel.org/r/20241002-b4-master-24-11-25-ov08x40-v3-0-483bcdcf8886@linaro.org
+It is necessary to account for I2C quirks in the burst mode path of this
+driver. Not all I2C controllers can accept arbitrarily long writes and this
+is represented in the quirks field of the adapter structure.
 
-Changes in v3:
-- Drops assigned-clock-* from description retains in example - Sakari,
-  Krzysztof
-- Updates example fake clock names to ov08x40_* instead of copy/paste
-  ov9282_clk -> ov08x40_clk, ov9282_clk_parent -> ov08x40_clk_parent - bod
-- Link to v2: https://lore.kernel.org/r/20241001-b4-master-24-11-25-ov08x40-v2-0-e478976b20c1@linaro.org
+Prior to this patch the following error message is seen on a Qualcomm
+X1E80100 CRD.
 
-Changes in v2:
-- Drops "-" in ovti,ov08x40.yaml after description: - Rob
-- Adds ":" after first line of description text - Rob
-- dts -> DT in commit log - Rob
-- Removes dependency on 'xvclk' as a name in yaml
-  and driver - Sakari
-- Uses assigned-clock, assigned-clock-parents and assigned-clock-rates -
-  Sakari
-- Drops clock-frequency - Sakarai, Krzysztof
-- Drops dovdd-supply, avdd-supply, dvdd-supply and reset-gpios
-  as required, its perfectly possible not to have the reset GPIO or the
-  power rails under control of the SoC. - bod
+[   38.773524] i2c i2c-2: adapter quirk: msg too long (addr 0x0036, size 290, write)
+[   38.781454] ov08x40 2-0036: Failed regs transferred: -95
+[   38.787076] ov08x40 2-0036: ov08x40_start_streaming failed to set regs
 
-- Link to v1: https://lore.kernel.org/r/20240926-b4-master-24-11-25-ov08x40-v1-0-e4d5fbd3b58a@linaro.org
+Fix the error by breaking up the write sequence into the advertised maximum
+write size of the quirks field if the quirks field is populated.
 
-V1:
-This series brings fixes and updates to ov08x40 which allows for use of
-this sensor on the Qualcomm x1e80100 CRD but also on any other dts based
-system.
-
-Firstly there's a fix for the pseudo burst mode code that was added in
-8f667d202384 ("media: ov08x40: Reduce start streaming time"). Not every I2C
-controller can handle an arbitrary sized write, this is the case on
-Qualcomm CAMSS/CCI I2C sensor interfaces which limit the transaction size
-and communicate this limit via I2C quirks. A simple fix to optionally break
-up the large submitted burst into chunks not exceeding adapter->quirk size
-fixes.
-
-Secondly then is addition of a yaml description for the ov08x40 and
-extension of the driver to support OF probe and powering on of the power
-rails from the driver instead of from ACPI.
-
-Once done the sensor works without further modification on the Qualcomm
-x1e80100 CRD.
-
+Fixes: 8f667d202384 ("media: ov08x40: Reduce start streaming time")
+Cc: stable@vger.kernel.org # v6.9+
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
 Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
-Bryan O'Donoghue (4):
-      media: ov08x40: Fix burst write sequence
-      media: dt-bindings: Add OmniVision OV08X40
-      media: ov08x40: Rename ext_clk to xvclk
-      media: ov08x40: Add OF probe support
+ drivers/media/i2c/ov08x40.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
- .../bindings/media/i2c/ovti,ov08x40.yaml           | 114 +++++++++++++
- drivers/media/i2c/ov08x40.c                        | 179 ++++++++++++++++++---
- 2 files changed, 270 insertions(+), 23 deletions(-)
----
-base-commit: 2b7275670032a98cba266bd1b8905f755b3e650f
-change-id: 20240926-b4-master-24-11-25-ov08x40-c6f477aaa6a4
+diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
+index 48df077522ad0bb2b5f64a6def8844c02af6a193..be25e45175b1322145dca428e845242d8fea2698 100644
+--- a/drivers/media/i2c/ov08x40.c
++++ b/drivers/media/i2c/ov08x40.c
+@@ -1339,15 +1339,13 @@ static int ov08x40_read_reg(struct ov08x40 *ov08x,
+ 	return 0;
+ }
+ 
+-static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
+-				   u16 last_reg,  u8 val)
++static int __ov08x40_burst_fill_regs(struct i2c_client *client, u16 first_reg,
++				     u16 last_reg, size_t num_regs, u8 val)
+ {
+-	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
+ 	struct i2c_msg msgs;
+-	size_t i, num_regs;
++	size_t i;
+ 	int ret;
+ 
+-	num_regs = last_reg - first_reg + 1;
+ 	msgs.addr = client->addr;
+ 	msgs.flags = 0;
+ 	msgs.len = 2 + num_regs;
+@@ -1373,6 +1371,31 @@ static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
+ 	return 0;
+ }
+ 
++static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
++				   u16 last_reg,  u8 val)
++{
++	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
++	size_t num_regs, num_write_regs;
++	int ret;
++
++	num_regs = last_reg - first_reg + 1;
++	num_write_regs = num_regs;
++
++	if (client->adapter->quirks && client->adapter->quirks->max_write_len)
++		num_write_regs = client->adapter->quirks->max_write_len - 2;
++
++	while (first_reg < last_reg) {
++		ret = __ov08x40_burst_fill_regs(client, first_reg, last_reg,
++						num_write_regs, val);
++		if (ret)
++			return ret;
++
++		first_reg += num_write_regs;
++	}
++
++	return 0;
++}
++
+ /* Write registers up to 4 at a time */
+ static int ov08x40_write_reg(struct ov08x40 *ov08x,
+ 			     u16 reg, u32 len, u32 __val)
 
-Best regards,
 -- 
-Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+2.46.2
 
 
