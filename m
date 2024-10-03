@@ -1,114 +1,140 @@
-Return-Path: <stable+bounces-80689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB0E98F8B7
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 23:14:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC4398F936
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 23:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA80B230AB
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 21:14:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEE21C21983
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 21:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4772A1ABEA7;
-	Thu,  3 Oct 2024 21:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFFE1BF81B;
+	Thu,  3 Oct 2024 21:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="koHtHqal"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="dZZWbDak"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC2F1A7AF6;
-	Thu,  3 Oct 2024 21:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D056F6F06A;
+	Thu,  3 Oct 2024 21:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727990046; cv=none; b=a1O+25POw5WY57np7G24liLvkdQAIxjv1qNN+dj65EV7ItQdVGghVhuoiRrxGLtx9hZ7Wwi2CCr9leeNhSdmgYo2qMliNI8OW9WzIFdvSG4QYJ8XbL4O9NSqy9t+wvNSweERdkENM89RfSIkjLcKoWZH4udwcsgAqpJDabfLkZM=
+	t=1727992259; cv=none; b=WxgZbRI8eolK999ZZ2X53pZGncrCdsSr3UJVGUYU+1T3UivknBpNHTCVKq5Tmt+OMI5O497nV4gwwHnBEC142pykIcKg+MF62oRxhtzC0zJnkGPa0HXweowHor8TVUNI3iPxoTOeQSOupUDl2Ook4NH8+IH5Q0PtX9MIoD7GVC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727990046; c=relaxed/simple;
-	bh=azsOB2pmahUnI+fEcqJQeBQfkC+qKR86a6BpgWEGw7o=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=aY+yzze73qSEQEvOqfk7Jbr4KWgTzcRfOSad03iT8UWSE3ZFTtf7kubQpxGg05puML2exCASKWCY6Tqe0yIi32S+PMDqi6usHEHColhqz+w56RBhySlzTDyc99BH1uVn45i5jGLmNKNioCBtA+G95+61ZBjviovO9ANDTFrICf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=koHtHqal; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6dbb24ee34dso12679027b3.2;
-        Thu, 03 Oct 2024 14:14:04 -0700 (PDT)
+	s=arc-20240116; t=1727992259; c=relaxed/simple;
+	bh=xDvuuU0Ny5bptRzf1f6XMRSEy3QqAXdPpCjIwoLn+yQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hxCHHWEeoIek1CKkptv73ReFxO4GY5Q2XlryKaGo3PyhMhNeMvmMBNcX/D22SR0u15rB8fgWTHrMgmIWeAnrWaIYhAGBXR5/EKngi+RznBbOiLE5AyJVaDqYMjegFskJT4fL8V1Ab0nmAYjzeyZiny4bsdfw3cvQsh48E5CcdrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=dZZWbDak; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727990043; x=1728594843; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=azsOB2pmahUnI+fEcqJQeBQfkC+qKR86a6BpgWEGw7o=;
-        b=koHtHqaltKH4VzryaD62Qwq/cYfGToSvnceYQeEF72Tgelqd6nJLdHNaXrlx+x03F8
-         9uBuMpj0dn6hzc/vXglWP8YhdWrErq9EhZyZ3chf5UCgG1LBZoO8oVcC6R1nETwWQiGd
-         cDskTbynfsGaqeyNk1ZSzbafq4gjG7W3uXXY9eo8XsPhN1DRdHlhQtZMmdZEw5rpSMjC
-         w1/U6lciswPFRw2ZudsbqkiEQaKXj5wHx4vQFH0OYBA1QGgzJ8dpL9NbFay4AZXuwJjw
-         qFTqxwSwL87YImTS+YXlA30sE6AUe+okuLd5AHEsLrc9VFrfTUl0OqRz3wLX14ne+Q4C
-         f7Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727990043; x=1728594843;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=azsOB2pmahUnI+fEcqJQeBQfkC+qKR86a6BpgWEGw7o=;
-        b=FvMVlgdGu1jZRvq3agbq6A0EQ9EE0Dp3UTvE97p5QPv4xrxBi+oiJhCq3TIP9pZX+w
-         GWQh0RGx9Z7oCiLicRQPHDKg4LSx5w+XLviyoL5fUr/+h3gjKFF2DMVKdUejFQGuAinX
-         NqobwfUreM6IbGujvsNLg8J1dkO4IaGo06ooNUIMdPLOoai7YGPnejwEMLZImKHk06r9
-         mI3wzfTLijRoS4e8pVZZWtOhr2demPlH0u8fl+19RCuSIsdA6dCsCq8Mami4LY28aHaK
-         aAwXDIUpiyNPZHnjmPWJQpMai31cK2bnuhKczFo2Qqf/Orpghem6YvT4sPJfkGTrEUa+
-         P0ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWX7x5Afibk0n00gd9lAnnHgCYdhWRB0zQSa8VeLILc2VvGv7BwdKwhybt+m8LEpMyUEa0P/ugRIfEt6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPQragI+/5cUGXr7LeDAcjkn326AhIwpmvhhIpDpLX1DCNnZ22
-	jKpHXUcBtMrmLBYSi9/SbKBjb3VTHm4J1sly3TgC7htQam7fwMd9zDyBEL98360/X3kYvmQwimP
-	3Ub3cim0bzIQ7CsfPYhB91mWeX0EcOeLXeLk=
-X-Google-Smtp-Source: AGHT+IGcneqJ9ltwhLiMpfZVG0K6YZJ9KUKekp5V92hfQXzHDQTQO5L0v78OARWV5WBQI88UHTe6w66PodJyncuncj4=
-X-Received: by 2002:a05:690c:6610:b0:64a:f237:e0b0 with SMTP id
- 00721157ae682-6e2c6fc38dcmr6435097b3.5.1727990043470; Thu, 03 Oct 2024
- 14:14:03 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1727992256; x=1759528256;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=6rpJeqVSzaRKWSkf7f1FmSyfDmQ9YVfHM+Tdpkcb4O4=;
+  b=dZZWbDakDgEL59R7siHPjCQ7Mf5YgV8x/z67xWS2Ko49nawNxBNrIIVk
+   WqDx9fV8GtxkYvtJJhmUmbuytyYWRJOGJNW3vg8iEYKg8rl/SuqH6pvBB
+   ZHJ3xsGO90nnyd6o36hT12bDL5Y3jcFIZLH0rZE/+VQrkHU97JTbB0n47
+   Q=;
+X-IronPort-AV: E=Sophos;i="6.11,175,1725321600"; 
+   d="scan'208";a="438116422"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2024 21:50:51 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:22494]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.107:2525] with esmtp (Farcaster)
+ id d6bf4c58-0a1d-4336-a2a1-3bd93f1d09d4; Thu, 3 Oct 2024 21:50:49 +0000 (UTC)
+X-Farcaster-Flow-ID: d6bf4c58-0a1d-4336-a2a1-3bd93f1d09d4
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Thu, 3 Oct 2024 21:50:49 +0000
+Received: from 88665a182662.ant.amazon.com (10.187.171.32) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Thu, 3 Oct 2024 21:50:46 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <ignat@cloudflare.com>
+CC: <alibuda@linux.alibaba.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kernel-team@cloudflare.com>, <kuba@kernel.org>, <kuniyu@amazon.com>,
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] net: explicitly clear the sk pointer, when pf->create fails
+Date: Thu, 3 Oct 2024 14:50:38 -0700
+Message-ID: <20241003215038.11611-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20241003170151.69445-1-ignat@cloudflare.com>
+References: <20241003170151.69445-1-ignat@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Leah Rumancik <leah.rumancik@gmail.com>
-Date: Thu, 3 Oct 2024 14:13:52 -0700
-Message-ID: <CACzhbgTFesCa-tpyCqunUoTw-1P2EJ83zDzrcB4fbMi6nNNwng@mail.gmail.com>
-Subject: read regression for dm-snapshot with loopback
-To: stable@vger.kernel.org
-Cc: axboe@kernel.dk, Christoph Hellwig <hch@lst.de>, bvanassche@acm.org, 
-	linux-block@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D036UWC001.ant.amazon.com (10.13.139.233) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-Hello,
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Thu,  3 Oct 2024 18:01:51 +0100
+> We have recently noticed the exact same KASAN splat as in commit
+> 6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket
+> creation fails"). The problem is that commit did not fully address the
+> problem, as some pf->create implementations do not use sk_common_release
+> in their error paths.
+> 
+> For example, we can use the same reproducer as in the above commit, but
+> changing ping to arping. arping uses AF_PACKET socket and if packet_create
+> fails, it will just sk_free the allocated sk object.
+> 
+> While we could chase all the pf->create implementations and make sure they
+> NULL the freed sk object on error from the socket, we can't guarantee
+> future protocols will not make the same mistake.
+> 
+> So it is easier to just explicitly NULL the sk pointer upon return from
+> pf->create in __sock_create. We do know that pf->create always releases the
+> allocated sk object on error, so if the pointer is not NULL, it is
+> definitely dangling.
 
-I have been investigating a read performance regression of dm-snapshot
-on top of loopback in which the read time for a dd command increased
-from 2min to 40min. I bisected the issue to dc5fc361d89 ("block:
-attempt direct issue of plug list"). I blktraced before and after this
-commit and the main difference I saw was that before this commit, when
-the performance was good, there were a lot of IO unplugs on the loop
-dev. After this commit, I saw 0 IO unplugs.
+Sounds good to me.
 
-On the mainline, I was also able to bisect to a commit which fixed
-this issue: 667ea36378cf ("loop: don't set QUEUE_FLAG_NOMERGES"). I
-also blktraced before and after this commit, and unsurprisingly, the
-main difference was that commit resulted in IO merges whereas
-previously there were none being.
+Let's remove the change by 6cd4a78d962b that should be unnecessary
+with this patch.
 
-I don't totally understand what is going on with the first commit
-which introduced the issue but I'd guess some modifying of the plug
-list behavior resulted in IO not getting merged/grouped but when we
-enabled QUEUE_FLAG_NOMERGES, we were then able to optimize through
-this mechanism. Buuuut 2min->40min seems like a huge performance drop
-just from merged vs non-merged IO, no? So perhaps it's more
-complicated than that...
 
-dc5fc361d89 -> 5.16
-667ea36378c -> 6.11
-
-6.6.y and 6.1.y and were both experiencing the performance issue. I
-tried porting 667ea36378 to these branches; it applied cleanly and
-resolved the issue for both. So perhaps we should consider it for the
-stable trees, but it'd be great if someone from the block layer could
-chime in with a better idea of what's going on here.
-
-- leah
+> 
+> Fixes: 6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket creation fails")
+> Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  net/socket.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/socket.c b/net/socket.c
+> index 7b046dd3e9a7..19afac3c2de9 100644
+> --- a/net/socket.c
+> +++ b/net/socket.c
+> @@ -1575,8 +1575,13 @@ int __sock_create(struct net *net, int family, int type, int protocol,
+>  	rcu_read_unlock();
+>  
+>  	err = pf->create(net, sock, protocol, kern);
+> -	if (err < 0)
+> +	if (err < 0) {
+> +		/* ->create should release the allocated sock->sk object on error
+> +		 * but it may leave the dangling pointer
+> +		 */
+> +		sock->sk = NULL;
+>  		goto out_module_put;
+> +	}
+>  
+>  	/*
+>  	 * Now to bump the refcnt of the [loadable] module that owns this
+> -- 
+> 2.39.5
+> 
 
