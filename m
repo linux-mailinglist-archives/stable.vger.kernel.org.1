@@ -1,70 +1,72 @@
-Return-Path: <stable+bounces-80691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB17398F9A3
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:11:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514DF98F9A6
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 199011C2170F
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 22:11:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAF6DB2239E
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 22:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1101CC143;
-	Thu,  3 Oct 2024 22:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD751CF296;
+	Thu,  3 Oct 2024 22:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aUMi/xmS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T4XqXL0E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6B1C2DB2;
-	Thu,  3 Oct 2024 22:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868F51CEAD7;
+	Thu,  3 Oct 2024 22:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727993441; cv=none; b=BU1Zd+1+ghOaZ0kFwTdIt7cX82h/x77nSrZeoOIK0QSDQReP43uhfLWP55YcjZPDFj7Kgwo04XLEa1KU42FGiOjkJ063QAQ0LSXOp924g0YQ1vU8I3FcbCNYmKlUKgyVU09KUFqx/TGnlymGfyta539k5/ndinvTNmghh2OZKhI=
+	t=1727993444; cv=none; b=FDfVPvXirrVd0IBaj0K3GSjOu7vai4PNu8bJJ6jb/KLIPD4PohciinUSX+Rwu3llYIh2xz29/gttFLagxT12GAfo6ruJS1N4ZeNSW6P1wETHbsoLW8jsVNXuYWSt69x+ngd4RnStjDAEzO1YMQhsYD8/S8kGEiYTktwNgaySbR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727993441; c=relaxed/simple;
-	bh=2ruyZa95IziUZXPWi0IJh7ReSJdmiH/rP39WJPPvJ+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lnTQvBCJwXo2yFgKmzS2H909MFkQBqspBgxEzy0nuWcLBttTVLOg97ZzsYbzyAJRfbSu0zQ+VmdnRb/j+RdN4Ge3yakmp6o2VvInbXndPkjFryonxGWeZoxJSZePIqFFChqizsGxouRzgYGUBwH/5PH0RYeLHWhxaUH7rceB7jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aUMi/xmS; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1727993444; c=relaxed/simple;
+	bh=GavArUkKww24mgKtAyasen4ZhpDZdFNpOqgfdzNwIdY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=icqtrNmfHUu3kjgl6y+1z6ejTzkhSIVT5Pl54NPqV0gkmJQhj9qSaIayfsQnYOeKSB+qfozDYnD63zr4b0aDTxb8ur5zYdazng7B42jpoutEwrL/kHmSEouEIncTF7YbqyhIUt3mBLuWl7nPDXkwZneH6gmlzEDFDF+R0YreTnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T4XqXL0E; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42cb9a0c300so12140925e9.0;
-        Thu, 03 Oct 2024 15:10:39 -0700 (PDT)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37cd8a5aac9so887610f8f.2;
+        Thu, 03 Oct 2024 15:10:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727993438; x=1728598238; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=C92rcUtVqnNfXPCgxcCPv2PyEiym9G5diOBGvpjsBrU=;
-        b=aUMi/xmSHyJQOll0s3hpW77UaM8q8DQdruuNQ0so2O+/0J5gbLfAr5w6Xk/lMt/t9q
-         9JyvsRewDK0VePpjPrHUIIIqICmiOrwbfArZ7xs5EYbGCUwtW0t3arR54hElEa5hFchc
-         0TvtJSfscn55SrDx4WD94Zpl6JOmAYcNBFNPUcOUa1+FHlqcJMua7iD5GiztYcteASb0
-         4qbAVFNPdiFZcCzKl+7tdY3G6BWteun3XXGYfZ+y0SPuZCsnxWcqbp+ZHXrUwngdrKmQ
-         mRRjswYqyjAR2nssh67TSB2xfo/Urr9YxSr6LkjH1HCbqsLWUUetRp/KjTxrXYTW+/dF
-         gM3Q==
+        d=gmail.com; s=20230601; t=1727993441; x=1728598241; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YtyXZhQOdZSWlMwX/3ym2xo9GQ01udbth4iGbL7BUug=;
+        b=T4XqXL0E6BxaUjcNuzf+8LwNwFeSHV1LaIQhVce6FV2VoKsohGZnlzIj34q6O7/Z3/
+         gqOJJMObAqD7OPmBMHYfjODmHeiwJGwZSmS/xTPosC87rstr1OblyUG0dAYClWZaKiYb
+         6IQqRLWufPraRWTZ74IuwN62JFYJmHCx+vihn08eLOxOVwlVkeibHBlBihDkhWctGYyt
+         RiroY42nEr0hzQWxGOnvJ8C1r1N7O/WSdpi3IBiyRWGy+gpdVp40BRaQnsPDSuZk9NvB
+         iDmh24WKEFJDUp0k0qRyamXt1G079rCy4ByreECPll8hcr4jskybRsVI6Me4MTqK/Xxh
+         m0AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727993438; x=1728598238;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C92rcUtVqnNfXPCgxcCPv2PyEiym9G5diOBGvpjsBrU=;
-        b=TpviM2xYTr2uC5zqw/y9Lzt8/mIJix6RzEnorpKcqT9dEALiae6OvEuFjlw5W06Dwy
-         dtUYXzg+4J1Xu6487e89f1AGXn1QhStRtX9byDNa8aLpfj3Kff6WqDkdNSl+QWWMUdSt
-         i/cq8rOafpsNBHDszeRKJeSIcvphO1ywcor7gJplDrN4azmlschFk6+ooIRRmqWpdI6p
-         ZYiDUYIuA/SoXSHFTbzaHMGk0EGQj/crbT2awoWEjUtXki0f6tDeW8KZgMaIB8qpNyn4
-         XNMhQ9/LSRTI5qF6NpTnorLpsrUPKT81MfwJSzulqM2s2f4XwTU514SdtU99Df4nhEu1
-         Ebzg==
-X-Forwarded-Encrypted: i=1; AJvYcCViIZi1xBGNRwitJCSntK873qF2UYnXQmLc2co1mI48dlKDiPuesz+xIjDkdga2me6LDAEujuyW@vger.kernel.org, AJvYcCWF4mBnokF5gzRanA35r5TXOYCcnKdjvdf+tdJZwoKEwUqYW1jtS9dH/61CGBOztggcM2yCwy0W@vger.kernel.org, AJvYcCXQLisbqqV1HI/7GGEIGrV3NxOCgj8Ecd7SCMOXtCqWBzxwFHFMm1hhtfZrDyyJsSon5fRUPenmHcaRXyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7uKeinNrI3u6E8hL8qyAlJsTLcntjFbXvnBPdCWFMzqtHxLfy
-	FRtdCIg/UoU+1FqtLb3Znl3H7mk8bdM1SOXurdvK45zqUx4XDvor
-X-Google-Smtp-Source: AGHT+IGA89vqGhblOrD5/6Jy9UL6C7XcJGVX50m6iOPle18rO83og1WfKAZfbCpwnmg1BTf0BO7Oqw==
-X-Received: by 2002:a5d:59a1:0:b0:371:88b9:256d with SMTP id ffacd0b85a97d-37d0e6cae5emr653101f8f.6.1727993438034;
-        Thu, 03 Oct 2024 15:10:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727993441; x=1728598241;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YtyXZhQOdZSWlMwX/3ym2xo9GQ01udbth4iGbL7BUug=;
+        b=axCB9xUwte9p66buF1OQkKXmcIJOoQ004tgrIvkVZ1H8Xzrezz+3sc79li1UFe64Yp
+         +v6yZX9/yV82yiy5aU8tjUyEn/NBaOihNCCMZnpA4XmPsDAwCSGoBVCDa6pRTiEjryF7
+         waMU2ZbdqIFG0eAMroXhEQiHuFcsV4U1N464ydSppCYY+wVhMf3RCqsojiAYf6ti3Dvr
+         dexOlSZBhO5in/K7kUt3QIYRn4glFA+45rGPOf8lZKbH1gCKR8TjaAGsdEuFJ39+syqS
+         TEm4ZbbhDfyQW4Y8iKZzrbqWRLU01570h+WVfor3ak916srWgKH7lO861nIhlfDrfaJ+
+         SN9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU61WmmBM4g6RtaiB9ojIv9onYCqPOBOlS6tMf90lC2X6NQ6NP2InGqxmlzVyIuYMTLymgbYvNd@vger.kernel.org, AJvYcCUq6XqnBqdm24ra88gk56ufkv74qolm3wnbset2Pqe11fJS+Ho4syQEaJeXFRRmEeyPlF2m1Xuw@vger.kernel.org, AJvYcCVSNsagFJr67hjRsyzH/QCT5u4ed5CnQN5IStbJhh6KXH5XsDjIsrhednYA5lfRYyP3FGTAluqrKOBlk0E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHH2oMFL+IRLZoW3ypKz3S+TsoM2NKm0AIAzhgeAabb/NFfb46
+	TlyFSwVVLiSdOVcacQynbe/wx3MIh2zqH1+fUWIk7x0sTDiAePgh
+X-Google-Smtp-Source: AGHT+IGIVO3kNwan/N+L0Eg7udZx2Sx7NC0DNk3w5ImFayGlFUVlPbofnen1833tz6NQFpF+XcWj3w==
+X-Received: by 2002:a05:6000:10e:b0:374:c942:a6b4 with SMTP id ffacd0b85a97d-37d0e6f0e26mr439840f8f.20.1727993440506;
+        Thu, 03 Oct 2024 15:10:40 -0700 (PDT)
 Received: from localhost.localdomain (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37d0822995fsm2079334f8f.38.2024.10.03.15.10.35
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37d0822995fsm2079334f8f.38.2024.10.03.15.10.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 15:10:36 -0700 (PDT)
+        Thu, 03 Oct 2024 15:10:39 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
@@ -79,10 +81,12 @@ To: Andrew Lunn <andrew@lunn.ch>,
 	linux-kernel@vger.kernel.org
 Cc: Daniel Golle <daniel@makrotopia.org>,
 	stable@vger.kernel.org
-Subject: [net PATCH 1/2] net: phy: Remove LED entry from LEDs list on unregister
-Date: Fri,  4 Oct 2024 00:10:04 +0200
-Message-ID: <20241003221006.4568-1-ansuelsmth@gmail.com>
+Subject: [net PATCH 2/2] net: phy: Skip PHY LEDs OF registration for Generic PHY driver
+Date: Fri,  4 Oct 2024 00:10:05 +0200
+Message-ID: <20241003221006.4568-2-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241003221006.4568-1-ansuelsmth@gmail.com>
+References: <20241003221006.4568-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,52 +95,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
-ordering") correctly fixed a problem with using devm_ but missed
-removing the LED entry from the LEDs list.
+It might happen that a PHY driver fails to probe or is not present in
+the system as it's a kmod. In such case the Device Tree might have LED
+entry but the Generic PHY is probed instead.
 
-This cause kernel panic on specific scenario where the port for the PHY
-is torn down and up and the kmod for the PHY is removed.
+In this scenario, PHY LEDs OF registration should be skipped as
+controlling the PHY LEDs is not possible.
 
-On setting the port down the first time, the assosiacted LEDs are
-correctly unregistered. The associated kmod for the PHY is now removed.
-The kmod is now added again and the port is now put up, the associated LED
-are registered again.
-On putting the port down again for the second time after these step, the
-LED list now have 4 elements. With the first 2 already unregistered
-previously and the 2 new one registered again.
-
-This cause a kernel panic as the first 2 element should have been
-removed.
-
-Fix this by correctly removing the element when LED is unregistered.
-
-Reported-by: Daniel Golle <daniel@makrotopia.org>
 Tested-by: Daniel Golle <daniel@makrotopia.org>
 Cc: stable@vger.kernel.org
-Fixes: c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct ordering")
+Fixes: 01e5b728e9e4 ("net: phy: Add a binding for PHY LEDs")
 Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 ---
- drivers/net/phy/phy_device.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/phy/phy_device.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 560e338b307a..499797646580 100644
+index 499797646580..af088bf00bae 100644
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
-@@ -3326,10 +3326,11 @@ static __maybe_unused int phy_led_hw_is_supported(struct led_classdev *led_cdev,
+@@ -3411,6 +3411,11 @@ static int of_phy_leds(struct phy_device *phydev)
+ 	struct device_node *leds;
+ 	int err;
  
- static void phy_leds_unregister(struct phy_device *phydev)
- {
--	struct phy_led *phyled;
-+	struct phy_led *phyled, *tmp;
- 
--	list_for_each_entry(phyled, &phydev->leds, list) {
-+	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
- 		led_classdev_unregister(&phyled->led_cdev);
-+		list_del(&phyled->list);
- 	}
- }
++	/* Skip LED registration if we are Generic PHY */
++	if (phy_driver_is_genphy(phydev) ||
++	    phy_driver_is_genphy_10g(phydev))
++		return 0;
++
+ 	if (!IS_ENABLED(CONFIG_OF_MDIO))
+ 		return 0;
  
 -- 
 2.45.2
