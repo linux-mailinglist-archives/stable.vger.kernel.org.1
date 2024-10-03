@@ -1,74 +1,88 @@
-Return-Path: <stable+bounces-80690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC4398F936
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 23:51:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB17398F9A3
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEE21C21983
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 21:51:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 199011C2170F
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 22:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFFE1BF81B;
-	Thu,  3 Oct 2024 21:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1101CC143;
+	Thu,  3 Oct 2024 22:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="dZZWbDak"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aUMi/xmS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D056F6F06A;
-	Thu,  3 Oct 2024 21:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6B1C2DB2;
+	Thu,  3 Oct 2024 22:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727992259; cv=none; b=WxgZbRI8eolK999ZZ2X53pZGncrCdsSr3UJVGUYU+1T3UivknBpNHTCVKq5Tmt+OMI5O497nV4gwwHnBEC142pykIcKg+MF62oRxhtzC0zJnkGPa0HXweowHor8TVUNI3iPxoTOeQSOupUDl2Ook4NH8+IH5Q0PtX9MIoD7GVC4=
+	t=1727993441; cv=none; b=BU1Zd+1+ghOaZ0kFwTdIt7cX82h/x77nSrZeoOIK0QSDQReP43uhfLWP55YcjZPDFj7Kgwo04XLEa1KU42FGiOjkJ063QAQ0LSXOp924g0YQ1vU8I3FcbCNYmKlUKgyVU09KUFqx/TGnlymGfyta539k5/ndinvTNmghh2OZKhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727992259; c=relaxed/simple;
-	bh=xDvuuU0Ny5bptRzf1f6XMRSEy3QqAXdPpCjIwoLn+yQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hxCHHWEeoIek1CKkptv73ReFxO4GY5Q2XlryKaGo3PyhMhNeMvmMBNcX/D22SR0u15rB8fgWTHrMgmIWeAnrWaIYhAGBXR5/EKngi+RznBbOiLE5AyJVaDqYMjegFskJT4fL8V1Ab0nmAYjzeyZiny4bsdfw3cvQsh48E5CcdrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=dZZWbDak; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1727993441; c=relaxed/simple;
+	bh=2ruyZa95IziUZXPWi0IJh7ReSJdmiH/rP39WJPPvJ+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lnTQvBCJwXo2yFgKmzS2H909MFkQBqspBgxEzy0nuWcLBttTVLOg97ZzsYbzyAJRfbSu0zQ+VmdnRb/j+RdN4Ge3yakmp6o2VvInbXndPkjFryonxGWeZoxJSZePIqFFChqizsGxouRzgYGUBwH/5PH0RYeLHWhxaUH7rceB7jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aUMi/xmS; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42cb9a0c300so12140925e9.0;
+        Thu, 03 Oct 2024 15:10:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1727992256; x=1759528256;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6rpJeqVSzaRKWSkf7f1FmSyfDmQ9YVfHM+Tdpkcb4O4=;
-  b=dZZWbDakDgEL59R7siHPjCQ7Mf5YgV8x/z67xWS2Ko49nawNxBNrIIVk
-   WqDx9fV8GtxkYvtJJhmUmbuytyYWRJOGJNW3vg8iEYKg8rl/SuqH6pvBB
-   ZHJ3xsGO90nnyd6o36hT12bDL5Y3jcFIZLH0rZE/+VQrkHU97JTbB0n47
-   Q=;
-X-IronPort-AV: E=Sophos;i="6.11,175,1725321600"; 
-   d="scan'208";a="438116422"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2024 21:50:51 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:22494]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.107:2525] with esmtp (Farcaster)
- id d6bf4c58-0a1d-4336-a2a1-3bd93f1d09d4; Thu, 3 Oct 2024 21:50:49 +0000 (UTC)
-X-Farcaster-Flow-ID: d6bf4c58-0a1d-4336-a2a1-3bd93f1d09d4
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 3 Oct 2024 21:50:49 +0000
-Received: from 88665a182662.ant.amazon.com (10.187.171.32) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Thu, 3 Oct 2024 21:50:46 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <ignat@cloudflare.com>
-CC: <alibuda@linux.alibaba.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kernel-team@cloudflare.com>, <kuba@kernel.org>, <kuniyu@amazon.com>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] net: explicitly clear the sk pointer, when pf->create fails
-Date: Thu, 3 Oct 2024 14:50:38 -0700
-Message-ID: <20241003215038.11611-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20241003170151.69445-1-ignat@cloudflare.com>
-References: <20241003170151.69445-1-ignat@cloudflare.com>
+        d=gmail.com; s=20230601; t=1727993438; x=1728598238; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C92rcUtVqnNfXPCgxcCPv2PyEiym9G5diOBGvpjsBrU=;
+        b=aUMi/xmSHyJQOll0s3hpW77UaM8q8DQdruuNQ0so2O+/0J5gbLfAr5w6Xk/lMt/t9q
+         9JyvsRewDK0VePpjPrHUIIIqICmiOrwbfArZ7xs5EYbGCUwtW0t3arR54hElEa5hFchc
+         0TvtJSfscn55SrDx4WD94Zpl6JOmAYcNBFNPUcOUa1+FHlqcJMua7iD5GiztYcteASb0
+         4qbAVFNPdiFZcCzKl+7tdY3G6BWteun3XXGYfZ+y0SPuZCsnxWcqbp+ZHXrUwngdrKmQ
+         mRRjswYqyjAR2nssh67TSB2xfo/Urr9YxSr6LkjH1HCbqsLWUUetRp/KjTxrXYTW+/dF
+         gM3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727993438; x=1728598238;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C92rcUtVqnNfXPCgxcCPv2PyEiym9G5diOBGvpjsBrU=;
+        b=TpviM2xYTr2uC5zqw/y9Lzt8/mIJix6RzEnorpKcqT9dEALiae6OvEuFjlw5W06Dwy
+         dtUYXzg+4J1Xu6487e89f1AGXn1QhStRtX9byDNa8aLpfj3Kff6WqDkdNSl+QWWMUdSt
+         i/cq8rOafpsNBHDszeRKJeSIcvphO1ywcor7gJplDrN4azmlschFk6+ooIRRmqWpdI6p
+         ZYiDUYIuA/SoXSHFTbzaHMGk0EGQj/crbT2awoWEjUtXki0f6tDeW8KZgMaIB8qpNyn4
+         XNMhQ9/LSRTI5qF6NpTnorLpsrUPKT81MfwJSzulqM2s2f4XwTU514SdtU99Df4nhEu1
+         Ebzg==
+X-Forwarded-Encrypted: i=1; AJvYcCViIZi1xBGNRwitJCSntK873qF2UYnXQmLc2co1mI48dlKDiPuesz+xIjDkdga2me6LDAEujuyW@vger.kernel.org, AJvYcCWF4mBnokF5gzRanA35r5TXOYCcnKdjvdf+tdJZwoKEwUqYW1jtS9dH/61CGBOztggcM2yCwy0W@vger.kernel.org, AJvYcCXQLisbqqV1HI/7GGEIGrV3NxOCgj8Ecd7SCMOXtCqWBzxwFHFMm1hhtfZrDyyJsSon5fRUPenmHcaRXyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7uKeinNrI3u6E8hL8qyAlJsTLcntjFbXvnBPdCWFMzqtHxLfy
+	FRtdCIg/UoU+1FqtLb3Znl3H7mk8bdM1SOXurdvK45zqUx4XDvor
+X-Google-Smtp-Source: AGHT+IGA89vqGhblOrD5/6Jy9UL6C7XcJGVX50m6iOPle18rO83og1WfKAZfbCpwnmg1BTf0BO7Oqw==
+X-Received: by 2002:a5d:59a1:0:b0:371:88b9:256d with SMTP id ffacd0b85a97d-37d0e6cae5emr653101f8f.6.1727993438034;
+        Thu, 03 Oct 2024 15:10:38 -0700 (PDT)
+Received: from localhost.localdomain (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37d0822995fsm2079334f8f.38.2024.10.03.15.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Oct 2024 15:10:36 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Daniel Golle <daniel@makrotopia.org>,
+	stable@vger.kernel.org
+Subject: [net PATCH 1/2] net: phy: Remove LED entry from LEDs list on unregister
+Date: Fri,  4 Oct 2024 00:10:04 +0200
+Message-ID: <20241003221006.4568-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,65 +90,55 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWC001.ant.amazon.com (10.13.139.233) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Thu,  3 Oct 2024 18:01:51 +0100
-> We have recently noticed the exact same KASAN splat as in commit
-> 6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket
-> creation fails"). The problem is that commit did not fully address the
-> problem, as some pf->create implementations do not use sk_common_release
-> in their error paths.
-> 
-> For example, we can use the same reproducer as in the above commit, but
-> changing ping to arping. arping uses AF_PACKET socket and if packet_create
-> fails, it will just sk_free the allocated sk object.
-> 
-> While we could chase all the pf->create implementations and make sure they
-> NULL the freed sk object on error from the socket, we can't guarantee
-> future protocols will not make the same mistake.
-> 
-> So it is easier to just explicitly NULL the sk pointer upon return from
-> pf->create in __sock_create. We do know that pf->create always releases the
-> allocated sk object on error, so if the pointer is not NULL, it is
-> definitely dangling.
+Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
+ordering") correctly fixed a problem with using devm_ but missed
+removing the LED entry from the LEDs list.
 
-Sounds good to me.
+This cause kernel panic on specific scenario where the port for the PHY
+is torn down and up and the kmod for the PHY is removed.
 
-Let's remove the change by 6cd4a78d962b that should be unnecessary
-with this patch.
+On setting the port down the first time, the assosiacted LEDs are
+correctly unregistered. The associated kmod for the PHY is now removed.
+The kmod is now added again and the port is now put up, the associated LED
+are registered again.
+On putting the port down again for the second time after these step, the
+LED list now have 4 elements. With the first 2 already unregistered
+previously and the 2 new one registered again.
 
+This cause a kernel panic as the first 2 element should have been
+removed.
 
-> 
-> Fixes: 6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket creation fails")
-> Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-> Cc: stable@vger.kernel.org
-> ---
->  net/socket.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/socket.c b/net/socket.c
-> index 7b046dd3e9a7..19afac3c2de9 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -1575,8 +1575,13 @@ int __sock_create(struct net *net, int family, int type, int protocol,
->  	rcu_read_unlock();
->  
->  	err = pf->create(net, sock, protocol, kern);
-> -	if (err < 0)
-> +	if (err < 0) {
-> +		/* ->create should release the allocated sock->sk object on error
-> +		 * but it may leave the dangling pointer
-> +		 */
-> +		sock->sk = NULL;
->  		goto out_module_put;
-> +	}
->  
->  	/*
->  	 * Now to bump the refcnt of the [loadable] module that owns this
-> -- 
-> 2.39.5
-> 
+Fix this by correctly removing the element when LED is unregistered.
+
+Reported-by: Daniel Golle <daniel@makrotopia.org>
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Cc: stable@vger.kernel.org
+Fixes: c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct ordering")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/phy/phy_device.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 560e338b307a..499797646580 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3326,10 +3326,11 @@ static __maybe_unused int phy_led_hw_is_supported(struct led_classdev *led_cdev,
+ 
+ static void phy_leds_unregister(struct phy_device *phydev)
+ {
+-	struct phy_led *phyled;
++	struct phy_led *phyled, *tmp;
+ 
+-	list_for_each_entry(phyled, &phydev->leds, list) {
++	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
+ 		led_classdev_unregister(&phyled->led_cdev);
++		list_del(&phyled->list);
+ 	}
+ }
+ 
+-- 
+2.45.2
+
 
