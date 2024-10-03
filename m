@@ -1,86 +1,50 @@
-Return-Path: <stable+bounces-80671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E23B98F4C0
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 19:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B607298F4E5
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 19:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75D1A28245F
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:03:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7759D282480
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D1C1A7AF5;
-	Thu,  3 Oct 2024 17:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDCF1A76A3;
+	Thu,  3 Oct 2024 17:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="dZfgCuOX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pZEn0yGc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8484F19CC09
-	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 17:02:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D8D19F46D;
+	Thu,  3 Oct 2024 17:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727974942; cv=none; b=Cye+wzJ+ULMTjECu6ja5y9J6069CVXkxN6SYIR/oMFXNpJ2Mu2BF0FbDj2RR6dYR+PsXOoyQBADZ5s44h5oK/cBS3UBmBKPn98IpsbPrYnc2b4pFEUhaJq48QGvpjtEAnu75dsCvQgfvsLzxBbL+zx+Z9kJ9G5A4QBhCnpkgtGE=
+	t=1727975505; cv=none; b=McUB8/WL8hhbn1XvQJ5HGbchwiNJ+F4CxryNLNzhQC0To2ba6jCO+4Ozo0xhG/o961S0copAKmIOBxpeO0DL96iD/5T+43tUGe5MGGa3+4gT6uKDTD+ueES/GRM/4KFQaxY+1YSIciXFSAXGCAUDLNoDpXvzHoXmoFPT+nCrpZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727974942; c=relaxed/simple;
-	bh=q5fnZalcCifiTYmt624hvA/GHzcWXModIxitdcD4x3o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gH4arriFaqqPR+zF7DNuxVJ5Q2IOb6Q5SkvHX5j57Ji4cUF+AvNKRRSUWYvlQN1S+1WY1qUHoPuikfen5lkz01su/UEd/ICHPmicT2aGZGemB/DjF5QQKe2llAG4JmPo4aPRt1iciidou0SjE3suNQ5Y932OmXpYVkvVc7ApZLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=dZfgCuOX; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42cb1758e41so9920175e9.1
-        for <stable@vger.kernel.org>; Thu, 03 Oct 2024 10:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1727974938; x=1728579738; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=L2K9Rx95eEIwrccz12T8FYrmBSVI/zqc5CLtbN9+dAo=;
-        b=dZfgCuOXrqJtq16DftDq0HKLhMQJIXr4LszGm/WCAKgzxuFt8EZOvrw0zyzCs9/JLe
-         A5HQCs0i7moqf9aRkKoyq6LZe+Iqnh7qRORgXSL85yMm/OzjiScFkdknfNOtub5ndbOD
-         +jKx38laVv80U2DnOOA+Ak2VolA1TYnFma6hEbEQoMulw4WsU+FWw9RRNGY8s84QoJc+
-         P3vYRxoBamQb73gyk6ZPrSO6caPUvniZllOA0tbYXiaBGDykaHQGnqg7wQZptGzJcr7l
-         RigoU1Dtp/iXpPfHwgBVz+WjkdCKLCIUf6SDfQPEicw766Y0gPoX4tyBZDdO64qVm/1h
-         vQww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727974938; x=1728579738;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L2K9Rx95eEIwrccz12T8FYrmBSVI/zqc5CLtbN9+dAo=;
-        b=OxDySYGes4ZIOXbJ4OfZL6kPYdB41wPoWii4fsXB5jgNFkTTYMMy5JUN/TGdbY7acI
-         Bic5QBMSWoZjEsM2IeHMSk9s8o690BYQ+QB4lNifPfwL6LFvogK1QB9sfehFLuNJJfTQ
-         CsE9/hQ2Ck2WvjBSanLTk5L7Oezkvnn+9vaVBDwNhRQUdEXTn39I6Lwjaqgck/O/9GfU
-         N+WZ5ZHn2ZLbyS6kFZLyjciruagPJtKeBGNzh0n5qxzQRY/Qn/C1EitZCfAXl41iIesB
-         QPmBqIS+1FunXyBAfM5wFOUwi6GXK8FidihIOdfQQpVDbBImQulbxky1QPj6nUEa4xCK
-         4Yvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBK3x2nhB7LyjS8Zz63/5DeiegFQeiQvFTtTdXPuILLxdYNHKVZbRoKV0qhdKev99obMkwVCY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRcnutFogt4f55d5Vf8dPJDG8VB6LtvddaiS1XEe542iyaMs01
-	yjq2EO/lqBCN82VHZcwj7/BqF2Q40lLty70Wj7+pclRxCK9dvl/ec6ACtqoyM18=
-X-Google-Smtp-Source: AGHT+IFvGS0AaOWIo2/ClTjMA5NELifeE+GDYetSD2J0UfxJBPFOi79ArzJpDHsBe02D/v3GZVuSNw==
-X-Received: by 2002:a05:600c:138a:b0:425:80d5:b8b2 with SMTP id 5b1f17b1804b1-42f777c6f57mr56953245e9.16.1727974937680;
-        Thu, 03 Oct 2024 10:02:17 -0700 (PDT)
-Received: from localhost.localdomain ([104.28.200.6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f802a01fesm19874695e9.32.2024.10.03.10.02.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 03 Oct 2024 10:02:16 -0700 (PDT)
-From: Ignat Korchagin <ignat@cloudflare.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: kernel-team@cloudflare.com,
-	kuniyu@amazon.com,
-	alibuda@linux.alibaba.com,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: explicitly clear the sk pointer, when pf->create fails
-Date: Thu,  3 Oct 2024 18:01:51 +0100
-Message-Id: <20241003170151.69445-1-ignat@cloudflare.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	s=arc-20240116; t=1727975505; c=relaxed/simple;
+	bh=vFK5H45ABPJADyrRJaINqKoLykSah/FVkTLD+X2PPj4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fWs/mzcRi+uKdd8v7/ce91gVGmHOEGvkMduVuYMNNataWMhgnX4PkdSwQWvbCyEqsLS9ZEysBpQe+d3QvahKIRv7qSjXdy9OAOEDyvHgVdNRFtBjLSiqAis+L0btvAvH40hnUW1UYPSQ1J8bgELVlmT6kbJ3TLGga6y7pCGXx48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pZEn0yGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908EFC4CECC;
+	Thu,  3 Oct 2024 17:11:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727975504;
+	bh=vFK5H45ABPJADyrRJaINqKoLykSah/FVkTLD+X2PPj4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=pZEn0yGcXdIvtrsYpTqDl6MH6pFMmbvUU+DktsS6pD3hrU+H+bxJufv6aQu1UtzEA
+	 nzUmSkrPTLCdlIOYhSIDlOIvNuLl17KRZt3GiGr2isoGm7GS4wvwVm4VyVOoDg3nXB
+	 VW9L4K7yiEqJ4PmCYuzEf7xvMapoPzl9kjBtZ+Y/co8dmNcjXikN/wd1AFcJEg9gZl
+	 exOIVzfgOb/4FD3VhXx9pJ2T7R9A9YEiobU1MpOuAZGsT9aihnMdrb4QH+R4TPgfK0
+	 qFHRcbKk6lEphFi4bZCOaLORMpkOIH2e8XHCq92DuWYC7QTyZyI1CJZBDiSO6gMpCq
+	 zpMxfkyN2AYUw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DA93803263;
+	Thu,  3 Oct 2024 17:11:49 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,53 +52,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH HID] HID: bpf: fix cfi stubs for hid_bpf_ops
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172797550801.1927250.1874708957513155198.git-patchwork-notify@kernel.org>
+Date: Thu, 03 Oct 2024 17:11:48 +0000
+References: <20240927-fix-hid-bpf-stubs-v1-1-5bbf125f247c@kernel.org>
+In-Reply-To: <20240927-fix-hid-bpf-stubs-v1-1-5bbf125f247c@kernel.org>
+To: Benjamin Tissoires <bentiss@kernel.org>
+Cc: jikos@kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
 
-We have recently noticed the exact same KASAN splat as in commit
-6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket
-creation fails"). The problem is that commit did not fully address the
-problem, as some pf->create implementations do not use sk_common_release
-in their error paths.
+Hello:
 
-For example, we can use the same reproducer as in the above commit, but
-changing ping to arping. arping uses AF_PACKET socket and if packet_create
-fails, it will just sk_free the allocated sk object.
+This patch was applied to netdev/net.git (main)
+by Jiri Kosina <jkosina@suse.com>:
 
-While we could chase all the pf->create implementations and make sure they
-NULL the freed sk object on error from the socket, we can't guarantee
-future protocols will not make the same mistake.
+On Fri, 27 Sep 2024 16:17:41 +0200 you wrote:
+> With the introduction of commit e42ac1418055 ("bpf: Check unsupported ops
+> from the bpf_struct_ops's cfi_stubs"), a HID-BPF struct_ops containing
+> a .hid_hw_request() or a .hid_hw_output_report() was failing to load
+> as the cfi stubs were not defined.
+> 
+> Fix that by defining those simple static functions and restore HID-BPF
+> functionality.
+> 
+> [...]
 
-So it is easier to just explicitly NULL the sk pointer upon return from
-pf->create in __sock_create. We do know that pf->create always releases the
-allocated sk object on error, so if the pointer is not NULL, it is
-definitely dangling.
+Here is the summary with links:
+  - [HID] HID: bpf: fix cfi stubs for hid_bpf_ops
+    https://git.kernel.org/netdev/net/c/acd5f76fd529
 
-Fixes: 6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket creation fails")
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Cc: stable@vger.kernel.org
----
- net/socket.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/socket.c b/net/socket.c
-index 7b046dd3e9a7..19afac3c2de9 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1575,8 +1575,13 @@ int __sock_create(struct net *net, int family, int type, int protocol,
- 	rcu_read_unlock();
- 
- 	err = pf->create(net, sock, protocol, kern);
--	if (err < 0)
-+	if (err < 0) {
-+		/* ->create should release the allocated sock->sk object on error
-+		 * but it may leave the dangling pointer
-+		 */
-+		sock->sk = NULL;
- 		goto out_module_put;
-+	}
- 
- 	/*
- 	 * Now to bump the refcnt of the [loadable] module that owns this
+You are awesome, thank you!
 -- 
-2.39.5
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
