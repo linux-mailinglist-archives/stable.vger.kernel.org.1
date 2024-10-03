@@ -1,102 +1,95 @@
-Return-Path: <stable+bounces-80681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A14098F64B
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 20:38:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1531398F678
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 20:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE56DB22444
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 18:38:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1AFB2827C4
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 18:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAE11AAE37;
-	Thu,  3 Oct 2024 18:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJyYLdSD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648FE19F412;
+	Thu,  3 Oct 2024 18:48:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47132182A0;
-	Thu,  3 Oct 2024 18:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8316EB4A;
+	Thu,  3 Oct 2024 18:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727980714; cv=none; b=hJPm0I4nbCdbaOTe3G8ufmTDZJQqafOhTt8pDLwzvMR8rASneILNMlWTMS3Y/BFbDpy49KIfwuoDuZqQRPt+GfQEwvxk4+Lj2s8q52GobkmkFGrwDFI0auPd7XkjTYLWX3yBTPoRVrw02zxjKEMNb/wEZaPNaqr3kZOxnyWuu0M=
+	t=1727981337; cv=none; b=g3QNVZWui6GVfEjvanRM4ANV2ZMVPx6HnSqK3ubGMUb9uOtrY+IW9OOsNP490V1lZoXqwl17tzizwe6qwOzoRx52yeUMDLtECjymMlz0XHZtv8Qmq68hr5mx0AOvyW3kN1sedf862xAEAxsEIBPD+QzRR6Bi5bhAv4TUe2L2OaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727980714; c=relaxed/simple;
-	bh=HjXKANVGbR9/XIdYwve4xbFnazJINYmdGpGAKFctDz4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZB1ilm0Ci1rihcThZMxfm2NT0pybYb9jYgA1v7cLDCMd+Jc4Ykhhmu7MmDjg6PQ0Fw5bYBPQIKgoHG+NyG8cMamdUJqqQ9mS/6psRuzR8SU2lbHhwYNJHjtf9dL6Phgrg5yF5hX421MnBRzcDkDDyGUyOB1ZfZVi7NdvP6STxtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJyYLdSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F173C4CECC;
-	Thu,  3 Oct 2024 18:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727980713;
-	bh=HjXKANVGbR9/XIdYwve4xbFnazJINYmdGpGAKFctDz4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJyYLdSDEHeuhIp/aW0XL7sB2W7uVX3CTYbIGWy4GixjAO11dTzf6g/HSOdz+t9bT
-	 hZLX7/v0GZfkywiGGPDEjrpd90anAjwDI+9REv62qqpUb89NFpsbX9XgI+fr4IaWO1
-	 x9vKCmg6LRdsjKaUgVVjmREBLSKI/oFa9YjD/pNAqTZjyOOU9qTek1mkO+NazOTPkT
-	 m1AEFWVDMSKxeUxwI4j3N3T2ltPRGuIuggxWhmUxeg8wEFKN2U8kGOinMxTxQXObZf
-	 siTr2WQSjXNp6HWLr+6j3jR37fRmoqQFd2v4c3SnBh/r5cL5p3p7OmWhtA0uP0vmhv
-	 x0AfMaMbtJi5g==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1swQid-00HVnf-3z;
-	Thu, 03 Oct 2024 19:38:31 +0100
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Fix kvm_has_feat*() handling of negative features
-Date: Thu,  3 Oct 2024 19:38:19 +0100
-Message-Id: <172798069153.2061073.17930897656296989464.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241002204239.2051637-1-maz@kernel.org>
-References: <20241002204239.2051637-1-maz@kernel.org>
+	s=arc-20240116; t=1727981337; c=relaxed/simple;
+	bh=36sUp+K+roiAExIe/Kxwsav5Jk5xZDaouhZcDm7sGG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MvZaB9pMKcus0XKAO3KYML9NADaurlsFt6RAMwd4bfwy3zT/dGOqZBBZr3LFO4+o5u+vtJJRV+d+IoRsJ11LfXKkMLf0SxHs+da5UH6IA43U5sX+ixAzM0GFKfjvfGGm+FTNspCslkK+/0JMbx2rYBha0K/qsIjYWTuln2wUUKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id BA7851C00B3; Thu,  3 Oct 2024 20:48:51 +0200 (CEST)
+Date: Thu, 3 Oct 2024 20:48:51 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.6 000/533] 6.6.54-rc2 review
+Message-ID: <Zv7nE2SUW4UB3Sx1@duo.ucw.cz>
+References: <20241003103209.857606770@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, maz@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-
-On Wed, 02 Oct 2024 21:42:39 +0100, Marc Zyngier wrote:
-> Oliver reports that the kvm_has_feat() helper is not behaviing as
-> expected for negative feature. On investigation, the main issue
-> seems to be caused by the following construct:
-> 
->  	(id##_##fld##_SIGNED ?					\
-> 	 get_idreg_field_signed(kvm, id, fld) :			\
-> 	 get_idreg_field_unsigned(kvm, id, fld))
-> 
-> [...]
-
-Applied to fixes, thanks!
-
-[1/1] KVM: arm64: Fix kvm_has_feat*() handling of negative features
-      commit: a1d402abf8e3ff1d821e88993fc5331784fac0da
-
-Cheers,
-
-	M.
--- 
-Without deviation from the norm, progress is not possible.
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="0p0/OUsEJfXqelNI"
+Content-Disposition: inline
+In-Reply-To: <20241003103209.857606770@linuxfoundation.org>
 
 
+--0p0/OUsEJfXqelNI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 6.6.54 release.
+> There are 533 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+CIP testing did not find any problems here:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.6.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--0p0/OUsEJfXqelNI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZv7nEwAKCRAw5/Bqldv6
+8mzmAJ9sIkzqGrAsXQD2XAuVyXs9zRcQ3gCgudC9JftpZjsuyeTosHSKI+TItEU=
+=RGCw
+-----END PGP SIGNATURE-----
+
+--0p0/OUsEJfXqelNI--
 
