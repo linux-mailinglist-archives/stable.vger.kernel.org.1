@@ -1,92 +1,74 @@
-Return-Path: <stable+bounces-80692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514DF98F9A6
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA5998F9BA
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAF6DB2239E
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 22:11:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76484B217CD
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 22:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD751CF296;
-	Thu,  3 Oct 2024 22:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DADE1CC14F;
+	Thu,  3 Oct 2024 22:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T4XqXL0E"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="XEHY3a6R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868F51CEAD7;
-	Thu,  3 Oct 2024 22:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C1D1BFDFF;
+	Thu,  3 Oct 2024 22:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727993444; cv=none; b=FDfVPvXirrVd0IBaj0K3GSjOu7vai4PNu8bJJ6jb/KLIPD4PohciinUSX+Rwu3llYIh2xz29/gttFLagxT12GAfo6ruJS1N4ZeNSW6P1wETHbsoLW8jsVNXuYWSt69x+ngd4RnStjDAEzO1YMQhsYD8/S8kGEiYTktwNgaySbR8=
+	t=1727993788; cv=none; b=on5bZkgmSSengzlHTbhIBq+qfGRqWsDrNGV7xX6x8sc+j9NS0RNCFQNA8MyJZpAhKsKRCO1maAvgb3zxo01c39d7lNhD/4pexrcRH/ubyj85VDxxBe6bIal1kM0EOOErMZ5LVvjTCUFBQltzeMFQVzUfe+A+Bcefdot40PLUSio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727993444; c=relaxed/simple;
-	bh=GavArUkKww24mgKtAyasen4ZhpDZdFNpOqgfdzNwIdY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icqtrNmfHUu3kjgl6y+1z6ejTzkhSIVT5Pl54NPqV0gkmJQhj9qSaIayfsQnYOeKSB+qfozDYnD63zr4b0aDTxb8ur5zYdazng7B42jpoutEwrL/kHmSEouEIncTF7YbqyhIUt3mBLuWl7nPDXkwZneH6gmlzEDFDF+R0YreTnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T4XqXL0E; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37cd8a5aac9so887610f8f.2;
-        Thu, 03 Oct 2024 15:10:42 -0700 (PDT)
+	s=arc-20240116; t=1727993788; c=relaxed/simple;
+	bh=J/rkdBOnFENzr/Ao83muSATxMMgLCURc4fzHWx3WNr4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Iq5YUneVDeQywC6bdF0YhI5eMeQR3nUn8bFdf9qAAbsj4kKPtCLnNtSX87BfbyPwXlXn6UJy7CS73CcY1/p82jGhEtVHA3tW3VwlzkrRjyz+FiRwdrLxvQ2oV+y4vBMkA7Kd2YfFG1kJWUMK8git7Bp9StPiNtcg+SiXXguMTiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=XEHY3a6R; arc=none smtp.client-ip=52.119.213.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727993441; x=1728598241; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YtyXZhQOdZSWlMwX/3ym2xo9GQ01udbth4iGbL7BUug=;
-        b=T4XqXL0E6BxaUjcNuzf+8LwNwFeSHV1LaIQhVce6FV2VoKsohGZnlzIj34q6O7/Z3/
-         gqOJJMObAqD7OPmBMHYfjODmHeiwJGwZSmS/xTPosC87rstr1OblyUG0dAYClWZaKiYb
-         6IQqRLWufPraRWTZ74IuwN62JFYJmHCx+vihn08eLOxOVwlVkeibHBlBihDkhWctGYyt
-         RiroY42nEr0hzQWxGOnvJ8C1r1N7O/WSdpi3IBiyRWGy+gpdVp40BRaQnsPDSuZk9NvB
-         iDmh24WKEFJDUp0k0qRyamXt1G079rCy4ByreECPll8hcr4jskybRsVI6Me4MTqK/Xxh
-         m0AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727993441; x=1728598241;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YtyXZhQOdZSWlMwX/3ym2xo9GQ01udbth4iGbL7BUug=;
-        b=axCB9xUwte9p66buF1OQkKXmcIJOoQ004tgrIvkVZ1H8Xzrezz+3sc79li1UFe64Yp
-         +v6yZX9/yV82yiy5aU8tjUyEn/NBaOihNCCMZnpA4XmPsDAwCSGoBVCDa6pRTiEjryF7
-         waMU2ZbdqIFG0eAMroXhEQiHuFcsV4U1N464ydSppCYY+wVhMf3RCqsojiAYf6ti3Dvr
-         dexOlSZBhO5in/K7kUt3QIYRn4glFA+45rGPOf8lZKbH1gCKR8TjaAGsdEuFJ39+syqS
-         TEm4ZbbhDfyQW4Y8iKZzrbqWRLU01570h+WVfor3ak916srWgKH7lO861nIhlfDrfaJ+
-         SN9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU61WmmBM4g6RtaiB9ojIv9onYCqPOBOlS6tMf90lC2X6NQ6NP2InGqxmlzVyIuYMTLymgbYvNd@vger.kernel.org, AJvYcCUq6XqnBqdm24ra88gk56ufkv74qolm3wnbset2Pqe11fJS+Ho4syQEaJeXFRRmEeyPlF2m1Xuw@vger.kernel.org, AJvYcCVSNsagFJr67hjRsyzH/QCT5u4ed5CnQN5IStbJhh6KXH5XsDjIsrhednYA5lfRYyP3FGTAluqrKOBlk0E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHH2oMFL+IRLZoW3ypKz3S+TsoM2NKm0AIAzhgeAabb/NFfb46
-	TlyFSwVVLiSdOVcacQynbe/wx3MIh2zqH1+fUWIk7x0sTDiAePgh
-X-Google-Smtp-Source: AGHT+IGIVO3kNwan/N+L0Eg7udZx2Sx7NC0DNk3w5ImFayGlFUVlPbofnen1833tz6NQFpF+XcWj3w==
-X-Received: by 2002:a05:6000:10e:b0:374:c942:a6b4 with SMTP id ffacd0b85a97d-37d0e6f0e26mr439840f8f.20.1727993440506;
-        Thu, 03 Oct 2024 15:10:40 -0700 (PDT)
-Received: from localhost.localdomain (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37d0822995fsm2079334f8f.38.2024.10.03.15.10.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Oct 2024 15:10:39 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Daniel Golle <daniel@makrotopia.org>,
-	stable@vger.kernel.org
-Subject: [net PATCH 2/2] net: phy: Skip PHY LEDs OF registration for Generic PHY driver
-Date: Fri,  4 Oct 2024 00:10:05 +0200
-Message-ID: <20241003221006.4568-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241003221006.4568-1-ansuelsmth@gmail.com>
-References: <20241003221006.4568-1-ansuelsmth@gmail.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1727993786; x=1759529786;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=x7S5TLf0uNeKxKynG+d6zNMxgJ7TApjOSq9+bG8QoKE=;
+  b=XEHY3a6R9mI+m9uNFF3osvfJmCpl8HmZddVK9Fe2uDPWeUmSmsXvIGaY
+   OZESwTUuG36/7JLvGrwRQEEFF0a5Q+Mpn4LnRjqFA7UmSRbptmBq0Ab7s
+   fBRIgeZQQv2DHHoDdFCsLtUjhuKjBjO0GpP6CQiF6vXKQB405E46KOhTk
+   E=;
+X-IronPort-AV: E=Sophos;i="6.11,175,1725321600"; 
+   d="scan'208";a="663541638"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2024 22:16:22 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [10.0.38.20:54321]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.239:2525] with esmtp (Farcaster)
+ id 2b21fd1b-19d3-4b7c-a31b-14397a46a683; Thu, 3 Oct 2024 22:16:21 +0000 (UTC)
+X-Farcaster-Flow-ID: 2b21fd1b-19d3-4b7c-a31b-14397a46a683
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Thu, 3 Oct 2024 22:16:21 +0000
+Received: from 88665a182662.ant.amazon.com.com (10.187.171.32) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Thu, 3 Oct 2024 22:16:18 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <a.kovaleva@yadro.com>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <johannes@sipsolutions.net>,
+	<kuba@kernel.org>, <linux-kernel@vger.kernel.org>, <linux@yadro.com>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <stable@vger.kernel.org>,
+	<kuniyu@amazon.com>
+Subject: Re: [PATCH v3 net] net: Fix an unsafe loop on the list
+Date: Thu, 3 Oct 2024 15:16:07 -0700
+Message-ID: <20241003221607.13408-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20241003104431.12391-1-a.kovaleva@yadro.com>
+References: <20241003104431.12391-1-a.kovaleva@yadro.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,39 +76,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D038UWB002.ant.amazon.com (10.13.139.185) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-It might happen that a PHY driver fails to probe or is not present in
-the system as it's a kmod. In such case the Device Tree might have LED
-entry but the Generic PHY is probed instead.
+From: Anastasia Kovaleva <a.kovaleva@yadro.com>
+Date: Thu, 3 Oct 2024 13:44:31 +0300
+> The kernel may crash when deleting a genetlink family if there are still
+> listeners for that family:
+> 
+> Oops: Kernel access of bad area, sig: 11 [#1]
+>   ...
+>   NIP [c000000000c080bc] netlink_update_socket_mc+0x3c/0xc0
+>   LR [c000000000c0f764] __netlink_clear_multicast_users+0x74/0xc0
+>   Call Trace:
+> __netlink_clear_multicast_users+0x74/0xc0
+> genl_unregister_family+0xd4/0x2d0
+> 
+> Change the unsafe loop on the list to a safe one, because inside the
+> loop there is an element removal from this list.
+> 
+> Fixes: b8273570f802 ("genetlink: fix netns vs. netlink table locking (2)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
+> Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-In this scenario, PHY LEDs OF registration should be skipped as
-controlling the PHY LEDs is not possible.
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Cc: stable@vger.kernel.org
-Fixes: 01e5b728e9e4 ("net: phy: Add a binding for PHY LEDs")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/phy/phy_device.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 499797646580..af088bf00bae 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3411,6 +3411,11 @@ static int of_phy_leds(struct phy_device *phydev)
- 	struct device_node *leds;
- 	int err;
- 
-+	/* Skip LED registration if we are Generic PHY */
-+	if (phy_driver_is_genphy(phydev) ||
-+	    phy_driver_is_genphy_10g(phydev))
-+		return 0;
-+
- 	if (!IS_ENABLED(CONFIG_OF_MDIO))
- 		return 0;
- 
--- 
-2.45.2
-
+> ---
+> v3: remove trailing "\", change spaces to tab
+> v2: add CC tag for stable
+> ---
+>  include/net/sock.h       | 2 ++
+>  net/netlink/af_netlink.c | 3 ++-
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index c58ca8dd561b..db29c39e19a7 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -894,6 +894,8 @@ static inline void sk_add_bind_node(struct sock *sk,
+>  	hlist_for_each_entry_safe(__sk, tmp, list, sk_node)
+>  #define sk_for_each_bound(__sk, list) \
+>  	hlist_for_each_entry(__sk, list, sk_bind_node)
+> +#define sk_for_each_bound_safe(__sk, tmp, list) \
+> +	hlist_for_each_entry_safe(__sk, tmp, list, sk_bind_node)
+>  
+>  /**
+>   * sk_for_each_entry_offset_rcu - iterate over a list at a given struct offset
+> diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+> index 0b7a89db3ab7..0a9287fadb47 100644
+> --- a/net/netlink/af_netlink.c
+> +++ b/net/netlink/af_netlink.c
+> @@ -2136,8 +2136,9 @@ void __netlink_clear_multicast_users(struct sock *ksk, unsigned int group)
+>  {
+>  	struct sock *sk;
+>  	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
+> +	struct hlist_node *tmp;
+>  
+> -	sk_for_each_bound(sk, &tbl->mc_list)
+> +	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list)
+>  		netlink_update_socket_mc(nlk_sk(sk), group, 0);
+>  }
+>  
+> -- 
+> 2.40.1
 
