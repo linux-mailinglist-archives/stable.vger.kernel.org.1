@@ -1,186 +1,150 @@
-Return-Path: <stable+bounces-80677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA2F98F599
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 19:54:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4CC98F59E
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 19:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E081C21B62
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:54:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03FB3B20F9A
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24C81A7250;
-	Thu,  3 Oct 2024 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D071A7AE4;
+	Thu,  3 Oct 2024 17:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UB68xgYw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iI6omeBD"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2040.outbound.protection.outlook.com [40.107.212.40])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194D19F418
-	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 17:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727978044; cv=fail; b=EIDwD574TVoutVESoUYIX7wDAnS388proXG5Xun1/BSQPFCUF9Q6nucL+kQ7XOOGZbFUHk7jtdsGKXSL23UMWB2vSaANO62L8qHAjRKkap66TNBIOMawJz3xGrNNLgKjQW6wXMnbrwulPKhVt4RawUIVugYRIjZSKLJkbku3Rck=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727978044; c=relaxed/simple;
-	bh=g6jhybVTCcb+XyJ62Snhbabj6C3ySwaWMiDIDnt9WBk=;
-	h=Message-ID:Date:To:From:Subject:Cc:Content-Type:MIME-Version; b=O/oDalqCD35hZV2pdU3asECuewUnJm3KEfD480KJp7Cnr5N7QHPD9kZTNq+wSUoAQJK7lMSluXru5BRWp19adlx3OhhwdTlSf7Kp4uM1AF64HSN4RCADZ5RiTzGYzaP3QyV8zX6sC2ENZKxhIJPgZO6cOHkwqmzkSTZ1o8C+Hgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UB68xgYw; arc=fail smtp.client-ip=40.107.212.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DOWyTHoUC7hywt667CrLinpuS5KPA4TH3xgq/w9b05tOce/17uL8v0CHzxz7eLuqrvRBS4REX/USrH58w03K1T9mPMeJRy/OOxsoRxoyv5grkgoGFtE7mx8E/g0GutLANqmxlJXA8SLWJlo0rO68Gp/JwFkFWBO59yFByCXvmsOTg76BTt8hEGtUVaYq2wuJTv6h//lHsXV8IfnUeyhgUJqRPA5wVlxq4mE6unqy9LoVVQLwizC8OmtwMPbWtPR8gKNHmwr9J6+GxG4RRZKMn6edFQDwLtUNysdA6DNMlKuAVTMk40yiQcKRejY0v8qF8V2++J19t5aFX9iKV8f6dQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fwtV15UmYqtTpRiFKx08JHUe8sjebuiTwxXAteGvoXk=;
- b=t+Gs1NmE6q8tXRbWXQdzwirOR9hKJ9hXPtovP4xhQ1j1fwZTu32wQyffHDU2QVIVDP+k/vWp6Ba3lysz/I56BiRSVMfwBl+UWt0FfSQ7WIRFwsME9+pVj1GA5FQUAZyvwGBLfjmaahsjrkNiClxq6dxHS+yt/SheHl9S/EQlrBkvXfYXcjjtAQ46OdUufQnBpE69lFkbfK74EoGGAXGqg9QR9bS3kwBSZV+eChDMCZpTuEwfQNVCeU1tWBOFhcQpQ0gLBgkDcU7zzM+m+KrRdgxYO/0UBWNRM0pAzVk6YF5lclCB4oGBxmMVe1UxxTOLn1ETsFfa1XvWHEMobCt7kg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fwtV15UmYqtTpRiFKx08JHUe8sjebuiTwxXAteGvoXk=;
- b=UB68xgYwPvmGDPSD0lbezab5LjqBcbpL9hVYkmwrxylhFvsKGDRSO+GZgkpLYAhio7VPwtlKlgAjGo0aBOupR8VCBwZ4N41t2k/jz+0r7J58/WduFNwEeYBAXxbR1e9Ql2Y6Apwn3DQtXV3SsdDoL4Gb804fQ26fttbxakpKsMI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by IA1PR12MB7686.namprd12.prod.outlook.com (2603:10b6:208:422::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Thu, 3 Oct
- 2024 17:53:54 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.8026.017; Thu, 3 Oct 2024
- 17:53:54 +0000
-Message-ID: <14faf893-2206-49c5-b32a-3aa19c6270ad@amd.com>
-Date: Thu, 3 Oct 2024 12:53:52 -0500
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-From: Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re-enable panel replay on 6.11 kernel
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0037.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:2d0::18) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37F71A76CA;
+	Thu,  3 Oct 2024 17:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727978209; cv=none; b=amaGURewKAIyVsF6A+ZhZjuViyLPaMkOfeapWZEeVQhCql6kKXCURWi7Hbq/jtYYMiI6hBiYsIkZAUf9inqGms+s8pQYa+MBdEO5hivuB/ZX2JYA8Ak2Q1aqZmO1ewB7JC+0p0gZaJRqJ7zXVdR9VmRhHDzGPJy/at97nqNOwpY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727978209; c=relaxed/simple;
+	bh=Tdz26YASw+9dvuOBtCyGwKlhjo+jgUjMABkC2CrdMsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CMdWvoWd3vtstIMt7CBTWs+McvtQP18misAFCwtiHtb7nH7gYCsthJ1NGNk7LJYLPgLAvZyMbVFG5N2qS1JsFHEDk98pW0RQ4gQDprXU2//BCb89qIHOddiGOBw8uOEu/WiwOVDswisE0j1NIuezm0Q5TrgFIB09PlkOpwACttQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iI6omeBD; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727978207; x=1759514207;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Tdz26YASw+9dvuOBtCyGwKlhjo+jgUjMABkC2CrdMsU=;
+  b=iI6omeBDc2JFg4iVnzvJlwN0tG/INzff2Nh2TziMIjczvXUS6SObFQOX
+   SXIFMmyANFRtiRlo7HoSJvv2BYQ+UopkH7v0YTleX4ofdg8x/bGA9dTMG
+   jj1a4L0LzUUTzOEjU7QONFF0ttO5myJzNG+uw67V5FiUsOr58AWPf5lz3
+   2dmQ4kNXqaJCKOE/4SJK+uVA7MrJChaqwj7I27YfEFXLJeJIDrGYChMDb
+   q4JPYsfaDX+jMQAxZNmQV9BIwvwj0e5deNnUWIoABLj3OT3sYhCTeP0oZ
+   FFBMnnF9LOFoLfo21OZ3Dh4DY4iUQ177OJraLQVA0rr0XucF1hDj/VDow
+   w==;
+X-CSE-ConnectionGUID: M6/GC9aqQx6KayUWHhAKVA==
+X-CSE-MsgGUID: 51ntRmi/QmqSK+DhTj5Ylw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="37749978"
+X-IronPort-AV: E=Sophos;i="6.11,175,1725346800"; 
+   d="scan'208";a="37749978"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2024 10:56:47 -0700
+X-CSE-ConnectionGUID: 11Robe9ISIGg+2J4PucE6A==
+X-CSE-MsgGUID: cra+AehDQ1ivTOPes+L8Iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,175,1725346800"; 
+   d="scan'208";a="74012973"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 03 Oct 2024 10:56:45 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1swQ4A-0000kR-1v;
+	Thu, 03 Oct 2024 17:56:42 +0000
+Date: Fri, 4 Oct 2024 01:55:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ard Biesheuvel <ardb+git@google.com>, x86@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, llvm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	stable@vger.kernel.org, Fangrui Song <i@maskray.me>,
+	Brian Gerst <brgerst@gmail.com>, Uros Bizjak <ubizjak@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>
+Subject: Re: [PATCH] x86/stackprotector: Work around strict Clang TLS symbol
+ requirements
+Message-ID: <202410040122.shftyeMf-lkp@intel.com>
+References: <20241002092534.3163838-2-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA1PR12MB7686:EE_
-X-MS-Office365-Filtering-Correlation-Id: 535f02cd-b064-48da-11fb-08dce3d458b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MThBUFloWHNRekdwTXhJUjlxY3NQMWZ2bjc1S3BnT3RqalBrME5LZjdLYVBn?=
- =?utf-8?B?Q2tnRTFicitOb1YwWjRNWUFUdEZ6NklNY0lLREdPZHI3R01qWUlxWFg5WlVL?=
- =?utf-8?B?T3RDOCtuS3hkUWswcS9GWS9sODBaSVVLdnZoMk9xSm5sUmZtYWNqMlM0NzND?=
- =?utf-8?B?bFdScjU5d0pQbUtCY2tDc01GNFNFSmllNm0wSm0wRm9ZczdNcXduOW5ZSERx?=
- =?utf-8?B?cjloaExvS0NidTdJN1hFdTZpQlFnUjNXajVrL005bUtiUXdHdGNkb2RZcllT?=
- =?utf-8?B?a2FVSXhycUl3OUNUM1lUTHhRNUhrRjdqTjQ1ZE12L2FYYnQ2S2NISFQvbUFL?=
- =?utf-8?B?emsrdGhUSXRhYTh0TG94clhmeEl1ZlRncFVxdkpOU01aQ2J1MmQva2JjenBC?=
- =?utf-8?B?YitVM1FiTzRSUnM2WVFPZFRETXpMc2FFUVk5OCsyNmZKc0M5U1REWEtsUVk0?=
- =?utf-8?B?SFlRRm1uWGR6SEpzTk1TcDBFY3RZYkp4RGg4UndVbDEzN3ZOU3lXRjZkY1FN?=
- =?utf-8?B?WE9ybERUdUtGRlFseGMvMktwUzBlRzRJd1Bob0RDTHo5bFBIMEtTcElGN3A0?=
- =?utf-8?B?Z1JKNmF5L1NDZWRwZ2hjRW5SUGsxWkZsNXMrUktab2hUYTM3ZkVTb29hYTZK?=
- =?utf-8?B?VksxU0NxVHMxQXlubkduLy9lOExNM3V0U1lNYnVHd1FVTjl0QlQ5NWkyODZQ?=
- =?utf-8?B?c25yN3J3Q3BjQmtOR2FDaW9EckdKTEhDTW5LT2xWTVhyZjNIa3NiSlZpcTZU?=
- =?utf-8?B?WEdGSmFvdU9tZU85ZWRsdTY1RU5zWERyK21TSjMrQmZmZTJNYVIvQ29ZTzF2?=
- =?utf-8?B?S1dIQldXQlpQcWFJajM5WUZlOHk1RDhTa2N4TGxkUXJXL3N5anlHQm9iWUxo?=
- =?utf-8?B?dnQyYk4wU1phTTVMZHpOSXR0OGJPYU9rTGhRb09Gbm53S0sxek5LRjd1czZV?=
- =?utf-8?B?Q2hHRlRMZC9HQVdWWlIzNjVXeXk5VXBqc29UMVpUeWgyV2U1QS9lemRubXpE?=
- =?utf-8?B?RXJTMEMwUkNIWkdhL3Jla1ZLVlhpSzZlWk5hU3dRdnYybjN6aGNKYVpreWhZ?=
- =?utf-8?B?OWJTN3k2OGdVZ0t2TzU3b2t0Tkh0ZGQyV3UvakR5VEs0amdlTC9Pak1BbkU3?=
- =?utf-8?B?RWNueWNOZUhSM2NJb0N4SUZNZjREUm9YN2RzRUNGcFJKRFlnT0xxVm1MQVRQ?=
- =?utf-8?B?WEpUNnZSMzhidW5LQmVpS0JMSE9zOTJ0NEo4cHM1bjF4K2I4MnhJRXZQTWlK?=
- =?utf-8?B?anJiazFVajhDLzhZS1VkeEhWUzFiWHlTd0ttTHAvUHVVajJsamM5eUdSVm56?=
- =?utf-8?B?VGNCOFlmL3BqeWt1S20rak4vNHYrZDc4UGZ0c2NlM3M4aFhzVWptcHZEZ084?=
- =?utf-8?B?RFIwUVBlb0NFODAzYWhodUhrbHpOWGdWbEszam5mUldnSEJCTDh2OXYxWWph?=
- =?utf-8?B?YXFtUkgrR2gvMDQ5Um91VnY1SGZaVXR6MGdRT01JRlM5Q0NHZ0RMb1NtYmJ5?=
- =?utf-8?B?WHc5SndjRjdVMlh3dlZDRjlBSDZiNjlTVk9XVDVUdHp6Ylpwb3ZyeVUxdGFh?=
- =?utf-8?B?NzhXc2pWT2M0ejFpcU1uT1c5NEZWRXhTcGNDc1RPVzU3SVNrdWxlT29SSmtP?=
- =?utf-8?B?RkswVGtsME1LanY3QlVSMFptVDlsM0dnRGs4RGhmVEpmbWEzN1prcVRCVGdD?=
- =?utf-8?B?YzZGenV1ZGMvbm5xSWJNK2tEcERsSWdxdTQwU2dIajNmU3dlTC9SelRRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NnV0M1cxaXZNY2N3KzFsaTVBVHJUMS90aWlLKzVUdEhjQmxRSFZhMDdwaTF3?=
- =?utf-8?B?TWlPMC9HUFhBeTBGN2RXTHRLOFcxSThUaXBDOXVhMnZhcTNBSytLdnZJZ0pJ?=
- =?utf-8?B?bFhBTm9Xb08xSDVteGNHUlJrdkhkQWVJU0MvbzkyZjRURGk2dDlFUDVHaHRs?=
- =?utf-8?B?RldyZlB1bW9XSjd0NU1BUXZPQmNTTi9LQzFSVVMrYzZMVUdZa3BjWVJXa2Ez?=
- =?utf-8?B?VmZVeXpZNVVDYklZdUk5c3hSQXkyNFcybThDUTJleFdaclJXaDVwWVBha2Rq?=
- =?utf-8?B?UFkrQVlYd2s3dllrWktpdldBRzdZbnkyd1V6bXdIcUpSTFFZOS92N1AycVdQ?=
- =?utf-8?B?T2xGb0N6bTFPQjRVNjEzNzczRXdRTjZ3VURGMUVrNHNQbWpTY1g5WFZrbkxn?=
- =?utf-8?B?RUtCS0tEanFqWWxscjI2VDE4YjB3emR0N1lKTkVsTGhNLzlya0wrZmZEeWNV?=
- =?utf-8?B?YXIrWllGTnpzNmdvNG9vYS84NzBFZ21RbHdiWkRtNjYweTRWUkRiNVkxeWF5?=
- =?utf-8?B?K1dlc1RVS0ZtUE5aYjNDaVRqTXBsT0M1MTRKdUFra3hOcENhenZhRStpcEs0?=
- =?utf-8?B?Yko3clpDcStZVVc1N1ltQXEzR3I5STcwa3NSZWEydEUwSUJHMEJBeG1kMEgw?=
- =?utf-8?B?THRIbGdDR1FVcGwvczc4amxLMk1HUWtaMmozbDhtNmdWZjQzbk92WmFSemMv?=
- =?utf-8?B?TE1NMGh1VnhHRElBYi8zbmZPN0NVeG9ZRHhGdkxNaG52YjA3YWlBRlVzKzd0?=
- =?utf-8?B?T2F2VVVkbk1zcmFLUGpreU15c1d1cUdkUTR4QnlsbFR6QjUwbjFGaFdnMHNO?=
- =?utf-8?B?RzdtLzNFSzdNMUxHTHZWOCsrd3hGRDhTWXFRbkZtSGUwdlUxZDBzbkRSSjJw?=
- =?utf-8?B?aU90TmNFRmtaSU5QM2xaN1VuSVBISFJKam53OC9lV1dCY1lWbVhYcHM1bTAx?=
- =?utf-8?B?ZnNmRkk5SmNsZjAvdUtDVjQ0WU4wMmkvejdnVUo1eXZKc0k4bitiMHRiM0l2?=
- =?utf-8?B?bThFdzhuWDkrY3IxTm5VUlFlQkdLbWIrek9GeG1JSXQ0R0xFRWFpTWc2MzA2?=
- =?utf-8?B?U01UTEpHUDVyQi92cTY0QU52ZENlYkxScXNVb283MitpOWJmY1hmcnNFR2Z1?=
- =?utf-8?B?ZnVuWWZrdGpoNG9rKzhaMDRjVlNBTW4vQlorOEdYeWwrT1NGQW5nYkpFaGRh?=
- =?utf-8?B?dWlnM3hOL0ZyNHdWc0cxdWxkUXpld05WbTZMejZqc0E4YVh3Q2RXdmxzMkNO?=
- =?utf-8?B?S25ITmxtTnRvZmp2a24xK0c1NTNnUWtYa2JwNmg2dHlUUCtFaW1OdVhQWDVB?=
- =?utf-8?B?b1cwNlhuN2YxTHYxUnJOeVFMN012YjI0RE1rVnF1UlphU1BZVUFGZGthSGVM?=
- =?utf-8?B?aXN5bVNvYmlhcTdMZmtSenlpV1RPelNaQWtsS3k2clFyYmx2cVYwek4rd1dM?=
- =?utf-8?B?blQyYm96NmJKTm1VVUFDUzZSU0d2MjFaK2tnQXFFOVU2ZWZWbW9vZDdJVTAv?=
- =?utf-8?B?NWZNMXdDL1R0eGU5SEg1WkRTOFdYUUtpN1pWYTJkWkl2eW5MWG9ubkZUUThI?=
- =?utf-8?B?K2l3QkdUU1FZYzZ3NWRWa0dDWUxGdjM5VjhSVEVTK2xWQXFWaWlEUWQwN1JM?=
- =?utf-8?B?MTFnTFh3R205ekw4VkxKeEFGV29nQ3hhUk50M2xabVFBVTBzcVpqOUp3WnRk?=
- =?utf-8?B?WjM2K3JJVXRZZVN1UTZDb2l5aUxJTnFIQjdkalVkNnowOXJOdGlRV0RvWWxO?=
- =?utf-8?B?RmZhWGhtYWhFMld3dUdsMTVNeElsRVRFYnp4amJKd1djT01lbGtDK0psbmJX?=
- =?utf-8?B?aTVrUWNuSFhPeEFOUDRNaFJNRm40dm90Q1NZVUEydWNXRG52Sm1IRUd1ei9y?=
- =?utf-8?B?QTFtTk5kS29qK2xqQmFDRUh4Nno5cGUyZDcyTEFRVWN0YXpOTW9DWTRwR3Bj?=
- =?utf-8?B?a2pjOE5RRld1OXV6TzFtay9MOFZSRjlTTlF4cXpab0pIOWRTQWlYY3BrN0dm?=
- =?utf-8?B?SWtMTVZuUWpuOHBKZENHNzBhcENaNWp6YytOU0lFWE1tZGpXNStTNE40RkZm?=
- =?utf-8?B?bXF4Ny9RdjE2SjNqQnpYd0szcExLUWNXVEF6ck1CU21HeXZLdUxiRFNQejNM?=
- =?utf-8?Q?GBaRMj0i8Bl0Ou8apqvxvwcVD?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 535f02cd-b064-48da-11fb-08dce3d458b9
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2024 17:53:54.2356
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dqiYE9IhgqSaB39SVYlTRY6SVa+kZS3dUL4gLf6mGq2nZZ9vUJREYYSQrThOtt4GYVi2hbZvnnPeusll8m4/Og==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7686
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241002092534.3163838-2-ardb+git@google.com>
 
-Hi,
+Hi Ard,
 
-"Panel replay" is a power saving technology that some display panels 
-support.
+kernel test robot noticed the following build warnings:
 
-During 6.11 development we had to turn off panel replay due to reports 
-of regressions.  Those regressions have now been fixed, and I've 
-confirmed that panel replay works again properly on 6.11 with the 
-following series of commits.
+[auto build test WARNING on tip/x86/core]
+[also build test WARNING on tip/master linus/master tip/x86/asm v6.12-rc1 next-20241003]
+[cannot apply to tip/auto-latest]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Can you please consider taking these back to 6.11.y so that users with 
-these panels can get their power savings back?
+url:    https://github.com/intel-lab-lkp/linux/commits/Ard-Biesheuvel/x86-stackprotector-Work-around-strict-Clang-TLS-symbol-requirements/20241002-172733
+base:   tip/x86/core
+patch link:    https://lore.kernel.org/r/20241002092534.3163838-2-ardb%2Bgit%40google.com
+patch subject: [PATCH] x86/stackprotector: Work around strict Clang TLS symbol requirements
+config: i386-randconfig-061-20241003 (https://download.01.org/0day-ci/archive/20241004/202410040122.shftyeMf-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241004/202410040122.shftyeMf-lkp@intel.com/reproduce)
 
-commit b68417613d41 ("drm/amd/display: Disable replay if VRR capability 
-is false")
-commit f91a9af09dea ("drm/amd/display: Fix VRR cannot enable")
-commit df18a4de9e77 ("drm/amd/display: Reset VRR config during resume")
-commit be64336307a6 ("drm/amd/display: Re-enable panel replay feature")
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410040122.shftyeMf-lkp@intel.com/
 
-Thanks!
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
 
+WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/locking/test-ww_mutex.o
+WARNING: modpost: EXPORT symbol "__ref_stack_chk_guard" [vmlinux] version generation failed, symbol will not be versioned.
+Is "__ref_stack_chk_guard" prototyped in <asm/asm-prototypes.h>?
+WARNING: modpost: "__ref_stack_chk_guard" [kernel/rcu/refscale.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [kernel/torture.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [fs/nfs/nfsv4.ko] has no CRC!
+>> WARNING: modpost: "__ref_stack_chk_guard" [fs/unicode/utf8-selftest.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [fs/smb/client/cifs.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [crypto/gcm.ko] has no CRC!
+>> WARNING: modpost: "__ref_stack_chk_guard" [lib/kunit/kunit-test.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/string_kunit.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/string_helpers_kunit.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/test_hexdump.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/test_hash.ko] has no CRC!
+>> WARNING: modpost: "__ref_stack_chk_guard" [lib/test_printf.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/test_scanf.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/test_bitmap.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/test_uuid.ko] has no CRC!
+>> WARNING: modpost: "__ref_stack_chk_guard" [lib/cmdline_kunit.ko] has no CRC!
+>> WARNING: modpost: "__ref_stack_chk_guard" [lib/memcpy_kunit.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/overflow_kunit.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/stackinit_kunit.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/fortify_kunit.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [lib/siphash_kunit.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [drivers/gpu/drm/tests/drm_cmdline_parser_test.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [drivers/gpu/drm/tests/drm_connector_test.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [drivers/gpu/drm/tests/drm_format_helper_test.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [drivers/gpu/drm/display/drm_display_helper.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [drivers/base/test/property-entry-test.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [drivers/power/supply/test_power.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [net/mptcp/mptcp_crypto_test.ko] has no CRC!
+WARNING: modpost: "__ref_stack_chk_guard" [net/dns_resolver/dns_resolver.ko] has no CRC!
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
