@@ -1,131 +1,98 @@
-Return-Path: <stable+bounces-80662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9E698F336
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:52:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D1298F340
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 17:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E4ED1F21D88
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:52:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00BC61C20F77
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 15:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E131A2C06;
-	Thu,  3 Oct 2024 15:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB2A1A2C06;
+	Thu,  3 Oct 2024 15:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CnTXO42F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTqDufGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B845713B280;
-	Thu,  3 Oct 2024 15:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D5413B280;
+	Thu,  3 Oct 2024 15:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727970727; cv=none; b=Phwtunhyvhbqsl6IwttZ3Qpbf3Ecn1DccOO93ILjYz7hc9/jIWL7sBVAeLEtv+4+bZo4CoQ1deV8Tddx0qqCFdUDJ8b4T8KZRQ/TDPVxk4lNMPm4iytS180ERBcm8Lj0/6fu605B/9g3pqzVGRvXeEfUke2zx2gS4fbuhkC0p9Q=
+	t=1727970863; cv=none; b=rso00lvgF/0onuI8k+MQ59mXISvDz7uLOG5sEXQz/EBO9kvE+u+BntaVSOsS4OW0+wfGrsKOOtYyn+31JcLafdYSndPnfLoO0o2jSdLDc2Wz5QMAOB5VJnGbhQu+orBkcZzJZT9hpy5TV2RsCbOQylakuQnZA1bryx1AlaoyJgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727970727; c=relaxed/simple;
-	bh=M9Oz75M4chQxxMkZ4li5kMs02D59pE5QYJmHwEsc1rA=;
+	s=arc-20240116; t=1727970863; c=relaxed/simple;
+	bh=HfYVStyslJI6MxSfOY6LsY7aD5pd1odJYDXldH/cXhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eHG0mqkNAJPpZmPSsKtPyUDPFxL3Jfrxsv9qx0dlZm5hhQljaZrg9F1hiI4p4WIE9XeHPBJln3QPVx9BQX7OMr67p8Q7PMml0UpqJy5r8P3XkUqfDU8oSe6c04K3PBLcgyq+FwUKAGpKzZK1TaYuw8vqbHfrHdETd96teryhrp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CnTXO42F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F90DC4CEC5;
-	Thu,  3 Oct 2024 15:52:04 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FG7j5QwPw1DltzloB9yuW4xSqc/+cVFASblOeHk9PK15t3+sk8HA1D2HD/i7cMO2ksw5SErjSCHlhks+MTIYdZ9Zc7eg0ksnLGvSQBH/JjRFkslJ4M1mex7PIoc6ZkWHZqAZ+rEqnTAO7Ua75gXGJBha5iiZu0GC+4QK2jGF0xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTqDufGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F956C4CEC5;
+	Thu,  3 Oct 2024 15:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727970727;
-	bh=M9Oz75M4chQxxMkZ4li5kMs02D59pE5QYJmHwEsc1rA=;
+	s=k20201202; t=1727970863;
+	bh=HfYVStyslJI6MxSfOY6LsY7aD5pd1odJYDXldH/cXhY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CnTXO42FbCft7Jo8Oud/6G8+I2anVX96jWC9rMlOGAwq30iqdsXI/elN4ZfpY51YG
-	 mhKdR3E0MmevNh/tqHTCEfdhiZCF0bdnQyHhlcm0G794YBhWVHb2VJTRKhh9KBfO0Q
-	 YdBX6n7kwUpbPAI0FDjOQ/fuJBTklM+bBna7qqbZEDK6v5ISWkHeMOqnRLJrNiDbAb
-	 9s7yOqj9Vos69octThtjJHEvnzCs/U2tjhVc93SvMv12ClqvwfIaM1V2dYHYuL7f61
-	 G7csTIR6/x2Oey6CPp/zqiTa6mI2G7KjVklleerE9/kdZtaKPnAHYwQfsW1ubROOZI
-	 EguVBYjZbk5/g==
-Date: Thu, 3 Oct 2024 16:52:02 +0100
-From: Simon Horman <horms@kernel.org>
-To: Petr Vaganov <p.vaganov@ideco.ru>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Stephan Mueller <smueller@chronox.de>,
-	Antony Antony <antony.antony@secunet.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
-	stable@vger.kernel.org, Boris Tonofa <b.tonofa@ideco.ru>
-Subject: Re: [PATCH net] xfrm: fix one more kernel-infoleak in algo dumping
-Message-ID: <20241003155202.GT1310185@kernel.org>
-References: <20241002061726.69114-1-p.vaganov@ideco.ru>
+	b=RTqDufGkYOLWyoPn6ajttltjMs2Donxq/+NkIlzxxa22KjUJrkp2jAJ+Ruey8rmxr
+	 yslJQ4Ts0uoH8AMiTQ0oym9MP8L1uavjagcKM2Xezizl6eGWU/9+KIJTJkuiq3o2BC
+	 3qKJK9ag/Ucp2UKT+9sIO/2rtJ0Zc+BkinztN6QaHRnJx/DuK1cnAoD9Zj0MJogdO4
+	 ySZP6iO05vnHP2Cppw8YSz2cj6TDzV9Z4vPuU8vTePamSu65NJCD7oELMsxiy2y4K+
+	 La58x5B+DZGAZQyrLy5hdPb0Ancx80LdZZw6EaAOMjrUJVIDjF8d7jXFG8I7NmCPBR
+	 4s6SfXk18U0Gw==
+Date: Thu, 3 Oct 2024 16:54:16 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/533] 6.6.54-rc2 review
+Message-ID: <92e2153d-9259-472b-9480-0258ad862968@sirena.org.uk>
+References: <20241003103209.857606770@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="V0G9Etd7bcY+KGUC"
+Content-Disposition: inline
+In-Reply-To: <20241003103209.857606770@linuxfoundation.org>
+X-Cookie: Batteries not included.
+
+
+--V0G9Etd7bcY+KGUC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241002061726.69114-1-p.vaganov@ideco.ru>
 
-On Wed, Oct 02, 2024 at 11:17:24AM +0500, Petr Vaganov wrote:
-> During fuzz testing, the following issue was discovered:
-> 
-> BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x598/0x2a30
+On Thu, Oct 03, 2024 at 12:33:11PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.54 release.
+> There are 533 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-...
+Tested-by: Mark Brown <broonie@kernel.org>
 
-> Fixes copying of xfrm algorithms where some random
-> data of the structure fields can end up in userspace.
-> Padding in structures may be filled with random (possibly sensitve)
-> data and should never be given directly to user-space.
-> 
-> A similar issue was resolved in the commit
-> 8222d5910dae ("xfrm: Zero padding when dumping algos and encap")
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: c7a5899eb26e ("xfrm: redact SA secret with lockdown confidentiality")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Boris Tonofa <b.tonofa@ideco.ru>
-> Signed-off-by: Boris Tonofa <b.tonofa@ideco.ru>
-> Signed-off-by: Petr Vaganov <p.vaganov@ideco.ru>
-> ---
->  net/xfrm/xfrm_user.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-> index 55f039ec3d59..97faeb3574ea 100644
-> --- a/net/xfrm/xfrm_user.c
-> +++ b/net/xfrm/xfrm_user.c
-> @@ -1098,7 +1098,9 @@ static int copy_to_user_auth(struct xfrm_algo_auth *auth, struct sk_buff *skb)
->  	if (!nla)
->  		return -EMSGSIZE;
->  	ap = nla_data(nla);
-> -	memcpy(ap, auth, sizeof(struct xfrm_algo_auth));
-> +	strscpy_pad(ap->alg_name, auth->alg_name, sizeof(sizeof(ap->alg_name)));
+--V0G9Etd7bcY+KGUC
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Hi Petr and Boris,
+-----BEGIN PGP SIGNATURE-----
 
-The nested sizeof doesn't look right to me.
-I expect the length of the destination is simply sizeof(ap->alg_name).
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmb+vicACgkQJNaLcl1U
+h9BSWgf9EU8iv+dhKJ4v6V75kQVIKcJwtg9byi9gATpcdLuL6r76JIbk4NcNNbXY
+yscLz6XKVmK+YQISIZzd4mluWdUhHw8OF3vCQQYOebLz2xO4DmhzjcqJ9ythZ/Cq
+5NMSz/MhH7uC1X/9diP4Gftx6zzANvrYelzolA3XX2iPjBb8rAjPCYldZf8gf5Pa
+vipynF+GxL3nWESTnrdOznv2qfqAHJZjJtBYuZe3U94yjQdYuHNPy1A1q+1+QEVT
+pmsd2EG2BDVmUtZOrjPVOLHWAk8D+8RSuUgl6ax5b+kNDIdp+fbuJ0NZHFoNP7aj
+u8H6Ytx9OLE8w3uKNuj90LKjW15kdg==
+=GYYI
+-----END PGP SIGNATURE-----
 
-And given that ap->alg_name is an array (which is why using sizeof is
-correct here), I believe the two-argument variant of strscpy_pad() can be
-used:
-
-	strscpy_pad(ap->alg_name, auth->alg_name);
-
-As an aside, and not for this patch, there is a usage of strncpy() just
-above this hunk which looks like it could be converted to the two-argument
-variant of strscpy() or strncpy_pad() if it ought to be zero-padded.
-
-
-> +	ap->alg_key_len = auth->alg_key_len;
-> +	ap->alg_trunc_len = auth->alg_trunc_len;
->  	if (redact_secret && auth->alg_key_len)
->  		memset(ap->alg_key, 0, (auth->alg_key_len + 7) / 8);
->  	else
-> -- 
-> 2.46.1
-> 
-> 
+--V0G9Etd7bcY+KGUC--
 
