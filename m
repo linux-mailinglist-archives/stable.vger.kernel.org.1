@@ -1,207 +1,117 @@
-Return-Path: <stable+bounces-80667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C811498F45A
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 18:44:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D5198F46D
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 18:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC3891C20BB4
-	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 16:44:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEDBC282F42
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B92C1A4F19;
-	Thu,  3 Oct 2024 16:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9001A704D;
+	Thu,  3 Oct 2024 16:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CeafXGDm"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="dIGbdhL3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E28186E3D
-	for <stable@vger.kernel.org>; Thu,  3 Oct 2024 16:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF201A7056;
+	Thu,  3 Oct 2024 16:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727973842; cv=none; b=CMKFnWirqK4DlDvtpm6wyacjaZaVLLvdewnzBi3GESCnD1pgRFNTjl1AqvVyhVQ1GKR7CuefKBgirf8H7uay45z/CPtsYA5/LN7eFfb4yrvYe+cVwwU7VloEZ2ETlfnBqaZjByghcXoi/0tzkcuv0KMk46DgKdBWG9cDtWftFno=
+	t=1727974072; cv=none; b=kmaKX0YBgEdD89iRzPFjNE9hNDZeWnNI43d3/Zau2bcL4BQJ5oAEeVKOVYmAjfwi04IXqzCHIEv98RG6et4CXHoOTKRn4EHt5dmxKmEK6ncQyFx0GCAB2OQhdDk/c8fdrF+NSCiE3TkU5gCNy9OcafLxsMYddufUxEeykL19Cgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727973842; c=relaxed/simple;
-	bh=2vYRKTLmGZSOKe30Yp6K60A888TbGikWaB4Y19FB77U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KIsF+jOiQC6DSjNj6tKHVM7P+z2s4+S3di1d0yLtzT2UCoK8KrnTux0N+f5QKgxkUQBDKXnBeAABuSSHGtHTQbZr0dSyAsmmm4LfWXoOpYaWl+oQsTrnqc8nYiyxysVxi/Nkehoo0Um3c3qlY0EnHB4BDS5NyTLXFnvyCw1ch9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CeafXGDm; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 493FMd7n006333;
-	Thu, 3 Oct 2024 16:43:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=corp-2023-11-20; bh=yj/Ie84goVXVOJ
-	sNvyfKY9rucIfxvy97cv046Hn+qS8=; b=CeafXGDmuJQr8CIakMYA1uuxJGymKy
-	CJJzDmzVRxNxmjtyKO6EBs2wkLHGj6wjyjziW0P3VxEW36EGi/V+U3hPqn+xZhql
-	dAAVv4GOC4fti6fqWLGIBgBBNatSrTA2/pIaNWLFu6WE3eLKaN5CloGLcJLKqop3
-	hUB7Jz+G3mOEm43oUwvRlBNzgJHWoyrXA0GUIgboV/yfiTXzy8RUg4uLTLjo3zbf
-	K2n25bzD+xYwkcrTR47KZexZ/K1g+kZ/V7pDpycFzn1C3J2Ta1ZzkWOzWINuBKkR
-	LRLjSjgjLy6OEE5KmOwGc6G7BBb90KZC/i/5OliibzZf/ieR33bGPGaw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41x87dcjkp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 03 Oct 2024 16:43:42 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 493FSqnZ040531;
-	Thu, 3 Oct 2024 16:43:42 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41x88ae71r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 03 Oct 2024 16:43:41 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 493Ghf35016942;
-	Thu, 3 Oct 2024 16:43:41 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41x88ae70q-1;
-	Thu, 03 Oct 2024 16:43:41 +0000
-From: Sherry Yang <sherry.yang@oracle.com>
-To: stable@vger.kernel.org
-Cc: linux@roeck-us.net, heikki.krogerus@linux.intel.com,
-        gregkh@linuxfoundation.org, rdbabiera@google.com,
-        sherry.yang@oracle.com
-Subject: [PATCH 5.15.y] usb: typec: tcpm: Check for port partner validity before consuming it
-Date: Thu,  3 Oct 2024 09:43:39 -0700
-Message-ID: <20241003164339.3282870-1-sherry.yang@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1727974072; c=relaxed/simple;
+	bh=M8f6aS+IByeVtnTPSzuINb48pU+igaxfoJQ9Tcvwxn8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uZAUX9MNdlCnQsO4wyjs3W+2tM5W/9yFOqYrHLVzcqNe6YYo8nGL+qez5pUkho9DadtXnTelIsTJPtQSPZrooqq8pyE+vp8OTicKiBRA4to0W0M+skeu+3sgScCTO3L9QJQw5XGyNXkfc1DgA9LdVCfnKR2k7KsDbC2bIvpjpfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=dIGbdhL3; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42cb8dac900so11693035e9.3;
+        Thu, 03 Oct 2024 09:47:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1727974070; x=1728578870; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LTMcH4K9v+DoRwb+OflDxoZfRqr/SiTrH+qJdlHOBAI=;
+        b=dIGbdhL3VOgzodVkyYKSPhQlxv6Um7QTaIcQyEzUr5dYGfYjBmSQ4TMtFsdjWAEF6X
+         Kk605cheKKWP2s9jiP8P8tSKhBRmgAxDgqf0X+W+Cb7vIohiNjS2cRSXT+BBF/vAVVfE
+         6pnPJtsR+d9Qmh9wzUdeEOcoWuJi3Y4hSz80EY0fAolBy0tNNfqPBpCpFRC/XCLJjU9m
+         AZhCSim2mG4UATrvLcta7yqALzsF5YBRZxBhtzGhWUkD5jrZm8XvQXKOcATqbbDNJzWY
+         dwOEk7p7mRLgoBYiLqDL+BCCp9p4Rr8GHwBpf+IIU7ao4ZcqY7TKnLQSNRLpBOKY3gkX
+         76zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727974070; x=1728578870;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LTMcH4K9v+DoRwb+OflDxoZfRqr/SiTrH+qJdlHOBAI=;
+        b=b+d5w5gOE/PfIMh1x3PxAN0wNvjcutHh8G3ExtopNO9CYfnsJxqISMJQlsfkth4OjF
+         ytmuvBaLKaJxDlDtVFnCJVl7ooHXB07s4heDdBatDLl4ZxX1V4reDJNg2Y4B8wuBwV5Y
+         SRWlHVkNGHJWGmYT1/Xs5xw6U8vqtEHt3RGA1SPpHPODR6c8K1p9E62W8LT5I8U7jay8
+         165S361ROl11I4gWDwAgmywqvHUxRm1/5bxD963GStWczcglD9ogXeywUfp2iaqJhCt+
+         9LdAGUQ1RB/mdNlhlo2fl5UHyboQAHxadsT08Cblqgs5a9wqbcVgVDUqHZQx2Q4njTZZ
+         3Tvg==
+X-Forwarded-Encrypted: i=1; AJvYcCUMc0Dx9/WZglIzsQva4Lf/hZGAgxUI8WCOLFk9bZ7KxA5VG+gduplm88OVpwsZYVQQIPdh+tm6a6wdqyU=@vger.kernel.org, AJvYcCW/nhytI+Lh+okQ4lY/t800Hqxe6JxFRx3xc+2zgjPxo5AmT3imNaqK++xoCVz3RSRDjWfKvKA5@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqfDMVXqPftR1kjjDGSKvHIK/hZuzZsAQXzsoNi5GRP3737iVA
+	GZnTHu7XviAwsibmSX+XRCG9S8Wk8NdNeIX2NIUHDQWktjXhHcU=
+X-Google-Smtp-Source: AGHT+IGUM8IIlGHJt3TQo8HYw+JN1qzS1zuRiNI3etW98uwknaVKmuQrYw+rNbZnlbOEODJAC0AFow==
+X-Received: by 2002:a5d:5850:0:b0:37c:c5fc:5802 with SMTP id ffacd0b85a97d-37d0e7b9b24mr8467f8f.36.1727974069340;
+        Thu, 03 Oct 2024 09:47:49 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4899.dip0.t-ipconnect.de. [91.43.72.153])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f7a01fc92sm49035985e9.36.2024.10.03.09.47.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Oct 2024 09:47:48 -0700 (PDT)
+Message-ID: <3b058daa-718e-418c-b34a-54e014988461@googlemail.com>
+Date: Thu, 3 Oct 2024 18:47:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/533] 6.6.54-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20241003103209.857606770@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20241003103209.857606770@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-03_15,2024-10-03_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
- malwarescore=0 adultscore=0 phishscore=0 bulkscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2408220000 definitions=main-2410030121
-X-Proofpoint-GUID: bq95wQNBixBYg3RRBpKNafDrCdAsa3mJ
-X-Proofpoint-ORIG-GUID: bq95wQNBixBYg3RRBpKNafDrCdAsa3mJ
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+Am 03.10.2024 um 12:33 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.54 release.
+> There are 533 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-commit ae11f04b452b5205536e1c02d31f8045eba249dd upstream.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-typec_register_partner() does not guarantee partner registration
-to always succeed. In the event of failure, port->partner is set
-to the error value or NULL. Given that port->partner validity is
-not checked, this results in the following crash:
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Unable to handle kernel NULL pointer dereference at virtual address xx
- pc : run_state_machine+0x1bc8/0x1c08
- lr : run_state_machine+0x1b90/0x1c08
-..
- Call trace:
-   run_state_machine+0x1bc8/0x1c08
-   tcpm_state_machine_work+0x94/0xe4
-   kthread_worker_fn+0x118/0x328
-   kthread+0x1d0/0x23c
-   ret_from_fork+0x10/0x20
+Beste Grüße,
+Peter Schneider
 
-To prevent the crash, check for port->partner validity before
-derefencing it in all the call sites.
-
-Cc: stable@vger.kernel.org
-Fixes: c97cd0b4b54e ("usb: typec: tcpm: set initial svdm version based on pd revision")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240427202812.3435268-1-badhri@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Sherry: bp to 5.15.y, minor conflicts due to missing commit:
- 8203d26905ee ("usb: typec: tcpm: Register USB Power Delivery
-Capabilities"). Ignore the the part
-typec_partner_set_usb_power_delivery() which is not in 5.15.y.]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
----
-This is a fix for CVE-2024-36893.
----
- drivers/usb/typec/tcpm/tcpm.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 5a5886cb0c00..2104bb6e61f5 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1471,7 +1471,8 @@ static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
- 	port->partner_ident.cert_stat = p[VDO_INDEX_CSTAT];
- 	port->partner_ident.product = product;
- 
--	typec_partner_set_identity(port->partner);
-+	if (port->partner)
-+		typec_partner_set_identity(port->partner);
- 
- 	tcpm_log(port, "Identity: %04x:%04x.%04x",
- 		 PD_IDH_VID(vdo),
-@@ -1559,6 +1560,9 @@ static void tcpm_register_partner_altmodes(struct tcpm_port *port)
- 	struct typec_altmode *altmode;
- 	int i;
- 
-+	if (!port->partner)
-+		return;
-+
- 	for (i = 0; i < modep->altmodes; i++) {
- 		altmode = typec_partner_register_altmode(port->partner,
- 						&modep->altmode_desc[i]);
-@@ -3577,7 +3581,10 @@ static int tcpm_init_vconn(struct tcpm_port *port)
- 
- static void tcpm_typec_connect(struct tcpm_port *port)
- {
-+	struct typec_partner *partner;
-+
- 	if (!port->connected) {
-+		port->connected = true;
- 		/* Make sure we don't report stale identity information */
- 		memset(&port->partner_ident, 0, sizeof(port->partner_ident));
- 		port->partner_desc.usb_pd = port->pd_capable;
-@@ -3587,9 +3594,13 @@ static void tcpm_typec_connect(struct tcpm_port *port)
- 			port->partner_desc.accessory = TYPEC_ACCESSORY_AUDIO;
- 		else
- 			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
--		port->partner = typec_register_partner(port->typec_port,
--						       &port->partner_desc);
--		port->connected = true;
-+		partner = typec_register_partner(port->typec_port, &port->partner_desc);
-+		if (IS_ERR(partner)) {
-+			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
-+			return;
-+		}
-+
-+		port->partner = partner;
- 	}
- }
- 
-@@ -3658,8 +3669,10 @@ static int tcpm_src_attach(struct tcpm_port *port)
- static void tcpm_typec_disconnect(struct tcpm_port *port)
- {
- 	if (port->connected) {
--		typec_unregister_partner(port->partner);
--		port->partner = NULL;
-+		if (port->partner) {
-+			typec_unregister_partner(port->partner);
-+			port->partner = NULL;
-+		}
- 		port->connected = false;
- 	}
- }
-@@ -3868,6 +3881,9 @@ static enum typec_cc_status tcpm_pwr_opmode_to_rp(enum typec_pwr_opmode opmode)
- 
- static void tcpm_set_initial_svdm_version(struct tcpm_port *port)
- {
-+	if (!port->partner)
-+		return;
-+
- 	switch (port->negotiated_rev) {
- 	case PD_REV30:
- 		break;
 -- 
-2.46.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
