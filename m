@@ -1,92 +1,181 @@
-Return-Path: <stable+bounces-80770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79887990916
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:24:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E412C99091F
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A96A41C21EF1
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 16:24:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3704FB23170
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 16:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3231C82ED;
-	Fri,  4 Oct 2024 16:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5911AA7BD;
+	Fri,  4 Oct 2024 16:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="rD0CgGFY"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="HaX8nOJm"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCB21E377D;
-	Fri,  4 Oct 2024 16:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE011C7618
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 16:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728059056; cv=none; b=b1R2xuCR1gBrbA878Xs7N2p4yd5Ej9uuCxVRkuxOb67BR2LSC+BYrb2yWmycayiKzjuT6+DSpyvgCxMyP450bkk6qVtdksQBbJV+Qh68Umbxn9fTVhz2dtBWEDMEWus2ijufjRRTU3gReV1jSjcvBLndpfFf07lBwioCEIi9GyQ=
+	t=1728059159; cv=none; b=Omq3wJNly+1tC7kvywFtzUykVcLaYuQPtMz87OH8BVrSYK68ii+1ZDzmgS6aG0JhoTfIsN0Ss9iDp3ZUA7AxixtmRwg2U2//Hoaf7bKOKr/AEGJJ+cyBfEtVc9gPH6NYgE2Wj/70qfJtONy+JrhPzsnpdPvpI8N8YI0gRm5W+lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728059056; c=relaxed/simple;
-	bh=Jgjffirx4+b6N67EonfgS9HkhD2Hun1SamPTDROda94=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hUeXl9/U+89+mSmuymqBFXzFA9Sz1w3rYsfDwINW+8lka20N7nR7Z4O1C67Nl9o+5AfzMsn18bfHXRa/LKctdIj953vu4+Pv0FF5Eg/w+Tmf7NNYcgI8pHMHqve2X8VTDLYgAz6cSARYPmB365lQ5jkiBsqNGrl9VmXd3UQPBpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=rD0CgGFY; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [192.168.35.166] (c-73-118-245-227.hsd1.wa.comcast.net [73.118.245.227])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 8A80C20DB370;
-	Fri,  4 Oct 2024 09:24:14 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8A80C20DB370
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1728059054;
-	bh=zH4HWDuKPn0rkCzJoxxLd5gXWSkBIlKuXlvAFlVEkQc=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=rD0CgGFYk7frjGx7B1X+CMR+4spcBlOXdtHAFFkbbS5eFnXFt/Wb22itvv3vrGiUl
-	 gjm4QhMTdOYLeBIa+AbQTREmcRu3fCcS678rZ2HpWs4WKhuSjufCyVcEY+5HchmTXP
-	 uFaut2ElQW0G4Q8XmzLUqpMxPf32hNYHr2iu/Evw=
-Message-ID: <f64f2cb8-de7a-4131-a0ae-e986b4857777@linux.microsoft.com>
-Date: Fri, 4 Oct 2024 09:24:15 -0700
+	s=arc-20240116; t=1728059159; c=relaxed/simple;
+	bh=35DS6SA6LlqACMXdShzhBA0O8bqX5UnPdumLFp4U2B4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JVFS/u3dXeRiFV+suuuyMXUGRYXAcfHB/H2yj9wpdLZ1z6AVQpo7vd4ebpkYRNlvd6+0AhgrxLo1fahbKJ1cJHfoBkDp9mdD0UuGnyF796G6IJiGp5axRUlbNlWgoVterlsq+NFLg1uoJHF9GSjrdFdVi3DJtdjlktE3dff/WwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=HaX8nOJm; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=+ToU/cCDQxvPZGABEX4zvJeWof5X6I9KDLPxE68DOgg=; b=HaX8nOJmJasudZjLYkR80Ywnvr
+	yZsl/Nu7KqjIylQ76RIlIBxbK1HynsAi0zrvbFTqFf+WxBkRlQ3T4x9R9FyPnUFn1KubZZERj1Cwx
+	5YKRjt7/QpUCDNjIXOWuBBlnYK3Ny3bhNWFP2yo/xK0ouPXQVsgALPJJQItLmkoQP8cLiobKm/3lX
+	OqUBrRWTYhu0x1J8QPYQFxFIDhwdGDKDRtg76MjECRNz/pEoudZt1hCcStJLXV8EkPU8EL7wgyjnN
+	GMnfJ3MrTbCQfItBCOKeuxRnkOSbbaqNEr9ErFvGdHOYfd0Xpu8QRxQ42MCNijtIIiXnztnc24+0l
+	ZFfvMflw==;
+Received: from [139.47.49.49] (helo=[192.168.1.139])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1swl7i-004ucx-Fg; Fri, 04 Oct 2024 18:25:46 +0200
+Message-ID: <5d674670c6f43bd501c20f5cc066a3f3a1531e50.camel@igalia.com>
+Subject: Re: [PATCH 2/2] drm/vc4: Stop the active perfmon before being
+ destroyed
+From: "Juan A." =?ISO-8859-1?Q?Su=E1rez?= <jasuarez@igalia.com>
+To: =?ISO-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Maxime Ripard
+ <mripard@kernel.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
+ <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter
+ <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com, 
+	stable@vger.kernel.org, Boris Brezillon <bbrezillon@kernel.org>
+Date: Fri, 04 Oct 2024 18:25:45 +0200
+In-Reply-To: <20241004123817.890016-2-mcanal@igalia.com>
+References: <20241004123817.890016-1-mcanal@igalia.com>
+	 <20241004123817.890016-2-mcanal@igalia.com>
+Autocrypt: addr=jasuarez@igalia.com; prefer-encrypt=mutual;
+ keydata=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
+ fUePB/i37LpOs4mt4/zIFeWDJxdHzBNHg
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: eahariha@linux.microsoft.com, James More <james.morse@arm.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum
- 3194386
-To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Rob Herring <robh@kernel.org>,
- D Scott Phillips <scott@os.amperecomputing.com>,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241003225239.321774-1-eahariha@linux.microsoft.com>
- <172804243078.2676985.11423830386246877637.b4-ty@arm.com>
-Content-Language: en-US
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-In-Reply-To: <172804243078.2676985.11423830386246877637.b4-ty@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/4/2024 4:47 AM, Catalin Marinas wrote:
-> On Thu, 03 Oct 2024 22:52:35 +0000, Easwar Hariharan wrote:
->> Add the Microsoft Azure Cobalt 100 CPU to the list of CPUs suffering
->> from erratum 3194386 added in commit 75b3c43eab59 ("arm64: errata:
->> Expand speculative SSBS workaround")
->>
->>
-> 
-> Applied to arm64 (for-next/fixes), thanks!
-> 
-> [1/1] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum 3194386
->       https://git.kernel.org/arm64/c/3eddb108abe3
-> 
-
-Thanks for queuing, I just saw that I typoed James' last name in the CC
-of the commit message. i.e. it needs s/More/Morse/
+Worth to mention we got this issue happened also for v3d (a fix was
+already submitted).
 
 
-I'll let you decide if it needs fixing up.
+Reviewed-by: Juan A. Suarez <jasuarez@igalia.com>
 
-Thanks,
-Easwar
+
+On Fri, 2024-10-04 at 09:36 -0300, Ma=C3=ADra Canal wrote:
+> Upon closing the file descriptor, the active performance monitor is
+> not
+> stopped. Although all perfmons are destroyed in
+> `vc4_perfmon_close_file()`,
+> the active performance monitor's pointer (`vc4->active_perfmon`) is
+> still
+> retained.
+>=20
+> If we open a new file descriptor and submit a few jobs with
+> performance
+> monitors, the driver will attempt to stop the active performance
+> monitor
+> using the stale pointer in `vc4->active_perfmon`. However, this
+> pointer
+> is no longer valid because the previous process has already
+> terminated,
+> and all performance monitors associated with it have been destroyed
+> and
+> freed.
+>=20
+> To fix this, when the active performance monitor belongs to a given
+> process, explicitly stop it before destroying and freeing it.
+>=20
+> Cc: <stable@vger.kernel.org> # v4.17+
+> Cc: Boris Brezillon <bbrezillon@kernel.org>
+> Cc: Juan A. Suarez Romero <jasuarez@igalia.com>
+> Fixes: 65101d8c9108 ("drm/vc4: Expose performance counters to
+> userspace")
+> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> ---
+> =C2=A0drivers/gpu/drm/vc4/vc4_perfmon.c | 7 ++++++-
+> =C2=A01 file changed, 6 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/vc4/vc4_perfmon.c
+> b/drivers/gpu/drm/vc4/vc4_perfmon.c
+> index f2e56d0f6298..f1342f917cf7 100644
+> --- a/drivers/gpu/drm/vc4/vc4_perfmon.c
+> +++ b/drivers/gpu/drm/vc4/vc4_perfmon.c
+> @@ -116,6 +116,11 @@ void vc4_perfmon_open_file(struct vc4_file
+> *vc4file)
+> =C2=A0static int vc4_perfmon_idr_del(int id, void *elem, void *data)
+> =C2=A0{
+> =C2=A0	struct vc4_perfmon *perfmon =3D elem;
+> +	struct vc4_dev *vc4 =3D (struct vc4_dev *)data;
+> +
+> +	/* If the active perfmon is being destroyed, stop it first
+> */
+> +	if (perfmon =3D=3D vc4->active_perfmon)
+> +		vc4_perfmon_stop(vc4, perfmon, false);
+> =C2=A0
+> =C2=A0	vc4_perfmon_put(perfmon);
+> =C2=A0
+> @@ -130,7 +135,7 @@ void vc4_perfmon_close_file(struct vc4_file
+> *vc4file)
+> =C2=A0		return;
+> =C2=A0
+> =C2=A0	mutex_lock(&vc4file->perfmon.lock);
+> -	idr_for_each(&vc4file->perfmon.idr, vc4_perfmon_idr_del,
+> NULL);
+> +	idr_for_each(&vc4file->perfmon.idr, vc4_perfmon_idr_del,
+> vc4);
+> =C2=A0	idr_destroy(&vc4file->perfmon.idr);
+> =C2=A0	mutex_unlock(&vc4file->perfmon.lock);
+> =C2=A0	mutex_destroy(&vc4file->perfmon.lock);
+
 
