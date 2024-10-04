@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC6A990FCC
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBA4991050
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D571B29D49
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:48:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2F7FB32518
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE80230239;
-	Fri,  4 Oct 2024 18:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5888222F8F1;
+	Fri,  4 Oct 2024 18:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9p00HvB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rsQAYb91"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B078230230;
-	Fri,  4 Oct 2024 18:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D751E1C2F;
+	Fri,  4 Oct 2024 18:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066726; cv=none; b=NXRCygMaHkfPdbBRhQfOoGWApcfwA1jExtBOiNfiQxUpvavD7NBP/NomthyymxJ7LX+C3LpzF4oVexbeKMEnUmSfoTSBRicfhxjKeNHYdrzo2ShpCw4CvNv4u4diEy05R47Sh/lfKg/Z7OFl5hKMuMVRejg20OzBkDrtNTpsQ+g=
+	t=1728066733; cv=none; b=aCimjuSKZu0VS2yiJ/8gbEauQc4es6s0Lvz3Ltvv8zZ2wOEtM9MWuojXxXaa6GRP/2LeiJspeI4tMCz5hQ5MKgtu+YH0fNHM73cuuIwJR6m5rDQGNpnFWpGUUaeZVO0kkgbIx/f3h5TaDU9UJa9nABxA4kbKbHV/lZymoX8K9sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066726; c=relaxed/simple;
-	bh=cIudPX+z8eB+rsul2HwYMPjgwGJNYwI7JcPY7jOIuNA=;
+	s=arc-20240116; t=1728066733; c=relaxed/simple;
+	bh=+koxMIZM77Tt7I8tTJn8hOJqD1LRiVGBhCi9CP4N6G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXmeNerNFHRN0hZGnRwKN9JrPSR2wDm31K+LFDapR4tw7i7dLbLbJpPPD/TgTAk/1d1gCoDEyOdFFvs4Fok/X77k0BY5sXW+QiMpOwmQMeYrL0Y81zYOzilmyhdY0Xsav9Z5uGNuyAwlEE4B64Ez+MakDuH7nEGJy7jGpc/lEN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9p00HvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19630C4CECC;
-	Fri,  4 Oct 2024 18:32:05 +0000 (UTC)
+	 MIME-Version; b=SzlcLAF+iwAoOpIrds3HcFi55k7Hc8tHqqfIM+vfn9RVwaavlwALiLCrWPpFwfByu2pstkPtsltfkyb2kLkRANAd4mR/bfHWUCzViLqEp3M8dlf32hX9/OLRJqTK/rd3n/+4hs31Vk84NamzZUulKDQmppxqT/EBox5z8Nfl+sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rsQAYb91; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37D3C4CECC;
+	Fri,  4 Oct 2024 18:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066725;
-	bh=cIudPX+z8eB+rsul2HwYMPjgwGJNYwI7JcPY7jOIuNA=;
+	s=k20201202; t=1728066732;
+	bh=+koxMIZM77Tt7I8tTJn8hOJqD1LRiVGBhCi9CP4N6G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9p00HvBGwTz1GJPNjqgGHyx/zKjnvUVrYd3pSx/sWQkIVu9ILTPXhB/CTqq7EUrB
-	 K0iwi6kSq3DC4vNU+TrDXwDlxm501qyzOylIj8jgleueEINXM/vU0IzRaFQTC1iPNr
-	 v3pa/RIP3NLa4KG54JGhmUwlniF8gma1hbvInLfTxjh2a4PLdvLE/aQFOuBeMMPy1L
-	 fwjHKSY0AwVjvyH/+B+CEApnx4XKMLO4r4K/39316plRdO86YEBASdeo7sSRag8pRX
-	 QXgBETW49PGNqN99XPb+ODN0uAV6MmVkHutANq0gk3VGGg9xbxeTu2qqDsj/LYnpOl
-	 0bmXHxNv8mrAA==
+	b=rsQAYb918FJHnYZgBhdRZJ1s0efE0kMEWcy3rqtNboo9VtVO2wEIwKghjyj0Edati
+	 vNX8H/X37+q1SMRvhc4tDUuXLww321BbzcTXoge2YbEUJO0sGZjrj9EGJUW4sHyF9J
+	 1W/6ytq3vtfyyrwRgEqElSbd8hd5kwxtimRYCKF5OJ4xuL0acajBnkk+IuWGdE8WZ7
+	 LDk260gjrQl3ed3VdHObOUfaUpVayFlvr8aSjon6B9hVlE9/X60BMcZcCLdythJt92
+	 dOs0qJ1T12wV42YGRNJNV5nuPg53sYvC/wvEOBnri8e19N5KZNaOU1l6PQz/REoeVP
+	 H2UyltkCkCOhw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+Cc: Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 09/16] clk: bcm: bcm53573: fix OF node leak in init
-Date: Fri,  4 Oct 2024 14:31:36 -0400
-Message-ID: <20241004183150.3676355-9-sashal@kernel.org>
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 14/16] tools/iio: Add memory allocation failure check for trigger_name
+Date: Fri,  4 Oct 2024 14:31:41 -0400
+Message-ID: <20241004183150.3676355-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183150.3676355-1-sashal@kernel.org>
 References: <20241004183150.3676355-1-sashal@kernel.org>
@@ -66,37 +66,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
+[ Upstream commit 3c6b818b097dd6932859bcc3d6722a74ec5931c1 ]
 
-Driver code is leaking OF node reference from of_get_parent() in
-bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
-first place, because the parent node will not be freed while we are
-processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
-leak by accessing parent directly, instead of of_get_parent().
+Added a check to handle memory allocation failure for `trigger_name`
+and return `-ENOMEM`.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20240828093129.3040-1-zhujun2@cmss.chinamobile.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/iio/iio_generic_buffer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
-index 36eb3716ffb00..3bc6837f844db 100644
---- a/drivers/clk/bcm/clk-bcm53573-ilp.c
-+++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
-@@ -115,7 +115,7 @@ static void bcm53573_ilp_init(struct device_node *np)
- 		goto err_free_ilp;
- 	}
- 
--	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
-+	ilp->regmap = syscon_node_to_regmap(np->parent);
- 	if (IS_ERR(ilp->regmap)) {
- 		err = PTR_ERR(ilp->regmap);
- 		goto err_free_ilp;
+diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+index ca9f33fa51c9f..e8cf3dc8de72c 100644
+--- a/tools/iio/iio_generic_buffer.c
++++ b/tools/iio/iio_generic_buffer.c
+@@ -483,6 +483,10 @@ int main(int argc, char **argv)
+ 			return -ENOMEM;
+ 		}
+ 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
++		if (!trigger_name) {
++			ret = -ENOMEM;
++			goto error;
++		}
+ 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
+ 		free(trig_dev_name);
+ 		if (ret < 0) {
 -- 
 2.43.0
 
