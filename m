@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-81116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D53990F1D
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:49:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE6F990F1F
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E642821E4
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A8CA1C20DA5
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC9E1E2305;
-	Fri,  4 Oct 2024 18:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86ACA1E1C24;
+	Fri,  4 Oct 2024 18:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V93xy/wt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvoLdZ36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC2A1E22FB;
-	Fri,  4 Oct 2024 18:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402901E2318;
+	Fri,  4 Oct 2024 18:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066729; cv=none; b=DCgkT+W+syCx60UnrWJ4IMoZ1bywomO5I3BfUIdeay888H5RR1eyKJRAUYGu85A19XIEaWRJgFdIcPvYjaTFKXChU30rryKSR3JkgATd6VuZrrjH66qdo3eVybicg1xz5mcqQGSBIOfzSQVnNn4lgALSoJ7H/zcAkDrwJPSH7ZY=
+	t=1728066730; cv=none; b=edkDMdZ4m6mQYa4K+Ya+dVvjADMniLrCxNAJN/taVEc7zCAehmxss6NnBIE+6+j4qEpClrLpHlk7+jp+4oMnNDomKfvr83WRPWa4hOyacYP7iM2ke/t83LPq+SCsc/8yJZ/ByvV89DOn11Ez9oR/GiXuEr6I/XbzFNtg+IB7ze0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066729; c=relaxed/simple;
-	bh=vlTp0gNwWkpQGr7wLw0OtQPlzy/VwTq3fY375i/I1XU=;
+	s=arc-20240116; t=1728066730; c=relaxed/simple;
+	bh=UERdAUIIkKO+mZatMfXd1r7F1mxOceEUePgfj0ybgDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B4PETdaFbnOzyv0jh6iICphs0pSOg7zy2Q/4x3gS0TCmt71OhW8JomzPfLmZP0r+qwYiEJYE9csInBc51iZLieyz9QpoNM/HoAyB+DIQu1yRswNiq3O5rksUrBWf9mjL4tQ3Jp45lizGSLGPc52jdiUqcNbbD2jo+zxsAjRO3uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V93xy/wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D99C4CECD;
-	Fri,  4 Oct 2024 18:32:07 +0000 (UTC)
+	 MIME-Version; b=P/ohvCljZPpttlGTBMDmbVhZKTZiPHkxL/G/kKZAU/hr23zaxVDKGODy1k7UehoBlIcIcLqwSuv+1WlIvwMcjAFcemF202hHUrMNbxOXp8RHbziCz8Fxg2VIDaXxqR9FGmdniDBqbqS0fuBaGh4lg8IU1sOCL4PNrXDn67RNWG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvoLdZ36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24323C4CEC6;
+	Fri,  4 Oct 2024 18:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066728;
-	bh=vlTp0gNwWkpQGr7wLw0OtQPlzy/VwTq3fY375i/I1XU=;
+	s=k20201202; t=1728066730;
+	bh=UERdAUIIkKO+mZatMfXd1r7F1mxOceEUePgfj0ybgDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V93xy/wtWof6G+PAapFk3vwGy0drlLBP6RCe8TJLS1ifrVNTb3yz8PFgv1V1jaRKk
-	 wverzR9u13Lu1cm+N1SzMPK+ys8cMR9TZqbrv3agOkS0l55eeYLnAX+J0cyGP8ua08
-	 w6fdoLDqtb+D5BSRS2imqe/KGpI8awBJt5RFDsj0NCcTygvlO3S/uCSPQ5Klf/qRtv
-	 4BXHYJhG7n2wc0mwru0bHCChZWx5w34s5acYpbhsqV6MNqKy19qVs7YNjdaDm6AwCZ
-	 e8hV3DVOa2QVNwtXM0WZ3n1aWP1LXrpsV5xiLAdAUQMO5uOXOIK3W5rBekrZ3Qtf9H
-	 kgyK9auu0NoCw==
+	b=pvoLdZ36VjJdGNIu17WVueLhBUNQrIPBxLX1FmREzNuNVhHPoyTAFRIIcNk6Hf/SO
+	 kbBHRHdB4/mI94BDBHMR0bYUOW2mry8QN12HVLQ6oqeUuZQsSXo0CSAZwmpZtOYgYG
+	 l/WOGPaO+hakr6lPWZV9DS3xk+XRcuzU7+aQKcGz/ecQF2ICbj7z+u6PlikgPeT0Z+
+	 xZm9shEoam8ERB+hQfQfRxvfBRZZj2uvcVpT2uMalpy9dQzBSfEWbn+x5QUkn/GQt8
+	 IXXZ60ogF02m9uJ7s/QX4ot113/FY6NBUZSMpLWS+rN9+KnsVgzOmxccNvGWF/7cnc
+	 xwQCEmaOOkDvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	zdravko delineshev <delineshev@outlook.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Yunke Cao <yunkec@chromium.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 11/16] PCI: Mark Creative Labs EMU20k2 INTx masking as broken
-Date: Fri,  4 Oct 2024 14:31:38 -0400
-Message-ID: <20241004183150.3676355-11-sashal@kernel.org>
+	m.szyprowski@samsung.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 12/16] media: videobuf2-core: clear memory related fields in __vb2_plane_dmabuf_put()
+Date: Fri,  4 Oct 2024 14:31:39 -0400
+Message-ID: <20241004183150.3676355-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183150.3676355-1-sashal@kernel.org>
 References: <20241004183150.3676355-1-sashal@kernel.org>
@@ -62,46 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Yunke Cao <yunkec@chromium.org>
 
-[ Upstream commit 2910306655a7072640021563ec9501bfa67f0cb1 ]
+[ Upstream commit 6a9c97ab6b7e85697e0b74e86062192a5ffffd99 ]
 
-Per user reports, the Creative Labs EMU20k2 (Sound Blaster X-Fi
-Titanium Series) generates spurious interrupts when used with
-vfio-pci unless DisINTx masking support is disabled.
+Clear vb2_plane's memory related fields in __vb2_plane_dmabuf_put(),
+including bytesused, length, fd and data_offset.
 
-Thus, quirk the device to mark INTx masking as broken.
+Remove the duplicated code in __prepare_dmabuf().
 
-Closes: https://lore.kernel.org/all/VI1PR10MB8207C507DB5420AB4C7281E0DB9A2@VI1PR10MB8207.EURPRD10.PROD.OUTLOOK.COM
-Link: https://lore.kernel.org/linux-pci/20240912215331.839220-1-alex.williamson@redhat.com
-Reported-by: zdravko delineshev <delineshev@outlook.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Yunke Cao <yunkec@chromium.org>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/common/videobuf2/videobuf2-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index bb51820890965..e496670d7994e 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3347,6 +3347,8 @@ DECLARE_PCI_FIXUP_FINAL(0x1814, 0x0601, /* Ralink RT2800 802.11n PCI */
- 			quirk_broken_intx_masking);
- DECLARE_PCI_FIXUP_FINAL(0x1b7c, 0x0004, /* Ceton InfiniTV4 */
- 			quirk_broken_intx_masking);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_CREATIVE, PCI_DEVICE_ID_CREATIVE_20K2,
-+			quirk_broken_intx_masking);
+diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
+index 50015a2ea5ce0..98719aa986bb9 100644
+--- a/drivers/media/common/videobuf2/videobuf2-core.c
++++ b/drivers/media/common/videobuf2/videobuf2-core.c
+@@ -281,6 +281,10 @@ static void __vb2_plane_dmabuf_put(struct vb2_buffer *vb, struct vb2_plane *p)
+ 	p->mem_priv = NULL;
+ 	p->dbuf = NULL;
+ 	p->dbuf_mapped = 0;
++	p->bytesused = 0;
++	p->length = 0;
++	p->m.fd = 0;
++	p->data_offset = 0;
+ }
  
  /*
-  * Realtek RTL8169 PCI Gigabit Ethernet Controller (rev 10)
+@@ -1169,10 +1173,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb, const void *pb)
+ 
+ 		/* Release previously acquired memory if present */
+ 		__vb2_plane_dmabuf_put(vb, &vb->planes[plane]);
+-		vb->planes[plane].bytesused = 0;
+-		vb->planes[plane].length = 0;
+-		vb->planes[plane].m.fd = 0;
+-		vb->planes[plane].data_offset = 0;
+ 
+ 		/* Acquire each plane's memory */
+ 		mem_priv = call_ptr_memop(vb, attach_dmabuf,
 -- 
 2.43.0
 
