@@ -1,250 +1,166 @@
-Return-Path: <stable+bounces-80725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126BF98FFD8
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 11:35:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287E099007E
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 12:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2261F22087
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 09:35:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DA991C22FAD
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 10:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C621465BE;
-	Fri,  4 Oct 2024 09:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFFE7149C7B;
+	Fri,  4 Oct 2024 10:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dhDBkHM1"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="QfHXi2Cz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A9D148857
-	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 09:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403373CF74
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 10:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728034531; cv=none; b=qHB0i+s6oSZKe7ix2iOaqrL85V4FJcpytHUg94gVa3DqNt593Rlf46AvF8UGbQ7sV3PmLXfB4qY0UMSLUOdoTTp5LwH7RCzKF66nRm5PjfiFD5y+Z23KrY0aA6NrbJKhaVio2zvu8pjEj2dPG1G6dDqAjQzt/PKKAwBIAwKLX2w=
+	t=1728036324; cv=none; b=bYlLA7euKagrFJKxJbufql/7eMJM5x59Gb9Q2jVQFveFUU9KfHxgj0rH+Ru9t4E4Hg2dNjufnhnkYZRrI1+5ueLZCNbOpFVxg3NJbG/GCDkt5XUgdeQn9V3QvXHcESgI7/A0JnSdRL5wBach3vQyzVAC81OLq/lZHO36LNntiKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728034531; c=relaxed/simple;
-	bh=PquVaNejDpT66ONMjZUqzihi3zMdtA6BsB4hySvQ4LI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XWro6QvsKiDjTTLgc70NqpOKrB/gT6Qir6O89t292F8Geoc2saFH1fascCeCrj0HVU1IVb/FYx40ZSFhDzW5SBONuzAq4Vri4rXyHxbUBIlqlHmf60mIHnDo8jFjSuzJ8b9JnIkYgj8b7pLjXf9Pu0kQQkFpr3MD4BstDjWN/9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dhDBkHM1; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20b6458ee37so21265445ad.1
-        for <stable@vger.kernel.org>; Fri, 04 Oct 2024 02:35:29 -0700 (PDT)
+	s=arc-20240116; t=1728036324; c=relaxed/simple;
+	bh=MGIV2Zrds0Tr+Iag7pnNW8b4OboPtXpobSSn+Pg2GnE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hL755DvYrFJMZlbul/K33BQc0U26cMQLpX0VD6it47JlUyFlriOoKrYltkSy0b0QvcNZ+RLC9TFX2OvVU6vOBI6edskaEct1hv6MC4jYQxiuWk82G6vlXtYvC9Mo1tyTvzlyDKd/S+V1UBqL09fml/zIwBm74HXvDo93ZpT/AUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=QfHXi2Cz; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-718d6ad6050so1688675b3a.0
+        for <stable@vger.kernel.org>; Fri, 04 Oct 2024 03:05:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1728034529; x=1728639329; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6IkXpLQ0vSqj8t5WW/tYmj59F4E1NuxHzkG9tqMb/4E=;
-        b=dhDBkHM1XDBGYNbqk9H62I7KR6UM+jzbF+V+xwm9qA/I31FVpVcEzt+abzYPtHq/CB
-         YmQZH8M4to2qdpSF3xV1D1P9sbXrOlCtd72vdq9t79sBJ0x5GpQLIc9j+3LuUTS9yVq9
-         bJiDkE/1/k1t0XrpJbLvB9OEerxEtavoasdXg=
+        d=cloudflare.com; s=google09082023; t=1728036322; x=1728641122; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=btQA1+hJcdMMNHgojMSUVQunR//xOuKAqvLVtMqwMTQ=;
+        b=QfHXi2Cz+Q295WPZ+NVZZAIPvM2rdDfpV1j0ynClsK6Uh6HgpZVxDo+pnKNqoZANGt
+         rxQZa5z74Ckqrk9EAEQdtFJ/OZkGEfbyXvqa4nRGbzvpd0/U2dnYuiVQd5C0ue3g2bsq
+         ZrycXcrktVoVyn9fKYb5NwuwcbYc7teMm/06s0E2s30aVSo0brwQMnC+jJ9kGk9aXgVs
+         nxTdyggv6LSvIsbo7e8ytrOfMpDV86ca7BfAa2+KMKdKhFmK7BvkLCQjo1lu8ZNd6tzT
+         7LPVx+9AhvWiTdYf2IUqD5Jtz6P6stO+ODEkjotGdQ6XRDjfjHDg+7pD3YlUhXs8Yydv
+         RIGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728034529; x=1728639329;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6IkXpLQ0vSqj8t5WW/tYmj59F4E1NuxHzkG9tqMb/4E=;
-        b=cQVxx8WMGTL5UIHZpslqfBB66nqJXgOEllFCpzFJxbTLkCTXJir1CfWtyRtJr9i4yK
-         9J2EsjuZdZX+zke3V0ZKrz9vIdWedGi0pdwmmMw4oAIzWowsckAEz/vcoFpSXw4kO5Xw
-         F6fF4AUELCsPCZix0Aw+aTmjAngSMu5BmQMbfWbCH1BGxIE3/AoOjJQkQqvD2zkH+26W
-         bxRBAqyjKjkavQGP93tz/hL6zO20fv/s10vhLzXq+imaUMAbndT96Wb3tHdZUGnf5/lN
-         ZLvuLznJJ4YbwvYwYalAhC00rCi2/1KpCUYy/3c4VxPH3anbD1tTRJHLYO72h5qsjUiL
-         GpsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUrHnR3AAEw/qWb8TV+4EOp8DnrOsxM+r68bCqO62h4ekUHu738v3snoGYyZxfJzcRV0qgW9jI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjqbCwezKjBgJO6VH908AeyVo0buHfVMSD5L1DTLOtrjnwsgvO
-	NLI1pUKbM7JWlQCEkxcTL4frMmhvdi/BI/HfWz+Xnzu1ohqaXTrdWA7zcKu5TA==
-X-Google-Smtp-Source: AGHT+IErQ8t9wB8Ytgfr++u0jtep5Wi9ModoCWT5qvL3pnBVmpNfQ1Eam8miRiHGNehloNIHA5v/dQ==
-X-Received: by 2002:a05:6a21:3a81:b0:1d5:2f56:9fe5 with SMTP id adf61e73a8af0-1d6dfac81dfmr2825823637.39.1728034528812;
-        Fri, 04 Oct 2024 02:35:28 -0700 (PDT)
-Received: from localhost.localdomain ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e1e83ca284sm1095403a91.11.2024.10.04.02.35.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Oct 2024 02:35:28 -0700 (PDT)
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
-To: linux-scsi@vger.kernel.org,
-	martin.petersen@oracle.com
-Cc: rajsekhar.chundru@broadcom.com,
-	sathya.prakash@broadcom.com,
-	sumit.saxena@broadcom.com,
-	chandrakanth.patil@broadcom.com,
-	prayas.patel@broadcom.com,
-	thenzl@redhat.com,
-	mav@ixsystems.com,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] mpi3mr: Validating SAS port assignments
-Date: Fri,  4 Oct 2024 15:01:40 +0530
-Message-Id: <20241004093140.149951-1-ranjan.kumar@broadcom.com>
-X-Mailer: git-send-email 2.31.1
+        d=1e100.net; s=20230601; t=1728036322; x=1728641122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=btQA1+hJcdMMNHgojMSUVQunR//xOuKAqvLVtMqwMTQ=;
+        b=vMjSJhkVdxbLPdmoXH/Cw6MY8vM0WA+Jpjy8dIwsaPGOaxbOQ+/NI1rvU8szk/x14g
+         H9h83Bqp56rP3TCjxhdhKiofy9Ur19II8XuGRKx27ipC6D+CxycztAE2eloHq8D3mAbD
+         4+ZmoQ5tu2JI5OCfk/M1FHDNqZjUOlkjSM1MdcVi6n8jY6j3eTf3yvcy/S74kACXpA4o
+         KEyEPTaSSAIftCYNIHkro8N3vyD7Xtq1vmfPCwNZ3ERnV9LpPh4D+06vqJZ1YeO8Skxu
+         /VxJPCtDdwZ2NMRSxJZJgbsqXm93E1F0j1BcPw6JRM6IZMrWhJQg7NdEM7a4X5KYroQg
+         Za9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWE5tVkKQTM1J3Cxplt5pBk1tO//0kui2i6aQcjNxBAkKj+hHb7BWzfaPam9pD3yUA5RgmsUeY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVoWchClsvDLtzCzShwIH8M+p31HWMeWJ+VSAjkPDYPeYoAYOx
+	qoshBRddnMT6eQSGevrlxqjc4rwEtrNGT2j/GmQEX5hugnrT0niLRm5XMIB/FxYbv/PhpOIzPuf
+	b+nwCHw05jets9VI//8Go3/9k5+txq22/baRY9g==
+X-Google-Smtp-Source: AGHT+IFkM7wK9W/MGjMxwILmKCuQzg/h44yqETKY/oTXPOtp+cPz5UrnMAjNkbW7FLSZEX1IsDwVg+1L3IRWtVfpYjM=
+X-Received: by 2002:a05:6a00:c94:b0:71d:d1b4:b454 with SMTP id
+ d2e1a72fcca58-71de23a95bemr3106191b3a.2.1728036322517; Fri, 04 Oct 2024
+ 03:05:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241003170151.69445-1-ignat@cloudflare.com> <20241003215038.11611-1-kuniyu@amazon.com>
+ <CANn89iKtKOx47OW90f-uUWcuF-kcEZ-WBvuPszc5eoU-aC6Z0w@mail.gmail.com>
+In-Reply-To: <CANn89iKtKOx47OW90f-uUWcuF-kcEZ-WBvuPszc5eoU-aC6Z0w@mail.gmail.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Fri, 4 Oct 2024 11:05:10 +0100
+Message-ID: <CALrw=nEV5KXwU6yyPgHBouF1pDxXBVZA0hMEGY3S6bOE_5U_dg@mail.gmail.com>
+Subject: Re: [PATCH] net: explicitly clear the sk pointer, when pf->create fails
+To: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>, alibuda@linux.alibaba.com, davem@davemloft.net, 
+	kernel-team@cloudflare.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sanity on phy_mask was added by Tomas through [1].
-It causes warning messages when >64 phys are
-detected (expander can have >64 phys) and devices
-connected to phys greater than 64 are dropped.
-phy_mask bitmap is only needed for controller
-phys(not required for expander phys).Controller phys
-can go maximum up to 64 and u64 is good enough to contain phy_mask bitmap.
+On Fri, Oct 4, 2024 at 9:55=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
+rote:
+>
+> On Thu, Oct 3, 2024 at 11:50=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.=
+com> wrote:
+> >
+> > From: Ignat Korchagin <ignat@cloudflare.com>
+> > Date: Thu,  3 Oct 2024 18:01:51 +0100
+> > > We have recently noticed the exact same KASAN splat as in commit
+> > > 6cd4a78d962b ("net: do not leave a dangling sk pointer, when socket
+> > > creation fails"). The problem is that commit did not fully address th=
+e
+> > > problem, as some pf->create implementations do not use sk_common_rele=
+ase
+> > > in their error paths.
+> > >
+> > > For example, we can use the same reproducer as in the above commit, b=
+ut
+> > > changing ping to arping. arping uses AF_PACKET socket and if packet_c=
+reate
+> > > fails, it will just sk_free the allocated sk object.
+> > >
+> > > While we could chase all the pf->create implementations and make sure=
+ they
+> > > NULL the freed sk object on error from the socket, we can't guarantee
+> > > future protocols will not make the same mistake.
+> > >
+> > > So it is easier to just explicitly NULL the sk pointer upon return fr=
+om
+> > > pf->create in __sock_create. We do know that pf->create always releas=
+es the
+> > > allocated sk object on error, so if the pointer is not NULL, it is
+> > > definitely dangling.
+> >
+> > Sounds good to me.
+> >
+> > Let's remove the change by 6cd4a78d962b that should be unnecessary
+> > with this patch.
+> >
+>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+>
+> Even if not strictly needed we also could fix af_packet to avoid a
+> dangling pointer.
 
-To suppress those warnings and allow devices to be discovered as
-before the [1], restrict the phy_mask setting and lowest phy
-setting only to the controller phys.
+af_packet was just one example - I reviewed every pf->create function
+and there are others. It would not be fair to fix this, but not the
+others, right?
 
-[1]:https://git.kernel.org/pub/scm/linux/kernel/git/mkp/scsi.git/commit/
-drivers/scsi/mpi3mr?h=6.12/
-scsi-queue&id=3668651def2c1622904e58b0280ee93121f2b10b
-
-Fixes: 3668651def2c ("mpi3mr: Sanitise num_phys")
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Motin <mav@ixsystems.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
----
- drivers/scsi/mpi3mr/mpi3mr.h           |  4 +--
- drivers/scsi/mpi3mr/mpi3mr_transport.c | 39 +++++++++++++++++---------
- 2 files changed, 27 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
-index dc2cdd5f0311..3822efe349e1 100644
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -541,8 +541,8 @@ struct mpi3mr_hba_port {
-  * @port_list: List of ports belonging to a SAS node
-  * @num_phys: Number of phys associated with port
-  * @marked_responding: used while refresing the sas ports
-- * @lowest_phy: lowest phy ID of current sas port
-- * @phy_mask: phy_mask of current sas port
-+ * @lowest_phy: lowest phy ID of current sas port, valid for controller port
-+ * @phy_mask: phy_mask of current sas port, valid for controller port
-  * @hba_port: HBA port entry
-  * @remote_identify: Attached device identification
-  * @rphy: SAS transport layer rphy object
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_transport.c b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-index ccd23def2e0c..3a685750f5cd 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
-@@ -595,7 +595,7 @@ static enum sas_linkrate mpi3mr_convert_phy_link_rate(u8 link_rate)
-  */
- static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
- 	struct mpi3mr_sas_port *mr_sas_port,
--	struct mpi3mr_sas_phy *mr_sas_phy)
-+	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
- {
- 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
- 
-@@ -605,9 +605,13 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
- 
- 	list_del(&mr_sas_phy->port_siblings);
- 	mr_sas_port->num_phys--;
--	mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
--	if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
--		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+
-+	if (host_node) {
-+		mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
-+
-+		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
-+			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	}
- 	sas_port_delete_phy(mr_sas_port->port, mr_sas_phy->phy);
- 	mr_sas_phy->phy_belongs_to_port = 0;
- }
-@@ -617,12 +621,13 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
-  * @mrioc: Adapter instance reference
-  * @mr_sas_port: Internal Port object
-  * @mr_sas_phy: Internal Phy object
-+ * @host_node: Flag to indicate this is a host_node
-  *
-  * Return: None.
-  */
- static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
- 	struct mpi3mr_sas_port *mr_sas_port,
--	struct mpi3mr_sas_phy *mr_sas_phy)
-+	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
- {
- 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
- 
-@@ -632,9 +637,12 @@ static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
- 
- 	list_add_tail(&mr_sas_phy->port_siblings, &mr_sas_port->phy_list);
- 	mr_sas_port->num_phys++;
--	mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
--	if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
--		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	if (host_node) {
-+		mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
-+
-+		if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
-+			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	}
- 	sas_port_add_phy(mr_sas_port->port, mr_sas_phy->phy);
- 	mr_sas_phy->phy_belongs_to_port = 1;
- }
-@@ -675,7 +683,7 @@ static void mpi3mr_add_phy_to_an_existing_port(struct mpi3mr_ioc *mrioc,
- 			if (srch_phy == mr_sas_phy)
- 				return;
- 		}
--		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy);
-+		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy, mr_sas_node->host_node);
- 		return;
- 	}
- }
-@@ -736,7 +744,7 @@ static void mpi3mr_del_phy_from_an_existing_port(struct mpi3mr_ioc *mrioc,
- 				mpi3mr_delete_sas_port(mrioc, mr_sas_port);
- 			else
- 				mpi3mr_delete_sas_phy(mrioc, mr_sas_port,
--				    mr_sas_phy);
-+				    mr_sas_phy, mr_sas_node->host_node);
- 			return;
- 		}
- 	}
-@@ -1367,7 +1375,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 	mpi3mr_sas_port_sanity_check(mrioc, mr_sas_node,
- 	    mr_sas_port->remote_identify.sas_address, hba_port);
- 
--	if (mr_sas_node->num_phys >= sizeof(mr_sas_port->phy_mask) * 8)
-+	if (mr_sas_node->host_node && mr_sas_node->num_phys >=
-+			sizeof(mr_sas_port->phy_mask) * 8)
- 		ioc_info(mrioc, "max port count %u could be too high\n",
- 		    mr_sas_node->num_phys);
- 
-@@ -1377,7 +1386,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 		    (mr_sas_node->phy[i].hba_port != hba_port))
- 			continue;
- 
--		if (i >= sizeof(mr_sas_port->phy_mask) * 8) {
-+		if (mr_sas_node->host_node && (i >= sizeof(mr_sas_port->phy_mask) * 8)) {
- 			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
- 			    i, sizeof(mr_sas_port->phy_mask) * 8);
- 			goto out_fail;
-@@ -1385,7 +1394,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 		list_add_tail(&mr_sas_node->phy[i].port_siblings,
- 		    &mr_sas_port->phy_list);
- 		mr_sas_port->num_phys++;
--		mr_sas_port->phy_mask |= (1 << i);
-+		if (mr_sas_node->host_node)
-+			mr_sas_port->phy_mask |= (1 << i);
- 	}
- 
- 	if (!mr_sas_port->num_phys) {
-@@ -1394,7 +1404,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
- 		goto out_fail;
- 	}
- 
--	mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
-+	if (mr_sas_node->host_node)
-+		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
- 
- 	if (mr_sas_port->remote_identify.device_type == SAS_END_DEVICE) {
- 		tgtdev = mpi3mr_get_tgtdev_by_addr(mrioc,
--- 
-2.31.1
-
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index a705ec21425409dc708cf61d619545ed342b1f01..db7d3482e732f236ec461b1ff=
+52a264d1b93bf90
+> 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -3421,16 +3421,18 @@ static int packet_create(struct net *net,
+> struct socket *sock, int protocol,
+>         if (sock->type =3D=3D SOCK_PACKET)
+>                 sock->ops =3D &packet_ops_spkt;
+>
+> +       po =3D pkt_sk(sk);
+> +       err =3D packet_alloc_pending(po);
+> +       if (err)
+> +               goto out2;
+> +
+> +       /* No more error after this point. */
+>         sock_init_data(sock, sk);
+>
+> -       po =3D pkt_sk(sk);
+>         init_completion(&po->skb_completion);
+>         sk->sk_family =3D PF_PACKET;
+>         po->num =3D proto;
+>
+> -       err =3D packet_alloc_pending(po);
+> -       if (err)
+> -               goto out2;
+>
+>         packet_cached_dev_reset(po);
 
