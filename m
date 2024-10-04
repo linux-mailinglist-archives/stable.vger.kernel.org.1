@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-81113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC07990F17
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:48:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 496F2990F2B
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5A41F22943
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:48:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7743B2B078
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7268423020E;
-	Fri,  4 Oct 2024 18:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7C51E22E5;
+	Fri,  4 Oct 2024 18:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCLH2G4v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xc7W5WeR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE7D230205;
-	Fri,  4 Oct 2024 18:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA44622F8F1;
+	Fri,  4 Oct 2024 18:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066724; cv=none; b=DDvNOKAuPzgvV3ICK1DW4Jc8gj8rv9YHaIGdqGzXszTHWes1yh0sfRJkLT5iJn5LjofDRQuv3yXVvhKDEWZN56sRzhRryVoSIFCVbI3t4ZV1Hxt1olOMVeDuopm/Y3lzIEk0uEMxUEOa1cYG+PPsqvPxzHHoBmfRlokB0t7LP6E=
+	t=1728066727; cv=none; b=ehve8fNsEh3cdsSZ2g8J2zBFa5JCTqpdDtHjeTXTye8nhhGtbkjd9K9d0X3n0DcvwZWV2C947/iwdq3D3jd/uvNIcmRoEG8xCtKceJvtNeLMOrVPy0yXMdGIxEZ+J7p6tLD0u45QFXP2yMYPa45PcIMIzV4qwvY3G1tJvGgaSDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066724; c=relaxed/simple;
-	bh=zrLJysfcwiQ4mwzB55fzaMxerf+EPFQ6hpVd3oEX7o4=;
+	s=arc-20240116; t=1728066727; c=relaxed/simple;
+	bh=skvcep9sdYZskInQv2BaNUbnAo9npNt0KtzP7o9x470=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9G9HZFOIO55UYy/jgpjPji8xlJWigfCohSIxR7SHCqIVeyjl0b8C9asLO5vTcuIOlgz1QCIrlWWpfu7QY0Ny/heVJku+hb886MXswkP3kesjmkcVjB/r+qyF+VcvSg8bN/Nkd6Oijl1Ujq5hMn/wLYR+snBkI4GoTdpn9JSPG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCLH2G4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E31C4CECC;
-	Fri,  4 Oct 2024 18:32:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fE/yxyw6qcZH+o8JiFe3O488Q0RvlL6fd3xhyKgVeP9fURJSg1UxLafkxPXrq+XNcVPM4EnnKJyVEN0/05dCDdhM15jrYa/SMYWhCKTSqRDcyL6UcSiqhKpvhLMOXooep2fvrEYNnW0pbJ7QDLXmnGmRSRNCSCtRGzt/N7yNIWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xc7W5WeR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545E4C4CEC6;
+	Fri,  4 Oct 2024 18:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066723;
-	bh=zrLJysfcwiQ4mwzB55fzaMxerf+EPFQ6hpVd3oEX7o4=;
+	s=k20201202; t=1728066727;
+	bh=skvcep9sdYZskInQv2BaNUbnAo9npNt0KtzP7o9x470=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCLH2G4vInyT/nSUVM15EzORIKcZUHE8ctoeQI8TxRbuoMoUdZyh9Muvwu/SZIb5S
-	 ybfIkW0FUgYBgdUcDMO1jvBoCALlu9MBHbtyEm3hi5R1yYzSDqzscwWrwaj65+JZbf
-	 zUkRkWPRPAhhDFkk1CnFVzacJ6Q9yi122IUlCpb+6aPyFet7HOUWX5xWEaZ3vjnFmF
-	 Uh0HFZ6vT6/q1v1rS5kx9auyKgsuUclFoQXt5pibESrpHLlQoQzYsjLdOUa6j54fIY
-	 8oZa+RFQ9pg6qq9/eq36gXT2vpUfUSKRxhMGhnJWmSUSkhF1BuyLKIDnJSGJNV9U+j
-	 zvOv3/gpjSaQw==
+	b=Xc7W5WeRP8PeSP4tdwQLIsivANMw/IzaMDf8UhPR5UfyuHUpgOY9LsaVYkCuqn/LF
+	 SEOmln73vH3QJurYEJhnnQrYV8Vtvxb5L8DGi6SoPVss8Po7VmAnM9mWscYQJiQI+i
+	 GBjILC7BcnFtWVhO+L/Q/DqDfGxFUqyUEIgeRfYqwE1zA0AHrxY90Vwxg0R5NMBsD6
+	 M+Q10wCjPZW3a4oq5a4bJUvk92aDCp/md+cph6SQl2qTfeeVLseu6g3xyaTcPCbNgZ
+	 fbRUc9CcwHM41ibRlnPGDM/tysvlm8Plj5xSbbuVUfQP67GJMh3SBOO6nbMv1oUOyq
+	 5pS9jw5il0ttg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Jordan <daniel.m.jordan@oracle.com>,
-	John 'Warthog9' Hawley <warthog9@eaglescrag.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 08/16] ktest.pl: Avoid false positives with grub2 skip regex
-Date: Fri,  4 Oct 2024 14:31:35 -0400
-Message-ID: <20241004183150.3676355-8-sashal@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	jdelvare@suse.com,
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 10/16] i2c: i801: Use a different adapter-name for IDF adapters
+Date: Fri,  4 Oct 2024 14:31:37 -0400
+Message-ID: <20241004183150.3676355-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183150.3676355-1-sashal@kernel.org>
 References: <20241004183150.3676355-1-sashal@kernel.org>
@@ -60,55 +63,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
+[ Upstream commit 43457ada98c824f310adb7bd96bd5f2fcd9a3279 ]
 
-Some distros have grub2 config files with the lines
+On chipsets with a second 'Integrated Device Function' SMBus controller use
+a different adapter-name for the second IDF adapter.
 
-    if [ x"${feature_menuentry_id}" = xy ]; then
-      menuentry_id_option="--id"
-    else
-      menuentry_id_option=""
-    fi
+This allows platform glue code which is looking for the primary i801
+adapter to manually instantiate i2c_clients on to differentiate
+between the 2.
 
-which match the skip regex defined for grub2 in get_grub_index():
+This allows such code to find the primary i801 adapter by name, without
+needing to duplicate the PCI-ids to feature-flags mapping from i2c-i801.c.
 
-    $skip = '^\s*menuentry';
-
-These false positives cause the grub number to be higher than it
-should be, and the wrong kernel can end up booting.
-
-Grub documents the menuentry command with whitespace between it and the
-title, so make the skip regex reflect this.
-
-Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
-Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index a29d9e125b00b..fe73902a197c6 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1969,7 +1969,7 @@ sub get_grub_index {
-     } elsif ($reboot_type eq "grub2") {
- 	$command = "cat $grub_file";
- 	$target = '^\s*menuentry.*' . $grub_menu_qt;
--	$skip = '^\s*menuentry';
-+	$skip = '^\s*menuentry\s';
- 	$submenu = '^\s*submenu\s';
-     } elsif ($reboot_type eq "grub2bls") {
-         $command = $grub_bls_get;
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index c1e2539b79502..b552f8d62fa2f 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1674,8 +1674,15 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	i801_add_tco(priv);
+ 
++	/*
++	 * adapter.name is used by platform code to find the main I801 adapter
++	 * to instantiante i2c_clients, do not change.
++	 */
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+-		"SMBus I801 adapter at %04lx", priv->smba);
++		 "SMBus %s adapter at %04lx",
++		 (priv->features & FEATURE_IDF) ? "I801 IDF" : "I801",
++		 priv->smba);
++
+ 	err = i2c_add_adapter(&priv->adapter);
+ 	if (err) {
+ 		platform_device_unregister(priv->tco_pdev);
 -- 
 2.43.0
 
