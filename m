@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-81058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE508990E62
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:34:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D556990E64
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85290283F6A
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:34:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6A941C21ED4
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F32F2256AB;
-	Fri,  4 Oct 2024 18:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122EE1DF253;
+	Fri,  4 Oct 2024 18:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdEnvHL2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jEwknbi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462E71E261B;
-	Fri,  4 Oct 2024 18:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF5B1DF25A;
+	Fri,  4 Oct 2024 18:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066592; cv=none; b=VTEf135nvIVxW4Hqm15ptNoLhXFXdapTJj/vtPA9NWWX7s9QeYbt7ZiyF5Pr2SHFOcUawBHk6i8gY/rI7tcWJW2gwuuN5mMm0TeaJSMC27jr+8swHQVGDrsbxjUwf/ftao5iN2GocB3DMjZuQ8OzPbREC35dvErKd4vAoknoxX8=
+	t=1728066608; cv=none; b=AsX00zByIHPuHvqWM7d9KLRCVh5ANUcn8GJX/rqF+mlaNIAXNQv8t+1ndHxIKW0WMiOzqO9ae779y2H2vKkNvGM2C35cddm4fCoNiJ++kdzC8ziX74zVfat2SsIjHIUpMssAfXaYl43dRMMSLb6P61YvfBGQ17gZne+w+qQC92Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066592; c=relaxed/simple;
-	bh=evmvvGbhWKHfqCIlgskArgjyb7DEwgQyyfI0Q4j2Bn4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VU30kiDgDgG2KfLVOCZ8nFsgIxsF4VGSG8tMxNIrLosJMF5LWzojJwkkYFb+IzUnbWQ0Y3uZxFHhp/4MsFiAEMTzw3pcdeZm4NsJ+AiCKDytN8tQKKBDAXMrRL/tFNFK4MKTbQDQ7bZ03SzNVEJZYRlxfqHFrndRdsWyOJbH408=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdEnvHL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0964DC4CEC6;
-	Fri,  4 Oct 2024 18:29:50 +0000 (UTC)
+	s=arc-20240116; t=1728066608; c=relaxed/simple;
+	bh=+KaJrIRtLYyTg1NyKVAJTDMq3P9Oib12WipD/KF9iSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z0s1GDZFo5M+/o1Tw93uZWgx50kHm66WKxXEk2K35DAhaN28YI8HrmrVfTShNGGoXbeWJNEa1Nyemihn7j7hjZ6I/gtxwtkIVs1ZvOb/pJ4WcbOPxJfz5rbFoHyboGGWs7UhP2EsuNfkfbTbpGH+6PxxJND7TR7Y0u0SqWPTALE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEwknbi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D2FC4CEC6;
+	Fri,  4 Oct 2024 18:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066592;
-	bh=evmvvGbhWKHfqCIlgskArgjyb7DEwgQyyfI0Q4j2Bn4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tdEnvHL2RcsSgm9rrZwnKmx5rsuCl0wVtDttzaicKU3fD9NRHaZiJ1HDXQhsRfWoR
-	 inyqb7LrjRDH2633ewxhg4D5LadvuFLgPNugILusHvCIhP9Pmsm7RSDKygPNhJ+tIs
-	 BYHRCK+8ltUTHHaY1kkBK+44U3Woi0Dp7u34kDJRJEDhxzAItgfUWCHRv/K3T0wd7S
-	 mEQy06gjRnRyd9QzxjUqgCdfmiT/4380PQSXMRzTWuNy4yFflLecSTsWRAHK9vjNU4
-	 VH5fdLdyO9Haa+r9secSD0l9jZ6v3rZRt7YBwlJDsgY9qxQsaQX6KbX/SxciC4qq1j
-	 yzVmWfmyM9JCA==
+	s=k20201202; t=1728066608;
+	bh=+KaJrIRtLYyTg1NyKVAJTDMq3P9Oib12WipD/KF9iSg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jEwknbi60kddwXGyEyqUhUs3DjDNRB7fhd3ia6beW6VvTYD8brq5mR7QBJOOg4QMb
+	 xx4Tpw66Y9WmR9mygwR6Q/IDAcfI35HSroTouC/vbqwjpqZBcIPeiF1ZbdSxMHR11i
+	 B5sNN9JsNA6lPnn1OSSDYqtym4YdTnIdqSXcB7EB5XTgiH8m12GNMkSAYnDhFYH4v4
+	 GoS/B0VwtQHuYg0M4AckloEUD1J/ozI2zjMfUgzbROp8j59hzoU5Kn9a41uDBXZOUF
+	 OU7Ocidx3fRm1L5azItU13u+fyxZOVyDg87QfO2J6cLpmcjouqCxS4/YuliTO+tpQy
+	 cBMY3+LhIOjyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrey Shumilin <shum.sdl@nppct.ru>,
-	Helge Deller <deller@gmx.de>,
+Cc: Tao Chen <chen.dylane@gmail.com>,
+	Jinke Han <jinkehan@didiglobal.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tzimmermann@suse.de,
-	fullwaywang@outlook.com,
-	javierm@redhat.com,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 31/31] fbdev: sisfb: Fix strbuf array overflow
-Date: Fri,  4 Oct 2024 14:28:39 -0400
-Message-ID: <20241004182854.3674661-31-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 01/26] bpf: Check percpu map value size first
+Date: Fri,  4 Oct 2024 14:29:27 -0400
+Message-ID: <20241004183005.3675332-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241004182854.3674661-1-sashal@kernel.org>
-References: <20241004182854.3674661-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,43 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.167
+X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
-From: Andrey Shumilin <shum.sdl@nppct.ru>
+From: Tao Chen <chen.dylane@gmail.com>
 
-[ Upstream commit 9cf14f5a2746c19455ce9cb44341b5527b5e19c3 ]
+[ Upstream commit 1d244784be6b01162b732a5a7d637dfc024c3203 ]
 
-The values of the variables xres and yres are placed in strbuf.
-These variables are obtained from strbuf1.
-The strbuf1 array contains digit characters
-and a space if the array contains non-digit characters.
-Then, when executing sprintf(strbuf, "%ux%ux8", xres, yres);
-more than 16 bytes will be written to strbuf.
-It is suggested to increase the size of the strbuf array to 24.
+Percpu map is often used, but the map value size limit often ignored,
+like issue: https://github.com/iovisor/bcc/issues/2519. Actually,
+percpu map value size is bound by PCPU_MIN_UNIT_SIZE, so we
+can check the value size whether it exceeds PCPU_MIN_UNIT_SIZE first,
+like percpu map of local_storage. Maybe the error message seems clearer
+compared with "cannot allocate memory".
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Jinke Han <jinkehan@didiglobal.com>
+Signed-off-by: Tao Chen <chen.dylane@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240910144111.1464912-2-chen.dylane@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/sis_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/arraymap.c | 3 +++
+ kernel/bpf/hashtab.c  | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
-index c6e21ba008953..ce9dc1e8bcdca 100644
---- a/drivers/video/fbdev/sis/sis_main.c
-+++ b/drivers/video/fbdev/sis/sis_main.c
-@@ -183,7 +183,7 @@ static void sisfb_search_mode(char *name, bool quiet)
- {
- 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
- 	int i = 0;
--	char strbuf[16], strbuf1[20];
-+	char strbuf[24], strbuf1[20];
- 	char *nameptr = name;
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 5102338129d5f..3d92e42c3895a 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -74,6 +74,9 @@ int array_map_alloc_check(union bpf_attr *attr)
+ 		 * access the elements.
+ 		 */
+ 		return -E2BIG;
++	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
++	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
++		return -E2BIG;
  
- 	/* We don't know the hardware specs yet and there is no ivideo */
+ 	return 0;
+ }
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 72bc5f5752543..4c7cab79d90e5 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -404,6 +404,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
+ 		 * kmalloc-able later in htab_map_update_elem()
+ 		 */
+ 		return -E2BIG;
++	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
++	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
++		return -E2BIG;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
