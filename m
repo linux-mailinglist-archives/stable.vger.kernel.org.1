@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC7498FB9C
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 02:38:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE1D98FB87
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 02:31:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EE8B1C220D1
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:38:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598312834BB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2758A2CAB;
-	Fri,  4 Oct 2024 00:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512B61849;
+	Fri,  4 Oct 2024 00:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b="RWAAjeav";
-	dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b="kC8YF6Zk"
+	dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b="XDYlgl8N";
+	dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b="IJKRwipa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out0.aaront.org (smtp-out0.aaront.org [52.10.12.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BBC367;
-	Fri,  4 Oct 2024 00:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1B2C8E9;
+	Fri,  4 Oct 2024 00:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.10.12.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728002305; cv=none; b=PtdZ5uLM9F5dXRxCCHRZCo6QUfivlpRBskTrvHhpoo87UBHeCqIt3lmDmlLnBTlHKCui9SMUdqZCShbFHUV/01dsCJzdcw9L1U4bLMiPDQExSiCecgbgs+mfli960tZWRHFm4XHhnMw7Kuvo1CD0S08QU+jom0z1eWKW6MoQMvI=
+	t=1728001896; cv=none; b=GxX8FAGQYS3ArJMkSgkZen6z7NRWQnN4HqZtUIB5Y5pvzpT6J6CBvaRfACCs6tS/eAeF1a/YRTSRHsw/CHnjot39i9PdfRCJ4kfVwspPPlrOfZ7I1cWGs5snbJLkGaDfikHFUnGrKSjA6lWoc7WRatNA9w4FRXuJE5+OfPZCC4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728002305; c=relaxed/simple;
-	bh=hSwY89Dc3i1dwP9dfCASLPDb2ZwIGzu1zOA5C3dVPm4=;
+	s=arc-20240116; t=1728001896; c=relaxed/simple;
+	bh=0pT50F1cem0hrgdH8pcqVClHyZziPHRa6KdtvkEn8No=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TLdWIF4H6kKuiAg8cZO5zba3n3CDcNaivhgj3t4qYhmRqyhS1O5+HU+VtXlJDs5F7FMZj2PsquV4WugjZBY5rsAmM2iJXxhbZW78pgXiFdvCyuUutseYbSVj/SELUSAzRqK0/g9cNVwpr85nhJkawkZdTsZXZW8IwEHEED0vrdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org; spf=pass smtp.mailfrom=aaront.org; dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b=RWAAjeav; dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b=kC8YF6Zk; arc=none smtp.client-ip=52.10.12.108
+	 MIME-Version; b=ka6EabcmwmQQj4zYn7CCEiW8DNuG1RoLBNVHWqnIpJ3Y1EF088y7WB4rWN6HBPNFLNYA28APlTW5GUsvC/KOrHXAjLCWSFV/gcl0+tFBVPzYL+rxbJGuAC5j1JohdHXBdCElEl1z4coFThgP8PI4RrRogEuP1ksf8XwjAwnrFqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org; spf=pass smtp.mailfrom=aaront.org; dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b=XDYlgl8N; dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b=IJKRwipa; arc=none smtp.client-ip=52.10.12.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaront.org
-Received: by smtp-out0.aaront.org (Postfix) with ESMTP id 4XKTxZ22L4zRg;
-	Fri,  4 Oct 2024 00:31:30 +0000 (UTC)
+Received: by smtp-out0.aaront.org (Postfix) with ESMTP id 4XKTxd5CCSzRh;
+	Fri,  4 Oct 2024 00:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/simple; d=aaront.org;
     h=from:to:cc:subject:date:message-id:in-reply-to:references
     :mime-version:content-transfer-encoding; s=bgzxjfijqntwovyv; bh=
-    hSwY89Dc3i1dwP9dfCASLPDb2ZwIGzu1zOA5C3dVPm4=; b=RWAAjeavCtwtgu/L
-    YYfaxaXpauEwv+C19RLSNHpylIDaY/q+ujLfb/VfJQItOAnHwY1FU8PwYoHX55gn
-    5pY4Dw==
+    0pT50F1cem0hrgdH8pcqVClHyZziPHRa6KdtvkEn8No=; b=XDYlgl8NLsNRHd96
+    VVSzgBMTh7igHjFSA/x1/bJIFP2n0O1qa0t+wwlnnblghgUDDANMICVPi/phcKA7
+    fGInCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aaront.org; h=
     from:to:cc:subject:date:message-id:in-reply-to:references
     :mime-version:content-transfer-encoding; s=elwxqanhxhag6erl; bh=
-    hSwY89Dc3i1dwP9dfCASLPDb2ZwIGzu1zOA5C3dVPm4=; b=kC8YF6ZkacsO2Gmb
-    M+TMravWtzrRMBHgu8tAwAg+Z/mqav5tawwlBUVf4RpgOz/z3e0bXnhpsESMhyek
-    q8mD2axYJtzoQdQHw0swChZn1I9lHb0q2p3Z9n0yaQ50n28Ia2QTCdsVXItsAPAu
-    P54vUA5Z74N+kq3jCiclJdLABZ6H8kCPDGuznQ0smeA9CwfN5XPyGNRQwFT5DBuk
-    7pgm/k4P4VgG2BRFFuPE5Buagq3wXZbhv5P+OiZG0Dc0rNs1rk7wFy0e65JAqWY3
-    n0dhcJbF35TypKJKP7MvpTVPrbdwZlb7DzKwaRJ+JqOcO/Qk8xt3NwiKzULg3bb6
-    c6fmnA==
+    0pT50F1cem0hrgdH8pcqVClHyZziPHRa6KdtvkEn8No=; b=IJKRwipaASwdRJga
+    55eXfloxQVbfFKmxtEDqPRsrSGZOHl3aoY0lljvdcbpPczYs8mtfHXKVAp6pJ7qy
+    j6N4OJN/OmDHm1MtASGJ4qhlk8146muetetchf652HOXs8Uqp5cupyAe4m6cX+hB
+    AjVxS/cy3K8++dVbhSZERmPVycGYcYQ9gfkaL3BI7OkK6bTKCcHTb99g2zi0b/Xm
+    3JX6FpwVbFkrdQIgE5GaHY1YRkY9nzwpqI0idAyT72toFqhuDn7PLTW7Hs137waV
+    gDQozmEp3bfeGly9GfKRAHceAYtslE2WubVJLk9Ev/d4gJbCmDINnm8+9/u4G4hM
+    XQhTGg==
 From: Aaron Thompson <dev@aaront.org>
 To: Johan Hedberg <johan.hedberg@gmail.com>,
 	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
@@ -58,9 +58,9 @@ To: Johan Hedberg <johan.hedberg@gmail.com>,
 	linux-kernel@vger.kernel.org
 Cc: Aaron Thompson <dev@aaront.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/3] Bluetooth: ISO: Fix multiple init when debugfs is disabled
-Date: Fri,  4 Oct 2024 00:30:28 +0000
-Message-Id: <20241004003030.160721-2-dev@aaront.org>
+Subject: [PATCH 2/3] Bluetooth: Call iso_exit() on module unload
+Date: Fri,  4 Oct 2024 00:30:29 +0000
+Message-Id: <20241004003030.160721-3-dev@aaront.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241004003030.160721-1-dev@aaront.org>
 References: <20241004003030.160721-1-dev@aaront.org>
@@ -74,64 +74,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Aaron Thompson <dev@aaront.org>
 
-If bt_debugfs is not created successfully, which happens if either
-CONFIG_DEBUG_FS or CONFIG_DEBUG_FS_ALLOW_ALL is unset, then iso_init()
-returns early and does not set iso_inited to true. This means that a
-subsequent call to iso_init() will result in duplicate calls to
-proto_register(), bt_sock_register(), etc.
+If iso_init() has been called, iso_exit() must be called on module
+unload. Without that, the struct proto that iso_init() registered with
+proto_register() becomes invalid, which could cause unpredictable
+problems later. In my case, with CONFIG_LIST_HARDENED and
+CONFIG_BUG_ON_DATA_CORRUPTION enabled, loading the module again usually
+triggers this BUG():
 
-With CONFIG_LIST_HARDENED and CONFIG_BUG_ON_DATA_CORRUPTION enabled, the
-duplicate call to proto_register() triggers this BUG():
-
-  list_add double add: new=ffffffffc0b280d0, prev=ffffffffbab56250,
-    next=ffffffffc0b280d0.
+  list_add corruption. next->prev should be prev (ffffffffb5355fd0),
+    but was 0000000000000068. (next=ffffffffc0a010d0).
   ------------[ cut here ]------------
-  kernel BUG at lib/list_debug.c:35!
+  kernel BUG at lib/list_debug.c:29!
   Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  CPU: 2 PID: 887 Comm: bluetoothd Not tainted 6.10.11-1-ao-desktop #1
-  RIP: 0010:__list_add_valid_or_report+0x9a/0xa0
+  CPU: 1 PID: 4159 Comm: modprobe Not tainted 6.10.11-4+bt2-ao-desktop #1
+  RIP: 0010:__list_add_valid_or_report+0x61/0xa0
   ...
-    __list_add_valid_or_report+0x9a/0xa0
-    proto_register+0x2b5/0x340
-    iso_init+0x23/0x150 [bluetooth]
-    set_iso_socket_func+0x68/0x1b0 [bluetooth]
-    kmem_cache_free+0x308/0x330
-    hci_sock_sendmsg+0x990/0x9e0 [bluetooth]
-    __sock_sendmsg+0x7b/0x80
-    sock_write_iter+0x9a/0x110
-    do_iter_readv_writev+0x11d/0x220
-    vfs_writev+0x180/0x3e0
-    do_writev+0xca/0x100
+    __list_add_valid_or_report+0x61/0xa0
+    proto_register+0x299/0x320
+    hci_sock_init+0x16/0xc0 [bluetooth]
+    bt_init+0x68/0xd0 [bluetooth]
+    __pfx_bt_init+0x10/0x10 [bluetooth]
+    do_one_initcall+0x80/0x2f0
+    do_init_module+0x8b/0x230
+    __do_sys_init_module+0x15f/0x190
+    do_syscall_64+0x68/0x110
   ...
-
-This change removes the early return. The check for iso_debugfs being
-NULL was unnecessary, it is always NULL when iso_inited is false.
 
 Cc: stable@vger.kernel.org
 Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
 Signed-off-by: Aaron Thompson <dev@aaront.org>
 ---
- net/bluetooth/iso.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/bluetooth/mgmt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index d5e00d0dd1a0..c9eefb43bf47 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -2301,13 +2301,9 @@ int iso_init(void)
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index e4f564d6f6fb..78a164fab3e1 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -10487,6 +10487,7 @@ int mgmt_init(void)
  
- 	hci_register_cb(&iso_cb);
- 
--	if (IS_ERR_OR_NULL(bt_debugfs))
--		return 0;
--
--	if (!iso_debugfs) {
-+	if (!IS_ERR_OR_NULL(bt_debugfs))
- 		iso_debugfs = debugfs_create_file("iso", 0444, bt_debugfs,
- 						  NULL, &iso_debugfs_fops);
--	}
- 
- 	iso_inited = true;
+ void mgmt_exit(void)
+ {
++	iso_exit();
+ 	hci_mgmt_chan_unregister(&chan);
+ }
  
 -- 
 2.39.5
