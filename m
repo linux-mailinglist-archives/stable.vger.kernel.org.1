@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-80807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B75990B48
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:25:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017F5990B4A
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 301E0281DE9
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:25:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33D2B1C220FD
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FDB221E4F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A54221E5B;
 	Fri,  4 Oct 2024 18:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXfYnKIK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqmYpihA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B35221E48;
-	Fri,  4 Oct 2024 18:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A40D221E4A;
+	Fri,  4 Oct 2024 18:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065959; cv=none; b=kF+AWcBUrdvMiXdwqtsPd7OIgtk4+GBf4/qlAjDDHpqci447bPt8B3uq70jlfeSSTi8posRhs2XBxz9yWJqv9swHOOl1JF/+OKV+U5FiGPusVKv5wQdTOtlD1+fBQaVzbBJ2QIzQTxeYeiPLiI+WxE63iIv0dNwFVEr9Qlm9cbw=
+	t=1728065959; cv=none; b=jlbgDkm+Pzm/0kPFR4uCq+r7z/dxVUwa7rEd1+yvZ4iXVnzJQXgCgYGKWuZbq2wNJhbuTpnF1HqiQu+oSUwDrrvulPF1d6D5033W0lOkzWCJ2997OSNOr//CYapQSfVYvwhL8kGI3NXOV85xDwsURWoOYd9R72tCXg5ZxJa5mxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728065959; c=relaxed/simple;
-	bh=T9FSG7KHJMwh3KSyMtOxrwtYHuwt9XZBB3dVvCGapi4=;
+	bh=c+STVTma1OKrrNgT+CTvb5cUI2XXZJx4+umYTKVNdl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lMa5UW/ur40WwUK1dmb5I3yNLjcFZwy6X81eBOURhP+EjLSzBwO3ahlF1LzGcz2xhGHyAy+59sEHXpv+nk3MZ7SBfWOYC45ht7KFYGcDMKC00oAdDZvoLkxrFH8LDdtckIKBcpSoW+CPZDfyKiKnESDhsKeZ89ShKQDJE6jBbfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXfYnKIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1123C4CEC6;
-	Fri,  4 Oct 2024 18:19:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r1BuMGskkolTp0YLITA4SxF+JRev1TpxFyMRmVEj6MyFyXko+0r2j/YVqv7UvswXuVWnVC/ArtpmMuREIgpUiIhA7YsraXX0fjjPjpCsEHeuHMzVVAZgXJWw1HMgm9XjNsIwvx9jHDXpkX+se03A7Jx67d2NdOabZVn3MxvctJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqmYpihA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC41EC4CECC;
+	Fri,  4 Oct 2024 18:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065957;
-	bh=T9FSG7KHJMwh3KSyMtOxrwtYHuwt9XZBB3dVvCGapi4=;
+	s=k20201202; t=1728065959;
+	bh=c+STVTma1OKrrNgT+CTvb5cUI2XXZJx4+umYTKVNdl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXfYnKIKzZn+HxHphlEy2xxldqXbEANCHjuorvn6RYDV/mj+yoi/crZvF/vM8HVfm
-	 ubxt8tj8KAYEkheEu6ZepfdFv9zfATSzhFABL+tvrXk1JglOX4EqVin/Kg+X4ryB3D
-	 0haQ37UJ3t+nkNSjpWGDh1FofRhNDddqaI8BB5Cerwwp15md6e0UUJzPRz8pTjtXPo
-	 TQwn5j4nAtrArsqBtabk7QAmK26cSZlweA3MDtTF8oMXaoBIIB1cJn438Q/Qx/TaI/
-	 yylItEhdRUVp/U9p/hmVWuhhh5h6g8RpRMJsBA8dHnVqplTn245FZwbW0/isu9jxMb
-	 Ekq6Pm7Pfe6GA==
+	b=aqmYpihAZzzxiUAHsqM5PpXLcSmrUlrNerjjSSKexR4xHOBXY1QCFdPWd5tN772QM
+	 114M3SQW+F+tgGCX9iML6i7E+XVuoAjpaURgWqkQ6PETgKzS3MDN4asNp2cshlw/eb
+	 RDHntXgQHRY4iImJTPpCsmD+KYLJeBQj7AoBk5Z6lnudUW6K5jCzgZFfAHgGM5nM+B
+	 VSIO0i+h7r5k0w4bAlSI+DZc/6Y5Ff98aY1bOKBT+GBn0rcH6qnINONp5oPnb20iBh
+	 g45sTvQquc9uyo7DX6yDZTg2eRnulg9c+2gkaF8Wp7S/NN2dkpOv2MKXsjiMZAgdKk
+	 gPXHKvyef2SRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 27/76] PCI: Add ACS quirk for Qualcomm SA8775P
-Date: Fri,  4 Oct 2024 14:16:44 -0400
-Message-ID: <20241004181828.3669209-27-sashal@kernel.org>
+	jdelvare@suse.com,
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 28/76] i2c: i801: Use a different adapter-name for IDF adapters
+Date: Fri,  4 Oct 2024 14:16:45 -0400
+Message-ID: <20241004181828.3669209-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -67,37 +69,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 026f84d3fa62d215b11cbeb5a5d97df941e93b5c ]
+[ Upstream commit 43457ada98c824f310adb7bd96bd5f2fcd9a3279 ]
 
-The Qualcomm SA8775P root ports don't advertise an ACS capability, but they
-do provide ACS-like features to disable peer transactions and validate bus
-numbers in requests.
+On chipsets with a second 'Integrated Device Function' SMBus controller use
+a different adapter-name for the second IDF adapter.
 
-Thus, add an ACS quirk for the SA8775P.
+This allows platform glue code which is looking for the primary i801
+adapter to manually instantiate i2c_clients on to differentiate
+between the 2.
 
-Link: https://lore.kernel.org/linux-pci/20240906052228.1829485-1-quic_skananth@quicinc.com
-Signed-off-by: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+This allows such code to find the primary i801 adapter by name, without
+needing to duplicate the PCI-ids to feature-flags mapping from i2c-i801.c.
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-i801.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index cc6c82c3bd3d0..8502f8a27f239 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5074,6 +5074,8 @@ static const struct pci_dev_acs_enabled {
- 	/* QCOM QDF2xxx root ports */
- 	{ PCI_VENDOR_ID_QCOM, 0x0400, pci_quirk_qcom_rp_acs },
- 	{ PCI_VENDOR_ID_QCOM, 0x0401, pci_quirk_qcom_rp_acs },
-+	/* QCOM SA8775P root port */
-+	{ PCI_VENDOR_ID_QCOM, 0x0115, pci_quirk_qcom_rp_acs },
- 	/* HXT SD4800 root ports. The ACS design is same as QCOM QDF2xxx */
- 	{ PCI_VENDOR_ID_HXT, 0x0401, pci_quirk_qcom_rp_acs },
- 	/* Intel PCH root ports */
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 328c0dab6b147..299fe9d3afab0 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1763,8 +1763,15 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	i801_add_tco(priv);
+ 
++	/*
++	 * adapter.name is used by platform code to find the main I801 adapter
++	 * to instantiante i2c_clients, do not change.
++	 */
+ 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
+-		"SMBus I801 adapter at %04lx", priv->smba);
++		 "SMBus %s adapter at %04lx",
++		 (priv->features & FEATURE_IDF) ? "I801 IDF" : "I801",
++		 priv->smba);
++
+ 	err = i2c_add_adapter(&priv->adapter);
+ 	if (err) {
+ 		platform_device_unregister(priv->tco_pdev);
 -- 
 2.43.0
 
