@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-81088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAE0990EC5
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8818A990EC7
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA22A1F22F60
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:42:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3127F1F23B6D
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09151E04BB;
-	Fri,  4 Oct 2024 18:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A41D22B55F;
+	Fri,  4 Oct 2024 18:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D76lt81Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1fBi5vz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F771E04B1;
-	Fri,  4 Oct 2024 18:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D458022B552;
+	Fri,  4 Oct 2024 18:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066674; cv=none; b=e/MLCXgrT1sSrejRlMdZUPbxl1UR9tJmvjCV+IEREUmPftfvdrlr+3zb95FEuj0fovyDE7MrD/X+DbaOZ/5o+0OosWjmiG69Qy7rfQuFgEgOfMI/RWbyQWTS2/Lm1ch9p/EBFJps1Z6Eogel90LTqJog2oJK7gTBKhZ2kTWm9Rg=
+	t=1728066675; cv=none; b=lgXcNUGdQQN4qB0ueUmUTN132f/OjSBeG6Dy5TrIxpbf/pAqduNiwB1kYU7pSvRwDQSzq4e8eGc/Qy8QItsxdedNfy3vg+/OmkoO9aSWn+QBwxFhfc/qe6mwGpfDaMG4Vt1MPBZrvkabfTPDzsW82v2323v4yktyV0lS0qkBR14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066674; c=relaxed/simple;
-	bh=kvOXRNJdLSkFt19dQGORrV4xUn+I7ThF4IlOi+Fs/2k=;
+	s=arc-20240116; t=1728066675; c=relaxed/simple;
+	bh=Z6wxp/uDYRFtVrH56D2GfLXb1JQJsthF7LDGv/DyJZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SP/Ehorg7lyhfDm2Tz46cPVtIMv07TqIQtBTWTA+ZmM84b0aawmlecnse5UNdMwVlYAo/PIwDDnNuYlEXBTpNvp5bGK9oMwpPeT5d6eLTVqUH6qDWdmvwr6AxU6thmN4m+BBUkQmEIkpIy+mg+kmBdBcZPaJUvHTRA6FThJr9Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D76lt81Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643E4C4CECC;
-	Fri,  4 Oct 2024 18:31:13 +0000 (UTC)
+	 MIME-Version; b=Fq0yt3Il9tpfdo4/I3JaJK3e7Z4/oOz/CHbTDt/sluxVvqlx1KllqcseXQk5zILG6WjRjlwBbp8I7s3D/EBQUtTPMw4Osya7P9lM3G2FihuN88QHp79j/jeYAouKoMhr+MYjvkjoZYXOCd4YO/jY25I6ZzKOiXHHxq9VqcG7X4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1fBi5vz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6F6C4CECC;
+	Fri,  4 Oct 2024 18:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066674;
-	bh=kvOXRNJdLSkFt19dQGORrV4xUn+I7ThF4IlOi+Fs/2k=;
+	s=k20201202; t=1728066675;
+	bh=Z6wxp/uDYRFtVrH56D2GfLXb1JQJsthF7LDGv/DyJZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D76lt81ZCT3xCpVnKYdHduWXZaRX1J2ZDk4HZY9uH8H0RudBezA3eeqN+nt27crYl
-	 D7P1Vg80X6mUW9K0FQFdA3RlBtAPdU3KpCOumaLR2RRbNoqsMrMylEEta4uVEKVkGi
-	 1x+oU11qvTSpNQL+jPGa9hEs6uIZ9H22IGf4W3UDhqjrBZhb8nffvXP7KP81+VlxjI
-	 TdgjjraBh4f+mDmr3pY1FBRDN818SBGPHRuFvtTY7tQcygWW8WDZ7HAkeBs+02DMDA
-	 dAd1yV+kFpMoK9BjIFZX26j93fp8w8HksGWWILT7MYOI9aNf2vq7VrQHh5M/ZvS530
-	 mVRMa+9CqV45Q==
+	b=V1fBi5vzClldjvILDMzmyLxk0WPUoDpky6J6NNCAqM1nmzg1E1Z/3HV58UoCpbLUM
+	 QhLh10qlwwR5sdH39n5xK8DyBK80VVycruR9qN5Hh/UyyL0A8q1jWIOJXPf1DJ/Lh6
+	 Kda58PQbNGHASxWNXsNdZ6W6KRDGm+qcoMKYlSrHd5hVpQ6jWXmcOepBCNxBevgamj
+	 470O6n+LeQ8GfL4fj4V1ZOkjKzr86kKL3zG4ihb0GICHCZfht25vXuN+VHjFYXSeok
+	 Pz/kAtR77aOl4EujMudrSoNfjP46b3uRoCCXCOsnqOuNw+X6jiEF1KQ5kdw4ItK2AU
+	 AaaOhlkKFtYTw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+Cc: Artem Sadovnikov <ancowi69@gmail.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	agordeev@linux.ibm.com,
-	gor@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 04/21] s390/mm: Add cond_resched() to cmm_alloc/free_pages()
-Date: Fri,  4 Oct 2024 14:30:39 -0400
-Message-ID: <20241004183105.3675901-4-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 05/21] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+Date: Fri,  4 Oct 2024 14:30:40 -0400
+Message-ID: <20241004183105.3675901-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183105.3675901-1-sashal@kernel.org>
 References: <20241004183105.3675901-1-sashal@kernel.org>
@@ -67,67 +68,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Artem Sadovnikov <ancowi69@gmail.com>
 
-[ Upstream commit 131b8db78558120f58c5dc745ea9655f6b854162 ]
+[ Upstream commit cc749e61c011c255d81b192a822db650c68b313f ]
 
-Adding/removing large amount of pages at once to/from the CMM balloon
-can result in rcu_sched stalls or workqueue lockups, because of busy
-looping w/o cond_resched().
+Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
 
-Prevent this by adding a cond_resched(). cmm_free_pages() holds a
-spin_lock while looping, so it cannot be added directly to the existing
-loop. Instead, introduce a wrapper function that operates on maximum 256
-pages at once, and add it there.
+This issue is triggered when an EXT4_IOC_MIGRATE ioctl is set to require
+synchronous updates because the file descriptor is opened with O_SYNC.
+This can lead to the jbd2_journal_stop() function calling
+jbd2_might_wait_for_commit(), potentially causing a deadlock if the
+EXT4_IOC_MIGRATE call races with a write(2) system call.
 
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+This problem only arises when CONFIG_PROVE_LOCKING is enabled. In this
+case, the jbd2_might_wait_for_commit macro locks jbd2_handle in the
+jbd2_journal_stop function while i_data_sem is locked. This triggers
+lockdep because the jbd2_journal_start function might also lock the same
+jbd2_handle simultaneously.
+
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20240404095000.5872-1-mish.uxin2012%40yandex.ru
+Link: https://patch.msgid.link/20240829152210.2754-1-ancowi69@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/cmm.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ fs/ext4/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/mm/cmm.c b/arch/s390/mm/cmm.c
-index a51c892f14f3e..756aefbd05249 100644
---- a/arch/s390/mm/cmm.c
-+++ b/arch/s390/mm/cmm.c
-@@ -98,11 +98,12 @@ static long cmm_alloc_pages(long nr, long *counter,
- 		(*counter)++;
- 		spin_unlock(&cmm_lock);
- 		nr--;
-+		cond_resched();
- 	}
- 	return nr;
- }
- 
--static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
-+static long __cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
- {
- 	struct cmm_page_array *pa;
- 	unsigned long addr;
-@@ -126,6 +127,21 @@ static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
- 	return nr;
- }
- 
-+static long cmm_free_pages(long nr, long *counter, struct cmm_page_array **list)
-+{
-+	long inc = 0;
-+
-+	while (nr) {
-+		inc = min(256L, nr);
-+		nr -= inc;
-+		inc = __cmm_free_pages(inc, counter, list);
-+		if (inc)
-+			break;
-+		cond_resched();
-+	}
-+	return nr + inc;
-+}
-+
- static int cmm_oom_notify(struct notifier_block *self,
- 			  unsigned long dummy, void *parm)
- {
+diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
+index dbba3c3a2f064..ebee8c94b5fe6 100644
+--- a/fs/ext4/migrate.c
++++ b/fs/ext4/migrate.c
+@@ -678,8 +678,8 @@ int ext4_ind_migrate(struct inode *inode)
+ 		ei->i_data[i] = cpu_to_le32(blk++);
+ 	ext4_mark_inode_dirty(handle, inode);
+ errout:
+-	ext4_journal_stop(handle);
+ 	up_write(&EXT4_I(inode)->i_data_sem);
++	ext4_journal_stop(handle);
+ out_unlock:
+ 	percpu_up_write(&sbi->s_writepages_rwsem);
+ 	return ret;
 -- 
 2.43.0
 
