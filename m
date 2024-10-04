@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCCE990DB1
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:16:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3CF1990DB5
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 932031F2192C
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:16:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62E2B285E39
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF481D90AC;
-	Fri,  4 Oct 2024 18:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB1F1D90DF;
+	Fri,  4 Oct 2024 18:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pGJWUL+z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIHIVUEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962FF1D90A1;
-	Fri,  4 Oct 2024 18:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F3B1D90CE;
+	Fri,  4 Oct 2024 18:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066468; cv=none; b=hRh4JYWYSEGsxnB4Y2Fo0tio1ST1Oxr6Krldc7JAVoHDkq34YZl/doy/v+v5U98gVpyQlFNEVAyvEB3eZC10tOHR9qba9BwJ9BEReXnVkWWSoK6cBHJEKssIEefbI9P/iMcbrnb7X1uVNqU/w+w6Qk/hBBrHE5v0wVxn64uwLOo=
+	t=1728066471; cv=none; b=TxK0GpOCpXjSRltQSjhFryOG5WL5kFWVtjeoW4TqQX3u73x+/Es2BnCFffE1Nx8JOXjCHzEjPzcLT0Ei9uC2KoFyxxeRRBrqzIYoed1OKjFmPnKc8XGSNwYLtgbl4sW2aWrbYAx1AQWjvtmMozJtuMQP8X4HAvqgHU2sC6GAo6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066468; c=relaxed/simple;
-	bh=aI0CcmK3NZ4l0SMhc8yyG55czISfXRwzFxc9DB73wY0=;
+	s=arc-20240116; t=1728066471; c=relaxed/simple;
+	bh=ABc0QBjQCqeraLJRnvc3Amm0w2qOe4YTPG226MAJ5fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCzcs+r/KtXfYqJF0mviVdJh3Z7slmLF2nkBb95xxRTCfDg9ISmxDkHDvsJ/VQdkQOE0huR2BWp2zT1yj2RQ8VuLY6QDJg5c39jfRLlM7mBShFz+Metumzsx/5g6A+sFOitLh95kgYDlRMUEH8kQZIb55ZCyY9WqytHGLXJEONA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pGJWUL+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95633C4CECD;
-	Fri,  4 Oct 2024 18:27:47 +0000 (UTC)
+	 MIME-Version; b=QOEnucXJES6hpuu9joptsdxNXiKdYu/UmB980yM8f5AceObPeAGZqJVcIQLiaSawf2Y1Zd5Zwy9QMEFwZoQSF6mHyhhU3ognfQ3FABT+Nl69WxAkxmT6MqlcWw6sdJozxC8aemBwzwr/cMCiiOKi46b1XXueT92BwxbbYMTnaWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIHIVUEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D889BC4CECC;
+	Fri,  4 Oct 2024 18:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066468;
-	bh=aI0CcmK3NZ4l0SMhc8yyG55czISfXRwzFxc9DB73wY0=;
+	s=k20201202; t=1728066470;
+	bh=ABc0QBjQCqeraLJRnvc3Amm0w2qOe4YTPG226MAJ5fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGJWUL+z3Q7DnlLWLVCk+k/sRzzKMgruXBv39k4hIfshG6I3TjG/TXeDNFm/YBfLh
-	 B3JT73lLrUHHdAKXUVQWUl4LA3hG21QWDfFLS3sNiDyltMGUFQ8VQDGqtB9ycAA872
-	 MCksm7DiIwmD8qo3SkKCNIUx2ugWKH415oH9U9CvpliCfC4B/xIeiTe4dTG8RZUg9Z
-	 U8eAvuyBqcqBL+33C1M22qKImUl7ughqafKMYZc9n1WRrn4umN65CLN/Lq52eQ6lLL
-	 z1DyysD+znfcxubTkl6RaASkwcjy4trnjPtdE5iDK37bxvZDmGtarw60u36z78UHeq
-	 a3RpOawc3/Yxg==
+	b=CIHIVUEYDmWjeJTlkZnvdARM/t+5rIkmnmoEYvAAZlfC4DTya4YX0jikurpljwSJm
+	 KhwpLtB7CUmHpD/qZjUJKevdqnI/q8FUir/YBFRklIM2CTvFZzj5H0oOC5INp1vZ5Z
+	 ap/VEaO2KErimfiJgy6qkFSRBsFDAJzoVfHyT91hADOX/+fZ4x2MsjTcoVJHSgnltf
+	 K2xtj9EO9GIe1xS1l95fIDKjS0qLeX+2lOffR4BTg7lczjT1VjaD3PnnjIHLbi317p
+	 o89UzXKXJ9aI72awXoQeXQTmM9yVhhkJctECHaC50/RYIkTa9xQMv6hqRixU6crCjE
+	 rD6/VjT+eJC9w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 16/42] RDMA/rtrs-srv: Avoid null pointer deref during path establishment
-Date: Fri,  4 Oct 2024 14:26:27 -0400
-Message-ID: <20241004182718.3673735-16-sashal@kernel.org>
+	mturquette@baylibre.com,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 17/42] clk: bcm: bcm53573: fix OF node leak in init
+Date: Fri,  4 Oct 2024 14:26:28 -0400
+Message-ID: <20241004182718.3673735-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182718.3673735-1-sashal@kernel.org>
 References: <20241004182718.3673735-1-sashal@kernel.org>
@@ -67,64 +66,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.112
 Content-Transfer-Encoding: 8bit
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d0e62bf7b575fbfe591f6f570e7595dd60a2f5eb ]
+[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
 
-For RTRS path establishment, RTRS client initiates and completes con_num
-of connections. After establishing all its connections, the information
-is exchanged between the client and server through the info_req message.
-During this exchange, it is essential that all connections have been
-established, and the state of the RTRS srv path is CONNECTED.
+Driver code is leaking OF node reference from of_get_parent() in
+bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
+first place, because the parent node will not be freed while we are
+processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
+leak by accessing parent directly, instead of of_get_parent().
 
-So add these sanity checks, to make sure we detect and abort process in
-error scenarios to avoid null pointer deref.
-
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://patch.msgid.link/20240821112217.41827-9-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index e978ee4bb73ae..e1fed7e550245 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -936,12 +936,11 @@ static void rtrs_srv_info_req_done(struct ib_cq *cq, struct ib_wc *wc)
- 	if (err)
- 		goto close;
+diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
+index 84f2af736ee8a..83ef41d618be3 100644
+--- a/drivers/clk/bcm/clk-bcm53573-ilp.c
++++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
+@@ -112,7 +112,7 @@ static void bcm53573_ilp_init(struct device_node *np)
+ 		goto err_free_ilp;
+ 	}
  
--out:
- 	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
- 	return;
- close:
-+	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
- 	close_path(srv_path);
--	goto out;
- }
- 
- static int post_recv_info_req(struct rtrs_srv_con *con)
-@@ -992,6 +991,16 @@ static int post_recv_path(struct rtrs_srv_path *srv_path)
- 			q_size = SERVICE_CON_QUEUE_DEPTH;
- 		else
- 			q_size = srv->queue_depth;
-+		if (srv_path->state != RTRS_SRV_CONNECTING) {
-+			rtrs_err(s, "Path state invalid. state %s\n",
-+				 rtrs_srv_state_str(srv_path->state));
-+			return -EIO;
-+		}
-+
-+		if (!srv_path->s.con[cid]) {
-+			rtrs_err(s, "Conn not set for %d\n", cid);
-+			return -EIO;
-+		}
- 
- 		err = post_recv_io(to_srv_con(srv_path->s.con[cid]), q_size);
- 		if (err) {
+-	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
++	ilp->regmap = syscon_node_to_regmap(np->parent);
+ 	if (IS_ERR(ilp->regmap)) {
+ 		err = PTR_ERR(ilp->regmap);
+ 		goto err_free_ilp;
 -- 
 2.43.0
 
