@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-80840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6E0990C16
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:43:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A65A990BBB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11DDEB2900F
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323E7280F54
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016FB1E8822;
-	Fri,  4 Oct 2024 18:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC45D1E884F;
+	Fri,  4 Oct 2024 18:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gyKln5vy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VN6WageN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1731E32CD;
-	Fri,  4 Oct 2024 18:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AE41E8845;
+	Fri,  4 Oct 2024 18:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066023; cv=none; b=UqbwZjNytnnoxFxCBF4epJ61SFPXOZXtdIuAQe1oZeA4vL+hmLSFdJIsPmZVEJGKCrZegIXOTFOhTDiLIp6NO3vAVzzwD3Q0rm7z5830Ti4Twrso3szgI32jSEkALo2RieoN9shLJPHaFvjAtDO8PuMt6wPnfNV1DlICSIcxIps=
+	t=1728066025; cv=none; b=NVlh+Z319cQYwUI100QBK4oLrRqq2heAAVbPCYRebPpjFI7Qz6WFI4Ue9BsNN6eUwqqVDBggRFnQvoNb1dFqfUJsP8kZJv0Tfzk0za9nvkr6RGRfN80NMDJ3kbPo/mrp3coshlkLxL4DE751yzNAAPUvBgMldjDB40XXuFBnpmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066023; c=relaxed/simple;
-	bh=EzVBYaCHBX8DZNJXTY8R/ao9hbVSq/400hzx71wVHY4=;
+	s=arc-20240116; t=1728066025; c=relaxed/simple;
+	bh=31Eu63po/GTps1UbVQw+dXkrvrYK47lQDftGwjhtYQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCcTuHjSHjpf62CPri0V//MhsSDtqnmNoW8/FGgEekCUiXkHxTNDoh8nj/anhntmBur+FDvxKh7rfwNyGMBubJlngtvYJJSvcfWjrbPBWDFWc61o2jX23+C46SESUq5SQGM4sJzT1CzQVzQymqsYAw0HNU5C3mUKFKkUr1S89G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gyKln5vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03751C4CEC6;
-	Fri,  4 Oct 2024 18:20:21 +0000 (UTC)
+	 MIME-Version; b=BAeLV1MM+5jW5H2neztOXjwQ7srT8QUGxbcmyn+0VygT6npy3MB9qSh2J6kp0AsTEMGI3oQ6D63t+E5Dz4g6Ywyxq/znEZTtiTvXQAFm6La0zOb3N0THHrBZvIZJqk78aLV7NvAZFkE90ZaBDBXbjG1P9GMcDwE9a1LSw4YpA/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VN6WageN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECCCC4CECE;
+	Fri,  4 Oct 2024 18:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066023;
-	bh=EzVBYaCHBX8DZNJXTY8R/ao9hbVSq/400hzx71wVHY4=;
+	s=k20201202; t=1728066025;
+	bh=31Eu63po/GTps1UbVQw+dXkrvrYK47lQDftGwjhtYQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gyKln5vyHsyEvf4gEv1UAI7EEPsje43NrkjdtUQcQiwlntReYRNCJeUyh2lXYyxO/
-	 UIhXwc0cStk/Zgo2BR4T3l75lAh0oMr+9AQ2/Ri8q91naSDOEYDAP+r7m0WvhTRdlG
-	 HaiE0tFlOwPlhR+Ho6FVh/k/sJ4dqikT9OJWohO/W1NihhKlVxyKs/EoMaF+IyaYmI
-	 Oy/7PuktiSQZUmNojgNxyq15Y+pswF3IANn8KwSBzBKd6iI7GoWv2JKCZqPnSK56Hf
-	 wKwKiPN5RxJIbFimH5ic1+M1iBSL5/olCNINCY7/QbhfUpkT/URfGamEJcKvxgUr7R
-	 j+4+aNT9XQZgw==
+	b=VN6WageNOMCQ2jKiSrqFm5wL33VkHsdw66u6PWkmw1xrbquxid+UBGLlyZhOPHjhX
+	 hcmxzKo40PxCK0uhaVK0MGWu10q4Qh1CheXCsaa3KIxpbhsv5eMNC+KDkKaiRVj0jU
+	 Xl93vQnssdWeGgIjXsu5xXDy2vI0YfjaBt0wlB9UEq+/JLk28S7yd0MbCE3m1B9zoW
+	 IBHQk2Ono6CmQcBkM1X9tMKE7RuWKBmuvj3GaM91F/c0vujosZx8CJJL3j+3Dj+kdn
+	 80+u0eLaW6EU7tkdBYyyJjH4/AjYImnZ/UAGumRtL2ja9QdWtZWR1Cuhe7/6TFlWji
+	 362kl4Udk5/fg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Simon Horman <horms@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+Cc: Philip Chen <philipchen@chromium.org>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kadlec@netfilter.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 60/76] netfilter: nf_reject: Fix build warning when CONFIG_BRIDGE_NETFILTER=n
-Date: Fri,  4 Oct 2024 14:17:17 -0400
-Message-ID: <20241004181828.3669209-60-sashal@kernel.org>
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	ira.weiny@intel.com,
+	pankaj.gupta.linux@gmail.com,
+	nvdimm@lists.linux.dev,
+	virtualization@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.11 61/76] virtio_pmem: Check device status before requesting flush
+Date: Fri,  4 Oct 2024 14:17:18 -0400
+Message-ID: <20241004181828.3669209-61-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -74,112 +71,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Simon Horman <horms@kernel.org>
+From: Philip Chen <philipchen@chromium.org>
 
-[ Upstream commit fc56878ca1c288e49b5cbb43860a5938e3463654 ]
+[ Upstream commit e25fbcd97cf52c3c9824d44b5c56c19673c3dd50 ]
 
-If CONFIG_BRIDGE_NETFILTER is not enabled, which is the case for x86_64
-defconfig, then building nf_reject_ipv4.c and nf_reject_ipv6.c with W=1
-using gcc-14 results in the following warnings, which are treated as
-errors:
+If a pmem device is in a bad status, the driver side could wait for
+host ack forever in virtio_pmem_flush(), causing the system to hang.
 
-net/ipv4/netfilter/nf_reject_ipv4.c: In function 'nf_send_reset':
-net/ipv4/netfilter/nf_reject_ipv4.c:243:23: error: variable 'niph' set but not used [-Werror=unused-but-set-variable]
-  243 |         struct iphdr *niph;
-      |                       ^~~~
-cc1: all warnings being treated as errors
-net/ipv6/netfilter/nf_reject_ipv6.c: In function 'nf_send_reset6':
-net/ipv6/netfilter/nf_reject_ipv6.c:286:25: error: variable 'ip6h' set but not used [-Werror=unused-but-set-variable]
-  286 |         struct ipv6hdr *ip6h;
-      |                         ^~~~
-cc1: all warnings being treated as errors
+So add a status check in the beginning of virtio_pmem_flush() to return
+early if the device is not activated.
 
-Address this by reducing the scope of these local variables to where
-they are used, which is code only compiled when CONFIG_BRIDGE_NETFILTER
-enabled.
-
-Compile tested and run through netfilter selftests.
-
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/netfilter-devel/20240906145513.567781-1-andriy.shevchenko@linux.intel.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Philip Chen <philipchen@chromium.org>
+Message-Id: <20240826215313.2673566-1-philipchen@chromium.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/nf_reject_ipv4.c | 10 ++++------
- net/ipv6/netfilter/nf_reject_ipv6.c |  5 ++---
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ drivers/nvdimm/nd_virtio.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 04504b2b51df5..87fd945a0d27a 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -239,9 +239,8 @@ static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
- void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 		   int hook)
- {
--	struct sk_buff *nskb;
--	struct iphdr *niph;
- 	const struct tcphdr *oth;
-+	struct sk_buff *nskb;
- 	struct tcphdr _oth;
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index 35c8fbbba10ed..f55d60922b87d 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -44,6 +44,15 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	unsigned long flags;
+ 	int err, err1;
  
- 	oth = nf_reject_ip_tcphdr_get(oldskb, &_oth, hook);
-@@ -266,14 +265,12 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = IP4_REPLY_MARK(net, oldskb->mark);
- 
- 	skb_reserve(nskb, LL_MAX_HEADER);
--	niph = nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
--				   ip4_dst_hoplimit(skb_dst(nskb)));
-+	nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
-+			    ip4_dst_hoplimit(skb_dst(nskb)));
- 	nf_reject_ip_tcphdr_put(nskb, oldskb, oth);
- 	if (ip_route_me_harder(net, sk, nskb, RTN_UNSPEC))
- 		goto free_nskb;
- 
--	niph = ip_hdr(nskb);
--
- 	/* "Never happens" */
- 	if (nskb->len > dst_mtu(skb_dst(nskb)))
- 		goto free_nskb;
-@@ -290,6 +287,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct iphdr *niph = ip_hdr(nskb);
- 		struct net_device *br_indev;
- 
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index dedee264b8f6c..69a78550261fb 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -283,7 +283,6 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	const struct tcphdr *otcph;
- 	unsigned int otcplen, hh_len;
- 	const struct ipv6hdr *oip6h = ipv6_hdr(oldskb);
--	struct ipv6hdr *ip6h;
- 	struct dst_entry *dst = NULL;
- 	struct flowi6 fl6;
- 
-@@ -339,8 +338,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	nskb->mark = fl6.flowi6_mark;
- 
- 	skb_reserve(nskb, hh_len + dst->header_len);
--	ip6h = nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP,
--				    ip6_dst_hoplimit(dst));
-+	nf_reject_ip6hdr_put(nskb, oldskb, IPPROTO_TCP, ip6_dst_hoplimit(dst));
- 	nf_reject_ip6_tcphdr_put(nskb, oldskb, otcph, otcplen);
- 
- 	nf_ct_attach(nskb, oldskb);
-@@ -355,6 +353,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 */
- 	if (nf_bridge_info_exists(oldskb)) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
-+		struct ipv6hdr *ip6h = ipv6_hdr(nskb);
- 		struct net_device *br_indev;
- 
- 		br_indev = nf_bridge_get_physindev(oldskb, net);
++	/*
++	 * Don't bother to submit the request to the device if the device is
++	 * not activated.
++	 */
++	if (vdev->config->get_status(vdev) & VIRTIO_CONFIG_S_NEEDS_RESET) {
++		dev_info(&vdev->dev, "virtio pmem device needs a reset\n");
++		return -EIO;
++	}
++
+ 	might_sleep();
+ 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
+ 	if (!req_data)
 -- 
 2.43.0
 
