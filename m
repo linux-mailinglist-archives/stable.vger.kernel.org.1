@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-80914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27BA1990CAD
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:55:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 033F7990CB0
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA45E282447
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:55:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA03D1F23500
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82E621F419;
-	Fri,  4 Oct 2024 18:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3098D1FCC55;
+	Fri,  4 Oct 2024 18:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDcN2Gky"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWT2v7uB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24AE21F410;
-	Fri,  4 Oct 2024 18:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9B61FCC46;
+	Fri,  4 Oct 2024 18:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066235; cv=none; b=fEMXQoiDoQojF209EQHJSOYYZ/YphJvG6wo+3Otc3pQdM3O+VO3a2qM5sERvD/HkP/uu9BVLOg10+zAc4F/aoqPObXJrfxqHYME0ZhCpUV+M7XYQrKBOF0FEPqg+C6GmTK4polIvik1NbP3G0awkyZR7vht3ZH4+Jw0IVxYNY1g=
+	t=1728066237; cv=none; b=flM6zWZMIWmC9OKwHA/WsKebphJlHrWZahn+Rph66yohVMsTWnKw8FrKcZpEj3vo/49dTV5rgPqbUhzOCVm+mb7wR2NFPv9GaP3gcgXkkdeWvKR7pQ6Dy28CA1vTSvgMtOGCFApUY5G90gWpGJax0boX18I37YI43grc2x9QbcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066235; c=relaxed/simple;
-	bh=9v4AkEzJHgd60Poe0PjrYbXzP1mJjJjuDEM+8aex0fY=;
+	s=arc-20240116; t=1728066237; c=relaxed/simple;
+	bh=Efcfh40coe8lTYot+luTmyVmHaIjn/egYX0OcqlC44c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQgTUP5/OuSt015+yHf1eD3lWpFzVvm43P4c0Sahqr9FsfeKf6PbiHldSe5uKKFTXfTV2vfj/bjmLrdCaz43dz7h/KAaWsBypyWNFP5tD7Xl318xAqCOjrklbGJ5R5JFKSsZyVlC2YzcIrvQ/e5rw1/lso3p9JsVAYdV58Th42g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDcN2Gky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D50C4CEC6;
-	Fri,  4 Oct 2024 18:23:54 +0000 (UTC)
+	 MIME-Version; b=GzdCyg+5jJSuw2vELj8FvpJraRLh06KOp7X9MniMf+XyCIeMiqX+q7cO7yEZznevRHTdnvexJZFMTvULR00PT24IqfpgLzQZgvy8Ni9bEDqkgXVvqYfgTp9xUjACGgR7HgPBKu/MbAZk0Cl7NwBKXUDNvwJin32oS6u7k6MKTOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWT2v7uB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F336CC4CECE;
+	Fri,  4 Oct 2024 18:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066235;
-	bh=9v4AkEzJHgd60Poe0PjrYbXzP1mJjJjuDEM+8aex0fY=;
+	s=k20201202; t=1728066236;
+	bh=Efcfh40coe8lTYot+luTmyVmHaIjn/egYX0OcqlC44c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDcN2GkyaPKSLq1XPzOriMrLuVZtmJEolY+ZL0cY/rqvYqrDfEauk9f0CDCpkXSr1
-	 E/vmxCKjeAnW22pGQTVcdCv4OlbEP79uDjx02fDl00IbJu9RNsoHDrLMW/HzVz7JEx
-	 nGIIMKRSyrmJD/Ps2O9wdx4Rrj4yfjsR7b9ioYgKb4k9wW4/4PZFHMyYRKNCzWMao3
-	 +KRONDgWpU4M6PoAFOzQUWCmKdHfQLTtjNlMuupv0mSCmL9zaQssl30ykHv1yE4oc3
-	 yO8ZQwZQq6dPpeyx9oXTO7IDwj3fvHnOgV9uQfje0m53ZzjZ1P5L+ETn68YoRBiXgl
-	 HYoRdIm40K9vQ==
+	b=MWT2v7uBRExG7bEW6MEbjfykQfoabjSH0/1qumcd0Ec0ozk0SjN+b2Mpdj3p7Gjn7
+	 oJdy89X5X1akvJ/leLORJnR8l56N9aE0Ri+bHLEX7VryYRZ5rmdgBVL28MR51VrOwB
+	 STgMKM02/D1OQg6rdx3DiyaWQ5DclDDmmXgOkChgbubUxEOrgV3p7qvwBlvk8ns9fD
+	 2UOhlEumxGyydscJsFqb+We+QDEY8eeX4D5NfdxuE7us107rUKyyTSlQqAZf6uVhPK
+	 ATKIKhTOaIibtLAhNjbUbZSIhvmC6GEOCqBO6IWUzHbaxQBND76uh4VxOmHjhaXwah
+	 1uknenjZpjj2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Abhishek Tamboli <abhishektamboli9@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Ken Raeburn <raeburn@redhat.com>,
+	Matthew Sakai <msakai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	arakesh@google.com,
-	dan.scally@ideasonboard.com,
-	m.grzeschik@pengutronix.de,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 58/70] usb: gadget: uvc: Fix ERR_PTR dereference in uvc_v4l2.c
-Date: Fri,  4 Oct 2024 14:20:56 -0400
-Message-ID: <20241004182200.3670903-58-sashal@kernel.org>
+	dm-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.10 59/70] dm vdo: don't refer to dedupe_context after releasing it
+Date: Fri,  4 Oct 2024 14:20:57 -0400
+Message-ID: <20241004182200.3670903-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182200.3670903-1-sashal@kernel.org>
 References: <20241004182200.3670903-1-sashal@kernel.org>
@@ -68,76 +66,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+From: Ken Raeburn <raeburn@redhat.com>
 
-[ Upstream commit a7bb96b18864225a694e3887ac2733159489e4b0 ]
+[ Upstream commit 0808ebf2f80b962e75741a41ced372a7116f1e26 ]
 
-Fix potential dereferencing of ERR_PTR() in find_format_by_pix()
-and uvc_v4l2_enum_format().
+Clear the dedupe_context pointer in a data_vio whenever ownership of
+the context is lost, so that vdo can't examine it accidentally.
 
-Fix the following smatch errors:
-
-drivers/usb/gadget/function/uvc_v4l2.c:124 find_format_by_pix()
-error: 'fmtdesc' dereferencing possible ERR_PTR()
-
-drivers/usb/gadget/function/uvc_v4l2.c:392 uvc_v4l2_enum_format()
-error: 'fmtdesc' dereferencing possible ERR_PTR()
-
-Also, fix similar issue in uvc_v4l2_try_format() for potential
-dereferencing of ERR_PTR().
-
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-Link: https://lore.kernel.org/r/20240815102202.594812-1-abhishektamboli9@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ken Raeburn <raeburn@redhat.com>
+Signed-off-by: Matthew Sakai <msakai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_v4l2.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/md/dm-vdo/dedupe.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/uvc_v4l2.c b/drivers/usb/gadget/function/uvc_v4l2.c
-index a024aecb76dc3..de1736f834e6b 100644
---- a/drivers/usb/gadget/function/uvc_v4l2.c
-+++ b/drivers/usb/gadget/function/uvc_v4l2.c
-@@ -121,6 +121,9 @@ static struct uvcg_format *find_format_by_pix(struct uvc_device *uvc,
- 	list_for_each_entry(format, &uvc->header->formats, entry) {
- 		const struct uvc_format_desc *fmtdesc = to_uvc_format(format->fmt);
+diff --git a/drivers/md/dm-vdo/dedupe.c b/drivers/md/dm-vdo/dedupe.c
+index 117266e1b3ae1..28b41d5261f4c 100644
+--- a/drivers/md/dm-vdo/dedupe.c
++++ b/drivers/md/dm-vdo/dedupe.c
+@@ -734,6 +734,7 @@ static void process_update_result(struct data_vio *agent)
+ 	    !change_context_state(context, DEDUPE_CONTEXT_COMPLETE, DEDUPE_CONTEXT_IDLE))
+ 		return;
  
-+		if (IS_ERR(fmtdesc))
-+			continue;
-+
- 		if (fmtdesc->fcc == pixelformat) {
- 			uformat = format->fmt;
- 			break;
-@@ -240,6 +243,7 @@ uvc_v4l2_try_format(struct file *file, void *fh, struct v4l2_format *fmt)
- 	struct uvc_video *video = &uvc->video;
- 	struct uvcg_format *uformat;
- 	struct uvcg_frame *uframe;
-+	const struct uvc_format_desc *fmtdesc;
- 	u8 *fcc;
++	agent->dedupe_context = NULL;
+ 	release_context(context);
+ }
  
- 	if (fmt->type != video->queue.queue.type)
-@@ -277,7 +281,10 @@ uvc_v4l2_try_format(struct file *file, void *fh, struct v4l2_format *fmt)
- 		fmt->fmt.pix.height = uframe->frame.w_height;
- 		fmt->fmt.pix.bytesperline = uvc_v4l2_get_bytesperline(uformat, uframe);
- 		fmt->fmt.pix.sizeimage = uvc_get_frame_size(uformat, uframe);
--		fmt->fmt.pix.pixelformat = to_uvc_format(uformat)->fcc;
-+		fmtdesc = to_uvc_format(uformat);
-+		if (IS_ERR(fmtdesc))
-+			return PTR_ERR(fmtdesc);
-+		fmt->fmt.pix.pixelformat = fmtdesc->fcc;
+@@ -1653,6 +1654,7 @@ static void process_query_result(struct data_vio *agent)
+ 
+ 	if (change_context_state(context, DEDUPE_CONTEXT_COMPLETE, DEDUPE_CONTEXT_IDLE)) {
+ 		agent->is_duplicate = decode_uds_advice(context);
++		agent->dedupe_context = NULL;
+ 		release_context(context);
  	}
- 	fmt->fmt.pix.field = V4L2_FIELD_NONE;
- 	fmt->fmt.pix.colorspace = V4L2_COLORSPACE_SRGB;
-@@ -389,6 +396,9 @@ uvc_v4l2_enum_format(struct file *file, void *fh, struct v4l2_fmtdesc *f)
- 		return -EINVAL;
- 
- 	fmtdesc = to_uvc_format(uformat);
-+	if (IS_ERR(fmtdesc))
-+		return PTR_ERR(fmtdesc);
-+
- 	f->pixelformat = fmtdesc->fcc;
- 
- 	return 0;
+ }
+@@ -2326,6 +2328,7 @@ static void timeout_index_operations_callback(struct vdo_completion *completion)
+ 		 * send its requestor on its way.
+ 		 */
+ 		list_del_init(&context->list_entry);
++		context->requestor->dedupe_context = NULL;
+ 		continue_data_vio(context->requestor);
+ 		timed_out++;
+ 	}
 -- 
 2.43.0
 
