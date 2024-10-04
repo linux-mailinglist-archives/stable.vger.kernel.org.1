@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-81104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E93990EFC
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:46:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10279990F22
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3510C282703
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:46:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DB41B2505E
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6617622E2BC;
-	Fri,  4 Oct 2024 18:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC6222EB26;
+	Fri,  4 Oct 2024 18:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAcFoaz2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1/Q1TFc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238B622E2B3;
-	Fri,  4 Oct 2024 18:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D2F1E0DAD;
+	Fri,  4 Oct 2024 18:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066700; cv=none; b=ZCuh7gEAeOTmyRyMtyLvMDC3wVVAosKvT9zHAPS8ldTPL7ornCnHQLb5t/swK8/OspN8ZXCTjjpqi8nenkAX2313C0U3xzwNCW1Jpod6qRGxT75fOl+mBX7rJl93JpjSj8ZZckZMsq8NPktq2TOudCbO3scaVLJG1hbaWP3m54Y=
+	t=1728066702; cv=none; b=Y7M+FuKRiWM0xgFRmXyIyla+sYNUED9sP+gXQwalo76A9BVM3XritCiiYIFwi//Qf+Bu3pub7FKTQa3TADYm8i8mKVFYKqVLLU4xeD3d+zXmaUv1J7Y3Yav03VvXrFiw/7xh6PotXgUV3ESEu3H5QuBas7ZmQymYimUqQM/vn3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066700; c=relaxed/simple;
-	bh=yYHq7xNveiDsE3Gbt9wmgizCiBRBWqnRzYhdreKXSOg=;
+	s=arc-20240116; t=1728066702; c=relaxed/simple;
+	bh=B8Fx3Q+Xw1jiIfd8zISR/GfjM0Tn9csC0lTW5Rn8nQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtdT24jHexvlZ5uLtVXN2ETWFOBqclbDXD1Lh7y1B+LdhXqLzr54omNfyLyPajkjffQV4SuUsDgYxIVMsWkNm+NkCLigKL6/aktGeA/R+O3wAvZ8gcELe0wZ6zaMYCIhdho18EHC4qwluHk/OubdbopMgh50W09SzX2yI8lq3lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAcFoaz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E053C4CECC;
-	Fri,  4 Oct 2024 18:31:39 +0000 (UTC)
+	 MIME-Version; b=a82hd0LYvhFVMd0nz7scK92AMVJpWOJ7aEPfWXnUezUSbskPWU52rrxVXW+HFvCsZ+yxW++cMrkqiAYzctgW7Um8JBZytA/wgXljaoe5qPTnuJXbh7/lUefprX/He3eurzS3n5j0WnGkg910PsBobssNf21JRdve/zKYKSIIuus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1/Q1TFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD0FC4CEC6;
+	Fri,  4 Oct 2024 18:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066700;
-	bh=yYHq7xNveiDsE3Gbt9wmgizCiBRBWqnRzYhdreKXSOg=;
+	s=k20201202; t=1728066702;
+	bh=B8Fx3Q+Xw1jiIfd8zISR/GfjM0Tn9csC0lTW5Rn8nQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAcFoaz2p5Q9EVZ6ssymx/6MHWOn82E6qgm+41fF3/pxvUEgs6VPcdhO/IMvpHzCo
-	 Y4prMIuH5kXb138kVOor9BFbnC6saRWiMUrXMEOscR8MNwpx4mHeHPyD+4JQvyEiYo
-	 Jm5J/9328Dp34IcD5WJaROXuudIRyglNMb+5GW1K5h7SpO+vsXQMghIHUlx7ZP4MnQ
-	 csXsz4OX6ahfaEEVlRo827a/cxqrfBNi2rYfKOGp7L38efnpSpgC2weFSN1pI5j4yG
-	 0l4hXLcOE8Hp6q3V+JTr3Z3M66Vn6LKyzWvXZA0Flf6rZBdv8DU6H7TTSete0zsUOt
-	 8I2wQJxWCcJeA==
+	b=i1/Q1TFcveFrmhuEK2IregLyLNmwUFQ4M7EB04OODcW4vfIF0SFWkQnPKIXsyrGFH
+	 w47IsVXSyR2YFHBQJxvYEN/6PAhdH3qDWVPfOBvgnBq3uqHVx/fX2KvgxMmQV3R/Ui
+	 qISI+dhQg7s2HSsUFzyxb0lHu4k26Qec+cbWYojNueqeT0EBCPXAUh6YX0cCmSyBZX
+	 37PVmRyU+E5xYm2GxWocWtpQQec62QdHIzp6MdzYv4UHkJ8wkx9leVuhwfMFX8MZq9
+	 AOHSW8zZcWDmpX9PCf3orxxMG+IWKjEMDirC9MC3togfl6d6cavqa9Abth83oxtTxu
+	 DBDms5NQVLMig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 20/21] driver core: bus: Return -EIO instead of 0 when show/store invalid bus attribute
-Date: Fri,  4 Oct 2024 14:30:55 -0400
-Message-ID: <20241004183105.3675901-20-sashal@kernel.org>
+Cc: Andrey Shumilin <shum.sdl@nppct.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>,
+	tzimmermann@suse.de,
+	fullwaywang@outlook.com,
+	javierm@redhat.com,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.4 21/21] fbdev: sisfb: Fix strbuf array overflow
+Date: Fri,  4 Oct 2024 14:30:56 -0400
+Message-ID: <20241004183105.3675901-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183105.3675901-1-sashal@kernel.org>
 References: <20241004183105.3675901-1-sashal@kernel.org>
@@ -64,46 +69,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-[ Upstream commit c0fd973c108cdc22a384854bc4b3e288a9717bb2 ]
+[ Upstream commit 9cf14f5a2746c19455ce9cb44341b5527b5e19c3 ]
 
-Return -EIO instead of 0 for below erroneous bus attribute operations:
- - read a bus attribute without show().
- - write a bus attribute without store().
+The values of the variables xres and yres are placed in strbuf.
+These variables are obtained from strbuf1.
+The strbuf1 array contains digit characters
+and a space if the array contains non-digit characters.
+Then, when executing sprintf(strbuf, "%ux%ux8", xres, yres);
+more than 16 bytes will be written to strbuf.
+It is suggested to increase the size of the strbuf array to 24.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240724-bus_fix-v2-1-5adbafc698fb@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/sis/sis_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 7d7d28f498edd..f970a40a2f7ad 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -103,7 +103,8 @@ static ssize_t bus_attr_show(struct kobject *kobj, struct attribute *attr,
+diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
+index 2fdd02e51f5fc..db745dc3cebe2 100644
+--- a/drivers/video/fbdev/sis/sis_main.c
++++ b/drivers/video/fbdev/sis/sis_main.c
+@@ -183,7 +183,7 @@ static void sisfb_search_mode(char *name, bool quiet)
  {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for reading a bus attribute without show() */
-+	ssize_t ret = -EIO;
+ 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
+ 	int i = 0;
+-	char strbuf[16], strbuf1[20];
++	char strbuf[24], strbuf1[20];
+ 	char *nameptr = name;
  
- 	if (bus_attr->show)
- 		ret = bus_attr->show(subsys_priv->bus, buf);
-@@ -115,7 +116,8 @@ static ssize_t bus_attr_store(struct kobject *kobj, struct attribute *attr,
- {
- 	struct bus_attribute *bus_attr = to_bus_attr(attr);
- 	struct subsys_private *subsys_priv = to_subsys_private(kobj);
--	ssize_t ret = 0;
-+	/* return -EIO for writing a bus attribute without store() */
-+	ssize_t ret = -EIO;
- 
- 	if (bus_attr->store)
- 		ret = bus_attr->store(subsys_priv->bus, buf, count);
+ 	/* We don't know the hardware specs yet and there is no ivideo */
 -- 
 2.43.0
 
