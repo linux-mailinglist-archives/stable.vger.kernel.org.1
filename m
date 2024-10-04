@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-80742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492A69904F9
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 15:56:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3869904FB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 15:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704A81C221ED
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 13:56:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D8791F22F3B
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 13:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5EC2139C6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3000215F4C;
 	Fri,  4 Oct 2024 13:56:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828AE212F1E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16C02139C8;
 	Fri,  4 Oct 2024 13:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728050187; cv=none; b=Hs/pfo1xBP6cRi0YnW7tg9SZ5/bIax1iqt8nU57efVlaE0Srr8Gdl7PuoKgFEzkZesNEzY9g3bSECAT8lmr0Qkb+sHlbLUB3+B8RNv8n9q+LmcExCrp4LC/kcsoAoFmjnVGyy444Sfb6aDHsbrs2+7+39ld9gKLdwLZDx4imYV8=
+	t=1728050187; cv=none; b=fxhNu1IhYzk9U6sIV1D9SJtv4ckg943Zy+C0vLHhZaV1URXGdNuZPgAhGJCW9J3rp7hryyEGeJ6YrTUgGNm/5yCkFywtXNSWcpE7vKeywdogUJCu7xcc7DokY20fE9lGkT8yam1vyEU9mmFezkOqZ6eZE4uK56WNvvLZ9kXfulw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728050187; c=relaxed/simple;
-	bh=kE5N9LMzZ5xDIVfqC2ZVNeflYoiHF/zPTxu7bKcTfKA=;
+	bh=k8cXzyqbg2s7qf7ZrUuCUbyXUbR4GVpJT/q3XIstq7o=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=OVoZ48NddykV62lXnGe3Rqixi+71wIHpNRcLZs4Kq7THu/EH2FxeF8oFCtDrI7j7flPVGPbCuoT9johIOBclNmTLASKUGjINCd8r143jyEZu1s3r8HENDSnV9WghicpgHV+gOh0xsYjcR+OPlaxJew7R0BQ41XLSRavm4G0LLLg=
+	 Content-Type; b=IYb+jgtXxee+Ht2sMm6Y+rA9kvClxk5aFIh5Rk9MszB2ZUrPQqOh/6U39zgUaivsj5lOhbDdoL2afcLjpie2raqvdjSmuWG9RtbacwxNdhLOdtiSpZR/LxG7nDuzSA/tHeeRuuvVc8yq1Oq+pO3i++av4XJACnaO7T5PVIZL14Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344F0C4CEC7;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8632DC4CECF;
 	Fri,  4 Oct 2024 13:56:27 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.98)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1swio7-00000005C94-2aO5;
+	id 1swio7-00000005CA2-3vqH;
 	Fri, 04 Oct 2024 09:57:23 -0400
-Message-ID: <20241004135723.471955359@goodmis.org>
+Message-ID: <20241004135723.800438615@goodmis.org>
 User-Agent: quilt/0.68
-Date: Fri, 04 Oct 2024 09:56:58 -0400
+Date: Fri, 04 Oct 2024 09:57:00 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -43,9 +43,9 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org,
- Tomas Glozar <tglozar@redhat.com>,
- Eder Zulian <ezulian@redhat.com>
-Subject: [for-linus][PATCH 3/8] rtla: Fix the help text in osnoise and timerlat top tools
+ Wei Li <liwei391@huawei.com>
+Subject: [for-linus][PATCH 5/8] tracing/timerlat: Fix duplicated kthread creation due to CPU
+ online/offline
 References: <20241004135655.993267242@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,60 +55,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-From: Eder Zulian <ezulian@redhat.com>
+From: Wei Li <liwei391@huawei.com>
 
-The help text in osnoise top and timerlat top had some minor errors
-and omissions. The -d option was missing the 's' (second) abbreviation and
-the error message for '-d' used '-D'.
+osnoise_hotplug_workfn() is the asynchronous online callback for
+"trace/osnoise:online". It may be congested when a CPU goes online and
+offline repeatedly and is invoked for multiple times after a certain
+online.
+
+This will lead to kthread leak and timer corruption. Add a check
+in start_kthread() to prevent this situation.
 
 Cc: stable@vger.kernel.org
-Fixes: 1eceb2fc2ca54 ("rtla/osnoise: Add osnoise top mode")
-Fixes: a828cd18bc4ad ("rtla: Add timerlat tool and timelart top mode")
-Link: https://lore.kernel.org/20240813155831.384446-1-ezulian@redhat.com
-Suggested-by: Tomas Glozar <tglozar@redhat.com>
-Reviewed-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Eder Zulian <ezulian@redhat.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20240924094515.3561410-2-liwei391@huawei.com
+Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
+Signed-off-by: Wei Li <liwei391@huawei.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- tools/tracing/rtla/src/osnoise_top.c  | 2 +-
- tools/tracing/rtla/src/timerlat_top.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/trace/trace_osnoise.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/osnoise_top.c b/tools/tracing/rtla/src/osnoise_top.c
-index 2f756628613d..30e3853076a0 100644
---- a/tools/tracing/rtla/src/osnoise_top.c
-+++ b/tools/tracing/rtla/src/osnoise_top.c
-@@ -442,7 +442,7 @@ struct osnoise_top_params *osnoise_top_parse_args(int argc, char **argv)
- 		case 'd':
- 			params->duration = parse_seconds_duration(optarg);
- 			if (!params->duration)
--				osnoise_top_usage(params, "Invalid -D duration\n");
-+				osnoise_top_usage(params, "Invalid -d duration\n");
- 			break;
- 		case 'e':
- 			tevent = trace_event_alloc(optarg);
-diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
-index 8c16419fe22a..210b0f533534 100644
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -459,7 +459,7 @@ static void timerlat_top_usage(char *usage)
- 		"	  -c/--cpus cpus: run the tracer only on the given cpus",
- 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
- 		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
--		"	  -d/--duration time[m|h|d]: duration of the session in seconds",
-+		"	  -d/--duration time[s|m|h|d]: duration of the session",
- 		"	  -D/--debug: print debug info",
- 		"	     --dump-tasks: prints the task running on all CPUs if stop conditions are met (depends on !--no-aa)",
- 		"	  -t/--trace[file]: save the stopped trace to [file|timerlat_trace.txt]",
-@@ -613,7 +613,7 @@ static struct timerlat_top_params
- 		case 'd':
- 			params->duration = parse_seconds_duration(optarg);
- 			if (!params->duration)
--				timerlat_top_usage("Invalid -D duration\n");
-+				timerlat_top_usage("Invalid -d duration\n");
- 			break;
- 		case 'e':
- 			tevent = trace_event_alloc(optarg);
+diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
+index 1439064f65d6..d1a539913a5f 100644
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2007,6 +2007,10 @@ static int start_kthread(unsigned int cpu)
+ 	void *main = osnoise_main;
+ 	char comm[24];
+ 
++	/* Do not start a new thread if it is already running */
++	if (per_cpu(per_cpu_osnoise_var, cpu).kthread)
++		return 0;
++
+ 	if (timerlat_enabled()) {
+ 		snprintf(comm, 24, "timerlat/%d", cpu);
+ 		main = timerlat_main;
+@@ -2061,11 +2065,10 @@ static int start_per_cpu_kthreads(void)
+ 		if (cpumask_test_and_clear_cpu(cpu, &kthread_cpumask)) {
+ 			struct task_struct *kthread;
+ 
+-			kthread = per_cpu(per_cpu_osnoise_var, cpu).kthread;
++			kthread = xchg_relaxed(&(per_cpu(per_cpu_osnoise_var, cpu).kthread), NULL);
+ 			if (!WARN_ON(!kthread))
+ 				kthread_stop(kthread);
+ 		}
+-		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
+ 	}
+ 
+ 	for_each_cpu(cpu, current_mask) {
 -- 
 2.45.2
 
