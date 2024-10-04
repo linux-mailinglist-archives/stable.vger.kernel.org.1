@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-80830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D560990BCA
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:36:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB2C990B94
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BB95B2A8EB
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:31:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E969A1C227D8
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695081E0DCE;
-	Fri,  4 Oct 2024 18:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324FE1E32A7;
+	Fri,  4 Oct 2024 18:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+GyUMTh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cyhuJwOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF4D1E0DAF;
-	Fri,  4 Oct 2024 18:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5341E048D;
+	Fri,  4 Oct 2024 18:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066003; cv=none; b=eB0kumfKhM9HHkbLgg1RAD8KURlUmTeTZzI+Fb8zHUURK66AkYKmUal7DNMVvYnI3Q0Iy3G5NXOra8MZx4L2Z6h/++xnR4mVP4vRxTDvAnOP6Fipp76enPUAfJ9GjTnW5wQuWG2HDV/0Xsp24aFn8wyrpzkbVgGRn3LoNJySKv8=
+	t=1728066006; cv=none; b=SUgSYGjkUeN0kC/r/cVASBNIZRVUqLFq3S5ytoM3iNisIyf1sUsIJox4tqGGZzWOlVw8KsKr9TkCJJGI4YmcCX73ehXcphexhTEtxp4aN56eajdZQtHi4FcRMCpX5g+fYVAkBluokWRDdFVSlXHafSwBx6Xt6Xyy+CZrakz0o7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066003; c=relaxed/simple;
-	bh=OIdMz7HONHnDTTdnBElA5S8YW2qimUiMR6+XE75vAow=;
+	s=arc-20240116; t=1728066006; c=relaxed/simple;
+	bh=oS1uGqXfnmXPlpnneZZ4xz7G/bFx9yxxFcyIXw9vlaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldnTzR7V31YaKHukzSCzh4vLYvPcv4S0EMTe3KEUIrYON6rQSimKYTPOshq0c3Kt7aHz56p617/OwfHM7tRgx4SXk1KRXqLklzSGDfRSaV/i0ElAMVb8/5p0AcyMAAY6yeKjrvA9VIYWLjenIPdRTdr2w7LOcx5vkVTz6RzwRV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+GyUMTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D220C4CECC;
-	Fri,  4 Oct 2024 18:20:01 +0000 (UTC)
+	 MIME-Version; b=qWN0GeDVzQtAjRzr9jYCtIdTduhODzrurb9sYuTdLQZBaxHxPt6u7lMTJ8r0cIG34JmJYd31k0m9BBY/imlOyXkwseCYouaGbKD64XnrvzcQkQz+IiPtaFa8KD4e+0Vx2EJFNUqsvX9v3eiYx/7awrjtBr6Imu6E+nS+7pg0W80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cyhuJwOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D381C4CECC;
+	Fri,  4 Oct 2024 18:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066002;
-	bh=OIdMz7HONHnDTTdnBElA5S8YW2qimUiMR6+XE75vAow=;
+	s=k20201202; t=1728066005;
+	bh=oS1uGqXfnmXPlpnneZZ4xz7G/bFx9yxxFcyIXw9vlaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+GyUMThBDPXcJ41NcQF1ItuB42QTxw5AJGU1IdZ7P4boRBXuNWJApL8dcHIjOKLI
-	 1njnR57ripS+xKaDQNOVTpJUAtH1sdDa1DVPrw44qfP38+rMqdoSFycHotYy+SyKqP
-	 x9KTNO04oBlkd1oIUYIc87uWLKOncfBcknOarXQhSvbKHjTg6gzEq3hQ2lv+a3xjE0
-	 asW8281h9VLEItrvTaVYqkHCg4jZ/fPYQ5F5FMznriwm+vGcj9HGlb7q3rDbrH89ui
-	 P8OYREudI5bNo3BT/20YEEYC//+HJv0EZr+ORR2r4sspkrrCuRSjxwcU/ybjIxImp1
-	 dKEak9GyDDc/Q==
+	b=cyhuJwOF8LzQY1DzoeNOdL+S6SPC5gngIa4u1y3l3oyfUpE/241q7sDTQcywU4kf4
+	 gTyhXO2W8UMkMgd7sEv7LSQHTq9d1nLykaBBz1DJrzrj7Ia4cKkfJf0/h/kjbjw8nm
+	 E1yncpP4V1hzeKSNaZYGQUndO8A3tnGf63+qVMhpAH8yXEN7TxSssQGdgawm4qGsAP
+	 wG437zcEd0jlhFEcfNY1PDKVvgUJ3c/hUwANTXmZ2cPBxa0axNNRRwX7tebxT/ZqyK
+	 n3FoiDnMoVFMkwq/Q9o2iA0nO/q78Jxm/GjlzUJmOI4Uf3GmTssj9ZyXz+6OZb88Hf
+	 DJxEXE8MqHXhg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Peter Hurley <peter@hurleysoftware.com>,
+Cc: Wadim Egorov <w.egorov@phytec.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tony.lindgren@linux.intel.com,
-	andriy.shevchenko@linux.intel.com,
-	ilpo.jarvinen@linux.intel.com,
-	l.sanfilippo@kunbus.com,
-	pcc@google.com,
-	linux-serial@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 50/76] serial: protect uart_port_dtr_rts() in uart_shutdown() too
-Date: Fri,  4 Oct 2024 14:17:07 -0400
-Message-ID: <20241004181828.3669209-50-sashal@kernel.org>
+	javier.carrasco@wolfvision.net,
+	abdelalkuor@geotab.com,
+	harshit.m.mogalapalli@oracle.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 51/76] usb: typec: tipd: Free IRQ only if it was requested before
+Date: Fri,  4 Oct 2024 14:17:08 -0400
+Message-ID: <20241004181828.3669209-51-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -71,62 +69,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+From: Wadim Egorov <w.egorov@phytec.de>
 
-[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
+[ Upstream commit db63d9868f7f310de44ba7bea584e2454f8b4ed0 ]
 
-Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
-3) added few uport == NULL checks. It added one to uart_shutdown(), so
-the commit assumes, uport can be NULL in there. But right after that
-protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
-call. That is invoked only if HUPCL is set, so I assume that is the
-reason why we do not see lots of these reports.
+In polling mode, if no IRQ was requested there is no need to free it.
+Call devm_free_irq() only if client->irq is set. This fixes the warning
+caused by the tps6598x module removal:
 
-Or it cannot be NULL at this point at all for some reason :P.
+WARNING: CPU: 2 PID: 333 at kernel/irq/devres.c:144 devm_free_irq+0x80/0x8c
+...
+...
+Call trace:
+  devm_free_irq+0x80/0x8c
+  tps6598x_remove+0x28/0x88 [tps6598x]
+  i2c_device_remove+0x2c/0x9c
+  device_remove+0x4c/0x80
+  device_release_driver_internal+0x1cc/0x228
+  driver_detach+0x50/0x98
+  bus_remove_driver+0x6c/0xbc
+  driver_unregister+0x30/0x60
+  i2c_del_driver+0x54/0x64
+  tps6598x_i2c_driver_exit+0x18/0xc3c [tps6598x]
+  __arm64_sys_delete_module+0x184/0x264
+  invoke_syscall+0x48/0x110
+  el0_svc_common.constprop.0+0xc8/0xe8
+  do_el0_svc+0x20/0x2c
+  el0_svc+0x28/0x98
+  el0t_64_sync_handler+0x13c/0x158
+  el0t_64_sync+0x190/0x194
 
-Until the above is investigated, stay on the safe side and move this
-dereference to the if too.
-
-I got this inconsistency from Coverity under CID 1585130. Thanks.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Cc: Peter Hurley <peter@hurleysoftware.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240816124150.608125-1-w.egorov@phytec.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/usb/typec/tipd/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 5bea3af46abce..9763fc5dcc80c 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -407,14 +407,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
- 		/*
- 		 * Turn off DTR and RTS early.
- 		 */
--		if (uport && uart_console(uport) && tty) {
--			uport->cons->cflag = tty->termios.c_cflag;
--			uport->cons->ispeed = tty->termios.c_ispeed;
--			uport->cons->ospeed = tty->termios.c_ospeed;
--		}
-+		if (uport) {
-+			if (uart_console(uport) && tty) {
-+				uport->cons->cflag = tty->termios.c_cflag;
-+				uport->cons->ispeed = tty->termios.c_ispeed;
-+				uport->cons->ospeed = tty->termios.c_ospeed;
-+			}
+diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
+index dd51a25480bfb..256b0c054e9a9 100644
+--- a/drivers/usb/typec/tipd/core.c
++++ b/drivers/usb/typec/tipd/core.c
+@@ -1465,8 +1465,9 @@ static void tps6598x_remove(struct i2c_client *client)
  
--		if (!tty || C_HUPCL(tty))
--			uart_port_dtr_rts(uport, false);
-+			if (!tty || C_HUPCL(tty))
-+				uart_port_dtr_rts(uport, false);
-+		}
+ 	if (!client->irq)
+ 		cancel_delayed_work_sync(&tps->wq_poll);
++	else
++		devm_free_irq(tps->dev, client->irq, tps);
  
- 		uart_port_shutdown(port);
- 	}
+-	devm_free_irq(tps->dev, client->irq, tps);
+ 	tps6598x_disconnect(tps, 0);
+ 	typec_unregister_port(tps->port);
+ 	usb_role_switch_put(tps->role_sw);
 -- 
 2.43.0
 
