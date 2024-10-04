@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-80962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3537A990D45
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:06:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A998990D49
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BCDE1C214BE
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:06:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50F4280E5E
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7627B207A35;
-	Fri,  4 Oct 2024 18:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992E8208217;
+	Fri,  4 Oct 2024 18:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeIJNft9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFV3kktj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327EC207A2E;
-	Fri,  4 Oct 2024 18:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B0B208210;
+	Fri,  4 Oct 2024 18:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066368; cv=none; b=riTATK6kDy5v+gx2XA2vRxGxsqmpWAJdpaMwVD/Ym/PNWpeN4cNVMkjO1fneLINAzEXcR9AkrYqlos1MGwV/PHJmPEhYA+6XmSdBGT+1Wt99qgAR9AQeJWdaovrEIi67KGQKYk+5QvzErNiP4/eXW3hzwPHHjNovPYJ0lZ87vcU=
+	t=1728066370; cv=none; b=p7VNXYk5lTgudwZFHW7antLCGP6lO1z49FLjdIDGOIf8GlOb9LBpgjX6PZs9Y87lYr2KSg1oAfCGU1Yw+SiJ989xhsG3oTUouv20Oap3+o+al2EpqCCj1FPzJBKwDvWHFEXLVzBc+wGao0Gn/byuUIE7tx8TkdW68ivgD2db0TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066368; c=relaxed/simple;
-	bh=5rnPl8Du6RiRUmsrEfZ224MyYqh7OTCMlG/Ph1AXil4=;
+	s=arc-20240116; t=1728066370; c=relaxed/simple;
+	bh=a/UPzWeqYrfQmZ08nifeo4dhpRbhCo8nr8pTic8Dmuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAgaCi4yhBDDTt/oxxf4eZCtWsCXtTKhtflmv5nZvDlCVozilMx7aDf4PO0OSHuOkR4263h568r6Nlprj57BazYfpbs1XTQ1f3q68Sh7NyFL8hidCKhNukQWpkFeLGik1NkP0I4NETeUSpza5SKy9SBAGxMvQKzEXdbeItG+c/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeIJNft9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E6CC4CEC6;
-	Fri,  4 Oct 2024 18:26:06 +0000 (UTC)
+	 MIME-Version; b=MvQ/8jCO14XCDlqAhNTsOdPrK2ggCSTuIPVuNjU/Botj+QImE7HdZvlfnYwzebGI6uMYeRbBGJSPISxBD3AwssEkWqZYgfh1gUmSkeprqB/S0/qAmI34yNFqzrOj3PzOlDRlk/BdTUmlYe9IIRKIh365uUksYLWCzUL9ELirKnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFV3kktj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87813C4CECC;
+	Fri,  4 Oct 2024 18:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066368;
-	bh=5rnPl8Du6RiRUmsrEfZ224MyYqh7OTCMlG/Ph1AXil4=;
+	s=k20201202; t=1728066369;
+	bh=a/UPzWeqYrfQmZ08nifeo4dhpRbhCo8nr8pTic8Dmuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KeIJNft9gewM4ZVvRbDWBx7gEuxe3H1WSfvLCRcYXHke1kJLlB1WNnk6xg4/Hh8sh
-	 wCP1CZWRNLaXMXek9tcWLixkYdIEpygMghSK6HRu4gyMYCOi8v7+Dfv2fs0k2EEd7q
-	 zn4Ozl26MtIixG19wagzUO/U2kgDTdeQsyaxCIUFJy5MK+HV0TklCo1CfPKP2gl/jA
-	 Ibiy7mfZXYUxpqxvk1ZUfSCYzuKHemd/Gi9hTvCaobBtzSJKj+uEDusRgcUZiIFUTH
-	 55RmDFoQKc4nax/0H6N1XOt2ly6Lm8Ph+O3hGqlKALOnplSw/Xd6klu1L/jefk5QEs
-	 Ns7EmJFHpU7wA==
+	b=mFV3kktjt6i2LGIMeTU9Ut+Wg9qNKFykWw4mOBgidvhw3bN654TDVQFSIDMo8UsUV
+	 8VAUm1TYRTNTQ3Ljfa8oB23BVzuLc5XSSZInJ6yDgafU1gFeVdLKZRGxbXL7rA7vqp
+	 ZwjzFEZPD50tXVcAIG4d+1m5fN2rdnH0VMEK62XdbvAmDScZjzkxZoRz9XlWxhEibJ
+	 nszqttUxxlrxNbD+0tDYXm9Lk8ysNzRo7o9n2SFgjPM0vMdpt1IGfKp5JK+/ADZNfL
+	 Sfx0EiinyfFqsguEt5RmApl304Y3N541ejdMWHLjtHOM0xkZiDP4NqE09rBp1VUt9Q
+	 Lfyilcs8YGegw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yunke Cao <yunkec@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+Cc: Peng Fan <peng.fan@nxp.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	m.szyprowski@samsung.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 36/58] media: videobuf2-core: clear memory related fields in __vb2_plane_dmabuf_put()
-Date: Fri,  4 Oct 2024 14:24:09 -0400
-Message-ID: <20241004182503.3672477-36-sashal@kernel.org>
+	andersson@kernel.org,
+	shawnguo@kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 37/58] remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table
+Date: Fri,  4 Oct 2024 14:24:10 -0400
+Message-ID: <20241004182503.3672477-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182503.3672477-1-sashal@kernel.org>
 References: <20241004182503.3672477-1-sashal@kernel.org>
@@ -68,49 +71,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.54
 Content-Transfer-Encoding: 8bit
 
-From: Yunke Cao <yunkec@chromium.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 6a9c97ab6b7e85697e0b74e86062192a5ffffd99 ]
+[ Upstream commit e954a1bd16102abc800629f9900715d8ec4c3130 ]
 
-Clear vb2_plane's memory related fields in __vb2_plane_dmabuf_put(),
-including bytesused, length, fd and data_offset.
+If there is a resource table device tree node, use the address as
+the resource table address, otherwise use the address(where
+.resource_table section loaded) inside the Cortex-M elf file.
 
-Remove the duplicated code in __prepare_dmabuf().
+And there is an update in NXP SDK that Resource Domain Control(RDC)
+enabled to protect TCM, linux not able to write the TCM space when
+updating resource table status and cause kernel dump. So use the address
+from device tree could avoid kernel dump.
 
-Signed-off-by: Yunke Cao <yunkec@chromium.org>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Note: NXP M4 SDK not check resource table update, so it does not matter
+use whether resource table address specified in elf file or in device
+tree. But to reflect the fact that if people specific resource table
+address in device tree, it means people are aware and going to use it,
+not the address specified in elf file.
+
+Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-2-10d0268c7eb1@nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/videobuf2/videobuf2-core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-index 468191438849e..29bfc2bf796b6 100644
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -302,6 +302,10 @@ static void __vb2_plane_dmabuf_put(struct vb2_buffer *vb, struct vb2_plane *p)
- 	p->mem_priv = NULL;
- 	p->dbuf = NULL;
- 	p->dbuf_mapped = 0;
-+	p->bytesused = 0;
-+	p->length = 0;
-+	p->m.fd = 0;
-+	p->data_offset = 0;
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index cfee164dd645c..db281b7a38b3d 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -669,6 +669,17 @@ static struct resource_table *imx_rproc_get_loaded_rsc_table(struct rproc *rproc
+ 	return (struct resource_table *)priv->rsc_table;
  }
  
- /*
-@@ -1296,10 +1300,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
- 
- 		/* Release previously acquired memory if present */
- 		__vb2_plane_dmabuf_put(vb, &vb->planes[plane]);
--		vb->planes[plane].bytesused = 0;
--		vb->planes[plane].length = 0;
--		vb->planes[plane].m.fd = 0;
--		vb->planes[plane].data_offset = 0;
- 
- 		/* Acquire each plane's memory */
- 		mem_priv = call_ptr_memop(attach_dmabuf,
++static struct resource_table *
++imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *fw)
++{
++	struct imx_rproc *priv = rproc->priv;
++
++	if (priv->rsc_table)
++		return (struct resource_table *)priv->rsc_table;
++
++	return rproc_elf_find_loaded_rsc_table(rproc, fw);
++}
++
+ static const struct rproc_ops imx_rproc_ops = {
+ 	.prepare	= imx_rproc_prepare,
+ 	.attach		= imx_rproc_attach,
+@@ -679,7 +690,7 @@ static const struct rproc_ops imx_rproc_ops = {
+ 	.da_to_va       = imx_rproc_da_to_va,
+ 	.load		= rproc_elf_load_segments,
+ 	.parse_fw	= imx_rproc_parse_fw,
+-	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
++	.find_loaded_rsc_table = imx_rproc_elf_find_loaded_rsc_table,
+ 	.get_loaded_rsc_table = imx_rproc_get_loaded_rsc_table,
+ 	.sanity_check	= rproc_elf_sanity_check,
+ 	.get_boot_addr	= rproc_elf_get_boot_addr,
 -- 
 2.43.0
 
