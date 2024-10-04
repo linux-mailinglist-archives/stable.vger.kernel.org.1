@@ -1,118 +1,139 @@
-Return-Path: <stable+bounces-81133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9909911D5
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 23:51:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD4799120C
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 00:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8406B2292E
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA3971F24290
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CD91ADFF9;
-	Fri,  4 Oct 2024 21:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EA51AE017;
+	Fri,  4 Oct 2024 22:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="I5PVdvEz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5hMdJav"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C84B1B4F0C;
-	Fri,  4 Oct 2024 21:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEEA13A3ED;
+	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728078589; cv=none; b=I+46f/ZizESPAOtWgc4zaoGjFTDd3OzABOezXRWzXbdsicsKuwTVC7NW1ourp3mq9vvLZgvX3BOI+ll1By7u2KKoMNtKJrQsPZtbhRlbMhiH7NFQ1F1OKbaLQotC6w1PPRbQA/PSS3TLiH5LpDEoP+DfbJV2sdfnDtlmhSgAjFQ=
+	t=1728079320; cv=none; b=CTlQk9I5STQWf41VqyyM1W50Fm69KBCIjixvxqVnnJcYgnz/h0WBVREBIr62o/HfRDCqyDmVqqPr+h/ItoUuhHaVAIzp2SRSvPzEAGRWv7dxge0HjiukwWr9RMndVELvM/wV9mvWXExXch+/KqiGptIBf/MvfGLZ2UPFyoF4w4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728078589; c=relaxed/simple;
-	bh=NxOsJ/X5q0lVn9sCM1rgeACGs0mI3BWueRHlnan+DQU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HPsAJaSXsQChh0stB0mrks1chZZ+LgSnV5bKAIzkxBGdHVhY9z+PlbwZILR8PyzDw32vETCb5//Z6qSbMtiKBhGdxhkMJKrbm0KQYgip/+yqXWUCGm30mexkN0fmOmZmxtxkjV636JbbxWVHesMmmWgBrlo7NLncMglf2kXGWX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=I5PVdvEz; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 494ARDrP026173;
-	Fri, 4 Oct 2024 21:49:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=lq7rT5ZzUap4bwlLN5DsOLz6
-	nWrU1nW508fbolR4VYc=; b=I5PVdvEzSaxuANLNECXWyaCaugekttkQPnttD+ge
-	APtlXzsmAewAkoo1Hnc+m3cVgtwh2loY/yaKZY3zutjTAgNoGQH5YWd7XaSPUOBl
-	0JmtPZ9oXhFaknu+UXMAxeixM5d9xtjpf7uP6erlaxVymW4QImZmpVsZAhFyUPix
-	De9crbVtkNx1bk/hVsRChZ+IR0Z1g5LfNdBDkyNTFBAPlsasLk4xTPd5S3b4XJZZ
-	gQ3t6wTU9VJ93rVgUFuoOQiFOBcMqXerndEulAKueIR7Sf9anX2r/C9D+PPe3RWb
-	VERPf+TUJScYpIYRwZy+R/m4Alq+rrYw7qeh5x6qGT1SnA==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42205kkax4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 04 Oct 2024 21:49:45 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 494Lnj61029980
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 4 Oct 2024 21:49:45 GMT
-Received: from hu-mojha-hyd.qualcomm.com (10.80.80.8) by
- nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 4 Oct 2024 14:49:42 -0700
-Date: Sat, 5 Oct 2024 03:19:38 +0530
-From: Mukesh Ojha <quic_mojha@quicinc.com>
-To: Johan Hovold <johan+linaro@kernel.org>
-CC: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/2] firmware: qcom: scm: suppress download mode error
-Message-ID: <ZwBi8mMNciskT5Il@hu-mojha-hyd.qualcomm.com>
-References: <20241002100122.18809-1-johan+linaro@kernel.org>
- <20241002100122.18809-2-johan+linaro@kernel.org>
+	s=arc-20240116; t=1728079320; c=relaxed/simple;
+	bh=yA8zi+D/kjXfBz7wwbF2jGW3GGImBGWDMebbbCkbJtk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tUWa3jQhQhbuTwrnkgmjVh5OH/iGgIfRsnXjRmoLviNIpCQJiSp00eRTFcXPY1tPpWuR91ndB8IpKWUGl4UclNBXc2y9lFprk5TII14josbrG182Zq+pNKeHA73ZjuA/jbzLtEE00+MVq1m9VgcoJrWsdwqlzSHm/SCTmUnCuaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5hMdJav; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 33139C4CEC6;
+	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728079320;
+	bh=yA8zi+D/kjXfBz7wwbF2jGW3GGImBGWDMebbbCkbJtk=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=d5hMdJavBg1kiftWPpZxcHf+KjR0tlkGnBaX/MNqoH/EtMay2VdboKsCVxqwQHArf
+	 FgprJgyHGKY43fRa36k4Qk5/A3za09SF7jVAfGEYmAAKzD4z47E5pRvjyIeccJYEL8
+	 FOuMDEta1fhQM6L8ceCOJOTZXBMCL7mpdlDH8vdDbDN3EQ0ftv+HgslAHCfe4I/Kcz
+	 TG7ea/HgZXxpl5B5PFPpu4Of0Odli89fkgA5bRfUI2MhjPOaIELvCoTgoBR+TEmC6S
+	 +vg/tVWQWE296xqIYSwMu2LTRlFQuGnrx8uPvyHcUV2G1qegQYVTxbxFVwGhU6T2xV
+	 uVJiaQ6Ry6enw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17CE0CF8853;
+	Fri,  4 Oct 2024 22:01:59 +0000 (UTC)
+From: Mitchell Levy via B4 Relay <devnull+levymitchell0.gmail.com@kernel.org>
+Subject: [PATCH 0/2] rust: lockdep: Fix soundness issue affecting
+ LockClassKeys
+Date: Fri, 04 Oct 2024 15:01:36 -0700
+Message-Id: <20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20241002100122.18809-2-johan+linaro@kernel.org>
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: BrlAznQaiVf3Guj9zusVitW1bAIcdB0B
-X-Proofpoint-GUID: BrlAznQaiVf3Guj9zusVitW1bAIcdB0B
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
- adultscore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501 phishscore=0
- bulkscore=0 impostorscore=0 malwarescore=0 suspectscore=0 mlxlogscore=949
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410040151
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMBlAGcC/3XMQQ6CMBCF4auQWTumLZKAK+9hWJTpCBOBkhYbD
+ eHuVvYu/5e8b4PIQTjCtdggcJIofs6hTwXQYOeeUVxuMMpcVKMqDK+44ujp6XhBV3KpKqOp7iz
+ kyxL4Ie+Du7e5B4mrD59DT/q3/oGSRo3OUENGW1t35tZPVsYz+Qnafd+/qun5vqgAAAA=
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Mitchell Levy <levymitchell0@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1728079319; l=2325;
+ i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
+ bh=yA8zi+D/kjXfBz7wwbF2jGW3GGImBGWDMebbbCkbJtk=;
+ b=yz5wfUx3V0h0nT096o9DYbVaoFL3T8pflNc7g21tFsCTJnfM/kKGtgWLYSVQnxXTNAjq8L9Uv
+ njm4iXSHk3bBh7tUymQ2ZfjzzviLMkJFU/H+29VLkmZkeDi7mJ6ihe6
+X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
+ pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
+X-Endpoint-Received: by B4 Relay for levymitchell0@gmail.com/20240719 with
+ auth_id=188
+X-Original-From: Mitchell Levy <levymitchell0@gmail.com>
+Reply-To: levymitchell0@gmail.com
 
-On Wed, Oct 02, 2024 at 12:01:21PM +0200, Johan Hovold wrote:
-> Stop spamming the logs with errors about missing mechanism for setting
-> the so called download (or dump) mode for users that have not requested
-> that feature to be enabled in the first place.
-> 
-> This avoids the follow error being logged on boot as well as on
-> shutdown when the feature it not available and download mode has not
-> been enabled on the kernel command line:
-> 
-> 	qcom_scm firmware:scm: No available mechanism for setting download mode
-> 
-> Fixes: 79cb2cb8d89b ("firmware: qcom: scm: Disable SDI and write no dump to dump mode")
-> Fixes: 781d32d1c970 ("firmware: qcom_scm: Clear download bit during reboot")
-> Cc: Mukesh Ojha <quic_mojha@quicinc.com>
-> Cc: stable@vger.kernel.org	# 6.4
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+This series is aimed at fixing a soundness issue with how dynamically
+allocated LockClassKeys are handled. Currently, LockClassKeys can be
+used without being Pin'd, which can break lockdep since it relies on
+address stability. Similarly, these keys are not automatically
+(de)registered with lockdep.
 
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+At the suggestion of Alice Ryhl, this series includes a patch for
+-stable kernels that disables dynamically allocated keys. This prevents
+backported patches from using the unsound implementation.
 
--Mukesh
+Currently, this series requires that all dynamically allocated
+LockClassKeys have a lifetime of 'static (i.e., they must be leaked
+after allocation). This is because Lock does not currently keep a
+reference to the LockClassKey, instead passing it to C via FFI. This
+causes a problem because the rust compiler would allow creating a
+'static Lock with a 'a LockClassKey (with 'a < 'static) while C would
+expect the LockClassKey to live as long as the lock. This problem
+represents an avenue for future work.
+
+---
+Changes from RFC:
+- Split into two commits so that dynamically allocated LockClassKeys are
+removed from stable kernels. (Thanks Alice Ryhl)
+- Extract calls to C lockdep functions into helpers so things build
+properly when LOCKDEP=n. (Thanks Benno Lossin)
+- Remove extraneous `get_ref()` calls. (Thanks Benno Lossin)
+- Provide better documentation for `new_dynamic()`. (Thanks Benno
+Lossin)
+- Ran rustfmt to fix formatting and some extraneous changes. (Thanks
+Alice Ryhl and Benno Lossin)
+- Link to RFC: https://lore.kernel.org/r/20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com
+
+---
+Mitchell Levy (2):
+      rust: lockdep: Remove support for dynamically allocated LockClassKeys
+      rust: lockdep: Use Pin for all LockClassKey usages
+
+ rust/helpers/helpers.c      |  1 +
+ rust/helpers/sync.c         | 13 +++++++++++++
+ rust/kernel/lib.rs          |  2 +-
+ rust/kernel/sync.rs         | 34 ++++++++++++++++++++++++----------
+ rust/kernel/sync/condvar.rs | 11 +++++++----
+ rust/kernel/sync/lock.rs    |  4 ++--
+ rust/kernel/workqueue.rs    |  2 +-
+ 7 files changed, 49 insertions(+), 18 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20240905-rust-lockdep-d3e30521c8ba
+
+Best regards,
+-- 
+Mitchell Levy <levymitchell0@gmail.com>
+
 
 
