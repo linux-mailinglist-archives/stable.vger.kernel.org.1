@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-80810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C511990B4F
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:26:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46AE990BB6
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281851F22480
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:26:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C635B287A1
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076593DABE0;
-	Fri,  4 Oct 2024 18:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D42D3DAC03;
+	Fri,  4 Oct 2024 18:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="atZlRSE+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b0TTh3BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FF12225D6;
-	Fri,  4 Oct 2024 18:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9763DABFE;
+	Fri,  4 Oct 2024 18:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065961; cv=none; b=mnizz6M+r2ry2f3oSkk0by29/6Gq8CtIglIcNNKt+YJbQkH5+ZHCcXPJffvgZpcgKzk0VEVF7vxD4YLkssoD7B7phHxfeWfgtSybw8xVRdvVBUZfARa+p7otHRwtVOScvXC0GPyDY/4LzAmztmR6l6KxBgckPXwgnpEDXhSW+QI=
+	t=1728065964; cv=none; b=Q59OceRD3HGbdUT0vVQcFiY0K/+qvnOUszqFwLm2P2gKy7JMObxivqycYSu+CvROCBUm8MwByJgs5tOLbMQElA2GKKsmOlh0O+K+8UHmr8gqNRpxRuY9OEJOt1JMyBva3mThtkMPiPUyONOSYQdvoNE5jDLXIxhHJcfzoMRsH+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728065961; c=relaxed/simple;
-	bh=NpFwHIc43h0KX6FekzSz+SQmAEBtDGBPknm+Mi89JxY=;
+	s=arc-20240116; t=1728065964; c=relaxed/simple;
+	bh=lQwW8GvhU7cntpyWPbWqgvJ1TFtT/WD4eXCDKKYmQDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VINFhtnqfLmcusK9U5Hyg9MQpbmb0wsQ45uNffPZzHgdR+d/JKcJm37kCVIKcnJxioNNjoO70MS2JE3qJeAg4cjof69SwUm98lu2FQ8XAQkhOviplhk+UhxWGHiRfi1VAgSMmbpxGqz+pV2BTS4mIOBVTAWKobuTRN/MIrLeFDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=atZlRSE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36ACC4CED1;
-	Fri,  4 Oct 2024 18:19:20 +0000 (UTC)
+	 MIME-Version; b=Z543lKD4OtZ5X2zV1LCfj/3pHispsbd6s4Gra6g53Mjk/wUEXraVvtUsHsT6UBDJts5jbPCzhGyHB9BWuV29Z7Cg3osp7c9ZKCFO6H++Fz6ORMwLvQtScZN96sTF9fuFLSoIs1Ug+DA9Ch3ekaGHyZ3xQzdxx4X6OFCBkEXSH+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b0TTh3BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC493C4CEC6;
+	Fri,  4 Oct 2024 18:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065961;
-	bh=NpFwHIc43h0KX6FekzSz+SQmAEBtDGBPknm+Mi89JxY=;
+	s=k20201202; t=1728065963;
+	bh=lQwW8GvhU7cntpyWPbWqgvJ1TFtT/WD4eXCDKKYmQDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atZlRSE+feSWT/OnsAtmMaBbJfJwZh4GITdsvhiJnw0PtW3qCuODVZsnzsKKlpjY2
-	 9SRZCPqnISmUFIoRRrDp/0k/XhelCSAMr2E6GelPGIAvBvBDG27hsbmiv7uM7R2bXZ
-	 PJf2PaMPHcxrCye9DgU6OMQLg8vK/2RzpyHu5tdhWd86N+psgd99Sq1EPzYHmSwsXh
-	 3MdBcZsBgKzq5hqMOSm6Iyzr1M7Hn2dlUcEztrYny25g1WBIScHeIk9ig58DL3uhfs
-	 lfOWWHRWuwGzpsmGdINkVq5uvnQkTKV2YJBvcGhwshTPt977OW3SB8qQAjJzNTG621
-	 uHh4F6W1CQf5w==
+	b=b0TTh3BGGgibghZaHOut157Fvm1GH6MbHUbQVYx3BokMVGAeg/qzBgWiqkjpHcubK
+	 YLU1de79Js4Ds4wR8Wqgq/nWtByF+Bvp0ZiT5DR6Ywl7UJbBLHzMhPzRQLiSGs6D38
+	 5lpqA7CrskAiSEpNm0Pt79hJ0x+hNrFPs9UlMI/64enwKOWT+iHf3C/8vo0G+n6MSF
+	 x8TvI0VPFZjanNqagK6oWDlc5tgbs+asWUP64MlYvcixS46K41YY3IqybuuK6AMEQ/
+	 muJ8+SC0DK06kel2xOFeJ+GPEtrMNBM+wn0tJDD9lc2+YBF8au8NtDU+i2/4rgSEcu
+	 MMvw0h0kUcAbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Palmer Dabbelt <palmer@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	pgaj@cadence.com,
-	linux-i3c@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 30/76] i3c: master: cdns: Fix use after free vulnerability in cdns_i3c_master Driver Due to Race Condition
-Date: Fri,  4 Oct 2024 14:16:47 -0400
-Message-ID: <20241004181828.3669209-30-sashal@kernel.org>
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 31/76] RISC-V: Don't have MAX_PHYSMEM_BITS exceed phys_addr_t
+Date: Fri,  4 Oct 2024 14:16:48 -0400
+Message-ID: <20241004181828.3669209-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -66,53 +69,68 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-[ Upstream commit 609366e7a06d035990df78f1562291c3bf0d4a12 ]
+[ Upstream commit ad380f6a0a5e82e794b45bb2eaec24ed51a56846 ]
 
-In the cdns_i3c_master_probe function, &master->hj_work is bound with
-cdns_i3c_master_hj. And cdns_i3c_master_interrupt can call
-cnds_i3c_master_demux_ibis function to start the work.
+I recently ended up with a warning on some compilers along the lines of
 
-If we remove the module which will call cdns_i3c_master_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
+      CC      kernel/resource.o
+    In file included from include/linux/ioport.h:16,
+                     from kernel/resource.c:15:
+    kernel/resource.c: In function 'gfr_start':
+    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
+       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+          |                                     ^
+    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
+       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+          |         ^~~~~~~~~~~~~~~~~
+    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
+      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+          |                           ^~~~~~~~~~
+    kernel/resource.c:1829:23: note: in expansion of macro 'min_t'
+     1829 |                 end = min_t(resource_size_t, base->end,
+          |                       ^~~~~
+    kernel/resource.c: In function 'gfr_continue':
+    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
+       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+          |                                     ^
+    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
+       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+          |         ^~~~~~~~~~~~~~~~~
+    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
+      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+          |                           ^~~~~~~~~~
+    kernel/resource.c:1847:24: note: in expansion of macro 'min_t'
+     1847 |                addr <= min_t(resource_size_t, base->end,
+          |                        ^~~~~
+    cc1: all warnings being treated as errors
 
-CPU0                                      CPU1
+which looks like a real problem: our phys_addr_t is only 32 bits now, so
+having 34-bit masks is just going to result in overflows.
 
-                                     | cdns_i3c_master_hj
-cdns_i3c_master_remove               |
-i3c_master_unregister(&master->base) |
-device_unregister(&master->dev)      |
-device_release                       |
-//free master->base                  |
-                                     | i3c_master_do_daa(&master->base)
-                                     | //use master->base
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in cdns_i3c_master_remove.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Link: https://lore.kernel.org/r/20240911153544.848398-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240731162159.9235-2-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/include/asm/sparsemem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-index c1627f3552ce3..c2d26beb3da2b 100644
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -1666,6 +1666,7 @@ static void cdns_i3c_master_remove(struct platform_device *pdev)
- {
- 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
- 
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
- 
- 	clk_disable_unprepare(master->sysclk);
+diff --git a/arch/riscv/include/asm/sparsemem.h b/arch/riscv/include/asm/sparsemem.h
+index 63acaecc33747..2f901a410586d 100644
+--- a/arch/riscv/include/asm/sparsemem.h
++++ b/arch/riscv/include/asm/sparsemem.h
+@@ -7,7 +7,7 @@
+ #ifdef CONFIG_64BIT
+ #define MAX_PHYSMEM_BITS	56
+ #else
+-#define MAX_PHYSMEM_BITS	34
++#define MAX_PHYSMEM_BITS	32
+ #endif /* CONFIG_64BIT */
+ #define SECTION_SIZE_BITS	27
+ #endif /* CONFIG_SPARSEMEM */
 -- 
 2.43.0
 
