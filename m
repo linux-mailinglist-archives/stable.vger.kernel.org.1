@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-81069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350FC990E85
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:36:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EA2990E8A
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58EF41C2096E
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:36:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59658280358
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E1C227396;
-	Fri,  4 Oct 2024 18:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2929227B8C;
+	Fri,  4 Oct 2024 18:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5LVwAM4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRNZCgXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C06022738E;
-	Fri,  4 Oct 2024 18:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE98227B83;
+	Fri,  4 Oct 2024 18:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066626; cv=none; b=nzO9tY3YmgLa2IGdp8F7pJxv9iEPyT9GIhm8EHm2sfbmGINOrx9SoCJrvY8rJZIKipSOqKkveZeunF80vrQhaxWJZOEpA/PAbyq9FLXDdysEuh55vTR5bIGFMEkg6c6hPcnX1ZiltBSxmZfLEhNwu8r3HzqOmQeWtjiONnlBOHI=
+	t=1728066629; cv=none; b=g7NDA33xqRSfFL0caKFmpTZgw4I7lJ3H5NU6b5R0BM7ec7+QB6cc5892hyKCnpqKkSClSdQgbwO1mf8SbcCWQOaZQGAXiqhmkk40eHsXgEbDD9KPfl2sTg3cVadTMj1WVsJKb02yeibCTlGlsfArSckmhXETWfQckF7I6RTRLNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066626; c=relaxed/simple;
-	bh=tV0+TPvJ3WXKCAtkLppJyPMZkVqQ+yL52eLxbwZ3xmI=;
+	s=arc-20240116; t=1728066629; c=relaxed/simple;
+	bh=mixcR5FGrrytqyCzdBNkxVc8SgptWgPg5PifIn4k5ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/B5XKW2O94ehsKHBqQkrXgBtu5yOtVpy9Ux5wYcEl1A8jxgK9jD8Q4yTbPk1w9FjMRWwSnrSTNL/0GhrNj7vfIQsOn9Numd1YVQnkLks0Mso3HgFRRsb3wxsQjFrZlKN3iUptfsPI7So1BePqyOgxx7M5ZhaPuEakm/pmQdug4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5LVwAM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C046C4CECD;
-	Fri,  4 Oct 2024 18:30:25 +0000 (UTC)
+	 MIME-Version; b=ZU5umCYOMb67b/UWDEyRJyLVvFJTygYgX8mx/KbihSRi8SU6vvYl0RTQTen6QCTjsHikXwT+oj2sAW9gtEbvIG2QRnukldxD4DyQk+3ABpsJm+DGpzP9BQuGsmjrZQGeJVh5XOMzmQUjNaasWIgrVpyx7MywNmAtD+2q55NgOHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRNZCgXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84905C4CECC;
+	Fri,  4 Oct 2024 18:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066626;
-	bh=tV0+TPvJ3WXKCAtkLppJyPMZkVqQ+yL52eLxbwZ3xmI=;
+	s=k20201202; t=1728066629;
+	bh=mixcR5FGrrytqyCzdBNkxVc8SgptWgPg5PifIn4k5ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5LVwAM4Z0dBJ9nxVdrxG/EMDk5pEPtUSQHn7RVIoOMRcPYnw5tlFKrroIIAL1CQh
-	 5LP9fD7xMniyo6YQq7qJS7rm7xGmO3COqVGKryB4ctdsjSrJ0iqKsNhJGulbK2Q7CF
-	 eXNQwZLfCbb61jpyEYQvwhtLKBYVtstgUGT16cfv+z0z9mEVoPlg0uH2u/tkvlbzec
-	 aQUiaPFY6ttjNz+Ae/m3WxlTAZEQASKBqOQVhH/k0vcfvJmjZhnVHrNwQLqvyr/qcW
-	 LSgSGxJ7vI72yvHHvfOTleuMUYTksCa/imfhTJk4Fli+ata5KUP0/xTuihlbyTOZPX
-	 LH6cKJ5Wdoozg==
+	b=MRNZCgXGQgSeLxK3pfPzSifAyGyYcOh7dH8hKkJQfHqp0YNdAOfNVmcN+rxmO5yQS
+	 zHsLVDhK/l6SFF+2hIESNj+GkEPI+ZDOTRBcSIgd/OsHQlJDjHyOE4Warz7i2hr/pi
+	 U8rn32u5C4xTmxfz59hy0yvXWoJ4fEPiaFonUitgyYSs4EUS6fRaRFVMAEJxyzNGpf
+	 r2NBq7Ji9Fs4V/tBZ3aA5t0/7NxlFgnAVM72A0TN00vrt4Tv0aoaxcL96mFLXdTh0i
+	 Yp2eSYu0wBCF2JZ6gVGfsPcF4JvJ0/EDB3nGoQcxuDVKxi1u6PupLBalisRqXk0MpM
+	 /wZsjsRpqmxjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: WangYuli <wangyuli@uniontech.com>,
+	SiyuLi <siyuli@glenfly.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	markzhang@nvidia.com,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 11/26] RDMA/mad: Improve handling of timed out WRs of mad agent
-Date: Fri,  4 Oct 2024 14:29:37 -0400
-Message-ID: <20241004183005.3675332-11-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	pierre-louis.bossart@linux.dev,
+	peter.ujfalusi@linux.intel.com,
+	maarten.lankhorst@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	rsalvaterra@gmail.com,
+	akoskovich@pm.me,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 12/26] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
+Date: Fri,  4 Oct 2024 14:29:38 -0400
+Message-ID: <20241004183005.3675332-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183005.3675332-1-sashal@kernel.org>
 References: <20241004183005.3675332-1-sashal@kernel.org>
@@ -66,140 +76,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 2a777679b8ccd09a9a65ea0716ef10365179caac ]
+[ Upstream commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 ]
 
-Current timeout handler of mad agent acquires/releases mad_agent_priv
-lock for every timed out WRs. This causes heavy locking contention
-when higher no. of WRs are to be handled inside timeout handler.
+Add DMA support for audio function of Glenfly Arise chip, which uses
+Requester ID of function 0.
 
-This leads to softlockup with below trace in some use cases where
-rdma-cm path is used to establish connection between peer nodes
-
-Trace:
------
- BUG: soft lockup - CPU#4 stuck for 26s! [kworker/u128:3:19767]
- CPU: 4 PID: 19767 Comm: kworker/u128:3 Kdump: loaded Tainted: G OE
-     -------  ---  5.14.0-427.13.1.el9_4.x86_64 #1
- Hardware name: Dell Inc. PowerEdge R740/01YM03, BIOS 2.4.8 11/26/2019
- Workqueue: ib_mad1 timeout_sends [ib_core]
- RIP: 0010:__do_softirq+0x78/0x2ac
- RSP: 0018:ffffb253449e4f98 EFLAGS: 00000246
- RAX: 00000000ffffffff RBX: 0000000000000000 RCX: 000000000000001f
- RDX: 000000000000001d RSI: 000000003d1879ab RDI: fff363b66fd3a86b
- RBP: ffffb253604cbcd8 R08: 0000009065635f3b R09: 0000000000000000
- R10: 0000000000000040 R11: ffffb253449e4ff8 R12: 0000000000000000
- R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000040
- FS:  0000000000000000(0000) GS:ffff8caa1fc80000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fd9ec9db900 CR3: 0000000891934006 CR4: 00000000007706e0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <IRQ>
-  ? show_trace_log_lvl+0x1c4/0x2df
-  ? show_trace_log_lvl+0x1c4/0x2df
-  ? __irq_exit_rcu+0xa1/0xc0
-  ? watchdog_timer_fn+0x1b2/0x210
-  ? __pfx_watchdog_timer_fn+0x10/0x10
-  ? __hrtimer_run_queues+0x127/0x2c0
-  ? hrtimer_interrupt+0xfc/0x210
-  ? __sysvec_apic_timer_interrupt+0x5c/0x110
-  ? sysvec_apic_timer_interrupt+0x37/0x90
-  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-  ? __do_softirq+0x78/0x2ac
-  ? __do_softirq+0x60/0x2ac
-  __irq_exit_rcu+0xa1/0xc0
-  sysvec_call_function_single+0x72/0x90
-  </IRQ>
-  <TASK>
-  asm_sysvec_call_function_single+0x16/0x20
- RIP: 0010:_raw_spin_unlock_irq+0x14/0x30
- RSP: 0018:ffffb253604cbd88 EFLAGS: 00000247
- RAX: 000000000001960d RBX: 0000000000000002 RCX: ffff8cad2a064800
- RDX: 000000008020001b RSI: 0000000000000001 RDI: ffff8cad5d39f66c
- RBP: ffff8cad5d39f600 R08: 0000000000000001 R09: 0000000000000000
- R10: ffff8caa443e0c00 R11: ffffb253604cbcd8 R12: ffff8cacb8682538
- R13: 0000000000000005 R14: ffffb253604cbd90 R15: ffff8cad5d39f66c
-  cm_process_send_error+0x122/0x1d0 [ib_cm]
-  timeout_sends+0x1dd/0x270 [ib_core]
-  process_one_work+0x1e2/0x3b0
-  ? __pfx_worker_thread+0x10/0x10
-  worker_thread+0x50/0x3a0
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xdd/0x100
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x29/0x50
-  </TASK>
-
-Simplified timeout handler by creating local list of timed out WRs
-and invoke send handler post creating the list. The new method acquires/
-releases lock once to fetch the list and hence helps to reduce locking
-contetiong when processing higher no. of WRs
-
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20240722110325.195085-1-saravanan.vajravel@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
+Signed-off-by: SiyuLi <siyuli@glenfly.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/mad.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/pci/quirks.c      | 4 ++++
+ include/linux/pci_ids.h   | 2 ++
+ sound/pci/hda/hda_intel.c | 2 +-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/mad.c b/drivers/infiniband/core/mad.c
-index 9355e521d9f4d..521c3d050be2d 100644
---- a/drivers/infiniband/core/mad.c
-+++ b/drivers/infiniband/core/mad.c
-@@ -2631,14 +2631,16 @@ static int retry_send(struct ib_mad_send_wr_private *mad_send_wr)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 60a469bdc7e3e..6f782734bb6e6 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4092,6 +4092,10 @@ static void quirk_dma_func0_alias(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
  
- static void timeout_sends(struct work_struct *work)
++/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
++
+ static void quirk_dma_func1_alias(struct pci_dev *dev)
  {
-+	struct ib_mad_send_wr_private *mad_send_wr, *n;
- 	struct ib_mad_agent_private *mad_agent_priv;
--	struct ib_mad_send_wr_private *mad_send_wr;
- 	struct ib_mad_send_wc mad_send_wc;
-+	struct list_head local_list;
- 	unsigned long flags, delay;
+ 	if (PCI_FUNC(dev->devfn) != 1)
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index b2418bfda4a98..c4ad85bf9897f 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -2657,6 +2657,8 @@
+ #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
+ #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
  
- 	mad_agent_priv = container_of(work, struct ib_mad_agent_private,
- 				      timed_work.work);
- 	mad_send_wc.vendor_err = 0;
-+	INIT_LIST_HEAD(&local_list);
- 
- 	spin_lock_irqsave(&mad_agent_priv->lock, flags);
- 	while (!list_empty(&mad_agent_priv->wait_list)) {
-@@ -2656,13 +2658,16 @@ static void timeout_sends(struct work_struct *work)
- 			break;
- 		}
- 
--		list_del(&mad_send_wr->agent_list);
-+		list_del_init(&mad_send_wr->agent_list);
- 		if (mad_send_wr->status == IB_WC_SUCCESS &&
- 		    !retry_send(mad_send_wr))
- 			continue;
- 
--		spin_unlock_irqrestore(&mad_agent_priv->lock, flags);
-+		list_add_tail(&mad_send_wr->agent_list, &local_list);
-+	}
-+	spin_unlock_irqrestore(&mad_agent_priv->lock, flags);
- 
-+	list_for_each_entry_safe(mad_send_wr, n, &local_list, agent_list) {
- 		if (mad_send_wr->status == IB_WC_SUCCESS)
- 			mad_send_wc.status = IB_WC_RESP_TIMEOUT_ERR;
- 		else
-@@ -2670,11 +2675,8 @@ static void timeout_sends(struct work_struct *work)
- 		mad_send_wc.send_buf = &mad_send_wr->send_buf;
- 		mad_agent_priv->agent.send_handler(&mad_agent_priv->agent,
- 						   &mad_send_wc);
--
- 		deref_mad_agent(mad_agent_priv);
--		spin_lock_irqsave(&mad_agent_priv->lock, flags);
- 	}
--	spin_unlock_irqrestore(&mad_agent_priv->lock, flags);
- }
- 
- /*
++#define PCI_VENDOR_ID_GLENFLY		0x6766
++
+ #define PCI_VENDOR_ID_INTEL		0x8086
+ #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
+ #define PCI_DEVICE_ID_INTEL_PXHD_0	0x0320
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index a3c6a5eeba3a4..b92095bb28c32 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2777,7 +2777,7 @@ static const struct pci_device_id azx_ids[] = {
+ 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
+ 	  AZX_DCAPS_PM_RUNTIME },
+ 	/* GLENFLY */
+-	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
++	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
+ 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
+ 	  .class_mask = 0xffffff,
+ 	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |
 -- 
 2.43.0
 
