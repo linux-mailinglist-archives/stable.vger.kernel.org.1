@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-80894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964DE990C70
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:49:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1688990C73
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D0172823A6
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 559DD1F22E61
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2051F780E;
-	Fri,  4 Oct 2024 18:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318C51F7831;
+	Fri,  4 Oct 2024 18:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K876QZYH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdfxA7Eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070B21F7808;
-	Fri,  4 Oct 2024 18:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BD11F782B;
+	Fri,  4 Oct 2024 18:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066195; cv=none; b=PT2W/0iwv92GDzfLvA+02t5FVIeFPNjGYLj3+qdK6aWAYFd1dKxyQ1Zc9i9xXKYj6bCOOy8pObhOCxchjMYjAm5EdToybNfP6IRNBUdqRAEXEMzhMxL/E12YuN7qkm7QSDFSmgYGSQf2SSqgjMpxQXb70aupTg4koNqGbsAKajk=
+	t=1728066197; cv=none; b=Y4NXnQ1wXre9zqivXnQc5T3BmEMUDpi9PIK/qK8Rg7AA57rsYMzDXCZRDGo7JkowXi7FsUXu8L0icMalEjBiA2XSz46XaxnjuX0WhxHC6+GdBFuSNhMxsONCZllYllYGCe9BeQy3dwdXE5WYQnxldnq8G14awOiYOWPYZ4kVXmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066195; c=relaxed/simple;
-	bh=dPelZsrz963rJ7yqfdRQroR1gmL4IW4pvZrgvpQucvU=;
+	s=arc-20240116; t=1728066197; c=relaxed/simple;
+	bh=suD76Zl1eWAEObQVqdM37af5ymlLk0z6r4lCRoUv+E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=THRwc8Uw+t176tDdvjXe0YAkKBYHnGc7eW0buVOjPufbt6PTOktm4cD3X0u2Zc3PSIUA4QGbOo9hy2wo+hjbsm5xMk7usjI7Ea1+PZIpusQAkt9ObEoToueO12LjpKXgZ1rL6bYQrzMXivBVGEadF4JXGSbI6H6m1b7y07hWlis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K876QZYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEE4C4CECD;
-	Fri,  4 Oct 2024 18:23:13 +0000 (UTC)
+	 MIME-Version; b=It0nrQu24ffMeulj1Gd6LUbyWQ0yR0Va52rhtarRd5onBSIZzAeXlcPsLCc23GagClxEGkzWw4ulK/GHqk4MnTmYq3XYwWEeKeMmNX8g/LNpgQ1shB7kJhDNEw4Ki/+HeAM4RqdvpTs68Mr9kuDkm2beR25hcITJzwLQfYHR5UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdfxA7Eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D8AC4CEC6;
+	Fri,  4 Oct 2024 18:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066194;
-	bh=dPelZsrz963rJ7yqfdRQroR1gmL4IW4pvZrgvpQucvU=;
+	s=k20201202; t=1728066196;
+	bh=suD76Zl1eWAEObQVqdM37af5ymlLk0z6r4lCRoUv+E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K876QZYHi3vdrjLxpFWsXVsiVgcYATgDJkS49O3JzHBmUnN44PtVB0nEUXthMb8r5
-	 XdgVRiuIObu0Hxh5z+IltkOXxrwsQVESILw4gjZtmN+O0LF4kR9JcwhhYqGv9Bk09u
-	 XIW6b7fBlHpQT1ohsfLPtGlI699flpTwxN4f+XYdd+Ae/H1IOcpObSck7+Svkv0J+E
-	 9iirCXuyfPBYa1+P1aQCzQnvuLoKjCPgAC0IAmcs0VU5t0SOfH25lU+Fb50T5AtOdH
-	 ARyq9phEAMMHGc3cYq2OjF25sMYwRu/R4LkpdeQfD4SzgCFjcaQVwhG2Zv9q99CeTK
-	 AvRJe4J/tqblA==
+	b=TdfxA7Ebfzki6Gur42/k/ihlkOa8cEGVEamC2/0eGA+0mJcBt8UVQrsQ4pwBjcYRG
+	 JH+6UVHWIppNuGOTNBdxtjWCZtA8EeqjszeuFTTrQ8qg1LiZvzrImMRCy04R+eXR4M
+	 wG1XW5Atzk3QOJAL0vlDXGzN6DuFMqjJyjYpBsoUgkh3B554XPqS5rglo0YvoDR4GT
+	 bUSY9ZiQEyIB2EJAmduGsvhuRYAZmJh4JIf5ZEP+7QqddUUgEhhiWGU5R9kYrIE0OC
+	 J2AFV1elJ7lGLQSPgh7phZ+xLXX40VweIxbC6jhNOXUAXmaGSRHUF9PyElijNF/M4x
+	 WVuRiRou13aBg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kw@linux.com,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 38/70] PCI: endpoint: Assign PCI domain number for endpoint controllers
-Date: Fri,  4 Oct 2024 14:20:36 -0400
-Message-ID: <20241004182200.3670903-38-sashal@kernel.org>
+	alsa-devel@alsa-project.org
+Subject: [PATCH AUTOSEL 6.10 39/70] soundwire: cadence: re-check Peripheral status with delayed_work
+Date: Fri,  4 Oct 2024 14:20:37 -0400
+Message-ID: <20241004182200.3670903-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182200.3670903-1-sashal@kernel.org>
 References: <20241004182200.3670903-1-sashal@kernel.org>
@@ -63,97 +62,207 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 0328947c50324cf4b2d8b181bf948edb8101f59f ]
+[ Upstream commit f8c35d61ba01afa76846905c67862cdace7f66b0 ]
 
-Right now, PCI endpoint subsystem doesn't assign PCI domain number for the
-PCI endpoint controllers. But this domain number could be useful to the EPC
-drivers to uniquely identify each controller based on the hardware instance
-when there are multiple ones present in an SoC (even multiple RC/EP).
+The SoundWire peripheral enumeration is entirely based on interrupts,
+more specifically sticky bits tracking state changes.
 
-So let's make use of the existing pci_bus_find_domain_nr() API to allocate
-domain numbers based on either devicetree (linux,pci-domain) property or
-dynamic domain number allocation scheme.
+This patch adds a defensive programming check on the actual status
+reported in PING frames. If for some reason an interrupt was lost or
+delayed, the delayed work would detect a peripheral change of status
+after the bus starts.
 
-It should be noted that the domain number allocated by this API will be
-based on both RC and EP controllers in a SoC. If the 'linux,pci-domain' DT
-property is present, then the domain number represents the actual hardware
-instance of the PCI endpoint controller. If not, then the domain number
-will be allocated based on the PCI EP/RC controller probe order.
+The 100ms defined for the delay is not completely arbitrary, if a
+Peripheral didn't join the bus within that delay then probably the
+hardware link is broken, and conversely if the detection didn't happen
+because of software issues the 100ms is still acceptable in terms of
+user experience.
 
-If the architecture doesn't support CONFIG_PCI_DOMAINS_GENERIC (rare), then
-currently a warning is thrown to indicate that the architecture specific
-implementation is needed.
+The overhead of the one-shot workqueue is minimal, and the mutual
+exclusion ensures that the interrupt and delayed work cannot update
+the status concurrently.
 
-Link: https://lore.kernel.org/linux-pci/20240828-pci-qcom-hotplug-v4-5-263a385fbbcb@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20240805114921.88007-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epc-core.c | 14 ++++++++++++++
- include/linux/pci-epc.h             |  2 ++
- 2 files changed, 16 insertions(+)
+ drivers/soundwire/cadence_master.c   | 39 ++++++++++++++++++++++++++--
+ drivers/soundwire/cadence_master.h   |  5 ++++
+ drivers/soundwire/intel.h            |  2 ++
+ drivers/soundwire/intel_auxdevice.c  |  1 +
+ drivers/soundwire/intel_bus_common.c | 11 ++++++++
+ 5 files changed, 56 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index 47d27ec7439d9..141840fceb798 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -810,6 +810,10 @@ void pci_epc_destroy(struct pci_epc *epc)
- {
- 	pci_ep_cfs_remove_epc_group(epc->group);
- 	device_unregister(&epc->dev);
+diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
+index 74da99034dab5..ec08e26cef829 100644
+--- a/drivers/soundwire/cadence_master.c
++++ b/drivers/soundwire/cadence_master.c
+@@ -891,8 +891,14 @@ static int cdns_update_slave_status(struct sdw_cdns *cdns,
+ 		}
+ 	}
+ 
+-	if (is_slave)
+-		return sdw_handle_slave_status(&cdns->bus, status);
++	if (is_slave) {
++		int ret;
 +
-+#ifdef CONFIG_PCI_DOMAINS_GENERIC
-+	pci_bus_release_domain_nr(NULL, &epc->dev);
-+#endif
++		mutex_lock(&cdns->status_update_lock);
++		ret = sdw_handle_slave_status(&cdns->bus, status);
++		mutex_unlock(&cdns->status_update_lock);
++		return ret;
++	}
+ 
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(pci_epc_destroy);
+@@ -989,6 +995,31 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
+ }
+ EXPORT_SYMBOL(sdw_cdns_irq);
  
-@@ -872,6 +876,16 @@ __pci_epc_create(struct device *dev, const struct pci_epc_ops *ops,
- 	epc->dev.release = pci_epc_release;
- 	epc->ops = ops;
- 
-+#ifdef CONFIG_PCI_DOMAINS_GENERIC
-+	epc->domain_nr = pci_bus_find_domain_nr(NULL, dev);
-+#else
-+	/*
-+	 * TODO: If the architecture doesn't support generic PCI
-+	 * domains, then a custom implementation has to be used.
-+	 */
-+	WARN_ONCE(1, "This architecture doesn't support generic PCI domains\n");
-+#endif
++static void cdns_check_attached_status_dwork(struct work_struct *work)
++{
++	struct sdw_cdns *cdns =
++		container_of(work, struct sdw_cdns, attach_dwork.work);
++	enum sdw_slave_status status[SDW_MAX_DEVICES + 1];
++	u32 val;
++	int ret;
++	int i;
 +
- 	ret = dev_set_name(&epc->dev, "%s", dev_name(dev));
- 	if (ret)
- 		goto put_dev;
-diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
-index acc5f96161fe1..cac04ce7f2ed7 100644
---- a/include/linux/pci-epc.h
-+++ b/include/linux/pci-epc.h
-@@ -128,6 +128,7 @@ struct pci_epc_mem {
-  * @group: configfs group representing the PCI EPC device
-  * @lock: mutex to protect pci_epc ops
-  * @function_num_map: bitmap to manage physical function number
-+ * @domain_nr: PCI domain number of the endpoint controller
-  * @init_complete: flag to indicate whether the EPC initialization is complete
-  *                 or not
++	val = cdns_readl(cdns, CDNS_MCP_SLAVE_STAT);
++
++	for (i = 0; i <= SDW_MAX_DEVICES; i++) {
++		status[i] = val & 0x3;
++		if (status[i])
++			dev_dbg(cdns->dev, "Peripheral %d status: %d\n", i, status[i]);
++		val >>= 2;
++	}
++
++	mutex_lock(&cdns->status_update_lock);
++	ret = sdw_handle_slave_status(&cdns->bus, status);
++	mutex_unlock(&cdns->status_update_lock);
++	if (ret < 0)
++		dev_err(cdns->dev, "%s: sdw_handle_slave_status failed: %d\n", __func__, ret);
++}
++
+ /**
+  * cdns_update_slave_status_work - update slave status in a work since we will need to handle
+  * other interrupts eg. CDNS_MCP_INT_RX_WL during the update slave
+@@ -1741,7 +1772,11 @@ int sdw_cdns_probe(struct sdw_cdns *cdns)
+ 	init_completion(&cdns->tx_complete);
+ 	cdns->bus.port_ops = &cdns_port_ops;
+ 
++	mutex_init(&cdns->status_update_lock);
++
+ 	INIT_WORK(&cdns->work, cdns_update_slave_status_work);
++	INIT_DELAYED_WORK(&cdns->attach_dwork, cdns_check_attached_status_dwork);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(sdw_cdns_probe);
+diff --git a/drivers/soundwire/cadence_master.h b/drivers/soundwire/cadence_master.h
+index bc84435e420f5..e1d7969ba48ae 100644
+--- a/drivers/soundwire/cadence_master.h
++++ b/drivers/soundwire/cadence_master.h
+@@ -117,6 +117,8 @@ struct sdw_cdns_dai_runtime {
+  * @link_up: Link status
+  * @msg_count: Messages sent on bus
+  * @dai_runtime_array: runtime context for each allocated DAI.
++ * @status_update_lock: protect concurrency between interrupt-based and delayed work
++ * status update
   */
-@@ -145,6 +146,7 @@ struct pci_epc {
- 	/* mutex to protect against concurrent access of EP controller */
- 	struct mutex			lock;
- 	unsigned long			function_num_map;
-+	int				domain_nr;
- 	bool				init_complete;
+ struct sdw_cdns {
+ 	struct device *dev;
+@@ -148,10 +150,13 @@ struct sdw_cdns {
+ 	bool interrupt_enabled;
+ 
+ 	struct work_struct work;
++	struct delayed_work attach_dwork;
+ 
+ 	struct list_head list;
+ 
+ 	struct sdw_cdns_dai_runtime **dai_runtime_array;
++
++	struct mutex status_update_lock; /* add mutual exclusion to sdw_handle_slave_status() */
  };
  
+ #define bus_to_cdns(_bus) container_of(_bus, struct sdw_cdns, bus)
+diff --git a/drivers/soundwire/intel.h b/drivers/soundwire/intel.h
+index b68e74c294e70..c502dfdfe8abf 100644
+--- a/drivers/soundwire/intel.h
++++ b/drivers/soundwire/intel.h
+@@ -98,6 +98,8 @@ static inline void intel_writew(void __iomem *base, int offset, u16 value)
+ 
+ #define INTEL_MASTER_RESET_ITERATIONS	10
+ 
++#define SDW_INTEL_DELAYED_ENUMERATION_MS	100
++
+ #define SDW_INTEL_CHECK_OPS(sdw, cb)	((sdw) && (sdw)->link_res && (sdw)->link_res->hw_ops && \
+ 					 (sdw)->link_res->hw_ops->cb)
+ #define SDW_INTEL_OPS(sdw, cb)		((sdw)->link_res->hw_ops->cb)
+diff --git a/drivers/soundwire/intel_auxdevice.c b/drivers/soundwire/intel_auxdevice.c
+index 18517121cc898..58f6b4f33cabd 100644
+--- a/drivers/soundwire/intel_auxdevice.c
++++ b/drivers/soundwire/intel_auxdevice.c
+@@ -433,6 +433,7 @@ static void intel_link_remove(struct auxiliary_device *auxdev)
+ 	 */
+ 	if (!bus->prop.hw_disabled) {
+ 		sdw_intel_debugfs_exit(sdw);
++		cancel_delayed_work_sync(&cdns->attach_dwork);
+ 		sdw_cdns_enable_interrupt(cdns, false);
+ 	}
+ 	sdw_bus_master_delete(bus);
+diff --git a/drivers/soundwire/intel_bus_common.c b/drivers/soundwire/intel_bus_common.c
+index 179aa0d85951b..db9cf211671a3 100644
+--- a/drivers/soundwire/intel_bus_common.c
++++ b/drivers/soundwire/intel_bus_common.c
+@@ -60,6 +60,9 @@ int intel_start_bus(struct sdw_intel *sdw)
+ 	sdw_cdns_check_self_clearing_bits(cdns, __func__,
+ 					  true, INTEL_MASTER_RESET_ITERATIONS);
+ 
++	schedule_delayed_work(&cdns->attach_dwork,
++			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
++
+ 	return 0;
+ }
+ 
+@@ -151,6 +154,9 @@ int intel_start_bus_after_reset(struct sdw_intel *sdw)
+ 	}
+ 	sdw_cdns_check_self_clearing_bits(cdns, __func__, true, INTEL_MASTER_RESET_ITERATIONS);
+ 
++	schedule_delayed_work(&cdns->attach_dwork,
++			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
++
+ 	return 0;
+ }
+ 
+@@ -184,6 +190,9 @@ int intel_start_bus_after_clock_stop(struct sdw_intel *sdw)
+ 
+ 	sdw_cdns_check_self_clearing_bits(cdns, __func__, true, INTEL_MASTER_RESET_ITERATIONS);
+ 
++	schedule_delayed_work(&cdns->attach_dwork,
++			      msecs_to_jiffies(SDW_INTEL_DELAYED_ENUMERATION_MS));
++
+ 	return 0;
+ }
+ 
+@@ -194,6 +203,8 @@ int intel_stop_bus(struct sdw_intel *sdw, bool clock_stop)
+ 	bool wake_enable = false;
+ 	int ret;
+ 
++	cancel_delayed_work_sync(&cdns->attach_dwork);
++
+ 	if (clock_stop) {
+ 		ret = sdw_cdns_clock_stop(cdns, true);
+ 		if (ret < 0)
 -- 
 2.43.0
 
