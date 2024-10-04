@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-80963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A998990D49
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:07:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788D7990D4D
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50F4280E5E
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:07:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA67F1C22B8F
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992E8208217;
-	Fri,  4 Oct 2024 18:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4097F208232;
+	Fri,  4 Oct 2024 18:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFV3kktj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MiATFFVL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B0B208210;
-	Fri,  4 Oct 2024 18:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E8208229;
+	Fri,  4 Oct 2024 18:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066370; cv=none; b=p7VNXYk5lTgudwZFHW7antLCGP6lO1z49FLjdIDGOIf8GlOb9LBpgjX6PZs9Y87lYr2KSg1oAfCGU1Yw+SiJ989xhsG3oTUouv20Oap3+o+al2EpqCCj1FPzJBKwDvWHFEXLVzBc+wGao0Gn/byuUIE7tx8TkdW68ivgD2db0TQ=
+	t=1728066372; cv=none; b=LX+cuThidZDKsJiuQ3LfJSh0rUmOHBtclQod9zVeHQH15q/irv6KzbK2uOflYy2r9VQUFBDw0D5hCCkEDro1lu9mjEqaNlBuqC1dFm3VZB5MkCeif15hTLefn1P4pj5w350xF19wfwTbRqsirLywYzJrJFgDDAKuU50Mr9i0CKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066370; c=relaxed/simple;
-	bh=a/UPzWeqYrfQmZ08nifeo4dhpRbhCo8nr8pTic8Dmuc=;
+	s=arc-20240116; t=1728066372; c=relaxed/simple;
+	bh=U8J2Tw65NFpyqvT4U3DdgcwfsguyzmGDIVIcuB4XB5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvQ/8jCO14XCDlqAhNTsOdPrK2ggCSTuIPVuNjU/Botj+QImE7HdZvlfnYwzebGI6uMYeRbBGJSPISxBD3AwssEkWqZYgfh1gUmSkeprqB/S0/qAmI34yNFqzrOj3PzOlDRlk/BdTUmlYe9IIRKIh365uUksYLWCzUL9ELirKnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFV3kktj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87813C4CECC;
-	Fri,  4 Oct 2024 18:26:08 +0000 (UTC)
+	 MIME-Version; b=HNUdLRCSW51Za5rFB33zx7cl5okoK0QA1rB7+TO6KCotQUeTDeIrK9hAvi8XqidG5j6s8E3UV9Z5vliNGuZUn16xRfrWBbxM58g/RtEgVVfOoc07S5kTwXyDb9sAIzoSdGcwfAdpG1+sc0fP1Yxr+18/6TbUsJImX0PBxaPjN70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MiATFFVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AEEC4CECD;
+	Fri,  4 Oct 2024 18:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066369;
-	bh=a/UPzWeqYrfQmZ08nifeo4dhpRbhCo8nr8pTic8Dmuc=;
+	s=k20201202; t=1728066371;
+	bh=U8J2Tw65NFpyqvT4U3DdgcwfsguyzmGDIVIcuB4XB5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFV3kktjt6i2LGIMeTU9Ut+Wg9qNKFykWw4mOBgidvhw3bN654TDVQFSIDMo8UsUV
-	 8VAUm1TYRTNTQ3Ljfa8oB23BVzuLc5XSSZInJ6yDgafU1gFeVdLKZRGxbXL7rA7vqp
-	 ZwjzFEZPD50tXVcAIG4d+1m5fN2rdnH0VMEK62XdbvAmDScZjzkxZoRz9XlWxhEibJ
-	 nszqttUxxlrxNbD+0tDYXm9Lk8ysNzRo7o9n2SFgjPM0vMdpt1IGfKp5JK+/ADZNfL
-	 Sfx0EiinyfFqsguEt5RmApl304Y3N541ejdMWHLjtHOM0xkZiDP4NqE09rBp1VUt9Q
-	 Lfyilcs8YGegw==
+	b=MiATFFVLXcGtGKKM8oz06KyQTACI6I8twiVEbzyddYn56Rx/cJ0/1p9Zcwim6Gnbo
+	 HGHQ3Rr5CYZ30++NR8B9yBRSDemWA2Fu2F2PwB/O/MnlHH8wWK7/POAeTWjZr7qDZF
+	 78U6dGxDYsQgjST955rE16ACxuA4A7jcg14d3SAHUn3F955DExIKDC8ZfDVe4VCXse
+	 9QLEJi7bKycVZKivc1QGqg4ALVRgczu+OkZ7Q6rPmERkFm43cWfdhf8BRDISj5DPoV
+	 AJnPSoSZ3NBHg5h2J0wQCPqq8pDCNzxJFRLazHsuNlbLj4nCZjUCS3gCFu/EM6A/I1
+	 7DmmYvESc1HkQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Peng Fan <peng.fan@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andersson@kernel.org,
+	abelvesa@kernel.org,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
 	shawnguo@kernel.org,
-	linux-remoteproc@vger.kernel.org,
+	linux-clk@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 37/58] remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table
-Date: Fri,  4 Oct 2024 14:24:10 -0400
-Message-ID: <20241004182503.3672477-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 38/58] clk: imx: Remove CLK_SET_PARENT_GATE for DRAM mux for i.MX7D
+Date: Fri,  4 Oct 2024 14:24:11 -0400
+Message-ID: <20241004182503.3672477-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182503.3672477-1-sashal@kernel.org>
 References: <20241004182503.3672477-1-sashal@kernel.org>
@@ -73,64 +73,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit e954a1bd16102abc800629f9900715d8ec4c3130 ]
+[ Upstream commit a54c441b46a0745683c2eef5a359d22856d27323 ]
 
-If there is a resource table device tree node, use the address as
-the resource table address, otherwise use the address(where
-.resource_table section loaded) inside the Cortex-M elf file.
+For i.MX7D DRAM related mux clock, the clock source change should ONLY
+be done done in low level asm code without accessing DRAM, and then
+calling clk API to sync the HW clock status with clk tree, it should never
+touch real clock source switch via clk API, so CLK_SET_PARENT_GATE flag
+should NOT be added, otherwise, DRAM's clock parent will be disabled when
+DRAM is active, and system will hang.
 
-And there is an update in NXP SDK that Resource Domain Control(RDC)
-enabled to protect TCM, linux not able to write the TCM space when
-updating resource table status and cause kernel dump. So use the address
-from device tree could avoid kernel dump.
-
-Note: NXP M4 SDK not check resource table update, so it does not matter
-use whether resource table address specified in elf file or in device
-tree. But to reflect the fact that if people specific resource table
-address in device tree, it means people are aware and going to use it,
-not the address specified in elf file.
-
-Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-2-10d0268c7eb1@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240607133347.3291040-8-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx7d.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index cfee164dd645c..db281b7a38b3d 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -669,6 +669,17 @@ static struct resource_table *imx_rproc_get_loaded_rsc_table(struct rproc *rproc
- 	return (struct resource_table *)priv->rsc_table;
- }
- 
-+static struct resource_table *
-+imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *fw)
-+{
-+	struct imx_rproc *priv = rproc->priv;
-+
-+	if (priv->rsc_table)
-+		return (struct resource_table *)priv->rsc_table;
-+
-+	return rproc_elf_find_loaded_rsc_table(rproc, fw);
-+}
-+
- static const struct rproc_ops imx_rproc_ops = {
- 	.prepare	= imx_rproc_prepare,
- 	.attach		= imx_rproc_attach,
-@@ -679,7 +690,7 @@ static const struct rproc_ops imx_rproc_ops = {
- 	.da_to_va       = imx_rproc_da_to_va,
- 	.load		= rproc_elf_load_segments,
- 	.parse_fw	= imx_rproc_parse_fw,
--	.find_loaded_rsc_table = rproc_elf_find_loaded_rsc_table,
-+	.find_loaded_rsc_table = imx_rproc_elf_find_loaded_rsc_table,
- 	.get_loaded_rsc_table = imx_rproc_get_loaded_rsc_table,
- 	.sanity_check	= rproc_elf_sanity_check,
- 	.get_boot_addr	= rproc_elf_get_boot_addr,
+diff --git a/drivers/clk/imx/clk-imx7d.c b/drivers/clk/imx/clk-imx7d.c
+index 2b77d1fc7bb94..1e1296e748357 100644
+--- a/drivers/clk/imx/clk-imx7d.c
++++ b/drivers/clk/imx/clk-imx7d.c
+@@ -498,9 +498,9 @@ static void __init imx7d_clocks_init(struct device_node *ccm_node)
+ 	hws[IMX7D_ENET_AXI_ROOT_SRC] = imx_clk_hw_mux2_flags("enet_axi_src", base + 0x8900, 24, 3, enet_axi_sel, ARRAY_SIZE(enet_axi_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_NAND_USDHC_BUS_ROOT_SRC] = imx_clk_hw_mux2_flags("nand_usdhc_src", base + 0x8980, 24, 3, nand_usdhc_bus_sel, ARRAY_SIZE(nand_usdhc_bus_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_DRAM_PHYM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_src", base + 0x9800, 24, 1, dram_phym_sel, ARRAY_SIZE(dram_phym_sel), CLK_SET_PARENT_GATE);
+-	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel), CLK_SET_PARENT_GATE);
++	hws[IMX7D_DRAM_ROOT_SRC] = imx_clk_hw_mux2("dram_src", base + 0x9880, 24, 1, dram_sel, ARRAY_SIZE(dram_sel));
+ 	hws[IMX7D_DRAM_PHYM_ALT_ROOT_SRC] = imx_clk_hw_mux2_flags("dram_phym_alt_src", base + 0xa000, 24, 3, dram_phym_alt_sel, ARRAY_SIZE(dram_phym_alt_sel), CLK_SET_PARENT_GATE);
+-	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2_flags("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel), CLK_SET_PARENT_GATE);
++	hws[IMX7D_DRAM_ALT_ROOT_SRC]  = imx_clk_hw_mux2("dram_alt_src", base + 0xa080, 24, 3, dram_alt_sel, ARRAY_SIZE(dram_alt_sel));
+ 	hws[IMX7D_USB_HSIC_ROOT_SRC] = imx_clk_hw_mux2_flags("usb_hsic_src", base + 0xa100, 24, 3, usb_hsic_sel, ARRAY_SIZE(usb_hsic_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_PCIE_CTRL_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_ctrl_src", base + 0xa180, 24, 3, pcie_ctrl_sel, ARRAY_SIZE(pcie_ctrl_sel), CLK_SET_PARENT_GATE);
+ 	hws[IMX7D_PCIE_PHY_ROOT_SRC] = imx_clk_hw_mux2_flags("pcie_phy_src", base + 0xa200, 24, 3, pcie_phy_sel, ARRAY_SIZE(pcie_phy_sel), CLK_SET_PARENT_GATE);
 -- 
 2.43.0
 
