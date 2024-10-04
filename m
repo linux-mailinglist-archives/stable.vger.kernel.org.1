@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-81124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A48990FD4
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:09:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F1C9910BB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5C61F2251A
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:09:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1492B21E3D
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08B21DD9D5;
-	Fri,  4 Oct 2024 19:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3561C1DED6D;
+	Fri,  4 Oct 2024 19:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7UwFIlk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlXraFbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A3673466
-	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 19:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94051CACFB
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 19:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728070598; cv=none; b=DSa3QdzVMvB+lxYvfGPvap94RJ7yPlvAbbhjyI3zQC3WD9batuvNp7SEBgLTc5wlp8f30dUgTAJmqgc3eNHhzvqgS1R5nklJz2/lyJ4wdHwvPV/0ww9LscK52JCtukUvPjVHgRwydg7iWChh6Tp6ld8gEq3IYOFFIvvD9e10Djk=
+	t=1728070628; cv=none; b=YdesuxWTokkKbIm3/R8BLTXVHs6AcGBu1IEX5JiciALVmv0ImK5m8QbDGnFooUuYerQYf12KCK7v4KmJVRuu1s0si+CtXkoDauNyHeo9+SnjN5DveMBQBh6UcWLkEFvWShE0NC00Q7WPZWK8NFw7hS4Q5ZXSWndEnEQnPjh2IfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728070598; c=relaxed/simple;
-	bh=+RDQO2EzUUB70xcWc2RNgkxemDdhy9Q1pW55RniZ6Eo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nOzCOCCB9Kh5dQR8BpAb+bN2tJ8tnCYvvUsi4PVCFr1YBbW4AQqHXeYcHjjEWT613g7gYZbQvYTEaWiglrQjbmZt8MFl4hQiiiAuk14GIiestXrSp41C0w/Z3ONMLFlfqJ6Q9LGYmv5UW6DfwcIjvX8IqhKqL76XSUm3KH6Snww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7UwFIlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B36C4CEC6;
-	Fri,  4 Oct 2024 19:36:37 +0000 (UTC)
+	s=arc-20240116; t=1728070628; c=relaxed/simple;
+	bh=dkL3L2bqK29d84C7yW4lPON2QKH/kQS0VZta8hKzgfM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SBmn/J0gXwnEKUcqK9GNq0vCjmIgrmVn0V0Cc0bOM6XZLnBmV/Snjr9jAkYwaIONRebG7gg+XW6bBP3wWH4GHn27EV7ToVLqBLCohSjIdsOS8B4Vw0Z5vcW1EpPM/hoI2Pyqtglq4E/D4Nvv9GqrkpHs4gll7W/5MNYD6kn5d+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tlXraFbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4FBC4CEC6;
+	Fri,  4 Oct 2024 19:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728070598;
-	bh=+RDQO2EzUUB70xcWc2RNgkxemDdhy9Q1pW55RniZ6Eo=;
+	s=k20201202; t=1728070627;
+	bh=dkL3L2bqK29d84C7yW4lPON2QKH/kQS0VZta8hKzgfM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=G7UwFIlkBI3ryVCMm4BuNc12vQZ3Qv7mO3VACHqI2/jG/v8A2FP1YN/Qq9QnBtr8/
-	 f6VzDs0yymJB5u6DP7XOacGM6IclDjnlh7Mp0ulbcPBMw/1H8sA0fU4YOtJHnr36Aw
-	 jQGUEyCniJsNyZF4AwJuEsCXI4m/Oh0+9YaYpF1xh7Kilw0J7vENAsu4RdrbL/qtKS
-	 1L4c1wFXSx1i7Av5eezx31lMquXNKLyII/8nb0GjfLkTSLbaNGLIk1IVjXqdJZLTgz
-	 pTSGIMmo64iWIqMz8mWKYA+UFO5IRYmkx7bSmbzYlrJ9CMK0gI58Trsm4Rs3knrhYb
-	 alkWzGVsjW24Q==
+	b=tlXraFbuBzhZEyjFeYK5D2J95Tasue1LDgR6yUKUWcg6iMWV4I3TgZ42EqZtA/Wh2
+	 rsDbL2wBAdZXFkpc4QapIfLeXyeL308yJsZTye5yO/lA6wRZv9LdhYukMGprngkStU
+	 lLac+Or6foFhb5BBzchT1eaXs/XZDK2OAPt9OmjejAoj6osoI0Sm/ANaIE6rMHpqcJ
+	 qNdrF93mW6/pFQEJYK441BNHH/bz/nv9aId/jApDplepoC9HHR/wXv3oK7YGxR8gHi
+	 Mpe3Z5ztfXaejg0Fgxe5io7IiGYLsJe5/qVJIT5H+txDwy/1Ea13pR+YNRovR94IFl
+	 H0dIL4LVtzSzA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: stable@vger.kernel.org
 Cc: linux-f2fs-devel@lists.sourceforge.net,
 	Jann Horn <jannh@google.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.15] f2fs: Require FMODE_WRITE for atomic write ioctls
-Date: Fri,  4 Oct 2024 19:35:57 +0000
-Message-ID: <20241004193557.189976-1-ebiggers@kernel.org>
+Subject: [PATCH 5.10] f2fs: Require FMODE_WRITE for atomic write ioctls
+Date: Fri,  4 Oct 2024 19:36:43 +0000
+Message-ID: <20241004193643.190072-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -93,10 +93,10 @@ Signed-off-by: Eric Biggers <ebiggers@google.com>
  1 file changed, 15 insertions(+)
 
 diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index be9536815e50d..fd369db1e47b5 100644
+index 50514962771a1..e25788e643bbd 100644
 --- a/fs/f2fs/file.c
 +++ b/fs/f2fs/file.c
-@@ -2005,10 +2005,13 @@ static int f2fs_ioc_start_atomic_write(struct file *filp)
+@@ -2047,10 +2047,13 @@ static int f2fs_ioc_start_atomic_write(struct file *filp)
  	struct inode *inode = file_inode(filp);
  	struct f2fs_inode_info *fi = F2FS_I(inode);
  	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
@@ -105,12 +105,12 @@ index be9536815e50d..fd369db1e47b5 100644
 +	if (!(filp->f_mode & FMODE_WRITE))
 +		return -EBADF;
 +
- 	if (!inode_owner_or_capable(&init_user_ns, inode))
+ 	if (!inode_owner_or_capable(inode))
  		return -EACCES;
  
  	if (!S_ISREG(inode->i_mode))
  		return -EINVAL;
-@@ -2075,10 +2078,13 @@ static int f2fs_ioc_start_atomic_write(struct file *filp)
+@@ -2117,10 +2120,13 @@ static int f2fs_ioc_start_atomic_write(struct file *filp)
  static int f2fs_ioc_commit_atomic_write(struct file *filp)
  {
  	struct inode *inode = file_inode(filp);
@@ -119,12 +119,12 @@ index be9536815e50d..fd369db1e47b5 100644
 +	if (!(filp->f_mode & FMODE_WRITE))
 +		return -EBADF;
 +
- 	if (!inode_owner_or_capable(&init_user_ns, inode))
+ 	if (!inode_owner_or_capable(inode))
  		return -EACCES;
  
  	ret = mnt_want_write_file(filp);
  	if (ret)
-@@ -2117,10 +2123,13 @@ static int f2fs_ioc_commit_atomic_write(struct file *filp)
+@@ -2159,10 +2165,13 @@ static int f2fs_ioc_commit_atomic_write(struct file *filp)
  static int f2fs_ioc_start_volatile_write(struct file *filp)
  {
  	struct inode *inode = file_inode(filp);
@@ -133,12 +133,12 @@ index be9536815e50d..fd369db1e47b5 100644
 +	if (!(filp->f_mode & FMODE_WRITE))
 +		return -EBADF;
 +
- 	if (!inode_owner_or_capable(&init_user_ns, inode))
+ 	if (!inode_owner_or_capable(inode))
  		return -EACCES;
  
  	if (!S_ISREG(inode->i_mode))
  		return -EINVAL;
-@@ -2152,10 +2161,13 @@ static int f2fs_ioc_start_volatile_write(struct file *filp)
+@@ -2194,10 +2203,13 @@ static int f2fs_ioc_start_volatile_write(struct file *filp)
  static int f2fs_ioc_release_volatile_write(struct file *filp)
  {
  	struct inode *inode = file_inode(filp);
@@ -147,12 +147,12 @@ index be9536815e50d..fd369db1e47b5 100644
 +	if (!(filp->f_mode & FMODE_WRITE))
 +		return -EBADF;
 +
- 	if (!inode_owner_or_capable(&init_user_ns, inode))
+ 	if (!inode_owner_or_capable(inode))
  		return -EACCES;
  
  	ret = mnt_want_write_file(filp);
  	if (ret)
-@@ -2181,10 +2193,13 @@ static int f2fs_ioc_release_volatile_write(struct file *filp)
+@@ -2223,10 +2235,13 @@ static int f2fs_ioc_release_volatile_write(struct file *filp)
  static int f2fs_ioc_abort_volatile_write(struct file *filp)
  {
  	struct inode *inode = file_inode(filp);
@@ -161,13 +161,13 @@ index be9536815e50d..fd369db1e47b5 100644
 +	if (!(filp->f_mode & FMODE_WRITE))
 +		return -EBADF;
 +
- 	if (!inode_owner_or_capable(&init_user_ns, inode))
+ 	if (!inode_owner_or_capable(inode))
  		return -EACCES;
  
  	ret = mnt_want_write_file(filp);
  	if (ret)
 
-base-commit: 3a5928702e7120f83f703fd566082bfb59f1a57e
+base-commit: ceb091e2c4ccf93b1ee0e0e8a202476a433784ff
 -- 
 2.47.0.rc0.187.ge670bccf7e-goog
 
