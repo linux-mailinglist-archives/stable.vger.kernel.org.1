@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-80911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299B2990CA5
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:54:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC29990CA9
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:54:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B8881C2294B
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2D11F2109A
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95911FAC51;
-	Fri,  4 Oct 2024 18:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC561FBCAA;
+	Fri,  4 Oct 2024 18:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7nFPMGV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZAHmsW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAC51FAC33;
-	Fri,  4 Oct 2024 18:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9331FBC9F;
+	Fri,  4 Oct 2024 18:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066227; cv=none; b=IGb1uXmfsyFRQliiNbtBiNemOk7w5JY+f98dTPvTS30rQk5h9OV3kidv1w+vehVH5TzxZsfjBFqET2mKyo40tyn6Mw+6RYcJCYsmJig4HLHq/jctz2WnSw4kIU47yxMEvi3ePybIwc6Pa5KI+kFdYd2SsnxQIx/y6Sn4itqIySk=
+	t=1728066228; cv=none; b=dJpZmU481TTdLjXniZytbNRzfsXzDkatLjKYkpfZBlssRn5h6N6kLTSbxY+JsXT6ccM7X0ZbB7yOEK5Mb2xKCWAxX1JUkgT8Dytnv8ONboTP7iVICkdnMG6jQ2RQTjmNw9tBZegXPI2ZtI+2ZMJ44Oj0Z2pMeWKdYMv9DECwohA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066227; c=relaxed/simple;
-	bh=vcj691Jmoh6A2g6nBW3VlGUIxl9YffykrLG0H3LroeY=;
+	s=arc-20240116; t=1728066228; c=relaxed/simple;
+	bh=MBjN4JNZbfHj09pIbFVjtX56PRWwuJv6/BKVipyEr3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXv3m3QzbUc1cwSKF1uPBU7Ur82mKEsB6BRTYpTA2OAiXNlqevHLZhcv02Pqwp8zeCSPQDoXCiBcChnfEh8Lp+E7og25X/9OZX/rbmw2r3Mcl2a+a2POf/5UZgkOyJKiKGa+xqMzFjA5CC9lupm2kruMoaCoIAk6877fkmG1778=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7nFPMGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEFDC4CED5;
-	Fri,  4 Oct 2024 18:23:45 +0000 (UTC)
+	 MIME-Version; b=T8GjvwZ8tfL0x3q6xCI/OeqQfmpXGT6SLXJH3mRLs+YiAU1XPcpPLrk4OPE72AW7d8m4wGV5tbmb/znDgAkLZUFOhZOVZeru9CR1Q3RtHTCXldEoBO+KLIsmv0DDTVn2k1pzndabF9y6VzsWyBrusscVaXQ98gBu9EJeH38lHk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZAHmsW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCA9C4CECC;
+	Fri,  4 Oct 2024 18:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066227;
-	bh=vcj691Jmoh6A2g6nBW3VlGUIxl9YffykrLG0H3LroeY=;
+	s=k20201202; t=1728066228;
+	bh=MBjN4JNZbfHj09pIbFVjtX56PRWwuJv6/BKVipyEr3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7nFPMGVElvU+TsqOFB4idk5h99wTrfwVpdq3zK2SS3e8jQz6oxxWm9YWO9SlYyl9
-	 iQWluQaM1xXo3FNICrW96N8Xxu4apGkzz1qWIhhPZ2Z/pBdxBAHoN8WV6MAGCUvNMu
-	 uJ92EvTZW5tbPM4rANuY8VEKKyOoEyCv/dwwgtLFX3i5niPJO31CNSH2qt1IDUUetU
-	 wC0cVByKagYn0ThAfBUwDQGgJRdpuzfmKxzK9gIYp8BnDQ/69c/UhKl9h+u73a3/rc
-	 A4ppc1Kd8TJPBhYUN8h1I81kNEbTVqUTUQ+E4OSk3QqVaYeH1cd+aWMm8relYQrb1q
-	 h/rS4QBfxkXnw==
+	b=aZAHmsW04X2wWZAA4EsOOM2NU6QRkH1SwyHpav8wVH8h/Nsv1wYJFAhVZDQLUiXOP
+	 zg1/MlKXpxmM03NL09VuoqmK08tYxt7jkdFvBelQKS2FUC+89jJmvD82zIJQ2y44Wq
+	 eof4r7YMr6jBZKmUz8oosMprQOwcBmxIjf2vd4um+dmfJ7c8IPbnxVPLY2A/13zFZH
+	 dxDt2qTTe4PaOJSIvLdPIBPdt0tjZPqWcJLMv+3peY5l5WtDBJjBh05VYDpB6qAHtg
+	 hFEMvfDZM6Cjtt7w73YNE/5lzeHMjvANPBaeh0JEQTIc9WovHrxTP7rz/bHWnZhs0v
+	 7mL3Zm0JLnTew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Chen <philipchen@chromium.org>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
+Cc: Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	pankaj.gupta.linux@gmail.com,
-	dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	ira.weiny@intel.com,
-	virtualization@lists.linux.dev,
-	nvdimm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.10 55/70] virtio_pmem: Check device status before requesting flush
-Date: Fri,  4 Oct 2024 14:20:53 -0400
-Message-ID: <20241004182200.3670903-55-sashal@kernel.org>
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 56/70] tools/iio: Add memory allocation failure check for trigger_name
+Date: Fri,  4 Oct 2024 14:20:54 -0400
+Message-ID: <20241004182200.3670903-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182200.3670903-1-sashal@kernel.org>
 References: <20241004182200.3670903-1-sashal@kernel.org>
@@ -71,45 +66,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Philip Chen <philipchen@chromium.org>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-[ Upstream commit e25fbcd97cf52c3c9824d44b5c56c19673c3dd50 ]
+[ Upstream commit 3c6b818b097dd6932859bcc3d6722a74ec5931c1 ]
 
-If a pmem device is in a bad status, the driver side could wait for
-host ack forever in virtio_pmem_flush(), causing the system to hang.
+Added a check to handle memory allocation failure for `trigger_name`
+and return `-ENOMEM`.
 
-So add a status check in the beginning of virtio_pmem_flush() to return
-early if the device is not activated.
-
-Signed-off-by: Philip Chen <philipchen@chromium.org>
-Message-Id: <20240826215313.2673566-1-philipchen@chromium.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20240828093129.3040-1-zhujun2@cmss.chinamobile.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/nd_virtio.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/iio/iio_generic_buffer.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-index 1f8c667c6f1ee..839f10ca56eac 100644
---- a/drivers/nvdimm/nd_virtio.c
-+++ b/drivers/nvdimm/nd_virtio.c
-@@ -44,6 +44,15 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
- 	unsigned long flags;
- 	int err, err1;
- 
-+	/*
-+	 * Don't bother to submit the request to the device if the device is
-+	 * not activated.
-+	 */
-+	if (vdev->config->get_status(vdev) & VIRTIO_CONFIG_S_NEEDS_RESET) {
-+		dev_info(&vdev->dev, "virtio pmem device needs a reset\n");
-+		return -EIO;
-+	}
-+
- 	might_sleep();
- 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
- 	if (!req_data)
+diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+index 0d0a7a19d6f95..9ef5ee087eda3 100644
+--- a/tools/iio/iio_generic_buffer.c
++++ b/tools/iio/iio_generic_buffer.c
+@@ -498,6 +498,10 @@ int main(int argc, char **argv)
+ 			return -ENOMEM;
+ 		}
+ 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
++		if (!trigger_name) {
++			ret = -ENOMEM;
++			goto error;
++		}
+ 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
+ 		free(trig_dev_name);
+ 		if (ret < 0) {
 -- 
 2.43.0
 
