@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-80905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A949990C93
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:52:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08BF990C95
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDB91281A42
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:52:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 775951F20FD2
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B211F9AA1;
-	Fri,  4 Oct 2024 18:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9861FA248;
+	Fri,  4 Oct 2024 18:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dW/vAFGw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMDyQWiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D92A1F9A96;
-	Fri,  4 Oct 2024 18:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3711F9A94;
+	Fri,  4 Oct 2024 18:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066215; cv=none; b=AhSAorxDuvz58pkSnHkW/ob9cTP0Ll1Xy1cvqlmBZLlrPvwNt+GY6XOrXzOVkjBkTloFrM4A5Cl1JStm/vBveUuHAQ4TCDOZGdiWatirVhRyU63Ew0B2Wf+hVwcZvpdpkwBYN3qVc61MSFS2vIdpGZr5FXicXvLiXyq8gQ8Kbx4=
+	t=1728066217; cv=none; b=EdHsgjtvZ4VK0PQOdMDsc3+XRdeMUl95tQkas+iXnL2SwPb7V3ZYPReA2KQWqJK4klirXF6+MuQLkFNHNsvoCumOs0ChppUi1cVpz8U/CVPvqfEGfujkDhKoO6JVRxFuCOSXKnHmO9cRKL2bs3hcc4gOtkkUTH/ZiQgwUXrNwdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066215; c=relaxed/simple;
-	bh=DNpS9s66jfBf7IvuX1+BgOg6ZCPZmjmAtfM2cLmL8Hg=;
+	s=arc-20240116; t=1728066217; c=relaxed/simple;
+	bh=v2f3zP+/WVZDh8GMvlexKRuJC8gRctxdpGKq0v6YoA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGYmuS9x1KDfXnMrREOl1VdHsn33XziFJjGzbmJiszS31PX44G+DcbdXravOxYnVkJ00ALSzp0OwaBHvG6PKxdJIirBnGaR6RJghdVRyAO9ZAU6s9w8m2YBwDoyGzAt/HAI42qgMrED2oeA9ofK8CzUMooQW//2Qop00xgZtypM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dW/vAFGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAF3C4CECD;
-	Fri,  4 Oct 2024 18:23:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d0NUr9UAL5mwwQiYRePt+9rumL4qcmLBGUZUbNio5O3Kvw0J4/i0RzoKs4J6qdvxnQvI6jS0JMi3W7tnLCEk6skQt+p2+lSPmnlfPiH5sUcH6qc7OlhOtAJlsTk2uAT/Dc8K3+N8T3fVvD0B3ReM486UvgXBDDC3NvKuk7zvot4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMDyQWiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1308DC4CED0;
+	Fri,  4 Oct 2024 18:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066215;
-	bh=DNpS9s66jfBf7IvuX1+BgOg6ZCPZmjmAtfM2cLmL8Hg=;
+	s=k20201202; t=1728066217;
+	bh=v2f3zP+/WVZDh8GMvlexKRuJC8gRctxdpGKq0v6YoA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dW/vAFGwQjBHPQ9AuEC7lbi5NNim3vcxd/B/VwvPbITbyB9S/SFszEAnJkqEalxk5
-	 g3hU1wHnSYsDdvknrD6WI1v5GjHHDZsjH/l72+mFFUj2gFUDdFjihYfM8F1KN+2DJT
-	 NFsSpetBNdvbvudbqmbu3gwzuT7AQaIVmpxx7prwwuDu28lt1rU/mhZ+AIR+xqjJwh
-	 pD62ZrwwGlTvmAL/uBz10aFcq2lxMcnvL0DOFho7uFno1EaY7bJqHmmCk7ZH/IiyUT
-	 ZWLDXBUMU0jefEtNuED2A6O43GC+lNNThizZqQGokyA/8SaawuVCol6Qv1F/KLWLPW
-	 Jr4I7apy8czlw==
+	b=PMDyQWiH7lVie4sJLpMzHUmgvILpM3DVWyDt9PTPlsp4jqdCW4adJHoH3TCZ63fNU
+	 7JKRP4qUMAyA2n9iWPtOW6xuk5wIEPJH2Jg0Rq5vCKJg2QCvXbexzGzqWm2z3gjGUF
+	 P3PrWHIbC315o37Ov62Xi0RHnZ3FX3v48J1Mk8LqmXVCjiTIXfHsRv71CJXpthOwn0
+	 YH3AAc53r3PL3xKdttu6uKiUA5YBx0UG9NJsRtxtXG46mIpUZ7ZoCvwk6KjxQU0QuN
+	 VpSpZVC09UcmjPEODFQ1+SHkrsuUkUXh9cZ+oHv7XErbeUPF7j6AhTsJPhrkb2jqPn
+	 UoDDPDVZtw/jQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shawn Shao <shawn.shao@jaguarmicro.com>,
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	hminas@synopsys.com,
+	mathias.nyman@intel.com,
 	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 49/70] usb: dwc2: Adjust the timing of USB Driver Interrupt Registration in the Crashkernel Scenario
-Date: Fri,  4 Oct 2024 14:20:47 -0400
-Message-ID: <20241004182200.3670903-49-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 50/70] xhci: dbc: Fix STALL transfer event handling
+Date: Fri,  4 Oct 2024 14:20:48 -0400
+Message-ID: <20241004182200.3670903-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182200.3670903-1-sashal@kernel.org>
 References: <20241004182200.3670903-1-sashal@kernel.org>
@@ -61,127 +62,300 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Shawn Shao <shawn.shao@jaguarmicro.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 4058c39bd176daf11a826802d940d86292a6b02b ]
+[ Upstream commit 9044ad57b60b0556d42b6f8aa218a68865e810a4 ]
 
-The issue is that before entering the crash kernel, the DWC USB controller
-did not perform operations such as resetting the interrupt mask bits.
-After entering the crash kernel,before the USB interrupt handler
-registration was completed while loading the DWC USB driver,an GINTSTS_SOF
-interrupt was received.This triggered the misroute_irq process within the
-GIC handling framework,ultimately leading to the misrouting of the
-interrupt,causing it to be handled by the wrong interrupt handler
-and resulting in the issue.
+Don't flush all pending DbC data requests when an endpoint halts.
 
-Summary:In a scenario where the kernel triggers a panic and enters
-the crash kernel,it is necessary to ensure that the interrupt mask
-bit is not enabled before the interrupt registration is complete.
-If an interrupt reaches the CPU at this moment,it will certainly
-not be handled correctly,especially in cases where this interrupt
-is reported frequently.
+An endpoint may halt and xHC DbC triggers a STALL error event if there's
+an issue with a bulk data transfer. The transfer should restart once xHC
+DbC receives a ClearFeature(ENDPOINT_HALT) request from the host.
 
-Please refer to the Crashkernel dmesg information as follows
-(the message on line 3 was added before devm_request_irq is
-called by the dwc2_driver_probe function):
-[    5.866837][    T1] dwc2 JMIC0010:01: supply vusb_d not found, using dummy regulator
-[    5.874588][    T1] dwc2 JMIC0010:01: supply vusb_a not found, using dummy regulator
-[    5.882335][    T1] dwc2 JMIC0010:01: before devm_request_irq  irq: [71], gintmsk[0xf300080e], gintsts[0x04200009]
-[    5.892686][    C0] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.0-jmnd1.2_RC #18
-[    5.900327][    C0] Hardware name: CMSS HyperCard4-25G/HyperCard4-25G, BIOS 1.6.4 Jul  8 2024
-[    5.908836][    C0] Call trace:
-[    5.911965][    C0]  dump_backtrace+0x0/0x1f0
-[    5.916308][    C0]  show_stack+0x20/0x30
-[    5.920304][    C0]  dump_stack+0xd8/0x140
-[    5.924387][    C0]  pcie_xxx_handler+0x3c/0x1d8
-[    5.930121][    C0]  __handle_irq_event_percpu+0x64/0x1e0
-[    5.935506][    C0]  handle_irq_event+0x80/0x1d0
-[    5.940109][    C0]  try_one_irq+0x138/0x174
-[    5.944365][    C0]  misrouted_irq+0x134/0x140
-[    5.948795][    C0]  note_interrupt+0x1d0/0x30c
-[    5.953311][    C0]  handle_irq_event+0x13c/0x1d0
-[    5.958001][    C0]  handle_fasteoi_irq+0xd4/0x260
-[    5.962779][    C0]  __handle_domain_irq+0x88/0xf0
-[    5.967555][    C0]  gic_handle_irq+0x9c/0x2f0
-[    5.971985][    C0]  el1_irq+0xb8/0x140
-[    5.975807][    C0]  __setup_irq+0x3dc/0x7cc
-[    5.980064][    C0]  request_threaded_irq+0xf4/0x1b4
-[    5.985015][    C0]  devm_request_threaded_irq+0x80/0x100
-[    5.990400][    C0]  dwc2_driver_probe+0x1b8/0x6b0
-[    5.995178][    C0]  platform_drv_probe+0x5c/0xb0
-[    5.999868][    C0]  really_probe+0xf8/0x51c
-[    6.004125][    C0]  driver_probe_device+0xfc/0x170
-[    6.008989][    C0]  device_driver_attach+0xc8/0xd0
-[    6.013853][    C0]  __driver_attach+0xe8/0x1b0
-[    6.018369][    C0]  bus_for_each_dev+0x7c/0xdc
-[    6.022886][    C0]  driver_attach+0x2c/0x3c
-[    6.027143][    C0]  bus_add_driver+0xdc/0x240
-[    6.031573][    C0]  driver_register+0x80/0x13c
-[    6.036090][    C0]  __platform_driver_register+0x50/0x5c
-[    6.041476][    C0]  dwc2_platform_driver_init+0x24/0x30
-[    6.046774][    C0]  do_one_initcall+0x50/0x25c
-[    6.051291][    C0]  do_initcall_level+0xe4/0xfc
-[    6.055894][    C0]  do_initcalls+0x80/0xa4
-[    6.060064][    C0]  kernel_init_freeable+0x198/0x240
-[    6.065102][    C0]  kernel_init+0x1c/0x12c
+Once xHC DbC restarts it will start from the TRB pointed to by dequeue
+field in the endpoint context, which might be the same TRB we got the
+STALL event for. Turn the TRB to a no-op in this case to make sure xHC
+DbC doesn't reuse and tries to retransmit this same TRB after we already
+handled it, and gave its corresponding data request back.
 
-Signed-off-by: Shawn Shao <shawn.shao@jaguarmicro.com>
-Link: https://lore.kernel.org/r/20240830031709.134-1-shawn.shao@jaguarmicro.com
+Other STALL events might be completely bogus.
+Lukasz Bartosik discovered that xHC DbC might issue spurious STALL events
+if hosts sends a ClearFeature(ENDPOINT_HALT) request to non-halted
+endpoints even without any active bulk transfers.
+
+Assume STALL event is spurious if it reports 0 bytes transferred, and
+the endpoint stopped on the STALLED TRB.
+Don't give back the data request corresponding to the TRB in this case.
+
+The halted status is per endpoint. Track it with a per endpoint flag
+instead of the driver invented DbC wide DS_STALLED state.
+DbC remains in DbC-Configured state even if endpoints halt. There is no
+Stalled state in the DbC Port state Machine (xhci section 7.6.6)
+
+Reported-by: Łukasz Bartosik <ukaszb@chromium.org>
+Closes: https://lore.kernel.org/linux-usb/20240725074857.623299-1-ukaszb@chromium.org/
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240905143300.1959279-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/usb/host/xhci-dbgcap.c | 133 ++++++++++++++++++++-------------
+ drivers/usb/host/xhci-dbgcap.h |   2 +-
+ 2 files changed, 83 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 7b84416dfc2b1..c1b7209b94836 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -469,18 +469,6 @@ static int dwc2_driver_probe(struct platform_device *dev)
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 872d9cddbcefa..885cab5be9773 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -173,16 +173,18 @@ static void xhci_dbc_giveback(struct dbc_request *req, int status)
+ 	spin_lock(&dbc->lock);
+ }
  
- 	spin_lock_init(&hsotg->lock);
- 
--	hsotg->irq = platform_get_irq(dev, 0);
--	if (hsotg->irq < 0)
--		return hsotg->irq;
+-static void xhci_dbc_flush_single_request(struct dbc_request *req)
++static void trb_to_noop(union xhci_trb *trb)
+ {
+-	union xhci_trb	*trb = req->trb;
 -
--	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
--		hsotg->irq);
--	retval = devm_request_irq(hsotg->dev, hsotg->irq,
--				  dwc2_handle_common_intr, IRQF_SHARED,
--				  dev_name(hsotg->dev), hsotg);
--	if (retval)
--		return retval;
--
- 	hsotg->vbus_supply = devm_regulator_get_optional(hsotg->dev, "vbus");
- 	if (IS_ERR(hsotg->vbus_supply)) {
- 		retval = PTR_ERR(hsotg->vbus_supply);
-@@ -524,6 +512,20 @@ static int dwc2_driver_probe(struct platform_device *dev)
- 	if (retval)
- 		goto error;
+ 	trb->generic.field[0]	= 0;
+ 	trb->generic.field[1]	= 0;
+ 	trb->generic.field[2]	= 0;
+ 	trb->generic.field[3]	&= cpu_to_le32(TRB_CYCLE);
+ 	trb->generic.field[3]	|= cpu_to_le32(TRB_TYPE(TRB_TR_NOOP));
++}
  
-+	hsotg->irq = platform_get_irq(dev, 0);
-+	if (hsotg->irq < 0) {
-+		retval = hsotg->irq;
-+		goto error;
++static void xhci_dbc_flush_single_request(struct dbc_request *req)
++{
++	trb_to_noop(req->trb);
+ 	xhci_dbc_giveback(req, -ESHUTDOWN);
+ }
+ 
+@@ -649,7 +651,6 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
+ 	case DS_DISABLED:
+ 		return;
+ 	case DS_CONFIGURED:
+-	case DS_STALLED:
+ 		if (dbc->driver->disconnect)
+ 			dbc->driver->disconnect(dbc);
+ 		break;
+@@ -669,6 +670,23 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
+ 	pm_runtime_put_sync(dbc->dev); /* note, was self.controller */
+ }
+ 
++static void
++handle_ep_halt_changes(struct xhci_dbc *dbc, struct dbc_ep *dep, bool halted)
++{
++	if (halted) {
++		dev_info(dbc->dev, "DbC Endpoint halted\n");
++		dep->halted = 1;
++
++	} else if (dep->halted) {
++		dev_info(dbc->dev, "DbC Endpoint halt cleared\n");
++		dep->halted = 0;
++
++		if (!list_empty(&dep->list_pending))
++			writel(DBC_DOOR_BELL_TARGET(dep->direction),
++			       &dbc->regs->doorbell);
++	}
++}
++
+ static void
+ dbc_handle_port_status(struct xhci_dbc *dbc, union xhci_trb *event)
+ {
+@@ -697,6 +715,7 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
+ 	struct xhci_ring	*ring;
+ 	int			ep_id;
+ 	int			status;
++	struct xhci_ep_ctx	*ep_ctx;
+ 	u32			comp_code;
+ 	size_t			remain_length;
+ 	struct dbc_request	*req = NULL, *r;
+@@ -706,8 +725,30 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
+ 	ep_id		= TRB_TO_EP_ID(le32_to_cpu(event->generic.field[3]));
+ 	dep		= (ep_id == EPID_OUT) ?
+ 				get_out_ep(dbc) : get_in_ep(dbc);
++	ep_ctx		= (ep_id == EPID_OUT) ?
++				dbc_bulkout_ctx(dbc) : dbc_bulkin_ctx(dbc);
+ 	ring		= dep->ring;
+ 
++	/* Match the pending request: */
++	list_for_each_entry(r, &dep->list_pending, list_pending) {
++		if (r->trb_dma == event->trans_event.buffer) {
++			req = r;
++			break;
++		}
++		if (r->status == -COMP_STALL_ERROR) {
++			dev_warn(dbc->dev, "Give back stale stalled req\n");
++			ring->num_trbs_free++;
++			xhci_dbc_giveback(r, 0);
++		}
 +	}
 +
-+	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
-+		hsotg->irq);
-+	retval = devm_request_irq(hsotg->dev, hsotg->irq,
-+				  dwc2_handle_common_intr, IRQF_SHARED,
-+				  dev_name(hsotg->dev), hsotg);
-+	if (retval)
-+		goto error;
++	if (!req) {
++		dev_warn(dbc->dev, "no matched request\n");
++		return;
++	}
 +
- 	/*
- 	 * For OTG cores, set the force mode bits to reflect the value
- 	 * of dr_mode. Force mode bits should not be touched at any
++	trace_xhci_dbc_handle_transfer(ring, &req->trb->generic);
++
+ 	switch (comp_code) {
+ 	case COMP_SUCCESS:
+ 		remain_length = 0;
+@@ -718,31 +759,49 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
+ 	case COMP_TRB_ERROR:
+ 	case COMP_BABBLE_DETECTED_ERROR:
+ 	case COMP_USB_TRANSACTION_ERROR:
+-	case COMP_STALL_ERROR:
+ 		dev_warn(dbc->dev, "tx error %d detected\n", comp_code);
+ 		status = -comp_code;
+ 		break;
++	case COMP_STALL_ERROR:
++		dev_warn(dbc->dev, "Stall error at bulk TRB %llx, remaining %zu, ep deq %llx\n",
++			 event->trans_event.buffer, remain_length, ep_ctx->deq);
++		status = 0;
++		dep->halted = 1;
++
++		/*
++		 * xHC DbC may trigger a STALL bulk xfer event when host sends a
++		 * ClearFeature(ENDPOINT_HALT) request even if there wasn't an
++		 * active bulk transfer.
++		 *
++		 * Don't give back this transfer request as hardware will later
++		 * start processing TRBs starting from this 'STALLED' TRB,
++		 * causing TRBs and requests to be out of sync.
++		 *
++		 * If STALL event shows some bytes were transferred then assume
++		 * it's an actual transfer issue and give back the request.
++		 * In this case mark the TRB as No-Op to avoid hw from using the
++		 * TRB again.
++		 */
++
++		if ((ep_ctx->deq & ~TRB_CYCLE) == event->trans_event.buffer) {
++			dev_dbg(dbc->dev, "Ep stopped on Stalled TRB\n");
++			if (remain_length == req->length) {
++				dev_dbg(dbc->dev, "Spurious stall event, keep req\n");
++				req->status = -COMP_STALL_ERROR;
++				req->actual = 0;
++				return;
++			}
++			dev_dbg(dbc->dev, "Give back stalled req, but turn TRB to No-op\n");
++			trb_to_noop(req->trb);
++		}
++		break;
++
+ 	default:
+ 		dev_err(dbc->dev, "unknown tx error %d\n", comp_code);
+ 		status = -comp_code;
+ 		break;
+ 	}
+ 
+-	/* Match the pending request: */
+-	list_for_each_entry(r, &dep->list_pending, list_pending) {
+-		if (r->trb_dma == event->trans_event.buffer) {
+-			req = r;
+-			break;
+-		}
+-	}
+-
+-	if (!req) {
+-		dev_warn(dbc->dev, "no matched request\n");
+-		return;
+-	}
+-
+-	trace_xhci_dbc_handle_transfer(ring, &req->trb->generic);
+-
+ 	ring->num_trbs_free++;
+ 	req->actual = req->length - remain_length;
+ 	xhci_dbc_giveback(req, status);
+@@ -762,7 +821,6 @@ static void inc_evt_deq(struct xhci_ring *ring)
+ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ {
+ 	dma_addr_t		deq;
+-	struct dbc_ep		*dep;
+ 	union xhci_trb		*evt;
+ 	u32			ctrl, portsc;
+ 	bool			update_erdp = false;
+@@ -814,43 +872,17 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			return EVT_DISC;
+ 		}
+ 
+-		/* Handle endpoint stall event: */
++		/* Check and handle changes in endpoint halt status */
+ 		ctrl = readl(&dbc->regs->control);
+-		if ((ctrl & DBC_CTRL_HALT_IN_TR) ||
+-		    (ctrl & DBC_CTRL_HALT_OUT_TR)) {
+-			dev_info(dbc->dev, "DbC Endpoint stall\n");
+-			dbc->state = DS_STALLED;
+-
+-			if (ctrl & DBC_CTRL_HALT_IN_TR) {
+-				dep = get_in_ep(dbc);
+-				xhci_dbc_flush_endpoint_requests(dep);
+-			}
+-
+-			if (ctrl & DBC_CTRL_HALT_OUT_TR) {
+-				dep = get_out_ep(dbc);
+-				xhci_dbc_flush_endpoint_requests(dep);
+-			}
+-
+-			return EVT_DONE;
+-		}
++		handle_ep_halt_changes(dbc, get_in_ep(dbc), ctrl & DBC_CTRL_HALT_IN_TR);
++		handle_ep_halt_changes(dbc, get_out_ep(dbc), ctrl & DBC_CTRL_HALT_OUT_TR);
+ 
+ 		/* Clear DbC run change bit: */
+ 		if (ctrl & DBC_CTRL_DBC_RUN_CHANGE) {
+ 			writel(ctrl, &dbc->regs->control);
+ 			ctrl = readl(&dbc->regs->control);
+ 		}
+-
+ 		break;
+-	case DS_STALLED:
+-		ctrl = readl(&dbc->regs->control);
+-		if (!(ctrl & DBC_CTRL_HALT_IN_TR) &&
+-		    !(ctrl & DBC_CTRL_HALT_OUT_TR) &&
+-		    (ctrl & DBC_CTRL_DBC_RUN)) {
+-			dbc->state = DS_CONFIGURED;
+-			break;
+-		}
+-
+-		return EVT_DONE;
+ 	default:
+ 		dev_err(dbc->dev, "Unknown DbC state %d\n", dbc->state);
+ 		break;
+@@ -939,7 +971,6 @@ static const char * const dbc_state_strings[DS_MAX] = {
+ 	[DS_ENABLED] = "enabled",
+ 	[DS_CONNECTED] = "connected",
+ 	[DS_CONFIGURED] = "configured",
+-	[DS_STALLED] = "stalled",
+ };
+ 
+ static ssize_t dbc_show(struct device *dev,
+diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+index 92661b555c2a2..48931102bfbc7 100644
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -81,7 +81,6 @@ enum dbc_state {
+ 	DS_ENABLED,
+ 	DS_CONNECTED,
+ 	DS_CONFIGURED,
+-	DS_STALLED,
+ 	DS_MAX
+ };
+ 
+@@ -90,6 +89,7 @@ struct dbc_ep {
+ 	struct list_head		list_pending;
+ 	struct xhci_ring		*ring;
+ 	unsigned int			direction:1;
++	unsigned int			halted:1;
+ };
+ 
+ #define DBC_QUEUE_SIZE			16
 -- 
 2.43.0
 
