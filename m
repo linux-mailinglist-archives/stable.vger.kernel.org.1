@@ -1,55 +1,84 @@
-Return-Path: <stable+bounces-81127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B839F990FD9
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:10:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A3B9910A8
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE0A61C232E1
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5109C282029
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DCD1DF24B;
-	Fri,  4 Oct 2024 19:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27D8231CB0;
+	Fri,  4 Oct 2024 20:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r2kPVUQ4"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="aGhSt/9i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2070.outbound.protection.outlook.com [40.107.95.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A7A1DD877
-	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 19:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728070699; cv=none; b=sYbC0Ta/kgwR5h2vXed06eV2vOKmkzuMonukDqIdB0I9DVhXIPH7BKHOsh5pMpThgVDAXD5uIIBfpSBqtsxQpQ5uKIChraN3QrfJP/5aALBTdjka7P2WnQz/iiiKdh+FlutqO6AbIJ75cpjIGRZ9jmHDjic6VU1sNwUWXPZwIJs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728070699; c=relaxed/simple;
-	bh=61RQvFcZxzV9OxImIeIelFCFhkqbd3Cj4t5qAiz9/sI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NPYavR/p5kOx4Z9p0o6wtqQNs/dmpFPRb6j9MQ0NoXZ9T8LZw2V+mjeX0nPdi5d/lqrAR6jaHEf3Kmfh6YtK7Vrj6nn+F2ihtUmL6HBnim6yxNB/s6N7hRMhm2CJRSlUHbPh4Pvr2SEZZQfUQyWnJKgT91LelwvaP8ugZfePjSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r2kPVUQ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B17C4CEC6;
-	Fri,  4 Oct 2024 19:38:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728070699;
-	bh=61RQvFcZxzV9OxImIeIelFCFhkqbd3Cj4t5qAiz9/sI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=r2kPVUQ4XwGGJKM+skMfeVurKpxby7+wO9mD331QKrzj1NAt8Vyb+o7NN8/Um5Bxw
-	 u379T9rbZWrl1jfnBkiMJZbpk7RWsPWOqOLbELtwEzmL5oOo9WQH8nSq7fl1eE3J0v
-	 v4DBcJRvJvtKIkU5nGp8ySDAx4fcMGbUI6FqIKEHFSh+oGF7FI5Xk/SGUSWOaDFsMz
-	 KKEoprwqDHe0YhCpW8QJrR7t2s3T3PLUTSF3Yd3aZ6tjybKW478qOajUzsgaHmHx+8
-	 Mo8HZvo1CnBQhIDxJ1alVltpPytX77hGbce91aKYhht+oiP7Z+67PwxuD/9RbLEWXm
-	 PudRvR5EMN8Qg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-f2fs-devel@lists.sourceforge.net,
-	Jann Horn <jannh@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 4.19] f2fs: Require FMODE_WRITE for atomic write ioctls
-Date: Fri,  4 Oct 2024 19:37:49 +0000
-Message-ID: <20241004193749.190266-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D85231CB3
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 20:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728074052; cv=fail; b=J4/dThoEKIKTU90KkuFZ2dIhlhxkxJS4XksRHqbpsUh4d/Lo6RMFzBKVA5V9vTEcnqZR/aGAycOh9PS/qNJkRY91TYAPdira654/TwpDTto922VNx76UbVwKflaU4mxwxNwNdaoKTEg7XKiGplXgW+OTxmzqhXfqioRCNn9kxyc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728074052; c=relaxed/simple;
+	bh=VBKmwmPh3wXgkrEfKlpdybrtoFFwlJIucpM4pUUnuLI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=laIw9fAoJKa1pJDCHPaVULKOThZkduguYAUOBLmN2OdpqxHmDghiz60oWYFlguwi3HtnLEwfG495j53KqQuYH+dUcmDMBwmdCIgvEYvj7q89YPnsJp/+KfSRESXgN5G+aycbIByjZ8LGTRuVpMoSd0LPRLBf+vFNKhbUtcWJ/rM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=aGhSt/9i; arc=fail smtp.client-ip=40.107.95.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OrcVVIWuMcmdE6NBp20Wc8IHcG8Wd4k//74J87+BrqGvo9wqSHNyFN6X994xbQfn9gIY9eHmfX0ZbYKSpKA0m/1ojeb9yRk1f6hIGxr7vJDXbvd/bnTG/3k9iB0I6+n0M9jwnLYCPaZejzHRxOICg7c63mHXwSXqQRQ97muunzwP/cGL0GBopmfcY6ipU7DRtg//+JRWHvv+7suryYwzLPtr7l8K5/qxYij67PdXCrs90NpaEqkBxfcc5Bvcx1Q4LixE6YZ4KRVwaxQguwvUYn3c2PNnUiZYACtiG/DNnD/Jd6vOjB/X+xIpdyWbITpxnzLXh/x9uWDvXNUa7AW03A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GzB+TVfRX2F4WXjJYUO65ZRQQlbQCidXxw/aLJWBSAA=;
+ b=NpD9MmvTukyZLW5qvfVapMLx6bCS32vr7JKuV6zjJrb9MTuhB3w589rTEQJuly0+PWPQ7qbPHSScNNHtSBySQwF8Nj05iFRb3PAkuP8TUaYQjiYAJCebSm39e+Fj3lWgWu5F7ONCg21hGI3FN6uW/DKsonWzyB/gSXdFlZF+wOtV65qiXFCUg028ZKy/xQocGyCOSPDMBliT3czyutI5+RC8+sxUglxokkuMfqjD/oYEFAr8T32zzxx2vfiF4EIjutS5QbvMHCR2JVNZ8KXEBAyjDiiipJIHgALEdlOvNU2zcYwINBT+mq/iQvjtQ4mgBWz59hp5sQqELyoOygY3uw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GzB+TVfRX2F4WXjJYUO65ZRQQlbQCidXxw/aLJWBSAA=;
+ b=aGhSt/9iFi4z1yJ1ouUXvWgkL2lkF1PImAuEWKwJ1ldcrg1R/iPUeeyuYcQkvuMnhN5cqbaXugjJ3Oq7TCVaa6ZP9S3446W7vBpbk4jeDw6ivwIt0iiI25GmcrfTiDVgU7UeLCH69OEIWx8wAjv9uML1Y0Pk0Hk/SiEzjocNVO4=
+Received: from CH2PR05CA0024.namprd05.prod.outlook.com (2603:10b6:610::37) by
+ CH3PR12MB7620.namprd12.prod.outlook.com (2603:10b6:610:150::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8026.15; Fri, 4 Oct 2024 20:34:07 +0000
+Received: from CH2PEPF0000009A.namprd02.prod.outlook.com
+ (2603:10b6:610:0:cafe::25) by CH2PR05CA0024.outlook.office365.com
+ (2603:10b6:610::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.10 via Frontend
+ Transport; Fri, 4 Oct 2024 20:34:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF0000009A.mail.protection.outlook.com (10.167.244.22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8026.11 via Frontend Transport; Fri, 4 Oct 2024 20:34:06 +0000
+Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 4 Oct
+ 2024 15:34:05 -0500
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>, Alex Deucher
+	<alexander.deucher@amd.com>, Alex Hung <alex.hung@amd.com>, Roman Li
+	<roman.li@amd.com>, Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] drm/amd/display: fix hibernate entry for DCN35+
+Date: Fri, 4 Oct 2024 16:33:50 -0400
+Message-ID: <20241004203350.201294-1-hamza.mahfooz@amd.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,118 +86,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009A:EE_|CH3PR12MB7620:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d38c775-c9c3-4b4c-ec9d-08dce4b3e4e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?rkXfMxsp2M7a4T/82+3XZwU/5GVNsCARZYgvVsPFiN/XXihYWvBm/jrCKlgH?=
+ =?us-ascii?Q?09m1oi2t3qHYxt5575dMVBhewbfHdGmewYCYY2tlXgphkya9x22gxH5DiABu?=
+ =?us-ascii?Q?4B0NS/GElH4S4cSkk4nViTvK6OaFmfRgfFNmIAiyblOWz5RNp8AQMaIuDtlq?=
+ =?us-ascii?Q?4cKL2fGXUsvgBg54rwMbVvsiPgMC7TKkc9ILmKpWVGQKLpJapu/uAhE5u0fP?=
+ =?us-ascii?Q?NFe+EH+Znmn+p99bHqE0MjkvyZH41/MQ/tu0BJzTn/eXtYQyZ7kWST6MZBxF?=
+ =?us-ascii?Q?Uer0SagNdXEwUYdwT+4eqPvTsRFPYlhUd890lp1QcpVEj6Cn8vsSYsRxmVn0?=
+ =?us-ascii?Q?7+duqaCC1Vb9T7U8uinuNRftnadn9+k/AdI8EfHDExHOnmaLOfW5pE+UN50S?=
+ =?us-ascii?Q?IKx+MbG+P6vGTpRQUSex6omwgWw7AZ7k1uWAi6h7Nk39E6I7dbKiAHEIU/bK?=
+ =?us-ascii?Q?0qQ27KqcePHxmm+6M2gvHJ/uSCa6MMIjFK1g88Qx+HnO1dIY+1TsyK/PV2io?=
+ =?us-ascii?Q?njlDrduKmZJaP3rNakCifFQSBHwau1iVA4uOGdC6OLkeihJwPn95qw8ZMXwd?=
+ =?us-ascii?Q?U0C9zEZ+4XvHZ2GI+dgxhOg6UiOoEmKxkvwEs7eAyScBE+lfO9m018QiqHux?=
+ =?us-ascii?Q?WhMfQDmB0qzGUGj1ZUsFQbITQvBx6ZuIGRs+k6uzK428u3hliGq56O0sEcFr?=
+ =?us-ascii?Q?MAe/cmyn8Dpt2fsx0qtfujvBR8vUnVcqPzB/1M7rcMqwjHEawGPeyrtfU4Uw?=
+ =?us-ascii?Q?6HftEr1i3RvHzHj87eCiaTVxSveVnKXb8LS7T7xLOwuyKOxk2EiifBvYho4e?=
+ =?us-ascii?Q?91CFjJDBK51ciyNlqETmlBhtJSwOzOkZf3igKsPcM7+gZouWYzeEhpVJ80//?=
+ =?us-ascii?Q?eGN6Ul6lHrfLhyjDDM5n/vBg4l5Cn0qnln45Zm9JwXeO2mwfPzTj5K8Iy1Cc?=
+ =?us-ascii?Q?TYKLqrFTaYnOwejwyo9ipX2wLmRWY3XrhDDT1Sb3SlHGQW1LjLEi0kSH4b6z?=
+ =?us-ascii?Q?ZYSGGQgKbDClZ+Nhui5W7Y9777DxO+fD9JvdLd6bcMY/omtX6j1zW5Rybwvq?=
+ =?us-ascii?Q?uFuSG5biN8V9/Puf/2kx7cfHisr1IA+y7IOp4oVpoVvLTqBqDmy/WZzUL0DH?=
+ =?us-ascii?Q?GfIl/8XVOSl8iZdrs3cae1NlxE5KeZWO+2m4RgS77TwQO+z0P4tY1WNBCVpM?=
+ =?us-ascii?Q?DRZ+gQRHjxah2qyQPX5A9Gpg686p19nJJy+NPjsDmXlLNtqQevZdd+W1QOMB?=
+ =?us-ascii?Q?gOobU2X+KVFYq22tM1EqLVzGenDs958NPGh9pIV+ENeq2021v9T2D0bO45FS?=
+ =?us-ascii?Q?ddBxa4eNsLGPtnr9glCxDgyF1QkUWlnot8pO3ESNkFFkwN4UbWf7JAGLItoe?=
+ =?us-ascii?Q?P4oXRG77ho9Tq0PWX1CyafpNSjSg?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2024 20:34:06.9579
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d38c775-c9c3-4b4c-ec9d-08dce4b3e4e8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7620
 
-From: Jann Horn <jannh@google.com>
+Since, two suspend-resume cycles are required to enter hibernate and,
+since we only need to enable idle optimizations in the first cycle
+(which is pretty much equivalent to s2idle). We can check in_s0ix, to
+prevent the system from entering idle optimizations before it actually
+enters hibernate (from display's perspective).
 
-commit 4f5a100f87f32cb65d4bb1ad282a08c92f6f591e upstream.
-
-The F2FS ioctls for starting and committing atomic writes check for
-inode_owner_or_capable(), but this does not give LSMs like SELinux or
-Landlock an opportunity to deny the write access - if the caller's FSUID
-matches the inode's UID, inode_owner_or_capable() immediately returns true.
-
-There are scenarios where LSMs want to deny a process the ability to write
-particular files, even files that the FSUID of the process owns; but this
-can currently partially be bypassed using atomic write ioctls in two ways:
-
- - F2FS_IOC_START_ATOMIC_REPLACE + F2FS_IOC_COMMIT_ATOMIC_WRITE can
-   truncate an inode to size 0
- - F2FS_IOC_START_ATOMIC_WRITE + F2FS_IOC_ABORT_ATOMIC_WRITE can revert
-   changes another process concurrently made to a file
-
-Fix it by requiring FMODE_WRITE for these operations, just like for
-F2FS_IOC_MOVE_RANGE. Since any legitimate caller should only be using these
-ioctls when intending to write into the file, that seems unlikely to break
-anything.
-
-Fixes: 88b88a667971 ("f2fs: support atomic writes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Cc: stable@vger.kernel.org # 6.10+
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 ---
- fs/f2fs/file.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 043ce96ac1270..0cc2f41e81243 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1709,10 +1709,13 @@ static int f2fs_ioc_getversion(struct file *filp, unsigned long arg)
- static int f2fs_ioc_start_atomic_write(struct file *filp)
- {
- 	struct inode *inode = file_inode(filp);
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 4651b884d8d9..546a168a2fbf 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2996,10 +2996,11 @@ static int dm_suspend(struct amdgpu_ip_block *ip_block)
  
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
+ 	hpd_rx_irq_work_suspend(dm);
+ 
+-	if (adev->dm.dc->caps.ips_support)
+-		dc_allow_idle_optimizations(adev->dm.dc, true);
+-
+ 	dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D3);
 +
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
- 	if (!S_ISREG(inode->i_mode))
- 		return -EINVAL;
-@@ -1766,10 +1769,13 @@ static int f2fs_ioc_start_atomic_write(struct file *filp)
- static int f2fs_ioc_commit_atomic_write(struct file *filp)
- {
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
++	if (dm->dc->caps.ips_support && adev->in_s0ix)
++		dc_allow_idle_optimizations(dm->dc, true);
 +
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
+ 	dc_dmub_srv_set_power_state(dm->dc->ctx->dmub_srv, DC_ACPI_CM_POWER_STATE_D3);
  
- 	ret = mnt_want_write_file(filp);
- 	if (ret)
-@@ -1811,10 +1817,13 @@ static int f2fs_ioc_commit_atomic_write(struct file *filp)
- static int f2fs_ioc_start_volatile_write(struct file *filp)
- {
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
-+
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
- 	if (!S_ISREG(inode->i_mode))
- 		return -EINVAL;
-@@ -1846,10 +1855,13 @@ static int f2fs_ioc_start_volatile_write(struct file *filp)
- static int f2fs_ioc_release_volatile_write(struct file *filp)
- {
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
-+
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
- 	ret = mnt_want_write_file(filp);
- 	if (ret)
-@@ -1875,10 +1887,13 @@ static int f2fs_ioc_release_volatile_write(struct file *filp)
- static int f2fs_ioc_abort_volatile_write(struct file *filp)
- {
- 	struct inode *inode = file_inode(filp);
- 	int ret;
- 
-+	if (!(filp->f_mode & FMODE_WRITE))
-+		return -EBADF;
-+
- 	if (!inode_owner_or_capable(inode))
- 		return -EACCES;
- 
- 	ret = mnt_want_write_file(filp);
- 	if (ret)
-
-base-commit: de2cffe297563c815c840cfa14b77a0868b61e53
+ 	return 0;
 -- 
-2.47.0.rc0.187.ge670bccf7e-goog
+2.46.0
 
 
