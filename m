@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-81121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3339C990F27
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:50:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34EC990FD3
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF2BF2818AC
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:50:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F1D4B2D335
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6E3231C82;
-	Fri,  4 Oct 2024 18:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A41922AD30;
+	Fri,  4 Oct 2024 18:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2bZ6Tvu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPxF/qbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866C51E1C37;
-	Fri,  4 Oct 2024 18:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49A522AD2A;
+	Fri,  4 Oct 2024 18:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066736; cv=none; b=Wsh3RZ1r/aqK5YhjwaxDATEXMeYg8r1X/4ng74MMfwV5EeAUQqQw4lshsN+YYbBdQ5cgTcrXMMUxyuDPps2aJJdZAChLJn9ZgunNPQXs8sfiZSkSWjP6UeHs1bFY5PRn6GrL7SZKChwvjYx8kKgFHjhw/4JY76/yusksBdrKWWI=
+	t=1728066670; cv=none; b=Ya/RnaC4GRHsGG+Fa34vQoNqsJZxFhEyzpfg82dzIwdF9HXmOvaz66SJuDFZd2ohqqHixOWnZdcUMjSMK3gBti/klvwIlA+RQbC/FXhyls2YG47rSMGXa17g9JSJH64eneAZ56NF066APLTwD/LheRapuGVBF5pjMaDD9zMN0cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066736; c=relaxed/simple;
-	bh=kqds2NyBuVvxYXnbgrMcfF/YXMYOO/t54toLJN9wb8A=;
+	s=arc-20240116; t=1728066670; c=relaxed/simple;
+	bh=R85LbV8H9lilogl/LLZ8T2Bj37ho9J71VV48hHczD64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVRnpelHAHEIcCaq7H8w3niJ25qN8SHsxUIw3Z7yA9nEothmCAQeI3inxh4hJS1jRDLgSTHzsLx43aKO0LRSsf8zCNHMWFYcYeGB7z3TPR6tOrthX6Jj8i8ix7jm722Nxrla/O9GBo8whMkOmXzNoOMx3VeP52jARoTa5HoH/gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2bZ6Tvu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535E7C4CECC;
-	Fri,  4 Oct 2024 18:32:15 +0000 (UTC)
+	 MIME-Version; b=qMMgMzzR2Dfq6EZtVmpnz3LobpvFPcoJkTw/L3ssKwHXu2OVe0e/KG+p3NG+tnwAOFLWRuHN1EXNd1TKtwv+LThLqFj37HsN97I4nAkIHiiXcnVHmK/m8nl94FhPqiY+hLeLjijZdiJc8t6v2jphg1paWb7yQEvxVjhbNcrxVrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPxF/qbM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C7BC4CECD;
+	Fri,  4 Oct 2024 18:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066736;
-	bh=kqds2NyBuVvxYXnbgrMcfF/YXMYOO/t54toLJN9wb8A=;
+	s=k20201202; t=1728066670;
+	bh=R85LbV8H9lilogl/LLZ8T2Bj37ho9J71VV48hHczD64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2bZ6Tvu05cnoTx6BnLQS0kkDB1cC9aRIVRXUIz2erDN5TTLSn/C5Hyza3cQei28G
-	 Dc84eYO4opEa9pWoA9AT2N/Q/Y6HvrRiAmnxZ0BjxZdqaWO/51QLbua4nG+pCpMhQk
-	 vRwcm5Fn56kD9g1arwd/Jdm1LoFNZZp/HXMjUzczeL1PPW/1V1X3cwvXxTi6jbHHxy
-	 6/jKMyT+PGQjS0g0k7k367IMKjRbMmUjDkiUzvomR4CPJeGHRXHaVLOjE9WRLW7YLr
-	 rKwk8qoKJmXXdb7OpeYABTknYW3QWXgQc/3tMCAES7nEvfKmmx+IIfiKuszul1BVST
-	 drzkpNbh3vEEg==
+	b=WPxF/qbMqInsBIT8KYZEFtoJqeAm4RNEK8lMhlZkpuuS616m9zpBJ5RDt0W7ZxdW5
+	 kFoow3qJisc/5XTci3jT86yALZd4Qqp0nfsA/sYauLt2SFLTlnHZ5jFxViTvDmk8wQ
+	 j+sOKAoKcQTjG74Lr9EWfBxUOj8O8Vv7U++EOhUfqyHl7yoHFTp2mWJybJL/qx6r9/
+	 owxVKndvkPPmqKi6iMMn0EjGulswYw2idRbMuSnz83Gvrn1ewZ4dleg+sWW6+Oikv+
+	 V3o/lXnlzfagxmow0k/Pwhhq+ZjLfzgS6SkkQ8GZFzMqRp+G1yQ+MC2uDg9XFJwBDo
+	 X/1+bCzYtJI4A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrey Shumilin <shum.sdl@nppct.ru>,
-	Helge Deller <deller@gmx.de>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tzimmermann@suse.de,
-	javierm@redhat.com,
-	fullwaywang@outlook.com,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.19 16/16] fbdev: sisfb: Fix strbuf array overflow
-Date: Fri,  4 Oct 2024 14:31:43 -0400
-Message-ID: <20241004183150.3676355-16-sashal@kernel.org>
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	nathan@kernel.org,
+	sumanthk@linux.ibm.com,
+	iii@linux.ibm.com,
+	frankja@linux.ibm.com,
+	jpoimboe@kernel.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 02/21] s390/boot: Compile all files with the same march flag
+Date: Fri,  4 Oct 2024 14:30:37 -0400
+Message-ID: <20241004183105.3675901-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241004183150.3676355-1-sashal@kernel.org>
-References: <20241004183150.3676355-1-sashal@kernel.org>
+In-Reply-To: <20241004183105.3675901-1-sashal@kernel.org>
+References: <20241004183105.3675901-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,43 +69,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.322
+X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Andrey Shumilin <shum.sdl@nppct.ru>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 9cf14f5a2746c19455ce9cb44341b5527b5e19c3 ]
+[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
 
-The values of the variables xres and yres are placed in strbuf.
-These variables are obtained from strbuf1.
-The strbuf1 array contains digit characters
-and a space if the array contains non-digit characters.
-Then, when executing sprintf(strbuf, "%ux%ux8", xres, yres);
-more than 16 bytes will be written to strbuf.
-It is suggested to increase the size of the strbuf array to 24.
+Only a couple of files of the decompressor are compiled with the
+minimum architecture level. This is problematic for potential function
+calls between compile units, especially if a target function is within
+a compile until compiled for a higher architecture level, since that
+may lead to an unexpected operation exception.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Therefore compile all files of the decompressor for the same (minimum)
+architecture level.
 
-Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/sis_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/boot/Makefile | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
-index b7f9da690db27..38a772582bc3e 100644
---- a/drivers/video/fbdev/sis/sis_main.c
-+++ b/drivers/video/fbdev/sis/sis_main.c
-@@ -197,7 +197,7 @@ static void sisfb_search_mode(char *name, bool quiet)
- {
- 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
- 	int i = 0;
--	char strbuf[16], strbuf1[20];
-+	char strbuf[24], strbuf1[20];
- 	char *nameptr = name;
+diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
+index 0ff9261c915e3..cba2705c62353 100644
+--- a/arch/s390/boot/Makefile
++++ b/arch/s390/boot/Makefile
+@@ -8,11 +8,8 @@ GCOV_PROFILE := n
+ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
  
- 	/* We don't know the hardware specs yet and there is no ivideo */
+-KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
+-KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
+-
+ #
+-# Use minimum architecture for als.c to be able to print an error
++# Use minimum architecture level so it is possible to print an error
+ # message if the kernel is started on a machine which is too old
+ #
+ ifndef CONFIG_CC_IS_CLANG
+@@ -21,16 +18,10 @@ else
+ CC_FLAGS_MARCH_MINIMUM := -march=z10
+ endif
+ 
+-ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
+-AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
+-CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
+-CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
+-endif
++KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
++KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
++KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
+ 
+ CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
+ 
 -- 
 2.43.0
 
