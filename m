@@ -1,115 +1,126 @@
-Return-Path: <stable+bounces-80709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDC498FC2F
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 04:09:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF04998FC4C
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 04:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2C7B283EB4
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 02:09:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66DEE1F2220F
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 02:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBF62233B;
-	Fri,  4 Oct 2024 02:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098DD210E9;
+	Fri,  4 Oct 2024 02:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="krIQcdki"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eLjsAud7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F435241E7;
-	Fri,  4 Oct 2024 02:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDD51CF83;
+	Fri,  4 Oct 2024 02:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728007739; cv=none; b=NyfNqN/A8WIml4I1lEkw9NIcm5DnL6KXzGLlCsd0zDLJjuC/YaF4peCP9GqGSZTxP+2cA+/clnGNjv0rSnEFX9RzkVv7rDFjGYxmGUmg9l1Dq5LKmYB1/ndqcoYNfP0VVxGwyUuCnIDTzvH256okBKJXGJwICGCvoG9nnsTigfY=
+	t=1728008773; cv=none; b=OzgNRfctmcQejhAD7jC76lFSVcOeUgpzVbECUsnNz60r2wC7nZ6Pkum1iUpm07G3Bk571+0XfP1U7tJj6aSZdZ7ZtbfuN9WdHfYv81iUMBa0oSerjEd6qJyq9/INT6ORA+uosNtvfZ+/gcQItaJfhDLnhtm6nlYv3Vimu70yqTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728007739; c=relaxed/simple;
-	bh=Pa7h51ZuIAZ85G0lqTJND6ua+oBMQex+ghL0S3JOBMQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lan0hQc9xTKXVH76IOzWvUyTP+HCWmgTVvnFAAgL/hPOK5j4GZy7joJBoFmjs4nJzO2e5DKgcj1EqbzVc7BZlQxEgu91Fn5Txr75ePfYlMX0RRbVNJlwr+Ik+A3BmL4dG87wtTpmzr0tqtcC652V8HAsrMyjRgbh7BQEfMdocD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=krIQcdki; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4940te4H007648;
-	Fri, 4 Oct 2024 02:08:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=
-	corp-2023-11-20; bh=TSYp3uNp/5P9hOjRNQSyP5XupqoeJyPR79IIIZQyRBg=; b=
-	krIQcdkinhku7IuQBT23pu0CO1fqCIZQDlDd34hFbNKNnnlCbfCrAdDPR2QzTXEP
-	EsFUd0+llMXR4GIG800p9zHlg1YUBoeZ3ySfVyUdQ27fv5wgAFfOb3FLeKSSHKPv
-	vlJEdP7C+JwH0WWlLpZm+HoJX1vbitNHpnxlzPdOAV63D++da0yainWhz7WDnjN1
-	+K/Zb8eG7LCmuVz2aR6PYHCrAiJcioEed8pRmZ+N+/dNQIK7Ig3Yl3mcnKPMq2zr
-	+QQar26dRfWbT+ezvVpMphErzR/kxa9OqZphFkGJ8OnlXOjxPB6zcKWkiZGvsy/2
-	WKgRwyfmsBSbr+LBSPN74g==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4220498p44-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 04 Oct 2024 02:08:51 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4940NUSB038380;
-	Fri, 4 Oct 2024 02:08:50 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 422054pb2m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 04 Oct 2024 02:08:50 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49427bli036075;
-	Fri, 4 Oct 2024 02:08:49 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 422054pb11-4;
-	Fri, 04 Oct 2024 02:08:49 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Satish Kharat <satishkh@cisco.com>, Sesidhar Baddela <sebaddel@cisco.com>,
-        Karan Tilak Kumar <kartilak@cisco.com>,
-        Martin Wilck <martin.wilck@suse.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        James Bottomley <jejb@linux.vnet.ibm.com>,
-        Lee Duncan <lduncan@suse.com>, Hannes Reinecke <hare@suse.de>,
-        Martin Wilck <mwilck@suse.com>, Petr Mladek <pmladek@suse.com>,
-        linux-scsi@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: fnic: move flush_work initialization out of if block
-Date: Thu,  3 Oct 2024 22:08:09 -0400
-Message-ID: <172800766873.2547528.18433845515105510650.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20240930133014.71615-1-mwilck@suse.com>
-References: <20240930133014.71615-1-mwilck@suse.com>
+	s=arc-20240116; t=1728008773; c=relaxed/simple;
+	bh=GMnrujM0zm0apvAexcF+JfloyXlRp3m9jTg8SqyfaCQ=;
+	h=Date:To:From:Subject:Message-Id; b=WC/WGdFvELIVc/8YyMA/euQZvwjrQSXpQ4jAQaHLZnCScXexAWJmtTYcJowprtcAseji0jgWPNqNqNnZJgAAkiLkFOKNpAlZJdh5tfzsUedAV+BXlT5EnGsLGOxmAP8xzYrNk9eCa0blbvEI1Sh2/X6cUfVekN/w9i3xRQ7DKx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eLjsAud7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD5BC4CEC5;
+	Fri,  4 Oct 2024 02:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1728008773;
+	bh=GMnrujM0zm0apvAexcF+JfloyXlRp3m9jTg8SqyfaCQ=;
+	h=Date:To:From:Subject:From;
+	b=eLjsAud7iiQy1n8Dnlpr+3HEsYybuz64roNPhdIjgEWjXCjOQBGTYKPnKWZoa6a4L
+	 63TLjx95ip8dV/uyYoXy1NlWByCH+BFvt+/H94mNIR7Rr6KqJon0BhHyi/dImjLwtt
+	 5Ab2bYOUqn7HGW5qSsUrKf/rL+KuVpzHcW6rBdNU=
+Date: Thu, 03 Oct 2024 19:26:12 -0700
+To: mm-commits@vger.kernel.org,tj@kernel.org,tglx@linutronix.de,stable@vger.kernel.org,hdanton@sina.com,frederic@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] kthread-unpark-only-parked-kthread.patch removed from -mm tree
+Message-Id: <20241004022613.2BD5BC4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-04_01,2024-10-03_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- bulkscore=0 spamscore=0 mlxscore=0 phishscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2409260000 definitions=main-2410040014
-X-Proofpoint-ORIG-GUID: Lo_UB6J59lPBgPtQsrsSXKeviUAMkUPJ
-X-Proofpoint-GUID: Lo_UB6J59lPBgPtQsrsSXKeviUAMkUPJ
 
-On Mon, 30 Sep 2024 15:30:14 +0200, Martin Wilck wrote:
 
-> (resending, sorry - I'd forgotten to add the mailing list)
-> 
-> After commit 379a58caa199 ("scsi: fnic: Move fnic_fnic_flush_tx() to a work
-> queue"), it can happen that a work item is sent to an uninitialized work
-> queue.  This may has the effect that the item being queued is never
-> actually queued, and any further actions depending on it will not proceed.
-> 
-> [...]
+The quilt patch titled
+     Subject: kthread: unpark only parked kthread
+has been removed from the -mm tree.  Its filename was
+     kthread-unpark-only-parked-kthread.patch
 
-Applied to 6.12/scsi-fixes, thanks!
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-[1/1] scsi: fnic: move flush_work initialization out of if block
-      https://git.kernel.org/mkp/scsi/c/f30e5f77d2f2
+------------------------------------------------------
+From: Frederic Weisbecker <frederic@kernel.org>
+Subject: kthread: unpark only parked kthread
+Date: Fri, 13 Sep 2024 23:46:34 +0200
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Calling into kthread unparking unconditionally is mostly harmless when
+the kthread is already unparked. The wake up is then simply ignored
+because the target is not in TASK_PARKED state.
+
+However if the kthread is per CPU, the wake up is preceded by a call
+to kthread_bind() which expects the task to be inactive and in
+TASK_PARKED state, which obviously isn't the case if it is unparked.
+
+As a result, calling kthread_stop() on an unparked per-cpu kthread
+triggers such a warning:
+
+	WARNING: CPU: 0 PID: 11 at kernel/kthread.c:525 __kthread_bind_mask kernel/kthread.c:525
+	 <TASK>
+	 kthread_stop+0x17a/0x630 kernel/kthread.c:707
+	 destroy_workqueue+0x136/0xc40 kernel/workqueue.c:5810
+	 wg_destruct+0x1e2/0x2e0 drivers/net/wireguard/device.c:257
+	 netdev_run_todo+0xe1a/0x1000 net/core/dev.c:10693
+	 default_device_exit_batch+0xa14/0xa90 net/core/dev.c:11769
+	 ops_exit_list net/core/net_namespace.c:178 [inline]
+	 cleanup_net+0x89d/0xcc0 net/core/net_namespace.c:640
+	 process_one_work kernel/workqueue.c:3231 [inline]
+	 process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
+	 worker_thread+0x86d/0xd70 kernel/workqueue.c:3393
+	 kthread+0x2f0/0x390 kernel/kthread.c:389
+	 ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+	 ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+	 </TASK>
+
+Fix this with skipping unecessary unparking while stopping a kthread.
+
+Link: https://lkml.kernel.org/r/20240913214634.12557-1-frederic@kernel.org
+Fixes: 5c25b5ff89f0 ("workqueue: Tag bound workers with KTHREAD_IS_PER_CPU")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reported-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
+Tested-by: syzbot+943d34fa3cf2191e3068@syzkaller.appspotmail.com
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/kthread.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/kernel/kthread.c~kthread-unpark-only-parked-kthread
++++ a/kernel/kthread.c
+@@ -623,6 +623,8 @@ void kthread_unpark(struct task_struct *
+ {
+ 	struct kthread *kthread = to_kthread(k);
+ 
++	if (!test_bit(KTHREAD_SHOULD_PARK, &kthread->flags))
++		return;
+ 	/*
+ 	 * Newly created kthread was parked when the CPU was offline.
+ 	 * The binding was lost and we need to set it again.
+_
+
+Patches currently in -mm which might be from frederic@kernel.org are
+
+
 
