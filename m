@@ -1,102 +1,148 @@
-Return-Path: <stable+bounces-81119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBA4991050
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:23:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA0A990FC8
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2F7FB32518
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:49:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DE34282C77
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5888222F8F1;
-	Fri,  4 Oct 2024 18:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDFD1DE3D1;
+	Fri,  4 Oct 2024 19:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rsQAYb91"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZjH6sYw5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D751E1C2F;
-	Fri,  4 Oct 2024 18:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37A1DE3CD;
+	Fri,  4 Oct 2024 19:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066733; cv=none; b=aCimjuSKZu0VS2yiJ/8gbEauQc4es6s0Lvz3Ltvv8zZ2wOEtM9MWuojXxXaa6GRP/2LeiJspeI4tMCz5hQ5MKgtu+YH0fNHM73cuuIwJR6m5rDQGNpnFWpGUUaeZVO0kkgbIx/f3h5TaDU9UJa9nABxA4kbKbHV/lZymoX8K9sU=
+	t=1728070253; cv=none; b=esR75WCdtykjtcOs8+RCR2D0Xzaz1WSR0bm8krdZzEOL/4X4PTM1bxnSI8v9jgx2F0HovHfIwP2hAwSesvZva6GeoM8oVMvsytqwYd0QKIyJ+ghF2uSo3U/5mQMNV3HVobgj+2v78f05jJwTQaFdYNCnlP4GvcsTFqMy1bZBiyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066733; c=relaxed/simple;
-	bh=+koxMIZM77Tt7I8tTJn8hOJqD1LRiVGBhCi9CP4N6G0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzlcLAF+iwAoOpIrds3HcFi55k7Hc8tHqqfIM+vfn9RVwaavlwALiLCrWPpFwfByu2pstkPtsltfkyb2kLkRANAd4mR/bfHWUCzViLqEp3M8dlf32hX9/OLRJqTK/rd3n/+4hs31Vk84NamzZUulKDQmppxqT/EBox5z8Nfl+sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rsQAYb91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37D3C4CECC;
-	Fri,  4 Oct 2024 18:32:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066732;
-	bh=+koxMIZM77Tt7I8tTJn8hOJqD1LRiVGBhCi9CP4N6G0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rsQAYb918FJHnYZgBhdRZJ1s0efE0kMEWcy3rqtNboo9VtVO2wEIwKghjyj0Edati
-	 vNX8H/X37+q1SMRvhc4tDUuXLww321BbzcTXoge2YbEUJO0sGZjrj9EGJUW4sHyF9J
-	 1W/6ytq3vtfyyrwRgEqElSbd8hd5kwxtimRYCKF5OJ4xuL0acajBnkk+IuWGdE8WZ7
-	 LDk260gjrQl3ed3VdHObOUfaUpVayFlvr8aSjon6B9hVlE9/X60BMcZcCLdythJt92
-	 dOs0qJ1T12wV42YGRNJNV5nuPg53sYvC/wvEOBnri8e19N5KZNaOU1l6PQz/REoeVP
-	 H2UyltkCkCOhw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 14/16] tools/iio: Add memory allocation failure check for trigger_name
-Date: Fri,  4 Oct 2024 14:31:41 -0400
-Message-ID: <20241004183150.3676355-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241004183150.3676355-1-sashal@kernel.org>
-References: <20241004183150.3676355-1-sashal@kernel.org>
+	s=arc-20240116; t=1728070253; c=relaxed/simple;
+	bh=Xs6myaYJRTX41E9hzKSusMcX++FCX9dr2GqqaK7tPuo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rjy5YAh47bWczxe2H/u4HyeuWrkZe4wEuwY2Nmc8vSPEGDWgE+z3PjEwTp5++lGOhRB5MEvy85njotbEecxyt7IvGnf9GNHaV/oHuyNi25Nfu7gkXKXoj6d/cdAmo20R9UYwgSuYDrwgUzi4WJgVL3T4tUoqQMH1Z8YpSvuLV1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZjH6sYw5; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2facaa16826so23741371fa.0;
+        Fri, 04 Oct 2024 12:30:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728070250; x=1728675050; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cDiKk/gkNOho7a3SMHPhX41erbMC+PbTgZ41vTz/A78=;
+        b=ZjH6sYw5J79IaF6L/tQJkw2P2H6szxIo0G0+2sKOrpAjDSurJVOwyupONe/5Yh+fjo
+         R/WguWUrnLzExpCTwrgk6Ib0rosfX6AdadDEFplafCeClp0RDLBW8BL1ExrCQLAPi8/A
+         D/7Iz3k4O0dc5jz9LhW1i36oHR2YKjcPLTUCkprXRseqJM2EbzagWyQlkeU4bpxbPlzN
+         jCD01esnpkfItMN6cl2Y4fZt1/RGMGCWokKpQ5ptIQqnJxtMTYInZruRjvAnuGyD12cD
+         SvdHhfrfl95mYajlY1a8MRQeY3P/iG1O6eXvv1+vxmLwwyO5qX/numKvZKM9ae/YuCMy
+         Sthg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728070250; x=1728675050;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cDiKk/gkNOho7a3SMHPhX41erbMC+PbTgZ41vTz/A78=;
+        b=gKO8OXz7AnONzPXVLsdA0V/vAqvjQ0dU8eiSC++oIT26xzTl9TzRPdBiUykIPe3uk7
+         QZxSdF316R+BEGnd3x1mkuNYki87s4hHBScfoBcyP4989T0Q1ig1/m+V8eWDUfPRz+gQ
+         an4xf01okWtpulxjZGDkLz2OpIwaSt7xMJggKkrzrkjqhVL0EvgBfayMb/2meEFljO9N
+         vM5HbBpiYzrrX7tYPhFQT1JIKN9HSMfMvxxIFWqBHDLDlfveNooeyUXDboiEILzFO0Zf
+         r4235Ehv+/KZcRil1bOO3ZVOmHWU5IKo0gFgwGBNdPMtCx5fdy12YVTlqmxzmuLPs+gV
+         MROw==
+X-Forwarded-Encrypted: i=1; AJvYcCVibJLISNtuD8OSGLppxfNrvH3SnrwOntl9BAMG0bHW2YZ1vkzQV5UCVvQP9lO6tIxwYxNLGeerP98W59owYSM=@vger.kernel.org, AJvYcCWTy3HZ9x0ELF3Pviwa4JjII7KgSUxLAwAnDeE9o9YckJHhkHWm7vJ9GFrUvqfMKmEN5znsvavG@vger.kernel.org, AJvYcCX1Xfa4SFlSZoOgOT9Z0xzi7V3tSOe8cHitVaX1hHqjkqM83nruHCpDDNPvhMrHC9fAYpqbHmTR2wlXN/J/@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKa554IMmuWQLMT2vJHyFi/w6rcm0+0k8qmhsx8lQ9GCtbiySV
+	fF9GdE7gBnLVk/0MgPy+83ykAskbe/E3Tng7uAbc6/+rVZeKjk1Jevt67MtJRwNvwBSKZc+hm0U
+	nCLOVWwB8dV+M/LY7E8YYZUpkpF0=
+X-Google-Smtp-Source: AGHT+IEK4J8RH1M7kHAo0ZIttY6GbiyFoqPXMSiNpGQSfNVTLSrfmAUw2yTiwZw0tRf8+uzaC3DuhqVUNgoO5+zLRZE=
+X-Received: by 2002:a2e:be20:0:b0:2fa:e4ae:3362 with SMTP id
+ 38308e7fff4ca-2faf3c1403fmr20806571fa.6.1728070249701; Fri, 04 Oct 2024
+ 12:30:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.322
-Content-Transfer-Encoding: 8bit
+References: <20241004003030.160721-1-dev@aaront.org> <20241004003030.160721-3-dev@aaront.org>
+In-Reply-To: <20241004003030.160721-3-dev@aaront.org>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Fri, 4 Oct 2024 15:30:37 -0400
+Message-ID: <CABBYNZ+gOZ36CJpq5Z7zXSNnruRpGrau9gXWo-cXKwU814ybvg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] Bluetooth: Call iso_exit() on module unload
+To: Aaron Thompson <dev@aaront.org>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Hi Aaron,
 
-[ Upstream commit 3c6b818b097dd6932859bcc3d6722a74ec5931c1 ]
+On Thu, Oct 3, 2024 at 8:31=E2=80=AFPM Aaron Thompson <dev@aaront.org> wrot=
+e:
+>
+> From: Aaron Thompson <dev@aaront.org>
+>
+> If iso_init() has been called, iso_exit() must be called on module
+> unload. Without that, the struct proto that iso_init() registered with
+> proto_register() becomes invalid, which could cause unpredictable
+> problems later. In my case, with CONFIG_LIST_HARDENED and
+> CONFIG_BUG_ON_DATA_CORRUPTION enabled, loading the module again usually
+> triggers this BUG():
+>
+>   list_add corruption. next->prev should be prev (ffffffffb5355fd0),
+>     but was 0000000000000068. (next=3Dffffffffc0a010d0).
+>   ------------[ cut here ]------------
+>   kernel BUG at lib/list_debug.c:29!
+>   Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
+>   CPU: 1 PID: 4159 Comm: modprobe Not tainted 6.10.11-4+bt2-ao-desktop #1
+>   RIP: 0010:__list_add_valid_or_report+0x61/0xa0
+>   ...
+>     __list_add_valid_or_report+0x61/0xa0
+>     proto_register+0x299/0x320
+>     hci_sock_init+0x16/0xc0 [bluetooth]
+>     bt_init+0x68/0xd0 [bluetooth]
+>     __pfx_bt_init+0x10/0x10 [bluetooth]
+>     do_one_initcall+0x80/0x2f0
+>     do_init_module+0x8b/0x230
+>     __do_sys_init_module+0x15f/0x190
+>     do_syscall_64+0x68/0x110
+>   ...
+>
+> Cc: stable@vger.kernel.org
+> Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+> Signed-off-by: Aaron Thompson <dev@aaront.org>
+> ---
+>  net/bluetooth/mgmt.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+> index e4f564d6f6fb..78a164fab3e1 100644
+> --- a/net/bluetooth/mgmt.c
+> +++ b/net/bluetooth/mgmt.c
+> @@ -10487,6 +10487,7 @@ int mgmt_init(void)
+>
+>  void mgmt_exit(void)
+>  {
+> +       iso_exit();
+>         hci_mgmt_chan_unregister(&chan);
+>  }
+>
+> --
+> 2.39.5
 
-Added a check to handle memory allocation failure for `trigger_name`
-and return `-ENOMEM`.
+I had it under bt_exit with the rest of the exit functions so that we
+don't have to move it once ISO sockets become stable.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20240828093129.3040-1-zhujun2@cmss.chinamobile.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/iio/iio_generic_buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index ca9f33fa51c9f..e8cf3dc8de72c 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -483,6 +483,10 @@ int main(int argc, char **argv)
- 			return -ENOMEM;
- 		}
- 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
-+		if (!trigger_name) {
-+			ret = -ENOMEM;
-+			goto error;
-+		}
- 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
- 		free(trig_dev_name);
- 		if (ret < 0) {
--- 
-2.43.0
-
+--=20
+Luiz Augusto von Dentz
 
