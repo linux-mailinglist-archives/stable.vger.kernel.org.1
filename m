@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-81075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6D3990E9F
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:39:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1118C990EA1
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54DC11F22D43
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:39:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43C7A1C22CFB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E16228B2A;
-	Fri,  4 Oct 2024 18:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08ED2281EB;
+	Fri,  4 Oct 2024 18:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oqpf81/0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z8xXGaoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F446228B23;
-	Fri,  4 Oct 2024 18:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A39B1DF99A;
+	Fri,  4 Oct 2024 18:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066638; cv=none; b=M0mTn0J6vz4f2T3R5+dR4V6mbT4ZhYHjjrxUOlMrGVmM35VSusPM3kUtzbMOUnqeZkdFvKIJUi8honuUkgNW5SthOXNADf+VbHavt36rvrRw7af9iVLECDd/YaPr5zmk6oWxY5hKPBxOjkRwKeZqwMU9v2Xgj+g1hLv/o0lSUp4=
+	t=1728066640; cv=none; b=iAemoO5mp4GOLUrKznXj13yl4I9sKT/huulzIqqr40A5q3BvnjB5lt8JCcHlQ7aZaKNBiT9ZR7hn38nFKBvUKwGMCKwrlDMD+d5C1N/p6P63LoAxTABqqnepKi2/MMPlE2VwUqvUuMcrkdU+HT01f1FWDaC1NSyi0BYzw/lwVjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066638; c=relaxed/simple;
-	bh=IoiKVtKpLwjUIwn3kU48+A7z58Di4HgMpWqRhItVb+w=;
+	s=arc-20240116; t=1728066640; c=relaxed/simple;
+	bh=HFhL5BDeKrOgZOkOiyCFwrVuMYPrYx1tVgcD+hDd9p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqb1yV8TJ2L1tt98JuinhuTU8P8BDHcExv/oQ7CNjx+tEG7VNLlbIqlf5/la1XmOyhbhkqsbmuf2aZkIWgk7hnKOVoZlihDNDZR4jlonuXUzzPI2S/u5J3b5tZiHTTFZq1pXWRE9tmwQKfjsJvXtKVouA0h7KTNEq74P5AXQzPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oqpf81/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB5FC4CED0;
-	Fri,  4 Oct 2024 18:30:36 +0000 (UTC)
+	 MIME-Version; b=tRUEdxwIKZu6yEXgSnHO0K5+L2alKC5kgULtYqaPOS/luJtUHhX6tHseJBlKp8U7gDL8YGSUVOxDes1Fj2xEWkLad5dpNn5fWQVdQquLH4x83gm8xaSUZkHzDjpjtxgi0YZySoa3iF4eM1Z4eyENOOGbva30kAFQ7PWwx3AHhJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z8xXGaoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D55C4CED1;
+	Fri,  4 Oct 2024 18:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066638;
-	bh=IoiKVtKpLwjUIwn3kU48+A7z58Di4HgMpWqRhItVb+w=;
+	s=k20201202; t=1728066639;
+	bh=HFhL5BDeKrOgZOkOiyCFwrVuMYPrYx1tVgcD+hDd9p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oqpf81/0A6UJajHGKbT5ZNtFQ2hoK9pFimh67ywV5/1LUma9WLp+k+s3hMVmG5Rzb
-	 eb+NrYnaRyGvyk+5NqvPzZ1L+aUYHhwqWDJIEIv7itjceCodY7ysk2eInfnk/4dE3L
-	 bQ7s/JWMcZsFwaYzLKDv+40RJM4AB/cwSoM7Rd9Lf+kRvRSCo7Dfr1OZrLNFfTPQT5
-	 H3a5kL9r6SZWRGAm8C69PiK/ZQPxSU8PHcrlYPtNVN/Za5yhZ5StC33Vs88RS9Wwvz
-	 z/W7mtzGz2MglIySVeJevOiczi83UUFqQtQOvZO3DqGLtWKLgvv7jjuKDouNZHoNq1
-	 mEkXtIltmVuzg==
+	b=Z8xXGaozoTGD2M6aO2Bwb/ghcA262gGUivQkpfDlg/VKTzsUEHnvY6qvDVc307E8U
+	 uqiBc6x5mtxLwm0I+A9Ouj53LjAAGex7IaMG10DrlcWdpP/X/1RiwvVyPE4bVW9DFv
+	 TI41HBL4PSz3IGHm7il2K19xY6b5emV/V6qr4cje99gtuajCH2bYRCELJ1eRrBIAhr
+	 E5qalJARCbiEPP4NxhMhnIIPsn5w73WScpVq9ud2x1+WFKt3wTrkgu1Cz13ydtu16f
+	 Esu3AjWd8vIj+D0H1fSIEBiK9EchkUol+WkDMmWC1zS/Q37SFx+vxnBF+pQmTrGFSY
+	 iwhJ/M8oF1n6g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Jon Mason <jdmason@kudzu.us>,
+Cc: Yunke Cao <yunkec@chromium.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	kurt.schwemmer@microsemi.com,
-	dave.jiang@intel.com,
-	allenbh@gmail.com,
-	linux-pci@vger.kernel.org,
-	ntb@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.10 17/26] ntb: ntb_hw_switchtec: Fix use after free vulnerability in switchtec_ntb_remove due to race condition
-Date: Fri,  4 Oct 2024 14:29:43 -0400
-Message-ID: <20241004183005.3675332-17-sashal@kernel.org>
+	m.szyprowski@samsung.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 18/26] media: videobuf2-core: clear memory related fields in __vb2_plane_dmabuf_put()
+Date: Fri,  4 Oct 2024 14:29:44 -0400
+Message-ID: <20241004183005.3675332-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183005.3675332-1-sashal@kernel.org>
 References: <20241004183005.3675332-1-sashal@kernel.org>
@@ -70,51 +68,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Yunke Cao <yunkec@chromium.org>
 
-[ Upstream commit e51aded92d42784313ba16c12f4f88cc4f973bbb ]
+[ Upstream commit 6a9c97ab6b7e85697e0b74e86062192a5ffffd99 ]
 
-In the switchtec_ntb_add function, it can call switchtec_ntb_init_sndev
-function, then &sndev->check_link_status_work is bound with
-check_link_status_work. switchtec_ntb_link_notification may be called
-to start the work.
+Clear vb2_plane's memory related fields in __vb2_plane_dmabuf_put(),
+including bytesused, length, fd and data_offset.
 
-If we remove the module which will call switchtec_ntb_remove to make
-cleanup, it will free sndev through kfree(sndev), while the work
-mentioned above will be used. The sequence of operations that may lead
-to a UAF bug is as follows:
+Remove the duplicated code in __prepare_dmabuf().
 
-CPU0                                 CPU1
-
-                        | check_link_status_work
-switchtec_ntb_remove    |
-kfree(sndev);           |
-                        | if (sndev->link_force_down)
-                        | // use sndev
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in switchtec_ntb_remove.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Yunke Cao <yunkec@chromium.org>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/hw/mscc/ntb_hw_switchtec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/common/videobuf2/videobuf2-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-index 4c6eb61a6ac62..ad09946100b56 100644
---- a/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-+++ b/drivers/ntb/hw/mscc/ntb_hw_switchtec.c
-@@ -1558,6 +1558,7 @@ static void switchtec_ntb_remove(struct device *dev,
- 	switchtec_ntb_deinit_db_msg_irq(sndev);
- 	switchtec_ntb_deinit_shared_mw(sndev);
- 	switchtec_ntb_deinit_crosslink(sndev);
-+	cancel_work_sync(&sndev->check_link_status_work);
- 	kfree(sndev);
- 	dev_info(dev, "ntb device unregistered\n");
+diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
+index 3bafde87a1257..78ad2b278da4c 100644
+--- a/drivers/media/common/videobuf2/videobuf2-core.c
++++ b/drivers/media/common/videobuf2/videobuf2-core.c
+@@ -301,6 +301,10 @@ static void __vb2_plane_dmabuf_put(struct vb2_buffer *vb, struct vb2_plane *p)
+ 	p->mem_priv = NULL;
+ 	p->dbuf = NULL;
+ 	p->dbuf_mapped = 0;
++	p->bytesused = 0;
++	p->length = 0;
++	p->m.fd = 0;
++	p->data_offset = 0;
  }
+ 
+ /*
+@@ -1278,10 +1282,6 @@ static int __prepare_dmabuf(struct vb2_buffer *vb)
+ 
+ 		/* Release previously acquired memory if present */
+ 		__vb2_plane_dmabuf_put(vb, &vb->planes[plane]);
+-		vb->planes[plane].bytesused = 0;
+-		vb->planes[plane].length = 0;
+-		vb->planes[plane].m.fd = 0;
+-		vb->planes[plane].data_offset = 0;
+ 
+ 		/* Acquire each plane's memory */
+ 		mem_priv = call_ptr_memop(vb, attach_dmabuf,
 -- 
 2.43.0
 
