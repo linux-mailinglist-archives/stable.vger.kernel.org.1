@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-80829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D374990BFE
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:41:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D560990BCA
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 220FAB2A615
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:31:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BB95B2A8EB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776BE1DF998;
-	Fri,  4 Oct 2024 18:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695081E0DCE;
+	Fri,  4 Oct 2024 18:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MF22u5FS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+GyUMTh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E2F1E04BA;
-	Fri,  4 Oct 2024 18:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF4D1E0DAF;
+	Fri,  4 Oct 2024 18:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066000; cv=none; b=OPtDVE3mei+dZxgIAJPyVlAgsvyMNMv3T3q4K8YqQ3ON6VRQoIxiPDL4JVexEYe9pjqd5IHtRwavtbege5t281NSzhssrq7cZRn9YKS1XIGS27ZJlUWO0tUbIk77hjVWOlVjkFNOD9VoF8A0h+pF6TDTu9QklBTeFN9PcW6Welk=
+	t=1728066003; cv=none; b=eB0kumfKhM9HHkbLgg1RAD8KURlUmTeTZzI+Fb8zHUURK66AkYKmUal7DNMVvYnI3Q0Iy3G5NXOra8MZx4L2Z6h/++xnR4mVP4vRxTDvAnOP6Fipp76enPUAfJ9GjTnW5wQuWG2HDV/0Xsp24aFn8wyrpzkbVgGRn3LoNJySKv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066000; c=relaxed/simple;
-	bh=YoqFwxCZRS6kKCe5T4DEAb+221PIKrG/75SqrvibgEM=;
+	s=arc-20240116; t=1728066003; c=relaxed/simple;
+	bh=OIdMz7HONHnDTTdnBElA5S8YW2qimUiMR6+XE75vAow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBbPfm+wJawpbmbioLA/vtbeCQwKlG4eNpeYma5slc9XzgjsK7rqbSUZksQgewZlMthKu+/PFYv4SQ0jjk4xAl4kl8LWmgMWDC/i1JBPm5ztu08sllgOCKeHZE2DP3wIuuo0LnUuntwI204576SbSdinlo1VsY17zZdAqQ06VPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MF22u5FS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8311C4CECD;
-	Fri,  4 Oct 2024 18:19:58 +0000 (UTC)
+	 MIME-Version; b=ldnTzR7V31YaKHukzSCzh4vLYvPcv4S0EMTe3KEUIrYON6rQSimKYTPOshq0c3Kt7aHz56p617/OwfHM7tRgx4SXk1KRXqLklzSGDfRSaV/i0ElAMVb8/5p0AcyMAAY6yeKjrvA9VIYWLjenIPdRTdr2w7LOcx5vkVTz6RzwRV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+GyUMTh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D220C4CECC;
+	Fri,  4 Oct 2024 18:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065999;
-	bh=YoqFwxCZRS6kKCe5T4DEAb+221PIKrG/75SqrvibgEM=;
+	s=k20201202; t=1728066002;
+	bh=OIdMz7HONHnDTTdnBElA5S8YW2qimUiMR6+XE75vAow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MF22u5FSiyXFhkXCJdi3k+HzD7JYsXcso2p+kBq23AuFaGNXo5zwOAgyrXf1ekbH2
-	 a41asqTiVh/7IE6wDDcQRm88MegmiERqYMD1wTbtZ1mmgKqX3T0vX5pr9v1PYaQQ0t
-	 AJ5Qb+iLfGSfJJ7puJoSZPOkljlnMn+pYNy4zMKGqQMLC5fP2GDB1zPHzoM5ff/DwE
-	 jpmz8oqYhKZZROA3oRG73XfeI93QEpIs0BLG95zH8Vvfw2NbxbiCb/qU7h3rTQa3aQ
-	 oxaeOaWODAFVuZiMVCaC+gn+AFPhNKeyAQf5Ucy++fQS7T11/3LX3vFxoql/kKJaJQ
-	 VeQQny9i/j+sA==
+	b=l+GyUMThBDPXcJ41NcQF1ItuB42QTxw5AJGU1IdZ7P4boRBXuNWJApL8dcHIjOKLI
+	 1njnR57ripS+xKaDQNOVTpJUAtH1sdDa1DVPrw44qfP38+rMqdoSFycHotYy+SyKqP
+	 x9KTNO04oBlkd1oIUYIc87uWLKOncfBcknOarXQhSvbKHjTg6gzEq3hQ2lv+a3xjE0
+	 asW8281h9VLEItrvTaVYqkHCg4jZ/fPYQ5F5FMznriwm+vGcj9HGlb7q3rDbrH89ui
+	 P8OYREudI5bNo3BT/20YEEYC//+HJv0EZr+ORR2r4sspkrrCuRSjxwcU/ybjIxImp1
+	 dKEak9GyDDc/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Peter Hurley <peter@hurleysoftware.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	miklos@szeredi.hu,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 49/76] fuse: handle idmappings properly in ->write_iter()
-Date: Fri,  4 Oct 2024 14:17:06 -0400
-Message-ID: <20241004181828.3669209-49-sashal@kernel.org>
+	tony.lindgren@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	ilpo.jarvinen@linux.intel.com,
+	l.sanfilippo@kunbus.com,
+	pcc@google.com,
+	linux-serial@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 50/76] serial: protect uart_port_dtr_rts() in uart_shutdown() too
+Date: Fri,  4 Oct 2024 14:17:07 -0400
+Message-ID: <20241004181828.3669209-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -66,40 +71,62 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 
-[ Upstream commit 5b8ca5a54cb89ab07b0389f50e038e533cdfdd86 ]
+[ Upstream commit 602babaa84d627923713acaf5f7e9a4369e77473 ]
 
-This is needed to properly clear suid/sgid.
+Commit af224ca2df29 (serial: core: Prevent unsafe uart port access, part
+3) added few uport == NULL checks. It added one to uart_shutdown(), so
+the commit assumes, uport can be NULL in there. But right after that
+protection, there is an unprotected "uart_port_dtr_rts(uport, false);"
+call. That is invoked only if HUPCL is set, so I assume that is the
+reason why we do not see lots of these reports.
 
-Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Or it cannot be NULL at this point at all for some reason :P.
+
+Until the above is investigated, stay on the safe side and move this
+dereference to the if too.
+
+I got this inconsistency from Coverity under CID 1585130. Thanks.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Peter Hurley <peter@hurleysoftware.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240805102046.307511-3-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/serial_core.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index ed76121f73f2e..536194d41b0b7 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1398,6 +1398,7 @@ static void fuse_dio_unlock(struct kiocb *iocb, bool exclusive)
- static ssize_t fuse_cache_write_iter(struct kiocb *iocb, struct iov_iter *from)
- {
- 	struct file *file = iocb->ki_filp;
-+	struct mnt_idmap *idmap = file_mnt_idmap(file);
- 	struct address_space *mapping = file->f_mapping;
- 	ssize_t written = 0;
- 	struct inode *inode = mapping->host;
-@@ -1412,7 +1413,7 @@ static ssize_t fuse_cache_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 			return err;
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 5bea3af46abce..9763fc5dcc80c 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -407,14 +407,16 @@ static void uart_shutdown(struct tty_struct *tty, struct uart_state *state)
+ 		/*
+ 		 * Turn off DTR and RTS early.
+ 		 */
+-		if (uport && uart_console(uport) && tty) {
+-			uport->cons->cflag = tty->termios.c_cflag;
+-			uport->cons->ispeed = tty->termios.c_ispeed;
+-			uport->cons->ospeed = tty->termios.c_ospeed;
+-		}
++		if (uport) {
++			if (uart_console(uport) && tty) {
++				uport->cons->cflag = tty->termios.c_cflag;
++				uport->cons->ispeed = tty->termios.c_ispeed;
++				uport->cons->ospeed = tty->termios.c_ospeed;
++			}
  
- 		if (fc->handle_killpriv_v2 &&
--		    setattr_should_drop_suidgid(&nop_mnt_idmap,
-+		    setattr_should_drop_suidgid(idmap,
- 						file_inode(file))) {
- 			goto writethrough;
- 		}
+-		if (!tty || C_HUPCL(tty))
+-			uart_port_dtr_rts(uport, false);
++			if (!tty || C_HUPCL(tty))
++				uart_port_dtr_rts(uport, false);
++		}
+ 
+ 		uart_port_shutdown(port);
+ 	}
 -- 
 2.43.0
 
