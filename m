@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-80915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033F7990CB0
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A61990CB3
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA03D1F23500
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:55:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D82961F23A41
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3098D1FCC55;
-	Fri,  4 Oct 2024 18:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FC71FCC78;
+	Fri,  4 Oct 2024 18:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWT2v7uB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qvgd3MiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9B61FCC46;
-	Fri,  4 Oct 2024 18:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC9E1FCC6F;
+	Fri,  4 Oct 2024 18:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066237; cv=none; b=flM6zWZMIWmC9OKwHA/WsKebphJlHrWZahn+Rph66yohVMsTWnKw8FrKcZpEj3vo/49dTV5rgPqbUhzOCVm+mb7wR2NFPv9GaP3gcgXkkdeWvKR7pQ6Dy28CA1vTSvgMtOGCFApUY5G90gWpGJax0boX18I37YI43grc2x9QbcM=
+	t=1728066238; cv=none; b=Ma3IlgrUxN2EwA4N9qELaoo8w+MG1lk+cqR0pugJ/XqVb4jhvRKMADPqqwIezKIG/aCRBQgdfevwftwvKgrSS1d8Ez91mvl90SDhZ3l/saF0LKCRBf+EqpPD5obwZh/7JP1I0naJ0FhtRyvG/hLRF4E+mLphelQN63U1XwhCoCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066237; c=relaxed/simple;
-	bh=Efcfh40coe8lTYot+luTmyVmHaIjn/egYX0OcqlC44c=;
+	s=arc-20240116; t=1728066238; c=relaxed/simple;
+	bh=Bk9YsL6iFGKSTVRwhI/gd8IweX/aAxs7s3R0/EDDezg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzdCyg+5jJSuw2vELj8FvpJraRLh06KOp7X9MniMf+XyCIeMiqX+q7cO7yEZznevRHTdnvexJZFMTvULR00PT24IqfpgLzQZgvy8Ni9bEDqkgXVvqYfgTp9xUjACGgR7HgPBKu/MbAZk0Cl7NwBKXUDNvwJin32oS6u7k6MKTOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWT2v7uB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F336CC4CECE;
-	Fri,  4 Oct 2024 18:23:55 +0000 (UTC)
+	 MIME-Version; b=q3vBmqleUqxUvm2pIQHgHDox1aAOQssNG4qwB2CCsCmMpvh3tgpdhKWZY/5fAG7v6+H3GVUnn1N7lUEQXhZcfFeWzvQmCUVijSKETLpb3VwpAjwNxNwHniQHKr7ueYgdAC8nAq8zZhwXg215r9gS8VM7wvPvhugl2SHUp0h7WuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qvgd3MiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450ADC4CEC6;
+	Fri,  4 Oct 2024 18:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066236;
-	bh=Efcfh40coe8lTYot+luTmyVmHaIjn/egYX0OcqlC44c=;
+	s=k20201202; t=1728066237;
+	bh=Bk9YsL6iFGKSTVRwhI/gd8IweX/aAxs7s3R0/EDDezg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWT2v7uBRExG7bEW6MEbjfykQfoabjSH0/1qumcd0Ec0ozk0SjN+b2Mpdj3p7Gjn7
-	 oJdy89X5X1akvJ/leLORJnR8l56N9aE0Ri+bHLEX7VryYRZ5rmdgBVL28MR51VrOwB
-	 STgMKM02/D1OQg6rdx3DiyaWQ5DclDDmmXgOkChgbubUxEOrgV3p7qvwBlvk8ns9fD
-	 2UOhlEumxGyydscJsFqb+We+QDEY8eeX4D5NfdxuE7us107rUKyyTSlQqAZf6uVhPK
-	 ATKIKhTOaIibtLAhNjbUbZSIhvmC6GEOCqBO6IWUzHbaxQBND76uh4VxOmHjhaXwah
-	 1uknenjZpjj2A==
+	b=qvgd3MiUmLnPPtTVZ/uuHAPUj+UnI7q+UUzAEKkz3Qt3FY5+EWXx8byUccQF4VMf+
+	 MfB5zJFCvgDU7++nLVNDpqsGoKOIPEYJvsB7qoBeXKt/MfQlPmHN3p9bwLZfj+N7wy
+	 WnfkN/ZXyRYEFF+H+G7SJqPQoQi5rsCAzOXOy7leRSG6XT9rLUP24h5BtkwiYI3FHj
+	 aMyxvTyi7++T76Af3UxGET0KLf+Mcx0vbVpylOoGVsuFlLleMta1OI2ouZnRsVAx1S
+	 aW9KuS+dKbnUhkuSriAJmBmecE9e/k7Rd4fMifN6ZSvP/iXLtiwsjFoA/OdwEHppSS
+	 P8oT7dmSCcomQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ken Raeburn <raeburn@redhat.com>,
-	Matthew Sakai <msakai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	dm-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.10 59/70] dm vdo: don't refer to dedupe_context after releasing it
-Date: Fri,  4 Oct 2024 14:20:57 -0400
-Message-ID: <20241004182200.3670903-59-sashal@kernel.org>
+Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 60/70] driver core: bus: Fix double free in driver API bus_register()
+Date: Fri,  4 Oct 2024 14:20:58 -0400
+Message-ID: <20241004182200.3670903-60-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182200.3670903-1-sashal@kernel.org>
 References: <20241004182200.3670903-1-sashal@kernel.org>
@@ -66,49 +64,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Ken Raeburn <raeburn@redhat.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 0808ebf2f80b962e75741a41ced372a7116f1e26 ]
+[ Upstream commit bfa54a793ba77ef696755b66f3ac4ed00c7d1248 ]
 
-Clear the dedupe_context pointer in a data_vio whenever ownership of
-the context is lost, so that vdo can't examine it accidentally.
+For bus_register(), any error which happens after kset_register() will
+cause that @priv are freed twice, fixed by setting @priv with NULL after
+the first free.
 
-Signed-off-by: Ken Raeburn <raeburn@redhat.com>
-Signed-off-by: Matthew Sakai <msakai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240727-bus_register_fix-v1-1-fed8dd0dba7a@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-vdo/dedupe.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/bus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/md/dm-vdo/dedupe.c b/drivers/md/dm-vdo/dedupe.c
-index 117266e1b3ae1..28b41d5261f4c 100644
---- a/drivers/md/dm-vdo/dedupe.c
-+++ b/drivers/md/dm-vdo/dedupe.c
-@@ -734,6 +734,7 @@ static void process_update_result(struct data_vio *agent)
- 	    !change_context_state(context, DEDUPE_CONTEXT_COMPLETE, DEDUPE_CONTEXT_IDLE))
- 		return;
- 
-+	agent->dedupe_context = NULL;
- 	release_context(context);
- }
- 
-@@ -1653,6 +1654,7 @@ static void process_query_result(struct data_vio *agent)
- 
- 	if (change_context_state(context, DEDUPE_CONTEXT_COMPLETE, DEDUPE_CONTEXT_IDLE)) {
- 		agent->is_duplicate = decode_uds_advice(context);
-+		agent->dedupe_context = NULL;
- 		release_context(context);
- 	}
- }
-@@ -2326,6 +2328,7 @@ static void timeout_index_operations_callback(struct vdo_completion *completion)
- 		 * send its requestor on its way.
- 		 */
- 		list_del_init(&context->list_entry);
-+		context->requestor->dedupe_context = NULL;
- 		continue_data_vio(context->requestor);
- 		timed_out++;
- 	}
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index ffea0728b8b2f..08362ecec0ecb 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -920,6 +920,8 @@ int bus_register(const struct bus_type *bus)
+ 	bus_remove_file(bus, &bus_attr_uevent);
+ bus_uevent_fail:
+ 	kset_unregister(&priv->subsys);
++	/* Above kset_unregister() will kfree @priv */
++	priv = NULL;
+ out:
+ 	kfree(priv);
+ 	return retval;
 -- 
 2.43.0
 
