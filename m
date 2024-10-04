@@ -1,128 +1,75 @@
-Return-Path: <stable+bounces-80732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08EC990221
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 13:34:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2896990270
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 13:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40F02844A4
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 11:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F9521F222C3
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 11:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740A6156238;
-	Fri,  4 Oct 2024 11:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="cmDPgSDJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3BE15DBBA;
+	Fri,  4 Oct 2024 11:47:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [151.80.165.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90881459E0;
-	Fri,  4 Oct 2024 11:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.165.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACE41D5AD8;
+	Fri,  4 Oct 2024 11:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728041677; cv=none; b=etngrmNlrYVtj972P3+3fs53/iNEN2eYOnoob8Hp6Uq4muHr3QsSqupeCDzQPCB7PZ3EOsWaFBDUeLTrDD3xDmZgMZRBkxSQLoLHcclF72eUtXro8fIZ+78eL2+lCtOwC482wJ1KCsevK7XdqWhuB3eQ2j9e++V0Zl6y0w/JCRA=
+	t=1728042446; cv=none; b=I9C9jlqqfUNI8Ti1o/Ot88k5Wn4vghM749UpT5VUtC+NmeY9NZ2M+eI/Q605dE1+5sPMCaeJgiEefZuJ8gl3FCGneNic1HkWFC8khaxDK23uFibcaPslTx9rKttmWJq8Nkv4wdOKBED6HxwQ7yqaX+KLIy5V2vFxKcUNmqnoxNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728041677; c=relaxed/simple;
-	bh=r3byHRX1DD/b6lnSg+ZhhlLMhZNxtPG3BhwsndUIWZI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FL28LWNZLPd1niAFbtw1ElBGvyVXgS55sQQNQVQnAlFiz1nvdUuN33GuRoaR+jDDYudu5ByEmJf8nB+i6PoPqh8tkx+gy6zJZblP+KoauUg9FLg/osy3oURPbXy8HOUpN1IlHcwZOuchqAkThy5UwKVH0hK4nk6Pm2hxeiQhhkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=cmDPgSDJ; arc=none smtp.client-ip=151.80.165.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id 0B91C3E8B0;
-	Fri,  4 Oct 2024 13:34:34 +0200 (CEST)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 9D46B40092;
-	Fri,  4 Oct 2024 11:34:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1728041673; bh=r3byHRX1DD/b6lnSg+ZhhlLMhZNxtPG3BhwsndUIWZI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cmDPgSDJDUGFZl5Pwl3sgFi+WFko/fSHOhTIhB4YzO9jNCFQp4ogSAbfakUEYLtDp
-	 C3oijIKzugW2x2C8jTUMrsUxFyO7/ufIDfFzaeidwz5zHWXc/GVo8COZ9r61JgiEkd
-	 PkkLTKVdcwLAkrf1nJWB9cWx5P5uZVEqmC5F7Yto=
-Received: from [198.18.0.1] (unknown [58.32.43.121])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 8078B405DE;
-	Fri,  4 Oct 2024 11:34:29 +0000 (UTC)
-Message-ID: <e71a5888-306f-4047-aa01-6df301297dd6@aosc.io>
-Date: Fri, 4 Oct 2024 19:34:27 +0800
+	s=arc-20240116; t=1728042446; c=relaxed/simple;
+	bh=0SLIkc6pXbim1GsR1XPmtqI24YJ6z9f6qFd1qlGEDxM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kl3usqkv4r5amzmlRZ75oIXjKxj6QibjSlhZ0x2c/vYpl8uAasnOs+9LNUQHqb7DcJtHnlklLts3quiwK2ROUqzEUc9/w4GYrnXjaD+Czt5DTAYLRUKXwurtfuKm0wsh7YcH+7DtB3lBh4t9Ctw4/6O2XOgKR4RcLExhIbO/5HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79203C4CEC6;
+	Fri,  4 Oct 2024 11:47:23 +0000 (UTC)
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Will Deacon <will@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Rob Herring <robh@kernel.org>,
+	D Scott Phillips <scott@os.amperecomputing.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: James More <james.morse@arm.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum 3194386
+Date: Fri,  4 Oct 2024 12:47:21 +0100
+Message-Id: <172804243078.2676985.11423830386246877637.b4-ty@arm.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241003225239.321774-1-eahariha@linux.microsoft.com>
+References: <20241003225239.321774-1-eahariha@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH 6.10 000/634] 6.10.13-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20241002125811.070689334@linuxfoundation.org>
-Content-Language: en-US
-From: Kexy Biscuit <kexybiscuit@aosc.io>
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9D46B40092
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Spamd-Result: default: False [1.29 / 10.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	BAYES_HAM(-0.12)[66.67%];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	RCVD_COUNT_ONE(0.00)[1];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,sladewatkins.net,gmx.de];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 10/2/2024 8:51 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.13 release.
-> There are 634 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, 03 Oct 2024 22:52:35 +0000, Easwar Hariharan wrote:
+> Add the Microsoft Azure Cobalt 100 CPU to the list of CPUs suffering
+> from erratum 3194386 added in commit 75b3c43eab59 ("arm64: errata:
+> Expand speculative SSBS workaround")
 > 
-> Responses should be made by Fri, 04 Oct 2024 12:56:13 +0000.
-> Anything received after that time might be too late.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.13-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-Building passed on amd64, arm64, loongarch64, ppc64el, and riscv64. 
-Smoke testing passed on 9 amd64 and 1 arm64 test systems.
+Applied to arm64 (for-next/fixes), thanks!
 
-Tested-by: Kexy Biscuit <kexybiscuit@aosc.io>
-
-https://github.com/AOSC-Dev/aosc-os-abbs/pull/8157
+[1/1] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum 3194386
+      https://git.kernel.org/arm64/c/3eddb108abe3
 
 -- 
-Best Regards,
-Kexy Biscuit
+Catalin
+
 
