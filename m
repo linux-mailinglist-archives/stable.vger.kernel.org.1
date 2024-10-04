@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B057990EDA
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:43:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45DAC990EDD
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1C401F2360B
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:43:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AA6E1C22E00
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21361E0DF1;
-	Fri,  4 Oct 2024 18:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05D31E0DA3;
+	Fri,  4 Oct 2024 18:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBcuHUB6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XATyHhpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDF71E0DE9;
-	Fri,  4 Oct 2024 18:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991291E0E1F;
+	Fri,  4 Oct 2024 18:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066682; cv=none; b=gg679tj3rm4yFV4PQqfG93gP/eYxLPuti8ccM0+Eki91o4O1F50vvHn6kdfO1uUM+Xw1r5fIqIkniZu7hIMrmgIa2jLuiJDlh4QvTBoLAZZGzz9e/p0MjpPdkgRnkI0B64SmxtPjIz/M3HZ5tvjl7w/1HNqYf3zs8gmPnwq47/0=
+	t=1728066685; cv=none; b=g554iPOPrvav0XhUjii4TEz7QnFmK8QbWa2lwxsbQyS9ZkYkuMOMmhuAu8Lk+Mx/3GXlZIP+Vl5rN2rP4/TYHRI99i5/by+1VwwlZTtTR6l/Ysh7rWplFvIzy0P8/+VRm+3+Wh3snkrGrFuXI/Atj8Y++NK+M87WTJiGFVJB7KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066682; c=relaxed/simple;
-	bh=Et/QtzBMD6b+dSzO1dRlGuwZ1D+exiJmgTfEy/ZuCiM=;
+	s=arc-20240116; t=1728066685; c=relaxed/simple;
+	bh=ABc0QBjQCqeraLJRnvc3Amm0w2qOe4YTPG226MAJ5fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dl0X8GOyko+8BBRGMgutYPkdl0Lhonb4VgDmo7lPsD1Oa/vOPHj4fRbS+c66Au+JKDeIiNIDIAO2ZzNHXgq/L7jby+0I8n/BmXqXbANgPKkZtZjPMWFk/DzRgoZS2LJ2i10+HgaUODLBvv8aYcjw9TeTqVcS9egyxRsqe1c6Cg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBcuHUB6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A64C4CED0;
-	Fri,  4 Oct 2024 18:31:21 +0000 (UTC)
+	 MIME-Version; b=RPL/cgFbGqD6HjqaRHaOCboGbeCX4wymzQzmGhUmK5TmTU7HolxPtTDr3FL6eXEIMxwK4uvwQh/M90BzPLz3JN+YadXnZFxyr0x+MTKje7hhW+0H6l8qjFxNs4I+F2bub8T5yywL5YC/mYpYFlCtbq2QMwoC2phUf5hsjakUBy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XATyHhpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A79C4CECC;
+	Fri,  4 Oct 2024 18:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066682;
-	bh=Et/QtzBMD6b+dSzO1dRlGuwZ1D+exiJmgTfEy/ZuCiM=;
+	s=k20201202; t=1728066685;
+	bh=ABc0QBjQCqeraLJRnvc3Amm0w2qOe4YTPG226MAJ5fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBcuHUB6BYzmQcR+bxYw6+PEeOj4N8k8KwgjbhCxErHv2fRr5SjY8qccB2QJEk+Uh
-	 hnyiL0M8cekIzK1wyN8n+9kLgJ6VjLuwAs20d9QzWKKEITtIVbkr4rOc7gePmcNCkZ
-	 nllnQNeoYmnvjbdSSPjU9RADpKnbalYGYH/YYPs++hfOMBadnPdDz6H5/av4Apia9T
-	 S2kRGss+bUfsdmruUJ60/QS7PoKs6X3EMokh/n5igtBGH2zbY2UUf+8HQG/gBR2zDo
-	 TWZXlFVgre+VN+jHsueeyvXuqU7tbM46bm/b1DQEUNJv4gXVbPcGsQ16CSej9qCdMY
-	 dE4ju46nRxhVg==
+	b=XATyHhpVrgxtkDeEbK5MVhAOUId3Q+546kWA12rfhbqt43jU6qPRLKZEg8tHcjUDc
+	 AkLSZ2CKG4GlEJCuHOCbk4mmr1fhqFpbSiimG9Pd0L8mEB+V5kA0daXF+C39guAyNb
+	 cF/M3F0JrtJUi+uIO4YCwztTMy9jkaDGGyIiZfeBnr5mGJMeHIYIFbzLGxQ8CQqiYb
+	 76YEy1RL72p0rasRZqut9zaTAHw9I0nwinyRm5GkJPBMsNDh2g3ZLxforI8bHvkHXo
+	 t94gAg8Vfvj7AcRJl9av+N2t80GImGLKPSb1+2flwZyFBof8BEnjISg/HGcCaLxnOq
+	 z1N0MNul5XVog==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Jordan <daniel.m.jordan@oracle.com>,
-	John 'Warthog9' Hawley <warthog9@eaglescrag.net>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 09/21] ktest.pl: Avoid false positives with grub2 skip regex
-Date: Fri,  4 Oct 2024 14:30:44 -0400
-Message-ID: <20241004183105.3675901-9-sashal@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	mturquette@baylibre.com,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 10/21] clk: bcm: bcm53573: fix OF node leak in init
+Date: Fri,  4 Oct 2024 14:30:45 -0400
+Message-ID: <20241004183105.3675901-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183105.3675901-1-sashal@kernel.org>
 References: <20241004183105.3675901-1-sashal@kernel.org>
@@ -65,50 +66,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
+[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
 
-Some distros have grub2 config files with the lines
+Driver code is leaking OF node reference from of_get_parent() in
+bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
+first place, because the parent node will not be freed while we are
+processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
+leak by accessing parent directly, instead of of_get_parent().
 
-    if [ x"${feature_menuentry_id}" = xy ]; then
-      menuentry_id_option="--id"
-    else
-      menuentry_id_option=""
-    fi
-
-which match the skip regex defined for grub2 in get_grub_index():
-
-    $skip = '^\s*menuentry';
-
-These false positives cause the grub number to be higher than it
-should be, and the wrong kernel can end up booting.
-
-Grub documents the menuentry command with whitespace between it and the
-title, so make the skip regex reflect this.
-
-Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
-Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
+ drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index d36612c620981..e7adb429018b2 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1954,7 +1954,7 @@ sub get_grub_index {
-     } elsif ($reboot_type eq "grub2") {
- 	$command = "cat $grub_file";
- 	$target = '^\s*menuentry.*' . $grub_menu_qt;
--	$skip = '^\s*menuentry';
-+	$skip = '^\s*menuentry\s';
- 	$submenu = '^\s*submenu\s';
-     } elsif ($reboot_type eq "grub2bls") {
-         $command = $grub_bls_get;
+diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
+index 84f2af736ee8a..83ef41d618be3 100644
+--- a/drivers/clk/bcm/clk-bcm53573-ilp.c
++++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
+@@ -112,7 +112,7 @@ static void bcm53573_ilp_init(struct device_node *np)
+ 		goto err_free_ilp;
+ 	}
+ 
+-	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
++	ilp->regmap = syscon_node_to_regmap(np->parent);
+ 	if (IS_ERR(ilp->regmap)) {
+ 		err = PTR_ERR(ilp->regmap);
+ 		goto err_free_ilp;
 -- 
 2.43.0
 
