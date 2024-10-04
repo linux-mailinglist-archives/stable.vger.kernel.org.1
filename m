@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-81101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86509990EF0
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:45:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6483990EF7
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3124E28170B
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:45:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67AF428196D
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B59922DBA2;
-	Fri,  4 Oct 2024 18:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140EA22DBC9;
+	Fri,  4 Oct 2024 18:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVfUQ2Ri"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SpTuFQ+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF991E105F;
-	Fri,  4 Oct 2024 18:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C140722DBC3;
+	Fri,  4 Oct 2024 18:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066696; cv=none; b=Savm96yUReAf8NrEbHzFoiYTbNgSMlOLb9t8h82EOtFDz5oD/2oUygYy7gdAGG9dB0SDznaG7ALdZR5yX/BszH9j9+TG2LkUlaOu+5/3D5okB5e5XtaMa84Yeto0iPBpM7w6MbUtt6ztllkXF5MO5j547qlxf0BdbyYZe8jhwhw=
+	t=1728066697; cv=none; b=uzfeVewwMA7OepvHgH42ZIN2K6RXE/04klYM0BdoPEnViLyZZPdat9jhFjfYtpB6QIRYRo8D8byVLhZ/aHiod9m7B5FYsXz+21u91zNXdqJ1rMxrpOy8nSIZzbRqo5b0077uAw5//IGmSu5WthJ8Z8peH62B+x+PCjLzKNAt9Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066696; c=relaxed/simple;
-	bh=nGNiYIjZSXut+aGfHt7CxIGumz9ID2G0x+w7lKmNCko=;
+	s=arc-20240116; t=1728066697; c=relaxed/simple;
+	bh=23AYrvH6m7KzyPtR5dF5yMTUmucHtURniMfelumR7nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1uPKYgdTLnxy9eAkS1ope2RscuARWQrwavUwGY8ASqwbD/WUgdarkd5jdOvKs257SLUiFhUnqNflzRIREv7jQv4QCB84bfi2kShroKRIwkAs1S4L6DiwhJe8MRtRqMe3SVNPgpZ70fxM9JaObNI2AbLC8H3Kut+Kjy3mdFuCic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVfUQ2Ri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11905C4CEC6;
-	Fri,  4 Oct 2024 18:31:34 +0000 (UTC)
+	 MIME-Version; b=mSc5obpewmEMVqkf2b7H0vunrEpwAA8z7dJ83/NdYW015hVpeitwyuIsZv9uVGDDi7hwMCcaeHE1OaKWDwmuiEgSd6VcvpZSt/KsXX5STb3XWZyIVNvZl8Qk4oISqPJqnTgBP/3mtVl/FSzl6Clx4FxB3ypHZr5Iq6zzLd7lcuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SpTuFQ+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55834C4CECC;
+	Fri,  4 Oct 2024 18:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066695;
-	bh=nGNiYIjZSXut+aGfHt7CxIGumz9ID2G0x+w7lKmNCko=;
+	s=k20201202; t=1728066697;
+	bh=23AYrvH6m7KzyPtR5dF5yMTUmucHtURniMfelumR7nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVfUQ2RiSkgHujksJv7Mr3PflOjmwf/L+5v1WMCgQxV/knazPnY0fIBhBKFNq97kj
-	 o7AMfBKdUbcwW1P9vZPsoqDfc/bPQibGmzBBh0tOivEXy4mmNrtr+daHaXP+or9LGg
-	 OU4e3g7oPjjxrYo6+Ppy3oaQYNHd0hHKBzHoUCDOmwOALY6hcVyfVMukgINyMxtRWX
-	 jqDOjKM4vz7381j9htiYgJLiZ9P3S5OHLKRVAG8tmxg8IcK6CzCLqJNRQHI9rcm8HI
-	 B9A/vJfvXqaCYybV50CIx/a/quSJvbDHIvrZwSGbOZRACuqiF28yxN+Xp4wWzXRlY2
-	 kk77ornvms3BA==
+	b=SpTuFQ+QRX2zS8r4h/9mqeyPytl04Ti1ikMRoz2Dgpal1W2Jwho6Lc5A9jYn8yuiK
+	 ogD1Ts5hRsNy2C2fxLgvTK9CwNTTfiyA34MFI2rocbnHz7bPvVNXymzCNGNav7L9VE
+	 Ssx5qELE2FO6yHZlihpTWDxbNSeftqN3+7BpAyobs4c9CUYdTL5Nha2pTTOqsh+OiC
+	 1+GU1HqVIF6QuCIQVTVt8A4pz2a9aiAHlJhtC0U1DjMMQc/CVnHPtV4mPkhew2+iu7
+	 mOTa/1bK6tFSp+F3BYFXq/xY5oag6PRlDkUGqsbPGoK9X+RlogE2SacoHs4KHNbdH6
+	 PLh55yknAyJ0g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shawn Shao <shawn.shao@jaguarmicro.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Philip Chen <philipchen@chromium.org>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hminas@synopsys.com,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 17/21] usb: dwc2: Adjust the timing of USB Driver Interrupt Registration in the Crashkernel Scenario
-Date: Fri,  4 Oct 2024 14:30:52 -0400
-Message-ID: <20241004183105.3675901-17-sashal@kernel.org>
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	ira.weiny@intel.com,
+	pankaj.gupta.linux@gmail.com,
+	nvdimm@lists.linux.dev,
+	virtualization@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.4 18/21] virtio_pmem: Check device status before requesting flush
+Date: Fri,  4 Oct 2024 14:30:53 -0400
+Message-ID: <20241004183105.3675901-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183105.3675901-1-sashal@kernel.org>
 References: <20241004183105.3675901-1-sashal@kernel.org>
@@ -66,122 +71,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Shawn Shao <shawn.shao@jaguarmicro.com>
+From: Philip Chen <philipchen@chromium.org>
 
-[ Upstream commit 4058c39bd176daf11a826802d940d86292a6b02b ]
+[ Upstream commit e25fbcd97cf52c3c9824d44b5c56c19673c3dd50 ]
 
-The issue is that before entering the crash kernel, the DWC USB controller
-did not perform operations such as resetting the interrupt mask bits.
-After entering the crash kernel,before the USB interrupt handler
-registration was completed while loading the DWC USB driver,an GINTSTS_SOF
-interrupt was received.This triggered the misroute_irq process within the
-GIC handling framework,ultimately leading to the misrouting of the
-interrupt,causing it to be handled by the wrong interrupt handler
-and resulting in the issue.
+If a pmem device is in a bad status, the driver side could wait for
+host ack forever in virtio_pmem_flush(), causing the system to hang.
 
-Summary:In a scenario where the kernel triggers a panic and enters
-the crash kernel,it is necessary to ensure that the interrupt mask
-bit is not enabled before the interrupt registration is complete.
-If an interrupt reaches the CPU at this moment,it will certainly
-not be handled correctly,especially in cases where this interrupt
-is reported frequently.
+So add a status check in the beginning of virtio_pmem_flush() to return
+early if the device is not activated.
 
-Please refer to the Crashkernel dmesg information as follows
-(the message on line 3 was added before devm_request_irq is
-called by the dwc2_driver_probe function):
-[    5.866837][    T1] dwc2 JMIC0010:01: supply vusb_d not found, using dummy regulator
-[    5.874588][    T1] dwc2 JMIC0010:01: supply vusb_a not found, using dummy regulator
-[    5.882335][    T1] dwc2 JMIC0010:01: before devm_request_irq  irq: [71], gintmsk[0xf300080e], gintsts[0x04200009]
-[    5.892686][    C0] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.0-jmnd1.2_RC #18
-[    5.900327][    C0] Hardware name: CMSS HyperCard4-25G/HyperCard4-25G, BIOS 1.6.4 Jul  8 2024
-[    5.908836][    C0] Call trace:
-[    5.911965][    C0]  dump_backtrace+0x0/0x1f0
-[    5.916308][    C0]  show_stack+0x20/0x30
-[    5.920304][    C0]  dump_stack+0xd8/0x140
-[    5.924387][    C0]  pcie_xxx_handler+0x3c/0x1d8
-[    5.930121][    C0]  __handle_irq_event_percpu+0x64/0x1e0
-[    5.935506][    C0]  handle_irq_event+0x80/0x1d0
-[    5.940109][    C0]  try_one_irq+0x138/0x174
-[    5.944365][    C0]  misrouted_irq+0x134/0x140
-[    5.948795][    C0]  note_interrupt+0x1d0/0x30c
-[    5.953311][    C0]  handle_irq_event+0x13c/0x1d0
-[    5.958001][    C0]  handle_fasteoi_irq+0xd4/0x260
-[    5.962779][    C0]  __handle_domain_irq+0x88/0xf0
-[    5.967555][    C0]  gic_handle_irq+0x9c/0x2f0
-[    5.971985][    C0]  el1_irq+0xb8/0x140
-[    5.975807][    C0]  __setup_irq+0x3dc/0x7cc
-[    5.980064][    C0]  request_threaded_irq+0xf4/0x1b4
-[    5.985015][    C0]  devm_request_threaded_irq+0x80/0x100
-[    5.990400][    C0]  dwc2_driver_probe+0x1b8/0x6b0
-[    5.995178][    C0]  platform_drv_probe+0x5c/0xb0
-[    5.999868][    C0]  really_probe+0xf8/0x51c
-[    6.004125][    C0]  driver_probe_device+0xfc/0x170
-[    6.008989][    C0]  device_driver_attach+0xc8/0xd0
-[    6.013853][    C0]  __driver_attach+0xe8/0x1b0
-[    6.018369][    C0]  bus_for_each_dev+0x7c/0xdc
-[    6.022886][    C0]  driver_attach+0x2c/0x3c
-[    6.027143][    C0]  bus_add_driver+0xdc/0x240
-[    6.031573][    C0]  driver_register+0x80/0x13c
-[    6.036090][    C0]  __platform_driver_register+0x50/0x5c
-[    6.041476][    C0]  dwc2_platform_driver_init+0x24/0x30
-[    6.046774][    C0]  do_one_initcall+0x50/0x25c
-[    6.051291][    C0]  do_initcall_level+0xe4/0xfc
-[    6.055894][    C0]  do_initcalls+0x80/0xa4
-[    6.060064][    C0]  kernel_init_freeable+0x198/0x240
-[    6.065102][    C0]  kernel_init+0x1c/0x12c
-
-Signed-off-by: Shawn Shao <shawn.shao@jaguarmicro.com>
-Link: https://lore.kernel.org/r/20240830031709.134-1-shawn.shao@jaguarmicro.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philip Chen <philipchen@chromium.org>
+Message-Id: <20240826215313.2673566-1-philipchen@chromium.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/nvdimm/nd_virtio.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 4f640c0c51b39..717fd0c0bccca 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -407,18 +407,6 @@ static int dwc2_driver_probe(struct platform_device *dev)
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index 10351d5b49fac..41e97c6567cf9 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -44,6 +44,15 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	unsigned long flags;
+ 	int err, err1;
  
- 	spin_lock_init(&hsotg->lock);
- 
--	hsotg->irq = platform_get_irq(dev, 0);
--	if (hsotg->irq < 0)
--		return hsotg->irq;
--
--	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
--		hsotg->irq);
--	retval = devm_request_irq(hsotg->dev, hsotg->irq,
--				  dwc2_handle_common_intr, IRQF_SHARED,
--				  dev_name(hsotg->dev), hsotg);
--	if (retval)
--		return retval;
--
- 	hsotg->vbus_supply = devm_regulator_get_optional(hsotg->dev, "vbus");
- 	if (IS_ERR(hsotg->vbus_supply)) {
- 		retval = PTR_ERR(hsotg->vbus_supply);
-@@ -454,6 +442,20 @@ static int dwc2_driver_probe(struct platform_device *dev)
- 	if (retval)
- 		goto error;
- 
-+	hsotg->irq = platform_get_irq(dev, 0);
-+	if (hsotg->irq < 0) {
-+		retval = hsotg->irq;
-+		goto error;
++	/*
++	 * Don't bother to submit the request to the device if the device is
++	 * not activated.
++	 */
++	if (vdev->config->get_status(vdev) & VIRTIO_CONFIG_S_NEEDS_RESET) {
++		dev_info(&vdev->dev, "virtio pmem device needs a reset\n");
++		return -EIO;
 +	}
 +
-+	dev_dbg(hsotg->dev, "registering common handler for irq%d\n",
-+		hsotg->irq);
-+	retval = devm_request_irq(hsotg->dev, hsotg->irq,
-+				  dwc2_handle_common_intr, IRQF_SHARED,
-+				  dev_name(hsotg->dev), hsotg);
-+	if (retval)
-+		goto error;
-+
- 	/*
- 	 * For OTG cores, set the force mode bits to reflect the value
- 	 * of dr_mode. Force mode bits should not be touched at any
+ 	might_sleep();
+ 	req_data = kmalloc(sizeof(*req_data), GFP_KERNEL);
+ 	if (!req_data)
 -- 
 2.43.0
 
