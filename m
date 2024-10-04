@@ -1,88 +1,94 @@
-Return-Path: <stable+bounces-81141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DA699129B
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 01:01:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7719912D0
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 01:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6CDC1F23B04
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 23:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02E061F23FA5
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 23:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6821714830D;
-	Fri,  4 Oct 2024 23:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32B114E2CD;
+	Fri,  4 Oct 2024 23:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aaront.org header.i=@aaront.org header.b="gBjjXSUs";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="PIKjtK6q"
+	dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b="dOHf5NSm";
+	dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b="ewQmsIZs"
 X-Original-To: stable@vger.kernel.org
-Received: from a27-57.smtp-out.us-west-2.amazonses.com (a27-57.smtp-out.us-west-2.amazonses.com [54.240.27.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+Received: from smtp-out1.aaront.org (smtp-out1.aaront.org [52.0.59.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B6B139590;
-	Fri,  4 Oct 2024 23:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.27.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66614231C9E;
+	Fri,  4 Oct 2024 23:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.0.59.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728082897; cv=none; b=FSNnSjAR6L2NUihP1ibo2ZTi5DrzzpAXfGqq16pk4BhaQNdAduTER1TJpK16OJeJdbnA4NEYYnUiQ3uHQtOdP9H5zCd75a6vD9cNRoGD6UP7Rz0K7XhlLYgH/Q5GfX3nP55ktWgsjbJZN7prcVReOKhKCORS+bEE/rH5EIPj0yo=
+	t=1728083480; cv=none; b=kyvf2Y697QVjgxv1mqtBN8ftp0iWHhSkCFFl6AuGTdj5vKaukqXNCueQHIDwmnDv5j/C8sEwjBBRB+NwuAi68gFL/yRh+igq2TlmfMutcS3fQ+wjqhBAzse88QnOy7iKTQCBXKiFxxJFmzM2UcEirpgoPK8ZR4iG6YYNWe3SwHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728082897; c=relaxed/simple;
-	bh=1Dl575V0wsuPTalg0wXqgivRD05gI/oK5+dCZ+uJADA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fmR4dmSVclzlZHAol4POSxsO/++Zkl1iyy900DXwCBVd9sKzwy03Airp2NHimVQWxIFo45P96cEM+DMalH0gYMRR814aPNiAKDDnpn8QbvGQpdKGZsWj+FAtMOhmL48uM9gHcsSiGkxIBuekPujWfZbPU+4YGd56ZvWy9wDbp4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org; spf=pass smtp.mailfrom=ses-us-west-2.bounces.aaront.org; dkim=pass (1024-bit key) header.d=aaront.org header.i=@aaront.org header.b=gBjjXSUs; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=PIKjtK6q; arc=none smtp.client-ip=54.240.27.57
+	s=arc-20240116; t=1728083480; c=relaxed/simple;
+	bh=KMN2c8hGsw5EmHaZU5+5NqKiYLs6SadoVbNXHeAHjKQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qEQJNEba5B6KnELegzgnedLRgiIxZ/kCt+XDxVIBgNMfNgcBdgjs9Udy/4ELQAPAWtaQFQYjRo1uovZ1mjHP2mMHv30Eq+oHf/K8KdkZKVjeTpa3codYGdAKRpUA1pXswzcwYAMmbVrZtA6dCw8VdKECVSb/aXcJOw9lkOB4Ja8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org; spf=pass smtp.mailfrom=aaront.org; dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b=dOHf5NSm; dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b=ewQmsIZs; arc=none smtp.client-ip=52.0.59.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ses-us-west-2.bounces.aaront.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=hnpv7wyf3seapxrj4k4fhpgkc6n7n3bh; d=aaront.org; t=1728082894;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=1Dl575V0wsuPTalg0wXqgivRD05gI/oK5+dCZ+uJADA=;
-	b=gBjjXSUsDWX2Rtb9TrMpvrch2sejESRtidSIx/TfjG0WDICDHe1XoaJpuwnaI2kS
-	xVGalovWutQdwlSfHT6U23GExmJ4EzyUFNtD7Du0JRJUmzs27QFRNxnWYxo7sdXaA5p
-	gXy7pof7Uy7Uxrs7UbEUMCYG+NcP+2iBHGp+5wcg=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=7v7vs6w47njt4pimodk5mmttbegzsi6n; d=amazonses.com; t=1728082894;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-	bh=1Dl575V0wsuPTalg0wXqgivRD05gI/oK5+dCZ+uJADA=;
-	b=PIKjtK6qpHbLo6K5XGSDGmhCjmQTuA92m5aYKVe35b3q7SO6cpPUWBCyznRDYdJm
-	CpEGJT4yBXZvpctOphJlQkXJaJUqtbqV4s/bzipF50tOUlgF+aiuOzvkQXVB5p9Gpyb
-	+JZCaqdOTVnfZ4EpIvE+IH4RyKAh8o+1MY0NB/+A=
-Message-ID: <0101019259c45edc-189b998f-1617-427e-b5dd-398bd8931b5f-000000@us-west-2.amazonses.com>
-Date: Fri, 4 Oct 2024 23:01:34 +0000
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaront.org
+Received: by smtp-out1.aaront.org (Postfix) with ESMTP id 4XL3z22L4rzMc;
+	Fri,  4 Oct 2024 23:04:46 +0000 (UTC)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/simple; d=aaront.org;
+    h=from:to:cc:subject:date:message-id:mime-version
+    :content-transfer-encoding; s=habm2wya2ukbsdan; bh=KMN2c8hGsw5Em
+    HaZU5+5NqKiYLs6SadoVbNXHeAHjKQ=; b=dOHf5NSmuN1Vo1pAFlr68h+nRtBtR
+    9lsOHeTOXWJkIr+FbXuQyR2lXM8+U4uZoiKCu90aucwIlGVYPZhQy9fCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aaront.org; h=
+    from:to:cc:subject:date:message-id:mime-version
+    :content-transfer-encoding; s=qkjur4vrxk6kmqfk; bh=KMN2c8hGsw5Em
+    HaZU5+5NqKiYLs6SadoVbNXHeAHjKQ=; b=ewQmsIZsBZNTXh4N5MB7vWxLvM/5W
+    nMft3iUcw2gOhpZqg811vKWm8N+6WWVNaqEg9Pts960L9fWr2umxSCo3Oo2xveHU
+    PiWLJpGss8rII90cp2TXvq1dZOp8apKD8fVbj6NwZr//KRAgktxc+ipS8VvSWwYk
+    1dv8Li01aRPqw8cJVXWFnDmT/GMMQQeVQGEFqvTIffYWlm/iQcsExMTVpjVq8s0a
+    jyw5Tfq6AjMsHX5MT/VxtPfYfD6HgEljCdJ/9j9DLDxUxeHFYSlUuIQBgjVkXo55
+    CYZCUM0n+RZFYvm6XkYtUCGaMSHdynRRN+VQRaR2Csq+Eg4g9/8h/IJNw==
+From: Aaron Thompson <dev@aaront.org>
+To: Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Aaron Thompson <dev@aaront.org>
+Subject: [PATCH v2 0/3] Bluetooth: Fix a few module init/deinit bugs
+Date: Fri,  4 Oct 2024 23:04:07 +0000
+Message-Id: <20241004230410.299824-1-dev@aaront.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] Bluetooth: Call iso_exit() on module unload
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>, 
-	Marcel Holtmann <marcel@holtmann.org>, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-References: <20241004003030.160721-1-dev@aaront.org>
- <20241004003030.160721-3-dev@aaront.org>
- <CABBYNZ+gOZ36CJpq5Z7zXSNnruRpGrau9gXWo-cXKwU814ybvg@mail.gmail.com>
-Content-Language: en-US
-From: Aaron Thompson <dev@aaront.org>
-In-Reply-To: <CABBYNZ+gOZ36CJpq5Z7zXSNnruRpGrau9gXWo-cXKwU814ybvg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Feedback-ID: ::1.us-west-2.OwdjDcIoZWY+bZWuVZYzryiuW455iyNkDEZFeL97Dng=:AmazonSES
-X-SES-Outgoing: 2024.10.04-54.240.27.57
+Content-Transfer-Encoding: 8bit
 
-Hi Luiz,
+Hi all,
 
-On 10/4/24 12:30, Luiz Augusto von Dentz wrote:
-> 
-> I had it under bt_exit with the rest of the exit functions so that we
-> don't have to move it once ISO sockets become stable.
-> 
+These patches fix a few bugs in init and deinit for the bluetooth
+module. I ran into the first one when I started running a kernel with
+debugfs disabled on my laptop, and I ran into the next two when I was
+working on the fix for the first one.
 
-Sure thing. I was just guessing based on where the call to iso_init() 
-is. Thanks for the review!
+v2:
+  * Move iso_exit() call to bt_exit() (Luiz Augusto von Dentz)
 
--- Aaron
+Aaron Thompson (3):
+  Bluetooth: ISO: Fix multiple init when debugfs is disabled
+  Bluetooth: Call iso_exit() on module unload
+  Bluetooth: Remove debugfs directory on module init failure
+
+ net/bluetooth/af_bluetooth.c | 3 +++
+ net/bluetooth/iso.c          | 6 +-----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+-- 
+2.39.5
 
 
