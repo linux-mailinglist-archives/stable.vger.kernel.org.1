@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-81059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D556990E64
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:34:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA89A990E67
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6A941C21ED4
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:34:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92D9B1F2312D
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122EE1DF253;
-	Fri,  4 Oct 2024 18:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11DB1E3793;
+	Fri,  4 Oct 2024 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jEwknbi6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIYdJ7iy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF5B1DF25A;
-	Fri,  4 Oct 2024 18:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669341DAC86;
+	Fri,  4 Oct 2024 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066608; cv=none; b=AsX00zByIHPuHvqWM7d9KLRCVh5ANUcn8GJX/rqF+mlaNIAXNQv8t+1ndHxIKW0WMiOzqO9ae779y2H2vKkNvGM2C35cddm4fCoNiJ++kdzC8ziX74zVfat2SsIjHIUpMssAfXaYl43dRMMSLb6P61YvfBGQ17gZne+w+qQC92Y=
+	t=1728066611; cv=none; b=gs3KB6Sa7h52UQtpt3W7I2Yv2YoKm45ewwi88CsaOQAEmoXqBJu7guDF7YVDk21/ADcEtJUSdEiAN4Xv4H0ijFKOvQ0Q6LLYj0H9L1ogCdakvvvYjbIDejT+CYHvuh2jMC7pTzBuSwbSz2NmTohalttWIP0caMcddcuQm3EPoHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066608; c=relaxed/simple;
-	bh=+KaJrIRtLYyTg1NyKVAJTDMq3P9Oib12WipD/KF9iSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z0s1GDZFo5M+/o1Tw93uZWgx50kHm66WKxXEk2K35DAhaN28YI8HrmrVfTShNGGoXbeWJNEa1Nyemihn7j7hjZ6I/gtxwtkIVs1ZvOb/pJ4WcbOPxJfz5rbFoHyboGGWs7UhP2EsuNfkfbTbpGH+6PxxJND7TR7Y0u0SqWPTALE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEwknbi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D2FC4CEC6;
-	Fri,  4 Oct 2024 18:30:07 +0000 (UTC)
+	s=arc-20240116; t=1728066611; c=relaxed/simple;
+	bh=/HJChuA+UwaKKNj96ZJZiKhTQqrC2wONWRpyxCCnJWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EwKomXJS/zw6Cw6L9h7baeXheltCQP6XPDRBmgpUYqOXgEiDH+fnBdieLAWRIWxMyesLiX8o1xIHquzAyQqiJif1sAPc/+JrqlxvCej5TILAmz/KP19kvDwm9s7aPMgsWnItoXiPNm5QZCoMeLzYQmEI/YCV7eNo/Legt8dePw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIYdJ7iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7959DC4CEDA;
+	Fri,  4 Oct 2024 18:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066608;
-	bh=+KaJrIRtLYyTg1NyKVAJTDMq3P9Oib12WipD/KF9iSg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jEwknbi60kddwXGyEyqUhUs3DjDNRB7fhd3ia6beW6VvTYD8brq5mR7QBJOOg4QMb
-	 xx4Tpw66Y9WmR9mygwR6Q/IDAcfI35HSroTouC/vbqwjpqZBcIPeiF1ZbdSxMHR11i
-	 B5sNN9JsNA6lPnn1OSSDYqtym4YdTnIdqSXcB7EB5XTgiH8m12GNMkSAYnDhFYH4v4
-	 GoS/B0VwtQHuYg0M4AckloEUD1J/ozI2zjMfUgzbROp8j59hzoU5Kn9a41uDBXZOUF
-	 OU7Ocidx3fRm1L5azItU13u+fyxZOVyDg87QfO2J6cLpmcjouqCxS4/YuliTO+tpQy
-	 cBMY3+LhIOjyQ==
+	s=k20201202; t=1728066611;
+	bh=/HJChuA+UwaKKNj96ZJZiKhTQqrC2wONWRpyxCCnJWE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CIYdJ7iyh+3IVzufNo1i+jXngkDy05ZK7N2E1okBvIiHul9dGhMF/Q52xc5rqZutb
+	 GWB7gw5AsZyPxT664v/+s2MOor5vhB12WM5uw1ujkiRfTP/B0n7lJyoTxbMDttpkxu
+	 97XcWVv6bOzeWAs3h474MUrP3tonbxoKSDHF5bS+VTzH5cOoaaXVtWJ+C/C1EOdknr
+	 Bo/FxOeFI63vYKwmm+XlUmW8P+SURCgTuUo2lcqsIrrpcn5jATVgP0QppRnwpb91PA
+	 UCSwGmSVqCPJVvsd19WTBqCEIz3dGCkz9YVgQfiQ7eunleha9vWOhIchRlD8jBRfF4
+	 Bh/sOlVuNN5Hg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tao Chen <chen.dylane@gmail.com>,
-	Jinke Han <jinkehan@didiglobal.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 01/26] bpf: Check percpu map value size first
-Date: Fri,  4 Oct 2024 14:29:27 -0400
-Message-ID: <20241004183005.3675332-1-sashal@kernel.org>
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	nathan@kernel.org,
+	glider@google.com,
+	iii@linux.ibm.com,
+	jpoimboe@kernel.org,
+	sumanthk@linux.ibm.com,
+	frankja@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 02/26] s390/boot: Compile all files with the same march flag
+Date: Fri,  4 Oct 2024 14:29:28 -0400
+Message-ID: <20241004183005.3675332-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241004183005.3675332-1-sashal@kernel.org>
+References: <20241004183005.3675332-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,57 +73,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
-From: Tao Chen <chen.dylane@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1d244784be6b01162b732a5a7d637dfc024c3203 ]
+[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
 
-Percpu map is often used, but the map value size limit often ignored,
-like issue: https://github.com/iovisor/bcc/issues/2519. Actually,
-percpu map value size is bound by PCPU_MIN_UNIT_SIZE, so we
-can check the value size whether it exceeds PCPU_MIN_UNIT_SIZE first,
-like percpu map of local_storage. Maybe the error message seems clearer
-compared with "cannot allocate memory".
+Only a couple of files of the decompressor are compiled with the
+minimum architecture level. This is problematic for potential function
+calls between compile units, especially if a target function is within
+a compile until compiled for a higher architecture level, since that
+may lead to an unexpected operation exception.
 
-Signed-off-by: Jinke Han <jinkehan@didiglobal.com>
-Signed-off-by: Tao Chen <chen.dylane@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910144111.1464912-2-chen.dylane@gmail.com
+Therefore compile all files of the decompressor for the same (minimum)
+architecture level.
+
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/arraymap.c | 3 +++
- kernel/bpf/hashtab.c  | 3 +++
- 2 files changed, 6 insertions(+)
+ arch/s390/boot/Makefile | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 5102338129d5f..3d92e42c3895a 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -74,6 +74,9 @@ int array_map_alloc_check(union bpf_attr *attr)
- 		 * access the elements.
- 		 */
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
+diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
+index 41a64b8dce252..6294ddc2ff891 100644
+--- a/arch/s390/boot/Makefile
++++ b/arch/s390/boot/Makefile
+@@ -8,11 +8,8 @@ GCOV_PROFILE := n
+ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
  
- 	return 0;
- }
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 72bc5f5752543..4c7cab79d90e5 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -404,6 +404,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
- 		 * kmalloc-able later in htab_map_update_elem()
- 		 */
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
+-KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
+-KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
+-
+ #
+-# Use minimum architecture for als.c to be able to print an error
++# Use minimum architecture level so it is possible to print an error
+ # message if the kernel is started on a machine which is too old
+ #
+ ifndef CONFIG_CC_IS_CLANG
+@@ -21,16 +18,10 @@ else
+ CC_FLAGS_MARCH_MINIMUM := -march=z10
+ endif
  
- 	return 0;
- }
+-ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
+-AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
+-CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
+-CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
+-endif
++KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
++KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
++KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
+ 
+ CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
+ 
 -- 
 2.43.0
 
