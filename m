@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-80790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0958F990B04
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:21:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C426F990B09
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11FECB267BC
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:21:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED4CA1C227C5
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8892139B6;
-	Fri,  4 Oct 2024 18:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8D02178ED;
+	Fri,  4 Oct 2024 18:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSwkhrYT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="juJ2JZgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B1D2101BE;
-	Fri,  4 Oct 2024 18:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3632F2178E6;
+	Fri,  4 Oct 2024 18:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065928; cv=none; b=b+NPBuCS73GMwwcH+eupBxFi4Jv2tIZi0KUM2VR5iB71Zu3trUGZ/L3FrEI5xuhC5mRp0P6ZGRrTAYn9Tnf7Yj/+SQkh3bbXaoU/esyzlrUyPI1pMkxTj3huvh4WQiqrlZEdCvHy4W2/F6az7R8Fl+vhd29TRlZn7JvlnF2AFm4=
+	t=1728065930; cv=none; b=cDx5gFM/WERvTzTr4m1tNlvU0WC8V8pRXR0XaO5vRE0RggDYDGPRopnRD5/g11nclooRgxilKThLQcT/gD9Ei3bErOzHytPj1Arnx4XvxaoAhT9AEi523q6m5T398p+xCSA6csPx4pxJGRy/Ld65W04tuDaWNNqcJzXyjCDfoi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728065928; c=relaxed/simple;
-	bh=2ahOnuwk7l3o0EEDnBU0EMIb5Yw7a5n5+yQc/ukKReY=;
+	s=arc-20240116; t=1728065930; c=relaxed/simple;
+	bh=v2mvxM65+HybBi/a2juuSaSOAdhlM+sU0raG1huyRQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIbQghRmEqb+LYY97gRjUh5ZQORQIIJ92kjQmaVUlYZoc8qNgrlkfFH90Ensaw4RGhJBrtctX9JKa/k9dJzu9y63kZTkWEH1DNyfGtwtGPxFCEuyZB4eUu0zbCFuRJmqWv7BeuInEleOFwlYaTdRW+X7olaQzXm7BeMnYNwddGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSwkhrYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8459AC4CECE;
-	Fri,  4 Oct 2024 18:18:46 +0000 (UTC)
+	 MIME-Version; b=S2GMyHWA6i1F/IFeU0k6tITCKiuaXM8wr/iQ2m8HxR003VpYDY2Q1djqhJya4NVaLHnBco4zTA8L3pcP8CUgCrEoTJIQp0hiAybKi572F38jtmsRM2ua4snPSEqIniWtVpEKKDHfSwgbAB/wUlaAOKCO4Yl4YbFK2ctUTSGjnGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=juJ2JZgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD66C4CECC;
+	Fri,  4 Oct 2024 18:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065928;
-	bh=2ahOnuwk7l3o0EEDnBU0EMIb5Yw7a5n5+yQc/ukKReY=;
+	s=k20201202; t=1728065929;
+	bh=v2mvxM65+HybBi/a2juuSaSOAdhlM+sU0raG1huyRQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSwkhrYT+dL/TYXGR7TJgDJn4Qbw/Z28su66ftIjuKsuRw/2xU74QimNkuxbD+Eeh
-	 QoNpkmLX1RxO6ALi4H2lTVOXW4xXHDPKldZKyC3NGsMbWJ6bP1nV7T6A32D6qfIHRI
-	 FhpPAuv0hR+/ONEu/WzgohGhxcTF0O9RXTAbP6L+rESs6MOXPC6M7y8KCMoC2BJKfx
-	 nonpJn/z598hzMenttgc5ju1uQJuZFajRMTlUKJHyLpbcWua/TjsPQQzJWh0DEWbk6
-	 ZznX4NOmTdJIgOeLF06CY6I1UTgbmzDPNYbGpe0293LPz+fdWYYrZ6uNLBi01zPUHl
-	 E1uLXiNmKDo4A==
+	b=juJ2JZgdjSPKjzxDoLfzO5kWgVJpWFBdfD6gn8It4WxMlfjFy3L8+WYS5EP7xFHxa
+	 lYI01uRDpx6zWbaTPzZghemVdxitMdXVTGBcj9V62l73urt07caSf0+ooCKFbgt2ph
+	 pmTMdFrV+PPH1leIiOKg7hZHrHbW/Yf5SFhDN9SDtZEpwiW1GFDZQppqE9YFA8wQ1X
+	 5oi8nWG76tKo23culJj4qnx/3aYHxZlqkhVMGJItRz+uPmgd9casRzFvOq3Y3au4pC
+	 CqkEIS2I9aqlFsxDPRO8B3p1I/H8iNwhcc5tRmOyIh6Jw5RKtURi1mAe4rr73jL+YC
+	 B8c8bPGh7nNnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Hodges <hodgesd@meta.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Artem Sadovnikov <ancowi69@gmail.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 10/76] bpf, x64: Fix a jit convergence issue
-Date: Fri,  4 Oct 2024 14:16:27 -0400
-Message-ID: <20241004181828.3669209-10-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 11/76] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+Date: Fri,  4 Oct 2024 14:16:28 -0400
+Message-ID: <20241004181828.3669209-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -76,184 +68,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Artem Sadovnikov <ancowi69@gmail.com>
 
-[ Upstream commit c8831bdbfbab672c006a18006d36932a494b2fd6 ]
+[ Upstream commit cc749e61c011c255d81b192a822db650c68b313f ]
 
-Daniel Hodges reported a jit error when playing with a sched-ext program.
-The error message is:
-  unexpected jmp_cond padding: -4 bytes
+Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
 
-But further investigation shows the error is actual due to failed
-convergence. The following are some analysis:
+This issue is triggered when an EXT4_IOC_MIGRATE ioctl is set to require
+synchronous updates because the file descriptor is opened with O_SYNC.
+This can lead to the jbd2_journal_stop() function calling
+jbd2_might_wait_for_commit(), potentially causing a deadlock if the
+EXT4_IOC_MIGRATE call races with a write(2) system call.
 
-  ...
-  pass4, final_proglen=4391:
-    ...
-    20e:    48 85 ff                test   rdi,rdi
-    211:    74 7d                   je     0x290
-    213:    48 8b 77 00             mov    rsi,QWORD PTR [rdi+0x0]
-    ...
-    289:    48 85 ff                test   rdi,rdi
-    28c:    74 17                   je     0x2a5
-    28e:    e9 7f ff ff ff          jmp    0x212
-    293:    bf 03 00 00 00          mov    edi,0x3
+This problem only arises when CONFIG_PROVE_LOCKING is enabled. In this
+case, the jbd2_might_wait_for_commit macro locks jbd2_handle in the
+jbd2_journal_stop function while i_data_sem is locked. This triggers
+lockdep because the jbd2_journal_start function might also lock the same
+jbd2_handle simultaneously.
 
-Note that insn at 0x211 is 2-byte cond jump insn for offset 0x7d (-125)
-and insn at 0x28e is 5-byte jmp insn with offset -129.
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
 
-  pass5, final_proglen=4392:
-    ...
-    20e:    48 85 ff                test   rdi,rdi
-    211:    0f 84 80 00 00 00       je     0x297
-    217:    48 8b 77 00             mov    rsi,QWORD PTR [rdi+0x0]
-    ...
-    28d:    48 85 ff                test   rdi,rdi
-    290:    74 1a                   je     0x2ac
-    292:    eb 84                   jmp    0x218
-    294:    bf 03 00 00 00          mov    edi,0x3
-
-Note that insn at 0x211 is 6-byte cond jump insn now since its offset
-becomes 0x80 based on previous round (0x293 - 0x213 = 0x80). At the same
-time, insn at 0x292 is a 2-byte insn since its offset is -124.
-
-pass6 will repeat the same code as in pass4. pass7 will repeat the same
-code as in pass5, and so on. This will prevent eventual convergence.
-
-Passes 1-14 are with padding = 0. At pass15, padding is 1 and related
-insn looks like:
-
-    211:    0f 84 80 00 00 00       je     0x297
-    217:    48 8b 77 00             mov    rsi,QWORD PTR [rdi+0x0]
-    ...
-    24d:    48 85 d2                test   rdx,rdx
-
-The similar code in pass14:
-    211:    74 7d                   je     0x290
-    213:    48 8b 77 00             mov    rsi,QWORD PTR [rdi+0x0]
-    ...
-    249:    48 85 d2                test   rdx,rdx
-    24c:    74 21                   je     0x26f
-    24e:    48 01 f7                add    rdi,rsi
-    ...
-
-Before generating the following insn,
-  250:    74 21                   je     0x273
-"padding = 1" enables some checking to ensure nops is either 0 or 4
-where
-  #define INSN_SZ_DIFF (((addrs[i] - addrs[i - 1]) - (prog - temp)))
-  nops = INSN_SZ_DIFF - 2
-
-In this specific case,
-  addrs[i] = 0x24e // from pass14
-  addrs[i-1] = 0x24d // from pass15
-  prog - temp = 3 // from 'test rdx,rdx' in pass15
-so
-  nops = -4
-and this triggers the failure.
-
-To fix the issue, we need to break cycles of je <-> jmp. For example,
-in the above case, we have
-  211:    74 7d                   je     0x290
-the offset is 0x7d. If 2-byte je insn is generated only if
-the offset is less than 0x7d (<= 0x7c), the cycle can be
-break and we can achieve the convergence.
-
-I did some study on other cases like je <-> je, jmp <-> je and
-jmp <-> jmp which may cause cycles. Those cases are not from actual
-reproducible cases since it is pretty hard to construct a test case
-for them. the results show that the offset <= 0x7b (0x7b = 123) should
-be enough to cover all cases. This patch added a new helper to generate 8-bit
-cond/uncond jmp insns only if the offset range is [-128, 123].
-
-Reported-by: Daniel Hodges <hodgesd@meta.com>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20240904221251.37109-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20240404095000.5872-1-mish.uxin2012%40yandex.ru
+Link: https://patch.msgid.link/20240829152210.2754-1-ancowi69@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c | 54 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 52 insertions(+), 2 deletions(-)
+ fs/ext4/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index d25d81c8ecc00..f609dc379be75 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -64,6 +64,56 @@ static bool is_imm8(int value)
- 	return value <= 127 && value >= -128;
- }
- 
-+/*
-+ * Let us limit the positive offset to be <= 123.
-+ * This is to ensure eventual jit convergence For the following patterns:
-+ * ...
-+ * pass4, final_proglen=4391:
-+ *   ...
-+ *   20e:    48 85 ff                test   rdi,rdi
-+ *   211:    74 7d                   je     0x290
-+ *   213:    48 8b 77 00             mov    rsi,QWORD PTR [rdi+0x0]
-+ *   ...
-+ *   289:    48 85 ff                test   rdi,rdi
-+ *   28c:    74 17                   je     0x2a5
-+ *   28e:    e9 7f ff ff ff          jmp    0x212
-+ *   293:    bf 03 00 00 00          mov    edi,0x3
-+ * Note that insn at 0x211 is 2-byte cond jump insn for offset 0x7d (-125)
-+ * and insn at 0x28e is 5-byte jmp insn with offset -129.
-+ *
-+ * pass5, final_proglen=4392:
-+ *   ...
-+ *   20e:    48 85 ff                test   rdi,rdi
-+ *   211:    0f 84 80 00 00 00       je     0x297
-+ *   217:    48 8b 77 00             mov    rsi,QWORD PTR [rdi+0x0]
-+ *   ...
-+ *   28d:    48 85 ff                test   rdi,rdi
-+ *   290:    74 1a                   je     0x2ac
-+ *   292:    eb 84                   jmp    0x218
-+ *   294:    bf 03 00 00 00          mov    edi,0x3
-+ * Note that insn at 0x211 is 6-byte cond jump insn now since its offset
-+ * becomes 0x80 based on previous round (0x293 - 0x213 = 0x80).
-+ * At the same time, insn at 0x292 is a 2-byte insn since its offset is
-+ * -124.
-+ *
-+ * pass6 will repeat the same code as in pass4 and this will prevent
-+ * eventual convergence.
-+ *
-+ * To fix this issue, we need to break je (2->6 bytes) <-> jmp (5->2 bytes)
-+ * cycle in the above. In the above example je offset <= 0x7c should work.
-+ *
-+ * For other cases, je <-> je needs offset <= 0x7b to avoid no convergence
-+ * issue. For jmp <-> je and jmp <-> jmp cases, jmp offset <= 0x7c should
-+ * avoid no convergence issue.
-+ *
-+ * Overall, let us limit the positive offset for 8bit cond/uncond jmp insn
-+ * to maximum 123 (0x7b). This way, the jit pass can eventually converge.
-+ */
-+static bool is_imm8_jmp_offset(int value)
-+{
-+	return value <= 123 && value >= -128;
-+}
-+
- static bool is_simm32(s64 value)
- {
- 	return value == (s64)(s32)value;
-@@ -2184,7 +2234,7 @@ st:			if (is_imm8(insn->off))
- 				return -EFAULT;
- 			}
- 			jmp_offset = addrs[i + insn->off] - addrs[i];
--			if (is_imm8(jmp_offset)) {
-+			if (is_imm8_jmp_offset(jmp_offset)) {
- 				if (jmp_padding) {
- 					/* To keep the jmp_offset valid, the extra bytes are
- 					 * padded before the jump insn, so we subtract the
-@@ -2266,7 +2316,7 @@ st:			if (is_imm8(insn->off))
- 				break;
- 			}
- emit_jmp:
--			if (is_imm8(jmp_offset)) {
-+			if (is_imm8_jmp_offset(jmp_offset)) {
- 				if (jmp_padding) {
- 					/* To avoid breaking jmp_offset, the extra bytes
- 					 * are padded before the actual jmp insn, so
+diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
+index d98ac2af8199f..a5e1492bbaaa5 100644
+--- a/fs/ext4/migrate.c
++++ b/fs/ext4/migrate.c
+@@ -663,8 +663,8 @@ int ext4_ind_migrate(struct inode *inode)
+ 	if (unlikely(ret2 && !ret))
+ 		ret = ret2;
+ errout:
+-	ext4_journal_stop(handle);
+ 	up_write(&EXT4_I(inode)->i_data_sem);
++	ext4_journal_stop(handle);
+ out_unlock:
+ 	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
+ 	return ret;
 -- 
 2.43.0
 
