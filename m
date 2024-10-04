@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-81086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34EC990FD3
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC6A990FCC
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:09:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F1D4B2D335
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:41:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D571B29D49
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A41922AD30;
-	Fri,  4 Oct 2024 18:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE80230239;
+	Fri,  4 Oct 2024 18:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPxF/qbM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9p00HvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49A522AD2A;
-	Fri,  4 Oct 2024 18:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B078230230;
+	Fri,  4 Oct 2024 18:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066670; cv=none; b=Ya/RnaC4GRHsGG+Fa34vQoNqsJZxFhEyzpfg82dzIwdF9HXmOvaz66SJuDFZd2ohqqHixOWnZdcUMjSMK3gBti/klvwIlA+RQbC/FXhyls2YG47rSMGXa17g9JSJH64eneAZ56NF066APLTwD/LheRapuGVBF5pjMaDD9zMN0cE=
+	t=1728066726; cv=none; b=NXRCygMaHkfPdbBRhQfOoGWApcfwA1jExtBOiNfiQxUpvavD7NBP/NomthyymxJ7LX+C3LpzF4oVexbeKMEnUmSfoTSBRicfhxjKeNHYdrzo2ShpCw4CvNv4u4diEy05R47Sh/lfKg/Z7OFl5hKMuMVRejg20OzBkDrtNTpsQ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066670; c=relaxed/simple;
-	bh=R85LbV8H9lilogl/LLZ8T2Bj37ho9J71VV48hHczD64=;
+	s=arc-20240116; t=1728066726; c=relaxed/simple;
+	bh=cIudPX+z8eB+rsul2HwYMPjgwGJNYwI7JcPY7jOIuNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMMgMzzR2Dfq6EZtVmpnz3LobpvFPcoJkTw/L3ssKwHXu2OVe0e/KG+p3NG+tnwAOFLWRuHN1EXNd1TKtwv+LThLqFj37HsN97I4nAkIHiiXcnVHmK/m8nl94FhPqiY+hLeLjijZdiJc8t6v2jphg1paWb7yQEvxVjhbNcrxVrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPxF/qbM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C7BC4CECD;
-	Fri,  4 Oct 2024 18:31:08 +0000 (UTC)
+	 MIME-Version; b=QXmeNerNFHRN0hZGnRwKN9JrPSR2wDm31K+LFDapR4tw7i7dLbLbJpPPD/TgTAk/1d1gCoDEyOdFFvs4Fok/X77k0BY5sXW+QiMpOwmQMeYrL0Y81zYOzilmyhdY0Xsav9Z5uGNuyAwlEE4B64Ez+MakDuH7nEGJy7jGpc/lEN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9p00HvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19630C4CECC;
+	Fri,  4 Oct 2024 18:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066670;
-	bh=R85LbV8H9lilogl/LLZ8T2Bj37ho9J71VV48hHczD64=;
+	s=k20201202; t=1728066725;
+	bh=cIudPX+z8eB+rsul2HwYMPjgwGJNYwI7JcPY7jOIuNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPxF/qbMqInsBIT8KYZEFtoJqeAm4RNEK8lMhlZkpuuS616m9zpBJ5RDt0W7ZxdW5
-	 kFoow3qJisc/5XTci3jT86yALZd4Qqp0nfsA/sYauLt2SFLTlnHZ5jFxViTvDmk8wQ
-	 j+sOKAoKcQTjG74Lr9EWfBxUOj8O8Vv7U++EOhUfqyHl7yoHFTp2mWJybJL/qx6r9/
-	 owxVKndvkPPmqKi6iMMn0EjGulswYw2idRbMuSnz83Gvrn1ewZ4dleg+sWW6+Oikv+
-	 V3o/lXnlzfagxmow0k/Pwhhq+ZjLfzgS6SkkQ8GZFzMqRp+G1yQ+MC2uDg9XFJwBDo
-	 X/1+bCzYtJI4A==
+	b=l9p00HvBGwTz1GJPNjqgGHyx/zKjnvUVrYd3pSx/sWQkIVu9ILTPXhB/CTqq7EUrB
+	 K0iwi6kSq3DC4vNU+TrDXwDlxm501qyzOylIj8jgleueEINXM/vU0IzRaFQTC1iPNr
+	 v3pa/RIP3NLa4KG54JGhmUwlniF8gma1hbvInLfTxjh2a4PLdvLE/aQFOuBeMMPy1L
+	 fwjHKSY0AwVjvyH/+B+CEApnx4XKMLO4r4K/39316plRdO86YEBASdeo7sSRag8pRX
+	 QXgBETW49PGNqN99XPb+ODN0uAV6MmVkHutANq0gk3VGGg9xbxeTu2qqDsj/LYnpOl
+	 0bmXHxNv8mrAA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	nathan@kernel.org,
-	sumanthk@linux.ibm.com,
-	iii@linux.ibm.com,
-	frankja@linux.ibm.com,
-	jpoimboe@kernel.org,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 02/21] s390/boot: Compile all files with the same march flag
-Date: Fri,  4 Oct 2024 14:30:37 -0400
-Message-ID: <20241004183105.3675901-2-sashal@kernel.org>
+	mturquette@baylibre.com,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 09/16] clk: bcm: bcm53573: fix OF node leak in init
+Date: Fri,  4 Oct 2024 14:31:36 -0400
+Message-ID: <20241004183150.3676355-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241004183105.3675901-1-sashal@kernel.org>
-References: <20241004183105.3675901-1-sashal@kernel.org>
+In-Reply-To: <20241004183150.3676355-1-sashal@kernel.org>
+References: <20241004183150.3676355-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,67 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.284
+X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
+[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
 
-Only a couple of files of the decompressor are compiled with the
-minimum architecture level. This is problematic for potential function
-calls between compile units, especially if a target function is within
-a compile until compiled for a higher architecture level, since that
-may lead to an unexpected operation exception.
+Driver code is leaking OF node reference from of_get_parent() in
+bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
+first place, because the parent node will not be freed while we are
+processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
+leak by accessing parent directly, instead of of_get_parent().
 
-Therefore compile all files of the decompressor for the same (minimum)
-architecture level.
-
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/boot/Makefile | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
-index 0ff9261c915e3..cba2705c62353 100644
---- a/arch/s390/boot/Makefile
-+++ b/arch/s390/boot/Makefile
-@@ -8,11 +8,8 @@ GCOV_PROFILE := n
- UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
+diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
+index 36eb3716ffb00..3bc6837f844db 100644
+--- a/drivers/clk/bcm/clk-bcm53573-ilp.c
++++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
+@@ -115,7 +115,7 @@ static void bcm53573_ilp_init(struct device_node *np)
+ 		goto err_free_ilp;
+ 	}
  
--KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
--KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
--
- #
--# Use minimum architecture for als.c to be able to print an error
-+# Use minimum architecture level so it is possible to print an error
- # message if the kernel is started on a machine which is too old
- #
- ifndef CONFIG_CC_IS_CLANG
-@@ -21,16 +18,10 @@ else
- CC_FLAGS_MARCH_MINIMUM := -march=z10
- endif
- 
--ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
--AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
--AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
--AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
--AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
--CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
--CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
--CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
--CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
--endif
-+KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
-+KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
-+KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
-+KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
- 
- CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
- 
+-	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
++	ilp->regmap = syscon_node_to_regmap(np->parent);
+ 	if (IS_ERR(ilp->regmap)) {
+ 		err = PTR_ERR(ilp->regmap);
+ 		goto err_free_ilp;
 -- 
 2.43.0
 
