@@ -1,154 +1,106 @@
-Return-Path: <stable+bounces-81135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35200991210
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 00:02:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175CE99121B
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 00:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10629B2118D
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C99C81F242AA
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 22:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C851B4F19;
-	Fri,  4 Oct 2024 22:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3751314659F;
+	Fri,  4 Oct 2024 22:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfgtGdHK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iwSbxTPC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E95146A93;
-	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4AA4437F
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 22:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728079320; cv=none; b=bb15wYpCWw2o0gzLb2QD4S3Ib79PuYKf4wJ/mp7X8U0j4IK6zqDMHdOh0q4+Yasnzo4ou0thQSPHviu7EO6Hf8JewvAqqNUd/gSDfmshQsUDzkezKDfxpfkGiTWBCFZWXON8nS6GISKuV3QxwQGoqVIT6kWbyBx+2M6ZbMS9ud4=
+	t=1728079455; cv=none; b=Y5gbsFqDTH9YoRcscGayizJfTPH76O4MNF4uByMHNIcfVMn8cu33WPbDjKYTeAyb68ef1zZsCdhB8UIIEAYS5OEIZ6hhOWXLTG+zQcYBnmodDaGuiYGUb7oIKOgtCIv4zyZgDiDzdHZ+y94HSmH7+73cV+kHycJ49PYHk2H1rx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728079320; c=relaxed/simple;
-	bh=iPLMZgolL2OjvuOB8W1t69ecArE1UplQady/bEDmFSI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XZBjuOP/Y3GNPrxb3rrwc/7MEfjmgmqVAVfXyppshGoxY76uX7RZVAUxS8QEhGYVt/O8F39aOtMUF0KZaVl/A8oLKLcXLwo+/xfdGR+mjfIaPIpzuXxtdi9639u4/xIjjWAk9Dh9HxRnf1fUwEedBATnf5BomJ1jB8C0lh87Z6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfgtGdHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 477ABC4CECD;
-	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728079320;
-	bh=iPLMZgolL2OjvuOB8W1t69ecArE1UplQady/bEDmFSI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WfgtGdHKZu3QJZakEqIkOEurfeFBj3A5ggDvHDB02bUtxNONskfbEy/7ws0x71iw0
-	 9gLULbWDHHKWSF6iMaIQ3kR/SLmY/ePhKY6+yvTxzAAtjW0RLZm/QGTbrR/ECx11LU
-	 7C0ard6w15iKVOoFnAoaIK4U2HCNq3c9ovduDlx4Wu/Pq73WhiVJki8aOLPwvKpAPs
-	 6fvCOpUiYjXL7SQPTL9IxtIwLxk/iwbNLs+nYCIEgmFdxkV8WZKV3ariQAjI93oiAX
-	 VPtSO3VEQOVZXz7PO2402y1dzDOAjQPh00sk/v4J9cUmG7f/4gt9WVbGScJLDX50BA
-	 xfgiQXYP6yeCA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33A9BCF8860;
-	Fri,  4 Oct 2024 22:02:00 +0000 (UTC)
-From: Mitchell Levy via B4 Relay <devnull+levymitchell0.gmail.com@kernel.org>
-Date: Fri, 04 Oct 2024 15:01:37 -0700
-Subject: [PATCH 1/2] rust: lockdep: Remove support for dynamically
- allocated LockClassKeys
+	s=arc-20240116; t=1728079455; c=relaxed/simple;
+	bh=H6F4oisiXQH5TBReZgwJfn2qQ2ERUEF3fm/x7plkIUY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rwOMKkkH1tNhtPjdm/Ep1Feu2QTfZE5De0jHM6SfT36wvNZuTJtPCqqw5yRW03sXdiX87oDWHIvsP0Y6iTAHFmdOy31Ebzsx7RN10DJCdLrtcgDCkdlgBeDk3eNnFBInH52gmWTQoGxJ7cgQY+1V10KhXDq7LFBPp+njNsl2W5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iwSbxTPC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728079452;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0IGprmyyjjQzPQe4OyVSogmJi13grvMR6zOq7likQRU=;
+	b=iwSbxTPCD00sFvU7dPAoxEdsMr5BT8xOqeWUC0//Q0S8Jx/0LdA6y4dNyCodvCOjFgFsTV
+	E7YXwW++t4Yjjh7c6BJilR/SmeiN7dvaqsaMhgSYnuIDk4jckNyTqKynJKw8f19dllyC11
+	g3pWcoNfgqVnbP1MSq1KGPB3jb65LPQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-453-kX7D7GGiPzq4M-mge1oM_g-1; Fri,
+ 04 Oct 2024 18:04:09 -0400
+X-MC-Unique: kX7D7GGiPzq4M-mge1oM_g-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C481019560AE;
+	Fri,  4 Oct 2024 22:04:07 +0000 (UTC)
+Received: from okorniev-mac.redhat.com (unknown [10.22.17.120])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 352D81956088;
+	Fri,  4 Oct 2024 22:04:06 +0000 (UTC)
+From: Olga Kornievskaia <okorniev@redhat.com>
+To: chuck.lever@oracle.com,
+	jlayton@kernel.org
+Cc: linux-nfs@vger.kernel.org,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/1] nfsd: fix possible badness in FREE_STATEID
+Date: Fri,  4 Oct 2024 18:04:03 -0400
+Message-Id: <20241004220403.50034-1-okorniev@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241004-rust-lockdep-v1-1-e9a5c45721fc@gmail.com>
-References: <20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com>
-In-Reply-To: <20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Andreas Hindborg <a.hindborg@kernel.org>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Mitchell Levy <levymitchell0@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1728079319; l=1817;
- i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
- bh=sPd80p5ID1e1fg5bg8nSOM9q7MeynA1KNnT/FYVqLZ0=;
- b=+P16WMaS1TptJcNjuLo6USG7helplG+QSPK9e9AOKqDmUSTTXHLfIItjWKVGXWBqjWeXUpkTl
- I/CNBV2TN7GC6h3bsOa85emNKu/4Fj9zFkR7uoxnP92z2fa+aWkvwhA
-X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
- pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
-X-Endpoint-Received: by B4 Relay for levymitchell0@gmail.com/20240719 with
- auth_id=188
-X-Original-From: Mitchell Levy <levymitchell0@gmail.com>
-Reply-To: levymitchell0@gmail.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-From: Mitchell Levy <levymitchell0@gmail.com>
+When multiple FREE_STATEIDs are sent for the same delegation stateid,
+it can lead to a possible either use-after-tree or counter refcount
+underflow errors.
 
-Currently, dynamically allocated LockCLassKeys can be used from the Rust
-side without having them registered. This is a soundness issue, so
-remove them.
+In nfsd4_free_stateid() under the client lock we find a delegation
+stateid, however the code drops the lock before calling nfs4_put_stid(),
+that allows another FREE_STATE to find the stateid again. The first one
+will proceed to then free the stateid which leads to either
+use-after-free or decrementing already zerod counter.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@metaspace.dk/
-Cc: stable@vger.kernel.org
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
 ---
- rust/kernel/lib.rs  |  2 +-
- rust/kernel/sync.rs | 14 ++------------
- 2 files changed, 3 insertions(+), 13 deletions(-)
+ fs/nfsd/nfs4state.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 22a3bfa5a9e9..b5f4b3ce6b48 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -44,8 +44,8 @@
- pub mod page;
- pub mod prelude;
- pub mod print;
--pub mod sizes;
- pub mod rbtree;
-+pub mod sizes;
- mod static_assert;
- #[doc(hidden)]
- pub mod std_vendor;
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 0ab20975a3b5..d270db9b9894 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -27,28 +27,18 @@
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
--    /// Creates a new lock class key.
--    pub const fn new() -> Self {
--        Self(Opaque::uninit())
--    }
--
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.0.get()
-     }
- }
- 
--impl Default for LockClassKey {
--    fn default() -> Self {
--        Self::new()
--    }
--}
--
- /// Defines a new static lock class and returns a pointer to it.
- #[doc(hidden)]
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
--        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        static CLASS: $crate::sync::LockClassKey =
-+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
-         &CLASS
-     }};
- }
-
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index ac1859c7cc9d..56b261608af4 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7154,6 +7154,7 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	switch (s->sc_type) {
+ 	case SC_TYPE_DELEG:
+ 		if (s->sc_status & SC_STATUS_REVOKED) {
++			s->sc_status |= SC_STATUS_CLOSED;
+ 			spin_unlock(&s->sc_lock);
+ 			dp = delegstateid(s);
+ 			list_del_init(&dp->dl_recall_lru);
 -- 
-2.34.1
-
+2.43.5
 
 
