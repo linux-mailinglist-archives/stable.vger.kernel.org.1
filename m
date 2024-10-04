@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-80704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE1D98FB87
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 02:31:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6907098FB8A
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 02:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598312834BB
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:31:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BB231C227FA
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 00:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512B61849;
-	Fri,  4 Oct 2024 00:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908151D5AD3;
+	Fri,  4 Oct 2024 00:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b="XDYlgl8N";
-	dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b="IJKRwipa"
+	dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b="BaUcvNxo";
+	dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b="RYzUmZTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out0.aaront.org (smtp-out0.aaront.org [52.10.12.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1B2C8E9;
-	Fri,  4 Oct 2024 00:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB02A955;
+	Fri,  4 Oct 2024 00:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.10.12.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728001896; cv=none; b=GxX8FAGQYS3ArJMkSgkZen6z7NRWQnN4HqZtUIB5Y5pvzpT6J6CBvaRfACCs6tS/eAeF1a/YRTSRHsw/CHnjot39i9PdfRCJ4kfVwspPPlrOfZ7I1cWGs5snbJLkGaDfikHFUnGrKSjA6lWoc7WRatNA9w4FRXuJE5+OfPZCC4o=
+	t=1728001899; cv=none; b=LXCPLqIpxvZZH/s28BY7pkvemPVA9Qt6by+DWlOyJ/KNUpITsPZhn/MO/R3yxfFOKy0g0V9R0MPPqgx9sgkaqpdmF9rv/RogyIZuLav4EupVZaSRwKYALadRSQu4TA+nLOnuHsU8Tvtd5qQWwHQZRJXuJVCzr+rL4gBfq0AnPlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728001896; c=relaxed/simple;
-	bh=0pT50F1cem0hrgdH8pcqVClHyZziPHRa6KdtvkEn8No=;
+	s=arc-20240116; t=1728001899; c=relaxed/simple;
+	bh=f0FQOyiYq7FpaBC/Z+gvQXYwpERUJNHDeFsnskdp8kg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ka6EabcmwmQQj4zYn7CCEiW8DNuG1RoLBNVHWqnIpJ3Y1EF088y7WB4rWN6HBPNFLNYA28APlTW5GUsvC/KOrHXAjLCWSFV/gcl0+tFBVPzYL+rxbJGuAC5j1JohdHXBdCElEl1z4coFThgP8PI4RrRogEuP1ksf8XwjAwnrFqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org; spf=pass smtp.mailfrom=aaront.org; dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b=XDYlgl8N; dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b=IJKRwipa; arc=none smtp.client-ip=52.10.12.108
+	 MIME-Version; b=cIlx4MYu1Sj/6SzQKiJOqMb0F387i3Jc5bBUHcpfzCyOQbawOx2o2c/tlyt18FMWWy7plGpEmeC6NjHdJsBbCrIjySC8cZe8XavxB1scDZgLN7m4lt4A+YlxQou80JzCFmbGYoIuEJ8OZKQ9ZPe4jGq7YNJKicFJl+g2GodOlaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org; spf=pass smtp.mailfrom=aaront.org; dkim=permerror (0-bit key) header.d=aaront.org header.i=@aaront.org header.b=BaUcvNxo; dkim=pass (2048-bit key) header.d=aaront.org header.i=@aaront.org header.b=RYzUmZTC; arc=none smtp.client-ip=52.10.12.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aaront.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaront.org
-Received: by smtp-out0.aaront.org (Postfix) with ESMTP id 4XKTxd5CCSzRh;
-	Fri,  4 Oct 2024 00:31:33 +0000 (UTC)
+Received: by smtp-out0.aaront.org (Postfix) with ESMTP id 4XKTxj0NhpzRj;
+	Fri,  4 Oct 2024 00:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/simple; d=aaront.org;
     h=from:to:cc:subject:date:message-id:in-reply-to:references
     :mime-version:content-transfer-encoding; s=bgzxjfijqntwovyv; bh=
-    0pT50F1cem0hrgdH8pcqVClHyZziPHRa6KdtvkEn8No=; b=XDYlgl8NLsNRHd96
-    VVSzgBMTh7igHjFSA/x1/bJIFP2n0O1qa0t+wwlnnblghgUDDANMICVPi/phcKA7
-    fGInCA==
+    f0FQOyiYq7FpaBC/Z+gvQXYwpERUJNHDeFsnskdp8kg=; b=BaUcvNxo9vK/8Y9J
+    +SKv7rgse3m3vjeAeGt0M451L15SmSrzYNnmkHl9RIZykMapV2JCcxUbDJpverVh
+    HBEwAA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aaront.org; h=
     from:to:cc:subject:date:message-id:in-reply-to:references
     :mime-version:content-transfer-encoding; s=elwxqanhxhag6erl; bh=
-    0pT50F1cem0hrgdH8pcqVClHyZziPHRa6KdtvkEn8No=; b=IJKRwipaASwdRJga
-    55eXfloxQVbfFKmxtEDqPRsrSGZOHl3aoY0lljvdcbpPczYs8mtfHXKVAp6pJ7qy
-    j6N4OJN/OmDHm1MtASGJ4qhlk8146muetetchf652HOXs8Uqp5cupyAe4m6cX+hB
-    AjVxS/cy3K8++dVbhSZERmPVycGYcYQ9gfkaL3BI7OkK6bTKCcHTb99g2zi0b/Xm
-    3JX6FpwVbFkrdQIgE5GaHY1YRkY9nzwpqI0idAyT72toFqhuDn7PLTW7Hs137waV
-    gDQozmEp3bfeGly9GfKRAHceAYtslE2WubVJLk9Ev/d4gJbCmDINnm8+9/u4G4hM
-    XQhTGg==
+    f0FQOyiYq7FpaBC/Z+gvQXYwpERUJNHDeFsnskdp8kg=; b=RYzUmZTCxYVdJUAq
+    FDkVjIAy2EyvrYyJgzVF3xozkaeMgRKz6Ht4J/hHAqQ3l4dRPKKZQM0phu011sU8
+    YZuYBNCSahCg9yR6l1zQNTfbW/ojBR2IrATVS6b9dqR4bNRb7RIw5SJREASVWcFo
+    ho1Lc3dP0kELPM04St0kpAZuwuQwM8P/wvas85DFp+VNEEPY2Z1GZKwlxKXo+ytr
+    0FACIeLA2VL+gU+oZr1sHQdwC3puUGDQ3G2Nyvp1CmoBgRQh4wG/0+IG4whKNte6
+    FC77CRtDVyfvKmWJKMn9KBxtLlhKpHfsY0MbbuFfh8L+HN7XDKnl+z2PrJSx6SlQ
+    mQryWA==
 From: Aaron Thompson <dev@aaront.org>
 To: Johan Hedberg <johan.hedberg@gmail.com>,
 	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
@@ -58,9 +58,9 @@ To: Johan Hedberg <johan.hedberg@gmail.com>,
 	linux-kernel@vger.kernel.org
 Cc: Aaron Thompson <dev@aaront.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/3] Bluetooth: Call iso_exit() on module unload
-Date: Fri,  4 Oct 2024 00:30:29 +0000
-Message-Id: <20241004003030.160721-3-dev@aaront.org>
+Subject: [PATCH 3/3] Bluetooth: Remove debugfs directory on module init failure
+Date: Fri,  4 Oct 2024 00:30:30 +0000
+Message-Id: <20241004003030.160721-4-dev@aaront.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241004003030.160721-1-dev@aaront.org>
 References: <20241004003030.160721-1-dev@aaront.org>
@@ -74,49 +74,69 @@ Content-Transfer-Encoding: 8bit
 
 From: Aaron Thompson <dev@aaront.org>
 
-If iso_init() has been called, iso_exit() must be called on module
-unload. Without that, the struct proto that iso_init() registered with
-proto_register() becomes invalid, which could cause unpredictable
-problems later. In my case, with CONFIG_LIST_HARDENED and
-CONFIG_BUG_ON_DATA_CORRUPTION enabled, loading the module again usually
-triggers this BUG():
+If bt_init() fails, the debugfs directory currently is not removed. If
+the module is loaded again after that, the debugfs directory is not set
+up properly due to the existing directory.
 
-  list_add corruption. next->prev should be prev (ffffffffb5355fd0),
-    but was 0000000000000068. (next=ffffffffc0a010d0).
-  ------------[ cut here ]------------
-  kernel BUG at lib/list_debug.c:29!
-  Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  CPU: 1 PID: 4159 Comm: modprobe Not tainted 6.10.11-4+bt2-ao-desktop #1
-  RIP: 0010:__list_add_valid_or_report+0x61/0xa0
-  ...
-    __list_add_valid_or_report+0x61/0xa0
-    proto_register+0x299/0x320
-    hci_sock_init+0x16/0xc0 [bluetooth]
-    bt_init+0x68/0xd0 [bluetooth]
-    __pfx_bt_init+0x10/0x10 [bluetooth]
-    do_one_initcall+0x80/0x2f0
-    do_init_module+0x8b/0x230
-    __do_sys_init_module+0x15f/0x190
-    do_syscall_64+0x68/0x110
-  ...
+  # modprobe bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:26 ./
+  drwx------ 31 root root 0 Sep 27 14:25 ../
+  -r--r--r--  1 root root 0 Sep 27 14:26 l2cap
+  -r--r--r--  1 root root 0 Sep 27 14:26 sco
+  # modprobe -r bluetooth
+  # ls -laF /sys/kernel/debug/bluetooth
+  ls: cannot access '/sys/kernel/debug/bluetooth': No such file or directory
+  #
+
+  # modprobe bluetooth
+  modprobe: ERROR: could not insert 'bluetooth': Invalid argument
+  # dmesg | tail -n 6
+  Bluetooth: Core ver 2.22
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: Faking l2cap_init() failure for testing
+  NET: Unregistered PF_BLUETOOTH protocol family
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
+
+  # modprobe bluetooth
+  # dmesg | tail -n 7
+  Bluetooth: Core ver 2.22
+  debugfs: Directory 'bluetooth' with parent '/' already present!
+  NET: Registered PF_BLUETOOTH protocol family
+  Bluetooth: HCI device and connection manager initialized
+  Bluetooth: HCI socket layer initialized
+  Bluetooth: L2CAP socket layer initialized
+  Bluetooth: SCO socket layer initialized
+  # ls -laF /sys/kernel/debug/bluetooth
+  total 0
+  drwxr-xr-x  2 root root 0 Sep 27 14:31 ./
+  drwx------ 31 root root 0 Sep 27 14:26 ../
+  #
 
 Cc: stable@vger.kernel.org
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
+Fixes: ffcecac6a738 ("Bluetooth: Create root debugfs directory during module init")
 Signed-off-by: Aaron Thompson <dev@aaront.org>
 ---
- net/bluetooth/mgmt.c | 1 +
+ net/bluetooth/af_bluetooth.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index e4f564d6f6fb..78a164fab3e1 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -10487,6 +10487,7 @@ int mgmt_init(void)
- 
- void mgmt_exit(void)
- {
-+	iso_exit();
- 	hci_mgmt_chan_unregister(&chan);
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index 67604ccec2f4..0d4b171b939a 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -825,6 +825,7 @@ static int __init bt_init(void)
+ 	bt_sysfs_cleanup();
+ cleanup_led:
+ 	bt_leds_cleanup();
++	debugfs_remove_recursive(bt_debugfs);
+ 	return err;
  }
  
 -- 
