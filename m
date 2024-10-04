@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-80862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EB1990BF6
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A485990BF9
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C53271C220B4
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:40:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF2401C224DB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172331DACB7;
-	Fri,  4 Oct 2024 18:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606B81EFEFF;
+	Fri,  4 Oct 2024 18:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENXBASqb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9jzluZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82271EF957;
-	Fri,  4 Oct 2024 18:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8D31EFEF8;
+	Fri,  4 Oct 2024 18:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066132; cv=none; b=WqlKVHxl7LOtbWmv0u8dROWWkrXtESYVQCKVZNS58lxf6DRhNNwbRG07zzDi0BIWJFGoiBwc7H8RQ7zmogbwbDciraUQFeNLRhTyWIdmENdQmUXsDELBIl9DSK594cftE51O+/HpsFl+3z/BwaWQe2g40/Xh5ztyTzf25y3GiOU=
+	t=1728066135; cv=none; b=hcb+Km8c+Axiq76pk8MRs2BD1f+WrMsI1BcuFhggF7Rvf22jxXuD65oYd7IJcT/E8s1MG3MJm8Kccgnld47+p/0GZTLXdpe+WCk4csID6otKVL1UnClVp3K07jZBRrido17xaw0z49C2K3IURbWmnGWR/IywGxWp59nE2oOsPe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066132; c=relaxed/simple;
-	bh=VrlpKBy5TNHBhTslCSmOmCDHVJEv+ytmNDHN7pQ4HOw=;
+	s=arc-20240116; t=1728066135; c=relaxed/simple;
+	bh=BkZTvcqrJr1kVa8DRGYLQE675x9DtbRiL3f0kgBfEac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LC2o+Y4UeNjLVzGgB7nnmD8lffBoL8c/BiI4oOGdzybMqQsm8kOXREPaMl5O5Nxmgwmtbk21JPQCahy0wpn11tT24ryg5j08q+am6EwWcq97HXIO6DinS4RhRmxBsRfqeoID7+H6laRDqaZfNNE/8+1YLDMO6C9UP/GIzCY+hjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENXBASqb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457DAC4CED0;
-	Fri,  4 Oct 2024 18:22:11 +0000 (UTC)
+	 MIME-Version; b=e2i2FyxiW1AaZfzRQ22uvB9M0G+xfJbjgVF5a6pnH4BFaJcqycGXExOaviHqd0DAAK9dDjhP+RDV1QOnT05jDLLeEa6U9WhF3fi4yqAm36SipN1XdS3l3rOccsxxT979MgPR/ZXC1Rj8rWYVIcXcLk+vWE75czRWWp/hyIl2aIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9jzluZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74860C4CEC6;
+	Fri,  4 Oct 2024 18:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066132;
-	bh=VrlpKBy5TNHBhTslCSmOmCDHVJEv+ytmNDHN7pQ4HOw=;
+	s=k20201202; t=1728066134;
+	bh=BkZTvcqrJr1kVa8DRGYLQE675x9DtbRiL3f0kgBfEac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENXBASqbzmrwuc+lyxHtQhXhAiQws2vw4Tx4zCoSmPODZiTMauEgPyrezOPmxBLW5
-	 saaQWxkzNJz79oOauSqk5QsRQUq7XM9OtimqeG72xXrsD+5DxSIgWqeWfcUpKJD1yJ
-	 kg2KHaoLiEWagQXvlk4Ayc7tvYy8IaVRtD2H1+8mE4Kc+LnkxUkTMMnOtfu/nV2HN6
-	 ndoFtdc/1y6UTv4IE0r7cEQPil9HBTDZqZipe+cWD1h+dH2RbINgOZJk13oP2znqdq
-	 GxiR1F/117FbmfSBHQncobfzhfizcYAO27gcRhDptdT5esGy6CmjJxSXdHymfW4KDN
-	 cbxcO/9MOhioQ==
+	b=m9jzluZSwWw7siuxucK5M/x9tmEusZx3wZAwy4wgKEU3TWehfbzlm/oWlIKEc3oJv
+	 27Ivm1iSidTak8SqA6DmXp5gcQW/U2Mv3k8K8I5BQueVnmuMfdB9YKBWpq2CIsbOgu
+	 zWErPMuPbAxL1vvnBx6UH7i74fPfHt1m21jfniGkBrdmp1RA4VChgdoCCLozOCtzB2
+	 Q7SDhavgahboLbGbGYN/Q3cxWF1L/CCCEKx392FF5/K4vEhvqe4wP2AtqmP+ckXRdU
+	 1on4AZOpU68zRTbnHLL5ozJIagJDYS8tEfM4hNE0YWS1nMfT4pT7XBws1+iFj5s5KJ
+	 ooxaPUnMu8itg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 06/70] bpftool: Fix undefined behavior caused by shifting into the sign bit
-Date: Fri,  4 Oct 2024 14:20:04 -0400
-Message-ID: <20241004182200.3670903-6-sashal@kernel.org>
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	nathan@kernel.org,
+	glider@google.com,
+	iii@linux.ibm.com,
+	frankja@linux.ibm.com,
+	sumanthk@linux.ibm.com,
+	jpoimboe@kernel.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 07/70] s390/boot: Compile all files with the same march flag
+Date: Fri,  4 Oct 2024 14:20:05 -0400
+Message-ID: <20241004182200.3670903-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182200.3670903-1-sashal@kernel.org>
 References: <20241004182200.3670903-1-sashal@kernel.org>
@@ -68,53 +73,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 4cdc0e4ce5e893bc92255f5f734d983012f2bc2e ]
+[ Upstream commit fccb175bc89a0d37e3ff513bb6bf1f73b3a48950 ]
 
-Replace shifts of '1' with '1U' in bitwise operations within
-__show_dev_tc_bpf() to prevent undefined behavior caused by shifting
-into the sign bit of a signed integer. By using '1U', the operations
-are explicitly performed on unsigned integers, avoiding potential
-integer overflow or sign-related issues.
+Only a couple of files of the decompressor are compiled with the
+minimum architecture level. This is problematic for potential function
+calls between compile units, especially if a target function is within
+a compile until compiled for a higher architecture level, since that
+may lead to an unexpected operation exception.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240908140009.3149781-1-visitorckw@gmail.com
+Therefore compile all files of the decompressor for the same (minimum)
+architecture level.
+
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/net.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/s390/boot/Makefile | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index 0ad684e810f34..0f2106218e1f0 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -482,9 +482,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
- 		if (prog_flags[i] || json_output) {
- 			NET_START_ARRAY("prog_flags", "%s ");
- 			for (j = 0; prog_flags[i] && j < 32; j++) {
--				if (!(prog_flags[i] & (1 << j)))
-+				if (!(prog_flags[i] & (1U << j)))
- 					continue;
--				NET_DUMP_UINT_ONLY(1 << j);
-+				NET_DUMP_UINT_ONLY(1U << j);
- 			}
- 			NET_END_ARRAY("");
- 		}
-@@ -493,9 +493,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
- 			if (link_flags[i] || json_output) {
- 				NET_START_ARRAY("link_flags", "%s ");
- 				for (j = 0; link_flags[i] && j < 32; j++) {
--					if (!(link_flags[i] & (1 << j)))
-+					if (!(link_flags[i] & (1U << j)))
- 						continue;
--					NET_DUMP_UINT_ONLY(1 << j);
-+					NET_DUMP_UINT_ONLY(1U << j);
- 				}
- 				NET_END_ARRAY("");
- 			}
+diff --git a/arch/s390/boot/Makefile b/arch/s390/boot/Makefile
+index 070c9b2e905ff..b3f4f41816185 100644
+--- a/arch/s390/boot/Makefile
++++ b/arch/s390/boot/Makefile
+@@ -9,11 +9,8 @@ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
+ KCSAN_SANITIZE := n
+ 
+-KBUILD_AFLAGS := $(KBUILD_AFLAGS_DECOMPRESSOR)
+-KBUILD_CFLAGS := $(KBUILD_CFLAGS_DECOMPRESSOR)
+-
+ #
+-# Use minimum architecture for als.c to be able to print an error
++# Use minimum architecture level so it is possible to print an error
+ # message if the kernel is started on a machine which is too old
+ #
+ ifndef CONFIG_CC_IS_CLANG
+@@ -22,16 +19,10 @@ else
+ CC_FLAGS_MARCH_MINIMUM := -march=z10
+ endif
+ 
+-ifneq ($(CC_FLAGS_MARCH),$(CC_FLAGS_MARCH_MINIMUM))
+-AFLAGS_REMOVE_head.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_head.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-AFLAGS_REMOVE_mem.o		+= $(CC_FLAGS_MARCH)
+-AFLAGS_mem.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_als.o		+= $(CC_FLAGS_MARCH)
+-CFLAGS_als.o			+= $(CC_FLAGS_MARCH_MINIMUM)
+-CFLAGS_REMOVE_sclp_early_core.o	+= $(CC_FLAGS_MARCH)
+-CFLAGS_sclp_early_core.o	+= $(CC_FLAGS_MARCH_MINIMUM)
+-endif
++KBUILD_AFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_AFLAGS_DECOMPRESSOR))
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_MARCH),$(KBUILD_CFLAGS_DECOMPRESSOR))
++KBUILD_AFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
++KBUILD_CFLAGS += $(CC_FLAGS_MARCH_MINIMUM)
+ 
+ CFLAGS_sclp_early_core.o += -I$(srctree)/drivers/s390/char
+ 
 -- 
 2.43.0
 
