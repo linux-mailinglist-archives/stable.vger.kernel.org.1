@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-80947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3016990D1B
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:03:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C29990D1E
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D641F2102F
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:03:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C7251C22BD9
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF6520493E;
-	Fri,  4 Oct 2024 18:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D2F204955;
+	Fri,  4 Oct 2024 18:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MF+MlNNI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYoOmJLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5117204937;
-	Fri,  4 Oct 2024 18:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C96320494C;
+	Fri,  4 Oct 2024 18:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066342; cv=none; b=evKuPK36pFk5VxyhCGwrkaP0+aW+W5udK3EhsXx4Ulbn5tO27zwdJxTYjmd7QfLQupKYQmVdjF9Z516viY+3/FnJGjxvcqls7G6JT66pswrj7NFUgul/+cC3H49XREvhTVWe26VXNJZ5hVSxd/PzDrfiqGt8izgjR3eYeBdpnDI=
+	t=1728066344; cv=none; b=GKQ4GCMjEHWAs2Z8YjZrWWfI+5ATxqDkdcz0iJ+iyOkDjg9JgxTGOuzKiUcy1384NE52p2rzaO6abdfDpwQci6Q+kSsOMQkn4HFQmzt9RNltlRoFQTU2T+snPZayyRlCiZ+lIoeHJSU4jjWB6FFz1uAobD3UzID4zbH1T3M4Jsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066342; c=relaxed/simple;
-	bh=KTr8g6F3xmAjDPlAHLp5RGD+Oi7UeQnxz6CI4SoYMaE=;
+	s=arc-20240116; t=1728066344; c=relaxed/simple;
+	bh=0a+Seo70NaweNCwlTC06rm6ofVOagReXXDNoRdVU5jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MEauIFhpDCJevfrrzmUESeF3/Nxo4cDCiUmeA+CeMUqBAerNbCmbiu0MBLCubAnZC0EEijQ6TLi08icii/N2zd1buW8V1B8ZqkmT1tKOD23E1oLG3DQyVthUy42FGenWIM0yVtAuEfrid/WFiX+v9oF8UopEa1/aWopPb+YcM7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MF+MlNNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C084BC4CECE;
-	Fri,  4 Oct 2024 18:25:40 +0000 (UTC)
+	 MIME-Version; b=PjYXz2OBRySj7qopzcjlcFy2c+zgPsUXLwn73D2YQYhlqTJzh+0pQWesbkaKHfS2/D3Cm26nXlyaZ4yhEdjWYXjmbr8QXZyyf6N+bdP9Gn7i9ES+bCjao1LSbXkVXVTQ7/3wZp5jqMEdLWbq7WGf/04l++Einyt3naEV8WrXWA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYoOmJLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07639C4CED2;
+	Fri,  4 Oct 2024 18:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066342;
-	bh=KTr8g6F3xmAjDPlAHLp5RGD+Oi7UeQnxz6CI4SoYMaE=;
+	s=k20201202; t=1728066343;
+	bh=0a+Seo70NaweNCwlTC06rm6ofVOagReXXDNoRdVU5jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MF+MlNNIJZU71m8PdsqK7QBxS/a5FtFdAliYUm3ZE2Lt/NJaVT3haKA+T3ob9T7PO
-	 8nZWOirvK44vF1Iu4tycr8cb2KKwcyZZAuboUPXWAcqZsRhJ25MoZvEPXXnhS7jPv3
-	 cb+XTUGup3a2G919BOo46cw4oa5CmLt0rkZvxtqRPIQwHgy+XgGkyxmL8bAIJl/Lbn
-	 Cfgw8+omi5eOueQlPr7kAylaQdKiLRhgUuXha8hvwfo6rd13dvldc2LNlHcRFgaaZo
-	 8M3AenEiftJn3mh+qjh7Tvn47j0HfsdsBDSOPKZcuyHAQVkH4pEC3SiJT2cz27/0Tb
-	 gVIIDlYgufVGA==
+	b=lYoOmJLqf6ZtmUrNVX8ciJwPdAbXzgrTn1+AMo+CmrE9GeKGXrW8QyDrXMmkdU8Ca
+	 3GucpTdcrIFSm4n7u3iFMG6IRgDeYSORjCWEArhg+jTH7LUObpvov02WEqxyfbyfAL
+	 v4vbIDlI9y4pRTxe9YkzfKGD0BrCQ6ufm6u54lZH5tEQXdtllk9HIvlDLXbCdYeV3v
+	 BVcJYE+QLdYJOWLxRdp4Nn7jZCi4oIDDD5M3GLFD5f6o8xCSW3cdkJmKXQas9jSz5R
+	 nTZXXTUcLJ8T3p1+v9y4O3LE+jXPuMGvqiTgUpdL8uPPWrNzcHhAQEns3cXE02lpRz
+	 UhcbeD1Jhaz5w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: WangYuli <wangyuli@uniontech.com>,
-	SiyuLi <siyuli@glenfly.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	pierre-louis.bossart@linux.dev,
-	peter.ujfalusi@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	maarten.lankhorst@linux.intel.com,
-	rsalvaterra@gmail.com,
-	akoskovich@pm.me,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 21/58] PCI: Add function 0 DMA alias quirk for Glenfly Arise chip
-Date: Fri,  4 Oct 2024 14:23:54 -0400
-Message-ID: <20241004182503.3672477-21-sashal@kernel.org>
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 22/58] RDMA/rtrs-srv: Avoid null pointer deref during path establishment
+Date: Fri,  4 Oct 2024 14:23:55 -0400
+Message-ID: <20241004182503.3672477-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182503.3672477-1-sashal@kernel.org>
 References: <20241004182503.3672477-1-sashal@kernel.org>
@@ -76,67 +67,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.54
 Content-Transfer-Encoding: 8bit
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Md Haris Iqbal <haris.iqbal@ionos.com>
 
-[ Upstream commit 9246b487ab3c3b5993aae7552b7a4c541cc14a49 ]
+[ Upstream commit d0e62bf7b575fbfe591f6f570e7595dd60a2f5eb ]
 
-Add DMA support for audio function of Glenfly Arise chip, which uses
-Requester ID of function 0.
+For RTRS path establishment, RTRS client initiates and completes con_num
+of connections. After establishing all its connections, the information
+is exchanged between the client and server through the info_req message.
+During this exchange, it is essential that all connections have been
+established, and the state of the RTRS srv path is CONNECTED.
 
-Link: https://lore.kernel.org/r/CA2BBD087345B6D1+20240823095708.3237375-1-wangyuli@uniontech.com
-Signed-off-by: SiyuLi <siyuli@glenfly.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-[bhelgaas: lower-case hex to match local code, drop unused Device IDs]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
+So add these sanity checks, to make sure we detect and abort process in
+error scenarios to avoid null pointer deref.
+
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://patch.msgid.link/20240821112217.41827-9-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c      | 4 ++++
- include/linux/pci_ids.h   | 2 ++
- sound/pci/hda/hda_intel.c | 2 +-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index ec4277d7835b2..5af53d9cc8b38 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4239,6 +4239,10 @@ static void quirk_dma_func0_alias(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe832, quirk_dma_func0_alias);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_RICOH, 0xe476, quirk_dma_func0_alias);
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 1d33efb8fb03b..e9835a1666d3a 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -931,12 +931,11 @@ static void rtrs_srv_info_req_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	if (err)
+ 		goto close;
  
-+/* Some Glenfly chips use function 0 as the PCIe Requester ID for DMA */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d40, quirk_dma_func0_alias);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_GLENFLY, 0x3d41, quirk_dma_func0_alias);
-+
- static void quirk_dma_func1_alias(struct pci_dev *dev)
- {
- 	if (PCI_FUNC(dev->devfn) != 1)
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index abff4e3b6a58b..cebfd1bb9dfa1 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2653,6 +2653,8 @@
- #define PCI_DEVICE_ID_DCI_PCCOM8	0x0002
- #define PCI_DEVICE_ID_DCI_PCCOM2	0x0004
+-out:
+ 	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
+ 	return;
+ close:
++	rtrs_iu_free(iu, srv_path->s.dev->ib_dev, 1);
+ 	close_path(srv_path);
+-	goto out;
+ }
  
-+#define PCI_VENDOR_ID_GLENFLY		0x6766
+ static int post_recv_info_req(struct rtrs_srv_con *con)
+@@ -987,6 +986,16 @@ static int post_recv_path(struct rtrs_srv_path *srv_path)
+ 			q_size = SERVICE_CON_QUEUE_DEPTH;
+ 		else
+ 			q_size = srv->queue_depth;
++		if (srv_path->state != RTRS_SRV_CONNECTING) {
++			rtrs_err(s, "Path state invalid. state %s\n",
++				 rtrs_srv_state_str(srv_path->state));
++			return -EIO;
++		}
 +
- #define PCI_VENDOR_ID_INTEL		0x8086
- #define PCI_DEVICE_ID_INTEL_EESSC	0x0008
- #define PCI_DEVICE_ID_INTEL_HDA_CML_LP	0x02c8
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index d5c9f113e477a..0c64f20664628 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2690,7 +2690,7 @@ static const struct pci_device_id azx_ids[] = {
- 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
- 	  AZX_DCAPS_PM_RUNTIME },
- 	/* GLENFLY */
--	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
-+	{ PCI_DEVICE(PCI_VENDOR_ID_GLENFLY, PCI_ANY_ID),
- 	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
- 	  .class_mask = 0xffffff,
- 	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |
++		if (!srv_path->s.con[cid]) {
++			rtrs_err(s, "Conn not set for %d\n", cid);
++			return -EIO;
++		}
+ 
+ 		err = post_recv_io(to_srv_con(srv_path->s.con[cid]), q_size);
+ 		if (err) {
 -- 
 2.43.0
 
