@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-80799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F1C990B24
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:23:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10D3990B27
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB2EA282DE2
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:23:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CED91C22CE3
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D7021D2C8;
-	Fri,  4 Oct 2024 18:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FAF21D2DB;
+	Fri,  4 Oct 2024 18:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pfqqXA4m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UVLy3iyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8511DD873;
-	Fri,  4 Oct 2024 18:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D380321D2D0;
+	Fri,  4 Oct 2024 18:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065943; cv=none; b=jmMIBV+yaM1YS6ZaGeC+nj2IfJV+K7RDrk2EI2RnxX7N3b7p8PsYoVluLbLFQzvbmXFQYYMr9q0R8Hub2fuTYMFJJxWahf+3dETpGeAnWZ2g1gOVASQGCD8p1zBrtqXydVvdGswjjsgLkvdDWM7ChUcb7AJa8pTB2+VNphZRo1A=
+	t=1728065944; cv=none; b=baQ7BU9ulflmX7wW1tCqjJ4xfa3G9wYnPTbM7z8EX7lbB5uhvLUqc5ftRGoYvF2lEs8/Jw6HPCL24tV8hFQ8QEQls1dWXEHxyvV/I9rMRfhAIfTbGJ5ZfCvoVBT3osuVO4Xt8CHNFzA14+RapagtkWuH/d+3qJhe4vW5ZmpN/ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728065943; c=relaxed/simple;
-	bh=J/CJ1wHjeMBBZix/ZJOLlFTggi6BPobk8g6fjsbu52A=;
+	s=arc-20240116; t=1728065944; c=relaxed/simple;
+	bh=JYoz5QyUR2nx87bkEGYll65BNDFwgH7DXFukJfA4Qcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLKk0NfSiVpnuVOJ/BH+2oXsPyIGgCevC17kzjezpjmRFzEVHGdwE04AMpilCo9pIzEBfy8ksNUXsEygtYSAotVdtG2F5MxWMFnUBaYqg0tH1K/yU2Vxz929Gx5urixeFI7yg0ueWQdf+XXQUKzerZsdTo08Y/nTvwxvm0Kw20Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pfqqXA4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE53DC4CEC6;
-	Fri,  4 Oct 2024 18:19:01 +0000 (UTC)
+	 MIME-Version; b=geznulhWh8IOR04oX7B5Re+4oTZ2Gd/spPsvZQMrw63F3W8mdMEZRvdA/hkyHyzedQ+/X3VnLhnnKN5ArK7MKU85Hhhuc1KoFAkkclTSoayhnwczMDR2StXWOkCAL2EcyYg9tzI1biJo+ePejO0HzcDjdfB11RQC3QklaEfGTLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UVLy3iyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558E1C4CECC;
+	Fri,  4 Oct 2024 18:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065942;
-	bh=J/CJ1wHjeMBBZix/ZJOLlFTggi6BPobk8g6fjsbu52A=;
+	s=k20201202; t=1728065944;
+	bh=JYoz5QyUR2nx87bkEGYll65BNDFwgH7DXFukJfA4Qcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfqqXA4m71EjTyUxopqvlAEIiX0ADRIYrW6svsy8aE6vSyItU9LdCrUxyCt4J7eL/
-	 ZwylOouMI/yiQ0VZ0Eaf5SapOGZICmlRsESf7daEUK5MfbBkWNsZY0LwSX/rX9fDTx
-	 2gBBNJqN0AjWo4fonNG1BMqHMBY1ZJ3GUofTvlttoffoKKOEs2Fe0dTit0T12emtG4
-	 iv+96adf40EGbjjLMZSDLnGuZoPIJ7a5MbtwtK2mc8Wse9La6sdswQLqnApPLBsaMp
-	 MdIwgw6hBJXhqbOTas3iz8zECchi421m0zfpkCm4IAqwtr/DL+D4kPvTsDTRWlKtid
-	 5kGrfb57SXfeg==
+	b=UVLy3iyJ+EN3NrCesaIgOf9WarhalOM+tTZwUx+6E7VDleP83fEokcIZ9oATx9Cgj
+	 /U+zQKQV9w1u5AHsD/IQ/QNpSkDIrIF3E3PuJOA5gZhZxPM0xJgXYXQ6x1IaO4uCcF
+	 ToTzYnSSc54aq3Ztb7Ifbacv9wctVETMKD0Vm2/yZzO49niqPm50h/L7LwA6C0WdCY
+	 1zD6Y7xzq8qbjHfXKFOuPqBeJ+k9tpWBHpPrT7blsifZ3z57PsnCD+4ySJHvzVnA5t
+	 D2FsRjFtYujAswBZnofACWV46YiJYPojRYVSqu3Hyu79i4zp1bDVJKPCRpyTw01MLp
+	 Y3IMibQVBvXmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiko Carstens <hca@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+Cc: Xu Kuohai <xukuohai@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	agordeev@linux.ibm.com,
-	brueckner@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 19/76] s390/traps: Handle early warnings gracefully
-Date: Fri,  4 Oct 2024 14:16:36 -0400
-Message-ID: <20241004181828.3669209-19-sashal@kernel.org>
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 20/76] bpf: Prevent tail call between progs attached to different hooks
+Date: Fri,  4 Oct 2024 14:16:37 -0400
+Message-ID: <20241004181828.3669209-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -68,54 +72,110 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Xu Kuohai <xukuohai@huawei.com>
 
-[ Upstream commit 3c4d0ae0671827f4b536cc2d26f8b9c54584ccc5 ]
+[ Upstream commit 28ead3eaabc16ecc907cfb71876da028080f6356 ]
 
-Add missing warning handling to the early program check handler. This
-way a warning is printed to the console as soon as the early console
-is setup, and the kernel continues to boot.
+bpf progs can be attached to kernel functions, and the attached functions
+can take different parameters or return different return values. If
+prog attached to one kernel function tail calls prog attached to another
+kernel function, the ctx access or return value verification could be
+bypassed.
 
-Before this change a disabled wait psw was loaded instead and the
-machine was silently stopped without giving an idea about what
-happened.
+For example, if prog1 is attached to func1 which takes only 1 parameter
+and prog2 is attached to func2 which takes two parameters. Since verifier
+assumes the bpf ctx passed to prog2 is constructed based on func2's
+prototype, verifier allows prog2 to access the second parameter from
+the bpf ctx passed to it. The problem is that verifier does not prevent
+prog1 from passing its bpf ctx to prog2 via tail call. In this case,
+the bpf ctx passed to prog2 is constructed from func1 instead of func2,
+that is, the assumption for ctx access verification is bypassed.
 
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Another example, if BPF LSM prog1 is attached to hook file_alloc_security,
+and BPF LSM prog2 is attached to hook bpf_lsm_audit_rule_known. Verifier
+knows the return value rules for these two hooks, e.g. it is legal for
+bpf_lsm_audit_rule_known to return positive number 1, and it is illegal
+for file_alloc_security to return positive number. So verifier allows
+prog2 to return positive number 1, but does not allow prog1 to return
+positive number. The problem is that verifier does not prevent prog1
+from calling prog2 via tail call. In this case, prog2's return value 1
+will be used as the return value for prog1's hook file_alloc_security.
+That is, the return value rule is bypassed.
+
+This patch adds restriction for tail call to prevent such bypasses.
+
+Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
+Link: https://lore.kernel.org/r/20240719110059.797546-4-xukuohai@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/early.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ include/linux/bpf.h |  1 +
+ kernel/bpf/core.c   | 21 ++++++++++++++++++---
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 14d324865e33f..ecae246e8d5d4 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -177,8 +177,21 @@ static __init void setup_topology(void)
- 
- void __do_early_pgm_check(struct pt_regs *regs)
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 3b94ec161e8cc..46873d9d86494 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -294,6 +294,7 @@ struct bpf_map {
+ 	 * same prog type, JITed flag and xdp_has_frags flag.
+ 	 */
+ 	struct {
++		const struct btf_type *attach_func_proto;
+ 		spinlock_t lock;
+ 		enum bpf_prog_type type;
+ 		bool jited;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 7ee62e38faf0e..4e07cc057d6f2 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2302,6 +2302,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
  {
--	if (!fixup_exception(regs))
--		disabled_wait();
-+	struct lowcore *lc = get_lowcore();
-+	unsigned long ip;
-+
-+	regs->int_code = lc->pgm_int_code;
-+	regs->int_parm_long = lc->trans_exc_code;
-+	ip = __rewind_psw(regs->psw, regs->int_code >> 16);
-+
-+	/* Monitor Event? Might be a warning */
-+	if ((regs->int_code & PGM_INT_CODE_MASK) == 0x40) {
-+		if (report_bug(ip, regs) == BUG_TRAP_TYPE_WARN)
-+			return;
-+	}
-+	if (fixup_exception(regs))
-+		return;
-+	disabled_wait();
- }
+ 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
+ 	bool ret;
++	struct bpf_prog_aux *aux = fp->aux;
  
- static noinline __init void setup_lowcore_early(void)
+ 	if (fp->kprobe_override)
+ 		return false;
+@@ -2311,7 +2312,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+ 	 * in the case of devmap and cpumap). Until device checks
+ 	 * are implemented, prohibit adding dev-bound programs to program maps.
+ 	 */
+-	if (bpf_prog_is_dev_bound(fp->aux))
++	if (bpf_prog_is_dev_bound(aux))
+ 		return false;
+ 
+ 	spin_lock(&map->owner.lock);
+@@ -2321,12 +2322,26 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
+ 		 */
+ 		map->owner.type  = prog_type;
+ 		map->owner.jited = fp->jited;
+-		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
++		map->owner.xdp_has_frags = aux->xdp_has_frags;
++		map->owner.attach_func_proto = aux->attach_func_proto;
+ 		ret = true;
+ 	} else {
+ 		ret = map->owner.type  == prog_type &&
+ 		      map->owner.jited == fp->jited &&
+-		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
++		      map->owner.xdp_has_frags == aux->xdp_has_frags;
++		if (ret &&
++		    map->owner.attach_func_proto != aux->attach_func_proto) {
++			switch (prog_type) {
++			case BPF_PROG_TYPE_TRACING:
++			case BPF_PROG_TYPE_LSM:
++			case BPF_PROG_TYPE_EXT:
++			case BPF_PROG_TYPE_STRUCT_OPS:
++				ret = false;
++				break;
++			default:
++				break;
++			}
++		}
+ 	}
+ 	spin_unlock(&map->owner.lock);
+ 
 -- 
 2.43.0
 
