@@ -1,86 +1,318 @@
-Return-Path: <stable+bounces-80772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE47990933
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:31:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103D19909AE
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:51:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD682820AA
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 16:31:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28CEA1C2131B
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 16:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31F51CACC7;
-	Fri,  4 Oct 2024 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F871C7292;
+	Fri,  4 Oct 2024 16:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tLMa5syD"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936A61C82E6;
-	Fri,  4 Oct 2024 16:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AB91E3789
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 16:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728059468; cv=none; b=Z1OYkzYxZ6J4xG75wr9x/LVloPwQoCLk7V0nGn1cywdH/XJ3n+0jCfMISuhAsL1mQyOQR/cC5bohYZozSTsUWgNi3KFH5vlyloOBRiN/BJhWWJcjizjVJSWssoAP1O/ORJtT9wxlC1np/nvYEg1j80MVGn+pjKN+DMpf2DGS/74=
+	t=1728060677; cv=none; b=SUyvdPGdz0Cix2bKrk+soe7cELi44l9jcu1zV8ZafFJ4sSaQFOq/2JpVfQqwd0ZdpVOSWapiAe/Z3MT6ZAHVTSQLWAt6CITK4xQCyFvcVGIcx0ZkPnxdAnETqFTqJWk9pwHX4Rpq0fhH+luvMPFdXoJajhXfwIRT007xhlKU/V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728059468; c=relaxed/simple;
-	bh=YmdSNPfR/tRO4uGaJI4F8DBmFm4uoOY1QMZOT8LKZ60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y6ulPUqOsrz8l1vePx/bHSrPJ695h59Zwfe6DfLJU21WQ+UrkGv4qkJQ1/vabnVC9NOCpOtx1qwSYSNrpheOXAIDB4aDwl5c8wlelZD6tLg9ylVnbiCpojzAIewaFTn4Ljy/Wc0ae6I/Z15Gc5QdCZDqNrvW7PJnTDScO1WPuJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63C55339;
-	Fri,  4 Oct 2024 09:31:35 -0700 (PDT)
-Received: from arm.com (unknown [10.57.22.47])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 38BEC3F640;
-	Fri,  4 Oct 2024 09:31:03 -0700 (PDT)
-Date: Fri, 4 Oct 2024 19:31:00 +0300
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Rob Herring <robh@kernel.org>,
-	D Scott Phillips <scott@os.amperecomputing.com>,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, James More <james.morse@arm.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum
- 3194386
-Message-ID: <ZwAYRH208DS-HDpV@arm.com>
-References: <20241003225239.321774-1-eahariha@linux.microsoft.com>
- <172804243078.2676985.11423830386246877637.b4-ty@arm.com>
- <f64f2cb8-de7a-4131-a0ae-e986b4857777@linux.microsoft.com>
+	s=arc-20240116; t=1728060677; c=relaxed/simple;
+	bh=CxxKykbVU1zqlhwv7EJaj80bzfJc3bHxD+77gbHA0/4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:In-Reply-To:
+	 Content-Type:References; b=A6PAwZhGli85+zjqcaybIdJgm2qc/CSssr8Ayku0G3fyb3C+wCPCw4xORwznju8EUCePyxjqjjArfToM0qTClfIdTnAOtKw/xotLpIUjR/DoI++nmpO+JgeAOCW0WNotXCzkpTNiYIdGahikI/27uOHGg+2MoCO+xpPJ+/4XaGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tLMa5syD; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20241004165107euoutp02dbcbf840ac254f0cba047b5ee994ee9e~7TgVe_4zs1188311883euoutp02V
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 16:51:07 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20241004165107euoutp02dbcbf840ac254f0cba047b5ee994ee9e~7TgVe_4zs1188311883euoutp02V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1728060667;
+	bh=nZDnZHd/VMEA+X9S9+2qXYsONNu6blqoAR4Hxiwy0HQ=;
+	h=Date:Subject:To:From:In-Reply-To:References:From;
+	b=tLMa5syDNN0FS8K1X7DNCKkW97+a+Biptl6LfQ5QOGcClDF8y61ehSaurmU2orYEt
+	 abJ2DeBk3qItmnayHr+vgtkRZxMfiNn8M//iNW6f7H/grF067Udqw1p2wlBOh9DXAq
+	 gHxRDVuyz/TQHMpFtboUcIpCoG3ZIKOr84SVR5Vo=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+	20241004165106eucas1p13be584b247551ec827d783a391973947~7TgUncnQU2254422544eucas1p1M;
+	Fri,  4 Oct 2024 16:51:06 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+	eusmges1new.samsung.com (EUCPMTA) with SMTP id 5A.9E.09624.9FC10076; Fri,  4
+	Oct 2024 17:51:05 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20241004165105eucas1p1f21dfe36e7b1f0384126534dcbbd36c4~7TgUQ5Piv2418124181eucas1p1T;
+	Fri,  4 Oct 2024 16:51:05 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20241004165105eusmtrp2ec1d1687edc797929ddd60283ecab2cc~7TgUPzFCM2525825258eusmtrp2c;
+	Fri,  4 Oct 2024 16:51:05 +0000 (GMT)
+X-AuditID: cbfec7f2-c11ff70000002598-9a-67001cf90b6e
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms1.samsung.com (EUCPMTA) with SMTP id 7A.D8.14621.9FC10076; Fri,  4
+	Oct 2024 17:51:05 +0100 (BST)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20241004165104eusmtip2300bd03afc8993725cf8f2d0f10114b0~7TgTXDawR0477704777eusmtip2S;
+	Fri,  4 Oct 2024 16:51:04 +0000 (GMT)
+Message-ID: <c96e6f1b-3abf-454a-8236-360a845b25e9@samsung.com>
+Date: Fri, 4 Oct 2024 18:51:04 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f64f2cb8-de7a-4131-a0ae-e986b4857777@linux.microsoft.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: + mm-mremap-prevent-racing-change-of-old-pmd-type.patch added
+ to mm-hotfixes-unstable branch
+To: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org,
+	willy@infradead.org, stable@vger.kernel.org, hughd@google.com,
+	david@redhat.com, jannh@google.com
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20241002224416.42F20C4CEC2@smtp.kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprDKsWRmVeSWpSXmKPExsWy7djP87o/ZRjSDc4ftbSYs34Nm8XX9b+Y
+	LZ5+6mOxuHRS1+L1xAusFgs2PmK0+P1jDpsDu8eCTaUem1doeZyY8ZvF4/2+q2wenzfJBbBG
+	cdmkpOZklqUW6dslcGU0nF7NXrDJomJa9wu2Bsa5Bl2MnBwSAiYSXfveMXYxcnEICaxglJjS
+	1MwO4XxhlLjwahErhPOZUWLb3LWsMC1NL9pZIBLLGSW6vn2BqvrIKPHh/2Z2kCpeATuJXy+f
+	A1VxcLAIqEgs2WoJERaUODnzCQuILSogL3H/1gywcmGBbIkvbc3MIHNEBDYwSuzsn8wMkmAW
+	EJe49WQ+E4jNJmAo0fW2iw3E5hSwlGhZ1M8EUSMv0bx1NlizhMAFDon2Y/uZIE51kdh4YAcb
+	hC0s8er4FnYIW0bi/06QoSAN7YwSC37fh3ImMEo0PL/FCFFlLXHn3C82kBeYBTQl1u/Shwg7
+	Sqw89o0ZJCwhwCdx460gxBF8EpO2TYcK80p0tAlBVKtJzDq+Dm7twQuXmCFsD4k5p98yT2BU
+	nIUULrOQvDwLyWuzEG5YwMiyilE8tbQ4Nz212DAvtVyvODG3uDQvXS85P3cTIzABnf53/NMO
+	xrmvPuodYmTiYDzEKMHBrCTCO2/73zQh3pTEyqrUovz4otKc1OJDjNIcLErivKop8qlCAumJ
+	JanZqakFqUUwWSYOTqkGpgnJh4zl5/EH86tevHu59o4sf9LLnlMKGw6cZrz7/tFpTseau9yn
+	jn+TObBEheelpOr9Dx/dHS9PyzDhtyuf+KLf+s65GNX92d2G5r8TAg/9nPHL7d5agcOxnaxK
+	ch9Vu/xiZKYUVJtbhZTOmfaiNGwJs94XyZrfi4uFo5+7ffv1TteX68Nby9USYdXBhj11IYob
+	ale/Vmm7LSgrb6jImbhTxX3ZPJv/ekfeLM2cFOmw0efBI+WdUz99+exTtoX154EXnz4nRz54
+	1nBhpkammub2kiCnS1MeubL1Fqjrm721WXnY6/OsWaw9P7cE2O5I3jvlgJrw4jq9H8fe+8UU
+	Cr9XvK68xD3H3bo6Ve+wrxJLcUaioRZzUXEiACB2xsevAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrIIsWRmVeSWpSXmKPExsVy+t/xe7o/ZRjSDW6dULKYs34Nm8XX9b+Y
+	LZ5+6mOxuHRS1+L1xAusFgs2PmK0+P1jDpsDu8eCTaUem1doeZyY8ZvF4/2+q2wenzfJBbBG
+	6dkU5ZeWpCpk5BeX2CpFG1oY6RlaWugZmVjqGRqbx1oZmSrp29mkpOZklqUW6dsl6GU0nF7N
+	XrDJomJa9wu2Bsa5Bl2MnBwSAiYSTS/aWboYuTiEBJYySjTfvssCkZCRODmtgRXCFpb4c62L
+	DaLoPaPE/IuvGEESvAJ2Er9ePgdq4OBgEVCRWLLVEiIsKHFy5hOwOaIC8hL3b81gB7GFBbIl
+	Jk/YzwwyR0RgA6PEyv1TmUESQgIWEjte/QMrYhYQl7j1ZD4TiM0mYCjR9RZkMScHp4ClRMui
+	fiaIGjOJrq1djBC2vETz1tnMExgFZyHZPQvJqFlIWmYhaVnAyLKKUSS1tDg3PbfYUK84Mbe4
+	NC9dLzk/dxMjMK62Hfu5eQfjvFcf9Q4xMnEwHmKU4GBWEuGdt/1vmhBvSmJlVWpRfnxRaU5q
+	8SFGU6D/JzJLiSbnAyM7ryTe0MzA1NDEzNLA1NLMWEmc1+3y+TQhgfTEktTs1NSC1CKYPiYO
+	TqkGpqzf8nvqXptYRUz/ldTGfVCm9ZC2fhW3W0qsa3ewQsKXH3F3PzE0nlJ5r82f6LtCf+lL
+	+4PT1iSr/nvsUrEu4D9L4omUS/1bVafcWJquHO7HoSYXtPX7DGEWh2kVDvrdp1zjbzTdSHIv
+	zGBa3XfwEqc848zfxqcCQuRMVuZnti7sf3/zln1b8atVX6X0LXzuvZZ8Vj7f6uL/ZY+vcKxk
+	M1FpOv9Is+yR0Sb/usdFTKcM+aTlmaoenWs12uJyW9RadrXpfL/P635OEJy74ejCh2KpR7Me
+	rrCtKznwU/Lh9reN8/cWvNHSi7hxR8+M4yAH//01QmY24e082gs5J8WnZHYwHLC4uC7mvKkj
+	86pfSizFGYmGWsxFxYkAB4lcWDQDAAA=
+X-CMS-MailID: 20241004165105eucas1p1f21dfe36e7b1f0384126534dcbbd36c4
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20241004165105eucas1p1f21dfe36e7b1f0384126534dcbbd36c4
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20241004165105eucas1p1f21dfe36e7b1f0384126534dcbbd36c4
+References: <20241002224416.42F20C4CEC2@smtp.kernel.org>
+	<CGME20241004165105eucas1p1f21dfe36e7b1f0384126534dcbbd36c4@eucas1p1.samsung.com>
 
-On Fri, Oct 04, 2024 at 09:24:15AM -0700, Easwar Hariharan wrote:
-> On 10/4/2024 4:47 AM, Catalin Marinas wrote:
-> > On Thu, 03 Oct 2024 22:52:35 +0000, Easwar Hariharan wrote:
-> >> Add the Microsoft Azure Cobalt 100 CPU to the list of CPUs suffering
-> >> from erratum 3194386 added in commit 75b3c43eab59 ("arm64: errata:
-> >> Expand speculative SSBS workaround")
-> > 
-> > Applied to arm64 (for-next/fixes), thanks!
-> > 
-> > [1/1] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum 3194386
-> >       https://git.kernel.org/arm64/c/3eddb108abe3
-> > 
-> 
-> Thanks for queuing, I just saw that I typoed James' last name in the CC
-> of the commit message. i.e. it needs s/More/Morse/
-> 
-> I'll let you decide if it needs fixing up.
+Dear All,
 
-Too late, I already sent the pull request to Linus. I doubt anyone else
-would notice ;).
+The original mail with this patch is not available in lore, so I decided 
+to reply this one.
 
+On 03.10.2024 00:44, Andrew Morton wrote:
+> The patch titled
+>       Subject: mm/mremap: prevent racing change of old pmd type
+> has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+>       mm-mremap-prevent-racing-change-of-old-pmd-type.patch
+>
+> This patch will shortly appear at
+>       https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mremap-prevent-racing-change-of-old-pmd-type.patch
+>
+> This patch will later appear in the mm-hotfixes-unstable branch at
+>      git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>
+> Before you just go and hit "reply", please:
+>     a) Consider who else should be cc'ed
+>     b) Prefer to cc a suitable mailing list as well
+>     c) Ideally: find the original patch on the mailing list and do a
+>        reply-to-all to that, adding suitable additional cc's
+>
+> *** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+>
+> The -mm tree is included into linux-next via the mm-everything
+> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> and is updated there every 2-3 working days
+>
+> ------------------------------------------------------
+> From: Jann Horn <jannh@google.com>
+> Subject: mm/mremap: prevent racing change of old pmd type
+> Date: Wed, 02 Oct 2024 23:07:06 +0200
+>
+> Prevent move_normal_pmd() in mremap() from racing with
+> retract_page_tables() in MADVISE_COLLAPSE such that
+>
+>      pmd_populate(mm, new_pmd, pmd_pgtable(pmd))
+>
+> operates on an empty source pmd, causing creation of a new pmd which maps
+> physical address 0 as a page table.
+>
+> This bug is only reachable if either CONFIG_READ_ONLY_THP_FOR_FS is set or
+> THP shmem is usable.  (Unprivileged namespaces can be used to set up a
+> tmpfs that can contain THP shmem pages with "huge=advise".)
+>
+> If userspace triggers this bug *in multiple processes*, this could likely
+> be used to create stale TLB entries pointing to freed pages or cause
+> kernel UAF by breaking an invariant the rmap code relies on.
+>
+> Fix it by moving the rmap locking up so that it covers the span from
+> reading the PMD entry to moving the page table.
+>
+> Link: https://lkml.kernel.org/r/20241002-move_normal_pmd-vs-collapse-fix-v1-1-78290e5dece6@google.com
+> Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
+> Signed-off-by: Jann Horn <jannh@google.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+This patch landed in today's linux-next as commit 46c1b3279220 
+("mm/mremap: prevent racing change of old pmd type"). In my tests I 
+found that it introduces a lockdep warning about possible circular 
+locking dependency on ARM64 machines. Reverting $subject together with 
+commits a2fbe16f45a8 ("mm: mremap: move_ptes() use 
+pte_offset_map_rw_nolock()") and 46c1b3279220 ("mm/mremap: prevent 
+racing change of old pmd type") on top of next-20241004 fixes this problem.
+
+Here is the observed lockdep warning:
+
+Freeing unused kernel memory: 13824K
+Run /sbin/init as init process
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.12.0-rc1+ #15391 Not tainted
+------------------------------------------------------
+init/1 is trying to acquire lock:
+ffff000006943588 (&anon_vma->rwsem){+.+.}-{3:3}, at: vma_prepare+0x70/0x158
+
+but task is already holding lock:
+ffff0000048c9970 (&mapping->i_mmap_rwsem){+.+.}-{3:3}, at: 
+vma_prepare+0x28/0x158
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #2 (&mapping->i_mmap_rwsem){+.+.}-{3:3}:
+        down_write+0x50/0xe8
+        dma_resv_lockdep+0x140/0x300
+        do_one_initcall+0x68/0x300
+        kernel_init_freeable+0x28c/0x50c
+        kernel_init+0x20/0x1d8
+        ret_from_fork+0x10/0x20
+
+-> #1 (fs_reclaim){+.+.}-{0:0}:
+        fs_reclaim_acquire+0xd0/0xe4
+        __alloc_pages_noprof+0xe4/0x10d0
+        alloc_pages_mpol_noprof+0x88/0x23c
+        alloc_pages_noprof+0x48/0xc0
+        __pud_alloc+0x44/0x254
+        alloc_new_pud.constprop.0+0x154/0x160
+        move_page_tables+0x1b0/0xc38
+        relocate_vma_down+0xe4/0x1f8
+        setup_arg_pages+0x190/0x370
+        load_elf_binary+0x370/0x15c4
+        bprm_execve+0x290/0x7a0
+        kernel_execve+0xf8/0x16c
+        run_init_process+0xa8/0xbc
+        kernel_init+0xec/0x1d8
+        ret_from_fork+0x10/0x20
+
+-> #0 (&anon_vma->rwsem){+.+.}-{3:3}:
+        __lock_acquire+0x1374/0x2224
+        lock_acquire+0x200/0x340
+        down_write+0x50/0xe8
+        vma_prepare+0x70/0x158
+        __split_vma+0x26c/0x388
+        vma_modify+0x45c/0x7f4
+        vma_modify_flags+0x90/0xc4
+        mprotect_fixup+0x8c/0x2c0
+        do_mprotect_pkey+0x2a8/0x464
+        __arm64_sys_mprotect+0x20/0x30
+        invoke_syscall+0x48/0x110
+        el0_svc_common.constprop.0+0x40/0xe8
+        do_el0_svc_compat+0x20/0x3c
+        el0_svc_compat+0x44/0xe0
+        el0t_32_sync_handler+0x98/0x148
+        el0t_32_sync+0x194/0x198
+
+other info that might help us debug this:
+
+Chain exists of:
+   &anon_vma->rwsem --> fs_reclaim --> &mapping->i_mmap_rwsem
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock(&mapping->i_mmap_rwsem);
+                                lock(fs_reclaim);
+lock(&mapping->i_mmap_rwsem);
+   lock(&anon_vma->rwsem);
+
+  *** DEADLOCK ***
+
+2 locks held by init/1:
+  #0: ffff000006998188 (&mm->mmap_lock){++++}-{3:3}, at: 
+do_mprotect_pkey+0xb4/0x464
+  #1: ffff0000048c9970 (&mapping->i_mmap_rwsem){+.+.}-{3:3}, at: 
+vma_prepare+0x28/0x158
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 1 Comm: init Not tainted 6.12.0-rc1+ #15391
+Hardware name: linux,dummy-virt (DT)
+Call trace:
+  dump_backtrace+0x94/0xec
+  show_stack+0x18/0x24
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  print_circular_bug+0x298/0x37c
+  check_noncircular+0x15c/0x170
+  __lock_acquire+0x1374/0x2224
+  lock_acquire+0x200/0x340
+  down_write+0x50/0xe8
+  vma_prepare+0x70/0x158
+  __split_vma+0x26c/0x388
+  vma_modify+0x45c/0x7f4
+  vma_modify_flags+0x90/0xc4
+  mprotect_fixup+0x8c/0x2c0
+  do_mprotect_pkey+0x2a8/0x464
+  __arm64_sys_mprotect+0x20/0x30
+  invoke_syscall+0x48/0x110
+  el0_svc_common.constprop.0+0x40/0xe8
+  do_el0_svc_compat+0x20/0x3c
+  el0_svc_compat+0x44/0xe0
+  el0t_32_sync_handler+0x98/0x148
+  el0t_32_sync+0x194/0x198
+INIT: version 2.88 booting
+
+> ...
+
+Best regards
 -- 
-Catalin
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
 
