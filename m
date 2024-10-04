@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B45F990E8E
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FA2990E91
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6FEA280DE8
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:37:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97BDE28107F
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45691227BB0;
-	Fri,  4 Oct 2024 18:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEABF2281C0;
+	Fri,  4 Oct 2024 18:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWdVFY1X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QgjpQEKu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CD4227BA9;
-	Fri,  4 Oct 2024 18:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62AD1DF985;
+	Fri,  4 Oct 2024 18:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066631; cv=none; b=tEuWq2EBhYQLKKlMlzjHuCZ+455tCQ237mBcWLR2m1CiKYWGxh+vEHDMF4J6XKQOjIoMDBnWdMoIJWYNn6Cvvnk6RnXusaV6dju7OMwZM7exDDXPwcjEfvr6jZh0rCod8ynhf0DtSM9l6mkSF//GNwUad79I0Nxq5ZD3sXsImw4=
+	t=1728066633; cv=none; b=C8k8mhO0hHUHHOG1kCYqkOK5WxE1xpqGXTvz7ZPD5EHV19PaALOIaXUiSCHLgJ0tBUAOXCCFAgt5PP41Za+UvZV3op++2xVBDlS53FzriHvBW1MOVU+VPH2dViBAzmXchino8Uspiv9dJr9Zog5XxJxvK+ANN3TQz2I/9KzK9Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066631; c=relaxed/simple;
-	bh=ABc0QBjQCqeraLJRnvc3Amm0w2qOe4YTPG226MAJ5fw=;
+	s=arc-20240116; t=1728066633; c=relaxed/simple;
+	bh=48xF3KYPyrDhFK+NnnNn7XOaMc2resuKCWppNm+DSzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7GSAAPF0hUvvJBCc3I/H4nQV1QTa/zxUXIMgS1I/T1mEyT/0Bjz4u8E+Fu+N9S+ApNvEgeeeKO79cFc5eNW0FLGXVAjn+fUCRDzj2mHDFF9IxxrGTcS9U2G76hUkvv3eP/JzYDm2kD6T4ewrR+mooQSQfifNwzZUEj5x7sQdmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWdVFY1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65A0C4CECC;
-	Fri,  4 Oct 2024 18:30:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E1i24yxLcV7qe6toUrbKFxJjpNO1nks6KVWyNoxURiRqa9OfoY/L3Qv3hiE7cSTwf6ETTW7gVJSCVzfyLNkAublatj0XuZN2q5xbJs8b3YdpnwQaq6+hVPPW7mNUPT4/reRSigAnzVKPQoKINcjZnDB1/ugPHUxFxf//7/X7/7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QgjpQEKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445F5C4CEC6;
+	Fri,  4 Oct 2024 18:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066631;
-	bh=ABc0QBjQCqeraLJRnvc3Amm0w2qOe4YTPG226MAJ5fw=;
+	s=k20201202; t=1728066633;
+	bh=48xF3KYPyrDhFK+NnnNn7XOaMc2resuKCWppNm+DSzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWdVFY1X/uLp0EANhw7KPYZTAspA2LgNvIQsKptID1/PZH0GVSP7TcNAdox6lkMnj
-	 3g1mmgeGcXeFSiD/Dt0+s8oAnq8PFfvZvudCFtH8qf+Ra9MT4p58ySqlixeRsWShg3
-	 RllWplEBAPjlUcMUIjqjMxfardf2aNlZvTCCEOFmGMyUNwIMmELGJxwvxfm6UjuHpy
-	 4vhpl8w+6A+koral9/1A8kBJ7660tKPfzFAsSXAmmb/yZNWbKxfmTbO0+OJka+eeLN
-	 WMlRdyZv8ch5fj+vBMv0bnh1hjOcKuOCcofJ4NJ3hABymGCxE19x2MleUrP4t7KqCM
-	 iPrp20NvMzDmw==
+	b=QgjpQEKuO/532IKpSeO28mMxZHvbHyRKOkh6ZoT8MhhD8XdzqC3reIrpwDBDUIbvT
+	 gfPrEwDyw4pY+7rFMhZI6R32wsVChA3hnhy5bskAeShKHYozP6HyW4AF5LuHyHT0TD
+	 j7HlgLPnu/SJNcfpEDnRKPc26wVjAHEUy+/pZe44eMVrThdtE2iVvg8dKHtoW90zLk
+	 FOWfRiz2gR0HuuIuZU/qyOYcbEnxUEeg+H9Ym6X6z+iwMJBY29Wsn7TQnChV7PWwGf
+	 ZjoWuM7rl77e9lIXlZfSIp0Aa/qJ2JROqAihbSxau5kVvD+Nz6mQNTXIjQgXCik1V1
+	 dDRoX2b30H/Fw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+Cc: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 13/26] clk: bcm: bcm53573: fix OF node leak in init
-Date: Fri,  4 Oct 2024 14:29:39 -0400
-Message-ID: <20241004183005.3675332-13-sashal@kernel.org>
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 14/26] PCI: Add ACS quirk for Qualcomm SA8775P
+Date: Fri,  4 Oct 2024 14:29:40 -0400
+Message-ID: <20241004183005.3675332-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183005.3675332-1-sashal@kernel.org>
 References: <20241004183005.3675332-1-sashal@kernel.org>
@@ -61,42 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
 
-[ Upstream commit f92d67e23b8caa81f6322a2bad1d633b00ca000e ]
+[ Upstream commit 026f84d3fa62d215b11cbeb5a5d97df941e93b5c ]
 
-Driver code is leaking OF node reference from of_get_parent() in
-bcm53573_ilp_init().  Usage of of_get_parent() is not needed in the
-first place, because the parent node will not be freed while we are
-processing given node (triggered by CLK_OF_DECLARE()).  Thus fix the
-leak by accessing parent directly, instead of of_get_parent().
+The Qualcomm SA8775P root ports don't advertise an ACS capability, but they
+do provide ACS-like features to disable peer transactions and validate bus
+numbers in requests.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240826065801.17081-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Thus, add an ACS quirk for the SA8775P.
+
+Link: https://lore.kernel.org/linux-pci/20240906052228.1829485-1-quic_skananth@quicinc.com
+Signed-off-by: Subramanian Ananthanarayanan <quic_skananth@quicinc.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/bcm/clk-bcm53573-ilp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/bcm/clk-bcm53573-ilp.c b/drivers/clk/bcm/clk-bcm53573-ilp.c
-index 84f2af736ee8a..83ef41d618be3 100644
---- a/drivers/clk/bcm/clk-bcm53573-ilp.c
-+++ b/drivers/clk/bcm/clk-bcm53573-ilp.c
-@@ -112,7 +112,7 @@ static void bcm53573_ilp_init(struct device_node *np)
- 		goto err_free_ilp;
- 	}
- 
--	ilp->regmap = syscon_node_to_regmap(of_get_parent(np));
-+	ilp->regmap = syscon_node_to_regmap(np->parent);
- 	if (IS_ERR(ilp->regmap)) {
- 		err = PTR_ERR(ilp->regmap);
- 		goto err_free_ilp;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 6f782734bb6e6..f0bbdc72255ed 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4920,6 +4920,8 @@ static const struct pci_dev_acs_enabled {
+ 	/* QCOM QDF2xxx root ports */
+ 	{ PCI_VENDOR_ID_QCOM, 0x0400, pci_quirk_qcom_rp_acs },
+ 	{ PCI_VENDOR_ID_QCOM, 0x0401, pci_quirk_qcom_rp_acs },
++	/* QCOM SA8775P root port */
++	{ PCI_VENDOR_ID_QCOM, 0x0115, pci_quirk_qcom_rp_acs },
+ 	/* HXT SD4800 root ports. The ACS design is same as QCOM QDF2xxx */
+ 	{ PCI_VENDOR_ID_HXT, 0x0401, pci_quirk_qcom_rp_acs },
+ 	/* Intel PCH root ports */
 -- 
 2.43.0
 
