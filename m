@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-80816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86AB990B63
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:27:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339C4990B66
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 693592813AF
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C6121C20C13
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCBE1D8A0B;
-	Fri,  4 Oct 2024 18:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5FB1D968B;
+	Fri,  4 Oct 2024 18:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oy5fzF9V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kmuaAc2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6905D1D8A01;
-	Fri,  4 Oct 2024 18:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB5D1D9685;
+	Fri,  4 Oct 2024 18:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065970; cv=none; b=FR7oC3ObODJ9D5PKzTA3Nv3vVXO+Vrrc7j/rwk4W57AZ+qSumucycUJDPMH/U2v9+xPxRGTBNeWvbNT1sS4PF5UGw8qae9ERFFNr+gpnWAGbp3vp4fN9ie/aq94ItC/z5vjQQF+pF9NZ0rnzA6mEPW60ItDljFA6NzHC65UhXiE=
+	t=1728065979; cv=none; b=pphxgwsg1kAZysrd2IUX0di5+hZpB/b0xvLzbSb2EflAfX3UEAZhJVD3BmCc573NRXjmi1xxqJkp0KbfvBJdS+jlOvURcl87uQ0fVSCOrsh8NzxcxJMZFM6a+9FR9OpFjESoWPHzd4sVkzRwa3hsnTubfYUFF9FQQhN7z0BK2gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728065970; c=relaxed/simple;
-	bh=+2IUzjSiBXKqfq0gzMBC4c/MR+jLj3sTvGy/aapbJXw=;
+	s=arc-20240116; t=1728065979; c=relaxed/simple;
+	bh=XpVz8zlyGtJM96GVGWDB+ynuKI1zdiHZnS2pTQYFm4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiqsjakeIRepvmq8bkyAanTo+7mzuQ3De6IEFYeS80F3oeiGNoGONlDOsBOxrHZa7W4x0/TPVW5EacdoQJPShC8XZWRhtviNw0frqyWHdvNtpXnjWLkcAGi3y9lh3OiK+29QTodbqhlh0/pN+BHKJjQXfO9pvOrzMLSI0yvDGw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oy5fzF9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F45BC4CED0;
-	Fri,  4 Oct 2024 18:19:29 +0000 (UTC)
+	 MIME-Version; b=OQtxjdX26qljxVbRaSFSj+fRF4HK2L4D7GzA4m9ZIWlJTG3rBopKPb1uwp1FQ4SdCd1DvN8m0O0p8tiBkAmE2ICSwQWyW+XquZZUYSVadvUYVsMxUardNp2AS08QD+TESxiKkcXGLHQlx49BNBaRFh4t4XFEADrvgv59E3xZCDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kmuaAc2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A312DC4CECC;
+	Fri,  4 Oct 2024 18:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065970;
-	bh=+2IUzjSiBXKqfq0gzMBC4c/MR+jLj3sTvGy/aapbJXw=;
+	s=k20201202; t=1728065978;
+	bh=XpVz8zlyGtJM96GVGWDB+ynuKI1zdiHZnS2pTQYFm4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oy5fzF9V9VPFIkQ0tWZLs6VIuCWv1t5o8RQfF9mIuwTt+XX074QUdE3sv8ASgsHr4
-	 saLqvL9uyVmkIVn3m1nl+Yn738cgqxBhJ2SqvqsSU/lKdjo5zwc+lx6hr2yfqEjYtB
-	 yV5rtB9+h6r7ucda9oNblAe6Gn54udW6+jviSjRyo513r6P0r/PMeuHPibqRs+D8Jd
-	 /opMyJJANtPZT4gL1yZvubhBh5+IvGJ/6bacWnnB+pu+SPWjnfTIkWFg98IMCesEkz
-	 5rXRRf2niG60K4XcNVzTGZurcv+bM5Gsd7Vc4ssvJg8o47i9I8Xe7XY9byV49MR5nS
-	 QzFYJGjGE2O7Q==
+	b=kmuaAc2JFQJAQXl1W4jdIY76++Z1jpnOuytr/QzfX0X/WSWGhmTJv4vMeyIcjlE+F
+	 48j8t66IpxNCBsTq4uyC/gbO2/TEfvUtqqBORn8qT+x6BxoXVHKQAOBThZ0I4H3HHX
+	 cL3PhkdN4KL3HAv/+8zECeA+cTnX/qm/J23sXhR3B5g6bgNjeMnCYaIJ4iqDnex19M
+	 Th5DbEIQZm/hpMF3TZQwbCdb50BqKGTu39Ku07y46xeatCEVo0sw1nsOcyLrjA4c1o
+	 4GJfJElTwHaYSVx6fAgqryofWH/oPgrLCQtHhaGpEfmtkl75gHWjYgMIUrPHu4Iz1O
+	 Wv7wZ1QYilNpA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.11 36/76] mfd: intel-lpss: Add Intel Panther Lake LPSS PCI IDs
-Date: Fri,  4 Oct 2024 14:16:53 -0400
-Message-ID: <20241004181828.3669209-36-sashal@kernel.org>
+Cc: Samuel Holland <samuel.holland@sifive.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	charlie@rivosinc.com,
+	andy.chiu@sifive.com,
+	xiao.w.wang@intel.com,
+	nick.knight@sifive.com,
+	greentime.hu@sifive.com,
+	kees@kernel.org,
+	masahiroy@kernel.org,
+	samitolvanen@google.com,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 37/76] riscv: Omit optimized string routines when using KASAN
+Date: Fri,  4 Oct 2024 14:16:54 -0400
+Message-ID: <20241004181828.3669209-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -60,64 +72,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit db6a186505c8156e55681a3b93ada431863b85c1 ]
+[ Upstream commit 58ff537109ac863d4ec83baf8413b17dcc10101c ]
 
-Add Intel Panther Lake-H/P PCI IDs.
+The optimized string routines are implemented in assembly, so they are
+not instrumented for use with KASAN. Fall back to the C version of the
+routines in order to improve KASAN coverage. This fixes the
+kasan_strings() unit test.
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240829095719.1557-3-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240801033725.28816-2-samuel.holland@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss-pci.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/riscv/include/asm/string.h | 2 ++
+ arch/riscv/kernel/riscv_ksyms.c | 3 ---
+ arch/riscv/lib/Makefile         | 2 ++
+ arch/riscv/lib/strcmp.S         | 1 +
+ arch/riscv/lib/strlen.S         | 1 +
+ arch/riscv/lib/strncmp.S        | 1 +
+ arch/riscv/purgatory/Makefile   | 2 ++
+ 7 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
-index 0eb6a98ed0fc0..1d8cdc4d5819b 100644
---- a/drivers/mfd/intel-lpss-pci.c
-+++ b/drivers/mfd/intel-lpss-pci.c
-@@ -607,6 +607,32 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa879), (kernel_ulong_t)&ehl_i2c_info },
- 	{ PCI_VDEVICE(INTEL, 0xa87a), (kernel_ulong_t)&ehl_i2c_info },
- 	{ PCI_VDEVICE(INTEL, 0xa87b), (kernel_ulong_t)&ehl_i2c_info },
-+	/* PTL-H */
-+	{ PCI_VDEVICE(INTEL, 0xe325), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xe326), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xe327), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0xe330), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0xe346), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0xe350), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe351), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe352), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xe378), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe379), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe37a), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe37b), (kernel_ulong_t)&ehl_i2c_info },
-+	/* PTL-P */
-+	{ PCI_VDEVICE(INTEL, 0xe425), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xe426), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xe427), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0xe430), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0xe446), (kernel_ulong_t)&tgl_spi_info },
-+	{ PCI_VDEVICE(INTEL, 0xe450), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe451), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe452), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xe478), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe479), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe47a), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xe47b), (kernel_ulong_t)&ehl_i2c_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(pci, intel_lpss_pci_ids);
+diff --git a/arch/riscv/include/asm/string.h b/arch/riscv/include/asm/string.h
+index a96b1fea24fe4..5ba77f60bf0b5 100644
+--- a/arch/riscv/include/asm/string.h
++++ b/arch/riscv/include/asm/string.h
+@@ -19,6 +19,7 @@ extern asmlinkage void *__memcpy(void *, const void *, size_t);
+ extern asmlinkage void *memmove(void *, const void *, size_t);
+ extern asmlinkage void *__memmove(void *, const void *, size_t);
+ 
++#if !(defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS))
+ #define __HAVE_ARCH_STRCMP
+ extern asmlinkage int strcmp(const char *cs, const char *ct);
+ 
+@@ -27,6 +28,7 @@ extern asmlinkage __kernel_size_t strlen(const char *);
+ 
+ #define __HAVE_ARCH_STRNCMP
+ extern asmlinkage int strncmp(const char *cs, const char *ct, size_t count);
++#endif
+ 
+ /* For those files which don't want to check by kasan. */
+ #if defined(CONFIG_KASAN) && !defined(__SANITIZE_ADDRESS__)
+diff --git a/arch/riscv/kernel/riscv_ksyms.c b/arch/riscv/kernel/riscv_ksyms.c
+index a72879b4249a5..5ab1c7e1a6ed5 100644
+--- a/arch/riscv/kernel/riscv_ksyms.c
++++ b/arch/riscv/kernel/riscv_ksyms.c
+@@ -12,9 +12,6 @@
+ EXPORT_SYMBOL(memset);
+ EXPORT_SYMBOL(memcpy);
+ EXPORT_SYMBOL(memmove);
+-EXPORT_SYMBOL(strcmp);
+-EXPORT_SYMBOL(strlen);
+-EXPORT_SYMBOL(strncmp);
+ EXPORT_SYMBOL(__memset);
+ EXPORT_SYMBOL(__memcpy);
+ EXPORT_SYMBOL(__memmove);
+diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
+index 2b369f51b0a5e..8eec6b69a875f 100644
+--- a/arch/riscv/lib/Makefile
++++ b/arch/riscv/lib/Makefile
+@@ -3,9 +3,11 @@ lib-y			+= delay.o
+ lib-y			+= memcpy.o
+ lib-y			+= memset.o
+ lib-y			+= memmove.o
++ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
+ lib-y			+= strcmp.o
+ lib-y			+= strlen.o
+ lib-y			+= strncmp.o
++endif
+ lib-y			+= csum.o
+ ifeq ($(CONFIG_MMU), y)
+ lib-$(CONFIG_RISCV_ISA_V)	+= uaccess_vector.o
+diff --git a/arch/riscv/lib/strcmp.S b/arch/riscv/lib/strcmp.S
+index 687b2bea5c438..542301a67a2ff 100644
+--- a/arch/riscv/lib/strcmp.S
++++ b/arch/riscv/lib/strcmp.S
+@@ -120,3 +120,4 @@ strcmp_zbb:
+ .option pop
+ #endif
+ SYM_FUNC_END(strcmp)
++EXPORT_SYMBOL(strcmp)
+diff --git a/arch/riscv/lib/strlen.S b/arch/riscv/lib/strlen.S
+index 8ae3064e45ff0..962983b73251e 100644
+--- a/arch/riscv/lib/strlen.S
++++ b/arch/riscv/lib/strlen.S
+@@ -131,3 +131,4 @@ strlen_zbb:
+ #endif
+ SYM_FUNC_END(strlen)
+ SYM_FUNC_ALIAS(__pi_strlen, strlen)
++EXPORT_SYMBOL(strlen)
+diff --git a/arch/riscv/lib/strncmp.S b/arch/riscv/lib/strncmp.S
+index aba5b3148621d..0f359ea2f55b2 100644
+--- a/arch/riscv/lib/strncmp.S
++++ b/arch/riscv/lib/strncmp.S
+@@ -136,3 +136,4 @@ strncmp_zbb:
+ .option pop
+ #endif
+ SYM_FUNC_END(strncmp)
++EXPORT_SYMBOL(strncmp)
+diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
+index f11945ee24903..fb9c917c9b457 100644
+--- a/arch/riscv/purgatory/Makefile
++++ b/arch/riscv/purgatory/Makefile
+@@ -1,7 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ purgatory-y := purgatory.o sha256.o entry.o string.o ctype.o memcpy.o memset.o
++ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
+ purgatory-y += strcmp.o strlen.o strncmp.o
++endif
+ 
+ targets += $(purgatory-y)
+ PURGATORY_OBJS = $(addprefix $(obj)/,$(purgatory-y))
 -- 
 2.43.0
 
