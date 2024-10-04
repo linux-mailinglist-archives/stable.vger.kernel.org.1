@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-81005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0D1990DBD
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:18:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DC6990DC1
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAC38286D7F
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:18:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72FB51C21490
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D011D95AD;
-	Fri,  4 Oct 2024 18:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116AD1D9660;
+	Fri,  4 Oct 2024 18:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ptjxfsPp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWwKlmtc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749801D95A6;
-	Fri,  4 Oct 2024 18:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECF81D95BE;
+	Fri,  4 Oct 2024 18:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066477; cv=none; b=na5aTAY1hRvNPvN33k0sDgmhm5jZQXlSXcSeE6iOu3hkY6ZQBYgauBblGY29qCbId/hsGcqac7T2sxn2rSyS3yXsHjiqzthO0L302GJsewkiba+hpnmufh1HzMp6+lfOkokcaII2Yk+OSKiK5YGUeifOnfmMZT5CXc+cD5WmYlg=
+	t=1728066478; cv=none; b=MtpekJ9jAgWhYt76NMSebJJ+ZnY0/sUAxFVq5RCmevU2DeKzuUI2pB53EL8BHVFOKXngxlRZ8Wuepi193bY2QPYRJb4R8Tca4SYGGfb/9jIpqdEOS5gKwTFJ0HxWP97X2V3gtRpQQxocHQRrL/UfHRQCvFXIqxK5mrZ8FJSX04Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066477; c=relaxed/simple;
-	bh=lQwW8GvhU7cntpyWPbWqgvJ1TFtT/WD4eXCDKKYmQDA=;
+	s=arc-20240116; t=1728066478; c=relaxed/simple;
+	bh=IgYMgtqiHAQsBKJx2iJTXwxxvvb52UxnQ0WOVJSj5R4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSAZpiPmi3uvpOyJxPRSDf1F+1V7W9jHXm6ZJJNODH/+TNN6jgcqLwdQgt/f1kVCJkZVU6uRB8Sj1m+OBBhcv6TxtEWdLLm+6dk7MeLHX1hn2Ibg7fYpdsi7CSFY7YZTc5BlzVmXwCiCxCJIEDJRH4lAs4Zloel6PUZ6hXGXo5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ptjxfsPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBD4C4CECC;
-	Fri,  4 Oct 2024 18:27:55 +0000 (UTC)
+	 MIME-Version; b=Hahj/0pizzaYWRp/hiw6nYorw7y6MspxHwjHHW9sax/kBMZDygvtEXnH5f63WNdiyeneZtToTs3wxiDdLHbxibidvUBmcPVPykaYdVpgwkpTZymJj9XeYMuwDx6MeELF8t51Qfd6Vt54fhFD4guf3m82eZgkfWqT8KxdItc1SOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWwKlmtc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90693C4CEC6;
+	Fri,  4 Oct 2024 18:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066477;
-	bh=lQwW8GvhU7cntpyWPbWqgvJ1TFtT/WD4eXCDKKYmQDA=;
+	s=k20201202; t=1728066478;
+	bh=IgYMgtqiHAQsBKJx2iJTXwxxvvb52UxnQ0WOVJSj5R4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptjxfsPpJSg5gdYuejUtwHSh8A1bGddY9nY9BIDu/R94pYny8MAoBOmUkBBCQaBEx
-	 Wbg1zfG1xqG6RyanxvfOnWkoOrXS7TonWpE5X0mEf5feB5p4DSP3szxM0zZ1k9DfVu
-	 ezPSr6TCqv4NAWD9AAKuXGo3rr4LjTRDzvht+au2B7vMBzS3Rnl/ng4ZaovACqDfko
-	 JP3UX3Uq5TrxiE17lOS3Hib2gBIDtlpRdZuPvPIJ2+CZyY491oHHdLida59bylJINT
-	 kbB4nvLuiTViJhIRji/ykoG6DAfwDWIq4IC10y2w7AECfQeOlP0PHEFLqno4VJYLPK
-	 bFeRiULTqPXKQ==
+	b=fWwKlmtc41/9OyT8EUwCQbwM6mjJqEf+2GijyK+CSBHDWwwCIexwkel3JBhm9vTf/
+	 ye7tDMVE3C+eGJNCe05AUK0uacHVq3+Vjc6dmclpu39Tf/i9VZKA4+1dgD47pdYouP
+	 3pXBVjEgcP6dAKGE1DAutVhikv8EP86OIJWekizRJBkSyv5k7NEKUwFBfr6LJnvd7H
+	 BAWqwOozbD4QYxiNDfgmKt4nIuKesrmiSqnPMJdYYcPipizMOiO0rx1spcLAFVtBDM
+	 fLFIDlz19gEtHZI8SfzD8id5T+QEqH99VOvBLBKwVfZMXhEdulbEgocTqAlVHrakmJ
+	 6EMXKgVEr/sqw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Palmer Dabbelt <palmer@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+Cc: Jens Axboe <axboe@kernel.dk>,
+	syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 21/42] RISC-V: Don't have MAX_PHYSMEM_BITS exceed phys_addr_t
-Date: Fri,  4 Oct 2024 14:26:32 -0400
-Message-ID: <20241004182718.3673735-21-sashal@kernel.org>
+	asml.silence@gmail.com,
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 22/42] io_uring: check if we need to reschedule during overflow flush
+Date: Fri,  4 Oct 2024 14:26:33 -0400
+Message-ID: <20241004182718.3673735-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182718.3673735-1-sashal@kernel.org>
 References: <20241004182718.3673735-1-sashal@kernel.org>
@@ -69,68 +66,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.112
 Content-Transfer-Encoding: 8bit
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit ad380f6a0a5e82e794b45bb2eaec24ed51a56846 ]
+[ Upstream commit eac2ca2d682f94f46b1973bdf5e77d85d77b8e53 ]
 
-I recently ended up with a warning on some compilers along the lines of
+In terms of normal application usage, this list will always be empty.
+And if an application does overflow a bit, it'll have a few entries.
+However, nothing obviously prevents syzbot from running a test case
+that generates a ton of overflow entries, and then flushing them can
+take quite a while.
 
-      CC      kernel/resource.o
-    In file included from include/linux/ioport.h:16,
-                     from kernel/resource.c:15:
-    kernel/resource.c: In function 'gfr_start':
-    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
-       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-          |                                     ^
-    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
-       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-          |         ^~~~~~~~~~~~~~~~~
-    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
-      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
-          |                           ^~~~~~~~~~
-    kernel/resource.c:1829:23: note: in expansion of macro 'min_t'
-     1829 |                 end = min_t(resource_size_t, base->end,
-          |                       ^~~~~
-    kernel/resource.c: In function 'gfr_continue':
-    include/linux/minmax.h:49:37: error: conversion from 'long long unsigned int' to 'resource_size_t' {aka 'unsigned int'} changes value from '17179869183' to '4294967295' [-Werror=overflow]
-       49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-          |                                     ^
-    include/linux/minmax.h:52:9: note: in expansion of macro '__cmp_once_unique'
-       52 |         __cmp_once_unique(op, type, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-          |         ^~~~~~~~~~~~~~~~~
-    include/linux/minmax.h:161:27: note: in expansion of macro '__cmp_once'
-      161 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
-          |                           ^~~~~~~~~~
-    kernel/resource.c:1847:24: note: in expansion of macro 'min_t'
-     1847 |                addr <= min_t(resource_size_t, base->end,
-          |                        ^~~~~
-    cc1: all warnings being treated as errors
+Check for needing to reschedule while flushing, and drop our locks and
+do so if necessary. There's no state to maintain here as overflows
+always prune from head-of-list, hence it's fine to drop and reacquire
+the locks at the end of the loop.
 
-which looks like a real problem: our phys_addr_t is only 32 bits now, so
-having 34-bit masks is just going to result in overflows.
-
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240731162159.9235-2-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/io-uring/66ed061d.050a0220.29194.0053.GAE@google.com/
+Reported-by: syzbot+5fca234bd7eb378ff78e@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/sparsemem.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/riscv/include/asm/sparsemem.h b/arch/riscv/include/asm/sparsemem.h
-index 63acaecc33747..2f901a410586d 100644
---- a/arch/riscv/include/asm/sparsemem.h
-+++ b/arch/riscv/include/asm/sparsemem.h
-@@ -7,7 +7,7 @@
- #ifdef CONFIG_64BIT
- #define MAX_PHYSMEM_BITS	56
- #else
--#define MAX_PHYSMEM_BITS	34
-+#define MAX_PHYSMEM_BITS	32
- #endif /* CONFIG_64BIT */
- #define SECTION_SIZE_BITS	27
- #endif /* CONFIG_SPARSEMEM */
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index b21f2bafaeb04..f902b161f02ca 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -615,6 +615,21 @@ static bool __io_cqring_overflow_flush(struct io_ring_ctx *ctx, bool force)
+ 
+ 		list_del(&ocqe->list);
+ 		kfree(ocqe);
++
++		/*
++		 * For silly syzbot cases that deliberately overflow by huge
++		 * amounts, check if we need to resched and drop and
++		 * reacquire the locks if so. Nothing real would ever hit this.
++		 * Ideally we'd have a non-posting unlock for this, but hard
++		 * to care for a non-real case.
++		 */
++		if (need_resched()) {
++			io_cq_unlock_post(ctx);
++			mutex_unlock(&ctx->uring_lock);
++			cond_resched();
++			mutex_lock(&ctx->uring_lock);
++			io_cq_lock(ctx);
++		}
+ 	}
+ 
+ 	all_flushed = list_empty(&ctx->cq_overflow_list);
 -- 
 2.43.0
 
