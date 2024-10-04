@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-81073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3876990F60
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:58:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D23990E9A
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96A7EB30D4C
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:38:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92EA2280EFB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622B4227BB1;
-	Fri,  4 Oct 2024 18:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C604E1DFDBC;
+	Fri,  4 Oct 2024 18:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUKY2H5p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNDmsL8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5102281F7;
-	Fri,  4 Oct 2024 18:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778991DFDB0;
+	Fri,  4 Oct 2024 18:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066635; cv=none; b=G7RaEGB0m8OY9u+ocS7bJzPfJmb6U2rFzVOLpvHyrnh8E1KM6S/qPSrspSk2Yld0QgsXfL07v1/FYbexalXyAjKH1+DHruOU90fI4u+rDZNuvFWQZ1Ku2AGW7wtDBEduNyL4fG4p1TJlckYp81uhLiXvSMA39SrlcLMLCmehwKA=
+	t=1728066636; cv=none; b=TSr3JI4FDZ5tgW4eGxXsKv4bNXdiIA56PuA9C0McLQq2RXG2JoMEZ2n25gz4JM/9GsKjZu3wy2kYQS8D93adkTEh5BqonELFC506uuw1p2kG5xCS64An6OQUTdFeP2vhDqw4ttAIwx0+sZEHv163pc8SPfJgSWCD/mQiYUWKhb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066635; c=relaxed/simple;
-	bh=EbEDNMe/ud2NSQzYnDYrrl5nw2Ikp6ze+E7G5ly5UlI=;
+	s=arc-20240116; t=1728066636; c=relaxed/simple;
+	bh=pGhMBklSLX6a/duMcuD848w0q/EuxxDj32RH6xll+Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nVHt3v+8DAwwVHRp5i3XRf+MehKSCjknLquPJk3hEbO5Tux8/rugFYAMJ8bIpQC5SEdsEdn6CtIPBH9QO1O/VjzmSy8EcuLDOgOmHaQ0BtEWFLx8HeujTzlV0oKZiy3TgftBXRLe7CQTozpmuNYnb04buO8mmEIJQll42mf7mvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUKY2H5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E948C4CECC;
-	Fri,  4 Oct 2024 18:30:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OtIGRET9RDCrhmvNllMyO13HzbrDgly12PipDNxQApadpZ39u4JVFRVvwpa4HHLK25JqOd8ZOoTDjCAR9feu9efSRcgm4K5ejdVLZiklYxazE140xRJsbYUMU6UOrc4EMWz7WyKeMuYLZmdSjHl5sVlkNizhotXuC+FQF2xEWFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNDmsL8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC61C4CEC6;
+	Fri,  4 Oct 2024 18:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066634;
-	bh=EbEDNMe/ud2NSQzYnDYrrl5nw2Ikp6ze+E7G5ly5UlI=;
+	s=k20201202; t=1728066636;
+	bh=pGhMBklSLX6a/duMcuD848w0q/EuxxDj32RH6xll+Y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUKY2H5pZMq8ym7kTajOWgWbdLJRqE/LJcqqxotm8oZrAL6khu6Q6BWU0WekaN2KJ
-	 K+MMyD9/Ox1fYI9NaIvskDZ5IgC9C/Y5ax5EV4mj+bmSFtklpKRzkq0qUFK5OXnskb
-	 OXLbYD4mGU0aL/ERHChkuXwZj/QsbGjtXaP9fKQxaGt09pl8w0OEzFr6EMqs5Z8wTI
-	 Ws0gXLUGTPhP4tjmfOtqUZHpMnR6MAFxn6KkUJx1kGVvRa3G5mxY3EBnrEe0gYmtwX
-	 jE0iO7ZuemfVHrZiA3DSbtND7cveGiDzLJrC2KMt83Wf1fa6uGATcwqguPns7fsIHC
-	 480ZUn1LkcviQ==
+	b=WNDmsL8NzvJiKMQ9HPZsnlpXHqJoaAaVamCHi5PcxnaefrCmoz/r1PHGoddn+EF+H
+	 FJLJ4HhdDlclpwndKTbTh2YKmPUg419qh3jtyu3hwjK5+oMDdDWVUk8PVNGWABfv9X
+	 dQrvB+c6supsPjyrlCs9DKiydfT7nt4JJ2at0agGcOJu0uPkS9pEOw/rRouAuOfnLS
+	 wHsvHO1YFE3O28yiLJ8+VV3KDRyeiZrMR5iufwKPb0sAt5jmDqOP8VNPJTIhVY4Ao0
+	 Iw1TR6NmRGdRbek1w6UK7Cpe8bE5Kugj3alGxw1QrdZxI7RYtVLDw7lq1HmTGoq88C
+	 vcyjW+Ep5uWHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	zdravko delineshev <delineshev@outlook.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 15/26] i2c: i801: Use a different adapter-name for IDF adapters
-Date: Fri,  4 Oct 2024 14:29:41 -0400
-Message-ID: <20241004183005.3675332-15-sashal@kernel.org>
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 16/26] PCI: Mark Creative Labs EMU20k2 INTx masking as broken
+Date: Fri,  4 Oct 2024 14:29:42 -0400
+Message-ID: <20241004183005.3675332-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004183005.3675332-1-sashal@kernel.org>
 References: <20241004183005.3675332-1-sashal@kernel.org>
@@ -69,50 +68,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.226
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 43457ada98c824f310adb7bd96bd5f2fcd9a3279 ]
+[ Upstream commit 2910306655a7072640021563ec9501bfa67f0cb1 ]
 
-On chipsets with a second 'Integrated Device Function' SMBus controller use
-a different adapter-name for the second IDF adapter.
+Per user reports, the Creative Labs EMU20k2 (Sound Blaster X-Fi
+Titanium Series) generates spurious interrupts when used with
+vfio-pci unless DisINTx masking support is disabled.
 
-This allows platform glue code which is looking for the primary i801
-adapter to manually instantiate i2c_clients on to differentiate
-between the 2.
+Thus, quirk the device to mark INTx masking as broken.
 
-This allows such code to find the primary i801 adapter by name, without
-needing to duplicate the PCI-ids to feature-flags mapping from i2c-i801.c.
-
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Closes: https://lore.kernel.org/all/VI1PR10MB8207C507DB5420AB4C7281E0DB9A2@VI1PR10MB8207.EURPRD10.PROD.OUTLOOK.COM
+Link: https://lore.kernel.org/linux-pci/20240912215331.839220-1-alex.williamson@redhat.com
+Reported-by: zdravko delineshev <delineshev@outlook.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-i801.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/pci/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 4baa9bce02b67..3d5ef84482b25 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -1895,8 +1895,15 @@ static int i801_probe(struct pci_dev *dev, const struct pci_device_id *id)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index f0bbdc72255ed..86b91f8da1caa 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3454,6 +3454,8 @@ DECLARE_PCI_FIXUP_FINAL(0x1814, 0x0601, /* Ralink RT2800 802.11n PCI */
+ 			quirk_broken_intx_masking);
+ DECLARE_PCI_FIXUP_FINAL(0x1b7c, 0x0004, /* Ceton InfiniTV4 */
+ 			quirk_broken_intx_masking);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_CREATIVE, PCI_DEVICE_ID_CREATIVE_20K2,
++			quirk_broken_intx_masking);
  
- 	i801_add_tco(priv);
- 
-+	/*
-+	 * adapter.name is used by platform code to find the main I801 adapter
-+	 * to instantiante i2c_clients, do not change.
-+	 */
- 	snprintf(priv->adapter.name, sizeof(priv->adapter.name),
--		"SMBus I801 adapter at %04lx", priv->smba);
-+		 "SMBus %s adapter at %04lx",
-+		 (priv->features & FEATURE_IDF) ? "I801 IDF" : "I801",
-+		 priv->smba);
-+
- 	err = i2c_add_adapter(&priv->adapter);
- 	if (err) {
- 		platform_device_unregister(priv->tco_pdev);
+ /*
+  * Realtek RTL8169 PCI Gigabit Ethernet Controller (rev 10)
 -- 
 2.43.0
 
