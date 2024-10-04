@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-81085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3535C990EBE
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:41:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD0C990F55
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C690A1F24D0B
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:41:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92594B31379
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193FB22AD0F;
-	Fri,  4 Oct 2024 18:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BA21E04A3;
+	Fri,  4 Oct 2024 18:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClZpxn7B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADfyvxSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C851822AD08;
-	Fri,  4 Oct 2024 18:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE2E1E049A;
+	Fri,  4 Oct 2024 18:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066667; cv=none; b=of8u2HHlnrS5n6ugek7NX1LOPuf6EUk4t6TU1WhfqM8fE906YWI4BjDikYSDoWTrJaF54ZuLTgEjCMcpU/LSsX2uWn/OFumjCE+VULRJh65D45yia/Npr/D4i4dU7c4cJcSImUnfVhs1x34d61sOFRBRwP5Cc7ayTkMFHa7Yhws=
+	t=1728066673; cv=none; b=FJ//znwxLEr6NLIslPM6eODKUKHRsPreybXsTPPLr29af/7ttd6baO8yj5MdLscIsgY4UQDqoJBp3Nsj+z0P1YSMjs1Ep/ABIC/8Qv1KtUzJzTiJs9JCUKi1vm4ctKkYDFsxU0kOz98yQCm8StHxbjc9FzB8CSdktZr3dw9tl4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066667; c=relaxed/simple;
-	bh=2GiZ3O48rveT/hHn+zcXPzbx0SldDS0Y/LX2/NzGneU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TpgLcqLS6bscMKOTDwUd6SYdoYRzSwuy+PCK73q6QIKTOnXvAMfavUik17Lqiir7jzyn+MtK5RQSqoMEjXf+oNP/mFmbPEe4X1QOLzZUm8EHh+wzHAjJc+vGRgaW5IrcYI7FkEKMOs9f/frWBdefT/e1hSGu3Tvm2HlnM6TIkZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClZpxn7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A70C4CEC6;
-	Fri,  4 Oct 2024 18:31:06 +0000 (UTC)
+	s=arc-20240116; t=1728066673; c=relaxed/simple;
+	bh=PASC1cDVLfI7W5kc2UXauk071LyN/QUixRh+XkYnRDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ie/OabbRpomDlV5mi44yu1rXkYHn6/0/3Wx27R3zo+0tDbkxRWEhyxq00q1iHEFiPOp8m9aoEoatHNbAk9gMLiWhH4+RSAXYcugvGjSC/yQAf7BgZ06gJmwxFErbTdenisz2BRsrgA79DrgWp0O2soUwhgHGIHZhAqjqhYYdiEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADfyvxSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A63C4CEC6;
+	Fri,  4 Oct 2024 18:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066667;
-	bh=2GiZ3O48rveT/hHn+zcXPzbx0SldDS0Y/LX2/NzGneU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ClZpxn7B7juoa+F+8gHiyEMYk+iAEB0PV66I+8KwEFK0JpEGOTwRcdlgVKFfj7hpP
-	 rIrYL7wXVEns3NFZIf9w4x3SWeCGSpcE5NTb7Lbwk40jYIUOJ4oOjRJHkCH6tePFWX
-	 rdyde6m+V6c8Rx2k6H9+2L0sT5Dq+E/+2JxnJntdCxRTegdf7V796Bw090y8cvaxzC
-	 EaMhf5dLF7LXaTUfEtATAgNAzlbm6lXojy1McVNS8ogcVOaOhU6xYhhyy7YbMRvhRC
-	 opy1zcT6AVAE2ug2xkkRTD77Pvczvkdqb+xjOMNhxAv5NfjaQ57sLIYwYKoQmlsLA2
-	 H9U9ENmgluFrw==
+	s=k20201202; t=1728066672;
+	bh=PASC1cDVLfI7W5kc2UXauk071LyN/QUixRh+XkYnRDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ADfyvxSdtZ1h4EoqtIvBBe3Fov8+NEYKpZA8fGdIcRo8PuE39z4x6Uut4XFrd579Y
+	 VkhA096TE5lD8XU3WdGN4MHdUJ26GxCPqHKAtVIGa2gOui2GQE0rGguYqNl25yU/To
+	 ZeEAqW863cyQD+qngwtxZwcEXZr0oFOEMvH7MHD3lVFBGszmOQFzOJ0iSHcb1O8Lne
+	 yDPW6DTHng4perfCCdYZoKXHuvRR2whfgJfQaiOp6IOht9VoRJsWatf0OW5yl3fu64
+	 86IoZnsJGpu0f35Go4XOenwvq1ma7G/x1S9ynAcyML/MMO0bgA8x0wXnZYiLFM7xCr
+	 NXIKU6UTBBLSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tao Chen <chen.dylane@gmail.com>,
-	Jinke Han <jinkehan@didiglobal.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 01/21] bpf: Check percpu map value size first
-Date: Fri,  4 Oct 2024 14:30:36 -0400
-Message-ID: <20241004183105.3675901-1-sashal@kernel.org>
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	frankja@linux.ibm.com,
+	nsg@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 03/21] s390/facility: Disable compile time optimization for decompressor code
+Date: Fri,  4 Oct 2024 14:30:38 -0400
+Message-ID: <20241004183105.3675901-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241004183105.3675901-1-sashal@kernel.org>
+References: <20241004183105.3675901-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,56 +69,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.284
 Content-Transfer-Encoding: 8bit
 
-From: Tao Chen <chen.dylane@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1d244784be6b01162b732a5a7d637dfc024c3203 ]
+[ Upstream commit 0147addc4fb72a39448b8873d8acdf3a0f29aa65 ]
 
-Percpu map is often used, but the map value size limit often ignored,
-like issue: https://github.com/iovisor/bcc/issues/2519. Actually,
-percpu map value size is bound by PCPU_MIN_UNIT_SIZE, so we
-can check the value size whether it exceeds PCPU_MIN_UNIT_SIZE first,
-like percpu map of local_storage. Maybe the error message seems clearer
-compared with "cannot allocate memory".
+Disable compile time optimizations of test_facility() for the
+decompressor. The decompressor should not contain any optimized code
+depending on the architecture level set the kernel image is compiled
+for to avoid unexpected operation exceptions.
 
-Signed-off-by: Jinke Han <jinkehan@didiglobal.com>
-Signed-off-by: Tao Chen <chen.dylane@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910144111.1464912-2-chen.dylane@gmail.com
+Add a __DECOMPRESSOR check to test_facility() to enforce that
+facilities are always checked during runtime for the decompressor.
+
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/arraymap.c | 3 +++
- kernel/bpf/hashtab.c  | 3 +++
- 2 files changed, 6 insertions(+)
+ arch/s390/include/asm/facility.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 81ed9b79f4019..af90c4498e80e 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -64,6 +64,9 @@ int array_map_alloc_check(union bpf_attr *attr)
- 		 * access the elements.
- 		 */
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
+diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
+index 68c476b20b57e..c7031d9ada293 100644
+--- a/arch/s390/include/asm/facility.h
++++ b/arch/s390/include/asm/facility.h
+@@ -53,8 +53,10 @@ static inline int test_facility(unsigned long nr)
+ 	unsigned long facilities_als[] = { FACILITIES_ALS };
  
- 	return 0;
- }
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 34c4f709b1ede..0d14a2a11463a 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -288,6 +288,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
- 		 * kmalloc-able later in htab_map_update_elem()
- 		 */
- 		return -E2BIG;
-+	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
-+	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
-+		return -E2BIG;
- 
- 	return 0;
+ 	if (__builtin_constant_p(nr) && nr < sizeof(facilities_als) * 8) {
+-		if (__test_facility(nr, &facilities_als))
+-			return 1;
++		if (__test_facility(nr, &facilities_als)) {
++			if (!__is_defined(__DECOMPRESSOR))
++				return 1;
++		}
+ 	}
+ 	return __test_facility(nr, &S390_lowcore.stfle_fac_list);
  }
 -- 
 2.43.0
