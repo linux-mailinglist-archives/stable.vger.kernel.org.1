@@ -1,333 +1,132 @@
-Return-Path: <stable+bounces-80763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CCF9907DD
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 17:46:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C1E9907DF
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 17:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EBCE288291
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 15:46:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 760131F25862
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 15:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF0A1C3037;
-	Fri,  4 Oct 2024 15:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCFA1E32B1;
+	Fri,  4 Oct 2024 15:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AkjMnPlE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sh1Vd/yN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DC21AA7A0;
-	Fri,  4 Oct 2024 15:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB181C303B
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 15:36:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728056152; cv=none; b=rs1hPVoJb68dgxZ3QoT3DTO0Ox9nWc6+gpXhBFk5jmquNj5GVixO9lS4ebQLAYgwPNl9n0vw77EkiwGB9vrK0Mg/9fB8l2dgH0jmpIm9sS5WQ61zzEZEa2QpSUC3U2uFJ+JYH+aEVQ7+gzm5mQhzVES6gj7wwQgyxO5235vhv2M=
+	t=1728056175; cv=none; b=AORfZ+EbuvH5MdfZBBhVUBJd9Dx0NfqwrrIZJk1oArnyI3fg+h7OvsWuST8tje8asUi8sijtooHTqpZtd7n0MUCQPOfJAhjIdanfT9LUq5sm7+YURmfSdSlSxHK0XkatngrmX/eZQe6THiTty9mKKQXOjbF+EdwkRepGoDiSpx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728056152; c=relaxed/simple;
-	bh=T+7P9RluBldf2chvXJKQ50NJ2y6fL/86RjwvDcsjh/Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GO6Kr+jXmbgCzhlmw/7vsREX79aV8eQTzw8eDJxVwYPkqiOdZAak//TqAnKE186UZNLed6VKrd3ER/WrwdVZaKiuQqUVv9y0KK0/ncpmV4/OT8ihjb9aVV6VRtxY2KvTT/ewNpjOTIMpfgBKyD0MhBpiQYTRt1PiAyidg1EhJb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AkjMnPlE; arc=none smtp.client-ip=209.85.222.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-84e9893c457so768062241.2;
-        Fri, 04 Oct 2024 08:35:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728056150; x=1728660950; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nw2sq7oLbYRyM54E/JZVt3qqEmIecjILj6ka5iJnvA8=;
-        b=AkjMnPlEnSLq0uJMA9vlj1BzvZjxVsYlC3Qrbsvz6qWPSr8de3oSVytgKScxTvL6sL
-         uL8p/dq9KuqfJO5rwr3VeuMdKjVVNRneIBV4d4x/iSTisxA0dBcU6MX4nQY6TDekraDl
-         QA8MHmBqGMBPOx+OLVkEMA1YCMlDuBWw/KSBaEXxsKjBxBdTivXUeAuqSKOH/iZmY+GV
-         ZriaNJzwrpMUE9Id5D6TOhGnL55Al/nN6LUjQmH0R2K0PHj9TTNMPNvVvzWlXPYTP/fP
-         6QuMjvQWPM3uTnhMhjg8cgv90pwQVRh//Pft9+pQxiBBMh5cI6h1IYG12rl3oUdlX36B
-         gdPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728056150; x=1728660950;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Nw2sq7oLbYRyM54E/JZVt3qqEmIecjILj6ka5iJnvA8=;
-        b=fVHJUZ2JXsuj0ooLBzWg4oafCMxHe46Tzs/a9/U3DGfmRWgg6f8ZkPcjiPQe0KG2bA
-         AumV2O0XHI+XmtAko50n9OAbtz+L5cK4ph8qy0y3bvposRR2q9QUo6j6F6HOHrzgS3Nx
-         Vntg3e9MkHtqav8CrjYYXx1xt7FmEnr9QSNOeEuX6G2thccs1xzc0LeDQ4bkeevaCeYp
-         LYT29VNh8Pz4qf4EllmeVo9m1vtSYsXK42WYd7m/ElAk0jVfwfHTOOEo2YRMkz/0jd3I
-         O4qgm4n3IN2s/PA8AD5Jh3VsTvjcaJKY6LFHSseeQ9mJPwc4qn77q+W80rSl1EbcTDgG
-         6E1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUOI1nysw5H9Cer9nwCp1YAuaeKx02o4LHA/ETkZZZyuISuQPSlZHZGGHPNI7stNxVNYO+kzmVh@vger.kernel.org, AJvYcCWkM9BGv6ARCwqJlynMAZOROtnfHmO86Aa/vQZtrl6Cuax5Z1RzXI7ejtFLfXX9wb3whoYZzb46XDdfSyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFVBO/XPfSX0wcXv2RKYy2yJVl4NTyacz2ioiRFHMRG3xV1wyu
-	KcKqRWYLy2lrYovlMROyyxudOKS8RsvFwYGrmHaYW9GLLC62A6chhHRtgQn+SzjKqgUIqf5AWjr
-	ws/TM+aY3eOBCXSbmWXa5D8wST3s=
-X-Google-Smtp-Source: AGHT+IEX6UhKKZvWjPQzKs3x120qKfcrb4jvMUBiNStNVz5nW9YCWNdPLZvRmnNxntvKi09plSGnjExnW8RMzBcETcs=
-X-Received: by 2002:a05:6122:1829:b0:50a:b8c6:b689 with SMTP id
- 71dfb90a1353d-50c854487abmr2562637e0c.3.1728056149818; Fri, 04 Oct 2024
- 08:35:49 -0700 (PDT)
+	s=arc-20240116; t=1728056175; c=relaxed/simple;
+	bh=Pc19oH7Ih4scqQQSq4nE+w2PUEeIHkT/kLjOwm8Auuw=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=RJH43axQSTcEr48c+qVsB9eGR5nYC2eMa7bIEhnn32+ub+G8ZLdWco161imHqU4G8OQkCJMEsVWyk/a/JxImmouhNHIbMZBcwKQIEDSRaFCxNWb9u33AYMR8IQ/GyW+uQUvzRc28vyWg4WX5K5VutirQyckHVMt7PrBE93aTnLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sh1Vd/yN; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728056172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JEi5RExZjbpGuczCWNpHYgyJ/zRUFnev8Ha101ZiYXI=;
+	b=Sh1Vd/yNOq56ifyylbM3UWdDvYw3qhf3NxZkg2n67iwzMQ3GghAUW1EZaicUDXjVtEl02w
+	9ZUbq39I1fQjOINoUV3HIa+t+bO4V6kzErNYy9TaQtUIKdoHt/rdnLRcC8/rXCbv+y/Uyd
+	K0Lf0BAiEfJAzCA5JuALl10RcC6Xs7Y=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-673-kZnPuEmfPOevldP0kGwdkQ-1; Fri,
+ 04 Oct 2024 11:36:11 -0400
+X-MC-Unique: kZnPuEmfPOevldP0kGwdkQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 41ED9195422F;
+	Fri,  4 Oct 2024 15:36:10 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CF9DD1956054;
+	Fri,  4 Oct 2024 15:36:07 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20241003010512.58559-1-batrick@batbytes.com>
+References: <20241003010512.58559-1-batrick@batbytes.com>
+To: Patrick Donnelly <batrick@batbytes.com>
+Cc: dhowells@redhat.com, Xiubo Li <xiubli@redhat.com>,
+    Ilya Dryomov <idryomov@gmail.com>, Jeff Layton <jlayton@kernel.org>,
+    Patrick Donnelly <pdonnell@redhat.com>, stable@vger.kernel.org,
+    ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ceph: fix cap ref leak via netfs init_request
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87y137nxqs.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <20241002015754.969-1-21cnbao@gmail.com> <CANeU7Q=FkkMByY2DgtcZfn=UOAygzK7xLJKR4GUx+sdo-bxq9w@mail.gmail.com>
-In-Reply-To: <CANeU7Q=FkkMByY2DgtcZfn=UOAygzK7xLJKR4GUx+sdo-bxq9w@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 4 Oct 2024 23:35:06 +0800
-Message-ID: <CAGsJ_4wYcaYJS3f2FXi1L6wg4zznvgicGK5Gw+ZpcW4pwCQx5g@mail.gmail.com>
-Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
- swapcache_prepare fails
-To: Chris Li <chrisl@kernel.org>
-Cc: ying.huang@intel.com, akpm@linux-foundation.org, david@redhat.com, 
-	hannes@cmpxchg.org, hughd@google.com, kaleshsingh@google.com, 
-	kasong@tencent.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	liyangouwen1@oppo.com, mhocko@suse.com, minchan@kernel.org, sj@kernel.org, 
-	stable@vger.kernel.org, surenb@google.com, v-songbaohua@oppo.com, 
-	willy@infradead.org, yosryahmed@google.com, yuzhao@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3822869.1728056166.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Fri, 04 Oct 2024 16:36:06 +0100
+Message-ID: <3822870.1728056166@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Fri, Oct 4, 2024 at 6:53=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
->
-> On Tue, Oct 1, 2024 at 6:58=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
-te:
-> >
-> > On Wed, Oct 2, 2024 at 8:43=E2=80=AFAM Huang, Ying <ying.huang@intel.co=
-m> wrote:
-> > >
-> > > Barry Song <21cnbao@gmail.com> writes:
-> > >
-> > > > On Tue, Oct 1, 2024 at 7:43=E2=80=AFAM Huang, Ying <ying.huang@inte=
-l.com> wrote:
-> > > >>
-> > > >> Barry Song <21cnbao@gmail.com> writes:
-> > > >>
-> > > >> > On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@=
-intel.com> wrote:
-> > > >> >>
-> > > >> >> Hi, Barry,
-> > > >> >>
-> > > >> >> Barry Song <21cnbao@gmail.com> writes:
-> > > >> >>
-> > > >> >> > From: Barry Song <v-songbaohua@oppo.com>
-> > > >> >> >
-> > > >> >> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcac=
-he")
-> > > >> >> > introduced an unconditional one-tick sleep when `swapcache_pr=
-epare()`
-> > > >> >> > fails, which has led to reports of UI stuttering on latency-s=
-ensitive
-> > > >> >> > Android devices. To address this, we can use a waitqueue to w=
-ake up
-> > > >> >> > tasks that fail `swapcache_prepare()` sooner, instead of alwa=
-ys
-> > > >> >> > sleeping for a full tick. While tasks may occasionally be wok=
-en by an
-> > > >> >> > unrelated `do_swap_page()`, this method is preferable to two =
-scenarios:
-> > > >> >> > rapid re-entry into page faults, which can cause livelocks, a=
-nd
-> > > >> >> > multiple millisecond sleeps, which visibly degrade user exper=
-ience.
-> > > >> >>
-> > > >> >> In general, I think that this works.  Why not extend the soluti=
-on to
-> > > >> >> cover schedule_timeout_uninterruptible() in __read_swap_cache_a=
-sync()
-> > > >> >> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  To a=
-void
-> > > >> >
-> > > >> > Hi Ying,
-> > > >> > Thanks for your comments.
-> > > >> > I feel extending the solution to __read_swap_cache_async() shoul=
-d be done
-> > > >> > in a separate patch. On phones, I've never encountered any issue=
-s reported
-> > > >> > on that path, so it might be better suited for an optimization r=
-ather than a
-> > > >> > hotfix?
-> > > >>
-> > > >> Yes.  It's fine to do that in another patch as optimization.
-> > > >
-> > > > Ok. I'll prepare a separate patch for optimizing that path.
-> > >
-> > > Thanks!
-> > >
-> > > >>
-> > > >> >> overhead to call wake_up() when there's no task waiting, we can=
- use an
-> > > >> >> atomic to count waiting tasks.
-> > > >> >
-> > > >> > I'm not sure it's worth adding the complexity, as wake_up() on a=
-n empty
-> > > >> > waitqueue should have a very low cost on its own?
-> > > >>
-> > > >> wake_up() needs to call spin_lock_irqsave() unconditionally on a g=
-lobal
-> > > >> shared lock.  On systems with many CPUs (such servers), this may c=
-ause
-> > > >> severe lock contention.  Even the cache ping-pong may hurt perform=
-ance
-> > > >> much.
-> > > >
-> > > > I understand that cache synchronization was a significant issue bef=
-ore
-> > > > qspinlock, but it seems to be less of a concern after its implement=
-ation.
-> > >
-> > > Unfortunately, qspinlock cannot eliminate cache ping-pong issue, as
-> > > discussed in the following thread.
-> > >
-> > > https://lore.kernel.org/lkml/20220510192708.GQ76023@worktop.programmi=
-ng.kicks-ass.net/
-> > >
-> > > > However, using a global atomic variable would still trigger cache b=
-roadcasts,
-> > > > correct?
-> > >
-> > > We can only change the atomic variable to non-zero when
-> > > swapcache_prepare() returns non-zero, and call wake_up() when the ato=
-mic
-> > > variable is non-zero.  Because swapcache_prepare() returns 0 most tim=
-es,
-> > > the atomic variable is 0 most times.  If we don't change the value of
-> > > atomic variable, cache ping-pong will not be triggered.
-> >
-> > yes. this can be implemented by adding another atomic variable.
-> >
-> > >
-> > > Hi, Kairui,
-> > >
-> > > Do you have some test cases to test parallel zram swap-in?  If so, th=
-at
-> > > can be used to verify whether cache ping-pong is an issue and whether=
- it
-> > > can be fixed via a global atomic variable.
-> > >
-> >
-> > Yes, Kairui please run a test on your machine with lots of cores before
-> > and after adding a global atomic variable as suggested by Ying. I am
-> > sorry I don't have a server machine.
-> >
-> > if it turns out you find cache ping-pong can be an issue, another
-> > approach would be a waitqueue hash:
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 2366578015ad..aae0e532d8b6 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4192,6 +4192,23 @@ static struct folio *alloc_swap_folio(struct vm_=
-fault *vmf)
-> >  }
-> >  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-> >
-> > +/*
-> > + * Alleviating the 'thundering herd' phenomenon using a waitqueue hash
-> > + * when multiple do_swap_page() operations occur simultaneously.
-> > + */
-> > +#define SWAPCACHE_WAIT_TABLE_BITS 5
-> > +#define SWAPCACHE_WAIT_TABLE_SIZE (1 << SWAPCACHE_WAIT_TABLE_BITS)
-> > +static wait_queue_head_t swapcache_wqs[SWAPCACHE_WAIT_TABLE_SIZE];
-> > +
-> > +static int __init swapcache_wqs_init(void)
-> > +{
-> > +       for (int i =3D 0; i < SWAPCACHE_WAIT_TABLE_SIZE; i++)
-> > +               init_waitqueue_head(&swapcache_wqs[i]);
-> > +
-> > +        return 0;
-> > +}
-> > +late_initcall(swapcache_wqs_init);
-> > +
-> >  /*
-> >   * We enter with non-exclusive mmap_lock (to exclude vma changes,
-> >   * but allow concurrent faults), and pte mapped but not yet locked.
-> > @@ -4204,6 +4221,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >  {
-> >         struct vm_area_struct *vma =3D vmf->vma;
-> >         struct folio *swapcache, *folio =3D NULL;
-> > +       DECLARE_WAITQUEUE(wait, current);
-> > +       wait_queue_head_t *swapcache_wq;
-> >         struct page *page;
-> >         struct swap_info_struct *si =3D NULL;
-> >         rmap_t rmap_flags =3D RMAP_NONE;
-> > @@ -4297,12 +4316,16 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >                                  * undetectable as pte_same() returns t=
-rue due
-> >                                  * to entry reuse.
-> >                                  */
-> > +                               swapcache_wq =3D &swapcache_wqs[hash_lo=
-ng(vmf->address & PMD_MASK,
-> > +                                                       SWAPCACHE_WAIT_=
-TABLE_BITS)];
->
-> It is better to hash against the swap entry value rather than the
-> fault address. Same swap entries can map to different parts of the
-> page table. I am not sure this is triggerable in the SYNC_IO page
-> fault path, hash against the swap entries is more obviously correct.
->
+Patrick Donnelly <batrick@batbytes.com> wrote:
 
-i am not convinced swap entry offset is a correct key here.
+> Log recovered from a user's cluster:
+> =
 
-1. do_swap_page() is always for anon pages, there is no possibility
-for anon pages to have different mapped virtual address; shmem will
-never execute a different code path.
+>     <7>[ 5413.970692] ceph:  get_cap_refs 00000000958c114b ret 1 got Fr
+>     <7>[ 5413.970695] ceph:  start_read 00000000958c114b, no cache cap
+>     ...
+>     <7>[ 5473.934609] ceph:   my wanted =3D Fr, used =3D Fr, dirty -
+>     <7>[ 5473.934616] ceph:  revocation: pAsLsXsFr -> pAsLsXs (revoking =
+Fr)
+>     <7>[ 5473.934632] ceph:  __ceph_caps_issued 00000000958c114b cap 000=
+00000f7784259 issued pAsLsXs
+>     <7>[ 5473.934638] ceph:  check_caps 10000000e68.fffffffffffffffe fil=
+e_want - used Fr dirty - flushing - issued pAsLsXs revoking Fr retain pAsL=
+sXsFsr  AUTHONLY NOINVAL FLUSH_FORCE
+> =
 
-2. considering a mTHP swap-in case, the aligned virtual address
-is the only reliable value for hash. if we only consider small folios
-swap-in, it is fine to use swap entry value.
+> The MDS subsequently complains that the kernel client is late releasing =
+caps.
+> =
 
-> Chris
->
-> >                                 if (swapcache_prepare(entry, nr_pages))=
- {
-> >                                         /*
-> >                                          * Relax a bit to prevent rapid
-> >                                          * repeated page faults.
-> >                                          */
-> > +                                       add_wait_queue(swapcache_wq, &w=
-ait);
-> >                                         schedule_timeout_uninterruptibl=
-e(1);
-> > +                                       remove_wait_queue(swapcache_wq,=
- &wait);
-> >                                         goto out_page;
-> >                                 }
-> >                                 need_clear_cache =3D true;
-> > @@ -4609,8 +4632,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >                 pte_unmap_unlock(vmf->pte, vmf->ptl);
-> >  out:
-> >         /* Clear the swap cache pin for direct swapin after PTL unlock =
-*/
-> > -       if (need_clear_cache)
-> > +       if (need_clear_cache) {
-> >                 swapcache_clear(si, entry, nr_pages);
-> > +               wake_up(swapcache_wq);
-> > +       }
-> >         if (si)
-> >                 put_swap_device(si);
-> >         return ret;
-> > @@ -4625,8 +4650,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >                 folio_unlock(swapcache);
-> >                 folio_put(swapcache);
-> >         }
-> > -       if (need_clear_cache)
-> > +       if (need_clear_cache) {
-> >                 swapcache_clear(si, entry, nr_pages);
-> > +               wake_up(swapcache_wq);
-> > +       }
-> >         if (si)
-> >                 put_swap_device(si);
-> >         return ret;
-> > --
-> > 2.34.1
-> >
-> > > --
-> > > Best Regards,
-> > > Huang, Ying
-> >
+> Approximately, a series of changes to this code by the three commits cit=
+ed
+> below resulted in subtle resource cleanup to be missed. The main culprit=
+ is the
+> change in error handling in 2d31604 which meant that a failure in init_r=
+equest
+> would no longer cause cleanup to be called. That would prevent the
+> ceph_put_cap_refs which would cleanup the leaked cap ref.
+> =
 
-Thanks
-Barry
+> Closes: https://tracker.ceph.com/issues/67008
+> Fixes: 49870056005ca9387e5ee31451991491f99cc45f ("ceph: convert ceph_rea=
+dpages to ceph_readahead")
+> Fixes: 2de160417315b8d64455fe03e9bb7d3308ac3281 ("netfs: Change ->init_r=
+equest() to return an error code")
+> Fixes: a5c9dc4451394b2854493944dcc0ff71af9705a3 ("ceph: Make ceph_init_r=
+equest() check caps on readahead")
+
+Note that you only need the first 12 digits of the SHA1 sum.
+
+> Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
+> Cc: stable@vger.kernel.org
+
+Reviewed-by: David Howells <dhowells@redhat.com>
+
 
