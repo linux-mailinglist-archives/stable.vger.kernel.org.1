@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-80943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFBA2990D0F
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:02:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 226C6990D11
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74BFE28286B
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:02:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF20D282444
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B512038B7;
-	Fri,  4 Oct 2024 18:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321AC2038D7;
+	Fri,  4 Oct 2024 18:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwUQyFX7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hNmsi6xI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B362038A7;
-	Fri,  4 Oct 2024 18:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF47B2038BA;
+	Fri,  4 Oct 2024 18:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066335; cv=none; b=U4VNDdCSDca16x27/wWvZbNGj4/RGJMVWur0fTpF+pbHzvih4X+X1uLJaGc7nxPrO3y/4WYYqPe7TfS8xNoS4KDzEgyBwpfSQPRp3Wr9BPaDYT82yG1ehKYvVy3ivRVhzdWo5pFA33/Qz6SiDVu1sg0ozZOjN/JB0mAmyh2YmhQ=
+	t=1728066336; cv=none; b=KmIlQsYxQTNeH0T52wEMcSH1yRXBJ4LpH1nQsp7jYWaN48U+hjQH/k9X4HqZAI/JZuHzMUun6gNKV9HyKQe1ct028ABQ1R3PhNmr2pJCYmHrn1idPF1dJ+4r6+0BO7zATq/1LM+yfspVB2PBFKlNlKc8uTv9ZspYNvdZM+igOEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066335; c=relaxed/simple;
-	bh=qKxMR/O+/KGzxD7YHNvfXz9zpZTqYq3dVEzc2yy3s4M=;
+	s=arc-20240116; t=1728066336; c=relaxed/simple;
+	bh=I1B3Eho7//Xn1xA82Jy691ZQ6rI68mS5fLecHIiaD4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnrox37+mdzBWHXbYdclp8QMzVWUawmw1e7wtLFKG0bpI3uOuyoi5nIXDa4/CSUCqA12GBRgtLyh4/SGoqly2dE15qvDckX0WjP94Wk81IBDPLFh5TUllBYe41E1Anh2MGVebm0cULB8oFVyNUyKNic8/XLHDEeEL8PAvgArdfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwUQyFX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE15C4CEC6;
-	Fri,  4 Oct 2024 18:25:33 +0000 (UTC)
+	 MIME-Version; b=kQpwqjv3NIQZj9sqhmV42W7yLF3KKXofOcgPrN+Ii873drZAK3aKaSZIFdRPqMO44P1LsUtkwRm8cp4iMNdWd32s9h1jQYpUJbADRDSAUdwo/DQr2rb63tG8ZGbE83KtpMV0ruU2wLTheuARWZ3y/z5pGqh8r+ktxaGAOIaKcX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hNmsi6xI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD2DC4CED0;
+	Fri,  4 Oct 2024 18:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066334;
-	bh=qKxMR/O+/KGzxD7YHNvfXz9zpZTqYq3dVEzc2yy3s4M=;
+	s=k20201202; t=1728066335;
+	bh=I1B3Eho7//Xn1xA82Jy691ZQ6rI68mS5fLecHIiaD4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwUQyFX7mxyZIIXNGZ8C9ByFZDswfreP/sFH1v5022wVP02iAq9KeRKpxvxc/iTEv
-	 pxOITOuJG3Brdboc9Lb3OpBKij7JhpHx0XN7AcDpc15W6nXsuDeqetGDDlpv/SUxRf
-	 gaEVvXYXpnOVQ0n4d9Hb4+FFV9OOXgSxQUJnR5jomjWxeEPCLOuEGpvCbMsgBpjuLi
-	 rr4VJpk/6kQsbzLtvzmYDgUB6sJQzvUGfFJlOhb/0Po13txn5aMH82DSuot/YVAvJo
-	 RrLlT83k93+6I5x8kJBLfj+r720ckpc9F7MHJtxpjmrt329kc8tcdWbYlc3UVCnghi
-	 uo+7ydPLwvrKg==
+	b=hNmsi6xIbX3Crm8Ah+I706qc7NIOQZ5FssuEg/PrnxiB6SwFf8Upjq63vaEuuyHTP
+	 OGUp6mklrETs+bYC8upwb0exWfw91Rs4qnQ++M21NJt0MIvUpu42rjQzT2DAHmX+sX
+	 BYyvxIorBg+DpKqHsxed37awX+f1jk5buzssV2VE9P+FkPCzULxovB1cBaLxQ18pZ1
+	 eK+ySTjOuYTlWggD5lFJ6tFo6+P8jNE+sGpIaz0o2LNjSQkxS7hTFs3DQRzN4LJUxH
+	 FyKvhRfv4Vjl9JMdodjztcGAzPdxQoGqbjs0Mt72ClxF3zB5o+d+UlYroPUI72ZjlW
+	 cNHCR2vcEpZpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xu Kuohai <xukuohai@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 17/58] bpf: Prevent tail call between progs attached to different hooks
-Date: Fri,  4 Oct 2024 14:23:50 -0400
-Message-ID: <20241004182503.3672477-17-sashal@kernel.org>
+Cc: Daniel Jordan <daniel.m.jordan@oracle.com>,
+	John 'Warthog9' Hawley <warthog9@eaglescrag.net>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 18/58] ktest.pl: Avoid false positives with grub2 skip regex
+Date: Fri,  4 Oct 2024 14:23:51 -0400
+Message-ID: <20241004182503.3672477-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182503.3672477-1-sashal@kernel.org>
 References: <20241004182503.3672477-1-sashal@kernel.org>
@@ -72,110 +65,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.54
 Content-Transfer-Encoding: 8bit
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Daniel Jordan <daniel.m.jordan@oracle.com>
 
-[ Upstream commit 28ead3eaabc16ecc907cfb71876da028080f6356 ]
+[ Upstream commit 2351e8c65404aabc433300b6bf90c7a37e8bbc4d ]
 
-bpf progs can be attached to kernel functions, and the attached functions
-can take different parameters or return different return values. If
-prog attached to one kernel function tail calls prog attached to another
-kernel function, the ctx access or return value verification could be
-bypassed.
+Some distros have grub2 config files with the lines
 
-For example, if prog1 is attached to func1 which takes only 1 parameter
-and prog2 is attached to func2 which takes two parameters. Since verifier
-assumes the bpf ctx passed to prog2 is constructed based on func2's
-prototype, verifier allows prog2 to access the second parameter from
-the bpf ctx passed to it. The problem is that verifier does not prevent
-prog1 from passing its bpf ctx to prog2 via tail call. In this case,
-the bpf ctx passed to prog2 is constructed from func1 instead of func2,
-that is, the assumption for ctx access verification is bypassed.
+    if [ x"${feature_menuentry_id}" = xy ]; then
+      menuentry_id_option="--id"
+    else
+      menuentry_id_option=""
+    fi
 
-Another example, if BPF LSM prog1 is attached to hook file_alloc_security,
-and BPF LSM prog2 is attached to hook bpf_lsm_audit_rule_known. Verifier
-knows the return value rules for these two hooks, e.g. it is legal for
-bpf_lsm_audit_rule_known to return positive number 1, and it is illegal
-for file_alloc_security to return positive number. So verifier allows
-prog2 to return positive number 1, but does not allow prog1 to return
-positive number. The problem is that verifier does not prevent prog1
-from calling prog2 via tail call. In this case, prog2's return value 1
-will be used as the return value for prog1's hook file_alloc_security.
-That is, the return value rule is bypassed.
+which match the skip regex defined for grub2 in get_grub_index():
 
-This patch adds restriction for tail call to prevent such bypasses.
+    $skip = '^\s*menuentry';
 
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/r/20240719110059.797546-4-xukuohai@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+These false positives cause the grub number to be higher than it
+should be, and the wrong kernel can end up booting.
+
+Grub documents the menuentry command with whitespace between it and the
+title, so make the skip regex reflect this.
+
+Link: https://lore.kernel.org/20240904175530.84175-1-daniel.m.jordan@oracle.com
+Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Acked-by: John 'Warthog9' Hawley (Tenstorrent) <warthog9@eaglescrag.net>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h |  1 +
- kernel/bpf/core.c   | 21 ++++++++++++++++++---
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ tools/testing/ktest/ktest.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index e4cd28c38b825..0f0e0265cbdf5 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -288,6 +288,7 @@ struct bpf_map {
- 	 * same prog type, JITed flag and xdp_has_frags flag.
- 	 */
- 	struct {
-+		const struct btf_type *attach_func_proto;
- 		spinlock_t lock;
- 		enum bpf_prog_type type;
- 		bool jited;
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 4124805ad7ba5..58ee17f429a33 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2259,6 +2259,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- {
- 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
- 	bool ret;
-+	struct bpf_prog_aux *aux = fp->aux;
- 
- 	if (fp->kprobe_override)
- 		return false;
-@@ -2268,7 +2269,7 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 	 * in the case of devmap and cpumap). Until device checks
- 	 * are implemented, prohibit adding dev-bound programs to program maps.
- 	 */
--	if (bpf_prog_is_dev_bound(fp->aux))
-+	if (bpf_prog_is_dev_bound(aux))
- 		return false;
- 
- 	spin_lock(&map->owner.lock);
-@@ -2278,12 +2279,26 @@ bool bpf_prog_map_compatible(struct bpf_map *map,
- 		 */
- 		map->owner.type  = prog_type;
- 		map->owner.jited = fp->jited;
--		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
-+		map->owner.xdp_has_frags = aux->xdp_has_frags;
-+		map->owner.attach_func_proto = aux->attach_func_proto;
- 		ret = true;
- 	} else {
- 		ret = map->owner.type  == prog_type &&
- 		      map->owner.jited == fp->jited &&
--		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
-+		      map->owner.xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->owner.attach_func_proto != aux->attach_func_proto) {
-+			switch (prog_type) {
-+			case BPF_PROG_TYPE_TRACING:
-+			case BPF_PROG_TYPE_LSM:
-+			case BPF_PROG_TYPE_EXT:
-+			case BPF_PROG_TYPE_STRUCT_OPS:
-+				ret = false;
-+				break;
-+			default:
-+				break;
-+			}
-+		}
- 	}
- 	spin_unlock(&map->owner.lock);
- 
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 24451f8f42910..045090085ac5b 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2043,7 +2043,7 @@ sub get_grub_index {
+     } elsif ($reboot_type eq "grub2") {
+ 	$command = "cat $grub_file";
+ 	$target = '^\s*menuentry.*' . $grub_menu_qt;
+-	$skip = '^\s*menuentry';
++	$skip = '^\s*menuentry\s';
+ 	$submenu = '^\s*submenu\s';
+     } elsif ($reboot_type eq "grub2bls") {
+ 	$command = $grub_bls_get;
 -- 
 2.43.0
 
