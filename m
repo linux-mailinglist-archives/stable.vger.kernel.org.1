@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-80958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D194990D3A
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:05:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5C8990D3D
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 054A1280E07
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:05:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 120331F21196
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871082071F2;
-	Fri,  4 Oct 2024 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0251207203;
+	Fri,  4 Oct 2024 18:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMhwOui6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ug2liVRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465772071EE;
-	Fri,  4 Oct 2024 18:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E022071F9;
+	Fri,  4 Oct 2024 18:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066361; cv=none; b=CZNYI/Giaqg2w498bW1NU7IHWVQqf/E09rOrK4TAqkSdFh3pV2JicD7jIe0Nw2W2O4Y9EaHxeKN8TsHcpSBH4KxVcCJO51Arw5qsKzogaWEy0Sh8LNXau3jWcgepLU084LTyXWljDmOoEpT/NCIkYCvWT4so3WwbAMRA73gloMg=
+	t=1728066362; cv=none; b=ZMbMOPWLxzzrfKXC/PEcim+yxwPRUNsqJTLFCnpx/zIaxVLWcVuffMAb7hlB7Pylu2dcQnt+THNcu9v7M5DrNE23bDjPGLB509b6R0OevVG6mvOF5E+4Uy3CsvDnkta8aqMEKDwz5Q+/M4nPh8T6TdAZTJIq+2DZLq4EPkAyt88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066361; c=relaxed/simple;
-	bh=KEHGx5ZxOwmv3mqRRP4gulTwHNAd9PJT3vm70lAVmY4=;
+	s=arc-20240116; t=1728066362; c=relaxed/simple;
+	bh=wWAM6pbEa+F6NoXD2vTaZhKqg/mJC29kUtzDx1IdrFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ARygTQmK2Ea1GT6zw6wdr6GdvsYtcEKaqKYj+i3LUZmmOoKlcaFfL23BjRkYdgbXho/vWmT9KLoJajYi8yCc9zLTe4c/IhXwjvVRuwIwOMAp7dclMgY7T9uqNW+Hbdvs/mKJuEpTuHAovWIeXS85d+FS5ddvlOEd0eunSyVITBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMhwOui6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288A7C4CECC;
-	Fri,  4 Oct 2024 18:25:59 +0000 (UTC)
+	 MIME-Version; b=PWZil15nrY2P1LforR4uIuuvNo/WSnNEXMYNiB/k8tWPARNxcsYaw/rtduM9qc8UBzeOACENiQ6eHhMwGDCC6syJS2dyAPy/lHOuCgetTqBnVl4dX3+pIevAqKH65YzJQhOpQ1VmAW5OeLQEjGSoROtWe4qYPOu5gMWNdArxDII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ug2liVRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488BFC4CEC6;
+	Fri,  4 Oct 2024 18:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066360;
-	bh=KEHGx5ZxOwmv3mqRRP4gulTwHNAd9PJT3vm70lAVmY4=;
+	s=k20201202; t=1728066362;
+	bh=wWAM6pbEa+F6NoXD2vTaZhKqg/mJC29kUtzDx1IdrFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMhwOui6NifvV0XMnaswzCogywNQ3ugAmVOhFFYu19hf2Da/RyF6pVYdUOqniqVs8
-	 wsaC0GjhyE0JQzKY+BqE5dzv2nVK++UZgYbbbMVuc38HMgS/uu60Djcv2Yxl1iNSvX
-	 ReVrBu6ZUHgOXWcK46C3XkrC40mcACe3RoRH3FAaydjHTM8z4lKCa3QnMq5gogPRGv
-	 KBG8IIxkTLWvlDpFLB10CksvOjSByYhaShfirlZ7FzFtCWRbpdJlIIIZ5sqEYw0dQ5
-	 DweFebealMUilmhzrk0XVQS+9iRKGDImPA7jDMGyWOYoZRyZrTTLYI7e052jmIJPkh
-	 Z8EomJy/lpF7w==
+	b=Ug2liVRrpfW18dJj8P8MdcpQmwXS39lS59BKNCG89tCrEicSjJFR1jYYdluk7kwa3
+	 5tcrDvzrefQ1W4yzCQREHLYUur8V9mgOnQSm4/RcVLcphz28Y6jv77g6FqnFiSLd3k
+	 uFU0A4Ke87LQcFNarD6tVT8op7hdO8aYhLPrDcwjwqLtDmJgcVEWXFmkJjCOV1edko
+	 zFoY10Dx90FGGypXi2TyiOCOxgOObvnNJcYgihok0C6jNsy+Lt8ZAcq2H6mQ2eU9ru
+	 36MA7pEJd6/mqS78QJY79xUkzs7Cx25M3QCigCTZ4QktJQvXOGo03mMdm2n8a2Q5Ob
+	 BsQoJ+gWpxKtA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jisheng Zhang <jszhang@kernel.org>,
-	Cyril Bur <cyrilbur@tenstorrent.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+Cc: Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	samitolvanen@google.com,
-	cleger@rivosinc.com,
-	guoren@kernel.org,
-	antonb@tenstorrent.com,
-	debug@rivosinc.com,
-	andy.chiu@sifive.com,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 32/58] riscv: avoid Imbalance in RAS
-Date: Fri,  4 Oct 2024 14:24:05 -0400
-Message-ID: <20241004182503.3672477-32-sashal@kernel.org>
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 33/58] RDMA/mlx5: Enforce umem boundaries for explicit ODP page faults
+Date: Fri,  4 Oct 2024 14:24:06 -0400
+Message-ID: <20241004182503.3672477-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182503.3672477-1-sashal@kernel.org>
 References: <20241004182503.3672477-1-sashal@kernel.org>
@@ -75,39 +65,96 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.54
 Content-Transfer-Encoding: 8bit
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit 8f1534e7440382d118c3d655d3a6014128b2086d ]
+[ Upstream commit 8c6d097d830f779fc1725fbaa1314f20a7a07b4b ]
 
-Inspired by[1], modify the code to remove the code of modifying ra to
-avoid imbalance RAS (return address stack) which may lead to incorret
-predictions on return.
+The new memory scheme page faults are requesting the driver to fetch
+additinal pages to the faulted memory access.
+This is done in order to prefetch pages before and after the area that
+got the page fault, assuming this will reduce the total amount of page
+faults.
 
-Link: https://lore.kernel.org/linux-riscv/20240607061335.2197383-1-cyrilbur@tenstorrent.com/ [1]
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Reviewed-by: Cyril Bur <cyrilbur@tenstorrent.com>
-Link: https://lore.kernel.org/r/20240720170659.1522-1-jszhang@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The driver should ensure it handles only the pages that are within the
+umem range.
+
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/20240909100504.29797-5-michaelgur@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/entry.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/odp.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index ed7baf2cf7e87..1f90fee24a8ba 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -219,8 +219,8 @@ SYM_CODE_START(ret_from_fork)
- 	jalr s0
- 1:
- 	move a0, sp /* pt_regs */
--	la ra, ret_from_exception
--	tail syscall_exit_to_user_mode
-+	call syscall_exit_to_user_mode
-+	j ret_from_exception
- SYM_CODE_END(ret_from_fork)
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index a524181f34df9..3a4605fda6d57 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -733,24 +733,31 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
+  *  >0: Number of pages mapped
+  */
+ static int pagefault_mr(struct mlx5_ib_mr *mr, u64 io_virt, size_t bcnt,
+-			u32 *bytes_mapped, u32 flags)
++			u32 *bytes_mapped, u32 flags, bool permissive_fault)
+ {
+ 	struct ib_umem_odp *odp = to_ib_umem_odp(mr->umem);
  
- /*
+-	if (unlikely(io_virt < mr->ibmr.iova))
++	if (unlikely(io_virt < mr->ibmr.iova) && !permissive_fault)
+ 		return -EFAULT;
+ 
+ 	if (mr->umem->is_dmabuf)
+ 		return pagefault_dmabuf_mr(mr, bcnt, bytes_mapped, flags);
+ 
+ 	if (!odp->is_implicit_odp) {
++		u64 offset = io_virt < mr->ibmr.iova ? 0 : io_virt - mr->ibmr.iova;
+ 		u64 user_va;
+ 
+-		if (check_add_overflow(io_virt - mr->ibmr.iova,
+-				       (u64)odp->umem.address, &user_va))
++		if (check_add_overflow(offset, (u64)odp->umem.address,
++				       &user_va))
+ 			return -EFAULT;
+-		if (unlikely(user_va >= ib_umem_end(odp) ||
+-			     ib_umem_end(odp) - user_va < bcnt))
++
++		if (permissive_fault) {
++			if (user_va < ib_umem_start(odp))
++				user_va = ib_umem_start(odp);
++			if ((user_va + bcnt) > ib_umem_end(odp))
++				bcnt = ib_umem_end(odp) - user_va;
++		} else if (unlikely(user_va >= ib_umem_end(odp) ||
++				    ib_umem_end(odp) - user_va < bcnt))
+ 			return -EFAULT;
+ 		return pagefault_real_mr(mr, odp, user_va, bcnt, bytes_mapped,
+ 					 flags);
+@@ -857,7 +864,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 	case MLX5_MKEY_MR:
+ 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
+ 
+-		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0);
++		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
+ 		if (ret < 0)
+ 			goto end;
+ 
+@@ -1710,7 +1717,7 @@ static void mlx5_ib_prefetch_mr_work(struct work_struct *w)
+ 	for (i = 0; i < work->num_sge; ++i) {
+ 		ret = pagefault_mr(work->frags[i].mr, work->frags[i].io_virt,
+ 				   work->frags[i].length, &bytes_mapped,
+-				   work->pf_flags);
++				   work->pf_flags, false);
+ 		if (ret <= 0)
+ 			continue;
+ 		mlx5_update_odp_stats(work->frags[i].mr, prefetch, ret);
+@@ -1761,7 +1768,7 @@ static int mlx5_ib_prefetch_sg_list(struct ib_pd *pd,
+ 		if (IS_ERR(mr))
+ 			return PTR_ERR(mr);
+ 		ret = pagefault_mr(mr, sg_list[i].addr, sg_list[i].length,
+-				   &bytes_mapped, pf_flags);
++				   &bytes_mapped, pf_flags, false);
+ 		if (ret < 0) {
+ 			mlx5r_deref_odp_mkey(&mr->mmkey);
+ 			return ret;
 -- 
 2.43.0
 
