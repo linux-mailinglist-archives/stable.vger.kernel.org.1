@@ -1,148 +1,123 @@
-Return-Path: <stable+bounces-81027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C4A990DF7
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:23:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F05990DFA
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 21:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A56AA1F215A6
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:23:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F25ED288EAC
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 19:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB52218D7D;
-	Fri,  4 Oct 2024 18:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEECF219C9C;
+	Fri,  4 Oct 2024 18:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QvbecYG4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VaM22kAk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAEE1E283D;
-	Fri,  4 Oct 2024 18:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F729219C92;
+	Fri,  4 Oct 2024 18:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066519; cv=none; b=ZBB3pEQhOt+6H+xQoKTx8y56VAkwlXcDAP0kLYw77/wm7J7DglU4C9Lv5ZNrIhKfC/5qD7BeV/ddB8JB7G8pVSfCGvh5l7UyTGR02y9tcmQ8jzXJHUufFccXaAW5A8IOhUIUnlvS/EUBpoS0zRkAkdplkVrh/N6PsUkeoPxPu8A=
+	t=1728066537; cv=none; b=XmxzPI697mxDIBFb6NXEHoUGIzLiGZnUrnPA5wq42Z+DFLJzvqW7XyXaSaNJt6x7QmuSGO1hW7Kg3LYw5UOu1OqX+eJ8KE0DEjKTje0M/k2NQdoVPC41VmyqmFoz/sbNJ6pfBlToPFo+GSgyO+26JXUtn+2Uo5TcQx9ShyuX4yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066519; c=relaxed/simple;
-	bh=R6ujciq4JJRrnvovbSEAsC5ALp4y99Jk0QndgasHk3Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u+Rq2nwHEwLNupfwiQGKb2MZL+2yQs+8rYIp8nwqxIa/D3whbwY3QmYbjzRO03PKw1T2wkq1L1d82pSwsVXoOjPNR2WYiLgtJn4G5udmx40h2pOB7fxrGk/jVzkn4vuj9iHd5NIBxLTOepNmgXBCw8oV+4MIRdSTknDiWVTW5r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QvbecYG4; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cb7a2e4d6so24771885e9.0;
-        Fri, 04 Oct 2024 11:28:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728066516; x=1728671316; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dxeYKpM2Q4pY2mSFZGOr8Df4aSHhLK/ZPcDMOZ4Tm6E=;
-        b=QvbecYG4DmQYQnWjDDRrOoAKWYdud5AlRuztiDpBOpwGfcV4cYRrC14awfL8XQOkXv
-         fSs0HEhekA5cwm+hBJ3yOfEUYJGbzfzikmLmP5IOYcyG9IEcHqWIRybhQI3dTOwTKoqi
-         gB0X2+YaVAHFJrzS16n0AS1hSbfsdGl1Ha/tpQWp4A5ScF3Ge4B23w8PUzts6wTC7L2O
-         m/4OhEpiHQ72VBAhXZqihdeXZ9vhhoHIJ77Vk/hcbbD8b74AlqSzohJZnwyPNmzCr/aO
-         /DZnl6OXddA6JMTnTwDLgwhX7UtLtlE7LbRZq0UxRJMHafkAWsIrJcaXN6niCP4R7jpu
-         uVsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728066516; x=1728671316;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dxeYKpM2Q4pY2mSFZGOr8Df4aSHhLK/ZPcDMOZ4Tm6E=;
-        b=k0IEDT28BDSGT4Nnhr718Pa4k+Gi2vOONAWhXjVqeWzXIi/lsj4SStQZPwLQisTzpr
-         pEY+2C7w4vGdsZFuhMWG66oVP2Nd+gnxMf6YR9+Tc7ullUK4uNB5cCZnQIredIFDkddu
-         WcHdeBzcr0QY4r5aobW/B6BMjI7xlKlXnDq01zFNnTNAunbFKjFCJkOMIZe06agP0li1
-         HSFRKrYrJi290jt+5gxZVUrtUcD3N8kYM+E0yUoS+hYdIwhWVKnpUp95IffKlJa2TqA1
-         Ay2+XJOicC8DAbwe7u0mchUqPU4UIFV1/IOa57t1p8942yweZZJTk0dq9aB6XKv1sMzP
-         9rng==
-X-Forwarded-Encrypted: i=1; AJvYcCV/12S8F7dwSaqxKYMqT1uYcR0MUgFXgjSUu8q5ZcsJYHiARFcIR4PaDnhqCwfXqqz7Q+2RsE+h@vger.kernel.org, AJvYcCWW9LfVF+siVBJIm1jq0NPi90UlnDaetfY4r8ZSBIKdsaZjL9VdiQs85oTNB1Sti447Por0Qucy@vger.kernel.org, AJvYcCWpUOwSOAms1EfNQvEeWHQLcwiHjlXi7JpUFUvXnTIgKCFLGEtwchZu0aaXsUGogRx+NQEJwAVq+qIvvGc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxdm/mF1wdPR9zk6j3oBpmDygF8DuEhNzIEwD/Hu7Ym1Z9iFJUe
-	JTPR9YRRH32BfT+sMTezJeHoN1BrC3QrT7KtSXy5Bmoi74YSDAbw
-X-Google-Smtp-Source: AGHT+IEsNCrEJP0r79niDXfZvRYF98O1t43V5c+NOEbYu2embuYhfU8nbZ9thVuDal+36S6NguwWFg==
-X-Received: by 2002:a05:600c:548a:b0:42c:a905:9384 with SMTP id 5b1f17b1804b1-42f85ab9ffcmr27814045e9.20.1728066514265;
-        Fri, 04 Oct 2024 11:28:34 -0700 (PDT)
-Received: from localhost.localdomain (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37d1690f34asm202748f8f.3.2024.10.04.11.28.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Oct 2024 11:28:33 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
+	s=arc-20240116; t=1728066537; c=relaxed/simple;
+	bh=c3W13BTVp91ByV6gxJQYghmYoKQFhYCaW2S2Ach2PcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lJ9VT/rFregHeV/p1ag5iU3itYtKrBfZz8OQ5C61GrPbLiDHow6FY62tGs6YmNu5duOCY1V+Y8UkWykGDwdX4tzhm6q1HtgzX5Y+H+HilqGIGIOG1hJDhlRCrQx6jPuTodPS+8hFu0Ua8C5FA7hB45DzwBUJO+OtbmO4+6eLxdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VaM22kAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0BFC4CEC6;
+	Fri,  4 Oct 2024 18:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728066537;
+	bh=c3W13BTVp91ByV6gxJQYghmYoKQFhYCaW2S2Ach2PcY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VaM22kAkhwth/xjolzsL8fs/Nkcd+rADCQ877EVPTHK9nGV8h1lZYetGwvWNLJn7s
+	 WPQpux+tnto7xaBAkaeUV2gDHhSZpf5OXaSy4pzSpkONbQzKwp4aGxhDCxU9hyxWT5
+	 tcyeLlVyzKgHbqZ9jw41T5OOYni7XMIFTfK7Hvi91XouUDotJdfs9YVhL/mS7rOm29
+	 DzkWPyLg1v8y8MNxJ3VZynuvSyfWUgp6b940U36SYVPou7BI4uDdNIXzmkUxCYaVbz
+	 mi6hgTZIxsiYMtoWG0lb+UM/Lv5spXKm0Bf61SxjbYBMCNZz8ii/JknrpSuX7mG3Zg
+	 c3vKX/MSpC0DA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [net PATCH v2] net: phy: Remove LED entry from LEDs list on unregister
-Date: Fri,  4 Oct 2024 20:27:58 +0200
-Message-ID: <20241004182759.14032-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.45.2
+Cc: Tao Chen <chen.dylane@gmail.com>,
+	Jinke Han <jinkehan@didiglobal.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 01/31] bpf: Check percpu map value size first
+Date: Fri,  4 Oct 2024 14:28:09 -0400
+Message-ID: <20241004182854.3674661-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.15.167
 Content-Transfer-Encoding: 8bit
 
-Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
-ordering") correctly fixed a problem with using devm_ but missed
-removing the LED entry from the LEDs list.
+From: Tao Chen <chen.dylane@gmail.com>
 
-This cause kernel panic on specific scenario where the port for the PHY
-is torn down and up and the kmod for the PHY is removed.
+[ Upstream commit 1d244784be6b01162b732a5a7d637dfc024c3203 ]
 
-On setting the port down the first time, the assosiacted LEDs are
-correctly unregistered. The associated kmod for the PHY is now removed.
-The kmod is now added again and the port is now put up, the associated LED
-are registered again.
-On putting the port down again for the second time after these step, the
-LED list now have 4 elements. With the first 2 already unregistered
-previously and the 2 new one registered again.
+Percpu map is often used, but the map value size limit often ignored,
+like issue: https://github.com/iovisor/bcc/issues/2519. Actually,
+percpu map value size is bound by PCPU_MIN_UNIT_SIZE, so we
+can check the value size whether it exceeds PCPU_MIN_UNIT_SIZE first,
+like percpu map of local_storage. Maybe the error message seems clearer
+compared with "cannot allocate memory".
 
-This cause a kernel panic as the first 2 element should have been
-removed.
-
-Fix this by correctly removing the element when LED is unregistered.
-
-Reported-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Cc: stable@vger.kernel.org
-Fixes: c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct ordering")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Jinke Han <jinkehan@didiglobal.com>
+Signed-off-by: Tao Chen <chen.dylane@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240910144111.1464912-2-chen.dylane@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes v2:
-- Drop second patch
-- Add Reviewed-by tag
+ kernel/bpf/arraymap.c | 3 +++
+ kernel/bpf/hashtab.c  | 3 +++
+ 2 files changed, 6 insertions(+)
 
- drivers/net/phy/phy_device.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 560e338b307a..499797646580 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3326,10 +3326,11 @@ static __maybe_unused int phy_led_hw_is_supported(struct led_classdev *led_cdev,
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index c76870bfd8167..2788da290c216 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -74,6 +74,9 @@ int array_map_alloc_check(union bpf_attr *attr)
+ 		 * access the elements.
+ 		 */
+ 		return -E2BIG;
++	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
++	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
++		return -E2BIG;
  
- static void phy_leds_unregister(struct phy_device *phydev)
- {
--	struct phy_led *phyled;
-+	struct phy_led *phyled, *tmp;
- 
--	list_for_each_entry(phyled, &phydev->leds, list) {
-+	list_for_each_entry_safe(phyled, tmp, &phydev->leds, list) {
- 		led_classdev_unregister(&phyled->led_cdev);
-+		list_del(&phyled->list);
- 	}
+ 	return 0;
  }
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index f53b4f04b935c..d08fe64e0e453 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -464,6 +464,9 @@ static int htab_map_alloc_check(union bpf_attr *attr)
+ 		 * kmalloc-able later in htab_map_update_elem()
+ 		 */
+ 		return -E2BIG;
++	/* percpu map value size is bound by PCPU_MIN_UNIT_SIZE */
++	if (percpu && round_up(attr->value_size, 8) > PCPU_MIN_UNIT_SIZE)
++		return -E2BIG;
  
+ 	return 0;
+ }
 -- 
-2.45.2
+2.43.0
 
 
