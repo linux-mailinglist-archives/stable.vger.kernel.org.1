@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-80856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C5A990BE4
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:38:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B56990C74
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:49:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79819280F45
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:38:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BEC3B29F69
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F591EF09C;
-	Fri,  4 Oct 2024 18:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447961DACA9;
+	Fri,  4 Oct 2024 18:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVI+D/g6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AEfR9cOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1276D1EF081;
-	Fri,  4 Oct 2024 18:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBB01EF0BC;
+	Fri,  4 Oct 2024 18:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066068; cv=none; b=mEmNWZ0u+sLwYSl9/4K0z+FN7oMKD5o9rOBa5dNA6ggpXTZKvGtPTu7gTIR5YjIY7sWgNTbAm0inmpIhsWyTaaqzxQQNjsBDK61GNAu92vmfeJvwwUdWtxZp8rHdmmDmqXVn+39aCI+GVU9ev7ORL5AvfIo5G/hLaYca7d+8AtE=
+	t=1728066124; cv=none; b=jKtKF4kJySsSoSGb8RywtasXYqSyOvuS3KlBt41porjrDrE/kG1cKSg7LeGspywZiqsQnJL8PZfPeAx/R88Olkw9IJYFoIScYbwZC9Oplvcb/1PtZ4xGjOmLMnBK9kSlrsuopZtmJjz8+OKvMeC+vipN00ru9crz7bIc8kANBt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066068; c=relaxed/simple;
-	bh=n2o64wcB9RGbVFbvgQObSO2pzut7VrPHzQR3h9vkoNA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poNktPNujxHWQjeo/FAQuLkiMzP3QMSix/I1msICx3MADf7ZvRGZtgsegdid89GW3SpWQOviVgj9xR+UMzkx/aEli4KHo/u9f69L5IHngKksltX8Bu0Dpsoctpf4KG/fBAf0Hy4ImAAhHvO0zVtAJhn6pcGIj3jFoBz8Op6Ya9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVI+D/g6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860CDC4CEC6;
-	Fri,  4 Oct 2024 18:21:06 +0000 (UTC)
+	s=arc-20240116; t=1728066124; c=relaxed/simple;
+	bh=5Bh4TTwH0WivaKR5pVnaai1z9H1dk+fO8e5BQ2qk7a8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CTbQPA4DNuTUNxVytUgmLSAwzzWwzj/ZdUH0D+m8SwRaxreoFjZMO8JbCCrFKidxAWjWmk7x06UXvJD/qVS7zMjn5GrsPumXY3Yt8bOpCjDa0cmyPO0l0q68lXWlqFLD4BrZ2ObR5u6FqOaN9tbXc4v+2r/CSFoi6S6+lngCmU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AEfR9cOd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C817C4CEC6;
+	Fri,  4 Oct 2024 18:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066067;
-	bh=n2o64wcB9RGbVFbvgQObSO2pzut7VrPHzQR3h9vkoNA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVI+D/g6oCzp+QXxr1eTGgufhP+lnczoGLEk1TuAO3VScKgptbrqDGZRj2VrTRoTg
-	 8lgZNeEapJZaCDRdS9haEpHzg6Wgg9ZflXdoLJJcdA+D7zHDwDswhlJM79Qag1Sriv
-	 NFOy7n4qihai2WaAZKpNWEhgOc94xxgCeS8+ZydgY4A4YWUJ5lYSkoVuC0jF8mVpCE
-	 rOgCWQCNUHpqTYkATRCEvhyQoNqgnwkK0TGIFwNU1g1R9L9W8VpZB0IF8rqJ74lQfK
-	 9yPlMrw7XrkMyPip34nlX9LbDcC8D/jUdnE7eCTqbVFybE/bU3v6g2XTLWgzxQCmjL
-	 VfZusPmoADccA==
+	s=k20201202; t=1728066123;
+	bh=5Bh4TTwH0WivaKR5pVnaai1z9H1dk+fO8e5BQ2qk7a8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AEfR9cOdpyP75C5vL7lvU4J5cebM/TkORD402r2P4f/PrVzCLmtJIyFHC/gFjnao/
+	 zpqKbEyKVqCknktzgidu6yGv21E9sqeR/0IMqgyD8JEfhQQJEn4IaJkQ+LenlEYBq+
+	 8Y282M6E02UekwTSD3LL5fTa54poqVd7Y1HmVveKDBSPGJoAhC0mFYbNxmfR9NWJko
+	 YaRcBXgRS/xGe1y3+MrRhn9QPifGBtXdMn0Lbz4S4W9bWoJg2mfgxvt8aPZVjBF1Et
+	 ngYAOsAkXoqZp1UD88Vu3OWLk+qnoOXmvAwb21B3IrR1ijkX3TsPconotayt7eAR6h
+	 pZg8KklQEoUUA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrey Shumilin <shum.sdl@nppct.ru>,
-	Helge Deller <deller@gmx.de>,
+Cc: Hou Tao <houtao1@huawei.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tzimmermann@suse.de,
-	fullwaywang@outlook.com,
-	javierm@redhat.com,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 76/76] fbdev: sisfb: Fix strbuf array overflow
-Date: Fri,  4 Oct 2024 14:17:33 -0400
-Message-ID: <20241004181828.3669209-76-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 01/70] bpf: Call the missed btf_record_free() when map creation fails
+Date: Fri,  4 Oct 2024 14:19:59 -0400
+Message-ID: <20241004182200.3670903-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
-References: <20241004181828.3669209-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,43 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.2
+X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Andrey Shumilin <shum.sdl@nppct.ru>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 9cf14f5a2746c19455ce9cb44341b5527b5e19c3 ]
+[ Upstream commit 87e9675a0dfd0bf4a36550e4a0e673038ec67aee ]
 
-The values of the variables xres and yres are placed in strbuf.
-These variables are obtained from strbuf1.
-The strbuf1 array contains digit characters
-and a space if the array contains non-digit characters.
-Then, when executing sprintf(strbuf, "%ux%ux8", xres, yres);
-more than 16 bytes will be written to strbuf.
-It is suggested to increase the size of the strbuf array to 24.
+When security_bpf_map_create() in map_create() fails, map_create() will
+call btf_put() and ->map_free() callback to free the map. It doesn't
+free the btf_record of map value, so add the missed btf_record_free()
+when map creation fails.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+However btf_record_free() needs to be called after ->map_free() just
+like bpf_map_free_deferred() did, because ->map_free() may use the
+btf_record to free the special fields in preallocated map value. So
+factor out bpf_map_free() helper to free the map, btf_record, and btf
+orderly and use the helper in both map_create() and
+bpf_map_free_deferred().
 
-Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20240912012845.3458483-2-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/sis_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
-index 009bf1d926448..75033e6be15ab 100644
---- a/drivers/video/fbdev/sis/sis_main.c
-+++ b/drivers/video/fbdev/sis/sis_main.c
-@@ -183,7 +183,7 @@ static void sisfb_search_mode(char *name, bool quiet)
- {
- 	unsigned int j = 0, xres = 0, yres = 0, depth = 0, rate = 0;
- 	int i = 0;
--	char strbuf[16], strbuf1[20];
-+	char strbuf[24], strbuf1[20];
- 	char *nameptr = name;
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index f45ed6adc092a..92590ddb2042d 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -733,15 +733,11 @@ void bpf_obj_free_fields(const struct btf_record *rec, void *obj)
+ 	}
+ }
  
- 	/* We don't know the hardware specs yet and there is no ivideo */
+-/* called from workqueue */
+-static void bpf_map_free_deferred(struct work_struct *work)
++static void bpf_map_free(struct bpf_map *map)
+ {
+-	struct bpf_map *map = container_of(work, struct bpf_map, work);
+ 	struct btf_record *rec = map->record;
+ 	struct btf *btf = map->btf;
+ 
+-	security_bpf_map_free(map);
+-	bpf_map_release_memcg(map);
+ 	/* implementation dependent freeing */
+ 	map->ops->map_free(map);
+ 	/* Delay freeing of btf_record for maps, as map_free
+@@ -760,6 +756,16 @@ static void bpf_map_free_deferred(struct work_struct *work)
+ 	btf_put(btf);
+ }
+ 
++/* called from workqueue */
++static void bpf_map_free_deferred(struct work_struct *work)
++{
++	struct bpf_map *map = container_of(work, struct bpf_map, work);
++
++	security_bpf_map_free(map);
++	bpf_map_release_memcg(map);
++	bpf_map_free(map);
++}
++
+ static void bpf_map_put_uref(struct bpf_map *map)
+ {
+ 	if (atomic64_dec_and_test(&map->usercnt)) {
+@@ -1411,8 +1417,7 @@ static int map_create(union bpf_attr *attr)
+ free_map_sec:
+ 	security_bpf_map_free(map);
+ free_map:
+-	btf_put(map->btf);
+-	map->ops->map_free(map);
++	bpf_map_free(map);
+ put_token:
+ 	bpf_token_put(token);
+ 	return err;
 -- 
 2.43.0
 
