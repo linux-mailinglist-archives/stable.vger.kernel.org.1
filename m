@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-80912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC29990CA9
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:54:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB560990CAB
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2D11F2109A
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:54:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570C21F22814
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC561FBCAA;
-	Fri,  4 Oct 2024 18:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D7B1DD9CD;
+	Fri,  4 Oct 2024 18:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZAHmsW0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sp9RKLor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9331FBC9F;
-	Fri,  4 Oct 2024 18:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D634A1DD9C8;
+	Fri,  4 Oct 2024 18:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728066228; cv=none; b=dJpZmU481TTdLjXniZytbNRzfsXzDkatLjKYkpfZBlssRn5h6N6kLTSbxY+JsXT6ccM7X0ZbB7yOEK5Mb2xKCWAxX1JUkgT8Dytnv8ONboTP7iVICkdnMG6jQ2RQTjmNw9tBZegXPI2ZtI+2ZMJ44Oj0Z2pMeWKdYMv9DECwohA=
+	t=1728066232; cv=none; b=SNojXzKXBdWomnNKbMGrL2G3eybMGwZOb+05pW5dvModJmoT42jMZpWxpE3m99jyW+6r9yHSm3QerK7JQrKHgbMf7EkUjrtgAqXMJQgISDQPlzquOlIm7vAqHYBKhfuYw6jlIIsnuxD5hK2/HzgCAa+x/XPcE9Sad1bIfcHALb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728066228; c=relaxed/simple;
-	bh=MBjN4JNZbfHj09pIbFVjtX56PRWwuJv6/BKVipyEr3w=;
+	s=arc-20240116; t=1728066232; c=relaxed/simple;
+	bh=I43N8VamydTRQfZg02WHwUJugou2zgn+e1JtOSyuupA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8GjvwZ8tfL0x3q6xCI/OeqQfmpXGT6SLXJH3mRLs+YiAU1XPcpPLrk4OPE72AW7d8m4wGV5tbmb/znDgAkLZUFOhZOVZeru9CR1Q3RtHTCXldEoBO+KLIsmv0DDTVn2k1pzndabF9y6VzsWyBrusscVaXQ98gBu9EJeH38lHk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZAHmsW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCA9C4CECC;
-	Fri,  4 Oct 2024 18:23:47 +0000 (UTC)
+	 MIME-Version; b=c6vIWClHZ6RHDVnn3mavfT0q2jKQy+qg6sQ+fesWVMY+6tubDsbNqeSLU+kDjnsrisQlkCBsT7WwUw0KQB0bRO5e+JBa6kghfJj2vmPGAx0Y7Jo8xMEkfdls050AMvxh+bzYO5ikLYN7puMUyqe8HmuxqrXBpe6Wrxr5A3/0OD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sp9RKLor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E898C4CEC6;
+	Fri,  4 Oct 2024 18:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728066228;
-	bh=MBjN4JNZbfHj09pIbFVjtX56PRWwuJv6/BKVipyEr3w=;
+	s=k20201202; t=1728066232;
+	bh=I43N8VamydTRQfZg02WHwUJugou2zgn+e1JtOSyuupA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZAHmsW04X2wWZAA4EsOOM2NU6QRkH1SwyHpav8wVH8h/Nsv1wYJFAhVZDQLUiXOP
-	 zg1/MlKXpxmM03NL09VuoqmK08tYxt7jkdFvBelQKS2FUC+89jJmvD82zIJQ2y44Wq
-	 eof4r7YMr6jBZKmUz8oosMprQOwcBmxIjf2vd4um+dmfJ7c8IPbnxVPLY2A/13zFZH
-	 dxDt2qTTe4PaOJSIvLdPIBPdt0tjZPqWcJLMv+3peY5l5WtDBJjBh05VYDpB6qAHtg
-	 hFEMvfDZM6Cjtt7w73YNE/5lzeHMjvANPBaeh0JEQTIc9WovHrxTP7rz/bHWnZhs0v
-	 7mL3Zm0JLnTew==
+	b=sp9RKLorTWZx5/5ZhjF60KZup3rQpPQlD+9Qo/OFfyDE07PnRiQo/cOeddNXsVLAe
+	 KWAVbsCD7c3pyRLhOtw/T9mST6IIAN9OGMLUTHeY9TKFExuFr5kjOp39nkv/6Ekzks
+	 DwMRN+DyxbWSSQrnFt7bIhSX3X7xoKec6oOq83r+PKwL1ckCPZnLAsd68LiXnAKSrs
+	 LCLFPEbT82DqS/9g1IPIl8H8oTw1XbF9dkHy0Bc9p6ygjzAGdGzznIkj4iQ0dYBMsh
+	 V4NTs+fhH3uHT9Ek+Jv5cz8dMR/xFPrFYsf3GAspRcMVVKMLcjBKZa8JUzBhfD/CAE
+	 gyl70YENVCShA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Riyan Dhiman <riyandhiman14@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 56/70] tools/iio: Add memory allocation failure check for trigger_name
-Date: Fri,  4 Oct 2024 14:20:54 -0400
-Message-ID: <20241004182200.3670903-56-sashal@kernel.org>
+	calvncce@gmail.com,
+	straube.linux@gmail.com,
+	soumya.negi97@gmail.com,
+	linux-staging@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.10 57/70] staging: vme_user: added bound check to geoid
+Date: Fri,  4 Oct 2024 14:20:55 -0400
+Message-ID: <20241004182200.3670903-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004182200.3670903-1-sashal@kernel.org>
 References: <20241004182200.3670903-1-sashal@kernel.org>
@@ -66,36 +69,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.13
 Content-Transfer-Encoding: 8bit
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Riyan Dhiman <riyandhiman14@gmail.com>
 
-[ Upstream commit 3c6b818b097dd6932859bcc3d6722a74ec5931c1 ]
+[ Upstream commit a8a8b54350229f59c8ba6496fb5689a1632a59be ]
 
-Added a check to handle memory allocation failure for `trigger_name`
-and return `-ENOMEM`.
+The geoid is a module parameter that allows users to hardcode the slot number.
+A bound check for geoid was added in the probe function because only values
+between 0 and less than VME_MAX_SLOT are valid.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20240828093129.3040-1-zhujun2@cmss.chinamobile.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Riyan Dhiman <riyandhiman14@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240827125604.42771-2-riyandhiman14@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_generic_buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/staging/vme_user/vme_fake.c   | 6 ++++++
+ drivers/staging/vme_user/vme_tsi148.c | 6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 0d0a7a19d6f95..9ef5ee087eda3 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -498,6 +498,10 @@ int main(int argc, char **argv)
- 			return -ENOMEM;
- 		}
- 		trigger_name = malloc(IIO_MAX_NAME_LENGTH);
-+		if (!trigger_name) {
-+			ret = -ENOMEM;
-+			goto error;
-+		}
- 		ret = read_sysfs_string("name", trig_dev_name, trigger_name);
- 		free(trig_dev_name);
- 		if (ret < 0) {
+diff --git a/drivers/staging/vme_user/vme_fake.c b/drivers/staging/vme_user/vme_fake.c
+index 7f84d1c86f291..c4fb2b65154c7 100644
+--- a/drivers/staging/vme_user/vme_fake.c
++++ b/drivers/staging/vme_user/vme_fake.c
+@@ -1059,6 +1059,12 @@ static int __init fake_init(void)
+ 	struct vme_slave_resource *slave_image;
+ 	struct vme_lm_resource *lm;
+ 
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		pr_err("VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
++	}
++
+ 	/* We need a fake parent device */
+ 	vme_root = root_device_register("vme");
+ 	if (IS_ERR(vme_root))
+diff --git a/drivers/staging/vme_user/vme_tsi148.c b/drivers/staging/vme_user/vme_tsi148.c
+index 2ec9c29044041..e40ca4870d704 100644
+--- a/drivers/staging/vme_user/vme_tsi148.c
++++ b/drivers/staging/vme_user/vme_tsi148.c
+@@ -2253,6 +2253,12 @@ static int tsi148_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	struct vme_dma_resource *dma_ctrlr;
+ 	struct vme_lm_resource *lm;
+ 
++	if (geoid < 0 || geoid >= VME_MAX_SLOTS) {
++		dev_err(&pdev->dev, "VME geographical address must be between 0 and %d (exclusive), but got %d\n",
++			VME_MAX_SLOTS, geoid);
++		return -EINVAL;
++	}
++
+ 	/* If we want to support more than one of each bridge, we need to
+ 	 * dynamically generate this so we get one per device
+ 	 */
 -- 
 2.43.0
 
