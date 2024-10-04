@@ -1,91 +1,118 @@
-Return-Path: <stable+bounces-80765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CAA09907EF
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 17:47:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB0C9907F8
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 17:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 887B01C2420C
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 15:47:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536CC1F21B49
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 15:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68F121B450;
-	Fri,  4 Oct 2024 15:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBECF1C304D;
+	Fri,  4 Oct 2024 15:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ISZ4oeb3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mK2Hzjmv"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE42521B438
-	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 15:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7C21CACF4
+	for <stable@vger.kernel.org>; Fri,  4 Oct 2024 15:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728056257; cv=none; b=pGyEpZLf6IYFShcTS/SZ7oiM4gvKgMeoXI3BZVKOVwKR7wIwKqSDSnxVXFW5pwzVVMrkSgRSbcIR0p13YZjJS7P9Mj5MQZblLSR+n4Yt/X0Ok+l/OMyimWoF+m4IJ3/xmYV9anqim8lgmr4WArL2+a23xOgN0SdFTOdOnWeUCUo=
+	t=1728056496; cv=none; b=B8c1BMwgV4copjEDgnp2gNo6xypDtpev8nDx2w4UsUwmEDDkocLAX1zg2A1xO8l6w+uQkRnfiNXMzY3h0rXPkP/agCdsf9EII7tNrBk6R0o2m8Sj4jMVP5HI1TC0BjZMKqR4EtyUgyY1LlK4e7QhSvTvr3R6skM6Mp3jz+Mj5Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728056257; c=relaxed/simple;
-	bh=0D1cYSeQQ+jhwWd4TLI5hO7NsEF3R3zty8OXiKh3+ps=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=BLptfiG3oDZNNfSlHqVMRHWFqzX0Ec28pE1076/JTGIRubBcR8cstRYmsWV2v9BJOiR/XJxmVrTdR3ragrsSB4nRJoA6kg5JFMjSAJj0zmm3DFAjUDlrMX7SW+qU0rLeyqx/6INTDxwqup920kCdr1VSsxkSbFG1vem5bQjOUzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ISZ4oeb3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728056255;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0D1cYSeQQ+jhwWd4TLI5hO7NsEF3R3zty8OXiKh3+ps=;
-	b=ISZ4oeb3sril25uP10lrVr0l9sn/EMQM5IGHls7rCxlNXu+P2U4RwJExM4iIhRm3SaOYQn
-	CEnYj0DfA5oryQKTbLHLzkD8RfXwF53JIjmOaBns8HsiYNjw02wGScZmnUynwqXh+QAj5w
-	FQRVtl7iGN2L9gk/JzGZ8Wk0uDGsV3E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-536-5Gug8Q8zOBabFupWhhPBXw-1; Fri,
- 04 Oct 2024 11:37:31 -0400
-X-MC-Unique: 5Gug8Q8zOBabFupWhhPBXw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 565A61955EB5;
-	Fri,  4 Oct 2024 15:37:30 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 37C221956054;
-	Fri,  4 Oct 2024 15:37:28 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20241003010512.58559-1-batrick@batbytes.com>
-References: <20241003010512.58559-1-batrick@batbytes.com>
-To: Ilya Dryomov <idryomov@gmail.com>
-Cc: dhowells@redhat.com, Xiubo Li <xiubli@redhat.com>,
-    Patrick Donnelly <batrick@batbytes.com>,
-    Jeff Layton <jlayton@kernel.org>,
-    Patrick Donnelly <pdonnell@redhat.com>, stable@vger.kernel.org,
-    ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ceph: fix cap ref leak via netfs init_request
+	s=arc-20240116; t=1728056496; c=relaxed/simple;
+	bh=dJqcYDoZdMv4SCtPkgzGtLXt5PcyPXiz75/oxa/aADI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I90kkje4KmQIrLOD5hErE3heDom8lJKAOsPzvIM3SpDN2bl3r5nu2iWBI7PLZcnA8P2M0jpSiRDm6Unmu8BAW0RpdECyWjGRQu4STqYQjxXb8YVCRDshRswLyJF/gpJzhsOXlidj3Te1UP5uBz1Mo5dv0IM7L7jXFXKiKU2HeJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mK2Hzjmv; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6e22f10cc11so17385157b3.1
+        for <stable@vger.kernel.org>; Fri, 04 Oct 2024 08:41:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728056494; x=1728661294; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ld53TKEHT8b3TSuRD204fFYTz9ezn3pJ8reFZpiI+8o=;
+        b=mK2Hzjmv77T9jM6BLYXk+0wgCzWlooXxmyJv2CA+PsMH4bIiIhnUHirg4Hf3Bs8rs7
+         RS13CkkZl1+OKF5EBG9Qes2L3l0qNUZfidvJAlPisHHhpyZRT5V+L1wPXbOmw0mLpD40
+         7C44TH8l+pBMpvvNuv0kCfi/USKci4MC0PD4ISydWcEjT9HKlxsCVSk0yRVAah3+7HIG
+         eUtrNZVImGi+BkGyrLQGBc+6XvZAIJL8zMXsLdg9t+1GyvARQAeapjAdbNm4/cH/WmuE
+         qhMfHvjLULM475fr/0fYjTzrtB0y0IYWL/P5O6QzTdPHHQPTzM5ygftaikeqQW8Okmxo
+         W+LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728056494; x=1728661294;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ld53TKEHT8b3TSuRD204fFYTz9ezn3pJ8reFZpiI+8o=;
+        b=cOQJYclwxa7fxoVU7RR3iASXSuilR6heg1p9WTuXVONhuLWStKe5fY+kbLYW6yt1RF
+         yUdpalmwn+Jh31jJ09UxTYmNPBnUb4TUGdtLNNNbTTQ1Kdi4DfzL4DW4BAyCuaZuip4S
+         c99Ees5ebC1zulGIYkeB2ECWTUK1TWUsUnjMh5+oDaX2S6uF4ZD2J2Vf9HA1CgJTlKPI
+         EBzgnlyDzvQoIWS+JEqHW0tChL0UckUTOZSD0mTfX2VjVvGiU0A+mAwbbdOIolCEg4Rf
+         KrjUKvSSz4UbTIzcbp2KU/qXOtjjAqfeoLSmSK20iE3FH8lqrIkDnubL43JI6jLLEeWI
+         pfzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNQujOzyo9n44mmpS69AfYPk1WxAP6yZacuLAl8kx6NXQdhSV0yNHQkjSk1Uchw1M7/YxbItA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+T/04VsYHq+FRqP4JxDYR962U7tf2dq5VKie8McdV1HW+UPrt
+	29AErYP0oZitXJbFI7NQAXwMQla46HqrY6tT36/5XnrgdDmm1DruT5fzq0prD5lIsqYfnVwjkpp
+	lcWE8Q/Ft0pJJBhHin1uoRbvOrzk=
+X-Google-Smtp-Source: AGHT+IGmAHX5qOJKjfePGvgyCk94mzcfv68CQ5ZqvNqlsIkB21J1eW/6bT6b0FMpBRoy3DQZDXAbMHouQVFazdiqulc=
+X-Received: by 2002:a05:690c:d89:b0:6de:b23:f2c3 with SMTP id
+ 00721157ae682-6e2c72412bamr31532787b3.7.1728056494214; Fri, 04 Oct 2024
+ 08:41:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3822913.1728056247.1@warthog.procyon.org.uk>
-Date: Fri, 04 Oct 2024 16:37:27 +0100
-Message-ID: <3822914.1728056247@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+References: <20241002125822.467776898@linuxfoundation.org> <20241002125838.303136061@linuxfoundation.org>
+ <CADpNCvbW+ntip0fWis6zYvQ0btiP6RqQBLFZeKrAwdS8U2N=rw@mail.gmail.com>
+ <2024100330-drew-clothing-79c1@gregkh> <A8D6C21F-ACAD-4083-900F-528EB3EB5410@oracle.com>
+ <CADpNCvbKGAVcD9=m_YxA6qOF6e0kohOfVsKOqJeVmrYaq0Sd8w@mail.gmail.com>
+ <2024100420-aflutter-setback-2482@gregkh> <CADpNCvYn9ACkumaMmq7xAj6EQuF6eYs174J+z81wv5WqzdWynA@mail.gmail.com>
+ <2024100430-finalist-brutishly-a192@gregkh> <2024100416-dodgy-theme-ae43@gregkh>
+In-Reply-To: <2024100416-dodgy-theme-ae43@gregkh>
+From: Youzhong Yang <youzhong@gmail.com>
+Date: Fri, 4 Oct 2024 11:41:24 -0400
+Message-ID: <CADpNCvZTdxNsrqq-xOga38unKWCC_ZwB-+F1VprJumXiCmTD6g@mail.gmail.com>
+Subject: Re: [PATCH 6.11 397/695] nfsd: fix refcount leak when file is
+ unhashed after being found
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Chuck Lever III <chuck.lever@oracle.com>, linux-stable <stable@vger.kernel.org>, 
+	"patches@lists.linux.dev" <patches@lists.linux.dev>, Jeff Layton <jlayton@kernel.org>, 
+	Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ilya,
+Thanks Greg. Yes, if a complete fix is concerned, it should be
+backported. I had no problem applying those commits on the top of 6.6,
+but I am not sure about the earlier kernel versions.
 
-Are you going to pick this up, or should I ask Christian to take it through
-the vfs tree?
-
-David
-
+On Fri, Oct 4, 2024 at 10:35=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Oct 04, 2024 at 04:26:39PM +0200, Greg Kroah-Hartman wrote:
+> > On Fri, Oct 04, 2024 at 10:17:34AM -0400, Youzhong Yang wrote:
+> > > Here is 1/4 in the context of Chuck's e-mail reply:
+> > >
+> > > nfsd: add list_head nf_gc to struct nfsd_file
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
+mmit/?id=3D8e6e2ffa6569a205f1805cbaeca143b556581da6
+> >
+> > Sorry, again, I don't know what to do here :(
+> >
+> >
+>
+> Ok, in digging through the thread, do you feel this one should also be
+> backported to the 6.11.y tree?  If so, how far back?
+>
+> thanks,
+>
+> greg k-h
 
