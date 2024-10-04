@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-80797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FE6990B1D
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:23:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E95990B1F
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 20:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA4C1C23197
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:23:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4778F1C22A93
+	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 18:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E185C21C17F;
-	Fri,  4 Oct 2024 18:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046EF21C195;
+	Fri,  4 Oct 2024 18:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tVEWhAff"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p2rr6JoY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD4A1DD867;
-	Fri,  4 Oct 2024 18:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13C321C18A;
+	Fri,  4 Oct 2024 18:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728065939; cv=none; b=J65W0gVnmAwGosKnV9hcdmEr71PHqgcw16HLW/DzlnpmLyXW9hPxn96VKL+EkNlr9lNfM/ucSc1+lbSRKuAjX12FkA9U8TW7HcOgPV+vDQMpITVcPT6ZkLJa8PDSFElfSsBS4nRmMkC/s6GiecS65+BCKBb72Ob7aKk/OiKLTh4=
+	t=1728065940; cv=none; b=RjsmegAE2BYz/PZABRX2N5WauR7g6QQnlKu2essRnOnWtM9dBPm7U7iWRTypKcXQRPlGioUgxMO3uHtFie3e0iHmlvn5XLouy6PsWEUxyiZirDvMrCUFnGReoLYVS/T5Dyz6596z1ujUaTMiO5gCbCDabGBZ1+tRjPfzsHT7R28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728065939; c=relaxed/simple;
-	bh=OPg7FRb0kBq7ivezil0fQ06/cg//Z3nwebfuiYFWQvw=;
+	s=arc-20240116; t=1728065940; c=relaxed/simple;
+	bh=y/HESDUQcnYjFODBAlVirlQLZWQXcTxESDRfkB3GLUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/KLVbuwlpUvLg8SkbfY5f8BNaSKyyozZL6ZB9+sxcBAWM87kT6rcQJ7TubHw5A8PsBKFfU2oem5uDpk85pzI7E+Wn8crCp2yEBFhZatOj6R2BOh0ShuAcZkrLU5bGaIPlH4Zbq6TX9tz5H0/0SQPmWI1YOpTi7MCw2BSOR7z4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tVEWhAff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CACDC4CECE;
-	Fri,  4 Oct 2024 18:18:58 +0000 (UTC)
+	 MIME-Version; b=oUSTbA2R967lk2kel2sB0vAGC8frIkWQwylMCzqbyAkoQf39tWT4HZqcN/sOBGJdKLWEhDTJTNXIbTGbpFg12XF+H/ikOnHm2IcASNbet5AaOVt64Ik5CBwba4nwetnoEKiVXp1YS7Z+Ux8QKCbRicALblldCUsM+A9PFAdZGbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p2rr6JoY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA99DC4CECC;
+	Fri,  4 Oct 2024 18:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728065939;
-	bh=OPg7FRb0kBq7ivezil0fQ06/cg//Z3nwebfuiYFWQvw=;
+	s=k20201202; t=1728065940;
+	bh=y/HESDUQcnYjFODBAlVirlQLZWQXcTxESDRfkB3GLUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVEWhAff2WTAHa7Csze1fmmKk3KvRxVW+yq8xlfrJwi8g2UXbKnODjM3VkX1/BQ4v
-	 3kcEuPP0BzjbcAN8kjsDzSJt+rKNxnsO9k1mEdJxH42w7pbaO1LV3/ttVaA2VcLqgn
-	 yzZFUP5KkJ3uRmGS5UN9aSdeMHevuFSAHEIqTci8fULbSbyOXnPlFUgTwkDYv6Abso
-	 wgFhzsQH58RHg8JaQTkbVf/EkhvHDOEiHsIfLE09Lj6+RAJsKJiOVHLGuHpWg6tdxL
-	 S+uQwxO3wV1883MVAu8MZtZq8pn9HN7pO8Z2yYxNElqMlFhc3ei6S3RK0lQ0wcu05p
-	 YZTsXhEvF9TvA==
+	b=p2rr6JoYB8blxDbU3+wy7ezW2GH8kVODcmK9OU443HJ4xUO9vwqpUQUZCFzT5QlRC
+	 6zGDj6ZwYusZVONgvaRuJYsbi+Y8VBKt/ND/n/uXnE9u273ir+WKhqCfXdeW3kIjCt
+	 mqSgXjGyS1ghKuEKMrHEOhq0NbLCItfAzEVYGDb+lgU/7L8O8SENDMAE8oadkAtsVc
+	 tbxq5yTGxNOfBr9vAPseeD9lQ4MqXrwlXPkRvGgYPVxSJXJ3w4mhNFCPu1Ofb34RmR
+	 Y2NGPKyWJxH+EWO5chsXb3XNXRYCmXjkfr1SSZiY9l2aOcWAlz7MdaI9Tnyp6m9G4O
+	 1qhEYXunKXNOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+Cc: Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	svens@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 17/76] s390/cpum_sf: Remove WARN_ON_ONCE statements
-Date: Fri,  4 Oct 2024 14:16:34 -0400
-Message-ID: <20241004181828.3669209-17-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 18/76] ext4: filesystems without casefold feature cannot be mounted with siphash
+Date: Fri,  4 Oct 2024 14:16:35 -0400
+Message-ID: <20241004181828.3669209-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241004181828.3669209-1-sashal@kernel.org>
 References: <20241004181828.3669209-1-sashal@kernel.org>
@@ -69,69 +67,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.2
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit b495e710157606889f2d8bdc62aebf2aa02f67a7 ]
+[ Upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
 
-Remove WARN_ON_ONCE statements. These have not triggered in the
-past.
+When mounting the ext4 filesystem, if the default hash version is set to
+DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
 
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_cpum_sf.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ fs/ext4/super.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
-index 736c1d9632dd5..48fa9471660a8 100644
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -1463,7 +1463,7 @@ static int aux_output_begin(struct perf_output_handle *handle,
- 	unsigned long range, i, range_scan, idx, head, base, offset;
- 	struct hws_trailer_entry *te;
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 93c016b186c07..e8e32cf3e2228 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3583,6 +3583,13 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+ 			 "mounted without CONFIG_UNICODE");
+ 		return 0;
+ 	}
++	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
++	    !ext4_has_feature_casefold(sb)) {
++		ext4_msg(sb, KERN_ERR,
++			 "Filesystem without casefold feature cannot be "
++			 "mounted with siphash");
++		return 0;
++	}
  
--	if (WARN_ON_ONCE(handle->head & ~PAGE_MASK))
-+	if (handle->head & ~PAGE_MASK)
- 		return -EINVAL;
- 
- 	aux->head = handle->head >> PAGE_SHIFT;
-@@ -1642,7 +1642,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
- 	unsigned long num_sdb;
- 
- 	aux = perf_get_aux(handle);
--	if (WARN_ON_ONCE(!aux))
-+	if (!aux)
- 		return;
- 
- 	/* Inform user space new data arrived */
-@@ -1661,7 +1661,7 @@ static void hw_collect_aux(struct cpu_hw_sf *cpuhw)
- 				num_sdb);
- 			break;
- 		}
--		if (WARN_ON_ONCE(!aux))
-+		if (!aux)
- 			return;
- 
- 		/* Update head and alert_mark to new position */
-@@ -1896,12 +1896,8 @@ static void cpumsf_pmu_start(struct perf_event *event, int flags)
- {
- 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
- 
--	if (WARN_ON_ONCE(!(event->hw.state & PERF_HES_STOPPED)))
-+	if (!(event->hw.state & PERF_HES_STOPPED))
- 		return;
--
--	if (flags & PERF_EF_RELOAD)
--		WARN_ON_ONCE(!(event->hw.state & PERF_HES_UPTODATE));
--
- 	perf_pmu_disable(event->pmu);
- 	event->hw.state = 0;
- 	cpuhw->lsctl.cs = 1;
+ 	if (readonly)
+ 		return 1;
 -- 
 2.43.0
 
