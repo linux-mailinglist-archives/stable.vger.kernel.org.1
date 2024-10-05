@@ -1,208 +1,137 @@
-Return-Path: <stable+bounces-81147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45B899134E
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 01:53:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C16399138F
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 02:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60BBF1F21F75
-	for <lists+stable@lfdr.de>; Fri,  4 Oct 2024 23:53:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07BCD1F21DFC
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 00:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E621547EF;
-	Fri,  4 Oct 2024 23:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4AA4A3E;
+	Sat,  5 Oct 2024 00:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ewAf2e6N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kG8inolI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FF91798C;
-	Fri,  4 Oct 2024 23:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B16D182;
+	Sat,  5 Oct 2024 00:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728086008; cv=none; b=spLiowspnYPeGVnoujUg4eKjq8lKsBfypIxrynUIhjFtCiCUeCpHJ+7hw5UMacFGV68Q783xnzKj6FEgo1C6QHW4QLn9xMr02tesj2RFMv//h2yTRuHODhtYzq30WhKQxPUj9DB5A/pUaV+1zASbyZyuYq4bQGvsTPe9xiImX8s=
+	t=1728088883; cv=none; b=Rxie88dpbXgl7GZzWSs8VpTL9+QDgTwSd+2zRKNGnV5/LO7IQ5Jypi56tytlFAtEmiWQgt0zTBXA2AEEEi25pVc9KicHs1KQ1wiRoFRtyxP/wfKBbBOcBb04X2q+CIPUES407V6rvtgGtMfdXrw1/XUgKyjE8DgVfWprgy1aM/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728086008; c=relaxed/simple;
-	bh=BebjlxX63Ovteg5+08eKIibagH8b/OwE48M4xmNgEiA=;
-	h=Date:To:From:Subject:Message-Id; b=sFV+asVz4/X5A5VFACr3ZrHyVG9OjSK4SATdzQN9xpXJBGfHsY7Wiu7Zjn68hYX/8GDxhLONdA9jBvZHlBjaLDyPS/qEkn5p/8Jh8WoiJzjttIMa134N3Q2e7+8Hfj5Yy8v6l/gNFD5+HSDNW07tc0VuJ8Gn5TI7/pB14uo2Fxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ewAf2e6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB24C4CEC6;
-	Fri,  4 Oct 2024 23:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1728086008;
-	bh=BebjlxX63Ovteg5+08eKIibagH8b/OwE48M4xmNgEiA=;
-	h=Date:To:From:Subject:From;
-	b=ewAf2e6NF9/ZP4tQ8UCqBSWrgyXMeAt9+U1UnFEQmf5USWI++YmX+xMN0zAMqdRUd
-	 gH2e873miHp13vSVkHpeZzIz8U7ll20HnFAZz87mYuTwLQfeoDJ2VUPBAd3WJtBrkr
-	 f/T1hoE4uH1xsQTn1WAGNcWOpYLwBUt1Zk/gaj0U=
-Date: Fri, 04 Oct 2024 16:53:27 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,peterx@redhat.com,lokeshgidra@google.com,edliaw@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241004235328.1DB24C4CEC6@smtp.kernel.org>
+	s=arc-20240116; t=1728088883; c=relaxed/simple;
+	bh=LaR4kGrs9T92YX+VSRnrcfr1FVYBTPYB+H5z66zupfo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kP0z4qgiakLa5e0abZLTPOAdkqmwihhfs5fhd272xpZEUC/cW5AFCyWhbL0qr6SX0MyGceHGYhIvp0a76KKeskHkFBAX4tDPeayKxTQBh5tMnsFe/2YtNGnVN23fNAWkih4L89wsmpCiUo1pQjpr57AqXXT22Zi45L2pjjik0ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kG8inolI; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6dbb24ee2ebso28742487b3.1;
+        Fri, 04 Oct 2024 17:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728088880; x=1728693680; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=owdQnnmJ0k9GqszQbsfRKFo2HloTe8ebu6VWxh7lnBE=;
+        b=kG8inolIiy3EXdGrsRyhBhpeP0um7hXGz/C4oQ5LwnER00av2iDDS1t+894HDucbrP
+         bVDIDVasPizH8RXncMB6CZDKooBSg9vPD/8Aa+VdjUQF3/XbycP/Xptk64v3rYKm/4aN
+         jXDJlogQGl5cp+taaSR3sqtbPF8q8mhQ+7yyVC/CzKSkkX6ezU/e87zp7Yu27jIbsDxS
+         dRybwFTMipLuSYuHGESgnbyP/AiDOZyB6w3BxvCFQ2RImR+2LwOknpFK+B3VpT33X2dh
+         PvQ1EDFrAtjYhDnaTEb/Yfo+d0A0DGCvXvyKcye2jir0u/9/ol08By/inGyPU3wWsQOF
+         T8ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728088880; x=1728693680;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=owdQnnmJ0k9GqszQbsfRKFo2HloTe8ebu6VWxh7lnBE=;
+        b=dT5xyRpo7rZOjjZR/2/FlJggtKVoJwIAdTONaEKEdcBA0jAo8/eMKsdFlPPjMmd6Ov
+         rW9zDpf0Iuvk0xr8qLxaFwq+GlH4qjXzPsOd0GxIzS7HXha/afszej+jXYku3kEHOTZ3
+         Xn/2qBSQET79g4qb/XrW1C5kgwUnqgAEZjLYp5k6/Iabe7x0ljpOW+LIU8xi+RZmco5l
+         2eRws5tQzuwuHZc1wGeOMbYpoygK6HRzOnhKHU6UN2Nc94PIcUnGvK/UOyBcfV6aCWcu
+         XrklhWbvMND/UQ7rxkWDaB1jel5jKIbNta6uG1+aVabUlhoxh+gcPCmdhMNd6UfBpPve
+         I8Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5w/jSdpVczZbnV0eZGw3SwbjUfdPFhg/mdqFHh7BD5Sr652dguhWlPTprHvStpauY45K04PM4BV2Inw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnBKn8HCrFSBQjKX2AUSPAYmva9BNlGatt8NBg3LkHGMNXuIDZ
+	qsrLnHiFuwr4hT82oBLv94ydgTmJulF/1pQnxT8RrgKla5XxiKRwdYkhtOKFPj2wwWqR4MijPUC
+	MAsbnfBB439aoiKUDElgJZk+zx/k=
+X-Google-Smtp-Source: AGHT+IEc4JsbDjOUOZUAYvNP80Xbb7FLwNWnw3A9w7KC2tYpBb8LjgwpuWtLeg559en8y1jJ5C3WUwbpFG3x3PmhmGU=
+X-Received: by 2002:a05:690c:3088:b0:6e2:e3d:4dda with SMTP id
+ 00721157ae682-6e2c702506emr33846777b3.17.1728088880398; Fri, 04 Oct 2024
+ 17:41:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CACzhbgTFesCa-tpyCqunUoTw-1P2EJ83zDzrcB4fbMi6nNNwng@mail.gmail.com>
+ <20241004055854.GA14489@lst.de>
+In-Reply-To: <20241004055854.GA14489@lst.de>
+From: Leah Rumancik <leah.rumancik@gmail.com>
+Date: Fri, 4 Oct 2024 17:41:08 -0700
+Message-ID: <CACzhbgT_o0B7x9=c10QpRVEm1FuNaAU3Lh0cUGQ3B_+4s21cLw@mail.gmail.com>
+Subject: Re: read regression for dm-snapshot with loopback
+To: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org, axboe@kernel.dk, bvanassche@acm.org, 
+	linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Cool, thanks. I'll poke around some more next week, but sounds good,
+let's go ahead with 667ea36378 for 6.6 and 6.1 then.
 
-The patch titled
-     Subject: selftests/mm: replace atomic_bool with pthread_barrier_t
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch
+- leah
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Edward Liaw <edliaw@google.com>
-Subject: selftests/mm: replace atomic_bool with pthread_barrier_t
-Date: Thu, 3 Oct 2024 21:17:10 +0000
-
-Patch series "selftests/mm: fix deadlock after pthread_create".
-
-On Android arm, pthread_create followed by a fork caused a deadlock in the
-case where the fork required work to be completed by the created thread.
-
-Update the synchronization primitive to use pthread_barrier instead of
-atomic_bool.
-
-Apply the same fix to the wp-fork-with-event test.
-
-
-This patch (of 2):
-
-Swap synchronization primitive with pthread_barrier, so that stdatomic.h
-does not need to be included.
-
-The synchronization is needed on Android ARM64; we see a deadlock with
-pthread_create when the parent thread races forward before the child has a
-chance to start doing work.
-
-Link: https://lkml.kernel.org/r/20241003211716.371786-1-edliaw@google.com
-Link: https://lkml.kernel.org/r/20241003211716.371786-2-edliaw@google.com
-Fixes: 8c864371b2a1 ("selftests/mm: fix ARM related issue with fork after
-pthread_create")
-Signed-off-by: Edward Liaw <edliaw@google.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/uffd-common.c     |    5 +++--
- tools/testing/selftests/mm/uffd-common.h     |    3 +--
- tools/testing/selftests/mm/uffd-unit-tests.c |   14 ++++++++------
- 3 files changed, 12 insertions(+), 10 deletions(-)
-
---- a/tools/testing/selftests/mm/uffd-common.c~selftests-mm-replace-atomic_bool-with-pthread_barrier_t
-+++ a/tools/testing/selftests/mm/uffd-common.c
-@@ -18,7 +18,7 @@ bool test_uffdio_wp = true;
- unsigned long long *count_verify;
- uffd_test_ops_t *uffd_test_ops;
- uffd_test_case_ops_t *uffd_test_case_ops;
--atomic_bool ready_for_fork;
-+pthread_barrier_t ready_for_fork;
- 
- static int uffd_mem_fd_create(off_t mem_size, bool hugetlb)
- {
-@@ -519,7 +519,8 @@ void *uffd_poll_thread(void *arg)
- 	pollfd[1].fd = pipefd[cpu*2];
- 	pollfd[1].events = POLLIN;
- 
--	ready_for_fork = true;
-+	/* Ready for parent thread to fork */
-+	pthread_barrier_wait(&ready_for_fork);
- 
- 	for (;;) {
- 		ret = poll(pollfd, 2, -1);
---- a/tools/testing/selftests/mm/uffd-common.h~selftests-mm-replace-atomic_bool-with-pthread_barrier_t
-+++ a/tools/testing/selftests/mm/uffd-common.h
-@@ -33,7 +33,6 @@
- #include <inttypes.h>
- #include <stdint.h>
- #include <sys/random.h>
--#include <stdatomic.h>
- 
- #include "../kselftest.h"
- #include "vm_util.h"
-@@ -105,7 +104,7 @@ extern bool map_shared;
- extern bool test_uffdio_wp;
- extern unsigned long long *count_verify;
- extern volatile bool test_uffdio_copy_eexist;
--extern atomic_bool ready_for_fork;
-+extern pthread_barrier_t ready_for_fork;
- 
- extern uffd_test_ops_t anon_uffd_test_ops;
- extern uffd_test_ops_t shmem_uffd_test_ops;
---- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-replace-atomic_bool-with-pthread_barrier_t
-+++ a/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -774,7 +774,7 @@ static void uffd_sigbus_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
--	ready_for_fork = false;
-+	pthread_barrier_init(&ready_for_fork, NULL, 2);
- 
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 
-@@ -791,8 +791,9 @@ static void uffd_sigbus_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
--	while (!ready_for_fork)
--		; /* Wait for the poll_thread to start executing before forking */
-+	/* Wait for child thread to start before forking */
-+	pthread_barrier_wait(&ready_for_fork);
-+	pthread_barrier_destroy(&ready_for_fork);
- 
- 	pid = fork();
- 	if (pid < 0)
-@@ -833,7 +834,7 @@ static void uffd_events_test_common(bool
- 	char c;
- 	struct uffd_args args = { 0 };
- 
--	ready_for_fork = false;
-+	pthread_barrier_init(&ready_for_fork, NULL, 2);
- 
- 	fcntl(uffd, F_SETFL, uffd_flags | O_NONBLOCK);
- 	if (uffd_register(uffd, area_dst, nr_pages * page_size,
-@@ -844,8 +845,9 @@ static void uffd_events_test_common(bool
- 	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
- 		err("uffd_poll_thread create");
- 
--	while (!ready_for_fork)
--		; /* Wait for the poll_thread to start executing before forking */
-+	/* Wait for child thread to start before forking */
-+	pthread_barrier_wait(&ready_for_fork);
-+	pthread_barrier_destroy(&ready_for_fork);
- 
- 	pid = fork();
- 	if (pid < 0)
-_
-
-Patches currently in -mm which might be from edliaw@google.com are
-
-selftests-mm-replace-atomic_bool-with-pthread_barrier_t.patch
-selftests-mm-fix-deadlock-for-fork-after-pthread_create-on-arm.patch
-
+On Thu, Oct 3, 2024 at 10:58=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrot=
+e:
+>
+> Hi Leah,
+>
+> On Thu, Oct 03, 2024 at 02:13:52PM -0700, Leah Rumancik wrote:
+> > Hello,
+> >
+> > I have been investigating a read performance regression of dm-snapshot
+> > on top of loopback in which the read time for a dd command increased
+> > from 2min to 40min. I bisected the issue to dc5fc361d89 ("block:
+> > attempt direct issue of plug list"). I blktraced before and after this
+> > commit and the main difference I saw was that before this commit, when
+> > the performance was good, there were a lot of IO unplugs on the loop
+> > dev. After this commit, I saw 0 IO unplugs.
+>
+> /me makes a not that it might make sense to enhance the tracing to show
+> which of the trace_block_unplug call sites did a particular unplug becaus=
+e
+> that might be helpful here, but I suspect the ones you saw the ones
+> from blk_mq_dispatch_plug_list, which now gets bypassed.
+>
+> I'm not really sure how that changed things, except that I know in
+> old kernels we had issues with reordering I/O in this path, and
+> maybe your workload hit that?  Did the issue order change in the
+> blktrace?
+>
+> > On the mainline, I was also able to bisect to a commit which fixed
+> > this issue: 667ea36378cf ("loop: don't set QUEUE_FLAG_NOMERGES"). I
+> > also blktraced before and after this commit, and unsurprisingly, the
+> > main difference was that commit resulted in IO merges whereas
+> > previously there were none being.
+>
+> With QUEUE_FLAG_NOMERGES even very basic merging is enabled, so that
+> would fix any smaller amount of reordering.  It is in fact a bit
+> stupid that this ever got set by default on the loop driver.
+>
+> > 6.6.y and 6.1.y and were both experiencing the performance issue. I
+> > tried porting 667ea36378 to these branches; it applied cleanly and
+> > resolved the issue for both. So perhaps we should consider it for the
+> > stable trees, but it'd be great if someone from the block layer could
+> > chime in with a better idea of what's going on here.
+>
+> I'm totally fine with backporting the patch.
+>
 
