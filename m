@@ -1,182 +1,106 @@
-Return-Path: <stable+bounces-81155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B9B9914CF
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 08:10:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2349599156A
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 10:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4C3D1C21E4F
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 06:10:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5435C1C216FD
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 08:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD514D8AD;
-	Sat,  5 Oct 2024 06:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733F813A24D;
+	Sat,  5 Oct 2024 08:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NHdIRyUX"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="keeIyN6L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EAD13049E;
-	Sat,  5 Oct 2024 06:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD16813DBBC;
+	Sat,  5 Oct 2024 08:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728108626; cv=none; b=cRd+lsjFBMbK4zdWzjz/PvEUuE7HlCkF39lCPVq9pWqENYDQANbTWPIyCz876t6XCSrGKodmVt94SI6O8bGL/sLKIPNMxje+v7sNaUICBci9Ny1hbWK+k4FWWH8EcFL0CWXqmU18OFPxXo6kGKAoWHLWnI+FQ5Ekydf02VjYZVI=
+	t=1728118527; cv=none; b=Ek2Q7ACjXDMiATRI/IDd4Wo6UGfupGqiWmywwOLtGP3B3AN3zvcqvjXr3cFYz8BNCUEeoOE+zeKUXl2w2M+AuTBkcgYxL5rTK0+XybNQ1iCnSGMNTQsGr55/0BZegWmQ8YowOVeZmcMSL9QriLXrKiBejKtKO8mMBXfjb3Lnkjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728108626; c=relaxed/simple;
-	bh=635Bn6hYjmr2sxs/uq7ckrdJIQP1sayE7ylcDwObo6c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O4bGAMJbWQ0rFBz2goIHJla6DgBL8j/Ju/Kkw6pB1y7S5XA51gSKOcHVn031UDvBer5HI4TbYqfxiCmWxIqR9CSYEKMunvsFvQrhUplElaKT6T0F/NVeS2NFpFRPaBftUEBMc+ygAz1iejxwrR7KHB+TVU+FqYIDh5BkNNxjFOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NHdIRyUX; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8a7b1c2f2bso408880066b.0;
-        Fri, 04 Oct 2024 23:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728108623; x=1728713423; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SAISPOWXGD8rHHheajjOUDZkVIJJBFpsvr2LQ0rtE7s=;
-        b=NHdIRyUXT2MKyMWKm38cny0WxsD5kWjIU6ddw8bicbnlGByyF0Jx2x29Yzj+mA1npE
-         6V9xfTlR37zuL8mbjPr+1WfUgp65EVLwSuHntGjdPNpCSoP01oWjFCd8Xxmt2+5p+mX7
-         XIkN5JrOCoY33UGJTRyzieaBrTE+cN3es9mKYtcz3CD1BLoLEYlGyiTZjpbfU5ohAOE2
-         sFUMGsfaV9FKmjDaPlWjOyvmsLJBq7DYs/6Sq7VE8iiMGqN7ybrtinn18nHBRHE8mHtD
-         pGo3UGZ0QtDJ2WP91mAMGZMdOpfHBv9YlTpYd9DHZlT+8GA43q7ZDGRdkE9O/gWGUnr2
-         G2SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728108623; x=1728713423;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SAISPOWXGD8rHHheajjOUDZkVIJJBFpsvr2LQ0rtE7s=;
-        b=lgnXVaBGiTvwHCf3bIAM9J4va4iVZmvW/OPmcSwxcP2QMQLzUb0bkcsb15Zq/hi8oT
-         SeKE74V7r2WMDG7TiICWg+VMQwXwx9whzfADripOVj3ddBfd9DFW1dD3r95GpwjciiWa
-         WpcGQJTxOAIpQJUS5Z/xE+b+hhuk/AfzA4iuzRlemSRpKMDwglHfJJs62MHpTtdRQizz
-         SAKt4BH3QgRoZZsJffjtyH2lmTOf/lbmDFFsHkz307MLIUIK7z56gXmX4e4s+lqYmmUd
-         m+YxJELxDXH1EMdOWktyLpr14FfPuUqZxoUCpamWguP6qJ3FksDjBXtCzA+S5XbhnEsC
-         hRCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsqydw10j5/AqB9bzOzVy5Dcm3whDDJ3HHfZq+l6eMxe33LwlnQrHoXouCBZJIVMi3T4jCORoOMs7BtJ4=@vger.kernel.org, AJvYcCWdvhp5fZt5hFLbt8MeAjap3UXJiPgOSUQavlFu8GrcTrCRUa3hPZCUi2rrEXFUjXZEY3NNHFaQ@vger.kernel.org, AJvYcCXI2fPCpvAuNXdsY8fj4SFWZ6VqoN09dqcBYPfRl4psabEeEOvjtM2U2z3B7lQy1WaU75IQuWs7gj5uoeexW9w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+f08SSLIF1zACV9ztNwcrufQDsnmhgiJqNAOGCI32ORif1kBZ
-	w9aZdVSPAPL0GlMWxInerVsan6GLZiLsOttdfVQE6N/0HDUU0f2T
-X-Google-Smtp-Source: AGHT+IGqNUMAwPWClwPCdsq8h1fl8+wh1idmUH3kZ8Jaoe0npsvFj6GqQHbFe2PfbXsNj9t89Ru+nQ==
-X-Received: by 2002:a17:906:6a20:b0:a86:80b7:4743 with SMTP id a640c23a62f3a-a991bd0a96cmr534148666b.24.1728108622737;
-        Fri, 04 Oct 2024 23:10:22 -0700 (PDT)
-Received: from ?IPV6:2003:df:bf2f:2200:42f9:1ced:dc84:a82d? (p200300dfbf2f220042f91ceddc84a82d.dip0.t-ipconnect.de. [2003:df:bf2f:2200:42f9:1ced:dc84:a82d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a993ab8e75esm36451866b.222.2024.10.04.23.10.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Oct 2024 23:10:22 -0700 (PDT)
-Message-ID: <14724ee5-9f8b-4370-a68d-2797fa9b4c53@gmail.com>
-Date: Sat, 5 Oct 2024 08:10:21 +0200
+	s=arc-20240116; t=1728118527; c=relaxed/simple;
+	bh=Q9fN4mIljgWDFimuOMbRoPT+LKzZXB/LgeqSeq5NyoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mZVeDmf4Buusm3cDnnVLlZSMRjYvpwLOm++OVgddznFNJppTD9Ba2cBtea5Y6h1w4TpUsACHR6FguMYex+6iXaM8mGyfHZ/EQZ/+kBQaUdu4vsI2ofwluZi3zfFnr9GbCAMzU6gIxSVYVKykF83VfXlmSSpcnlYnV/37fvvJyrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=keeIyN6L; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 004411F921;
+	Sat,  5 Oct 2024 10:55:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1728118519;
+	bh=CDFLEKcKHVxpFqH0nXKpZpV/aXgTu4xt6u1XvUqG51s=;
+	h=Received:From:To:Subject;
+	b=keeIyN6LSR25JuIY2SIcSA+mnr/DCGLQzTsrn/acIHK2dkEUN3tAxBFH6t27LHW3K
+	 wDGljIO2kHOF3ued7Lf0GJvPCF9Ex0Y/KZwaccJ/f60eacB9EauMTDDWmG5V7Jr7q9
+	 NZNi5M3wqnKOeSK++fiD+ojYcamoqXKYUKun6+URKuDjJDsIuZBmEgi7N+ln879T5s
+	 swISV2oNbpfsrgxlwzvRfHx+LxwDtLNIZ2dR++sQtMppy3OD4eiaFrLcGbtk3NFXwn
+	 l7ssm7ZJTBpgP00w7pS09JvetBeKisWeMXCesB3eWYG4E84+2FiOTTb72NKH97IsQf
+	 yFVdJDkCO2d0w==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id A99417F96B; Sat,  5 Oct 2024 10:55:18 +0200 (CEST)
+Date: Sat, 5 Oct 2024 10:55:18 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Brian Norris <briannorris@chromium.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Lin <yu-hao.lin@nxp.com>, kernel@pengutronix.de,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 02/12] wifi: mwifiex: fix MAC address handling
+Message-ID: <ZwD-9nV3o2fOpEYb@gaggiata.pivistrello.it>
+References: <20240918-mwifiex-cleanup-1-v2-0-2d0597187d3c@pengutronix.de>
+ <20240918-mwifiex-cleanup-1-v2-2-2d0597187d3c@pengutronix.de>
+ <ZwB3FCdpL85yA2Si@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] rust: lockdep: Remove support for dynamically
- allocated LockClassKeys
-To: levymitchell0@gmail.com, Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com>
- <20241004-rust-lockdep-v1-1-e9a5c45721fc@gmail.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20241004-rust-lockdep-v1-1-e9a5c45721fc@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZwB3FCdpL85yA2Si@google.com>
 
-Am 05.10.24 um 00:01 schrieb Mitchell Levy via B4 Relay:
-> From: Mitchell Levy <levymitchell0@gmail.com>
+On Fri, Oct 04, 2024 at 04:15:32PM -0700, Brian Norris wrote:
+> On Wed, Sep 18, 2024 at 01:10:27PM +0200, Sascha Hauer wrote:
+> > Furthermore the driver doesn't use the permanent address to add the
+> > bss_num to, but instead the current MAC address increases each time
+> > we do a change_virtual_intf.
+> > 
+> > Fix this by initializing the MAC address once from the permanent MAC
+> > address during creation of the virtual interface and never touch it
+> > again. This also means that userspace can set a different MAC address
+> > which then stays like this forever and is not unexpectedly changed
+> > by the driver.
+> > 
+> > It is not clear how many (if any) MAC addresses after the permanent MAC
+> > address are reserved for a device, so set the locally admistered
+> > bit for all MAC addresses derived from the permanent address.
 > 
-> Currently, dynamically allocated LockCLassKeys can be used from the Rust
-> side without having them registered. This is a soundness issue, so
-> remove them.
-> 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@metaspace.dk/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
->   rust/kernel/lib.rs  |  2 +-
->   rust/kernel/sync.rs | 14 ++------------
->   2 files changed, 3 insertions(+), 13 deletions(-)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 22a3bfa5a9e9..b5f4b3ce6b48 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -44,8 +44,8 @@
->   pub mod page;
->   pub mod prelude;
->   pub mod print;
-> -pub mod sizes;
->   pub mod rbtree;
-> +pub mod sizes;
->   mod static_assert;
->   #[doc(hidden)]
->   pub mod std_vendor;
+> I think I'm generally supportive of the direction this changes things,
+> but I'm a bit hesitant about two things:
 
+FTR, I am hesitant for similar reasons. In addition there is my comment
+from the previous version on a specific use case potentially broken.
 
-This is fixed already
+> And I see that you rightly don't know how many addresses are actually
+> reserved, but I have an educated guess that it's not just 1. For one,
+> this driver used to default-create 3 interfaces:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/rust/kernel/lib.rs?id=ece207a83e464af710d641f29e32b7a144c48e79
+The MAC addresses on the module are not allocated by the Wi-Fi chip vendor (NXP,
+and before Marvell), but by whom is integrating the chip. I can try to ask
+a couple of vendors what they are doing on this regard, and if this is somehow
+suggested by NXP or they are just doing whatever they believe is right. Just to
+add a couple of more data points to this discussion.
 
-and can be dropped here.
-
-
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 0ab20975a3b5..d270db9b9894 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -27,28 +27,18 @@
->   unsafe impl Sync for LockClassKey {}
->   
->   impl LockClassKey {
-> -    /// Creates a new lock class key.
-> -    pub const fn new() -> Self {
-> -        Self(Opaque::uninit())
-> -    }
-> -
->       pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
->           self.0.get()
->       }
->   }
->   
-> -impl Default for LockClassKey {
-> -    fn default() -> Self {
-> -        Self::new()
-> -    }
-> -}
-> -
->   /// Defines a new static lock class and returns a pointer to it.
->   #[doc(hidden)]
->   #[macro_export]
->   macro_rules! static_lock_class {
->       () => {{
-> -        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-
-
-Should the SAFETY comment added in the 2nd patch go to here?
-
-+        // SAFETY: lockdep expects uninitialized memory when it's 
-handed a statically allocated
-+        // lock_class_key
-
-
-> +        static CLASS: $crate::sync::LockClassKey =
-> +            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
->           &CLASS
->       }};
->   }
-> 
+Francesco
 
 
