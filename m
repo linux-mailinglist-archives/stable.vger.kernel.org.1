@@ -1,127 +1,110 @@
-Return-Path: <stable+bounces-81153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAEE991437
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 06:00:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0C799149B
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 07:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DD6DB236C1
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 04:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9AA71F247E7
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 05:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF2225761;
-	Sat,  5 Oct 2024 04:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643CD4595B;
+	Sat,  5 Oct 2024 05:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="bT4fUEiE"
 X-Original-To: stable@vger.kernel.org
-Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4071CF96;
-	Sat,  5 Oct 2024 04:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=222.66.158.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374114085D;
+	Sat,  5 Oct 2024 05:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728100813; cv=none; b=mr2JJABt37sO4L6RSdknEDhkLIhMVzoiH//zGybwyhdK5j+M4QmcRDBVy0LK+K8WLdsIRiA/KUEgLh7TuitOqFAnVwhn9xy4vpYxyWsL0+QR+azZ3iicGDXjaWWLfgDE0LzpW6Z+bmitP2D8Uoszo2ONxSHH4E5ItrTVo//KYyE=
+	t=1728106556; cv=none; b=jr0+mb06LdPK91pvgISwSIY3l6Ei8iQBHI6t16LbOkHHh+y0nMnQmj2fxpwJmukYtRl7snn5f4UPMxJt0pV4lZbeP6xG0LSeBLQWjrRrT9ps8Wees1ei6srsnxcGPTwY/j6mwSTgJq4Jf9wt7wSDqR6JnHOD/RN9OMuBq3HKZsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728100813; c=relaxed/simple;
-	bh=PG0XHGI5wFfTGkP+YR+0JHpic7dT3FF/ZeQno6JDSJc=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=uTqobHzlJMhQnE5fZTCaQAb4ulKc0iM6lQRP+ez6aNwmZ/7vRMHqx8Qe6VmznaVH4jcLwqoCbYoC4jEz+F4SMbBrEN6e+XYkgpXRjADwctKCIdggQL8Mj2tZ/hSGYN7nGyyuz3PBpz1EcV7wPoYKT3eB+2hJpxITqUc/arAR+yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com; spf=pass smtp.mailfrom=unisoc.com; arc=none smtp.client-ip=222.66.158.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unisoc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unisoc.com
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 4953xbrx076252;
-	Sat, 5 Oct 2024 11:59:37 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (bjmbx01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4XLBKx1l11z2QKSM0;
-	Sat,  5 Oct 2024 11:51:33 +0800 (CST)
-Received: from BJMBX01.spreadtrum.com (10.0.64.7) by BJMBX01.spreadtrum.com
- (10.0.64.7) with Microsoft SMTP Server (TLS) id 15.0.1497.23; Sat, 5 Oct 2024
- 11:59:35 +0800
-Received: from BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7]) by
- BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7%16]) with mapi id
- 15.00.1497.023; Sat, 5 Oct 2024 11:59:35 +0800
-From: =?utf-8?B?6buE5pyd6ZizIChaaGFveWFuZyBIdWFuZyk=?=
-	<zhaoyang.huang@unisoc.com>
-To: Sasha Levin <sashal@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>,
-        =?utf-8?B?5bq357qq5ruoIChTdGV2ZSBLYW5nKQ==?=
-	<Steve.Kang@unisoc.com>
-CC: Anna Schumaker <anna.schumaker@oracle.com>,
-        "trondmy@kernel.org"
-	<trondmy@kernel.org>,
-        "anna@kernel.org" <anna@kernel.org>,
-        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>
-Subject: reply: [PATCH AUTOSEL 6.11 47/76] fs: nfs: fix missing refcnt by
- replacing folio_set_private by folio_attach_private
-Thread-Topic: reply: [PATCH AUTOSEL 6.11 47/76] fs: nfs: fix missing refcnt by
- replacing folio_set_private by folio_attach_private
-Thread-Index: AdsW2vyx/M4PP0tDSQ+IiAM+c/Yjug==
-Date: Sat, 5 Oct 2024 03:59:34 +0000
-Message-ID: <0120b0d030c14601ba3a19f016615eff@BJMBX01.spreadtrum.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-transport-fromentityheader: Hosted
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1728106556; c=relaxed/simple;
+	bh=1tbKmxlxcXA+hS7zlWOrxgFssaRDFCNYRlpmn/RlnZs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BSmGdmGathN0h9AS/ptM8bxRXLFgIo2DxC3gCffKY9AjrX+WgVDXCdqPlJZsKJsDcQsWRXnWYkFwdrvyWkKL0e/VEu8EjlB9ODvy26KhX6CmXM/SWoITB8pF47bvXCk2ItF/ixHmxWRGoL0dS5/ihBPJcwVwR8QB3uxDmCuHKpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=bT4fUEiE; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Cm/+r/Iu7iT6qjqotRyzDFVjq3VicaFGGYKMIAH+pZQ=; b=bT4fUEiE0R4OQ3Jn19EjBbst3h
+	/GULhvNMTDaKPlxeuW4LZeQV4LUEce/O1ovahnW9CimmKIL2fVpNvMrOaNR/HAu2txg8yDYQ9yCvA
+	55EQWfbGNRyweHmFxiZB+AiLlVrnrhGEFG3eidD5AlC/aKaKlwozSczoy8jQQcbdxAo9mkvzdVGlw
+	JG19blDhjeRPK9hKJWZ3RGBTn0MaJK9BAIIAJqKZvvaZP/8/NaRLZRsyd+Rys6Nmhf/LzTaJ5nvMH
+	p2dlOvpMderqf9yYTDzBcgjWybS1BywLfac5/tgcuE2Nkt8ct/Ff8P3S19Qb/6kupjDb9cf715BGZ
+	t7FEKkeg==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1swxIG-0071bZ-2j;
+	Sat, 05 Oct 2024 13:35:43 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2024 13:35:42 +0800
+Date: Sat, 5 Oct 2024 13:35:42 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Danny Tsen <dtsen@linux.ibm.com>
+Cc: linux-crypto@vger.kernel.org, stable@vger.kernel.org, leitao@debian.org,
+	nayna@linux.ibm.com, appro@cryptogams.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com
+Subject: Re: [PATCH 0/3] crypto: Fix data mismatch over ipsec tunnel
+ encrypted/decrypted with ppc64le AES/GCM module.
+Message-ID: <ZwDQLmwA1LvWx5Dg@gondor.apana.org.au>
+References: <20240923133040.4630-1-dtsen@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MAIL:SHSQR01.spreadtrum.com 4953xbrx076252
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240923133040.4630-1-dtsen@linux.ibm.com>
 
-PkZyb206IFpoYW95YW5nIEh1YW5nIDx6aGFveWFuZy5odWFuZ0B1bmlzb2MuY29tPg0KPg0KPlsg
-VXBzdHJlYW0gY29tbWl0IDAzZTAyYjk0MTcxYjE5ODVkZDBhYTE4NDI5NmZlOTQ0MjViODU1YTMg
-XQ0KPg0KPlRoaXMgcGF0Y2ggaXMgaW5zcGlyZWQgYnkgYSBjb2RlIHJldmlldyBvZiBmcyBjb2Rl
-cyB3aGljaCBhaW1zIGF0IGZvbGlvJ3MgZXh0cmENCj5yZWZjbnQgdGhhdCBjb3VsZCBpbnRyb2R1
-Y2UgdW53YW50ZWQgYmVoYXZpb3VzIHdoZW4ganVkZ2luZyByZWZjbnQsIHN1Y2gNCj5hc1sxXS5U
-aGF0IGlzLCB0aGUgZm9saW8gcGFzc2VkIHRvIG1hcHBpbmdfZXZpY3RfZm9saW8gY2FycmllcyB0
-aGUgcmVmY250cyBmcm9tDQo+ZmluZF9sb2NrX2VudHJpZXMsIHBhZ2VfY2FjaGUsIGNvcnJlc3Bv
-bmRpbmcgdG8gUFRFcyBhbmQgZm9saW8ncyBwcml2YXRlIGlmIGhhcy4NCj5Ib3dldmVyLCBjdXJy
-ZW50IGNvZGUgZG9lc24ndCB0YWtlIHRoZSByZWZjbnQgZm9yIGZvbGlvJ3MgcHJpdmF0ZSB3aGlj
-aCBjb3VsZA0KPmhhdmUgbWFwcGluZ19ldmljdF9mb2xpbyBtaXNzIHRoZSBvbmUgdG8gb25seSBQ
-VEUgYW5kIGxlYWQgdG8gY2FsbA0KPmZpbGVtYXBfcmVsZWFzZV9mb2xpbyB3cm9uZ2x5Lg0KPg0K
-PlsxXQ0KPmxvbmcgbWFwcGluZ19ldmljdF9mb2xpbyhzdHJ1Y3QgYWRkcmVzc19zcGFjZSAqbWFw
-cGluZywgc3RydWN0IGZvbGlvICpmb2xpbykNCj57IC4uLg0KPi8vY3VycmVudCBjb2RlIHdpbGwg
-bWlzanVkZ2UgaGVyZSBpZiB0aGVyZSBpcyBvbmUgcHRlIG9uIHRoZSBmb2xpbyB3aGljaCBpcyBi
-ZQ0KPmRlZW1lZCBhcyB0aGUgb25lIGFzIGZvbGlvJ3MgcHJpdmF0ZQ0KPiAgICAgICAgaWYgKGZv
-bGlvX3JlZl9jb3VudChmb2xpbykgPg0KPiAgICAgICAgICAgICAgICAgICAgICAgIGZvbGlvX25y
-X3BhZ2VzKGZvbGlvKSArIGZvbGlvX2hhc19wcml2YXRlKGZvbGlvKSArDQo+MSkNCj4gICAgICAg
-ICAgICAgICAgcmV0dXJuIDA7DQo+ICAgICAgICBpZiAoIWZpbGVtYXBfcmVsZWFzZV9mb2xpbyhm
-b2xpbywgMCkpDQo+ICAgICAgICAgICAgICAgIHJldHVybiAwOw0KPg0KPiAgICAgICAgcmV0dXJu
-IHJlbW92ZV9tYXBwaW5nKG1hcHBpbmcsIGZvbGlvKTsgfQ0KPg0KPlNpZ25lZC1vZmYtYnk6IFpo
-YW95YW5nIEh1YW5nIDx6aGFveWFuZy5odWFuZ0B1bmlzb2MuY29tPg0KPlNpZ25lZC1vZmYtYnk6
-IEFubmEgU2NodW1ha2VyIDxhbm5hLnNjaHVtYWtlckBvcmFjbGUuY29tPg0KPlNpZ25lZC1vZmYt
-Ynk6IFNhc2hhIExldmluIDxzYXNoYWxAa2VybmVsLm9yZz4NClNvcnJ5LCB0aGlzIHBhdGNoIHNo
-b3VsZCBiZSBkcm9wcGVkIHNpbmNlIFRyb25kIGhhcyBleHBsYWluZWQgdGhhdCB0aGVyZSBpcyBu
-byBuZWVkIHRvIGdyYWIgcmVmY250IGhlcmUgYXMgbmZzX3BhZ2UgaGFzIGhvbGQgdGhlIHJlZmNv
-dW50IG9uIHRoaXMgZm9saW8uDQo+LS0tDQo+IGZzL25mcy93cml0ZS5jIHwgNiArKy0tLS0NCj4g
-MSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4NCj5kaWZm
-IC0tZ2l0IGEvZnMvbmZzL3dyaXRlLmMgYi9mcy9uZnMvd3JpdGUuYyBpbmRleA0KPmQwNzRkMGNl
-YjRmMDEuLjgwYzZkZWQ1Zjc0YzYgMTAwNjQ0DQo+LS0tIGEvZnMvbmZzL3dyaXRlLmMNCj4rKysg
-Yi9mcy9uZnMvd3JpdGUuYw0KPkBAIC03NzIsOCArNzcyLDcgQEAgc3RhdGljIHZvaWQgbmZzX2lu
-b2RlX2FkZF9yZXF1ZXN0KHN0cnVjdCBuZnNfcGFnZQ0KPipyZXEpDQo+ICAgICAgICBuZnNfbG9j
-a19yZXF1ZXN0KHJlcSk7DQo+ICAgICAgICBzcGluX2xvY2soJm1hcHBpbmctPmlfcHJpdmF0ZV9s
-b2NrKTsNCj4gICAgICAgIHNldF9iaXQoUEdfTUFQUEVELCAmcmVxLT53Yl9mbGFncyk7DQo+LSAg
-ICAgICBmb2xpb19zZXRfcHJpdmF0ZShmb2xpbyk7DQo+LSAgICAgICBmb2xpby0+cHJpdmF0ZSA9
-IHJlcTsNCj4rICAgICAgIGZvbGlvX2F0dGFjaF9wcml2YXRlKGZvbGlvLCByZXEpOw0KPiAgICAg
-ICAgc3Bpbl91bmxvY2soJm1hcHBpbmctPmlfcHJpdmF0ZV9sb2NrKTsNCj4gICAgICAgIGF0b21p
-Y19sb25nX2luYygmbmZzaS0+bnJlcXVlc3RzKTsNCj4gICAgICAgIC8qIHRoaXMgYSBoZWFkIHJl
-cXVlc3QgZm9yIGEgcGFnZSBncm91cCAtIG1hcmsgaXQgYXMgaGF2aW5nIGFuIEBADQo+LTc5Nyw4
-ICs3OTYsNyBAQCBzdGF0aWMgdm9pZCBuZnNfaW5vZGVfcmVtb3ZlX3JlcXVlc3Qoc3RydWN0IG5m
-c19wYWdlDQo+KnJlcSkNCj4NCj4gICAgICAgICAgICAgICAgc3Bpbl9sb2NrKCZtYXBwaW5nLT5p
-X3ByaXZhdGVfbG9jayk7DQo+ICAgICAgICAgICAgICAgIGlmIChsaWtlbHkoZm9saW8pKSB7DQo+
-LSAgICAgICAgICAgICAgICAgICAgICAgZm9saW8tPnByaXZhdGUgPSBOVUxMOw0KPi0gICAgICAg
-ICAgICAgICAgICAgICAgIGZvbGlvX2NsZWFyX3ByaXZhdGUoZm9saW8pOw0KPisgICAgICAgICAg
-ICAgICAgICAgICAgIGZvbGlvX2RldGFjaF9wcml2YXRlKGZvbGlvKTsNCj4gICAgICAgICAgICAg
-ICAgICAgICAgICBjbGVhcl9iaXQoUEdfTUFQUEVELA0KPiZyZXEtPndiX2hlYWQtPndiX2ZsYWdz
-KTsNCj4gICAgICAgICAgICAgICAgfQ0KPiAgICAgICAgICAgICAgICBzcGluX3VubG9jaygmbWFw
-cGluZy0+aV9wcml2YXRlX2xvY2spOw0KPi0tDQo+Mi40My4wDQoNCg==
+On Mon, Sep 23, 2024 at 09:30:37AM -0400, Danny Tsen wrote:
+> Fix data mismatch over ipsec tunnel encrypted/decrypted with ppc64le AES/GCM module.
+> 
+> This patch is to fix an issue when simd is not usable that data mismatch
+> may occur. The fix is to register algs as SIMD modules so that the
+> algorithm is excecuted when SIMD instructions is usable.
+> 
+> A new module rfc4106(gcm(aes)) is also added. Re-write AES/GCM assembly
+> codes with smaller footprints and small performance gain.
+> 
+> This patch has been tested with the kernel crypto module tcrypt.ko and
+> has passed the selftest.  The patch is also tested with
+> CONFIG_CRYPTO_MANAGER_EXTRA_TESTS enabled.
+> 
+> Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+> Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+> 
+> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+> 
+> Danny Tsen (3):
+>   crypto: Re-write AES/GCM stitched implementation for ppcle64.
+>   crypto: Register modules as SIMD modules for ppcle64 AES/GCM algs.
+>   crypto: added CRYPTO_SIMD in Kconfig for CRYPTO_AES_GCM_P10.
+> 
+>  arch/powerpc/crypto/Kconfig            |    2 +-
+>  arch/powerpc/crypto/aes-gcm-p10-glue.c |  141 +-
+>  arch/powerpc/crypto/aes-gcm-p10.S      | 2421 +++++++++++-------------
+>  3 files changed, 1187 insertions(+), 1377 deletions(-)
+> 
+> -- 
+> 2.43.0
+
+All applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
