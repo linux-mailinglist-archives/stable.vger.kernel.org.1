@@ -1,122 +1,187 @@
-Return-Path: <stable+bounces-81159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2E09915DE
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 12:10:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CD19915F4
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 12:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C441F24B6C
-	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 10:10:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11952841D8
+	for <lists+stable@lfdr.de>; Sat,  5 Oct 2024 10:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC0814659F;
-	Sat,  5 Oct 2024 10:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C19B148FFC;
+	Sat,  5 Oct 2024 10:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XchjH2nO"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="luA4lAtc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA677145348;
-	Sat,  5 Oct 2024 10:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8131E73176
+	for <stable@vger.kernel.org>; Sat,  5 Oct 2024 10:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728122840; cv=none; b=qnRZhFWg8VLDbiTCJeowFsSratQVYBAIgFdlBA15dlccfY2NuUSMMylhiYrQgUEEBGSID8mzaCLvyC+zq+5eQqxtwHfzM1shew693DUT+MMYLHzM1TfxCUEdXpNsnHlpCSclquZIbkJ9z3aJ+O2cFx31wOlIfjp+D1jdutC95WY=
+	t=1728124272; cv=none; b=WmJEpJ9xxUKqzVGArEQ/cGTJrmwHa3QfClXrT9x/ei/yrcZuBJt6vA5IZr6jd+k9/5nT7kI3aGA5UfckgJFLILv0GMBzAhe59z/JOwp+9G2eCa875zWQ9itF/4CYjgd0IUcddENZky4HyfjIntD5uIEwYcOoh3WaJ4WKbNMmZBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728122840; c=relaxed/simple;
-	bh=5Ib0kNVNvQg0c0d2ZUEETygeqfRQo7joOlN5mh/d8bs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fMaR0QrZ7/BWzffprEjbCCGNpY7CzOhJBPYRvYWmatouKd+CVA1fGYrJ9aNjfHyr4ACtPmZoTZkKkzGBEdYw3ssu/wnh1mK9IinTjmO1oj8/ExbSG8NqGvhKdqG5ULJY+ZF7bD0kAijunJswHOa+0vBPoTIQ5QVnkn1Pxo+prnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XchjH2nO; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5398e33155fso3754721e87.3;
-        Sat, 05 Oct 2024 03:07:18 -0700 (PDT)
+	s=arc-20240116; t=1728124272; c=relaxed/simple;
+	bh=Pij+6FhctUgT45PYcO9Wc7sOysLVBbXPyPt2wqIlGhA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gN9IODmLebRU4bUFo8/1r/AcYw/fkCfSpvkGLe0uguSINIJAlMW6YrdGlYxXL36kp4IdmovKyPbHEJi2Z4HZrZD3z9EK7I1j1OcGYd6lpfy3ngqDPJwOrHbwjWKkpHk0tW19c8L7ET15uFOezlvmRfeWoVi8Ktxp78RS5LbZpYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=luA4lAtc; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a99422929b2so17363366b.0
+        for <stable@vger.kernel.org>; Sat, 05 Oct 2024 03:31:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728122837; x=1728727637; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wgmZynwG71OocyO0thzm1PkveGyf/L6c+8DunhW8BTE=;
-        b=XchjH2nO4zUb2LwQxQifQJLE+KYsO0QB4DWG15grX6Oy3QIcUCzoUe8OzOT/QbHqOV
-         pFfn1gpmBQCl7GHC0VQU4gTVaF6r6ae38BJ5DPETk9yfnE7JK+P1JvavNEIsezllzE0x
-         g0g+M/vCrtx5Yo8B3xIFt1pGOIoHQ783tCarK6A7iRhBCayPyTPApbGs5zmhiBZ005Vp
-         LL3vtflJ/v9K31l/pSQ7sWUSE0m2iY90MMnNQXRRILRTRXF0Wrk67roKcYpAN4RLszId
-         kzHac9Zj8FTokn6BdTfISE1DdAkm5bJ9o1HjGFDLRhh3vkdTKwKi6vfC2a/AL/XpesJj
-         CzmA==
+        d=linaro.org; s=google; t=1728124268; x=1728729068; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p2Scx6qIga+XDSP8TrnSyjUo0WD/tL5TkvTo8bpNEJk=;
+        b=luA4lAtcOtLI/jjNZFqGE04eeuOF2zCotJwNkej6DVZg3e/p7RUTJ6xIVkr23kukDM
+         nmhS6tEpkdkAcJHSPyB46E1WppxcafBBO0DfkCxxvR9gVEwB4b5LKKIs5Yg8ddwFU9jM
+         7MAOzAEwl2XS2aEjmZbZ2r73D4BOXkCLJtjrAMvZ08q3wO55TR1NBjWMrJ5UBvzfSUVZ
+         A5NZJ2Y6IbhZeRUO8/4Cf2rxYT07Efi6gJnVzuhnLlWjglJYpiZRwFRW4yG5vEgQVlgO
+         +OhJv4fE/q7sYZ0AWbsIXqIcK+vsGLMv9W/1ZK/uOTLFXexhIsuUssSNJpU0YYCuxsC8
+         VzNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728122837; x=1728727637;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1728124268; x=1728729068;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wgmZynwG71OocyO0thzm1PkveGyf/L6c+8DunhW8BTE=;
-        b=R5UyGoeSkSwvHylMigCEEMF5EtWG2fP2Ode2CBVRSzWnhxRF4mqb4QBXG0yK5EOE+v
-         GGwUfJHgPOUL+aMcDJs4kqNMxWE3WX7R0AEJ9AYfxmtTsi6IFygna4sosVdiOF6YgSHZ
-         OPcYW/0YJf4dE7HCoRIavxhaBQ1QPcHY/s6mnJbZStgvIVKzV4Lx74fMxczgC48/cc9o
-         u7pr0stOwrZUsnLSIBm003PXhQeNXgDVFuP4+ylNAyltAGglGWwD5csoRE6k/pJ+j3Zy
-         HVbVgjDkLoxkDOK+ZotRe/4aS0Lnfzmptc1HaeeDyDMsorMFIBaRgzVvI6ijtkaYEHXc
-         e8nA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8psvKrAnOB/NLlU56pp+q3FbNfIrJ+4Lk6+3axdDZcyWRhWTZTXi0Hy1l25uO0uUJJJRi1+DC@vger.kernel.org, AJvYcCWLL+AlePN3Xp1aKH0X5ATahN8+ZdceYHqW15TPpJ7+6r5+8bN1STGyALZwGMJTm3wjZ4Ri48pjZJoNEAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxY/OhVAg4sKvslO3i0VR3GWesiCyiDV8LsRikDYaVrUl+vPP6
-	11cOtFP6zjn832hRP+J0eCfmyOcoKgIaJHz6yEvFEwRtW4IteJse
-X-Google-Smtp-Source: AGHT+IGNYuQkErgECfD7RtrsNs0x0faBAPGYH1Yw0W5OTZRp9TC9znXQ0J+EMz4L/KmxiThpg7fNAw==
-X-Received: by 2002:a05:6512:baa:b0:536:53fc:e8fc with SMTP id 2adb3069b0e04-539ab877139mr3473922e87.16.1728122836676;
-        Sat, 05 Oct 2024 03:07:16 -0700 (PDT)
-Received: from localhost.localdomain ([178.69.224.101])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-539afec1240sm186305e87.55.2024.10.05.03.07.15
+        bh=p2Scx6qIga+XDSP8TrnSyjUo0WD/tL5TkvTo8bpNEJk=;
+        b=Vdq3sw91haY1wsefxIPGY1zcDCtB+Qk0osS+k3Xf4bPZV2LNhWoSaP3Mebgd8m64xr
+         2sgaSLk5190NiolxKtdeXHr3jns/2gE0eWXhsK2znQC4nZIXGiBbNcdgz7k64LooOiGM
+         s9vNdgOreXwM038zucEPJaD6Gqct8riJQhTxPKpR2VnlytU6+zDYQQ2JGg3WHteZ1YoJ
+         WoQsxuQIUlGV3qqruGNjWEqrs2WXLPN/mMsCLq/YQl/kQvI8w5DjKohOb68ISUeYzwX1
+         A2uzsy3qXYQWxcN0NEvfPQ/PIEEHb2vAn7O883v/T8VE49K73NHvDsCIIBy1qlphOsKr
+         F2yw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFH2vL6BSfzJVUFm6wXNZmuNcA9UaCXlLsCPqcnelAAYrB9OziROU1i4CoX6Doe/+ytPh+9Ic=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAsUEbDQ6CAN/V3OuvNKcofz2M5MCVL7J4Tcad3VaJ3RzF139w
+	56SYBESduBf2AIBUeS5A8cxAZ+j5JiDFNgkdTzvLwXIX1qhESTcvtEVhobZ0Fa0=
+X-Google-Smtp-Source: AGHT+IFbacpLSnc4rOMpY5+dmRRZziIlusw3JZmkgHzp0UUQlnip7OEkK3q13Utpc9eyONEmI4HwlQ==
+X-Received: by 2002:a17:907:5cd:b0:a99:409a:370 with SMTP id a640c23a62f3a-a99409a04f1mr81222166b.49.1728124267726;
+        Sat, 05 Oct 2024 03:31:07 -0700 (PDT)
+Received: from [127.0.0.1] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a992e7856bfsm116315566b.138.2024.10.05.03.31.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2024 03:07:16 -0700 (PDT)
-From: Artem Sadovnikov <ancowi69@gmail.com>
-To: Dave Kleikamp <shaggy@kernel.org>
-Cc: Artem Sadovnikov <ancowi69@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	jfs-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] jfs: xattr: check invalid xattr size more strictly
-Date: Sat,  5 Oct 2024 10:06:57 +0000
-Message-ID: <20241005100658.2102-1-ancowi69@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Sat, 05 Oct 2024 03:31:07 -0700 (PDT)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH v5 0/4] ov08x40: Enable use of ov08x40 on Qualcomm X1E80100
+ CRD
+Date: Sat, 05 Oct 2024 11:31:02 +0100
+Message-Id: <20241005-b4-master-24-11-25-ov08x40-v5-0-5f1eb2e11036@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGYVAWcC/43Nu2oDMRCF4VcxqjNBGo0uTpX3CC50W1uQrIJkh
+ I3Zd4+8RXAwLCn/U3znxlqqOTX2truxmnpuucwj1MuOhZObjwlyHM2QI/E9avAEX66dUwUkEAJ
+ QQencXohD0BMZ45zTjtgAvmua8mXFPw6jT7mdS72uX13c13+xXQCHRFFNPkqvrHv/zLOr5bXUI
+ 7u7HX8twbnYtHC1jN0b7ZEH8WTJRws3LTksstKHGCZrrX6y6NGSmxYNy6SEgdQUgw1/rGVZfgB
+ dZCArqQEAAA==
+X-Change-ID: 20240926-b4-master-24-11-25-ov08x40-c6f477aaa6a4
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Jason Chen <jason.z.chen@intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ stable@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2997;
+ i=bryan.odonoghue@linaro.org; h=from:subject:message-id;
+ bh=Pij+6FhctUgT45PYcO9Wc7sOysLVBbXPyPt2wqIlGhA=;
+ b=owEBbQKS/ZANAwAIASJxO7Ohjcg6AcsmYgBnARVoLEjcjm9TuL9OFReqpJEqft90VdK51doUk
+ nmz3UXVx0iJAjMEAAEIAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCZwEVaAAKCRAicTuzoY3I
+ OvciD/4vEXfuM9u5+VapF5+ubkcJAfOstxrMLN1t4iIeawhT/7WfmWfO12wowCTkX1kVaUQcbXI
+ YUbCdzI+3cS/WLwxuJyOKssB9jmNgUk4GuhFBJ1KCnhWlsxk19C6KLBwJgekWFuB6a0Es2Xm6rf
+ ZbfGt3KNSpRukqdxIFT5QYr03i6PWX7MtT+PuQoKjIqFXH0jOMRDEc1aFdXGR7nPEcy7cZVcx6e
+ jMd33jKYUGa+CJBKPPUa8Lx0T8dr8cg0QkYXJZNEVnuvN7LOwcCkSgYdShZpPPlBWbwuyuVfKho
+ 3OMnMqz7peEOJ8jSN24PN2HRz2+lUZKuNKGC0yMT2rKdhzyK1SGp6mx3OQGDWeq0S6VsgAsUfKN
+ HWhfoWus2/Twc0f32iKwoLTabaT48N1IFmu3xFEIgj9QfhNp4mSo5NrNoxviDrejKo7yhNRCaCS
+ zQc4q5LJfWjNY7vgDhIt457L4amGm6zYyhGsTGROxUgNb2tAZant9y36UWQzQBtulPFgjyCqiky
+ 6K5I2EyxIwJglqDIGAttC5ERRAhk9SAXscg6m+psC/KhUQAmFUuYINGe02zxo5EFhfrnHco2DK6
+ xk0Q5vGv6Yj9eZy4NT+6dNZvsOQlkSF1P1I1/aQu8Gk2Xoo32uc6VnG5fLQT96YGkz5aMlhdcP7
+ 43FS1MTnX54y4Xg==
+X-Developer-Key: i=bryan.odonoghue@linaro.org; a=openpgp;
+ fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
 
-Commit 7c55b78818cf ("jfs: xattr: fix buffer overflow for invalid xattr")
-also addresses this issue but it only fixes it for positive values, while
-ea_size is an integer type and can take negative values, e.g. in case of
-a corrupted filesystem. This still breaks validation and would overflow
-because of implicit conversion from int to size_t in print_hex_dump().
+Changes in v5:
+- Fixes smatch CI splat
+- Link to v4: https://lore.kernel.org/r/20241003-b4-master-24-11-25-ov08x40-v4-0-7ee2c45fdc8c@linaro.org
 
-Fix this issue by clamping the ea_size value instead.
+Changes in v4:
+- Drops link-frequencies from properties: as discussed here:
+  https://lore.kernel.org/r/Zv6STSKeNNlT83ux@kekkonen.localdomain
+- Link to v3: https://lore.kernel.org/r/20241002-b4-master-24-11-25-ov08x40-v3-0-483bcdcf8886@linaro.org
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+Changes in v3:
+- Drops assigned-clock-* from description retains in example - Sakari,
+  Krzysztof
+- Updates example fake clock names to ov08x40_* instead of copy/paste
+  ov9282_clk -> ov08x40_clk, ov9282_clk_parent -> ov08x40_clk_parent - bod
+- Link to v2: https://lore.kernel.org/r/20241001-b4-master-24-11-25-ov08x40-v2-0-e478976b20c1@linaro.org
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Changes in v2:
+- Drops "-" in ovti,ov08x40.yaml after description: - Rob
+- Adds ":" after first line of description text - Rob
+- dts -> DT in commit log - Rob
+- Removes dependency on 'xvclk' as a name in yaml
+  and driver - Sakari
+- Uses assigned-clock, assigned-clock-parents and assigned-clock-rates -
+  Sakari
+- Drops clock-frequency - Sakarai, Krzysztof
+- Drops dovdd-supply, avdd-supply, dvdd-supply and reset-gpios
+  as required, its perfectly possible not to have the reset GPIO or the
+  power rails under control of the SoC. - bod
+
+- Link to v1: https://lore.kernel.org/r/20240926-b4-master-24-11-25-ov08x40-v1-0-e4d5fbd3b58a@linaro.org
+
+V1:
+This series brings fixes and updates to ov08x40 which allows for use of
+this sensor on the Qualcomm x1e80100 CRD but also on any other dts based
+system.
+
+Firstly there's a fix for the pseudo burst mode code that was added in
+8f667d202384 ("media: ov08x40: Reduce start streaming time"). Not every I2C
+controller can handle an arbitrary sized write, this is the case on
+Qualcomm CAMSS/CCI I2C sensor interfaces which limit the transaction size
+and communicate this limit via I2C quirks. A simple fix to optionally break
+up the large submitted burst into chunks not exceeding adapter->quirk size
+fixes.
+
+Secondly then is addition of a yaml description for the ov08x40 and
+extension of the driver to support OF probe and powering on of the power
+rails from the driver instead of from ACPI.
+
+Once done the sensor works without further modification on the Qualcomm
+x1e80100 CRD.
+
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- fs/jfs/xattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Bryan O'Donoghue (4):
+      media: ov08x40: Fix burst write sequence
+      media: dt-bindings: Add OmniVision OV08X40
+      media: ov08x40: Rename ext_clk to xvclk
+      media: ov08x40: Add OF probe support
 
-diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
-index 8ef8dfc3c194..95bcbbf7359c 100644
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -557,7 +557,7 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
- 
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
--		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
-+		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
- 
- 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
- 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+ .../bindings/media/i2c/ovti,ov08x40.yaml           | 114 +++++++++++++
+ drivers/media/i2c/ov08x40.c                        | 181 ++++++++++++++++++---
+ 2 files changed, 271 insertions(+), 24 deletions(-)
+---
+base-commit: 2b7275670032a98cba266bd1b8905f755b3e650f
+change-id: 20240926-b4-master-24-11-25-ov08x40-c6f477aaa6a4
+
+Best regards,
 -- 
-2.43.0
-
+Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
 
