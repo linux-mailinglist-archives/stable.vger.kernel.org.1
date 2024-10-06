@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-81180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EF0991B8F
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 02:22:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAC1991B92
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 02:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAC891C20E90
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 00:22:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45C37283535
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 00:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920DB2582;
-	Sun,  6 Oct 2024 00:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC7E4C9D;
+	Sun,  6 Oct 2024 00:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCwo/oWD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p36XlHIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E724C66
-	for <stable@vger.kernel.org>; Sun,  6 Oct 2024 00:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A6C749C;
+	Sun,  6 Oct 2024 00:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728174165; cv=none; b=lrUbC6Mi69qmJ1GUrwrAt5m9TDcDWPkikORL3cOjhDvDWL95eUvnj9UhYmX/ztQhC6tqbSm/E3kPYIrujNcK7lA+iH2QiDYkWhsPmdGepxd5eSqT7HsZgWSubgd1t1h9oyminvtJv/ZL5Rg+x76v/+5H2+14T+L7m3D8iO2EWGE=
+	t=1728174517; cv=none; b=TByYBtsrC0yqq0GmwWkJzgXhYEgbe0KJ29lMAjGro7eJVFr2qzmKua28RcyZqkOKItVNW75eDCJOJ0cXRknRhow3DfoJyXaNSAsIjjdMlufq0bzmxAgteFGwPjhFUTZVR3ung3Ff52for16EHjdq9TnsWnbvyhpe40ksXXLr050=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728174165; c=relaxed/simple;
-	bh=aTp53eDu1pp2aLC9Eo70jDCaTegJ7QEREu4pKaxZ8AQ=;
+	s=arc-20240116; t=1728174517; c=relaxed/simple;
+	bh=msK4PyFxyLJqk2iRjq18icdvb7lMwHkPOHByGpZdx1Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DaNgwIiWySBIwxTGk9leMXVmnUiFkcfzgJac2LWnUfXJURZ3WKTqipn0MzeT0pC1ZwaezGxAMq0A5exfXrSm7mv9o5KWZ7Gp1D+s+zrG52wlcZm/Nfk0L15tmCtrRSg9ywK+PxRayNWFMys8wrZpv1ndE5J8Sp9axXKbZbObHaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCwo/oWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30C4C4CEC2;
-	Sun,  6 Oct 2024 00:22:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQlirKVRxP49xwNGhq4cyR4S6nrI77mHYwCp3X8Yhd0I2BGwfCtE342k++B8eSxCGD6XHdubnQPguJbVfyB3fD2hf0I86jsWQsXg7JuG3YlAQsVvC/EdMABWKktQpZ+XSypuKXKofB5LSfWx4EEURjc7veba/Vwq9mnnfpqouX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p36XlHIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5A7C4CEC2;
+	Sun,  6 Oct 2024 00:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728174164;
-	bh=aTp53eDu1pp2aLC9Eo70jDCaTegJ7QEREu4pKaxZ8AQ=;
+	s=k20201202; t=1728174517;
+	bh=msK4PyFxyLJqk2iRjq18icdvb7lMwHkPOHByGpZdx1Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sCwo/oWDdWWgheEsa/aYdCizifXPnZt+Qbp3NJRSeyfCOxrz4LlqePJkK42wPpRcf
-	 I1T2L2HVC1VpBT4nR/ZJdCI4DoRdzGJWzdYPbznJ7dziFJ3yGfrySzgEe2noA1Djoo
-	 Ha3MGe6EhfjNikE0xk3VKlwzyBA2Up6qzjQaC9NpMw8ysEpoxBFn/d2ROWHd+SqhJo
-	 Uqm5EMWUk0jceXIRDfEIh4IECE6SjV7E1j4XrOMDWQjgyOuqUG5aqd7D8qJrf9Lg8u
-	 2HE9V+EkTW1SlVhooycKdRuuqLCihC+MByP8hVu74RpAUR2HuHQN6bQnEkIgNzSD2z
-	 FPcXja8wOvVeA==
-Date: Sat, 5 Oct 2024 20:22:43 -0400
+	b=p36XlHInlhsHeolBwaUesQ4VHvJ3t7BgLR0g5NiujmQ1kOi3ceRQkiJYduAQ0XaIU
+	 6M02Xon6HSZDx6u9zll9EJ/9fHBy6EzETCnpHrGJgUA0EYCDc+p2Ki4hnvSkV51g0m
+	 7URgkiUhxQSYJ20lVLXp219jDSpNclpkIz3HPLRRCkhULwIziDf6CCGvYc0bT1uHMG
+	 KaU5PPxO7EsQXpaPfwDYsVakyjDXkVmTX9T/ujbJ4jjrjo0iv2YhPPjm6+Sz6n1j3y
+	 Xc8E6pVzYpiy5bHe0XIqfJINAqm+zIESYIHgdUelaMC4ZT2Frp6GqnftX9efOvUnA8
+	 t1rXPaXu+ohag==
+Date: Sat, 5 Oct 2024 20:28:35 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Re-enable panel replay on 6.11 kernel
-Message-ID: <ZwHYUwzZ0cmJFTl5@sashalap>
-References: <14faf893-2206-49c5-b32a-3aa19c6270ad@amd.com>
+To: Florian Westphal <fw@strlen.de>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, kadlec@netfilter.org, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.11 049/244] netfilter: nf_tables: don't
+ initialize registers in nft_do_chain()
+Message-ID: <ZwHZs99aQl9FP7v-@sashalap>
+References: <20240925113641.1297102-1-sashal@kernel.org>
+ <20240925113641.1297102-49-sashal@kernel.org>
+ <ZvP6-utbwqWmP5_0@calendula>
+ <20240925122041.GA8444@breakpoint.cc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,29 +64,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <14faf893-2206-49c5-b32a-3aa19c6270ad@amd.com>
+In-Reply-To: <20240925122041.GA8444@breakpoint.cc>
 
-On Thu, Oct 03, 2024 at 12:53:52PM -0500, Mario Limonciello wrote:
->Hi,
+On Wed, Sep 25, 2024 at 02:20:41PM +0200, Florian Westphal wrote:
+>Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+>> Hi Sasha,
+>>
+>> This commit requires:
+>>
+>> commit 14fb07130c7ddd257e30079b87499b3f89097b09
+>> Author: Florian Westphal <fw@strlen.de>
+>> Date:   Tue Aug 20 11:56:13 2024 +0200
+>>
+>>     netfilter: nf_tables: allow loads only when register is initialized
+>>
+>> so either drop it or pull-in this dependency for 6.11
 >
->"Panel replay" is a power saving technology that some display panels 
->support.
+>It should be dropped, its crazy to pull the dependency into
+>stable.
 >
->During 6.11 development we had to turn off panel replay due to reports 
->of regressions.  Those regressions have now been fixed, and I've 
->confirmed that panel replay works again properly on 6.11 with the 
->following series of commits.
->
->Can you please consider taking these back to 6.11.y so that users with 
->these panels can get their power savings back?
->
->commit b68417613d41 ("drm/amd/display: Disable replay if VRR 
->capability is false")
->commit f91a9af09dea ("drm/amd/display: Fix VRR cannot enable")
->commit df18a4de9e77 ("drm/amd/display: Reset VRR config during resume")
->commit be64336307a6 ("drm/amd/display: Re-enable panel replay feature")
+>Is there a way to indicate 'stable: never' in changelogs?
 
-Queued up, thanks!
+There is a way to indicate we shouldn't pick something up with our
+regular flows. See
+https://docs.kernel.org/process/stable-kernel-rules.html#option-1.
 
 -- 
 Thanks,
