@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-81182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE11991B96
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 02:29:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAAA991B98
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 02:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACBF31C2131B
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 00:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D950E283552
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 00:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEDF6AB8;
-	Sun,  6 Oct 2024 00:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C3EA920;
+	Sun,  6 Oct 2024 00:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcsrPliz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIC4DWJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574004690;
-	Sun,  6 Oct 2024 00:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB6F63A9;
+	Sun,  6 Oct 2024 00:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728174571; cv=none; b=WdZ5qDiAP3v9bVK6LmPYwoUG39kuNtXHGQD+Rx7m2l8ODNq57318yL7eX18333H119Ay0DKB38gv/mt7ns8R4C6SY/6ePOt2v3PIIUMIXTUfxoOLMTvhYczNxc/iwENNQOH/k2vy1KJxAitvZK4ej/7SAXjD/8GhqvIPvaNytsI=
+	t=1728174624; cv=none; b=bs8s7W0+/weDlAi9Y9DqV0ZPxAlekbwz4mSdj4xw0q69Y8brEOQ0JKRzPlUwpJYpuZmlELGD1/6Q9YEzah2phEnMVT3qywgpVrl6sSRN8Wz0CQ2UkMCcdh5RAh9ml6PmclqQog6R2k7uMhGRzechh9eGqHBbdMYUJD3BTXrjdyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728174571; c=relaxed/simple;
-	bh=IVi6F5BlL7sFbhsFG08Yszd8yWzrvkLgEvB1ht1Gyi0=;
+	s=arc-20240116; t=1728174624; c=relaxed/simple;
+	bh=oqblIYdx9eZFWe5fwD+19RsYKavE0aEIhzBYTqN48/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Re7lDo2fYzbtQicKnxzYKe4wtNPb8V5DcznYvJ22mcir1wcDzVQBDLYpLQDPkdQM0JGAsUainxS8v2clnEq+sDY7dfb0+A2fJEwk+2ZEdWT3Ac/9FDcJcJ0IfE/HjfEXD5mcMv8812IS4QxPZXoLeufTucdE+/ChuPjE1ySpukM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcsrPliz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EA0C4CEC2;
-	Sun,  6 Oct 2024 00:29:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=pkyTuBLWAKBDL65eBTR7UMmHD1WnU1An8pBZg/XbE/gJCyCFi9I/QM1Gg9dxcYMH6VkzCIcBoG2ZowNnJ6yqI2ll8sk1JkMrEpjPuP3L6NCpDsRdae6o7FWLFtr23/HFA1uAVCZk/16fTRXMZveTNRUglSUi7Bmfwp6X5IqVpko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIC4DWJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA024C4CEC2;
+	Sun,  6 Oct 2024 00:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728174571;
-	bh=IVi6F5BlL7sFbhsFG08Yszd8yWzrvkLgEvB1ht1Gyi0=;
+	s=k20201202; t=1728174624;
+	bh=oqblIYdx9eZFWe5fwD+19RsYKavE0aEIhzBYTqN48/g=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kcsrPlizUZtl6KTW88Lvl1GyK9BAwr9Nr1P/xAqXJhpNWkeP3bQRcsBPiwnqUNiCt
-	 pDdqDFvqp1es2Vz8BwyC8ONIkGDUQMDriovfWPuvBx7f4wXVCLAWHePsLze/3PXDp/
-	 WbjM05WMYnVw9zeHyOaSQOvmYw7D5ojOg1hMCLsYuZ/Vb4o5OtVwzoEZwQnwN7p4UE
-	 xSd/WYIR3+NDglCvGqU6L+l9FSLJzyOdi8loAOb2AdBICRIx9HIhG5CLM/9NRfafcQ
-	 SU6jDyZ5FJDRXVmd0rlz3nDrrcBYtFo71uYWc+iS7wMHMaB0wk/7FzccbzNs4DgAeI
-	 nPlTMWBcNiPfw==
-Date: Sat, 5 Oct 2024 20:29:29 -0400
+	b=bIC4DWJ4JLDTgiUmnoEbRm5EcqrGfzp1AukJ3VdKXV1wg12knyKwnhXFWVvdVewQp
+	 U5mJ69n9bAhE8KIaYij2UpH1Khx3V74/nnqRbbon222TXnl03uvzAoTeuw6jCHoOYr
+	 JlDnCgW+qOqww9KrWer065W4Lz0HKfoIu+OPD7ez5btz+2mNHzDzFTv8NhKFR/QWZd
+	 CEBHlrfC0+XhPYAV8vHYpWerrkJ6oXA2ld5x3EEZmcQ6H/81sdGiAZlmsa2ZKnUBoJ
+	 P5gasA7YG/ms6Q9jFk7H6QGDmZLSBM/SUfXE06voYQJWG/hw43lSU8dEJWZqolzNzc
+	 hlOPAq8lUIqxA==
+Date: Sat, 5 Oct 2024 20:30:22 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Mark Brown <broonie@kernel.org>
+To: Dave Chinner <david@fromorbit.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Jerome Brunet <jbrunet@baylibre.com>, lgirdwood@gmail.com,
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.11 109/244] ASoC: soc-pcm: Indicate warning if
- dpcm_playback/capture were used for availability limition
-Message-ID: <ZwHZ6ePdG3oNRams@sashalap>
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Christian Brauner <brauner@kernel.org>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.11 237/244] iomap: fix iomap_dio_zero() for fs
+ bs > system page size
+Message-ID: <ZwHaHrQNr1KbgyN3@sashalap>
 References: <20240925113641.1297102-1-sashal@kernel.org>
- <20240925113641.1297102-109-sashal@kernel.org>
- <ZvP-YQuXTyGDfb8x@finisterre.sirena.org.uk>
+ <20240925113641.1297102-237-sashal@kernel.org>
+ <ZvQJuuGxixcPgTUG@dread.disaster.area>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,36 +66,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZvP-YQuXTyGDfb8x@finisterre.sirena.org.uk>
+In-Reply-To: <ZvQJuuGxixcPgTUG@dread.disaster.area>
 
-On Wed, Sep 25, 2024 at 02:13:21PM +0200, Mark Brown wrote:
->On Wed, Sep 25, 2024 at 07:25:30AM -0400, Sasha Levin wrote:
->> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+On Wed, Sep 25, 2024 at 11:01:46PM +1000, Dave Chinner wrote:
+>On Wed, Sep 25, 2024 at 07:27:38AM -0400, Sasha Levin wrote:
+>> From: Pankaj Raghav <p.raghav@samsung.com>
 >>
->> [ Upstream commit fd69dfe6789f4ed46d1fdb52e223cff83946d997 ]
+>> [ Upstream commit 10553a91652d995274da63fc317470f703765081 ]
 >>
->> I have been wondering why DPCM needs special flag (= dpcm_playback/capture)
->> to use it. Below is the history why it was added to ASoC.
+>> iomap_dio_zero() will pad a fs block with zeroes if the direct IO size
+>> < fs block size. iomap_dio_zero() has an implicit assumption that fs block
+>> size < page_size. This is true for most filesystems at the moment.
+>>
+>> If the block size > page size, this will send the contents of the page
+>> next to zero page(as len > PAGE_SIZE) to the underlying block device,
+>> causing FS corruption.
+>>
+>> iomap is a generic infrastructure and it should not make any assumptions
+>> about the fs block size and the page size of the system.
 >
->...
+>Please drop this. It is for support of new functionality that was
+>just merged and has no relevance to older kernels. It is not a bug
+>fix.
 >
->> Because of these history, this dpcm_xxx is unneeded flag today. But because
->> we have been used it for 10 years since (B), it may have been used
->> differently. For example some DAI available both playback/capture, but it
->> set dpcm_playback flag only, in this case dpcm_xxx flag is used as
->> availability limitation. We can use playback_only flag instead in this
->> case, but it is very difficult to find such DAI today.
->>
->> Let's add grace time to remove dpcm_playback/capture flag.
->>
->> This patch don't use dpcm_xxx flag anymore, and indicates warning to use
->> xxx_only flag if both playback/capture were available but using only
->> one of dpcm_xxx flag, and not using xxx_only flag.
+>And ....
 >
->This is a cleanup/refactoring preparation patch, I can see no reason why
->it would be considered for stable.
+>> +
+>> +	set_memory_ro((unsigned long)page_address(zero_page),
+>> +		      1U << IOMAP_ZERO_PAGE_ORDER);
+>
+>.... this will cause stable kernel regressions.
+>
+>It was removed later in the merge because it is unnecessary and
+>causes boot failures on (at least) some Power architectures.
 
-Dropped, thanks!
+Dropped, and sorry about sending this one out twice!
 
 -- 
 Thanks,
