@@ -1,171 +1,126 @@
-Return-Path: <stable+bounces-81203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93839921AA
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 23:31:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F9C99217A
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 22:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71CFB280CB6
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 21:31:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 979F0B207CC
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 20:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB021714C9;
-	Sun,  6 Oct 2024 21:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF7318A6A7;
+	Sun,  6 Oct 2024 20:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="e2CVKnCj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i2LSRqMe"
 X-Original-To: stable@vger.kernel.org
-Received: from master.debian.org (master.debian.org [82.195.75.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197BD170A3E
-	for <stable@vger.kernel.org>; Sun,  6 Oct 2024 21:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B902EAD8;
+	Sun,  6 Oct 2024 20:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728250247; cv=none; b=idHcr6tpC7fcuERpKQXj3xso6BOlRAdOlk2tt9mFBcOvB4KtlwNQip/qa68m3f5Aw2YV+t/L+P7x2GludgX1QyoODzMBI1n7CNymB2muBRb8Tr3qMtrL4XS8zxtLJdNmt38Cd9aXZ8zpgRUR3fYWxjEdkvevtDshLNJkI5wur3o=
+	t=1728248271; cv=none; b=VzceKHO0PzfmdEPcecpSQwpGVvM8Lok0dBxZSSIib25P0NJhs2FKod/y56QfhyUIN8naKy20ObbLqXg1c35VcuPA4JIzHbXmDreZmiT1p89sJMNjHFHF7VQ77SAAnw6kA1C9KA8FcL2bL0Hfo37jUIhNEIqQrmmQM1CZ7INX4kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728250247; c=relaxed/simple;
-	bh=plvdcIrF+/9PMWZAX4XUy05CstB2iv+ZEdy+RNH/OsE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gd18Bg2MlV5ErfvYWYXoK+6TSTINgSN2QXNIGVsf/iuKwb64krluK0FBgda7oiXqIHPvrwQHaicOwazOBjk9MmNigXKU1Yul+54LNGzMs0NPnsmtwGs2kpQ/Gm4MWBd69EwHgLACriKONQS/BRbo21npdGAt0w7oR2t+RP0Xd44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=master.debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=e2CVKnCj; arc=none smtp.client-ip=82.195.75.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=master.debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.master; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description; bh=zdBDZgetkh5UgI2D2SQbdbYvtZ+RJqSi4tcrK665tTc=; b=e2CV
-	KnCjy5jfrgR/TeZvmI3o5/LKiZ3K8Er1CWbTQOfsgeweszpFRP9N13sLm/sm7Hu6+Y6bF85m+nmgT
-	ACKFfihHSj6QZDKNKZwlSUkZOFsJ7XXw2mX5m0BTyA5xN9w9/q9gRjIVw9e1yS/JlsEPfZo4jCxRT
-	DHl8DrZdUxxeRQg44w/8PQfP+cdKVznx9WTQ77X9N7KZpLJXiui906mGQb/9QAW3ko+SW8l6QYFwi
-	dbqHgyKVbY4qUo21w/qGsfDiaNCaFH4i1cQD6+/eEOzmd4qZYQargMtXmNJzzsmbott6aE3X+BRuL
-	7UHN3eH3VXyEWpYMr6lJ193I1ofnYQ==;
-Received: from ukleinek by master.debian.org with local (Exim 4.94.2)
-	(envelope-from <ukleinek@master.debian.org>)
-	id 1sxYDv-003U6l-Ra; Sun, 06 Oct 2024 20:51:27 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>
-To: stable@vger.kernel.org
-Cc: xiao sheng wen <atzlinux@sina.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH v6.6.x] cpufreq: intel_pstate: Make hwp_notify_lock a raw spinlock
-Date: Sun,  6 Oct 2024 22:51:07 +0200
-Message-ID: <20241006205106.385009-6-ukleinek@debian.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241006205106.385009-4-ukleinek@debian.org>
-References: <20241006205106.385009-4-ukleinek@debian.org>
+	s=arc-20240116; t=1728248271; c=relaxed/simple;
+	bh=9k26v9n7uWvM7DAabG5+dgfZHDOlxCvPXYF25rHiFLY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jFY4sr8uPakikFq8no2Ffab1YqIwHv269ZDKKRW0jD7Ofvd3r4BxsOHDF1apwy64AeqWTIh6GsivQ1AfuCKK8p2rgnI6+UG41f/Db/fnEmQvPIVYEmpjZBzPVIA91isL3JpAyUHVws4yE2wj646Sb+G9coE54ROUm/gZr2Wl7VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i2LSRqMe; arc=none smtp.client-ip=209.85.222.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-7a9a7bea3cfso220630785a.1;
+        Sun, 06 Oct 2024 13:57:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728248268; x=1728853068; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PnmB+ZQHx2VRbqXrqnFk/p0zOAvgwQ1BHnY11BPXuhY=;
+        b=i2LSRqMeeP4YeoD23WG8+Ql2a/tXoeK1P/hoiZhOpuo8g2qPKJdmXmzzeJ+FfxH+ea
+         2/zDqfIu1OoU7xGPkfYMV4BuUB92PPTVd+CgFlmrQ+HYpmUi5y2gCNY5qw0wyIuza1mY
+         01igesngfzt/Sup7mhM/bfA9qo0QcbKo9GhjzD2/hj7A6VBdH9xHN+B5GuPQmdg9RnHy
+         nvh6soYaTaMehC1/fbh7l5IhoiunOoqbL/RRY0V2Q87kGAtvG4txGdOvGlM2mZrEj0tM
+         FuT2/utsQ9yOpDSGQNjick/p51IxuAJsMBhX+F/o+1ONLVYoqaxglHSE3Wkx3yL/DGmm
+         CAUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728248268; x=1728853068;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PnmB+ZQHx2VRbqXrqnFk/p0zOAvgwQ1BHnY11BPXuhY=;
+        b=qcdcEsefeNbiLeaMNZi1TJk71mnnPfOazWUTC8jQD2kUP779fXcQ95XOwmIeAwDvWV
+         aPE9VXFm6sNpqa5HA7n/iU2nzuWjxJjN3lJOZCIDNQjKW5rR42OJdhUfZ1WV/2JnwL6B
+         lGn0PHsvoSAHOx8avwb6PT8TsWRwShwXJEviD5B0oU3ZAR5zHlk0EcztQ8+T2KVHadOa
+         2g8ddKAiLTfoOZ/ECPv2nixYmdrwp8e7aquuHrKox1R3ijE9UhL1o4Z/GJ8nheqVgHuL
+         oFdJhSMYbwzAeccPWGyVTKe5PtZdmfjEOfveflZKhNkSLOELfV9HBixYyp264H42Z/gA
+         j8Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCVaK+WWgLWvDxg4vNfULaa2HjPYyrl51h35XG9XfDs8r5KqNXF+t9Cq+1rh+OrUNs3DPSkHMWZGvKqcHWpB@vger.kernel.org, AJvYcCWEYujRSq55Lw6PNqzk0XfWQTRMWkSSgU4P5hzRM5G8vQZ7WdTM8gom+scPMA1nsQvkxoeBO2N/@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXwVYXIGU4nN4fAciCy7/pdo6OJuTy0DYjEA6Ss6WAsgYGglG+
+	b/cB94aBRzK9ZBjQ93jPbQhmj91S3sX0aNhaczlEKcsEgYE/8042
+X-Google-Smtp-Source: AGHT+IEDrQ4cpe6u1eaulg32wqYdo/IErgLQDzGzYL/7nLTp4wfVTQNvuokBIZBhTIBZIX5rF0MlBg==
+X-Received: by 2002:a05:620a:3705:b0:7a9:bf33:c17a with SMTP id af79cd13be357-7ae6f44cd13mr1634916685a.33.1728248268355;
+        Sun, 06 Oct 2024 13:57:48 -0700 (PDT)
+Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae7562c677sm192360085a.31.2024.10.06.13.57.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Oct 2024 13:57:47 -0700 (PDT)
+From: Gax-c <zichenxie0106@gmail.com>
+To: srinivas.kandagatla@linaro.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	rohitkr@codeaurora.org
+Cc: linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	stable@vger.kernel.org,
+	zzjas98@gmail.com,
+	chenyuan0y@gmail.com,
+	Zichen Xie <zichenxie0106@gmail.com>
+Subject: [PATCH v3] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
+Date: Sun,  6 Oct 2024 15:57:37 -0500
+Message-Id: <20241006205737.8829-1-zichenxie0106@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4038; i=ukleinek@debian.org; h=from:subject; bh=plvdcIrF+/9PMWZAX4XUy05CstB2iv+ZEdy+RNH/OsE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnAvg/2ByivPLbvtRDQFQ+6+yVX33eUqqBIZvNU Mh72COdR7eJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZwL4PwAKCRCPgPtYfRL+ TtWmB/0Y6nyrcTZqmPoZyRUD2odvxBeiizHKneQPk4BG6p6yf55/di7HwQCTzKucdXVqGhc0795 TwcbOcnMhs5CtK0onBb1ci+TJ64hZgVFppVUHJJmqsV+6GgH+PzaabDajf/WH0JAxCnd09s0wIZ ShFg4D6UYHqbxcU3pR7J1SbQuDPId1vs990ZgYBqIjUXIH+foHEO3wRGn4n0oo1dcqHXwy19xE5 +cmoEp391RVJaMMC7bL2KucPH6Xjozu1Azy/aTpxQ7M93eS/vCAAxm2eLvQsgmbwucBtjzByLh5 TqGE3CvlHoqwb8tPbMtNR3nrZUthAWowLpivcTvnwVPLfhek
-X-Developer-Key: i=ukleinek@debian.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-commit 8b4865cd904650cbed7f2407e653934c621b8127 upstream.
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-notify_hwp_interrupt() is called via sysvec_thermal() ->
-smp_thermal_vector() -> intel_thermal_interrupt() in hard irq context.
-For this reason it must not use a simple spin_lock that sleeps with
-PREEMPT_RT enabled. So convert it to a raw spinlock.
+A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
+possibly return NULL pointer. NULL Pointer Dereference may be
+triggerred without addtional check.
+Add a NULL check for the returned pointer.
 
-Reported-by: xiao sheng wen <atzlinux@sina.com>
-Link: https://bugs.debian.org/1076483
-Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: xiao sheng wen <atzlinux@sina.com>
-Link: https://patch.msgid.link/20240919081121.10784-2-ukleinek@debian.org
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ukleinek: Backport to v6.6.y]
-Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
+Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
 ---
- drivers/cpufreq/intel_pstate.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+v2: Fix "From" tag.
+v3: Format tags to Fixes/Cc/Signed-off-by.
+---
+ sound/soc/qcom/lpass-cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 0ee3a04bb102..8a4fdf212ce0 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1632,7 +1632,7 @@ static void intel_pstate_notify_work(struct work_struct *work)
- 	wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_STATUS, 0);
- }
+diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
+index 5a47f661e0c6..242bc16da36d 100644
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -1242,6 +1242,8 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
+ 	/* Allocation for i2sctl regmap fields */
+ 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
+ 					GFP_KERNEL);
++	if (!drvdata->i2sctl)
++		return -ENOMEM;
  
--static DEFINE_SPINLOCK(hwp_notify_lock);
-+static DEFINE_RAW_SPINLOCK(hwp_notify_lock);
- static cpumask_t hwp_intr_enable_mask;
- 
- void notify_hwp_interrupt(void)
-@@ -1649,7 +1649,7 @@ void notify_hwp_interrupt(void)
- 	if (!(value & 0x01))
- 		return;
- 
--	spin_lock_irqsave(&hwp_notify_lock, flags);
-+	raw_spin_lock_irqsave(&hwp_notify_lock, flags);
- 
- 	if (!cpumask_test_cpu(this_cpu, &hwp_intr_enable_mask))
- 		goto ack_intr;
-@@ -1673,13 +1673,13 @@ void notify_hwp_interrupt(void)
- 
- 	schedule_delayed_work(&cpudata->hwp_notify_work, msecs_to_jiffies(10));
- 
--	spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- 
- 	return;
- 
- ack_intr:
- 	wrmsrl_safe(MSR_HWP_STATUS, 0);
--	spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- }
- 
- static void intel_pstate_disable_hwp_interrupt(struct cpudata *cpudata)
-@@ -1692,10 +1692,10 @@ static void intel_pstate_disable_hwp_interrupt(struct cpudata *cpudata)
- 	/* wrmsrl_on_cpu has to be outside spinlock as this can result in IPC */
- 	wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_INTERRUPT, 0x00);
- 
--	spin_lock_irqsave(&hwp_notify_lock, flags);
-+	raw_spin_lock_irqsave(&hwp_notify_lock, flags);
- 	if (cpumask_test_and_clear_cpu(cpudata->cpu, &hwp_intr_enable_mask))
- 		cancel_delayed_work(&cpudata->hwp_notify_work);
--	spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- }
- 
- static void intel_pstate_enable_hwp_interrupt(struct cpudata *cpudata)
-@@ -1704,10 +1704,10 @@ static void intel_pstate_enable_hwp_interrupt(struct cpudata *cpudata)
- 	if (boot_cpu_has(X86_FEATURE_HWP_NOTIFY)) {
- 		unsigned long flags;
- 
--		spin_lock_irqsave(&hwp_notify_lock, flags);
-+		raw_spin_lock_irqsave(&hwp_notify_lock, flags);
- 		INIT_DELAYED_WORK(&cpudata->hwp_notify_work, intel_pstate_notify_work);
- 		cpumask_set_cpu(cpudata->cpu, &hwp_intr_enable_mask);
--		spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+		raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- 
- 		/* wrmsrl_on_cpu has to be outside spinlock as this can result in IPC */
- 		wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_INTERRUPT, 0x01);
-@@ -3136,10 +3136,10 @@ static void intel_pstate_driver_cleanup(void)
- 			if (intel_pstate_driver == &intel_pstate)
- 				intel_pstate_clear_update_util_hook(cpu);
- 
--			spin_lock(&hwp_notify_lock);
-+			raw_spin_lock(&hwp_notify_lock);
- 			kfree(all_cpu_data[cpu]);
- 			WRITE_ONCE(all_cpu_data[cpu], NULL);
--			spin_unlock(&hwp_notify_lock);
-+			raw_spin_unlock(&hwp_notify_lock);
- 		}
- 	}
- 	cpus_read_unlock();
+ 	/* Initialize bitfields for dai I2SCTL register */
+ 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
 -- 
-2.45.2
+2.25.1
 
 
