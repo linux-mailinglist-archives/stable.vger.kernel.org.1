@@ -1,229 +1,113 @@
-Return-Path: <stable+bounces-81195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF65D991E39
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 13:57:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9527991E9B
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 15:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1081282D08
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 11:57:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 927D5B21784
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 13:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4F1364A0;
-	Sun,  6 Oct 2024 11:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33AC176FDB;
+	Sun,  6 Oct 2024 13:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4CLrmlr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwPryr9z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A99216EB5D
-	for <stable@vger.kernel.org>; Sun,  6 Oct 2024 11:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C84165F19;
+	Sun,  6 Oct 2024 13:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728215842; cv=none; b=CjWHLNmE0i84XzFV7voNPrpGFyiTjIUwzZLmOQZj4YaWBKkib2rF33/xkVJOAwAVc1h9COih/gt2h5Bq2QueWcGFnKb+9rEvSelRZ4Q5riBwyuY2MI0Q2K/uCtlo/pAqTw0RFv5kS99yEYh5mpCcb/KRZETkNgQ5MuPjkmgjx2g=
+	t=1728222076; cv=none; b=muFxSI35WDUuqueOgN6NTMHskjYOEg8EQugX5T9T1ILk930Et4vkuPfnxgTKAvwkCckj7vV0PS64IfMnwFfNiXLfe41g4TQDbvPLRVhO0Ao3+Iihp79on/XEgaGGLEgnB5AVtq554AXSKx99+xeMwMO6fxwbTVc+Fc5ywu1Xdlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728215842; c=relaxed/simple;
-	bh=SAEP2mceIijkMWqgqpGe7krG5Meaeqo6fgwteGsKEa8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GWJtVTbEOe4lsJZ91SIjLoVGioT1l/SWWksboRa34cKfImMrNy+JzttowFQXdRdr1bhJ3mpBAPlZqCemVtqmUv29/bN2J9zHgdYb+w64hCKybZNNQqSIM3ZLKFvqNwHgS8lvsITtQpye2ZreNvEPcUIRhItMyIklXnoZUnYlQr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4CLrmlr; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e25ccd64be9so2886682276.2
-        for <stable@vger.kernel.org>; Sun, 06 Oct 2024 04:57:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728215840; x=1728820640; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SAEP2mceIijkMWqgqpGe7krG5Meaeqo6fgwteGsKEa8=;
-        b=D4CLrmlruS/CoWFYBQ135OCDZ12xSOHWI3ew28XckYymFTXTQQhhQ116p/Z+i+Zmg5
-         0+KQhcaZqHYwBpurV2kghdfMqZUqlGl3cgLMd3ZrgrWIDucYG+r5ivapouQNk2qee3Wh
-         BXop5N9NkNZAdo2Oiiog01dkeWoV7lxfnjdTY6fR2Vl01ILUO5Y/6Guub32iswzOLJMT
-         YLA/M6QSc4czKhc9FuS4BxVt8qFN8uPmQih0AdBmeqXVLVklhnwawqAJZDwvfZZUgBFh
-         rpk5FgrNoFwaAZiv67AqtMBUgGo82RSePVNncjIJXIibWeBt7JDqJ35Lk1KcStboSqtJ
-         NRrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728215840; x=1728820640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SAEP2mceIijkMWqgqpGe7krG5Meaeqo6fgwteGsKEa8=;
-        b=Z7z2Eq4eTFq5C1rBw5YDILLRsVpmWeZO+Ez3kKYXtDgi3P9FfHVEMW8vk3TKVDqSpV
-         zuOaM96RUg2KoCqxnuMLc+UhIdMBI/jshjnccbUMVQ0jCsJ7/4Be//36NdFuWQ8eAAaV
-         X2O3qfJLCRSdrVdNpjaQVuuytiOZbLwjZSoElOZnpujOkksYCeBE6g26A2UOJd3vqHHc
-         +368G6iU04vmKzD2IRiJ8Uyqifk5y4DbtpweU95VrC3FST9Rwh1sMTAaVk2ZOXk0KQh0
-         4E1txvdN2v5qBR92rzylwJWAE9my+WkmsU/btQolbod+OmyI+Nwu6PXkBfRLkWFGvTjk
-         0nhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEyo2ZsKCGyxo5+tvJ81PTG+NT32hLSAz1byIbUfIIdyuQx+GrH8A0hrSkjI89s5OzSKVe1CE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOui2K3WlmfNfpGa4abt3knsBu0HXK7+A+pglQQR6Yp942Hk27
-	YrXWCOJAXKFUy2A37HNPEPIRICJwCpJ/cHDkqv5W3X7hWTgBr+YmaZkyutzBOWeOMKTKuaxskL0
-	3jwNQpLTQHqeBd6Ee/Ku21JU/nAo=
-X-Google-Smtp-Source: AGHT+IFemGvuLcSGtK8Fzrp3SRorEbBJEYDi2/qqgWCrVVAk/FBpY401X2FStVhWAZs/EJa8VAIZAKA/ziYG9a0X/h8=
-X-Received: by 2002:a5b:8c7:0:b0:e28:b864:e97f with SMTP id
- 3f1490d57ef6-e28b864ecb1mr1738367276.46.1728215840201; Sun, 06 Oct 2024
- 04:57:20 -0700 (PDT)
+	s=arc-20240116; t=1728222076; c=relaxed/simple;
+	bh=K5npnAxiexyEfdq03gplw9O57YzXwDpNOCTcMAefvQA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oy5POlQWibNLP0OzySPAfP89NZydZ0POgBHiKwcZ7zf7AfPkZTp+wo5keVkOEDvFx8PE2bFgvzVrnMcpchoJEaoyM62KKhFckCp4pMqEr0Y78OH/0cqHQrCiyvfBybbswbrRN42aEu6WYTnsi8ihoTG9x6MK0EnP51kiRXxhNB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwPryr9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EF9C4CEC5;
+	Sun,  6 Oct 2024 13:41:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728222076;
+	bh=K5npnAxiexyEfdq03gplw9O57YzXwDpNOCTcMAefvQA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kwPryr9zZSYcVwAYwtEFngfzwcxq09/A35aTFcAVzaed8EdypCtDGXYbR2xckOxNy
+	 cqSaugovHq2qpOHQ8t0G6LgxMzC94ZsyWVNBc9wQSpKvbgdNYg149vxmU4xRt+qPwV
+	 u3ffgUjlC3ztBdyyD2fFBn1CZf69IFOvQyK4RBAsaAbJnSp5mpLFUotQVcCkZYMsNW
+	 uNpnr4i6fb+OpuRoxP9rMGBgBBkg4E9XgMK463gLUg/VWLTrWpcDjQ9STraxxFV4VY
+	 CVwMBhFo8SX+AGWGlZZx+SePQUR6EgoY9eXNVdKeSxmTjxZdg0SuhjatjC/t1412IQ
+	 VJsNIWkx/nY8A==
+Date: Sun, 6 Oct 2024 14:41:02 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Mihail Chindris <mihail.chindris@analog.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, devicetree@vger.kernel.org,
+ dlechner@baylibre.com, Mark Brown <broonie@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4 02/11] iio: dac: adi-axi-dac: fix wrong register
+ bitfield
+Message-ID: <20241006144102.4b44c09f@jic23-huawei>
+In-Reply-To: <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-2-ceb157487329@baylibre.com>
+References: <20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-0-ceb157487329@baylibre.com>
+	<20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-2-ceb157487329@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241002125822.467776898@linuxfoundation.org> <20241002125838.303136061@linuxfoundation.org>
- <CADpNCvbW+ntip0fWis6zYvQ0btiP6RqQBLFZeKrAwdS8U2N=rw@mail.gmail.com>
- <2024100330-drew-clothing-79c1@gregkh> <A8D6C21F-ACAD-4083-900F-528EB3EB5410@oracle.com>
- <CADpNCvbKGAVcD9=m_YxA6qOF6e0kohOfVsKOqJeVmrYaq0Sd8w@mail.gmail.com>
- <2024100420-aflutter-setback-2482@gregkh> <CADpNCvYn9ACkumaMmq7xAj6EQuF6eYs174J+z81wv5WqzdWynA@mail.gmail.com>
- <2024100430-finalist-brutishly-a192@gregkh> <2024100416-dodgy-theme-ae43@gregkh>
- <8AC0ACC8-6A77-487E-B610-6A0777AFC08E@oracle.com> <CADpNCvZXyw25A3+DvMpECFoffWmcrFQ0Do5hhwbqftxTVr-+Mw@mail.gmail.com>
- <0CFAAF67-170F-4BA2-BC16-F9B40ADE7D35@oracle.com>
-In-Reply-To: <0CFAAF67-170F-4BA2-BC16-F9B40ADE7D35@oracle.com>
-From: Youzhong Yang <youzhong@gmail.com>
-Date: Sun, 6 Oct 2024 07:57:08 -0400
-Message-ID: <CADpNCvZ-X2NuxLBjJcPi14U-Jt44tS7TrbguavVxrhf5_5v1pg@mail.gmail.com>
-Subject: Re: [PATCH 6.11 397/695] nfsd: fix refcount leak when file is
- unhashed after being found
-To: Chuck Lever III <chuck.lever@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-stable <stable@vger.kernel.org>, 
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, Jeff Layton <jlayton@kernel.org>, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The precise explanation is in the commit message.
+On Thu, 03 Oct 2024 19:28:59 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> I'm asking that you please apply and test these patches on
-> v6.11 and v6.1, at the very least, before requesting that
-> Greg apply these patches to the LTS kernels. Greg needs
-> very clear instructions about how he should proceed, as
-> well as some evidence that we are not asking him to apply
-> patches that will break the target kernels.
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Fix ADI_DAC_R1_MODE of AXI_DAC_REG_CNTRL_2.
+> 
+> Both generic DAC and ad3552r DAC IPs docs are reporting
+> bit 5 for it.
 
-It's very reasonable to have more tests. I 100% agree.
+Reorder to come before the previous patch.
+This want's backporting. The renames are good but too noisy to
+backport if we can avoid it.
 
-Per your request, I performed the testing under kernel 6.1 and 6.11.
-We've already tested under kernel 6.6 using our test farm.
+Jonathan
 
-Conclusion: it works as expected - the issue reproduces without the
-fix, it's no longer reproducible with the fix applied.
+> 
+> Link: https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
+> Fixes: 4e3949a192e4 ("iio: dac: add support for AXI DAC IP core")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  drivers/iio/dac/adi-axi-dac.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+> index e83f70465b46..04193a98616e 100644
+> --- a/drivers/iio/dac/adi-axi-dac.c
+> +++ b/drivers/iio/dac/adi-axi-dac.c
+> @@ -46,7 +46,7 @@
+>  #define AXI_DAC_CNTRL_1_REG			0x0044
+>  #define   AXI_DAC_CNTRL_1_SYNC			BIT(0)
+>  #define AXI_DAC_CNTRL_2_REG			0x0048
+> -#define   ADI_DAC_CNTRL_2_R1_MODE		BIT(4)
+> +#define   ADI_DAC_CNTRL_2_R1_MODE		BIT(5)
+>  #define AXI_DAC_DRP_STATUS_REG			0x0074
+>  #define   AXI_DAC_DRP_STATUS_DRP_LOCKED		BIT(17)
+>  
+> 
 
-To Greg: please cherry-pick the commits 1, 2, 3, and 4 (see below for
-what these commits are) and apply to kernel 6.1 all the way up to 6.11
-if that's appropriate.
-
-Here is how it's done:
-
-- cherry-pick nfsd commit(s)
-- build and install kernel
-- run my reproducer
-- check nfsd_file_allocations and nfsd_file_releases, see if it
-reproduces or not
-
-Commits to cherry-pick:
-
-1. nfsd: add list_head nf_gc to struct nfsd_file
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D8e6e2ffa6569a205f1805cbaeca143b556581da6
-
-2. nfsd: fix refcount leak when file is unhashed after being found
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D8a7926176378460e0d91e02b03f0ff20a8709a60
-
-3. nfsd: remove unneeded EEXIST error check in nfsd_do_file_acquire
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D81a95c2b1d605743220f28db04b8da13a65c4059
-
-4. nfsd: count nfsd_file allocations
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D700bb4ff912f954345286e065ff145753a1d5bbe
-
-Note: commit #4 is very useful for detecting if a leak happens or not, othe=
-rwise
-it would be very time-consuming to find out. It's not needed but better to =
-have.
-
-Kernel 6.1.110 + commit 4
-1st run:
-nfsd_file_allocations: 811
-nfsd_file_releases: 791
-leaks? Yes
-2nd run:
-nfsd_file_allocations: 554
-nfsd_file_releases: 548
-leaks? Yes
-
-Kernel 6.1.110 + commits 1,2,3,4
-1st run:
-nfsd_file_allocations: 816
-nfsd_file_releases: 816
-leaks? No
-2nd run:
-nfsd_file_allocations: 9755
-nfsd_file_releases: 9755
-leaks? No
-
-Kernel 6.11.0 + commit 4
-1st run:
-nfsd_file_allocations: 3662
-nfsd_file_releases: 3659
-leaks? Yes
-2nd run:
-nfsd_file_allocations: 2177
-nfsd_file_releases: 2175
-leaks? Yes
-
-Kernel 6.11.0 + commits 1,2,3,4
-1st run:
-nfsd_file_allocations: 2136
-nfsd_file_releases: 2136
-leaks? No
-2nd run:
-nfsd_file_allocations: 9094
-nfsd_file_releases: 9094
-leaks? No
-
-On Fri, Oct 4, 2024 at 2:09=E2=80=AFPM Chuck Lever III <chuck.lever@oracle.=
-com> wrote:
->
->
->
-> > On Oct 4, 2024, at 1:59=E2=80=AFPM, Youzhong Yang <youzhong@gmail.com> =
-wrote:
-> >
-> > The explanation of how it can happen is in the commit message. Using
-> > list_head 'nf_lru' for two purposes (the LRU list and dispose list) is
-> > problematic.
->
-> "is problematic" is not an adequate or precise explanation
-> of how the code is failing. But as I said, I'm not objecting,
-> just noting that we don't understand why this change addresses
-> the problem.
->
-> In other words, we have test experience that shows the patch
-> is safe to apply, but no deep explanation of why it is
-> effective.
->
->
-> > I also mentioned my reproducer in one of the e-mail
-> > threads, here it is if it still matters:
-> >
-> > https://github.com/youzhongyang/nfsd-file-leaks
->
-> I'm asking that you please apply and test these patches on
-> v6.11 and v6.1, at the very least, before requesting that
-> Greg apply these patches to the LTS kernels. Greg needs
-> very clear instructions about how he should proceed, as
-> well as some evidence that we are not asking him to apply
-> patches that will break the target kernels.
->
-> And, please confirm that 4/4 is needed. I can't see any
-> obvious reason why it is necessary to prevent a leak.
->
->
-> --
-> Chuck Lever
->
->
 
