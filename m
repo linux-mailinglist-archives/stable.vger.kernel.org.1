@@ -1,177 +1,109 @@
-Return-Path: <stable+bounces-81198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264CD991F9E
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 18:31:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CF099210B
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 22:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC073B21754
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 16:31:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47F5B1F2174C
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 20:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EAD874068;
-	Sun,  6 Oct 2024 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8E018B46A;
+	Sun,  6 Oct 2024 20:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ym7gB86w"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D24228EC;
-	Sun,  6 Oct 2024 16:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21B9189F43
+	for <stable@vger.kernel.org>; Sun,  6 Oct 2024 20:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728232259; cv=none; b=f7kVJxPbs3ZmL9w9fY37t4p1M7b/7w+o9YF+EPZNrv26BL8UQ8I6MQkUe6avD9wQYfK8pzo62VeUACNKJ3QzQwEVpD+DDjGSOi+zLtlSRs/1rqB7GzOG8NjW4YuXDctLfmvNmYvWlzsJ9CxuOy5e12wRItvwqVmTj+fzSiTaGxo=
+	t=1728245342; cv=none; b=A2mpPazNxNVy3IcH7lsHxn8eEigZXwdDVD3V3wN0Db8rvbCKZ20VnL+EKeZO/NfLcwtf5phcz9LlJ82fEQGI/xVQpx6Y75i1D+TFkrQ3J99Icm3uhT4ab70hJkHd4nsATNjEaNhoOudF+lXhgV1d4xXmEdMHBHnzPmv+WwU8wac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728232259; c=relaxed/simple;
-	bh=GhbHXVFrXTV4h+t9O9YExUGsfkiGJ4V8EVDKnnjWkNs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=iMxcwGEwWxGUAqXIgDuFbGg3LZ3Egk0NeleML//K1YnNyQ7IkHxFa7HRsPo84Lf1UGkxXsIUAPBhAOFwDjQ7xPGT2MtKe2zGBlEkXszc5d1JrVmLFSLoDeSNL+5bANcVlu96FCL8IL274+i69sJNeVxM8Z2u3iQcd7CJmz1WiNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.2.100] (213.87.128.249) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Sun, 6 Oct
- 2024 19:30:37 +0300
-Message-ID: <ba0e407e-46c5-4681-862c-3204eb2e6c16@omp.ru>
-Date: Sun, 6 Oct 2024 19:30:36 +0300
+	s=arc-20240116; t=1728245342; c=relaxed/simple;
+	bh=9xGDpi/jA95ojqNc9c3wQkAfuzmzm+dGXz6YwpBqnhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GGuvXAG1pX8yBFPmHyV9NqUAK7uZO5kKHays3nIizv5yA01pKrljRALrWMRglFSBJtMDw7iObx5tJYFJnGn9xDA1CMKY/VBI1xEEpWjd5KBatQUs0c/WGPJpZ+Tobem3wxOzT4TYnsPB88g6Asr3nPwJbyf5etTiSoeNN4yCGjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ym7gB86w; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2facf48157dso36553641fa.2
+        for <stable@vger.kernel.org>; Sun, 06 Oct 2024 13:09:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728245339; x=1728850139; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1CNIHOt8fvcwETMUAw0ufzYaZKbLYWoq5arc8dbVRfg=;
+        b=Ym7gB86w5MXrtMLyaDAGw+upAcxgLYxAPhcqWqMLvZ087kJUjUMXhBfldPBqNKkUtf
+         r1Swb459MBr+6NsfowzZ6NXX2E9kUZ0tRYJAMeEWAHijrDdlb1ayRrhyevMrnLZnJbwW
+         yqXXxan8JTwPJ2YXoVPzcgHjYXsBrWBKMi8Nmcmtf79BmksV1WrD7jo5Qa3TgMozwyoW
+         hPHWY8+EzxA4iHYr08y3O/8fYU/Q5wRgzQ6CuYQbb2fEf2fWg18ucGJgIO906oKCJxk/
+         zNyiS9EVf5GBQJzFrQUdbFemLv2rF/XNjlLQcO6jNF2FFwF6w8pHyI6wOKH0+poNYdcJ
+         c1XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728245339; x=1728850139;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1CNIHOt8fvcwETMUAw0ufzYaZKbLYWoq5arc8dbVRfg=;
+        b=qLBdOXNZd3kOjUrth9Lm3zuHgDpvcUdOMz2jqmSUjuhupRClMrsjiBvbZSmOHI3dw1
+         zu6w1P1ML/TTZM8de5WeaK64S576TVdZKnGLVFpccqkgVYjVOU7xhioKxW/tBj9tAylr
+         SYghheZm6CNeq9k+O+f89P2VsJJ7jai3lSgh20HPKVUnm5ByhS26lQbQ72pgN3bk4bws
+         MmVlUMdD3Y1Jh4V6dwXbs58D3MqBUme/BuNRJ/SDVyIC/mhtyUt0OQc1eTnD6Oz7jz2U
+         8p1ed0+vc5cUW61cr7gnP33QR4mpd9uWcpJ5ugI84Goc43Zok7Y3aOxtK4XPdy1kUHl6
+         dVvA==
+X-Gm-Message-State: AOJu0YzG5CRE5NYieLynb6ojZN/gq+BCy7/WngL5JrVQLEdvuMQt2UON
+	CLaykfYmJWJBGMdO5G5fvz1HKpfvRVWg2SUJjpSZGhm9xIFgGX428M5hqFFgcWo=
+X-Google-Smtp-Source: AGHT+IF6OTa70sIjp7tcQGOntDCvvftTUjqZUMbgta3o2jm6LLM0vAoPx5aZuA/nwzvRdyDNRSh4eA==
+X-Received: by 2002:a2e:bc28:0:b0:2fa:c387:745b with SMTP id 38308e7fff4ca-2faf3c64c28mr37712301fa.31.1728245338878;
+        Sun, 06 Oct 2024 13:08:58 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00-89ea-67f6-92cd-b49.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:89ea:67f6:92cd:b49])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2faf9adcb37sm5870681fa.60.2024.10.06.13.08.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Oct 2024 13:08:58 -0700 (PDT)
+Date: Sun, 6 Oct 2024 23:08:56 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: stable@vger.kernel.org, agross@kernel.org, bjorn.andersson@linaro.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH] Revert "arm64: dts: qcom: sm8250: switch UFS QMP PHY to
+ new style of bindings"
+Message-ID: <ebbksal6u5kkvywrlq4d7f7vjntfjvjtfbrtmt3roj77dr2gg5@nzocu3q5har5>
+References: <20241003143532.108444-1-sumit.semwal@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "ata: pata_serverworks: Do not use the term blacklist" has
- been added to the 6.11-stable tree
-To: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>,
-	<dlemoal@kernel.org>
-CC: Niklas Cassel <cassel@kernel.org>
-References: <20241006151837.2327-1-sashal@kernel.org>
-Content-Language: en-US
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-In-Reply-To: <20241006151837.2327-1-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 10/06/2024 16:15:19
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 188238 [Oct 06 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.0.4
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 39 0.3.39
- e168d0b3ce73b485ab2648dd465313add1404cce
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 213.87.128.249 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 213.87.128.249 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;www.kernel.org:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.128.249
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/06/2024 16:19:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 10/6/2024 3:26:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241003143532.108444-1-sumit.semwal@linaro.org>
 
-On 10/6/24 18:18, Sasha Levin wrote:
+On Thu, Oct 03, 2024 at 08:05:32PM GMT, Sumit Semwal wrote:
+> This reverts commit cf9c7b34b90b622254b236a9a43737b6059a1c14.
+> 
+> This commit breaks UFS on RB5 in the 6.1 LTS kernels. The original patch
+> author suggests that this is not a stable kernel patch, hence reverting
+> it.
+> 
+> This was reported during testing with 6.1.103 / 5.15.165 LTS kernels
+> merged in the respective Android Common Kernel branches.
+> 
+> Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+> ---
+>  arch/arm64/boot/dts/qcom/sm8250.dtsi | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
 
-> This is a note to let you know that I've just added the patch titled
-> 
->     ata: pata_serverworks: Do not use the term blacklist
-> 
-> to the 6.11-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      ata-pata_serverworks-do-not-use-the-term-blacklist.patch
-> and it can be found in the queue-6.11 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+As an important note, this patch is targeting stable kernels, not the
+main tree.
 
-   Hm... again, what exactly does this commit fix? :-/
-
-> commit 106fce3509096c391ee57d0482d1e857e3dfb6fb
-> Author: Damien Le Moal <dlemoal@kernel.org>
-> Date:   Fri Jul 26 10:58:36 2024 +0900
-> 
->     ata: pata_serverworks: Do not use the term blacklist
->     
->     [ Upstream commit 858048568c9e3887d8b19e101ee72f129d65cb15 ]
->     
->     Let's not use the term blacklist in the function
->     serverworks_osb4_filter() documentation comment and rather simply refer
->     to what that function looks at: the list of devices with groken UDMA5.
->     
->     While at it, also constify the values of the csb_bad_ata100 array.
->     
->     Of note is that all of this should probably be handled using libata
->     quirk mechanism but it is unclear if these UDMA5 quirks are specific
->     to this controller only.
->     
->     Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
->     Reviewed-by: Niklas Cassel <cassel@kernel.org>
->     Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/drivers/ata/pata_serverworks.c b/drivers/ata/pata_serverworks.c
-> index 549ff24a98231..4edddf6bcc150 100644
-> --- a/drivers/ata/pata_serverworks.c
-> +++ b/drivers/ata/pata_serverworks.c
-> @@ -46,10 +46,11 @@
->  #define SVWKS_CSB5_REVISION_NEW	0x92 /* min PCI_REVISION_ID for UDMA5 (A2.0) */
->  #define SVWKS_CSB6_REVISION	0xa0 /* min PCI_REVISION_ID for UDMA4 (A1.0) */
->  
-> -/* Seagate Barracuda ATA IV Family drives in UDMA mode 5
-> - * can overrun their FIFOs when used with the CSB5 */
-> -
-> -static const char *csb_bad_ata100[] = {
-> +/*
-> + * Seagate Barracuda ATA IV Family drives in UDMA mode 5
-> + * can overrun their FIFOs when used with the CSB5.
-> + */
-> +static const char * const csb_bad_ata100[] = {
->  	"ST320011A",
->  	"ST340016A",
->  	"ST360021A",
-> @@ -163,10 +164,11 @@ static unsigned int serverworks_osb4_filter(struct ata_device *adev, unsigned in
->   *	@adev: ATA device
->   *	@mask: Mask of proposed modes
->   *
-> - *	Check the blacklist and disable UDMA5 if matched
-> + *	Check the list of devices with broken UDMA5 and
-> + *	disable UDMA5 if matched.
->   */
-> -
-> -static unsigned int serverworks_csb_filter(struct ata_device *adev, unsigned int mask)
-> +static unsigned int serverworks_csb_filter(struct ata_device *adev,
-> +					   unsigned int mask)
->  {
->  	const char *p;
->  	char model_num[ATA_ID_PROD_LEN + 1];
-
-MBR, Sergey
-
+-- 
+With best wishes
+Dmitry
 
