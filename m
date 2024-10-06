@@ -1,203 +1,144 @@
-Return-Path: <stable+bounces-81189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E10991D60
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 10:52:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF068991D65
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 10:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5BB1C20EA3
-	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 08:52:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C471F21D76
+	for <lists+stable@lfdr.de>; Sun,  6 Oct 2024 08:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8BF150990;
-	Sun,  6 Oct 2024 08:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D5C1714C9;
+	Sun,  6 Oct 2024 08:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qr/hXtlR"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="hw9N2iS+"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2051.outbound.protection.outlook.com [40.107.243.51])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41F3A31
-	for <stable@vger.kernel.org>; Sun,  6 Oct 2024 08:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728204723; cv=fail; b=kN68zm9VWG0gnaaGz8I8oUOaq0E7TqpPbvB/aVWRsVAVhK3OGdVoMHIuUEmeGalncovcLDykyfizXZHgDKSfb67LBEjWFe4e3XwDsheXCRQH964+Phwutw4uKc148V31k2gH7LPIwYTHLKit7E+j0D2aUarG5Iyw8IluuGFs9vs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728204723; c=relaxed/simple;
-	bh=Sc912Wb/O9E6purL+IbMSo+pFBouYxyyj8uTRnPuM9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rkOW5rY9liZvxoEDM2ZwrB+iJ9wKRH0fxMH+JosFhthtRnCiNb7DWcLXXqILD40GmLamdpAbEucN7RcBxdCxUq5WTiaq7KR+D+NjYwDzlZtsP4n3VKvQHAU5XJToPdpOb3a70asEycniy38Ne77XvRnpQBxpbSrj3yNDi4PTOSM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qr/hXtlR; arc=fail smtp.client-ip=40.107.243.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d1R0XYdjQwTfPpwJOzpxChdofxn8IOPy3u2ynKKrMcVO6103Q3MNiMASGAWb4b5sIOPDQSbd8j+AYfmlAiBgdD1BHawYgWaZGJ5/MEXymbT1k5gbqt5TvqhRUZdU+MZAWwUCqZuElbhiboYg4mXt4lauitVeAhBTxObuEUAyrqN6eT+U/BwjWCkCFbVsM2xww9bUyR00Uc+u1S1hSKi0vz2Yqwts76nMSPgrj2YtfhrY+1YIruP0OETMBSGd2HljZYVpytMbXKNgaQhvYhPtb+sevY4kzm0WjRt0S50183cQCY1ZD5l/1/dLxE2FC3AEHh8O1xMElZ0aA8+iG7j3Lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=px3DW3O07ANbdoJkhi/ElYkA/jEg5GYCTL2JPeBAjfM=;
- b=MjTy2LQwE7LeI3Kh2i45/Rf1EDs1kE2KgBPojRwEqNcWh8LveBKXgE+8pRwFsrqNfAcTtMCuwmYo7C1Fx8oiw/uDEad2WZC8Pj/NDOhZQh3BxpCOD2kv2U+gfdPcSKjGr79lYvCTyXBxdOF6g6uGMfAVajKqTjvOT49PP75XYtR/4doMmhOshL2zsoxM0twypOEGjjU2FXlJzpdHwhj6cxUCaiKQbvTV5orHNzAM5WyNkS42GnNzzCzmiY5cJBZUuV8ZjRbkAqPa3asjYNfJzqI2h2UQS7bbO3qvUYImfF0xUuLOKXCuHabGsieQNmV93Q7l0rNuOdhYdCCMObXPBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=px3DW3O07ANbdoJkhi/ElYkA/jEg5GYCTL2JPeBAjfM=;
- b=qr/hXtlRDT+Cz2hDLc/Y44RHCcPlrzUgK1xvz6cygJ2ahG90F+DX+KGtW9YnAGCHpy7FvXocDbVzh0Tcr3DWCuGLqysOHnOl4LfCC4tFkRqU6s7jhCyAjcAXF4kb02ViHJWE7egyju13RxgChagVhIHCUz7PrJeCNLYAtHnvmvKSdMRTfUj9rk3Wjy6s3TrrspJbc+iTMsH2hXrZlzQg6f1HNWvUZZM6eEN5s1Gy4kV8FciyPp/NjxqA4jyHUPEVRyKczf51h8XFFMt+ggVBzUWSpf4qdCRatyuDuT1c/jmGvAhSAxSkYZFx55s0uGw33nwF/mxqLVcJ0StMjwpN5g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by DS0PR12MB8069.namprd12.prod.outlook.com (2603:10b6:8:f0::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8026.20; Sun, 6 Oct 2024 08:51:56 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::66fc:f8a2:1bfb:6de8]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::66fc:f8a2:1bfb:6de8%3]) with mapi id 15.20.8026.017; Sun, 6 Oct 2024
- 08:51:56 +0000
-Date: Sun, 6 Oct 2024 11:51:46 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Aleksandr Nogikh <nogikh@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, gregkh@linuxfoundation.org,
-	jiri@nvidia.com, kuba@kernel.org, pabeni@redhat.com,
-	sashal@kernel.org, stable@vger.kernel.org, vkarri@nvidia.com,
-	dvyukov@google.com
-Subject: Re: Re: [PATCH stable 6.1] devlink: Fix RCU stall when unregistering
- a devlink instance
-Message-ID: <ZwJPot2x-bO4cdWM@shredder.mtl.com>
-References: <Zvv7X7HgcQuFIVF1@shredder.lan>
- <20241001164759.469719-1-nogikh@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241001164759.469719-1-nogikh@google.com>
-X-ClientProxiedBy: LO4P265CA0100.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2bc::12) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75449A31;
+	Sun,  6 Oct 2024 08:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728205039; cv=none; b=N0qO6EbrDN7me10vOVlowqIBh/qC/5G6r1k/VTDSnmOqBHhYbQYJaTJqUkEaN3jFUVs2PGrqmphjmMMCENygNOLuWUS5jMWpj0x2lGXAQRgfP0Qc6ZwHz57YlSRMI8ZFr9vNsVcs4yv48+guUhKLgexQ8cb2QlMHgMYmhmRbbWc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728205039; c=relaxed/simple;
+	bh=Wpido9Kf/hvaKPT3kLqwH4CTFoVCPwgVYoycmspxKVg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QR4WWcb4aOGF0RwabfNJ0Q4NJBaGP4UdWvgOOj0G189/OrWc0WL4rpXKmgocvepm8QglStw9FrsrEX3TPpL6CLu8jBGqtzc85vrfdSqCTX+Clr5yvZ8f4/S8hQcR8CogwBIZqiBbezcyprDvNrzCKd/gdFG+u3jeHVrYNDgzksU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=hw9N2iS+; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1728205013; x=1728809813; i=markus.elfring@web.de;
+	bh=BIrwPlkTYIFaxGZHJcTFOF4qlwUrg6aOe4aE4Kc20jM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=hw9N2iS+tT6yz2seCRkfYGlTsBR9U5M2c3ugP957wVDIf7eXavfmHhqEHVGRFiDx
+	 NGZuD08/HkCN+kTISHP/7w7it4T+A3yGuyF6PIRA0wwzYM534EbwvCl90vH6/fjSM
+	 Bhls+9PCjRWw6MAG9/Apb/sEpw83HwmfyRdsbd5kCevm4ZEdmLP0SX2HeAqeHdqkW
+	 oowvblL0TMjz3SBiB2BDmJtyLzbESTHAQSjJUmSvcrKYoGVYtba7kJMzHMpRqYW4A
+	 iJ3+kWc51XJys9sDHoHgtfvprA1oiO5pkUKzN0zAZPV+j85U5hSW5c9B0w8g/sCU4
+	 BlOEFU7LwhB9Wvj8rw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.87.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MSqXM-1tQV350QOs-00Ro1A; Sun, 06
+ Oct 2024 10:56:53 +0200
+Message-ID: <6d17006d-ee97-4c7c-a355-245f32fe1fc3@web.de>
+Date: Sun, 6 Oct 2024 10:56:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|DS0PR12MB8069:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9cb7f762-4b2a-4184-13df-08dce5e421e9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?34uRGyJMhf7SKokmarc6xB2Y0ikWPkfkIXfGnHTDjN7E6HnjLOdyhA51fhh9?=
- =?us-ascii?Q?2lZHmX6BznTjMW4GmXJgckp2DKvdAADiLwyxmKg/hFmbLlNMyDx1JOKuVnC9?=
- =?us-ascii?Q?BLg/nZUmeGCvIMqB7Gc7epGIr32+YhK0z+YRinelGz1jxt3uCkRIU8ruifng?=
- =?us-ascii?Q?PvxuKJRxbEAF7BE5gDAScGh8YFb1E4B+BTY47ON69y/hdZJ1FAkfzBPZFK73?=
- =?us-ascii?Q?TUpqaZQpsg6E2wsgYUnQ6I+NucdTH9gIHlkQ7pF1T7b0QFdH4CrQa/Iw4o3I?=
- =?us-ascii?Q?4pcD5f54Tnn+TWTnx0R7N1+2XiUJFFKk4Z0HLkWsk5EfSt8rhPMaoG+pltPa?=
- =?us-ascii?Q?TBPE27+66OtizEdVNt0SAUNDPBO2YCQineWqBF28zH+WNLN4gXzIQElpOJir?=
- =?us-ascii?Q?cI3UXJ/BkQ3dVLEQ4lrtC5EqN3AZKA0KyE/2j1JRmtgvXNewh1NwQt7MyXuj?=
- =?us-ascii?Q?hvDcD5pARpS9IgFL4msBx34Lkgn3IZMPf7a4xT2tjplQSYkQOLf+/slRoj2t?=
- =?us-ascii?Q?zYX8VYmcdD4uUiQJcimpOjKW5ikyRwLBs8HDgG5nme+nFF6VGT5fuph6ExMF?=
- =?us-ascii?Q?AEcMfbWw05kXWsqMYVpIxuGCB7JJbdsJnStN830kUCkD+bPoYgJyFfZoRcsC?=
- =?us-ascii?Q?IxkgPNzDcTXWOkF4TQco8Ycheha6s0s6UT1rJZTt3v0FHJjUu+IXjmbmcgc+?=
- =?us-ascii?Q?2FJWqiqCtjsmmw9LinzQwnnidxeK7OAjy26PM6Q45VyOLPdyLLslke9YIk/w?=
- =?us-ascii?Q?WSQ2VhTkoyEMZuzffqUxNgQfEF4FfbPOLMwl2wi0/yPb1MtNWDE2oKIzFjEn?=
- =?us-ascii?Q?7Tsyh389xiQKyf2Pc/8JByGhyyXpWRFPmLcBdhRYXeWxMPC1/MhYjt3m/hV0?=
- =?us-ascii?Q?UXqZ2Fpk2qMobzYol/FHmJ5MILaWcJCNjVVfEIn7aZyMGc78fYlLbeN4xE5v?=
- =?us-ascii?Q?AaaPP4T0io6VJpamnL3sbGfGM7RF3m9G2RdrvvLj7IsDx/X6fAepLOdKhTOV?=
- =?us-ascii?Q?iVsPebfCazEEhOtaYhSWAW5z1OLRBhf851quwgZ0qwhmSybiYPOvxP2km/9f?=
- =?us-ascii?Q?u/hLNyAEQKZeEwP1wiJXCne3L6qEr20tLy5C6Xhm3yFT088v4WNHFZIFzmNR?=
- =?us-ascii?Q?55aX2qZHkAC2/QV4/6mDVk5SW9t++a22myWJ9A3D2oImooJewJreNaNW7yTQ?=
- =?us-ascii?Q?QTLuuwzIzDqYTmtfLQqeyfqoDjqLt3gZ914h2NrB/kVDxUm9UdYqsVmWgbuz?=
- =?us-ascii?Q?eqm25iC1KNlGhOKx2rhkP1ftFgbUBRSASjsouHWYdw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8RgpVhZ+qyt7Yo1jRznVza7Dk+ztE6a/mNiHb4Pk+yDyt/4m4Md9N+OeO4+s?=
- =?us-ascii?Q?1Rtr5Nn3tD3fWYaaYigNithDiZFrwIYZYxeWCWG/2NsMtYRZUvQhFOTH73Rr?=
- =?us-ascii?Q?YqUv4GCaVyC8SfmEk4J8HQiXC83uxTasxx3iCswFL7sSwy6wXPkANgBkw4wO?=
- =?us-ascii?Q?gsZYi3AD2KqnqUvVlQo++0FnOMvSIvLoutdIkFKn3f3EbKIc4claAPLPpSe3?=
- =?us-ascii?Q?a8ffuyzb65FaDxoIN6m86YPssMn+K/zFQERnMtATO9/FqqYekL2cwDUW5ksT?=
- =?us-ascii?Q?+R3q7L03ZxuM4oXRJ8mAoMllx5qHi0K3cyMgBfdBF6EdrfoHb8dD3YmZhVmS?=
- =?us-ascii?Q?Tj9l3MIEtzlveJlSl87LnRPQl03xOaG8CIaPWotGgj067SZRAlZUxpytZsTn?=
- =?us-ascii?Q?KV2tHg4KHkPdwFX1HgwyAgz+Y1G5+j/kEvUfb8cuhASYUCPzhx31q1h0cqU4?=
- =?us-ascii?Q?wt2Y5BK35IAr02wZEfzqfI6DFULje57B2KZQ4WVrz3NATF1w9LNwW7k/LYA7?=
- =?us-ascii?Q?j5oSQKKEFQuVgrhgafx81vfpDlqPMGnrogIhxSfq1nanV+YINSM9VNwahaBE?=
- =?us-ascii?Q?r7zbY8Xmj62cg2gkF25Elb0Mx475puxHQIdmEc4LRyCN4zkGPcaQZNPrHpiJ?=
- =?us-ascii?Q?rzOa+vFkHeWS4UXT19EcT+eImo80wvh8sx1N19bh6x6S6HGbyychWEVkaZXB?=
- =?us-ascii?Q?Fb1IQYlIxNOtwcN9NXpbdBzHw3zuv1rv7z/XCpntgczj8aMjXOyIR8+zvPt1?=
- =?us-ascii?Q?+gAcaBrffTEocdPT7wWGlPfWPdTu2z9p7EyOYO4mPuauCoA8lrsHImGrZUXW?=
- =?us-ascii?Q?3hTWgLqV1rLfmQ14x8FmuzinD5rVYNO/+AgX2RLNs60xd2JIEOoz6mb4SUzL?=
- =?us-ascii?Q?4mcPYdS1o9GIUWwv/R3NoF0GXVwF/KUVR8qqB8pUtEgWowExtHZh6osc7N7G?=
- =?us-ascii?Q?FD/oiV3kElwhnBkPLduQK6bSSeox1heYEqcw/yDwPbU7cQauVO1QddSXPJyn?=
- =?us-ascii?Q?0kTwO6PLDt7E+kE7lLZXGtUs172nhLoGr/QrBCY8FKGKpemp03x0dObOaJLa?=
- =?us-ascii?Q?8gQvD5PaHwUioNSWYbJ6tnZHfEJSkXmlIvqmSX4teqLiIgNDqp+MXFun3cy8?=
- =?us-ascii?Q?OkAqFYzsfXTN0jAyZyT8P1j4E8SGd5OVgjZS3YewGJC6t/4uI5+O18SL/FT4?=
- =?us-ascii?Q?FWx4t7MDegf4EtKWeF9rqyaOHSMPlhjOLFmb9PnBP2olFdgGKIg1zCRgJdmb?=
- =?us-ascii?Q?bJDrXWJakNoK8CxwMizWYu8nY+vgRLPNtGkzh+qqXG1QwIDayDhbt/ExG1qI?=
- =?us-ascii?Q?31+i0BlZrG875EyqTwSoYSM+LuZvbb9GfH6Mt1QGlBsPaOGfOP6PDpsGAL6j?=
- =?us-ascii?Q?NZNq3gUt+6SJMB1RwH1IVPpicH2adqmC7s8MiLTIfO7ADdKdxY/XS8AdDNwc?=
- =?us-ascii?Q?IpFg7pOfLbb7aDsBXJ2HTdVhSVezCgYggaevT/YQwjSSZF70/Oi/16UhF0gS?=
- =?us-ascii?Q?gxg/CZ+BGxpXN4PJl9f3YdUamFx57gJ6V0rzBJZsAs0ofJIeWTz8a4TuocXU?=
- =?us-ascii?Q?Kznj5bPbsMRZldykR2+gyexipXUaFePJOnk0pUaz?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9cb7f762-4b2a-4184-13df-08dce5e421e9
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2024 08:51:56.4829
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: olsYnyhCYXB+v/W/xDaF6j8RbXZniIjH94AHV1eyNIqDHGdePu83k9KaQdztZYDb/MEwXZj87NeRQ8kntNjH+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8069
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: qcom: Fix NULL Dereference in
+ asoc_qcom_lpass_cpu_platform_probe()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Zichen Xie <zichenxie0106@gmail.com>, alsa-devel@alsa-project.org,
+ linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Cc: Jaroslav Kysela <perex@perex.cz>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Rohit kumar <quic_rohkumar@quicinc.com>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ Takashi Iwai <tiwai@suse.com>, stable@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Chenyuan Yang <chenyuan0y@gmail.com>,
+ Zijie Zhao <zzjas98@gmail.com>
+References: <20241003152739.9650-1-zichenxie0106@gmail.com>
+ <ee94b16a-baa7-471c-997e-f1bf17b074b8@web.de>
+ <2024100620-decency-discuss-df6e@gregkh>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <2024100620-decency-discuss-df6e@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jTPeINaQftL8b2MzXONGYdc/E9Af1aAvOORf/CE0M7cm1Obw5qd
+ LU2OVArBY5A4mwcydPSsvUujrrMYmQ03tvpohyPLy2hkEwsEr3pIRUzhMam251qPZ1XLpOl
+ BvoQ08Xs33MkDj/IUZFJgbupoeZj1JIPrcuLdz785TXdRiswkCZW7cfiCqTNrWdNCj5JKdJ
+ TQ7zKPCYVQu6egYxi9QSw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:wiu11a04sOI=;vU2wESOvjSd2DSRm4DJW2MSEhfc
+ fEVMQ7wruXhyaYrVabKlQhIfv0Npp/t+RBJEn/swIad3aATLganRZshY6Vs0zV8Z+sqZQj8S1
+ OubjqPqqkkjyWywNZrDi/FOBxWYsMYTi0s+Na2t5QHeIrgwTOQg0Ndrtml2sxqqhzkt0ox9I7
+ LeoGz8YDPwy7Yv7I0pt0hBz2M5YH478Z+wR4LteTrYmjW//AH84+9ladv8djjdKseTz162ebV
+ O+s55JAIM1eHQoXyT0cldVVTlEwFHG4yc6wej2OPDeeRLsnjCPvURhMxmKNgNqJpDYjD8PlHX
+ T51milFsMU02UC7G407wsTpx8xakS1EzBh9PnlrTtjIqto4ccDEKzubsv7R3OkU7fjHojynBc
+ hcSL3ly7bM2i1Kmg8RRBpI/oUJNg4gKb3ZM06mdy0ANOZS1tYZ0XJTj7FC0SLibI4nqZmTBHz
+ BT7Eo8ZT0W0sKma8yLEP1OXnXfaS9XyOynPf+P1tfUTK2wdBi6/SdgfDXaLSal34/VJEBGOul
+ cHMfVLjQxRNnMNY20ggTs3qQWj16haf1KVyjwSR17+wonMGbfkFacWLd0nF+Et2PoehLh/AQ6
+ OChJUcZ2W8OXFmAtEtP8iJonjgur70AqSJViX8WiFB5wNBvgXaiGleYP952jXKVY8oLxVJ9mn
+ mbjPkQKuNwVwFMBu3QTBZ15SM9oC2GzYgg3snzj/08fD2tAPiqpRDwKY5pO3O/lDZuviUwR8u
+ 1hr/HM+PYN4QiEiBkqJmrJtg33zQ3yywUsCBRxxRKr1AKSq9CMX9a0YmQemp3i7wnZo5+j6eh
+ fLX5p6bi1vCtPgulWCWz/aNA==
 
-On Tue, Oct 01, 2024 at 06:47:59PM +0200, Aleksandr Nogikh wrote:
-> Hi Ido,
-> 
-> On Tue, 1 Oct 2024 16:38:39 +0300, Ido Schimmel wrote:
-> > 
-> > On Tue, Oct 01, 2024 at 02:11:27PM +0200, Greg KH wrote:
-> > > On Tue, Oct 01, 2024 at 02:20:35PM +0300, Ido Schimmel wrote:
-> > > > I read the stable rules and I am not providing an "upstream commit ID"
-> > > > since the code in upstream has been reworked, making this fix
-> > > > irrelevant. The only affected stable kernel is 6.1.y.
-> > > 
-> > > You need to document the heck out of why this is only relevant for this
-> > > one specific kernel branch IN the changelog text, so that we understand
-> > > what is going on, AND you need to get acks from the relevant maintainers
-> > > of this area of the kernel to accept something that is not in Linus's
-> > > tree.
-> > > 
-> > > But first of, why?  Why not just take the upstrema commits instead?
-> > 
-> > There were a lot of changes as part of the 6.3 cycle to completely
-> > rework the semantics of the devlink instance reference count. As part of
-> > these changes, commit d77278196441 ("devlink: bump the instance index
-> > directly when iterating") inadvertently fixed the bug mentioned in this
-> > patch. This commit cannot be applied to 6.1.y as-is because a prior
-> > commit (also in 6.3) moved the code to a different file (leftover.c ->
-> > core.c). There might be more dependencies that I'm currently unaware of.
-> > 
-> > The alternative, proposed in this patch, is to provide a minimal and
-> > contained fix for the bug introduced in upstream commit c2368b19807a
-> > ("net: devlink: introduce "unregistering" mark and use it during
-> > devlinks iteration") as part of the 6.0 cycle.
-> > 
-> > The above explains why the patch is only relevant to 6.1.y.
-> 
-> Thanks for bringing up this topic!
-> 
-> For what it's worth, syzbot would also greatly benefit from your fix:
-> https://github.com/google/syzkaller/issues/5328
-> 
-> I've built a kernel locally with your changes, run syzkaller against it,
-> and I can confirm that the kernel no longer crashes due to devlink.
+>>> A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
+>>
+>>                    call?
+>>
+>>
+>>> possibly return NULL pointer. NULL Pointer Dereference may be
+>>> triggerred without addtional check.
+>> =E2=80=A6
+>>
+>> * How do you think about to use the term =E2=80=9Cnull pointer derefere=
+nce=E2=80=9D
+>>   for the final commit message (including the summary phrase)?
+>>
+>> * Would you like to avoid any typos here?
+>>
+>>
+>> =E2=80=A6
+>>> ---
+>>>  sound/soc/qcom/lpass-cpu.c | 2 ++
+>>
+>> Did you overlook to add a version description behind the marker line?
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/process/submitting-patches.rst?h=3Dv6.12-rc1#n723
+=E2=80=A6
+> This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+>
+> Markus, you seem to have sent a nonsensical or otherwise pointless
+> review comment to a patch submission on a Linux kernel developer mailing
+> list.  I strongly suggest that you not do this anymore.  Please do not
+> bother developers who are actively working to produce patches and
+> features with comments that, in the end, are a waste of time.
+>
+> Patch submitter, please ignore Markus's suggestion; you do not need to
+> follow it at all.  The person/bot/AI that sent it is being ignored by
+> almost all Linux kernel maintainers for having a persistent pattern of
+> behavior of producing distracting and pointless commentary, and
+> inability to adapt to feedback.  Please feel free to also ignore emails
+> from them.
+* Do you care for any spell checking?
 
-Good to know :)
+* Do you find any related advice (from other automated responses) helpful?
 
-I hope this patch can be accepted as-is instead of a much larger patch.
-Will copy you on the next version.
 
-Thanks for testing!
+Regards,
+Markus
 
