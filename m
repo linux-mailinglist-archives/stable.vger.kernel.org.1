@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA6C993549
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:46:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205B499354D
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E8B7284381
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:46:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ED63B234E7
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61151D54F0;
-	Mon,  7 Oct 2024 17:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C2A1DDA29;
+	Mon,  7 Oct 2024 17:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ywmozxvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCIk2mCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775AA139CFA
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8564A139CFA
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728323202; cv=none; b=DJ1Cyj6m25ulWf65Ym7TJYq5lobzDy2/unxpMYaju8pjIR6+WRbathl7MngfsNKBIDBnuOPLZ+Uu+RFd71caCLoESyjItT7rzyIgrI/2nUrQyfI02fbWtBLzURtz6j1nVitRYl9FUca2WawUNJ/WO58bRR+cwVVG82sirkSMOtU=
+	t=1728323211; cv=none; b=pVrCOQOY4odJnexeNclHsUMNfAodNfLUmDSoradDwa7eU7OwGUWGI3W6w+RpbNwN+KCkE6lRlp8jeA+tjX4FjXR8taCMgErsGhR8wBjNnv0fNA2HmiGBqd9DE1pW3Xe1TidaarSmLSti81Ro0tT+3FVqvkK4a3MuoVBLO5zGHF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728323202; c=relaxed/simple;
-	bh=WQPJzVOI16DiQ3JKu0hJh91xzhmsJCaOwkJXOytxiIs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AxOhL/fWxrsMqOsPPAxFbLFy6ndUsIYstM0RNpQa949TWhsMKcX244V4pgMlLvOrYObNjlJh+qO0EVMpSss6Q0+xXztZOsNIfSihXe60dsMdR3eawmaj5xo68NZjSJuDo4Bz9cdS/D3h0ceZxbbb9wrVUFHDQ3HFabt6pPg00aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ywmozxvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0B6C4CECF;
-	Mon,  7 Oct 2024 17:46:41 +0000 (UTC)
+	s=arc-20240116; t=1728323211; c=relaxed/simple;
+	bh=dW23im1DucL45kXfKajhXLPIZkBExNLj4tZ93qipHxs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S6K8lJk29x1iw6cIzZXvl/PF5Cvy1o1A5pFTP/1t7eI5rmFRMFhU8cz6/TXq6ZrTtO5bXRbtRBEhKmuDfMtKIy+QiqspJ7bZtdAykIn9/3SXGfdh9vbqLIzytvKLv9YL0xZG2sKEGkg27I3Asm72JCP5oJo4YZui6BhKoTSRrdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCIk2mCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90721C4CEC6;
+	Mon,  7 Oct 2024 17:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728323202;
-	bh=WQPJzVOI16DiQ3JKu0hJh91xzhmsJCaOwkJXOytxiIs=;
+	s=korg; t=1728323211;
+	bh=dW23im1DucL45kXfKajhXLPIZkBExNLj4tZ93qipHxs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Ywmozxvg9XSvAkWlGgAKqsxNDHaGY3uX5YkfRSPmFpJSBD0XAmfHr8S4kxg4utDQ5
-	 eXMYE9mIuiWQjN6f2fOS+mXF77vefkYTFNDC5ovxXej3HctxllA3K0ItbDIm2ZI98c
-	 rI64uaHn5FXEVixzkE7OEBiw1JdR8vW1TFP44m48=
-Subject: FAILED: patch "[PATCH] drm/sched: Always wake up correct scheduler in" failed to apply to 6.6-stable tree
+	b=ZCIk2mCeHftZERvAuWSihbCs45teDz//utOrPe5CueB1x2JkjBPJmF2utBIE0Sl4e
+	 2c9ohz+4t8Sf4t3vjYhiAwpvbsOcaH3YDAWwYVZQErloNBl/aiifkqBZsVVS+6RmrW
+	 AwPg+OPh/BseVovkomlhBOWceBT9IAGmuFg/2Yu4=
+Subject: FAILED: patch "[PATCH] drm/sched: Always wake up correct scheduler in" failed to apply to 6.1-stable tree
 To: tvrtko.ursulin@igalia.com,airlied@gmail.com,alexander.deucher@amd.com,christian.koenig@amd.com,daniel@ffwll.ch,ltuikov89@gmail.com,matthew.brost@intel.com,pstanner@redhat.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 19:46:38 +0200
-Message-ID: <2024100738-clammy-reply-9e28@gregkh>
+Date: Mon, 07 Oct 2024 19:46:39 +0200
+Message-ID: <2024100739-habitant-profane-90df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x cbc8764e29c2318229261a679b2aafd0f9072885
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100738-clammy-reply-9e28@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100739-habitant-profane-90df@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -85,6 +85,10 @@ a6149f039369 ("drm/sched: Convert drm scheduler to use a work queue rather than 
 35963cf2cd25 ("drm/sched: Add drm_sched_wqueue_* helpers")
 0da611a87021 ("dma-buf: add dma_fence_timestamp helper")
 56e449603f0a ("drm/sched: Convert the GPU scheduler to variable number of run-queues")
+b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
+7b05a7c0c9ca ("drm/nouveau: get vmm via nouveau_cli_vmm()")
+e02238990b1a ("drm/nouveau: new VM_BIND uAPI interfaces")
+7a5d5f9c0587 ("drm/nouveau: fixup the uapi header file.")
 
 thanks,
 
