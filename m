@@ -1,108 +1,102 @@
-Return-Path: <stable+bounces-81314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AFD992EEC
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:21:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D3B992F0F
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53EEA1F242B7
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E0901C237C3
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500A81D79BB;
-	Mon,  7 Oct 2024 14:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06B11D619D;
+	Mon,  7 Oct 2024 14:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="MtgWjhaE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z3fiLlzK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947B11D7982
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 14:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75C7188588
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 14:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728310882; cv=none; b=YDCJ+ul4FS4yhxX+f0kYTElKdsG3cjzSZbj/XFzaOgZYOJyGJuEWdB31rB5sRMzNKYSkf4oTcPQ1K2mBjsQ3B+bYf06LJ8UMAhxL7/pKzTFJ9ZoIesZ6cLJ/SNz7EhXiCz/3a4pamQMhLTErXKW7M4lP3NN+sWcuwRk3KBNqAwQ=
+	t=1728311157; cv=none; b=bKlAXBb3Yi6bzsiTaRoNxcx9388ZSFEq1SUYtdXARbbZugSW+NzLx6icmRJosK+3iqDCi43dobpmGUwvz73UMuk2Sx93QkkTGUeDOxQ7keRUo2LA3vZrKiSfTMZhqpOoZ8AOTT2UutW3L6AZzj5u5Y881tgFNGCDx5AO4b5Iqwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728310882; c=relaxed/simple;
-	bh=UfsJfKuIY3PfTumtoxik1Ea0qW7eIN7BDbe4vNZ5QTo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tv5X4Jgga9HmWo9on+YdNtyv/HhsezTSH6IqoJ5QONMP1IwlNYo64XmEzoaUUcG+16App2NHssVZnqY6+TwGlr63eCKzDchiYG8Si7qjGb8UhVzVXEEF8ChSOuiMObiXJn6/IwkjAFV/Rf/c4UPY9uP4pAWZ8cdmTxYy572ZaAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=MtgWjhaE; arc=none smtp.client-ip=209.85.166.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-82aef2c1e5fso167239639f.1
-        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 07:21:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1728310880; x=1728915680; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VC79KI09BOMVnLp6M0LTx88kNLWiyUtWHxQNIXByZpQ=;
-        b=MtgWjhaERUwLDazYZf9528GmKtNqaM74AtUHFvKZ39vdbncKWTGJ0AFR2VDIdKxoVh
-         RnodvXuezB7aszBDqAGrlgflE9RhdSc0WEqSjhya5a1MZKrNJC9dWmyFVhU7OaScDFuz
-         2PFc8KTjaZSa+oCVrs1tbrKJL1jyUJ//241BFvY6tGu/pAuYm4ZBE6JqR97J8JYUn2F7
-         0WMABHEDTPaz1m6PeGAeGxDdRgqsUhFG2wE6L7HtP6euDwOou/wQM4YTUGFEL+azeKBD
-         jLR5IyM/QYDf/4q4O0Kb+Nz8xRDu2U2Tq+PEtP27ihypBmWPXrtPCoBkQnh3o1ZOQH4W
-         g3oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728310880; x=1728915680;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VC79KI09BOMVnLp6M0LTx88kNLWiyUtWHxQNIXByZpQ=;
-        b=uMJiV+6tA9YM/IX5n19uyoKKkG+wr1hsPlwuSb1Bcq0rVxt833Mhjt05FTF8smJBGo
-         jJmW/ZHfMGV5X5X1uChnvRQFVRX2T7O+62SucW9547drH+6diWdoWcZnAo8KHSvo6qgc
-         2N9EKaPU4AYFHbYDxmfcxl4NOUM1tLuaXwUlG1DpGSvMLI/cFieB/PMh1sIlQciUNAiu
-         pDgsy/6xtWzdU5ZCxYKwXkdLnyEdA/90d7aOsVeuPe8amsZ4KW7A+5nHSQanvnvMdMCR
-         EuVN+FEf/UMlwfMK8YKwhSZR3JtJPfCvs9E9N5332XXyVaP/J00Y7xruYau1P21BJ1Q6
-         sNRg==
-X-Forwarded-Encrypted: i=1; AJvYcCX2V8A1zGuDW1EvvGFI+OajrBPFQ9XQfo8LOHNcKF7RzKopnDBHtImRJc4TiCn4DsxzCELUNng=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsGlcfgV4vJE+PKkSrPCy1DhPatkLRGylnjVoVta0+6gmR39hP
-	VBWW5i9nhNmjh1b59+VDHocpk/8run3wn0mcVTANejOzTfZYAuCtMnkRdbLhkeo=
-X-Google-Smtp-Source: AGHT+IGEdNw9YxcVJEbUjcPKtzj9rWUNLLjJTyJuMad09+Ov0EAZ2JIxxAkjp223AAfsDuP15ylO7Q==
-X-Received: by 2002:a05:6602:6010:b0:82a:4490:692a with SMTP id ca18e2360f4ac-834f7cb0918mr1196787639f.7.1728310879744;
-        Mon, 07 Oct 2024 07:21:19 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4db6eb569cfsm1182684173.67.2024.10.07.07.21.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Oct 2024 07:21:19 -0700 (PDT)
-Message-ID: <5995b8d7-a94a-4c5d-8bf6-e19998c0ac72@kernel.dk>
-Date: Mon, 7 Oct 2024 08:21:18 -0600
+	s=arc-20240116; t=1728311157; c=relaxed/simple;
+	bh=ZnMWCebUvIXpErwhTJha4bt61ATpr5E1Eyg+wlPB0EM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ldiIEdKIp0+Jy62RrUHJXXawPsf/LsSmSXh24wxj652pjyvFDLRXlZMUy5i0CCATQu6L4+2i5P2d5RCvL3bRqS+suYGnF2ms+MQCdkd/Pw9iO6VbmDM/G+lV8owx5pkAhMfaKGUoDcRjrQmjqdF6OnPURg3jHAFxJHLR8x69LCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z3fiLlzK; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728311156; x=1759847156;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=ZnMWCebUvIXpErwhTJha4bt61ATpr5E1Eyg+wlPB0EM=;
+  b=Z3fiLlzKLhpoyYBlWXeNxW3NSAZjFAfRcz/WNQOhsm0yesSvhntR8pMi
+   pB7i1A1gxUadCPEAW3/RJFH1p7ZXWpDtfKPVx4y8u3T7153b4Xi76j1mN
+   0Il1+tYbPNDDYEUWbFznZT9KhWK5KOBBozrZ8dALlgIW9kcxp/7Y44fWy
+   G51SYhvdHP5AyKHdqmcHCJW2k0Tab08ZyHvcUTOm1zPmFJd7mUKoqbZO+
+   /czCREhshdJOfvrK3vYIkZXBz2cDpd+7JcC782zmn/txKox/WVA0QHCdS
+   s6Q/4Ww1zPc+9TmjcWqPeFjxTvzd46xEL/YkGAgfSExVeZ5k3ixlp3E7Y
+   g==;
+X-CSE-ConnectionGUID: HksDfUTzQWO5bcQqX3MVQQ==
+X-CSE-MsgGUID: alDmlOtDSVGj/QakfOrTFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="38120077"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
+   d="scan'208";a="38120077"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 07:25:55 -0700
+X-CSE-ConnectionGUID: o9pzUsqbTOeK4bMeZt4J6w==
+X-CSE-MsgGUID: YymaFdXdTcqQRn5U27VtnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
+   d="scan'208";a="98810213"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 07 Oct 2024 07:25:54 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sxogK-00055i-1H;
+	Mon, 07 Oct 2024 14:25:52 +0000
+Date: Mon, 7 Oct 2024 22:24:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: George Rurikov <g.ryurikov@securitycode.ru>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 5.10] block, bfq: remove useless checking in
+ bfq_put_queue()
+Message-ID: <ZwPvOyCeBAHgLpfV@83e7b27afa97>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10] block, bfq: remove useless checking in
- bfq_put_queue()
-To: George Rurikov <g.ryurikov@securitycode.ru>, stable@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Paolo Valente <paolo.valente@linaro.org>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- Yu Kuai <yukuai3@huawei.com>, Jan Kara <jack@suse.cz>
-References: <20241007140709.1762881-1-g.ryurikov@securitycode.ru>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20241007140709.1762881-1-g.ryurikov@securitycode.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/7/24 8:07 AM, George Rurikov wrote:
-> From: George Ryurikov <g.ryurikov@securitycode.ru>
-> 
-> From: Yu Kuai <yukuai3@huawei.com>
-> 
-> commit 1e3cc2125d7cc7d492b2e6e52d09c1e17ba573c3
-> 
-> 'bfqq->bfqd' is ensured to set in bfq_init_queue(), and it will never
-> change afterwards.
+Hi,
 
-No point pushing this to stable, so no from here.
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 5.10] block, bfq: remove useless checking in bfq_put_queue()
+Link: https://lore.kernel.org/stable/20241007140709.1762881-1-g.ryurikov%40securitycode.ru
+
+Please ignore this mail if the patch is not relevant for upstream.
 
 -- 
-Jens Axboe
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
