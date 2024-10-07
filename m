@@ -1,133 +1,160 @@
-Return-Path: <stable+bounces-81241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331789928F1
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:16:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E432D9928FA
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAD0285079
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 10:16:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12BAD1C22B48
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 10:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF131E519;
-	Mon,  7 Oct 2024 10:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A491AFB2D;
+	Mon,  7 Oct 2024 10:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="V4aP/rfI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqp5XVMY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50354136354
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 10:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B80170A3E
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 10:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728296163; cv=none; b=qxm3kR7CnHCt8uvMtTp/c9nHEZxGLUsjmupicI6Lwaaqz2QEhoA6eT4G+BR5Fo9DaMIfvIjkPxKBRkQMdiuZdNxQwHtkRRJn6thdwL2oUkY0yWgEHlzyXLh/glU1CN/FYQ2k1ApqsWm56FJSV9Bz7DK+XZCGtuMPCgh4TuapD7Y=
+	t=1728296314; cv=none; b=pva8l1bloM18hWWsC08MG26bm+OBMYeoShreqpWZbXvsPlQNDNTCxE/hR1/LK3hmyrTD4/ePYc9e2BpoyWwlhfEou39CPsjqeH744TT4VQJ3GtXDSHKoaxMzb6vENbkj3LkJvtx3TsWNHf/20zeeLDeAYr3LsM0jSuVMRJHJOuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728296163; c=relaxed/simple;
-	bh=QEW8xS45co+9Q5+FEHW81DqGS+oo/TRSeAM4ZM3skio=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AyVvSi8vVeUMI/zMaeuQwyVui7qwjWQDIs7AsHTAPkcMVyYGXDvUtH0CjAunhQLuC/uFAxKhjqjRzbVCYUcjOPAwjCtcu+EJuCjmcPOdbkGO9LZiadZVp5OICuQ5UnfpVRJH/L0nch+NlkrS1MG2YOZz7PIkMvOrMLtQoHwY83U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=V4aP/rfI; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c87c7d6ad4so5891287a12.3
-        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 03:16:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1728296158; x=1728900958; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uD7+x06HNAsGvnUsU1IbHnMrioZv6+EXemRCdJxKLoc=;
-        b=V4aP/rfIVYJxRLj7NCgAG5rh+521Cw9/uvwF3u0jKWC1gRmKSZd04K1zIt3oTJpmS6
-         WjFuZD8nC1MmotYAUCcWFw+iiLX8hWUR+5QLvRVfYvMdOeBGZaeMZwQbKVZE6N5yAElE
-         e0RTZyiUaWwc8u9VaSnB8KnYkF+zJQEgbI0JE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728296158; x=1728900958;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uD7+x06HNAsGvnUsU1IbHnMrioZv6+EXemRCdJxKLoc=;
-        b=VQ8BEjTZ4JOqVXVpBRj4ZzWzT0KZYGCZvmoWo6Qy5rodpyCn+mmtcApTdaU+DY1d+F
-         +Nr4SyzfIpOKdni11JvsNG961eQ2VuvRq1BU2WyY1mR+NzXYxQ/AhG8e4znZ/Q1XTkvc
-         OAJx8pGgDbwkEUihRajrzGjNF0pvuADnA5Bl9CsLnfr422i3HxtsXYbF8cXYhnpOIgz7
-         wtxCAG8qnGZ+BD3ZbiY+ObA3LxnTcMmk4dXz82HTWsVJ/bktJ0faA7jN09QKbX5Nd3fn
-         JtFAGmcOMf1msrZGZNAz/6/f5UtFwRMIfto1yh/WebjahI1GLOTNpPjy+nH1CMUxxzAA
-         5KVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvEA4lluMgow/SVGu72lRGvH1cs75dfEKsK1pqzXA2+CQeRZIbI3XvASRytGBiVegFOHMGZaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXgaTBsWdR0y3naCebFEuwNveSkmFR+U3xToaV0Sgo0IxiQRyk
-	Sgc596dTxwY1lMR3bZZyX0qR6JKr7PSbFhmLIKp+jY8qOtuTP8MCeVj9fRMcB6Iy0teb6rT+hqJ
-	3drdsvFDjU0g91JtHpD5VRKZiOgcuTBy8ThKwXw==
-X-Google-Smtp-Source: AGHT+IHCZRkH8BOWmS+bXReQgFIle5qN39Wo9G9kYJNjoBdkjLUW7WB9tEXtznOwowsN9Uy1rnTsh/v4dV2Zx1Ta3bQ=
-X-Received: by 2002:a17:907:7206:b0:a99:3dbf:648d with SMTP id
- a640c23a62f3a-a993dbf6715mr607796966b.45.1728296158491; Mon, 07 Oct 2024
- 03:15:58 -0700 (PDT)
+	s=arc-20240116; t=1728296314; c=relaxed/simple;
+	bh=krOqM6vdNbeSw0C/OYWHAeSREggmsj7zHZa4YITSka0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jeFum8D9ztA06dT8wmgOig0Y17VezZo8xt7AFj3meDcu7CaJOI7gjLEVc01e4L7GOm9E3ihVs0lwuj6XuWGLRSvsmT6VMkTCSrS6Za5XfEn3NB4qJx3a6oK5v9f0mJY4AHcaRNrVb86DAWHp+e8col80HXFX1qUl7Mr3zFMV0RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqp5XVMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77745C4CEC6;
+	Mon,  7 Oct 2024 10:18:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728296313;
+	bh=krOqM6vdNbeSw0C/OYWHAeSREggmsj7zHZa4YITSka0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=cqp5XVMYzn4FaQ226XP0J2evJZM+SkAKEc/ofv1AmJgqrp3mmkJ7Xn5tpRE828V3O
+	 mYDAK7oFosuoTt9gdrtc5QHRTZ15g7ip+fKuHNxxGc+NCEnNC/Boui3s8wJOznY95J
+	 iDyyOsnxhwqy7IYcPQsWsFu1P3QyRfzxJ30JWFiE=
+Subject: FAILED: patch "[PATCH] ext4: dax: fix overflowing extents beyond inode size when" failed to apply to 5.15-stable tree
+To: chengzhihao1@huawei.com,jack@suse.cz,tytso@mit.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 07 Oct 2024 12:18:30 +0200
+Message-ID: <2024100730-sleeve-exalted-315e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004181828.3669209-1-sashal@kernel.org> <20241004181828.3669209-48-sashal@kernel.org>
-In-Reply-To: <20241004181828.3669209-48-sashal@kernel.org>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Mon, 7 Oct 2024 12:15:45 +0200
-Message-ID: <CAJfpegtNF6CkSsE7yWq8-4W7HP3aOjE4xnAzJp0uiU-S7Wb8pg@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.11 48/76] fuse: allow O_PATH fd for FUSE_DEV_IOC_BACKING_OPEN
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Miklos Szeredi <mszeredi@redhat.com>, Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Fri, 4 Oct 2024 at 20:19, Sasha Levin <sashal@kernel.org> wrote:
->
-> From: Miklos Szeredi <mszeredi@redhat.com>
->
-> [ Upstream commit efad7153bf93db8565128f7567aab1d23e221098 ]
->
-> Only f_path is used from backing files registered with
-> FUSE_DEV_IOC_BACKING_OPEN, so it makes sense to allow O_PATH descriptors.
->
-> O_PATH files have an empty f_op, so don't check read_iter/write_iter.
->
-> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/fuse/passthrough.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/fs/fuse/passthrough.c b/fs/fuse/passthrough.c
-> index 9666d13884ce5..62aee8289d110 100644
-> --- a/fs/fuse/passthrough.c
-> +++ b/fs/fuse/passthrough.c
-> @@ -228,16 +228,13 @@ int fuse_backing_open(struct fuse_conn *fc, struct fuse_backing_map *map)
->         if (map->flags || map->padding)
->                 goto out;
->
-> -       file = fget(map->fd);
-> +       file = fget_raw(map->fd);
->         res = -EBADF;
->         if (!file)
->                 goto out;
->
-> -       res = -EOPNOTSUPP;
-> -       if (!file->f_op->read_iter || !file->f_op->write_iter)
-> -               goto out_fput;
-> -
->         backing_sb = file_inode(file)->i_sb;
-> +       pr_info("%s: %x:%pD %i\n", __func__, backing_sb->s_dev, file, backing_sb->s_stack_depth);
 
-That's a stray debug line that wasn't in there when I posted the patch
-for review[1], but somehow made it into the pull...
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Since this isn't a bug fix, it would be easiest to just drop the patch
-from the stable queues.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-But I'm okay with just dropping this stray line from the backport, or
-waiting for an upstream fix which does that.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x dda898d7ffe85931f9cca6d702a51f33717c501e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100730-sleeve-exalted-315e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Thanks,
-Miklos
+Possible dependencies:
 
-[1] https://lore.kernel.org/all/20240913104703.1673180-1-mszeredi@redhat.com/
+dda898d7ffe8 ("ext4: dax: fix overflowing extents beyond inode size when partially writing")
+91562895f803 ("ext4: properly sync file size update after O_SYNC direct IO")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From dda898d7ffe85931f9cca6d702a51f33717c501e Mon Sep 17 00:00:00 2001
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Date: Fri, 9 Aug 2024 20:15:32 +0800
+Subject: [PATCH] ext4: dax: fix overflowing extents beyond inode size when
+ partially writing
+
+The dax_iomap_rw() does two things in each iteration: map written blocks
+and copy user data to blocks. If the process is killed by user(See signal
+handling in dax_iomap_iter()), the copied data will be returned and added
+on inode size, which means that the length of written extents may exceed
+the inode size, then fsck will fail. An example is given as:
+
+dd if=/dev/urandom of=file bs=4M count=1
+ dax_iomap_rw
+  iomap_iter // round 1
+   ext4_iomap_begin
+    ext4_iomap_alloc // allocate 0~2M extents(written flag)
+  dax_iomap_iter // copy 2M data
+  iomap_iter // round 2
+   iomap_iter_advance
+    iter->pos += iter->processed // iter->pos = 2M
+   ext4_iomap_begin
+    ext4_iomap_alloc // allocate 2~4M extents(written flag)
+  dax_iomap_iter
+   fatal_signal_pending
+  done = iter->pos - iocb->ki_pos // done = 2M
+ ext4_handle_inode_extension
+  ext4_update_inode_size // inode size = 2M
+
+fsck reports: Inode 13, i_size is 2097152, should be 4194304.  Fix?
+
+Fix the problem by truncating extents if the written length is smaller
+than expected.
+
+Fixes: 776722e85d3b ("ext4: DAX iomap write support")
+CC: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219136
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://patch.msgid.link/20240809121532.2105494-1-chengzhihao@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+
+diff --git a/fs/ext4/file.c b/fs/ext4/file.c
+index c89e434db6b7..be061bb64067 100644
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -334,10 +334,10 @@ static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
+  * Clean up the inode after DIO or DAX extending write has completed and the
+  * inode size has been updated using ext4_handle_inode_extension().
+  */
+-static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
++static void ext4_inode_extension_cleanup(struct inode *inode, bool need_trunc)
+ {
+ 	lockdep_assert_held_write(&inode->i_rwsem);
+-	if (count < 0) {
++	if (need_trunc) {
+ 		ext4_truncate_failed_write(inode);
+ 		/*
+ 		 * If the truncate operation failed early, then the inode may
+@@ -586,7 +586,7 @@ static ssize_t ext4_dio_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 		 * writeback of delalloc blocks.
+ 		 */
+ 		WARN_ON_ONCE(ret == -EIOCBQUEUED);
+-		ext4_inode_extension_cleanup(inode, ret);
++		ext4_inode_extension_cleanup(inode, ret < 0);
+ 	}
+ 
+ out:
+@@ -670,7 +670,7 @@ ext4_dax_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 
+ 	if (extend) {
+ 		ret = ext4_handle_inode_extension(inode, offset, ret);
+-		ext4_inode_extension_cleanup(inode, ret);
++		ext4_inode_extension_cleanup(inode, ret < (ssize_t)count);
+ 	}
+ out:
+ 	inode_unlock(inode);
+
 
