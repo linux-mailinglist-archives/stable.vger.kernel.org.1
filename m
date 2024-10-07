@@ -1,122 +1,118 @@
-Return-Path: <stable+bounces-81304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FED992D90
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:40:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA550992DA9
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D5C0B21BD8
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:40:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3319283A51
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931501D4176;
-	Mon,  7 Oct 2024 13:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6809E1D4326;
+	Mon,  7 Oct 2024 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="NlJ4r+5T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WcKkyqix"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B5156875;
-	Mon,  7 Oct 2024 13:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAD31662E4;
+	Mon,  7 Oct 2024 13:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728308446; cv=none; b=LWO1VkXQQfqtqCT3GLuNvuhvKCMcLaYUqHOZ0Cx0/DNulUfk7H+qd3W8h2u9GmScPGCMSIWaFvxNl1/lLudNQF5xzP7gtcT4Bjl+qt6aNCHmKHIjlG5PWKMTrdWCQDb+NcpMU25h/mgKTW0LEJx37KiFiQW+HIUbxgEhdRrCpas=
+	t=1728308834; cv=none; b=oAm+vNn+KCnlmMEJryYAsJsdN5uZN7JRhy82iPEbqCDh4U9GYXJKeAtRQnPdGGGaDvN7jAWm/Sdp6ok0FabAPe/Isu36GRsYhHisoZp1mjjZBFzDHOJska+ONH10OyesN1TjG8cblWwsahFbAiyPIrV1c+/5Qaxekb5CNvE4P48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728308446; c=relaxed/simple;
-	bh=jLz84yx57rMUyMrYweXyVDvuBOPGOAyZYEzz4GQzM78=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=PBuC1BrstSQFHjuLlohJ8s9LxrVOmrju3OtBVvOExAsE+Uw5s8IcwyYVb+p2pM1nX+rmbXXm7ACSayFd91Gq812KoJxgTaJwuGUgcviARs3l44MeBFP7QU1GNSq2knijXCfsw4k2WpJvuriQqZVnWzjmdf4Nw8esUsciKcCRj8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=NlJ4r+5T; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1728308423; x=1728913223; i=markus.elfring@web.de;
-	bh=uNDbyTC+VvTw4II8s+8j3WlwWTsyRMvrYvyOAIO6/gw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=NlJ4r+5TwqjWaDr3b8lv54NXLE12M75yY1PuGqve8EHk6iukf3rAo7Xo8mBLERo0
-	 ex02+qHeivWGi+xVsQULamO2TxMekqdJsQJL7W18qZEplbJL3j7iXn6rFMvIH+l03
-	 2MqWR1Df4vZh2yCOz2SNzE/J3eW+7JRIOBq0UfjJGxkdMJBoAyb2KUetJLkMVNrMb
-	 jgDfCZKtpPoe5x7nXaQhF8/LfVb25V4v+j8GuLDOSlaVnFCo5I40MC/AGFVJjuejC
-	 TO2ug7+xr+bBIT8+HrHxFds9TKhTASA03iszzEBaEMeJZ/D2ApFX7lseUC/FXN9S9
-	 5rcZ36Qzy/C6qOW7VQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.81.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MsJSy-1tq3UC3Rta-00rGtP; Mon, 07
- Oct 2024 15:40:22 +0200
-Message-ID: <bc2f9291-c91d-4e46-bfa9-573eea6a67c2@web.de>
-Date: Mon, 7 Oct 2024 15:40:21 +0200
+	s=arc-20240116; t=1728308834; c=relaxed/simple;
+	bh=yGFj/O5rnD5FErbWRKXzgdC/zozHjxSeh3qRyTdrHpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M1UwSC4rwY0eVVFPhkvJUY43eb3pZbvZ9wLfaFxD/MWdzA31eL95U6KI5QKokBJSGpSXAMD5mipBONqTI16gfwIPDObxy7oh35CAMRNlmIlFwOo4JrwqI6QE1IEZdhC9hv70HZ0trCofQR9Lti79GdbT8+jUuUIqwwZ6TB133uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WcKkyqix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED8AC4CEC6;
+	Mon,  7 Oct 2024 13:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728308833;
+	bh=yGFj/O5rnD5FErbWRKXzgdC/zozHjxSeh3qRyTdrHpY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WcKkyqixZ6z9FTdcHN0rpj+oqcJa7DojRBwBguzjszsRUG+BXIOpEGXGGNAOtJiXP
+	 eB/BJCu4bYYJ8InH9iZhMLfqq3EwZOds2+Lt2AinjfSok9aZZqxkn3YikXtMXCvI6n
+	 EUn58tucHkdlPrnyJiX8s+GcOW1Tb4u1SdAKfcNBascNXYT3xTfbNetfsILRPFPFBt
+	 i4iHr0s+DqqBVrliP8zvzEfQ4gBf5bJxDef72m4EAfLspRqHSBHViTsM9zFR+q+wYi
+	 Ru+3HFHNa2wmjyc9PU7tMYWisHGw6nPds3whgWsEFNv8Iyw+h7Tx9Q8SYHPemURAyb
+	 52KrkkclVeHwQ==
+Date: Mon, 7 Oct 2024 14:47:09 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Zichen Xie <zichenxie0106@gmail.com>, alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Rohit kumar <quic_rohkumar@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Takashi Iwai <tiwai@suse.com>, stable@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Zijie Zhao <zzjas98@gmail.com>
+Subject: Re: [PATCH v3] ASoC: qcom: Fix NULL Dereference in
+ asoc_qcom_lpass_cpu_platform_probe()
+Message-ID: <ZwPmXVzXphEtvvhx@finisterre.sirena.org.uk>
+References: <20241006205737.8829-1-zichenxie0106@gmail.com>
+ <9be6b874-0c4d-4100-887f-0aa693985715@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Zichen Xie <zichenxie0106@gmail.com>, alsa-devel@alsa-project.org,
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jaroslav Kysela <perex@perex.cz>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Rohit kumar <quic_rohkumar@quicinc.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Takashi Iwai <tiwai@suse.com>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Chenyuan Yang <chenyuan0y@gmail.com>, Zijie Zhao <zzjas98@gmail.com>
-References: <20241006205737.8829-1-zichenxie0106@gmail.com>
-Subject: Re: [v3?] ASoC: qcom: Fix NULL Dereference in
- asoc_qcom_lpass_cpu_platform_probe()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241006205737.8829-1-zichenxie0106@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="9JgK+5okZLJh/tVY"
+Content-Disposition: inline
+In-Reply-To: <9be6b874-0c4d-4100-887f-0aa693985715@web.de>
+X-Cookie: Editing is a rewording activity.
+
+
+--9JgK+5okZLJh/tVY
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:riV0L5mlmEIR4dXPGagU2I773oUqWQtoY5KYJxgB1uVUBjxO5Om
- zNswnhL7l5jeECauaAHGaRj1UYfNM1QSxOxpcZVrl1iz+JOtnI1L2vA/K7P9hjZSUAlztn6
- TOAfvKXIOIr1sy8jMQeOKp1MjBJWh9umA4anhUJJXMqRebm6rMIatMkIheT8/WP0UNw1c0B
- azqb0PrQC1FSw4sOmBamA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Fn7znV4Vg3o=;us8pt03XPhEI8ToSvd3lelJu9IA
- 1QhsJ66wVxBBvXjxnYLIANg3kXp25Y2n9wRMf9QcTDe3Hbf9xrC9WLvHlnV1GpvADdLlINUIw
- X96hgxF+6+RztwsX5+OfAEXfQ1+PBA4+vmMJ5xOG53pke6meywwyxRYGhsEwalrKpD0C7041T
- J/G7t0hy3r+1hZe9wgD270F/qXfGOrGtk6OhJ3V2jhKzL+TIzeN5neff17HFZqxBKe6LVVAyZ
- SDUqxwJX6yTf5LCJyT8C6Znx7N5dHYp7mBWO9pr/PvCNuwQMhgZHSbut4IXEigmgGprF7D1lA
- D/kjjelWVblWcmVd/wiggfIQtVhLZNtcSWzfXAftX1UkcX7j+EyDaqnc6PP14Yl49EIXMunns
- 0JYHUoLBF/2F9lq2BTTbWAb9UhC2RztLr2rcffe+3XY/EwNeHpvZyUH8KD6QkFxMsO6uerA0t
- VEfycSmES0Oz7ZBI6r0kVTqFz8qQleqVJKzj3DnQi3Ao4+TifpQGXNssa7MN7LeUvBJSIB8cg
- y8+2mdBxOWkGWo2TRJruEDQ0iPtVzl7LAZT4se1it7a9KiN4iWOZ6RSfuCmsrheGRTfWOgDle
- u0Mo3fNtEe3um2qdon8JTuyruancO66xZdMuNX7d660PeVExQlJxRKVDcLaFb5sWHRuryzPok
- v3rVK6qf26O5Dw7noQQfbwQ/JYSb/WjxgH8RhTmBoA2I6zJuQPm2AAZ9lrPDYGW5Q23gmEyjf
- CEjZ0djXbtPMgiNDH3BXxFztmmSsy1bfX1GIRjFXv2Jtca2y/LVpr1hcTKufslr6rELfEspwR
- ozDEeofaUVNr7am4mget4yvw==
 
-=E2=80=A6
-> ---
-> v2: Fix "From" tag.
-> v3: Format tags to Fixes/Cc/Signed-off-by.
-> ---
-=E2=80=A6
+On Mon, Oct 07, 2024 at 03:16:27PM +0200, Markus Elfring wrote:
+> > A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
+>=20
+>                    call?
+>=20
+>=20
+> > possibly return NULL pointer. NULL Pointer Dereference may be
+>=20
+> Can the term =E2=80=9Cnull pointer dereference=E2=80=9D be applied for
+> the final commit message (including the summary phrase)?
+>=20
+>=20
+> > triggerred without addtional check.
+>=20
+>   triggered?         additional?
 
-* How do you think about to reconsider the version numbers
-  a bit more?
+Feel free to ignore Markus, he has a long history of sending
+unhelpful review comments and continues to ignore repeated requests
+to stop.
 
-* Would you like to mention the repeated adjustment of
-  the patch subject?
+--9JgK+5okZLJh/tVY
+Content-Type: application/pgp-signature; name="signature.asc"
 
-* Can a duplicate marker line be replaced by a blank line?
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcD5l0ACgkQJNaLcl1U
+h9Bz3wf/Qjsm7YymNTSgU04NIuFJv7cm/idFHsogeWTEMXMQi8XF6YHHZnh5nqgT
+S9nuoLxNBpHddndwDTkmZjPEn/uptCpBeMHJRYa3L2Xc4C605FUBt1uy2kM3LmRX
+konGCd7t9CHNYWWErxvnOhPPgfIKInfEQHhBWl35R/zZRHWHLlN4DLb+SYCdx5JC
+ELx7rjvdBW0o5zUfhUi38aW1m/Lj+CI8/3bBKjTy3HZFx05qpLL0n9X/J8UGBhYS
+ZnNspHpLAo/qmNQBpB5HHYnNCG8YBnVgZvV48NHZJrvMJZ7T8oTOEhzArNcB/8Ou
+srH8XkXcQcrwKLOj9NYITJdOtwxQ0Q==
+=h7hN
+-----END PGP SIGNATURE-----
 
-See also:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.12-rc2#n231
-
-Is the email address =E2=80=9Clinux-kernel@vger.kernel.org=E2=80=9D still =
-relevant here?
-
-Regards,
-Markus
+--9JgK+5okZLJh/tVY--
 
