@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F7F993436
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:59:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CB6993421
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E2B1B21A35
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DCCD1C21312
 	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1995B1DCB3D;
-	Mon,  7 Oct 2024 16:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F411DD522;
+	Mon,  7 Oct 2024 16:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xolETX9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sA8ERmux"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1981DBB1D
-	for <Stable@vger.kernel.org>; Mon,  7 Oct 2024 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E3C1DBB1D
+	for <Stable@vger.kernel.org>; Mon,  7 Oct 2024 16:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728320077; cv=none; b=qz4Pg3zM/cfhT5J/PfYlHYwlyPnn9EAmgNhliaobN/vZOrOlJxsSmR7ahsBmb6TRnDfaNl3KIJzj6S9iujIcmhRVSp0npuIcd3HDgvMVREr8lGZG6OYTBp2K67yha+bz4rGMPv3mK7mH/AtPTJhvSf+M5FUDaprxU5kIkS5wH/0=
+	t=1728320081; cv=none; b=sdSbV8HwQxwhdddbmVCggKym9gV+QtsR9PTETQF7bP7egFrIsylRviGiexEJHqEgWD2fSvlzVg/0s4Lp1EmU7lWikLTvFskaFiGmHp9YuA6Lp6O8cp5Gpw7Y0KJM5Dq7r4X1ybV4pZRhZbCZndF/kcS6g7CYcw25o+Wh6oLu9zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728320077; c=relaxed/simple;
-	bh=NGtDfgAi90TslKSf3R8HHUfCWZHIRePf1psXgoodfAk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MDuURhoJdyUgNhlhZ0IZ+1i38eaAvCwcd0crpCq41G/GvQ+Pn2mo0HVWPbXa7/AHUXfYY56QvKQfFifYA077+M4PNapYxE0EhQ3C7FaaYuEwPJiGvijLdgMESJkIIj7AU+6hzqLV5tx0LpT4UaCtakykuwIGMeoaj/ka8/my5xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xolETX9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D2DC4CEC6;
-	Mon,  7 Oct 2024 16:54:37 +0000 (UTC)
+	s=arc-20240116; t=1728320081; c=relaxed/simple;
+	bh=ozwxw/iYZgNDXDvc5z4ml0kcZ5gdBZDMSgU8DpCRleg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kCgwN3/754VItTmySOcY5XQ37HLXHu8IsTXoDA5r8WSvfL6AXM4qMl0sP1KdfIGK4JIRW5K/gNcRIYoPlA/muWGZNb6MuYO8VzJQZzKl86hwB2ZfW+dRJkekoNxU5k3y9hF5/nksTS6N3LxJ2f03/8dSpl+oLcuLKaeuXcwY1u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sA8ERmux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776A7C4CEC6;
+	Mon,  7 Oct 2024 16:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728320077;
-	bh=NGtDfgAi90TslKSf3R8HHUfCWZHIRePf1psXgoodfAk=;
+	s=korg; t=1728320080;
+	bh=ozwxw/iYZgNDXDvc5z4ml0kcZ5gdBZDMSgU8DpCRleg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xolETX9LHSN4ylYxPQJfjEpwne4rvHim7otcjzDpZmnd+R6Pd96JAsKBgxEQmZlx2
-	 Kfzw7GC5V5823aCSaUghE60O/xyt/mhbWHf+HHZwB0YOjz/H0yWmsUciJlsSUZhYqC
-	 YLyXsu+1w2GanHm0sHTCS9SKPC3O5yp2O3aDrf+o=
-Subject: FAILED: patch "[PATCH] iio: pressure: bmp280: Fix regmap for BMP280 device" failed to apply to 6.1-stable tree
+	b=sA8ERmuxg+tHoHNFcw51vqvM8V99uabFmSv89C78g3/5kYfk2igx4IroDEcXIorMH
+	 BOL9IZr7msphZbfuRvExFQucJTIQeHn/lJUgGcTzRnxDcPdRWhwKahcRXTddXCQXrn
+	 1imtwLadiIuKLCSPMkY8FFlP1Ka+cGMnUJ/+HzAc=
+Subject: FAILED: patch "[PATCH] iio: pressure: bmp280: Fix regmap for BMP280 device" failed to apply to 5.10-stable tree
 To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 18:54:29 +0200
-Message-ID: <2024100729-showbiz-slinging-fa22@gregkh>
+Date: Mon, 07 Oct 2024 18:54:30 +0200
+Message-ID: <2024100730-headway-thinness-1068@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x b9065b0250e1705935445ede0a18c1850afe7b75
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100729-showbiz-slinging-fa22@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100730-headway-thinness-1068@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -80,6 +80,15 @@ accb9d05df39 ("iio: pressure: bmp280: Add nvmem operations for BMP580")
 c25ea00fefa4 ("iio: pressure: bmp280: Add preinit callback")
 0b0b772637cd ("iio: pressure: bmp280: Use chip_info pointers for each chip as driver data")
 12491d35551d ("iio: pressure: bmp280: convert to i2c's .probe_new()")
+10b40ffba2f9 ("iio: pressure: bmp280: Add more tunable config parameters for BMP380")
+8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
+18d1bb377023 ("iio: pressure: bmp280: reorder i2c device tables declarations")
+327b5c0512c1 ("iio: pressure: bmp280: Fix alignment for DMA safety")
+b00e805a47a8 ("iio: pressure: bmp280: simplify driver initialization logic")
+83cb40beaefa ("iio: pressure: bmp280: Simplify bmp280 calibration data reading")
+2405f8cc8485 ("iio: pressure: bmp280: use FIELD_GET, FIELD_PREP and GENMASK")
+5f0c359defea ("iio: pressure: bmp280: reorder local variables following reverse xmas tree")
+5d5129b17f83 ("iio: pressure: bmp280: fix datasheet links")
 
 thanks,
 
