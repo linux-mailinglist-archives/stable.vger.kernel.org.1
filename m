@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3325A99318A
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:39:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4564499318E
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC391C2360D
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:39:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30EB0B272C7
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0D51D90C8;
-	Mon,  7 Oct 2024 15:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B851D90D3;
+	Mon,  7 Oct 2024 15:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AErzkhN7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFrB+K01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADEF1D90D1
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421631D90D1
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315569; cv=none; b=eAASR5eD4hjwiZ1fSiQY/3RbdiPLfVIRj6YcmReCfi36pSi64J5YeLDYGiX/8OngfMGQREngk8G/tb9MLZTFdgulm3GTU3qn+RJ18Gdz8i/X2NxXQ+XswnRuUo4dLwlrf/TqjvUYNzPFlr/0VAv3dBxmFA/vuQ50Vuf0lAxAP8s=
+	t=1728315573; cv=none; b=ZCmUsMtQKOwVqN+78ftqZOYGaLwcAhluJ2jw5lX5Wvk9A4A9Lfb0vYzRzyOmFkXGm2qGLBLAY6OEjS08seA8lV2xdBsKTvwFcl+YC6ZDWMCqb1wSDv+QZJGVkJbDW5OVgFiOYGk4hsCVqlC05pb+uOuXfm6hcedg5MER/Cy/aKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315569; c=relaxed/simple;
-	bh=vP4SkkKlhTkzPNm1MFy1Ht1zLsbS9b/lv0HxFdi0KWg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b1vpwnJIIx3kk2nHLbdebmOu0LrRplKt7ObW6B308QCa9X3qLjBkMUD2eoKC2x5BLW0JcSCkCQtBfVTNx5vAmSrKvulLch2glIPEzHkzzTW0MDK/cgh2L+YU//h0F2Y16kKHEDhz+XxwNHn/Np7ThX6DYwCTAyO0C2TZmB/fK3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AErzkhN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16853C4CEC6;
-	Mon,  7 Oct 2024 15:39:28 +0000 (UTC)
+	s=arc-20240116; t=1728315573; c=relaxed/simple;
+	bh=edXUfNqjCnepTC1Yry05B0DPcfUz0FBxTkNLVfxkdl8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EEmAyzyrBNiZSUQlIEZrwmFkN80Bcp3HlSXlnJQ09BwIAVzzOoayhzh6vUZdhHwg8UULEbw4dqz0wo66Rd055deGGYO4zWoA1Fx+ciC10eu0CPdjc9fEduAEXhjYQLi00giLTEs3GMF8MMLI5mP2ZZCiqbP3dvhGF4/FiMVUG4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFrB+K01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B00C4CEC6;
+	Mon,  7 Oct 2024 15:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728315569;
-	bh=vP4SkkKlhTkzPNm1MFy1Ht1zLsbS9b/lv0HxFdi0KWg=;
+	s=korg; t=1728315573;
+	bh=edXUfNqjCnepTC1Yry05B0DPcfUz0FBxTkNLVfxkdl8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AErzkhN7wSf9NSeo2i61NiI572E7/yVGKLiLrSMBvf3TOghwLT3f6z84H9HBqER8j
-	 6wVOihLCdGC5mVuTERq0vNWeGH8meci2joXRqaSPJrSZ6V6EjzdBzFgcGpiJnrKHDU
-	 cbWt70FZkWo3CBmbi++Uw8JxXnQb9Wp3Vq0DDcp0=
-Subject: FAILED: patch "[PATCH] NFSD: Limit the number of concurrent async COPY operations" failed to apply to 6.1-stable tree
+	b=SFrB+K01kkzvx3P/ofU0w9rIqOfWcdaRuSfiJ0mJcVaQBm4x4KOIhzGrvyB4hFTFB
+	 MqQv+OawyiBAsbnEctCt4cFvg8Ppv68tJA4Cia90dPRvGAL7LzXs4hEpF22GLLnd4Z
+	 8Vv3UV0z94MC/bqPMnj+z5IkyC++6igOXbAHg2cU=
+Subject: FAILED: patch "[PATCH] NFSD: Limit the number of concurrent async COPY operations" failed to apply to 5.15-stable tree
 To: chuck.lever@oracle.com,jlayton@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:39:19 +0200
-Message-ID: <2024100719-unframed-resolved-7a54@gregkh>
+Date: Mon, 07 Oct 2024 17:39:20 +0200
+Message-ID: <2024100720-untaken-groggily-473b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x aadc3bbea163b6caaaebfdd2b6c4667fbc726752
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100719-unframed-resolved-7a54@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100720-untaken-groggily-473b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,18 @@ aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
 34e8f9ec4c9a ("NFSD: fix leaked reference count of nfsd4_ssc_umount_item")
 6ba434cb1a8d ("nfsd: clean up potential nfsd_file refcount leaks in COPY codepath")
 75333d48f922 ("NFSD: fix use-after-free in __nfs42_ssc_open()")
+781fde1a2ba2 ("NFSD: Rename the fields in copy_stateid_t")
+754035ff79a1 ("NFSD enforce filehandle check for source file in COPY")
+a11ada99ce93 ("NFSD: Move copy offload callback arguments into a separate structure")
+e72f9bc006c0 ("NFSD: Add nfsd4_send_cb_offload()")
+ad1e46c9b07b ("NFSD: Remove kmalloc from nfsd4_do_async_copy()")
+3b7bf5933cad ("NFSD: Refactor nfsd4_do_copy()")
+478ed7b10d87 ("NFSD: Refactor nfsd4_cleanup_inter_ssc() (2/2)")
+24d796ea383b ("NFSD: Refactor nfsd4_cleanup_inter_ssc() (1/2)")
+1913cdf56cb5 ("NFSD: Replace boolean fields in struct nfsd4_copy")
+87689df69491 ("NFSD: Shrink size of struct nfsd4_copy")
+3988a57885ee ("NFSD: Rename boot verifier functions")
+91d2e9b56cf5 ("NFSD: Clean up the nfsd_net::nfssvc_boot field")
 
 thanks,
 
