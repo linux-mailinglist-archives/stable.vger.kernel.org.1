@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CEB99350F
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:30:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79792993510
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A781A2849F3
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:30:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 389D8281716
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DE91DD87A;
-	Mon,  7 Oct 2024 17:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7F2139587;
+	Mon,  7 Oct 2024 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYUcVsmt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oecTQCA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48DA17740
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CCE17740
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728322245; cv=none; b=URkg4FUth2G0nRqwQfE+wOYBkuHHa+k+Tahw+HDhCbM1o8a0R0Zo3U7G/VeVZbhc9BGT3vbLA2hwN40DyhNqzCQdgu0EC2sjrvhLMdBZE0QV7ceCiAE7Ol3hGrqbEt+S3/YWV/rovXNakNVXDy/Ds3KSy+A/DGrQ0u5Crzd0EFI=
+	t=1728322304; cv=none; b=Ph40cqGAMGgk3yhwUqVEkrNwt5sZmtuB5c262eyJI43/YdRlf4VfeglxVrdNugQd++TTjm9ZPNOUuswFvEXTDDNpr5Vk2Yg+Vu67kclkuzWvffJL9Zw9KH7gWBNfURKF3BxmzDMIjYrzPY2Nu8FG4rnJuZ6oP3neU54dEAtGm/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728322245; c=relaxed/simple;
-	bh=IAXcC9CAbeSUZSWyOl2aHTkZ7QmeGHd01aoTHIcy+Uw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=krHCnAwV74hIOznYNGPFQS4y5JJaRfO3VdWux6pD/WndlxBaJzBa3K59Jy55lHGKA0eNOWWLvzw11br5rJWA4mlEuHa7G7J4X2jFUY4COiLEZdzR3EO3Q0PanEcchvzwXYCEkXNivItVJn0JXzKu+J8zDALseO9MDBVvVDodroQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYUcVsmt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE17C4CEC6;
-	Mon,  7 Oct 2024 17:30:44 +0000 (UTC)
+	s=arc-20240116; t=1728322304; c=relaxed/simple;
+	bh=OP2imvaz6xibDXZyen9WGt+p0QUyOie0K9VPVHxEASA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j6RNPTtF2lM/cIptD2mlSlmL1JqQBDdc3Nmo0CN7hr5kRsKDB+a1YrS/5UetbmGGM2aP5oHnh36Tx7D5xY2saNu7LkEpqSuqtH0kby+8PFuuXIfJUx6GRG0tRwQN1ShWUPwxiS7fAlW2pphcD8SaPFCDIvxKu0y2UOellrzNMYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oecTQCA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A57C4CEC6;
+	Mon,  7 Oct 2024 17:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728322245;
-	bh=IAXcC9CAbeSUZSWyOl2aHTkZ7QmeGHd01aoTHIcy+Uw=;
+	s=korg; t=1728322304;
+	bh=OP2imvaz6xibDXZyen9WGt+p0QUyOie0K9VPVHxEASA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fYUcVsmt21qvixgvo51tSjqsaMdJJNjoF53oEZiExpCkiqDmSNy6rqjSzrWXp//M0
-	 oYVSwLlcO0jCL98zeStDpShAfznmxF5LAHOysjBR40Lj4glKLxj2XzTDXj0N7fhaiX
-	 7rgxVG7vXGXdWs0SJd/kFfvSqLSETGRGbtPvVoAM=
-Subject: FAILED: patch "[PATCH] io_uring/net: harden multishot termination case for recv" failed to apply to 6.1-stable tree
-To: axboe@kernel.dk
+	b=oecTQCA5GE9WdC20yDfXqjUY+w7D4bqXBZpEH4I78Fh6k4vW1V1wydZiV6/d/mEs+
+	 eujksgo4a29+Qj3SjamYfkz1unRfGPTkfq8Vr58x4lTLOivoIdzojiZeFfi1XXHMff
+	 /0FptZ4O2xsaQ0GNRckUFbrfszXNap2GSbVe1grU=
+Subject: FAILED: patch "[PATCH] tracing/timerlat: Fix duplicated kthread creation due to CPU" failed to apply to 6.1-stable tree
+To: liwei391@huawei.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,rostedt@goodmis.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 19:30:33 +0200
-Message-ID: <2024100733-porridge-situated-e017@gregkh>
+Date: Mon, 07 Oct 2024 19:31:41 +0200
+Message-ID: <2024100741-afoot-canal-db89@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,28 +62,19 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x c314094cb4cfa6fc5a17f4881ead2dfebfa717a7
+git cherry-pick -x 0bb0a5c12ecf36ad561542bbb95f96355e036a02
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100733-porridge-situated-e017@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100741-afoot-canal-db89@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-c314094cb4cf ("io_uring/net: harden multishot termination case for recv")
-4a3223f7bfda ("io_uring/net: switch io_recv() to using io_async_msghdr")
-fb6328bc2ab5 ("io_uring/net: simplify msghd->msg_inq checking")
-186daf238529 ("io_uring/kbuf: rename REQ_F_PARTIAL_IO to REQ_F_BL_NO_RECYCLE")
-eb18c29dd2a3 ("io_uring/net: move recv/recvmsg flags out of retry loop")
-c3f9109dbc9e ("io_uring/kbuf: flag request if buffer pool is empty after buffer pick")
-95041b93e90a ("io_uring: add io_file_can_poll() helper")
-521223d7c229 ("io_uring/cancel: don't default to setting req->work.cancel_seq")
-4bcb982cce74 ("io_uring: expand main struct io_kiocb flags to 64-bits")
-72bd80252fee ("io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers")
-76b367a2d831 ("io_uring/net: limit inline multishot retries")
-91e5d765a82f ("io_uring/net: un-indent mshot retry path in io_recv_finish()")
-595e52284d24 ("io_uring/poll: don't enable lazy wake for POLLEXCLUSIVE")
-89d528ba2f82 ("io_uring: indicate if io_kbuf_recycle did recycle anything")
-4de520f1fcef ("Merge tag 'io_uring-futex-2023-10-30' of git://git.kernel.dk/linux")
+0bb0a5c12ecf ("tracing/timerlat: Fix duplicated kthread creation due to CPU online/offline")
+177e1cc2f412 ("tracing/osnoise: Use a cpumask to know what threads are kthreads")
+e88ed227f639 ("tracing/timerlat: Add user-space interface")
+4998e7fda149 ("tracing/osnoise: Switch from PF_NO_SETAFFINITY to migrate_disable")
+30838fcd8107 ("tracing/osnoise: Add OSNOISE_WORKLOAD option")
+b179d48b6aab ("tracing/osnoise: Add osnoise/options file")
 
 thanks,
 
@@ -91,55 +82,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c314094cb4cfa6fc5a17f4881ead2dfebfa717a7 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Thu, 26 Sep 2024 07:08:10 -0600
-Subject: [PATCH] io_uring/net: harden multishot termination case for recv
+From 0bb0a5c12ecf36ad561542bbb95f96355e036a02 Mon Sep 17 00:00:00 2001
+From: Wei Li <liwei391@huawei.com>
+Date: Tue, 24 Sep 2024 17:45:11 +0800
+Subject: [PATCH] tracing/timerlat: Fix duplicated kthread creation due to CPU
+ online/offline
 
-If the recv returns zero, or an error, then it doesn't matter if more
-data has already been received for this buffer. A condition like that
-should terminate the multishot receive. Rather than pass in the
-collected return value, pass in whether to terminate or keep the recv
-going separately.
+osnoise_hotplug_workfn() is the asynchronous online callback for
+"trace/osnoise:online". It may be congested when a CPU goes online and
+offline repeatedly and is invoked for multiple times after a certain
+online.
 
-Note that this isn't a bug right now, as the only way to get there is
-via setting MSG_WAITALL with multishot receive. And if an application
-does that, then -EINVAL is returned anyway. But it seems like an easy
-bug to introduce, so let's make it a bit more explicit.
+This will lead to kthread leak and timer corruption. Add a check
+in start_kthread() to prevent this situation.
 
-Link: https://github.com/axboe/liburing/issues/1246
 Cc: stable@vger.kernel.org
-Fixes: b3fdea6ecb55 ("io_uring: multishot recv")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20240924094515.3561410-2-liwei391@huawei.com
+Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index f10f5a22d66a..18507658a921 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1133,6 +1133,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 	int ret, min_ret = 0;
- 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
- 	size_t len = sr->len;
-+	bool mshot_finished;
+diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
+index 1439064f65d6..d1a539913a5f 100644
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2007,6 +2007,10 @@ static int start_kthread(unsigned int cpu)
+ 	void *main = osnoise_main;
+ 	char comm[24];
  
- 	if (!(req->flags & REQ_F_POLLED) &&
- 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
-@@ -1187,6 +1188,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 		req_set_fail(req);
++	/* Do not start a new thread if it is already running */
++	if (per_cpu(per_cpu_osnoise_var, cpu).kthread)
++		return 0;
++
+ 	if (timerlat_enabled()) {
+ 		snprintf(comm, 24, "timerlat/%d", cpu);
+ 		main = timerlat_main;
+@@ -2061,11 +2065,10 @@ static int start_per_cpu_kthreads(void)
+ 		if (cpumask_test_and_clear_cpu(cpu, &kthread_cpumask)) {
+ 			struct task_struct *kthread;
+ 
+-			kthread = per_cpu(per_cpu_osnoise_var, cpu).kthread;
++			kthread = xchg_relaxed(&(per_cpu(per_cpu_osnoise_var, cpu).kthread), NULL);
+ 			if (!WARN_ON(!kthread))
+ 				kthread_stop(kthread);
+ 		}
+-		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
  	}
  
-+	mshot_finished = ret <= 0;
- 	if (ret > 0)
- 		ret += sr->done_io;
- 	else if (sr->done_io)
-@@ -1194,7 +1196,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 	else
- 		io_kbuf_recycle(req, issue_flags);
- 
--	if (!io_recv_finish(req, &ret, kmsg, ret <= 0, issue_flags))
-+	if (!io_recv_finish(req, &ret, kmsg, mshot_finished, issue_flags))
- 		goto retry_multishot;
- 
- 	return ret;
+ 	for_each_cpu(cpu, current_mask) {
 
 
