@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006BF99309E
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:07:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB379930A2
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969EE28144B
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:07:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C2A6B26793
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F711D88B9;
-	Mon,  7 Oct 2024 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B05A1D8DF3;
+	Mon,  7 Oct 2024 15:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrntQk1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjFM4Eri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EE21D86F1
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2EA1D86D5
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728313575; cv=none; b=nd1yN29ZSJLO6Xqr6k+FvYG2GIZ2pHHOynSoC23/92Oa7vKUaSyznUBaU4RM0NdM38jb5RRMSZesC23KHHU383j20doT7okZTVHweuJTJo9i2qbNNq0sUwHXMH2ZdDyRX9b3uAQ5JpdXDJhPjcYk4qitufTCVmYzem40yAXOuo0=
+	t=1728313580; cv=none; b=pRKUqqiFUZyZKha0dEUHd/rLO43cV2CjqMVqdNapvg69/8aLn2JJZRvqVaQIRcniPkS2zEQgQFDqh1Uuqq1D/EZzEdBr4wNbinp+wQZLWYa/jVzTYk4i5GHmLTolRyurlZGBD3EXj7kGmLwLX4QJkdL/KArGNyM8EACTdSlb3nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728313575; c=relaxed/simple;
-	bh=5sepHUCc3Zsdl0rPg7fgMew0nQP9ufYG3ef5//JPRNg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U6qhvU/+MScSiQnnXb+gof6bX84iBZLPW1s92Xs4N99PAjjYD8dfSp6dKR5Qv6BvCuxo7U3xmYw94feLLJKbFKashiuU7ophDuzfPNCKVsGm43HCC+jI2nUI5x9xDlJrAgKe7Pu1lkaGC6NScmqpwlY5dpqIeAYTjJKTtG6L6t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrntQk1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CE2C4CEC6;
-	Mon,  7 Oct 2024 15:06:14 +0000 (UTC)
+	s=arc-20240116; t=1728313580; c=relaxed/simple;
+	bh=bwCDAqL1hZllZw7iSp3bt81he4dl1u/EeiWdHAc/wCQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aPOrXmG4JlgEHUx6Yksx+mTiUyqcGUu/VnJFIUr0ftXMPwSUrPcpI7S8luZxbi12PVSbHdH5cMz/pVqfS2YafkqaVT409XjRYUoVar5rg1/SnhTfhi7jvV/UjjsJGXZoi4EJP1kvCVzq3LmhRJNqIpShu/p49oL2Ivmj2RivySA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjFM4Eri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E8CC4CECC;
+	Mon,  7 Oct 2024 15:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728313575;
-	bh=5sepHUCc3Zsdl0rPg7fgMew0nQP9ufYG3ef5//JPRNg=;
+	s=korg; t=1728313578;
+	bh=bwCDAqL1hZllZw7iSp3bt81he4dl1u/EeiWdHAc/wCQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qrntQk1yES5mmDPA8A/nAvApl3KDvEzXfbcAGTyNZV5IebstAaCGrEe5O5hcq6STj
-	 Bp1pQU/F/SXWT9uTm9/y7WgBeJWujx7l2ZgRzgr2sF9g7tDJ4dlV/wUg+BRAjG1NHw
-	 2r5sTHKxrbHIFd+wK4tody1bfCUAji346Z2Cte+0=
-Subject: FAILED: patch "[PATCH] mm: z3fold: deprecate CONFIG_Z3FOLD" failed to apply to 6.10-stable tree
+	b=VjFM4EriuJyCxZqhuXk911ZaN2FO1FJQkzvAlKL1TBgs7AbS0a0w2StlEJzO7jh+o
+	 ZFJUVPUXk6m2gbMuZZUhG+eYrtkVXBpWadVTkHUKSRbp0PHK3VoyudpCLEyGtAhu+/
+	 72zJTDfFn7GP+081L04QTx/8SE5bptZ25EDMh/J4=
+Subject: FAILED: patch "[PATCH] mm: z3fold: deprecate CONFIG_Z3FOLD" failed to apply to 6.6-stable tree
 To: yosryahmed@google.com,akpm@linux-foundation.org,aneesh.kumar@kernel.org,arnd@arndb.de,chenhuacai@kernel.org,chris@chrisdown.name,christophe.leroy@csgroup.eu,hannes@cmpxchg.org,hch@lst.de,kernel@xen0n.name,linmiaohe@huawei.com,mpe@ellerman.id.au,naveen.n.rao@linux.ibm.com,nphamcs@gmail.com,npiggin@gmail.com,senozhatsky@chromium.org,stable@vger.kernel.org,vitaly.wool@konsulko.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:06:08 +0200
-Message-ID: <2024100708-flatware-expert-550d@gregkh>
+Date: Mon, 07 Oct 2024 17:06:10 +0200
+Message-ID: <2024100710-snout-expiring-3cbb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7a2369b74abf76cd3e54c45b30f6addb497f831b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100708-flatware-expert-550d@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100710-snout-expiring-3cbb@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,18 @@ Possible dependencies:
 43d746dc49bb ("mm/zsmalloc: use a proper page type")
 8db00ad56461 ("mm: allow reuse of the lower 16 bit of the page type with an actual type")
 6d21dde7adc0 ("mm: update _mapcount and page_type documentation")
+ff202303c398 ("mm: convert page type macros to enum")
+46df8e73a4a3 ("mm: free up PG_slab")
+d99e3140a4d3 ("mm: turn folio_test_hugetlb into a PageType")
+fd1a745ce03e ("mm: support page_mapcount() on page_has_type() pages")
+29cfe7556bfd ("mm: constify more page/folio tests")
+443cbaf9e2fd ("crash: split vmcoreinfo exporting code out from crash_core.c")
+85fcde402db1 ("kexec: split crashkernel reservation code out from crash_core.c")
+55c49fee57af ("mm/vmalloc: remove vmap_area_list")
+d093602919ad ("mm: vmalloc: remove global vmap_area_root rb-tree")
+7fa8cee00316 ("mm: vmalloc: move vmap_init_free_space() down in vmalloc.c")
+4a693ce65b18 ("kdump: defer the insertion of crashkernel resources")
+9f2a63523582 ("Merge tag 'mm-nonmm-stable-2024-01-09-10-33' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
 
 thanks,
 
