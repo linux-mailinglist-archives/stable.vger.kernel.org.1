@@ -1,446 +1,162 @@
-Return-Path: <stable+bounces-81458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA0E993536
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:41:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D39993537
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:42:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FB89B20AD3
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:41:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B70321C2229F
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4701DDA1F;
-	Mon,  7 Oct 2024 17:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EF31DD896;
+	Mon,  7 Oct 2024 17:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8tlhxTe"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="yM1Uiwmv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5241DDA15
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D368C13632B
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728322869; cv=none; b=TYdsfypC2bFgPwA8jKzgydf3wzTj25+x7e+d3oZaXab+WPzSGISCqt/qz0Gwe/m0YsZAkttSTeMOeAFSD+dQSY9iVmtj0fL3n6Wl+29HwJ+KkQKRARHLUDl9p+sARegCDfAKuvdI7N44lyWvC/4sVvUcjnzIWGpRFEeT1jXA83I=
+	t=1728322957; cv=none; b=NNVQpLwUBNQzuCuQOlWQxVRxO2AgaC8V5v0fJvQKghzqI1dKnXyl4/k6fWdwEOMva0Dj6MihgRce3O3I/lu26E2/PmH0H27GvIJP0sf12fI+iADpuWKLc6iJu4w/WviNK8uL8uemz5ZcfPp6DQt4ls6BVK9/R0LAapNq0+wfDxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728322869; c=relaxed/simple;
-	bh=7BSaHzrHSCMRKVmhnPuYU0niWj9Xx0tG60DDvvxeXN0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sagydrvnUXDxFVoRVhSjGgM26ojGVgtxI9CcjrPXwCiVN1nOjcO+q5qaaOdefrvY1If/AAc4yooqvc+z9MhPv/tAVv/NpLxcpbvJ4IaqhOaCqtJ5cG0KeidMBt5TcepyLPwousMieWQv0xsUp0QQBnKRaC/9YYKJNOHr28UqQ0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8tlhxTe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66345C4CEC7;
-	Mon,  7 Oct 2024 17:41:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728322869;
-	bh=7BSaHzrHSCMRKVmhnPuYU0niWj9Xx0tG60DDvvxeXN0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=B8tlhxTexwyLHenF2DGfTuwYifxxlQIXyWylb5a75SrHikXigIIN05ICLlGIVK6un
-	 JfcpwKLSn/WN5+yhJQviA/gBhDPT9QeVkA8U4Ym2VGaRqEaiqUmcUaSpIuLESen19R
-	 GG16MNjpuo/5qigAVhGfVe1wHO+V49nWrHiC2OHI=
-Subject: FAILED: patch "[PATCH] close_range(): fix the logics in descriptor table trimming" failed to apply to 5.10-stable tree
-To: viro@zeniv.linux.org.uk
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 19:41:05 +0200
-Message-ID: <2024100705-pursuable-relenting-ba02@gregkh>
+	s=arc-20240116; t=1728322957; c=relaxed/simple;
+	bh=w6ZnCNt1Vqg3icH/I290wMUm2+4XbFE9JVYOmCHrHQc=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=MmdvjsAbkbkd14DocBW7LFOKt/LEgiDAv+X030eNLvsUTz86cdLzhV+qof90eLIe07xzRLkxVHoorDXJo8wy602RQm1A5R9w4NPRlwZrT8V5tObwqPG51dMq5PWaBRB/jSU3belIr+RgXsVZXNAjA0j8Z0YMJg+gnobV9KLfqpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=yM1Uiwmv; arc=none smtp.client-ip=209.85.166.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-3a2761f1227so15746435ab.0
+        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 10:42:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1728322953; x=1728927753; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PS5NA1ThaEVnkiTkM/GVrPYk7r9jGIHbFBqyFUVNhbA=;
+        b=yM1UiwmvkZFoaq/Ei8cNSBRBtnk5vg1J11KUOn7cR+dTb4T7+R+dzcpYpCghQqiCxd
+         NEtOZOkrjwG85HeSkCFeulYnZ4ML8d00vXp6ziDhBWEedf1H9Q1JlF1NuHG+mMRE75M8
+         lh0ni7gMgwyp4VmXYp7DhMiasSymAIdIET4rhvBsGEzWoJweUp6j2BvkdIMTjkclXMLD
+         qzQ4xkjcGx19Pm/bzscAa5bMS7hDrQLjtNEwWIL/OAh/c4CLwGKf9PQ7WWXabyz8FKu1
+         nwKz+DE08u8ynTQqXDB/ws84g3Mi5zvKicNyv6qcGrkJgQPv5aiQPTRcgOt9FOVRDcT3
+         uDEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728322953; x=1728927753;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=PS5NA1ThaEVnkiTkM/GVrPYk7r9jGIHbFBqyFUVNhbA=;
+        b=d4o69nA4qhREAoEKfF1kMebLCmlovnpIrkXycZbUPLzkuEqrPcERnON+29bVWOmvhL
+         wD1i5dFpx/9R5Z7kcpWFd3T/9SG5cxF5USCqZXyLTe7B4XWogh17/ASbIMJHHC1dNtAo
+         5T/WiRrqGbwNU/bIsB/arn0wtCeTxIpbusp4LXvUrL3kvhKlwC7hv2FD6E2iTY5mLPE3
+         vtfrgGYsTx3DPnoyvbJVcNFdAQaVYNnw3FxkyCUlVamDe5H2Qe1pkTDu+hl6zqqTOE/w
+         7zOfwzmiUb/yqDzHP0W7w7mDBRIpoEOjo4lMEjbTn40dIxtChQnqb41k32yP4XIqfLos
+         +gKQ==
+X-Gm-Message-State: AOJu0Yw2C3msWSGZDu+oR9lKjN/Qqdybn0YdHhOPy3CXR4h29nVwt2g0
+	wBjS8LoB7YEHff4kGiB38TTkFR5D/g7RV4DAox/0ONs+I1M5mtotUK7qADKBQ/E=
+X-Google-Smtp-Source: AGHT+IEFqk2OLzut3DxcDk1Bt62GqmNjTUGT35SDJggK18lVB9U6VXzjUmDWn9pT4Tl+5qHXdYVbzA==
+X-Received: by 2002:a05:6e02:1fc8:b0:3a0:aa15:3497 with SMTP id e9e14a558f8ab-3a375976e55mr112884675ab.1.1728322952902;
+        Mon, 07 Oct 2024 10:42:32 -0700 (PDT)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4db90af1a9asm198127173.164.2024.10.07.10.42.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Oct 2024 10:42:32 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------g2Q5I6jsE2Syy05xn6km1t5h"
+Message-ID: <bc227357-0a18-41f7-8743-04de427bff36@kernel.dk>
+Date: Mon, 7 Oct 2024 11:42:31 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-
-
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 678379e1d4f7443b170939525d3312cfc37bf86b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100705-pursuable-relenting-ba02@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-678379e1d4f7 ("close_range(): fix the logics in descriptor table trimming")
-c4aab26253cd ("fd_is_open(): move to fs/file.c")
-f60d374d2cc8 ("close_on_exec(): pass files_struct instead of fdtable")
-a88c955fcfb4 ("file: s/close_fd_get_file()/file_close_fd()/g")
-021a160abf62 ("fs: use __fput_sync in close(2)")
-11f3f500ec8a ("fork: add kernel_clone_args flag to not dup/clone files")
-54e6842d0775 ("fork/vm: Move common PF_IO_WORKER behavior to new flag")
-c81cc5819faf ("kernel: Make io_thread and kthread bit fields")
-fb04563d1cae ("sched: Show PF_flag holes")
-f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-9963e444f71e ("sched: Widen TAKS_state literals")
-f9fc8cad9728 ("sched: Add TASK_ANY for wait_task_inactive()")
-9204a97f7ae8 ("sched: Change wait_task_inactive()s match_state")
-1fbcaa923ce2 ("freezer,umh: Clean up freezer/initrd interaction")
-5950e5d574c6 ("freezer: Have {,un}lock_system_sleep() save/restore flags")
-0b9d46fc5ef7 ("sched: Rename task_running() to task_on_cpu()")
-8386c414e27c ("PM: hibernate: defer device probing when resuming from hibernation")
-6684cf42906f ("Merge tag 'pull-work.fd-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 678379e1d4f7443b170939525d3312cfc37bf86b Mon Sep 17 00:00:00 2001
-From: Al Viro <viro@zeniv.linux.org.uk>
-Date: Fri, 16 Aug 2024 15:17:00 -0400
-Subject: [PATCH] close_range(): fix the logics in descriptor table trimming
-
-Cloning a descriptor table picks the size that would cover all currently
-opened files.  That's fine for clone() and unshare(), but for close_range()
-there's an additional twist - we clone before we close, and it would be
-a shame to have
-	close_range(3, ~0U, CLOSE_RANGE_UNSHARE)
-leave us with a huge descriptor table when we are not going to keep
-anything past stderr, just because some large file descriptor used to
-be open before our call has taken it out.
-
-Unfortunately, it had been dealt with in an inherently racy way -
-sane_fdtable_size() gets a "don't copy anything past that" argument
-(passed via unshare_fd() and dup_fd()), close_range() decides how much
-should be trimmed and passes that to unshare_fd().
-
-The problem is, a range that used to extend to the end of descriptor
-table back when close_range() had looked at it might very well have stuff
-grown after it by the time dup_fd() has allocated a new files_struct
-and started to figure out the capacity of fdtable to be attached to that.
-
-That leads to interesting pathological cases; at the very least it's a
-QoI issue, since unshare(CLONE_FILES) is atomic in a sense that it takes
-a snapshot of descriptor table one might have observed at some point.
-Since CLOSE_RANGE_UNSHARE close_range() is supposed to be a combination
-of unshare(CLONE_FILES) with plain close_range(), ending up with a
-weird state that would never occur with unshare(2) is confusing, to put
-it mildly.
-
-It's not hard to get rid of - all it takes is passing both ends of the
-range down to sane_fdtable_size().  There we are under ->files_lock,
-so the race is trivially avoided.
-
-So we do the following:
-	* switch close_files() from calling unshare_fd() to calling
-dup_fd().
-	* undo the calling convention change done to unshare_fd() in
-60997c3d45d9 "close_range: add CLOSE_RANGE_UNSHARE"
-	* introduce struct fd_range, pass a pointer to that to dup_fd()
-and sane_fdtable_size() instead of "trim everything past that point"
-they are currently getting.  NULL means "we are not going to be punching
-any holes"; NR_OPEN_MAX is gone.
-	* make sane_fdtable_size() use find_last_bit() instead of
-open-coding it; it's easier to follow that way.
-	* while we are at it, have dup_fd() report errors by returning
-ERR_PTR(), no need to use a separate int *errorp argument.
-
-Fixes: 60997c3d45d9 "close_range: add CLOSE_RANGE_UNSHARE"
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring/net: harden multishot termination
+ case for recv" failed to apply to 6.1-stable tree
+To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+References: <2024100733-porridge-situated-e017@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2024100733-porridge-situated-e017@gregkh>
 
-diff --git a/fs/file.c b/fs/file.c
-index 5125607d040a..eb093e736972 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -272,59 +272,45 @@ static inline bool fd_is_open(unsigned int fd, const struct fdtable *fdt)
- 	return test_bit(fd, fdt->open_fds);
- }
- 
--static unsigned int count_open_files(struct fdtable *fdt)
--{
--	unsigned int size = fdt->max_fds;
--	unsigned int i;
--
--	/* Find the last open fd */
--	for (i = size / BITS_PER_LONG; i > 0; ) {
--		if (fdt->open_fds[--i])
--			break;
--	}
--	i = (i + 1) * BITS_PER_LONG;
--	return i;
--}
--
- /*
-  * Note that a sane fdtable size always has to be a multiple of
-  * BITS_PER_LONG, since we have bitmaps that are sized by this.
-  *
-- * 'max_fds' will normally already be properly aligned, but it
-- * turns out that in the close_range() -> __close_range() ->
-- * unshare_fd() -> dup_fd() -> sane_fdtable_size() we can end
-- * up having a 'max_fds' value that isn't already aligned.
-- *
-- * Rather than make close_range() have to worry about this,
-- * just make that BITS_PER_LONG alignment be part of a sane
-- * fdtable size. Becuase that's really what it is.
-+ * punch_hole is optional - when close_range() is asked to unshare
-+ * and close, we don't need to copy descriptors in that range, so
-+ * a smaller cloned descriptor table might suffice if the last
-+ * currently opened descriptor falls into that range.
-  */
--static unsigned int sane_fdtable_size(struct fdtable *fdt, unsigned int max_fds)
-+static unsigned int sane_fdtable_size(struct fdtable *fdt, struct fd_range *punch_hole)
- {
--	unsigned int count;
-+	unsigned int last = find_last_bit(fdt->open_fds, fdt->max_fds);
- 
--	count = count_open_files(fdt);
--	if (max_fds < NR_OPEN_DEFAULT)
--		max_fds = NR_OPEN_DEFAULT;
--	return ALIGN(min(count, max_fds), BITS_PER_LONG);
-+	if (last == fdt->max_fds)
-+		return NR_OPEN_DEFAULT;
-+	if (punch_hole && punch_hole->to >= last && punch_hole->from <= last) {
-+		last = find_last_bit(fdt->open_fds, punch_hole->from);
-+		if (last == punch_hole->from)
-+			return NR_OPEN_DEFAULT;
-+	}
-+	return ALIGN(last + 1, BITS_PER_LONG);
- }
- 
- /*
-- * Allocate a new files structure and copy contents from the
-- * passed in files structure.
-- * errorp will be valid only when the returned files_struct is NULL.
-+ * Allocate a new descriptor table and copy contents from the passed in
-+ * instance.  Returns a pointer to cloned table on success, ERR_PTR()
-+ * on failure.  For 'punch_hole' see sane_fdtable_size().
-  */
--struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int *errorp)
-+struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_hole)
- {
- 	struct files_struct *newf;
- 	struct file **old_fds, **new_fds;
- 	unsigned int open_files, i;
- 	struct fdtable *old_fdt, *new_fdt;
-+	int error;
- 
--	*errorp = -ENOMEM;
- 	newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);
- 	if (!newf)
--		goto out;
-+		return ERR_PTR(-ENOMEM);
- 
- 	atomic_set(&newf->count, 1);
- 
-@@ -341,7 +327,7 @@ struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int
- 
- 	spin_lock(&oldf->file_lock);
- 	old_fdt = files_fdtable(oldf);
--	open_files = sane_fdtable_size(old_fdt, max_fds);
-+	open_files = sane_fdtable_size(old_fdt, punch_hole);
- 
- 	/*
- 	 * Check whether we need to allocate a larger fd array and fd set.
-@@ -354,14 +340,14 @@ struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int
- 
- 		new_fdt = alloc_fdtable(open_files - 1);
- 		if (!new_fdt) {
--			*errorp = -ENOMEM;
-+			error = -ENOMEM;
- 			goto out_release;
- 		}
- 
- 		/* beyond sysctl_nr_open; nothing to do */
- 		if (unlikely(new_fdt->max_fds < open_files)) {
- 			__free_fdtable(new_fdt);
--			*errorp = -EMFILE;
-+			error = -EMFILE;
- 			goto out_release;
- 		}
- 
-@@ -372,7 +358,7 @@ struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int
- 		 */
- 		spin_lock(&oldf->file_lock);
- 		old_fdt = files_fdtable(oldf);
--		open_files = sane_fdtable_size(old_fdt, max_fds);
-+		open_files = sane_fdtable_size(old_fdt, punch_hole);
- 	}
- 
- 	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
-@@ -406,8 +392,7 @@ struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int
- 
- out_release:
- 	kmem_cache_free(files_cachep, newf);
--out:
--	return NULL;
-+	return ERR_PTR(error);
- }
- 
- static struct fdtable *close_files(struct files_struct * files)
-@@ -748,37 +733,25 @@ int __close_range(unsigned fd, unsigned max_fd, unsigned int flags)
- 	if (fd > max_fd)
- 		return -EINVAL;
- 
--	if (flags & CLOSE_RANGE_UNSHARE) {
--		int ret;
--		unsigned int max_unshare_fds = NR_OPEN_MAX;
-+	if ((flags & CLOSE_RANGE_UNSHARE) && atomic_read(&cur_fds->count) > 1) {
-+		struct fd_range range = {fd, max_fd}, *punch_hole = &range;
- 
- 		/*
- 		 * If the caller requested all fds to be made cloexec we always
- 		 * copy all of the file descriptors since they still want to
- 		 * use them.
- 		 */
--		if (!(flags & CLOSE_RANGE_CLOEXEC)) {
--			/*
--			 * If the requested range is greater than the current
--			 * maximum, we're closing everything so only copy all
--			 * file descriptors beneath the lowest file descriptor.
--			 */
--			rcu_read_lock();
--			if (max_fd >= last_fd(files_fdtable(cur_fds)))
--				max_unshare_fds = fd;
--			rcu_read_unlock();
--		}
--
--		ret = unshare_fd(CLONE_FILES, max_unshare_fds, &fds);
--		if (ret)
--			return ret;
-+		if (flags & CLOSE_RANGE_CLOEXEC)
-+			punch_hole = NULL;
- 
-+		fds = dup_fd(cur_fds, punch_hole);
-+		if (IS_ERR(fds))
-+			return PTR_ERR(fds);
- 		/*
- 		 * We used to share our file descriptor table, and have now
- 		 * created a private one, make sure we're using it below.
- 		 */
--		if (fds)
--			swap(cur_fds, fds);
-+		swap(cur_fds, fds);
- 	}
- 
- 	if (flags & CLOSE_RANGE_CLOEXEC)
-diff --git a/include/linux/fdtable.h b/include/linux/fdtable.h
-index 2944d4aa413b..b1c5722f2b3c 100644
---- a/include/linux/fdtable.h
-+++ b/include/linux/fdtable.h
-@@ -22,7 +22,6 @@
-  * as this is the granularity returned by copy_fdset().
-  */
- #define NR_OPEN_DEFAULT BITS_PER_LONG
--#define NR_OPEN_MAX ~0U
- 
- struct fdtable {
- 	unsigned int max_fds;
-@@ -106,7 +105,10 @@ struct task_struct;
- 
- void put_files_struct(struct files_struct *fs);
- int unshare_files(void);
--struct files_struct *dup_fd(struct files_struct *, unsigned, int *) __latent_entropy;
-+struct fd_range {
-+	unsigned int from, to;
-+};
-+struct files_struct *dup_fd(struct files_struct *, struct fd_range *) __latent_entropy;
- void do_close_on_exec(struct files_struct *);
- int iterate_fd(struct files_struct *, unsigned,
- 		int (*)(const void *, struct file *, unsigned),
-@@ -115,8 +117,6 @@ int iterate_fd(struct files_struct *, unsigned,
- extern int close_fd(unsigned int fd);
- extern int __close_range(unsigned int fd, unsigned int max_fd, unsigned int flags);
- extern struct file *file_close_fd(unsigned int fd);
--extern int unshare_fd(unsigned long unshare_flags, unsigned int max_fds,
--		      struct files_struct **new_fdp);
- 
- extern struct kmem_cache *files_cachep;
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 60c0b4868fd4..89ceb4a68af2 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1756,33 +1756,30 @@ static int copy_files(unsigned long clone_flags, struct task_struct *tsk,
- 		      int no_files)
- {
- 	struct files_struct *oldf, *newf;
--	int error = 0;
- 
- 	/*
- 	 * A background process may not have any files ...
- 	 */
- 	oldf = current->files;
- 	if (!oldf)
--		goto out;
-+		return 0;
- 
- 	if (no_files) {
- 		tsk->files = NULL;
--		goto out;
-+		return 0;
- 	}
- 
- 	if (clone_flags & CLONE_FILES) {
- 		atomic_inc(&oldf->count);
--		goto out;
-+		return 0;
- 	}
- 
--	newf = dup_fd(oldf, NR_OPEN_MAX, &error);
--	if (!newf)
--		goto out;
-+	newf = dup_fd(oldf, NULL);
-+	if (IS_ERR(newf))
-+		return PTR_ERR(newf);
- 
- 	tsk->files = newf;
--	error = 0;
--out:
--	return error;
-+	return 0;
- }
- 
- static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
-@@ -3238,17 +3235,16 @@ static int unshare_fs(unsigned long unshare_flags, struct fs_struct **new_fsp)
- /*
-  * Unshare file descriptor table if it is being shared
-  */
--int unshare_fd(unsigned long unshare_flags, unsigned int max_fds,
--	       struct files_struct **new_fdp)
-+static int unshare_fd(unsigned long unshare_flags, struct files_struct **new_fdp)
- {
- 	struct files_struct *fd = current->files;
--	int error = 0;
- 
- 	if ((unshare_flags & CLONE_FILES) &&
- 	    (fd && atomic_read(&fd->count) > 1)) {
--		*new_fdp = dup_fd(fd, max_fds, &error);
--		if (!*new_fdp)
--			return error;
-+		fd = dup_fd(fd, NULL);
-+		if (IS_ERR(fd))
-+			return PTR_ERR(fd);
-+		*new_fdp = fd;
- 	}
- 
- 	return 0;
-@@ -3306,7 +3302,7 @@ int ksys_unshare(unsigned long unshare_flags)
- 	err = unshare_fs(unshare_flags, &new_fs);
- 	if (err)
- 		goto bad_unshare_out;
--	err = unshare_fd(unshare_flags, NR_OPEN_MAX, &new_fd);
-+	err = unshare_fd(unshare_flags, &new_fd);
- 	if (err)
- 		goto bad_unshare_cleanup_fs;
- 	err = unshare_userns(unshare_flags, &new_cred);
-@@ -3398,7 +3394,7 @@ int unshare_files(void)
- 	struct files_struct *old, *copy = NULL;
- 	int error;
- 
--	error = unshare_fd(CLONE_FILES, NR_OPEN_MAX, &copy);
-+	error = unshare_fd(CLONE_FILES, &copy);
- 	if (error || !copy)
- 		return error;
- 
+This is a multi-part message in MIME format.
+--------------g2Q5I6jsE2Syy05xn6km1t5h
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 10/7/24 11:30 AM, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x c314094cb4cfa6fc5a17f4881ead2dfebfa717a7
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100733-porridge-situated-e017@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> 
+> Possible dependencies:
+
+Here's one that applies for 6.1, trivial fixup, passes test suite.
+
+-- 
+Jens Axboe
+--------------g2Q5I6jsE2Syy05xn6km1t5h
+Content-Type: text/x-patch; charset=UTF-8;
+ name="6.1-0001-io_uring-net-harden-multishot-termination-case-for-r.patch"
+Content-Disposition: attachment;
+ filename*0="6.1-0001-io_uring-net-harden-multishot-termination-case-for-";
+ filename*1="r.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA2MDU1N2Q4NDJiY2NmNGU2YTExNDM2MTYzMzQ4YTI2NzBlZmNjMDgyIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFRodSwgMjYgU2VwIDIwMjQgMDc6MDg6MTAgLTA2MDAKU3ViamVjdDogW1BBVENIXSBp
+b191cmluZy9uZXQ6IGhhcmRlbiBtdWx0aXNob3QgdGVybWluYXRpb24gY2FzZSBmb3IgcmVj
+dgoKSWYgdGhlIHJlY3YgcmV0dXJucyB6ZXJvLCBvciBhbiBlcnJvciwgdGhlbiBpdCBkb2Vz
+bid0IG1hdHRlciBpZiBtb3JlCmRhdGEgaGFzIGFscmVhZHkgYmVlbiByZWNlaXZlZCBmb3Ig
+dGhpcyBidWZmZXIuIEEgY29uZGl0aW9uIGxpa2UgdGhhdApzaG91bGQgdGVybWluYXRlIHRo
+ZSBtdWx0aXNob3QgcmVjZWl2ZS4gUmF0aGVyIHRoYW4gcGFzcyBpbiB0aGUKY29sbGVjdGVk
+IHJldHVybiB2YWx1ZSwgcGFzcyBpbiB3aGV0aGVyIHRvIHRlcm1pbmF0ZSBvciBrZWVwIHRo
+ZSByZWN2CmdvaW5nIHNlcGFyYXRlbHkuCgpOb3RlIHRoYXQgdGhpcyBpc24ndCBhIGJ1ZyBy
+aWdodCBub3csIGFzIHRoZSBvbmx5IHdheSB0byBnZXQgdGhlcmUgaXMKdmlhIHNldHRpbmcg
+TVNHX1dBSVRBTEwgd2l0aCBtdWx0aXNob3QgcmVjZWl2ZS4gQW5kIGlmIGFuIGFwcGxpY2F0
+aW9uCmRvZXMgdGhhdCwgdGhlbiAtRUlOVkFMIGlzIHJldHVybmVkIGFueXdheS4gQnV0IGl0
+IHNlZW1zIGxpa2UgYW4gZWFzeQpidWcgdG8gaW50cm9kdWNlLCBzbyBsZXQncyBtYWtlIGl0
+IGEgYml0IG1vcmUgZXhwbGljaXQuCgpMaW5rOiBodHRwczovL2dpdGh1Yi5jb20vYXhib2Uv
+bGlidXJpbmcvaXNzdWVzLzEyNDYKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKRml4ZXM6
+IGIzZmRlYTZlY2I1NSAoImlvX3VyaW5nOiBtdWx0aXNob3QgcmVjdiIpClNpZ25lZC1vZmYt
+Ynk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5kaz4KLS0tCiBpb191cmluZy9uZXQuYyB8
+IDQgKysrLQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigt
+KQoKZGlmZiAtLWdpdCBhL2lvX3VyaW5nL25ldC5jIGIvaW9fdXJpbmcvbmV0LmMKaW5kZXgg
+NDg0MDRiZDMzMDAxLi5mNDFhY2FiZjdiNGEgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL25ldC5j
+CisrKyBiL2lvX3VyaW5nL25ldC5jCkBAIC04OTMsNiArODkzLDcgQEAgaW50IGlvX3JlY3Yo
+c3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykKIAlpbnQg
+cmV0LCBtaW5fcmV0ID0gMDsKIAlib29sIGZvcmNlX25vbmJsb2NrID0gaXNzdWVfZmxhZ3Mg
+JiBJT19VUklOR19GX05PTkJMT0NLOwogCXNpemVfdCBsZW4gPSBzci0+bGVuOworCWJvb2wg
+bXNob3RfZmluaXNoZWQ7CiAKIAlpZiAoIShyZXEtPmZsYWdzICYgUkVRX0ZfUE9MTEVEKSAm
+JgogCSAgICAoc3ItPmZsYWdzICYgSU9SSU5HX1JFQ1ZTRU5EX1BPTExfRklSU1QpKQpAQCAt
+OTU3LDYgKzk1OCw3IEBAIGludCBpb19yZWN2KHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNp
+Z25lZCBpbnQgaXNzdWVfZmxhZ3MpCiAJCXJlcV9zZXRfZmFpbChyZXEpOwogCX0KIAorCW1z
+aG90X2ZpbmlzaGVkID0gcmV0IDw9IDA7CiAJaWYgKHJldCA+IDApCiAJCXJldCArPSBzci0+
+ZG9uZV9pbzsKIAllbHNlIGlmIChzci0+ZG9uZV9pbykKQEAgLTk2OCw3ICs5NzAsNyBAQCBp
+bnQgaW9fcmVjdihzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5zaWduZWQgaW50IGlzc3VlX2Zs
+YWdzKQogCWlmIChtc2cubXNnX2lucSkKIAkJY2ZsYWdzIHw9IElPUklOR19DUUVfRl9TT0NL
+X05PTkVNUFRZOwogCi0JaWYgKCFpb19yZWN2X2ZpbmlzaChyZXEsICZyZXQsIGNmbGFncywg
+cmV0IDw9IDAsIGlzc3VlX2ZsYWdzKSkKKwlpZiAoIWlvX3JlY3ZfZmluaXNoKHJlcSwgJnJl
+dCwgY2ZsYWdzLCBtc2hvdF9maW5pc2hlZCwgaXNzdWVfZmxhZ3MpKQogCQlnb3RvIHJldHJ5
+X211bHRpc2hvdDsKIAogCXJldHVybiByZXQ7Ci0tIAoyLjQ1LjIKCg==
+
+--------------g2Q5I6jsE2Syy05xn6km1t5h--
 
