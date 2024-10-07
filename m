@@ -1,280 +1,136 @@
-Return-Path: <stable+bounces-81446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63119934FB
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:27:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05577993502
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87347283E1C
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:27:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364F31C22648
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7901DD54D;
-	Mon,  7 Oct 2024 17:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE581DD54F;
+	Mon,  7 Oct 2024 17:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="YsyEB/NG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSEFkGQC"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B871DD55F;
-	Mon,  7 Oct 2024 17:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7381DA2E5
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728322016; cv=none; b=pA0s89ynlcnF6RTlJiJYjF2on+8gn20MZOfeyV69TrivlX/TlkLmQIW9eBreytMl5inRi376FFmlR75Acym50Qzwq73kC7B/Gy5vphgvaSqM5u4iiq5d/u13mCDnaixda85OwIMrVAM0v4xTj5beAEgyed7/w/YYbdUDiga09Q8=
+	t=1728322171; cv=none; b=g8P43YDXwY1j5h92YLOdXLAV5Tx61aSDpHY4Eka9GhDulppX4rrjBsbtM3t+nR/b7sduKuGDxuya+y3+NeDOCe3hYWnTHdOESNtL8bLS7QaK34dUwISJwfQWKhDZoUXRwTUSdMrSJFdItDa2yj4R0qSBIS7gpNi+VrjegEVD4G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728322016; c=relaxed/simple;
-	bh=kaalLp86ks67wc3KDPCad1kTXDc6X6BZ6Zss1z40094=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lv2+RxdLcAeLIcXhDnuqHXocX9/0U6i/Vi5jePn9X0wO3O4ETkHDa2V5udKfxDSjeiCWFjamc8atsC1bJzoIjHcK0fjtukDWwjWI/gni1SDNgAqtfqsSZDBS1r7LBjOJfB4z4RUJ1dn0B1aNlVPjem5VR4U6oeAu9liiWANWyAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=YsyEB/NG; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.126] (unknown [131.107.159.254])
-	by linux.microsoft.com (Postfix) with ESMTPSA id CC27520DBA06;
-	Mon,  7 Oct 2024 10:26:47 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CC27520DBA06
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1728322007;
-	bh=EMcohMbOdcf2CBxPiaUoWiiNiff7a5n19ot6Uzakgzo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YsyEB/NGrfNAbkW/0BuJJicvGn6ZrYaYVzSihqeAj2ZNT02kqV6My2xRGpqABE+Ki
-	 33dMm1KU+F6+jOKRNmAjmRZLwH6RobQlOXnQ7PCl5gyeJfLdhGrE4VXSbDz1t8OQmV
-	 2I73TkYLrCWOq9mHNHEA9DJe2/a7k+eJihOGFsWE=
-Message-ID: <b11f4672-6c68-41f2-92c3-e7a15555a6ac@linux.microsoft.com>
-Date: Mon, 7 Oct 2024 10:26:46 -0700
+	s=arc-20240116; t=1728322171; c=relaxed/simple;
+	bh=zUZX5oMxhlJZyl5VoOAbtJcXr53oyd47aSCVb7yA/uE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ShV+dMckTb3OSxW4hjkQ+pt0YPp0a9WIvi4voYkTgm0vupiwDd6ekPuvergoDZ4XIur53p2z+yeBBEGAdh7aCu0vAvSu4RIKGrnO7Af0ZsenJwqS+I8fkQwA+fw3pdIvOGBrgGRNzqkBB+ejlfMtfPfMsOwLutQXxy/sXNttiFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSEFkGQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0136CC4CEC6;
+	Mon,  7 Oct 2024 17:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728322170;
+	bh=zUZX5oMxhlJZyl5VoOAbtJcXr53oyd47aSCVb7yA/uE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=hSEFkGQCseuIDPE4Tgf4F87S0SpFpUoTKJGPAKBBlTRi3kyfOAkJG4+0FjRFgZY2t
+	 2vomytFNGp6TGKWNea68j6A96Y2QTuazUOzcEQb0Fpw5krYRUksFGz4uE5BRiU1Hxb
+	 agjXIgtXMQsPI7oWVsvx7wYJqljzWOhfwIIFoi7U=
+Subject: FAILED: patch "[PATCH] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE" failed to apply to 5.15-stable tree
+To: luiz.von.dentz@intel.com,kiran.k@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 07 Oct 2024 19:29:27 +0200
+Message-ID: <2024100727-switch-reaffirm-2dec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "coredump: Standartize and fix logging" has been added to
- the 6.10-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- sashal@kernel.org, Kees Cook <kees@kernel.org>,
- "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
-References: <20241006152737.10366-1-sashal@kernel.org>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <20241006152737.10366-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Sasha,
 
-Thank you very much for taking this to the stable kernel!
-With the 6.12-rc1, folks saw unkillable processes, and the suspicion was
-that get_task_comm() takes a lock on the task_struct.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Kees was kind enough to look into that and sent out
-https://lore.kernel.org/all/20240928210830.work.307-kees@kernel.org/.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-As much as I'd love to see these logs produced by the kernel to help
-with core dump diagnostics, I am really worried that lock might cause
-more harm than the patches bring value, let alone this is a stable
-kernel, and as I understand, folks might run very important workloads
-trusting the stable kernel.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x b25e11f978b63cb7857890edb3a698599cddb10e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100727-switch-reaffirm-2dec@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-If you see why these patches are good for the stable kernel (e.g. there
-is no lock as in 6.12), I trust your judgement. Added Kees and Eric
-in hopes they have time to help if this is a good change for
-the stable kernel.
+Possible dependencies:
 
-Thank you all for your help!
+b25e11f978b6 ("Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE")
+3e54c5890c87 ("Bluetooth: hci_event: Use of a function table to handle HCI events")
+12cfe4176ad6 ("Bluetooth: HCI: Use skb_pull_data to parse LE Metaevents")
+70a6b8de6af5 ("Bluetooth: HCI: Use skb_pull_data to parse Extended Inquiry Result event")
+8d08d324fdcb ("Bluetooth: HCI: Use skb_pull_data to parse Inquiry Result with RSSI event")
+27d9eb4bcac1 ("Bluetooth: HCI: Use skb_pull_data to parse Inquiry Result event")
+aadc3d2f42a5 ("Bluetooth: HCI: Use skb_pull_data to parse Number of Complete Packets event")
+e3f3a1aea871 ("Bluetooth: HCI: Use skb_pull_data to parse Command Complete event")
+ae61a10d9d46 ("Bluetooth: HCI: Use skb_pull_data to parse BR/EDR events")
+3244845c6307 ("Bluetooth: hci_sync: Convert MGMT_OP_SSP")
 
-On 10/6/2024 8:27 AM, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->      coredump: Standartize and fix logging
-> 
-> to the 6.10-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->       coredump-standartize-and-fix-logging.patch
-> and it can be found in the queue-6.10 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit f0a5649db30d6ff2509281ace680db9cc08ce258
-> Author: Roman Kisel <romank@linux.microsoft.com>
-> Date:   Thu Jul 18 11:27:24 2024 -0700
-> 
->      coredump: Standartize and fix logging
->      
->      [ Upstream commit c114e9948c2b6a0b400266e59cc656b59e795bca ]
->      
->      The coredump code does not log the process ID and the comm
->      consistently, logs unescaped comm when it does log it, and
->      does not always use the ratelimited logging. That makes it
->      harder to analyze logs and puts the system at the risk of
->      spamming the system log incase something crashes many times
->      over and over again.
->      
->      Fix that by logging TGID and comm (escaped) consistently and
->      using the ratelimited logging always.
->      
->      Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
->      Tested-by: Allen Pais <apais@linux.microsoft.com>
->      Link: https://lore.kernel.org/r/20240718182743.1959160-2-romank@linux.microsoft.com
->      Signed-off-by: Kees Cook <kees@kernel.org>
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/fs/coredump.c b/fs/coredump.c
-> index a57a06b80f571..19d3343b93c6b 100644
-> --- a/fs/coredump.c
-> +++ b/fs/coredump.c
-> @@ -586,8 +586,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->   		struct subprocess_info *sub_info;
->   
->   		if (ispipe < 0) {
-> -			printk(KERN_WARNING "format_corename failed\n");
-> -			printk(KERN_WARNING "Aborting core\n");
-> +			coredump_report_failure("format_corename failed, aborting core");
->   			goto fail_unlock;
->   		}
->   
-> @@ -607,27 +606,21 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->   			 * right pid if a thread in a multi-threaded
->   			 * core_pattern process dies.
->   			 */
-> -			printk(KERN_WARNING
-> -				"Process %d(%s) has RLIMIT_CORE set to 1\n",
-> -				task_tgid_vnr(current), current->comm);
-> -			printk(KERN_WARNING "Aborting core\n");
-> +			coredump_report_failure("RLIMIT_CORE is set to 1, aborting core");
->   			goto fail_unlock;
->   		}
->   		cprm.limit = RLIM_INFINITY;
->   
->   		dump_count = atomic_inc_return(&core_dump_count);
->   		if (core_pipe_limit && (core_pipe_limit < dump_count)) {
-> -			printk(KERN_WARNING "Pid %d(%s) over core_pipe_limit\n",
-> -			       task_tgid_vnr(current), current->comm);
-> -			printk(KERN_WARNING "Skipping core dump\n");
-> +			coredump_report_failure("over core_pipe_limit, skipping core dump");
->   			goto fail_dropcount;
->   		}
->   
->   		helper_argv = kmalloc_array(argc + 1, sizeof(*helper_argv),
->   					    GFP_KERNEL);
->   		if (!helper_argv) {
-> -			printk(KERN_WARNING "%s failed to allocate memory\n",
-> -			       __func__);
-> +			coredump_report_failure("%s failed to allocate memory", __func__);
->   			goto fail_dropcount;
->   		}
->   		for (argi = 0; argi < argc; argi++)
-> @@ -644,8 +637,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->   
->   		kfree(helper_argv);
->   		if (retval) {
-> -			printk(KERN_INFO "Core dump to |%s pipe failed\n",
-> -			       cn.corename);
-> +			coredump_report_failure("|%s pipe failed", cn.corename);
->   			goto close_fail;
->   		}
->   	} else {
-> @@ -658,10 +650,8 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->   			goto fail_unlock;
->   
->   		if (need_suid_safe && cn.corename[0] != '/') {
-> -			printk(KERN_WARNING "Pid %d(%s) can only dump core "\
-> -				"to fully qualified path!\n",
-> -				task_tgid_vnr(current), current->comm);
-> -			printk(KERN_WARNING "Skipping core dump\n");
-> +			coredump_report_failure(
-> +				"this process can only dump core to a fully qualified path, skipping core dump");
->   			goto fail_unlock;
->   		}
->   
-> @@ -730,13 +720,13 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->   		idmap = file_mnt_idmap(cprm.file);
->   		if (!vfsuid_eq_kuid(i_uid_into_vfsuid(idmap, inode),
->   				    current_fsuid())) {
-> -			pr_info_ratelimited("Core dump to %s aborted: cannot preserve file owner\n",
-> -					    cn.corename);
-> +			coredump_report_failure("Core dump to %s aborted: "
-> +				"cannot preserve file owner", cn.corename);
->   			goto close_fail;
->   		}
->   		if ((inode->i_mode & 0677) != 0600) {
-> -			pr_info_ratelimited("Core dump to %s aborted: cannot preserve file permissions\n",
-> -					    cn.corename);
-> +			coredump_report_failure("Core dump to %s aborted: "
-> +				"cannot preserve file permissions", cn.corename);
->   			goto close_fail;
->   		}
->   		if (!(cprm.file->f_mode & FMODE_CAN_WRITE))
-> @@ -757,7 +747,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
->   		 * have this set to NULL.
->   		 */
->   		if (!cprm.file) {
-> -			pr_info("Core dump to |%s disabled\n", cn.corename);
-> +			coredump_report_failure("Core dump to |%s disabled", cn.corename);
->   			goto close_fail;
->   		}
->   		if (!dump_vma_snapshot(&cprm))
-> @@ -983,11 +973,10 @@ void validate_coredump_safety(void)
->   {
->   	if (suid_dumpable == SUID_DUMP_ROOT &&
->   	    core_pattern[0] != '/' && core_pattern[0] != '|') {
-> -		pr_warn(
-> -"Unsafe core_pattern used with fs.suid_dumpable=2.\n"
-> -"Pipe handler or fully qualified core dump path required.\n"
-> -"Set kernel.core_pattern before fs.suid_dumpable.\n"
-> -		);
-> +
-> +		coredump_report_failure("Unsafe core_pattern used with fs.suid_dumpable=2: "
-> +			"pipe handler or fully qualified core dump path required. "
-> +			"Set kernel.core_pattern before fs.suid_dumpable.");
->   	}
->   }
->   
-> diff --git a/include/linux/coredump.h b/include/linux/coredump.h
-> index 0904ba010341a..45e598fe34766 100644
-> --- a/include/linux/coredump.h
-> +++ b/include/linux/coredump.h
-> @@ -43,8 +43,30 @@ extern int dump_align(struct coredump_params *cprm, int align);
->   int dump_user_range(struct coredump_params *cprm, unsigned long start,
->   		    unsigned long len);
->   extern void do_coredump(const kernel_siginfo_t *siginfo);
-> +
-> +/*
-> + * Logging for the coredump code, ratelimited.
-> + * The TGID and comm fields are added to the message.
-> + */
-> +
-> +#define __COREDUMP_PRINTK(Level, Format, ...) \
-> +	do {	\
-> +		char comm[TASK_COMM_LEN];	\
-> +	\
-> +		get_task_comm(comm, current);	\
-> +		printk_ratelimited(Level "coredump: %d(%*pE): " Format "\n",	\
-> +			task_tgid_vnr(current), (int)strlen(comm), comm, ##__VA_ARGS__);	\
-> +	} while (0)	\
-> +
-> +#define coredump_report(fmt, ...) __COREDUMP_PRINTK(KERN_INFO, fmt, ##__VA_ARGS__)
-> +#define coredump_report_failure(fmt, ...) __COREDUMP_PRINTK(KERN_WARNING, fmt, ##__VA_ARGS__)
-> +
->   #else
->   static inline void do_coredump(const kernel_siginfo_t *siginfo) {}
-> +
-> +#define coredump_report(...)
-> +#define coredump_report_failure(...)
-> +
->   #endif
->   
->   #if defined(CONFIG_COREDUMP) && defined(CONFIG_SYSCTL)
+thanks,
 
--- 
-Thank you,
-Roman
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b25e11f978b63cb7857890edb3a698599cddb10e Mon Sep 17 00:00:00 2001
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Date: Thu, 12 Sep 2024 12:17:00 -0400
+Subject: [PATCH] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
+
+This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
+("Bluetooth: Always request for user confirmation for Just Works")
+always request user confirmation with confirm_hint set since the
+likes of bluetoothd have dedicated policy around JUST_WORKS method
+(e.g. main.conf:JustWorksRepairing).
+
+CVE: CVE-2024-8805
+Cc: stable@vger.kernel.org
+Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
+
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index b87c0f1dab9e..561c8cb87473 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5324,19 +5324,16 @@ static void hci_user_confirm_request_evt(struct hci_dev *hdev, void *data,
+ 		goto unlock;
+ 	}
+ 
+-	/* If no side requires MITM protection; auto-accept */
++	/* If no side requires MITM protection; use JUST_CFM method */
+ 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
+ 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
+ 
+-		/* If we're not the initiators request authorization to
+-		 * proceed from user space (mgmt_user_confirm with
+-		 * confirm_hint set to 1). The exception is if neither
+-		 * side had MITM or if the local IO capability is
+-		 * NoInputNoOutput, in which case we do auto-accept
++		/* If we're not the initiator of request authorization and the
++		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
++		 * method (mgmt_user_confirm with confirm_hint set to 1).
+ 		 */
+ 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
+-		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
+-		    (loc_mitm || rem_mitm)) {
++		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
+ 			bt_dev_dbg(hdev, "Confirming auto-accept as acceptor");
+ 			confirm_hint = 1;
+ 			goto confirm;
 
 
