@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5BF99314A
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:34:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5B5993152
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37E0C1F247F5
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:34:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3DA61C236B9
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783421D8DF5;
-	Mon,  7 Oct 2024 15:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA2718BBB2;
+	Mon,  7 Oct 2024 15:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zn+Spt8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rS3Q6gsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361B21D2B35
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7571D7E37
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315212; cv=none; b=JKkXmC0Zhm7yMVOrED2G23JNwdwimFxX4AWlJOfJdYcVs8MBcGCX/omJXUvvohz9AfgZVLKRN7g4uXaXHdaQGM54a5/wCky7qkkNp+waENn9CHipwa/Zu1JoFdMtaCW+EoV03tW4dgnbcDKToYsQ1cyspv73ezvkDBf8DDMd7GM=
+	t=1728315286; cv=none; b=vDE1qbYullB9cIWhU/zDgjb+jt3w+jJbxiXW65FRLvFmChck2MbRe2KW+1xlJvNwxqe5kbhNXB6AqsZ1o1d13j3dPpNsQcyERdfsO8d90yIM1os5fsbkAsZ+snzI1VFf7ZomMDSXHTPSaE6w7J8zhawBTZXu1oTLVo+hOkaZIHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315212; c=relaxed/simple;
-	bh=6wJgeWKYNyvrcdUEwXQjFLJlk2rXANcne3WDfofyHxo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RnOBQTMSm7R4nB7MViHuogau4fIV7cJm0lKI7lmhxN/HRIXROHxKUu2UcfJUYGfd5u4E8swbOL5e6hwewQf4i9GI+V/KEa/qpJ1yu0WTsX7aCHnnz+RtHjPZtZm7Dn6/5MhgsBLs3e9uPkf8fl/aP12h2+ulg+WYJhr/DAf46ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zn+Spt8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8D3C4CEC6;
-	Mon,  7 Oct 2024 15:33:31 +0000 (UTC)
+	s=arc-20240116; t=1728315286; c=relaxed/simple;
+	bh=w+oRvTjYYDgxEJoIjlru+iHP1hGaIFusRU/B+6VLh4A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DFn635ohEcp0iDXhgLlQzBi1eBoxc8YrHf4gEdAJJ1IRjWjT/U31stHHcPqiPiQCiR+6OuSuXhopQj9JDWiJYXVQECOxoib5MOGSlzodIfZwTw9vHBA/++SUKJjpXGb6D6KQpoyGY9KgnGVE8hjiPydZyQxG9RTFdqWApwowItw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rS3Q6gsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D170FC4CEC6;
+	Mon,  7 Oct 2024 15:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728315211;
-	bh=6wJgeWKYNyvrcdUEwXQjFLJlk2rXANcne3WDfofyHxo=;
+	s=korg; t=1728315285;
+	bh=w+oRvTjYYDgxEJoIjlru+iHP1hGaIFusRU/B+6VLh4A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zn+Spt8TLictTDcJGj4JMXOaEUVvJJrZ2v0915Sm+bH1Ss9QujQr93Umf4cjnRz5T
-	 DDkpodrfK/VB+BUHpVIaW8TJ1KRtYEHQ3m12/G18pck57dlj1sUSqtt8UGWWxCXbPM
-	 VXlJsJrnvHOdJufEU/MnOg41DSg6wBoqHKMGaSyY=
-Subject: FAILED: patch "[PATCH] drm/xe: fix UAF around queue destruction" failed to apply to 6.10-stable tree
-To: matthew.auld@intel.com,lucas.demarchi@intel.com,matthew.brost@intel.com,stable@vger.kernel.org
+	b=rS3Q6gsb8X7Hfdfu50ciBBAFwZfALYINzud/eIikn9yufOkVkyox6xtWzP9X8lq1n
+	 9YTcH1JhGM+OblPzxSja5kI4bfsGh6Ide41Q9ki9+vwi6dh8rHekLZF+Kt3Kqnw6uk
+	 uJXZFyO8i6rt2hz0/fQjxxbdPPMc33AvN58AnNnk=
+Subject: FAILED: patch "[PATCH] sched: psi: fix bogus pressure spikes from aggregation race" failed to apply to 6.10-stable tree
+To: hannes@cmpxchg.org,brandon@buildbuddy.io,chengming.zhou@linux.dev,torvalds@linux-foundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:33:28 +0200
-Message-ID: <2024100727-lego-panther-fea9@gregkh>
+Date: Mon, 07 Oct 2024 17:34:42 +0200
+Message-ID: <2024100742-manual-outright-b57d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,15 +62,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2d2be279f1ca9e7288282d4214f16eea8a727cdb
+git cherry-pick -x 3840cbe24cf060ea05a585ca497814609f5d47d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100727-lego-panther-fea9@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100742-manual-outright-b57d@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-2d2be279f1ca ("drm/xe: fix UAF around queue destruction")
-3f371a98dead ("drm/xe: Delete unused GuC submission_state.suspend")
+3840cbe24cf0 ("sched: psi: fix bogus pressure spikes from aggregation race")
 
 thanks,
 
@@ -78,151 +77,178 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2d2be279f1ca9e7288282d4214f16eea8a727cdb Mon Sep 17 00:00:00 2001
-From: Matthew Auld <matthew.auld@intel.com>
-Date: Mon, 23 Sep 2024 15:56:48 +0100
-Subject: [PATCH] drm/xe: fix UAF around queue destruction
+From 3840cbe24cf060ea05a585ca497814609f5d47d1 Mon Sep 17 00:00:00 2001
+From: Johannes Weiner <hannes@cmpxchg.org>
+Date: Thu, 3 Oct 2024 07:29:05 -0400
+Subject: [PATCH] sched: psi: fix bogus pressure spikes from aggregation race
 
-We currently do stuff like queuing the final destruction step on a
-random system wq, which will outlive the driver instance. With bad
-timing we can teardown the driver with one or more work workqueue still
-being alive leading to various UAF splats. Add a fini step to ensure
-user queues are properly torn down. At this point GuC should already be
-nuked so queue itself should no longer be referenced from hw pov.
+Brandon reports sporadic, non-sensical spikes in cumulative pressure
+time (total=) when reading cpu.pressure at a high rate. This is due to
+a race condition between reader aggregation and tasks changing states.
 
-v2 (Matt B)
- - Looks much safer to use a waitqueue and then just wait for the
-   xa_array to become empty before triggering the drain.
+While it affects all states and all resources captured by PSI, in
+practice it most likely triggers with CPU pressure, since scheduling
+events are so frequent compared to other resource events.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2317
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240923145647.77707-2-matthew.auld@intel.com
-(cherry picked from commit 861108666cc0e999cffeab6aff17b662e68774e3)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+The race context is the live snooping of ongoing stalls during a
+pressure read. The read aggregates per-cpu records for stalls that
+have concluded, but will also incorporate ad-hoc the duration of any
+active state that hasn't been recorded yet. This is important to get
+timely measurements of ongoing stalls. Those ad-hoc samples are
+calculated on-the-fly up to the current time on that CPU; since the
+stall hasn't concluded, it's expected that this is the minimum amount
+of stall time that will enter the per-cpu records once it does.
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 70d4e4d46c3c..74e593caf87c 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -298,6 +298,9 @@ static void xe_device_destroy(struct drm_device *dev, void *dummy)
- 	if (xe->unordered_wq)
- 		destroy_workqueue(xe->unordered_wq);
- 
-+	if (xe->destroy_wq)
-+		destroy_workqueue(xe->destroy_wq);
-+
- 	ttm_device_fini(&xe->ttm);
+The problem is that the path that concludes the state uses a CPU clock
+read that is not synchronized against aggregators; the clock is read
+outside of the seqlock protection. This allows aggregators to race and
+snoop a stall with a longer duration than will actually be recorded.
+
+With the recorded stall time being less than the last snapshot
+remembered by the aggregator, a subsequent sample will underflow and
+observe a bogus delta value, resulting in an erratic jump in pressure.
+
+Fix this by moving the clock read of the state change into the seqlock
+protection. This ensures no aggregation can snoop live stalls past the
+time that's recorded when the state concludes.
+
+Reported-by: Brandon Duffany <brandon@buildbuddy.io>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219194
+Link: https://lore.kernel.org/lkml/20240827121851.GB438928@cmpxchg.org/
+Fixes: df77430639c9 ("psi: Reduce calls to sched_clock() in psi")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index 020d58967d4e..84dad1511d1e 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -769,12 +769,13 @@ static void record_times(struct psi_group_cpu *groupc, u64 now)
  }
  
-@@ -363,8 +366,9 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
- 	xe->preempt_fence_wq = alloc_ordered_workqueue("xe-preempt-fence-wq", 0);
- 	xe->ordered_wq = alloc_ordered_workqueue("xe-ordered-wq", 0);
- 	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", 0, 0);
-+	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", 0, 0);
- 	if (!xe->ordered_wq || !xe->unordered_wq ||
--	    !xe->preempt_fence_wq) {
-+	    !xe->preempt_fence_wq || !xe->destroy_wq) {
+ static void psi_group_change(struct psi_group *group, int cpu,
+-			     unsigned int clear, unsigned int set, u64 now,
++			     unsigned int clear, unsigned int set,
+ 			     bool wake_clock)
+ {
+ 	struct psi_group_cpu *groupc;
+ 	unsigned int t, m;
+ 	u32 state_mask;
++	u64 now;
+ 
+ 	lockdep_assert_rq_held(cpu_rq(cpu));
+ 	groupc = per_cpu_ptr(group->pcpu, cpu);
+@@ -789,6 +790,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
+ 	 * SOME and FULL time these may have resulted in.
+ 	 */
+ 	write_seqcount_begin(&groupc->seq);
++	now = cpu_clock(cpu);
+ 
+ 	/*
+ 	 * Start with TSK_ONCPU, which doesn't have a corresponding
+@@ -899,18 +901,15 @@ void psi_task_change(struct task_struct *task, int clear, int set)
+ {
+ 	int cpu = task_cpu(task);
+ 	struct psi_group *group;
+-	u64 now;
+ 
+ 	if (!task->pid)
+ 		return;
+ 
+ 	psi_flags_change(task, clear, set);
+ 
+-	now = cpu_clock(cpu);
+-
+ 	group = task_psi_group(task);
+ 	do {
+-		psi_group_change(group, cpu, clear, set, now, true);
++		psi_group_change(group, cpu, clear, set, true);
+ 	} while ((group = group->parent));
+ }
+ 
+@@ -919,7 +918,6 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ {
+ 	struct psi_group *group, *common = NULL;
+ 	int cpu = task_cpu(prev);
+-	u64 now = cpu_clock(cpu);
+ 
+ 	if (next->pid) {
+ 		psi_flags_change(next, 0, TSK_ONCPU);
+@@ -936,7 +934,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 				break;
+ 			}
+ 
+-			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
++			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
+ 		} while ((group = group->parent));
+ 	}
+ 
+@@ -974,7 +972,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		do {
+ 			if (group == common)
+ 				break;
+-			psi_group_change(group, cpu, clear, set, now, wake_clock);
++			psi_group_change(group, cpu, clear, set, wake_clock);
+ 		} while ((group = group->parent));
+ 
  		/*
- 		 * Cleanup done in xe_device_destroy via
- 		 * drmm_add_action_or_reset register above
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index ec7eb7811126..24c8c2d20676 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -396,6 +396,9 @@ struct xe_device {
- 	/** @unordered_wq: used to serialize unordered work, mostly display */
- 	struct workqueue_struct *unordered_wq;
- 
-+	/** @destroy_wq: used to serialize user destroy work, like queue */
-+	struct workqueue_struct *destroy_wq;
-+
- 	/** @tiles: device tiles */
- 	struct xe_tile tiles[XE_MAX_TILES_PER_DEVICE];
- 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 715c761dc7d6..98a6a385a796 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -276,10 +276,26 @@ static struct workqueue_struct *get_submit_wq(struct xe_guc *guc)
+@@ -986,7 +984,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		if ((prev->psi_flags ^ next->psi_flags) & ~TSK_ONCPU) {
+ 			clear &= ~TSK_ONCPU;
+ 			for (; group; group = group->parent)
+-				psi_group_change(group, cpu, clear, set, now, wake_clock);
++				psi_group_change(group, cpu, clear, set, wake_clock);
+ 		}
+ 	}
  }
- #endif
+@@ -997,8 +995,8 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
+ 	int cpu = task_cpu(curr);
+ 	struct psi_group *group;
+ 	struct psi_group_cpu *groupc;
+-	u64 now, irq;
+ 	s64 delta;
++	u64 irq;
  
-+static void xe_guc_submit_fini(struct xe_guc *guc)
-+{
-+	struct xe_device *xe = guc_to_xe(guc);
-+	struct xe_gt *gt = guc_to_gt(guc);
-+	int ret;
-+
-+	ret = wait_event_timeout(guc->submission_state.fini_wq,
-+				 xa_empty(&guc->submission_state.exec_queue_lookup),
-+				 HZ * 5);
-+
-+	drain_workqueue(xe->destroy_wq);
-+
-+	xe_gt_assert(gt, ret);
-+}
-+
- static void guc_submit_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc *guc = arg;
+ 	if (static_branch_likely(&psi_disabled))
+ 		return;
+@@ -1011,7 +1009,6 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
+ 	if (prev && task_psi_group(prev) == group)
+ 		return;
  
-+	xe_guc_submit_fini(guc);
- 	xa_destroy(&guc->submission_state.exec_queue_lookup);
- 	free_submit_wq(guc);
+-	now = cpu_clock(cpu);
+ 	irq = irq_time_read(cpu);
+ 	delta = (s64)(irq - rq->psi_irq_time);
+ 	if (delta < 0)
+@@ -1019,12 +1016,15 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
+ 	rq->psi_irq_time = irq;
+ 
+ 	do {
++		u64 now;
++
+ 		if (!group->enabled)
+ 			continue;
+ 
+ 		groupc = per_cpu_ptr(group->pcpu, cpu);
+ 
+ 		write_seqcount_begin(&groupc->seq);
++		now = cpu_clock(cpu);
+ 
+ 		record_times(groupc, now);
+ 		groupc->times[PSI_IRQ_FULL] += delta;
+@@ -1223,11 +1223,9 @@ void psi_cgroup_restart(struct psi_group *group)
+ 	for_each_possible_cpu(cpu) {
+ 		struct rq *rq = cpu_rq(cpu);
+ 		struct rq_flags rf;
+-		u64 now;
+ 
+ 		rq_lock_irq(rq, &rf);
+-		now = cpu_clock(cpu);
+-		psi_group_change(group, cpu, 0, 0, now, true);
++		psi_group_change(group, cpu, 0, 0, true);
+ 		rq_unlock_irq(rq, &rf);
+ 	}
  }
-@@ -351,6 +367,8 @@ int xe_guc_submit_init(struct xe_guc *guc, unsigned int num_ids)
- 
- 	xa_init(&guc->submission_state.exec_queue_lookup);
- 
-+	init_waitqueue_head(&guc->submission_state.fini_wq);
-+
- 	primelockdep(guc);
- 
- 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
-@@ -367,6 +385,9 @@ static void __release_guc_id(struct xe_guc *guc, struct xe_exec_queue *q, u32 xa
- 
- 	xe_guc_id_mgr_release_locked(&guc->submission_state.idm,
- 				     q->guc->id, q->width);
-+
-+	if (xa_empty(&guc->submission_state.exec_queue_lookup))
-+		wake_up(&guc->submission_state.fini_wq);
- }
- 
- static int alloc_guc_id(struct xe_guc *guc, struct xe_exec_queue *q)
-@@ -1274,13 +1295,16 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
- 
- static void guc_exec_queue_fini_async(struct xe_exec_queue *q)
- {
-+	struct xe_guc *guc = exec_queue_to_guc(q);
-+	struct xe_device *xe = guc_to_xe(guc);
-+
- 	INIT_WORK(&q->guc->fini_async, __guc_exec_queue_fini_async);
- 
- 	/* We must block on kernel engines so slabs are empty on driver unload */
- 	if (q->flags & EXEC_QUEUE_FLAG_PERMANENT || exec_queue_wedged(q))
- 		__guc_exec_queue_fini_async(&q->guc->fini_async);
- 	else
--		queue_work(system_wq, &q->guc->fini_async);
-+		queue_work(xe->destroy_wq, &q->guc->fini_async);
- }
- 
- static void __guc_exec_queue_fini(struct xe_guc *guc, struct xe_exec_queue *q)
-diff --git a/drivers/gpu/drm/xe/xe_guc_types.h b/drivers/gpu/drm/xe/xe_guc_types.h
-index 546ac6350a31..69046f698271 100644
---- a/drivers/gpu/drm/xe/xe_guc_types.h
-+++ b/drivers/gpu/drm/xe/xe_guc_types.h
-@@ -81,6 +81,8 @@ struct xe_guc {
- #endif
- 		/** @submission_state.enabled: submission is enabled */
- 		bool enabled;
-+		/** @submission_state.fini_wq: submit fini wait queue */
-+		wait_queue_head_t fini_wq;
- 	} submission_state;
- 	/** @hwconfig: Hardware config state */
- 	struct {
 
 
