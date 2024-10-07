@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27A1993457
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E7D993459
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856851F23AB5
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:03:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCA211F23C57
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA871DC077;
-	Mon,  7 Oct 2024 17:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D001D9691;
+	Mon,  7 Oct 2024 17:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTAP4Q2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+q+kXTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101721DB373
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A981DC07D
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728320618; cv=none; b=T94o4OmnwXkD08Fln+91HBOI1rUjb6X6MVVhfiPmdAsL6fHRYlwbDDw44g7cP7FXNqAWpVv2pwNUmR5f7kBYD/7wmtaNRAmxu+SjHRb8Lcr0/IQBaqiZ3dWWGpJeio+G82e7EZ4ZFAJ/astBs4zR1UcvFM6ArGVpmEgIytkkCqo=
+	t=1728320664; cv=none; b=M1AdIAwx2TE+CG5BHTnqR/YUdyM83bXbnZvgyzYrEBP78VR9qTNAXhgS2XMa5tN6cuUoOP4XM7lhPouMKEciUab5EC5Jfdllst0orsX2+2LkbG/d2s0k2eY7rE0qqGBnskgmTDOQefPzGXGkLQOxhsM4Mfyn6vLU/YHHzrTsCck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728320618; c=relaxed/simple;
-	bh=iooaCtnKVs9gow5M8UfpUBIVsc8e0MQatJmJ/ptbrfg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LA8pJRD0lXTAsQv3FcVTU+wggukZMOGRHQLm/Kxb6t/Xl7y41exxsbdhxCPJIjGo5C/CNKcOWUA1jjqUJiY1eMXWN5Uo5xWOnIB0kq5PHtLspnHYzvg9g3G6fRzEkUwgR39YwEE2SYm3yX15kiOsLyrdmSFtwscT+L8KHSPz0Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTAP4Q2W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CF4C4CEC6;
-	Mon,  7 Oct 2024 17:03:37 +0000 (UTC)
+	s=arc-20240116; t=1728320664; c=relaxed/simple;
+	bh=CAaY0JKH9m+B1ErvsWBsy8m6tKSMaU1ZxO3f2LpKb7o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pp5NyOgYxsVHOW2w6GWkktHcdsQWUmZN59B6hBboAY2YlrN5aOGbxxOo0NsBWg5c3n+lZ2wrvQ+oyIf44WkSE6lk1fog9yamDiLeG4PuJ2vNtKR1XynIifkBViM/Lk8i2RX2W69mfdoaQ1EZAGMxF6m00FacY5n0C7mN3BHxHN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+q+kXTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FE1C4CEC6;
+	Mon,  7 Oct 2024 17:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728320617;
-	bh=iooaCtnKVs9gow5M8UfpUBIVsc8e0MQatJmJ/ptbrfg=;
+	s=korg; t=1728320664;
+	bh=CAaY0JKH9m+B1ErvsWBsy8m6tKSMaU1ZxO3f2LpKb7o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bTAP4Q2WbXjMbfavFNR3IVrxn8f/6YCCOamsyIm4KBerp0494ybETP32HmbX8V0MB
-	 Gbxwvd08WBRbBhrt/J6Yq/sOEAN6LDdsG8UY5ofUmdFMPjMT9p+tRZn5Q+GlOP940Q
-	 NGZSfZymH9yubBN/4asGwKFN67EIr0/K9cEQfgfg=
+	b=b+q+kXTuQ5yDTfbgo1dkahG/foIXFd8mHL8eTWKQ0LzSpSod777dmtRKqMrXZU4BF
+	 CLk+jynvuf6Q3JLFkMvvJmYHVFUbJ7DIQ5xhIFZb86TA3ppITqg6GTctP9h6pkuwbG
+	 5z+gc5BAhoSlvwLUSviPwBdYsp/Aa0M8KI+D23sk=
 Subject: FAILED: patch "[PATCH] gso: fix udp gso fraglist segmentation after pull from" failed to apply to 5.10-stable tree
 To: willemb@google.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 19:02:27 +0200
-Message-ID: <2024100727-trunks-disabled-4c43@gregkh>
+Date: Mon, 07 Oct 2024 19:03:26 +0200
+Message-ID: <2024100726-unlocking-handled-41bb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ git checkout FETCH_HEAD
 git cherry-pick -x a1e40ac5b5e9077fe1f7ae0eb88034db0f9ae1ab
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100727-trunks-disabled-4c43@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100726-unlocking-handled-41bb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
