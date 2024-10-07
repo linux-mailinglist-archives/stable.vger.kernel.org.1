@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD22993156
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:35:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6209F993157
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F33284AA7
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:35:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C389280D81
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A62F1D90C8;
-	Mon,  7 Oct 2024 15:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1E81D9323;
+	Mon,  7 Oct 2024 15:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbIvow7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIa81j2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1801D2714
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EA01D90D3
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315293; cv=none; b=sXjQ5OUvMooD9l0N3kG+JbsoM7IoOipZyL2Z6xBBZ0Zo+qHU7qwm7sbSIhYy6aa645X2Bg1/qArSJTmlaUp3P0R4kW6J8y75cyUfo40WQEcAZyL2SurxC0vWGbfu3IzJfS4Se8AMUyL0hQR26zyY7UT10QCxQtB4dynWM/9sfQ4=
+	t=1728315296; cv=none; b=NOSH1c1vB3v+Z1nUgCdNi6LpDZLEjjapSe62+OnwPd6gBazHRSTXgSHJQ+VqKdXsCE4gyt5tZ0EvFwtDHh4Sq987QFMQxIkSSHeA/RQ31wmjYc0z2aXoipi8wnfAtAAayweBrbVJEQNqpXsbFUMzkGwSpWZS/mbzECcdnIJaj0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315293; c=relaxed/simple;
-	bh=hdXyO3CUcZCS+q0Dtd5IV/69iGBiF4TVLacblQEieLY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t+i5fT44iWLK2TiM/xTdZcSgNOx0W1nAQKApjC3H+m5loFWCkUCsq+4ABnyawIfLTT4tWxqNz/cbVZ9pJI7n49qtfNjlvdggbwWoWvMXPQ2vN3oAqk4/uQOM+XVbXzmPhAjVenmxKFv7N8fr3eISH1ltzWJ8RB44RQw/wCFbZXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbIvow7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3098EC4CEC6;
-	Mon,  7 Oct 2024 15:34:51 +0000 (UTC)
+	s=arc-20240116; t=1728315296; c=relaxed/simple;
+	bh=D6mdxMA1ZeOl7G3OxhRE46Cl5ch4eEcSJWcUvJrfiRY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hpcAv2NABk4QANEP3RqtuZS2scX293QeurjHJXR+Ibh9NMFzvba/Xv0DDqhZPaoAdtqO+qCM7IL/Zqz2n44wNaWD2yvcZmFMwSNrX3afWnF3UoLewORAF5LOMZaWPOmd1lecyGY+9YiU13MmPBir9qD0wa+wAg5e8TgLVJGsTws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIa81j2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63F3C4CEC6;
+	Mon,  7 Oct 2024 15:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728315292;
-	bh=hdXyO3CUcZCS+q0Dtd5IV/69iGBiF4TVLacblQEieLY=;
+	s=korg; t=1728315296;
+	bh=D6mdxMA1ZeOl7G3OxhRE46Cl5ch4eEcSJWcUvJrfiRY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FbIvow7DNvS8NPHI9ay5puXWknxslRw4hdM/bJu0Ub3vEc4SqP0TTPdVtCO96zyk+
-	 o4AhHh4NAxI7fPMukzvX7XXoSM4X3cuKIP0i1+CK1piMPPYSkx6TAoUEFPn+xkAIly
-	 538VWaVLjoVX4LEysvNrW75gM9aA7iqe76v24JQ8=
-Subject: FAILED: patch "[PATCH] sched: psi: fix bogus pressure spikes from aggregation race" failed to apply to 6.1-stable tree
+	b=NIa81j2fxrlPuwq9k86FV9OmCBPeNNMLfOb/5IInqBGJ50GRgSNw0GP7LKHfJ0jpw
+	 gcV5uerdJVrzZ4WyMnRb8Xbpg1pJ8Pkv1wg+j1Yrg43/EHdQfCN6qGMPzGFwsbHYPb
+	 GD29d1fyqtu1++yV1eP98cz1qhfdumZObY1gJUbo=
+Subject: FAILED: patch "[PATCH] sched: psi: fix bogus pressure spikes from aggregation race" failed to apply to 5.15-stable tree
 To: hannes@cmpxchg.org,brandon@buildbuddy.io,chengming.zhou@linux.dev,torvalds@linux-foundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:34:44 +0200
-Message-ID: <2024100744-slurp-uncouple-456c@gregkh>
+Date: Mon, 07 Oct 2024 17:34:46 +0200
+Message-ID: <2024100745-barometer-saffron-c873@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3840cbe24cf060ea05a585ca497814609f5d47d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100744-slurp-uncouple-456c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100745-barometer-saffron-c873@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,16 @@ ddae0ca2a8fe ("sched: Move psi_account_irqtime() out of update_rq_clock_task() h
 a3b2aeac9d15 ("delayacct: track delays from IRQ/SOFTIRQ")
 eca7de7cdc38 ("delayacct: improve the average delay precision of getdelay tool to microsecond")
 6ab587e8e8b4 ("docs/zh_CN: Update the translation of delay-accounting to 6.1-rc8")
+34f26a15611a ("sched/psi: Per-cgroup PSI accounting disable/re-enable interface")
+dc86aba751e2 ("sched/psi: Cache parent psi_group to speed up group iteration")
+52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ pressure")
+71dbdde7914d ("sched/psi: Remove NR_ONCPU task accounting")
+65176f59a18d ("sched/psi: Optimize task switch inside shared cgroups again")
+d79ddb069c52 ("sched/psi: Move private helpers to sched/stats.h")
+c530a3c716b9 ("sched/psi: Fix periodic aggregation shut off")
+5f69a6577bc3 ("psi: dont alloc memory for psi by default")
+662ce1dc9caf ("delayacct: track delays from write-protect copy")
+6f664045c868 ("Merge tag 'mm-nonmm-stable-2022-05-26' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
 
 thanks,
 
