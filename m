@@ -1,101 +1,133 @@
-Return-Path: <stable+bounces-81240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1244B9928C9
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:07:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331789928F1
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B943F1F24DC7
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 10:07:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAD0285079
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 10:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3453B1C1AB0;
-	Mon,  7 Oct 2024 10:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF131E519;
+	Mon,  7 Oct 2024 10:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="BusjZvhn"
+	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="V4aP/rfI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410551AD9FF
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 10:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50354136354
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 10:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728295523; cv=none; b=k2sM//BYAwarXUdFkmrrIJkR6lg1Er0qz/QiAZ8vqJhTlb0b2+GX57cddUgh1J4CULKJVLEEbvgd7U1BkD07KnhhUCKSksTa8Atf4jn98Sii1N2caul4trjMCrj1sovDn3SfQZIingwK6BDuIusueqUul/iXkSdqb+0vhWkhVZI=
+	t=1728296163; cv=none; b=qxm3kR7CnHCt8uvMtTp/c9nHEZxGLUsjmupicI6Lwaaqz2QEhoA6eT4G+BR5Fo9DaMIfvIjkPxKBRkQMdiuZdNxQwHtkRRJn6thdwL2oUkY0yWgEHlzyXLh/glU1CN/FYQ2k1ApqsWm56FJSV9Bz7DK+XZCGtuMPCgh4TuapD7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728295523; c=relaxed/simple;
-	bh=60X5nUyAE9DrS52akUXLSBpRxabsnePVmWNJSqfHVqM=;
+	s=arc-20240116; t=1728296163; c=relaxed/simple;
+	bh=QEW8xS45co+9Q5+FEHW81DqGS+oo/TRSeAM4ZM3skio=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IT0jQt9h3kJnw98UYr1R6NhSIwFbdkArRvocXTvatgdwVQbJyYFjvcn1RI1KU4dMkVKVT8YwarOSq4BiVFWchy3SM3c/Oo/T8F9ReifO4z5E1c7gYeI3VSbo4IQXG/1QnjCWWvbP3HMthBdIfgPZdSplBjIy8/M1JrWA1T6BZ0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=BusjZvhn; arc=none smtp.client-ip=209.85.167.51
+	 To:Cc:Content-Type; b=AyVvSi8vVeUMI/zMaeuQwyVui7qwjWQDIs7AsHTAPkcMVyYGXDvUtH0CjAunhQLuC/uFAxKhjqjRzbVCYUcjOPAwjCtcu+EJuCjmcPOdbkGO9LZiadZVp5OICuQ5UnfpVRJH/L0nch+NlkrS1MG2YOZz7PIkMvOrMLtQoHwY83U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=V4aP/rfI; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5398e7dda5fso4108834e87.0
-        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 03:05:19 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c87c7d6ad4so5891287a12.3
+        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 03:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1728295518; x=1728900318; darn=vger.kernel.org;
+        d=szeredi.hu; s=google; t=1728296158; x=1728900958; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=60X5nUyAE9DrS52akUXLSBpRxabsnePVmWNJSqfHVqM=;
-        b=BusjZvhnpQ+pE6LCNNDzU8CKH67hwvr3bhWzgM3pc3NZW9sxcvyHp2mejs4G/6urkr
-         jPbbJsRcpvOFX7OZGbh4OlWuqmHObw1K9G70klCADV/Aiatn49VBwBirqb4BcwwLPDfH
-         8FWVjXibpnIa/fsZUnFrHh7fgtvgvUmcWC/Ew=
+        bh=uD7+x06HNAsGvnUsU1IbHnMrioZv6+EXemRCdJxKLoc=;
+        b=V4aP/rfIVYJxRLj7NCgAG5rh+521Cw9/uvwF3u0jKWC1gRmKSZd04K1zIt3oTJpmS6
+         WjFuZD8nC1MmotYAUCcWFw+iiLX8hWUR+5QLvRVfYvMdOeBGZaeMZwQbKVZE6N5yAElE
+         e0RTZyiUaWwc8u9VaSnB8KnYkF+zJQEgbI0JE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728295518; x=1728900318;
+        d=1e100.net; s=20230601; t=1728296158; x=1728900958;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=60X5nUyAE9DrS52akUXLSBpRxabsnePVmWNJSqfHVqM=;
-        b=NWPyhNGIUWEf8H7+I5RYVHh5YkIeMZNghzxNB5yJ4yMZdFHSx6kFbaJ4Fn7fwFeMyS
-         U5Lrk/8q1AZlc7eYBpgVla2/QU3Sei4ZLyErZhJhgzXP0c0i6sPoG5j9t/vlF0tUqNGV
-         iwLUnI+pWVU+1xIzKU1mwaUVRN2paZwLgfFttFVySkKyj8OZQRu/ZH1rW9plbTrxMNnq
-         ZvxJ32l5hB6WrC2YvOPuhSdttHnOYyXUzdX8iXM/yjPrGIRk202d7xJEmBl0abdwpGD6
-         Jhu9vQZp149PiciJFHtgUQky96RG9dZEG8N077fCggba028XeqI3whdMfuk1oteDvNSa
-         Tflg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUCOgrCxwMLVdBVdBM7bH8KjUJ+VvQVww8kH6JPVgPKnFn4GJb1PCkbMzYizRgM1ovl7Hv9WQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwjFNwIba9xs2wvrhaIRTEsmhJN0wsrK/CyXfLDItq1YYAkA8B
-	KewahHGv/bdOnrihWDZkB5Kr6YnDAyKe1vOt5dC8OP3L866w7o9IXRKkSYVc6O8fp1GXKhgnik2
-	TsPKdDtoQoVtSxcMGfcUwsH/cwPNPWkxTfsNraw==
-X-Google-Smtp-Source: AGHT+IEMCR/7S6+NB65Ewgm85Y27kXieWu5X6dcSByOH//2ik5TJFm6oU52jizX6aN9ixkQGjMbaeNJrse8KTg0/+zE=
-X-Received: by 2002:a05:6512:b9c:b0:530:aeea:27e1 with SMTP id
- 2adb3069b0e04-539ab9e6cfcmr5778643e87.50.1728295518265; Mon, 07 Oct 2024
- 03:05:18 -0700 (PDT)
+        bh=uD7+x06HNAsGvnUsU1IbHnMrioZv6+EXemRCdJxKLoc=;
+        b=VQ8BEjTZ4JOqVXVpBRj4ZzWzT0KZYGCZvmoWo6Qy5rodpyCn+mmtcApTdaU+DY1d+F
+         +Nr4SyzfIpOKdni11JvsNG961eQ2VuvRq1BU2WyY1mR+NzXYxQ/AhG8e4znZ/Q1XTkvc
+         OAJx8pGgDbwkEUihRajrzGjNF0pvuADnA5Bl9CsLnfr422i3HxtsXYbF8cXYhnpOIgz7
+         wtxCAG8qnGZ+BD3ZbiY+ObA3LxnTcMmk4dXz82HTWsVJ/bktJ0faA7jN09QKbX5Nd3fn
+         JtFAGmcOMf1msrZGZNAz/6/f5UtFwRMIfto1yh/WebjahI1GLOTNpPjy+nH1CMUxxzAA
+         5KVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvEA4lluMgow/SVGu72lRGvH1cs75dfEKsK1pqzXA2+CQeRZIbI3XvASRytGBiVegFOHMGZaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXgaTBsWdR0y3naCebFEuwNveSkmFR+U3xToaV0Sgo0IxiQRyk
+	Sgc596dTxwY1lMR3bZZyX0qR6JKr7PSbFhmLIKp+jY8qOtuTP8MCeVj9fRMcB6Iy0teb6rT+hqJ
+	3drdsvFDjU0g91JtHpD5VRKZiOgcuTBy8ThKwXw==
+X-Google-Smtp-Source: AGHT+IHCZRkH8BOWmS+bXReQgFIle5qN39Wo9G9kYJNjoBdkjLUW7WB9tEXtznOwowsN9Uy1rnTsh/v4dV2Zx1Ta3bQ=
+X-Received: by 2002:a17:907:7206:b0:a99:3dbf:648d with SMTP id
+ a640c23a62f3a-a993dbf6715mr607796966b.45.1728296158491; Mon, 07 Oct 2024
+ 03:15:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004182200.3670903-1-sashal@kernel.org> <20241004182200.3670903-45-sashal@kernel.org>
-In-Reply-To: <20241004182200.3670903-45-sashal@kernel.org>
+References: <20241004181828.3669209-1-sashal@kernel.org> <20241004181828.3669209-48-sashal@kernel.org>
+In-Reply-To: <20241004181828.3669209-48-sashal@kernel.org>
 From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Mon, 7 Oct 2024 12:05:06 +0200
-Message-ID: <CAJfpegumr4qf7MmKshr0BuQ3-KBKoujfgwtfDww4nYbyUpdzng@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.10 45/70] fuse: handle idmappings properly in ->write_iter()
+Date: Mon, 7 Oct 2024 12:15:45 +0200
+Message-ID: <CAJfpegtNF6CkSsE7yWq8-4W7HP3aOjE4xnAzJp0uiU-S7Wb8pg@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.11 48/76] fuse: allow O_PATH fd for FUSE_DEV_IOC_BACKING_OPEN
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>, Miklos Szeredi <mszeredi@redhat.com>, 
-	linux-fsdevel@vger.kernel.org
+	Miklos Szeredi <mszeredi@redhat.com>, Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 4 Oct 2024 at 20:23, Sasha Levin <sashal@kernel.org> wrote:
+On Fri, 4 Oct 2024 at 20:19, Sasha Levin <sashal@kernel.org> wrote:
 >
-> From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+> From: Miklos Szeredi <mszeredi@redhat.com>
 >
-> [ Upstream commit 5b8ca5a54cb89ab07b0389f50e038e533cdfdd86 ]
+> [ Upstream commit efad7153bf93db8565128f7567aab1d23e221098 ]
 >
-> This is needed to properly clear suid/sgid.
+> Only f_path is used from backing files registered with
+> FUSE_DEV_IOC_BACKING_OPEN, so it makes sense to allow O_PATH descriptors.
 >
-> Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+> O_PATH files have an empty f_op, so don't check read_iter/write_iter.
+>
+> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 > Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/fuse/passthrough.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+>
+> diff --git a/fs/fuse/passthrough.c b/fs/fuse/passthrough.c
+> index 9666d13884ce5..62aee8289d110 100644
+> --- a/fs/fuse/passthrough.c
+> +++ b/fs/fuse/passthrough.c
+> @@ -228,16 +228,13 @@ int fuse_backing_open(struct fuse_conn *fc, struct fuse_backing_map *map)
+>         if (map->flags || map->padding)
+>                 goto out;
+>
+> -       file = fget(map->fd);
+> +       file = fget_raw(map->fd);
+>         res = -EBADF;
+>         if (!file)
+>                 goto out;
+>
+> -       res = -EOPNOTSUPP;
+> -       if (!file->f_op->read_iter || !file->f_op->write_iter)
+> -               goto out_fput;
+> -
+>         backing_sb = file_inode(file)->i_sb;
+> +       pr_info("%s: %x:%pD %i\n", __func__, backing_sb->s_dev, file, backing_sb->s_stack_depth);
 
-AFAICS, this commit shouldn't be backported to any kernel.
+That's a stray debug line that wasn't in there when I posted the patch
+for review[1], but somehow made it into the pull...
 
-Hopefully it would do nothing, since idmapped fuse mounts are not
-enabled before v6.12, but still...
+Since this isn't a bug fix, it would be easiest to just drop the patch
+from the stable queues.
+
+But I'm okay with just dropping this stray line from the backport, or
+waiting for an upstream fix which does that.
 
 Thanks,
 Miklos
+
+[1] https://lore.kernel.org/all/20240913104703.1673180-1-mszeredi@redhat.com/
 
