@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4789934AB
+	by mail.lfdr.de (Postfix) with ESMTPS id D460C9934AC
 	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBFC2B20E8A
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:18:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33E8AB2103D
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963471DC74E;
-	Mon,  7 Oct 2024 17:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6531DD523;
+	Mon,  7 Oct 2024 17:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r60vF7IO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVMElvyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577C51DB546
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2501DB546
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728321498; cv=none; b=Wb+4ZQ+YVC5zxTROvaomVyW8ZYfv+oSSSnXm7PQnXocOQbSYUFK+UCbHNKCrkjZ51iZyUM6nOyjtcFQ/Fbr6cPfs1Sbg76KqpEZWpOne7A/kvpcn/tyQ7iT34zYy4eUUYO9A5mtWVjC+Cn8NmsojQM0jArA0jlG9DyCh/7swi5o=
+	t=1728321502; cv=none; b=r5C33LnoZtMOSR3UEcxQ8qk085tH/0nU3dzR3TYv6N9c0i63TCnyK217yYSf9GUjRr+aAyazSypD29wvtey+dvtaxo9GMRMga7R8NpUZhWZ5o9X4BvD9Nic8kQm+BZ3N30xJCk/BdWFuWfgViNSZ9xNnx+Ucp+m8V9RkoRYrohs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728321498; c=relaxed/simple;
-	bh=ujevYbT1rchpUu8T/gcUMEAOLoFNEXD1XK4ak2YZPTs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RBpOBrVp7Uk2qnprFQIIxVXmhNJ90PwDskAdxSa2qMqNKIdemXIPRZPadd4jQItRyD/6PmAIJVUORViDfbGCF8WUWuHPz3DyxuESvbYsWNVqvyFPyZeUotinVmo1K8GFlmd5/KRdaE5tumdRwonJCUkxzTXU9uopKyxv4JOZq44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r60vF7IO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E0BC4CEC6;
-	Mon,  7 Oct 2024 17:18:17 +0000 (UTC)
+	s=arc-20240116; t=1728321502; c=relaxed/simple;
+	bh=nC2JsprpAqVxwrVQarbkHWIQ7rOY5EBUtkvjDOh+5BE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FtlMeITt1M+cFDZenhjTi3SVTdxMCj4KqLEM0l4ei6yH9+2rPcKXw3jMrJ9TErKeeEA1d66DXRc8bkb+HRN4UCVBVdpioKg686H9EILnRc2/jAqG2w6xIrw/+wjIfEdf3ePar9JclDBtMXOsucQ7NqMkJDQI3S2lmEVNJb9zl44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVMElvyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322B6C4CEC6;
+	Mon,  7 Oct 2024 17:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728321497;
-	bh=ujevYbT1rchpUu8T/gcUMEAOLoFNEXD1XK4ak2YZPTs=;
+	s=korg; t=1728321501;
+	bh=nC2JsprpAqVxwrVQarbkHWIQ7rOY5EBUtkvjDOh+5BE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=r60vF7IOQuMeEl9SyLsvyENHMbUOWKlKGHdQpXAaQ0y5YbAhFGWgsthRPK6pFhJoK
-	 wHTlyLQfQFrtyqThIMeT+lXP9xolZxOl8QQm+rL+Rx9R6uqYzrZ4hzZh/UN3ChCn2k
-	 D4j0sCiiOxh+gZX0o2ZgOHFzJCT0nyDgnjSzl5jM=
-Subject: FAILED: patch "[PATCH] btrfs: drop the backref cache during relocation if we commit" failed to apply to 6.6-stable tree
+	b=IVMElvylFQ8n4tLv3XIdw9IbFG4kyAzxylPpe2rOD3Y1qABy1F4j4LqvP11/mQ7u9
+	 ge35ly615eBOnuChRmvdXo6afKYh3ulsxoj5sRoJixyrY5l3SYfKtwAMlgMc5keZrl
+	 iMHtchUatYZ+1xz35XGIQDpDxPzYIS5PIgeH7tf4=
+Subject: FAILED: patch "[PATCH] btrfs: drop the backref cache during relocation if we commit" failed to apply to 6.1-stable tree
 To: josef@toxicpanda.com,boris@bur.io,dsterba@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 19:18:14 +0200
-Message-ID: <2024100714-clustered-sizing-bcce@gregkh>
+Date: Mon, 07 Oct 2024 19:18:16 +0200
+Message-ID: <2024100716-cryptic-harness-bdfa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x db7e68b522c01eb666cfe1f31637775f18997811
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100714-clustered-sizing-bcce@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100716-cryptic-harness-bdfa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 db7e68b522c0 ("btrfs: drop the backref cache during relocation if we commit")
 ab7c8bbf3a08 ("btrfs: relocation: constify parameters where possible")
 32f2abca380f ("btrfs: relocation: return bool from btrfs_should_ignore_reloc_root")
+b9a9a85059cd ("btrfs: output affected files when relocation fails")
+aa5d3003ddee ("btrfs: move orphan prototypes into orphan.h")
+7f0add250f82 ("btrfs: move super_block specific helpers into super.h")
+c03b22076bd2 ("btrfs: move super prototypes into super.h")
+5c11adcc383a ("btrfs: move verity prototypes into verity.h")
+77407dc032e2 ("btrfs: move dev-replace prototypes into dev-replace.h")
+2fc6822c99d7 ("btrfs: move scrub prototypes into scrub.h")
+677074792a1d ("btrfs: move relocation prototypes into relocation.h")
+33cf97a7b658 ("btrfs: move acl prototypes into acl.h")
+b538a271ae9b ("btrfs: move the 32bit warn defines into messages.h")
+af142b6f44d3 ("btrfs: move file prototypes to file.h")
+7572dec8f522 ("btrfs: move ioctl prototypes into ioctl.h")
+c7a03b524d30 ("btrfs: move uuid tree prototypes to uuid-tree.h")
+7c8ede162805 ("btrfs: move file-item prototypes into their own header")
+f2b39277b87d ("btrfs: move dir-item prototypes into dir-item.h")
+59b818e064ab ("btrfs: move defrag related prototypes to their own header")
+a6a01ca61f49 ("btrfs: move the file defrag code into defrag.c")
 
 thanks,
 
