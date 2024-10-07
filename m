@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A6D99318D
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 969FC9931AD
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 851E61F23D6F
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410691F22DE5
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8FE1D935A;
-	Mon,  7 Oct 2024 15:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3431D9592;
+	Mon,  7 Oct 2024 15:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfWr2caU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLWt+ddo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065931D9351
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24511D935A
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315584; cv=none; b=df34W8rLlrEuHBHdBa0S43arRuS8YovqplNohRfQzsPGAGW0sdKfJcHh3jmwMTJIEW2/O0/TivXAPcUZyRLAuYCafVmmwxtjnMu/bdwqYgkfgxIkVOAe+b0FxeRp5uGNNqjd7hJ61EIzmbkZak8tyWidMkXC/XbJCUqSeZcDW8M=
+	t=1728315819; cv=none; b=Xfeutfd1SSmcHrbbu0NdPrgJmEIALG/y/UHIF28fX7OQ+U+G0PENHFRkEJBvxc/xavMLMlYYkBWfaWQd6oQeoyIzYBYZXmbnVlfZPrrreywgraizLPXgpUoniaDSP3t8VH354GzjVhV9MIU5PPqnWn83rOHuMZB3AyOPsn+Le3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315584; c=relaxed/simple;
-	bh=XKCKrGrdTojBc4nfnsnSexrWRjXMwhsudThsQFC9wmY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ln3M9WwqwEycx/cFaBcCQRbnoo4mGxASbWtvynCbVZxR6j7EOaLrTiknz9RPuY9vgA+lnjC+SMRhtVhKqItFau6PbMMHBXc3rMd+bwCONnpi+7tydWSWjqTP3HC+LX2Hx7bWT/cjczKh9aG6RelXHl42CHJdX0WV1je5AzDmXsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfWr2caU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6869EC4CECF;
-	Mon,  7 Oct 2024 15:39:43 +0000 (UTC)
+	s=arc-20240116; t=1728315819; c=relaxed/simple;
+	bh=G9DZaTLpxZWg3j1cliafkbM2f3KOfyYl4eEpEoORkpA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Cz9kNet+kNpjelW+SAnAfYG5coKETRWKlx7k6h1WxFfzh0qXwp4YKUJy3s5wNjPELo+ZKohXr7S5f9eyFXiFL55W3xhfhiUIG6+hRPY0K3JX3IhV48SiF8p80t/7SCWpdOOEJTBV3W7BArviXJizIa8kgaocrr8UuzqKVbJYfPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLWt+ddo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF40C4CEC6;
+	Mon,  7 Oct 2024 15:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728315583;
-	bh=XKCKrGrdTojBc4nfnsnSexrWRjXMwhsudThsQFC9wmY=;
+	s=korg; t=1728315819;
+	bh=G9DZaTLpxZWg3j1cliafkbM2f3KOfyYl4eEpEoORkpA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tfWr2caUzNCMYOXgOTQMO6cwpwHrTe+D0VE493vQk5Cj0t3iBdiKU7thh5i/Dkmhm
-	 B1nQslL4ksV1OcHVy6WTrUyqwLelzH+YA50jfE+0AeY/UJPZlGgorSrP/QfajLx/1u
-	 eO7PdU6tWHSu9HNhTNzSExzmc4Nr+a2a6SINzGMo=
-Subject: FAILED: patch "[PATCH] NFSD: Limit the number of concurrent async COPY operations" failed to apply to 4.19-stable tree
-To: chuck.lever@oracle.com,jlayton@kernel.org
+	b=yLWt+ddoVy4saVZSNuHei3jWOUMccSQOLzD+SKWDuVBmrxnZphoraBgjgMqopWn2l
+	 34JF4HfsoEAyAVROPm9PL959R+SHjotd70Nt6z1OY10RD6SnIyyOeWnr/jFeSETDlS
+	 gwprDuGI/EAEFLY3ZR6fu6zwIRVxnYIlMmbvKIVI=
+Subject: FAILED: patch "[PATCH] clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL" failed to apply to 6.11-stable tree
+To: Alex.Michel@wiedemann-group.com,abel.vesa@linaro.org,alex.michel@wiedemann-group.com,o.rempel@pengutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:39:23 +0200
-Message-ID: <2024100722-swell-reverence-0d12@gregkh>
+Date: Mon, 07 Oct 2024 17:43:36 +0200
+Message-ID: <2024100735-unengaged-reapprove-44c8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.11-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
 git checkout FETCH_HEAD
-git cherry-pick -x aadc3bbea163b6caaaebfdd2b6c4667fbc726752
+git cherry-pick -x 32c055ef563c3a4a73a477839f591b1b170bde8e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100722-swell-reverence-0d12@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100735-unengaged-reapprove-44c8@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
 
 Possible dependencies:
 
-aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
-9ed666eba4e0 ("NFSD: Async COPY result needs to return a write verifier")
-8d915bbf3926 ("NFSD: Force all NFSv4.2 COPY requests to be synchronous")
-15d1975b7279 ("NFSD: initialize copy->cp_clp early in nfsd4_copy for use by trace point")
-81e722978ad2 ("NFSD: fix problems with cleanup on errors in nfsd4_copy")
-34e8f9ec4c9a ("NFSD: fix leaked reference count of nfsd4_ssc_umount_item")
-6ba434cb1a8d ("nfsd: clean up potential nfsd_file refcount leaks in COPY codepath")
-75333d48f922 ("NFSD: fix use-after-free in __nfs42_ssc_open()")
-781fde1a2ba2 ("NFSD: Rename the fields in copy_stateid_t")
-754035ff79a1 ("NFSD enforce filehandle check for source file in COPY")
-a11ada99ce93 ("NFSD: Move copy offload callback arguments into a separate structure")
-e72f9bc006c0 ("NFSD: Add nfsd4_send_cb_offload()")
-ad1e46c9b07b ("NFSD: Remove kmalloc from nfsd4_do_async_copy()")
-3b7bf5933cad ("NFSD: Refactor nfsd4_do_copy()")
-478ed7b10d87 ("NFSD: Refactor nfsd4_cleanup_inter_ssc() (2/2)")
-24d796ea383b ("NFSD: Refactor nfsd4_cleanup_inter_ssc() (1/2)")
-1913cdf56cb5 ("NFSD: Replace boolean fields in struct nfsd4_copy")
-87689df69491 ("NFSD: Shrink size of struct nfsd4_copy")
-3988a57885ee ("NFSD: Rename boot verifier functions")
-91d2e9b56cf5 ("NFSD: Clean up the nfsd_net::nfssvc_boot field")
+32c055ef563c ("clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL")
 
 thanks,
 
@@ -96,106 +77,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From aadc3bbea163b6caaaebfdd2b6c4667fbc726752 Mon Sep 17 00:00:00 2001
-From: Chuck Lever <chuck.lever@oracle.com>
-Date: Wed, 28 Aug 2024 13:40:04 -0400
-Subject: [PATCH] NFSD: Limit the number of concurrent async COPY operations
+From 32c055ef563c3a4a73a477839f591b1b170bde8e Mon Sep 17 00:00:00 2001
+From: Michel Alex <Alex.Michel@wiedemann-group.com>
+Date: Mon, 2 Sep 2024 09:05:53 +0000
+Subject: [PATCH] clk: imx6ul: fix clock parent for IMX6UL_CLK_ENETx_REF_SEL
 
-Nothing appears to limit the number of concurrent async COPY
-operations that clients can start. In addition, AFAICT each async
-COPY can copy an unlimited number of 4MB chunks, so can run for a
-long time. Thus IMO async COPY can become a DoS vector.
+Commit 4e197ee880c24ecb63f7fe17449b3653bc64b03c ("clk: imx6ul: add
+ethernet refclock mux support") sets the internal clock as default
+ethernet clock.
 
-Add a restriction mechanism that bounds the number of concurrent
-background COPY operations. Start simple and try to be fair -- this
-patch implements a per-namespace limit.
-
-An async COPY request that occurs while this limit is exceeded gets
-NFS4ERR_DELAY. The requesting client can choose to send the request
-again after a delay or fall back to a traditional read/write style
-copy.
-
-If there is need to make the mechanism more sophisticated, we can
-visit that in future patches.
+Since IMX6UL_CLK_ENET_REF cannot be parent for IMX6UL_CLK_ENET1_REF_SEL,
+the call to clk_set_parent() fails. IMX6UL_CLK_ENET1_REF_125M is the correct
+parent and shall be used instead.
+Same applies for IMX6UL_CLK_ENET2_REF_SEL, for which IMX6UL_CLK_ENET2_REF_125M
+is the correct parent.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Alex Michel <alex.michel@wiedemann-group.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/AS1P250MB0608F9CE4009DCE65C61EEDEA9922@AS1P250MB0608.EURP250.PROD.OUTLOOK.COM
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 238fc4e56e53..37b8bfdcfeea 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -148,6 +148,7 @@ struct nfsd_net {
- 	u32		s2s_cp_cl_id;
- 	struct idr	s2s_cp_stateids;
- 	spinlock_t	s2s_cp_lock;
-+	atomic_t	pending_async_copies;
+diff --git a/drivers/clk/imx/clk-imx6ul.c b/drivers/clk/imx/clk-imx6ul.c
+index f9394e94f69d..05c7a82b751f 100644
+--- a/drivers/clk/imx/clk-imx6ul.c
++++ b/drivers/clk/imx/clk-imx6ul.c
+@@ -542,8 +542,8 @@ static void __init imx6ul_clocks_init(struct device_node *ccm_node)
  
- 	/*
- 	 * Version information
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 231c6035602f..9655acb407b7 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1280,6 +1280,7 @@ static void nfs4_put_copy(struct nfsd4_copy *copy)
- {
- 	if (!refcount_dec_and_test(&copy->refcount))
- 		return;
-+	atomic_dec(&copy->cp_nn->pending_async_copies);
- 	kfree(copy->cp_src);
- 	kfree(copy);
+ 	clk_set_parent(hws[IMX6UL_CLK_ENFC_SEL]->clk, hws[IMX6UL_CLK_PLL2_PFD2]->clk);
+ 
+-	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET_REF]->clk);
+-	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF]->clk);
++	clk_set_parent(hws[IMX6UL_CLK_ENET1_REF_SEL]->clk, hws[IMX6UL_CLK_ENET1_REF_125M]->clk);
++	clk_set_parent(hws[IMX6UL_CLK_ENET2_REF_SEL]->clk, hws[IMX6UL_CLK_ENET2_REF_125M]->clk);
+ 
+ 	imx_register_uart_clocks();
  }
-@@ -1835,10 +1836,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
- 		sizeof(struct knfsd_fh));
- 	if (nfsd4_copy_is_async(copy)) {
--		status = nfserrno(-ENOMEM);
- 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
- 		if (!async_copy)
- 			goto out_err;
-+		async_copy->cp_nn = nn;
-+		/* Arbitrary cap on number of pending async copy operations */
-+		if (atomic_inc_return(&nn->pending_async_copies) >
-+				(int)rqstp->rq_pool->sp_nrthreads) {
-+			atomic_dec(&nn->pending_async_copies);
-+			goto out_err;
-+		}
- 		INIT_LIST_HEAD(&async_copy->copies);
- 		refcount_set(&async_copy->refcount, 1);
- 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
-@@ -1878,7 +1885,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	}
- 	if (async_copy)
- 		cleanup_async_copy(async_copy);
--	status = nfserrno(-ENOMEM);
-+	status = nfserr_jukebox;
- 	goto out;
- }
- 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 7ade551bc022..a49aa75bc0b7 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8554,6 +8554,7 @@ static int nfs4_state_create_net(struct net *net)
- 	spin_lock_init(&nn->client_lock);
- 	spin_lock_init(&nn->s2s_cp_lock);
- 	idr_init(&nn->s2s_cp_stateids);
-+	atomic_set(&nn->pending_async_copies, 0);
- 
- 	spin_lock_init(&nn->blocked_locks_lock);
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index fbdd42cde1fa..2a21a7662e03 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -713,6 +713,7 @@ struct nfsd4_copy {
- 	struct nfsd4_ssc_umount_item *ss_nsui;
- 	struct nfs_fh		c_fh;
- 	nfs4_stateid		stateid;
-+	struct nfsd_net		*cp_nn;
- };
- 
- static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
 
 
