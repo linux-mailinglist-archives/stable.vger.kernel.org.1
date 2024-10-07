@@ -1,58 +1,48 @@
-Return-Path: <stable+bounces-81250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E137992A3F
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:31:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE11992A8E
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26891C2294D
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:31:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A8EAB2383E
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2061CACC0;
-	Mon,  7 Oct 2024 11:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3281D1F7E;
+	Mon,  7 Oct 2024 11:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="DnhDtAE1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4lTXEaF"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93486101C4;
-	Mon,  7 Oct 2024 11:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728300688; cv=pass; b=Fdk2uajCCDfPOubpZxMnsrLIowhgZFByFu3oLsk2MjZLmQihcIVpW89DOUZQXBejJEdbQyAtvBF+QNT4zNLpOyLqDQWMSxpdoAS5q37VNpx7oEPmbsHryvlg0doapZ1y64LS1BnON9GFpxtFn8E2UfvSnb9i8Cyctpis8JL9Tps=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728300688; c=relaxed/simple;
-	bh=zB6cHrIxf8MAti/jSyoDypswPusO31FpIcIhlwrhIzY=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=aHS/HUnnDkKDKJ3YFegFOWW4WqKSE0Ja0EaFD+/nXiK9aq3r6ECpnwJQ5GyLwfTplsXdh0IGgAur3NR+8mb1Ic8wvgWtqIvhdstwC5+zCN99vVZtwTO/hztmbTtfRFS7KAW1h95xf61hWT9FElGTebYmKG6P9kpopw0+jsQKuKE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=DnhDtAE1; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1728300673; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=OpPE9fAAnOFuLxarIZG8HMCPijywuOof1PxDeoPioRi//9dAuaSNfgHCRKvd4DhhtQ1iqDnTCPP9gn2+b+TpvyNfBx73u6TVdXVEcaGUt8hqocx+0EoY/EZYZUTQk8+OFYOlPS9QcDGke79fzEgzzOwAfzYMAJetFSrZA7allaY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1728300673; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9onN0rTwv0VDbke7yVsL14uwCLFnY8cP6ctLDOhwCTs=; 
-	b=lm+VbNGUBLSUigrWCBl3aICzGSejqX1d8gk5I14F3246aw5CbRb+EAdztLzKUD0/WL+9XSp9nqHFPiBczIOjz3HP8hyKjIOzjxsvzJY12XpXcSHhMyIKr8v0HH2v8tdT7H5FTltnU/3i8nk9JHE3mba5D4LXJqv4jFbhqlcFr6E=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
-	dmarc=pass header.from=<Usama.Anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1728300673;
-	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=9onN0rTwv0VDbke7yVsL14uwCLFnY8cP6ctLDOhwCTs=;
-	b=DnhDtAE1dKIFov3oPuoZ2ubL3IOmlklo/ppKKWMXJMe11jWW6sQWe8PB26UGXlaf
-	7tKEivakd6o6h3rPq9PrlFzXzbUOt1x/AaPuvGBHHIhJEP8VT5dSK4iPH5Li78ZFCTf
-	a/6ol31BsT+ubNn0UzGvWdFzXudLmtrF61K00Cuo=
-Received: by mx.zohomail.com with SMTPS id 1728300670434664.2188885986342;
-	Mon, 7 Oct 2024 04:31:10 -0700 (PDT)
-Message-ID: <697607de-5a01-4581-93a9-f4895f8a5739@collabora.com>
-Date: Mon, 7 Oct 2024 16:31:03 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF915199235;
+	Mon,  7 Oct 2024 11:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728301483; cv=none; b=QzwtzfPyIZ+LTt/6Pg1Xde8erCnLkYFmekTiupyAGN/SQ9ur0pZSCHx3/u1S2iwNf3r5ysLstl2y+JbjnNT7pzSgzpNwhfs17fRskRXjrdaaWUly0JHsRVSzoYHVzpm6FSvHkjuzNtAX99Cozn54sg8axf/L7uGa9OZFycOHKIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728301483; c=relaxed/simple;
+	bh=BdagRc9kDm8QW5L4yx71h6tv7jwW8Ojd8Q3cbF5c6CU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gs31NWBukt6brdmIguYCBhObZgSQpMofGflXlt4J0TBYIPRjcfpAUjsf0GbJklWZmp75kvSVWcq4f7rbSCg7LVnXJTNrrTTfS3vytIWu88iSritNedfZXnqbSUqYSGv515+meTE/WVvIIOJf+CvTnvQ40J6QAiaFm0EuoYlHdEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4lTXEaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27D7C4CEC6;
+	Mon,  7 Oct 2024 11:44:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728301482;
+	bh=BdagRc9kDm8QW5L4yx71h6tv7jwW8Ojd8Q3cbF5c6CU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=p4lTXEaFcv2P0OnXd5GZOTtWQLLF+wfcvWE0on94SJrz+Sn2Yzoc05REKGvvsLA+2
+	 U6jk9UL9xpE0OTLvMPvpOmMgOAHGGAwwo6GL4GqK8UlMOiSbZ1lxYomsaXLqiJCic0
+	 rRUKVHX+ua1Fz1HIn7rryFLRP/+jnCJ7YfKrEMrl7OJQjJo/eLdG5pr5xjb4XFygur
+	 gk3o0GNq8o4aukr0tIt+k/nSrBF+dUOVtc/GHSwelRzSplndQgqnUyklBsH65EQSmm
+	 jIb1QJ0yg4HpclchjPUmDrXyD6rbf1vVIHX3Tnyh/fSvRGIufkvDHRLI4FhaBHGuM4
+	 uWWLQVAcrZAxA==
+Message-ID: <5e6bb315-7896-4e63-86aa-1a219b7a7fb3@kernel.org>
+Date: Mon, 7 Oct 2024 14:44:35 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,120 +50,181 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: Usama.Anjum@collabora.com, akpm@linux-foundation.org, peterx@redhat.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: remove the newlines, which are added for unknown
- reasons and interfere with bug analysis
-To: Jeongjun Park <aha310510@gmail.com>, Greg KH <gregkh@linuxfoundation.org>
-References: <20241007065307.4158-1-aha310510@gmail.com>
- <2024100748-exhume-overgrown-bf0d@gregkh>
- <CAO9qdTFwaK36EKV1c8gLCgBG+BR5JmC6=PGk2a6YdHVrH9NukQ@mail.gmail.com>
- <2024100700-animal-upriver-fb7c@gregkh>
- <CAO9qdTGSaJZ0oTmWqRouU45ur3drQVxRaH8aaBB99DXAoA40_A@mail.gmail.com>
+Subject: Re: [PATCH] usb: dwc3: core: Fix system suspend on TI AM62 platforms
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>,
+ Pavel Machek <pavel@ucw.cz>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>,
+ Tero Kristo <kristo@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>,
+ Dhruva Gole <d-gole@ti.com>, Vishal Mahaveer <vishalm@ti.com>,
+ "msp@baylibre.com" <msp@baylibre.com>, "srk@ti.com" <srk@ti.com>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20241001-am62-lpm-usb-v1-1-9916b71165f7@kernel.org>
+ <20241005010355.zyb54bbqjmpdjnce@synopsys.com>
 Content-Language: en-US
-From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-In-Reply-To: <CAO9qdTGSaJZ0oTmWqRouU45ur3drQVxRaH8aaBB99DXAoA40_A@mail.gmail.com>
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241005010355.zyb54bbqjmpdjnce@synopsys.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
 
-On 10/7/24 4:24 PM, Jeongjun Park wrote:
-> Greg KH <gregkh@linuxfoundation.org> wrote:
->>
->> On Mon, Oct 07, 2024 at 05:57:18PM +0900, Jeongjun Park wrote:
->>> Greg KH <gregkh@linuxfoundation.org> wrote:
->>>>
->>>> On Mon, Oct 07, 2024 at 03:53:07PM +0900, Jeongjun Park wrote:
->>>>> Looking at the source code links for mm/memory.c in the sample reports
->>>>> in the syzbot report links [1].
->>>>>
->>>>> it looks like the line numbers are designated as lines that have been
->>>>> increased by 1. This may seem like a problem with syzkaller or the
->>>>> addr2line program that assigns the line numbers, but there is no problem
->>>>> with either of them.
->>>>>
->>>>> In the previous commit d61ea1cb0095 ("userfaultfd: UFFD_FEATURE_WP_ASYNC"),
->>>>> when modifying mm/memory.c, an unknown line break is added to the very first
->>>>> line of the file. However, the git.kernel.org site displays the source code
->>>>> with the added line break removed, so even though addr2line has assigned
->>>>> the correct line number, it looks like the line number has increased by 1.
->>>>>
->>>>> This may seem like a trivial thing, but I think it would be appropriate
->>>>> to remove all the newline characters added to the upstream and stable
->>>>> versions, as they are not only incorrect in terms of code style but also
->>>>> hinder bug analysis.
->>>>>
->>>>> [1]
->>>>>
->>>>> https://syzkaller.appspot.com/bug?extid=4145b11cdf925264bff4
->>>>> https://syzkaller.appspot.com/bug?extid=fa43f1b63e3aa6f66329
->>>>> https://syzkaller.appspot.com/bug?extid=890a1df7294175947697
->>>>>
->>>>> Fixes: d61ea1cb0095 ("userfaultfd: UFFD_FEATURE_WP_ASYNC")
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
->>>>> ---
->>>>>  mm/memory.c | 1 -
->>>>>  1 file changed, 1 deletion(-)
->>>>>
->>>>> diff --git a/mm/memory.c b/mm/memory.c
->>>>> index 2366578015ad..7dffe8749014 100644
->>>>> --- a/mm/memory.c
->>>>> +++ b/mm/memory.c
->>>>> @@ -1,4 +1,3 @@
->>>>> -
->>>>
->>>> This sounds like you have broken tools that can not handle an empty line
->>>> in a file.
->>>>
->>>> Why not fix those?
->>>
->>> As I mentioned above, there is no problem with addr2line's ability to parse
->>> the code line that called the function in the calltrace of the crash report.
->>>
->>> However, when the source code of mm/memory.c is printed on the screen on the
->>> git.kernel.org site, the line break character that exists in the first line
->>> of the file is deleted and printed, so as a result, all code lines in the
->>> mm/memory.c file are located at line numbers that are -1 less than the
->>> actual line.
->>>
->>> You can understand it easily if you compare the source code of mm/memory.c
->>> on github and git.kernel.org.
->>>
->>> https://github.com/torvalds/linux/blob/master/mm/memory.c
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/memory.c
->>>
->>> Since I cannot modify the source code printing function of the git.kernel.org
->>> site, the best solution I can suggest is to remove the unnecessary line break
->>> character that exists in all versions.
->>
->> I would recommend fixing the git.kernel.org code, it is all open source
->> and can be fixed up, as odds are other projects/repos would like to have
->> it fixed as well.
->>
-> 
-> Oh, I just realized that this website is open source and written in C.
-> 
-> This seems to be the correct git repository, so I'll commit here.
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/zx2c4/cgit.git
-Get latest tag from
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/
-instead.
+Hi,
 
-https://kernelnewbies.org/FirstKernelPatch could be helpful in
-understanding some missing details.
+On 05/10/2024 04:04, Thinh Nguyen wrote:
+> Hi,
+> 
+> On Tue, Oct 01, 2024, Roger Quadros wrote:
+>> Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
+>> system suspend is broken on AM62 TI platforms.
+>>
+>> Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+>> bits (hence forth called 2 SUSPHY bits) were being set during core
+>> initialization and even during core re-initialization after a system
+>> suspend/resume.
+>>
+>> These bits are required to be set for system suspend/resume to work correctly
+>> on AM62 platforms.
+>>
+>> Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
+>> driver is not loaded and started.
+>> For Host mode, the 2 SUSPHY bits are set before the first system suspend but
+>> get cleared at system resume during core re-init and are never set again.
+>>
+>> This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
+>> before system suspend and restored to the original state during system resume.
+>>
+>> Cc: stable@vger.kernel.org # v6.9+
+>> Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+>> Link: https://urldefense.com/v3/__https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/__;!!A4F2R9G_pg!ahChm4MaKd6VGYqbnM4X1_pY_jqavYDv5HvPFbmicKuhvFsBwlEFi1xO5itGuHmfjbRuUSzReJISf5-1gXpr$ 
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> ---
+>>  drivers/usb/dwc3/core.c | 16 ++++++++++++++++
+>>  drivers/usb/dwc3/core.h |  2 ++
+>>  2 files changed, 18 insertions(+)
+>>
+>> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+>> index 9eb085f359ce..1233922d4d54 100644
+>> --- a/drivers/usb/dwc3/core.c
+>> +++ b/drivers/usb/dwc3/core.c
+>> @@ -2336,6 +2336,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>>  	u32 reg;
+>>  	int i;
+>>  
+>> +	dwc->susphy_state = !!(dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+>> +			    DWC3_GUSB2PHYCFG_SUSPHY);
+>> +
+>>  	switch (dwc->current_dr_role) {
+>>  	case DWC3_GCTL_PRTCAP_DEVICE:
+>>  		if (pm_runtime_suspended(dwc->dev))
+>> @@ -2387,6 +2390,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>>  		break;
+>>  	}
+>>  
+>> +	if (!PMSG_IS_AUTO(msg)) {
+>> +		if (!dwc->susphy_state)
+>> +			dwc3_enable_susphy(dwc, true);
+>> +	}
+>> +
+>>  	return 0;
+>>  }
+>>  
+>> @@ -2454,6 +2462,14 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+>>  		break;
+>>  	}
+>>  
+>> +	if (!PMSG_IS_AUTO(msg)) {
+>> +		/* dwc3_core_init_for_resume() disables SUSPHY so just handle
+>> +		 * the enable case
+>> +		 */
+> 
+> Can we note that this is a particular behavior needed for AM62 here?
+> And can we use this comment style:
+> 
+> /*
+>  * xxxxx
+>  * xxxxx
+>  */
+
+OK.
 
 > 
-> Regards,
-> Jeongjun Park
 > 
->> thanks,
+>> +		if (dwc->susphy_state)
+> 
+> Shouldn't we check for if (!dwc->susphy_state) and clear the susphy
+> bits?
+
+In that case it would have already been cleared so no need to check
+and clear again.
+
+> 
+>> +			dwc3_enable_susphy(dwc, true);
+> 
+> The dwc3_enable_susphy() set and clear both GUSB3PIPECTL_SUSPHY and
+> GUSB2PHYCFG_SUSPHY, perhaps we should split that function out so we can
+> only need to set for GUSB2PHYCFG_SUSPHY since you only track for that.
+
+As  dwc3_enable_susphy() sets and clears both GUSB3PIPECTL_SUSPHY and
+GUSB2PHYCFG_SUSPHY together it doesn't really help to track both
+separately, but just complicates things.
+
+> 
+>> +	}
+>> +
+>>  	return 0;
+>>  }
+>>  
+>> diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+>> index c71240e8f7c7..b2ed5aba4c72 100644
+>> --- a/drivers/usb/dwc3/core.h
+>> +++ b/drivers/usb/dwc3/core.h
+>> @@ -1150,6 +1150,7 @@ struct dwc3_scratchpad_array {
+>>   * @sys_wakeup: set if the device may do system wakeup.
+>>   * @wakeup_configured: set if the device is configured for remote wakeup.
+>>   * @suspended: set to track suspend event due to U3/L2.
+>> + * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY before PM suspend.
+>>   * @imod_interval: set the interrupt moderation interval in 250ns
+>>   *			increments or 0 to disable.
+>>   * @max_cfg_eps: current max number of IN eps used across all USB configs.
+>> @@ -1382,6 +1383,7 @@ struct dwc3 {
+>>  	unsigned		sys_wakeup:1;
+>>  	unsigned		wakeup_configured:1;
+>>  	unsigned		suspended:1;
+>> +	unsigned		susphy_state:1;
+>>  
+>>  	u16			imod_interval;
+>>  
 >>
->> greg k-h
+>> ---
+>> base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+>> change-id: 20240923-am62-lpm-usb-f420917bd707
+>>
+>> Best regards,
+>> -- 
+>> Roger Quadros <rogerq@kernel.org>
+>>
+> 
+> <rant/>
+> While reviewing your change, I see that we misuse the
+> dis_u2_susphy_quirk to make this property a conditional thing during
+> suspend and resume for certain platform. That bugs me because we can't
+> easily change it without the reported hardware to test.
+> </rant>
+
+No it is not conditional. if dis_u2_susphy_quirk or dis_u3_susphy_quirk
+is set then we never enable the respective U2/U3 SUSPHY bit.
+
+> 
+> Thanks for the patch!
+> 
+> BR,
+> Thinh
 
 -- 
-BR,
-Muhammad Usama Anjum
-
+cheers,
+-roger
 
