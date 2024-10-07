@@ -1,109 +1,106 @@
-Return-Path: <stable+bounces-81306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDF7992DDB
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:54:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AD8992DEC
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DA5D1C22EB6
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:54:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 979D1B20D7D
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCF11D45FF;
-	Mon,  7 Oct 2024 13:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9661D5ABE;
+	Mon,  7 Oct 2024 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DctWvKJa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxcxUGoY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C45A1D4354;
-	Mon,  7 Oct 2024 13:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0A01D54EE;
+	Mon,  7 Oct 2024 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728309243; cv=none; b=Y8MMP+rozfL0ve0yqMvydMCdTpsYyegoB0EYgZzGRfMw7khKxiSWlrGshO538RMQpwjODx+AmC2oz2KQxb5ARljvIbDr8RFrbiuXwxSKePtpTqb+E/Yok0qQJ1ThvqriSZ4OHqjeMaPz4kjPBh+JQhmq5+xV8CT91bgiz1vAEEQ=
+	t=1728309323; cv=none; b=Q/skO1eh5kqKEO6uHF7hxhzKbVsb0J7Hp/emsGhslvhTMLoQv1YHHkdof1uRtNxzURJ0Y/6hEJVCPGw6MlCJDADXjSjC6R8P/zNeuHrfJvC6q3yAPKDrlCdMMoKpIuH8iTK7w2zXIEOxlHVPxTPcBhmiVhUL6J4mhV2HlN7L4Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728309243; c=relaxed/simple;
-	bh=OqTgQbaF1Wymp6tKgKCQ/wtWZC34eQBotCaVLTmxZLU=;
+	s=arc-20240116; t=1728309323; c=relaxed/simple;
+	bh=jV7RkNNOAmSp1W66uhPjFkMmdnAxUOyJwhAUXaxvnhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cKAOxhY/OF643JNmob447epqDpVAp0DmZOtpt3DrPaDTWcHoEGMEvxDyFGsXyEJJqjhs/JdxSEELxRfhmerld+mNFd3g69rH33Rhe6MtJmTCfbvGbb2mA9rNeCH+bz0Lxg1FigS2v9F7LO8WthlQ5Wvg+qUXkJy1eUvjYkSXQjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DctWvKJa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4082FC4CEC6;
-	Mon,  7 Oct 2024 13:54:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=hhXNRa2b8AJmLNQDp9pdXEf9nb/yTMi85mCD1MxBWKFKuFGNuALSNiQbTN/mX5g9tY03wmY7/S9RiuWLFD1i5MsW41NcauY7V5krE7ESHJBjB0OEOfXuBb33VXSBLbvXIIQUGIch/FfLhl8+5ScMApXvnuxRs9UVzTM/a+zAVDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cxcxUGoY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B405C4CED7;
+	Mon,  7 Oct 2024 13:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728309243;
-	bh=OqTgQbaF1Wymp6tKgKCQ/wtWZC34eQBotCaVLTmxZLU=;
+	s=k20201202; t=1728309323;
+	bh=jV7RkNNOAmSp1W66uhPjFkMmdnAxUOyJwhAUXaxvnhY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DctWvKJa5JQaX+NffcrwW411WL8HqFa26Ui3O2VffAPTPyX3gmFF3E6MzGZkQB/Xr
-	 XVqZnwBA3ox8xdkaQZN+ND5N2xSDCTgIhIuwMwCVD0AIoM5K5JcfVzMmDBWzV4ihbE
-	 qXUqs7r/+DuszgI++u2396nKyh9fB+JV6/IEZzv6r0XSnTPGFMe+TDUXZTcB915kBV
-	 mJCPOl3lKNKLrsq3zEkG9pJvmzzmMeRG6i/AW3+rqqYL7f6EmG6I3mnx4gfH3hF0IM
-	 Bf8e5JNhr9kJZOoR3jTYnIPSwCDog0idaXUpKNT7hib+e9cqs5bE0MVhcbnvI79q4K
-	 AeAtnTSUf2cXw==
-Date: Mon, 7 Oct 2024 15:53:57 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Yonatan Maman <ymaman@nvidia.com>
-Cc: kherbst@redhat.com, lyude@redhat.com, dakr@redhat.com,
-	airlied@gmail.com, daniel@ffwll.ch, bskeggs@nvidia.com,
-	jglisse@redhat.com, dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Gal Shalom <GalShalom@nvidia.com>
-Subject: Re: [PATCH v2 1/2] nouveau/dmem: Fix privileged error in copy engine
- channel
-Message-ID: <ZwPn9Z1IPlB65zd-@pollux>
-References: <20241007132700.982800-1-ymaman@nvidia.com>
- <20241007132700.982800-2-ymaman@nvidia.com>
+	b=cxcxUGoYJ29XLZVgvWMR4vtOIUfu8mmrfjqWCL/LiFMZsUw6XMR3qXSO/6ZYaJCGO
+	 oarmLQsFT0/SLMIz84O6myrMHESfLFWmv8WnltmdWAqoovTcqlTolnrZXcNjn4MxFe
+	 YhRmxJ4d0DgEvLL3TDvXEFc0Bx6Hop/z7DjZ29Vkja2WmrPaIZ4aslrmVvNXmhNEtx
+	 ThT/4+DsKpnfUmQAB+tqdoeWTJGGsbXcKwNhiQjTHM793fJG0aPyEUesJSji+gnTV1
+	 OsJomxMg5crABM0v3dISP3g9oCJJbnNglYijylBjA9mX8PhaoiIg+geKCTdEAyRk6p
+	 4ULbvv0zSLBGg==
+Date: Mon, 7 Oct 2024 14:55:07 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Benjamin Bara <bbara93@gmail.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>, linux-sound@vger.kernel.org,
+	linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Benjamin Bara <benjamin.bara@skidata.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "ASoC: tegra: machine: Handle component name
+ prefix"
+Message-ID: <ZwPoO5hYiB3ev-ml@finisterre.sirena.org.uk>
+References: <20241007-tegra-dapm-v1-1-bede7983fa76@skidata.com>
+ <32040b21-370f-44af-b1fe-bd625bc3fd9d@linaro.org>
+ <CAJpcXm7252KSGdkASJq-GpZPUKnmxL9o3raNJL-QjkL67Pd+OQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rfsTlN80Gow+oO9v"
+Content-Disposition: inline
+In-Reply-To: <CAJpcXm7252KSGdkASJq-GpZPUKnmxL9o3raNJL-QjkL67Pd+OQ@mail.gmail.com>
+X-Cookie: Editing is a rewording activity.
+
+
+--rfsTlN80Gow+oO9v
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241007132700.982800-2-ymaman@nvidia.com>
 
-On Mon, Oct 07, 2024 at 04:26:59PM +0300, Yonatan Maman wrote:
-> From: Yonatan Maman <Ymaman@Nvidia.com>
-> 
-> When `nouveau_dmem_copy_one` is called, the following error occurs:
-> 
-> [272146.675156] nouveau 0000:06:00.0: fifo: PBDMA9: 00000004 [HCE_PRIV]
-> ch 1 00000300 00003386
-> 
-> This indicates that a copy push command triggered a Host Copy Engine
-> Privileged error on channel 1 (Copy Engine channel). To address this
-> issue, modify the Copy Engine channel to allow privileged push commands
-> 
-> Fixes: 6de125383a5c ("drm/nouveau/fifo: expose runlist topology info on all chipsets")
-> Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
-> Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
+On Mon, Oct 07, 2024 at 03:17:45PM +0200, Benjamin Bara wrote:
 
-Again, why is this signed-off by Gal? If he's a co-author, please add the
-corresponding tag.
+> Instead of reverting, we could probably also rewrite
+> snd_soc_dapm_widget_name_cmp() to directly use dapm->component, instead
+> of using snd_soc_dapm_to_component(). In this case, we can explicitly
+> check for a NULL and skip the prefix check - not sure why it currently
+> is implemented this way.
 
-Please also see my reply to the previous version.
+> I think fixing snd_soc_dapm_widget_name_cmp() to be able to handle all
+> cases might be the better option, what do you think?
 
-> Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-> ---
->  drivers/gpu/drm/nouveau/nouveau_drm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-> index a58c31089613..0a75ce4c5021 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-> @@ -356,7 +356,7 @@ nouveau_accel_ce_init(struct nouveau_drm *drm)
->  		return;
->  	}
->  
-> -	ret = nouveau_channel_new(drm, device, false, runm, NvDmaFB, NvDmaTT, &drm->cechan);
-> +	ret = nouveau_channel_new(drm, device, true, runm, NvDmaFB, NvDmaTT, &drm->cechan);
->  	if (ret)
->  		NV_ERROR(drm, "failed to create ce channel, %d\n", ret);
->  }
-> -- 
-> 2.34.1
-> 
+Yes, I think that makes sense.
+
+--rfsTlN80Gow+oO9v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcD6DoACgkQJNaLcl1U
+h9BgUQf/dMB6IM/qORov7dwmlk1NGy30tvrrrgUxwEFMZihx0n5vJ0mZRCNuNS4V
+ODVv/lXQ99BrJK5YrVMpM8XK+a83t6Z6vWQKAqvehGJBIZE5GQVWKZsbzDvRfc4M
+oSinOs5v5oFx2EVXY6l4Tijg5PoAtq5sjdCrDxDZ5r/y0UQbUjmVTJNiZkeI6h+j
+nD1mStsvYmaXLa75AkzDxlFjMp3oGjvrmfeqDb7XJlK3IwefQufItWQY39x2NJDK
+dvYGfZJYIP8qADyyVUQBJHYCS7mnSbc0VaCWwszhEC1UZoFqco7dKpT0LY9+365s
+hh0z1MhnVvGtKHuaCDRfVUE8I/fhng==
+=qsqs
+-----END PGP SIGNATURE-----
+
+--rfsTlN80Gow+oO9v--
 
