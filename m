@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3095E99281B
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:29:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2268D992885
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:56:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7596B23022
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:29:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF123282E32
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AB818E059;
-	Mon,  7 Oct 2024 09:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5D71DEFCE;
+	Mon,  7 Oct 2024 09:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5BhgDQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZIW6fpp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8A41741E0
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7191DEFCB
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728293380; cv=none; b=Kel3W1c+c6ZR6rszSAsxOPzKShIKxiHpvpTO8NFbIzGtP0WqEn2VrqqY0pDzQB3Jum2E4/ipnGKg+7J6JktD0UdgMmlfL2UE57cvTICmw0n3d7e+OV4aGOp5obq4OzWL653Ldaz4myf8FOC1DGjYQvH03VpuWxjkFCTprmBbrDg=
+	t=1728294972; cv=none; b=T7RUIK+Z5DjzACyLXetugaJhRtqwII1ZIrZNono9KNvWvS2Iq/Bim4ylJB92yUyDBVDsJYDz71vmjzJTHGcqmWUZMXLyA0Llhfqq6yPgO37Y2WluAwZ82TtE9r6McSxky2HqZA1NnbWHW5QsPntvEf8cL0Oe7DFrKZ2cXCqW21Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728293380; c=relaxed/simple;
-	bh=xWwn8nkv6sOmRVMI7+RohgpuJB6juzCTf26xVHRqKnI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ooNg22s5xj7h1n5wbX5B0jX3y4hZask/xPMRURPr4zQAz61c9BPrxDISUyUDjlQ3AqUDZvnbJmUXPZnjeIo/iNWI512ShSSJGG1SFUNsxDLIA0v5pILpvh2m7jvwlTUYjbPpyzHe/fn74wYDQ2XEkDSS3yw1/AFEdkwghSMKGy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5BhgDQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D734C4CEC6;
-	Mon,  7 Oct 2024 09:29:38 +0000 (UTC)
+	s=arc-20240116; t=1728294972; c=relaxed/simple;
+	bh=StYm0PbciDflnhndEXsVW7XlNhB95P89jMi+Qj1+xlU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nfrWT/owIl2JwFiRr4HXO6l9GmkbRLUDkm8GFtyRX9PCUin6MXGFHzaBygmKcj6vtgPQRqJArDTc6n+j9pOO+1jIdleyBiJ99exBQYhPTqtu6L557WWiN4Q/nrzEXZTDCeYwDAJ/TnhQ7qKtKtkL9XGoWaaoex4IJlRI2nbWEzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZIW6fpp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5303BC4CEC6;
+	Mon,  7 Oct 2024 09:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728293379;
-	bh=xWwn8nkv6sOmRVMI7+RohgpuJB6juzCTf26xVHRqKnI=;
+	s=korg; t=1728294971;
+	bh=StYm0PbciDflnhndEXsVW7XlNhB95P89jMi+Qj1+xlU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=G5BhgDQZ5WNHXOT2dJWoW08L4K+2RhXCRAmVbiaayZtliGp15OJq0s0P9li3cxl9h
-	 l2s2ETBu7USwUEZtvmetUblmMOOHYHv8PfDMKaJrZLow9CyymILo1KcpGBPAbLa1Be
-	 OpqujUqwJ5a1X98rS4ssaWLlFGFYTGJJRqRNzvmA=
-Subject: FAILED: patch "[PATCH] spi: bcm63xx: Fix missing pm_runtime_disable()" failed to apply to 5.15-stable tree
-To: ruanjinjie@huawei.com,broonie@kernel.org,jonas.gorski@gmail.com
+	b=wZIW6fppiZP0KC5/m+xojRBZd+j+L7SnTHGseLM7XRNDWaAGSZyzTY72e/o490eyi
+	 HpuXCY0V3lY58cN8ekabEGmCjBeBS4y3AKkneQKS36QhKnlmHpLky69Iv1hDwqKPXo
+	 bE7XEUIswh90o4w2WD2ygQtqB+HIHBFjvtn3z4H4=
+Subject: FAILED: patch "[PATCH] mm, slub: avoid zeroing kmalloc redzone" failed to apply to 6.6-stable tree
+To: peng.fan@nxp.com,feng.tang@intel.com,rientjes@google.com,stable@vger.kernel.org,vbabka@suse.cz
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 11:29:28 +0200
-Message-ID: <2024100728-ebony-lemon-83b7@gregkh>
+Date: Mon, 07 Oct 2024 11:56:08 +0200
+Message-ID: <2024100708-unhidden-unscathed-7372@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 265697288ec2160ca84707565d6641d46f69b0ff
+git cherry-pick -x 59090e479ac78ae18facd4c58eb332562a23020e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100728-ebony-lemon-83b7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100708-unhidden-unscathed-7372@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-265697288ec2 ("spi: bcm63xx: Fix missing pm_runtime_disable()")
+59090e479ac7 ("mm, slub: avoid zeroing kmalloc redzone")
+8f828aa48812 ("mm/slub: avoid zeroing outside-object freepointer for single free")
+2d5524635b00 ("slub, kasan: improve interaction of KASAN and slub_debug poisoning")
 
 thanks,
 
@@ -77,52 +79,199 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 265697288ec2160ca84707565d6641d46f69b0ff Mon Sep 17 00:00:00 2001
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-Date: Mon, 19 Aug 2024 20:33:49 +0800
-Subject: [PATCH] spi: bcm63xx: Fix missing pm_runtime_disable()
+From 59090e479ac78ae18facd4c58eb332562a23020e Mon Sep 17 00:00:00 2001
+From: Peng Fan <peng.fan@nxp.com>
+Date: Thu, 29 Aug 2024 11:29:11 +0800
+Subject: [PATCH] mm, slub: avoid zeroing kmalloc redzone
 
-The pm_runtime_disable() is missing in the remove function, fix it
-by using devm_pm_runtime_enable(), so the pm_runtime_disable() in
-the probe error path can also be removed.
+Since commit 946fa0dbf2d8 ("mm/slub: extend redzone check to extra
+allocated kmalloc space than requested"), setting orig_size treats
+the wasted space (object_size - orig_size) as a redzone. However with
+init_on_free=1 we clear the full object->size, including the redzone.
 
-Fixes: 2d13f2ff6073 ("spi: bcm63xx-spi: fix pm_runtime")
-Cc: stable@vger.kernel.org # v5.13+
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20240819123349.4020472-3-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Additionally we clear the object metadata, including the stored orig_size,
+making it zero, which makes check_object() treat the whole object as a
+redzone.
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 289f8a94980b..2fb79701a525 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -583,13 +583,15 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+These issues lead to the following BUG report with "slub_debug=FUZ
+init_on_free=1":
+
+[    0.000000] =============================================================================
+[    0.000000] BUG kmalloc-8 (Not tainted): kmalloc Redzone overwritten
+[    0.000000] -----------------------------------------------------------------------------
+[    0.000000]
+[    0.000000] 0xffff000010032858-0xffff00001003285f @offset=2136. First byte 0x0 instead of 0xcc
+[    0.000000] FIX kmalloc-8: Restoring kmalloc Redzone 0xffff000010032858-0xffff00001003285f=0xcc
+[    0.000000] Slab 0xfffffdffc0400c80 objects=36 used=23 fp=0xffff000010032a18 flags=0x3fffe0000000200(workingset|node=0|zone=0|lastcpupid=0x1ffff)
+[    0.000000] Object 0xffff000010032858 @offset=2136 fp=0xffff0000100328c8
+[    0.000000]
+[    0.000000] Redzone  ffff000010032850: cc cc cc cc cc cc cc cc                          ........
+[    0.000000] Object   ffff000010032858: cc cc cc cc cc cc cc cc                          ........
+[    0.000000] Redzone  ffff000010032860: cc cc cc cc cc cc cc cc                          ........
+[    0.000000] Padding  ffff0000100328b4: 00 00 00 00 00 00 00 00 00 00 00 00              ............
+[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.11.0-rc3-next-20240814-00004-g61844c55c3f4 #144
+[    0.000000] Hardware name: NXP i.MX95 19X19 board (DT)
+[    0.000000] Call trace:
+[    0.000000]  dump_backtrace+0x90/0xe8
+[    0.000000]  show_stack+0x18/0x24
+[    0.000000]  dump_stack_lvl+0x74/0x8c
+[    0.000000]  dump_stack+0x18/0x24
+[    0.000000]  print_trailer+0x150/0x218
+[    0.000000]  check_object+0xe4/0x454
+[    0.000000]  free_to_partial_list+0x2f8/0x5ec
+
+To address the issue, use orig_size to clear the used area. And restore
+the value of orig_size after clear the remaining area.
+
+When CONFIG_SLUB_DEBUG not defined, (get_orig_size()' directly returns
+s->object_size. So when using memset to init the area, the size can simply
+be orig_size, as orig_size returns object_size when CONFIG_SLUB_DEBUG not
+enabled. And orig_size can never be bigger than object_size.
+
+Fixes: 946fa0dbf2d8 ("mm/slub: extend redzone check to extra allocated kmalloc space than requested")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 60004bfc2dc2..d52c88f29f69 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -756,6 +756,50 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
+ 	return false;
+ }
  
- 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
++/*
++ * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
++ * family will round up the real request size to these fixed ones, so
++ * there could be an extra area than what is requested. Save the original
++ * request size in the meta data area, for better debug and sanity check.
++ */
++static inline void set_orig_size(struct kmem_cache *s,
++				void *object, unsigned int orig_size)
++{
++	void *p = kasan_reset_tag(object);
++	unsigned int kasan_meta_size;
++
++	if (!slub_debug_orig_size(s))
++		return;
++
++	/*
++	 * KASAN can save its free meta data inside of the object at offset 0.
++	 * If this meta data size is larger than 'orig_size', it will overlap
++	 * the data redzone in [orig_size+1, object_size]. Thus, we adjust
++	 * 'orig_size' to be as at least as big as KASAN's meta data.
++	 */
++	kasan_meta_size = kasan_metadata_size(s, true);
++	if (kasan_meta_size > orig_size)
++		orig_size = kasan_meta_size;
++
++	p += get_info_end(s);
++	p += sizeof(struct track) * 2;
++
++	*(unsigned int *)p = orig_size;
++}
++
++static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
++{
++	void *p = kasan_reset_tag(object);
++
++	if (!slub_debug_orig_size(s))
++		return s->object_size;
++
++	p += get_info_end(s);
++	p += sizeof(struct track) * 2;
++
++	return *(unsigned int *)p;
++}
++
+ #ifdef CONFIG_SLUB_DEBUG
+ static unsigned long object_map[BITS_TO_LONGS(MAX_OBJS_PER_PAGE)];
+ static DEFINE_SPINLOCK(object_map_lock);
+@@ -985,50 +1029,6 @@ static void print_slab_info(const struct slab *slab)
+ 	       &slab->__page_flags);
+ }
  
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		goto out_clk_disable;
+-/*
+- * kmalloc caches has fixed sizes (mostly power of 2), and kmalloc() API
+- * family will round up the real request size to these fixed ones, so
+- * there could be an extra area than what is requested. Save the original
+- * request size in the meta data area, for better debug and sanity check.
+- */
+-static inline void set_orig_size(struct kmem_cache *s,
+-				void *object, unsigned int orig_size)
+-{
+-	void *p = kasan_reset_tag(object);
+-	unsigned int kasan_meta_size;
+-
+-	if (!slub_debug_orig_size(s))
+-		return;
+-
+-	/*
+-	 * KASAN can save its free meta data inside of the object at offset 0.
+-	 * If this meta data size is larger than 'orig_size', it will overlap
+-	 * the data redzone in [orig_size+1, object_size]. Thus, we adjust
+-	 * 'orig_size' to be as at least as big as KASAN's meta data.
+-	 */
+-	kasan_meta_size = kasan_metadata_size(s, true);
+-	if (kasan_meta_size > orig_size)
+-		orig_size = kasan_meta_size;
+-
+-	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
+-
+-	*(unsigned int *)p = orig_size;
+-}
+-
+-static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
+-{
+-	void *p = kasan_reset_tag(object);
+-
+-	if (!slub_debug_orig_size(s))
+-		return s->object_size;
+-
+-	p += get_info_end(s);
+-	p += sizeof(struct track) * 2;
+-
+-	return *(unsigned int *)p;
+-}
+-
+ void skip_orig_size_check(struct kmem_cache *s, const void *object)
+ {
+ 	set_orig_size(s, (void *)object, s->object_size);
+@@ -1894,7 +1894,6 @@ static inline void inc_slabs_node(struct kmem_cache *s, int node,
+ 							int objects) {}
+ static inline void dec_slabs_node(struct kmem_cache *s, int node,
+ 							int objects) {}
+-
+ #ifndef CONFIG_SLUB_TINY
+ static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
+ 			       void **freelist, void *nextfree)
+@@ -2239,14 +2238,21 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init)
+ 	 */
+ 	if (unlikely(init)) {
+ 		int rsize;
+-		unsigned int inuse;
++		unsigned int inuse, orig_size;
  
- 	/* register and we are done */
- 	ret = devm_spi_register_controller(dev, host);
- 	if (ret) {
- 		dev_err(dev, "spi register failed\n");
--		goto out_pm_disable;
-+		goto out_clk_disable;
+ 		inuse = get_info_end(s);
++		orig_size = get_orig_size(s, x);
+ 		if (!kasan_has_integrated_init())
+-			memset(kasan_reset_tag(x), 0, s->object_size);
++			memset(kasan_reset_tag(x), 0, orig_size);
+ 		rsize = (s->flags & SLAB_RED_ZONE) ? s->red_left_pad : 0;
+ 		memset((char *)kasan_reset_tag(x) + inuse, 0,
+ 		       s->size - inuse - rsize);
++		/*
++		 * Restore orig_size, otherwize kmalloc redzone overwritten
++		 * would be reported
++		 */
++		set_orig_size(s, x, orig_size);
++
  	}
- 
- 	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
-@@ -597,8 +599,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--out_pm_disable:
--	pm_runtime_disable(&pdev->dev);
- out_clk_disable:
- 	clk_disable_unprepare(clk);
- out_err:
+ 	/* KASAN might put x into memory quarantine, delaying its reuse. */
+ 	return !kasan_slab_free(s, x, init);
 
 
