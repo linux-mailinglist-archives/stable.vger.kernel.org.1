@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F05D992815
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:28:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42F0992817
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B9221F23457
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:28:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B921281734
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AA818E059;
-	Mon,  7 Oct 2024 09:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F6D18CC0A;
+	Mon,  7 Oct 2024 09:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SrsTZsBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5nE8wVo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354681741E0
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269981741E0
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728293277; cv=none; b=rWo4lynaaY5ooh7dL43Pveu/mt+TP7lqtrW0oJybkO3fEEZe0tX8a0oy+rnelo3ZpagT9Mh26vs89nEG5WDVtQ7Ul129rwPuEYQVqu24h586/cuW4AsKiJmPIkmMpaflnGCxUkc/T0pjBiDAePaDtqXN7i7ZE/AjgpGA/xpNd0Q=
+	t=1728293340; cv=none; b=Aga7x6JbMZwYVKcu/VynrckBrtUc2WKz4s2k3OP3bDveAkt8pMPbrc5wpK32Vgn9EKnvsCRrdAp/0JVyiwPEStCfwPXo/h2kfiMa8vdB2V+br4fLDTfu5o7sAmC8sg7l8mJ5cEs3YAiubH6oiuclZ/BX/dIcqLwlv2u5iEb5njI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728293277; c=relaxed/simple;
-	bh=uYAkcNJOPDh/fu+kJG+zjY68ftEBwKX6yuUWhgSmJsg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RlO6BSn2/t8pB8zvhisuqk8xDicXz2dMhFdVhfTnYohjoXIEjtc+Pg5YsF5zqinuZgOjf6LdM/ZKYZtbbYQtCLwe4iadYcg/pZfroBU4djgZaChKGyisTlp0AlGrItCFk6dgEwSZ0pCBGclSvRmZijIsJhCQYE8oNuxuRuwgZ4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SrsTZsBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27E2C4CEC6;
-	Mon,  7 Oct 2024 09:27:56 +0000 (UTC)
+	s=arc-20240116; t=1728293340; c=relaxed/simple;
+	bh=LqJd4Xa1f8MCwaKEvLxJqAxXOtBSygts+X9RK566RKE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=btWcgZfT2RoPo6pIIj3r+leVb3w4S5+C777SUVc4vyMcmFk4o5nHwR0hAqE9cDXIpJON+XdtGA4b3VqGvj3Bb4ZdeQXwjeTsI6AOu7Qmxw647teHtdEe2MthrXFs6A5sDngdYF/J53sq3OTD7PimpPk5X1FjiifnYSf5tZmy5aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5nE8wVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9ABC4CECC;
+	Mon,  7 Oct 2024 09:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728293277;
-	bh=uYAkcNJOPDh/fu+kJG+zjY68ftEBwKX6yuUWhgSmJsg=;
+	s=korg; t=1728293339;
+	bh=LqJd4Xa1f8MCwaKEvLxJqAxXOtBSygts+X9RK566RKE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SrsTZsBlOnyErqVGqgc5Pr6aAS+548jtrCiXBctsbS5klHUIxQ8AqkjU9VcDJS5B0
-	 U5SKyJ1S6SEGoBWqfdY1+30a2o6f69e42QkvmIPP08IeIb9xcoMD59AV8GzPtyuj/6
-	 Fr5+rsBKPkaZ1Xb0PR2fnN1uLJMWIbxRsdEUBQKw=
-Subject: FAILED: patch "[PATCH] i2c: synquacer: Deal with optional PCLK correctly" failed to apply to 6.6-stable tree
-To: ardb@kernel.org,andi.shyti@kernel.org,christophe.jaillet@wanadoo.fr
+	b=I5nE8wVoIG8u+4mN7IFccym2/5jv58xAwdlDN8F6AF3orstc+DZDPaFBYvAciUemF
+	 wJ8PzJ1SqtgwJ43ovyVPL8bzELr1H7ubXXXQTanArPTLbRXhWd+GAfgffgltbigDsc
+	 4647TzKqFiUj48yzSxXV9I1V+3wBtEcOw595CNWM=
+Subject: FAILED: patch "[PATCH] dt-bindings: clock: exynos7885: Fix duplicated binding" failed to apply to 6.1-stable tree
+To: virag.david003@gmail.com,krzysztof.kozlowski@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 11:27:54 +0200
-Message-ID: <2024100754-daylight-mountable-26f0@gregkh>
+Date: Mon, 07 Oct 2024 11:28:57 +0200
+Message-ID: <2024100757-huntress-lunacy-e567@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f2990f8630531a99cad4dc5c44cb2a11ded42492
+git cherry-pick -x abf3a3ea9acb5c886c8729191a670744ecd42024
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100754-daylight-mountable-26f0@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100757-huntress-lunacy-e567@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-f2990f863053 ("i2c: synquacer: Deal with optional PCLK correctly")
-e6722ea6b9ed ("i2c: synquacer: Remove a clk reference from struct synquacer_i2c")
-55750148e559 ("i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()")
+abf3a3ea9acb ("dt-bindings: clock: exynos7885: Fix duplicated binding")
+b3f9581affb0 ("dt-bindings: clock: samsung: remove define with number of clocks")
+284f6dcb50ae ("dt-bindings: clock: exynos850: Add AUD and HSI main gate clocks")
+521568cff706 ("dt-bindings: clock: exynos850: Add Exynos850 CMU_G3D")
 
 thanks,
 
@@ -79,41 +80,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f2990f8630531a99cad4dc5c44cb2a11ded42492 Mon Sep 17 00:00:00 2001
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 12 Sep 2024 12:46:31 +0200
-Subject: [PATCH] i2c: synquacer: Deal with optional PCLK correctly
+From abf3a3ea9acb5c886c8729191a670744ecd42024 Mon Sep 17 00:00:00 2001
+From: David Virag <virag.david003@gmail.com>
+Date: Tue, 6 Aug 2024 14:11:44 +0200
+Subject: [PATCH] dt-bindings: clock: exynos7885: Fix duplicated binding
 
-ACPI boot does not provide clocks and regulators, but instead, provides
-the PCLK rate directly, and enables the clock in firmware. So deal
-gracefully with this.
+The numbering in Exynos7885's FSYS CMU bindings has 4 duplicated by
+accident, with the rest of the bindings continuing with 5.
 
-Fixes: 55750148e559 ("i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()")
-Cc: stable@vger.kernel.org # v6.10+
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fix this by moving CLK_MOUT_FSYS_USB30DRD_USER to the end as 11.
 
-diff --git a/drivers/i2c/busses/i2c-synquacer.c b/drivers/i2c/busses/i2c-synquacer.c
-index 4eccbcd0fbfc..bbb9062669e4 100644
---- a/drivers/i2c/busses/i2c-synquacer.c
-+++ b/drivers/i2c/busses/i2c-synquacer.c
-@@ -550,12 +550,13 @@ static int synquacer_i2c_probe(struct platform_device *pdev)
- 	device_property_read_u32(&pdev->dev, "socionext,pclk-rate",
- 				 &i2c->pclkrate);
+Since CLK_MOUT_FSYS_USB30DRD_USER is not used in any device tree as of
+now, and there are no other clocks affected (maybe apart from
+CLK_MOUT_FSYS_MMC_SDIO_USER which the number was shared with, also not
+used in a device tree), this is the least impactful way to solve this
+problem.
+
+Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Virag <virag.david003@gmail.com>
+Link: https://lore.kernel.org/r/20240806121157.479212-2-virag.david003@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+diff --git a/include/dt-bindings/clock/exynos7885.h b/include/dt-bindings/clock/exynos7885.h
+index 255e3aa94323..54cfccff8508 100644
+--- a/include/dt-bindings/clock/exynos7885.h
++++ b/include/dt-bindings/clock/exynos7885.h
+@@ -136,12 +136,12 @@
+ #define CLK_MOUT_FSYS_MMC_CARD_USER	2
+ #define CLK_MOUT_FSYS_MMC_EMBD_USER	3
+ #define CLK_MOUT_FSYS_MMC_SDIO_USER	4
+-#define CLK_MOUT_FSYS_USB30DRD_USER	4
+ #define CLK_GOUT_MMC_CARD_ACLK		5
+ #define CLK_GOUT_MMC_CARD_SDCLKIN	6
+ #define CLK_GOUT_MMC_EMBD_ACLK		7
+ #define CLK_GOUT_MMC_EMBD_SDCLKIN	8
+ #define CLK_GOUT_MMC_SDIO_ACLK		9
+ #define CLK_GOUT_MMC_SDIO_SDCLKIN	10
++#define CLK_MOUT_FSYS_USB30DRD_USER	11
  
--	pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
-+	pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(pclk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(pclk),
- 				     "failed to get and enable clock\n");
- 
--	i2c->pclkrate = clk_get_rate(pclk);
-+	if (pclk)
-+		i2c->pclkrate = clk_get_rate(pclk);
- 
- 	if (i2c->pclkrate < SYNQUACER_I2C_MIN_CLK_RATE ||
- 	    i2c->pclkrate > SYNQUACER_I2C_MAX_CLK_RATE)
+ #endif /* _DT_BINDINGS_CLOCK_EXYNOS_7885_H */
 
 
