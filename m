@@ -1,105 +1,87 @@
-Return-Path: <stable+bounces-81289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF29992BE1
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:38:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4426992C74
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A64801C21F43
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:38:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C587B228DF
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F9E1D1F5B;
-	Mon,  7 Oct 2024 12:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1D81D26F1;
+	Mon,  7 Oct 2024 12:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hb5POORb"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02D11E519;
-	Mon,  7 Oct 2024 12:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC99C1BB6B8
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 12:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728304700; cv=none; b=fZY7ZPZb2deZkBPKASmaKT5i5YaA4IhoP21ODmIR208r+S0eD0xrFcV6XZfZayujZSwpsKwd25S0SEoXwwt7oywVUikPxg3lO5YY6/CTM3mlCXIZs1+qCBsjHvIIeptZ0s6ChsUIFIemJ+BFnWkMJ/5DWuA2uwOOhMubdURIywQ=
+	t=1728305971; cv=none; b=IE734UExCyTx1z9xw/ae0sbQW4bnU8drePCRPDSgrOe/E3YE9aoVilRzC3ymtSsUOIGl6sU/Re1Wv23iK0voutEsdHWsaZGTQUHTEpqvU0DRl0muvYsfqGcXBEeLNVrs+EguEQZT44cp5G+Rgatww+HIcnbx0I7lR1Sf6GfpRA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728304700; c=relaxed/simple;
-	bh=Pipla4zbD9cgP8JFbE4AulSgCDTywrUPj6678G3JbRk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OMPqHbjQ22RvMoruFkO5F8gKWomdBTNJqkBL22ibmJW3yqhiCRnNR0Q99BF3eqw/RK+KlBX7v28ga2IbsxhC6g8lcYFGOtkIoOTcuXPQ5W4kAgsQCSq+oV7IWfvbmciAWaC5kpv9n5Qc3zTpbG9nBtQOOFenYi/tSao7I2e+b5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E5C3CFEC;
-	Mon,  7 Oct 2024 05:38:46 -0700 (PDT)
-Received: from [10.96.9.194] (PW05HE0L.arm.com [10.96.9.194])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 451173F640;
-	Mon,  7 Oct 2024 05:38:14 -0700 (PDT)
-Message-ID: <db5634c4-a851-44c2-843c-6c6d1f78cbe3@arm.com>
-Date: Mon, 7 Oct 2024 13:38:11 +0100
+	s=arc-20240116; t=1728305971; c=relaxed/simple;
+	bh=3ooZ9kmhaJWNAXtfTvyJozS6mAsQny3tJLdHcEAZzCQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=YGhhb28tsG2UJrPMnsBpkNRR1nhxAX090ZF6mELYgJiXfLB1rcKDNfTjFzzrAGi3SC/guogI7CFYHUnmFtxYyXUmOMZupIDCqoWdsFt3pQBVo0FJ8FIgjQk3bOcxb8kbCVSclU6bvrqqXdr06eHsAwVKDFW6nWHEBfIRzyOgIiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hb5POORb; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fac60ab585so45266191fa.0
+        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 05:59:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728305968; x=1728910768; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3ooZ9kmhaJWNAXtfTvyJozS6mAsQny3tJLdHcEAZzCQ=;
+        b=Hb5POORb/1AeQBorgsCujR9HWuYD6cncuSIhJV2yxMsXtE5oU1tNxAnVZFTvcczwrW
+         IOL5J95JkYQ6phrVECiFKWexLeYsg7T7o6P+21CS6x7SlcNkOAZqZ7NedxVw0CrH9bZz
+         kniWZ5oRSIfAVEfbae/eAA6nAm1WIO9Pza6/tPK25EJwLEn9T2ug+T2DFVRSW+MBkg7p
+         b/zBuCcpR1cLS1fDEIfMOaSmyTjB3JGK6VOmRBVefWOboKxd7RUUWwzUKTUqbFqDJM/Q
+         AaMo1fDJNfR3u8TbxdxvzFB9ULCqlZNLbGDQp9ESwQbQqMb2xzH1m4ZWuUN16ntsrR2R
+         723A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728305968; x=1728910768;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3ooZ9kmhaJWNAXtfTvyJozS6mAsQny3tJLdHcEAZzCQ=;
+        b=nFdduQom+J9asDjrSUAX3IrOmIVGPj37KMvIln41VCPZWwWuIJe5C9zsrajxptaHP4
+         DiT7EmZTEBkvccYBt0m6ed7hi8kOBedflYpRCV3P+cK9Igeq6Bnrni73FDTs48V90fP8
+         OBBctmj2au4p/8pkCDmPFMg0l2e42ITRtqj1z8OOXgpOzDW7dfdykVemZjEepZVdyPb6
+         mP5n7TDE7houfm/qyTvspk8wxXekLEhrqSZ6D+Ta0BxkvBkzFT3fVB2L9cKn0HHp0j2G
+         enBpbq2ezjwnYx8rEvlc6RlhBiHpwYJ2bXDDV+bLDDY4dEKbRRjvJqUhLg564HuDSJzZ
+         +ZEw==
+X-Gm-Message-State: AOJu0YytH2/CyORM15KkNiqNSU8e5MrpxaMJPr1nuXwQJe7a+WLtNT+R
+	LS5myZOXkQ3G0azDh+t+uU0upFnpxK3ZdkpUEX3rJ6yq0TDZk5tBgNPcKw6B9tdKKsvfvL6SFLZ
+	KPU3px31/dyqtwKJyeVz7IGppN7svYONY
+X-Google-Smtp-Source: AGHT+IFejIjcy6rykL0ZfwOH22vOCBLd6VtMsS4MiJ+gMpvLsa+1Z4nsG19vZFXMTnJtHahvQ0h5V8CRLVpLltJDykE=
+X-Received: by 2002:a2e:9fca:0:b0:2fa:d2eb:c3d0 with SMTP id
+ 38308e7fff4ca-2faf5cdeaf6mr40973091fa.23.1728305967607; Mon, 07 Oct 2024
+ 05:59:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] coresight: etm4x: Fix PID tracing when perf is run in an
- init PID namespace
-Content-Language: en-GB
-To: Julien Meunier <julien.meunier@nokia.com>,
- Mike Leach <mike.leach@linaro.org>, James Clark <james.clark@linaro.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Leo Yan <leo.yan@linux.dev>
-Cc: stable@vger.kernel.org, coresight@lists.linaro.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20240925131357.9468-1-julien.meunier@nokia.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240925131357.9468-1-julien.meunier@nokia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Reply-To: sedat.dilek@gmail.com
+From: Sedat Dilek <sedat.dilek@gmail.com>
+Date: Mon, 7 Oct 2024 14:58:51 +0200
+Message-ID: <CA+icZUWN_mZ8w+5ZMdNR=YsZTFZ+hRYVr31PHqKc+8tfb2uxUQ@mail.gmail.com>
+Subject: Wrong tag for queue/6.1 = v6.11.2
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 25/09/2024 14:13, Julien Meunier wrote:
-> The previous implementation limited the tracing capabilities when perf
-> was run in the init PID namespace, making it impossible to trace
-> applications in non-init PID namespaces.
-> 
-> This update improves the tracing process by verifying the event owner.
-> This allows us to determine whether the user has the necessary
-> permissions to trace the application.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: aab473867fed ("coresight: etm4x: Don't trace PID for non-root PID namespace")
-> Signed-off-by: Julien Meunier <julien.meunier@nokia.com>
+Hi,
 
-Thanks for the fix, I will queue this for v6.13
+can you check the tag for queue/6.1?
 
-Suzuki
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/log/?h=queue/6.1
 
-
-> ---
->   drivers/hwtracing/coresight/coresight-etm4x-core.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-> index bf01f01964cf..8365307b1aec 100644
-> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-> @@ -695,7 +695,7 @@ static int etm4_parse_event_config(struct coresight_device *csdev,
->   
->   	/* Only trace contextID when runs in root PID namespace */
->   	if ((attr->config & BIT(ETM_OPT_CTXTID)) &&
-> -	    task_is_in_init_pid_ns(current))
-> +	    task_is_in_init_pid_ns(event->owner))
->   		/* bit[6], Context ID tracing bit */
->   		config->cfg |= TRCCONFIGR_CID;
->   
-> @@ -710,7 +710,7 @@ static int etm4_parse_event_config(struct coresight_device *csdev,
->   			goto out;
->   		}
->   		/* Only trace virtual contextID when runs in root PID namespace */
-> -		if (task_is_in_init_pid_ns(current))
-> +		if (task_is_in_init_pid_ns(event->owner))
->   			config->cfg |= TRCCONFIGR_VMID | TRCCONFIGR_VMIDOPT;
->   	}
->   
-
+Best regards,
+-Sedat-
 
