@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DF99934AA
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:18:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4789934AB
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 874822823A7
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:18:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBFC2B20E8A
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6617E1DC74E;
-	Mon,  7 Oct 2024 17:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963471DC74E;
+	Mon,  7 Oct 2024 17:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6JZcNBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r60vF7IO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269FB1DB55D
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577C51DB546
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728321480; cv=none; b=l8Mbpc+oee1gA/H7a6JS+iQA3BNIGlFs2g4ilu0vSCM1zM5sk1lpKtwJh9k2pFDfQ3t+0rX0JETD7awA1u/YcCmhtKhQiEhSGyvQ3ZKp1BEJNXYucVMVOX43sPyV4Je5Pns4H/vGs4SVHK6wpkh0a1Mou6M9jm2aG5ejBmYie7M=
+	t=1728321498; cv=none; b=Wb+4ZQ+YVC5zxTROvaomVyW8ZYfv+oSSSnXm7PQnXocOQbSYUFK+UCbHNKCrkjZ51iZyUM6nOyjtcFQ/Fbr6cPfs1Sbg76KqpEZWpOne7A/kvpcn/tyQ7iT34zYy4eUUYO9A5mtWVjC+Cn8NmsojQM0jArA0jlG9DyCh/7swi5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728321480; c=relaxed/simple;
-	bh=xkwmVaryOWfe2aAbssQ7MTbjbWCibjtSqph8/0oiJAs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rn48iQUHsnNk08S9m+zApFLJ114xP9EKdghu5NHyic1PmUUYAozL2h/Pf04S9gTUX3Ojz1ic1y3RA+sJl+/mes0NTwpKjyOxHjCi1b/OPWe7ZXt8gy9vW+iueOgl6WBHbISDXigIEVm1puk+UERipy82/rJ4N1ZUu5h+kXr3uXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6JZcNBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784CDC4CEC6;
-	Mon,  7 Oct 2024 17:17:59 +0000 (UTC)
+	s=arc-20240116; t=1728321498; c=relaxed/simple;
+	bh=ujevYbT1rchpUu8T/gcUMEAOLoFNEXD1XK4ak2YZPTs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RBpOBrVp7Uk2qnprFQIIxVXmhNJ90PwDskAdxSa2qMqNKIdemXIPRZPadd4jQItRyD/6PmAIJVUORViDfbGCF8WUWuHPz3DyxuESvbYsWNVqvyFPyZeUotinVmo1K8GFlmd5/KRdaE5tumdRwonJCUkxzTXU9uopKyxv4JOZq44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r60vF7IO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E0BC4CEC6;
+	Mon,  7 Oct 2024 17:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728321480;
-	bh=xkwmVaryOWfe2aAbssQ7MTbjbWCibjtSqph8/0oiJAs=;
+	s=korg; t=1728321497;
+	bh=ujevYbT1rchpUu8T/gcUMEAOLoFNEXD1XK4ak2YZPTs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=n6JZcNBAVWCRz6vthLe6FzMpDGF64dG0Xsl/JwYS4QqoVi6QRysaE7ARP82foqbai
-	 oioSLSGobr7NMZmDUDC9r58SRS+YpkHNLdX9sadQsvL/w16alUdwMvUf2xl8C+Q6YN
-	 fS1Wo7ur6idf+TJZ31/rnp4WwTjFUZZ097Rbg3nk=
-Subject: FAILED: patch "[PATCH] btrfs: fix a NULL pointer dereference when failed to start a" failed to apply to 4.19-stable tree
-To: wqu@suse.com,dsterba@suse.com,josef@toxicpanda.com
+	b=r60vF7IOQuMeEl9SyLsvyENHMbUOWKlKGHdQpXAaQ0y5YbAhFGWgsthRPK6pFhJoK
+	 wHTlyLQfQFrtyqThIMeT+lXP9xolZxOl8QQm+rL+Rx9R6uqYzrZ4hzZh/UN3ChCn2k
+	 D4j0sCiiOxh+gZX0o2ZgOHFzJCT0nyDgnjSzl5jM=
+Subject: FAILED: patch "[PATCH] btrfs: drop the backref cache during relocation if we commit" failed to apply to 6.6-stable tree
+To: josef@toxicpanda.com,boris@bur.io,dsterba@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 19:17:56 +0200
-Message-ID: <2024100756-parasail-agreement-0453@gregkh>
+Date: Mon, 07 Oct 2024 19:18:14 +0200
+Message-ID: <2024100714-clustered-sizing-bcce@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x c3b47f49e83197e8dffd023ec568403bcdbb774b
+git cherry-pick -x db7e68b522c01eb666cfe1f31637775f18997811
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100756-parasail-agreement-0453@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100714-clustered-sizing-bcce@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-c3b47f49e831 ("btrfs: fix a NULL pointer dereference when failed to start a new trasacntion")
-d2311e698578 ("btrfs: relocation: Delay reloc tree deletion after merge_reloc_roots")
-83354f0772cd ("btrfs: catch cow on deleting snapshots")
-61fa90c16b0b ("btrfs: switch BTRFS_ROOT_* to enums")
+db7e68b522c0 ("btrfs: drop the backref cache during relocation if we commit")
+ab7c8bbf3a08 ("btrfs: relocation: constify parameters where possible")
+32f2abca380f ("btrfs: relocation: return bool from btrfs_should_ignore_reloc_root")
 
 thanks,
 
@@ -80,89 +79,207 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c3b47f49e83197e8dffd023ec568403bcdbb774b Mon Sep 17 00:00:00 2001
-From: Qu Wenruo <wqu@suse.com>
-Date: Sat, 28 Sep 2024 08:05:58 +0930
-Subject: [PATCH] btrfs: fix a NULL pointer dereference when failed to start a
- new trasacntion
+From db7e68b522c01eb666cfe1f31637775f18997811 Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Tue, 24 Sep 2024 16:50:22 -0400
+Subject: [PATCH] btrfs: drop the backref cache during relocation if we commit
 
-[BUG]
-Syzbot reported a NULL pointer dereference with the following crash:
+Since the inception of relocation we have maintained the backref cache
+across transaction commits, updating the backref cache with the new
+bytenr whenever we COWed blocks that were in the cache, and then
+updating their bytenr once we detected a transaction id change.
 
-  FAULT_INJECTION: forcing a failure.
-   start_transaction+0x830/0x1670 fs/btrfs/transaction.c:676
-   prepare_to_relocate+0x31f/0x4c0 fs/btrfs/relocation.c:3642
-   relocate_block_group+0x169/0xd20 fs/btrfs/relocation.c:3678
-  ...
-  BTRFS info (device loop0): balance: ended with status: -12
-  Oops: general protection fault, probably for non-canonical address 0xdffffc00000000cc: 0000 [#1] PREEMPT SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x0000000000000660-0x0000000000000667]
-  RIP: 0010:btrfs_update_reloc_root+0x362/0xa80 fs/btrfs/relocation.c:926
-  Call Trace:
-   <TASK>
-   commit_fs_roots+0x2ee/0x720 fs/btrfs/transaction.c:1496
-   btrfs_commit_transaction+0xfaf/0x3740 fs/btrfs/transaction.c:2430
-   del_balance_item fs/btrfs/volumes.c:3678 [inline]
-   reset_balance_state+0x25e/0x3c0 fs/btrfs/volumes.c:3742
-   btrfs_balance+0xead/0x10c0 fs/btrfs/volumes.c:4574
-   btrfs_ioctl_balance+0x493/0x7c0 fs/btrfs/ioctl.c:3673
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:907 [inline]
-   __se_sys_ioctl+0xf9/0x170 fs/ioctl.c:893
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This works as long as we're only ever modifying blocks, not changing the
+structure of the tree.
 
-[CAUSE]
-The allocation failure happens at the start_transaction() inside
-prepare_to_relocate(), and during the error handling we call
-unset_reloc_control(), which makes fs_info->balance_ctl to be NULL.
+However relocation does in fact change the structure of the tree.  For
+example, if we are relocating a data extent, we will look up all the
+leaves that point to this data extent.  We will then call
+do_relocation() on each of these leaves, which will COW down to the leaf
+and then update the file extent location.
 
-Then we continue the error path cleanup in btrfs_balance() by calling
-reset_balance_state() which will call del_balance_item() to fully delete
-the balance item in the root tree.
+But, a key feature of do_relocation() is the pending list.  This is all
+the pending nodes that we modified when we updated the file extent item.
+We will then process all of these blocks via finish_pending_nodes, which
+calls do_relocation() on all of the nodes that led up to that leaf.
 
-However during the small window between set_reloc_contrl() and
-unset_reloc_control(), we can have a subvolume tree update and created a
-reloc_root for that subvolume.
+The purpose of this is to make sure we don't break sharing unless we
+absolutely have to.  Consider the case that we have 3 snapshots that all
+point to this leaf through the same nodes, the initial COW would have
+created a whole new path.  If we did this for all 3 snapshots we would
+end up with 3x the number of nodes we had originally.  To avoid this we
+will cycle through each of the snapshots that point to each of these
+nodes and update their pointers to point at the new nodes.
 
-Then we go into the final btrfs_commit_transaction() of
-del_balance_item(), and into btrfs_update_reloc_root() inside
-commit_fs_roots().
+Once we update the pointer to the new node we will drop the node we
+removed the link for and all of its children via btrfs_drop_subtree().
+This is essentially just btrfs_drop_snapshot(), but for an arbitrary
+point in the snapshot.
 
-That function checks if fs_info->reloc_ctl is in the merge_reloc_tree
-stage, but since fs_info->reloc_ctl is NULL, it results a NULL pointer
-dereference.
+The problem with this is that we will never reflect this in the backref
+cache.  If we do this btrfs_drop_snapshot() for a node that is in the
+backref tree, we will leave the node in the backref tree.  This becomes
+a problem when we change the transid, as now the backref cache has
+entire subtrees that no longer exist, but exist as if they still are
+pointed to by the same roots.
 
-[FIX]
-Just add extra check on fs_info->reloc_ctl inside
-btrfs_update_reloc_root(), before checking
-fs_info->reloc_ctl->merge_reloc_tree.
+In the best case scenario you end up with "adding refs to an existing
+tree ref" errors from insert_inline_extent_backref(), where we attempt
+to link in nodes on roots that are no longer valid.
 
-That DEAD_RELOC_TREE handling is to prevent further modification to the
-reloc tree during merge stage, but since there is no reloc_ctl at all,
-we do not need to bother that.
+Worst case you will double free some random block and re-use it when
+there's still references to the block.
 
-Reported-by: syzbot+283673dbc38527ef9f3d@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/66f6bfa7.050a0220.38ace9.0019.GAE@google.com/
-CC: stable@vger.kernel.org # 4.19+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
+This is extremely subtle, and the consequences are quite bad.  There
+isn't a way to make sure our backref cache is consistent between
+transid's.
+
+In order to fix this we need to simply evict the entire backref cache
+anytime we cross transid's.  This reduces performance in that we have to
+rebuild this backref cache every time we change transid's, but fixes the
+bug.
+
+This has existed since relocation was added, and is a pretty critical
+bug.  There's a lot more cleanup that can be done now that this
+functionality is going away, but this patch is as small as possible in
+order to fix the problem and make it easy for us to backport it to all
+the kernels it needs to be backported to.
+
+Followup series will dismantle more of this code and simplify relocation
+drastically to remove this functionality.
+
+We have a reproducer that reproduced the corruption within a few minutes
+of running.  With this patch it survives several iterations/hours of
+running the reproducer.
+
+Fixes: 3fd0a5585eb9 ("Btrfs: Metadata ENOSPC handling for balance")
+CC: stable@vger.kernel.org
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
+diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
+index e2f478ecd7fd..f8e1d5b2c512 100644
+--- a/fs/btrfs/backref.c
++++ b/fs/btrfs/backref.c
+@@ -3179,10 +3179,14 @@ void btrfs_backref_release_cache(struct btrfs_backref_cache *cache)
+ 		btrfs_backref_cleanup_node(cache, node);
+ 	}
+ 
+-	cache->last_trans = 0;
+-
+-	for (i = 0; i < BTRFS_MAX_LEVEL; i++)
+-		ASSERT(list_empty(&cache->pending[i]));
++	for (i = 0; i < BTRFS_MAX_LEVEL; i++) {
++		while (!list_empty(&cache->pending[i])) {
++			node = list_first_entry(&cache->pending[i],
++						struct btrfs_backref_node,
++						list);
++			btrfs_backref_cleanup_node(cache, node);
++		}
++	}
+ 	ASSERT(list_empty(&cache->pending_edge));
+ 	ASSERT(list_empty(&cache->useless_node));
+ 	ASSERT(list_empty(&cache->changed));
 diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index cf1dfeaaf2d8..f3834f8d26b4 100644
+index ea4ed85919ec..cf1dfeaaf2d8 100644
 --- a/fs/btrfs/relocation.c
 +++ b/fs/btrfs/relocation.c
-@@ -856,7 +856,7 @@ int btrfs_update_reloc_root(struct btrfs_trans_handle *trans,
- 	btrfs_grab_root(reloc_root);
+@@ -232,70 +232,6 @@ static struct btrfs_backref_node *walk_down_backref(
+ 	return NULL;
+ }
  
- 	/* root->reloc_root will stay until current relocation finished */
--	if (fs_info->reloc_ctl->merge_reloc_tree &&
-+	if (fs_info->reloc_ctl && fs_info->reloc_ctl->merge_reloc_tree &&
- 	    btrfs_root_refs(root_item) == 0) {
- 		set_bit(BTRFS_ROOT_DEAD_RELOC_TREE, &root->state);
- 		/*
+-static void update_backref_node(struct btrfs_backref_cache *cache,
+-				struct btrfs_backref_node *node, u64 bytenr)
+-{
+-	struct rb_node *rb_node;
+-	rb_erase(&node->rb_node, &cache->rb_root);
+-	node->bytenr = bytenr;
+-	rb_node = rb_simple_insert(&cache->rb_root, node->bytenr, &node->rb_node);
+-	if (rb_node)
+-		btrfs_backref_panic(cache->fs_info, bytenr, -EEXIST);
+-}
+-
+-/*
+- * update backref cache after a transaction commit
+- */
+-static int update_backref_cache(struct btrfs_trans_handle *trans,
+-				struct btrfs_backref_cache *cache)
+-{
+-	struct btrfs_backref_node *node;
+-	int level = 0;
+-
+-	if (cache->last_trans == 0) {
+-		cache->last_trans = trans->transid;
+-		return 0;
+-	}
+-
+-	if (cache->last_trans == trans->transid)
+-		return 0;
+-
+-	/*
+-	 * detached nodes are used to avoid unnecessary backref
+-	 * lookup. transaction commit changes the extent tree.
+-	 * so the detached nodes are no longer useful.
+-	 */
+-	while (!list_empty(&cache->detached)) {
+-		node = list_entry(cache->detached.next,
+-				  struct btrfs_backref_node, list);
+-		btrfs_backref_cleanup_node(cache, node);
+-	}
+-
+-	while (!list_empty(&cache->changed)) {
+-		node = list_entry(cache->changed.next,
+-				  struct btrfs_backref_node, list);
+-		list_del_init(&node->list);
+-		BUG_ON(node->pending);
+-		update_backref_node(cache, node, node->new_bytenr);
+-	}
+-
+-	/*
+-	 * some nodes can be left in the pending list if there were
+-	 * errors during processing the pending nodes.
+-	 */
+-	for (level = 0; level < BTRFS_MAX_LEVEL; level++) {
+-		list_for_each_entry(node, &cache->pending[level], list) {
+-			BUG_ON(!node->pending);
+-			if (node->bytenr == node->new_bytenr)
+-				continue;
+-			update_backref_node(cache, node, node->new_bytenr);
+-		}
+-	}
+-
+-	cache->last_trans = 0;
+-	return 1;
+-}
+-
+ static bool reloc_root_is_dead(const struct btrfs_root *root)
+ {
+ 	/*
+@@ -551,9 +487,6 @@ static int clone_backref_node(struct btrfs_trans_handle *trans,
+ 	struct btrfs_backref_edge *new_edge;
+ 	struct rb_node *rb_node;
+ 
+-	if (cache->last_trans > 0)
+-		update_backref_cache(trans, cache);
+-
+ 	rb_node = rb_simple_search(&cache->rb_root, src->commit_root->start);
+ 	if (rb_node) {
+ 		node = rb_entry(rb_node, struct btrfs_backref_node, rb_node);
+@@ -3698,11 +3631,9 @@ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
+ 			break;
+ 		}
+ restart:
+-		if (update_backref_cache(trans, &rc->backref_cache)) {
+-			btrfs_end_transaction(trans);
+-			trans = NULL;
+-			continue;
+-		}
++		if (rc->backref_cache.last_trans != trans->transid)
++			btrfs_backref_release_cache(&rc->backref_cache);
++		rc->backref_cache.last_trans = trans->transid;
+ 
+ 		ret = find_next_extent(rc, path, &key);
+ 		if (ret < 0)
 
 
