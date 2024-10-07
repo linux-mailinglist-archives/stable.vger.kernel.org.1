@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4564499318E
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:40:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4BF99318C
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30EB0B272C7
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26105282ABF
 	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B851D90D3;
-	Mon,  7 Oct 2024 15:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474B01D9346;
+	Mon,  7 Oct 2024 15:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFrB+K01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMHuPGdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421631D90D1
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068D21D90D1
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315573; cv=none; b=ZCmUsMtQKOwVqN+78ftqZOYGaLwcAhluJ2jw5lX5Wvk9A4A9Lfb0vYzRzyOmFkXGm2qGLBLAY6OEjS08seA8lV2xdBsKTvwFcl+YC6ZDWMCqb1wSDv+QZJGVkJbDW5OVgFiOYGk4hsCVqlC05pb+uOuXfm6hcedg5MER/Cy/aKk=
+	t=1728315577; cv=none; b=FaDFMTgzRTKoNGh600lJoO+j3wS+NXk3TNz9DYuK073VAzOxT4L1nxr+Pqrv5l30+CK0HJdI/VeFmzYYZC9f9cC6nECKzjy3wwZW0ZkJ4JdyXyZWfCuasyWmGgH3otdjgGrYs9uXxbkAG1Kae7X3sYrbUTQJqa7rLgSx1ZYGI2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315573; c=relaxed/simple;
-	bh=edXUfNqjCnepTC1Yry05B0DPcfUz0FBxTkNLVfxkdl8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EEmAyzyrBNiZSUQlIEZrwmFkN80Bcp3HlSXlnJQ09BwIAVzzOoayhzh6vUZdhHwg8UULEbw4dqz0wo66Rd055deGGYO4zWoA1Fx+ciC10eu0CPdjc9fEduAEXhjYQLi00giLTEs3GMF8MMLI5mP2ZZCiqbP3dvhGF4/FiMVUG4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFrB+K01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B00C4CEC6;
-	Mon,  7 Oct 2024 15:39:32 +0000 (UTC)
+	s=arc-20240116; t=1728315577; c=relaxed/simple;
+	bh=UqBrVqqHycaJWXWAmj7QZleEmvuhCXuFcQB082UDzYM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KapRFcxjtDr090ape662P+Yx9ZAAKlqVhhfDAReGNFBvDjYfm4IiltdLBB6wGPI3KTJYT5YbkfgUBKkNPmV5Bqwq2dhoj5TESILshevAqbosoSWrqfAoFa6Px5LLOFRBLDmE09G+4MKHY10w1gVicZiXoN+uhvr/Z0DtDFYpL4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMHuPGdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FBDC4CED2;
+	Mon,  7 Oct 2024 15:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728315573;
-	bh=edXUfNqjCnepTC1Yry05B0DPcfUz0FBxTkNLVfxkdl8=;
+	s=korg; t=1728315576;
+	bh=UqBrVqqHycaJWXWAmj7QZleEmvuhCXuFcQB082UDzYM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SFrB+K01kkzvx3P/ofU0w9rIqOfWcdaRuSfiJ0mJcVaQBm4x4KOIhzGrvyB4hFTFB
-	 MqQv+OawyiBAsbnEctCt4cFvg8Ppv68tJA4Cia90dPRvGAL7LzXs4hEpF22GLLnd4Z
-	 8Vv3UV0z94MC/bqPMnj+z5IkyC++6igOXbAHg2cU=
-Subject: FAILED: patch "[PATCH] NFSD: Limit the number of concurrent async COPY operations" failed to apply to 5.15-stable tree
+	b=KMHuPGdFUXOnKF7LqosjdVFKpxmg4eXvEGyQKCabMIeI/XBvvz7Cx4gJOfePt2mAc
+	 ypPBS6gFmhfkFd9a/HfhRic5WTwOYwjNcN4Tn/eZvr2lBgpURDAIVrQ2HccRkngbAi
+	 +3OAa6DGQTyLgVhN3SLBRob8bx/KexHHo+xiO2E4=
+Subject: FAILED: patch "[PATCH] NFSD: Limit the number of concurrent async COPY operations" failed to apply to 5.10-stable tree
 To: chuck.lever@oracle.com,jlayton@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:39:20 +0200
-Message-ID: <2024100720-untaken-groggily-473b@gregkh>
+Date: Mon, 07 Oct 2024 17:39:21 +0200
+Message-ID: <2024100721-crusher-anaerobic-cc9b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x aadc3bbea163b6caaaebfdd2b6c4667fbc726752
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100720-untaken-groggily-473b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100721-crusher-anaerobic-cc9b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
