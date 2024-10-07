@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F578993426
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:58:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6EC99342C
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEDC71F23659
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A329A281D41
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302D71DD542;
-	Mon,  7 Oct 2024 16:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51D1DC1A6;
+	Mon,  7 Oct 2024 16:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGHoTGYN"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dluVkDV"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BDF1DD540
-	for <Stable@vger.kernel.org>; Mon,  7 Oct 2024 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19131DC187
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728320103; cv=none; b=Scx18qMj3n6+64Z3VhCqdVyH0e1PC4n+qYYMmudXHS5BSzj292v/DlFD2t4it74P19i+6U7J2eQINhz5nYnUHGlwcabMYqBKuSurR0MWVzffj36WUFCppwh/nvQqvM7OHF/5v7X2SaE3GSkh6Aqg8G9epz4x0r5oNhK6ioAHl1k=
+	t=1728320199; cv=none; b=bCHUeR6w7z6jOtErcKZCKAMwGglE8qlAb41FTmw+DePqDw9JyLISWOXaTbHe6fJdhn531lMfSB/wuVyZNkmfEXHdQmD/4jwD88Ip0Y5QD7xuqgKlpbncdbE8/D5vhNP97kDi3ATV/abSqdyqnBg3plX7UF2b+TI1GUY9oYkAgsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728320103; c=relaxed/simple;
-	bh=72aacUIWUu+dJMFSO5N2DGCRShT5mKmgQFQ2KQticag=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ta26riPGVR3ybWcm3gcbu29iaomGxA60eHOcJliXjMwDtXkmFPOBRNs2QxfPyegAHjN2kVc+dLIr3bPgPAKd+7KrPY7m36dd9UKSN3nF3OsYVbly+2sIZUMncWH2TzaftSq7G36iuHcClw+CmIUxhHWyxa24jt82nib2O6w7XRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGHoTGYN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F43C4CEC6;
-	Mon,  7 Oct 2024 16:55:02 +0000 (UTC)
+	s=arc-20240116; t=1728320199; c=relaxed/simple;
+	bh=eXLhwZXWFrSVEO4K38t//y4SMsUROln6liSmXhYfBOc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DK6YQF4ihGoysfG63+GsIOLNgz+bODfVyVqWtgmrlBaCDoJtzL814aeS3naxqPa/gRnqyBI2ij72ewpuOUX/wyxgpt7SIMyD3fqx4OxKpPqlta+LqaG60pSj8cywkv/AlJ7pwSwAKn2bseoLVW2cveBZ8P9lmhH8B67i7ZdGVrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dluVkDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9D3C4CEC6;
+	Mon,  7 Oct 2024 16:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728320102;
-	bh=72aacUIWUu+dJMFSO5N2DGCRShT5mKmgQFQ2KQticag=;
+	s=korg; t=1728320199;
+	bh=eXLhwZXWFrSVEO4K38t//y4SMsUROln6liSmXhYfBOc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NGHoTGYNzbAktY6xkV+vP+WY1YDz9sDM7Fxr8qFyabxHOorzqxwa3taRnmMC/u52I
-	 VGxO7Vh+ngfIMwIjNetTVDfV6JipxSdgg+89/m5CE/mlFXVMM7a0tULG5SbU/tWFGt
-	 Zhg9IL4dK15U9d7qyiel334w+SDMCd5USfq1kOcc=
-Subject: FAILED: patch "[PATCH] iio: pressure: bmp280: Fix waiting time for BMP3xx" failed to apply to 6.1-stable tree
-To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=1dluVkDVvZc40HwvDmdCe++yYPCg/44YKvVucZ8YGc7WFwMnVEUVpBuTUNbTCjEU+
+	 jEZdTS0kt2NlavO7G3wnOkwU16reg8eHLD/4lZwZUmMBvgOlWxFen2yWLk3Z2HkTfW
+	 RSHx3rURE4LboMnUsKBVv4Xe1ySR+Rb+BjNVm/sE=
+Subject: FAILED: patch "[PATCH] r8169: add tally counter fields added with RTL8125" failed to apply to 6.10-stable tree
+To: hkallweit1@gmail.com,horms@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 18:54:41 +0200
-Message-ID: <2024100740-engaging-splendor-8e75@gregkh>
+Date: Mon, 07 Oct 2024 18:56:33 +0200
+Message-ID: <2024100733-glorifier-splurge-c8fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 262a6634bcc4f0c1c53d13aa89882909f281a6aa
+git cherry-pick -x ced8e8b8f40accfcce4a2bbd8b150aa76d5eff9a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100740-engaging-splendor-8e75@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100733-glorifier-splurge-c8fc@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-262a6634bcc4 ("iio: pressure: bmp280: Fix waiting time for BMP3xx configuration")
-439ce8961bdd ("iio: pressure: bmp280: Improve indentation and line wrapping")
-a2d43f44628f ("iio: pressure: fix some word spelling errors")
-accb9d05df39 ("iio: pressure: bmp280: Add nvmem operations for BMP580")
-597dfb2af052 ("iio: pressure: bmp280: Add support for new sensor BMP580")
-42cde8808573 ("iio: pressure: Kconfig: Delete misleading I2C reference on bmp280 title")
-0b0b772637cd ("iio: pressure: bmp280: Use chip_info pointers for each chip as driver data")
-12491d35551d ("iio: pressure: bmp280: convert to i2c's .probe_new()")
+ced8e8b8f40a ("r8169: add tally counter fields added with RTL8125")
+8df9439389a4 ("r8169: Fix spelling mistake: "tx_underun" -> "tx_underrun"")
 
 thanks,
 
@@ -84,42 +78,60 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 262a6634bcc4f0c1c53d13aa89882909f281a6aa Mon Sep 17 00:00:00 2001
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-Date: Thu, 11 Jul 2024 23:15:50 +0200
-Subject: [PATCH] iio: pressure: bmp280: Fix waiting time for BMP3xx
- configuration
+From ced8e8b8f40accfcce4a2bbd8b150aa76d5eff9a Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Date: Tue, 17 Sep 2024 23:04:46 +0200
+Subject: [PATCH] r8169: add tally counter fields added with RTL8125
 
-According to the datasheet, both pressure and temperature can go up to
-oversampling x32. With this option, the maximum measurement time is not
-80ms (this is for press x32 and temp x2), but it is 130ms nominal
-(calculated from table 3.9.2) and since most of the maximum values
-are around +15%, it is configured to 150ms.
+RTL8125 added fields to the tally counter, what may result in the chip
+dma'ing these new fields to unallocated memory. Therefore make sure
+that the allocated memory area is big enough to hold all of the
+tally counter values, even if we use only parts of it.
 
-Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://patch.msgid.link/20240711211558.106327-3-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/741d26a9-2b2b-485d-91d9-ecb302e345b5@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index cc8553177977..3deaa57bb3f5 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1581,10 +1581,11 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 		}
- 		/*
- 		 * Waits for measurement before checking configuration error
--		 * flag. Selected longest measure time indicated in
--		 * section 3.9.1 in the datasheet.
-+		 * flag. Selected longest measurement time, calculated from
-+		 * formula in datasheet section 3.9.2 with an offset of ~+15%
-+		 * as it seen as well in table 3.9.1.
- 		 */
--		msleep(80);
-+		msleep(150);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 45ac8befba29..3ddba7aa4914 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -579,6 +579,33 @@ struct rtl8169_counters {
+ 	__le32	rx_multicast;
+ 	__le16	tx_aborted;
+ 	__le16	tx_underrun;
++	/* new since RTL8125 */
++	__le64 tx_octets;
++	__le64 rx_octets;
++	__le64 rx_multicast64;
++	__le64 tx_unicast64;
++	__le64 tx_broadcast64;
++	__le64 tx_multicast64;
++	__le32 tx_pause_on;
++	__le32 tx_pause_off;
++	__le32 tx_pause_all;
++	__le32 tx_deferred;
++	__le32 tx_late_collision;
++	__le32 tx_all_collision;
++	__le32 tx_aborted32;
++	__le32 align_errors32;
++	__le32 rx_frame_too_long;
++	__le32 rx_runt;
++	__le32 rx_pause_on;
++	__le32 rx_pause_off;
++	__le32 rx_pause_all;
++	__le32 rx_unknown_opcode;
++	__le32 rx_mac_error;
++	__le32 tx_underrun32;
++	__le32 rx_mac_missed;
++	__le32 rx_tcam_dropped;
++	__le32 tdu;
++	__le32 rdu;
+ };
  
- 		/* Check config error flag */
- 		ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
+ struct rtl8169_tc_offsets {
 
 
