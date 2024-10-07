@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05577993502
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:29:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9C1993503
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364F31C22648
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:29:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDFFB1F23951
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE581DD54F;
-	Mon,  7 Oct 2024 17:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CF31DD553;
+	Mon,  7 Oct 2024 17:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSEFkGQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZwq86Ot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7381DA2E5
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987071DCB06
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728322171; cv=none; b=g8P43YDXwY1j5h92YLOdXLAV5Tx61aSDpHY4Eka9GhDulppX4rrjBsbtM3t+nR/b7sduKuGDxuya+y3+NeDOCe3hYWnTHdOESNtL8bLS7QaK34dUwISJwfQWKhDZoUXRwTUSdMrSJFdItDa2yj4R0qSBIS7gpNi+VrjegEVD4G8=
+	t=1728322179; cv=none; b=J55CLjvIN+NHwSavLX1/KXSWFxJdLX6Q+z0upoaMg8oKOclAcJ31xnBtkzUrf0a3RE1AX6LzJarrUC8o+NAuPG6Z5cuJiTK4kGOkdygIRsYEVJYcvTF3rCGZ5xvesz24VzdcwwGO6J7Pmr56mpBi67HbNsTmHkgzyePDESP4WXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728322171; c=relaxed/simple;
-	bh=zUZX5oMxhlJZyl5VoOAbtJcXr53oyd47aSCVb7yA/uE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ShV+dMckTb3OSxW4hjkQ+pt0YPp0a9WIvi4voYkTgm0vupiwDd6ekPuvergoDZ4XIur53p2z+yeBBEGAdh7aCu0vAvSu4RIKGrnO7Af0ZsenJwqS+I8fkQwA+fw3pdIvOGBrgGRNzqkBB+ejlfMtfPfMsOwLutQXxy/sXNttiFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSEFkGQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0136CC4CEC6;
-	Mon,  7 Oct 2024 17:29:29 +0000 (UTC)
+	s=arc-20240116; t=1728322179; c=relaxed/simple;
+	bh=iD0t951VHh6kfdq6l20bSIPFPG65JBDgOKyaLRqMD5Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=W49f0ALvAA6ygnC5gifDa8Q7WptqgX1uPzkL/I0XgPB7iQTBUBbd0MRza63EoqoMBuKUZAJuVeg8GQnpK+utEE7bbChwNa043Xhivz+nl5mccCYtZb8c0T+/dNLbexrbTi5yXtXCRh9bAG8TJR7XFWSbREgIeB3zihkbAd0eIGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZwq86Ot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95CFC4CEC7;
+	Mon,  7 Oct 2024 17:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728322170;
-	bh=zUZX5oMxhlJZyl5VoOAbtJcXr53oyd47aSCVb7yA/uE=;
+	s=korg; t=1728322179;
+	bh=iD0t951VHh6kfdq6l20bSIPFPG65JBDgOKyaLRqMD5Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hSEFkGQCseuIDPE4Tgf4F87S0SpFpUoTKJGPAKBBlTRi3kyfOAkJG4+0FjRFgZY2t
-	 2vomytFNGp6TGKWNea68j6A96Y2QTuazUOzcEQb0Fpw5krYRUksFGz4uE5BRiU1Hxb
-	 agjXIgtXMQsPI7oWVsvx7wYJqljzWOhfwIIFoi7U=
-Subject: FAILED: patch "[PATCH] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE" failed to apply to 5.15-stable tree
+	b=XZwq86OtD1lyivEEtl8Gm47DHwt58pTpp1cq/LwB0zQKsj0/+b63ymAFIg5XM9Wk+
+	 DAURsgcnPxxYKSjL1WK7YrLuzsvO2ZznYgRwFhibB++cQpxjU4RgqPTPpn16tg57QS
+	 OS05YMiNLlOEB0QaqSt41MPp2TQ14Ro6IaXJ8Y2w=
+Subject: FAILED: patch "[PATCH] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE" failed to apply to 5.10-stable tree
 To: luiz.von.dentz@intel.com,kiran.k@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 07 Oct 2024 19:29:27 +0200
-Message-ID: <2024100727-switch-reaffirm-2dec@gregkh>
+Message-ID: <2024100727-emission-slot-94cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x b25e11f978b63cb7857890edb3a698599cddb10e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100727-switch-reaffirm-2dec@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100727-emission-slot-94cc@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -79,6 +79,16 @@ aadc3d2f42a5 ("Bluetooth: HCI: Use skb_pull_data to parse Number of Complete Pac
 e3f3a1aea871 ("Bluetooth: HCI: Use skb_pull_data to parse Command Complete event")
 ae61a10d9d46 ("Bluetooth: HCI: Use skb_pull_data to parse BR/EDR events")
 3244845c6307 ("Bluetooth: hci_sync: Convert MGMT_OP_SSP")
+6f6ff38a1e14 ("Bluetooth: hci_sync: Convert MGMT_OP_SET_LOCAL_NAME")
+cf75ad8b41d2 ("Bluetooth: hci_sync: Convert MGMT_SET_POWERED")
+ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+e8907f76544f ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 3")
+cba6b758711c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 2")
+161510ccf91c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 1")
+6a98e3836fa2 ("Bluetooth: Add helper for serialized HCI command execution")
+4139ff008330 ("Bluetooth: Fix wrong opcode when LL privacy enabled")
+01ce70b0a274 ("Bluetooth: eir: Move EIR/Adv Data functions to its own file")
+5031ffcc79b8 ("Bluetooth: Keep MSFT ext info throughout a hci_dev's life cycle")
 
 thanks,
 
