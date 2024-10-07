@@ -1,78 +1,74 @@
-Return-Path: <stable+bounces-81299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804BF992D36
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:27:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD61992D62
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425902848FF
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:27:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E9CC1F234F1
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 13:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766F21D359A;
-	Mon,  7 Oct 2024 13:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B62E1D45FF;
+	Mon,  7 Oct 2024 13:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IQrNT71g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NMQ069vW"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C40F1D3560;
-	Mon,  7 Oct 2024 13:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C941D434E
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 13:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728307666; cv=none; b=syEA9jBTa8MIRf5AjTOQlPY50cyRsg8kCNcQ68wex0nhsqK7MIVMOP0zG2P40MQTpJXjx2iQECfFyOrVEv+9TdUlYNOqfW2EojUrn9YlZYjVou3xJsn+sPDHgFnjVEZ2iJLALELrfJ3Nr0+jeyXEL8cwD1aKhL2zByHZjRFUrOk=
+	t=1728307916; cv=none; b=K5ukuiG9E3mxAbKLUd1E/s/tl+4orLmS3QzUZufRpqK4aPBvii2bXGkmEou1M6n7eSBMCAiKcvKZeXaa0iMKteA2O51pewjnumKGcwT/hzdr2o3JoqWWhgq06WvnlQhBRr/WPGghLZ9cV6i6HrWXyi+9B9HVea0NfPHUzL3ybtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728307666; c=relaxed/simple;
-	bh=6li13mG7rvgAP9Nm8d61xioTFUbu8TpWPproLOenVpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iT9IeIG3uuaVvAjAEkelwcyhKzBprxAFoClWUc8WVDqndpbEL9cTO/4mfJ3LTp1SwY6hVdIwP107lNr6ZQLEEyt5ntQG+na21haNs53zvhseHKEef2XhJZTjLRCn71a46rqij4fUVjokWiZAM/tTBWxblVz2a4JlE/rPPipgmA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IQrNT71g; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1728307916; c=relaxed/simple;
+	bh=1I+yJu0PI6OE5Ei7RYULnfVT3Ab5UjS/ved/f3Ay1JI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=bgvSS9gE/EHp6OsSxRwL+xWHLoPAibtH93PRJbYG2v2OF4JSmx++v9qKQAlhnFpMn4Nfe96ADKl2wZIL7S6gYmQAuq4zadL35tDYNnfKNxYn4DOd0MT+wtT1k5r0tXUnKsUYHpvLjGM5eUONvBWJhWV/AXEu1QpnMBusasGPzDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NMQ069vW; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728307665; x=1759843665;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6li13mG7rvgAP9Nm8d61xioTFUbu8TpWPproLOenVpQ=;
-  b=IQrNT71gBmCodS/yML8DpiPh9gTU5ETCy9Phkg7HaXVFHUBmB+tm0Xp7
-   XkqAkSKp0ZqCFJlIlhO4ciMxtmOL/VBVIvJ3iy9rITl7xLgzpGM3FRB5C
-   K5onCE1JfShcsrX076iCyEeUcHrG3Sd9cfq2MQGA7m03oifuL0fQZ0LLP
-   bYHnL8eQDq7r9T/2KjD31k107uhAWj8ML0Wuu6Q5AK1yAP/Amnx51p72X
-   dm0MA7S1/6UaxTYP7gzpdwtiXDTYKpYzdGgQdIoT3MnEysOw4RI6HYYnY
-   kHt0fE40WkfbVKVu+USAR/VLkN00jWK4/94Yp5L/XgQFvN2lBgmeiVf5Z
-   Q==;
-X-CSE-ConnectionGUID: PAc4Uiw0QmCQbq/HP/vaHw==
-X-CSE-MsgGUID: 0S89wkcyRuSsnDjEQMRDRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="38026165"
+  t=1728307914; x=1759843914;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=1I+yJu0PI6OE5Ei7RYULnfVT3Ab5UjS/ved/f3Ay1JI=;
+  b=NMQ069vWbzALU20R/5MJ7/PYBpYHOPs0uZASh0eWjdFUi1vZhwrYxb5W
+   ij73ujZAqlomxlj4+J9kT6n38YHR0bn5yoMOxrpXKPJOO+Q/3C6Xh4WOi
+   X8AsHu1GNYhzllpCb3fhRKISqXjKbxMsnCTUMbq3dQ2gjDzKPchVyaueF
+   uZFJXM6wf1dHOO3K184+eLEzjqDlJqoc4RXaDknHwKkq8qTesWxvgMs7C
+   tDt98Wi4hYbITvAOtvGBa5OQX3h4G07nsyvp3fH4ecQRT297XJINGSjKr
+   uBpeTY7yoj9uni1sulZniWmIV8qLFbuwYpu9CPZS2soNFjPseiYVFWBRr
+   w==;
+X-CSE-ConnectionGUID: Ab7ZJGenQGCYLAsNfoilVQ==
+X-CSE-MsgGUID: PoWZotxmQb+preoL8i9sVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="38842237"
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="38026165"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 06:27:45 -0700
-X-CSE-ConnectionGUID: pMedMtvZRmWZNfZaZIrn1w==
-X-CSE-MsgGUID: 7uZTz8MzTiGXCJfhzfLKHQ==
+   d="scan'208";a="38842237"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 06:31:54 -0700
+X-CSE-ConnectionGUID: WmL8NB/OR+yAJhS+t+XoFw==
+X-CSE-MsgGUID: 6laoIrV4TEqOF/sseBELLg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="80272278"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 06:27:42 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sxnm0-00000000Djt-0L9V;
-	Mon, 07 Oct 2024 16:27:40 +0300
-Date: Mon, 7 Oct 2024 16:27:39 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Ferry Toth <fntoth@gmail.com>
-Cc: Serge Semin <fancer.lancer@gmail.com>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Viresh Kumar <vireshk@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] dmaengine: dw: Select only supported masters for
- ACPI devices
-Message-ID: <ZwPhy9ZRBILy3S1l@smile.fi.intel.com>
-References: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
- <d6ebb78b-a369-4958-9ce1-8d0647d3410a@gmail.com>
+   d="scan'208";a="75444421"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 07 Oct 2024 06:31:53 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sxnq2-000526-1A;
+	Mon, 07 Oct 2024 13:31:50 +0000
+Date: Mon, 7 Oct 2024 21:31:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yonatan Maman <ymaman@nvidia.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] nouveau/dmem: Fix privileged error in copy engine
+ channel
+Message-ID: <ZwPip8E2iWotS_Zp@83e7b27afa97>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,49 +77,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d6ebb78b-a369-4958-9ce1-8d0647d3410a@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20241007132700.982800-2-ymaman@nvidia.com>
 
-On Tue, Sep 24, 2024 at 09:07:19PM +0200, Ferry Toth wrote:
-> Op 20-09-2024 om 17:56 schreef Andy Shevchenko:
-> > From: Serge Semin <fancer.lancer@gmail.com>
-> > 
-> > The recently submitted fix-commit revealed a problem in the iDMA 32-bit
-> > platform code. Even though the controller supported only a single master
-> > the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
-> > 0 and 1. As a result the sanity check implemented in the commit
-> > b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-> > got incorrect interface data width and thus prevented the client drivers
-> > from configuring the DMA-channel with the EINVAL error returned. E.g.,
-> > the next error was printed for the PXA2xx SPI controller driver trying
-> > to configure the requested channels:
-> > 
-> > > [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
-> > > [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
-> > > [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
-> > 
-> > The problem would have been spotted much earlier if the iDMA 32-bit
-> > controller supported more than one master interfaces. But since it
-> > supports just a single master and the iDMA 32-bit specific code just
-> > ignores the master IDs in the CTLLO preparation method, the issue has
-> > been gone unnoticed so far.
-> > 
-> > Fix the problem by specifying the default master ID for both memory
-> > and peripheral devices in the driver data. Thus the issue noticed for
-> > the iDMA 32-bit controllers will be eliminated and the ACPI-probed
-> > DW DMA controllers will be configured with the correct master ID by
-> > default.
+Hi,
 
-...
+Thanks for your patch.
 
-> Tested-by: Ferry Toth <fntoth@gmail.com> (Intel Edison-Arduino)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Thanks for testing!
-Vinod, can this be queued for v6.12-rc3?
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2 1/2] nouveau/dmem: Fix privileged error in copy engine channel
+Link: https://lore.kernel.org/stable/20241007132700.982800-2-ymaman%40nvidia.com
 
 -- 
-With Best Regards,
-Andy Shevchenko
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
 
