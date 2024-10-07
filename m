@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465A3993435
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:59:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CC9993420
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AA46B29B2E
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90C3B1F2361D
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D63E1DC073;
-	Mon,  7 Oct 2024 16:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A891DC07C;
+	Mon,  7 Oct 2024 16:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d97D/oLn"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7P7yzVe"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC231DB546
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838BE1DB94F
+	for <Stable@vger.kernel.org>; Mon,  7 Oct 2024 16:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728319986; cv=none; b=ukEqm2K6uDQOJKuxxGTTmo/tR0X69HiBuzw0w+wXv9HW86a+V9P1+O2YkAMUI/UaHq5G7oHsF2fsg1SIT8IB1awMyMIEMA6QHl/xvHDO3QWXf71ndEGZNktwKz0mRX32TC/8HXi15jy4OtAhLB/zITMJQ2OO4l52sNoR8EPP/Y8=
+	t=1728320074; cv=none; b=OjOy7Kcse8wGdy0IoqJcHowXcr9veMLqUB0L9KYKAPH/az20/dK0gkyNRyLTUAoUpJOIG+mm4qhNzqpy32j3ATXhkx8TdSn//qn9MpXEOd4Y6kboYrWTRJFTDdgR0wmZbOEWXpY8MPrXZmoYmdQc7Ma7B9469qbFZBYkKDZ1R+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728319986; c=relaxed/simple;
-	bh=M4Gdzf6LOPIeRZ4iUwkj/QaiVUITxLVvVtPhNe3G740=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=B50VEXRJh0qo/dDMp2gorcKdnYZZrV67/gHaqRyvygTvM6k3OQP7MOK+DqD1kTjz+mck94aqHSwWsv/qil4v9aMoix07ttb5Ysc6ZgXi+LwXhGs38sqsvZO+blke1uNnIPDPrd3dr/oOWck8FutqDDklPcZLuFET0Yz27jXjeKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d97D/oLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E199C4CEC6;
-	Mon,  7 Oct 2024 16:53:05 +0000 (UTC)
+	s=arc-20240116; t=1728320074; c=relaxed/simple;
+	bh=2/McZmOsJJRtxQ0lvuhi862w7x4Dli6vQLXcwmW8eEA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IbAtXMvCldtJPYx5qc55jqMf8FgegXDeLGA83jEf5OQ+sdIlmiZSjKbvpQvU9nz/wAD+DlqonsSclN+BhFoY+AELNL0pc2S8JHDilPU0gJcT+9FQtMADy5yIN1fc2kV6xrGGNAyAgODjrc8HMabAzPGMtB5bzlM6c7tW/YvpN0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7P7yzVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07437C4CEC6;
+	Mon,  7 Oct 2024 16:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728319985;
-	bh=M4Gdzf6LOPIeRZ4iUwkj/QaiVUITxLVvVtPhNe3G740=;
+	s=korg; t=1728320074;
+	bh=2/McZmOsJJRtxQ0lvuhi862w7x4Dli6vQLXcwmW8eEA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=d97D/oLnzfTRgU/yxKeMQuyFVcVYlm808y4QPJCqguSMBJHPQ/CEXKkmTy8VxvCtO
-	 MNusXdR4a45WiFjC68gr1/9jYL8D0MlVyJwHibiFUp8M1MHZbOb3e6+p2yNT7/5b3Z
-	 FrAuLNuY9Xb4tGRws3MESLD99xQDZktoyQRVvEIo=
-Subject: FAILED: patch "[PATCH] media: qcom: camss: Fix ordering of pm_runtime_enable" failed to apply to 4.19-stable tree
-To: bryan.odonoghue@linaro.org,hverkuil-cisco@xs4all.nl,johan+linaro@kernel.org,konradybcio@kernel.org,stable@vger.kernel.org
+	b=e7P7yzVesMlZljmu/iY3H7K7vUl42bRvenjOTCoRn4OQdHemvFmrXFYCLCTSAHz0+
+	 /TUEB534mJwf5NJ6jRX33D5FVgYubk33wr1V44xdKMHEJNmHTDuVs1n4NxpdBicl2T
+	 OqdTR0vbZWZyUUMXX3egkS3bfUWDgKaHkf7Nbgcg=
+Subject: FAILED: patch "[PATCH] iio: pressure: bmp280: Fix regmap for BMP280 device" failed to apply to 6.6-stable tree
+To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 18:52:52 +0200
-Message-ID: <2024100752-transport-oversleep-2bf8@gregkh>
+Date: Mon, 07 Oct 2024 18:54:28 +0200
+Message-ID: <2024100728-festivity-collide-66b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x a151766bd3688f6803e706c6433a7c8d3c6a6a94
+git cherry-pick -x b9065b0250e1705935445ede0a18c1850afe7b75
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100752-transport-oversleep-2bf8@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100728-festivity-collide-66b2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-a151766bd368 ("media: qcom: camss: Fix ordering of pm_runtime_enable")
-f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
-b278080a89f4 ("media: qcom: camss: Fix V4L2 async notifier error path")
-7405116519ad ("media: qcom: camss: Fix pm_domain_on sequence in probe")
-5651bab6890a ("media: qcom: Initialise V4L2 async notifier later")
-428bbf4be401 ("media: camss: Convert to platform remove callback returning void")
-46cc03175498 ("media: camss: Split power domain management")
-3d658980e6da ("media: camss: Do not attach an already attached power domain on MSM8916 platform")
-cf295629e3d6 ("media: camss: Allocate camss struct as a managed device resource")
-6b1814e26989 ("media: camss: Allocate power domain resources dynamically")
-5ba38efb2622 ("media: camss: Add SM8250 bandwdith configuration support")
-b4436a18eedb ("media: camss: add support for SM8250 camss")
-4edc8eae715c ("media: camss: Add initial support for VFE hardware version Titan 480")
-3c8c15391481 ("media: v4l: async: Rename async nf functions, clean up long lines")
-2070893aed11 ("media: rcar-vin: Move group async notifier")
-161b56a82dba ("media: rcar-vin: Rename array storing subdevice information")
-6df305779291 ("media: rcar-vin: Improve async notifier cleanup paths")
-b2dc5680aeb4 ("media: rcar-vin: Refactor controls creation for video device")
-f33fd8d77dd0 ("media: imx: add a driver for i.MX8MQ mipi csi rx phy and controller")
-6f8f9fdec8e4 ("media: Documentation: media: Fix v4l2-async kerneldoc syntax")
+b9065b0250e1 ("iio: pressure: bmp280: Fix regmap for BMP280 device")
+b23be4cd99a6 ("iio: pressure: bmp280: Use BME prefix for BME280 specifics")
+439ce8961bdd ("iio: pressure: bmp280: Improve indentation and line wrapping")
+33564435c808 ("iio: pressure: bmp280: Allow multiple chips id per family of devices")
+a2d43f44628f ("iio: pressure: fix some word spelling errors")
 
 thanks,
 
@@ -96,61 +81,129 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a151766bd3688f6803e706c6433a7c8d3c6a6a94 Mon Sep 17 00:00:00 2001
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Mon, 29 Jul 2024 13:42:03 +0100
-Subject: [PATCH] media: qcom: camss: Fix ordering of pm_runtime_enable
+From b9065b0250e1705935445ede0a18c1850afe7b75 Mon Sep 17 00:00:00 2001
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+Date: Thu, 11 Jul 2024 23:15:49 +0200
+Subject: [PATCH] iio: pressure: bmp280: Fix regmap for BMP280 device
 
-pm_runtime_enable() should happen prior to vfe_get() since vfe_get() calls
-pm_runtime_resume_and_get().
+Up to now, the BMP280 device is using the regmap of the BME280 which
+has registers that exist only in the BME280 device.
 
-This is a basic race condition that doesn't show up for most users so is
-not widely reported. If you blacklist qcom-camss in modules.d and then
-subsequently modprobe the module post-boot it is possible to reliably show
-this error up.
+Fixes: 14e8015f8569 ("iio: pressure: bmp280: split driver in logical parts")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://patch.msgid.link/20240711211558.106327-2-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The kernel log for this error looks like this:
-
-qcom-camss ac5a000.camss: Failed to power up pipeline: -13
-
-Fixes: 02afa816dbbf ("media: camss: Add basic runtime PM support")
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 51b1d3550421..d64985ca6e88 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -2283,6 +2283,8 @@ static int camss_probe(struct platform_device *pdev)
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 2fc5724196e3..cc8553177977 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1186,7 +1186,7 @@ const struct bmp280_chip_info bme280_chip_info = {
+ 	.id_reg = BMP280_REG_ID,
+ 	.chip_id = bme280_chip_ids,
+ 	.num_chip_id = ARRAY_SIZE(bme280_chip_ids),
+-	.regmap_config = &bmp280_regmap_config,
++	.regmap_config = &bme280_regmap_config,
+ 	.start_up_time = 2000,
+ 	.channels = bme280_channels,
+ 	.num_channels = ARRAY_SIZE(bme280_channels),
+diff --git a/drivers/iio/pressure/bmp280-regmap.c b/drivers/iio/pressure/bmp280-regmap.c
+index fa52839474b1..d27d68edd906 100644
+--- a/drivers/iio/pressure/bmp280-regmap.c
++++ b/drivers/iio/pressure/bmp280-regmap.c
+@@ -41,7 +41,7 @@ const struct regmap_config bmp180_regmap_config = {
+ };
+ EXPORT_SYMBOL_NS(bmp180_regmap_config, IIO_BMP280);
  
- 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
- 
-+	pm_runtime_enable(dev);
-+
- 	num_subdevs = camss_of_parse_ports(camss);
- 	if (num_subdevs < 0) {
- 		ret = num_subdevs;
-@@ -2323,8 +2325,6 @@ static int camss_probe(struct platform_device *pdev)
- 		}
+-static bool bmp280_is_writeable_reg(struct device *dev, unsigned int reg)
++static bool bme280_is_writeable_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+ 	case BMP280_REG_CONFIG:
+@@ -54,7 +54,35 @@ static bool bmp280_is_writeable_reg(struct device *dev, unsigned int reg)
  	}
+ }
  
--	pm_runtime_enable(dev);
++static bool bmp280_is_writeable_reg(struct device *dev, unsigned int reg)
++{
++	switch (reg) {
++	case BMP280_REG_CONFIG:
++	case BMP280_REG_CTRL_MEAS:
++	case BMP280_REG_RESET:
++		return true;
++	default:
++		return false;
++	}
++}
++
+ static bool bmp280_is_volatile_reg(struct device *dev, unsigned int reg)
++{
++	switch (reg) {
++	case BMP280_REG_TEMP_XLSB:
++	case BMP280_REG_TEMP_LSB:
++	case BMP280_REG_TEMP_MSB:
++	case BMP280_REG_PRESS_XLSB:
++	case BMP280_REG_PRESS_LSB:
++	case BMP280_REG_PRESS_MSB:
++	case BMP280_REG_STATUS:
++		return true;
++	default:
++		return false;
++	}
++}
++
++static bool bme280_is_volatile_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+ 	case BME280_REG_HUMIDITY_LSB:
+@@ -71,7 +99,6 @@ static bool bmp280_is_volatile_reg(struct device *dev, unsigned int reg)
+ 		return false;
+ 	}
+ }
 -
- 	return 0;
+ static bool bmp380_is_writeable_reg(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+@@ -167,7 +194,7 @@ const struct regmap_config bmp280_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
  
- err_register_subdevs:
-@@ -2332,6 +2332,7 @@ static int camss_probe(struct platform_device *pdev)
- err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
-+	pm_runtime_disable(dev);
- err_genpd_cleanup:
- 	camss_genpd_cleanup(camss);
+-	.max_register = BME280_REG_HUMIDITY_LSB,
++	.max_register = BMP280_REG_TEMP_XLSB,
+ 	.cache_type = REGCACHE_RBTREE,
+ 
+ 	.writeable_reg = bmp280_is_writeable_reg,
+@@ -175,6 +202,18 @@ const struct regmap_config bmp280_regmap_config = {
+ };
+ EXPORT_SYMBOL_NS(bmp280_regmap_config, IIO_BMP280);
+ 
++const struct regmap_config bme280_regmap_config = {
++	.reg_bits = 8,
++	.val_bits = 8,
++
++	.max_register = BME280_REG_HUMIDITY_LSB,
++	.cache_type = REGCACHE_RBTREE,
++
++	.writeable_reg = bme280_is_writeable_reg,
++	.volatile_reg = bme280_is_volatile_reg,
++};
++EXPORT_SYMBOL_NS(bme280_regmap_config, IIO_BMP280);
++
+ const struct regmap_config bmp380_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+index 0933e411ae2c..4b0ebce001df 100644
+--- a/drivers/iio/pressure/bmp280.h
++++ b/drivers/iio/pressure/bmp280.h
+@@ -490,6 +490,7 @@ extern const struct bmp280_chip_info bmp580_chip_info;
+ /* Regmap configurations */
+ extern const struct regmap_config bmp180_regmap_config;
+ extern const struct regmap_config bmp280_regmap_config;
++extern const struct regmap_config bme280_regmap_config;
+ extern const struct regmap_config bmp380_regmap_config;
+ extern const struct regmap_config bmp580_regmap_config;
  
 
 
