@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-81476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC5D993748
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 21:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D972F993761
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 21:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16021C227EA
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E05551C22D77
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E761DDA3C;
-	Mon,  7 Oct 2024 19:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43171DDC11;
+	Mon,  7 Oct 2024 19:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4kY2qmlU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uQlGkS/k"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CEC13B797
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 19:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B4E15B12F
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 19:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728329120; cv=none; b=DomZsBYGZG27OWHI7gt3vxRPXjj9BxCfNI6W1n0aIIzq9mGpBNb+IJ2ACM7J0GUTlWFw5Tsx4RjJkMzK6jrKXr56n3OYKvd2LyvouaRo6dtyBdXMgzbhepWp/rGONOX/umNK0NDi/lgF9IqCdrdWzvETojqec4Q5cv2f89sAvj0=
+	t=1728329531; cv=none; b=VnT1DbCifiZU2ruPCEwfvq1DlWpRWzhpIU9KHKCtcsXfIXdpSWih8BdSpY06WvYX1jSzVAvRFL1tmn4jsEDeFVEc1S/pX6zeUk/rWFeeODOWkneZrPifpxVhH9cH+mtLkNthpIBj4teS+Um3xvrPsUsOcTLF8QGOz5xqhdMwXM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728329120; c=relaxed/simple;
-	bh=0IhdWC17rzBAQapljFG63a0hLiPpVx1yPc6Qasf1zpE=;
+	s=arc-20240116; t=1728329531; c=relaxed/simple;
+	bh=gVKaVNcLmPZ8+/HG8hTKQJd793QQPS5a+MPntrepH2A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SZ5FlKVid3yVmqRRZt8hTM5JHCeYO6ijHEk5ryDEZSUgYyRrQMgqGHbtfeWiURaJA/EEV82/2OmFBWsYSl1oskkMpH9NsdoojxgYAwDGeYwpfz2pM+vpPVwIDmiRAjOBrBmTP0ByOTgz3m/CeTJxLE0A+/gg10nsFFfkvP0XvUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4kY2qmlU; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=BC6PqNo4aGNva522eMCrp9A/LTIUmnSCBB/0K8smTJY+Dw3f0x6EHmrgeCNKVRXmJDElgDgjD6qOfPaPM1zbjSB5qycdEmzpRhxm5S+hI46cQO+MgNqRi/W6/PM/yuyddH3p+se3aqYcyCV05wwJSPtBRgciDi+cPTOmQv8wphM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uQlGkS/k; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e2b049b64aso77356847b3.3
-        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 12:25:17 -0700 (PDT)
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e25cef43f5aso5702288276.3
+        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 12:32:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728329117; x=1728933917; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728329526; x=1728934326; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=INVb5YwfIp0vmB3x3v0V8APhhvcemuk9P/Yoi7NKfgc=;
-        b=4kY2qmlUHC+EPJVtUiMMsPzredt6XVl/tx/mzK5+cop4A5neu+5RyTneS1YQFM8oUN
-         ZAQIlEJCz68xN331NlKIY9IEDnmMeUaHt53gnaQcDRNIkjA/rLmkGSM++R+/ZoXwx8ZK
-         IYQsAbWc3qletFiMka9a7+wcj0A11V0boHGLn9WX1TVcM9smrNt/k2RfYKnI2Jb3iL+N
-         nnxIUsRixTJmM+tnfqBGi+M1HsVMNyTWy/QZFhbx5iO628Y+2fbTSsD1zqEIdguvEF54
-         7Egpz7o1XXLRD+FImBfk4/aoMHU9xRpJeChwbCrCMm2HzyKJ7cnJ8uFtxKBCbe4aswrr
-         MOzg==
+        bh=aQ4nZK36dvasxpfTiF75+2bg3CsdUZgwatgcnJXcD2c=;
+        b=uQlGkS/kfdndfbgfLfBjXychPREs72MR8yrx8B4m56iLkQ36tFCUDsm5ViMUmIhkpQ
+         alT0Z1haYhYQd+jgf5QWDUdPgvD+hYkq4EXNulugICL1vhOU0ZcS1S4mf60CYSOLejQS
+         2fMt/hIJgpY0CbxgdORR/z+vNG35KvhRfrq8YIS+H+N4H/flIrQG1xCe0+f+dSUbyYNN
+         Aiv4ZdHrODDSCf8Ei3hUTDTOO/+7RTzhnV0/TphlFbEYSgZCzxbbRMBFaBQF0m/u6hZI
+         A11PAZ4SLLbbrRft3/jqTrnxZ07AB35RzrsZS6RV/omG5djZRfcATylfwIVaONqbDmji
+         dPwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728329117; x=1728933917;
+        d=1e100.net; s=20230601; t=1728329526; x=1728934326;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=INVb5YwfIp0vmB3x3v0V8APhhvcemuk9P/Yoi7NKfgc=;
-        b=fFpT0jT8VjmmLGFXY8l7QrpfdU6m7vjTyu+FccT+ZBgteHXnUaRIWYHt6Q+JajrNW+
-         49Ky2LmtkiCt4YniydF3g2fleMD78lkfoW7CGzCzgv4K0mC4v8tkQn1ocz1Y/KY2YMbb
-         Nd+USjGSxYJHvYj7pP3af/YoceaWFPnw1shFNjV+cu0epaDPqCRyrsBGlNTMgcOcIr2l
-         1JiTN1tjt5OCDY4hwFU88GjWMTtVAMGPNx+ren6fWuWAcwqPWYBtXotbahE+3fmVACuJ
-         1QoEmyRiByCDqxBL4+bY3rTiVFSYY5z96FuRq3MlDS4g3rsGBV6rc9L8wBcLXZlSmUyw
-         1uoQ==
-X-Gm-Message-State: AOJu0YzpOdOJEjZqWfH/ZpwuCujXcegjdF95U9ZSwyDvbYv+7r5vs3pv
-	b26o4JYpsTbonj7/tGIqEnYf41F35xfD+tQQWEpqD7Hy8vPzF+E+A3nyizdM1O+uEVtir+8RrmM
-	agFY2IRfGynSHysCnlXFtuj2iZ0mNiWz5hAc2z430WiHQkXYNTCWOPDNKPGKqysOuJvtHZ47Jcs
-	iMK0Lk9rseKxnzZrqH+Mq7EHsbHvZlv2us5ms+SHBsg29Tm0iIjvW7qg==
-X-Google-Smtp-Source: AGHT+IFgFnFEKgq96ZvWBGlYAqd2te13/xTNb00ta5kCriqF3QzSKzZspuOzbr8Zcs6lEiDMrw5dKX10YEyOMTGj
+        bh=aQ4nZK36dvasxpfTiF75+2bg3CsdUZgwatgcnJXcD2c=;
+        b=TlfTBAFHLttOppbMr0uQxNcSlsxN9aEBW/jOeofxyKI03/kA5ypa9WsuFjq+244SkS
+         ViPrr0QhfMMmG1zBNhs/1+snpv8g9ghUYeAPlWgducFjYGBSWWhY8NbqnCJt1rtbnEfP
+         BRC2BN6aCOLoS1Pn/RxopsR97YuKhz8MQRbBl6kG0C+0gfTjWcz0tEbmKbgupLxuXWUq
+         uraLuKS29D43vzSAbISRBhh9COHDcJ5eUrYkbKU+CECWyFPxHLLvUbrE6BqLfLVHpSPS
+         Q2cNCEty+FEEbXhz5DGHNX9neDVCsjErM/y3+E3s5X6MYnuQVm/qJLLDtI2N83QshJ4f
+         IbKQ==
+X-Gm-Message-State: AOJu0YzHQsiUsauCGMRjyiLh0UxcKQgbwGuUiTPEWihFdDPqzd6xiYt4
+	PlvBA/DmHTYHXYgf9dF+iswpz9QO4/76tSBwk9GcSiUTS3EZdL7o2L6xf4Quv8kGrVhFh711THn
+	rErUznUu+ogZiZMVDg0viZjBEIWbZOhISXFRbWA0YvGeQ35XBjsrPevshl8xkD0RqNH9GSPCk5j
+	M8dcoosVuDuxNKcB2zeDywB+vBA1pMgDHYne4NAkudDXSPx+0gRoboVA==
+X-Google-Smtp-Source: AGHT+IHeE5wzkX1L2z/jQrdYOlPBvWWl1+rlSAWJvDWDe6VXFB7ccTWFPQjxBJvHgbWgS8phi99t5NVjypgD7bvh
 X-Received: from yosry.c.googlers.com ([fda3:e722:ac3:cc00:a8:616:ac13:f2fc])
- (user=yosryahmed job=sendgmr) by 2002:a05:690c:6d0a:b0:6db:c6ac:62a0 with
- SMTP id 00721157ae682-6e2c72a0cc0mr2636847b3.5.1728329116511; Mon, 07 Oct
- 2024 12:25:16 -0700 (PDT)
-Date: Mon,  7 Oct 2024 19:25:12 +0000
-In-Reply-To: <2024100707-delta-trance-5682@gregkh>
+ (user=yosryahmed job=sendgmr) by 2002:a5b:6c6:0:b0:e22:5f73:1701 with SMTP id
+ 3f1490d57ef6-e28934fdfc5mr58056276.0.1728329525568; Mon, 07 Oct 2024 12:32:05
+ -0700 (PDT)
+Date: Mon,  7 Oct 2024 19:32:00 +0000
+In-Reply-To: <2024100711-ebook-refund-46f3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <2024100707-delta-trance-5682@gregkh>
+References: <2024100711-ebook-refund-46f3@gregkh>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-Message-ID: <20241007192512.2534138-1-yosryahmed@google.com>
-Subject: [PATCH 6.6.y] mm: z3fold: deprecate CONFIG_Z3FOLD
+Message-ID: <20241007193200.2668673-1-yosryahmed@google.com>
+Subject: [PATCH 6.1.y] mm: z3fold: deprecate CONFIG_Z3FOLD
 From: Yosry Ahmed <yosryahmed@google.com>
 To: stable@vger.kernel.org
 Cc: Yosry Ahmed <yosryahmed@google.com>, Arnd Bergmann <arnd@arndb.de>, 
@@ -151,41 +151,29 @@ Cc: WANG Xuerui <kernel@xen0n.name>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit 7a2369b74abf76cd3e54c45b30f6addb497f831b)
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
 ---
  arch/loongarch/configs/loongson3_defconfig |  1 -
- arch/powerpc/configs/ppc64_defconfig       |  1 -
  mm/Kconfig                                 | 25 ++++++++++++++++------
- 3 files changed, 19 insertions(+), 8 deletions(-)
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
-index a3b52aaa83b33..e5f70642ed206 100644
+index 3540e9c0a6310..15b7420c868ba 100644
 --- a/arch/loongarch/configs/loongson3_defconfig
 +++ b/arch/loongarch/configs/loongson3_defconfig
-@@ -83,7 +83,6 @@ CONFIG_ZPOOL=y
- CONFIG_ZSWAP=y
+@@ -82,7 +82,6 @@ CONFIG_ZSWAP=y
  CONFIG_ZSWAP_COMPRESSOR_DEFAULT_ZSTD=y
+ CONFIG_ZPOOL=y
  CONFIG_ZBUD=y
 -CONFIG_Z3FOLD=y
  CONFIG_ZSMALLOC=m
- # CONFIG_COMPAT_BRK is not set
- CONFIG_MEMORY_HOTPLUG=y
-diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index 6e7b9e8fd2251..65e518dde2c2f 100644
---- a/arch/powerpc/configs/ppc64_defconfig
-+++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -81,7 +81,6 @@ CONFIG_MODULE_SIG_SHA512=y
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=m
- CONFIG_ZSWAP=y
--CONFIG_Z3FOLD=y
- CONFIG_ZSMALLOC=y
- # CONFIG_SLAB_MERGE_DEFAULT is not set
- CONFIG_SLAB_FREELIST_RANDOM=y
+ CONFIG_NET=y
+ CONFIG_PACKET=y
 diff --git a/mm/Kconfig b/mm/Kconfig
-index ece4f2847e2b4..c11cd01169e8d 100644
+index a65145fe89f2b..cf782e0474910 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -147,12 +147,15 @@ config ZSWAP_ZPOOL_DEFAULT_ZBUD
+@@ -132,12 +132,15 @@ config ZSWAP_ZPOOL_DEFAULT_ZBUD
  	help
  	  Use the zbud allocator as the default allocator.
  
@@ -204,7 +192,7 @@ index ece4f2847e2b4..c11cd01169e8d 100644
  config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
  	bool "zsmalloc"
  	select ZSMALLOC
-@@ -164,7 +167,7 @@ config ZSWAP_ZPOOL_DEFAULT
+@@ -149,7 +152,7 @@ config ZSWAP_ZPOOL_DEFAULT
         string
         depends on ZSWAP
         default "zbud" if ZSWAP_ZPOOL_DEFAULT_ZBUD
@@ -213,7 +201,7 @@ index ece4f2847e2b4..c11cd01169e8d 100644
         default "zsmalloc" if ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
         default ""
  
-@@ -178,15 +181,25 @@ config ZBUD
+@@ -163,15 +166,25 @@ config ZBUD
  	  deterministic reclaim properties that make it preferable to a higher
  	  density approach when reclaim will be used.
  
