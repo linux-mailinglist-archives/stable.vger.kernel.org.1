@@ -1,88 +1,93 @@
-Return-Path: <stable+bounces-81490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C63993B75
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 01:56:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6AEC993B7D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 01:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A77CD284160
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 23:56:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41C61B21690
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 23:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3D01925B1;
-	Mon,  7 Oct 2024 23:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C631925A5;
+	Mon,  7 Oct 2024 23:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PfdoAor7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/iEfLY9L";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PfdoAor7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/iEfLY9L"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kX5bu8C9";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+Wn2bPS0";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pm2qeL0O";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="iN67xaOY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B30918DF65
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 23:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C36B18DF65
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 23:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728345410; cv=none; b=q4CWTxpVqyqbIqz0Oh1RpcUsOPGVTNG3g08T/CnwzxA6dC1Gdxsggg21C+8RfrqNZoCmKqkoTt07V0k/NA+TmX268qS6wcrzb7HEjIe7fDGfNpqMCAtrereFuiamlkVch3LJKiSKbFkmgD/GEpPNqxbCBIcfS94ncn+AREV84Qc=
+	t=1728345592; cv=none; b=uPU1iVxntfJFVzMjWN1E8OS1ZOneNi3YEnK1//3dpYb7ypH1aVN6+Q119nNNuvR8pXkqU5T+bFj4Oyh5rmnB5mM9eP5PD2M1v/kfmSOQdyDKcy4xVHQqh1v77Sb0RTn82LSuwFCkj7q/3nc3EGFLA8FWZlGXZ3SUt2MFdj+fwz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728345410; c=relaxed/simple;
-	bh=sGef4p4hPrpJgP9PjVJq7xMOjCG8MN4nsGdAQEqt7bI=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:Date:Message-id; b=H/jce+N8NXU2X1UAagBZpsHSE6HuNT66taivWGi1+t4ML+tJyeFf3W1e8IYNfc3Cuv082VEJKPWeHudDT1JQm8F32gxQalBBv576+SFTqmM/DP5HwDrQPbLNo89rwMKEqk30/Gf2ZjCgs/Ml6WZS49XdAkMuL8SUfUihBtiR5to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=PfdoAor7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/iEfLY9L; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=PfdoAor7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/iEfLY9L; arc=none smtp.client-ip=195.135.223.130
+	s=arc-20240116; t=1728345592; c=relaxed/simple;
+	bh=2iXSzq8dE3YR+XgHGE+3QByUbzmQjRoecGUYGegT7R4=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=l9boTFPT2j5aHIsNoqn18n5WolqgBuLoVY3ZxSP2vxvIC8cdwft0hOF1L2VaM/58aOvc4OAjc/cUG2rBSXuswnHCO4kO13unAZ23M5lGllIF3b/9D3vSpUiWIYI6akx6Cazq3dnin4xYje5/6PRclBgraDugHHA4OpZSdtt5O0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kX5bu8C9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+Wn2bPS0; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pm2qeL0O; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=iN67xaOY; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B50FB21C79;
-	Mon,  7 Oct 2024 23:56:46 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B664D1F848;
+	Mon,  7 Oct 2024 23:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1728345406; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1728345588; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fps74rDVAfhly/m/ZgjdKaVWwHmLLKhBirsh9hmxmSI=;
-	b=PfdoAor7Zk7x/9fziZAuJqYxQ131Iq8bfx1KML4Dj77SMmemEs9C16MejgT00q9HZoz4uh
-	NnPW+55KwZW+3HJYvke7VUVugOBECtAe2nI4RRkHEcldlz5FKqxkxmAO4avCjzdbKzekhh
-	kRWyd8H5f/h+0N5MWdG9i92McNg13r0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kUK7tz0CiHM7vBplclQiONo7Ovskc1Q/qth8f2n/4Y=;
+	b=kX5bu8C9vhfQX3jTkaqOeGgIfXi33VSFnyIViev8HB/Pxawh+6WQFofmWomCaF6W2CbWOZ
+	1zqIWHdGgZKSRfzM9M18mUWV/lRErij7AUWEBvFd5JshiJQgp6ak2FqQPw6oLFnouam0Tc
+	BhIyKOKXkC1td1zufyoaueL0WA8ilgE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1728345406;
+	s=susede2_ed25519; t=1728345588;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fps74rDVAfhly/m/ZgjdKaVWwHmLLKhBirsh9hmxmSI=;
-	b=/iEfLY9LVoHPaVAAR/Sc1HQW4MvjYmVAY+9faX7a9t2VXhPeS9+DV+HYCb+NwOqbAP29y+
-	miDO1WNosjj5DtDA==
-Authentication-Results: smtp-out1.suse.de;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kUK7tz0CiHM7vBplclQiONo7Ovskc1Q/qth8f2n/4Y=;
+	b=+Wn2bPS0bxRVMGZJqu5EMq1h/XcxGUxwlNy+CGultr00pMioKQ2Tjvu6NPrKCc+5MfIFMN
+	z6STEHu4jSNS0JAQ==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1728345406; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1728345587; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fps74rDVAfhly/m/ZgjdKaVWwHmLLKhBirsh9hmxmSI=;
-	b=PfdoAor7Zk7x/9fziZAuJqYxQ131Iq8bfx1KML4Dj77SMmemEs9C16MejgT00q9HZoz4uh
-	NnPW+55KwZW+3HJYvke7VUVugOBECtAe2nI4RRkHEcldlz5FKqxkxmAO4avCjzdbKzekhh
-	kRWyd8H5f/h+0N5MWdG9i92McNg13r0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kUK7tz0CiHM7vBplclQiONo7Ovskc1Q/qth8f2n/4Y=;
+	b=pm2qeL0O40dEd7D47rr8DtdhPcaMeHjHCA5CqB9JkGM1fY5HjSHa1B9rkWWQwANxax/8Pa
+	ct7vx+apYxZbE/22rwTGmvXNPvWto8eYy2AE44zm20rQ/Uutr+4ixiPe2NzkaJKqc55w4J
+	I64hefOoUsKuVOI7BU1Z+S8CIgGOAOI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1728345406;
+	s=susede2_ed25519; t=1728345587;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fps74rDVAfhly/m/ZgjdKaVWwHmLLKhBirsh9hmxmSI=;
-	b=/iEfLY9LVoHPaVAAR/Sc1HQW4MvjYmVAY+9faX7a9t2VXhPeS9+DV+HYCb+NwOqbAP29y+
-	miDO1WNosjj5DtDA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kUK7tz0CiHM7vBplclQiONo7Ovskc1Q/qth8f2n/4Y=;
+	b=iN67xaOYS7EVZ+0RCGstk4Ei7MFCwqO7e+krPax6/JZMxTwpkrvUapbosyHGOImvtKx6/U
+	iPRU0epDGDchifAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ACA9313885;
-	Mon,  7 Oct 2024 23:56:44 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A736013885;
+	Mon,  7 Oct 2024 23:59:45 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0XQDGTx1BGe+GwAAD6G6ig
-	(envelope-from <neilb@suse.de>); Mon, 07 Oct 2024 23:56:44 +0000
+	id xGBHF/F1BGeSHAAAD6G6ig
+	(envelope-from <neilb@suse.de>); Mon, 07 Oct 2024 23:59:45 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -95,10 +100,12 @@ From: "NeilBrown" <neilb@suse.de>
 To: gregkh@linuxfoundation.org, stable@vger.kernel.org
 Cc: bcodding@redhat.com, chuck.lever@oracle.com, jlayton@kernel.org,
  okorniev@redhat.com
-Subject: [PATCH stable 4.12] nfsd: fix delegation_blocked() to block correctly
- for at least 30 seconds
-Date: Tue, 08 Oct 2024 10:56:40 +1100
-Message-id: <172834540098.3184596.16262317375953167566@noble.neil.brown.name>
+Subject: [PATCH 5.4.y] nfsd: fix delegation_blocked() to block correctly for
+ at least 30 seconds
+In-reply-to: <2024100728-graves-septic-4380@gregkh>
+References: <2024100728-graves-septic-4380@gregkh>
+Date: Tue, 08 Oct 2024 10:59:38 +1100
+Message-id: <172834557878.3184596.740888095598271167@noble.neil.brown.name>
 X-Spam-Score: -4.30
 X-Spamd-Result: default: False [-4.30 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
@@ -118,12 +125,10 @@ X-Spamd-Result: default: False [-4.30 / 50.00];
 	FROM_EQ_ENVFROM(0.00)[];
 	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo]
 X-Spam-Flag: NO
 X-Spam-Level: 
 
-
-commit 45bb63ed20e02ae146336412889fe5450316a84f
 
 The pair of bloom filtered used by delegation_blocked() was intended to
 block delegations on given filehandles for between 30 and 60 seconds.  A
@@ -148,15 +153,16 @@ Signed-off-by: NeilBrown <neilb@suse.de>
 Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+(cherry picked from commit 45bb63ed20e02ae146336412889fe5450316a84f)
 ---
  fs/nfsd/nfs4state.c | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 7ac644d64ab1..d45487d82d44 100644
+index a0aa7e63739d..378639f04a7b 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
-@@ -743,7 +743,8 @@ static void nfs4_free_deleg(struct nfs4_stid *stid)
+@@ -820,7 +820,8 @@ static void nfs4_free_deleg(struct nfs4_stid *stid)
   * When a delegation is recalled, the filehandle is stored in the "new"
   * filter.
   * Every 30 seconds we swap the filters and clear the "new" one,
@@ -166,7 +172,7 @@ index 7ac644d64ab1..d45487d82d44 100644
   *
   * Each filter is 256 bits.  We hash the filehandle to 32bit and use the
   * low 3 bytes as hash-table indices.
-@@ -772,9 +773,9 @@ static int delegation_blocked(struct knfsd_fh *fh)
+@@ -849,9 +850,9 @@ static int delegation_blocked(struct knfsd_fh *fh)
  		if (seconds_since_boot() - bd->swap_time > 30) {
  			bd->entries -=3D bd->old_entries;
  			bd->old_entries =3D bd->entries;
@@ -178,7 +184,7 @@ index 7ac644d64ab1..d45487d82d44 100644
  		}
  		spin_unlock(&blocked_delegations_lock);
 
-base-commit: de2cffe297563c815c840cfa14b77a0868b61e53
+base-commit: 661f109c057497c8baf507a2562ceb9f9fb3cbc2
 --=20
 2.46.0
 
