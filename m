@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E432D9928FA
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:18:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DC59928FB
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12BAD1C22B48
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 10:18:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 900AB28154B
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 10:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A491AFB2D;
-	Mon,  7 Oct 2024 10:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0431B580C;
+	Mon,  7 Oct 2024 10:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqp5XVMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUqwq37O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B80170A3E
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 10:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260F158A36
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 10:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728296314; cv=none; b=pva8l1bloM18hWWsC08MG26bm+OBMYeoShreqpWZbXvsPlQNDNTCxE/hR1/LK3hmyrTD4/ePYc9e2BpoyWwlhfEou39CPsjqeH744TT4VQJ3GtXDSHKoaxMzb6vENbkj3LkJvtx3TsWNHf/20zeeLDeAYr3LsM0jSuVMRJHJOuY=
+	t=1728296318; cv=none; b=N6zZeCyBQgXW8wMvwPIPFzoxz1sj1/MwDkRVqVFGuX6awLLz5xQs5VWzpqxG5pYzpqyUSJOHevyvpM+R/YnI3dwHy2uFMP5/rYImZmp80RTJ+8cjHfYKZEYDJoiCl8/7pCxm5s8jtjz7ezm9t7P4hJsD87Ibvb8Nivbj7fiNrOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728296314; c=relaxed/simple;
-	bh=krOqM6vdNbeSw0C/OYWHAeSREggmsj7zHZa4YITSka0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jeFum8D9ztA06dT8wmgOig0Y17VezZo8xt7AFj3meDcu7CaJOI7gjLEVc01e4L7GOm9E3ihVs0lwuj6XuWGLRSvsmT6VMkTCSrS6Za5XfEn3NB4qJx3a6oK5v9f0mJY4AHcaRNrVb86DAWHp+e8col80HXFX1qUl7Mr3zFMV0RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqp5XVMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77745C4CEC6;
-	Mon,  7 Oct 2024 10:18:33 +0000 (UTC)
+	s=arc-20240116; t=1728296318; c=relaxed/simple;
+	bh=eXWPOqlb6LeqBCaeHFbYARd9LPh1zFeV2p5saedxp4o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RUEdonwdfBzAYLDPOQS9k09cdHi7807nF38Vn1IZXV/0AdT5UqHejKfMkqkWuL/SxigG9cnL5GWSmBU0aWPj1RugrBxV7XGj15SRdhi7LBfPJk1STlF3pW75lw8CH98vPlmyNZsX7weXPylzwAD86Cf+B8VcPzTCqXlw+O8Cqx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUqwq37O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BA1C4CECD;
+	Mon,  7 Oct 2024 10:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728296313;
-	bh=krOqM6vdNbeSw0C/OYWHAeSREggmsj7zHZa4YITSka0=;
+	s=korg; t=1728296317;
+	bh=eXWPOqlb6LeqBCaeHFbYARd9LPh1zFeV2p5saedxp4o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cqp5XVMYzn4FaQ226XP0J2evJZM+SkAKEc/ofv1AmJgqrp3mmkJ7Xn5tpRE828V3O
-	 mYDAK7oFosuoTt9gdrtc5QHRTZ15g7ip+fKuHNxxGc+NCEnNC/Boui3s8wJOznY95J
-	 iDyyOsnxhwqy7IYcPQsWsFu1P3QyRfzxJ30JWFiE=
-Subject: FAILED: patch "[PATCH] ext4: dax: fix overflowing extents beyond inode size when" failed to apply to 5.15-stable tree
+	b=yUqwq37OygaNknp5iPj72XSQ7uG0Rvqt5vIFpP2lEoL1GFptzc5MNI3uZqg/s1oVb
+	 Vs4ifaYK1y0W2nAp0eXPAJ45/7vWToy3EfFQZKTdZ2JCflkJrD6uDIL0575WvI45po
+	 Xln0TnLGwrGs296sszKqR5bGhjha2n/n0mYeYCg4=
+Subject: FAILED: patch "[PATCH] ext4: dax: fix overflowing extents beyond inode size when" failed to apply to 5.10-stable tree
 To: chengzhihao1@huawei.com,jack@suse.cz,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 12:18:30 +0200
-Message-ID: <2024100730-sleeve-exalted-315e@gregkh>
+Date: Mon, 07 Oct 2024 12:18:31 +0200
+Message-ID: <2024100731-crawfish-voucher-f47b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x dda898d7ffe85931f9cca6d702a51f33717c501e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100730-sleeve-exalted-315e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100731-crawfish-voucher-f47b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 dda898d7ffe8 ("ext4: dax: fix overflowing extents beyond inode size when partially writing")
 91562895f803 ("ext4: properly sync file size update after O_SYNC direct IO")
+5899593f51e6 ("ext4: Fix occasional generic/418 failure")
 
 thanks,
 
