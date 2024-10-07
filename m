@@ -1,112 +1,128 @@
-Return-Path: <stable+bounces-81312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AA9992E98
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:16:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797C8992EC4
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4362850B6
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AB471F23009
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C851D4615;
-	Mon,  7 Oct 2024 14:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szdMgXzi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA621D7982;
+	Mon,  7 Oct 2024 14:17:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MSK-MAILEDGE.securitycode.ru (msk-mailedge.securitycode.ru [195.133.217.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61DB433CA;
-	Mon,  7 Oct 2024 14:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E76F1D6DC7;
+	Mon,  7 Oct 2024 14:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.217.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728310555; cv=none; b=JLssjm0xEbQ29RF6ezQ7GQ1gsJhXgqQyQGiuBxH6VvesX7KcecjBH3gWTBf4bghyGGzNAsX3IYCJwzp5PNY6SaC0WJjI4iNx0J5nt1Hz4q/LkWndh5GTTWO5M9iPYg5eVQt2DcFT+xaeK85cBfcbmTXFE7iI357ZZyTr4Ml4ZDI=
+	t=1728310621; cv=none; b=frzqIBVbzlnFx/vm9VDHfIQB+x39yymmey+EVivRD+T9YmcMe6kUYw7qM9TbR912wWtETvr1BQohHt/qiZl6bvb/dDZU4mimaE1Gt+BqorbNqO2jHMDB4Y4Gxhc/2EZHIC6Ya54nd8454utUjrDx0wPTTf9uWXHPplGhuIm2uUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728310555; c=relaxed/simple;
-	bh=3qD+O+1xzIs6q1p8HC+OxtflwSCDotmRykzLnbi1GN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lN8/kVHjppau9S/BXk6QgFJIN7Hi1K2UtmM4vrsMJIm73OOy8WuwCdTJewm/r4RNkQOtPxqJlOzTeFdkmv0GoFKszR6MLpqcHE67KG9/oRTr4OPWn4i5z1w8uTJtO4ajGssrd8i5oevdg9HIkqSrn0z299mE1ohEqWyyGorv7sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szdMgXzi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C138FC4CEC6;
-	Mon,  7 Oct 2024 14:15:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728310555;
-	bh=3qD+O+1xzIs6q1p8HC+OxtflwSCDotmRykzLnbi1GN4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=szdMgXzikN+bR54b3MvHNJnGyR26KH24dNATMHRHRHy+LT2a+ub9a0/ROx5liqzB/
-	 XHWZ75o9QeDCCw9xYTCcxex2wnClosRC4A0g5exxj0Nhdx9JF1ScVihAiapBTEToXV
-	 w9OkYJm5YKii8hDyhJYyiIj4k7Uo+0M0SM4+O1wK+V2hzOx0B4mbK3wpVWfXnPcylr
-	 PFUaevfgiRY2629C9DkdhPNuiEtYKFTecqTPJ6AlnuBAng7IMQyv0/+vfJAxjPcMqv
-	 FK0Cag24V8XoXdhQd+neLGzXMm/KhWU40nrg3uRKpbw1X8ZxDIsAEL3BcqQZLqgdAW
-	 Y5883jWkAdWXw==
-Date: Mon, 7 Oct 2024 15:14:38 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Zichen Xie <zichenxie0106@gmail.com>, alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Rohit kumar <quic_rohkumar@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Takashi Iwai <tiwai@suse.com>, stable@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Zijie Zhao <zzjas98@gmail.com>
-Subject: Re: [v3?] ASoC: qcom: Fix NULL Dereference in
- asoc_qcom_lpass_cpu_platform_probe()
-Message-ID: <ZwPszt6b5ZzAkskz@finisterre.sirena.org.uk>
-References: <20241006205737.8829-1-zichenxie0106@gmail.com>
- <bc2f9291-c91d-4e46-bfa9-573eea6a67c2@web.de>
+	s=arc-20240116; t=1728310621; c=relaxed/simple;
+	bh=8DGTH5FD1i9Kn/l1YJyaz3nBsYdk+fBaMBnPUh8SBLk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IiP1EMtow21z6kteD29JwcI0HyAQ83lj7qOPDdsuyBvUzquYoWiTv08nPk6wnl4AcYv1g120d9i3gwMXKNGDnZs1ypdkygWPIPOY8a+3suXwXhs5apacC3ydUlSGSA3sFi+zRNFDIoT/P98/D1M2/OykiC+2D9sO3eOGHH3uJWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru; spf=pass smtp.mailfrom=securitycode.ru; arc=none smtp.client-ip=195.133.217.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=securitycode.ru
+From: George Rurikov <g.ryurikov@securitycode.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: George Ryurikov <g.ryurikov@securitycode.ru>, Paolo Valente
+	<paolo.valente@linaro.org>, Jens Axboe <axboe@kernel.dk>,
+	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Yu Kuai <yukuai3@huawei.com>, Jan Kara
+	<jack@suse.cz>
+Subject: [PATCH 5.10] block, bfq: remove useless checking in bfq_put_queue()
+Date: Mon, 7 Oct 2024 17:16:18 +0300
+Message-ID: <20241007141618.1766564-1-g.ryurikov@securitycode.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="B6mD5aEE6D1/oRxA"
-Content-Disposition: inline
-In-Reply-To: <bc2f9291-c91d-4e46-bfa9-573eea6a67c2@web.de>
-X-Cookie: Editing is a rewording activity.
-
-
---B6mD5aEE6D1/oRxA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-ClientProxiedBy: MSK-EX2.Securitycode.ru (172.17.8.92) To
+ MSK-EX2.Securitycode.ru (172.17.8.92)
 
-On Mon, Oct 07, 2024 at 03:40:21PM +0200, Markus Elfring wrote:
+From: George Ryurikov <g.ryurikov@securitycode.ru>
 
-> * How do you think about to reconsider the version numbers
->   a bit more?
->=20
-> * Would you like to mention the repeated adjustment of
->   the patch subject?
->=20
-> * Can a duplicate marker line be replaced by a blank line?
+From: Yu Kuai <yukuai3@huawei.com>
 
-Feel free to ignore Markus, he has a long history of sending
-unhelpful review comments and continues to ignore repeated requests
-to stop.
+commit 1e3cc2125d7cc7d492b2e6e52d09c1e17ba573c3 upstream.
 
---B6mD5aEE6D1/oRxA
-Content-Type: application/pgp-signature; name="signature.asc"
+'bfqq->bfqd' is ensured to set in bfq_init_queue(), and it will never
+change afterwards.
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20220816015631.1323948-3-yukuai1@huaweiclou=
+d.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: George Ryurikov <g.ryurikov@securitycode.ru>
+---
+ block/bfq-iosched.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcD7M4ACgkQJNaLcl1U
-h9CFiAf/V5OjgX/m7bDwCQgaPh8iQoD0Z/LMA6OfjNapjpGiIjXiHTnyl4+joeRF
-XZWhKsmHJQ8m2Cm/N73q98LdMxh49L4ocqv+R0V0p8wRBA0K+w409dSIKvrVMMF8
-mBnNAtuqAnzZGzdXWmh8CEuRRj+D7F9bC7rFrappGop4KIJoswGPkRT5XZwAANKK
-P7QW5dwgHMwi90bYR+cIF3R1mKinWnzDEJenxRyGiD1jhvW4zyoshNZ5fbsZSF1O
-RfdTos0jJvJoFQ3mIe5Z8deCL9eCqW+clErOZ3gSEP5zXMuPnsKyLmhEqs7a1oS+
-Oc9ykkgdRC+fn899c+ALAhcckcaLlQ==
-=JWCO
------END PGP SIGNATURE-----
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 6687b805bab3..0031c5751d89 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -4864,9 +4864,7 @@ void bfq_put_queue(struct bfq_queue *bfqq)
+        struct hlist_node *n;
+        struct bfq_group *bfqg =3D bfqq_group(bfqq);
 
---B6mD5aEE6D1/oRxA--
+-       if (bfqq->bfqd)
+-               bfq_log_bfqq(bfqq->bfqd, bfqq, "put_queue: %p %d",
+-                            bfqq, bfqq->ref);
++       bfq_log_bfqq(bfqq->bfqd, bfqq, "put_queue: %p %d", bfqq, bfqq->ref)=
+;
+
+        bfqq->ref--;
+        if (bfqq->ref)
+@@ -4931,7 +4929,7 @@ void bfq_put_queue(struct bfq_queue *bfqq)
+                hlist_del_init(&item->woken_list_node);
+        }
+
+-       if (bfqq->bfqd && bfqq->bfqd->last_completed_rq_bfqq =3D=3D bfqq)
++       if (bfqq->bfqd->last_completed_rq_bfqq =3D=3D bfqq)
+                bfqq->bfqd->last_completed_rq_bfqq =3D NULL;
+
+        kmem_cache_free(bfq_pool, bfqq);
+--
+2.34.1
+=D0=97=D0=B0=D1=8F=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 =D0=BE =D0=BA=D0=BE=
+=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=
+=BE=D1=81=D1=82=D0=B8
+
+=D0=94=D0=B0=D0=BD=D0=BD=D0=BE=D0=B5 =D1=8D=D0=BB=D0=B5=D0=BA=D1=82=D1=80=
+=D0=BE=D0=BD=D0=BD=D0=BE=D0=B5 =D0=BF=D0=B8=D1=81=D1=8C=D0=BC=D0=BE =D0=B8 =
+=D0=BB=D1=8E=D0=B1=D1=8B=D0=B5 =D0=BF=D1=80=D0=B8=D0=BB=D0=BE=D0=B6=D0=B5=
+=D0=BD=D0=B8=D1=8F =D0=BA =D0=BD=D0=B5=D0=BC=D1=83 =D1=8F=D0=B2=D0=BB=D1=8F=
+=D1=8E=D1=82=D1=81=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=
+=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D1=8B=D0=BC=D0=B8 =D0=B8 =D0=BF=D1=80=
+=D0=B5=D0=B4=D0=BD=D0=B0=D0=B7=D0=BD=D0=B0=D1=87=D0=B5=D0=BD=D1=8B =D0=B8=
+=D1=81=D0=BA=D0=BB=D1=8E=D1=87=D0=B8=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE =
+=D0=B4=D0=BB=D1=8F =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=B0. =D0=95=
+=D1=81=D0=BB=D0=B8 =D0=92=D1=8B =D0=BD=D0=B5 =D1=8F=D0=B2=D0=BB=D1=8F=D0=B5=
+=D1=82=D0=B5=D1=81=D1=8C =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=BE=
+=D0=BC =D0=B4=D0=B0=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =D0=BF=D0=B8=D1=81=D1=8C=
+=D0=BC=D0=B0, =D0=BF=D0=BE=D0=B6=D0=B0=D0=BB=D1=83=D0=B9=D1=81=D1=82=D0=B0,=
+ =D1=83=D0=B2=D0=B5=D0=B4=D0=BE=D0=BC=D0=B8=D1=82=D0=B5 =D0=BD=D0=B5=D0=BC=
+=D0=B5=D0=B4=D0=BB=D0=B5=D0=BD=D0=BD=D0=BE =D0=BE=D1=82=D0=BF=D1=80=D0=B0=
+=D0=B2=D0=B8=D1=82=D0=B5=D0=BB=D1=8F, =D0=BD=D0=B5 =D1=80=D0=B0=D1=81=D0=BA=
+=D1=80=D1=8B=D0=B2=D0=B0=D0=B9=D1=82=D0=B5 =D1=81=D0=BE=D0=B4=D0=B5=D1=80=
+=D0=B6=D0=B0=D0=BD=D0=B8=D0=B5 =D0=B4=D1=80=D1=83=D0=B3=D0=B8=D0=BC =D0=BB=
+=D0=B8=D1=86=D0=B0=D0=BC, =D0=BD=D0=B5 =D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=
+=D0=B7=D1=83=D0=B9=D1=82=D0=B5 =D0=B5=D0=B3=D0=BE =D0=B2 =D0=BA=D0=B0=D0=BA=
+=D0=B8=D1=85-=D0=BB=D0=B8=D0=B1=D0=BE =D1=86=D0=B5=D0=BB=D1=8F=D1=85, =D0=
+=BD=D0=B5 =D1=85=D1=80=D0=B0=D0=BD=D0=B8=D1=82=D0=B5 =D0=B8 =D0=BD=D0=B5 =
+=D0=BA=D0=BE=D0=BF=D0=B8=D1=80=D1=83=D0=B9=D1=82=D0=B5 =D0=B8=D0=BD=D1=84=
+=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BB=D1=8E=D0=B1=D1=8B=D0=BC =
+=D1=81=D0=BF=D0=BE=D1=81=D0=BE=D0=B1=D0=BE=D0=BC.
 
