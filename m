@@ -1,176 +1,124 @@
-Return-Path: <stable+bounces-81382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640F89933EE
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:52:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EFF9933E6
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8703E1C223FE
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:51:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 421FE1C23752
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96DC1DD528;
-	Mon,  7 Oct 2024 16:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50E91DC064;
+	Mon,  7 Oct 2024 16:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fstab.de header.i=@fstab.de header.b="SWKv+m77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EH2toxe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C571DD526
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EB31DC73E
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728319804; cv=none; b=pak79i2u/a/gsZR5Tpw/4wQtAozPlrgEzDzcuXGmBGZZ9YPxLJRVIWWw1u4157T0svCKjTCfLvtrXnbIKBK1cX3oCkX58pt5m//FwmbvyuE67aIiNZCySGyywZDZBxqpMPUrsHkw8yTrDeU+24wrrWvZgsQTo+byj42ph4SBpts=
+	t=1728319798; cv=none; b=IfFsTryi+hnjkNpZzRmMr4yOQYKTyvyBqngS/T6KQ/nUtlt6eWmu2twG+CBCFwHO9iBm8Q8z+DkpNXLDlRfNW19PSD3mcUcLkbC4kUSssHItCxWrSW4FCQbVQ4kLs1Ot7BKqBfjmOu1RbII2vRA7q0shV1+Bpf7+tAY5+YYl/T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728319804; c=relaxed/simple;
-	bh=6dI3sJJNpJlplzaGuy7c1kRQ/dEO5ZpL6LqEprZfR5c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z9T7oNVYPM0FCyLihRZQ/rGTswM1QgfUwN1jYtflbbWZImHDR+e7GFwBsVDRpLTb2IMSQw6uQLAD45i1T6e4hwy4Mh6Mk4aEwgpR6yZKmoQH84FjMu0Xg6QcnY1kDzQ9tWKE/AFUNISZ64u6x5c1yVgbTYwU4/CUhbz7H/bL63w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fstab.de; spf=pass smtp.mailfrom=fstab.de; dkim=pass (2048-bit key) header.d=fstab.de header.i=@fstab.de header.b=SWKv+m77; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fstab.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fstab.de
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6cb284c1a37so40940056d6.1
-        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 09:50:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fstab.de; s=google; t=1728319802; x=1728924602; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dmGaAQmkU9F3c2Jeb7g7GHDPHRwyj2CfpEporkATVQA=;
-        b=SWKv+m77mX2iVk2ucExgL3CWJZ4HQNjwUgYFVt61TSnQ2OrzMC34GRjLPmFAvhKiUh
-         z91vbssM/522B/eJ/EVbLywipnO/vQPJjYb86uAyOj5gonX/IcoMtRx9uhwfY38veMKZ
-         /SGGRsD10LEi270dX/Gi72P4k5dcVmKgnWrhoMJNdo7fc8Nn/qr0SlEiKXmgB1RWEnA6
-         dwsTXM65pSpbimf7YVBsMwy68HhPBStHJpQOFF18UNx+P2FkQL485nD9LyY5OAobE2ch
-         IR2sMWgg6XZzcIkrS1PHE4/lvvUfxExeag5vKl/t1FFrTkjNxuHldH/LG1AswfIbr03H
-         Nuwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728319802; x=1728924602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dmGaAQmkU9F3c2Jeb7g7GHDPHRwyj2CfpEporkATVQA=;
-        b=FtoHGeB45LYyXfbx3dhPRFMOLp7hIWAc4XMScXOkDj/FgyjopMjn3Piex/eqRFVFcc
-         7Mv6WThzTW4roHKmGUFyoRfuJuuOZa3bjbE11U5KQAb06FvM0GHST61BMb+3J9Tl9HrO
-         79TEHgOq1t6pnMjzLqz/1ITktHhsAVQtJreWW0xcPfE6x3XP4DiwwxPg4h2LG73fQLrY
-         V1QwkdUVfSIXHzjgu/9Skw617w5YcFMwYYcnW+CJq3j1fJlpgr9U11EfWrDyKiFcp4tK
-         T2R5nUCFm3Ff2uCpLJCGkpGfoQzZFQt8YVwnQ0HUFlD7u59UmFmEzaP+wSY0ZYkoYT9+
-         micg==
-X-Gm-Message-State: AOJu0YyB8KwLRgtLo86zj+RYSVIjhZDJJVTZ1jILkgk0FYrSyZPIZVCg
-	UFE0reKbtceYtd/Lt5CCLCDOKRq9H+JZvCvxUPqmdbqOfi27Lr2g2UBGLVr/xqDLGOwP+4rcfhr
-	vHUXDzxI4Lhnvgjxh3agjDSuacI1hED8elPuJ5Q==
-X-Google-Smtp-Source: AGHT+IEm+VXpk2PXdAMKj32kJciQY2qUulpmzOvWUM5SHIl1I7X9ZVDGrC8jmlFtgyk3aSmC+UhdwaJrO50hnJny9+M=
-X-Received: by 2002:a05:6214:2c05:b0:6c5:681e:1d4 with SMTP id
- 6a1803df08f44-6cb9a4556a6mr191929736d6.34.1728319801515; Mon, 07 Oct 2024
- 09:50:01 -0700 (PDT)
+	s=arc-20240116; t=1728319798; c=relaxed/simple;
+	bh=1mBaai1gA12vZriq3Wz3wkAW3rmcT5bYjSYx5D4BbTs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=okCtd8eED9viNELsLCjg2hWaC4vistsWPyghA2hHPZ91+30nuqteVrGoIudIvj4TKKtn3WXWt5gXhUoT4Fd+Y0sMMpWLWpcZvg+vlzR0ugXnlE5aFU+WmHb1SmpjdamBYHKqIxn7KwacbVlTAWlVxT0cw5Q69rgIEyClk3ZzcZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EH2toxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F51BC4CEC6;
+	Mon,  7 Oct 2024 16:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728319798;
+	bh=1mBaai1gA12vZriq3Wz3wkAW3rmcT5bYjSYx5D4BbTs=;
+	h=Subject:To:Cc:From:Date:From;
+	b=1EH2toxeV8oDRlDwHgIbkNvcejBxWkiF5AQnISGu18CmVEjZeYrTQmgh7hWPASnD7
+	 DEzCdGpcHc5XWVxfVlthOBkduxo5LS+3iMngf70kmRkGwZYlO6jWEGgrocKv/2R+Va
+	 +W3QvzX9T3qGvqhUUjLBX1x0cO+yg+CxYeLYEt3o=
+Subject: FAILED: patch "[PATCH] clk: qcom: dispcc-sm8250: use CLK_SET_RATE_PARENT for branch" failed to apply to 5.10-stable tree
+To: dmitry.baryshkov@linaro.org,andersson@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 07 Oct 2024 18:49:55 +0200
+Message-ID: <2024100755-requisite-gratuity-37ef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPX310gmJeYhE2C6-==rKSDh6wAmoR8R5-pjEOgYD3AP+Si+0w@mail.gmail.com>
- <2024092318-pregnancy-handwoven-3458@gregkh> <CAPX310hNn28m3gxmtus0=EAb3wXvDTgG2HXyR63CBW7HKxYkpg@mail.gmail.com>
-In-Reply-To: <CAPX310hNn28m3gxmtus0=EAb3wXvDTgG2HXyR63CBW7HKxYkpg@mail.gmail.com>
-From: =?UTF-8?Q?Fabian_St=C3=A4ber?= <fabian@fstab.de>
-Date: Mon, 7 Oct 2024 18:49:51 +0200
-Message-ID: <CAPX310hCZqKJvEns9vjoQ27=JZzNNa+HK0o4knOMfBBK+JWNEg@mail.gmail.com>
-Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-sorry for the delay, I ran git bisect, here's the output. If you need
-any additional info please let me know.
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-3c1d704d9266741fc5a9a0a287a5c6b72ddbea55 is the first bad commit
-commit 3c1d704d9266741fc5a9a0a287a5c6b72ddbea55 (HEAD)
-Author: Sanath S <Sanath.S@amd.com>
-Date:   Sat Jan 13 10:52:48 2024
+To reproduce the conflict and resubmit, you may use the following commands:
 
-    thunderbolt: Reset topology created by the boot firmware
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 0e93c6320ecde0583de09f3fe801ce8822886fec
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100755-requisite-gratuity-37ef@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-    commit 59a54c5f3dbde00b8ad30aef27fe35b1fe07bf5c upstream.
+Possible dependencies:
 
-    Boot firmware (typically BIOS) might have created tunnels of its own.
-    The tunnel configuration that it does might be sub-optimal. For instanc=
-e
-    it may only support HBR2 monitors so the DisplayPort tunnels it created
-    may limit Linux graphics drivers. In addition there is an issue on some
-    AMD based systems where the BIOS does not allocate enough PCIe resource=
-s
-    for future topology extension. By resetting the USB4 topology the PCIe
-    links will be reset as well allowing Linux to re-allocate.
+0e93c6320ecd ("clk: qcom: dispcc-sm8250: use CLK_SET_RATE_PARENT for branch clocks")
 
-    This aligns the behavior with Windows Connection Manager.
+thanks,
 
-    We already issued host router reset for USB4 v2 routers, now extend it
-    to USB4 v1 routers as well. For pre-USB4 (that's Apple systems) we leav=
-e
-    it as is and continue to discover the existing tunnels.
+greg k-h
 
-    Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-    Signed-off-by: Sanath S <Sanath.S@amd.com>
-    Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+------------------ original commit in Linus's tree ------------------
 
- drivers/thunderbolt/domain.c |  5 +++--
- drivers/thunderbolt/icm.c    |  2 +-
- drivers/thunderbolt/nhi.c    | 19 +++++++++++++------
- drivers/thunderbolt/tb.c     | 26 +++++++++++++++++++-------
- drivers/thunderbolt/tb.h     |  4 ++--
- 5 files changed, 38 insertions(+), 18 deletions(-)
+From 0e93c6320ecde0583de09f3fe801ce8822886fec Mon Sep 17 00:00:00 2001
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Sun, 4 Aug 2024 08:40:05 +0300
+Subject: [PATCH] clk: qcom: dispcc-sm8250: use CLK_SET_RATE_PARENT for branch
+ clocks
 
-On Tue, Sep 24, 2024 at 8:58=E2=80=AFAM Fabian St=C3=A4ber <fabian@fstab.de=
-> wrote:
->
-> Hi Greg,
->
-> I can reproduce the issue with the upstream Linux kernel: I compiled
-> 6.6.28 and 6.6.29 from source: 6.6.28 works, 6.6.29 doesn't.
->
-> I'll learn how to do 'git bisect' to narrow it down to the offending comm=
-it.
->
-> The non-lts kernel is also broken.
->
-> Fabian
->
-> On Mon, Sep 23, 2024 at 8:45=E2=80=AFAM Greg KH <gregkh@linuxfoundation.o=
-rg> wrote:
-> >
-> > On Mon, Sep 23, 2024 at 08:34:23AM +0200, Fabian St=C3=A4ber wrote:
-> > > Hi,
-> >
-> > Adding the linux-usb list.
-> >
-> > > I got a Dell WD19TBS Thunderbolt Dock, and it has been working with
-> > > Linux for years without issues. However, updating to
-> > > linux-lts-6.6.29-1 or newer breaks the USB ports on my Dock. Using th=
-e
-> > > latest non-LTS kernel doesn't help, it also breaks the USB ports.
-> > >
-> > > Downgrading the kernel to linux-lts-6.6.28-1 works. This is the last
-> > > working version.
-> > >
-> > > I opened a thread on the Arch Linux forum
-> > > https://bbs.archlinux.org/viewtopic.php?id=3D299604 with some dmesg
-> > > output. However, it sounds like this is a regression in the Linux
-> > > kernel, so I'm posting this here as well.
-> > >
-> > > Let me know if you need any more info.
-> >
-> > Is there any way you can use 'git bisect' to test inbetween kernel
-> > versions/commits to find the offending change?
-> >
-> > Does the non-lts arch kernel work properly?
-> >
-> > thanks,
-> >
-> > greg k-h
+Add CLK_SET_RATE_PARENT for several branch clocks. Such clocks don't
+have a way to change the rate, so set the parent rate instead.
+
+Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-1-1149dd8399fe@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+
+diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
+index 5a09009b7289..eb78cd5439d0 100644
+--- a/drivers/clk/qcom/dispcc-sm8250.c
++++ b/drivers/clk/qcom/dispcc-sm8250.c
+@@ -849,6 +849,7 @@ static struct clk_branch disp_cc_mdss_dp_link1_intf_clk = {
+ 				&disp_cc_mdss_dp_link1_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -884,6 +885,7 @@ static struct clk_branch disp_cc_mdss_dp_link_intf_clk = {
+ 				&disp_cc_mdss_dp_link_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -1009,6 +1011,7 @@ static struct clk_branch disp_cc_mdss_mdp_lut_clk = {
+ 				&disp_cc_mdss_mdp_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+
 
