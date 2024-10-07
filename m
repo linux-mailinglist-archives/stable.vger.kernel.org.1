@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E1999280E
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:27:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FCA99280F
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:27:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3AD41F234BD
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:27:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 209041C22165
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F306618CC0A;
-	Mon,  7 Oct 2024 09:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5E818CC0A;
+	Mon,  7 Oct 2024 09:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpQDxpNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr0cj72j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32741741E0
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3501741E0
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728293244; cv=none; b=dkAAlta+0d/RY4K6LOJyaWg/Bi0tYTeP/umWfMls84Q+KS9ovi3BLH5Jn4DL5pmAatwgoSZ4iJewwt0z2b9XDE86rgC/fkOig3GzuYFLUXsd3DWpJR66IqyRHDeJ2Zy3CvLFIemO8/WP1Nf+eNEYdOgv9iLmP3Ge2GkzgxEjzZU=
+	t=1728293255; cv=none; b=H+s/oq5yVfIrEVKVCmEM2zxwRf55dyOmFWV1TX7RJElM+X3VC19lF3Wf3nk4tENEy5OBzPuIfRF7yrLVbIO35IPX6rG49Xsbo7W4dPb16daQyCTthT4c15z312xIdfZvc7LKyTS3Rnt+8t+6418XN0X4KKvySn8kfb2RTvxteAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728293244; c=relaxed/simple;
-	bh=NeMGC052ExAGF/NY9SjOXZC8udQRi06AsPTvqgWl06k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Rl18jHKdtoIoDs2qoUCw95J9oaVsknDkec8IKByY3C0qzp2+WS4qmC81P8bgiv9yBvyZbSy/0Ag4cHjpy2uTE5TdxffB1W1/GqdSq9r/cNcutKZYnZUwgc+5kc0vWpW2bket26WdHx6WW1cHi9QHhTDZf3F0wLucCywFJUeVqME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpQDxpNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E625BC4CEC6;
-	Mon,  7 Oct 2024 09:27:23 +0000 (UTC)
+	s=arc-20240116; t=1728293255; c=relaxed/simple;
+	bh=PeCOdP0WqHztiCzqMWNkF9FpnJHzhMG467Us5e/k6bQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cQjN2zIw2ytvh8GzlasnyBoAwDDvfYFhfUEkxjyEUKsQ9vhXvUctoerBCmn41Phd4wI0KsclpsHgekdf4mOfYtkD+/Gdyb1mZGojsiFzZRVdfYag+48n0mt1JutXyEqeahtG/ot1KMADVBx0L9NaCT9/nLrBGZF8AjW0TKAO7fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr0cj72j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B95C4CEC6;
+	Mon,  7 Oct 2024 09:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728293244;
-	bh=NeMGC052ExAGF/NY9SjOXZC8udQRi06AsPTvqgWl06k=;
+	s=korg; t=1728293255;
+	bh=PeCOdP0WqHztiCzqMWNkF9FpnJHzhMG467Us5e/k6bQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fpQDxpNaY8M3qPRrxdcevbFgWbiUM6GS+3IUA8zKbG+9wNME8ymzmqWCTlgiUGgB8
-	 qIh0nWUu6/NhZpzH1rZYG+vE/OjWO2MflYr4NFSN+lFw/mM+jgp1HldT7/lpHxNOlZ
-	 brNuFPKzPBvl3aHfx+1dcsh09EK8kf7mmim6DG2Q=
-Subject: FAILED: patch "[PATCH] i2c: core: Lock address during client device instantiation" failed to apply to 6.1-stable tree
-To: hkallweit1@gmail.com,ole@ans.pl,wsa+renesas@sang-engineering.com
+	b=Vr0cj72jQZpxsfKYiPp8CLsQ6mGgkzAgC4uUJBc+uzcNWEYcO9BVmjkYXLUJzdTxp
+	 f5Eiq6jxwkxFMoXHZq7nf+AIbaBxEGLxJuA6141B9jbdBBRaL4zgC4PuNEP28OVL53
+	 htl4+3pPUiXR8lCvKUE4pelMCenh+EOkP/CKHIJc=
+Subject: FAILED: patch "[PATCH] i2c: xiic: Fix pm_runtime_set_suspended() with runtime pm" failed to apply to 6.1-stable tree
+To: ruanjinjie@huawei.com,andi.shyti@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 11:27:13 +0200
-Message-ID: <2024100713-creatable-lapped-c0b3@gregkh>
+Date: Mon, 07 Oct 2024 11:27:32 +0200
+Message-ID: <2024100732-swoop-math-2863@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,15 +62,15 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8d3cefaf659265aa82b0373a563fdb9d16a2b947
+git cherry-pick -x 0c8d604dea437b69a861479b413d629bc9b3da70
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100713-creatable-lapped-c0b3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100732-swoop-math-2863@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-8d3cefaf6592 ("i2c: core: Lock address during client device instantiation")
-73febd775bdb ("i2c: create debugfs entry per adapter")
+0c8d604dea43 ("i2c: xiic: Fix pm_runtime_set_suspended() with runtime pm enabled")
+8390dc7477e4 ("i2c: xiic: Use devm_clk_get_enabled()")
 
 thanks,
 
@@ -78,111 +78,34 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8d3cefaf659265aa82b0373a563fdb9d16a2b947 Mon Sep 17 00:00:00 2001
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Date: Thu, 15 Aug 2024 21:44:50 +0200
-Subject: [PATCH] i2c: core: Lock address during client device instantiation
+From 0c8d604dea437b69a861479b413d629bc9b3da70 Mon Sep 17 00:00:00 2001
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+Date: Mon, 23 Sep 2024 11:42:50 +0800
+Subject: [PATCH] i2c: xiic: Fix pm_runtime_set_suspended() with runtime pm
+ enabled
 
-Krzysztof reported an issue [0] which is caused by parallel attempts to
-instantiate the same I2C client device. This can happen if driver
-supports auto-detection, but certain devices are also instantiated
-explicitly.
-The original change isn't actually wrong, it just revealed that I2C core
-isn't prepared yet to handle this scenario.
-Calls to i2c_new_client_device() can be nested, therefore we can't use a
-simple mutex here. Parallel instantiation of devices at different addresses
-is ok, so we just have to prevent parallel instantiation at the same address.
-We can use a bitmap with one bit per 7-bit I2C client address, and atomic
-bit operations to set/check/clear bits.
-Now a parallel attempt to instantiate a device at the same address will
-result in -EBUSY being returned, avoiding the "sysfs: cannot create duplicate
-filename" splash.
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-Note: This patch version includes small cosmetic changes to the Tested-by
-      version, only functional change is that address locking is supported
-      for slave addresses too.
+Fixes: 36ecbcab84d0 ("i2c: xiic: Implement power management")
+Cc: <stable@vger.kernel.org> # v4.6+
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 
-[0] https://lore.kernel.org/linux-i2c/9479fe4e-eb0c-407e-84c0-bd60c15baf74@ans.pl/T/#m12706546e8e2414d8f1a0dc61c53393f731685cc
-
-Fixes: caba40ec3531 ("eeprom: at24: Probe for DDR3 thermal sensor in the SPD case")
-Cc: stable@vger.kernel.org
-Tested-by: Krzysztof Piotr Oledzki <ole@ans.pl>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index b63f75e44296..e39e8d792d03 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -915,6 +915,27 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index 4c89aad02451..1d68177241a6 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -1337,8 +1337,8 @@ static int xiic_i2c_probe(struct platform_device *pdev)
  	return 0;
+ 
+ err_pm_disable:
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 
+ 	return ret;
  }
- 
-+/*
-+ * Serialize device instantiation in case it can be instantiated explicitly
-+ * and by auto-detection
-+ */
-+static int i2c_lock_addr(struct i2c_adapter *adap, unsigned short addr,
-+			 unsigned short flags)
-+{
-+	if (!(flags & I2C_CLIENT_TEN) &&
-+	    test_and_set_bit(addr, adap->addrs_in_instantiation))
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+static void i2c_unlock_addr(struct i2c_adapter *adap, unsigned short addr,
-+			    unsigned short flags)
-+{
-+	if (!(flags & I2C_CLIENT_TEN))
-+		clear_bit(addr, adap->addrs_in_instantiation);
-+}
-+
- /**
-  * i2c_new_client_device - instantiate an i2c device
-  * @adap: the adapter managing the device
-@@ -962,6 +983,10 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 		goto out_err_silent;
- 	}
- 
-+	status = i2c_lock_addr(adap, client->addr, client->flags);
-+	if (status)
-+		goto out_err_silent;
-+
- 	/* Check for address business */
- 	status = i2c_check_addr_busy(adap, i2c_encode_flags_to_addr(client));
- 	if (status)
-@@ -993,6 +1018,8 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 	dev_dbg(&adap->dev, "client [%s] registered with bus id %s\n",
- 		client->name, dev_name(&client->dev));
- 
-+	i2c_unlock_addr(adap, client->addr, client->flags);
-+
- 	return client;
- 
- out_remove_swnode:
-@@ -1004,6 +1031,7 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
- 	dev_err(&adap->dev,
- 		"Failed to register i2c client %s at 0x%02x (%d)\n",
- 		client->name, client->addr, status);
-+	i2c_unlock_addr(adap, client->addr, client->flags);
- out_err_silent:
- 	if (need_put)
- 		put_device(&client->dev);
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index 7eedd0c662da..8d79440cd8ce 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -761,6 +761,9 @@ struct i2c_adapter {
- 	struct regulator *bus_regulator;
- 
- 	struct dentry *debugfs;
-+
-+	/* 7bit address space */
-+	DECLARE_BITMAP(addrs_in_instantiation, 1 << 7);
- };
- #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
- 
 
 
