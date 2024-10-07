@@ -1,233 +1,228 @@
-Return-Path: <stable+bounces-81341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAFC99311A
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5BF99314A
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFBFE1F22584
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:26:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37E0C1F247F5
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65A01D88A2;
-	Mon,  7 Oct 2024 15:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783421D8DF5;
+	Mon,  7 Oct 2024 15:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="oSKAbY8f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zn+Spt8T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8BA1D86D5;
-	Mon,  7 Oct 2024 15:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361B21D2B35
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728314801; cv=none; b=j5bzvypK08tB0PsV6W4BODaB3KP6jGPN+gSwz/npVCWvOtxrLywIk5Qy4pZ12xboMPc67XfaHRJ8FGcpSuqsP1oOUzWq2glWsM9qn3LqoCAR+GktZ3BsWNdV8JMa+lzT1HokN11gS6kGZ8rvrGm/4BhSDBsbr0A4B/iVATeBhLo=
+	t=1728315212; cv=none; b=JKkXmC0Zhm7yMVOrED2G23JNwdwimFxX4AWlJOfJdYcVs8MBcGCX/omJXUvvohz9AfgZVLKRN7g4uXaXHdaQGM54a5/wCky7qkkNp+waENn9CHipwa/Zu1JoFdMtaCW+EoV03tW4dgnbcDKToYsQ1cyspv73ezvkDBf8DDMd7GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728314801; c=relaxed/simple;
-	bh=Cwxab3OEYEQnKVD8IpuFZfg4FAWBq/eZGqQs5eWoeqQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nXAub/LIxmk5CYBwjxWQ/MY4t207uA0gro/IVz9/OJ9KrCA48J8oTM2yRzjxyCDIk61O/uvmv/xrWSGNijauj1xTbUQ0iIkbL8YYkooCPyLOUITa/zOe6/xaPqwP1uuHgE2xqnd1w+UxvKngy39hz6PPWSM63XuyJKmeefvUwgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=oSKAbY8f; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2fac3f1287bso49458591fa.1;
-        Mon, 07 Oct 2024 08:26:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1728314798; x=1728919598; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NZzmI3/E+4zvUFPe267H6YGr4dzPAzhTWsYOYQT4nKc=;
-        b=oSKAbY8f9KEIa7HD8T49YC8v7V2ClfxToWzA73vLwAg87j9dp1nWvmZl26J9/hiwo3
-         CnzQFuc8/pbBRrZ90zBrZo7rGD8LUIJR08uQj7Dnd7yxIttGK4Nflz1ofuh2Rv9Hue84
-         xRbqqEZuwFGiOUrNGkPkkjxUof9vrrdyblUnw+ROeVnfEIGCsuaO9wKKhfD2IuorGX+a
-         O2MFP0fUIEV8wXaQ9bBcX6J2tjFchUdpvWYu2vw89vIgMYeVtgKlVQyWenRXKNWhtP08
-         R6nY6MUBeR8afOZGyFCZ0QMWnAiogn5PnCqHCTYFtbL0g9Xd9BnTQ4LYvENN6auWz7Tg
-         dKkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728314798; x=1728919598;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NZzmI3/E+4zvUFPe267H6YGr4dzPAzhTWsYOYQT4nKc=;
-        b=GyVNqcqJ6Q8EnDW0QuOf3dNaNWVl8goptRAgbihKRorc2YQr/6Ik3ipUEmtWG9wwCb
-         r01fIwCYUWSKJCjo21/TPtsLmGt9iTsORlcPKKxcQNlOZoxFVHHlrY+ZRlBXCMT2A48W
-         VjSIVoDqDWghqTowXYHlynPdu8KC0fkLg2fE55ClwE3O/t8FgAWh+ZAR9ers1GAik5xD
-         jxu/QGYKABgMGmhLGMjYVatS5+HDVeG7/ximl1Z54xZs8avslwfBzcHn0pkhYR8SlZql
-         EFnpaj6rsBCbK5VBO410wfPqoFqzrgTQb8aB+cf+FszJqqnydXQ1PqOtj5QP7nQPPDbd
-         NieQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjNXH1nMGEbwqFtsvpM+BeWmRw5lqWDJMpyq20GBEpnedyVheUQp3iNhvR4y2ALS07oTap7wtH1PI=@vger.kernel.org, AJvYcCVldCyHdIi1Lpf7CMe+r7SX8QTtyw6w5k9OIvgKlYdhFUrWOutwx4j+ZgsJtEkFR4bbBhYerl/H@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDVZ/tURHYrt4sUGkDJtnHo6YpP/pKmxfKYW24OXR/u7d0p0tR
-	qnNYGUME1UHqKR7SGfNNvMqpq5rZa553suit9w18ogQk+riBJ0kOt5qTL2yhKY1SZgVtwwH49uT
-	8VqN3RagJ/dbl8RguafQKfz8nJYo=
-X-Google-Smtp-Source: AGHT+IGojiny12Chfp+GslN/SL3gAhwspzeqsorG42D6HB8PDv5anfD7mEWfasq5TMCCusncpTIfTHbAzUXM2GZ4Gp8=
-X-Received: by 2002:a2e:bc21:0:b0:2fa:d534:3ee7 with SMTP id
- 38308e7fff4ca-2faf3d724dfmr59608961fa.35.1728314797484; Mon, 07 Oct 2024
- 08:26:37 -0700 (PDT)
+	s=arc-20240116; t=1728315212; c=relaxed/simple;
+	bh=6wJgeWKYNyvrcdUEwXQjFLJlk2rXANcne3WDfofyHxo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RnOBQTMSm7R4nB7MViHuogau4fIV7cJm0lKI7lmhxN/HRIXROHxKUu2UcfJUYGfd5u4E8swbOL5e6hwewQf4i9GI+V/KEa/qpJ1yu0WTsX7aCHnnz+RtHjPZtZm7Dn6/5MhgsBLs3e9uPkf8fl/aP12h2+ulg+WYJhr/DAf46ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zn+Spt8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8D3C4CEC6;
+	Mon,  7 Oct 2024 15:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728315211;
+	bh=6wJgeWKYNyvrcdUEwXQjFLJlk2rXANcne3WDfofyHxo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=zn+Spt8TLictTDcJGj4JMXOaEUVvJJrZ2v0915Sm+bH1Ss9QujQr93Umf4cjnRz5T
+	 DDkpodrfK/VB+BUHpVIaW8TJ1KRtYEHQ3m12/G18pck57dlj1sUSqtt8UGWWxCXbPM
+	 VXlJsJrnvHOdJufEU/MnOg41DSg6wBoqHKMGaSyY=
+Subject: FAILED: patch "[PATCH] drm/xe: fix UAF around queue destruction" failed to apply to 6.10-stable tree
+To: matthew.auld@intel.com,lucas.demarchi@intel.com,matthew.brost@intel.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 07 Oct 2024 17:33:28 +0200
+Message-ID: <2024100727-lego-panther-fea9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZwF96Z8i3XcxDe/z@tissot.1015granger.net> <172816225422.1692160.16192443029175940103@noble.neil.brown.name>
-In-Reply-To: <172816225422.1692160.16192443029175940103@noble.neil.brown.name>
-From: Olga Kornievskaia <aglo@umich.edu>
-Date: Mon, 7 Oct 2024 11:26:25 -0400
-Message-ID: <CAN-5tyE=XkZ9hfGOortUapxCc43_YkgSeN9+7oFf=M8xRFFxTw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] nfsd: fix possible badness in FREE_STATEID
-To: NeilBrown <neilb@suse.de>
-Cc: Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
-	Olga Kornievskaia <okorniev@redhat.com>, 
-	"linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Oct 5, 2024 at 5:09=E2=80=AFPM NeilBrown <neilb@suse.de> wrote:
->
-> On Sun, 06 Oct 2024, Chuck Lever wrote:
-> > On Sat, Oct 05, 2024 at 12:20:48PM -0400, Jeff Layton wrote:
-> > > On Sat, 2024-10-05 at 10:53 -0400, Chuck Lever wrote:
-> > > > On Fri, Oct 04, 2024 at 06:04:03PM -0400, Olga Kornievskaia wrote:
-> > > > > When multiple FREE_STATEIDs are sent for the same delegation stat=
-eid,
-> > > > > it can lead to a possible either use-after-tree or counter refcou=
-nt
-> > > > > underflow errors.
-> > > > >
-> > > > > In nfsd4_free_stateid() under the client lock we find a delegatio=
-n
-> > > > > stateid, however the code drops the lock before calling nfs4_put_=
-stid(),
-> > > > > that allows another FREE_STATE to find the stateid again. The fir=
-st one
-> > > > > will proceed to then free the stateid which leads to either
-> > > > > use-after-free or decrementing already zerod counter.
-> > > > >
-> > > > > CC: stable@vger.kernel.org
-> > > >
-> > > > I assume that the broken commit is pretty old, but this fix does no=
-t
-> > > > apply before v6.9 (where sc_status is introduced). I can add
-> > > > "# v6.9+" to the Cc: stable tag.
-> > > >
-> > >
-> > > I don't know. It looks like nfsd4_free_stateid always returned
-> > > NFS4ERR_LOCKS_HELD on a delegation stateid until 3f29cc82a84c.
-> > >
-> > > > But what do folks think about a Fixes: tag?
-> > > >
-> > > > Could be e1ca12dfb1be ("NFSD: added FREE_STATEID operation"), but
-> > > > that doesn't have the switch statement, which was added by
-> > > > 2da1cec713bc ("nfsd4: simplify free_stateid").
-> > > >
-> > > >
-> > >
-> > > Maybe this one?
-> > >
-> > >     3f29cc82a84c nfsd: split sc_status out of sc_type
-> > >
-> > > That particular bit of the code (and the SC_STATUS_CLOSED flag) was
-> > > added in that patch, and I don't think you'd want to apply this patch
-> > > to anything that didn't have it.
-> >
-> > OK, if we believe that 3f29cc82 is where the misbehavior started,
-> > then I can replace the "Cc: stable@" with "Fixes: 3f29cc82a84c".
->
-> I believe the misbehaviour started with
-> Commit: b0fc29d6fcd0 ("nfsd: Ensure stateids remain unique until they are=
- freed")
-> in v3.18.
->
-> The bug in the current code is that it assumes that
->
->         list_del_init(&dp->dl_recall_lru);
->
-> actually removes from the the dl_recall_lru, and so a reference must be
-> dropped.  But if it wasn't on the list, then that is wrong.
-
-I've actually been chasing a different problem (a UAF) and Ben noticed
-a problem with doing a double free (by double free_stateid) which this
-patch addresses. But, this particular line list_del_init() in
-nfsd4_free_stateid() has been bothering me as I thought this access
-should be guarded by the "state_lock"? Though I have to admit I've
-tried that and it doesn't seem to help my UAF problem. Anyway where
-I'm going with it perhaps the guard "if
-(!list_empty(&dp->dl_recall_lru))" is still needed (not for double
-free_stateid by from other possibilities)?
-
-I was wondering if the nfsd4_free_stateid() somehow could steal the
-entries from the list while the laundromat is going thru the
-revocation process. The problem I believe is that the laundromat
-thread marks the delegation "revoked" but somehow never ends up
-calling destroy_delegation() (destoy_delegation is the place that
-frees the lease -- but instead we are left with a lease on the file
-which causes a new open to call into break_lease() which ends up doing
-a UAF on a freed delegation stateid -- which was freed by the
-free_stateid).
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-> So a "if (!list_empty(&dp->dl_recall_lru))" guard might also fix the
-> bug (though adding SC_STATUS_CLOSED is a better fix I think).
->
-> Prior to the above 3.17 commit, the relevant code was
->
->  static void destroy_revoked_delegation(struct nfs4_delegation *dp)
->  {
->         list_del_init(&dp->dl_recall_lru);
->         remove_stid(&dp->dl_stid);
->         nfs4_put_delegation(dp);
->  }
->
-> so the revoked delegation would be removed (remove_stid) from the idr
-> and a subsequent FREE_STATEID request would not find it.
-> The commit removed the remove_stid() call but didn't do anything to
-> prevent the free_stateid being repeated.
-> In that kernel it might have been appropriate to set
->   dp->dl_stid.sc_type =3D NFS4_CLOSED_DELEG_STID;
-> was done to unhash_delegation() in that patch.
->
-> So I think we should declare
-> Fixes: b0fc29d6fcd0 ("nfsd: Ensure stateids remain unique until they are =
-freed")
->
-> and be prepared to provide alternate patches for older kernels.
->
-> NeilBrown
->
-> >
-> >
-> > > > > Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-> > > > > ---
-> > > > >  fs/nfsd/nfs4state.c | 1 +
-> > > > >  1 file changed, 1 insertion(+)
-> > > > >
-> > > > > diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-> > > > > index ac1859c7cc9d..56b261608af4 100644
-> > > > > --- a/fs/nfsd/nfs4state.c
-> > > > > +++ b/fs/nfsd/nfs4state.c
-> > > > > @@ -7154,6 +7154,7 @@ nfsd4_free_stateid(struct svc_rqst *rqstp, =
-struct nfsd4_compound_state *cstate,
-> > > > >         switch (s->sc_type) {
-> > > > >         case SC_TYPE_DELEG:
-> > > > >                 if (s->sc_status & SC_STATUS_REVOKED) {
-> > > > > +                       s->sc_status |=3D SC_STATUS_CLOSED;
-> > > > >                         spin_unlock(&s->sc_lock);
-> > > > >                         dp =3D delegstateid(s);
-> > > > >                         list_del_init(&dp->dl_recall_lru);
-> > > > > --
-> > > > > 2.43.5
-> > > > >
-> > > >
-> > >
-> > > --
-> > > Jeff Layton <jlayton@kernel.org>
-> >
-> > --
-> > Chuck Lever
-> >
->
->
+The patch below does not apply to the 6.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2d2be279f1ca9e7288282d4214f16eea8a727cdb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100727-lego-panther-fea9@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+
+Possible dependencies:
+
+2d2be279f1ca ("drm/xe: fix UAF around queue destruction")
+3f371a98dead ("drm/xe: Delete unused GuC submission_state.suspend")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2d2be279f1ca9e7288282d4214f16eea8a727cdb Mon Sep 17 00:00:00 2001
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Mon, 23 Sep 2024 15:56:48 +0100
+Subject: [PATCH] drm/xe: fix UAF around queue destruction
+
+We currently do stuff like queuing the final destruction step on a
+random system wq, which will outlive the driver instance. With bad
+timing we can teardown the driver with one or more work workqueue still
+being alive leading to various UAF splats. Add a fini step to ensure
+user queues are properly torn down. At this point GuC should already be
+nuked so queue itself should no longer be referenced from hw pov.
+
+v2 (Matt B)
+ - Looks much safer to use a waitqueue and then just wait for the
+   xa_array to become empty before triggering the drain.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2317
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923145647.77707-2-matthew.auld@intel.com
+(cherry picked from commit 861108666cc0e999cffeab6aff17b662e68774e3)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 70d4e4d46c3c..74e593caf87c 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -298,6 +298,9 @@ static void xe_device_destroy(struct drm_device *dev, void *dummy)
+ 	if (xe->unordered_wq)
+ 		destroy_workqueue(xe->unordered_wq);
+ 
++	if (xe->destroy_wq)
++		destroy_workqueue(xe->destroy_wq);
++
+ 	ttm_device_fini(&xe->ttm);
+ }
+ 
+@@ -363,8 +366,9 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
+ 	xe->preempt_fence_wq = alloc_ordered_workqueue("xe-preempt-fence-wq", 0);
+ 	xe->ordered_wq = alloc_ordered_workqueue("xe-ordered-wq", 0);
+ 	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", 0, 0);
++	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", 0, 0);
+ 	if (!xe->ordered_wq || !xe->unordered_wq ||
+-	    !xe->preempt_fence_wq) {
++	    !xe->preempt_fence_wq || !xe->destroy_wq) {
+ 		/*
+ 		 * Cleanup done in xe_device_destroy via
+ 		 * drmm_add_action_or_reset register above
+diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
+index ec7eb7811126..24c8c2d20676 100644
+--- a/drivers/gpu/drm/xe/xe_device_types.h
++++ b/drivers/gpu/drm/xe/xe_device_types.h
+@@ -396,6 +396,9 @@ struct xe_device {
+ 	/** @unordered_wq: used to serialize unordered work, mostly display */
+ 	struct workqueue_struct *unordered_wq;
+ 
++	/** @destroy_wq: used to serialize user destroy work, like queue */
++	struct workqueue_struct *destroy_wq;
++
+ 	/** @tiles: device tiles */
+ 	struct xe_tile tiles[XE_MAX_TILES_PER_DEVICE];
+ 
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index 715c761dc7d6..98a6a385a796 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -276,10 +276,26 @@ static struct workqueue_struct *get_submit_wq(struct xe_guc *guc)
+ }
+ #endif
+ 
++static void xe_guc_submit_fini(struct xe_guc *guc)
++{
++	struct xe_device *xe = guc_to_xe(guc);
++	struct xe_gt *gt = guc_to_gt(guc);
++	int ret;
++
++	ret = wait_event_timeout(guc->submission_state.fini_wq,
++				 xa_empty(&guc->submission_state.exec_queue_lookup),
++				 HZ * 5);
++
++	drain_workqueue(xe->destroy_wq);
++
++	xe_gt_assert(gt, ret);
++}
++
+ static void guc_submit_fini(struct drm_device *drm, void *arg)
+ {
+ 	struct xe_guc *guc = arg;
+ 
++	xe_guc_submit_fini(guc);
+ 	xa_destroy(&guc->submission_state.exec_queue_lookup);
+ 	free_submit_wq(guc);
+ }
+@@ -351,6 +367,8 @@ int xe_guc_submit_init(struct xe_guc *guc, unsigned int num_ids)
+ 
+ 	xa_init(&guc->submission_state.exec_queue_lookup);
+ 
++	init_waitqueue_head(&guc->submission_state.fini_wq);
++
+ 	primelockdep(guc);
+ 
+ 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
+@@ -367,6 +385,9 @@ static void __release_guc_id(struct xe_guc *guc, struct xe_exec_queue *q, u32 xa
+ 
+ 	xe_guc_id_mgr_release_locked(&guc->submission_state.idm,
+ 				     q->guc->id, q->width);
++
++	if (xa_empty(&guc->submission_state.exec_queue_lookup))
++		wake_up(&guc->submission_state.fini_wq);
+ }
+ 
+ static int alloc_guc_id(struct xe_guc *guc, struct xe_exec_queue *q)
+@@ -1274,13 +1295,16 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
+ 
+ static void guc_exec_queue_fini_async(struct xe_exec_queue *q)
+ {
++	struct xe_guc *guc = exec_queue_to_guc(q);
++	struct xe_device *xe = guc_to_xe(guc);
++
+ 	INIT_WORK(&q->guc->fini_async, __guc_exec_queue_fini_async);
+ 
+ 	/* We must block on kernel engines so slabs are empty on driver unload */
+ 	if (q->flags & EXEC_QUEUE_FLAG_PERMANENT || exec_queue_wedged(q))
+ 		__guc_exec_queue_fini_async(&q->guc->fini_async);
+ 	else
+-		queue_work(system_wq, &q->guc->fini_async);
++		queue_work(xe->destroy_wq, &q->guc->fini_async);
+ }
+ 
+ static void __guc_exec_queue_fini(struct xe_guc *guc, struct xe_exec_queue *q)
+diff --git a/drivers/gpu/drm/xe/xe_guc_types.h b/drivers/gpu/drm/xe/xe_guc_types.h
+index 546ac6350a31..69046f698271 100644
+--- a/drivers/gpu/drm/xe/xe_guc_types.h
++++ b/drivers/gpu/drm/xe/xe_guc_types.h
+@@ -81,6 +81,8 @@ struct xe_guc {
+ #endif
+ 		/** @submission_state.enabled: submission is enabled */
+ 		bool enabled;
++		/** @submission_state.fini_wq: submit fini wait queue */
++		wait_queue_head_t fini_wq;
+ 	} submission_state;
+ 	/** @hwconfig: Hardware config state */
+ 	struct {
+
 
