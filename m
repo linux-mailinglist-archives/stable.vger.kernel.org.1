@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2AD99280B
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:26:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF75499280C
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 11:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CC9D1F23554
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40241F23511
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 09:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DEA18E74A;
-	Mon,  7 Oct 2024 09:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3457418E055;
+	Mon,  7 Oct 2024 09:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yauRq7Kk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCVhfPqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D9318E37D
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E558818BC05
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 09:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728293203; cv=none; b=dGDB6+KY/Zecxg3Ep+6dhxrGq4BAD4bI8DJaIIq9fXP8JlGrf0ukoukiNWkldiOEKEIG7g6466JhNWpgG20OMt/SLCw8Q5gufgfFmvFQKMESS1zboQJ9GTgSrxuM8O98uqMvinii1d/IxUgVRKRLOcmlLME4L3gJP3BUMXvchow=
+	t=1728293212; cv=none; b=RwHh3Row6dLjjwOAdJ47IapOo1j+xvrS7lbzryYQksCygh5qtMBjIaMLeI9N4aB3n5QHOd5e/twN14ojf/msNraL841b72fclX/1unqP3wwIhSvACnIGkkUb4ps3atur7x7HOa2DmLU19r6ItJm5yc2fG5JwTM5Sv6GnRXt3RRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728293203; c=relaxed/simple;
-	bh=v5aP4TV257iAy+yRiiZxaKkAGObjcAhwM2ftaKHN4ik=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BkmaaU2I5KhIghhIGJVh364WejypImXI3raSCR/6/IiHHH1xGR46zkjPco38AwphRMv7kdOz2wTpWjFU6585obmDG+FVhOMJZu0XjbcyXwG3pKONS9m5b1f98boDKhILA5qmxrqUCJDqLGXhf/Opdxz7iflGTVjKFGlVEasW/Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yauRq7Kk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579D5C4CEC6;
-	Mon,  7 Oct 2024 09:26:42 +0000 (UTC)
+	s=arc-20240116; t=1728293212; c=relaxed/simple;
+	bh=Bh9HcfNDnCSBZBMIYTu1LBGkjktAHpEkjkYDJerSdEU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jjcuc9HlwPTSsAvvlAveX6cF21ZvQs/5hn+ZMd1k5blRZnLZH+fg/OaxDlWzQhEFrYK8EOOOo1xkyJUTSX0O8S/57iZKyP9t6gUdV3De0ecf9fZO1fuOPACT/wbMbeIE2blHi2ktPpT87m1tbzT18HVp8domOFKaSreYrTJ2nJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCVhfPqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15291C4CEC6;
+	Mon,  7 Oct 2024 09:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728293202;
-	bh=v5aP4TV257iAy+yRiiZxaKkAGObjcAhwM2ftaKHN4ik=;
+	s=korg; t=1728293211;
+	bh=Bh9HcfNDnCSBZBMIYTu1LBGkjktAHpEkjkYDJerSdEU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yauRq7KkcfLGVIhAEbx5aBZsgfKIcVcd4yYled6g3UkNn8dOkXsAsmPVBwHWrJlwg
-	 NXEMg9T3XLOoR6py8bh7qsDApFZfqb6VZ8brGcvlmuuhEZfHX/hKj9FdNgkY1ZEqbp
-	 f28+5i5zjvZHNdiuiafK70PF7zTIFTGKPHkYk690=
-Subject: FAILED: patch "[PATCH] i2c: qcom-geni: Use IRQF_NO_AUTOEN flag in request_irq()" failed to apply to 5.4-stable tree
+	b=oCVhfPqOUx5Xkv/1yOL6nvDoVNX3vRoa9AkRxZptaFe2vNPGH4gYH9UL+x4AGCvBD
+	 Rs/ylbe7mQHJFqJrm9Xa1iGYA0mQsQ0p9stRUvn/sea1OogARCBHUV+LuUE46WC3yD
+	 eHQ+H00dsyWgOvfgVKJz/N2G+aD4YmYhw1KBwAos=
+Subject: FAILED: patch "[PATCH] i2c: qcom-geni: Use IRQF_NO_AUTOEN flag in request_irq()" failed to apply to 4.19-stable tree
 To: ruanjinjie@huawei.com,andi.shyti@kernel.org,quic_msavaliy@quicinc.com,stable@vger.kernel.org,vladimir.zapolskiy@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 11:26:39 +0200
-Message-ID: <2024100739-baked-blizzard-0044@gregkh>
+Date: Mon, 07 Oct 2024 11:26:40 +0200
+Message-ID: <2024100740-rickety-tamale-ac1e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x e2c85d85a05f16af2223fcc0195ff50a7938b372
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100739-baked-blizzard-0044@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100740-rickety-tamale-ac1e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 e2c85d85a05f ("i2c: qcom-geni: Use IRQF_NO_AUTOEN flag in request_irq()")
 3b7d81f08a6a ("i2c: qcom-geni: Grow a dev pointer to simplify code")
 b2ca8800621b ("i2c: qcom-geni: Let firmware specify irq trigger flags")
+c9913ac42135 ("i2c: qcom-geni: Provide support for ACPI")
+c3c2889b8a2c ("i2c: qcom-geni: Signify successful driver probe")
+848bd3f3de9d ("i2c: qcom-geni: Fix runtime PM mismatch with child devices")
 
 thanks,
 
