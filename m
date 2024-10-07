@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E5999317C
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:38:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B2A993181
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:39:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB421F23946
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:38:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69CC91C22694
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38B51D90D1;
-	Mon,  7 Oct 2024 15:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDF61D90D3;
+	Mon,  7 Oct 2024 15:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ike7JaG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt368Wmv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D7C1D86DC
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEF41D90C8
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315521; cv=none; b=U2wbUZV2dkXkKeHpLPmhszNWuKE+bUV0mkegaTggicuJN+kHg6NRAq5ssUqyalo6vtXj5JBnOt6saD3qNeAw7uHR4u+tOgQY1e9q0JFxg+o006rrp4Md5TU+RHhWOYFz34f6Qhq+LWc+o/PKTsfvzfNN2mCLUEptOo7Pf/Zihag=
+	t=1728315546; cv=none; b=eAzc+jKB50ElTKtCm8qSr5Rmw1m+WHzAoitD4QS0604y27jzIEu3Ap+oK0Dw1pVcd9p43QRRptmePKA52JlnrENKd1ogJ+R6oPPOCLdajxss4PUGS0SGpR07fBwF/CLk7Vaz0e/fvnHgg32fRx/1o9QKhiGBBbd45B9LaJxID6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315521; c=relaxed/simple;
-	bh=ywggsBuunlnfU9YeLcFECSC7glmbki6mcUzvf3IrII4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=omrmOuUK2t674u62ggy4hOMhhf/bHgujmzpkpd86AcYEencY0AQcRaPkGNyVrEUpcLAz1vwvmAuvR7yEweJhC/wcmku/qzfqusM61cXtLBE702I065WQOdi91Qromb2e1uLyZZ3D0qZ1x37mwlN6LmcukhVsh+3SpYAg8jXCjTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ike7JaG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08DDC4CEC6;
-	Mon,  7 Oct 2024 15:38:40 +0000 (UTC)
+	s=arc-20240116; t=1728315546; c=relaxed/simple;
+	bh=eJSS279djYneqZGv622jFybRd5NX/EokyZ2ev+lxg5A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rdwkG3/PrkgBdmzbqwBW9tNGighu1VARX5Gh7MIvzRA3r54Tp+QuwE8RAv7EzS5tzLnUmxNusBamgJKJ+GJQdutMK69fOP+rwL8DnnVhdRgO5uEUcfV0JJQWHqR5OqVGqU5/LiDDvXtZdWrxUqQZ+oOi2eByFyeArCNQElt0pqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt368Wmv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1664DC4CEC6;
+	Mon,  7 Oct 2024 15:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728315521;
-	bh=ywggsBuunlnfU9YeLcFECSC7glmbki6mcUzvf3IrII4=;
+	s=korg; t=1728315546;
+	bh=eJSS279djYneqZGv622jFybRd5NX/EokyZ2ev+lxg5A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ike7JaG4oWb2xeuGOzdG+1RzaB/ZMQdESegOyBgQ6MbVXmDMV1kvbPZT9YBUtmSoF
-	 0Ikh15yXTpSPOeTZw2oXAGFr+2ENzaTY6NxrFoW8uCb3pioYUOet67EkWauQjglW74
-	 5JpTfDxohwQkQkk/VL9qBiAwFWCp/NMy1VbHaqcA=
-Subject: FAILED: patch "[PATCH] nfsd: fix delegation_blocked() to block correctly for at" failed to apply to 4.19-stable tree
-To: neilb@suse.de,bcodding@redhat.com,chuck.lever@oracle.com,jlayton@kernel.org,okorniev@redhat.com
+	b=Pt368WmviCe1KoM4bUXTiFTqN6wM9txqrhq38yH1pe5bLUSove/qT0XxgbZOAst7y
+	 kASqigbOUvxDJLvmXhzfwxvQpMViAb+Yxk5VJGueu4XCU9WUfhB1KfAslZeJ72ly3q
+	 xiysglITJT8/6X5bSZoG7qVK17QrtY76OSRYCK4g=
+Subject: FAILED: patch "[PATCH] NFSD: Fix NFSv4's PUTPUBFH operation" failed to apply to 5.4-stable tree
+To: chuck.lever@oracle.com,cedric.blancher@gmail.com,dan.f.shelton@gmail.com,roland.mainz@nrubsig.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:38:29 +0200
-Message-ID: <2024100729-trident-control-06ad@gregkh>
+Date: Mon, 07 Oct 2024 17:39:03 +0200
+Message-ID: <2024100703-decorated-bodacious-fa3c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 45bb63ed20e02ae146336412889fe5450316a84f
+git cherry-pick -x 202f39039a11402dcbcd5fece8d9fa6be83f49ae
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100729-trident-control-06ad@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100703-decorated-bodacious-fa3c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-45bb63ed20e0 ("nfsd: fix delegation_blocked() to block correctly for at least 30 seconds")
-b3f255ef6bff ("nfsd: use ktime_get_seconds() for timestamps")
+202f39039a11 ("NFSD: Fix NFSv4's PUTPUBFH operation")
+e78e274eb22d ("NFSD: Avoid clashing function prototypes")
+eeadcb757945 ("NFSD: Simplify READ_PLUS")
+3fdc54646234 ("NFSD: Reduce amount of struct nfsd4_compoundargs that needs clearing")
+103cc1fafee4 ("SUNRPC: Parametrize how much of argsize should be zeroed")
+1913cdf56cb5 ("NFSD: Replace boolean fields in struct nfsd4_copy")
+87689df69491 ("NFSD: Shrink size of struct nfsd4_copy")
+09426ef2a64e ("NFSD: Shrink size of struct nfsd4_copy_notify")
+99b002a1fa00 ("NFSD: Clean up nfsd4_encode_readlink()")
+c738b218a2e5 ("NFSD: Clean up SPLICE_OK in nfsd4_encode_read()")
+0cb4d23ae08c ("NFSD: Fix the behavior of READ near OFFSET_MAX")
+555dbf1a9aac ("nfsd: Replace use of rwsem with errseq_t")
+f11ad7aa6531 ("NFSD: Fix verifier returned in stable WRITEs")
+1e37d0e5bda4 ("NFSD: Fix inconsistent indenting")
+474bc334698d ("nfsd: Reduce contention for the nfsd_file nf_rwsem")
+eac0b17a77fb ("NFSD add vfs_fsync after async copy is done")
+bddfdbcddbe2 ("NFSD: Extract the svcxdr_init_encode() helper")
+1fcbd1c9456b ("NFSD: Update the NFSv2 READLINK argument decoder to use struct xdr_stream")
+224c1c894e48 ("NFSD: Update READLINK3arg decoder to use struct xdr_stream")
+be63bd2ac6bb ("NFSD: Update READ3arg decoder to use struct xdr_stream")
 
 thanks,
 
@@ -78,59 +96,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 45bb63ed20e02ae146336412889fe5450316a84f Mon Sep 17 00:00:00 2001
-From: NeilBrown <neilb@suse.de>
-Date: Mon, 9 Sep 2024 15:06:36 +1000
-Subject: [PATCH] nfsd: fix delegation_blocked() to block correctly for at
- least 30 seconds
+From 202f39039a11402dcbcd5fece8d9fa6be83f49ae Mon Sep 17 00:00:00 2001
+From: Chuck Lever <chuck.lever@oracle.com>
+Date: Sun, 11 Aug 2024 13:11:07 -0400
+Subject: [PATCH] NFSD: Fix NFSv4's PUTPUBFH operation
 
-The pair of bloom filtered used by delegation_blocked() was intended to
-block delegations on given filehandles for between 30 and 60 seconds.  A
-new filehandle would be recorded in the "new" bit set.  That would then
-be switch to the "old" bit set between 0 and 30 seconds later, and it
-would remain as the "old" bit set for 30 seconds.
+According to RFC 8881, all minor versions of NFSv4 support PUTPUBFH.
 
-Unfortunately the code intended to clear the old bit set once it reached
-30 seconds old, preparing it to be the next new bit set, instead cleared
-the *new* bit set before switching it to be the old bit set.  This means
-that the "old" bit set is always empty and delegations are blocked
-between 0 and 30 seconds.
+Replace the XDR decoder for PUTPUBFH with a "noop" since we no
+longer want the minorversion check, and PUTPUBFH has no arguments to
+decode. (Ideally nfsd4_decode_noop should really be called
+nfsd4_decode_void).
 
-This patch updates bd->new before clearing the set with that index,
-instead of afterwards.
+PUTPUBFH should now behave just like PUTROOTFH.
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Reported-by: Cedric Blancher <cedric.blancher@gmail.com>
+Fixes: e1a90ebd8b23 ("NFSD: Combine decode operations for v4 and v4.1")
+Cc: Dan Shelton <dan.f.shelton@gmail.com>
+Cc: Roland Mainz <roland.mainz@nrubsig.org>
 Cc: stable@vger.kernel.org
-Fixes: 6282cd565553 ("NFSD: Don't hand out delegations for 30 seconds after recalling them.")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index cb5a9ab451c5..ac1859c7cc9d 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1078,7 +1078,8 @@ static void nfs4_free_deleg(struct nfs4_stid *stid)
-  * When a delegation is recalled, the filehandle is stored in the "new"
-  * filter.
-  * Every 30 seconds we swap the filters and clear the "new" one,
-- * unless both are empty of course.
-+ * unless both are empty of course.  This results in delegations for a
-+ * given filehandle being blocked for between 30 and 60 seconds.
-  *
-  * Each filter is 256 bits.  We hash the filehandle to 32bit and use the
-  * low 3 bytes as hash-table indices.
-@@ -1107,9 +1108,9 @@ static int delegation_blocked(struct knfsd_fh *fh)
- 		if (ktime_get_seconds() - bd->swap_time > 30) {
- 			bd->entries -= bd->old_entries;
- 			bd->old_entries = bd->entries;
-+			bd->new = 1-bd->new;
- 			memset(bd->set[bd->new], 0,
- 			       sizeof(bd->set[0]));
--			bd->new = 1-bd->new;
- 			bd->swap_time = ktime_get_seconds();
- 		}
- 		spin_unlock(&blocked_delegations_lock);
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 4643fcfb7187..f118921250c3 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -1245,14 +1245,6 @@ nfsd4_decode_putfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
+ 	return nfs_ok;
+ }
+ 
+-static __be32
+-nfsd4_decode_putpubfh(struct nfsd4_compoundargs *argp, union nfsd4_op_u *p)
+-{
+-	if (argp->minorversion == 0)
+-		return nfs_ok;
+-	return nfserr_notsupp;
+-}
+-
+ static __be32
+ nfsd4_decode_read(struct nfsd4_compoundargs *argp, union nfsd4_op_u *u)
+ {
+@@ -2374,7 +2366,7 @@ static const nfsd4_dec nfsd4_dec_ops[] = {
+ 	[OP_OPEN_CONFIRM]	= nfsd4_decode_open_confirm,
+ 	[OP_OPEN_DOWNGRADE]	= nfsd4_decode_open_downgrade,
+ 	[OP_PUTFH]		= nfsd4_decode_putfh,
+-	[OP_PUTPUBFH]		= nfsd4_decode_putpubfh,
++	[OP_PUTPUBFH]		= nfsd4_decode_noop,
+ 	[OP_PUTROOTFH]		= nfsd4_decode_noop,
+ 	[OP_READ]		= nfsd4_decode_read,
+ 	[OP_READDIR]		= nfsd4_decode_readdir,
 
 
