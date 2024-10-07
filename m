@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8472999341D
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:58:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A12993438
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A87B81C20902
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:58:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 868BFB29B44
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17311DC194;
-	Mon,  7 Oct 2024 16:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF1821DB546;
+	Mon,  7 Oct 2024 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6V7o+Iw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMOKIGeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBC61DCB22
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642E41DCB22
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728319982; cv=none; b=PdkZcKByXibmLZfxZRmJdBPAXrcqeFdTvOJ2wYTiu/OBuROrll0Tgh8CxC7e8XEeXov36M+nAsZRkk5CdrSLa1mPe+EQ3F74uSbiBzaKZoh6B8ABNZygvBKzUW5K3YI62q1BTJBDqZPRLbxP69PGkCzqdm9wZwsSEx2aQTi1AN4=
+	t=1728319989; cv=none; b=UT5WI4rXPR5G9G359cGT4P1h1RABGRwccDfDzmJXXEmjQSlAtgSYs69MrWLWRDnj4bnxaQ3D5R6vP+sBa0DmQvszPMlW2RvfSU9n6WzXyrTFy2SJFUrmTiRVtYi/Ud4G7XYHVsS2BSI6quhB8UU62s5Eq/lAxjvvHULvGj8Ags8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728319982; c=relaxed/simple;
-	bh=mkMIplcha9AlVbNkfgAO25zauXQ4d8K7Y4MUPr4Cdpo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aTtYxYOJslKA5GMabP/vg+K/LZXyLsho7gNQNoALsGGxMUJhaTLJ63ZzJgVXBzchs/mZ4WJLyyJUxkV4/h6cBsuxOUP9cRxGuYj1wmKeqHoDcpaSOnWAarmAhrUJ2dhN/sUoumWx3XPtUMseaTcl3vChCulRcO5mH1drMnHaEd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6V7o+Iw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DD7C4CEC6;
-	Mon,  7 Oct 2024 16:53:01 +0000 (UTC)
+	s=arc-20240116; t=1728319989; c=relaxed/simple;
+	bh=Vkwh6s1aaoEWnpB/S3jzGIJLZ0Gi4lQPFJIh/mDpGDw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V82pwWK0pr2QT8iri9M4DVJ1A/eaKS1hMnoWEV8mCywF9cQ1/k16s5zY6YCIgq/jSWflTh69kgm75yl+Rfamy+EvWYUBAHWxvk4XA4ONxhldZB6ejxeK7sThBaL0AehpWsPjnAU+UyxXYSy1MBww3py4n80sCjFEr8Lj+JUbsoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMOKIGeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683F9C4CEC6;
+	Mon,  7 Oct 2024 16:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728319982;
-	bh=mkMIplcha9AlVbNkfgAO25zauXQ4d8K7Y4MUPr4Cdpo=;
+	s=korg; t=1728319988;
+	bh=Vkwh6s1aaoEWnpB/S3jzGIJLZ0Gi4lQPFJIh/mDpGDw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=D6V7o+IwFcQtRNpGygh5d7vfA9T6Bqer2Hm/aDCICmtWSKuYnuhQiWyPDAnHyEkhG
-	 Lrtms4bPtIPEiaBGGdf2Woc6KRgL0x/vxrAB9CR4eTHnhts6JhoAyPBN4ODV1ZGD+H
-	 OARCnvG6W2jwjMYdmoflllOzFrWYqGmPSFXde86Y=
-Subject: FAILED: patch "[PATCH] media: qcom: camss: Fix ordering of pm_runtime_enable" failed to apply to 5.10-stable tree
+	b=EMOKIGeFIQC+RWwMjFhfykYSwAEysd0qnTKk0fdzlv/N2qtLQT7k/AziM3KQTGeE1
+	 v+onnngRz58C1ROrzGrR3vg6eipWkJbc0b7dKQn7eYXDSDIFGTBmdqIWFpxxrYJE9V
+	 4L1YmmjsdhM095q2VRIB2NknfrBwHI9f0eLKJn9o=
+Subject: FAILED: patch "[PATCH] media: qcom: camss: Fix ordering of pm_runtime_enable" failed to apply to 5.4-stable tree
 To: bryan.odonoghue@linaro.org,hverkuil-cisco@xs4all.nl,johan+linaro@kernel.org,konradybcio@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 18:52:51 +0200
-Message-ID: <2024100750-precook-fidgeting-acf8@gregkh>
+Date: Mon, 07 Oct 2024 18:52:52 +0200
+Message-ID: <2024100751-esquire-carol-bffe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x a151766bd3688f6803e706c6433a7c8d3c6a6a94
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100750-precook-fidgeting-acf8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100751-esquire-carol-bffe@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
