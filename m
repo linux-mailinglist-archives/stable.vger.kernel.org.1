@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CAF99345A
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:04:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E3A99345B
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6841F2405F
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE07F1C2264C
 	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866251DC190;
-	Mon,  7 Oct 2024 17:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09F11DC07D;
+	Mon,  7 Oct 2024 17:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnMY2sX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mxt5zSnm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C4A1DC07D
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CE81D9691
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 17:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728320668; cv=none; b=lBjSEC5JPgPQ6vBBToh/OEXfFn+XHe9BAzyhrWa7/5qsdOtYJCSve8FmwixKXzzB1CMnNZsBwja6F4urFJuncrwyZZNuqDSBuHs3Qbj3fAKSJkcYaFuSCYmPut+NcWPDR2hpjjbQB76QlYB1z0A3ee6lUzCsJtTfoWHPt1JfUcs=
+	t=1728320671; cv=none; b=j6iEtzGgRysYh/JGdeS1tQ9BaJcAr/ihSL1klSk0a4EeyvPZARC4LUO7jzi1Gr6DtATVtzkGtnkkgv8TnLn+qv+SAIPmknMbNiWH2Pc6mZ/HiH0h7RqOABsRAFAtxip/gA4Z7w4voD2G+N5SG66UYJY/ZEHIzU2QuFk5atTSrHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728320668; c=relaxed/simple;
-	bh=SgG6ditpWDUdQhvo9zJlmE2u674IstuA0TcKxwerZQw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IYjU8mZue6Ipz9akAHsiNXdvy32RHMCf2/OzzEqAJf/TKkH3JtCJieaoQNA1aunEs4/XTy1GRhL3uj6ePSu01uHE4zfxOmoS8AAnsbUzEbavMKQZ6COncRVIr9+mt32o/vmwGm8XDoSlnw/hW088988l+DWeslno90pKgAOEX5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnMY2sX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B728C4CEC7;
-	Mon,  7 Oct 2024 17:04:27 +0000 (UTC)
+	s=arc-20240116; t=1728320671; c=relaxed/simple;
+	bh=Q+97TLJ3/N9DeNGtG1/7bQeXQxHk9rN5foKwOfvPYtE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mllCeWoz9oKw8WiAoqiIea4dovc/IerW4tdQNXGure6iW9sLfwVTEN5xMyQHueYoHRoqczMjo0GgsWb7WLzBuJR9zZS1E1tXuOIWJzfnCLz7GLglwYxXHPpw4sz+maxt9Kyntei1tcho24QWeGZjusOP1v64E+L+4qH9cHpWkhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mxt5zSnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22091C4CEC6;
+	Mon,  7 Oct 2024 17:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728320668;
-	bh=SgG6ditpWDUdQhvo9zJlmE2u674IstuA0TcKxwerZQw=;
+	s=korg; t=1728320671;
+	bh=Q+97TLJ3/N9DeNGtG1/7bQeXQxHk9rN5foKwOfvPYtE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LnMY2sX2rlzRhSLHwNwRrO29kmyl6XfnAJTvib6m0PaLfGJiL+Rciqlkt5GBjTWcG
-	 YzHFJH8dGlSueT5exDlJ3MS7cWYtvSuC2NeX09Qx3vLwyTw2guUCAQ5ifcrC5taAaw
-	 xq90QPgfyLzJ0foWt18y9uj0OC6/5uc7CMoKZccM=
-Subject: FAILED: patch "[PATCH] gso: fix udp gso fraglist segmentation after pull from" failed to apply to 5.15-stable tree
-To: willemb@google.com,kuba@kernel.org
+	b=Mxt5zSnmZP6plNjbDx7bNNaN8hYZOnLg5SkgjscfoTwrJWi+nXO5KhOf0pPZ/AhPP
+	 BRlfvg4Yk92ISHib+vCFmkNhbwsGjLv6P2U5K7dE7B4x1k1GgeQ1ufRqpn3AmWGETy
+	 Zwm7fjHSm3w2A8E6VGsrfM+LPcXxpX5Blr6z1I0A=
+Subject: FAILED: patch "[PATCH] clk: qcom: gcc-sc8180x: Add GPLL9 support" failed to apply to 5.15-stable tree
+To: quic_skakitap@quicinc.com,andersson@kernel.org,dmitry.baryshkov@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 19:03:29 +0200
-Message-ID: <2024100729-mountain-blizzard-35b6@gregkh>
+Date: Mon, 07 Oct 2024 19:04:27 +0200
+Message-ID: <2024100727-starved-makeover-291c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,15 +62,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a1e40ac5b5e9077fe1f7ae0eb88034db0f9ae1ab
+git cherry-pick -x 818a2f8d5e4ad2c1e39a4290158fe8e39a744c70
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100729-mountain-blizzard-35b6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100727-starved-makeover-291c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-a1e40ac5b5e9 ("gso: fix udp gso fraglist segmentation after pull from frag_list")
-9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
+818a2f8d5e4a ("clk: qcom: gcc-sc8180x: Add GPLL9 support")
 
 thanks,
 
@@ -78,72 +77,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a1e40ac5b5e9077fe1f7ae0eb88034db0f9ae1ab Mon Sep 17 00:00:00 2001
-From: Willem de Bruijn <willemb@google.com>
-Date: Tue, 1 Oct 2024 13:17:46 -0400
-Subject: [PATCH] gso: fix udp gso fraglist segmentation after pull from
- frag_list
+From 818a2f8d5e4ad2c1e39a4290158fe8e39a744c70 Mon Sep 17 00:00:00 2001
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Date: Mon, 12 Aug 2024 10:43:03 +0530
+Subject: [PATCH] clk: qcom: gcc-sc8180x: Add GPLL9 support
 
-Detect gso fraglist skbs with corrupted geometry (see below) and
-pass these to skb_segment instead of skb_segment_list, as the first
-can segment them correctly.
+Add the missing GPLL9 pll and fix the gcc_parents_7 data to use
+the correct pll hw.
 
-Valid SKB_GSO_FRAGLIST skbs
-- consist of two or more segments
-- the head_skb holds the protocol headers plus first gso_size
-- one or more frag_list skbs hold exactly one segment
-- all but the last must be gso_size
-
-Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
-modify these skbs, breaking these invariants.
-
-In extreme cases they pull all data into skb linear. For UDP, this
-causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
-udp_hdr(seg->next)->dest.
-
-Detect invalid geometry due to pull, by checking head_skb size.
-Don't just drop, as this may blackhole a destination. Convert to be
-able to pass to regular skb_segment.
-
-Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20241001171752.107580-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-3-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index d842303587af..a5be6e4ed326 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -296,8 +296,26 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 		return NULL;
- 	}
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index d25c5dc37f91..0596427f8922 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -142,6 +142,23 @@ static struct clk_alpha_pll gpll7 = {
+ 	},
+ };
  
--	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
--		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-+	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
-+		 /* Detect modified geometry and pass those to skb_segment. */
-+		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
-+			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++static struct clk_alpha_pll gpll9 = {
++	.offset = 0x1c000,
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_TRION],
++	.clkr = {
++		.enable_reg = 0x52000,
++		.enable_mask = BIT(9),
++		.hw.init = &(const struct clk_init_data) {
++			.name = "gpll9",
++			.parent_data = &(const struct clk_parent_data) {
++				.fw_name = "bi_tcxo",
++			},
++			.num_parents = 1,
++			.ops = &clk_alpha_pll_fixed_trion_ops,
++		},
++	},
++};
 +
-+		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
-+		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
-+		gso_skb->csum_offset = offsetof(struct udphdr, check);
-+		gso_skb->ip_summed = CHECKSUM_PARTIAL;
-+
-+		uh = udp_hdr(gso_skb);
-+		if (is_ipv6)
-+			uh->check = ~udp_v6_check(gso_skb->len,
-+						  &ipv6_hdr(gso_skb)->saddr,
-+						  &ipv6_hdr(gso_skb)->daddr, 0);
-+		else
-+			uh->check = ~udp_v4_check(gso_skb->len,
-+						  ip_hdr(gso_skb)->saddr,
-+						  ip_hdr(gso_skb)->daddr, 0);
-+	}
+ static const struct parent_map gcc_parent_map_0[] = {
+ 	{ P_BI_TCXO, 0 },
+ 	{ P_GPLL0_OUT_MAIN, 1 },
+@@ -241,7 +258,7 @@ static const struct parent_map gcc_parent_map_7[] = {
+ static const struct clk_parent_data gcc_parents_7[] = {
+ 	{ .fw_name = "bi_tcxo", },
+ 	{ .hw = &gpll0.clkr.hw },
+-	{ .name = "gppl9" },
++	{ .hw = &gpll9.clkr.hw },
+ 	{ .hw = &gpll4.clkr.hw },
+ 	{ .hw = &gpll0_out_even.clkr.hw },
+ };
+@@ -4552,6 +4569,7 @@ static struct clk_regmap *gcc_sc8180x_clocks[] = {
+ 	[GPLL1] = &gpll1.clkr,
+ 	[GPLL4] = &gpll4.clkr,
+ 	[GPLL7] = &gpll7.clkr,
++	[GPLL9] = &gpll9.clkr,
+ };
  
- 	skb_pull(gso_skb, sizeof(*uh));
- 
+ static const struct qcom_reset_map gcc_sc8180x_resets[] = {
 
 
