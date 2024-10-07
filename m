@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-81475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4E5993744
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 21:24:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC5D993748
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 21:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4D64B22AD4
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:24:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C16021C227EA
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 19:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EEC1DDA3C;
-	Mon,  7 Oct 2024 19:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E761DDA3C;
+	Mon,  7 Oct 2024 19:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JNJYYqiv"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4kY2qmlU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9911DDA09
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 19:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CEC13B797
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 19:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728329041; cv=none; b=q/FfKf6RyzX/80g5Nph3RHpFzbvHXVfIjlH/NCI4ZQU1EtnWhtNcCtdjLFwGCKO3AOUwQ9Qj2j6sAd9sB76iARCNeN67yfeUr7CDuNDIJKb3dpPGIuyVP1KE8h8AzE+ne8ojQYxNZ95uaOVa8gCxop92ntJPYArUiBIHYdDN6uc=
+	t=1728329120; cv=none; b=DomZsBYGZG27OWHI7gt3vxRPXjj9BxCfNI6W1n0aIIzq9mGpBNb+IJ2ACM7J0GUTlWFw5Tsx4RjJkMzK6jrKXr56n3OYKvd2LyvouaRo6dtyBdXMgzbhepWp/rGONOX/umNK0NDi/lgF9IqCdrdWzvETojqec4Q5cv2f89sAvj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728329041; c=relaxed/simple;
-	bh=zVrz1xKctyHSTqHhaCye6QQH+5uiUWp9bPnnySsHGxs=;
+	s=arc-20240116; t=1728329120; c=relaxed/simple;
+	bh=0IhdWC17rzBAQapljFG63a0hLiPpVx1yPc6Qasf1zpE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FoG60rX0neVR/uvKYVf8SOFbHWnBgXyGtd66En5iWv2n7tbUt2aNUVARakxTUtMmuqlEm+nZjUETp+vqzlmnPfkcPMhnVKPlOG9aSQgbRy7CAS6MQsWqh4K7YicnFShfY+oOGDQKpl+MkYcbA1Buv8H/jqErgqdEw+XqL669nZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JNJYYqiv; arc=none smtp.client-ip=209.85.128.201
+	 To:Cc:Content-Type; b=SZ5FlKVid3yVmqRRZt8hTM5JHCeYO6ijHEk5ryDEZSUgYyRrQMgqGHbtfeWiURaJA/EEV82/2OmFBWsYSl1oskkMpH9NsdoojxgYAwDGeYwpfz2pM+vpPVwIDmiRAjOBrBmTP0ByOTgz3m/CeTJxLE0A+/gg10nsFFfkvP0XvUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4kY2qmlU; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6e29b4f8837so55510167b3.0
-        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 12:23:59 -0700 (PDT)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6e2b049b64aso77356847b3.3
+        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 12:25:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728329038; x=1728933838; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728329117; x=1728933917; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ne0lF0Pla2FDz2GUp2Mw3btoLP/uXf+LNe1nm9eoiHU=;
-        b=JNJYYqivglzDc/xxJmq/IMrrhDIbeF6AXHC0Yh8ZfSSBAGWr7wZ0wVrWDtKEyUa+uU
-         t55mO8J2Ab8V4c+0Fd2uahj5GjWqxnDIBWafhnVodoa2EUzjxD+XFdmZzuL5Na6YJg70
-         5y3/ztoUMSi57+FoE3FuUIkb9T9XMLQ+afX3C6mblNFcWfmfLrf2RZxcQfo+9OlNsRJR
-         7DiPiVxuRztpbOfAfxP9TCb5aumQ5t65eFhxXP4vZWW/WNd4BCYnJZXHNUBS/EjU3QNm
-         sJ0AvU7WTgN27UlUtDyVIlY941VRKTxK0ODlcao/cigRmmcPgOsUyvilm/JLXwrzHMn+
-         AM7Q==
+        bh=INVb5YwfIp0vmB3x3v0V8APhhvcemuk9P/Yoi7NKfgc=;
+        b=4kY2qmlUHC+EPJVtUiMMsPzredt6XVl/tx/mzK5+cop4A5neu+5RyTneS1YQFM8oUN
+         ZAQIlEJCz68xN331NlKIY9IEDnmMeUaHt53gnaQcDRNIkjA/rLmkGSM++R+/ZoXwx8ZK
+         IYQsAbWc3qletFiMka9a7+wcj0A11V0boHGLn9WX1TVcM9smrNt/k2RfYKnI2Jb3iL+N
+         nnxIUsRixTJmM+tnfqBGi+M1HsVMNyTWy/QZFhbx5iO628Y+2fbTSsD1zqEIdguvEF54
+         7Egpz7o1XXLRD+FImBfk4/aoMHU9xRpJeChwbCrCMm2HzyKJ7cnJ8uFtxKBCbe4aswrr
+         MOzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728329038; x=1728933838;
+        d=1e100.net; s=20230601; t=1728329117; x=1728933917;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ne0lF0Pla2FDz2GUp2Mw3btoLP/uXf+LNe1nm9eoiHU=;
-        b=Cb32zeFteQBIDWJQpAmIBlPm6eZ7/mYk2Y3/lF5pg0TGehr3Q0O4U60baFqDAp4hkE
-         7Gc21zlfFrCBKshwn4Sv4GRdF7LvU+ZsS+lEnr6CIxgLC5YfU1Ce4IllAA/658MmMYyp
-         SPLVqUmzG0Df+D1+GmcS9ytsCiY5WrakRC2EFhpxncoTJ7JNw9xRmqd/Ba6hONcNg4AN
-         uxeR2mD3cuY89zFNwATlswRJ6PUyUdUpsFKAgWaX95jLMv9jaYuaNr64/owPn3+lWFWD
-         mdkBdXGSsfmjE2QF6o5dtLbBFMat1mE2w5I77b29oKobynZPMKZYL8oLHAcm6gOnLqKr
-         A6HQ==
-X-Gm-Message-State: AOJu0YyI2XEq6Vidok1Q/iV33FUEz1WMsOZJuEZ7avSV6zGhAiK3BvLC
-	QQX/Ff2I0FmaQlGIo1+z6E8ZL5RuRh4BwDhiKdPME2q6XkMxyuNS1uins6uWMruCt4X3vmx30ei
-	I987nOPugXwhIbU63XTsKiz91p9CPVYsLBceKv5rf9eqB3hs3biR8+HT7YHTdvf4AsKNp4BY0kT
-	R+mButimszNCVUA31hbhxBAJW5m/REBBmfUHXE0JkxD2WFYBj//rLEZw==
-X-Google-Smtp-Source: AGHT+IHhqZw7/Ama1f7jz4saYUWrs2H+RGlMFeAY4imqyB4qQAzOhUaHZm0K8Kv61c7kXU1KVBl95SQMR2FPyABz
+        bh=INVb5YwfIp0vmB3x3v0V8APhhvcemuk9P/Yoi7NKfgc=;
+        b=fFpT0jT8VjmmLGFXY8l7QrpfdU6m7vjTyu+FccT+ZBgteHXnUaRIWYHt6Q+JajrNW+
+         49Ky2LmtkiCt4YniydF3g2fleMD78lkfoW7CGzCzgv4K0mC4v8tkQn1ocz1Y/KY2YMbb
+         Nd+USjGSxYJHvYj7pP3af/YoceaWFPnw1shFNjV+cu0epaDPqCRyrsBGlNTMgcOcIr2l
+         1JiTN1tjt5OCDY4hwFU88GjWMTtVAMGPNx+ren6fWuWAcwqPWYBtXotbahE+3fmVACuJ
+         1QoEmyRiByCDqxBL4+bY3rTiVFSYY5z96FuRq3MlDS4g3rsGBV6rc9L8wBcLXZlSmUyw
+         1uoQ==
+X-Gm-Message-State: AOJu0YzpOdOJEjZqWfH/ZpwuCujXcegjdF95U9ZSwyDvbYv+7r5vs3pv
+	b26o4JYpsTbonj7/tGIqEnYf41F35xfD+tQQWEpqD7Hy8vPzF+E+A3nyizdM1O+uEVtir+8RrmM
+	agFY2IRfGynSHysCnlXFtuj2iZ0mNiWz5hAc2z430WiHQkXYNTCWOPDNKPGKqysOuJvtHZ47Jcs
+	iMK0Lk9rseKxnzZrqH+Mq7EHsbHvZlv2us5ms+SHBsg29Tm0iIjvW7qg==
+X-Google-Smtp-Source: AGHT+IFgFnFEKgq96ZvWBGlYAqd2te13/xTNb00ta5kCriqF3QzSKzZspuOzbr8Zcs6lEiDMrw5dKX10YEyOMTGj
 X-Received: from yosry.c.googlers.com ([fda3:e722:ac3:cc00:a8:616:ac13:f2fc])
- (user=yosryahmed job=sendgmr) by 2002:a05:690c:4708:b0:68e:8de6:617c with
- SMTP id 00721157ae682-6e30df3fc0cmr34047b3.5.1728329038026; Mon, 07 Oct 2024
- 12:23:58 -0700 (PDT)
-Date: Mon,  7 Oct 2024 19:23:51 +0000
+ (user=yosryahmed job=sendgmr) by 2002:a05:690c:6d0a:b0:6db:c6ac:62a0 with
+ SMTP id 00721157ae682-6e2c72a0cc0mr2636847b3.5.1728329116511; Mon, 07 Oct
+ 2024 12:25:16 -0700 (PDT)
+Date: Mon,  7 Oct 2024 19:25:12 +0000
 In-Reply-To: <2024100707-delta-trance-5682@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <2024100707-delta-trance-5682@gregkh>
 X-Mailer: git-send-email 2.47.0.rc0.187.ge670bccf7e-goog
-Message-ID: <20241007192351.2532915-1-yosryahmed@google.com>
-Subject: [PATCH 6.10.y] mm: z3fold: deprecate CONFIG_Z3FOLD
+Message-ID: <20241007192512.2534138-1-yosryahmed@google.com>
+Subject: [PATCH 6.6.y] mm: z3fold: deprecate CONFIG_Z3FOLD
 From: Yosry Ahmed <yosryahmed@google.com>
 To: stable@vger.kernel.org
 Cc: Yosry Ahmed <yosryahmed@google.com>, Arnd Bergmann <arnd@arndb.de>, 
@@ -158,10 +158,10 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  3 files changed, 19 insertions(+), 8 deletions(-)
 
 diff --git a/arch/loongarch/configs/loongson3_defconfig b/arch/loongarch/configs/loongson3_defconfig
-index b4252c357c8e2..75b366407a60a 100644
+index a3b52aaa83b33..e5f70642ed206 100644
 --- a/arch/loongarch/configs/loongson3_defconfig
 +++ b/arch/loongarch/configs/loongson3_defconfig
-@@ -96,7 +96,6 @@ CONFIG_ZPOOL=y
+@@ -83,7 +83,6 @@ CONFIG_ZPOOL=y
  CONFIG_ZSWAP=y
  CONFIG_ZSWAP_COMPRESSOR_DEFAULT_ZSTD=y
  CONFIG_ZBUD=y
@@ -170,7 +170,7 @@ index b4252c357c8e2..75b366407a60a 100644
  # CONFIG_COMPAT_BRK is not set
  CONFIG_MEMORY_HOTPLUG=y
 diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index 544a65fda77bc..d39284489aa26 100644
+index 6e7b9e8fd2251..65e518dde2c2f 100644
 --- a/arch/powerpc/configs/ppc64_defconfig
 +++ b/arch/powerpc/configs/ppc64_defconfig
 @@ -81,7 +81,6 @@ CONFIG_MODULE_SIG_SHA512=y
@@ -182,10 +182,10 @@ index 544a65fda77bc..d39284489aa26 100644
  # CONFIG_SLAB_MERGE_DEFAULT is not set
  CONFIG_SLAB_FREELIST_RANDOM=y
 diff --git a/mm/Kconfig b/mm/Kconfig
-index b4cb45255a541..baf7ce6a888c0 100644
+index ece4f2847e2b4..c11cd01169e8d 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -146,12 +146,15 @@ config ZSWAP_ZPOOL_DEFAULT_ZBUD
+@@ -147,12 +147,15 @@ config ZSWAP_ZPOOL_DEFAULT_ZBUD
  	help
  	  Use the zbud allocator as the default allocator.
  
@@ -204,7 +204,7 @@ index b4cb45255a541..baf7ce6a888c0 100644
  config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
  	bool "zsmalloc"
  	select ZSMALLOC
-@@ -163,7 +166,7 @@ config ZSWAP_ZPOOL_DEFAULT
+@@ -164,7 +167,7 @@ config ZSWAP_ZPOOL_DEFAULT
         string
         depends on ZSWAP
         default "zbud" if ZSWAP_ZPOOL_DEFAULT_ZBUD
@@ -213,7 +213,7 @@ index b4cb45255a541..baf7ce6a888c0 100644
         default "zsmalloc" if ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
         default ""
  
-@@ -177,15 +180,25 @@ config ZBUD
+@@ -178,15 +181,25 @@ config ZBUD
  	  deterministic reclaim properties that make it preferable to a higher
  	  density approach when reclaim will be used.
  
