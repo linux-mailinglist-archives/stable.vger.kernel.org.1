@@ -1,179 +1,176 @@
-Return-Path: <stable+bounces-81481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02AFD993851
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 22:33:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0722993867
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 22:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B93E9284B7D
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 20:33:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BCB01F22D80
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 20:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16808156665;
-	Mon,  7 Oct 2024 20:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB1F1DE4F6;
+	Mon,  7 Oct 2024 20:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="B+D+I0w8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hl8Cm7p8"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2054.outbound.protection.outlook.com [40.107.237.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1FA320F
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 20:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728333195; cv=fail; b=CJ76DOQu1NYESMVWzQAUOb3md29WhF1tpOy43F1HEX470tqD53jqxgbrxADVUsrt8UhYOd9bETIPk510EHE9BBeLwZaGZS3uR8VwYq+uYJL4IeP99FiBjS5DGjgwO+Jvs6hMJDgTLsTvHfqyHf7NIttnJSMAok+56LedD6ij+Sg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728333195; c=relaxed/simple;
-	bh=IL35gLo7d2DhxyT6sk+jFaD+NLvvZOZn6nMYaGdUQs4=;
-	h=Message-ID:Date:To:From:Subject:Content-Type:MIME-Version; b=lXEsbCuSyGw0DJQmsNYNQe+biKmVucjGmDVuaZ9pJLj/zpAa96SgONfps4Qf9zQRYXvdlneZWEUuCpcbVYHJ4EnGukB5fs1RVJ7wILFR0I+chrS0oDGL9v92Ty0rTdNzN1Jz98vMMcYZTcltJfFyqIpuRFGmTIpvFlo+7Ruf6Dk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=B+D+I0w8; arc=fail smtp.client-ip=40.107.237.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y/dwNsUBorU1AbsYGRvkt9vGYZ6L0M/F2BPX+jFnKGwb/U5DRiFteVQVHL2hERs1Mu1ouC0XiCTqlzEtzZVLVFkjhoGz8cy8+CAFgw3A/+ckaHpSYBRYHM3KryH9qwmscAjBiNrg7dJTvW4g/N96x6b+IinZlauozr4vo4eSCS9yjQtobBF8VV9AjG8hNsm7ZgLLBwmU+/xQzVLiKJIFuWa3jsB0IPD4NSA9KAIYHTX10z7cdDfFAJFMN9tOgOebY0z/0O/BXYDqBeuxI54fBkM3/No5y8oE2gXCUZXo/tlTts+APAkUA4t1/6dgeytfiSQOXBdC5s4D69VyzvJd8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=21D8DoSLrEDiKqmiZgEZQGETQrk46hiR+v2Evyk+ZdQ=;
- b=TjRwgDv84xnpJloVCPGINDToxlsHc9uNESP9Ku7cG6UV047H/t2aJEQOHm1OZk+7C+8ZvlY7rgu9e/P0QroKuUxo+9w/pBt2q8zUVfunShWbhClR6Xw9+oYHcR/I32qnpHv5DFKHQzWKFobF+loKJCdB32iAA8yG4GKhCW9ZJtf9va35LtXZGwXAU3QbbdUezb5BfOJLiH4sfRQZWCz2wAj9/QhD30JG4NTlYy8kzvz0FHfNkGGgbWJUttL6NK+R+9ljwwwW2UUU0UscyMuMqPimxx6ufrEzh4EaQICYweqEUCD9mN6qicc5cZiRGM0p+IKmgJbl14qBPqm5uOguMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=21D8DoSLrEDiKqmiZgEZQGETQrk46hiR+v2Evyk+ZdQ=;
- b=B+D+I0w8/cleDHjubXuvJNAe0kM5vzt+dFGp7r4vJaJ63AEdZd7z0F66UCiK5q1WPiy8yYBVZtGkjfRFGbCD+IAte9F4+gTnuzRcpv1QsWywmlEn/f+f3IFmgFCW2v3o0PRArJU8N2udRcLfJCzLCgN1duZAhNdHA+DEJKhwwDw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by CY8PR12MB7291.namprd12.prod.outlook.com (2603:10b6:930:54::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Mon, 7 Oct
- 2024 20:33:11 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.8026.020; Mon, 7 Oct 2024
- 20:33:11 +0000
-Message-ID: <d75e0922-ec80-4ef1-880a-fba98a67ffe5@amd.com>
-Date: Mon, 7 Oct 2024 15:33:10 -0500
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-From: Mario Limonciello <mario.limonciello@amd.com>
-Subject: Regression in 6.11.2
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR08CA0013.namprd08.prod.outlook.com
- (2603:10b6:805:66::26) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D371DE4C9
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 20:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728333488; cv=none; b=dZSwdqCv7bx96JiSyxTafOnRqOFEnkZse5ZpomZ6lZVwiyK0Qcds38VuOxaux+4B5a8WSPUk/bfOJokhZXQBa7Mcoe5E+PO9RVoFlCH9TOFEk/kTIfvTNaT8wK7jAOldcdIvmU6b84uawM5E6OwH4DPKix6OdJz5SSc0xi+tHeE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728333488; c=relaxed/simple;
+	bh=+vaw7NnPKy7C066jwLSdY8mlS1f0W7g9767BntV5JOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UuTpN/ZEcxNOze40TW+906i8f7Noz1IRMMkT/EGdMHYC8QeXZy8Og2sa0TFqcg+7BKHXTVlnhY0PYU1svVPTB00FkGeCn03XjblA/tuUIzUi71Z7ydmS++mepskoL8oR25O1z7vjdfCXh/COR1IVNhJxsbaapWMvyqxxkZ6hP8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hl8Cm7p8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CD4C4CEC6;
+	Mon,  7 Oct 2024 20:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728333488;
+	bh=+vaw7NnPKy7C066jwLSdY8mlS1f0W7g9767BntV5JOI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hl8Cm7p85zG1Kb3xSGcWgswVy/Qv2Uu9lM1wIakAdMYXLVDsEiCz1novSVNE4U3wq
+	 Z3df2hQm/9VAHOU9NEsM+AJm/FSMCECZE3rBGdrHMtrWCfINXNukpAa3VsQ0+661Rk
+	 kZ99ptNU72t7N31GohcplvOKNynfjsMHzXk9KHJGuAhbIF9btk/FiZlJZhj+z1v4j4
+	 U+w3l76oWNpjhffiuAaSxaDkrX0mvyVLfN/a1vFFuxGgD8nWRUDSHPVJC02tNA1qby
+	 SH9baB4AG8KrInrcDupi6bL9gRy2P0biQ436mNLX8/djzp0TGaiJ4BSuHfd0QjRVw0
+	 qwHEAW0k1OphQ==
+Date: Mon, 7 Oct 2024 16:38:06 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: linux-stable <stable@vger.kernel.org>
+Subject: Re: queue-5.10 panic on shutdown
+Message-ID: <ZwRGrj7wteHsLIxQ@sashalap>
+References: <9D3ADFBD-00AE-479E-8BFD-E9F5E56D6A26@oracle.com>
+ <ZwRCA4RWiow4zTjV@tissot.1015granger.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CY8PR12MB7291:EE_
-X-MS-Office365-Filtering-Correlation-Id: 238dd195-303f-468d-a018-08dce70f4302
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Zkc4RU1aTUY3OWNMZU5uYzhpK2ZHSW1RZlJoelVpRURDbGpheHhGYVFCVmkr?=
- =?utf-8?B?aVpvYkhxWW9xUmduUFRGVzJpYXNJeDVXV3IxRmk3Q1JJaW9McXdaM2RhUzZZ?=
- =?utf-8?B?UXNZZ1NWaVppaE1CSzdQbmNvUzBkWW1NNmN2N2puZUZ4d1Jqczk4TFNSYmpY?=
- =?utf-8?B?STY5SVQ5VEtJbENkdEpiUUpHcndhQk96QjJKUmtyYW1QTzNLa01lTXNEb3di?=
- =?utf-8?B?ME9JaXg0bksreFJEQXlhaW5La0RpNUI3OVZQUWJaeTJseWhzOXJoOUdnU09Z?=
- =?utf-8?B?YTB0cVBocUEyYW9oSHdhbzkzL1FmN29oV0Z1bDJZVnQ3SktOYnZsVmpPajNk?=
- =?utf-8?B?WEtRdFJzSndIRU9YOVdsNndOWXNOcW5PRElOWmtRRm5SZElXcFpDRUpRZnA5?=
- =?utf-8?B?TVh6S0VBbGR4dGdVbDZRV3ZxUzRudGowNzNGV2s5bTJubGVHNERGK01ZR0o4?=
- =?utf-8?B?NjE1NXlXcHowaXNFS2ZQdVBybnh0Mk1PNGk1ejJiTzU3L3ZvV0ZMdGxtazBO?=
- =?utf-8?B?L1FQMjB3OTlEQUJVeDhyVDdKUGlBZTNOUU9RcVVrQytHakJTUUpVNHRxS3Rj?=
- =?utf-8?B?dnY3NmlYdjBDOWV2QVlkSlIraHNtMTRzVnZWZjl1ODBjZVlIVEp4SHcwUVc3?=
- =?utf-8?B?K29ETlJENU9nNGJzeWtMUnNnczlIV3NNZ2Urd25mMG9KWS80ZGV2QTIxanVO?=
- =?utf-8?B?UzJ0anVlQ2oyOUgxUXFLOHVPNFVYNFBkUzNxN0QrUWtOUXBjeGwvY3NFK0c0?=
- =?utf-8?B?a3cvekVsVjVjS2doSTF3V1Fjb0NMRTZFRHB4cWZ5aHJTcCtQRmJTd1ZpYjhr?=
- =?utf-8?B?emhZY1ZwbVg2ZDB0ZFN4ZS9HTHNCTTRoSU9nb0pYcWN4YWxacE1rekd2cU5q?=
- =?utf-8?B?c2ROMUZ0c280Y0VRVksrbzIzMk43M012RDRhZnVyRUpsUmwxb3BreEJ6Q0pz?=
- =?utf-8?B?U3FxRWxOMFVJNStQZldmejROSTlWbmtoVVUvZmhCZXNqU0dURHhiNW55WDEw?=
- =?utf-8?B?NmpmS2F5WWFNRnZ5a3J6OHJ3Z1RETDJLNWZXUzV1N0dRWVdMSDczQ0pxWTRW?=
- =?utf-8?B?Mm5HWmRjYkVBa0hJYXhFWmFteGtDZitaTlIya1EyRmRWbW9iNVhhOXdCWjNV?=
- =?utf-8?B?c2hpalNYS0dKZ1RjcldmUTNzWnFLZ1Q5eXFrYTRqbVIrZXBwdERRbFlxNTUv?=
- =?utf-8?B?VjdIaGNMSmRlNkpkS3EzZHBQQ21nTFZDNVlSUnN5b0k0ejRwRXJuY3R0M3Y0?=
- =?utf-8?B?ZVpvZ09MNENzT0NUaEJmT2gxam90djVoMDl0VUVJM0JTUm1ESWVzbXNvR0R4?=
- =?utf-8?B?aVBNL3dJc3I0YjdYZ2tzeVJheU1HRFB1Ris4RWxrZ1JOMnBtOEd5SlFZcGFJ?=
- =?utf-8?B?R2ZpQk9NRVN3L2xQUmw2K053Q2huU1RzLzhna3FVTFN5YWFaaWxvVWRMeGFC?=
- =?utf-8?B?U0RtenFjRFJMYlJIMkpJejdsRFFUQUZrbTZlWkNOL2RpSitRc3FBUUIzS0RZ?=
- =?utf-8?B?N21WYnFYODNhNDJPVnlzYThzeUNDWFQvcmFEc0dFMSs5cWZqb3Q4UzJUNm8z?=
- =?utf-8?B?NTRCSFdaUFF6TlN0aUFoWFZWTjc4dlFKTEc1WVhUNUlCeG95QXY0L1FTQUVz?=
- =?utf-8?B?RFZTakM1QWdSNE1YU0lza200emt1c1NpWGJuYW95L0RQQk5GVlpheCthOUtX?=
- =?utf-8?B?aFlqaFRjeHh6UmgzdkE2VWZicUVrd2VzM1p0eXhoNFpKMnh4TXZnTmZRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZDRSYlFmd3FCeWJtM0JPQXh5ckJQVGRTNDBzaWdUdU9ISDViWS9IN2U2Q2VL?=
- =?utf-8?B?Y3E5SnozWHFCaGdsZVZHcytOSkt3MGl3OUFNL3N2eFIrWkNndVMzSVRFaWdC?=
- =?utf-8?B?ZjJOcW55WXpSaTJucVVNNVB3UlptYW1MMmQ3ckF6NFRVNnpSTHNHZXIrdzVi?=
- =?utf-8?B?bjV3eVZ5aXFMNmt5Z0JhMmVlQUhRM2h1dTZBSjFZbUlrRldobHJFa0VNUkE3?=
- =?utf-8?B?NlIwT2xOeVFoaENjcE5wZEFxMk53M1d1cmFod2Exd0VoMjZJWXJhbHc2a0pN?=
- =?utf-8?B?Y0RKYnlYNy9FSnp3eitQWTU0VllYa21iSnBMcFU5RWlxY1oxeW9VcHIwcFZX?=
- =?utf-8?B?bmY4cy95b0VKSU85VTNjRFczM1pRblc2MHppUFRQS1h3ZENvcWpFR0ZwcGxF?=
- =?utf-8?B?bDBmVGg2d1FzWko0dHN4cm9QdjlxOExYSGEwYUF5Zk5NY1NIRCtVZCtMRDlB?=
- =?utf-8?B?UWl3anhIY3daTU44bmNpQkVKSFk2NTIvMHEzN3NYOXppNXhrbldnWjVtWkZI?=
- =?utf-8?B?VG1LejluOEIzTEMwZC93TGlOWm5KVFU3dE8raWRRV2c2WVlSRUZjV0xBVUF0?=
- =?utf-8?B?SjNmREUzM1RTcVVKQ3BWbzV2cTZycVFUWTYxRDNsZUkzRXNvU3dFRE8xQjZ0?=
- =?utf-8?B?MUJJMW5JVzlsMWE5WVRIS2EzdHBSTHRqcEZKOFBtUWtqUG5OR2x0aThqdE9h?=
- =?utf-8?B?RW1mZ2swMy9GUGxrMWFTVjhZWExOWlo2WllYZzJEaDNhY2x5ZkxZTS9TdE1K?=
- =?utf-8?B?ZWVtT1lYVmtudW5odkQvQ2tXQkUxOVdTTXJPMjlDWFpEMS9IUGhjVDc4ckhu?=
- =?utf-8?B?U2U3bkJJSHgxUVVCdHExa3FWSmFRVUhqN3ZXZkRWZ2N5ejdnQVlva0RFcVB1?=
- =?utf-8?B?WHFFZCtqUFlQOTRrMjBhWTdmeERKZ1RRekpTUyt4OHpHc2RZYUpyZ1dCZUZv?=
- =?utf-8?B?aE5JTjRMcVFVTlNGTHFkWnk5YVhJb2wyUjJQQzZBWnhSbGN2ZStZTkVzUzFJ?=
- =?utf-8?B?bG9VTElHUGc3S21uTm4rRUZFa25oQm9lcTBsT1g2Z3JISzJGRW52dkp0TzdH?=
- =?utf-8?B?YitnV0NCL3UyWnJMbFZwcVR0WjNYS1lsazgrZVlyUEVCYkVJa01SR1d0c2pS?=
- =?utf-8?B?UFB4blF0QUxrQm1QOXRuWktSK0g5Zm9MNWRtbm5ETmVmdEYrdnZSUmQ2NHVC?=
- =?utf-8?B?bDJjMzl5UkkvZkRlYWZXc3d2cks0bURiYzB3TmpsZUdsbFNma2c4cGVXZGRB?=
- =?utf-8?B?L2FPdUJSZFdvQkM2MWQrbStnelVhK1RFcVQxYXQwbXBBUzBlR0xPQzZNTUNy?=
- =?utf-8?B?cEs1Vko1c0J5c3ZESzBjNVBoS0c1ZG1xNTk5aHROYVhIUGdUSitvOUN3aTYz?=
- =?utf-8?B?MExSdWVJRXFHVXJVUlFPOERUSWR4VE1tSVd2S0F4WHNSUFJWVkdNa0lDWVpX?=
- =?utf-8?B?dm9BUFZ4MHQrcU5HTXRVZHVCV29rOFV0OFZ5VTQyVTZnSnl4V3N1cWVYZno2?=
- =?utf-8?B?VERwOC9uL1VWWGNqcStFM1hKcnRWMmR6a3dSMWc2b0tSQWJpNlRtN0I4Skwz?=
- =?utf-8?B?blNWOU85NG83Y2wvK3ZlV01IZUtYN3ZjOG5rcGJaRVNoUmgxbnNvc2tocXVK?=
- =?utf-8?B?bWRjN1Mxb1JMd0d2Yy9tazZjRE5PbVF5dENiOC85SVZiOWpsMVJsb3ZNSFBj?=
- =?utf-8?B?dzB6Sjd4RXBFYldwaXk3WTJiQjFiMStwYUNDTTg1Rjg3ZlovanFUdGtJZ090?=
- =?utf-8?B?SzBEVE5yUWZUK3ExNXQ1NU9TempsYWlBMUYvdEtka0gxQkdRQXh6MFREVkZt?=
- =?utf-8?B?RWJ3aFZOZFYwTmZTTGZIaWRNcUE2WHF2YjUwZTg5REtQVFUzdmJmdkd4MVZq?=
- =?utf-8?B?RVVMeUozTVozUHVnemtZbjZoVWNQRzNkcUNrVlA4dnJaRWhSallldTJkWm8z?=
- =?utf-8?B?R3Zud1FnUEt6dVRvSE1zazBVakxHdmZiVWJ3Ym1Edm5xSWFlTDcxL0F6THFR?=
- =?utf-8?B?dDFudzFVWFA0L0QwVVVnU20vUEZTQ3RCQmNLd2laZ0FWSkRVbDE3WE5KNjlF?=
- =?utf-8?B?MWp5ODl3bmxzNjhkWEZYVUZuVTVSUHJMWk1GdHR3am9tWXYvMXdIWHp1aWxr?=
- =?utf-8?Q?Ev3Ncxe8qIJEg2LTtgGkQK7jQ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 238dd195-303f-468d-a018-08dce70f4302
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2024 20:33:11.6141
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YDPY3IzgX1E46AerpuKqHpe6aDAVxbM9J9ywMsqtAu7m0vyCTiBrqzf23WKoGNzqyXqn5oe2qITD4zcYlCa1Mw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7291
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZwRCA4RWiow4zTjV@tissot.1015granger.net>
 
-Hi,
+On Mon, Oct 07, 2024 at 04:18:11PM -0400, Chuck Lever wrote:
+>On Mon, Oct 07, 2024 at 10:06:04AM -0400, Chuck Lever wrote:
+>> Hi-
+>>
+>> I've seen the following panic on shutdown for about
+>> a week. I've been fighting a stomach bug, so I
+>> haven't been able to drill into it until now. I'm
+>> bisecting, but thought I should report the issue
+>> now.
+>>
+>>
+>> [52704.952919] BUG: unable to handle page fault for address: ffffffffffffffe8
+>> [52704.954545] #PF: supervisor read access in kernel mode
+>> [52704.955755] #PF: error_code(0x0000) - not-present page
+>> [52704.956952] PGD 1c4415067 P4D 1c4415067 PUD 1c4417067 PMD 0  [52704.958291] Oops: 0000 [#1] SMP PTI
+>> [52704.959136] CPU: 3 PID: 1 Comm: systemd-shutdow Not tainted 5.10.226-g9ee79287d0d8 #1
+>> [52704.960950] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+>> [52704.962902] RIP: 0010:platform_shutdown+0x9/0x50
+>> [52704.964010] Code: 02 00 00 ff 75 dd 31 c0 48 83 05 19 c9 b6 02 01 5d c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8b 47 68 <48> 8b 40 e8 48 85 c0 74 23 55 48 83 ef 10 48 83 05 01 ca b6 02 01
+>> [52704.968215] RSP: 0018:ffffaaf780013d88 EFLAGS: 00010246
+>> [52704.969426] RAX: 0000000000000000 RBX: ffff8f91478b6018 RCX: 0000000000000000
+>> [52704.971095] RDX: 0000000000000001 RSI: ffff8f91478b6018 RDI: ffff8f91478b6010
+>> [52704.972758] RBP: ffffaaf780013db8 R08: ffff8f91478b4408 R09: 0000000000000000
+>> [52704.974433] R10: 000000000000000f R11: ffffffffa654d2e0 R12: ffffffffa6ba0440
+>> [52704.976083] R13: ffff8f91478b6010 R14: ffff8f91478b6090 R15: 0000000000000000
+>> [52704.977765] FS:  00007f0f126e6b80(0000) GS:ffff8f92b7d80000(0000) knlGS:0000000000000000
+>> [52704.979653] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [52704.981008] CR2: ffffffffffffffe8 CR3: 00000001501be006 CR4: 0000000000170ee0
+>> [52704.982697] Call Trace:
+>> [52704.983309]  ? show_regs.cold+0x22/0x2f
+>> [52704.984223]  ? __die_body+0x28/0xb0
+>> [52704.985076]  ? __die+0x39/0x4c
+>> [52704.985827]  ? no_context.constprop.0+0x190/0x480
+>> [52704.986940]  ? __bad_area_nosemaphore+0x51/0x290
+>> [52704.988050]  ? bad_area_nosemaphore+0x1e/0x30
+>> [52704.989082]  ? do_kern_addr_fault+0x9a/0xf0
+>> [52704.990098]  ? exc_page_fault+0x1d3/0x350
+>> [52704.991047]  ? asm_exc_page_fault+0x1e/0x30
+>> [52704.992041]  ? platform_shutdown+0x9/0x50
+>> [52704.992997]  ? platform_dev_attrs_visible+0x50/0x50
+>> [52704.994152]  ? device_shutdown+0x260/0x3d0
+>> [52704.995132]  kernel_restart_prepare+0x4e/0x60
+>> [52704.996180]  kernel_restart+0x1b/0x50
+>> [52704.997070]  __do_sys_reboot+0x24d/0x330
+>> [52704.998026]  ? finish_task_switch+0xf6/0x620
+>> [52704.999049]  ? __schedule+0x486/0xf50
+>> [52704.999926]  ? exit_to_user_mode_prepare+0xc3/0x390
+>> [52705.000840]  __x64_sys_reboot+0x26/0x40
+>> [52705.001542]  do_syscall_64+0x50/0x90
+>> [52705.002218]  entry_SYSCALL_64_after_hwframe+0x67/0xd1
+>> [52705.003356] RIP: 0033:0x7f0f1369def7
+>> [52705.004216] Code: 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 89 fa be 69 19 12 28 bf ad de e1 fe b8 a9 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 01 c3 48 8b 15 51 af 0c 00 f7 d8 64 89 02 b8
+>> [52705.008496] RSP: 002b:00007fffcbc9eb48 EFLAGS: 00000206 ORIG_RAX: 00000000000000a9
+>> [52705.010235] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f0f1369def7
+>> [52705.011915] RDX: 0000000001234567 RSI: 0000000028121969 RDI: 00000000fee1dead
+>> [52705.013593] RBP: 00007fffcbc9eda0 R08: 0000000000000000 R09: 00007fffcbc9df40
+>> [52705.015272] R10: 00007fffcbc9e100 R11: 0000000000000206 R12: 00007fffcbc9ebd8
+>> [52705.016928] R13: 0000000000000000 R14: 0000000000000000 R15: 000055a7848b1968
+>> [52705.018585] Modules linked in: sunrpc nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill nf_tables nfnetlink iTCO_wdt intel_rapl_msr intel_rapl_common intel_pmc_bxt kvm_intel iTCO_vendor_support kvm virtio_net irqbypass rapl joydev net_failover i2c_i801 lpc_ich failover i2c_smbus virtio_balloon fuse zram xfs crct10dif_pclmul crc32_pclmul crc32c_intel serio_raw ghash_clmulni_intel virtio_blk virtio_console qemu_fw_cfg [last unloaded: nft_fib]
+>> [52705.029015] CR2: ffffffffffffffe8
+>> [52705.029832] ---[ end trace 40dfe466fd371faa ]---
+>> [52705.030908] RIP: 0010:platform_shutdown+0x9/0x50
+>> [52705.031972] Code: 02 00 00 ff 75 dd 31 c0 48 83 05 19 c9 b6 02 01 5d c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 8b 47 68 <48> 8b 40 e8 48 85 c0 74 23 55 48 83 ef 10 48 83 05 01 ca b6 02 01
+>> [52705.036245] RSP: 0018:ffffaaf780013d88 EFLAGS: 00010246
+>> [52705.037474] RAX: 0000000000000000 RBX: ffff8f91478b6018 RCX: 0000000000000000
+>> [52705.039143] RDX: 0000000000000001 RSI: ffff8f91478b6018 RDI: ffff8f91478b6010
+>> [52705.040827] RBP: ffffaaf780013db8 R08: ffff8f91478b4408 R09: 0000000000000000
+>> [52705.042463] R10: 000000000000000f R11: ffffffffa654d2e0 R12: ffffffffa6ba0440
+>> [52705.044135] R13: ffff8f91478b6010 R14: ffff8f91478b6090 R15: 0000000000000000
+>> [52705.045784] FS:  00007f0f126e6b80(0000) GS:ffff8f92b7d80000(0000) knlGS:0000000000000000
+>> [52705.047637] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [52705.048992] CR2: ffffffffffffffe8 CR3: 00000001501be006 CR4: 0000000000170ee0
+>> [52705.050655] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000009
+>> [52705.053432] Kernel Offset: 0x23000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+>> [52705.055871] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000009 ]---
+>
+>The bisect result is:
+>
+>7f4c4e6312179ddc5a730185dd963d9ff4af010e is the first bad commit
+>commit 7f4c4e6312179ddc5a730185dd963d9ff4af010e (refs/bisect/bad)
+>Author:     Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>AuthorDate: Thu Nov 19 13:46:11 2020 +0100
+>Commit:     Sasha Levin <sashal@kernel.org>
+>CommitDate: Fri Oct 4 19:11:25 2024 -0400
+>
+>    driver core: platform: use bus_type functions
+>
+>    [ Upstream commit 9c30921fe7994907e0b3e0637b2c8c0fc4b5171f ]
+>
+>    This works towards the goal mentioned in 2006 in commit 594c8281f905
+>    ("[PATCH] Add bus_type probe, remove, shutdown methods.").
+>
+>    The functions are moved to where the other bus_type functions are
+>    defined and renamed to match the already established naming scheme.
+>
+>    Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>    Link: https://lore.kernel.org/r/20201119124611.2573057-3-u.kleine-koenig@pengutronix.de
+>    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>    Stable-dep-of: cfd67903977b ("PCI: xilinx-nwl: Clean up clock on probe failure/removal")
+>    Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> drivers/base/platform.c | 132 +++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------------------------------
+> 1 file changed, 65 insertions(+), 67 deletions(-)
+>
+>
+>which even seems plausible.
 
-commit 872b8f14d772 ("drm/amd/display: Validate backlight caps are 
-sane") was added to stable trees to fix a brightness problem on one 
-laptop on a buggy firmware but with how aggressive it was it caused a 
-problem on another.
+Ugh... It was a larger backport on 5.10, I'll drop all of that. Thats
+for looking into it!
 
-Fortunately the problem on the other was already fixed in 6.12 though!
-
-commit 87d749a6aab7 ("drm/amd/display: Allow backlight to go below 
-`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT`")
-
-Can that commit please be brought everywhere that 872b8f14d772 went?
-
-Thanks!
+-- 
+Thanks,
+Sasha
 
