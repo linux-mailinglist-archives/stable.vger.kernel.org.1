@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A460E993410
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:57:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DE9993412
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 18:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 371BE1F23450
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:57:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55636282E70
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313E41DC065;
-	Mon,  7 Oct 2024 16:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28D51DC721;
+	Mon,  7 Oct 2024 16:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNUgd81Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7Rs2mCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8DA1DC051
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913501DC1BA
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 16:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728319864; cv=none; b=UWn7czoQygLpOAL8YoFWUF8LqTvwzV3Jt6kS2aImshvbEyq9m12b1T1/lX+/qM+q7yyw2PADJfsQETrkYx/Scg5AehbWm7sFjhHYl/UT+VQ3sYOR9U9LTPyrvJq+3DFl7mdO/D7txLrrG16G5/idI4yiO7pWIuvEIbx70nNP6Kg=
+	t=1728319876; cv=none; b=WJaaJQzD6C4EsXKfIxFngdeGTAYKlIUCBHVx84YkT/zv3YNxMl7VAtIQqbLH5YqyWQo4i2H+XpAJ9Hic7mofWZuXz7iFmTmlJvnNL7BRBAl5orUtUCnEYGczWe0ZcRxVxyxsj5YE1+rVe6RFW/O3/UPztuKV5Z1yoetwNoAVmQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728319864; c=relaxed/simple;
-	bh=p+t9xNvx8xvxsqwufZJtIIg8kwW8LUuET3tApQjyqPk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y3aLgwa/jWH+UIfuis7DwDzpEbjFewe1Rg4AyWFOhDdRQoffi4Iulus+rs586fHYjd1STKtAX62C863D1z+02pT0JZe7r0qQrG2doMv39frZbPKUdlnR2eADRgbd99lz0k2ptholFL97V3Vr8DuQQzkQBHZCJdrHoH55P4+kTjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNUgd81Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F86C4CEC6;
-	Mon,  7 Oct 2024 16:51:03 +0000 (UTC)
+	s=arc-20240116; t=1728319876; c=relaxed/simple;
+	bh=6bIqTqkifcUtepQUdJKzF+SKDuoDyIlItth7t2k4GbM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=r0+F7EmtTg3nnPfidagLIElvXEqjw7RZUCrG493MXHZD3x83RT7DWePwaYxZg231BnZ5A02JAWeJYz9SxhfVepkL2QIyTtUOsvusJeR26nRAUH4jwa4HHYyIApnF+aPl3cgK25P7TITFl9Bk5E8y9ZXZVAxi3JGLcAsNkk4zB/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7Rs2mCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7497C4CEC6;
+	Mon,  7 Oct 2024 16:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728319864;
-	bh=p+t9xNvx8xvxsqwufZJtIIg8kwW8LUuET3tApQjyqPk=;
+	s=korg; t=1728319876;
+	bh=6bIqTqkifcUtepQUdJKzF+SKDuoDyIlItth7t2k4GbM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=MNUgd81YRUTxurIBno1fan6HINeo5dOookeoYApkCecxs+Ygjl+LnMqM/N2vxzwNN
-	 hGto7CgoYuKfxBf7RKzBvhQGM0uqtF+HDyocr2VhkzL71UFXpKghpJX1pl87GGGr/b
-	 KGYR+JRO1O5lCPyM+IJZb4JqmqPcWHy8VV0Gso2Q=
-Subject: FAILED: patch "[PATCH] clk: qcom: gcc-sc8180x: Register QUPv3 RCGs for DFS on" failed to apply to 6.10-stable tree
+	b=p7Rs2mCRcsUB3iwRtkwfTeeBBsI+gVsAHKCO62zGnkaGBcsq6b9mPh4bVD8oizAvM
+	 58T74ZjtsSr0Fj4QiEXnGzoqceqJBgMpklCZFKk6irnOmYq33N6hpoQJxXLTHbPLBZ
+	 tm9zAC+IWgU2etrOIRLG7ix+LKAYptYRil1E9Z88=
+Subject: FAILED: patch "[PATCH] clk: qcom: gcc-sc8180x: Register QUPv3 RCGs for DFS on" failed to apply to 6.6-stable tree
 To: quic_skakitap@quicinc.com,andersson@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 18:51:01 +0200
-Message-ID: <2024100701-excursion-granite-98c3@gregkh>
+Date: Mon, 07 Oct 2024 18:51:02 +0200
+Message-ID: <2024100701-hazily-excusable-eb9b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1fc8c02e1d80463ce1b361d82b83fc43bb92d964
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100701-excursion-granite-98c3@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100701-hazily-excusable-eb9b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,20 @@ Possible dependencies:
 aa9fc5c90814 ("clk: qcom: Add Video Clock Controller driver for SM7150")
 9f0532da4226 ("clk: qcom: Add Camera Clock Controller driver for SM7150")
 3829c412197e ("clk: qcom: Add Display Clock Controller driver for SM7150")
+76126a5129b5 ("clk: qcom: Add camcc clock driver for x1e80100")
+acddef6e1744 ("clk: qcom: Add GPU clock driver for x1e80100")
+ee3f0739035f ("clk: qcom: Add dispcc clock driver for x1e80100")
+2ff787e34174 ("clk: qcom: gcc-sm8150: Register QUPv3 RCGs for DFS on SM8150")
+f6bda45310ff ("clk: qcom: videocc-sm8150: Add runtime PM support")
+161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+e146252ac160 ("clk: qcom: Add ECPRICC driver support for QDU1000 and QRU1000")
+8676fd4f3874 ("clk: qcom: add the SM8650 GPU Clock Controller driver")
+9e939f008338 ("clk: qcom: add the SM8650 Display Clock Controller driver")
+e3388328e47c ("clk: qcom: add the SM8650 TCSR Clock Controller driver")
+aa381a2bdf1d ("clk: qcom: add the SM8650 Global Clock Controller driver, part 2")
+c58225b7e3d7 ("clk: qcom: add the SM8650 Global Clock Controller driver, part 1")
+ff93872a9c61 ("clk: qcom: camcc-sc8280xp: Add sc8280xp CAMCC")
+0a6d7f8275f2 ("Merge branch 'clk-cleanup' into clk-next")
 
 thanks,
 
