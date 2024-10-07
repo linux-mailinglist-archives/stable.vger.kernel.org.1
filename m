@@ -1,215 +1,164 @@
-Return-Path: <stable+bounces-81206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE56899228E
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 03:25:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3CDD9922C5
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 04:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 338821F21A7F
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 01:25:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89B7328175F
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 02:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D68EEEBA;
-	Mon,  7 Oct 2024 01:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEE913AF9;
+	Mon,  7 Oct 2024 02:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHCH8QY0"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=kev009.com header.i=@kev009.com header.b="tuIpb769"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CC5C156;
-	Mon,  7 Oct 2024 01:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C72F5234
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 02:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728264296; cv=none; b=XP9gYtrq2p2P+Hsi3iiTwPGAPfzDcDDVZa2sFU/Tec11x+XOPBHAaRYxQvCp9qAYEI2tlce37Hz3CXkyv98GrVwbGG/aCE642pFaqxG4yfJlNtN12ZNw2jMeZBZ2oL7RxTdI9Q8dLBbACBtTfv6BoVJ/COk1O9noIAKqiCML8NA=
+	t=1728268382; cv=none; b=E6NDz/b0msN4bfHuXuIZCwgT12bgo/LSnM4wSzem5Yuv3dIti2l/C97Ap5XuQ6oT9Tv2OH8/dbPc/L4WuCVklr0ai6LdN31by34yFPa9LcFaaOI3OWAKdUA7QKWzYZsKvw64CaaK2kXGuAIGFXgLyWtm1tGiD2cqyKJ56JT68aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728264296; c=relaxed/simple;
-	bh=WCm/xfTBodlqj4bAKzAchL/blZIThgBRMTL2D1XRc6E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgMUSyKQWRByXdiSPyTSfneRgt5Np3RvdQ+bDkyfjCb1VSMiWYHBqkbKXW3B5ynkQcE4ZpYZfjhjVPeqej1J3VyBl0yNzDO883i/XT3eCHriF1hgbLTAQB6JkUc4nsjIp/XK4ZOiDINmdO+FTulQqUMWsJW09yuM1TepUR2R8TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHCH8QY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34E6C4CECC;
-	Mon,  7 Oct 2024 01:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728264295;
-	bh=WCm/xfTBodlqj4bAKzAchL/blZIThgBRMTL2D1XRc6E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHCH8QY0ZXyEg2C+QRZGwoRijb0ZYP98j15RbnIj0xpbmInWugI1WP/16g5MG0gkq
-	 sJLKqd47QLOFtzx86pGpGw6HbaD3D2COBr8JA5Yp1kHFiUfEw1zabd4aiJTKvl1J+a
-	 ZQDvdAixuafMQ6YotvbpxU7p6W00zg9wj37b9WRsQHpYRotTGsCRHsPVw5z3hlxMwJ
-	 sZn6A99qgdUvuj7whS9oJOYonxQKROWvoy7NDVyRlFZyaN1jyGcgMOqZmPz666tNit
-	 6l4pH1XdvzgS7X3elzgyOotEJZHdfLsiLrths1XG1qsRIS5d90F1DSHlAWunn24IFG
-	 xoNd569qORQcQ==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: x86@kernel.org,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 01/10] crypto: x86/aegis128 - access 32-bit arguments as 32-bit
-Date: Sun,  6 Oct 2024 18:24:21 -0700
-Message-ID: <20241007012430.163606-2-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241007012430.163606-1-ebiggers@kernel.org>
-References: <20241007012430.163606-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1728268382; c=relaxed/simple;
+	bh=UmYzWjwwdRldGzMtasrj0iUPzywF33QHaFRM8bXmb/M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cc3Tzkidt8zN1IxKuufzktbHldZT0DtZX3osblG2Q2XI2tBTrOUKVmwg5eZB+NGiSildwNlL+ysvncN5CX6xXp2chSks+2azBmlJZfL0yw1+tZp+aldcsX9VzkKiRSzMeZUydvVs9c16eDKyH+kRLmxu1dBP01koVP500uFyPMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kev009.com; spf=pass smtp.mailfrom=kev009.com; dkim=fail (0-bit key) header.d=kev009.com header.i=@kev009.com header.b=tuIpb769 reason="key not found in DNS"; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kev009.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kev009.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4583068795eso39503391cf.1
+        for <stable@vger.kernel.org>; Sun, 06 Oct 2024 19:32:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kev009.com; s=google; t=1728268379; x=1728873179; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eIagNj3XBeiwbes7ESay7OedVVX9YeO+j3SWRSuWDgU=;
+        b=tuIpb769p5oD0BWU9SUrJE4RyPonSCiDvwzOKjzffMGJDU82HUKHq4lzCS/ioKYOrm
+         QDXVeJV6LQjGIWPMtPKHYfrf4AEIiyZpWU3He1FOCy/6WqsM0rud7fQP4UtlJDBTZCq1
+         ZjzQRzllrHWRp3q6Q9zICqXpK/uhznT/YuZoY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728268379; x=1728873179;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eIagNj3XBeiwbes7ESay7OedVVX9YeO+j3SWRSuWDgU=;
+        b=TZkqR0f05c4NX4EP1cAvSumoH9KJ8KvYEz1UpXYn6RKK4P6XKVtYTK9GwCnHVpIgZW
+         Ywrk1UQ5r3kMaOvwWQQjGT7ASgQFvCUxusbRxv63BvP8COQpcN0aM0XGLEWpg/BJvb+d
+         SXpCz+Rn5cHEu9Vej89aW6O+PBsYQCW0GkGCQczYv3+lxBgGcsGIhA0LS1tRh7Q3RXvf
+         d+gQBhYe/cWr2bAH0S7/c1T8H6J8kU8NcAcwrz9txFXuE2vbtb4qzmz3b+W/WSOJLyMg
+         MjH28lP2CSVgmEw+f+WcJcX9DTrmjcKvavKwXK7kkv7dazsWuieDJ2Uz3Lu05SUCfA8R
+         34+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWnVGtKZhCAg7Fl0PoChpMObPwXk3Boda+CcJC3sArIQZ+JKOF39Tuo+3YZcpPhoCybb3APspA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHHGzTAIvrbDydq4qHsK7fyuQZ6UOzLRzOqAXrDiIJIcFyvTkN
+	6H6F11jvvmBeWblbmuSJl1oe2+oBulpnXj3c9jQGneP4QzTuTjacCFaBfj9l1UHanOHVXnpwJyD
+	mY59BJqmgU32koqynACjPbSBnBN4KStoalPzB
+X-Google-Smtp-Source: AGHT+IGW6ESRO/rs7JsIqpNrzr5mR+Qf6lp+llFyFWrhgLaCLuuBhqRYKgzRWQDEQknxfpZf58As69biVB1biwW3opY=
+X-Received: by 2002:ac8:5792:0:b0:45b:1d3:d9a8 with SMTP id
+ d75a77b69052e-45d9ba85fdcmr172235491cf.27.1728268379057; Sun, 06 Oct 2024
+ 19:32:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240801210155.89097-1-kevin.bowling@kev009.com>
+In-Reply-To: <20240801210155.89097-1-kevin.bowling@kev009.com>
+From: Kevin Bowling <kevin.bowling@kev009.com>
+Date: Sun, 6 Oct 2024 19:32:47 -0700
+Message-ID: <CAK7dMtDiL16JAXvTuTv3fOL5JNkMOCyjr6tVx44uDMKQxVnwqA@mail.gmail.com>
+Subject: Re: [PATCH] KEYS: Print digitalSignature and CA link errors
+To: dhowells@redhat.com, keyrings@vger.kernel.org, jarkko@kernel.org
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Eric Biggers <ebiggers@google.com>
+Hi,
 
-Fix the AEGIS assembly code to access 'unsigned int' arguments as 32-bit
-values instead of 64-bit, since the upper bits of the corresponding
-64-bit registers are not guaranteed to be zero.
+Hopefully this is pretty self explanatory, it just increases the
+diagnostic capabilities of using the keyring erroneously.  How do I
+get someone to look at it?
 
-Note: there haven't been any reports of this bug actually causing
-incorrect behavior.  Neither gcc nor clang guarantee zero-extension to
-64 bits, but zero-extension is likely to happen in practice because most
-instructions that operate on 32-bit registers zero-extend to 64 bits.
+Regards,
+Kevin
 
-Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
- arch/x86/crypto/aegis128-aesni-asm.S | 29 ++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/crypto/aegis128-aesni-asm.S b/arch/x86/crypto/aegis128-aesni-asm.S
-index ad7f4c891625..2de859173940 100644
---- a/arch/x86/crypto/aegis128-aesni-asm.S
-+++ b/arch/x86/crypto/aegis128-aesni-asm.S
-@@ -19,11 +19,11 @@
- #define MSG	%xmm5
- #define T0	%xmm6
- #define T1	%xmm7
- 
- #define STATEP	%rdi
--#define LEN	%rsi
-+#define LEN	%esi
- #define SRC	%rdx
- #define DST	%rcx
- 
- .section .rodata.cst16.aegis128_const, "aM", @progbits, 32
- .align 16
-@@ -74,50 +74,50 @@
-  */
- SYM_FUNC_START_LOCAL(__load_partial)
- 	xor %r9d, %r9d
- 	pxor MSG, MSG
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1, %r8
- 	jz .Lld_partial_1
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1E, %r8
- 	add SRC, %r8
- 	mov (%r8), %r9b
- 
- .Lld_partial_1:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x2, %r8
- 	jz .Lld_partial_2
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1C, %r8
- 	add SRC, %r8
- 	shl $0x10, %r9
- 	mov (%r8), %r9w
- 
- .Lld_partial_2:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x4, %r8
- 	jz .Lld_partial_4
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x18, %r8
- 	add SRC, %r8
- 	shl $32, %r9
- 	mov (%r8), %r8d
- 	xor %r8, %r9
- 
- .Lld_partial_4:
- 	movq %r9, MSG
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x8, %r8
- 	jz .Lld_partial_8
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x10, %r8
- 	add SRC, %r8
- 	pslldq $8, MSG
- 	movq (%r8), T0
- 	pxor T0, MSG
-@@ -137,11 +137,11 @@ SYM_FUNC_END(__load_partial)
-  *   %r8
-  *   %r9
-  *   %r10
-  */
- SYM_FUNC_START_LOCAL(__store_partial)
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	mov DST, %r9
- 
- 	movq T0, %r10
- 
- 	cmp $8, %r8
-@@ -675,11 +675,11 @@ SYM_TYPED_FUNC_START(crypto_aegis128_aesni_dec_tail)
- 
- 	movdqa MSG, T0
- 	call __store_partial
- 
- 	/* mask with byte count: */
--	movq LEN, T0
-+	movd LEN, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
- 	movdqa .Laegis128_counter(%rip), T1
-@@ -700,11 +700,12 @@ SYM_TYPED_FUNC_START(crypto_aegis128_aesni_dec_tail)
- 	RET
- SYM_FUNC_END(crypto_aegis128_aesni_dec_tail)
- 
- /*
-  * void crypto_aegis128_aesni_final(void *state, void *tag_xor,
-- *                                  u64 assoclen, u64 cryptlen);
-+ *                                  unsigned int assoclen,
-+ *                                  unsigned int cryptlen);
-  */
- SYM_FUNC_START(crypto_aegis128_aesni_final)
- 	FRAME_BEGIN
- 
- 	/* load the state: */
-@@ -713,12 +714,12 @@ SYM_FUNC_START(crypto_aegis128_aesni_final)
- 	movdqu 0x20(STATEP), STATE2
- 	movdqu 0x30(STATEP), STATE3
- 	movdqu 0x40(STATEP), STATE4
- 
- 	/* prepare length block: */
--	movq %rdx, MSG
--	movq %rcx, T0
-+	movd %edx, MSG
-+	movd %ecx, T0
- 	pslldq $8, T0
- 	pxor T0, MSG
- 	psllq $3, MSG /* multiply by 8 (to get bit count) */
- 
- 	pxor STATE3, MSG
--- 
-2.46.2
-
+On Thu, Aug 1, 2024 at 2:02=E2=80=AFPM Kevin Bowling <kevin.bowling@kev009.=
+com> wrote:
+>
+> ENOKEY is overloaded for several different failure types in these link
+> functions.  In addition, by the time we are consuming the return several
+> other methods can return ENOKEY.  Add some error prints to help diagnose
+> fundamental certificate issues.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kevin Bowling <kevin.bowling@kev009.com>
+> ---
+>  crypto/asymmetric_keys/restrict.c | 24 ++++++++++++++++++------
+>  1 file changed, 18 insertions(+), 6 deletions(-)
+>
+> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/r=
+estrict.c
+> index afcd4d101ac5..472561e451b3 100644
+> --- a/crypto/asymmetric_keys/restrict.c
+> +++ b/crypto/asymmetric_keys/restrict.c
+> @@ -140,14 +140,20 @@ int restrict_link_by_ca(struct key *dest_keyring,
+>         pkey =3D payload->data[asym_crypto];
+>         if (!pkey)
+>                 return -ENOPKG;
+> -       if (!test_bit(KEY_EFLAG_CA, &pkey->key_eflags))
+> +       if (!test_bit(KEY_EFLAG_CA, &pkey->key_eflags)) {
+> +               pr_err("Missing CA usage bit\n");
+>                 return -ENOKEY;
+> -       if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags))
+> +       }
+> +       if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags)) {
+> +               pr_err("Missing keyCertSign usage bit\n");
+>                 return -ENOKEY;
+> +       }
+>         if (!IS_ENABLED(CONFIG_INTEGRITY_CA_MACHINE_KEYRING_MAX))
+>                 return 0;
+> -       if (test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags))
+> +       if (test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags)) {
+> +               pr_err("Unexpected digitalSignature usage bit\n");
+>                 return -ENOKEY;
+> +       }
+>
+>         return 0;
+>  }
+> @@ -183,14 +189,20 @@ int restrict_link_by_digsig(struct key *dest_keyrin=
+g,
+>         if (!pkey)
+>                 return -ENOPKG;
+>
+> -       if (!test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags))
+> +       if (!test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags)) {
+> +               pr_err("Missing digitalSignature usage bit\n");
+>                 return -ENOKEY;
+> +       }
+>
+> -       if (test_bit(KEY_EFLAG_CA, &pkey->key_eflags))
+> +       if (test_bit(KEY_EFLAG_CA, &pkey->key_eflags)) {
+> +               pr_err("Unexpected CA usage bit\n");
+>                 return -ENOKEY;
+> +       }
+>
+> -       if (test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags))
+> +       if (test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags)) {
+> +               pr_err("Unexpected keyCertSign usage bit\n");
+>                 return -ENOKEY;
+> +       }
+>
+>         return restrict_link_by_signature(dest_keyring, type, payload,
+>                                           trust_keyring);
+> --
+> 2.46.0
+>
 
