@@ -1,102 +1,83 @@
-Return-Path: <stable+bounces-81316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D3B992F0F
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:26:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A895B992F40
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 16:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E0901C237C3
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:26:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BF4228391A
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06B11D619D;
-	Mon,  7 Oct 2024 14:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78751DB344;
+	Mon,  7 Oct 2024 14:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z3fiLlzK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D82OKvzd"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75C7188588
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 14:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B5F1DACAF;
+	Mon,  7 Oct 2024 14:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728311157; cv=none; b=bKlAXBb3Yi6bzsiTaRoNxcx9388ZSFEq1SUYtdXARbbZugSW+NzLx6icmRJosK+3iqDCi43dobpmGUwvz73UMuk2Sx93QkkTGUeDOxQ7keRUo2LA3vZrKiSfTMZhqpOoZ8AOTT2UutW3L6AZzj5u5Y881tgFNGCDx5AO4b5Iqwc=
+	t=1728311187; cv=none; b=cMiakV5xX2/ctvtHkUbcETw8iaZn4hMhCFHqIG+3NTd/4ixSahIQmDmTtMPMfEytIF0UG5WaudcAE9hhuODBVDEstp0pjBMU1MBsk6vGY2E6G62cj+GWkn6PFeMQ4D11sx6zYcIWxGXZXLvCNonSPlcgGV0Sh4rCwbnkKhwJrFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728311157; c=relaxed/simple;
-	bh=ZnMWCebUvIXpErwhTJha4bt61ATpr5E1Eyg+wlPB0EM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ldiIEdKIp0+Jy62RrUHJXXawPsf/LsSmSXh24wxj652pjyvFDLRXlZMUy5i0CCATQu6L4+2i5P2d5RCvL3bRqS+suYGnF2ms+MQCdkd/Pw9iO6VbmDM/G+lV8owx5pkAhMfaKGUoDcRjrQmjqdF6OnPURg3jHAFxJHLR8x69LCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z3fiLlzK; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728311156; x=1759847156;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=ZnMWCebUvIXpErwhTJha4bt61ATpr5E1Eyg+wlPB0EM=;
-  b=Z3fiLlzKLhpoyYBlWXeNxW3NSAZjFAfRcz/WNQOhsm0yesSvhntR8pMi
-   pB7i1A1gxUadCPEAW3/RJFH1p7ZXWpDtfKPVx4y8u3T7153b4Xi76j1mN
-   0Il1+tYbPNDDYEUWbFznZT9KhWK5KOBBozrZ8dALlgIW9kcxp/7Y44fWy
-   G51SYhvdHP5AyKHdqmcHCJW2k0Tab08ZyHvcUTOm1zPmFJd7mUKoqbZO+
-   /czCREhshdJOfvrK3vYIkZXBz2cDpd+7JcC782zmn/txKox/WVA0QHCdS
-   s6Q/4Ww1zPc+9TmjcWqPeFjxTvzd46xEL/YkGAgfSExVeZ5k3ixlp3E7Y
-   g==;
-X-CSE-ConnectionGUID: HksDfUTzQWO5bcQqX3MVQQ==
-X-CSE-MsgGUID: alDmlOtDSVGj/QakfOrTFQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="38120077"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="38120077"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 07:25:55 -0700
-X-CSE-ConnectionGUID: o9pzUsqbTOeK4bMeZt4J6w==
-X-CSE-MsgGUID: YymaFdXdTcqQRn5U27VtnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="98810213"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 07 Oct 2024 07:25:54 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sxogK-00055i-1H;
-	Mon, 07 Oct 2024 14:25:52 +0000
-Date: Mon, 7 Oct 2024 22:24:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: George Rurikov <g.ryurikov@securitycode.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 5.10] block, bfq: remove useless checking in
- bfq_put_queue()
-Message-ID: <ZwPvOyCeBAHgLpfV@83e7b27afa97>
+	s=arc-20240116; t=1728311187; c=relaxed/simple;
+	bh=lezOR42ihxRPVyojKwdkT8yuC0GYMwXyoKuEBH40Y2M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sUCrBk55wJ7qcsCj9LwmTTjwsmEn+PQt+4LAwc5KBvVi9vQmirGbbuvdCVSHRSvHtolU/UTCroxBHj63VQtJES44XiDYnp7ZrXpWlWxDZ9cO1bTThGIanEd5h+kDhbld1rsptdEuhDbHgptN6sCf7nqOUmedGnBWJ/MObGW7prc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D82OKvzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE991C4CEC6;
+	Mon,  7 Oct 2024 14:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728311187;
+	bh=lezOR42ihxRPVyojKwdkT8yuC0GYMwXyoKuEBH40Y2M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D82OKvzdIq3LJOQK9NOT3Yyz+CsJ/dPjP3yZ3Vinb7FJkomzes0brqbfWWMWXIDMh
+	 90iwed555l6GOaMtZb/0jpdUlSetg/OWJTq9qGkmFMFey0NJOu77Es+aj5YUjC4GMN
+	 s+La1kFRykxyq7jipOwt/D3tmtmkgCLXBUKiIKeDw7m1sJErXH1KQge4KL3Moi1jD4
+	 nIlW7z262QcMUg0VGatGmgGfEMMLmhR78GFV2CGZVq5ajKhZgINXjRs9Q4FKhu4eSv
+	 eLKpnUTBOITaXRz/Z5Lo5ZRde7dop98O6V/HYHtDzAreBGLg6c6cvpIlglSzA7GDKc
+	 RfY2zm8bZ/Tfw==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Andy Gross <agross@codeaurora.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+Subject: Re: (subset) [PATCH] soc: qcom: smem_state: fix missing of_node_put in error path
+Date: Mon,  7 Oct 2024 09:26:00 -0500
+Message-ID: <172831116172.468342.625142624677266432.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240822164853.231087-2-krzysztof.kozlowski@linaro.org>
+References: <20240822164853.231087-1-krzysztof.kozlowski@linaro.org> <20240822164853.231087-2-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241007140709.1762881-1-g.ryurikov@securitycode.ru>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-Thanks for your patch.
+On Thu, 22 Aug 2024 18:48:51 +0200, Krzysztof Kozlowski wrote:
+> If of_parse_phandle_with_args() succeeds, the OF node reference should
+> be dropped, regardless of number of phandle arguments.
+> 
+> 
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Applied, thanks!
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+[2/3] soc: qcom: pbs: simplify locking with guard()
+      commit: 6187aaae71ec236163d96601b37216e110bf7554
+[3/3] soc: qcom: smem_state: simplify locking with guard()
+      commit: cd3a3e60ebfe6f62ccf9d2164f6455e0b1ae1884
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 5.10] block, bfq: remove useless checking in bfq_put_queue()
-Link: https://lore.kernel.org/stable/20241007140709.1762881-1-g.ryurikov%40securitycode.ru
-
-Please ignore this mail if the patch is not relevant for upstream.
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Bjorn Andersson <andersson@kernel.org>
 
