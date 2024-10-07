@@ -1,117 +1,203 @@
-Return-Path: <stable+bounces-81284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD3D992B8D
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25902992BB9
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 14:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756B01F24DF7
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:21:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D16451F21395
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 12:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431221D27AD;
-	Mon,  7 Oct 2024 12:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B731D2229;
+	Mon,  7 Oct 2024 12:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="bHLM+SVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miwc6eVt"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31471D27A5;
-	Mon,  7 Oct 2024 12:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E721547D4
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 12:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728303662; cv=none; b=LhtVHy2L3S9BytasY5kPaRD+lAIRv7fiJC2dx3ICGN5GsmK/H3AS6MIHNhXpAG/HA8IYGtprLOrX3NJevjulBBoumzCpS3y7hNZB7pk/qpnCRV70gJqpoesQz9clHD0luV8VEi0joKR94OlncV6VJKdHS7igDDf1iFeE3ePirWA=
+	t=1728304101; cv=none; b=b+HyR0m9dHypUu7vNqdFRJAmP3ma0B1y4KKzfPv6IiqF+V4bvME+tSMnWv1lJe35+g7adhF8bpEKphcXdUslqCNB1RGQfJn5TIOf5MSYBZrN20DxtDHHpSJK/8cEskGAG3tEptBdHtUspCcfI46t1wkiCpWz3sEt/NixXp7ZLr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728303662; c=relaxed/simple;
-	bh=/GmggK7t18GXzw5zOZycQRz+IDt5txZjeSYlbdPeeY4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MuChDahf4ewcfP2RgdOkonwGRs+tj12W+LQAUTlccil31wkLSS9UP3z5r1i2Gk2EBQFyshS1AwWiyms1LIXQeH1QFRXEZHasBW4OabNgdaYTOY7rmY6bN4rCyqnNTSGRFxwB7Yjwr+wQvnVdY2tt4AjXo6SVc8OJbhZb6RZ3rcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=bHLM+SVZ; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1728303634; x=1728908434; i=markus.elfring@web.de;
-	bh=/GmggK7t18GXzw5zOZycQRz+IDt5txZjeSYlbdPeeY4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=bHLM+SVZWlGSCFlphG9GUsIP7D8znN7Rdsr4oAww3t1c/KttrgRLnXh4cN4WJt4u
-	 mEz1P95u8o5h50Ut7gRb59Es1KeIbA8w9PRWd91yiXXepiGYhHTgdXl9IG9d9YJtx
-	 GpL3c418aEO7XEVXYl8uL7g7cmL0tw49AyJ/hGQo87q0sceUY6lJcbd34d0u9FuE1
-	 YzzcB2t3R3hWK7zFnYdz7S3wNDOzl+i2MYQRQLJf63bca01kDZTC+I2lBRMT/qstw
-	 AdX8sQwBdKy+ob+YXbU1SYkfVE+F9hGnipVi+2B38F9l2anx+jsVwFfBn8/s15aIY
-	 ziZe2Qy33Djq5Oa8Yw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.81.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MuF8x-1trPmp0v7t-00se2x; Mon, 07
- Oct 2024 14:20:34 +0200
-Message-ID: <78ce32f1-0037-4caf-98fd-1e73216e3778@web.de>
-Date: Mon, 7 Oct 2024 14:20:32 +0200
+	s=arc-20240116; t=1728304101; c=relaxed/simple;
+	bh=s2Dfm0nptBJH1Yzr2a/VRDocMSQb7toJAr3QT0rUKDI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FNaSE/U+mP+vy/Il/u7z4OXvssqo/Daub3IVSZ9XSeO5F0LCDuwYwvy23FvTZjc/wmWBPZCGf7oP7Kg03BaKTETAN/RvfDFKhMrtdyOuMsraeeE7TA5XYgqsBQRCl/QTfRR3utZ+0Sl4Y2T35oUJfu0iqhBoqJQD94kOWesSVzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miwc6eVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF98C4CEC6;
+	Mon,  7 Oct 2024 12:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728304100;
+	bh=s2Dfm0nptBJH1Yzr2a/VRDocMSQb7toJAr3QT0rUKDI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=miwc6eVtf5sFD678i2grV+DrPZDcXqs5ulOXRiaicHXsVdaEvylw290SxIKrwxbDj
+	 EztOkNBOc06Opwig0MxVH8ZE1AXrA033PNiE/MMUwu2o4G+P7hH+mkPj0cYcrHkK6a
+	 Qws5yP2CLfouqFkkDmiUxDtxyJyhk6Uj5mEgOqz8=
+Subject: FAILED: patch "[PATCH] ext4: fix slab-use-after-free in ext4_split_extent_at()" failed to apply to 4.19-stable tree
+To: libaokun1@huawei.com,jack@suse.cz,ojaswin@linux.ibm.com,tytso@mit.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 07 Oct 2024 14:28:17 +0200
+Message-ID: <2024100717-untrue-mockup-9fb4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ASoC: qcom: Fix NULL Dereference in
- asoc_qcom_lpass_cpu_platform_probe()
-From: Markus Elfring <Markus.Elfring@web.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Zichen Xie <zichenxie0106@gmail.com>, alsa-devel@alsa-project.org,
- linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Cc: Jaroslav Kysela <perex@perex.cz>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Rohit kumar <quic_rohkumar@quicinc.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- Takashi Iwai <tiwai@suse.com>, stable@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, Chenyuan Yang <chenyuan0y@gmail.com>,
- Zijie Zhao <zzjas98@gmail.com>
-References: <20241003152739.9650-1-zichenxie0106@gmail.com>
- <ee94b16a-baa7-471c-997e-f1bf17b074b8@web.de>
- <2024100620-decency-discuss-df6e@gregkh>
- <6d17006d-ee97-4c7c-a355-245f32fe1fc3@web.de>
- <2024100608-chomp-undiluted-c3e2@gregkh>
- <8e4fe108-cfde-40c0-83f5-c1ce60b0940f@web.de>
-Content-Language: en-GB
-In-Reply-To: <8e4fe108-cfde-40c0-83f5-c1ce60b0940f@web.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0/I9nLZtNHJn+8QIWefoO9WcBYmjaQQoCt5aoy4FevRamxm7P0Q
- Q9foGI8xfnQEOl8gd8qHaI4rbnwqgXDrPSvIVNBZxHpmO2S/51vo9R1PidVJ9ShIAjYGEe/
- I3y1XsZLH0yNLQpanCWT2Px+hVrkD9sQQa85Gk+gFp9Xmhsmm1G1GTBdw3jPWVwkIsmkPLo
- O6RGxdOCvKk9XmGiTLNXQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:9C7O/4L1sAY=;q/IaW97ObEBUXcpA1ESM21aujM2
- aPpH6dgfr8LrKuNnoKkSuHYPMaIKQkVpFDQ/j87UpMeh1FNFOXCeR9RBnKPRPs4NZ/Fip6EXj
- 79Gks+a3lZFWS60vXOEO1ZOwugvU/Or1rbLX7A8O7lIIyJfDjfwpUHGFXNv374M8WgyaaGR6J
- 0nAyGEpiVwAJWPlc2Q36PaJB4OLFwwCt+Q6Ez9Q2Fm5ssFW7Rk70VoSIfEj77+kKacfBDO33B
- BZyi97p/a4Frs9xo4J9kupmxpbmP7ci9/pGwowMd8BbMWQ4W0vv3Qwrt6oYNqt82lhE3SVsn6
- H6eRC4hZAeCbEsSaSvylUUzcop9RWafF3C+4tiNa5Mih/TVQ82JZypApr3sNbSWuAJQcbr2p9
- rofnZQIwjUu+ET5YuGdqmM9fbf2DXfeyIOFxkL0/sDz0rRxbi/kVwPDeSbR+K2gUXFvg9eJob
- 7lj4PHRb/6Biok0jzutVZI/mGQMi9d8d8JmIrljoRB9Q+6sWde7ah8Ci9fdZCKtmQd7t1Gcvf
- Y1TCwznjPMXgev6J7br+fN48lmXMctT7OJ63GL/jxMbC9aqvJoALKxSsZk7IE28ID7mLJoWzp
- sYMfNYkiBGRMrCsk1cbPSCXs9pJHGhQCkeA2tVyVX0V/nRshIG260EjfJbNdaPcnaY1fdpcB4
- ZGgc4mPVr9j5RGetnKskUyA9ps0yaVu91Dx8g3ltsu+3FXNwc0RivmhzO5H7En1psa6Rl/FBJ
- JdePx+nHyophij3lhiA77rqHfVSb1ORcHa8172Il21JH64Tu+2KhgbOuaOBV9+LmHDJPDVFXs
- TJ0FwmNsv0RKyJly8dQz1Wbw==
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
->>> * Do you find any related advice (from other automated responses) help=
-ful?
->>
->> No.
->
-> I wonder how this answer fits to reminders for the Linux patch review pr=
-ocess
-> (which were also automatically sent) according to your inbox filter rule=
-s.
 
-See also:
-https://lore.kernel.org/all/?q=3D%22This+looks+like+a+new+version+of+a+pre=
-viously+submitted+patch%22
+The patch below does not apply to the 4.19-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Regards,
-Markus
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git checkout FETCH_HEAD
+git cherry-pick -x c26ab35702f8cd0cdc78f96aa5856bfb77be798f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100717-untrue-mockup-9fb4@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+
+Possible dependencies:
+
+c26ab35702f8 ("ext4: fix slab-use-after-free in ext4_split_extent_at()")
+082cd4ec240b ("ext4: fix bug on in ext4_es_cache_extent as ext4_split_extent_at failed")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c26ab35702f8cd0cdc78f96aa5856bfb77be798f Mon Sep 17 00:00:00 2001
+From: Baokun Li <libaokun1@huawei.com>
+Date: Thu, 22 Aug 2024 10:35:23 +0800
+Subject: [PATCH] ext4: fix slab-use-after-free in ext4_split_extent_at()
+
+We hit the following use-after-free:
+
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
+Read of size 2 at addr ffff88810548ed08 by task kworker/u20:0/40
+CPU: 0 PID: 40 Comm: kworker/u20:0 Not tainted 6.9.0-dirty #724
+Call Trace:
+ <TASK>
+ kasan_report+0x93/0xc0
+ ext4_split_extent_at+0xba8/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+
+Allocated by task 40:
+ __kmalloc_noprof+0x1ac/0x480
+ ext4_find_extent+0xf3b/0x1e70
+ ext4_ext_map_blocks+0x188/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+
+Freed by task 40:
+ kfree+0xf1/0x2b0
+ ext4_find_extent+0xa71/0x1e70
+ ext4_ext_insert_extent+0xa22/0x3260
+ ext4_split_extent_at+0x3ef/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+==================================================================
+
+The flow of issue triggering is as follows:
+
+ext4_split_extent_at
+  path = *ppath
+  ext4_ext_insert_extent(ppath)
+    ext4_ext_create_new_leaf(ppath)
+      ext4_find_extent(orig_path)
+        path = *orig_path
+        read_extent_tree_block
+          // return -ENOMEM or -EIO
+        ext4_free_ext_path(path)
+          kfree(path)
+        *orig_path = NULL
+  a. If err is -ENOMEM:
+  ext4_ext_dirty(path + path->p_depth)
+  // path use-after-free !!!
+  b. If err is -EIO and we have EXT_DEBUG defined:
+  ext4_ext_show_leaf(path)
+    eh = path[depth].p_hdr
+    // path also use-after-free !!!
+
+So when trying to zeroout or fix the extent length, call ext4_find_extent()
+to update the path.
+
+In addition we use *ppath directly as an ext4_ext_show_leaf() input to
+avoid possible use-after-free when EXT_DEBUG is defined, and to avoid
+unnecessary path updates.
+
+Fixes: dfe5080939ea ("ext4: drop EXT4_EX_NOFREE_ON_ERR from rest of extents handling code")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-4-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 4395e2b668ec..fe6bca63f9d6 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3251,6 +3251,25 @@ static int ext4_split_extent_at(handle_t *handle,
+ 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
+ 		goto out;
+ 
++	/*
++	 * Update path is required because previous ext4_ext_insert_extent()
++	 * may have freed or reallocated the path. Using EXT4_EX_NOFAIL
++	 * guarantees that ext4_find_extent() will not return -ENOMEM,
++	 * otherwise -ENOMEM will cause a retry in do_writepages(), and a
++	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
++	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
++	 */
++	path = ext4_find_extent(inode, ee_block, ppath,
++				flags | EXT4_EX_NOFAIL);
++	if (IS_ERR(path)) {
++		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
++				 split, PTR_ERR(path));
++		return PTR_ERR(path);
++	}
++	depth = ext_depth(inode);
++	ex = path[depth].p_ext;
++	*ppath = path;
++
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+ 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+ 			if (split_flag & EXT4_EXT_DATA_VALID1) {
+@@ -3303,7 +3322,7 @@ static int ext4_split_extent_at(handle_t *handle,
+ 	ext4_ext_dirty(handle, inode, path + path->p_depth);
+ 	return err;
+ out:
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ 	return err;
+ }
+ 
+
 
