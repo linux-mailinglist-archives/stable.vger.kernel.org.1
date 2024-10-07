@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEBD99307C
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:05:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D885899308E
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414E41C22E23
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:05:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5987C1F226F3
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047AD1D88C1;
-	Mon,  7 Oct 2024 15:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB4D1D935C;
+	Mon,  7 Oct 2024 15:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVG/bvA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rn3Vt531"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33101D966A
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493001EB25
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728313395; cv=none; b=mpa44TkRlLnSxTjQhfBHSp4cV+qGyvzSxgukZyGVtQ963LVHUctNZ5Dz/FBHRi4k5T4vY4lj/+RnSJEM6Zoj27fdm+4zNhzdbV65LYXkWZiQSAIYB3iiJAvjhZ0Zt8PyLXwI8iSmiOzHciSnKIon/C3OixFH3usnlrq9mDg1cjc=
+	t=1728313497; cv=none; b=uOsNWQeJp+AuppYgqpu8hQNyPGmVmC2wNKz1/8XZnlJ4RzNTb9183GQugD1n+b9+uB7DJvrIwc6dGfHYPiQyetzb9zuf+WlSm+dUZWiq+FrBicFephYZUe6YXqQFnRPYCRyBFvVctWEPsGNhJAF2RU4Mogk1ueFtUaWWggxo+w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728313395; c=relaxed/simple;
-	bh=LUkodzt1hGsmy3rp31ulEZVV45YjmvRzeT5TOHbaDWQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N9L8FDlxqkB7HsuZwYe/fZ61wEZ7kVz6c0LTjRoslTZsJbI0a9lWD/eIPbg6tcBfSqrLa3hVfQta1h/zQ2jIzuTjjv1HnABFldsE1EsD3r312mlIJRdGSH0v54lHA6oskz7wX861hfVzSK+Y6oDthtAgD2Rmi/P5RoUYTCocZ4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVG/bvA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF3AC4CEC6;
-	Mon,  7 Oct 2024 15:03:14 +0000 (UTC)
+	s=arc-20240116; t=1728313497; c=relaxed/simple;
+	bh=LLXGGaI77Ia62ZiGo7oiNx0WuHi9MkEx3IlBncetdA0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CRJyQXbVG11UbSkjvCfXWMAmWURQgQXjZvJDAFZh9Flb1UbhC7UEwTaY8V6wWOE6P4/wUdetsrg/q8yjkhkFGFGMC+e3F+liqXHKhsTrn1q0Kcp5mYVeXdI4Vhl/ckV9spj85FHzo2wjaLdBkJ74NoUmsx2c1wNnB4mltoI/84Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rn3Vt531; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2BAC4CEC6;
+	Mon,  7 Oct 2024 15:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728313395;
-	bh=LUkodzt1hGsmy3rp31ulEZVV45YjmvRzeT5TOHbaDWQ=;
+	s=korg; t=1728313496;
+	bh=LLXGGaI77Ia62ZiGo7oiNx0WuHi9MkEx3IlBncetdA0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iVG/bvA5kt0XRvS+czmp52tH3v5Z4c454NOPUcWK1GsZa0yA7kzQj3agGozhF6+5A
-	 J7EHo5FcXkWDp9uItI4yoKwxTlqZa6EdecnyV9hLGE/VjJFlGV8CMf6kBY81L4QisA
-	 i9HIYlra6K/2FZv6wK8N3lioDgYz3E5ywBj3Rdhw=
-Subject: FAILED: patch "[PATCH] parisc: Allow mmap(MAP_STACK) memory to automatically expand" failed to apply to 5.10-stable tree
-To: deller@kernel.org,camm@maguirefamily.org,deller@gmx.de
+	b=rn3Vt531aygwNDBjrMzFkQRE5xx1HVfo2Kx9UA2iRYcC6lzIPR7N3dhGElk3Jqpar
+	 KwMoKQ4UF7rGr51TKgdnqb8m+waOkaHSLVnIMUOcPShBm83Mjxu+yyWGOCv8P/Qj/+
+	 jLVZcgbjBK92YukeNNCzRVHt3SGLbMtyKRORGskg=
+Subject: FAILED: patch "[PATCH] drm: omapdrm: Add missing check for alloc_ordered_workqueue" failed to apply to 4.19-stable tree
+To: make24@iscas.ac.cn,tomi.valkeinen@ideasonboard.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:03:01 +0200
-Message-ID: <2024100701-untold-fernlike-509b@gregkh>
+Date: Mon, 07 Oct 2024 17:04:53 +0200
+Message-ID: <2024100753-rockfish-ensnare-ca86@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5d698966fa7b452035c44c937d704910bf3440dd
+git cherry-pick -x e794b7b9b92977365c693760a259f8eef940c536
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100701-untold-fernlike-509b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100753-rockfish-ensnare-ca86@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-5d698966fa7b ("parisc: Allow mmap(MAP_STACK) memory to automatically expand upwards")
-d5aad4c2ca05 ("prctl: generalize PR_SET_MDWE support check to be per-arch")
-793838138c15 ("prctl: Disable prctl(PR_SET_MDWE) on parisc")
-24e41bf8a6b4 ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl")
-0da668333fb0 ("mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long")
-d7597f59d1d3 ("mm: add new api to enable ksm per process")
-ddc65971bb67 ("prctl: add PR_GET_AUXV to copy auxv to userspace")
-49be4fb28109 ("Merge tag 'perf-tools-fixes-for-v6.3-1-2023-03-09' of git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux")
+e794b7b9b929 ("drm: omapdrm: Add missing check for alloc_ordered_workqueue")
+2ee767922e1b ("drm/omap: Group CRTC, encoder, connector and dssdev in a structure")
+ac3b13189333 ("drm/omap: Create all planes before CRTCs")
+f96993630445 ("drm/omap: Remove unneeded variable assignments in omap_modeset_init")
+845417b3b3b0 ("drm/omap: dss: Move DSS mgr ops and private data to dss_device")
+f324b2798c87 ("drm/omap: dss: Store dss_device pointer in omap_dss_device")
+c1dfe721e096 ("drm/omap: dss: Move and rename omap_dss_(get|put)_device()")
+67822ae11971 ("drm/omap: dss: Remove panel devices list")
+4e0bb06c0b9a ("drm/omap: dss: Split omapdss_register_display()")
+b9f4d2ebf641 ("drm/omap: dss: Make omap_dss_get_next_device() more generic")
+92ce521a4841 ("drm/omap: dss: Rename for_each_dss_dev macro to for_each_dss_display")
+7269fde4e8c9 ("drm/omap: displays: Remove input omap_dss_device from panel data")
+fb5571717c24 ("drm/omap: dss: Move src and dst check and set to connection handlers")
+1f507968c30b ("drm/omap: dss: Move debug message and checks to connection handlers")
+ec727e3f6184 ("drm/omap: dss: Add functions to connect and disconnect devices")
+b93109d7dc9e ("drm/omap: dss: Move common device operations to common structure")
+e10bd354ad79 ("drm/omap: dss: Allow looking up any device by port")
+a7e82a67c1d7 ("drm/omap: dss: Rework output lookup by port node")
+9184f8d94c38 ("drm/omap: dss: Create and use omapdss_device_is_registered()")
+6a7c5a2200ad ("drm/omap: dss: Create global list of all omap_dss_device instances")
 
 thanks,
 
@@ -84,47 +96,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5d698966fa7b452035c44c937d704910bf3440dd Mon Sep 17 00:00:00 2001
-From: Helge Deller <deller@kernel.org>
-Date: Sun, 8 Sep 2024 20:51:17 +0200
-Subject: [PATCH] parisc: Allow mmap(MAP_STACK) memory to automatically expand
- upwards
+From e794b7b9b92977365c693760a259f8eef940c536 Mon Sep 17 00:00:00 2001
+From: Ma Ke <make24@iscas.ac.cn>
+Date: Thu, 8 Aug 2024 14:13:36 +0800
+Subject: [PATCH] drm: omapdrm: Add missing check for alloc_ordered_workqueue
 
-When userspace allocates memory with mmap() in order to be used for stack,
-allow this memory region to automatically expand upwards up until the
-current maximum process stack size.
-The fault handler checks if the VM_GROWSUP bit is set in the vm_flags field
-of a memory area before it allows it to expand.
-This patch modifies the parisc specific code only.
-A RFC for a generic patch to modify mmap() for all architectures was sent
-to the mailing list but did not get enough Acks.
+As it may return NULL pointer and cause NULL pointer dereference. Add check
+for the return value of alloc_ordered_workqueue.
 
-Reported-by: Camm Maguire <camm@maguirefamily.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org	# v5.10+
+Cc: stable@vger.kernel.org
+Fixes: 2f95bc6d324a ("drm: omapdrm: Perform initialization/cleanup at probe/remove time")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240808061336.2796729-1-make24@iscas.ac.cn
 
-diff --git a/arch/parisc/include/asm/mman.h b/arch/parisc/include/asm/mman.h
-index 47c5a1991d10..89b6beeda0b8 100644
---- a/arch/parisc/include/asm/mman.h
-+++ b/arch/parisc/include/asm/mman.h
-@@ -11,4 +11,18 @@ static inline bool arch_memory_deny_write_exec_supported(void)
- }
- #define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
+diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
+index 6598c9c08ba1..d3eac4817d76 100644
+--- a/drivers/gpu/drm/omapdrm/omap_drv.c
++++ b/drivers/gpu/drm/omapdrm/omap_drv.c
+@@ -695,6 +695,10 @@ static int omapdrm_init(struct omap_drm_private *priv, struct device *dev)
+ 	soc = soc_device_match(omapdrm_soc_devices);
+ 	priv->omaprev = soc ? (uintptr_t)soc->data : 0;
+ 	priv->wq = alloc_ordered_workqueue("omapdrm", 0);
++	if (!priv->wq) {
++		ret = -ENOMEM;
++		goto err_alloc_workqueue;
++	}
  
-+static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
-+{
-+	/*
-+	 * The stack on parisc grows upwards, so if userspace requests memory
-+	 * for a stack, mark it with VM_GROWSUP so that the stack expansion in
-+	 * the fault handler will work.
-+	 */
-+	if (flags & MAP_STACK)
-+		return VM_GROWSUP;
-+
-+	return 0;
-+}
-+#define arch_calc_vm_flag_bits(flags) arch_calc_vm_flag_bits(flags)
-+
- #endif /* __ASM_MMAN_H__ */
+ 	mutex_init(&priv->list_lock);
+ 	INIT_LIST_HEAD(&priv->obj_list);
+@@ -753,6 +757,7 @@ err_gem_deinit:
+ 	drm_mode_config_cleanup(ddev);
+ 	omap_gem_deinit(ddev);
+ 	destroy_workqueue(priv->wq);
++err_alloc_workqueue:
+ 	omap_disconnect_pipelines(ddev);
+ 	drm_dev_put(ddev);
+ 	return ret;
 
 
