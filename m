@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-81346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6209F993157
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:35:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AC5993162
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 17:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C389280D81
-	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:35:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED5BF1C23712
+	for <lists+stable@lfdr.de>; Mon,  7 Oct 2024 15:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1E81D9323;
-	Mon,  7 Oct 2024 15:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC9B1D8DF5;
+	Mon,  7 Oct 2024 15:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIa81j2f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJXJ83R7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EA01D90D3
-	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F164C18BBB2
+	for <stable@vger.kernel.org>; Mon,  7 Oct 2024 15:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728315296; cv=none; b=NOSH1c1vB3v+Z1nUgCdNi6LpDZLEjjapSe62+OnwPd6gBazHRSTXgSHJQ+VqKdXsCE4gyt5tZ0EvFwtDHh4Sq987QFMQxIkSSHeA/RQ31wmjYc0z2aXoipi8wnfAtAAayweBrbVJEQNqpXsbFUMzkGwSpWZS/mbzECcdnIJaj0o=
+	t=1728315370; cv=none; b=IohKsggTo/4q9PbABORcppfLzkhOk/DYyJca/eGqHJn2TO3aZbLikAlkzXoouUjA5QxR5ZBaS7zVIb4BdXUlilhG5dp4S4N3bBVH9v3DhqWfFlPhDfWb7myu3fO6kIaCLZnpSc154ZR9zHdNbhRBAzvemNEHWFQbNiurT0HWa8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728315296; c=relaxed/simple;
-	bh=D6mdxMA1ZeOl7G3OxhRE46Cl5ch4eEcSJWcUvJrfiRY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hpcAv2NABk4QANEP3RqtuZS2scX293QeurjHJXR+Ibh9NMFzvba/Xv0DDqhZPaoAdtqO+qCM7IL/Zqz2n44wNaWD2yvcZmFMwSNrX3afWnF3UoLewORAF5LOMZaWPOmd1lecyGY+9YiU13MmPBir9qD0wa+wAg5e8TgLVJGsTws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIa81j2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63F3C4CEC6;
-	Mon,  7 Oct 2024 15:34:55 +0000 (UTC)
+	s=arc-20240116; t=1728315370; c=relaxed/simple;
+	bh=A6AoEYWYdgzCQeERYl05RpAEwqecycejQrAjpJMY0qo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Tg+gyb5wQFSrJH+tUC9T03jIqolWoaRIFFGD7aPvYUuKlF4c/qpI1qMdB8EeREW5q0FxupL+tY5QN++v2VHFvaG3sKed8kap4TtKuFwUV6f/nal7kZTZvzORrTHNAiBS4yryX0JaQYNyFr6nRmcv1oXOicdNBn5E+Hyf+wtc3fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJXJ83R7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08342C4CEC6;
+	Mon,  7 Oct 2024 15:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728315296;
-	bh=D6mdxMA1ZeOl7G3OxhRE46Cl5ch4eEcSJWcUvJrfiRY=;
+	s=korg; t=1728315369;
+	bh=A6AoEYWYdgzCQeERYl05RpAEwqecycejQrAjpJMY0qo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NIa81j2fxrlPuwq9k86FV9OmCBPeNNMLfOb/5IInqBGJ50GRgSNw0GP7LKHfJ0jpw
-	 gcV5uerdJVrzZ4WyMnRb8Xbpg1pJ8Pkv1wg+j1Yrg43/EHdQfCN6qGMPzGFwsbHYPb
-	 GD29d1fyqtu1++yV1eP98cz1qhfdumZObY1gJUbo=
-Subject: FAILED: patch "[PATCH] sched: psi: fix bogus pressure spikes from aggregation race" failed to apply to 5.15-stable tree
-To: hannes@cmpxchg.org,brandon@buildbuddy.io,chengming.zhou@linux.dev,torvalds@linux-foundation.org
+	b=nJXJ83R7YGx9heEggkziWpnizIqyWOJrYF8tZrYHBl0Ldfk3yhcNFtfcMyYtQfvW7
+	 ZiTyAeX5r6WtnMVj7VwiI8FiG1K3NVAvZq9Y+neOtlE/LG6ta4uh7Q0tmYHlhpWwrW
+	 +BeDclmtNjqImAsxGhRzH65XB8O+MDHjE+pnRwfU=
+Subject: FAILED: patch "[PATCH] drm/rockchip: vop: clear DMA stop bit on RK3066" failed to apply to 5.4-stable tree
+To: val@packett.cool,heiko@sntech.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 07 Oct 2024 17:34:46 +0200
-Message-ID: <2024100745-barometer-saffron-c873@gregkh>
+Date: Mon, 07 Oct 2024 17:36:06 +0200
+Message-ID: <2024100706-contort-navigator-6ca8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,38 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3840cbe24cf060ea05a585ca497814609f5d47d1
+git cherry-pick -x 6b44aa559d6c7f4ea591ef9d2352a7250138d62a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100745-barometer-saffron-c873@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100706-contort-navigator-6ca8@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-3840cbe24cf0 ("sched: psi: fix bogus pressure spikes from aggregation race")
-ddae0ca2a8fe ("sched: Move psi_account_irqtime() out of update_rq_clock_task() hotpath")
-0c2924079f5a ("sched/psi: Bail out early from irq time accounting")
-a3b2aeac9d15 ("delayacct: track delays from IRQ/SOFTIRQ")
-eca7de7cdc38 ("delayacct: improve the average delay precision of getdelay tool to microsecond")
-6ab587e8e8b4 ("docs/zh_CN: Update the translation of delay-accounting to 6.1-rc8")
-34f26a15611a ("sched/psi: Per-cgroup PSI accounting disable/re-enable interface")
-dc86aba751e2 ("sched/psi: Cache parent psi_group to speed up group iteration")
-52b1364ba0b1 ("sched/psi: Add PSI_IRQ to track IRQ/SOFTIRQ pressure")
-71dbdde7914d ("sched/psi: Remove NR_ONCPU task accounting")
-65176f59a18d ("sched/psi: Optimize task switch inside shared cgroups again")
-d79ddb069c52 ("sched/psi: Move private helpers to sched/stats.h")
-c530a3c716b9 ("sched/psi: Fix periodic aggregation shut off")
-5f69a6577bc3 ("psi: dont alloc memory for psi by default")
-662ce1dc9caf ("delayacct: track delays from write-protect copy")
-6f664045c868 ("Merge tag 'mm-nonmm-stable-2022-05-26' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
+6b44aa559d6c ("drm/rockchip: vop: clear DMA stop bit on RK3066")
 
 thanks,
 
@@ -92,178 +77,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3840cbe24cf060ea05a585ca497814609f5d47d1 Mon Sep 17 00:00:00 2001
-From: Johannes Weiner <hannes@cmpxchg.org>
-Date: Thu, 3 Oct 2024 07:29:05 -0400
-Subject: [PATCH] sched: psi: fix bogus pressure spikes from aggregation race
+From 6b44aa559d6c7f4ea591ef9d2352a7250138d62a Mon Sep 17 00:00:00 2001
+From: Val Packett <val@packett.cool>
+Date: Mon, 24 Jun 2024 17:40:48 -0300
+Subject: [PATCH] drm/rockchip: vop: clear DMA stop bit on RK3066
 
-Brandon reports sporadic, non-sensical spikes in cumulative pressure
-time (total=) when reading cpu.pressure at a high rate. This is due to
-a race condition between reader aggregation and tasks changing states.
+The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
+and needs the driver to acknowledge that by clearing the bit.
 
-While it affects all states and all resources captured by PSI, in
-practice it most likely triggers with CPU pressure, since scheduling
-events are so frequent compared to other resource events.
+Unless we clear it "between" frames, the RGB output only shows noise
+instead of the picture. atomic_flush is the place for it that least
+affects other code (doing it on vblank would require converting all
+other usages of the reg_lock to spin_(un)lock_irq, which would affect
+performance for everyone).
 
-The race context is the live snooping of ongoing stalls during a
-pressure read. The read aggregates per-cpu records for stalls that
-have concluded, but will also incorporate ad-hoc the duration of any
-active state that hasn't been recorded yet. This is important to get
-timely measurements of ongoing stalls. Those ad-hoc samples are
-calculated on-the-fly up to the current time on that CPU; since the
-stall hasn't concluded, it's expected that this is the minimum amount
-of stall time that will enter the per-cpu records once it does.
+This seems to be a redundant synchronization mechanism that was removed
+in later iterations of the VOP hardware block.
 
-The problem is that the path that concludes the state uses a CPU clock
-read that is not synchronized against aggregators; the clock is read
-outside of the seqlock protection. This allows aggregators to race and
-snoop a stall with a longer duration than will actually be recorded.
-
-With the recorded stall time being less than the last snapshot
-remembered by the aggregator, a subsequent sample will underflow and
-observe a bogus delta value, resulting in an erratic jump in pressure.
-
-Fix this by moving the clock read of the state change into the seqlock
-protection. This ensures no aggregation can snoop live stalls past the
-time that's recorded when the state concludes.
-
-Reported-by: Brandon Duffany <brandon@buildbuddy.io>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219194
-Link: https://lore.kernel.org/lkml/20240827121851.GB438928@cmpxchg.org/
-Fixes: df77430639c9 ("psi: Reduce calls to sched_clock() in psi")
+Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Val Packett <val@packett.cool>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-2-val@packett.cool
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 020d58967d4e..84dad1511d1e 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -769,12 +769,13 @@ static void record_times(struct psi_group_cpu *groupc, u64 now)
- }
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index a13473b2d54c..e88fbd5685a3 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1583,6 +1583,10 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
+ 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
+ 	vop_cfg_done(vop);
  
- static void psi_group_change(struct psi_group *group, int cpu,
--			     unsigned int clear, unsigned int set, u64 now,
-+			     unsigned int clear, unsigned int set,
- 			     bool wake_clock)
- {
- 	struct psi_group_cpu *groupc;
- 	unsigned int t, m;
- 	u32 state_mask;
-+	u64 now;
- 
- 	lockdep_assert_rq_held(cpu_rq(cpu));
- 	groupc = per_cpu_ptr(group->pcpu, cpu);
-@@ -789,6 +790,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
- 	 * SOME and FULL time these may have resulted in.
- 	 */
- 	write_seqcount_begin(&groupc->seq);
-+	now = cpu_clock(cpu);
++	/* Ack the DMA transfer of the previous frame (RK3066). */
++	if (VOP_HAS_REG(vop, common, dma_stop))
++		VOP_REG_SET(vop, common, dma_stop, 0);
++
+ 	spin_unlock(&vop->reg_lock);
  
  	/*
- 	 * Start with TSK_ONCPU, which doesn't have a corresponding
-@@ -899,18 +901,15 @@ void psi_task_change(struct task_struct *task, int clear, int set)
- {
- 	int cpu = task_cpu(task);
- 	struct psi_group *group;
--	u64 now;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+index b33e5bdc26be..0cf512cc1614 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+@@ -122,6 +122,7 @@ struct vop_common {
+ 	struct vop_reg lut_buffer_index;
+ 	struct vop_reg gate_en;
+ 	struct vop_reg mmu_en;
++	struct vop_reg dma_stop;
+ 	struct vop_reg out_mode;
+ 	struct vop_reg standby;
+ };
+diff --git a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+index b9ee02061d5b..9bcb40a640af 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+@@ -466,6 +466,7 @@ static const struct vop_output rk3066_output = {
+ };
  
- 	if (!task->pid)
- 		return;
- 
- 	psi_flags_change(task, clear, set);
- 
--	now = cpu_clock(cpu);
--
- 	group = task_psi_group(task);
- 	do {
--		psi_group_change(group, cpu, clear, set, now, true);
-+		psi_group_change(group, cpu, clear, set, true);
- 	} while ((group = group->parent));
- }
- 
-@@ -919,7 +918,6 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- {
- 	struct psi_group *group, *common = NULL;
- 	int cpu = task_cpu(prev);
--	u64 now = cpu_clock(cpu);
- 
- 	if (next->pid) {
- 		psi_flags_change(next, 0, TSK_ONCPU);
-@@ -936,7 +934,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 				break;
- 			}
- 
--			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
-+			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
- 		} while ((group = group->parent));
- 	}
- 
-@@ -974,7 +972,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 		do {
- 			if (group == common)
- 				break;
--			psi_group_change(group, cpu, clear, set, now, wake_clock);
-+			psi_group_change(group, cpu, clear, set, wake_clock);
- 		} while ((group = group->parent));
- 
- 		/*
-@@ -986,7 +984,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 		if ((prev->psi_flags ^ next->psi_flags) & ~TSK_ONCPU) {
- 			clear &= ~TSK_ONCPU;
- 			for (; group; group = group->parent)
--				psi_group_change(group, cpu, clear, set, now, wake_clock);
-+				psi_group_change(group, cpu, clear, set, wake_clock);
- 		}
- 	}
- }
-@@ -997,8 +995,8 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	int cpu = task_cpu(curr);
- 	struct psi_group *group;
- 	struct psi_group_cpu *groupc;
--	u64 now, irq;
- 	s64 delta;
-+	u64 irq;
- 
- 	if (static_branch_likely(&psi_disabled))
- 		return;
-@@ -1011,7 +1009,6 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	if (prev && task_psi_group(prev) == group)
- 		return;
- 
--	now = cpu_clock(cpu);
- 	irq = irq_time_read(cpu);
- 	delta = (s64)(irq - rq->psi_irq_time);
- 	if (delta < 0)
-@@ -1019,12 +1016,15 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	rq->psi_irq_time = irq;
- 
- 	do {
-+		u64 now;
-+
- 		if (!group->enabled)
- 			continue;
- 
- 		groupc = per_cpu_ptr(group->pcpu, cpu);
- 
- 		write_seqcount_begin(&groupc->seq);
-+		now = cpu_clock(cpu);
- 
- 		record_times(groupc, now);
- 		groupc->times[PSI_IRQ_FULL] += delta;
-@@ -1223,11 +1223,9 @@ void psi_cgroup_restart(struct psi_group *group)
- 	for_each_possible_cpu(cpu) {
- 		struct rq *rq = cpu_rq(cpu);
- 		struct rq_flags rf;
--		u64 now;
- 
- 		rq_lock_irq(rq, &rf);
--		now = cpu_clock(cpu);
--		psi_group_change(group, cpu, 0, 0, now, true);
-+		psi_group_change(group, cpu, 0, 0, true);
- 		rq_unlock_irq(rq, &rf);
- 	}
- }
+ static const struct vop_common rk3066_common = {
++	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
+ 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
+ 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
+ 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
 
 
