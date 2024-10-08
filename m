@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C02B994E1F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777299949B4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 054592817F0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C95B2830ED
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98E01DF727;
-	Tue,  8 Oct 2024 13:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DF31DE3A2;
+	Tue,  8 Oct 2024 12:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhCK5Y23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIANK7ZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44A11DED65;
-	Tue,  8 Oct 2024 13:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDEA1DDA15;
+	Tue,  8 Oct 2024 12:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393156; cv=none; b=oz0xKYQqNAuIk9zOUE1ARQ+Qs1Vswgs00sSXs8eqRRjrEU5jWrjRuGhusMs2uH2DLfAALeJYs7ca3JocaZJbD3K2MogL7GeqHPqpYDQInQYmoTaSneXMvWk47NcLOXXtuV11hukYFGwjflE9+NztXuE5GwPH5Pw6qfdwxpQNDdE=
+	t=1728390320; cv=none; b=O6xKvKY4oyg7G4o+kg5HB6daWW8JY+3zzpwRgIGYb8OAWEMUHxt177dCXJqWhEUSGZ/+HOmZ69qB1ua76oNN1jVGELoUgJO2aF5g0bzLY+PaBGGY8TEIElJswBWZ+XiWg5mJu9bN3rl6lnpN21LiuKZsYJkW3z1Ezxe8PiVSM0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393156; c=relaxed/simple;
-	bh=iE4MYChV5KJJVA+YdxdRAqrNMX+PMUM6fe7xTIVipVo=;
+	s=arc-20240116; t=1728390320; c=relaxed/simple;
+	bh=ENe+FV/XyPW3Q+5Cl2M3FQByHWJeral+4ih8vKwWg7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lowxiPk01/vzCjhxIB2jGb7g5En/+qvGD2/drKn48b5Wc0fOQc8VvAmHipi3npClKx3cNjyfwQcAo3CJOiJZfRZRsP1+eS3hhTG29s6bblJ1dsNP1u3YjA6/bVWw0+1gtOnNqik6zCpXvsQXzKklbxn6nMogc1RnkdWe/We8d+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhCK5Y23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34CDC4CEC7;
-	Tue,  8 Oct 2024 13:12:35 +0000 (UTC)
+	 MIME-Version; b=m6D/k1PJv8byejrb+F9mbD5PDnoTmpFEyDGaYE+Ct9o8VynQynP7e65p0H4qvLHyXbkN7psiF3A9fd2JKz3UImCpMRL3rRunnKO/jFFpqhBpwgKjI2f/kEyFwlX832CR0XBJNAlqGcOZXds/N2Soqi/SGAX32OUK4Y+ZyaE+f5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIANK7ZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3DBC4CEC7;
+	Tue,  8 Oct 2024 12:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393156;
-	bh=iE4MYChV5KJJVA+YdxdRAqrNMX+PMUM6fe7xTIVipVo=;
+	s=korg; t=1728390320;
+	bh=ENe+FV/XyPW3Q+5Cl2M3FQByHWJeral+4ih8vKwWg7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhCK5Y23pBWmWu9WOoy1EEO24ciwmz3fjuGClRE9ALu+P8jdLXULccjThRyurtbvD
-	 vzRRZqAOnucVqbARIcSn1Y+rEsx2F6ys9dTwb8nGlRCRm1OCrRwUaBmk/ZfJUQ/W23
-	 8PeZzY7VulIbUIjDXUfQr0lPkJ/7EqCenQGK0WhU=
+	b=DIANK7ZSbkvDKQOS3gdXUU11jgNRSxgOLigR8goE3jz0YPyvaK0wtPyQISI13Me7w
+	 76nQ6GaBKLy6GFOa/UWjFryPqaP2DLUfcYpnGbwb8baWmCJ70OyVx56SNe2ykfXZa4
+	 JeLtULK57ODnQzXpLffxUygTR+SafRbBMPUXg84o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seiji Nishikawa <snishika@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/386] ACPI: PAD: fix crash in exit_round_robin()
+Subject: [PATCH 6.10 252/482] ext4: avoid use-after-free in ext4_ext_show_leaf()
 Date: Tue,  8 Oct 2024 14:05:15 +0200
-Message-ID: <20241008115632.217281533@linuxfoundation.org>
+Message-ID: <20241008115658.208036241@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seiji Nishikawa <snishika@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 0a2ed70a549e61c5181bad5db418d223b68ae932 ]
+[ Upstream commit 4e2524ba2ca5f54bdbb9e5153bea00421ef653f5 ]
 
-The kernel occasionally crashes in cpumask_clear_cpu(), which is called
-within exit_round_robin(), because when executing clear_bit(nr, addr) with
-nr set to 0xffffffff, the address calculation may cause misalignment within
-the memory, leading to access to an invalid memory address.
+In ext4_find_extent(), path may be freed by error or be reallocated, so
+using a previously saved *ppath may have been freed and thus may trigger
+use-after-free, as follows:
 
-----------
-BUG: unable to handle kernel paging request at ffffffffe0740618
-        ...
-CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
-        ...
-RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
-Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
-RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
-RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
-RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
-R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
-R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
-FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- ? acpi_pad_add+0x120/0x120 [acpi_pad]
- kthread+0x10b/0x130
- ? set_kthread_struct+0x50/0x50
- ret_from_fork+0x1f/0x40
-        ...
-CR2: ffffffffe0740618
+ext4_split_extent
+  path = *ppath;
+  ext4_split_extent_at(ppath)
+  path = ext4_find_extent(ppath)
+  ext4_split_extent_at(ppath)
+    // ext4_find_extent fails to free path
+    // but zeroout succeeds
+  ext4_ext_show_leaf(inode, path)
+    eh = path[depth].p_hdr
+    // path use-after-free !!!
 
-crash> dis -lr ffffffffc0726923
-        ...
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
-0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
-0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
-/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
-0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
+Similar to ext4_split_extent_at(), we use *ppath directly as an input to
+ext4_ext_show_leaf(). Fix a spelling error by the way.
 
-crash> px tsk_in_cpu[14]
-$66 = 0xffffffff
+Same problem in ext4_ext_handle_unwritten_extents(). Since 'path' is only
+used in ext4_ext_show_leaf(), remove 'path' and use *ppath directly.
 
-crash> px 0xffffffffc072692c+0x19cf4
-$99 = 0xffffffffc0740620
+This issue is triggered only when EXT_DEBUG is defined and therefore does
+not affect functionality.
 
-crash> sym 0xffffffffc0740620
-ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
-
-crash> px pad_busy_cpus_bits[0]
-$42 = 0xfffc0
-----------
-
-To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
-cpumask_clear_cpu() in exit_round_robin(), just as it is done in
-round_robin_cpu().
-
-Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
-Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
-[ rjw: Subject edit, avoid updates to the same value ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-5-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_pad.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/ext4/extents.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-index 7a453c5ff303a..71e25c7989762 100644
---- a/drivers/acpi/acpi_pad.c
-+++ b/drivers/acpi/acpi_pad.c
-@@ -131,8 +131,10 @@ static void exit_round_robin(unsigned int tsk_index)
- {
- 	struct cpumask *pad_busy_cpus = to_cpumask(pad_busy_cpus_bits);
- 
--	cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
--	tsk_in_cpu[tsk_index] = -1;
-+	if (tsk_in_cpu[tsk_index] != -1) {
-+		cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
-+		tsk_in_cpu[tsk_index] = -1;
-+	}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index e067f2dd0335c..7954430f886d8 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3287,7 +3287,7 @@ static int ext4_split_extent_at(handle_t *handle,
  }
  
- static unsigned int idle_pct = 5; /* percentage */
+ /*
+- * ext4_split_extents() splits an extent and mark extent which is covered
++ * ext4_split_extent() splits an extent and mark extent which is covered
+  * by @map as split_flags indicates
+  *
+  * It may result in splitting the extent into multiple extents (up to three)
+@@ -3363,7 +3363,7 @@ static int ext4_split_extent(handle_t *handle,
+ 			goto out;
+ 	}
+ 
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ out:
+ 	return err ? err : allocated;
+ }
+@@ -3828,14 +3828,13 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 			struct ext4_ext_path **ppath, int flags,
+ 			unsigned int allocated, ext4_fsblk_t newblock)
+ {
+-	struct ext4_ext_path __maybe_unused *path = *ppath;
+ 	int ret = 0;
+ 	int err = 0;
+ 
+ 	ext_debug(inode, "logical block %llu, max_blocks %u, flags 0x%x, allocated %u\n",
+ 		  (unsigned long long)map->m_lblk, map->m_len, flags,
+ 		  allocated);
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ 
+ 	/*
+ 	 * When writing into unwritten space, we should not fail to
+@@ -3932,7 +3931,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 	if (allocated > map->m_len)
+ 		allocated = map->m_len;
+ 	map->m_len = allocated;
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ out2:
+ 	return err ? err : allocated;
+ }
 -- 
 2.43.0
 
