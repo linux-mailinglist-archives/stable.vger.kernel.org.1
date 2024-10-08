@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-81923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BB6994A23
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 650A5994CCE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41EAD1F2220C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 102C81F23DE1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451561DED43;
-	Tue,  8 Oct 2024 12:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BFC1DF720;
+	Tue,  8 Oct 2024 12:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ym8io02k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zd2+zBQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC8B1DE8BA;
-	Tue,  8 Oct 2024 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8D21DED60;
+	Tue,  8 Oct 2024 12:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390595; cv=none; b=LzW1opxQ7Bn9uiLh/nB6zGsGEPzNl2cr7/7k+qs7GW2pabtUZ61Y5uUq+7g6JZY2SBbqrfIE+xgxA54nsjugAJYmXg07C+9UPieF/45ZsAvzj86XzRJ35hnFHTlGFEKQCpMtO/y5Vqe1V1w9g5ci9KN8UKLf8Cve+V0iMKfTelk=
+	t=1728392251; cv=none; b=ckadxj0dekCKrhpoO8gJpccErg/OfczPxYt6OM39FgrLaQDxlABC2rB/tLFWUDpG9w8uOkg0vygPMl5PcA6GfagZ25Q+qsEZ4XtI03yiY+jjoh9qauFXNj/GSeIPGE2ghUQnoZYUlI9RxVCjkqsAQ/7aThmbrCX0O3ZP9zBVyjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390595; c=relaxed/simple;
-	bh=XQ+oFBvatmknhmcxeIdiUYXvukXOsj1+8ZAvJbsKU5s=;
+	s=arc-20240116; t=1728392251; c=relaxed/simple;
+	bh=PEQWUyKnNFQQc53ArWv9UPRQQNDsDYktXq+LB7Tm/94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2e+owPjEVYq3ojTErrLABQHHfQGR6M5lqyNoHzpxNMyJidgb1OYwTDBE9tOXJtkw0SG2L4+LKONzxr2in5KKffFh2b3ZqFCsSTJFt2I2oNlMpze9r72NwxhKP0+6DnbAeOA3bApEE5H6zbeH5vza8jAuoctgN95F+wR8+6NERo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ym8io02k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A74C4CEC7;
-	Tue,  8 Oct 2024 12:29:53 +0000 (UTC)
+	 MIME-Version; b=nXCpzgwrW2XVwwyZW99Lk9Mz1FoGziphAQxbMxqBZQxyuprSF+JSXjpL31imOuNtqhUPodXEF12EVETW9DdyetN0ScHHcnXdUhqULbMz2uiQUMPxiWNc6fLILTduD2G0c5RemUYtD/R5AGv0aDR6CrE0/d1O55TebdnM4fi/kME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zd2+zBQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E156DC4CEC7;
+	Tue,  8 Oct 2024 12:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390594;
-	bh=XQ+oFBvatmknhmcxeIdiUYXvukXOsj1+8ZAvJbsKU5s=;
+	s=korg; t=1728392251;
+	bh=PEQWUyKnNFQQc53ArWv9UPRQQNDsDYktXq+LB7Tm/94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ym8io02kJpnCfEnJJ3HUNHydWplaMZlv6H10b5+t/fl3uqpLphvtENB/Ylx/pxlOr
-	 1AjmWD9g11HirHpNq3dplu6x5u9I48BL7clWQSYploHgA0JFtt5WsYLIgn+TpzDXL4
-	 DWt5IndeoO5t+92qRyyDiO/PA5/J5oasYJWCEwjs=
+	b=Zd2+zBQ22axkAlul5gPIhJwXapDmM2HVMMk6MKTvhxqAybQ21cpvIepvN22+IZA0n
+	 JpsxYJklnBpwdDhbuvo8xspIWFEOWmH5G8AapyCEePl19Q3Q9sYo/AfvvdAWMrgwu3
+	 rzwupcvYAaV7BqkGaIrVduuV9EHcr+7BeatoAF9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.10 326/482] ext4: fix incorrect tid assumption in ext4_fc_mark_ineligible()
-Date: Tue,  8 Oct 2024 14:06:29 +0200
-Message-ID: <20241008115701.255979050@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.11 360/558] memory: tegra186-emc: drop unused to_tegra186_emc()
+Date: Tue,  8 Oct 2024 14:06:30 +0200
+Message-ID: <20241008115716.466007968@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit ebc4b2c1ac92fc0f8bf3f5a9c285a871d5084a6b upstream.
+commit 67dd9e861add38755a7c5d29e25dd0f6cb4116ab upstream.
 
-Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
-valid value for transaction IDs, which is incorrect.
+to_tegra186_emc() is not used, W=1 builds:
 
-Furthermore, the sbi->s_fc_ineligible_tid handling also makes the same
-assumption by being initialised to '0'.  Fortunately, the sb flag
-EXT4_MF_FC_INELIGIBLE can be used to check whether sbi->s_fc_ineligible_tid
-has been previously set instead of comparing it with '0'.
+  tegra186-emc.c:38:36: error: unused function 'to_tegra186_emc' [-Werror,-Wunused-function]
 
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240724161119.13448-5-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 9a38cb27668e ("memory: tegra: Add interconnect support for DRAM scaling in Tegra234")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240812123055.124123-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fast_commit.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/memory/tegra/tegra186-emc.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -339,22 +339,29 @@ void ext4_fc_mark_ineligible(struct supe
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	tid_t tid;
-+	bool has_transaction = true;
-+	bool is_ineligible;
+--- a/drivers/memory/tegra/tegra186-emc.c
++++ b/drivers/memory/tegra/tegra186-emc.c
+@@ -35,11 +35,6 @@ struct tegra186_emc {
+ 	struct icc_provider provider;
+ };
  
- 	if (ext4_fc_disabled(sb))
- 		return;
- 
--	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
- 	if (handle && !IS_ERR(handle))
- 		tid = handle->h_transaction->t_tid;
- 	else {
- 		read_lock(&sbi->s_journal->j_state_lock);
--		tid = sbi->s_journal->j_running_transaction ?
--				sbi->s_journal->j_running_transaction->t_tid : 0;
-+		if (sbi->s_journal->j_running_transaction)
-+			tid = sbi->s_journal->j_running_transaction->t_tid;
-+		else
-+			has_transaction = false;
- 		read_unlock(&sbi->s_journal->j_state_lock);
- 	}
- 	spin_lock(&sbi->s_fc_lock);
--	if (tid_gt(tid, sbi->s_fc_ineligible_tid))
-+	is_ineligible = ext4_test_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
-+	if (has_transaction &&
-+	    (!is_ineligible ||
-+	     (is_ineligible && tid_gt(tid, sbi->s_fc_ineligible_tid))))
- 		sbi->s_fc_ineligible_tid = tid;
-+	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
- 	spin_unlock(&sbi->s_fc_lock);
- 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
- 	sbi->s_fc_stats.fc_ineligible_reason_count[reason]++;
+-static inline struct tegra186_emc *to_tegra186_emc(struct icc_provider *provider)
+-{
+-	return container_of(provider, struct tegra186_emc, provider);
+-}
+-
+ /*
+  * debugfs interface
+  *
 
 
 
