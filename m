@@ -1,107 +1,222 @@
-Return-Path: <stable+bounces-83052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B1099532D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:18:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23E1995336
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77C891F26BDE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38C281F25BD0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CDB1E0084;
-	Tue,  8 Oct 2024 15:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9AC51E00BD;
+	Tue,  8 Oct 2024 15:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e2Xnl/fi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a24QI64u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A46B1DEFCF
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 15:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CFD1DEFF4;
+	Tue,  8 Oct 2024 15:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728400726; cv=none; b=Adx0JWT6Gr7GIwH2SYSJHEd6uSs4zzDSj1adGAioYpWrr7bzbKrV4Jfc+qr7snKjxf5WvM2++Af+2JpLGBJnStFz2Ec3HPKvGZBCorEl/JEZ+bgB9DGAXH3HU/xDiQVaeMLNcO0/gOwVYU0HlQDhDxaqbEn+mabA/4hTdruIBjI=
+	t=1728400772; cv=none; b=PS79HI3x8NKig7CEDumbS2UUmKrBJq5Zg5pBAxlYoIZx3hjVuK7Fd4gJJu1E0cFQBd+lT1y++0do8o+9HxSQH6OtkVlDZyrpriII+7XOQ1nGv9HFjmD7zuZ0HhSlCBDkjgCqbceq0tZucYBB9Rcb2LzEr+LLeV5w+lZuiRi939I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728400726; c=relaxed/simple;
-	bh=BpcwFEIzPlx3XXF1AFjmp/nEahhq0W3xXSSc3zpzhVE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UxV73GHdjURNyXB0rrGxb73fRhZPLkEPKD9abtnOldVqspMfTbyj81aFlGyh2vV4RvCOBzRxtOnr4ByInAAs2Z4SOckGy/oST4hzYax4MZ9DdsSHq3y8JdB/NN9ptFlsrGS6ELyuetd6oHZYbJCWYttsLCS9gs6GvByrExOzKkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e2Xnl/fi; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42cbe8ec7dbso244705e9.1
-        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 08:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728400723; x=1729005523; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BpcwFEIzPlx3XXF1AFjmp/nEahhq0W3xXSSc3zpzhVE=;
-        b=e2Xnl/fiiRQHYHjKm5GS6yUEskYFMQQHo6TmZsZGnKCP++qyu4X4v3B5sp4PVhtwoI
-         qIJ8kU2XHBiW6yTr3GsqmO/9N6/qrrtnSDu1Ws6BZ6TDNSsm7lN/+FS2F+Cn7ESAG0x3
-         LGXCggwmlqgs4rL5xALKKkhiBzM3SsMzFj7lRTn6jWnXlkzh+lsvO7E4W/DNiNIKKQvk
-         +KI1Ns2dJ5LpcBTCZLS5+N7uK8mWbS+MU/9Azb5GL5/mal6bQ2ZKuhccvgDCVhQpR1iA
-         3Goea/6t+0rTUz1OOc6V2/ra6I7+GV2Q27CIMOaJO047C9+43lDJcW+c/SNcFV8QieKP
-         6Q5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728400723; x=1729005523;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BpcwFEIzPlx3XXF1AFjmp/nEahhq0W3xXSSc3zpzhVE=;
-        b=OHRGwcCcItqP2oMOhBN3EA7GE3x15MigHt9rZN67HVwutWTKmdq52llkX3xfQXQL8W
-         Q0KazN650xNNiEozgBisYb8+aXhpdxVKUs7G72qxCEzUHD5x1ZoAITvUn/ntDIJVdK0x
-         zJdtDjoSWO2hyeihp7tdq1iNSLTgB6TkCJjNjMcxPnnNSa30XKDMc8zERrb/vI2wx038
-         TzakmGM0eN/KOouw867yamtRkCoiZSbvo6Pb1DCwklbxrAqOlEuEA+wbt16fTREt+VY/
-         EVKjMre/H+jgzYXG/IVSZraqHAu/9sITQTYYNoDJrAW/3ldubeRxUkJOCUtHBvES6kU0
-         Nf0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVJn4Fv0xj5Ihr/fyI7jH9YHW5ryJ0Mbn9ikMWL0BZqvFTtq+NRh8kVPI0rOXKdRAvSJLZoTm0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIVqcLhHzSj0B3Q/suiD6AxUPiRVDGrZYuzd0UwDkpXTdkfS2p
-	sB/VCxjBBqrbPRU1ivzlj+FtV1YrUYMIf9r6zOjYMcki6F1XT6IaYVjojL2znn7ThbFqxmqMuw3
-	YDjl6+/Em+qZ8MprYpHR2uM28yDCv/yHdQSY7
-X-Google-Smtp-Source: AGHT+IFl2HJmQLQPihSYgmIEqLrXDgSBjiY3CjR9+Q8LC6wqa3oeEE7Y5k2ZSKlmXR02y/8JyOXbsOZ7d7x39Pyhndc=
-X-Received: by 2002:a05:600c:1e1f:b0:426:5d89:896d with SMTP id
- 5b1f17b1804b1-4303b672650mr4285565e9.1.1728400722198; Tue, 08 Oct 2024
- 08:18:42 -0700 (PDT)
+	s=arc-20240116; t=1728400772; c=relaxed/simple;
+	bh=AC3J8zJg8qAC6TuirHuU2JewxyEkJScRJmlwgbFmEPc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RkKUVI5V2xvPCv/JOzpDg1ZInDD3N2cjrk8ym/0ZagPMmjnEi0wyfWc88Dk1X2N+EuHFW4/xfLha0TVyR/VRXI1wHXOG/2nEPvmN2sZkvQoTpAPQ5uaJ0O1cATfJ3UX12iY8ghi8wujsBWE3FHpa9QF2AOkDabqtGblkx8GfMww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a24QI64u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64805C4CEC7;
+	Tue,  8 Oct 2024 15:19:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728400772;
+	bh=AC3J8zJg8qAC6TuirHuU2JewxyEkJScRJmlwgbFmEPc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=a24QI64uPZ6z5hRJvZlr31MpYyZXMzUhdAVtKWaDEi7vPtkC5KqRV+wBYbhSwXu0W
+	 o45UMpVVWdRB68nn8fGfTP8se9s6plpyJt6P09LpRTWdm3RmInyVF94QGnUxPezvw9
+	 FjW65nDoXcO7eaNOfksf4EwXO4RaYYl1i+15n/j6xd5YHDN/NaHBHRDn+UGcUSDwQO
+	 LD0lPUjSPehFtrnJZiK7Kcain6/8tYDvqrEX7uS7lvYgWm4iWUzMcIVkGqSjXZFy2/
+	 5PcvHshWGHD5o7zWlicOAa48fcERyglXIpbUTVt15qC/ioSheg9jdsubki2jsQyo+6
+	 mqHDcE/tyjzJA==
+Message-ID: <85f1805b-e4c8-48c4-8e99-c36d20182a13@kernel.org>
+Date: Tue, 8 Oct 2024 18:19:26 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CGME20241004165105eucas1p1f21dfe36e7b1f0384126534dcbbd36c4@eucas1p1.samsung.com>
- <20241002224416.42F20C4CEC2@smtp.kernel.org> <c96e6f1b-3abf-454a-8236-360a845b25e9@samsung.com>
-In-Reply-To: <c96e6f1b-3abf-454a-8236-360a845b25e9@samsung.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 8 Oct 2024 17:18:04 +0200
-Message-ID: <CAG48ez14RUJWc+iABHeTu1FAUPqH9bRTYAi+KqT2A=XFYYqL-Q@mail.gmail.com>
-Subject: Re: + mm-mremap-prevent-racing-change-of-old-pmd-type.patch added to
- mm-hotfixes-unstable branch
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, mm-commits@vger.kernel.org, 
-	willy@infradead.org, stable@vger.kernel.org, hughd@google.com, 
-	david@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: dwc3: core: Fix system suspend on TI AM62 platforms
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>,
+ Pavel Machek <pavel@ucw.cz>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>,
+ Tero Kristo <kristo@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>,
+ Dhruva Gole <d-gole@ti.com>, Vishal Mahaveer <vishalm@ti.com>,
+ "msp@baylibre.com" <msp@baylibre.com>, "srk@ti.com" <srk@ti.com>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20241001-am62-lpm-usb-v1-1-9916b71165f7@kernel.org>
+ <20241005010355.zyb54bbqjmpdjnce@synopsys.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241005010355.zyb54bbqjmpdjnce@synopsys.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi!
+Hi Thinh,
 
-On Fri, Oct 4, 2024 at 6:51=E2=80=AFPM Marek Szyprowski
-<m.szyprowski@samsung.com> wrote:
-> This patch landed in today's linux-next as commit 46c1b3279220
-> ("mm/mremap: prevent racing change of old pmd type"). In my tests I
-> found that it introduces a lockdep warning about possible circular
-> locking dependency on ARM64 machines. Reverting $subject together with
-> commits a2fbe16f45a8 ("mm: mremap: move_ptes() use
-> pte_offset_map_rw_nolock()") and 46c1b3279220 ("mm/mremap: prevent
-> racing change of old pmd type") on top of next-20241004 fixes this proble=
-m.
+On 05/10/2024 04:04, Thinh Nguyen wrote:
+> Hi,
+> 
+> On Tue, Oct 01, 2024, Roger Quadros wrote:
+>> Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
+>> system suspend is broken on AM62 TI platforms.
+>>
+>> Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+>> bits (hence forth called 2 SUSPHY bits) were being set during core
+>> initialization and even during core re-initialization after a system
+>> suspend/resume.
+>>
+>> These bits are required to be set for system suspend/resume to work correctly
+>> on AM62 platforms.
+>>
+>> Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
+>> driver is not loaded and started.
+>> For Host mode, the 2 SUSPHY bits are set before the first system suspend but
+>> get cleared at system resume during core re-init and are never set again.
+>>
+>> This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
+>> before system suspend and restored to the original state during system resume.
+>>
+>> Cc: stable@vger.kernel.org # v6.9+
+>> Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+>> Link: https://urldefense.com/v3/__https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/__;!!A4F2R9G_pg!ahChm4MaKd6VGYqbnM4X1_pY_jqavYDv5HvPFbmicKuhvFsBwlEFi1xO5itGuHmfjbRuUSzReJISf5-1gXpr$ 
+>> Signed-off-by: Roger Quadros <rogerq@kernel.org>
+>> ---
+>>  drivers/usb/dwc3/core.c | 16 ++++++++++++++++
+>>  drivers/usb/dwc3/core.h |  2 ++
+>>  2 files changed, 18 insertions(+)
+>>
+>> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+>> index 9eb085f359ce..1233922d4d54 100644
+>> --- a/drivers/usb/dwc3/core.c
+>> +++ b/drivers/usb/dwc3/core.c
+>> @@ -2336,6 +2336,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>>  	u32 reg;
+>>  	int i;
+>>  
+>> +	dwc->susphy_state = !!(dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
+>> +			    DWC3_GUSB2PHYCFG_SUSPHY);
+>> +
+>>  	switch (dwc->current_dr_role) {
+>>  	case DWC3_GCTL_PRTCAP_DEVICE:
+>>  		if (pm_runtime_suspended(dwc->dev))
+>> @@ -2387,6 +2390,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>>  		break;
+>>  	}
+>>  
+>> +	if (!PMSG_IS_AUTO(msg)) {
+>> +		if (!dwc->susphy_state)
+>> +			dwc3_enable_susphy(dwc, true);
+>> +	}
+>> +
+>>  	return 0;
+>>  }
+>>  
+>> @@ -2454,6 +2462,14 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+>>  		break;
+>>  	}
+>>  
+>> +	if (!PMSG_IS_AUTO(msg)) {
+>> +		/* dwc3_core_init_for_resume() disables SUSPHY so just handle
+>> +		 * the enable case
+>> +		 */
+> 
+> Can we note that this is a particular behavior needed for AM62 here?
+> And can we use this comment style:
 
-Thanks for the report; that patch has now been removed, and a
-different approach
-(https://lore.kernel.org/all/20241007-move_normal_pmd-vs-collapse-fix-2-v1-=
-1-5ead9631f2ea@google.com/)
-will probably be used instead.
+Looking at this again, this fix is not specific to AM62 but for all platforms.
+e.g. if Host Role was already started when going to system suspend, SUSPHY bits
+were enabled, then after system resume SUSPHY bits are cleared at dwc3_core_init_for_resume().
+
+Host stop/start was not called so SUSPHY bits remain cleared. So here
+we deal with enabling SUSPHY.
+
+> 
+> /*
+>  * xxxxx
+>  * xxxxx
+>  */
+> 
+> 
+>> +		if (dwc->susphy_state)
+> 
+> Shouldn't we check for if (!dwc->susphy_state) and clear the susphy
+> bits?
+> 
+>> +			dwc3_enable_susphy(dwc, true);
+> 
+> The dwc3_enable_susphy() set and clear both GUSB3PIPECTL_SUSPHY and
+> GUSB2PHYCFG_SUSPHY, perhaps we should split that function out so we can
+> only need to set for GUSB2PHYCFG_SUSPHY since you only track for that.
+> 
+>> +	}
+>> +
+>>  	return 0;
+>>  }
+>>  
+>> diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+>> index c71240e8f7c7..b2ed5aba4c72 100644
+>> --- a/drivers/usb/dwc3/core.h
+>> +++ b/drivers/usb/dwc3/core.h
+>> @@ -1150,6 +1150,7 @@ struct dwc3_scratchpad_array {
+>>   * @sys_wakeup: set if the device may do system wakeup.
+>>   * @wakeup_configured: set if the device is configured for remote wakeup.
+>>   * @suspended: set to track suspend event due to U3/L2.
+>> + * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY before PM suspend.
+>>   * @imod_interval: set the interrupt moderation interval in 250ns
+>>   *			increments or 0 to disable.
+>>   * @max_cfg_eps: current max number of IN eps used across all USB configs.
+>> @@ -1382,6 +1383,7 @@ struct dwc3 {
+>>  	unsigned		sys_wakeup:1;
+>>  	unsigned		wakeup_configured:1;
+>>  	unsigned		suspended:1;
+>> +	unsigned		susphy_state:1;
+>>  
+>>  	u16			imod_interval;
+>>  
+>>
+>> ---
+>> base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+>> change-id: 20240923-am62-lpm-usb-f420917bd707
+>>
+>> Best regards,
+>> -- 
+>> Roger Quadros <rogerq@kernel.org>
+>>
+> 
+> <rant/>
+> While reviewing your change, I see that we misuse the
+> dis_u2_susphy_quirk to make this property a conditional thing during
+> suspend and resume for certain platform. That bugs me because we can't
+> easily change it without the reported hardware to test.
+> </rant>
+> 
+> Thanks for the patch!
+> 
+> BR,
+> Thinh
+
+-- 
+cheers,
+-roger
 
