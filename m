@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E75994AED
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B99A994D6D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 868FC2827F0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9E81F21E95
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8031F1DE4CB;
-	Tue,  8 Oct 2024 12:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A601DE4CC;
+	Tue,  8 Oct 2024 13:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YU1abvRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILfYIOSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE991DC759;
-	Tue,  8 Oct 2024 12:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0751C9B99;
+	Tue,  8 Oct 2024 13:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391083; cv=none; b=iuPp5KRN982086Eqx3E0Dto0zdzu6GkD+PrnIcM5UVxxUDNiBFvaPx3BKF6GlbQgucH7bx3RQdI0+1hXC3HC6TkAvwGvYnvnS4ffBIaNwRgKJJTujd3qsYjfYfBRzkc/nsHNrBhrl6N+hG8cuyNG5/lPkUIEC83vdDMjcZzPtGM=
+	t=1728392719; cv=none; b=ckIdHCa8e38IIOmTvZb+gKR5EE7zUZJ+eDqOKGVuoSV7cRhBAn5dIWTY9XGfz23oQ2fjCKBKNN8AMZwA0tHTKQjA/9ip95geInL2AvjiaVBSDPQKcbWmyGVDb/UuPnbDYyQk4zteufnKSCSEJpzhYBqiBFqSYlI6oB4JewLLrrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391083; c=relaxed/simple;
-	bh=lxr2uzr5Z+FVDgoHnveiZJAFxzxw5GvrIN/arYcJjRY=;
+	s=arc-20240116; t=1728392719; c=relaxed/simple;
+	bh=rFYjWPZFfl0qxF+tM6STMxmHqFRZJXudeRzcMOBtkZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rqu7ntOWmeNDnNk4rRMaAeCUpOgBn60bZerPvBpGQUau3hiqxaMU4KNAoRcJna8oCVZMxfmojf0s9HvoKfFkAy8HbbUswlIMulAJ7MoHF64YuE9k3bY9S+uu7zwYw9mlRxISN2qhcPpQEb5neoJ4tV0dshT+0Uuq351nv15Zrlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YU1abvRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD79BC4CEC7;
-	Tue,  8 Oct 2024 12:38:02 +0000 (UTC)
+	 MIME-Version; b=PZGW4twZbEAyCr5pWImLt17EuWJJgZWooqcik0DM0Mzhjgu2FwJzvIqdYN7Hfz7N67d6fQe8uawYa+/eyuZjt6SdyLbGH0nBcTNi59eR8vF5jXHuASlMpvOGr/psfGgkJf/wklgAtEfCFi2CZbbli4/oQkw0tVuiDIY37UD1RMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILfYIOSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BB9C4CEC7;
+	Tue,  8 Oct 2024 13:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391083;
-	bh=lxr2uzr5Z+FVDgoHnveiZJAFxzxw5GvrIN/arYcJjRY=;
+	s=korg; t=1728392718;
+	bh=rFYjWPZFfl0qxF+tM6STMxmHqFRZJXudeRzcMOBtkZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YU1abvRd2sKEKpWSqLfZEDnak4/v70kE76iPC7t3j5pzeAvIGEBVoUoTetqoDXjER
-	 wf7t8eP3XEGIBHBNHMrzfMfs2M0Y606+F+BdlLiZp97nOOGtwl4R0ROPFBpJhRbX7c
-	 2t+r+9XLwgHhsO8n2JXc/i92Ehx4J37RBaQ+hdHI=
+	b=ILfYIOSLNU13a1PCQFGVq9jpMlnElC/1NWQIm6erjopoXH66hByKnC3LO1ti1k6Yb
+	 6hP3+lHogPbfuk/OxZWexjRNPD9UaOAF0Ie0GoM7zG+vug6OP6eR8zQohmuBkdm6iF
+	 KC96lfyOn6T3HooPDFEI35ijXUCc03xL9ScuCDeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 465/482] iio: pressure: bmp280: Improve indentation and line wrapping
+	Boris Burkov <boris@bur.io>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.11 498/558] btrfs: drop the backref cache during relocation if we commit
 Date: Tue,  8 Oct 2024 14:08:48 +0200
-Message-ID: <20241008115706.812195412@linuxfoundation.org>
+Message-ID: <20241008115721.828356367@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,376 +60,214 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 439ce8961bdd2e925c1f6adc82ce9fe3931e2c08 ]
+commit db7e68b522c01eb666cfe1f31637775f18997811 upstream.
 
-Fix indentations that are not following the standards, remove
-extra white lines and add missing white lines.
+Since the inception of relocation we have maintained the backref cache
+across transaction commits, updating the backref cache with the new
+bytenr whenever we COWed blocks that were in the cache, and then
+updating their bytenr once we detected a transaction id change.
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240429190046.24252-2-vassilisamir@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: b9065b0250e1 ("iio: pressure: bmp280: Fix regmap for BMP280 device")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This works as long as we're only ever modifying blocks, not changing the
+structure of the tree.
+
+However relocation does in fact change the structure of the tree.  For
+example, if we are relocating a data extent, we will look up all the
+leaves that point to this data extent.  We will then call
+do_relocation() on each of these leaves, which will COW down to the leaf
+and then update the file extent location.
+
+But, a key feature of do_relocation() is the pending list.  This is all
+the pending nodes that we modified when we updated the file extent item.
+We will then process all of these blocks via finish_pending_nodes, which
+calls do_relocation() on all of the nodes that led up to that leaf.
+
+The purpose of this is to make sure we don't break sharing unless we
+absolutely have to.  Consider the case that we have 3 snapshots that all
+point to this leaf through the same nodes, the initial COW would have
+created a whole new path.  If we did this for all 3 snapshots we would
+end up with 3x the number of nodes we had originally.  To avoid this we
+will cycle through each of the snapshots that point to each of these
+nodes and update their pointers to point at the new nodes.
+
+Once we update the pointer to the new node we will drop the node we
+removed the link for and all of its children via btrfs_drop_subtree().
+This is essentially just btrfs_drop_snapshot(), but for an arbitrary
+point in the snapshot.
+
+The problem with this is that we will never reflect this in the backref
+cache.  If we do this btrfs_drop_snapshot() for a node that is in the
+backref tree, we will leave the node in the backref tree.  This becomes
+a problem when we change the transid, as now the backref cache has
+entire subtrees that no longer exist, but exist as if they still are
+pointed to by the same roots.
+
+In the best case scenario you end up with "adding refs to an existing
+tree ref" errors from insert_inline_extent_backref(), where we attempt
+to link in nodes on roots that are no longer valid.
+
+Worst case you will double free some random block and re-use it when
+there's still references to the block.
+
+This is extremely subtle, and the consequences are quite bad.  There
+isn't a way to make sure our backref cache is consistent between
+transid's.
+
+In order to fix this we need to simply evict the entire backref cache
+anytime we cross transid's.  This reduces performance in that we have to
+rebuild this backref cache every time we change transid's, but fixes the
+bug.
+
+This has existed since relocation was added, and is a pretty critical
+bug.  There's a lot more cleanup that can be done now that this
+functionality is going away, but this patch is as small as possible in
+order to fix the problem and make it easy for us to backport it to all
+the kernels it needs to be backported to.
+
+Followup series will dismantle more of this code and simplify relocation
+drastically to remove this functionality.
+
+We have a reproducer that reproduced the corruption within a few minutes
+of running.  With this patch it survives several iterations/hours of
+running the reproducer.
+
+Fixes: 3fd0a5585eb9 ("Btrfs: Metadata ENOSPC handling for balance")
+CC: stable@vger.kernel.org
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/bmp280-core.c | 108 ++++++++++++++++-------------
- drivers/iio/pressure/bmp280-spi.c  |   4 +-
- 2 files changed, 61 insertions(+), 51 deletions(-)
+ fs/btrfs/backref.c    |   12 +++++---
+ fs/btrfs/relocation.c |   75 ++------------------------------------------------
+ 2 files changed, 11 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 221fa2c552ae2..82c177e0ff933 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -52,7 +52,6 @@
-  */
- enum { AC1, AC2, AC3, AC4, AC5, AC6, B1, B2, MB, MC, MD };
+--- a/fs/btrfs/backref.c
++++ b/fs/btrfs/backref.c
+@@ -3179,10 +3179,14 @@ void btrfs_backref_release_cache(struct
+ 		btrfs_backref_cleanup_node(cache, node);
+ 	}
  
+-	cache->last_trans = 0;
 -
- enum bmp380_odr {
- 	BMP380_ODR_200HZ,
- 	BMP380_ODR_100HZ,
-@@ -181,18 +180,19 @@ static int bmp280_read_calib(struct bmp280_data *data)
- 	struct bmp280_calib *calib = &data->calib.bmp280;
- 	int ret;
+-	for (i = 0; i < BTRFS_MAX_LEVEL; i++)
+-		ASSERT(list_empty(&cache->pending[i]));
++	for (i = 0; i < BTRFS_MAX_LEVEL; i++) {
++		while (!list_empty(&cache->pending[i])) {
++			node = list_first_entry(&cache->pending[i],
++						struct btrfs_backref_node,
++						list);
++			btrfs_backref_cleanup_node(cache, node);
++		}
++	}
+ 	ASSERT(list_empty(&cache->pending_edge));
+ 	ASSERT(list_empty(&cache->useless_node));
+ 	ASSERT(list_empty(&cache->changed));
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -232,70 +232,6 @@ static struct btrfs_backref_node *walk_d
+ 	return NULL;
+ }
  
+-static void update_backref_node(struct btrfs_backref_cache *cache,
+-				struct btrfs_backref_node *node, u64 bytenr)
+-{
+-	struct rb_node *rb_node;
+-	rb_erase(&node->rb_node, &cache->rb_root);
+-	node->bytenr = bytenr;
+-	rb_node = rb_simple_insert(&cache->rb_root, node->bytenr, &node->rb_node);
+-	if (rb_node)
+-		btrfs_backref_panic(cache->fs_info, bytenr, -EEXIST);
+-}
 -
- 	/* Read temperature and pressure calibration values. */
- 	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_TEMP_START,
--			       data->bmp280_cal_buf, sizeof(data->bmp280_cal_buf));
-+			       data->bmp280_cal_buf,
-+			       sizeof(data->bmp280_cal_buf));
- 	if (ret < 0) {
- 		dev_err(data->dev,
--			"failed to read temperature and pressure calibration parameters\n");
-+			"failed to read calibration parameters\n");
- 		return ret;
- 	}
- 
--	/* Toss the temperature and pressure calibration data into the entropy pool */
--	add_device_randomness(data->bmp280_cal_buf, sizeof(data->bmp280_cal_buf));
-+	/* Toss calibration data into the entropy pool */
-+	add_device_randomness(data->bmp280_cal_buf,
-+			      sizeof(data->bmp280_cal_buf));
- 
- 	/* Parse temperature calibration values. */
- 	calib->T1 = le16_to_cpu(data->bmp280_cal_buf[T1]);
-@@ -223,7 +223,7 @@ static int bme280_read_calib(struct bmp280_data *data)
- 	/* Load shared calibration params with bmp280 first */
- 	ret = bmp280_read_calib(data);
- 	if  (ret < 0) {
--		dev_err(dev, "failed to read common bmp280 calibration parameters\n");
-+		dev_err(dev, "failed to read calibration parameters\n");
- 		return ret;
- 	}
- 
-@@ -283,6 +283,7 @@ static int bme280_read_calib(struct bmp280_data *data)
- 
- 	return 0;
- }
-+
- /*
-  * Returns humidity in percent, resolution is 0.01 percent. Output value of
-  * "47445" represents 47445/1024 = 46.333 %RH.
-@@ -305,7 +306,7 @@ static u32 bmp280_compensate_humidity(struct bmp280_data *data,
- 	var = clamp_val(var, 0, 419430400);
- 
- 	return var >> 12;
--};
-+}
- 
- /*
-  * Returns temperature in DegC, resolution is 0.01 DegC.  Output value of
-@@ -538,7 +539,7 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
- }
- 
- static int bmp280_write_oversampling_ratio_humid(struct bmp280_data *data,
--					       int val)
-+						 int val)
+-/*
+- * update backref cache after a transaction commit
+- */
+-static int update_backref_cache(struct btrfs_trans_handle *trans,
+-				struct btrfs_backref_cache *cache)
+-{
+-	struct btrfs_backref_node *node;
+-	int level = 0;
+-
+-	if (cache->last_trans == 0) {
+-		cache->last_trans = trans->transid;
+-		return 0;
+-	}
+-
+-	if (cache->last_trans == trans->transid)
+-		return 0;
+-
+-	/*
+-	 * detached nodes are used to avoid unnecessary backref
+-	 * lookup. transaction commit changes the extent tree.
+-	 * so the detached nodes are no longer useful.
+-	 */
+-	while (!list_empty(&cache->detached)) {
+-		node = list_entry(cache->detached.next,
+-				  struct btrfs_backref_node, list);
+-		btrfs_backref_cleanup_node(cache, node);
+-	}
+-
+-	while (!list_empty(&cache->changed)) {
+-		node = list_entry(cache->changed.next,
+-				  struct btrfs_backref_node, list);
+-		list_del_init(&node->list);
+-		BUG_ON(node->pending);
+-		update_backref_node(cache, node, node->new_bytenr);
+-	}
+-
+-	/*
+-	 * some nodes can be left in the pending list if there were
+-	 * errors during processing the pending nodes.
+-	 */
+-	for (level = 0; level < BTRFS_MAX_LEVEL; level++) {
+-		list_for_each_entry(node, &cache->pending[level], list) {
+-			BUG_ON(!node->pending);
+-			if (node->bytenr == node->new_bytenr)
+-				continue;
+-			update_backref_node(cache, node, node->new_bytenr);
+-		}
+-	}
+-
+-	cache->last_trans = 0;
+-	return 1;
+-}
+-
+ static bool reloc_root_is_dead(const struct btrfs_root *root)
  {
- 	const int *avail = data->chip_info->oversampling_humid_avail;
- 	const int n = data->chip_info->num_oversampling_humid_avail;
-@@ -563,7 +564,7 @@ static int bmp280_write_oversampling_ratio_humid(struct bmp280_data *data,
- }
+ 	/*
+@@ -551,9 +487,6 @@ static int clone_backref_node(struct btr
+ 	struct btrfs_backref_edge *new_edge;
+ 	struct rb_node *rb_node;
  
- static int bmp280_write_oversampling_ratio_temp(struct bmp280_data *data,
--					       int val)
-+						int val)
- {
- 	const int *avail = data->chip_info->oversampling_temp_avail;
- 	const int n = data->chip_info->num_oversampling_temp_avail;
-@@ -588,7 +589,7 @@ static int bmp280_write_oversampling_ratio_temp(struct bmp280_data *data,
- }
- 
- static int bmp280_write_oversampling_ratio_press(struct bmp280_data *data,
--					       int val)
-+						 int val)
- {
- 	const int *avail = data->chip_info->oversampling_press_avail;
- 	const int n = data->chip_info->num_oversampling_press_avail;
-@@ -772,13 +773,12 @@ static int bmp280_chip_config(struct bmp280_data *data)
- 	int ret;
- 
- 	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
--				 BMP280_OSRS_TEMP_MASK |
--				 BMP280_OSRS_PRESS_MASK |
--				 BMP280_MODE_MASK,
--				 osrs | BMP280_MODE_NORMAL);
-+				BMP280_OSRS_TEMP_MASK |
-+				BMP280_OSRS_PRESS_MASK |
-+				BMP280_MODE_MASK,
-+				osrs | BMP280_MODE_NORMAL);
- 	if (ret < 0) {
--		dev_err(data->dev,
--			"failed to write ctrl_meas register\n");
-+		dev_err(data->dev, "failed to write ctrl_meas register\n");
- 		return ret;
- 	}
- 
-@@ -786,8 +786,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
- 				 BMP280_FILTER_MASK,
- 				 BMP280_FILTER_4X);
- 	if (ret < 0) {
--		dev_err(data->dev,
--			"failed to write config register\n");
-+		dev_err(data->dev, "failed to write config register\n");
- 		return ret;
- 	}
- 
-@@ -926,8 +925,8 @@ static int bmp380_cmd(struct bmp280_data *data, u8 cmd)
- }
- 
- /*
-- * Returns temperature in Celsius degrees, resolution is 0.01º C. Output value of
-- * "5123" equals 51.2º C. t_fine carries fine temperature as global value.
-+ * Returns temperature in Celsius degrees, resolution is 0.01º C. Output value
-+ * of "5123" equals 51.2º C. t_fine carries fine temperature as global value.
-  *
-  * Taken from datasheet, Section Appendix 9, "Compensation formula" and repo
-  * https://github.com/BoschSensortec/BMP3-Sensor-API.
-@@ -1069,7 +1068,8 @@ static int bmp380_read_calib(struct bmp280_data *data)
- 
- 	/* Read temperature and pressure calibration data */
- 	ret = regmap_bulk_read(data->regmap, BMP380_REG_CALIB_TEMP_START,
--			       data->bmp380_cal_buf, sizeof(data->bmp380_cal_buf));
-+			       data->bmp380_cal_buf,
-+			       sizeof(data->bmp380_cal_buf));
- 	if (ret) {
- 		dev_err(data->dev,
- 			"failed to read temperature calibration parameters\n");
-@@ -1077,7 +1077,8 @@ static int bmp380_read_calib(struct bmp280_data *data)
- 	}
- 
- 	/* Toss the temperature calibration data into the entropy pool */
--	add_device_randomness(data->bmp380_cal_buf, sizeof(data->bmp380_cal_buf));
-+	add_device_randomness(data->bmp380_cal_buf,
-+			      sizeof(data->bmp380_cal_buf));
- 
- 	/* Parse calibration values */
- 	calib->T1 = get_unaligned_le16(&data->bmp380_cal_buf[BMP380_T1]);
-@@ -1159,7 +1160,8 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 
- 	/* Configure output data rate */
- 	ret = regmap_update_bits_check(data->regmap, BMP380_REG_ODR,
--				       BMP380_ODRS_MASK, data->sampling_freq, &aux);
-+				       BMP380_ODRS_MASK, data->sampling_freq,
-+				       &aux);
- 	if (ret) {
- 		dev_err(data->dev, "failed to write ODR selection register\n");
- 		return ret;
-@@ -1178,12 +1180,13 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 
- 	if (change) {
- 		/*
--		 * The configurations errors are detected on the fly during a measurement
--		 * cycle. If the sampling frequency is too low, it's faster to reset
--		 * the measurement loop than wait until the next measurement is due.
-+		 * The configurations errors are detected on the fly during a
-+		 * measurement cycle. If the sampling frequency is too low, it's
-+		 * faster to reset the measurement loop than wait until the next
-+		 * measurement is due.
- 		 *
--		 * Resets sensor measurement loop toggling between sleep and normal
--		 * operating modes.
-+		 * Resets sensor measurement loop toggling between sleep and
-+		 * normal operating modes.
- 		 */
- 		ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
- 					BMP380_MODE_MASK,
-@@ -1201,22 +1204,21 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 			return ret;
+-	if (cache->last_trans > 0)
+-		update_backref_cache(trans, cache);
+-
+ 	rb_node = rb_simple_search(&cache->rb_root, src->commit_root->start);
+ 	if (rb_node) {
+ 		node = rb_entry(rb_node, struct btrfs_backref_node, rb_node);
+@@ -3698,11 +3631,9 @@ static noinline_for_stack int relocate_b
+ 			break;
  		}
- 		/*
--		 * Waits for measurement before checking configuration error flag.
--		 * Selected longest measure time indicated in section 3.9.1
--		 * in the datasheet.
-+		 * Waits for measurement before checking configuration error
-+		 * flag. Selected longest measure time indicated in
-+		 * section 3.9.1 in the datasheet.
- 		 */
- 		msleep(80);
+ restart:
+-		if (update_backref_cache(trans, &rc->backref_cache)) {
+-			btrfs_end_transaction(trans);
+-			trans = NULL;
+-			continue;
+-		}
++		if (rc->backref_cache.last_trans != trans->transid)
++			btrfs_backref_release_cache(&rc->backref_cache);
++		rc->backref_cache.last_trans = trans->transid;
  
- 		/* Check config error flag */
- 		ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
- 		if (ret) {
--			dev_err(data->dev,
--				"failed to read error register\n");
-+			dev_err(data->dev, "failed to read error register\n");
- 			return ret;
- 		}
- 		if (tmp & BMP380_ERR_CONF_MASK) {
- 			dev_warn(data->dev,
--				"sensor flagged configuration as incompatible\n");
-+				 "sensor flagged configuration as incompatible\n");
- 			return -EINVAL;
- 		}
- 	}
-@@ -1317,9 +1319,11 @@ static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
- 	}
- 
- 	/* Start NVM operation sequence */
--	ret = regmap_write(data->regmap, BMP580_REG_CMD, BMP580_CMD_NVM_OP_SEQ_0);
-+	ret = regmap_write(data->regmap, BMP580_REG_CMD,
-+			   BMP580_CMD_NVM_OP_SEQ_0);
- 	if (ret) {
--		dev_err(data->dev, "failed to send nvm operation's first sequence\n");
-+		dev_err(data->dev,
-+			"failed to send nvm operation's first sequence\n");
- 		return ret;
- 	}
- 	if (is_write) {
-@@ -1327,7 +1331,8 @@ static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
- 		ret = regmap_write(data->regmap, BMP580_REG_CMD,
- 				   BMP580_CMD_NVM_WRITE_SEQ_1);
- 		if (ret) {
--			dev_err(data->dev, "failed to send nvm write sequence\n");
-+			dev_err(data->dev,
-+				"failed to send nvm write sequence\n");
- 			return ret;
- 		}
- 		/* Datasheet says on 4.8.1.2 it takes approximately 10ms */
-@@ -1338,7 +1343,8 @@ static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
- 		ret = regmap_write(data->regmap, BMP580_REG_CMD,
- 				   BMP580_CMD_NVM_READ_SEQ_1);
- 		if (ret) {
--			dev_err(data->dev, "failed to send nvm read sequence\n");
-+			dev_err(data->dev,
-+				"failed to send nvm read sequence\n");
- 			return ret;
- 		}
- 		/* Datasheet says on 4.8.1.1 it takes approximately 200us */
-@@ -1501,8 +1507,8 @@ static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
- 		if (ret)
- 			goto exit;
- 
--		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
--				       sizeof(data->le16));
-+		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB,
-+				       &data->le16, sizeof(data->le16));
- 		if (ret) {
- 			dev_err(data->dev, "error reading nvm data regs\n");
- 			goto exit;
-@@ -1546,7 +1552,8 @@ static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
- 	while (bytes >= sizeof(*buf)) {
- 		addr = bmp580_nvmem_addrs[offset / sizeof(*buf)];
- 
--		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR, BMP580_NVM_PROG_EN |
-+		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR,
-+				   BMP580_NVM_PROG_EN |
- 				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
- 		if (ret) {
- 			dev_err(data->dev, "error writing nvm address\n");
-@@ -1554,8 +1561,8 @@ static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
- 		}
- 		data->le16 = cpu_to_le16(*buf++);
- 
--		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
--					sizeof(data->le16));
-+		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB,
-+					&data->le16, sizeof(data->le16));
- 		if (ret) {
- 			dev_err(data->dev, "error writing LSB NVM data regs\n");
- 			goto exit;
-@@ -1662,7 +1669,8 @@ static int bmp580_chip_config(struct bmp280_data *data)
- 		  BMP580_OSR_PRESS_EN;
- 
- 	ret = regmap_update_bits_check(data->regmap, BMP580_REG_OSR_CONFIG,
--				       BMP580_OSR_TEMP_MASK | BMP580_OSR_PRESS_MASK |
-+				       BMP580_OSR_TEMP_MASK |
-+				       BMP580_OSR_PRESS_MASK |
- 				       BMP580_OSR_PRESS_EN,
- 				       reg_val, &aux);
- 	if (ret) {
-@@ -1713,7 +1721,8 @@ static int bmp580_chip_config(struct bmp280_data *data)
- 		 */
- 		ret = regmap_read(data->regmap, BMP580_REG_EFF_OSR, &tmp);
- 		if (ret) {
--			dev_err(data->dev, "error reading effective OSR register\n");
-+			dev_err(data->dev,
-+				"error reading effective OSR register\n");
- 			return ret;
- 		}
- 		if (!(tmp & BMP580_EFF_OSR_VALID_ODR)) {
-@@ -1848,7 +1857,8 @@ static int bmp180_read_calib(struct bmp280_data *data)
- 	}
- 
- 	/* Toss the calibration data into the entropy pool */
--	add_device_randomness(data->bmp180_cal_buf, sizeof(data->bmp180_cal_buf));
-+	add_device_randomness(data->bmp180_cal_buf,
-+			      sizeof(data->bmp180_cal_buf));
- 
- 	calib->AC1 = be16_to_cpu(data->bmp180_cal_buf[AC1]);
- 	calib->AC2 = be16_to_cpu(data->bmp180_cal_buf[AC2]);
-@@ -1963,8 +1973,7 @@ static u32 bmp180_compensate_press(struct bmp280_data *data, s32 adc_press)
- 	return p + ((x1 + x2 + 3791) >> 4);
- }
- 
--static int bmp180_read_press(struct bmp280_data *data,
--			     int *val, int *val2)
-+static int bmp180_read_press(struct bmp280_data *data, int *val, int *val2)
- {
- 	u32 comp_press;
- 	s32 adc_press;
-@@ -2241,6 +2250,7 @@ static int bmp280_runtime_resume(struct device *dev)
- 	ret = regulator_bulk_enable(BMP280_NUM_SUPPLIES, data->supplies);
- 	if (ret)
- 		return ret;
-+
- 	usleep_range(data->start_up_time, data->start_up_time + 100);
- 	return data->chip_info->chip_config(data);
- }
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index 4e19ea0b4d398..62b4e58104cf9 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -13,7 +13,7 @@
- #include "bmp280.h"
- 
- static int bmp280_regmap_spi_write(void *context, const void *data,
--                                   size_t count)
-+				   size_t count)
- {
- 	struct spi_device *spi = to_spi_device(context);
- 	u8 buf[2];
-@@ -29,7 +29,7 @@ static int bmp280_regmap_spi_write(void *context, const void *data,
- }
- 
- static int bmp280_regmap_spi_read(void *context, const void *reg,
--                                  size_t reg_size, void *val, size_t val_size)
-+				  size_t reg_size, void *val, size_t val_size)
- {
- 	struct spi_device *spi = to_spi_device(context);
- 
--- 
-2.43.0
-
+ 		ret = find_next_extent(rc, path, &key);
+ 		if (ret < 0)
 
 
 
