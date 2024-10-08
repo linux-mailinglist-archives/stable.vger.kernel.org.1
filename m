@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B6994BE4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D373B994947
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C02121C24DA6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 586CAB278B7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB79183CB8;
-	Tue,  8 Oct 2024 12:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607891DDA24;
+	Tue,  8 Oct 2024 12:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiJgN3l6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blPoSXK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E167B1D54D1;
-	Tue,  8 Oct 2024 12:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1C01D26F2;
+	Tue,  8 Oct 2024 12:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391680; cv=none; b=MiFCYGsq1Jeqz3yQ35NymdTVJ7StQCnIDQxMPTOXp8jakf3jAOowNkJzTCjuMda6Y7xkCskkbZVNVgg08kyHXpyRknsVLIXMyjxZNAdRzLifUBIfx2Hp9P2ON2xyrhW7sOZt8fcnDWV8UsrldYtLcWih7evPPzSDSBZg/dTjMVI=
+	t=1728390080; cv=none; b=WKVrhEp/9kDkRczZ0nF/HE/zcUcgC31hrVW1oiI26pLPFNbq9DyETYYkrzAEGFysFxeiQBsNTW9F8vqVOGcr7S7RyR3rJDH2h0S0X5Vn8xHEB6BKzGqbj8AvLzQFIa09euxOihVkaLIldn8+UroDmgf9/nCqrGcEWye1bCr6LO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391680; c=relaxed/simple;
-	bh=y+ZSUq5wDfJQd6EIA8yCjoQQBAVimKB07uiF2rdjYTI=;
+	s=arc-20240116; t=1728390080; c=relaxed/simple;
+	bh=AR0rF7LGyMP8jHJavdIBlKXA+tr1V5ybKwEnHhpOx48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aImdXLNejcvKlSBq1gjWcrVM0giabKRtlt+zk1C3p0h6O3GWF+Zsj2S8KNyBqHjRS2yiXpITbRymKX2J5/Rn+ygeyDsCLF2D1BzS55OLY2UCE7StNgiBeeBnxJuKYWtHVg1y4WC17DTWqz46C2Rgra13ZltFi/nbD3ubB27tbpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiJgN3l6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E06AC4CEC7;
-	Tue,  8 Oct 2024 12:47:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BUKpHisxT6sGvhJaatY5uxu6sy8EEafuaaFhpqH+rwMG4fP2B3tl8sKEE7Y4WuFmwX0WSuTTVBBt2loehEBWzZKsd6KSih7/cPT05G+uoGvQtuuWUPPIzeH/tNStNFVRwTQDAw/vyaL+zPOQFwN6di3uOe8xrtUopaNhtKDX14Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blPoSXK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA03C4CEC7;
+	Tue,  8 Oct 2024 12:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391679;
-	bh=y+ZSUq5wDfJQd6EIA8yCjoQQBAVimKB07uiF2rdjYTI=;
+	s=korg; t=1728390079;
+	bh=AR0rF7LGyMP8jHJavdIBlKXA+tr1V5ybKwEnHhpOx48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZiJgN3l6Yp5c4LS5EZBhKKCnj09HdxgnN1gW7vhCxXtk6I6VHECy87cveLCf254/x
-	 fEowBS9fHJS2unhbrekcOLpfugHfj9DHV9FRMdq1QKU1G/ghk8dMUj9+QMksjB1qda
-	 T1GIuYVBbz7qykLrjNG8WchAwZjStjSdzi9H+eTA=
+	b=blPoSXK6CGVIoeYKtU6MsWmVYQeUqIZ8gYUBmHJ+sFXpMu4DA4vSnN02Z3PucM8zT
+	 iB87Nsgkp/11EWEfOZJYdSXi94fL/G6reex670ZAr4wm/wdsGbhYL0pgs55ImU4Xfs
+	 jYP7/yhsSG4CRYm1OsmzEbbioDpIbznSxa26WMis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Willy Tarreau <w@1wt.eu>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 190/558] fbdev: efifb: Register sysfs groups through driver core
+Subject: [PATCH 6.10 157/482] selftests/nolibc: avoid passing NULL to printf("%s")
 Date: Tue,  8 Oct 2024 14:03:40 +0200
-Message-ID: <20241008115709.825874787@linuxfoundation.org>
+Message-ID: <20241008115654.484963908@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 95cdd538e0e5677efbdf8aade04ec098ab98f457 ]
+[ Upstream commit f1a58f61d88642ae1e6e97e9d72d73bc70a93cb8 ]
 
-The driver core can register and cleanup sysfs groups already.
-Make use of that functionality to simplify the error handling and
-cleanup.
+Clang on higher optimization levels detects that NULL is passed to
+printf("%s") and warns about it.
+While printf() from nolibc gracefully handles that NULL,
+it is undefined behavior as per POSIX, so the warning is reasonable.
+Avoid the warning by transforming NULL into a non-NULL placeholder.
 
-Also avoid a UAF race during unregistering where the sysctl attributes
-were usable after the info struct was freed.
-
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Acked-by: Willy Tarreau <w@1wt.eu>
+Link: https://lore.kernel.org/r/20240807-nolibc-llvm-v2-8-c20f2f5fc7c2@weissschuh.net
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/efifb.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ tools/testing/selftests/nolibc/nolibc-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
-index 8dd82afb3452b..595b8e27bea66 100644
---- a/drivers/video/fbdev/efifb.c
-+++ b/drivers/video/fbdev/efifb.c
-@@ -561,15 +561,10 @@ static int efifb_probe(struct platform_device *dev)
- 		break;
- 	}
+diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
+index 994477ee87bef..4bd8360d54225 100644
+--- a/tools/testing/selftests/nolibc/nolibc-test.c
++++ b/tools/testing/selftests/nolibc/nolibc-test.c
+@@ -534,7 +534,7 @@ int expect_strzr(const char *expr, int llen)
+ {
+ 	int ret = 0;
  
--	err = sysfs_create_groups(&dev->dev.kobj, efifb_groups);
--	if (err) {
--		pr_err("efifb: cannot add sysfs attrs\n");
--		goto err_unmap;
--	}
- 	err = fb_alloc_cmap(&info->cmap, 256, 0);
- 	if (err < 0) {
- 		pr_err("efifb: cannot allocate colormap\n");
--		goto err_groups;
-+		goto err_unmap;
- 	}
+-	llen += printf(" = <%s> ", expr);
++	llen += printf(" = <%s> ", expr ? expr : "(null)");
+ 	if (expr) {
+ 		ret = 1;
+ 		result(llen, FAIL);
+@@ -553,7 +553,7 @@ int expect_strnz(const char *expr, int llen)
+ {
+ 	int ret = 0;
  
- 	err = devm_aperture_acquire_for_platform_device(dev, par->base, par->size);
-@@ -587,8 +582,6 @@ static int efifb_probe(struct platform_device *dev)
- 
- err_fb_dealloc_cmap:
- 	fb_dealloc_cmap(&info->cmap);
--err_groups:
--	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
- err_unmap:
- 	if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
- 		iounmap(info->screen_base);
-@@ -608,12 +601,12 @@ static void efifb_remove(struct platform_device *pdev)
- 
- 	/* efifb_destroy takes care of info cleanup */
- 	unregister_framebuffer(info);
--	sysfs_remove_groups(&pdev->dev.kobj, efifb_groups);
- }
- 
- static struct platform_driver efifb_driver = {
- 	.driver = {
- 		.name = "efi-framebuffer",
-+		.dev_groups = efifb_groups,
- 	},
- 	.probe = efifb_probe,
- 	.remove_new = efifb_remove,
+-	llen += printf(" = <%s> ", expr);
++	llen += printf(" = <%s> ", expr ? expr : "(null)");
+ 	if (!expr) {
+ 		ret = 1;
+ 		result(llen, FAIL);
 -- 
 2.43.0
 
