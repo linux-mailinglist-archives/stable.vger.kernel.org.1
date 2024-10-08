@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-82901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9C4994F1F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBD5994D45
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB12A2864F8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A594E1C25208
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AD01DF722;
-	Tue,  8 Oct 2024 13:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130751DE88B;
+	Tue,  8 Oct 2024 13:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs5wYuOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1yUXjC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE631DEFE3;
-	Tue,  8 Oct 2024 13:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46181C9B99;
+	Tue,  8 Oct 2024 13:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393809; cv=none; b=lavnFvm8iOPXU0kKBtliLNok7va4vZ00nlyJuzXHhJiaAZ8TatotsDlthnQehSbIvRvgdz5trzSTobl4JmsH3RAPydiJYjp1fcANbCZFEpRM5IS5LqMojL4c2meQYuYetPNv4+SK0wGPzM958fB4VuTa3qu2Bm5NCt60AYuf0OU=
+	t=1728392630; cv=none; b=YdAPMo4o9CH4xgqlw5MjwGuL0FGGrTSoXWL/BVhZRM/7qPdICIzliFN8011A3S4erb+zvbTO1VJke/8BC5MmzoEP3UQwoQha1WGpz29l7PM0UdwH91beKUoDVA9IMfMU3LR5WrBz2tA8ShfD4oWf9UT+SZUzdqmcYeJO3mTAcxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393809; c=relaxed/simple;
-	bh=EtCnoGngnq4Uk51jnNScJDckquvZbYuWJzU46jb9g1Y=;
+	s=arc-20240116; t=1728392630; c=relaxed/simple;
+	bh=A+rEQSXIa4/iSUqdS6JrHCptZpb3fEG4F1GNSK/vAfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/wQYu1ZKzvVtfVxGGLIWoi3PbuH5KxG/yy4cOexPC4Xks5F2bm7WFNh/EZIQtL3QmhJzJJoOf034JE66RnCsg4R33yZq4FS8CWPtwW50QkgN35nFYdpQUsJIHh1hHOGKuLmohLqF4Tczkx9Irx7qi+02Yo60SyAr4cymRgVYmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs5wYuOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539C0C4CEC7;
-	Tue,  8 Oct 2024 13:23:28 +0000 (UTC)
+	 MIME-Version; b=UGwwxi9pSeuu3ta5b1nG3Qhx9swMYTLVJDyqgCpElM5KhM5YrPhG0H+E/QAQoUHgERQlS+f255f8+Z7jqGWDd5iD/HYhiazknW2ibQVpbkc2iTslM2/2FCwliZ/dbRnvn7jmuaI2I3mwgbFkZXnCIjIHJUytv5FESvc4bTLaiVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1yUXjC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04511C4CEC7;
+	Tue,  8 Oct 2024 13:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393808;
-	bh=EtCnoGngnq4Uk51jnNScJDckquvZbYuWJzU46jb9g1Y=;
+	s=korg; t=1728392630;
+	bh=A+rEQSXIa4/iSUqdS6JrHCptZpb3fEG4F1GNSK/vAfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bs5wYuOxA09I1+c31Rmw7hOqikI95B1NA0Z4t/JZ4gzsaNqfvCoz4337PF/V7V7fn
-	 LthnIdd56qEw+XR3y0gFPv+sfwvfYpnuS4fW+bZRfMmGT8fdqEWNziBafgsghVGU94
-	 px2J1FmgVmAGn36vbKzSNIkHkDjU3ShRjat9qyPM=
+	b=t1yUXjC4Gmhx9OY/l22Cwzu3XYRSLOyUYhqz544bvR3/ZdrQ5E5nQyNvDMy+SCvmJ
+	 oFVTII3ompDIqlJtLW9fYyFf62Qgw0tbTrsqF3ScW8eolPwORKLq9l1yMcBtWKsy6D
+	 lmSMiqQKBCZ/3v68T4hpWTKnrmwfwTyoTn21/OME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhishek Tamboli <abhishektamboli9@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 230/386] ALSA: hda/realtek: Add a quirk for HP Pavilion 15z-ec200
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.11 445/558] media: ov5675: Fix power on/off delay timings
 Date: Tue,  8 Oct 2024 14:07:55 +0200
-Message-ID: <20241008115638.454574212@linuxfoundation.org>
+Message-ID: <20241008115719.775113170@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhishek Tamboli <abhishektamboli9@gmail.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit d75dba49744478c32f6ce1c16b5f391c2d5cef5f upstream.
+commit 719ec29fceda2f19c833d2784b1574638320400f upstream.
 
-Add the quirk for HP Pavilion Gaming laptop 15z-ec200 for
-enabling the mute led. The fix apply the ALC285_FIXUP_HP_MUTE_LED
-quirk for this model.
+The ov5675 specification says that the gap between XSHUTDN deassert and the
+first I2C transaction should be a minimum of 8192 XVCLK cycles.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219303
-Signed-off-by: Abhishek Tamboli <abhishektamboli9@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240930145300.4604-1-abhishektamboli9@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Right now we use a usleep_rage() that gives a sleep time of between about
+430 and 860 microseconds.
+
+On the Lenovo X13s we have observed that in about 1/20 cases the current
+timing is too tight and we start transacting before the ov5675's reset
+cycle completes, leading to I2C bus transaction failures.
+
+The reset racing is sometimes triggered at initial chip probe but, more
+usually on a subsequent power-off/power-on cycle e.g.
+
+[   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
+[   71.451686] ov5675 24-0010: failed to set plls
+
+The current quiescence period we have is too tight. Instead of expressing
+the post reset delay in terms of the current XVCLK this patch converts the
+power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
+an additional buffer.
+
+1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
+85.3 microseconds on the power-off path is 90 microseconds with grace.
+
+Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3399 Puma with
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/ov5675.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9923,6 +9923,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x88dd, "HP Pavilion 15z-ec200", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8902, "HP OMEN 16", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x890e, "HP 255 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8919, "HP Pavilion Aero Laptop 13-be0xxx", ALC287_FIXUP_HP_GPIO_LED),
+--- a/drivers/media/i2c/ov5675.c
++++ b/drivers/media/i2c/ov5675.c
+@@ -972,12 +972,10 @@ static int ov5675_set_stream(struct v4l2
+ 
+ static int ov5675_power_off(struct device *dev)
+ {
+-	/* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
+-	u32 delay_us = DIV_ROUND_UP(512, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 
+-	usleep_range(delay_us, delay_us * 2);
++	usleep_range(90, 100);
+ 
+ 	clk_disable_unprepare(ov5675->xvclk);
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 1);
+@@ -988,7 +986,6 @@ static int ov5675_power_off(struct devic
+ 
+ static int ov5675_power_on(struct device *dev)
+ {
+-	u32 delay_us = DIV_ROUND_UP(8192, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 	int ret;
+@@ -1014,8 +1011,11 @@ static int ov5675_power_on(struct device
+ 
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 0);
+ 
+-	/* 8192 xvclk cycles prior to the first SCCB transation */
+-	usleep_range(delay_us, delay_us * 2);
++	/* Worst case quiesence gap is 1.365 milliseconds @ 6MHz XVCLK
++	 * Add an additional threshold grace period to ensure reset
++	 * completion before initiating our first I2C transaction.
++	 */
++	usleep_range(1500, 1600);
+ 
+ 	return 0;
+ }
 
 
 
