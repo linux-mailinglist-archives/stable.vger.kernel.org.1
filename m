@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EDD994DD5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C9F994C10
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0B51C250E3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AC32B223E6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EBD1DE88F;
-	Tue,  8 Oct 2024 13:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDA11DE4C4;
+	Tue,  8 Oct 2024 12:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YssGvg5k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J23oRzUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1598E1C32EB;
-	Tue,  8 Oct 2024 13:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C891DC046;
+	Tue,  8 Oct 2024 12:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392999; cv=none; b=qq1RolxvfT2YbR2AoI1tSP3/c/c8WjNr8ODBSpsSbhLc0ALnyl3CyJ0o6KtpgNvBgLt6eIFYAjK/2D+/+UuRFB9hRvc3HX7TUlP2779LKWiAQWJhZiUkd2sur3+bCCkqU5TyiQcPSqhtIu45bM65MzdXctb0Cv2Mvc3G3a3fCHg=
+	t=1728391778; cv=none; b=I1t5/vdBenRK3jRFOPWKkdg9WFbWctKPKoBnX6HBUANEIGuBrnjnDAKgzVMBkdMV6X0bMvx+tMZqAKdmVbhzEHgh2lYOByUZ0CRs+xPYL1+DRynIJU9vzyPwlAig7mGWrk6q3ctHYTvtpA4p5Voya8+iUZBbydOTMXbQ2CvgoHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392999; c=relaxed/simple;
-	bh=xQzooaX1KHJEjozG3imatkKCu8BNt4ZkkaPZhOC2mRk=;
+	s=arc-20240116; t=1728391778; c=relaxed/simple;
+	bh=CyFf2l0NhjM15/Tmy/jmXEGm9iqi4KDxW86YAkY0ra0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G8HnuH/wbl2stpCEJRl0+3UbMH/RpzaBjfPmtFlFS8zEe0/obsy1x5itZ6dCOu13mdwI1FCPTNUQkR2XZmsDbOU33W/mj8XMi1Q9H1fCUyEkcQ8Il7wKHS/UkRQRCSNM2FqX4GAaQca9DbLwRdPQN615KDFiH4liNqg+yz/Cz38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YssGvg5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8F1C4CEC7;
-	Tue,  8 Oct 2024 13:09:58 +0000 (UTC)
+	 MIME-Version; b=PVULgeiaUcOMoxsRcLE0yWBwolaG5wnooe3hJOtD/WuiXJR9Uz00cwVHafqL0HiBf3M6rU+Q+0MQmsERXxKH8WubwA4B3MxiBwA1chpyjSDwwCFl64Y/06n9SHTNLp7H9AUdu8K0oEuR8n59Zt90ilJPCFDMnyfQWg0muZps970=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J23oRzUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AB0C4CEC7;
+	Tue,  8 Oct 2024 12:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392998;
-	bh=xQzooaX1KHJEjozG3imatkKCu8BNt4ZkkaPZhOC2mRk=;
+	s=korg; t=1728391778;
+	bh=CyFf2l0NhjM15/Tmy/jmXEGm9iqi4KDxW86YAkY0ra0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YssGvg5kt0fRON1uCTOymp9vvLAH1TOyoUQGCYEAJchKRM7WSB8azqtLBqCcDwGPn
-	 sqlqfMzUUrJT6NrjHsPOw+h4ynM6SRI99dx+RbGM893FMHVzodJlJ06C2dsuYscM+/
-	 7U6qbjVXAwGNMUfYSJAAQmQP7wykGUC1WRMFgUK0=
+	b=J23oRzUnfG9Q5a3iOYtCkbo8T3WYp+wKg9QoscCTcIRdSCMIH9Ty1+kA3ylw5Y3T2
+	 2XJ1X5+4R18H+Sq6fJ71fCE2/7UYXm3YZSvhtgvebDyvqlws3eg8tjTGzGORwHmZRp
+	 kw9rAw3YkxPAodIkobzbXDfyOqDP9Bw62eEwEdKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Rocha <rrochavi@fnal.gov>,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <kai.makisara@kolumbus.fi>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jiri Olsa <olsajiri@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/386] scsi: st: Fix input/output error on empty drive reset
+Subject: [PATCH 6.11 220/558] selftests/bpf: fix uprobe.path leak in bpf_testmod
 Date: Tue,  8 Oct 2024 14:04:10 +0200
-Message-ID: <20241008115629.529143339@linuxfoundation.org>
+Message-ID: <20241008115710.999909701@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Rocha <rrochavi@fnal.gov>
+From: Jiri Olsa <olsajiri@gmail.com>
 
-[ Upstream commit 3d882cca73be830549833517ddccb3ac4668c04e ]
+[ Upstream commit db61e6a4eee5a7884b2cafeaf407895f253bbaa7 ]
 
-A previous change was introduced to prevent data loss during a power-on
-reset when a tape is present inside the drive. This commit set the
-"pos_unknown" flag to true to avoid operations that could compromise data
-by performing actions from an untracked position. The relevant change is
-commit 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
+testmod_unregister_uprobe() forgets to path_put(&uprobe.path).
 
-As a consequence of this change, a new issue has surfaced: the driver now
-returns an "Input/output error" even for empty drives when the drive, host,
-or bus is reset. This issue stems from the "flush_buffer" function, which
-first checks whether the "pos_unknown" flag is set. If the flag is set, the
-user will encounter an "Input/output error" until the tape position is
-known again. This behavior differs from the previous implementation, where
-empty drives were not affected at system start up time, allowing tape
-software to send commands to the driver to retrieve the drive's status and
-other information.
-
-The current behavior prioritizes the "pos_unknown" flag over the
-"ST_NO_TAPE" status, leading to issues for software that detects drives
-during system startup. This software will receive an "Input/output error"
-until a tape is loaded and its position is known.
-
-To resolve this, the "ST_NO_TAPE" status should take priority when the
-drive is empty, allowing communication with the drive following a power-on
-reset. At the same time, the change should continue to protect data by
-maintaining the "pos_unknown" flag when the drive contains a tape and its
-position is unknown.
-
-Signed-off-by: Rafael Rocha <rrochavi@fnal.gov>
-Link: https://lore.kernel.org/r/20240905173921.10944-1-rrochavi@fnal.gov
-Fixes: 9604eea5bd3a ("scsi: st: Add third party poweron reset handling")
-Acked-by: Kai Mäkisara <kai.makisara@kolumbus.fi>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jiri Olsa <olsajiri@gmail.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240801132724.GA8791@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 338aa8c429682..212a402e75358 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -835,6 +835,9 @@ static int flush_buffer(struct scsi_tape *STp, int seek_next)
- 	int backspace, result;
- 	struct st_partstat *STps;
+diff --git a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
+index fd28c1157bd3d..72f565af4f829 100644
+--- a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
++++ b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
+@@ -477,6 +477,7 @@ static void testmod_unregister_uprobe(void)
+ 	if (uprobe.offset) {
+ 		uprobe_unregister(d_real_inode(uprobe.path.dentry),
+ 				  uprobe.offset, &uprobe.consumer);
++		path_put(&uprobe.path);
+ 		uprobe.offset = 0;
+ 	}
  
-+	if (STp->ready != ST_READY)
-+		return 0;
-+
- 	/*
- 	 * If there was a bus reset, block further access
- 	 * to this device.
-@@ -842,8 +845,6 @@ static int flush_buffer(struct scsi_tape *STp, int seek_next)
- 	if (STp->pos_unknown)
- 		return (-EIO);
- 
--	if (STp->ready != ST_READY)
--		return 0;
- 	STps = &(STp->ps[STp->partition]);
- 	if (STps->rw == ST_WRITING)	/* Writing */
- 		return st_flush_write_buffer(STp);
 -- 
 2.43.0
 
