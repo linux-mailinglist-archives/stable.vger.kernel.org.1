@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-82166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CC8994B79
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C6D9948B8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EDD8288040
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935331F28850
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36541DF963;
-	Tue,  8 Oct 2024 12:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8661D618C;
+	Tue,  8 Oct 2024 12:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRB8KZhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2A4Wd4f+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820391DF751;
-	Tue,  8 Oct 2024 12:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF947165F08;
+	Tue,  8 Oct 2024 12:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391369; cv=none; b=UPrTTwuOZtT6tGrembkTQg+Uw55prMNhjr+DSZVX7AMrLZF3760G5ZHY/ZeWh62bGFywDtXqMVlGxZ3qPF8jw2EyulCqWdx8gHUfT323HsgeBNVp38ltBa4kGEQwVfkxDzW0GLfNLNcNZNCAybhV/1ivMrujR1p2PG/qiCt+o6o=
+	t=1728389768; cv=none; b=nT7Q6DB0XCq7GSwsj+kk+0exdj48uWNxYdIzB0qzOzvsS6jJLMBjdabj24FBP1x1HqLPnNUp2800XI0olU2qwy+ha2jb942FZ8O3BhqERn9QgnZaJlZVSXBduQLpOcfYkQxbauGXYNQ9yUbD9I/hXJkAl4L8RL5iMThAbOIZ5S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391369; c=relaxed/simple;
-	bh=m/bgoELUCDkbWYGEwSEpsvJOjKsWUPtkgpHc/0JC/O0=;
+	s=arc-20240116; t=1728389768; c=relaxed/simple;
+	bh=0uA1l8vJSFw3G4eaQ5+odMIyeIsFqh7y7qSq+npcy/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U66MzdkENyRYfdafELY8hai83d0z0KqcaimlS8Jl730cMz6RJhVCNWrjghE1xa0AjmELi5fr5FFrE6LErtdmruZu6xCcAZwRoqTtrcOT5ebvEvMFqL/Wb0m/nk25g1CXoO+lWVwVuBlBNTolEjjkvMBiZCiCvi0KvrpYJAwpZKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRB8KZhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031ABC4CEC7;
-	Tue,  8 Oct 2024 12:42:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CrDD5ZksLPTsMta6vtKfG6+88Dfq4P1zwjQLxGA26YAvRfQzs0CfD8HFfMmu1HO9OSGW9UytKEZmH7VVBTJfFjkYfunuJ7msBBznT3aThTau2/QY4fI3C+aPtGS61WlpMvxErWK2jdPZHGwKSNZ4GqMw59O4hFqGx4n8g0ZS7R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2A4Wd4f+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08866C4CECD;
+	Tue,  8 Oct 2024 12:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391369;
-	bh=m/bgoELUCDkbWYGEwSEpsvJOjKsWUPtkgpHc/0JC/O0=;
+	s=korg; t=1728389768;
+	bh=0uA1l8vJSFw3G4eaQ5+odMIyeIsFqh7y7qSq+npcy/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRB8KZhlrtYSLyMChVHv/zKHinFfVERSUqwjXj+XG+XVnzjk219blygcza6c6AigN
-	 Jnl1w596S6l/FkRaw99biFRuoeXnOkUk/vUi38PTQy80+EsMRI5Ov6kY/BIRWKQDjM
-	 WrmyN5x/ZqEOH0CMEGNgmfmvb2Hz1VN99DsPnRSU=
+	b=2A4Wd4f+eJtoDGkfneVXt1U6Y+0O7r5QB2kK7kVbQFp9EhPYdYwAMs1gRl9ssb+MA
+	 iYrP+sd2QjfwbiXWULj88beKIkFhelQHYklSHTU6WZPpSv0VunBeP/nGbTxSLG0TqI
+	 eYzQ7yxQT6ZZdwaj0V8ITcr/ENXD4D76VLxUozqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.11 092/558] ice: Adjust over allocation of memory in ice_sched_add_root_node() and ice_sched_add_node()
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 059/482] cifs: Remove intermediate object of failed create reparse call
 Date: Tue,  8 Oct 2024 14:02:02 +0200
-Message-ID: <20241008115705.990456787@linuxfoundation.org>
+Message-ID: <20241008115650.630691563@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 62fdaf9e8056e9a9e6fe63aa9c816ec2122d60c6 ]
+[ Upstream commit c9432ad5e32f066875b1bf95939c363bc46d6a45 ]
 
-In ice_sched_add_root_node() and ice_sched_add_node() there are calls to
-devm_kcalloc() in order to allocate memory for array of pointers to
-'ice_sched_node' structure. But incorrect types are used as sizeof()
-arguments in these calls (structures instead of pointers) which leads to
-over allocation of memory.
+If CREATE was successful but SMB2_OP_SET_REPARSE failed then remove the
+intermediate object created by CREATE. Otherwise empty object stay on the
+server when reparse call failed.
 
-Adjust over allocation of memory by correcting types in devm_kcalloc()
-sizeof() arguments.
+This ensures that if the creating of special files is unsupported by the
+server then no empty file stay on the server as a result of unsupported
+operation.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 102466f303ff ("smb: client: allow creating special files via reparse points")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_sched.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/smb/client/smb2inode.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
-index ecf8f5d602921..6ca13c5dcb14e 100644
---- a/drivers/net/ethernet/intel/ice/ice_sched.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sched.c
-@@ -28,9 +28,8 @@ ice_sched_add_root_node(struct ice_port_info *pi,
- 	if (!root)
- 		return -ENOMEM;
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index 11a1c53c64e0b..a6dab60e2c01e 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -1205,9 +1205,12 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifsFileInfo *cfile;
+ 	struct inode *new = NULL;
++	int out_buftype[4] = {};
++	struct kvec out_iov[4] = {};
+ 	struct kvec in_iov[2];
+ 	int cmds[2];
+ 	int rc;
++	int i;
  
--	/* coverity[suspicious_sizeof] */
- 	root->children = devm_kcalloc(ice_hw_to_dev(hw), hw->max_children[0],
--				      sizeof(*root), GFP_KERNEL);
-+				      sizeof(*root->children), GFP_KERNEL);
- 	if (!root->children) {
- 		devm_kfree(ice_hw_to_dev(hw), root);
- 		return -ENOMEM;
-@@ -186,10 +185,9 @@ ice_sched_add_node(struct ice_port_info *pi, u8 layer,
- 	if (!node)
- 		return -ENOMEM;
- 	if (hw->max_children[layer]) {
--		/* coverity[suspicious_sizeof] */
- 		node->children = devm_kcalloc(ice_hw_to_dev(hw),
- 					      hw->max_children[layer],
--					      sizeof(*node), GFP_KERNEL);
-+					      sizeof(*node->children), GFP_KERNEL);
- 		if (!node->children) {
- 			devm_kfree(ice_hw_to_dev(hw), node);
- 			return -ENOMEM;
+ 	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
+ 			     SYNCHRONIZE | DELETE |
+@@ -1228,7 +1231,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cmds[1] = SMB2_OP_POSIX_QUERY_INFO;
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
+-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
++				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
+ 		if (!rc) {
+ 			rc = smb311_posix_get_inode_info(&new, full_path,
+ 							 data, sb, xid);
+@@ -1237,12 +1240,29 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cmds[1] = SMB2_OP_QUERY_INFO;
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
+-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
++				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
+ 		if (!rc) {
+ 			rc = cifs_get_inode_info(&new, full_path,
+ 						 data, sb, xid, NULL);
+ 		}
+ 	}
++
++
++	/*
++	 * If CREATE was successful but SMB2_OP_SET_REPARSE failed then
++	 * remove the intermediate object created by CREATE. Otherwise
++	 * empty object stay on the server when reparse call failed.
++	 */
++	if (rc &&
++	    out_iov[0].iov_base != NULL && out_buftype[0] != CIFS_NO_BUFFER &&
++	    ((struct smb2_hdr *)out_iov[0].iov_base)->Status == STATUS_SUCCESS &&
++	    (out_iov[1].iov_base == NULL || out_buftype[1] == CIFS_NO_BUFFER ||
++	     ((struct smb2_hdr *)out_iov[1].iov_base)->Status != STATUS_SUCCESS))
++		smb2_unlink(xid, tcon, full_path, cifs_sb, NULL);
++
++	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
++		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
++
+ 	return rc ? ERR_PTR(rc) : new;
+ }
+ 
 -- 
 2.43.0
 
