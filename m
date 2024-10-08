@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF5B994CD8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28AA994A2F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38D061F23950
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7391C24B45
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298611DF96F;
-	Tue,  8 Oct 2024 12:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6F61DF25E;
+	Tue,  8 Oct 2024 12:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXog+Y0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elfWyDmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA24D1DE4CB;
-	Tue,  8 Oct 2024 12:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89812178384;
+	Tue,  8 Oct 2024 12:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392288; cv=none; b=YShB+briFDjpcMjRVJgLOBjvu7sfwgP/ZxZMI7aSV5D8mpKn5hCW5S7teii3K5IAsvLKxIORtncGtVVO/SAk7UE5qQoKNjVl9MVC6yAIQ15Kx/JXpwXMDy6PGLM6sdTHTb0DNqt95IBYyz0jD8YHsWfSQFH+mMxzp+DXbJjD8Yg=
+	t=1728390607; cv=none; b=We6HUK5cRCAX/KsBcW/FVvI3xJ5kpDWIrAPuRzNzO/ooksa2tP5cbDTh67I/nbIeTAI4rxfvPLeivOEHQB45f56sPp+sopNR+rwJvZhkZQ6EVCgqdq1+SwGVRIMlwjBz9dpE8pwkMDoYr2sAoGKd0BQKFgvz3zkpZgxlCaR9c4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392288; c=relaxed/simple;
-	bh=i5WsZr1tqWu7x7l4WHhSrPK5ZmVDFZaqV3ZRdgxHvT0=;
+	s=arc-20240116; t=1728390607; c=relaxed/simple;
+	bh=TC2TUBtJ6w1b3oznr0k4YYwfPEhSGFb4TsKkFRaEfX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0qXdlZJX1OyNzq8j+LtQdkSQf3sa9SeHbZ5hGrPEb3HmAZ0b8fXLJ1W3qnjKeuojv4yn4pe4iMRm5nfq103tUVayrjcRAdBWFOQSOz1WyQ5GDcDWFp3SqT84/UkFPLdfQYy5WIVoZUydhhB0bGnj6jYDhXSebu4fexP0R/8N0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXog+Y0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4879FC4CEC7;
-	Tue,  8 Oct 2024 12:58:08 +0000 (UTC)
+	 MIME-Version; b=HG4/6OkaJBH9llT0yGhvcvY9UFj6QX7JX7UTJHibBJxB/FBEwlrg78IWev78b6Etq4JcNTq3r6WOdxt3xygPd3DCuVV+g9eMAMOmAVxOKRJLiA36oHF5q8UrDb6qpIkqcHPZ32WBb/pG/753+WmAP8YqpbpAMv2BIrpxrGK7A9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elfWyDmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5CBC4CEC7;
+	Tue,  8 Oct 2024 12:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392288;
-	bh=i5WsZr1tqWu7x7l4WHhSrPK5ZmVDFZaqV3ZRdgxHvT0=;
+	s=korg; t=1728390607;
+	bh=TC2TUBtJ6w1b3oznr0k4YYwfPEhSGFb4TsKkFRaEfX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXog+Y0yIowb3zkN0V5xVhBOtNL3WsYj8QcexAjmmt0uvBOSs2x4OsnKugSHS5606
-	 et49WmmAi0uitLsyacN4wgsakI00Pm6TQICU8DG4Z5NqjwXxuxrssG73Nt+xkYTzQU
-	 f4793vnRFtaPVPImOwmcyg6Cx9c1euricCg9lNIg=
+	b=elfWyDmBtsaSfOs4P2KUxvjcLDIdeMLUFjboYKk6Pzq2oy6v951j9xSCY/yX6OXEa
+	 nGB2my9cN+guGpGiThgf4erlrfJSpKFwJD2eX8bDtJcwlIll7CUS17rPL4BrtCwCkt
+	 Uf1Lgpch4gekH0ADuNyoV+9tPLrYTNftZUljybpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.11 370/558] drm/mediatek: ovl_adaptor: Add missing of_node_put()
-Date: Tue,  8 Oct 2024 14:06:40 +0200
-Message-ID: <20241008115716.855623758@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.10 338/482] ext4: use handle to mark fc as ineligible in __track_dentry_update()
+Date: Tue,  8 Oct 2024 14:06:41 +0200
+Message-ID: <20241008115701.727051793@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 5beb6fba25db235b52eab34bde8112f07bb31d75 upstream.
+commit faab35a0370fd6e0821c7a8dd213492946fc776f upstream.
 
-Error paths that exit for_each_child_of_node() need to call
-of_node_put() to decerement the child refcount and avoid memory leaks.
+Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
+in a fast-commit being done before the filesystem is effectively marked as
+ineligible.  This patch fixes the calls to this function in
+__track_dentry_update() by adding an extra parameter to the callback used in
+ext4_fc_track_template().
 
-Add the missing of_node_put().
-
-Cc: stable@vger.kernel.org
-Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240624-mtk_disp_ovl_adaptor_scoped-v1-2-9fa1e074d881@gmail.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240923104909.18342-2-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/fast_commit.c |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-@@ -523,8 +523,10 @@ static int ovl_adaptor_comp_init(struct
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -379,7 +379,7 @@ void ext4_fc_mark_ineligible(struct supe
+  */
+ static int ext4_fc_track_template(
+ 	handle_t *handle, struct inode *inode,
+-	int (*__fc_track_fn)(struct inode *, void *, bool),
++	int (*__fc_track_fn)(handle_t *handle, struct inode *, void *, bool),
+ 	void *args, int enqueue)
+ {
+ 	bool update = false;
+@@ -396,7 +396,7 @@ static int ext4_fc_track_template(
+ 		ext4_fc_reset_inode(inode);
+ 		ei->i_sync_tid = tid;
+ 	}
+-	ret = __fc_track_fn(inode, args, update);
++	ret = __fc_track_fn(handle, inode, args, update);
+ 	mutex_unlock(&ei->i_fc_lock);
+ 
+ 	if (!enqueue)
+@@ -420,7 +420,8 @@ struct __track_dentry_update_args {
+ };
+ 
+ /* __track_fn for directory entry updates. Called with ei->i_fc_lock. */
+-static int __track_dentry_update(struct inode *inode, void *arg, bool update)
++static int __track_dentry_update(handle_t *handle, struct inode *inode,
++				 void *arg, bool update)
+ {
+ 	struct ext4_fc_dentry_update *node;
+ 	struct ext4_inode_info *ei = EXT4_I(inode);
+@@ -435,14 +436,14 @@ static int __track_dentry_update(struct
+ 
+ 	if (IS_ENCRYPTED(dir)) {
+ 		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_ENCRYPTED_FILENAME,
+-					NULL);
++					handle);
+ 		mutex_lock(&ei->i_fc_lock);
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+ 	node = kmem_cache_alloc(ext4_fc_dentry_cachep, GFP_NOFS);
+ 	if (!node) {
+-		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
++		ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
+ 		mutex_lock(&ei->i_fc_lock);
+ 		return -ENOMEM;
+ 	}
+@@ -454,7 +455,7 @@ static int __track_dentry_update(struct
+ 		node->fcd_name.name = kmalloc(dentry->d_name.len, GFP_NOFS);
+ 		if (!node->fcd_name.name) {
+ 			kmem_cache_free(ext4_fc_dentry_cachep, node);
+-			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, NULL);
++			ext4_fc_mark_ineligible(sb, EXT4_FC_REASON_NOMEM, handle);
+ 			mutex_lock(&ei->i_fc_lock);
+ 			return -ENOMEM;
  		}
+@@ -576,7 +577,8 @@ void ext4_fc_track_create(handle_t *hand
+ }
  
- 		comp_pdev = of_find_device_by_node(node);
--		if (!comp_pdev)
-+		if (!comp_pdev) {
-+			of_node_put(node);
- 			return -EPROBE_DEFER;
-+		}
+ /* __track_fn for inode tracking */
+-static int __track_inode(struct inode *inode, void *arg, bool update)
++static int __track_inode(handle_t *handle, struct inode *inode, void *arg,
++			 bool update)
+ {
+ 	if (update)
+ 		return -EEXIST;
+@@ -614,7 +616,8 @@ struct __track_range_args {
+ };
  
- 		priv->ovl_adaptor_comp[id] = &comp_pdev->dev;
- 
+ /* __track_fn for tracking data updates */
+-static int __track_range(struct inode *inode, void *arg, bool update)
++static int __track_range(handle_t *handle, struct inode *inode, void *arg,
++			 bool update)
+ {
+ 	struct ext4_inode_info *ei = EXT4_I(inode);
+ 	ext4_lblk_t oldstart;
 
 
 
