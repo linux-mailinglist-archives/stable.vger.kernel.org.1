@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-82949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A649C994F9D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E12994ADF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51FF51F24E32
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884D61C24F57
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE651E0DB1;
-	Tue,  8 Oct 2024 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4CE1DED60;
+	Tue,  8 Oct 2024 12:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3XnIcaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGycmua8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795651DF996;
-	Tue,  8 Oct 2024 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA911DE8A0;
+	Tue,  8 Oct 2024 12:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393975; cv=none; b=NhVHah/ZnwsQQoS9YcqWvuAlUVtejz6HACBJNjaaPbjlD9rgRAdcky0y3vgE+JQ7qs/O5pnkDsiYDwmGQ5W2TdlIrSbfXKZnCwtTrw186gMlHu7iY6PhxsaNscyaNhoXJHobpLdKVZy+veAV7/0IvIX0KK/xBv/NHiZ88cAZwto=
+	t=1728391046; cv=none; b=j4+uea3t4+y8bK9gyG9EhihbuRw0aYuGOfZkoujqbvyX3l9ItqAcmYBpcCnr85TEaqIdCxu/Z37PS3AHI5/Oh6L1IQn7qcy748FKDMZBrkp5eerdki84dl/DaYyewbGdX49FgcsBWGPVxhywy8Em9wsHw+TLhx0jQWwKHCcJPLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393975; c=relaxed/simple;
-	bh=plFnwNu3clbLpmVsNUD+EPMH8TNfsA9DZaRMfrtPe5U=;
+	s=arc-20240116; t=1728391046; c=relaxed/simple;
+	bh=/JT32A7u8KTIcd+E94FJ69emo1e22W0Tc5RwkUqF0dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oq3t3xXmQ+GhaNu4yp3iohP3g5L90SdXMYQ3v/kRT20YQiW+WYwvEG2XwPgzczRHomF2wVh7QqrRWcEGq7DKMbUXQ0+uM48FGmc2F2GHiGByTiJnw7NVmr0G6oubmyQUy5XGw3ZbkBOSzwh8T3xVcVYJ3XJgN/ce9MEt5eQA9+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3XnIcaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C713C4CEC7;
-	Tue,  8 Oct 2024 13:26:14 +0000 (UTC)
+	 MIME-Version; b=snyMe96uaS7zv2BOxHRL2qHoFQ+i96ebmg4kfT1pkl+3ogEMUNEm37myAsF8RsLkR820tz2RqLxaO4tnotSrubC8FMxTlnc89dm8eFowGnDBUeLrv1eQqF3cFhSa1ApeNZrGounA7lRHYuh4MOLoCUcYCC8AsZJD1F7C9QVN4ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGycmua8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAF8C4CEC7;
+	Tue,  8 Oct 2024 12:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393975;
-	bh=plFnwNu3clbLpmVsNUD+EPMH8TNfsA9DZaRMfrtPe5U=;
+	s=korg; t=1728391045;
+	bh=/JT32A7u8KTIcd+E94FJ69emo1e22W0Tc5RwkUqF0dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3XnIcaFZI28G/4xL/zU5C3GSUirZDVDPKlXG4oz5gwrYDi2XxHZ9pDf2fqihW74S
-	 LT+8Olyd0VGC+B56R8UaMomwN3Gzc4Z4yhqqxAWlk5wil7l7x+ydQdnaXwFEDkRXie
-	 8yfqoTV2Dv8AxnUofK90atXM/6b5oHLAISEemEiM=
+	b=jGycmua8Hq2CxXd4FgIYuiMLd6gNr8z3XNrRi16ZIK4RuJmbciPPk63/KVPjMhiog
+	 zfJL1+668ajAmoklgRt+NfdCFCxJjfZBeJNADiu7z/3GAJzeWq4MmDMt7inkG6GWDV
+	 /ss6uujcUKoR+drzsIBsW+r1DffNe3oQOOi13RKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 292/386] media: qcom: camss: Fix ordering of pm_runtime_enable
+	Jonathan Gray <jsg@jsg.id.au>
+Subject: [PATCH 6.10 474/482] Revert "drm/amd/display: Skip Recompute DSC Params if no Stream on Link"
 Date: Tue,  8 Oct 2024 14:08:57 +0200
-Message-ID: <20241008115640.877305955@linuxfoundation.org>
+Message-ID: <20241008115707.165489287@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Jonathan Gray <jsg@jsg.id.au>
 
-commit a151766bd3688f6803e706c6433a7c8d3c6a6a94 upstream.
+This reverts commit 6f9c39e8169384d2a5ca9bf323a0c1b81b3d0f3a.
 
-pm_runtime_enable() should happen prior to vfe_get() since vfe_get() calls
-pm_runtime_resume_and_get().
+duplicated a change made in 6.10.5
+70275bb960c71d313254473d38c14e7101cee5ad
 
-This is a basic race condition that doesn't show up for most users so is
-not widely reported. If you blacklist qcom-camss in modules.d and then
-subsequently modprobe the module post-boot it is possible to reliably show
-this error up.
-
-The kernel log for this error looks like this:
-
-qcom-camss ac5a000.camss: Failed to power up pipeline: -13
-
-Fixes: 02afa816dbbf ("media: camss: Add basic runtime PM support")
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: stable@vger.kernel.org # 6.10
+Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1665,6 +1665,8 @@ static int camss_probe(struct platform_d
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1267,9 +1267,6 @@ static bool is_dsc_need_re_compute(
+ 	if (new_stream_on_link_num == 0)
+ 		return false;
  
- 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
- 
-+	pm_runtime_enable(dev);
-+
- 	num_subdevs = camss_of_parse_ports(camss);
- 	if (num_subdevs < 0) {
- 		ret = num_subdevs;
-@@ -1701,8 +1703,6 @@ static int camss_probe(struct platform_d
- 		}
- 	}
- 
--	pm_runtime_enable(dev);
+-	if (new_stream_on_link_num == 0)
+-		return false;
 -
- 	return 0;
- 
- err_register_subdevs:
-@@ -1710,6 +1710,7 @@ err_register_subdevs:
- err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
-+	pm_runtime_disable(dev);
- err_genpd_cleanup:
- 	camss_genpd_cleanup(camss);
- 
+ 	/* check current_state if there stream on link but it is not in
+ 	 * new request state
+ 	 */
 
 
 
