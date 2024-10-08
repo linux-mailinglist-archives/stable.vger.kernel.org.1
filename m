@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC18994BCC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB35D9948FB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C091A1C24ED4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE9BF1F29234
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA31F1DE2CF;
-	Tue,  8 Oct 2024 12:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623D233981;
+	Tue,  8 Oct 2024 12:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6iEnuuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0CdLukW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D33183CB8;
-	Tue,  8 Oct 2024 12:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F87918FC70;
+	Tue,  8 Oct 2024 12:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391603; cv=none; b=oka5IG9lQ/FpOIei4k2tpXGYdmcfbzzFyaSY0k0dadc4LV2QLXSzIu+7aLZt2ddp3R79avIlZIXFDbWC8KBA3fPq5Div8HCOLW/QR0vwvJMKQH7Z6c55Z3T3T7ZYpim7FspJ6m3f7WWoIlwJmYtpePKUqx29lJDnDPIqgQNo21g=
+	t=1728389911; cv=none; b=byFGh2ymDkXHQbFLP1HYB2bg95mt9hI0774VtLdH8wyleTPvTorobxghGk8yor7KF8T4E3B1hWgl8vPUp5CRLvQ6S7JkkSAikcygzbF4TuByP0urzrz/mKQKoCV7rEKLHbPeVh+kL3hDiNH1xufYTFNAy8QIQLDmzmCsP9bWY+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391603; c=relaxed/simple;
-	bh=qFgc4ySsGz/bQsRyg9V6BIvTSM75ixWOQOZxZQb8oC0=;
+	s=arc-20240116; t=1728389911; c=relaxed/simple;
+	bh=dvE5rsjxuHFkf+BmegZw47bSLDw9F66PPKPIaSp465c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFnsmDhpDhZsDKgwcP7EzKuQWk62T9znpb0+k2N7+leXqub2361ujGdK1fx5KMTI6p0qaW8nTEQqHwfT3Nd56wOL16GXxxFwQXXra+4/dL1qTVeoV0a3TxhfUb5Y2oEa/3rWYtZCLFppWFbQT13POx85gjW4AkvrrBcJVHRcZco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6iEnuuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3493C4CEC7;
-	Tue,  8 Oct 2024 12:46:42 +0000 (UTC)
+	 MIME-Version; b=GGJvt383RgM390pr8ofjHf9qk/dALHVAj7xwKsY5gWu0S0WlSMry/MpYlzI64MMhalJMxalko2zyc+6v3iaduWsipIBHBjZzkHK1uGeJ6cce2BPOSewWzWfZqY7ihS3MAmYIIxZHaU0dLHrg8/Hc90qTF4474hXLPQ4aLbsKPWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0CdLukW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B56EC4CECC;
+	Tue,  8 Oct 2024 12:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391603;
-	bh=qFgc4ySsGz/bQsRyg9V6BIvTSM75ixWOQOZxZQb8oC0=;
+	s=korg; t=1728389911;
+	bh=dvE5rsjxuHFkf+BmegZw47bSLDw9F66PPKPIaSp465c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6iEnuuuI5/EvPgFIUmX8kPrAEBDCqcZphLpkh9+hSlCUHGYRtry+YAaeIzbUC7rK
-	 lmqgVEHiELZF1iPEIrNF1Xb0NpfatXFTfm2mwKwhVrM9702T9nipyLaHKZXPbloTjD
-	 9Xn0cF2Hckg62rjmm97R71i4/0lJEO364EaCcYBs=
+	b=K0CdLukWa5mPSzbk8JpUEZ1T8pphf7kx98EpHW9K8xvdf+RNtqXxQLCJM/TLNEm3W
+	 io08XNwKWFJQoACBI12LREV2LbqREdokozO6a7qnQYsLG04lrHnf0eYRNOPl/MJwiC
+	 AAgU1dcx7ommcw0bLqj7J9y0vzsvdTSACcu6/geg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 166/558] x86/ioapic: Handle allocation failures gracefully
-Date: Tue,  8 Oct 2024 14:03:16 +0200
-Message-ID: <20241008115708.889483443@linuxfoundation.org>
+Subject: [PATCH 6.10 134/482] wifi: mt76: mt7915: hold dev->mt76.mutex while disabling tx worker
+Date: Tue,  8 Oct 2024 14:03:17 +0200
+Message-ID: <20241008115653.577088760@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,155 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 830802a0fea8fb39d3dc9fb7d6b5581e1343eb1f ]
+[ Upstream commit 8f7152f10cb434f954aeff85ca1be9cd4d01912b ]
 
-Breno observed panics when using failslab under certain conditions during
-runtime:
+Prevent racing against other functions disabling the same worker
 
-   can not alloc irq_pin_list (-1,0,20)
-   Kernel panic - not syncing: IO-APIC: failed to add irq-pin. Can not proceed
-
-   panic+0x4e9/0x590
-   mp_irqdomain_alloc+0x9ab/0xa80
-   irq_domain_alloc_irqs_locked+0x25d/0x8d0
-   __irq_domain_alloc_irqs+0x80/0x110
-   mp_map_pin_to_irq+0x645/0x890
-   acpi_register_gsi_ioapic+0xe6/0x150
-   hpet_open+0x313/0x480
-
-That's a pointless panic which is a leftover of the historic IO/APIC code
-which panic'ed during early boot when the interrupt allocation failed.
-
-The only place which might justify panic is the PIT/HPET timer_check() code
-which tries to figure out whether the timer interrupt is delivered through
-the IO/APIC. But that code does not require to handle interrupt allocation
-failures. If the interrupt cannot be allocated then timer delivery fails
-and it either panics due to that or falls back to legacy mode.
-
-Cure this by removing the panic wrapper around __add_pin_to_irq_node() and
-making mp_irqdomain_alloc() aware of the failure condition and handle it as
-any other failure in this function gracefully.
-
-Reported-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Breno Leitao <leitao@debian.org>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/all/ZqfJmUF8sXIyuSHN@gmail.com
-Link: https://lore.kernel.org/all/20240802155440.275200843@linutronix.de
+Link: https://patch.msgid.link/20240827093011.18621-17-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/io_apic.c | 46 ++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 24 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 477b740b2f267..d1ec1dcb637af 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -352,27 +352,26 @@ static void ioapic_mask_entry(int apic, int pin)
-  * shared ISA-space IRQs, so we have to support them. We are super
-  * fast in the common case, and fast for shared ISA-space IRQs.
-  */
--static int __add_pin_to_irq_node(struct mp_chip_data *data,
--				 int node, int apic, int pin)
-+static bool add_pin_to_irq_node(struct mp_chip_data *data, int node, int apic, int pin)
- {
- 	struct irq_pin_list *entry;
- 
--	/* don't allow duplicates */
--	for_each_irq_pin(entry, data->irq_2_pin)
-+	/* Don't allow duplicates */
-+	for_each_irq_pin(entry, data->irq_2_pin) {
- 		if (entry->apic == apic && entry->pin == pin)
--			return 0;
-+			return true;
-+	}
- 
- 	entry = kzalloc_node(sizeof(struct irq_pin_list), GFP_ATOMIC, node);
- 	if (!entry) {
--		pr_err("can not alloc irq_pin_list (%d,%d,%d)\n",
--		       node, apic, pin);
--		return -ENOMEM;
-+		pr_err("Cannot allocate irq_pin_list (%d,%d,%d)\n", node, apic, pin);
-+		return false;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 8008ce3fa6c7e..387d47e9fcd38 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1537,12 +1537,14 @@ void mt7915_mac_reset_work(struct work_struct *work)
+ 		set_bit(MT76_RESET, &phy2->mt76->state);
+ 		cancel_delayed_work_sync(&phy2->mt76->mac_work);
  	}
 +
- 	entry->apic = apic;
- 	entry->pin = pin;
- 	list_add_tail(&entry->list, &data->irq_2_pin);
--
--	return 0;
-+	return true;
- }
- 
- static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
-@@ -387,13 +386,6 @@ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
- 		}
- }
- 
--static void add_pin_to_irq_node(struct mp_chip_data *data,
--				int node, int apic, int pin)
--{
--	if (__add_pin_to_irq_node(data, node, apic, pin))
--		panic("IO-APIC: failed to add irq-pin. Can not proceed\n");
--}
--
- /*
-  * Reroute an IRQ to a different pin.
-  */
-@@ -1002,8 +994,7 @@ static int alloc_isa_irq_from_domain(struct irq_domain *domain,
- 	if (irq_data && irq_data->parent_data) {
- 		if (!mp_check_pin_attr(irq, info))
- 			return -EBUSY;
--		if (__add_pin_to_irq_node(irq_data->chip_data, node, ioapic,
--					  info->ioapic.pin))
-+		if (!add_pin_to_irq_node(irq_data->chip_data, node, ioapic, info->ioapic.pin))
- 			return -ENOMEM;
- 	} else {
- 		info->flags |= X86_IRQ_ALLOC_LEGACY;
-@@ -3017,10 +3008,8 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 		return -ENOMEM;
- 
- 	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, info);
--	if (ret < 0) {
--		kfree(data);
--		return ret;
--	}
-+	if (ret < 0)
-+		goto free_data;
- 
- 	INIT_LIST_HEAD(&data->irq_2_pin);
- 	irq_data->hwirq = info->ioapic.pin;
-@@ -3029,7 +3018,10 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 	irq_data->chip_data = data;
- 	mp_irqdomain_get_attr(mp_pin_to_gsi(ioapic, pin), data, info);
- 
--	add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin);
-+	if (!add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin)) {
-+		ret = -ENOMEM;
-+		goto free_irqs;
-+	}
- 
- 	mp_preconfigure_entry(data);
- 	mp_register_handler(virq, data->is_level);
-@@ -3044,6 +3036,12 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 		    ioapic, mpc_ioapic_id(ioapic), pin, virq,
- 		    data->is_level, data->active_low);
- 	return 0;
++	mutex_lock(&dev->mt76.mutex);
 +
-+free_irqs:
-+	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
-+free_data:
-+	kfree(data);
-+	return ret;
- }
+ 	mt76_worker_disable(&dev->mt76.tx_worker);
+ 	mt76_for_each_q_rx(&dev->mt76, i)
+ 		napi_disable(&dev->mt76.napi[i]);
+ 	napi_disable(&dev->mt76.tx_napi);
  
- void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
+-	mutex_lock(&dev->mt76.mutex);
+ 
+ 	if (mtk_wed_device_active(&dev->mt76.mmio.wed))
+ 		mtk_wed_device_stop(&dev->mt76.mmio.wed);
 -- 
 2.43.0
 
