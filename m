@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394AC994E51
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603189949D5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC20A1F2189F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFFAF1F2118E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592F21DED6F;
-	Tue,  8 Oct 2024 13:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA92A1DF971;
+	Tue,  8 Oct 2024 12:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEpOqVRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DN5UUhd7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185551DE4CD;
-	Tue,  8 Oct 2024 13:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D831DE2AD;
+	Tue,  8 Oct 2024 12:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393347; cv=none; b=S4FMPWh4dnA4EeDVE6MWw2Pw7px5A/5A79/7S3+bEzVnmXTlXX+xu4sl/YBcgfEy6EV9vZ0nkGySXB9HbklHCUlh9SBcEM4i6RuJxmqPgFLvk09rzl/sxEdaXDPIDZve78kGDOR4ZWGIggLJkpStGFIZUyBCx0KP+rpgWQ07/Q0=
+	t=1728390387; cv=none; b=IC/TRItdi4du++2IWnnQxtBGuKZQPEamHCRKbsP8r0lbA9igEiQPhsYbiNonNAW7yLBGKS0Bm/KZQ3Ib5YHIFj6YhwWbZ+bZfg4KlnV6I2dcLjYjvF+KX+Lp7mhsMpAL/3Cac6A2TCwTJwZD700+0/Qv3pf9xYPHlkoS4L9dZ6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393347; c=relaxed/simple;
-	bh=TH/ajmhnzO/Xe/sjrYZbrQLTPT0DGz2IhHIKYTuAdPM=;
+	s=arc-20240116; t=1728390387; c=relaxed/simple;
+	bh=/imnsK2IY+4OIs3QfYz72ZFWD5EXQnbIj3A97TR0OmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZppLHWJSek13AcL9y7yG/osyR3QgtAuU5H2kM2ogRweQPFuZOcUiRc+664fZT3s2wAt6RDEmcbj+virwXXoDotvVdGRUtzjEn35yimSFoEVv8PRqwe5aIvCUtI4Wi1j9N2RH0K5zqNMXXMYY8hYYCR7HtdQwJa/37vzxVOgQ1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEpOqVRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6F8C4CEC7;
-	Tue,  8 Oct 2024 13:15:46 +0000 (UTC)
+	 MIME-Version; b=IKoD93OqWdUYNPpkaVK44aYechaIsF8bDGVaKPPZ6YTR79XZ8hSM0aSsfpEXk8LWRldfgXwfWwZjYPcik7aPa9nuxMKjTz5l51sXHz31SybOKvjOr0UJjHDCKaCnJV8w/+9wYUwyaVSlh3sffimBqZpS+2v9mHQup9uX0uX2DXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DN5UUhd7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB056C4CECD;
+	Tue,  8 Oct 2024 12:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393347;
-	bh=TH/ajmhnzO/Xe/sjrYZbrQLTPT0DGz2IhHIKYTuAdPM=;
+	s=korg; t=1728390387;
+	bh=/imnsK2IY+4OIs3QfYz72ZFWD5EXQnbIj3A97TR0OmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEpOqVRjJ4WyMCZoM/PUU/QA8guIYGnw3rtzXFg0bNoVhuftQcfA6ZEtO9uCQiiCT
-	 EptrG6cW1SZ+SOpBDlOu8erRHcQ9uos45F2wp/Yqag5NeIOou/DSEHtE0blqShiqPY
-	 h/eCLCJLeyqnWYM/9wTZXdilgoBgVlqJshHWLyTU=
+	b=DN5UUhd7bY090uwbF1/89R/zfJrQjxFpDIz7V/sb/1OhkO6t/lroy872ThaLSm5iQ
+	 aBUCXifdPBM2Ciq2L3KhL9wxvMlNzlF6TJYmstl5ha2g5Kkev1X7deboG8jLirL9bO
+	 1gxq/QEvUzR45YYHlcy9kaKN5AwDa73wYkOFTInA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/386] crypto: simd - Do not call crypto_alloc_tfm during registration
+Subject: [PATCH 6.10 275/482] selftests: vDSO: fix vDSO symbols lookup for powerpc64
 Date: Tue,  8 Oct 2024 14:05:38 +0200
-Message-ID: <20241008115633.110632943@linuxfoundation.org>
+Message-ID: <20241008115659.102267099@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,251 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 3c44d31cb34ce4eb8311a2e73634d57702948230 ]
+[ Upstream commit ba83b3239e657469709d15dcea5f9b65bf9dbf34 ]
 
-Algorithm registration is usually carried out during module init,
-where as little work as possible should be carried out.  The SIMD
-code violated this rule by allocating a tfm, this then triggers a
-full test of the algorithm which may dead-lock in certain cases.
+On powerpc64, following tests fail locating vDSO functions:
 
-SIMD is only allocating the tfm to get at the alg object, which is
-in fact already available as it is what we are registering.  Use
-that directly and remove the crypto_alloc_tfm call.
+  ~ # ./vdso_test_abi
+  TAP version 13
+  1..16
+  # [vDSO kselftest] VDSO_VERSION: LINUX_2.6.15
+  # Couldn't find __kernel_gettimeofday
+  ok 1 # SKIP __kernel_gettimeofday
+  # clock_id: CLOCK_REALTIME
+  # Couldn't find __kernel_clock_gettime
+  ok 2 # SKIP __kernel_clock_gettime CLOCK_REALTIME
+  # Couldn't find __kernel_clock_getres
+  ok 3 # SKIP __kernel_clock_getres CLOCK_REALTIME
+  ...
+  # Couldn't find __kernel_time
+  ok 16 # SKIP __kernel_time
+  # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:16 error:0
 
-Also remove some obsolete and unused SIMD API.
+  ~ # ./vdso_test_getrandom
+  __kernel_getrandom is missing!
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  ~ # ./vdso_test_gettimeofday
+  Could not find __kernel_gettimeofday
+
+  ~ # ./vdso_test_getcpu
+  Could not find __kernel_getcpu
+
+On powerpc64, as shown below by readelf, vDSO functions symbols have
+type NOTYPE, so also accept that type when looking for symbols.
+
+$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
+ELF Header:
+  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+...
+
+Symbol table '.dynsym' contains 12 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND
+     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     2: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     3: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     6: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     7: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     8: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+     9: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+    10: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+    11: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+
+Symbol table '.symtab' contains 56 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
+    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
+    48: 00000000000005f0    36 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_tbfreq
+    49: 000000000000047c    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_gettimeofday
+    50: 0000000000000614   172 NOTYPE  GLOBAL DEFAULT    8 __kernel_sync_dicache
+    51: 00000000000006f0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_getrandom
+    52: 0000000000000454    12 NOTYPE  GLOBAL DEFAULT    8 __kernel_sigtram[...]
+    53: 0000000000000578    68 NOTYPE  GLOBAL DEFAULT    8 __kernel_time
+    54: 00000000000004d0    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_g[...]
+    55: 00000000000005bc    52 NOTYPE  GLOBAL DEFAULT    8 __kernel_get_sys[...]
+
+Fixes: 98eedc3a9dbf ("Document the vDSO and add a reference parser")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/crypto/aes-ce-glue.c     |  2 +-
- arch/arm/crypto/aes-neonbs-glue.c |  2 +-
- crypto/simd.c                     | 76 ++++++-------------------------
- include/crypto/internal/simd.h    | 12 +----
- 4 files changed, 19 insertions(+), 73 deletions(-)
+ tools/testing/selftests/vDSO/parse_vdso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/crypto/aes-ce-glue.c b/arch/arm/crypto/aes-ce-glue.c
-index b668c97663ec0..f5b66f4cf45d9 100644
---- a/arch/arm/crypto/aes-ce-glue.c
-+++ b/arch/arm/crypto/aes-ce-glue.c
-@@ -711,7 +711,7 @@ static int __init aes_init(void)
- 		algname = aes_algs[i].base.cra_name + 2;
- 		drvname = aes_algs[i].base.cra_driver_name + 2;
- 		basename = aes_algs[i].base.cra_driver_name;
--		simd = simd_skcipher_create_compat(algname, drvname, basename);
-+		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
- 		err = PTR_ERR(simd);
- 		if (IS_ERR(simd))
- 			goto unregister_simds;
-diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
-index f00f042ef3570..0ca94b90bc4ec 100644
---- a/arch/arm/crypto/aes-neonbs-glue.c
-+++ b/arch/arm/crypto/aes-neonbs-glue.c
-@@ -539,7 +539,7 @@ static int __init aes_init(void)
- 		algname = aes_algs[i].base.cra_name + 2;
- 		drvname = aes_algs[i].base.cra_driver_name + 2;
- 		basename = aes_algs[i].base.cra_driver_name;
--		simd = simd_skcipher_create_compat(algname, drvname, basename);
-+		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
- 		err = PTR_ERR(simd);
- 		if (IS_ERR(simd))
- 			goto unregister_simds;
-diff --git a/crypto/simd.c b/crypto/simd.c
-index edaa479a1ec5e..d109866641a26 100644
---- a/crypto/simd.c
-+++ b/crypto/simd.c
-@@ -136,27 +136,19 @@ static int simd_skcipher_init(struct crypto_skcipher *tfm)
- 	return 0;
- }
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 4ae417372e9eb..d9ccc5acac182 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -216,7 +216,8 @@ void *vdso_sym(const char *version, const char *name)
+ 		ELF(Sym) *sym = &vdso_info.symtab[chain];
  
--struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
-+struct simd_skcipher_alg *simd_skcipher_create_compat(struct skcipher_alg *ialg,
-+						      const char *algname,
- 						      const char *drvname,
- 						      const char *basename)
- {
- 	struct simd_skcipher_alg *salg;
--	struct crypto_skcipher *tfm;
--	struct skcipher_alg *ialg;
- 	struct skcipher_alg *alg;
- 	int err;
- 
--	tfm = crypto_alloc_skcipher(basename, CRYPTO_ALG_INTERNAL,
--				    CRYPTO_ALG_INTERNAL | CRYPTO_ALG_ASYNC);
--	if (IS_ERR(tfm))
--		return ERR_CAST(tfm);
--
--	ialg = crypto_skcipher_alg(tfm);
--
- 	salg = kzalloc(sizeof(*salg), GFP_KERNEL);
- 	if (!salg) {
- 		salg = ERR_PTR(-ENOMEM);
--		goto out_put_tfm;
-+		goto out;
- 	}
- 
- 	salg->ialg_name = basename;
-@@ -195,30 +187,16 @@ struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
- 	if (err)
- 		goto out_free_salg;
- 
--out_put_tfm:
--	crypto_free_skcipher(tfm);
-+out:
- 	return salg;
- 
- out_free_salg:
- 	kfree(salg);
- 	salg = ERR_PTR(err);
--	goto out_put_tfm;
-+	goto out;
- }
- EXPORT_SYMBOL_GPL(simd_skcipher_create_compat);
- 
--struct simd_skcipher_alg *simd_skcipher_create(const char *algname,
--					       const char *basename)
--{
--	char drvname[CRYPTO_MAX_ALG_NAME];
--
--	if (snprintf(drvname, CRYPTO_MAX_ALG_NAME, "simd-%s", basename) >=
--	    CRYPTO_MAX_ALG_NAME)
--		return ERR_PTR(-ENAMETOOLONG);
--
--	return simd_skcipher_create_compat(algname, drvname, basename);
--}
--EXPORT_SYMBOL_GPL(simd_skcipher_create);
--
- void simd_skcipher_free(struct simd_skcipher_alg *salg)
- {
- 	crypto_unregister_skcipher(&salg->alg);
-@@ -246,7 +224,7 @@ int simd_register_skciphers_compat(struct skcipher_alg *algs, int count,
- 		algname = algs[i].base.cra_name + 2;
- 		drvname = algs[i].base.cra_driver_name + 2;
- 		basename = algs[i].base.cra_driver_name;
--		simd = simd_skcipher_create_compat(algname, drvname, basename);
-+		simd = simd_skcipher_create_compat(algs + i, algname, drvname, basename);
- 		err = PTR_ERR(simd);
- 		if (IS_ERR(simd))
- 			goto err_unregister;
-@@ -383,27 +361,19 @@ static int simd_aead_init(struct crypto_aead *tfm)
- 	return 0;
- }
- 
--struct simd_aead_alg *simd_aead_create_compat(const char *algname,
--					      const char *drvname,
--					      const char *basename)
-+static struct simd_aead_alg *simd_aead_create_compat(struct aead_alg *ialg,
-+						     const char *algname,
-+						     const char *drvname,
-+						     const char *basename)
- {
- 	struct simd_aead_alg *salg;
--	struct crypto_aead *tfm;
--	struct aead_alg *ialg;
- 	struct aead_alg *alg;
- 	int err;
- 
--	tfm = crypto_alloc_aead(basename, CRYPTO_ALG_INTERNAL,
--				CRYPTO_ALG_INTERNAL | CRYPTO_ALG_ASYNC);
--	if (IS_ERR(tfm))
--		return ERR_CAST(tfm);
--
--	ialg = crypto_aead_alg(tfm);
--
- 	salg = kzalloc(sizeof(*salg), GFP_KERNEL);
- 	if (!salg) {
- 		salg = ERR_PTR(-ENOMEM);
--		goto out_put_tfm;
-+		goto out;
- 	}
- 
- 	salg->ialg_name = basename;
-@@ -442,36 +412,20 @@ struct simd_aead_alg *simd_aead_create_compat(const char *algname,
- 	if (err)
- 		goto out_free_salg;
- 
--out_put_tfm:
--	crypto_free_aead(tfm);
-+out:
- 	return salg;
- 
- out_free_salg:
- 	kfree(salg);
- 	salg = ERR_PTR(err);
--	goto out_put_tfm;
--}
--EXPORT_SYMBOL_GPL(simd_aead_create_compat);
--
--struct simd_aead_alg *simd_aead_create(const char *algname,
--				       const char *basename)
--{
--	char drvname[CRYPTO_MAX_ALG_NAME];
--
--	if (snprintf(drvname, CRYPTO_MAX_ALG_NAME, "simd-%s", basename) >=
--	    CRYPTO_MAX_ALG_NAME)
--		return ERR_PTR(-ENAMETOOLONG);
--
--	return simd_aead_create_compat(algname, drvname, basename);
-+	goto out;
- }
--EXPORT_SYMBOL_GPL(simd_aead_create);
- 
--void simd_aead_free(struct simd_aead_alg *salg)
-+static void simd_aead_free(struct simd_aead_alg *salg)
- {
- 	crypto_unregister_aead(&salg->alg);
- 	kfree(salg);
- }
--EXPORT_SYMBOL_GPL(simd_aead_free);
- 
- int simd_register_aeads_compat(struct aead_alg *algs, int count,
- 			       struct simd_aead_alg **simd_algs)
-@@ -493,7 +447,7 @@ int simd_register_aeads_compat(struct aead_alg *algs, int count,
- 		algname = algs[i].base.cra_name + 2;
- 		drvname = algs[i].base.cra_driver_name + 2;
- 		basename = algs[i].base.cra_driver_name;
--		simd = simd_aead_create_compat(algname, drvname, basename);
-+		simd = simd_aead_create_compat(algs + i, algname, drvname, basename);
- 		err = PTR_ERR(simd);
- 		if (IS_ERR(simd))
- 			goto err_unregister;
-diff --git a/include/crypto/internal/simd.h b/include/crypto/internal/simd.h
-index d2316242a9884..be97b97a75dd2 100644
---- a/include/crypto/internal/simd.h
-+++ b/include/crypto/internal/simd.h
-@@ -14,11 +14,10 @@
- struct simd_skcipher_alg;
- struct skcipher_alg;
- 
--struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
-+struct simd_skcipher_alg *simd_skcipher_create_compat(struct skcipher_alg *ialg,
-+						      const char *algname,
- 						      const char *drvname,
- 						      const char *basename);
--struct simd_skcipher_alg *simd_skcipher_create(const char *algname,
--					       const char *basename);
- void simd_skcipher_free(struct simd_skcipher_alg *alg);
- 
- int simd_register_skciphers_compat(struct skcipher_alg *algs, int count,
-@@ -32,13 +31,6 @@ void simd_unregister_skciphers(struct skcipher_alg *algs, int count,
- struct simd_aead_alg;
- struct aead_alg;
- 
--struct simd_aead_alg *simd_aead_create_compat(const char *algname,
--					      const char *drvname,
--					      const char *basename);
--struct simd_aead_alg *simd_aead_create(const char *algname,
--				       const char *basename);
--void simd_aead_free(struct simd_aead_alg *alg);
--
- int simd_register_aeads_compat(struct aead_alg *algs, int count,
- 			       struct simd_aead_alg **simd_algs);
- 
+ 		/* Check for a defined global or weak function w/ right name. */
+-		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
++		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
++		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
+ 			continue;
+ 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
+ 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
 -- 
 2.43.0
 
