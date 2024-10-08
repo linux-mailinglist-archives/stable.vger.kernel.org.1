@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0A9E994949
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3729994DD4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69C8E1F25C1D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78DBA1F258FA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE621DE8BA;
-	Tue,  8 Oct 2024 12:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2681DED4E;
+	Tue,  8 Oct 2024 13:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHlCoX42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxU60R4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1161DE8A6;
-	Tue,  8 Oct 2024 12:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1C81C32EB;
+	Tue,  8 Oct 2024 13:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390089; cv=none; b=cBAHPUwWARjQRb6kK/pA32+IA15A2WGUkvkiVoGbs4Q9f+hBBp6SxNkMJgjRBdpb6Vsn6aZswVx0/EdR7q+pKEuHu7/HLj4NlPi2T+8Ojx3YtNJw/LCa9kYmTbT5sZT+Gh839E+zvtPw51TIoRn1h7iKs6/DzJS+WuNa8Uj9VlM=
+	t=1728392996; cv=none; b=pF6XYMAToLDhjPHHH3R4lLpKUEeOusrUPxR3QxOH/xAMB2Q2YxnBxVGmQfqCPDOOMdJQDzCRNNlnRPS0Qr8SdlF4Amy6WZWz3XMQT9sTM8Lrw+Av0fGJHX5X08QdMgHhANygj4z61Cl3mSnOF67y0P8Kkp5oyUY6CzvZ2Iuccnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390089; c=relaxed/simple;
-	bh=lPr+2bMDpXSLFP4nskjUu36ENeri1X3ZhRT/UqBAS4M=;
+	s=arc-20240116; t=1728392996; c=relaxed/simple;
+	bh=5XOGS/ta4dt1Jzl0e+xcYqideMmGXiv9SFOQLAj25Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQg5g15HBHCAiXSs4jDZfIPPNbtPzWNIp3L5jG+BWW6Xz/TMrUCOXHc6AJup5THVhzxJGIHvhHNXseEnx7BLXciHEHI6mpBt/eB692FkGip1HTpNFK+HfM94y0mWJlU1scRn8QrrYoHuj6+33fzW5fJ3lXOT38tA3g/tmlhurcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHlCoX42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F144CC4CECD;
-	Tue,  8 Oct 2024 12:21:28 +0000 (UTC)
+	 MIME-Version; b=tudRQB5y9/WM0RhNDINcwaao2+DCIFuVjH3Zpg3uxSPItJyZBcSoidSMBXdGCmzo+YaH4HNaTE60+XrExyWpw8rnJ2653khOHUKlLAJofJACRFBZfGCzxBxNxQEbc7rDLMrPnSoluA7miZsI1mn8pMZQxGsPoR5FiELjC2sMfTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxU60R4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1119DC4CEC7;
+	Tue,  8 Oct 2024 13:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390089;
-	bh=lPr+2bMDpXSLFP4nskjUu36ENeri1X3ZhRT/UqBAS4M=;
+	s=korg; t=1728392995;
+	bh=5XOGS/ta4dt1Jzl0e+xcYqideMmGXiv9SFOQLAj25Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHlCoX42lZWAISRjPErv9wg2xY45NvZoo0hSCGOEyAksW4tMQXNtfERjTk5rFwbFK
-	 quMldKI+47H/tWYNpPr1YPSSnMg1Wu8QNqaHrEbYwri67e/yrNfSR8zfQU2mVeOPjA
-	 aLsdYIea08UNcHJGHC9JdcwAteLEOkE6BZo2FX8s=
+	b=nxU60R4qIJhcvhgzA9Hv1gevFLw5upBZC2wrfiKMyom/rzOyPOEg8C8f3Mk8zqqeZ
+	 pz207QCrZOwtq0xleB9b/we2Me+xGK1PBPqsosofLwiuzLcrxv4B/6hLROcmscOMEf
+	 0EH4c0oIBlDUXyPf0Sk6blRJWGbvC44LfZvK1LGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Klara Modin <klarasmodin@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 186/482] ata: sata_sil: Rename sil_blacklist to sil_quirks
+Subject: [PATCH 6.6 004/386] jump_label: Fix static_key_slow_dec() yet again
 Date: Tue,  8 Oct 2024 14:04:09 +0200
-Message-ID: <20241008115655.623241467@linuxfoundation.org>
+Message-ID: <20241008115629.490288429@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 93b0f9e11ce511353c65b7f924cf5f95bd9c3aba ]
+[ Upstream commit 1d7f856c2ca449f04a22d876e36b464b7a9d28b6 ]
 
-Rename the array sil_blacklist to sil_quirks as this name is more
-neutral and is also consistent with how this driver define quirks with
-the SIL_QUIRK_XXX flags.
+While commit 83ab38ef0a0b ("jump_label: Fix concurrency issues in
+static_key_slow_dec()") fixed one problem, it created yet another,
+notably the following is now possible:
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+  slow_dec
+    if (try_dec) // dec_not_one-ish, false
+    // enabled == 1
+                                slow_inc
+                                  if (inc_not_disabled) // inc_not_zero-ish
+                                  // enabled == 2
+                                    return
+
+    guard((mutex)(&jump_label_mutex);
+    if (atomic_cmpxchg(1,0)==1) // false, we're 2
+
+                                slow_dec
+                                  if (try-dec) // dec_not_one, true
+                                  // enabled == 1
+                                    return
+    else
+      try_dec() // dec_not_one, false
+      WARN
+
+Use dec_and_test instead of cmpxchg(), like it was prior to
+83ab38ef0a0b. Add a few WARNs for the paranoid.
+
+Fixes: 83ab38ef0a0b ("jump_label: Fix concurrency issues in static_key_slow_dec()")
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_sil.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/jump_label.c | 34 +++++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
-index cc77c02482843..df095659bae0f 100644
---- a/drivers/ata/sata_sil.c
-+++ b/drivers/ata/sata_sil.c
-@@ -128,7 +128,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
- static const struct sil_drivelist {
- 	const char *product;
- 	unsigned int quirk;
--} sil_blacklist [] = {
-+} sil_quirks[] = {
- 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
- 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
- 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
-@@ -600,8 +600,8 @@ static void sil_thaw(struct ata_port *ap)
-  *	list, and apply the fixups to only the specific
-  *	devices/hosts/firmwares that need it.
-  *
-- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
-- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
-+ *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
-+ *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
-  *	pessimistic fix for the following reasons...
-  *	- There seems to be less info on it, only one device gleaned off the
-  *	Windows	driver, maybe only one is affected.  More info would be greatly
-@@ -620,9 +620,9 @@ static void sil_dev_config(struct ata_device *dev)
+diff --git a/kernel/jump_label.c b/kernel/jump_label.c
+index 7374053bbe049..554e04b25b13a 100644
+--- a/kernel/jump_label.c
++++ b/kernel/jump_label.c
+@@ -165,7 +165,7 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
+ 		jump_label_update(key);
+ 		/*
+ 		 * Ensure that when static_key_fast_inc_not_disabled() or
+-		 * static_key_slow_try_dec() observe the positive value,
++		 * static_key_dec_not_one() observe the positive value,
+ 		 * they must also observe all the text changes.
+ 		 */
+ 		atomic_set_release(&key->enabled, 1);
+@@ -247,7 +247,7 @@ void static_key_disable(struct static_key *key)
+ }
+ EXPORT_SYMBOL_GPL(static_key_disable);
  
- 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
+-static bool static_key_slow_try_dec(struct static_key *key)
++static bool static_key_dec_not_one(struct static_key *key)
+ {
+ 	int v;
  
--	for (n = 0; sil_blacklist[n].product; n++)
--		if (!strcmp(sil_blacklist[n].product, model_num)) {
--			quirks = sil_blacklist[n].quirk;
-+	for (n = 0; sil_quirks[n].product; n++)
-+		if (!strcmp(sil_quirks[n].product, model_num)) {
-+			quirks = sil_quirks[n].quirk;
- 			break;
- 		}
+@@ -271,6 +271,14 @@ static bool static_key_slow_try_dec(struct static_key *key)
+ 		 * enabled. This suggests an ordering problem on the user side.
+ 		 */
+ 		WARN_ON_ONCE(v < 0);
++
++		/*
++		 * Warn about underflow, and lie about success in an attempt to
++		 * not make things worse.
++		 */
++		if (WARN_ON_ONCE(v == 0))
++			return true;
++
+ 		if (v <= 1)
+ 			return false;
+ 	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
+@@ -281,15 +289,27 @@ static bool static_key_slow_try_dec(struct static_key *key)
+ static void __static_key_slow_dec_cpuslocked(struct static_key *key)
+ {
+ 	lockdep_assert_cpus_held();
++	int val;
  
+-	if (static_key_slow_try_dec(key))
++	if (static_key_dec_not_one(key))
+ 		return;
+ 
+ 	guard(mutex)(&jump_label_mutex);
+-	if (atomic_cmpxchg(&key->enabled, 1, 0) == 1)
++	val = atomic_read(&key->enabled);
++	/*
++	 * It should be impossible to observe -1 with jump_label_mutex held,
++	 * see static_key_slow_inc_cpuslocked().
++	 */
++	if (WARN_ON_ONCE(val == -1))
++		return;
++	/*
++	 * Cannot already be 0, something went sideways.
++	 */
++	if (WARN_ON_ONCE(val == 0))
++		return;
++
++	if (atomic_dec_and_test(&key->enabled))
+ 		jump_label_update(key);
+-	else
+-		WARN_ON_ONCE(!static_key_slow_try_dec(key));
+ }
+ 
+ static void __static_key_slow_dec(struct static_key *key)
+@@ -326,7 +346,7 @@ void __static_key_slow_dec_deferred(struct static_key *key,
+ {
+ 	STATIC_KEY_CHECK_USE(key);
+ 
+-	if (static_key_slow_try_dec(key))
++	if (static_key_dec_not_one(key))
+ 		return;
+ 
+ 	schedule_delayed_work(work, timeout);
 -- 
 2.43.0
 
