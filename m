@@ -1,96 +1,84 @@
-Return-Path: <stable+bounces-81531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8B29940CB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 10:15:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7575C994124
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 10:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB941C20E1B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 08:15:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF9AA1F27A96
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 08:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F364C17CA02;
-	Tue,  8 Oct 2024 07:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2484213CA99;
+	Tue,  8 Oct 2024 07:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LspoFCCp"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="aLkENXaI"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2042.outbound.protection.outlook.com [40.107.101.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADD51779B1;
-	Tue,  8 Oct 2024 07:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728372765; cv=fail; b=ZZ7U5crMHEqAkPF0SW241IG6KJhAz4dMDEBA4cZt020J+/9hVxrA1u7d5gIPm0imIXdIOpmeyZLbagwzPmJii1yxMkSefqWT8VBCEUCRMakGbkzMiKhjkIkOFUiVaSbC25FX8faG/J/EbFJqHV5xGm2TKdiZ1GsxOs+JzxiiHZY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728372765; c=relaxed/simple;
-	bh=uapw6YSN5kzkG8QmRw5nmx5hrLy6JERTcHfAV2U4bao=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KGCsi0KklIRQNUsd53Y2S7roTkX6XexFaWOsNI4T3URsJkY/g2fUSxPx8X8eHrS6owCWVi3FdFrfatqxClA9qYiEcJ6csiTj8GsTToDzrVvT7tHAOMBgiwOpOcIMLuMF0ZiNazlwfEIrRMnYQXfTEKoI+8ubMmeiEEzaaf7HG/Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LspoFCCp; arc=fail smtp.client-ip=40.107.101.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JE5G56X81b3HHpV/JgrI+J8vlrEjFFXgHj+W2B/roNQjXSJxZaACVwq8nnadXMKe8XcWAP7ri8dCfeI2BByqpLiQydYKweCT4B6ReNicV8V/+Ci2+9WDdOLP2EzIgwsfkUpaa+zaHcRTgikdNGOAEoXluYI9oPT6VeMcxBRsqOjdnFsq4jGjrbiNgkkHO5E+LB2/WHT8Um+VcP8Agc2v9qfevztmpdpxnPa27m9/Py9xGC80tmtMg5E9SVSw1yyqc5082pYI1P5AZwvfYAcu9iGl44kEqdomWSu6UG6DnGmWcRcDVnugBV7M8XoDpRwLNAQDVQoXIdlAW1fC96u0BQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q7er5QWkVAR30tYU+u5zWDMxY6A325xO9o5a7E70Nrc=;
- b=gvwSxA6GvRe3aUhltZVUBa0PpbUzFYgNHgiFu52me4Mw5YC7J/1Hi1/Y0sx8yr8SKtJ3Awm5/8MbyZUgdVlCduoL3peGSN+AagDPkgJsWof3pdVZqsSOdmkSpiq9Ix1unwtPLdFBdBy5u8R6YquxJ3Lwolab4vlcU77cs/WmLfY/aYap9OnfjkdBGnhe3LVc9nYRzzkuUSBRXuhY5FdnUl/MCvSrMI1nRIRX7BnIGQVNhkADs/yfchP+NLN1kUPVQAKQsP0BgeJWdU91vl4dzPUu/FTsG49GbVaCi1YnU+A5qhb5XDPYa24HDwXWVqp4esVbvYWaBklhGervPKX9Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q7er5QWkVAR30tYU+u5zWDMxY6A325xO9o5a7E70Nrc=;
- b=LspoFCCpgjYK+7aWVV/WzLxtCLOdVMAdJDdxeG9hswwunpx7/RIGz+3b4/puusgnaRcCrBhygmXuV4f6pwUTTLWMIoSyjiYjzmRxNUjmdnVFms0z+E9NsLth/Vd6EGrUyi9XBJaoRCwj2wAuqx6/lcIcO3NJ1/xpOYGoB2uEbUlGcMXBCl4bT/fuOL9AQ4PZfL9loDTx+eH70/Cv6LIxr9d6Q1RRMUaMvsydxFT5nuFC3O+U81YNzD/vtFc3TfQC4P1XigG2B/lhTWaDwoozLOXkPwNFScFqNZK33Fx90Su1rHDqsgPn88GluhtDMZGEB8DI1f9my4NxIvUmEZBLSg==
-Received: from BN0PR10CA0019.namprd10.prod.outlook.com (2603:10b6:408:143::8)
- by BL1PR12MB5777.namprd12.prod.outlook.com (2603:10b6:208:390::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Tue, 8 Oct
- 2024 07:32:39 +0000
-Received: from BL02EPF0001A0FA.namprd03.prod.outlook.com
- (2603:10b6:408:143:cafe::f) by BN0PR10CA0019.outlook.office365.com
- (2603:10b6:408:143::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.17 via Frontend
- Transport; Tue, 8 Oct 2024 07:32:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BL02EPF0001A0FA.mail.protection.outlook.com (10.167.242.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8048.13 via Frontend Transport; Tue, 8 Oct 2024 07:32:39 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 8 Oct 2024
- 00:32:29 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Tue, 8 Oct 2024 00:32:29 -0700
-Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.126.190.181)
- with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Tue, 8 Oct
- 2024 00:32:26 -0700
-From: Yonatan Maman <ymaman@nvidia.com>
-To: <kherbst@redhat.com>, <lyude@redhat.com>, <dakr@redhat.com>,
-	<airlied@gmail.com>, <daniel@ffwll.ch>, <bskeggs@nvidia.com>,
-	<jglisse@redhat.com>, <dri-devel@lists.freedesktop.org>,
-	<nouveau@lists.freedesktop.org>
-CC: Yonatan Maman <Ymaman@Nvidia.com>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Gal Shalom <GalShalom@Nvidia.com>
-Subject: [PATCH v3 2/2] nouveau/dmem: Fix vulnerability in migrate_to_ram upon copy error
-Date: Tue, 8 Oct 2024 10:31:03 +0300
-Message-ID: <20241008073103.987926-3-ymaman@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241008073103.987926-1-ymaman@nvidia.com>
-References: <20241008073103.987926-1-ymaman@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D14A23A0
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 07:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728373668; cv=none; b=Z1QozR+TIm+AWKm06Jw28oPzyohOEzC5EYAVsBeW8V7RVNMKFcAYW3EUlAtdujKVd4+mpuMnbUvIhL1FjSZq7UsAydEduQd/cVgMzx18jrKIGE9Wtstkk/+cpQtAyD/T+6cvEPs6YzOr/fxRvQHToMYVttG0ck5XD9S2ppdLwpE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728373668; c=relaxed/simple;
+	bh=tCv/7mhipd7WQOFWDu5wytCySq5oguUqWbVzOY5daOM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sPr2dqLHnpWZ7TT7U5fNleEG05MIGuahpIQ43hKMbthPWxds+2cXhUVbskc59oodY0lrf734riKe7XUTpaQ+PZnmn754NrXwGi4V8O5300TirgbfaSnaSEwDoh+kR9f3HUyaoAHbm0mxzgflUatARo71Y4A31XcvJ0PGbt06dKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=aLkENXaI; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3e045525719so3313811b6e.2
+        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 00:47:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1728373665; x=1728978465; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Es5a3SaOdE2aGjaLKoPJpJw7Ue4TmpSKGBflwGeF01U=;
+        b=aLkENXaID4WyYDu1/Lj2gVfordfIsjcpbppkiE7u7msN+DWqVPc6rNz9ouoj5ANHFD
+         U2nQjNZB0qkOuDJu2wom53s7kKhA4uNV5X/gC5jB5d6uup55HHifpIZUO2tMer1bzfSb
+         RNhmiVmCdG9Yxl/7Q8jiKw3dKJbnm1JkcYsxY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728373665; x=1728978465;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Es5a3SaOdE2aGjaLKoPJpJw7Ue4TmpSKGBflwGeF01U=;
+        b=SECxVAagLF6gsjNR2y9HZpXB6S3Q09DbJ2sMDY2+bSifZ6y1feMitqCwTvh/sMqg22
+         yiepzjUGIWM0THA112MS4y9Gq0yNDU13thy6o63gvUOM1gl2ww4oQG/1RK/zkTpEFIpV
+         fk8lSKY4yEf+Vi0pkEVYRMqiJxn+hOkEMRLYKr4/o+9eLT7Tc4AqWP9dw7ui+Whs6T/e
+         QfIbwFL95b2ECc3H+ZukfASlPLxs1eoJtPjQ0n7LOjsKxEOiC7LkH6coPwycWqg+ruj+
+         AgJKqewocDvPVHj6p+DAdAXGp4V5ILNfJOyh9wZosy0csJj3zLDhBNXg+mmiCLWj/h2W
+         DncQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlpyFA0Y5ndxPOn8SmBpcSK2NhvrNt8wKbLpXzTAH6pce1KajfmCj/qjTQ2kosq4VX67BsPQ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHJ7ZTM2br7i+T2InWv9PybeyKTkYYieJ4fIImsadtpVS/K7oF
+	j/BIlHa4O6/+051J8jQw6CcpJAHn7B4ftDkNKxi7wFXnDKlwFmBrxrQI9R2oPA==
+X-Google-Smtp-Source: AGHT+IHcU90bO2mwisFuDqHClHaBqkqjJ5WQ3QaW2yhyT6648XzcBDWFAijqjwcFcv9VNXNf+TZGeg==
+X-Received: by 2002:a05:6808:23c9:b0:3e0:6809:ab18 with SMTP id 5614622812f47-3e3c1326016mr10038627b6e.13.1728373665150;
+        Tue, 08 Oct 2024 00:47:45 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0d452b7sm5596039b3a.108.2024.10.08.00.47.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2024 00:47:44 -0700 (PDT)
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+To: linux-scsi@vger.kernel.org,
+	martin.petersen@oracle.com
+Cc: rajsekhar.chundru@broadcom.com,
+	sathya.prakash@broadcom.com,
+	sumit.saxena@broadcom.com,
+	chandrakanth.patil@broadcom.com,
+	prayas.patel@broadcom.com,
+	thenzl@redhat.com,
+	mav@ixsystems.com,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH v2] mpi3mr: Validating SAS port assignments
+Date: Tue,  8 Oct 2024 13:13:53 +0530
+Message-Id: <20241008074353.200379-1-ranjan.kumar@broadcom.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,96 +86,183 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FA:EE_|BL1PR12MB5777:EE_
-X-MS-Office365-Filtering-Correlation-Id: 75b2dba1-1006-4369-ceb6-08dce76b6385
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7uzH7+oqiWoir1UN15SS/jkUv3ZwdESkhtxsuG35gBw26FVilOsot9UCjG/+?=
- =?us-ascii?Q?TEdg8C0w23SklmnFelsAHibZvWh6MSqk649SKPxzjad7OhsVm/0RR8/hQxyj?=
- =?us-ascii?Q?Gcfp5nUcj9iXByF54ITZ2nWwe4nzE3En5W53QowQYqGunIB7R7tUe3olZp7T?=
- =?us-ascii?Q?o+rEZUml3ZHHDR5eodBQA1YjEHznpCCpEKsBw7TBv1AlGNFXFNrN+fu6I+xa?=
- =?us-ascii?Q?4nucAyR06XeAbXFIzXH4H+vRVyY8Uf5xb+xKxQU3vNHUUmYF1KpsvqOKEbKb?=
- =?us-ascii?Q?qWH/Aczld675T4Zu1u/EW1o/UJ5lDinSIkeMm5JooO0D5pYVLKgQNj/aZo+3?=
- =?us-ascii?Q?/EGWoGVD+OwHOgcWjn/a90K5QLmsI2Kl2WyTcCx2OdhLjyw4gLauXJ2FoTpY?=
- =?us-ascii?Q?SzYi36WuGEfQvOYSBHuGh6eq/T04mOWGGMF9031sIYDGWoHn86Gg6HgU6xmo?=
- =?us-ascii?Q?iMRPWEBi04W1PCcmDh2AaFAPFL3bvG6uUeNOcMB6yLCO6Ya+S/sgsikE1ESL?=
- =?us-ascii?Q?NJTdVe1Qwl26jGGQvHk85C1Mbmzk3Jyx/2pNKwVWckIYIDzZPR+bo6yzXhHh?=
- =?us-ascii?Q?38ttlh1NOfyAiisSst3/L7e/MrOiZTJkiyFKj2KvcHsn1dpxF4qWU0ncj9X2?=
- =?us-ascii?Q?w6aZN/aa568Cd2ci8XijqGH7pF0YHRayahu+bzTZ3bkvXBV9xRPqZAB/9XZ7?=
- =?us-ascii?Q?Hpg0sly/BcbVM8xwREXW/NlCtWnpj48d3EmxGOxG6dJfbNxJoHrvZP1hUjfp?=
- =?us-ascii?Q?HZHJvoqQd8UMJl4D/l4GgHYtpNvt6DHEuxP4lb5Yn8yISuyjJDM+gmIeTRHJ?=
- =?us-ascii?Q?zsG198OkZLqcCcFcSoAwkevUzQxEGinbkwWgOeoYuPXegWfJd9BSviHaiGLZ?=
- =?us-ascii?Q?3WIv+/NUKpbqsQDkMWCp2Sa4chaKTFTD+h+1j0AIiN6DQn8QgN2avqUFWJmp?=
- =?us-ascii?Q?itP6DGQAwdTS2qOiS10XuyhFF8uyBS29jgmPBxes2im3jdHFlUIk7CXaSKoI?=
- =?us-ascii?Q?HV0M1wuXJ9ezo6IJK0dnv7eKVgc//opN9gWV6eEnQ4FMvEdg42p2Jw54bzKT?=
- =?us-ascii?Q?owGT48nfD45r3JEE5L8kYVWf8YmdrXOaToTawYVJCPUuae4F6LNqWFZeagVd?=
- =?us-ascii?Q?vQf207I2Ew6s3VOFKa9/KbLETo/XFfjrnCp4hkMvMtvx5OFFEfqtgNXc45Vp?=
- =?us-ascii?Q?Pv+Y1Y2VPuct79WV/vCX0jPHpiBh1Y43xzecBn+cvq0hhV/Wu0mjfxBWdtyY?=
- =?us-ascii?Q?2g6Fnyb99l7lVk8e9CXt0BNk/oNcg3NyHdhVZxVr+AREUzjVHmBBiU9BlB2x?=
- =?us-ascii?Q?iYaXF2dbVBPKh0WOCzB/DeIzi+owB5G6SSAcnVX0ztZuf/0V+Lnbb3DE5pwu?=
- =?us-ascii?Q?pTe81XwP6se/NH4sU2lnjLZSN51l?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2024 07:32:39.5123
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75b2dba1-1006-4369-ceb6-08dce76b6385
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5777
 
-From: Yonatan Maman <Ymaman@Nvidia.com>
+Sanity on phy_mask was added by Tomas through [1].
+It causes warning messages when >64 phys are
+detected (expander can have >64 phys) and devices
+connected to phys greater than 64 are dropped.
+phy_mask bitmap is only needed for controller
+phys(not required for expander phys).Controller phys
+can go maximum up to 64 and u64 is good enough to contain phy_mask bitmap.
 
-The `nouveau_dmem_copy_one` function ensures that the copy push command is
-sent to the device firmware but does not track whether it was executed
-successfully.
+To suppress those warnings and allow devices to be discovered as
+before the [1], restrict the phy_mask setting and lowest phy
+setting only to the controller phys.
 
-In the case of a copy error (e.g., firmware or hardware failure), the
-copy push command will be sent via the firmware channel, and
-`nouveau_dmem_copy_one` will likely report success, leading to the
-`migrate_to_ram` function returning a dirty HIGH_USER page to the user.
+[1]:https://git.kernel.org/pub/scm/linux/kernel/git/mkp/scsi.git/commit/
+drivers/scsi/mpi3mr?h=6.12/
+scsi-queue&id=3668651def2c1622904e58b0280ee93121f2b10b
 
-This can result in a security vulnerability, as a HIGH_USER page that may
-contain sensitive or corrupted data could be returned to the user.
-
-To prevent this vulnerability, we allocate a zero page. Thus, in case of
-an error, a non-dirty (zero) page will be returned to the user.
-
-Fixes: 5be73b690875 ("drm/nouveau/dmem: device memory helpers for SVM")
-Signed-off-by: Yonatan Maman <Ymaman@Nvidia.com>
-Signed-off-by: Gal Shalom <GalShalom@Nvidia.com>
-Co-developed-by: Gal Shalom <GalShalom@Nvidia.com>
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Fixes: 3668651def2c ("mpi3mr: Sanitise num_phys")
 Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410051943.Mp9o5DlF-lkp@intel.com/
+Reported-by: Alexander Motin <mav@ixsystems.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
 ---
- drivers/gpu/drm/nouveau/nouveau_dmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr.h           |  4 +--
+ drivers/scsi/mpi3mr/mpi3mr_transport.c | 42 +++++++++++++++++---------
+ 2 files changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-index 6fb65b01d778..097bd3af0719 100644
---- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
-@@ -193,7 +193,7 @@ static vm_fault_t nouveau_dmem_migrate_to_ram(struct vm_fault *vmf)
- 	if (!spage || !(src & MIGRATE_PFN_MIGRATE))
- 		goto done;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
+index dc2cdd5f0311..3822efe349e1 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -541,8 +541,8 @@ struct mpi3mr_hba_port {
+  * @port_list: List of ports belonging to a SAS node
+  * @num_phys: Number of phys associated with port
+  * @marked_responding: used while refresing the sas ports
+- * @lowest_phy: lowest phy ID of current sas port
+- * @phy_mask: phy_mask of current sas port
++ * @lowest_phy: lowest phy ID of current sas port, valid for controller port
++ * @phy_mask: phy_mask of current sas port, valid for controller port
+  * @hba_port: HBA port entry
+  * @remote_identify: Attached device identification
+  * @rphy: SAS transport layer rphy object
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_transport.c b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+index ccd23def2e0c..0ba9e6a6a13c 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_transport.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_transport.c
+@@ -590,12 +590,13 @@ static enum sas_linkrate mpi3mr_convert_phy_link_rate(u8 link_rate)
+  * @mrioc: Adapter instance reference
+  * @mr_sas_port: Internal Port object
+  * @mr_sas_phy: Internal Phy object
++ * @host_node: Flag to indicate this is a host_node
+  *
+  * Return: None.
+  */
+ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
+ 	struct mpi3mr_sas_port *mr_sas_port,
+-	struct mpi3mr_sas_phy *mr_sas_phy)
++	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
+ {
+ 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
  
--	dpage = alloc_page_vma(GFP_HIGHUSER, vmf->vma, vmf->address);
-+	dpage = alloc_page_vma(GFP_HIGHUSER | __GFP_ZERO, vmf->vma, vmf->address);
- 	if (!dpage)
- 		goto done;
+@@ -605,9 +606,13 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
  
+ 	list_del(&mr_sas_phy->port_siblings);
+ 	mr_sas_port->num_phys--;
+-	mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
+-	if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
+-		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++
++	if (host_node) {
++		mr_sas_port->phy_mask &= ~(1 << mr_sas_phy->phy_id);
++
++		if (mr_sas_port->lowest_phy == mr_sas_phy->phy_id)
++			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++	}
+ 	sas_port_delete_phy(mr_sas_port->port, mr_sas_phy->phy);
+ 	mr_sas_phy->phy_belongs_to_port = 0;
+ }
+@@ -617,12 +622,13 @@ static void mpi3mr_delete_sas_phy(struct mpi3mr_ioc *mrioc,
+  * @mrioc: Adapter instance reference
+  * @mr_sas_port: Internal Port object
+  * @mr_sas_phy: Internal Phy object
++ * @host_node: Flag to indicate this is a host_node
+  *
+  * Return: None.
+  */
+ static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
+ 	struct mpi3mr_sas_port *mr_sas_port,
+-	struct mpi3mr_sas_phy *mr_sas_phy)
++	struct mpi3mr_sas_phy *mr_sas_phy, u8 host_node)
+ {
+ 	u64 sas_address = mr_sas_port->remote_identify.sas_address;
+ 
+@@ -632,9 +638,12 @@ static void mpi3mr_add_sas_phy(struct mpi3mr_ioc *mrioc,
+ 
+ 	list_add_tail(&mr_sas_phy->port_siblings, &mr_sas_port->phy_list);
+ 	mr_sas_port->num_phys++;
+-	mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
+-	if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
+-		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++	if (host_node) {
++		mr_sas_port->phy_mask |= (1 << mr_sas_phy->phy_id);
++
++		if (mr_sas_phy->phy_id < mr_sas_port->lowest_phy)
++			mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++	}
+ 	sas_port_add_phy(mr_sas_port->port, mr_sas_phy->phy);
+ 	mr_sas_phy->phy_belongs_to_port = 1;
+ }
+@@ -675,7 +684,7 @@ static void mpi3mr_add_phy_to_an_existing_port(struct mpi3mr_ioc *mrioc,
+ 			if (srch_phy == mr_sas_phy)
+ 				return;
+ 		}
+-		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy);
++		mpi3mr_add_sas_phy(mrioc, mr_sas_port, mr_sas_phy, mr_sas_node->host_node);
+ 		return;
+ 	}
+ }
+@@ -736,7 +745,7 @@ static void mpi3mr_del_phy_from_an_existing_port(struct mpi3mr_ioc *mrioc,
+ 				mpi3mr_delete_sas_port(mrioc, mr_sas_port);
+ 			else
+ 				mpi3mr_delete_sas_phy(mrioc, mr_sas_port,
+-				    mr_sas_phy);
++				    mr_sas_phy, mr_sas_node->host_node);
+ 			return;
+ 		}
+ 	}
+@@ -1028,7 +1037,7 @@ mpi3mr_alloc_hba_port(struct mpi3mr_ioc *mrioc, u16 port_id)
+ /**
+  * mpi3mr_get_hba_port_by_id - find hba port by id
+  * @mrioc: Adapter instance reference
+- * @port_id - Port ID to search
++ * @port_id: Port ID to search
+  *
+  * Return: mpi3mr_hba_port reference for the matched port
+  */
+@@ -1367,7 +1376,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
+ 	mpi3mr_sas_port_sanity_check(mrioc, mr_sas_node,
+ 	    mr_sas_port->remote_identify.sas_address, hba_port);
+ 
+-	if (mr_sas_node->num_phys >= sizeof(mr_sas_port->phy_mask) * 8)
++	if (mr_sas_node->host_node && mr_sas_node->num_phys >=
++			sizeof(mr_sas_port->phy_mask) * 8)
+ 		ioc_info(mrioc, "max port count %u could be too high\n",
+ 		    mr_sas_node->num_phys);
+ 
+@@ -1377,7 +1387,7 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
+ 		    (mr_sas_node->phy[i].hba_port != hba_port))
+ 			continue;
+ 
+-		if (i >= sizeof(mr_sas_port->phy_mask) * 8) {
++		if (mr_sas_node->host_node && (i >= sizeof(mr_sas_port->phy_mask) * 8)) {
+ 			ioc_warn(mrioc, "skipping port %u, max allowed value is %zu\n",
+ 			    i, sizeof(mr_sas_port->phy_mask) * 8);
+ 			goto out_fail;
+@@ -1385,7 +1395,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
+ 		list_add_tail(&mr_sas_node->phy[i].port_siblings,
+ 		    &mr_sas_port->phy_list);
+ 		mr_sas_port->num_phys++;
+-		mr_sas_port->phy_mask |= (1 << i);
++		if (mr_sas_node->host_node)
++			mr_sas_port->phy_mask |= (1 << i);
+ 	}
+ 
+ 	if (!mr_sas_port->num_phys) {
+@@ -1394,7 +1405,8 @@ static struct mpi3mr_sas_port *mpi3mr_sas_port_add(struct mpi3mr_ioc *mrioc,
+ 		goto out_fail;
+ 	}
+ 
+-	mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
++	if (mr_sas_node->host_node)
++		mr_sas_port->lowest_phy = ffs(mr_sas_port->phy_mask) - 1;
+ 
+ 	if (mr_sas_port->remote_identify.device_type == SAS_END_DEVICE) {
+ 		tgtdev = mpi3mr_get_tgtdev_by_addr(mrioc,
 -- 
-2.34.1
+2.31.1
 
 
