@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60EE9949EB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1C7994E43
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7E31F25BD9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF4041C25224
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076C91DF978;
-	Tue,  8 Oct 2024 12:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958271DF736;
+	Tue,  8 Oct 2024 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XT2HJ1f+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYUENVp2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D121DF96F;
-	Tue,  8 Oct 2024 12:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E6D1DEFDD;
+	Tue,  8 Oct 2024 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390440; cv=none; b=dh0D8H3bJm0etse9Rx8AcXfDmMmiNEFfvd/H3HrGJ4jSwL1ABxbjMCLcgdp4iKickvZBP4TgyiSlOUYvl2MTE0lTgP+d6Y077KcKKmrhzkORzFm8XCiJqecds/GzQg/wghWFr3f07fezG7FjgcfE3ZmTT4Z/BfYqLyqUcQ1Er2U=
+	t=1728393280; cv=none; b=vBYvO7UVrIQNSlZ2qE6jQPwowYBsWqdyB+QvTb/qg94fXgtA/Jz3/w47Ah3Wp5Kf+Bmu4HIGbGBbcB44fKlItmiPQpkuWj5ckf0dbHDYqMwhtQNxfiJT7Kgo1HdUmMle7euYYgSFcmqzLGsiHG/jW5mGJ5KG0NXmznJ1FQw+Cok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390440; c=relaxed/simple;
-	bh=n4P7pF+lRpOflfjmaCkPsnPnrNqJj+O9QBsHYmoTWj4=;
+	s=arc-20240116; t=1728393280; c=relaxed/simple;
+	bh=6v7/FTXG/rs555X1JWMoFNRxv/eV5Wk/JJUmT/2VdS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5nPvoEY4F6mKnsWy6mdiJuBfYrYlTe9i7WeCH4GLknVxkDAHmpeaWElaLcKIpJ0LEVptL18FI7jAQF3k2vkYqmN99NwzlXTPYHC31crfAl9RJ7CE2ToQkMqDwrzzZRJ1GqdeFc4CLgRnNxGiQZYiM7NfZIPPTbUOkBO7Cg3P6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XT2HJ1f+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C69BC4CECD;
-	Tue,  8 Oct 2024 12:27:19 +0000 (UTC)
+	 MIME-Version; b=kkT8MKykXLBaE/F309wI9RRPKrkJW2u/7cUIgCbrM7g5NwAOPLM2nZ5BdeQFIaDjdroz1OBp8yUPsLawDtg2339rvr7Q/s8N0TgFVrC4+AmwMXSU8lQ650snDGJ6DqL7wVFZzo6p0cNBKEorTMSIBtHVH+A5OxOjPnzqSZfAs18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYUENVp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA097C4CECC;
+	Tue,  8 Oct 2024 13:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390440;
-	bh=n4P7pF+lRpOflfjmaCkPsnPnrNqJj+O9QBsHYmoTWj4=;
+	s=korg; t=1728393280;
+	bh=6v7/FTXG/rs555X1JWMoFNRxv/eV5Wk/JJUmT/2VdS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XT2HJ1f+TIcflfkJwwhnnJ/FGWMZZlw9ed6mi52RZHTrEp8G3SuvQM9IiFFlw3WBE
-	 GGHAU704T/+UZj4UqAuGwmChUnRwyGaNmGJOLeFll9dfm/dK6sXvqNxLmDfYMY7hmv
-	 vlFn6A7K72DTLyaRA89oxNbWTC+ZRzB2Ab+Ww+Qg=
+	b=CYUENVp2lohZM1a3vgt0JT934YeBbk+pcEDk1uECg9kEEjhi/BR/4ExEnEjSoT544
+	 sUszF1VqPeY1fSHvW7FFbTEkgEdoGjLKzWoCQx5xjMlT532DuZHQ8/JIgIhzq9XG/7
+	 fmrPTedQer/J1aqsN1vTYvB8WffD639KU3+/FjOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 288/482] Revert "ALSA: hda: Conditionally use snooping for AMD HDMI"
+	Louis Peens <louis.peens@corigine.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 106/386] nfp: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Tue,  8 Oct 2024 14:05:51 +0200
-Message-ID: <20241008115659.612439959@linuxfoundation.org>
+Message-ID: <20241008115633.615685831@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 3f7f36a4559ef78a6418c5f0447fbfbdcf671956 upstream.
+[ Upstream commit daaba19d357f0900b303a530ced96c78086267ea ]
 
-This reverts commit 478689b5990deb626a0b3f1ebf165979914d6be4.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-The fix seems leading to regressions for other systems.
-Also, the way to check the presence of IOMMU via get_dma_ops() isn't
-reliable and it's no longer applicable for 6.12.  After all, it's no
-right fix, so let's revert it at first.
-
-To be noted, the PCM buffer allocation has been changed to try the
-continuous pages at first since 6.12, so the problem could be already
-addressed without this hackish workaround.
-
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-Closes: https://lore.kernel.org/ZvgCdYfKgwHpJXGE@eldamar.lan
-Link: https://patch.msgid.link/20241002155948.4859-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Louis Peens <louis.peens@corigine.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240911094445.1922476-4-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_controller.h |    2 +-
- sound/pci/hda/hda_intel.c      |   10 +---------
- 2 files changed, 2 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/hda_controller.h
-+++ b/sound/pci/hda/hda_controller.h
-@@ -28,7 +28,7 @@
- #else
- #define AZX_DCAPS_I915_COMPONENT 0		/* NOP */
- #endif
--#define AZX_DCAPS_AMD_ALLOC_FIX	(1 << 14)	/* AMD allocation workaround */
-+/* 14 unused */
- #define AZX_DCAPS_CTX_WORKAROUND (1 << 15)	/* X-Fi workaround */
- #define AZX_DCAPS_POSFIX_LPIB	(1 << 16)	/* Use LPIB as default */
- #define AZX_DCAPS_AMD_WORKAROUND (1 << 17)	/* AMD-specific workaround */
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -40,7 +40,6 @@
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+index f2085340a1cfe..fceb4abea2365 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+@@ -821,14 +821,13 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
  
- #ifdef CONFIG_X86
- /* for snoop control */
--#include <linux/dma-map-ops.h>
- #include <asm/set_memory.h>
- #include <asm/cpufeature.h>
- #endif
-@@ -307,7 +306,7 @@ enum {
+ 	snprintf(r_vec->name, sizeof(r_vec->name),
+ 		 "%s-rxtx-%d", nfp_net_name(nn), idx);
+-	err = request_irq(r_vec->irq_vector, r_vec->handler, 0, r_vec->name,
+-			  r_vec);
++	err = request_irq(r_vec->irq_vector, r_vec->handler, IRQF_NO_AUTOEN,
++			  r_vec->name, r_vec);
+ 	if (err) {
+ 		nfp_net_napi_del(&nn->dp, r_vec);
+ 		nn_err(nn, "Error requesting IRQ %d\n", r_vec->irq_vector);
+ 		return err;
+ 	}
+-	disable_irq(r_vec->irq_vector);
  
- /* quirks for ATI HDMI with snoop off */
- #define AZX_DCAPS_PRESET_ATI_HDMI_NS \
--	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_AMD_ALLOC_FIX)
-+	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_SNOOP_OFF)
+ 	irq_set_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
  
- /* quirks for AMD SB */
- #define AZX_DCAPS_PRESET_AMD_SB \
-@@ -1703,13 +1702,6 @@ static void azx_check_snoop_available(st
- 	if (chip->driver_caps & AZX_DCAPS_SNOOP_OFF)
- 		snoop = false;
- 
--#ifdef CONFIG_X86
--	/* check the presence of DMA ops (i.e. IOMMU), disable snoop conditionally */
--	if ((chip->driver_caps & AZX_DCAPS_AMD_ALLOC_FIX) &&
--	    !get_dma_ops(chip->card->dev))
--		snoop = false;
--#endif
--
- 	chip->snoop = snoop;
- 	if (!snoop) {
- 		dev_info(chip->card->dev, "Force to non-snoop mode\n");
+-- 
+2.43.0
+
 
 
 
