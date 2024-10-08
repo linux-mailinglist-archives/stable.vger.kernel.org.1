@@ -1,155 +1,104 @@
-Return-Path: <stable+bounces-81991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5508D994A80
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2074F994C39
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BA4A28ABA8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB1C1F22E3B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAB11DE4FA;
-	Tue,  8 Oct 2024 12:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C261CCB32;
+	Tue,  8 Oct 2024 12:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtOVeuAA"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F871E493
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 12:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50B1DE4FA;
+	Tue,  8 Oct 2024 12:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390811; cv=none; b=vA6B2LnIt4CRgHImJXPbAS1rVctxoxo/D90QdHsNS7n9YvYJWjCwHN9saE3QqBuCs1FKTOQMjN1JgGgZB3/BEthjDSNq0lP9KRXabezxq16E8MMdu0UAiykn5y9KW5UqKpNVRfKLV4WVIjasfzObFyKdI4EfwjYt9CeH3x8RXio=
+	t=1728391911; cv=none; b=bDZlxfOeTF7CWbNeFRZYMNam9j7pG3oy1BKBQve4yuBOVmBZrxYMeVevquEcbUYt9VD3c49eFgrzn2AhW79YmR/AuD7W3Pqh62wwB3yV3fKsNKKUi/UUf+v8vIOkIjoRwoTNwL0ZqzeGlKZW/YVsK9OoRkLXiSgOFbEawWdFCVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390811; c=relaxed/simple;
-	bh=+sUUOR68jKR14arxgh3IpJrXa5dm0+KQfbTLw7fd0DI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iYWm1r2yDG7iexRq9JX472mJE1Ag1DGk4OdhT+xPq9x9sy0FRJdyTo9WD9qhI2hXNhJV0J64FHjdqPcKOfEmiDr8PtIraIn193+zr0SWAh1bzUxpsdS16S5WBSL9ZCyvgwmrVqw7b0KzO1S7flpt4Jloke2QBOIX7SsUKUctnIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id BB44E1C006B; Tue,  8 Oct 2024 14:33:27 +0200 (CEST)
-Date: Tue, 8 Oct 2024 14:33:27 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Pavel Machek <pavel@denx.de>, Jens Axboe <axboe@kernel.dk>,
-	Vegard Nossum <vegard.nossum@oracle.com>, stable@vger.kernel.org,
-	cengiz.can@canonical.com, mheyne@amazon.de, mngyadam@amazon.com,
-	kuntal.nayak@broadcom.com, ajay.kaher@broadcom.com,
-	zsm@chromium.org, dan.carpenter@linaro.org,
-	shivani.agarwal@broadcom.com, ahalaney@redhat.com,
-	alsi@bang-olufsen.dk, ardb@kernel.org,
-	benjamin.gaignard@collabora.com, bli@bang-olufsen.dk,
-	chengzhihao1@huawei.com, christophe.jaillet@wanadoo.fr,
-	ebiggers@kernel.org, edumazet@google.com, fancer.lancer@gmail.com,
-	florian.fainelli@broadcom.com, harshit.m.mogalapalli@oracle.com,
-	hdegoede@redhat.com, horms@kernel.org, hverkuil-cisco@xs4all.nl,
-	ilpo.jarvinen@linux.intel.com, jgg@nvidia.com, kevin.tian@intel.com,
-	kirill.shutemov@linux.intel.com, kuba@kernel.org,
-	luiz.von.dentz@intel.com, md.iqbal.hossain@intel.com,
-	mpearson-lenovo@squebb.ca, nicolinc@nvidia.com, pablo@netfilter.org,
-	rfoss@kernel.org, richard@nod.at, tfiga@chromium.org,
-	vladimir.oltean@nxp.com, xiaolei.wang@windriver.com,
-	yanjun.zhu@linux.dev, yi.zhang@redhat.com, yu.c.chen@intel.com,
-	yukuai3@huawei.com
-Subject: Re: [PATCH RFC 6.6.y 00/15] Some missing CVE fixes
-Message-ID: <ZwUml+OpEzrZNTRZ@duo.ucw.cz>
-References: <20241002150606.11385-1-vegard.nossum@oracle.com>
- <612f0415-96c2-4d52-bd3d-46ffa8afbeef@kernel.dk>
- <ZwUUjKD7peMgODGB@duo.ucw.cz>
- <2024100820-endnote-seldom-127c@gregkh>
- <ZwUY/BMXwxq0Y9+F@duo.ucw.cz>
- <2024100828-scuff-tyke-f03f@gregkh>
+	s=arc-20240116; t=1728391911; c=relaxed/simple;
+	bh=YE2XRtzRZkns41fz+Cy8hJ39gj24A9rMJ9r/7gXSnZc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=eXlSvmn8CN27BL4FJuwMYHrvjIG+4y8tn+PwCWtGfW1R8MKXhDoAiUBGiTQlNKsB6MPAEBwWLjl1wZ7MH9AaGtrBY0DxFM8fBfi3RbDgU580eow2+40ujnJemQIyARlhM/T1gmLuheAwNFymTe/WX+IBtvL90rOYx9wBSw83420=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtOVeuAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8EDC4CEC7;
+	Tue,  8 Oct 2024 12:51:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728391911;
+	bh=YE2XRtzRZkns41fz+Cy8hJ39gj24A9rMJ9r/7gXSnZc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jtOVeuAA7sZesMakms482PV2/c0HplW8mwBPCxqrrO3Ykbh6H4nfOnBFcOhfb6Qbu
+	 eJS+3UEM/DMS9PdY6ooDccNHenaYJA2hUheX0vmZ9pt66iXTFX6LpDw1deQw9LSgNR
+	 YfTwpG06A7IcqVosg5YV4WopXm3VOaqaoTatlmmuOJRqiedA2NYJl94v/9PlqNV+vT
+	 gcm9gIPbZfMNT4L4A5urADcZY6SJmBrTENVKn5EVRQWb6tKFouFeitc1ShqYdJJfKn
+	 td/gbxdMeMWzJo//eMN2UU+P0p6dZtnESAbbQq77UFDR+i+TFGredQ6AX/AHG8Hxzx
+	 yJGIr6kokfKUg==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
+ ranjani.sridharan@linux.intel.com, yung-chuan.liao@linux.intel.com, 
+ stable@vger.kernel.org, pierre-louis.bossart@linux.dev
+In-Reply-To: <20241008060710.15409-1-peter.ujfalusi@linux.intel.com>
+References: <20241008060710.15409-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH for 6.12] ASoC: SOF: Intel: hda-loader: do not wait for
+ HDaudio IOC
+Message-Id: <172839190833.2607981.9233557897493329826.b4-ty@kernel.org>
+Date: Tue, 08 Oct 2024 13:51:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="wDAyIo9EMxXVwJqU"
-Content-Disposition: inline
-In-Reply-To: <2024100828-scuff-tyke-f03f@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-99b12
 
+On Tue, 08 Oct 2024 09:07:10 +0300, Peter Ujfalusi wrote:
+> Commit 9ee3f0d8c999 ("ASOC: SOF: Intel: hda-loader: only wait for
+> HDaudio IOC for IPC4 devices") removed DMA wait for IPC3 case.
+> Proceed and remove the wait for IPC4 devices as well.
+> 
+> There is no dependency to IPC version in the load logic and
+> checking the firmware status is a sufficient check in case of
+> errors.
+> 
+> [...]
 
---wDAyIo9EMxXVwJqU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-Hi!
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> > > And yes, many bugs at this level (turns out about 25% of all stable
-> > > commits) match that definition, which is fine.  If you have a problem
-> > > with this, please take it up with cve.org and their rules, but don't =
-go
-> > > making stuff up please.
-> >=20
-> > You are assigning CVE for any bug. No, it is not fine, and while CVE
-> > rules may permit you to do that, it is unhelpful, because the CVE feed
-> > became useless.
->=20
-> Their rules _REQUIRE_ us to do this.  Please realize this.
+Thanks!
 
-If you said that limited manpower makes you do this, that would be
-something to consider. Can you quote those rules?
+[1/1] ASoC: SOF: Intel: hda-loader: do not wait for HDaudio IOC
+      commit: 9814c1447f9cc67c9e88e0a4423de3a496078360
 
-I'd expect vulnerability description to be in english, not part of
-english text and part copy/paste from changelog. I'd also expect
-vulnerability description ... to ... well, describe the
-vulnerability. While changelogs describe fix being made, not the
-vulnerability.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Some even explain why the bug being fixed is not vulnerability at all,
-like this one. (Not even bug, to be exact. It is workaround for static
-checker).
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-I don't believe the rules are solely responsible for this.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> > (And yes, some people are trying to mitigate damage you are doing by
-> > disputing worst offenders, and process shows that quite often CVEs get
-> > assigned when they should not have been.)
->=20
-> Mistakes happen, we revoke them when asked, that's all we can do and
-> it's worlds better than before when you could not revoke anything and
-> anyone could, and would, assign random CVEs for the kernel with no way
-> to change that.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Yes, way too many mistakes happen. And no, it is not an improvement
-over previous situation.=20
+Thanks,
+Mark
 
-Best regards,
-								Pavel
-
-https://www.cve.org/CVERecord?id=3DCVE-2023-52472
-
-Published: 2024-02-25
-Updated: 2024-05-29
-Title: Crypto: Rsa - Add A Check For Allocation Failure
-
-Description
-In the Linux kernel, the following vulnerability has been resolved: crypto:=
- rsa - add a check for allocation failure Static checkers insist that the m=
-pi_alloc() allocation can fail so add a check to prevent a NULL dereference=
-=2E Small allocations like this can't actually fail in current kernels, but=
- adding a check is very simple and makes the static checkers happy.
-
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---wDAyIo9EMxXVwJqU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZwUmlwAKCRAw5/Bqldv6
-8tCbAKCokBj+11pzOtH/ro1herHiHL7prgCfeuUXiluNsUrHPSLwytcU4lhUcu4=
-=yXtu
------END PGP SIGNATURE-----
-
---wDAyIo9EMxXVwJqU--
 
