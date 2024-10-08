@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09652994CDC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BB6994A23
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37DE3B2B252
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41EAD1F2220C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B431DFD8B;
-	Tue,  8 Oct 2024 12:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451561DED43;
+	Tue,  8 Oct 2024 12:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpeoXH0X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ym8io02k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820471DF72E;
-	Tue,  8 Oct 2024 12:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC8B1DE8BA;
+	Tue,  8 Oct 2024 12:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392245; cv=none; b=FR2cUkncXss/hI3EAhIXWSfqE4wZ33PcizA3bQoigW/R7tYJY3JdsW2EGqlGxbJimry1BaGszCDqvqk/C46Qum8n6irprNg+9rO/qdq3x+U1qZG4mKf1NiVtIhDmXiUjUE9q6up5BjtnOFDiFMFgrOE5Tw90zqDpa7+grC8d4Ew=
+	t=1728390595; cv=none; b=LzW1opxQ7Bn9uiLh/nB6zGsGEPzNl2cr7/7k+qs7GW2pabtUZ61Y5uUq+7g6JZY2SBbqrfIE+xgxA54nsjugAJYmXg07C+9UPieF/45ZsAvzj86XzRJ35hnFHTlGFEKQCpMtO/y5Vqe1V1w9g5ci9KN8UKLf8Cve+V0iMKfTelk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392245; c=relaxed/simple;
-	bh=qZm5zj/GT7SOZdjNDFXHZ1F3IlnjWokg8cmDBeOJAtI=;
+	s=arc-20240116; t=1728390595; c=relaxed/simple;
+	bh=XQ+oFBvatmknhmcxeIdiUYXvukXOsj1+8ZAvJbsKU5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhKdreTPtzrn6fxB5CILjWcW3otwdo4msZ9WXdAUpikqz1n0MIo6g6xfjXuMj95eW88/lu+Ds7yx0aEqToAspS8bIINb9EthSwoAAPlFf60+vrawpFjHx5iA7dOyFOStPVo0o0l83jEnn5dSWK5Z5wGG+Ll018wFkP7kOZmNLOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpeoXH0X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A096AC4CECD;
-	Tue,  8 Oct 2024 12:57:24 +0000 (UTC)
+	 MIME-Version; b=Y2e+owPjEVYq3ojTErrLABQHHfQGR6M5lqyNoHzpxNMyJidgb1OYwTDBE9tOXJtkw0SG2L4+LKONzxr2in5KKffFh2b3ZqFCsSTJFt2I2oNlMpze9r72NwxhKP0+6DnbAeOA3bApEE5H6zbeH5vza8jAuoctgN95F+wR8+6NERo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ym8io02k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A74C4CEC7;
+	Tue,  8 Oct 2024 12:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392245;
-	bh=qZm5zj/GT7SOZdjNDFXHZ1F3IlnjWokg8cmDBeOJAtI=;
+	s=korg; t=1728390594;
+	bh=XQ+oFBvatmknhmcxeIdiUYXvukXOsj1+8ZAvJbsKU5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpeoXH0X7WUSHMnD1PBF00TirtCuzFT2WaGyiTmptred/MyziLx+lSbZEdCYLClea
-	 qploRGFxYKSSZAQ82d47LbvDy3Hbcf0vxpkeVfVf6xj4D4E5tF9Hoh8YrFOkqwg6ww
-	 ziAYKfo86gGirRMBXhurCAqPYbD1+0TuOPjT6DI8=
+	b=ym8io02kJpnCfEnJJ3HUNHydWplaMZlv6H10b5+t/fl3uqpLphvtENB/Ylx/pxlOr
+	 1AjmWD9g11HirHpNq3dplu6x5u9I48BL7clWQSYploHgA0JFtt5WsYLIgn+TpzDXL4
+	 DWt5IndeoO5t+92qRyyDiO/PA5/J5oasYJWCEwjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.11 359/558] firmware: tegra: bpmp: Drop unused mbox_client_to_bpmp()
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.10 326/482] ext4: fix incorrect tid assumption in ext4_fc_mark_ineligible()
 Date: Tue,  8 Oct 2024 14:06:29 +0200
-Message-ID: <20241008115716.427500128@linuxfoundation.org>
+Message-ID: <20241008115701.255979050@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 9c3a62c20f7fb00294a4237e287254456ba8a48b upstream.
+commit ebc4b2c1ac92fc0f8bf3f5a9c285a871d5084a6b upstream.
 
-mbox_client_to_bpmp() is not used, W=1 builds:
+Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
+valid value for transaction IDs, which is incorrect.
 
-  drivers/firmware/tegra/bpmp.c:28:1: error: unused function 'mbox_client_to_bpmp' [-Werror,-Wunused-function]
+Furthermore, the sbi->s_fc_ineligible_tid handling also makes the same
+assumption by being initialised to '0'.  Fortunately, the sb flag
+EXT4_MF_FC_INELIGIBLE can be used to check whether sbi->s_fc_ineligible_tid
+has been previously set instead of comparing it with '0'.
 
-Fixes: cdfa358b248e ("firmware: tegra: Refactor BPMP driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240724161119.13448-5-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/tegra/bpmp.c |    6 ------
- 1 file changed, 6 deletions(-)
+ fs/ext4/fast_commit.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/firmware/tegra/bpmp.c
-+++ b/drivers/firmware/tegra/bpmp.c
-@@ -24,12 +24,6 @@
- #define MSG_RING	BIT(1)
- #define TAG_SZ		32
- 
--static inline struct tegra_bpmp *
--mbox_client_to_bpmp(struct mbox_client *client)
--{
--	return container_of(client, struct tegra_bpmp, mbox.client);
--}
--
- static inline const struct tegra_bpmp_ops *
- channel_to_ops(struct tegra_bpmp_channel *channel)
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -339,22 +339,29 @@ void ext4_fc_mark_ineligible(struct supe
  {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	tid_t tid;
++	bool has_transaction = true;
++	bool is_ineligible;
+ 
+ 	if (ext4_fc_disabled(sb))
+ 		return;
+ 
+-	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	if (handle && !IS_ERR(handle))
+ 		tid = handle->h_transaction->t_tid;
+ 	else {
+ 		read_lock(&sbi->s_journal->j_state_lock);
+-		tid = sbi->s_journal->j_running_transaction ?
+-				sbi->s_journal->j_running_transaction->t_tid : 0;
++		if (sbi->s_journal->j_running_transaction)
++			tid = sbi->s_journal->j_running_transaction->t_tid;
++		else
++			has_transaction = false;
+ 		read_unlock(&sbi->s_journal->j_state_lock);
+ 	}
+ 	spin_lock(&sbi->s_fc_lock);
+-	if (tid_gt(tid, sbi->s_fc_ineligible_tid))
++	is_ineligible = ext4_test_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
++	if (has_transaction &&
++	    (!is_ineligible ||
++	     (is_ineligible && tid_gt(tid, sbi->s_fc_ineligible_tid))))
+ 		sbi->s_fc_ineligible_tid = tid;
++	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	spin_unlock(&sbi->s_fc_lock);
+ 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
+ 	sbi->s_fc_stats.fc_ineligible_reason_count[reason]++;
 
 
 
