@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-82868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE91994EDE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB40994D6B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E802328350E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3C47B29C4A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035011DF251;
-	Tue,  8 Oct 2024 13:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766D01C9B99;
+	Tue,  8 Oct 2024 13:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w12L4mGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thrWx/Df"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59E11DED7D;
-	Tue,  8 Oct 2024 13:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349651C32EB;
+	Tue,  8 Oct 2024 13:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393695; cv=none; b=lAzSvsC9lwvetYmPtVIftzW5txkVKJ1H7hgB7711hqE1ISkLCaYgI69Vkuoa+GMXPACvdtSNeecMvP9IJkGnCIiv4G5P7p6wHs9nFOQ8GMHcc7cayEghn7oj7a27/j8FSQ1VY57HniNJnG9tz6qdo8rt8zaJWDqctNP4T5lmbaA=
+	t=1728392534; cv=none; b=sCfhXkfM/4vXj+fpd46/sAuwofD645kiPf1VYwq25WDMnMtLTxLjc88t1fYrk4zFXhURnGpzbiPqke+mid+Bi8V+U0F8QGcv4mT1l18pex0Proe7aRPbIO+g2dba0wWeRWn+1m6f7V0pE+XT4qf9tS5jsLlbBrwM8NHarsQA6VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393695; c=relaxed/simple;
-	bh=l26c+m1UxV+/REX2J39chheficli1+fxegmrf1MGUjU=;
+	s=arc-20240116; t=1728392534; c=relaxed/simple;
+	bh=8pVTSQmzLtfV3UsTf+YP/gEaT2j+UkNxX9I8Iro6h3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCEFyPZMUR26QfgZzcdFWY5tLHkCzoOkzMPyOWZLJ94TIfXmtoZgdrIKBZtRAmVdLEmAHYxs5HabmQKyUEhHoQRkKwX3+4lFucb1AyjuhieADsXzZspNavdFCrLxu/kfWwOTby5CPesVy5pK1Y6RS277ER7ndNbyKyf8fYznIvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w12L4mGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E601DC4CECC;
-	Tue,  8 Oct 2024 13:21:34 +0000 (UTC)
+	 MIME-Version; b=ffT7rdcXQK6IpGKHHZuCoLf2Q621tnq9HJaVB4IUmmrxqwS1xDDSBuonvi1kmFzF28k/3nkvaLcqY0lfaUaaplAQQT8UFDo+UM9QSUHpU7+WyqkPNN9RaOtyMClGdFTnNmFnMDJcNQel42Gv+82w+9PcewRFafTibb+CJEeT+g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thrWx/Df; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F152C4CEC7;
+	Tue,  8 Oct 2024 13:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393695;
-	bh=l26c+m1UxV+/REX2J39chheficli1+fxegmrf1MGUjU=;
+	s=korg; t=1728392533;
+	bh=8pVTSQmzLtfV3UsTf+YP/gEaT2j+UkNxX9I8Iro6h3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w12L4mGQKv4QuZRKG0FB+iqY3i1hcAWg+hkK0ulE/54dTl9/yRwRT9S8v93vqYwQ6
-	 r/+qMMHVR/14MToIW6M2nlgoyGqks3yPj465MXZn+ly9rEPmdaGByxVwssmGum/F81
-	 Vpe3CzsBrB2sLotfUaZX0aBZji3O4Xx7gE+FxOW0=
+	b=thrWx/DfOM+P6+RrcJm9+FRLUy3XlvA2FEpqiRghVYxxSiAaqki+QVRdCGBAXvFeT
+	 CnWN4/CYCjqTzaGRz8dZAhyI0Yc3X9CBilzI7oAquu8jCrPFZWwvVsjIVHLhhOWMEe
+	 YiKIk+dyq+niEie/J3B0I/BNBbwWBjKFFYlyg5SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/386] selftests: vDSO: fix vDSO name for powerpc
+	Heming Zhao <heming.zhao@suse.com>,
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 412/558] ocfs2: fix the la space leak when unmounting an ocfs2 volume
 Date: Tue,  8 Oct 2024 14:07:22 +0200
-Message-ID: <20241008115637.159815271@linuxfoundation.org>
+Message-ID: <20241008115718.487567321@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +69,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit 59eb856c3ed9b3552befd240c0c339f22eed3fa1 ]
+commit dfe6c5692fb525e5e90cefe306ee0dffae13d35f upstream.
 
-Following error occurs when running vdso_test_correctness on powerpc:
+This bug has existed since the initial OCFS2 code.  The code logic in
+ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
+free bits, which causes an OCFS2 volume to lose the last free clusters of
+LA window on each umount command.
 
-~ # ./vdso_test_correctness
-[WARN]	failed to find vDSO
-[SKIP]	No vDSO, so skipping clock_gettime() tests
-[SKIP]	No vDSO, so skipping clock_gettime64() tests
-[RUN]	Testing getcpu...
-[OK]	CPU 0: syscall: cpu 0, node 0
-
-On powerpc, vDSO is neither called linux-vdso.so.1 nor linux-gate.so.1
-but linux-vdso32.so.1 or linux-vdso64.so.1.
-
-Also search those two names before giving up.
-
-Fixes: c7e5789b24d3 ("kselftest: Move test_vdso to the vDSO test suite")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vDSO/vdso_test_correctness.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_test_correctness.c b/tools/testing/selftests/vDSO/vdso_test_correctness.c
-index e691a3cf14911..cdb697ae8343c 100644
---- a/tools/testing/selftests/vDSO/vdso_test_correctness.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_correctness.c
-@@ -114,6 +114,12 @@ static void fill_function_pointers()
- 	if (!vdso)
- 		vdso = dlopen("linux-gate.so.1",
- 			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
-+	if (!vdso)
-+		vdso = dlopen("linux-vdso32.so.1",
-+			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
-+	if (!vdso)
-+		vdso = dlopen("linux-vdso64.so.1",
-+			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
- 	if (!vdso) {
- 		printf("[WARN]\tfailed to find vDSO\n");
- 		return;
--- 
-2.43.0
-
+--- a/fs/ocfs2/localalloc.c
++++ b/fs/ocfs2/localalloc.c
+@@ -1002,6 +1002,25 @@ static int ocfs2_sync_local_to_main(stru
+ 		start = bit_off + 1;
+ 	}
+ 
++	/* clear the contiguous bits until the end boundary */
++	if (count) {
++		blkno = la_start_blk +
++			ocfs2_clusters_to_blocks(osb->sb,
++					start - count);
++
++		trace_ocfs2_sync_local_to_main_free(
++				count, start - count,
++				(unsigned long long)la_start_blk,
++				(unsigned long long)blkno);
++
++		status = ocfs2_release_clusters(handle,
++				main_bm_inode,
++				main_bm_bh, blkno,
++				count);
++		if (status < 0)
++			mlog_errno(status);
++	}
++
+ bail:
+ 	if (status)
+ 		mlog_errno(status);
 
 
 
