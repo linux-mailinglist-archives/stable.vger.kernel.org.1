@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07723994E3C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4879949DB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38F751C2527E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AED6A1C21018
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DF61DF272;
-	Tue,  8 Oct 2024 13:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0E1D9586;
+	Tue,  8 Oct 2024 12:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY67smva"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSjyQF7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F3B1DF26C;
-	Tue,  8 Oct 2024 13:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3EDEEC8;
+	Tue,  8 Oct 2024 12:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393252; cv=none; b=COPNyTb6ifLT7Je3qrf+0hbhy3HFK35VbTNYQv191J/23Lw7gDQcwVvpOKV8v3Dk0qfkWnIbieAPwjYNg92aG8BN4A89NRInBYev2kJ7uTdHKlcyWKuF+VkIYKiulH+PyZD9ZGx/FEtnYWKa+aCTim4GK3ura/6terw4Lj8M7jM=
+	t=1728390409; cv=none; b=P6suQLQjibEcpHu7aUH1YVBu4drRfVV2y8+cmA0uRGq5DC2z0H6sJRoEv1D9JZg8GA18hsfPSuJALSNyvvvM+ww9mwU3fsgg2Av3elM/goQEJUWsx2T9bJkx3bMEvWoVgexY5/GizNg0JujD2N8TNsIe2wSyXxHNMbbIQcDJkWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393252; c=relaxed/simple;
-	bh=lWoDC3Kj/CfT3ORuH2fsKJlTq9/a1owyVEzTArK4eAM=;
+	s=arc-20240116; t=1728390409; c=relaxed/simple;
+	bh=zCaee3QTrbY1PfuOjGEIEtwWqBM4gHt6Br+sobM/WoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jtla15O7BM7EOFi6uNn9+JQF5ax8Xt3/j/TJYhKovlK9uUXrSR5xbr4BMBJgi2VH0iAwBHIrpq7gSbPdqHlo/RVW2YnU9fAvxQ8A+Q/KGyBbY2V16hH9K8tCX4e7KUJ+AEzyC1qPKmceTyeSY1QEFpaF17l248EKbgPmarjxBjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY67smva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3471C4CEC7;
-	Tue,  8 Oct 2024 13:14:11 +0000 (UTC)
+	 MIME-Version; b=AVSJiFeXQHDCbhj9pdGYqXsh5DER5mbddCU3KIOturxQFhGoBof6/nX3033EkCypsYuR97eYIg6j3+R+4wzO6utCyO6cuyhoxxjZRtvXCzCkPAjzmFesXznHa+Hlo6zpdLgErCwySPyQrUgLOzG9iG9uH/Ekolib300qALryRgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSjyQF7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A4EC4CEC7;
+	Tue,  8 Oct 2024 12:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393252;
-	bh=lWoDC3Kj/CfT3ORuH2fsKJlTq9/a1owyVEzTArK4eAM=;
+	s=korg; t=1728390409;
+	bh=zCaee3QTrbY1PfuOjGEIEtwWqBM4gHt6Br+sobM/WoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XY67smva6xXnIAMm9hiDk5Ll7pzLEWghzmqKmFT9W8wWnBDoFiiLQWcBhisKYJPAL
-	 YWjQrHyV1uYcSJvHvhhj5OYCO2PrQb6BZXJwdw1CeTH9ZoVfWjYKUznDlyVBjVbiFa
-	 8ijHcfVzlaXjV23gvQBkZcABro0jB0dkmgoWwpLs=
+	b=rSjyQF7NYvAqi7qBQymiLiTOfqr3TlUeMicoiA3ZXgMLtmLJS6qSoHucrWlfcjtln
+	 +ilPo9s9ctph/bmO7s85RRReY44YIToUFgnHhaeKQaOVt/NuHsOBVFe8Afsme9ihNC
+	 R7VTE47YeKA7hL45BH5U64J3qficxFzjQjya8sgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/386] wifi: mac80211: fix RCU list iterations
+Subject: [PATCH 6.10 280/482] powerpc/vdso: Fix VDSO data access when running in a non-root time namespace
 Date: Tue,  8 Oct 2024 14:05:43 +0200
-Message-ID: <20241008115633.304669889@linuxfoundation.org>
+Message-ID: <20241008115659.299092686@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit ac35180032fbc5d80b29af00ba4881815ceefcb6 ]
+[ Upstream commit c73049389e58c01e2e3bbfae900c8daeee177191 ]
 
-There are a number of places where RCU list iteration is
-used, but that aren't (always) called with RCU held. Use
-just list_for_each_entry() in most, and annotate iface
-iteration with the required locks.
+When running in a non-root time namespace, the global VDSO data page
+is replaced by a dedicated namespace data page and the global data
+page is mapped next to it. Detailed explanations can be found at
+commit 660fd04f9317 ("lib/vdso: Prepare for time namespace support").
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240827094939.ed8ac0b2f897.I8443c9c3c0f8051841353491dae758021b53115e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+When it happens, __kernel_get_syscall_map and __kernel_get_tbfreq
+and __kernel_sync_dicache don't work anymore because they read 0
+instead of the data they need.
+
+To address that, clock_mode has to be read. When it is set to
+VDSO_CLOCKMODE_TIMENS, it means it is a dedicated namespace data page
+and the global data is located on the following page.
+
+Add a macro called get_realdatapage which reads clock_mode and add
+PAGE_SIZE to the pointer provided by get_datapage macro when
+clock_mode is equal to VDSO_CLOCKMODE_TIMENS. Use this new macro
+instead of get_datapage macro except for time functions as they handle
+it internally.
+
+Fixes: 74205b3fc2ef ("powerpc/vdso: Add support for time namespaces")
+Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Closes: https://lore.kernel.org/all/ZtnYqZI-nrsNslwy@zx2c4.com/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/chan.c | 4 +++-
- net/mac80211/mlme.c | 2 +-
- net/mac80211/scan.c | 2 +-
- net/mac80211/util.c | 4 +++-
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/vdso_datapage.h | 15 +++++++++++++++
+ arch/powerpc/kernel/asm-offsets.c        |  2 ++
+ arch/powerpc/kernel/vdso/cacheflush.S    |  2 +-
+ arch/powerpc/kernel/vdso/datapage.S      |  4 ++--
+ 4 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 68952752b5990..c09aed6a3cfcc 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -245,7 +245,9 @@ ieee80211_get_max_required_bw(struct ieee80211_sub_if_data *sdata,
- 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
- 	struct sta_info *sta;
+diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/asm/vdso_datapage.h
+index a585c8e538ff0..939daf6b695ef 100644
+--- a/arch/powerpc/include/asm/vdso_datapage.h
++++ b/arch/powerpc/include/asm/vdso_datapage.h
+@@ -111,6 +111,21 @@ extern struct vdso_arch_data *vdso_data;
+ 	addi	\ptr, \ptr, (_vdso_datapage - 999b)@l
+ .endm
  
--	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
-+	lockdep_assert_wiphy(sdata->local->hw.wiphy);
++#include <asm/asm-offsets.h>
++#include <asm/page.h>
 +
-+	list_for_each_entry(sta, &sdata->local->sta_list, list) {
- 		if (sdata != sta->sdata &&
- 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
- 			continue;
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 42e2c84ed2484..b14c809bcdea3 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -732,7 +732,7 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
- 		bool disable_mu_mimo = false;
- 		struct ieee80211_sub_if_data *other;
++.macro get_realdatapage ptr scratch
++	get_datapage \ptr
++#ifdef CONFIG_TIME_NS
++	lwz	\scratch, VDSO_CLOCKMODE_OFFSET(\ptr)
++	xoris	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@h
++	xori	\scratch, \scratch, VDSO_CLOCKMODE_TIMENS@l
++	cntlzw	\scratch, \scratch
++	rlwinm	\scratch, \scratch, PAGE_SHIFT - 5, 1 << PAGE_SHIFT
++	add	\ptr, \ptr, \scratch
++#endif
++.endm
++
+ #endif /* __ASSEMBLY__ */
  
--		list_for_each_entry_rcu(other, &local->interfaces, list) {
-+		list_for_each_entry(other, &local->interfaces, list) {
- 			if (other->vif.bss_conf.mu_mimo_owner) {
- 				disable_mu_mimo = true;
- 				break;
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index b58d061333c52..933a58895432f 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -489,7 +489,7 @@ static void __ieee80211_scan_completed(struct ieee80211_hw *hw, bool aborted)
- 	 * the scan was in progress; if there was none this will
- 	 * just be a no-op for the particular interface.
- 	 */
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-+	list_for_each_entry(sdata, &local->interfaces, list) {
- 		if (ieee80211_sdata_running(sdata))
- 			wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- 	}
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index d682c32821a11..02b5aaad2a155 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -745,7 +745,9 @@ static void __iterate_interfaces(struct ieee80211_local *local,
- 	struct ieee80211_sub_if_data *sdata;
- 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index f029755f9e69a..0c5c0fbf62417 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -346,6 +346,8 @@ int main(void)
+ #else
+ 	OFFSET(CFG_SYSCALL_MAP32, vdso_arch_data, syscall_map);
+ #endif
++	OFFSET(VDSO_CLOCKMODE_OFFSET, vdso_arch_data, data[0].clock_mode);
++	DEFINE(VDSO_CLOCKMODE_TIMENS, VDSO_CLOCKMODE_TIMENS);
  
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-+	list_for_each_entry_rcu(sdata, &local->interfaces, list,
-+				lockdep_is_held(&local->iflist_mtx) ||
-+				lockdep_is_held(&local->hw.wiphy->mtx)) {
- 		switch (sdata->vif.type) {
- 		case NL80211_IFTYPE_MONITOR:
- 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
+ #ifdef CONFIG_BUG
+ 	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
+diff --git a/arch/powerpc/kernel/vdso/cacheflush.S b/arch/powerpc/kernel/vdso/cacheflush.S
+index 0085ae464dac9..3b2479bd2f9a1 100644
+--- a/arch/powerpc/kernel/vdso/cacheflush.S
++++ b/arch/powerpc/kernel/vdso/cacheflush.S
+@@ -30,7 +30,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+ #ifdef CONFIG_PPC64
+ 	mflr	r12
+   .cfi_register lr,r12
+-	get_datapage	r10
++	get_realdatapage	r10, r11
+ 	mtlr	r12
+   .cfi_restore	lr
+ #endif
+diff --git a/arch/powerpc/kernel/vdso/datapage.S b/arch/powerpc/kernel/vdso/datapage.S
+index db8e167f01667..2b19b6201a33a 100644
+--- a/arch/powerpc/kernel/vdso/datapage.S
++++ b/arch/powerpc/kernel/vdso/datapage.S
+@@ -28,7 +28,7 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
+ 	mflr	r12
+   .cfi_register lr,r12
+ 	mr.	r4,r3
+-	get_datapage	r3
++	get_realdatapage	r3, r11
+ 	mtlr	r12
+ #ifdef __powerpc64__
+ 	addi	r3,r3,CFG_SYSCALL_MAP64
+@@ -52,7 +52,7 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
+   .cfi_startproc
+ 	mflr	r12
+   .cfi_register lr,r12
+-	get_datapage	r3
++	get_realdatapage	r3, r11
+ #ifndef __powerpc64__
+ 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
+ #endif
 -- 
 2.43.0
 
