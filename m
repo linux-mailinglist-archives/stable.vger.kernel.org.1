@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-81646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0831A994892
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B867994869
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27241F27E33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D60B1C25640
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03061DC046;
-	Tue,  8 Oct 2024 12:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108B61DED63;
+	Tue,  8 Oct 2024 12:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbA3OZjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoBNrOZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF0A1DE2AE;
-	Tue,  8 Oct 2024 12:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C2F1DE8B0;
+	Tue,  8 Oct 2024 12:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389660; cv=none; b=uR6qNX6ajREZm0iMQIDJ9Dt6rg+yP4GOxWCgRUozUOLerRQE24wYbFNZ/D5YLuaoUc0WMO7XO6ss1M2df0/11GPxfVnABHJ1XxsNCFwi2WsoZPQjKAqYJpH9COepvnKK7ravOGoHye59FNYx2nwVh/O7OQ3ZZvXAS7Ep8FBl/II=
+	t=1728389553; cv=none; b=TrFJA4uKU8KP2lalGBXVCm2R0SsB4oKtColR6LKBRbgqEp+2boOA/ISUITNQuLlc2gd++Bgsuw4V+w9A4rafEoLwZe/uMXSEEhkTgkYhOOQxdIa5ndLBCbIPkZkOMK3aaRcSFTqqKQ8mDwwdnleXZWMzOTMDhhvcg9Yxprx6Wo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389660; c=relaxed/simple;
-	bh=qpCMkQXOH16CCqDfWyG0KcvBC926UwZo7bswy7605vY=;
+	s=arc-20240116; t=1728389553; c=relaxed/simple;
+	bh=fA5EfXb3FybdnV98MVJLYIdy+hVTKjbFwV1eE7C8upA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7ypVSmAkWIn/JBNkKGiLwmim29g49s/K8Axt/CG6ef28OWUHXRFsSCFwlUA4pnEKX49tVdipritXJwHXjQGLmNN3Bzn9fsLBm3+y48q9tJrN778eU5WB2x2s+fnIji1RJgYZjCmQzv4YGU4hvts+Nv0BV0Aj7qsW5y5DSHYb+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbA3OZjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869B2C4CEC7;
-	Tue,  8 Oct 2024 12:14:19 +0000 (UTC)
+	 MIME-Version; b=IUCcxxX59j+FWGr3r2EgWuBXAbGn6wijbCDUikUxi42865hBRg+6lrE76lRucXSNqrm8hpAi8qkXnX6lwtlY4EXnf3XtAhxsLJneXO1YLrMWEsEQwhrf81pVRMI8LHqrZMZ2YoCpg+mva0MwPSLTKwyR89Eyf+eK4Jf4Z1fHCzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoBNrOZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B71C4CED4;
+	Tue,  8 Oct 2024 12:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389660;
-	bh=qpCMkQXOH16CCqDfWyG0KcvBC926UwZo7bswy7605vY=;
+	s=korg; t=1728389553;
+	bh=fA5EfXb3FybdnV98MVJLYIdy+hVTKjbFwV1eE7C8upA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbA3OZjXQ7q0MEujc1UXNL+i7GjAy5yn+q50ewyaunzGzqcPJNNZKGWUuu8uRB7oP
-	 a6jkxepE2+hq07ig1oIjKuliBGkLIGAxSwNDt31Bil3cR/KRwjmoSDF5ZMf2HhRW1B
-	 NcD5CwUlJKnxBSFB/CDQ2r8qzetPwDTya1DH1g5c=
+	b=xoBNrOZ6YRGiFIseMGMAKSS7V4filjE5dYxR4ehet4+USbYcmDFoytWFI3Q0TAOm9
+	 wjQFUjHHwhTfYnDr/6qKNKHnQZ9z03+fZhjt8b2z0vIuYnH8WgFvIvDCRACUKTAQif
+	 A2TeAGkbcDai3+/93K2SUzwMsL0sNkAaF6JNo2hU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	jiaymao <quic_jiaymao@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 027/482] selftests: netfilter: Add missing return value
-Date: Tue,  8 Oct 2024 14:01:30 +0200
-Message-ID: <20241008115649.368373998@linuxfoundation.org>
+Subject: [PATCH 6.10 028/482] Bluetooth: MGMT: Fix possible crash on mgmt_index_removed
+Date: Tue,  8 Oct 2024 14:01:31 +0200
+Message-ID: <20241008115649.407608033@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
 References: <20241008115648.280954295@linuxfoundation.org>
@@ -66,32 +66,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 10dbd23633f0433f8d13c2803d687b36a675ef60 ]
+[ Upstream commit f53e1c9c726d83092167f2226f32bd3b73f26c21 ]
 
-There is no return value in count_entries, just add it.
+If mgmt_index_removed is called while there are commands queued on
+cmd_sync it could lead to crashes like the bellow trace:
 
-Fixes: eff3c558bb7e ("netfilter: ctnetlink: support filtering by zone")
-Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+0x0000053D: __list_del_entry_valid_or_report+0x98/0xdc
+0x0000053D: mgmt_pending_remove+0x18/0x58 [bluetooth]
+0x0000053E: mgmt_remove_adv_monitor_complete+0x80/0x108 [bluetooth]
+0x0000053E: hci_cmd_sync_work+0xbc/0x164 [bluetooth]
+
+So while handling mgmt_index_removed this attempts to dequeue
+commands passed as user_data to cmd_sync.
+
+Fixes: 7cf5c2978f23 ("Bluetooth: hci_sync: Refactor remove Adv Monitor")
+Reported-by: jiaymao <quic_jiaymao@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/netfilter/conntrack_dump_flush.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/mgmt.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-index bd9317bf5adaf..dc056fec993bd 100644
---- a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-+++ b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-@@ -207,6 +207,7 @@ static int conntrack_data_generate_v6(struct mnl_socket *sock,
- static int count_entries(const struct nlmsghdr *nlh, void *data)
- {
- 	reply_counter++;
-+	return MNL_CB_OK;
- }
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index c383eb44d516b..31cabc3e98ce4 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -1454,10 +1454,15 @@ static void cmd_status_rsp(struct mgmt_pending_cmd *cmd, void *data)
  
- static int conntracK_count_zone(struct mnl_socket *sock, uint16_t zone)
+ static void cmd_complete_rsp(struct mgmt_pending_cmd *cmd, void *data)
+ {
+-	if (cmd->cmd_complete) {
+-		u8 *status = data;
++	struct cmd_lookup *match = data;
++
++	/* dequeue cmd_sync entries using cmd as data as that is about to be
++	 * removed/freed.
++	 */
++	hci_cmd_sync_dequeue(match->hdev, NULL, cmd, NULL);
+ 
+-		cmd->cmd_complete(cmd, *status);
++	if (cmd->cmd_complete) {
++		cmd->cmd_complete(cmd, match->mgmt_status);
+ 		mgmt_pending_remove(cmd);
+ 
+ 		return;
+@@ -9349,12 +9354,12 @@ void mgmt_index_added(struct hci_dev *hdev)
+ void mgmt_index_removed(struct hci_dev *hdev)
+ {
+ 	struct mgmt_ev_ext_index ev;
+-	u8 status = MGMT_STATUS_INVALID_INDEX;
++	struct cmd_lookup match = { NULL, hdev, MGMT_STATUS_INVALID_INDEX };
+ 
+ 	if (test_bit(HCI_QUIRK_RAW_DEVICE, &hdev->quirks))
+ 		return;
+ 
+-	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
++	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
+ 
+ 	if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
+ 		mgmt_index_event(MGMT_EV_UNCONF_INDEX_REMOVED, hdev, NULL, 0,
+@@ -9405,7 +9410,7 @@ void mgmt_power_on(struct hci_dev *hdev, int err)
+ void __mgmt_power_off(struct hci_dev *hdev)
+ {
+ 	struct cmd_lookup match = { NULL, hdev };
+-	u8 status, zero_cod[] = { 0, 0, 0 };
++	u8 zero_cod[] = { 0, 0, 0 };
+ 
+ 	mgmt_pending_foreach(MGMT_OP_SET_POWERED, hdev, settings_rsp, &match);
+ 
+@@ -9417,11 +9422,11 @@ void __mgmt_power_off(struct hci_dev *hdev)
+ 	 * status responses.
+ 	 */
+ 	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
+-		status = MGMT_STATUS_INVALID_INDEX;
++		match.mgmt_status = MGMT_STATUS_INVALID_INDEX;
+ 	else
+-		status = MGMT_STATUS_NOT_POWERED;
++		match.mgmt_status = MGMT_STATUS_NOT_POWERED;
+ 
+-	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &status);
++	mgmt_pending_foreach(0, hdev, cmd_complete_rsp, &match);
+ 
+ 	if (memcmp(hdev->dev_class, zero_cod, sizeof(zero_cod)) != 0) {
+ 		mgmt_limited_event(MGMT_EV_CLASS_OF_DEV_CHANGED, hdev,
 -- 
 2.43.0
 
