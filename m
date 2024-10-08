@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAD8994FA2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D954B994DCC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5DBE288451
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60CE4B240FF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C71DF998;
-	Tue,  8 Oct 2024 13:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC7F1DF25B;
+	Tue,  8 Oct 2024 13:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9RH2l7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Duuu0Fr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543D71DEFF6;
-	Tue,  8 Oct 2024 13:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D960A1DED6F;
+	Tue,  8 Oct 2024 13:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393988; cv=none; b=SAYiR0IvnneZ/L3kc0D9N73Q/9KG+Mh8zc5yg+C/wM/0DXc3l5uHbWL2yGPCIVpxoSoOySS57kZH77kIg7qlraC+GXPI8zzJztrWF8nZc3ppPGhajT6eu1Z8/DF3aa8ER65XIuA2fRqAgxTo+UwvD1JzRWQaQAmuaaFlNkFDOHc=
+	t=1728392816; cv=none; b=Aad/vG9TVafXV5Tcq8iUiZSfr4KwUj4dnEYyJu2zX/U0LqyAH2/1w7pf8NYSnNMCFEsTzZbEIsq+lD+yUhh4UW1N9IXVclrR0AyGxDHLF+rZ/JYe5J9uibNs5RCfJqYbCQbzFPbeCRSbolpHZUpuK6OiSppo3MXIKrF6ESr4pFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393988; c=relaxed/simple;
-	bh=ChNaHVYvRoy+NfFohQdGILbtHFHzY/K9ygs3UKcXGnA=;
+	s=arc-20240116; t=1728392816; c=relaxed/simple;
+	bh=24rToqJnrztsTmKjyaz4XSrdEtn7b/ldojgz4gSSy5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0FVktbCqb9JCGoe8ynu4LZ309zBLkTa3c2W6I8i7sMWZVJe11UUHgrq5rTrYlFWER1TPLlzB0FPEAv3gikGe0KhVfq98l0q2dx3Qd9cqafzCz5MhswYyk3q/mwZBPhb9p2JwWmovWEEFwr7JirHzNilognMnd2w6arlCUrJZ3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9RH2l7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A39C4CECD;
-	Tue,  8 Oct 2024 13:26:27 +0000 (UTC)
+	 MIME-Version; b=lrXXRuzDYwurAQTofgi2HGehElMPjlX9Hn+sfkZXrNQz5/o1kUF4pgcVozMipPaOQBIsFz0kpqivDns+MawuRbwbA9vZNb7aJSBkSSPuuD8bbxx4DR6fnkBr90FbfMcIgS4ukb2+M+qrPuwMdxcTf0C9daGv27QJUGaMiOn51L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Duuu0Fr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE8AC4CEC7;
+	Tue,  8 Oct 2024 13:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393988;
-	bh=ChNaHVYvRoy+NfFohQdGILbtHFHzY/K9ygs3UKcXGnA=;
+	s=korg; t=1728392816;
+	bh=24rToqJnrztsTmKjyaz4XSrdEtn7b/ldojgz4gSSy5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9RH2l7xbsNBLXsXiANjIYZmp8lxcS6dKK2qPs+tZuQ0zJw9okJ7EKSPrdzELHFqb
-	 PN8qVLAY1QhQBLbvI6p3JvLWyYcyFYxviHQqTOSTLmN1kNv9YnaliyKie2+nkTrdBq
-	 f41yuElD2o8n9LJ0hXE9fgYEJy/4s6uLuz/4SG8U=
+	b=1Duuu0Frcd91sKBasfc18FkxXAk9w5p1Zq3c5EyReyt2AjmoMUEopF4Z/Me7DrrAp
+	 wMfo5oBZpSYoS+A3QfrgQhSLZuPGwDejQN3ugL2FaVEe0+S9C6yuN8v7qU6KNoI7fq
+	 4nIeXKYSvMFTBMC8RpKLkBqbn+SkRqqxrj+4mtjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 313/386] net: pcs: xpcs: fix the wrong register that was written back
+	Wayne Lin <wayne.lin@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 528/558] drm/amd/display: Fix system hang while resume with TBT monitor
 Date: Tue,  8 Oct 2024 14:09:18 +0200
-Message-ID: <20241008115641.702995037@linuxfoundation.org>
+Message-ID: <20241008115723.005344309@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-commit 93ef6ee5c20e9330477930ec6347672c9e0cf5a6 upstream.
+commit 52d4e3fb3d340447dcdac0e14ff21a764f326907 upstream.
 
-The value is read from the register TXGBE_RX_GEN_CTL3, and it should be
-written back to TXGBE_RX_GEN_CTL3 when it changes some fields.
+[Why]
+Connected with a Thunderbolt monitor and do the suspend and the system
+may hang while resume.
 
+The TBT monitor HPD will be triggered during the resume procedure
+and call the drm_client_modeset_probe() while
+struct drm_connector connector->dev->master is NULL.
+
+It will mess up the pipe topology after resume.
+
+[How]
+Skip the TBT monitor HPD during the resume procedure because we
+currently will probe the connectors after resume by default.
+
+Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 453f86a26945207a16b8f66aaed5962dc2b95b85)
 Cc: stable@vger.kernel.org
-Fixes: f629acc6f210 ("net: pcs: xpcs: support to switch mode for Wangxun NICs")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20240924022857.865422-1-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/pcs/pcs-xpcs-wx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/pcs/pcs-xpcs-wx.c b/drivers/net/pcs/pcs-xpcs-wx.c
-index 19c75886f070..5f5cd3596cb8 100644
---- a/drivers/net/pcs/pcs-xpcs-wx.c
-+++ b/drivers/net/pcs/pcs-xpcs-wx.c
-@@ -109,7 +109,7 @@ static void txgbe_pma_config_1g(struct dw_xpcs *xpcs)
- 	txgbe_write_pma(xpcs, TXGBE_DFE_TAP_CTL0, 0);
- 	val = txgbe_read_pma(xpcs, TXGBE_RX_GEN_CTL3);
- 	val = u16_replace_bits(val, 0x4, TXGBE_RX_GEN_CTL3_LOS_TRSHLD0);
--	txgbe_write_pma(xpcs, TXGBE_RX_EQ_ATTN_CTL, val);
-+	txgbe_write_pma(xpcs, TXGBE_RX_GEN_CTL3, val);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -770,6 +770,12 @@ static void dmub_hpd_callback(struct amd
+ 		return;
+ 	}
  
- 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL0, 0x20);
- 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL3, 0x46);
--- 
-2.46.2
-
++	/* Skip DMUB HPD IRQ in suspend/resume. We will probe them later. */
++	if (notify->type == DMUB_NOTIFICATION_HPD && adev->in_suspend) {
++		DRM_INFO("Skip DMUB HPD IRQ callback in suspend/resume\n");
++		return;
++	}
++
+ 	link_index = notify->link_index;
+ 	link = adev->dm.dc->links[link_index];
+ 	dev = adev->dm.ddev;
 
 
 
