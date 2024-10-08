@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-82893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFC9994F10
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC58A994A8F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33B471F2200F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75CEC1F21E6D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8871DF987;
-	Tue,  8 Oct 2024 13:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23F31DE2CF;
+	Tue,  8 Oct 2024 12:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPrSSaZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylAZ8E4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1CD1DF265;
-	Tue,  8 Oct 2024 13:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD661DA60C;
+	Tue,  8 Oct 2024 12:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393779; cv=none; b=VqEZ08oKzC1JprtEizz8lKzV34sSM/+MdP9j3nbXVII96R+J+VIn4/qOQBj5lRySgZIVnGut1sDDLx86tL1k6pnAtTCasSFSMCZqB1I4GDT0cYc7V9CnfyCwEO3KGv15uiBcO6Sq1iQultin6tvf98Igs7BG2yMg9jjxHtsXJCc=
+	t=1728390837; cv=none; b=PpL7noNoFEZwDHvdZ2wAqve/3la1XVL0/AclWbgYq/Q4gByVsJAme7TSYqVEyIukSUUrrZBLTyzusChwzdht4YVK4rf9NrjcWNHRYwAEyHOuZ+3eoiPKX4N3q6DCrtI/N2wrIhj4x4d1jaDMr4M4F6UfWM4fAbsNNZfAXzp19oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393779; c=relaxed/simple;
-	bh=n48daMbQ3Tbsm2ikTxk0Di+qsuuql1R3w8O9rra3gAs=;
+	s=arc-20240116; t=1728390837; c=relaxed/simple;
+	bh=XlV7Lb2irJH9K/dEZCSsCIH79uDb/V4rW170ctuBVZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDPnezpiS/0/WHFnaMWcJ/5cAAVgftqP7+A0e1JMkrmmTErF5A2tmqAHwRnBmJ2WpX5sK9LrZbTuEsdA7JC5rn2f7gt3a5jNDBeb2sGths/1h3hPXFptBMz2v+UO/nW/k5BfSFTwTv0UbWqafQGSkQEXfQL1Jzm6InsvQFtWRRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPrSSaZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE8AC4CEC7;
-	Tue,  8 Oct 2024 13:22:58 +0000 (UTC)
+	 MIME-Version; b=I/g1TqOtZGu8Iif4MNB2rbAuI2oha2dNq4fEmG10oa3f/4HgKRen9L8w1ghh5dTNDVLe+jLGoqb/0u6n7RSntuQe6Rc9gMi4Pr6ZZ/+kEE/vCklhrVm845XK8SLXnAfXBf2eCAw2yO9yKbdKLEut5NHxugVStOqBpAiW5kT2CxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylAZ8E4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DFFC4CEC7;
+	Tue,  8 Oct 2024 12:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393779;
-	bh=n48daMbQ3Tbsm2ikTxk0Di+qsuuql1R3w8O9rra3gAs=;
+	s=korg; t=1728390837;
+	bh=XlV7Lb2irJH9K/dEZCSsCIH79uDb/V4rW170ctuBVZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPrSSaZ4Fkxwwjyc09CN00SQNak0XA2dvfwEtYklFj20EMOiHpDgZdKWj3rsybJZv
-	 HScm9csUkChL+HB98vH3q1JRq28gxgmNwepSgRxwAIVTbOwTtX83awZN7AHKO18I7h
-	 hWJojGzMQRQQg6bKi5KeKMUsJhjDuigd3X4RO8AM=
+	b=ylAZ8E4bGkv6CRsysoIJddxhsw0Z/rFf4AQX2h1TDCtVsvXhUaYS6GqJ7ZuMT9+uh
+	 VB2D6AEb6s+zeRurdXmvPEXr0bySPZSOXsOXr0tOGjwYwIYWQZ0VY3+JW6EXC95UaS
+	 zoNjszAiTpEjylptLMKA9aN/jy/ZpbuJAY1Oi6Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lianqin Hu <hulianqin@vivo.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 226/386] ALSA: usb-audio: Add delay quirk for VIVO USB-C HEADSET
-Date: Tue,  8 Oct 2024 14:07:51 +0200
-Message-ID: <20241008115638.298718270@linuxfoundation.org>
+	Nuno Sa <nuno.sa@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.10 409/482] Input: adp5589-keys - fix NULL pointer dereference
+Date: Tue,  8 Oct 2024 14:07:52 +0200
+Message-ID: <20241008115704.503645665@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 73385f3e0d8088b715ae8f3f66d533c482a376ab upstream.
+commit fb5cc65f973661241e4a2b7390b429aa7b330c69 upstream.
 
-Audio control requests that sets sampling frequency sometimes fail on
-this card. Adding delay between control messages eliminates that problem.
+We register a devm action to call adp5589_clear_config() and then pass
+the i2c client as argument so that we can call i2c_get_clientdata() in
+order to get our device object. However, i2c_set_clientdata() is only
+being set at the end of the probe function which means that we'll get a
+NULL pointer dereference in case the probe function fails early.
 
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/TYUPR06MB62177E629E9DEF2401333BF7D2692@TYUPR06MB6217.apcprd06.prod.outlook.com
+Fixes: 30df385e35a4 ("Input: adp5589-keys - use devm_add_action_or_reset() for register clear")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-1-fca0149dfc47@analog.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/keyboard/adp5589-keys.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2181,6 +2181,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
-+	DEVICE_FLG(0x2d95, 0x8011, /* VIVO USB-C HEADSET */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
+--- a/drivers/input/keyboard/adp5589-keys.c
++++ b/drivers/input/keyboard/adp5589-keys.c
+@@ -936,10 +936,9 @@ static int adp5589_keypad_add(struct adp
+ 
+ static void adp5589_clear_config(void *data)
+ {
+-	struct i2c_client *client = data;
+-	struct adp5589_kpad *kpad = i2c_get_clientdata(client);
++	struct adp5589_kpad *kpad = data;
+ 
+-	adp5589_write(client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
++	adp5589_write(kpad->client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
+ }
+ 
+ static int adp5589_probe(struct i2c_client *client)
+@@ -983,7 +982,7 @@ static int adp5589_probe(struct i2c_clie
+ 	}
+ 
+ 	error = devm_add_action_or_reset(&client->dev, adp5589_clear_config,
+-					 client);
++					 kpad);
+ 	if (error)
+ 		return error;
+ 
+@@ -1010,8 +1009,6 @@ static int adp5589_probe(struct i2c_clie
+ 	if (error)
+ 		return error;
+ 
+-	i2c_set_clientdata(client, kpad);
+-
+ 	dev_info(&client->dev, "Rev.%d keypad, irq %d\n", revid, client->irq);
+ 	return 0;
+ }
 
 
 
