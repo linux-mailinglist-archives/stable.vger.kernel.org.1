@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820059949C8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B08E994E32
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F393F282AE4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68211F2029E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466E71DE890;
-	Tue,  8 Oct 2024 12:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1241DF721;
+	Tue,  8 Oct 2024 13:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbGC1Wd/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e27KJEZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050921D618C;
-	Tue,  8 Oct 2024 12:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A96A1DEFED;
+	Tue,  8 Oct 2024 13:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390359; cv=none; b=nAup7QkOqoKFgwqLr2JDfz8ggakRSdL2GZNau3rI/nlF4PDmZwd8gDO8+WifP4TlJuth8CsRvPutVrTxUFZB29OlUBFlrDgxIqVWr/g83ef7mpr3JQg40Z4remjxWpgpkNbvl+lPDHn4miaw3mcNVhUPU4rQrbZoD1BYtC7xq7k=
+	t=1728393210; cv=none; b=B3NhJWCNo9sQxoTguoFjJr244w8fLvsWhAqFcgn8uDrvbGbmOm4A6AB+wR3dnQwXr7x9881fPNOUHfSkOg1JaoKFcvz5kLTNKCw3JOVWQeOaVO4sojfyEKk14GWubZXPLYK+dvclS035B4EPzAJTn/1haZJVTRgNKBHI5DcyU/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390359; c=relaxed/simple;
-	bh=CQbDf1olt7Ii1zOPYgeGJ6zlFfcL7PGj0qBO3AjHZSA=;
+	s=arc-20240116; t=1728393210; c=relaxed/simple;
+	bh=eY7aktInPHICZK/xFMjUfLs2fSblbTdpAqzE8HxTG90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cebFzeCT1ZXkyXzRu5q+lTdRIs2F1bytvJST5+R/6h06cKTjez751HWd8xeDjHhxwKYTNNM5HDN83XaFV6sszk39uIID2qSj+3LNRD19M1QY3JR4viwHrhIBDQ0FEssHFZ6/l6DLQNR7LVb7baBG+nhv7pd6028RqOba8tYPkpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbGC1Wd/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD54C4CEC7;
-	Tue,  8 Oct 2024 12:25:58 +0000 (UTC)
+	 MIME-Version; b=uEGiDvDTAFdncQqiU9ybKchFl/EsIJarGY7cPUrh+lz1dLe84Kn58QAPZpJsXcZU9v7yizn0FLUe+mHBpYvFAPqGobRlfUN3xWhvGjl2s2ZnluBlOO5GqQWK/nbVxJa5QvDc08C/wwTgq3FtFbaamPXzJ35AMkpSLbdbZhPCbzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e27KJEZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB1DC4CEC7;
+	Tue,  8 Oct 2024 13:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390358;
-	bh=CQbDf1olt7Ii1zOPYgeGJ6zlFfcL7PGj0qBO3AjHZSA=;
+	s=korg; t=1728393210;
+	bh=eY7aktInPHICZK/xFMjUfLs2fSblbTdpAqzE8HxTG90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbGC1Wd/LyJrjnsV9rTjdj8pgKgUpE0LKoRo36N95FpCs/BOLp0dAIBOM62PK3f/i
-	 xPxhseJv54OaBj92wIedXGQrjx/98AsXkLUUsJVMk4xJfM8/7lDYtbXaeVCL1cKbY6
-	 LfrLOxa4z7QFIQQFFRqC54KBClslbNsgH3hModx8=
+	b=e27KJEZGmySbLmCIalBNNYxJUEj+TCDgqqnQYPLECg1fRk0JS+53/BMN+Ctshrzdj
+	 vp9NbXgNvhmtRKRNR+7oqEbvpj+H40r8NEiVUdLgj7qVLOaBksEp+sjMlglQ8pMKMg
+	 KEpkelPWZxP9695soD/DRPCLoa0kKpKWgRuIy9Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alexander F. Lent" <lx@xanderlent.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 266/482] accel/ivpu: Add missing MODULE_FIRMWARE metadata
+Subject: [PATCH 6.6 084/386] ACPI: EC: Do not release locks during operation region accesses
 Date: Tue,  8 Oct 2024 14:05:29 +0200
-Message-ID: <20241008115658.751172540@linuxfoundation.org>
+Message-ID: <20241008115632.763436035@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander F. Lent <lx@xanderlent.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 58b5618ba80a5e5a8d531a70eae12070e5bd713f ]
+[ Upstream commit dc171114926ec390ab90f46534545420ec03e458 ]
 
-Modules that load firmware from various paths at runtime must declare
-those paths at compile time, via the MODULE_FIRMWARE macro, so that the
-firmware paths are included in the module's metadata.
+It is not particularly useful to release locks (the EC mutex and the
+ACPI global lock, if present) and re-acquire them immediately thereafter
+during EC address space accesses in acpi_ec_space_handler().
 
-The accel/ivpu driver loads firmware but lacks this metadata,
-preventing dracut from correctly locating firmware files. Fix it.
+First, releasing them for a while before grabbing them again does not
+really help anyone because there may not be enough time for another
+thread to acquire them.
 
-Fixes: 9ab43e95f922 ("accel/ivpu: Switch to generation based FW names")
-Fixes: 02d5b0aacd05 ("accel/ivpu: Implement firmware parsing and booting")
-Signed-off-by: Alexander F. Lent <lx@xanderlent.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709-fix-ivpu-firmware-metadata-v3-1-55f70bba055b@xanderlent.com
+Second, if another thread successfully acquires them and carries out
+a new EC write or read in the middle if an operation region access in
+progress, it may confuse the EC firmware, especially after the burst
+mode has been enabled.
+
+Finally, manipulating the locks after writing or reading every single
+byte of data is overhead that it is better to avoid.
+
+Accordingly, modify the code to carry out EC address space accesses
+entirely without releasing the locks.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/12473338.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_fw.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/ec.c | 55 +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 49 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
-index 1457300828bf1..ef717802a3c8c 100644
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -58,6 +58,10 @@ static struct {
- 	{ IVPU_HW_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
- };
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 35e22a2af4e4b..115994dfefec1 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -783,6 +783,9 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
+ 	unsigned long tmp;
+ 	int ret = 0;
  
-+/* Production fw_names from the table above */
-+MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
-+MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
++	if (t->rdata)
++		memset(t->rdata, 0, t->rlen);
 +
- static int ivpu_fw_request(struct ivpu_device *vdev)
+ 	/* start transaction */
+ 	spin_lock_irqsave(&ec->lock, tmp);
+ 	/* Enable GPE for command processing (IBF=0/OBF=1) */
+@@ -819,8 +822,6 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
+ 
+ 	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
+ 		return -EINVAL;
+-	if (t->rdata)
+-		memset(t->rdata, 0, t->rlen);
+ 
+ 	mutex_lock(&ec->mutex);
+ 	if (ec->global_lock) {
+@@ -847,7 +848,7 @@ static int acpi_ec_burst_enable(struct acpi_ec *ec)
+ 				.wdata = NULL, .rdata = &d,
+ 				.wlen = 0, .rlen = 1};
+ 
+-	return acpi_ec_transaction(ec, &t);
++	return acpi_ec_transaction_unlocked(ec, &t);
+ }
+ 
+ static int acpi_ec_burst_disable(struct acpi_ec *ec)
+@@ -857,7 +858,7 @@ static int acpi_ec_burst_disable(struct acpi_ec *ec)
+ 				.wlen = 0, .rlen = 0};
+ 
+ 	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
+-				acpi_ec_transaction(ec, &t) : 0;
++				acpi_ec_transaction_unlocked(ec, &t) : 0;
+ }
+ 
+ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
+@@ -873,6 +874,19 @@ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
+ 	return result;
+ }
+ 
++static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
++{
++	int result;
++	u8 d;
++	struct transaction t = {.command = ACPI_EC_COMMAND_READ,
++				.wdata = &address, .rdata = &d,
++				.wlen = 1, .rlen = 1};
++
++	result = acpi_ec_transaction_unlocked(ec, &t);
++	*data = d;
++	return result;
++}
++
+ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
  {
- 	int ret = -ENOENT;
+ 	u8 wdata[2] = { address, data };
+@@ -883,6 +897,16 @@ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
+ 	return acpi_ec_transaction(ec, &t);
+ }
+ 
++static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
++{
++	u8 wdata[2] = { address, data };
++	struct transaction t = {.command = ACPI_EC_COMMAND_WRITE,
++				.wdata = wdata, .rdata = NULL,
++				.wlen = 2, .rlen = 0};
++
++	return acpi_ec_transaction_unlocked(ec, &t);
++}
++
+ int ec_read(u8 addr, u8 *val)
+ {
+ 	int err;
+@@ -1323,6 +1347,7 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	struct acpi_ec *ec = handler_context;
+ 	int result = 0, i, bytes = bits / 8;
+ 	u8 *value = (u8 *)value64;
++	u32 glk;
+ 
+ 	if ((address > 0xFF) || !value || !handler_context)
+ 		return AE_BAD_PARAMETER;
+@@ -1330,13 +1355,25 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (function != ACPI_READ && function != ACPI_WRITE)
+ 		return AE_BAD_PARAMETER;
+ 
++	mutex_lock(&ec->mutex);
++
++	if (ec->global_lock) {
++		acpi_status status;
++
++		status = acpi_acquire_global_lock(ACPI_EC_UDELAY_GLK, &glk);
++		if (ACPI_FAILURE(status)) {
++			result = -ENODEV;
++			goto unlock;
++		}
++	}
++
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
+ 
+ 	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+-			acpi_ec_read(ec, address, value) :
+-			acpi_ec_write(ec, address, *value);
++			acpi_ec_read_unlocked(ec, address, value) :
++			acpi_ec_write_unlocked(ec, address, *value);
+ 		if (result < 0)
+ 			break;
+ 	}
+@@ -1344,6 +1381,12 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
+ 
++	if (ec->global_lock)
++		acpi_release_global_lock(glk);
++
++unlock:
++	mutex_unlock(&ec->mutex);
++
+ 	switch (result) {
+ 	case -EINVAL:
+ 		return AE_BAD_PARAMETER;
 -- 
 2.43.0
 
