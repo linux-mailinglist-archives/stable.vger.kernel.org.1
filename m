@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00604994A9F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CF3994EFD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94341F2242C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF6121F21D34
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8F21B81CC;
-	Tue,  8 Oct 2024 12:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB591DF733;
+	Tue,  8 Oct 2024 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00dG9I+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ryeq1zR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8581779B1;
-	Tue,  8 Oct 2024 12:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0171DE8BE;
+	Tue,  8 Oct 2024 13:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390890; cv=none; b=XJPDsPRbPktJ3DpE52yz1/S++C3eXz0fX+SZTfvCegRDGUlhmJP8ITbCIak0Sig6vIXfv9POXPuxEm1VwRfA06qaKSNdZMRrCm7KVA5QFWXTmYzhR4MPkkrnCEA354neP9vgmFqNCbzHMVxywol+l7l5fkvBs8YxWyffuoggnjk=
+	t=1728393736; cv=none; b=nD3y4rnwwdAMNkjao2/Kb9Pm+nooiZwlLvGbYQ0dWDHUT0+MjQiJf+GieH5YFfjw4V+L/MpeCdS31/2h94Dl51NoL3poqNBNEOWp+K4dcBqj+mgCDePa9HSkk5r8/CBsd4Fe2apSZM4YoxJf/NHfPSOv8IciT+QPgcBibwgXw7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390890; c=relaxed/simple;
-	bh=AXBiwQ/uCbNSWHe4YoIpTYiZzVPgvalqk+BVZ2reGX0=;
+	s=arc-20240116; t=1728393736; c=relaxed/simple;
+	bh=4w8QtQKmIUcweIKwxAJR8D7bZqctae8O/sWBPQrVvSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qm9RKwIIR/1ym44qoMlsjL6zF/6IV7C+/ty3HTxLI04+g5VaIwBq2+QXpbaGIexkjzoZX1XR+Xrydl2k+towmQoC6WjfXjsXIsIvQHm+akQm83fU5tY81eCh0ugQekH83tP/AfLnVXoC4Sd1iKZJPPqPjqrP32wuZY7Y1zNkCzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00dG9I+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6045C4CEC7;
-	Tue,  8 Oct 2024 12:34:49 +0000 (UTC)
+	 MIME-Version; b=UpcTas0GQiC+5SpVAcKFGLzUPe8voE/5zH5eqdKlv7y9nqUvQsEapF3ztNrTZS8aGdzt6NNDVIuNwU/UXS7vvN5jB+hy1lnXtSp4yOtdNcZ2NCxg8IKpX5x3wTwCUzTSiDaUIaegBuZPvka9WQSERtuF7QFT2hCAYt3KpGJe19I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ryeq1zR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1F2C4CEC7;
+	Tue,  8 Oct 2024 13:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390890;
-	bh=AXBiwQ/uCbNSWHe4YoIpTYiZzVPgvalqk+BVZ2reGX0=;
+	s=korg; t=1728393736;
+	bh=4w8QtQKmIUcweIKwxAJR8D7bZqctae8O/sWBPQrVvSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00dG9I+WDwY4mADmKzQfqO05d08+3CsfzEwcxRqLab3J7UCEMo9gVYEuOGxHTWnm8
-	 CxmrDKksmxCTNHwIKSB8a9en/oRkBRonnhSK3djWybciuM4/ZmVkwaBvA7DJPsgSwD
-	 xbGjsDztsTNi2pawkd+xhDZ22p2agVjlH/tVifFE=
+	b=1ryeq1zRPANR0NEHJcfBScxYv3zGGmbF+z6J1Zg+BQTt/2vT1+4rfv7UhKBk2F5fF
+	 s/3WcE1qF5WGxzylJBiJujUDXSFNPlOWvQLSsDEIXFfuiyj2wKMx8xu1cYwbluZAxn
+	 OinDptuL9sqSth6BjLHfMHnIlQ0KXIeWLUBltnAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 423/482] net: pcs: xpcs: fix the wrong register that was written back
+	Xiaxi Shen <shenxiaxi26@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 241/386] ext4: fix timer use-after-free on failed mount
 Date: Tue,  8 Oct 2024 14:08:06 +0200
-Message-ID: <20241008115705.049759543@linuxfoundation.org>
+Message-ID: <20241008115638.880779029@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-commit 93ef6ee5c20e9330477930ec6347672c9e0cf5a6 upstream.
+commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
 
-The value is read from the register TXGBE_RX_GEN_CTL3, and it should be
-written back to TXGBE_RX_GEN_CTL3 when it changes some fields.
+Syzbot has found an ODEBUG bug in ext4_fill_super
 
-Cc: stable@vger.kernel.org
-Fixes: f629acc6f210 ("net: pcs: xpcs: support to switch mode for Wangxun NICs")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20240924022857.865422-1-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The del_timer_sync function cancels the s_err_report timer,
+which reminds about filesystem errors daily. We should
+guarantee the timer is no longer active before kfree(sbi).
+
+When filesystem mounting fails, the flow goes to failed_mount3,
+where an error occurs when ext4_stop_mmpd is called, causing
+a read I/O failure. This triggers the ext4_handle_error function
+that ultimately re-arms the timer,
+leaving the s_err_report timer active before kfree(sbi) is called.
+
+Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
+
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
+Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/pcs/pcs-xpcs-wx.c |    2 +-
+ fs/ext4/super.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/pcs/pcs-xpcs-wx.c
-+++ b/drivers/net/pcs/pcs-xpcs-wx.c
-@@ -109,7 +109,7 @@ static void txgbe_pma_config_1g(struct d
- 	txgbe_write_pma(xpcs, TXGBE_DFE_TAP_CTL0, 0);
- 	val = txgbe_read_pma(xpcs, TXGBE_RX_GEN_CTL3);
- 	val = u16_replace_bits(val, 0x4, TXGBE_RX_GEN_CTL3_LOS_TRSHLD0);
--	txgbe_write_pma(xpcs, TXGBE_RX_EQ_ATTN_CTL, val);
-+	txgbe_write_pma(xpcs, TXGBE_RX_GEN_CTL3, val);
- 
- 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL0, 0x20);
- 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL3, 0x46);
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5659,8 +5659,8 @@ failed_mount3a:
+ failed_mount3:
+ 	/* flush s_sb_upd_work before sbi destroy */
+ 	flush_work(&sbi->s_sb_upd_work);
+-	del_timer_sync(&sbi->s_err_report);
+ 	ext4_stop_mmpd(sbi);
++	del_timer_sync(&sbi->s_err_report);
+ 	ext4_group_desc_free(sbi);
+ failed_mount:
+ 	if (sbi->s_chksum_driver)
 
 
 
