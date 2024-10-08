@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-82971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3624994FB4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAB2994D7A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87C161F246FF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CD591C2520F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C696E1DF979;
-	Tue,  8 Oct 2024 13:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C516F1DFD1;
+	Tue,  8 Oct 2024 13:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxll0E2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuxT9oMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FA81DF256;
-	Tue,  8 Oct 2024 13:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8238B1DE4CC;
+	Tue,  8 Oct 2024 13:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394047; cv=none; b=l5zSG9WwFHQ8oD5ETzNJprtmRO/t57N7uUX9CuMz5xbeUhepyF5iBkLmE1DwureETFgQZupaxZ9DJSRugZOtgGx+ok+ouU2HmG9PxaRSv0ZmmjUb33mWmrhwHeLPGeZtk3vl2N+YgnHEHu2engJVyegMJtu+w2YRywTN2N90wCw=
+	t=1728392742; cv=none; b=pWFamNImH4NUofaCmaNkpJUXSTgypvvirXbS6Msz12bm0Uh2OUEPYMYky/Sr1IVA3ZPkceCi8OxkhIqdZc92q4LTHdKl+PQnN3R9GvJzbPg/IEEbhrD8UxjPHT6adsbfgAaWmLwhd+DVXUhTzNxVBV8k4oQ8u01vF1uVyGEx+g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394047; c=relaxed/simple;
-	bh=XbbrajIq+Luz7orv+UoHn+xTq0v9SCCTWUs5vZyeRNQ=;
+	s=arc-20240116; t=1728392742; c=relaxed/simple;
+	bh=gtNkcNBT7L4uEERw62mHqJqfeUP3SkiduSrBhrxsDrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gU5VvTY2GTBm525FFgA4hg9kOlC+DowncQjOYJUtZVohQkvldrvt9fD49O1ioFf8djbEDm+CEX0AT8yGKHSh1Odd2uWfpQhQkmv/mTFTE2lRcxRMEWx8HwH2aQhHwSWWzJcMnMFnRgCcZxZp3wy+O2vM81A/xA12TlOVZhHchQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxll0E2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0996EC4CEC7;
-	Tue,  8 Oct 2024 13:27:26 +0000 (UTC)
+	 MIME-Version; b=f2SY6EfdetoI/H3/pAiufiZRo6J6PcHHAUikvb3plllF19ornuhlZiv1snGcloSsEZWtwPGiEB15MeAxoBzkxS19cDHvDSjBlN1e1Jutqs0Cz9YfNbVNzyGhiFIgEj7iVtLKuDb/X2fOKCEEomAS0igVEtYdh3cmIC5/pEaf+H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuxT9oMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E513FC4CEC7;
+	Tue,  8 Oct 2024 13:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394047;
-	bh=XbbrajIq+Luz7orv+UoHn+xTq0v9SCCTWUs5vZyeRNQ=;
+	s=korg; t=1728392742;
+	bh=gtNkcNBT7L4uEERw62mHqJqfeUP3SkiduSrBhrxsDrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxll0E2pKV5am4ZlSFAogZqoSiYJbHM/jhEoZ/JL8NgCsIRHKCqSex9zz3R6Qiho2
-	 kx32MxePQ1Qmcm5rifUMOg3F/iHbojwASOFqkm17FxPjgddAI8+XpGLiEZIaYMOc+G
-	 HHIoODxSS0RhXux7n83KQjqU34wVnHftbAmXoYWE=
+	b=LuxT9oMPWSCJSIB8gdFCsLIVMlsSmONlaSE9eZRWksIU0sUmKr1QhE7Fs3Ycitir9
+	 5fwVO+QAFN2Ky2nivuK4z7jJtNJC0gyaOu5IhCb1KV3wyzt00ghhY6W/2NPOAiI8z8
+	 0vFvQgWoJ3xPaol5Hvasaa5w40eTfkLhgB0xQuIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 290/386] clk: qcom: gcc-sm8250: Do not turn off PCIe GDSCs during gdsc_disable()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>
+Subject: [PATCH 6.11 505/558] Bluetooth: hci_event: Align BR/EDR JUST_WORKS paring with LE
 Date: Tue,  8 Oct 2024 14:08:55 +0200
-Message-ID: <20241008115640.797971338@linuxfoundation.org>
+Message-ID: <20241008115722.104266341@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit ade508b545c969c72cd68479f275a5dd640fd8b9 upstream.
+commit b25e11f978b63cb7857890edb3a698599cddb10e upstream.
 
-With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
-can happen during scenarios such as system suspend and breaks the resume
-of PCIe controllers from suspend.
+This aligned BR/EDR JUST_WORKS method with LE which since 92516cd97fd4
+("Bluetooth: Always request for user confirmation for Just Works")
+always request user confirmation with confirm_hint set since the
+likes of bluetoothd have dedicated policy around JUST_WORKS method
+(e.g. main.conf:JustWorksRepairing).
 
-So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
-during gdsc_disable() and allow the hardware to transition the GDSCs to
-retention when the parent domain enters low power state during system
-suspend.
-
-Cc: stable@vger.kernel.org # 5.7
-Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20240719134238.312191-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+CVE: CVE-2024-8805
+Cc: stable@vger.kernel.org
+Fixes: ba15a58b179e ("Bluetooth: Fix SSP acceptor just-works confirmation without MITM")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm8250.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_event.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sm8250.c
-+++ b/drivers/clk/qcom/gcc-sm8250.c
-@@ -3226,7 +3226,7 @@ static struct gdsc pcie_0_gdsc = {
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -5324,19 +5324,16 @@ static void hci_user_confirm_request_evt
+ 		goto unlock;
+ 	}
  
- static struct gdsc pcie_1_gdsc = {
-@@ -3234,7 +3234,7 @@ static struct gdsc pcie_1_gdsc = {
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
+-	/* If no side requires MITM protection; auto-accept */
++	/* If no side requires MITM protection; use JUST_CFM method */
+ 	if ((!loc_mitm || conn->remote_cap == HCI_IO_NO_INPUT_OUTPUT) &&
+ 	    (!rem_mitm || conn->io_capability == HCI_IO_NO_INPUT_OUTPUT)) {
  
- static struct gdsc pcie_2_gdsc = {
-@@ -3242,7 +3242,7 @@ static struct gdsc pcie_2_gdsc = {
- 	.pd = {
- 		.name = "pcie_2_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- };
- 
- static struct gdsc ufs_card_gdsc = {
+-		/* If we're not the initiators request authorization to
+-		 * proceed from user space (mgmt_user_confirm with
+-		 * confirm_hint set to 1). The exception is if neither
+-		 * side had MITM or if the local IO capability is
+-		 * NoInputNoOutput, in which case we do auto-accept
++		/* If we're not the initiator of request authorization and the
++		 * local IO capability is not NoInputNoOutput, use JUST_WORKS
++		 * method (mgmt_user_confirm with confirm_hint set to 1).
+ 		 */
+ 		if (!test_bit(HCI_CONN_AUTH_PEND, &conn->flags) &&
+-		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT &&
+-		    (loc_mitm || rem_mitm)) {
++		    conn->io_capability != HCI_IO_NO_INPUT_OUTPUT) {
+ 			bt_dev_dbg(hdev, "Confirming auto-accept as acceptor");
+ 			confirm_hint = 1;
+ 			goto confirm;
 
 
 
