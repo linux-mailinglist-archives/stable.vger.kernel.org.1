@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C088994F4F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:26:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A62A994D58
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 214F2288350
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67D851F21A90
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46241E0E08;
-	Tue,  8 Oct 2024 13:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F368E1DE4CD;
+	Tue,  8 Oct 2024 13:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR1Pq/+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urU8DuKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636981E0090;
-	Tue,  8 Oct 2024 13:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04E61C9B99;
+	Tue,  8 Oct 2024 13:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393842; cv=none; b=La0q4XqdXd5xZTH3nHHR+fTJqlFLBxWaccZhUUBrwscZSWXf/c4WFBTBMvoEx7ZFbPrQe4sUWNTkUJ9bRm9KAomj8xlDYPXyR/UVXzpE7xI+2ZK8+Bba1QgiWMzqK3V6k7hli5GFWc3GEQo7QqTIwibQjqOSO2HsuLJZQYamPrk=
+	t=1728392677; cv=none; b=qtuYkrBH1nXZP/7OvYKWE0lYftGvRYftDXHl3yv/+dblVzK3Tw9mqD9hYCLkGlNVpcWnzMAZK6uVkFAXHaInPwTO3VpKyDmikYzaQmp4VQ6OfBggLVT29xc8H3Q5OBCGDVpywRS32hq4BLOZWzRzBepH0HunR3wqd3kw61PEtms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393842; c=relaxed/simple;
-	bh=XM6ImjItchmkXVjm3BkDNpUkHElyhzAMwHNTnreDge8=;
+	s=arc-20240116; t=1728392677; c=relaxed/simple;
+	bh=6Cfp7QJXPS2yB6HheS3e4uUqzpR+YTV6/RrV+OninCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLUwTsbH81sf60zh5BgCOdvsa0S160Oj5D+TQQEoHEduUEuwdhdjBP1t1ai0R8CWkcHIrBJny2LM/SzVPScanp9Ulc44SbXnUKqO/m6zgdI1y7p0fr2x7h6/OvpqWmCaPSswqwuqlXybVb1QmCwPe134enY9OuY/uWBx9FxxhtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR1Pq/+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AAFC4CEC7;
-	Tue,  8 Oct 2024 13:24:01 +0000 (UTC)
+	 MIME-Version; b=ZtnWRb6ppm9/XITvUql8WLxGV/zuMTmQLZk0O7aWhE+7m9Ii8cMyWanKUXjVTR4OkAIPPxvqR1ZAiAI1STRkaJc/WSgwZc9O3cT1MMFtsDBkmH3252iDXs2Me8pQ8d3NI9hYQ4q25imsbM0xPOQO3RMDMrW/UfedLyqWcuL9wNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urU8DuKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7D7C4CEC7;
+	Tue,  8 Oct 2024 13:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393842;
-	bh=XM6ImjItchmkXVjm3BkDNpUkHElyhzAMwHNTnreDge8=;
+	s=korg; t=1728392677;
+	bh=6Cfp7QJXPS2yB6HheS3e4uUqzpR+YTV6/RrV+OninCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zR1Pq/+66zSP11aRaMxSf8Bbmznw2hEJ2DDJGwCGdf12KdypdV1nPljXnxGUOtuZI
-	 lHXrqdT+pOMHntLq2ztY+eLSPmF9hLtpLMVjb+va0DNe+hDJYW8Qrdp8A8QD83dc/A
-	 OSLc6HPloN6bfZhjWgZ945bFvubJVBDmHkqsw+yA=
+	b=urU8DuKhT6HsbcQgoiaOX6A1RvPIyDfbcEbENe6SY+ya5KImMGxSgCXKIqdzUnpNc
+	 qcz9btzseReO7ni+R7Gx4JLFgNS6wtHF9f9vmTVP9UjLOWOQCv97Cdv2+Rl5/vACRN
+	 /6J2+uyVRbQNADRDgLxCBO6WgV0MOpDmI0bGKI7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	NeilBrown <neilb@suse.de>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 272/386] nfsd: fix delegation_blocked() to block correctly for at least 30 seconds
+	Nuno Sa <nuno.sa@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.11 487/558] Input: adp5589-keys - fix adp5589_gpio_get_value()
 Date: Tue,  8 Oct 2024 14:08:37 +0200
-Message-ID: <20241008115640.095592657@linuxfoundation.org>
+Message-ID: <20241008115721.398091232@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 45bb63ed20e02ae146336412889fe5450316a84f upstream.
+commit c684771630e64bc39bddffeb65dd8a6612a6b249 upstream.
 
-The pair of bloom filtered used by delegation_blocked() was intended to
-block delegations on given filehandles for between 30 and 60 seconds.  A
-new filehandle would be recorded in the "new" bit set.  That would then
-be switch to the "old" bit set between 0 and 30 seconds later, and it
-would remain as the "old" bit set for 30 seconds.
+The adp5589 seems to have the same behavior as similar devices as
+explained in commit 910a9f5636f5 ("Input: adp5588-keys - get value from
+data out when dir is out").
 
-Unfortunately the code intended to clear the old bit set once it reached
-30 seconds old, preparing it to be the next new bit set, instead cleared
-the *new* bit set before switching it to be the old bit set.  This means
-that the "old" bit set is always empty and delegations are blocked
-between 0 and 30 seconds.
+Basically, when the gpio is set as output we need to get the value from
+ADP5589_GPO_DATA_OUT_A register instead of ADP5589_GPI_STATUS_A.
 
-This patch updates bd->new before clearing the set with that index,
-instead of afterwards.
-
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Fixes: 9d2e173644bb ("Input: ADP5589 - new driver for I2C Keypad Decoder and I/O Expander")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-2-fca0149dfc47@analog.com
 Cc: stable@vger.kernel.org
-Fixes: 6282cd565553 ("NFSD: Don't hand out delegations for 30 seconds after recalling them.")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/input/keyboard/adp5589-keys.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1087,7 +1087,8 @@ static void nfs4_free_deleg(struct nfs4_
-  * When a delegation is recalled, the filehandle is stored in the "new"
-  * filter.
-  * Every 30 seconds we swap the filters and clear the "new" one,
-- * unless both are empty of course.
-+ * unless both are empty of course.  This results in delegations for a
-+ * given filehandle being blocked for between 30 and 60 seconds.
-  *
-  * Each filter is 256 bits.  We hash the filehandle to 32bit and use the
-  * low 3 bytes as hash-table indices.
-@@ -1116,9 +1117,9 @@ static int delegation_blocked(struct knf
- 		if (ktime_get_seconds() - bd->swap_time > 30) {
- 			bd->entries -= bd->old_entries;
- 			bd->old_entries = bd->entries;
-+			bd->new = 1-bd->new;
- 			memset(bd->set[bd->new], 0,
- 			       sizeof(bd->set[0]));
--			bd->new = 1-bd->new;
- 			bd->swap_time = ktime_get_seconds();
- 		}
- 		spin_unlock(&blocked_delegations_lock);
+--- a/drivers/input/keyboard/adp5589-keys.c
++++ b/drivers/input/keyboard/adp5589-keys.c
+@@ -391,10 +391,17 @@ static int adp5589_gpio_get_value(struct
+ 	struct adp5589_kpad *kpad = gpiochip_get_data(chip);
+ 	unsigned int bank = kpad->var->bank(kpad->gpiomap[off]);
+ 	unsigned int bit = kpad->var->bit(kpad->gpiomap[off]);
++	int val;
+ 
+-	return !!(adp5589_read(kpad->client,
+-			       kpad->var->reg(ADP5589_GPI_STATUS_A) + bank) &
+-			       bit);
++	mutex_lock(&kpad->gpio_lock);
++	if (kpad->dir[bank] & bit)
++		val = kpad->dat_out[bank];
++	else
++		val = adp5589_read(kpad->client,
++				   kpad->var->reg(ADP5589_GPI_STATUS_A) + bank);
++	mutex_unlock(&kpad->gpio_lock);
++
++	return !!(val & bit);
+ }
+ 
+ static void adp5589_gpio_set_value(struct gpio_chip *chip,
 
 
 
