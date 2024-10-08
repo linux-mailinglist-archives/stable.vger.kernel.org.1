@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-81996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263BC994A8A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1010E994D22
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E12D828B410
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85DB1F2207D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9901DE8A3;
-	Tue,  8 Oct 2024 12:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430721DE4DB;
+	Tue,  8 Oct 2024 13:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Glprv8aO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJJ4Rku7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CB61D4141;
-	Tue,  8 Oct 2024 12:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005B01DE2A5;
+	Tue,  8 Oct 2024 13:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390828; cv=none; b=tXKE2LYZTm0kWv6QLTFnaMV69YBqFOaF2qDnPfNxuueftPcETdm6NXPXCaNPx/xiqC/BbgKg++dfKC/6/wWth796canCNWZ5fKivMDIK8F32ifZh3Bq+um/6cKDDPj4LIMlByuHsk66cJzZdMqXkoCCaEW8XuWwk3LBfldT3cCc=
+	t=1728392524; cv=none; b=ADr/wbaKtkdsu6PVIE3ffGc+Jm67cijZGJtbfNsYTzLTJ41ih3qtqBAw3eCCsGoIwkgr209VkdeiOvHad336L/xY7qvoBy1v4ZCH1jwG1fWNckjTLwBrD0oqidAhkZjhHEgD9oxFE3RT/IzUnmblcxUD3+r6nK6iX28jKMjoMEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390828; c=relaxed/simple;
-	bh=q3+fpuYvAaBuIQ3r2MqIZJXsSW2Zj4kA8IuiNaxClsQ=;
+	s=arc-20240116; t=1728392524; c=relaxed/simple;
+	bh=WLwRj/HquwQhS9vPeul50MmUzuudxyZRZs0yQu5A3+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+g+5qiKQTvvyZ8gEnY0PXxamPwwfw3eQUMeZpXuFF5fJ2DE4DuTfbUaVQ9EbT63qSSEJmJNGfx6tM/29oi9NL9R7l/Dsb3EqPfTQ82r5/+1p2ctUpj8aSAbOGQb+WTTqZFqdQwrI9Z9td6FulrvvTTsJmqfCvKiX6DeUND44u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Glprv8aO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E03C4CECC;
-	Tue,  8 Oct 2024 12:33:47 +0000 (UTC)
+	 MIME-Version; b=YURNRMFY3YZbyqk0gjvu5IkIWZ0+JVBm4Iz3PZABjmD51OE2E3fVQRy0OyT1lMCLp4705PhZZs94dIyqLn+53UM6Q6kgBbJbr9zMc3DjNucUe8kKSPprGoY1Mhh39QISZGeOevuiaBliUkSzrLUK7w6pSxAicrweUmVOEfba0oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJJ4Rku7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D88C4CEC7;
+	Tue,  8 Oct 2024 13:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390827;
-	bh=q3+fpuYvAaBuIQ3r2MqIZJXsSW2Zj4kA8IuiNaxClsQ=;
+	s=korg; t=1728392523;
+	bh=WLwRj/HquwQhS9vPeul50MmUzuudxyZRZs0yQu5A3+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Glprv8aOlpQ3N/Z6gq4/wTw6Bk6CehtYdL98eX7HZs8pcrxKfusBCarcasKuNv1Jq
-	 Hxw0Y7z8EWJvHiReVMNVq/y7Yz+iUGQZYBkV0wyUSLRlZso6WtxyDg4uaLQOa4PiCs
-	 yz2fEa+RroVMP20H+ORovQJuPcIBpjBAaM/D6wEM=
+	b=KJJ4Rku7EEgxLdWNrlQxwnz5avOJSB4B/WmZi9w/ql5/T/iX28qgy3dFHFWjWbA2q
+	 y9x6aAhx9ixoQbndwPeM9Nvu7a12nmQSRcj4PXOR3L951daxMwRPUMM5uG6nU7JCsu
+	 K/8BWUi5XW4JnMHdMuJLMtZFu3GPUtjdlWXdlddA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alfred Agrell <blubban@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Subject: [PATCH 6.10 406/482] tomoyo: fallback to realpath if symlinks pathname does not exist
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.11 439/558] RDMA/mana_ib: use the correct page table index based on hardware page size
 Date: Tue,  8 Oct 2024 14:07:49 +0200
-Message-ID: <20241008115704.386740901@linuxfoundation.org>
+Message-ID: <20241008115719.545092588@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Long Li <longli@microsoft.com>
 
-commit ada1986d07976d60bed5017aa38b7f7cf27883f7 upstream.
+commit 9e517a8e9d9a303bf9bde35e5c5374795544c152 upstream.
 
-Alfred Agrell found that TOMOYO cannot handle execveat(AT_EMPTY_PATH)
-inside chroot environment where /dev and /proc are not mounted, for
-commit 51f39a1f0cea ("syscalls: implement execveat() system call") missed
-that TOMOYO tries to canonicalize argv[0] when the filename fed to the
-executed program as argv[0] is supplied using potentially nonexistent
-pathname.
+MANA hardware uses 4k page size. When calculating the page table index,
+it should use the hardware page size, not the system page size.
 
-Since "/dev/fd/<fd>" already lost symlink information used for obtaining
-that <fd>, it is too late to reconstruct symlink's pathname. Although
-<filename> part of "/dev/fd/<fd>/<filename>" might not be canonicalized,
-TOMOYO cannot use tomoyo_realpath_nofollow() when /dev or /proc is not
-mounted. Therefore, fallback to tomoyo_realpath_from_path() when
-tomoyo_realpath_nofollow() failed.
-
-Reported-by: Alfred Agrell <blubban@gmail.com>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1082001
-Fixes: 51f39a1f0cea ("syscalls: implement execveat() system call")
-Cc: stable@vger.kernel.org # v3.19+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: stable@vger.kernel.org
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/1725030993-16213-1-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/tomoyo/domain.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/mana/main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/tomoyo/domain.c
-+++ b/security/tomoyo/domain.c
-@@ -723,10 +723,13 @@ int tomoyo_find_next_domain(struct linux
- 	ee->r.obj = &ee->obj;
- 	ee->obj.path1 = bprm->file->f_path;
- 	/* Get symlink's pathname of program. */
--	retval = -ENOENT;
- 	exename.name = tomoyo_realpath_nofollow(original_name);
--	if (!exename.name)
--		goto out;
-+	if (!exename.name) {
-+		/* Fallback to realpath if symlink's pathname does not exist. */
-+		exename.name = tomoyo_realpath_from_path(&bprm->file->f_path);
-+		if (!exename.name)
-+			goto out;
-+	}
- 	tomoyo_fill_path_info(&exename);
- retry:
- 	/* Check 'aggregator' directive. */
+--- a/drivers/infiniband/hw/mana/main.c
++++ b/drivers/infiniband/hw/mana/main.c
+@@ -383,7 +383,7 @@ static int mana_ib_gd_create_dma_region(
+ 
+ 	create_req->length = umem->length;
+ 	create_req->offset_in_page = ib_umem_dma_offset(umem, page_sz);
+-	create_req->gdma_page_type = order_base_2(page_sz) - PAGE_SHIFT;
++	create_req->gdma_page_type = order_base_2(page_sz) - MANA_PAGE_SHIFT;
+ 	create_req->page_count = num_pages_total;
+ 
+ 	ibdev_dbg(&dev->ib_dev, "size_dma_region %lu num_pages_total %lu\n",
 
 
 
