@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-82154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA589994B70
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EC3994887
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A8B1F27553
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C06D1F27AB4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBD11DED64;
-	Tue,  8 Oct 2024 12:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55611DE2CF;
+	Tue,  8 Oct 2024 12:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WURVJd2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQiPzRmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A5E1DE8BA;
-	Tue,  8 Oct 2024 12:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ADE1DA60C;
+	Tue,  8 Oct 2024 12:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391332; cv=none; b=XOVvQW8wALgfQsEpBj0Zl4HOUj4DSkE1j+Bpn1WE4/L2rtciZ9D/jVtKwmo4gjoFJpod+RJ0ke2wNPUMbDAuTt8wBsx/XlKvZL69eNm8Bez7xfhE+SDm1jBUEN1mA22awLdf8Ts7x6ew/XC+8mz41Qv2weRyqvDdxe17dAzi/es=
+	t=1728389629; cv=none; b=aTXbDG7ANM9eqmvEVvgw4UZHsDjwWOnRhwU7J21nYbUF+z7Pca9mD0oFMqbpWbL94QemrHN3H4I0ivEh6+Rge9c2kVmsn7V5Bx/l5dU9q4xlKnHjnTqmUUHvzWiYFE6MyUknqaVYJMaF7iRgeooqcm344R4dUfS61p2Ju66u1hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391332; c=relaxed/simple;
-	bh=nE2TvYUEQfCa86HuvipNIcBM18rZk+iXvfiStG7pSwM=;
+	s=arc-20240116; t=1728389629; c=relaxed/simple;
+	bh=mXSlST6x8Ntcg1xLT6deNwbXelIapYrf6LddvsKLy3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU+hY8d327xNbgZkQeV/pJQEWqrI//KdMSwNM06SfRkIV5TeeqvPPq8J3MSdrCkx0QVf93S8+IB3p9wyTpr1uPBLoB66m/rNekh/Wc3z8JEzGlBCu/iJBjbaxuQPJfdT/rjV96GEwwyhwdYA5+GhIp66xZhSRbzR5OgPVitwZ0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WURVJd2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC8BC4CEC7;
-	Tue,  8 Oct 2024 12:42:11 +0000 (UTC)
+	 MIME-Version; b=Q3sUsO6FCKxAja++VA2zzJPQtUxZmWgl2D+wr8IIlBUeD4zn9Bt1tvuoerMZB6MxSpI9MpvRt2mNXljPxl31DctdbgON5W6TdovU6+QCXDG5LuYIrAjaHXIQ+HMiKrS8G6e9QS19EpIMrnR5PqQ4g4BTFKaZsd+SBhV3oCTY9Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQiPzRmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA430C4CEC7;
+	Tue,  8 Oct 2024 12:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391331;
-	bh=nE2TvYUEQfCa86HuvipNIcBM18rZk+iXvfiStG7pSwM=;
+	s=korg; t=1728389629;
+	bh=mXSlST6x8Ntcg1xLT6deNwbXelIapYrf6LddvsKLy3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WURVJd2KMZBSUXefuRM5MMYy9OXgw4mzbhenXVnYIHjZgQQVfTrn9n8KUmeyE2AiN
-	 8OifJb/TqQbvw/zIPDWmt03GP5RTZm+Uy93wGyyLJR2x+QHY5CLUd7FCcCBI0re0if
-	 y6XcomIHksgCLHVkPEGq4s/3jfRBPg5N13kH8iPk=
+	b=NQiPzRmN8oc1twBfSbYOtIdyMYnyV+huisBVbCSNmUJDCeuqWUOWzgmN5sZHnt7KB
+	 VplTwj6VJ430WZlj22k20PjU1NbE1+Lh6tTL+MUBZlpnkC1kmW7OXIJ4gFrSgyK9On
+	 w1xu1Wi7T1qav8C/fMGHC56SUGyINGFEaujh9SYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ravikanth Tuniki <ravikanth.tuniki@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 081/558] drm/amd/display: Fix VRR cannot enable
+Subject: [PATCH 6.10 048/482] dt-bindings: net: xlnx,axi-ethernet: Add missing reg minItems
 Date: Tue,  8 Oct 2024 14:01:51 +0200
-Message-ID: <20241008115705.562890722@linuxfoundation.org>
+Message-ID: <20241008115650.196335132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Ravikanth Tuniki <ravikanth.tuniki@amd.com>
 
-[ Upstream commit f91a9af09dea850d83d4b217b8acbafd97b5c61f ]
+[ Upstream commit c6929644c1e0d6108e57061d427eb966e1746351 ]
 
-[Why]
-Sometimes the VRR cannot enable after login to the desktop.
+Add missing reg minItems as based on current binding document
+only ethernet MAC IO space is a supported configuration.
 
-User space may call the DRM_IOCTL_MODE_GETCONNECTOR right after
-the DRM_IOCTL_MODE_RMFB.
+There is a bug in schema, current examples contain 64-bit
+addressing as well as 32-bit addressing. The schema validation
+does pass incidentally considering one 64-bit reg address as
+two 32-bit reg address entries. If we change axi_ethernet_eth1
+example node reg addressing to 32-bit schema validation reports:
 
-After calling DRM_IOCTL_MODE_RMFB to remove all the frame buffer
-and it will cause the driver to disable the crtc and disable the
-link while calling the link_set_dpms_off().
+Documentation/devicetree/bindings/net/xlnx,axi-ethernet.example.dtb:
+ethernet@40000000: reg: [[1073741824, 262144]] is too short
 
-It will cause the dpcd read failed in amdgpu_dm_update_freesync_caps()
-while try to get the DP_MSA_TIMING_PAR_IGNORED capability and think
-the sink side does not support VRR.
+To fix it add missing reg minItems constraints and to make things clearer
+stick to 32-bit addressing in examples.
 
-[How]
-Use the dpcd_caps.allow_invalid_MSA_timing_param flag instead of
-reading from dpcd directly.
-
-dpcd_caps.allow_invalid_MSA_timing_param flag is updated during HPD.
-It is safe to replace the original method.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: cbb1ca6d5f9a ("dt-bindings: net: xlnx,axi-ethernet: convert bindings document to yaml")
+Signed-off-by: Ravikanth Tuniki <ravikanth.tuniki@amd.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/1727723615-2109795-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 23 ++-----------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index a705e7fa18c06..9ee54c5ce4a61 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -11812,25 +11812,6 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
- 	return ret;
- }
+diff --git a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+index bbe89ea9590ce..e95c216282818 100644
+--- a/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
++++ b/Documentation/devicetree/bindings/net/xlnx,axi-ethernet.yaml
+@@ -34,6 +34,7 @@ properties:
+       and length of the AXI DMA controller IO space, unless
+       axistream-connected is specified, in which case the reg
+       attribute of the node referenced by it is used.
++    minItems: 1
+     maxItems: 2
  
--static bool is_dp_capable_without_timing_msa(struct dc *dc,
--					     struct amdgpu_dm_connector *amdgpu_dm_connector)
--{
--	u8 dpcd_data;
--	bool capable = false;
--
--	if (amdgpu_dm_connector->dc_link &&
--		dm_helpers_dp_read_dpcd(
--				NULL,
--				amdgpu_dm_connector->dc_link,
--				DP_DOWN_STREAM_PORT_COUNT,
--				&dpcd_data,
--				sizeof(dpcd_data))) {
--		capable = (dpcd_data & DP_MSA_TIMING_PAR_IGNORED) ? true:false;
--	}
--
--	return capable;
--}
--
- static bool dm_edid_parser_send_cea(struct amdgpu_display_manager *dm,
- 		unsigned int offset,
- 		unsigned int total_length,
-@@ -12133,8 +12114,8 @@ void amdgpu_dm_update_freesync_caps(struct drm_connector *connector,
- 		     sink->sink_signal == SIGNAL_TYPE_EDP)) {
- 		bool edid_check_required = false;
- 
--		if (is_dp_capable_without_timing_msa(adev->dm.dc,
--						     amdgpu_dm_connector)) {
-+		if (amdgpu_dm_connector->dc_link &&
-+		    amdgpu_dm_connector->dc_link->dpcd_caps.allow_invalid_MSA_timing_param) {
- 			if (edid->features & DRM_EDID_FEATURE_CONTINUOUS_FREQ) {
- 				amdgpu_dm_connector->min_vfreq = connector->display_info.monitor_range.min_vfreq;
- 				amdgpu_dm_connector->max_vfreq = connector->display_info.monitor_range.max_vfreq;
+   interrupts:
+@@ -181,7 +182,7 @@ examples:
+         clock-names = "s_axi_lite_clk", "axis_clk", "ref_clk", "mgt_clk";
+         clocks = <&axi_clk>, <&axi_clk>, <&pl_enet_ref_clk>, <&mgt_clk>;
+         phy-mode = "mii";
+-        reg = <0x00 0x40000000 0x00 0x40000>;
++        reg = <0x40000000 0x40000>;
+         xlnx,rxcsum = <0x2>;
+         xlnx,rxmem = <0x800>;
+         xlnx,txcsum = <0x2>;
 -- 
 2.43.0
 
