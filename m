@@ -1,114 +1,109 @@
-Return-Path: <stable+bounces-81583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2613C994765
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:40:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D0EC9947C3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E87A1C20EF2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:40:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A06C8B26DEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2FF13D246;
-	Tue,  8 Oct 2024 11:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663C21DE885;
+	Tue,  8 Oct 2024 11:51:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BC63A1CD
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 11:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAAC1D8DF6;
+	Tue,  8 Oct 2024 11:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728387614; cv=none; b=lQnd7anTBNQci7lO9CMRoyl0BKhu/owRg7tSRY+gd7XtgRLKWgW0qVK119A/4qE4NVRadr+EKnqw1taMoFL+XUK9KJq81Qdm2ChCWJg3pFhaMZdKMMnHtSYDKwSh4d5J+ZjHC6rrqOgvUPKtx1ldySA7XFjEVVFNZGkqFm0ME24=
+	t=1728388317; cv=none; b=UFsURpltYMXq+1GjgOAau/0Rh+yqJIx2/Nu7Ljfv7TGU9UzWBV5slPu9WJ0vE7iMsZcN7cNJNKxd6M2q1PgxWlo8IL7ih+CyQVEQQ+NHr/8MtMbGAMmQeXmtEm5hRHb1AYVGya/ziw2KAQTdfosOdOB88uRKJ8GKaMQCHY+7a6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728387614; c=relaxed/simple;
-	bh=02H+TSkwG7VmV1ZyCanULDQgTyzjB7Gqngsl92bH1Vw=;
+	s=arc-20240116; t=1728388317; c=relaxed/simple;
+	bh=pD1UuK9TzGO7wHfJxW6KD6klX9AkmnYXRgKL2KM14/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FGF0scVL6pp6sUQDtc4oOd967/R1it/xDt2QDcHuiYKf8pAr4md4JBaLVMAnfLwT5d1nOJmqlT36nnTAorJc4P1Ln6zGxkKLERSijxvCnAaRp+OR7Xi6ypxVKcoISP6d4Yu42V/P5JbKPOiUlkF9fYWLrwhKP+CBTa6l6DihAUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id CD7F11C006B; Tue,  8 Oct 2024 13:40:10 +0200 (CEST)
-Date: Tue, 8 Oct 2024 13:40:10 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Pavel Machek <pavel@denx.de>, Vegard Nossum <vegard.nossum@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org,
-	cengiz.can@canonical.com, mheyne@amazon.de, mngyadam@amazon.com,
-	kuntal.nayak@broadcom.com, ajay.kaher@broadcom.com,
-	zsm@chromium.org, dan.carpenter@linaro.org,
-	shivani.agarwal@broadcom.com, ahalaney@redhat.com,
-	alsi@bang-olufsen.dk, ardb@kernel.org,
-	benjamin.gaignard@collabora.com, bli@bang-olufsen.dk,
-	chengzhihao1@huawei.com, christophe.jaillet@wanadoo.fr,
-	ebiggers@kernel.org, edumazet@google.com, fancer.lancer@gmail.com,
-	florian.fainelli@broadcom.com, harshit.m.mogalapalli@oracle.com,
-	hdegoede@redhat.com, horms@kernel.org, hverkuil-cisco@xs4all.nl,
-	ilpo.jarvinen@linux.intel.com, jgg@nvidia.com, kevin.tian@intel.com,
-	kirill.shutemov@linux.intel.com, kuba@kernel.org,
-	luiz.von.dentz@intel.com, md.iqbal.hossain@intel.com,
-	mpearson-lenovo@squebb.ca, nicolinc@nvidia.com, pablo@netfilter.org,
-	rfoss@kernel.org, richard@nod.at, tfiga@chromium.org,
-	vladimir.oltean@nxp.com, xiaolei.wang@windriver.com,
-	yanjun.zhu@linux.dev, yi.zhang@redhat.com, yu.c.chen@intel.com,
-	yukuai3@huawei.com
-Subject: Re: [PATCH RFC 6.6.y 00/15] Some missing CVE fixes
-Message-ID: <ZwUaGvyHBePPNQF/@duo.ucw.cz>
-References: <20241002150606.11385-1-vegard.nossum@oracle.com>
- <612f0415-96c2-4d52-bd3d-46ffa8afbeef@kernel.dk>
- <69e265b4-fae2-4a60-9652-c8db07da89a1@oracle.com>
- <ZwUVPCre5BR6uPZj@duo.ucw.cz>
- <2024100823-barbed-flatness-631c@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CL6/6T+O927XVr3jSQzGSuGIpfCDnjzTpRZ+h++s1DK4KlvWSmHIkbiI1fLI15vriOZpjbFrlFsLSkKWS2BMNnvenXydLcK+HlqA8sX+KJjwBQiNMRFzu7bmuYnazQewTMc2zixhnKaCMFQFceC4LnOjtvLIzDp/h9QEGzUZBmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=poettering.net; spf=pass smtp.mailfrom=poettering.net; arc=none smtp.client-ip=85.214.157.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=poettering.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poettering.net
+Received: from gardel-login.0pointer.net (gardel-mail [85.214.157.71])
+	by gardel.0pointer.net (Postfix) with ESMTP id D4F82E8010A;
+	Tue,  8 Oct 2024 13:41:43 +0200 (CEST)
+Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
+	id 2D95A1601D0; Tue,  8 Oct 2024 13:41:40 +0200 (CEST)
+Date: Tue, 8 Oct 2024 13:41:40 +0200
+From: Lennart Poettering <lennart@poettering.net>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fcntl: make F_DUPFD_QUERY associative
+Message-ID: <ZwUac8RIaV0E4Jwa@gardel-login>
+References: <20241008-duften-formel-251f967602d5@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PI6/zF5QDGYHmGgy"
-Content-Disposition: inline
-In-Reply-To: <2024100823-barbed-flatness-631c@gregkh>
-
-
---PI6/zF5QDGYHmGgy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241008-duften-formel-251f967602d5@brauner>
 
-On Tue 2024-10-08 13:24:31, Greg Kroah-Hartman wrote:
-> On Tue, Oct 08, 2024 at 01:19:24PM +0200, Pavel Machek wrote:
-> > Hi!
-> >=20
-> > > Unfortunately for distributions, there may be various customers or
-> > > government agencies which expect or require all CVEs to be addressed
-> > > (regardless of severity), which is why we're backporting these to sta=
-ble
-> > > and trying to close those gaps.
-> >=20
-> > Customers and government will need to understand that with CVEs
-> > assigned the way they are, addressing all of them will be impossible
-> > (or will lead to unstable kernel), unfortunately :-(.
->=20
-> Citation needed please.
+On Di, 08.10.24 13:30, Christian Brauner (brauner@kernel.org) wrote:
 
-https://opensourcesecurity.io/category/securityblog/
+> Currently when passing a closed file descriptor to
+> fcntl(fd, F_DUPFD_QUERY, fd_dup) the order matters:
+>
+>     fd = open("/dev/null");
+>     fd_dup = dup(fd);
+>
+> When we now close one of the file descriptors we get:
+>
+>     (1) fcntl(fd, fd_dup) // -EBADF
+>     (2) fcntl(fd_dup, fd) // 0 aka not equal
+>
+> depending on which file descriptor is passed first. That's not a huge
+> deal but it gives the api I slightly weird feel. Make it so that the
+> order doesn't matter by requiring that both file descriptors are valid:
+>
+> (1') fcntl(fd, fd_dup) // -EBADF
+> (2') fcntl(fd_dup, fd) // -EBADF
+>
+> Fixes: c62b758bae6a ("fcntl: add F_DUPFD_QUERY fcntl()")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Lennart Poettering <lennart@poettering.net>
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> ---
+>  fs/fcntl.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/fs/fcntl.c b/fs/fcntl.c
+> index 22dd9dcce7ec..3d89de31066a 100644
+> --- a/fs/fcntl.c
+> +++ b/fs/fcntl.c
+> @@ -397,6 +397,9 @@ static long f_dupfd_query(int fd, struct file *filp)
+>  {
+>  	CLASS(fd_raw, f)(fd);
+>
+> +	if (fd_empty(f))
+> +		return -EBADF;
+> +
+>  	/*
+>  	 * We can do the 'fdput()' immediately, as the only thing that
+>  	 * matters is the pointer value which isn't changed by the fdput.
 
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Thanks! LGTM!
 
---PI6/zF5QDGYHmGgy
-Content-Type: application/pgp-signature; name="signature.asc"
+Reviewed-By: Lennart Poettering <lennart@poettering.net>
 
------BEGIN PGP SIGNATURE-----
+Lennart
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZwUaGgAKCRAw5/Bqldv6
-8shSAJ9kMlJMvZkB9jhL/bhzmpN/HRc3GQCffHCNp/vMdZu1TI7VvqsMIfLS3cs=
-=JPms
------END PGP SIGNATURE-----
-
---PI6/zF5QDGYHmGgy--
+--
+Lennart Poettering, Berlin
 
