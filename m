@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301F3994EC4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0309949B7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D009B28C9F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDC161C248FB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2453F1DF744;
-	Tue,  8 Oct 2024 13:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51685EEC8;
+	Tue,  8 Oct 2024 12:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJYrBsG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9DB6YjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03CC1DEFF0;
-	Tue,  8 Oct 2024 13:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDE91E485;
+	Tue,  8 Oct 2024 12:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393169; cv=none; b=rehUIzZIZtHesuZRiQJKCR4dtmaZo5ypz9sRetaoAXpj7j0jgMn7ZLMyeEba3SRDflAwiBGcOo5KUgZfNv+OGoEmA2Dp9SK47FT6cN7ZmutNd1FM74W2kp53wUh9fHIMxip6x8WbbNmA1iqiy7DpraF+S+1j6XVcXyIzNk/K+sk=
+	t=1728390330; cv=none; b=E87Hc97d3zRvMVjqmAqr85/S+Ox4pgb1xHup8AwAL0KLvezulG+ehw1EFF7Dv6uIpbTfEVhsbIbZ/gBgY0I1xgAJztJbqUCRVthVpi3Ggk7S8/xOOwoeK7sstkO69n/cKa76t6jaN+N6ziqwfmOcHw+JvYtbcM3ryrT/Y0FDqTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393169; c=relaxed/simple;
-	bh=WYHad9jJyRmFfCIimXP4dxnBpvhU+PxQx+r1GktDWZM=;
+	s=arc-20240116; t=1728390330; c=relaxed/simple;
+	bh=xzjoFnjSPlmJBNNqOs3sqy3ncjg6Y5bXvbOZpnPXTcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MYwSeaDGZvvRrMxQllG53OPPGrLs82ug5uWDPmCalH0uvCeCwrlD6kIu4/bEcOlo82vnmtA5nLtEpNRn91oG3MFTuQGAUM23GtqfD/oyVMO3pLl5chZLhMf54p8QjCOUbdZhAND3DojrUSz5LVXe6LTjhTFo+3aIf8jlq0+ghJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJYrBsG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E888C4CEC7;
-	Tue,  8 Oct 2024 13:12:49 +0000 (UTC)
+	 MIME-Version; b=i4zGQDsLIzh9Rg4x7XsFQKBqVOt/E4vJTg92MT09CiFZmamZw0sPwdWMKUjc/A79FDeSnhZtuJLlffolo4yTkqZeuYbFiOhVCP79dvKew1e5PT95sAtxqqsjnZjbf/VhT+Udg+TafMZAyQuqFljeb4WaGA+bBA/BmWIAM/BPInY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9DB6YjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7082EC4CECC;
+	Tue,  8 Oct 2024 12:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393169;
-	bh=WYHad9jJyRmFfCIimXP4dxnBpvhU+PxQx+r1GktDWZM=;
+	s=korg; t=1728390329;
+	bh=xzjoFnjSPlmJBNNqOs3sqy3ncjg6Y5bXvbOZpnPXTcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJYrBsG5PopseEmceVm0bQOA4qIYUNot9PTCDYE9FlWJKEbQRWQs8qQ/3HGrrl2uP
-	 YUEWz9KiwChn3D7qR5SkHi/QKxsdKnTbWpUcAGjRoCOZPTYEo1xLO2NgjijU+gDino
-	 hX2q98RAUzRtDoZ+QcggCPOuaCGMegjDPiqoxHQ8=
+	b=T9DB6YjCC1BF7UJsNyjuqKZBXkFDjGXM09AFatur+LcO72CYLodYAlBNMos4lfvwN
+	 1Dabr453BofhbXHpMr9CzS3dsfbUXpAqOCrAA5ryNUpwyVGKa84OLM1PrWcBnMPEpH
+	 Hfuab6mCjv9y3p0gNyQzPr5d3X/7XrwJAZLXr9cE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/386] e1000e: avoid failing the system during pm_suspend
+Subject: [PATCH 6.10 255/482] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
 Date: Tue,  8 Oct 2024 14:05:18 +0200
-Message-ID: <20241008115632.334644426@linuxfoundation.org>
+Message-ID: <20241008115658.322424492@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 0a6ad4d9e1690c7faa3a53f762c877e477093657 ]
+[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
 
-Occasionally when the system goes into pm_suspend, the suspend might fail
-due to a PHY access error on the network adapter. Previously, this would
-have caused the whole system to fail to go to a low power state.
-An example of this was reported in the following Bugzilla:
-https://bugzilla.kernel.org/show_bug.cgi?id=205015
+When direct I/O completions invalidates the page cache it holds neither the
+i_rwsem nor the invalidate_lock so it can be racing with
+iomap_write_delalloc_release.  If the search for the end of the region that
+contains data returns the start offset we hit such a race and just need to
+look for the end of the newly created hole instead.
 
-[ 1663.694828] e1000e 0000:00:19.0 eth0: Failed to disable ULP
-[ 1664.731040] asix 2-3:1.0 eth1: link up, 100Mbps, full-duplex, lpa 0xC1E1
-[ 1665.093513] e1000e 0000:00:19.0 eth0: Hardware Error
-[ 1665.596760] e1000e 0000:00:19.0: pci_pm_resume+0x0/0x80 returned 0 after 2975399 usecs
-
-and then the system never recovers from it, and all the following suspend failed due to this
-[22909.393854] PM: pci_pm_suspend(): e1000e_pm_suspend+0x0/0x760 [e1000e] returns -2
-[22909.393858] PM: dpm_run_callback(): pci_pm_suspend+0x0/0x160 returns -2
-[22909.393861] PM: Device 0000:00:1f.6 failed to suspend async: error -2
-
-This can be avoided by changing the return values of __e1000_shutdown and
-e1000e_pm_suspend functions so that they always return 0 (success). This
-is consistent with what other drivers do.
-
-If the e1000e driver encounters a hardware error during suspend, potential
-side effects include slightly higher power draw or non-working wake on
-LAN. This is preferred to a system-level suspend failure, and a warning
-message is written to the system log, so that the user can be aware that
-the LAN controller experienced a problem during suspend.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=205015
-Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ fs/iomap/buffered-io.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 334f652c60601..d377a286c0e1b 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6672,8 +6672,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 		if (adapter->flags2 & FLAG2_HAS_PHY_WAKEUP) {
- 			/* enable wakeup by the PHY */
- 			retval = e1000_init_phy_wakeup(adapter, wufc);
--			if (retval)
--				return retval;
-+			if (retval) {
-+				e_err("Failed to enable wakeup\n");
-+				goto skip_phy_configurations;
-+			}
- 		} else {
- 			/* enable wakeup by the MAC */
- 			ew32(WUFC, wufc);
-@@ -6694,8 +6696,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 			 * or broadcast.
- 			 */
- 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
--			if (retval)
--				return retval;
-+			if (retval) {
-+				e_err("Failed to enable ULP\n");
-+				goto skip_phy_configurations;
-+			}
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index e817564e80e01..b9b035a5e7793 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1226,7 +1226,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
+ 			error = data_end;
+ 			goto out_unlock;
  		}
+-		WARN_ON_ONCE(data_end <= start_byte);
++
++		/*
++		 * If we race with post-direct I/O invalidation of the page cache,
++		 * there might be no data left at start_byte.
++		 */
++		if (data_end == start_byte)
++			continue;
++
++		WARN_ON_ONCE(data_end < start_byte);
+ 		WARN_ON_ONCE(data_end > scan_end_byte);
  
- 		/* Force SMBUS to allow WOL */
-@@ -6744,6 +6748,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 		hw->phy.ops.release(hw);
- 	}
- 
-+skip_phy_configurations:
- 	/* Release control of h/w to f/w.  If f/w is AMT enabled, this
- 	 * would have already happened in close and is redundant.
- 	 */
-@@ -6986,15 +6991,13 @@ static __maybe_unused int e1000e_pm_suspend(struct device *dev)
- 	e1000e_pm_freeze(dev);
- 
- 	rc = __e1000_shutdown(pdev, false);
--	if (rc) {
--		e1000e_pm_thaw(dev);
--	} else {
-+	if (!rc) {
- 		/* Introduce S0ix implementation */
- 		if (adapter->flags2 & FLAG2_ENABLE_S0IX_FLOWS)
- 			e1000e_s0ix_entry_flow(adapter);
- 	}
- 
--	return rc;
-+	return 0;
- }
- 
- static __maybe_unused int e1000e_pm_resume(struct device *dev)
+ 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
 -- 
 2.43.0
 
