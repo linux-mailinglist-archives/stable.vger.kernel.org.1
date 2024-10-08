@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-82521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D83994D29
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E455994F34
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CC51F245EE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 254B5B298AF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2611C9B99;
-	Tue,  8 Oct 2024 13:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F0A1DED48;
+	Tue,  8 Oct 2024 13:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whnPM5+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJtz9K5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B217F4FF;
-	Tue,  8 Oct 2024 13:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F50618C333;
+	Tue,  8 Oct 2024 13:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392544; cv=none; b=fBsN98s6TPKe8VU58N4tvhK4W1XoEQa32WIuUMlf37uiv7JqX0dxJNr6lfpR6xxFzbrxQZ4txFvA3/qp3EGRjlEfzVHgP/ilE9oq36cYtsGBcc+WqGI0oNyaW9w4l3xu1qvXubvyEJWqrIqAmQo1p2PMjfpMSVd3ytvsgS5TEAA=
+	t=1728393599; cv=none; b=sNXfQCrLgjKCvoUGw/1HPkkxCP18CDOw3iBOGh85atFqgP+sgScVR25tmATFUYD5Vgj07MDm5BBzjJ4TOQcGcI3T3bfvJhXqEgFuAW373QChfc3RSC0zI+PdA3dCsHUBTkhVH6PjSAFslcY8MmnezlDg7ZsyNuyxdf11CA3KD1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392544; c=relaxed/simple;
-	bh=LMXjSp2RAGNFCxyBM7WXcasYU5GICOmaln8hFJwQudo=;
+	s=arc-20240116; t=1728393599; c=relaxed/simple;
+	bh=GgAbzGvKaLAYqVjcZSdRlr7PBbS00qlxCzQpN8PeHOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TrQH9cqWjnQDLdgatqAqvP10loI/zPKpp2UuOgpwwzCoIigbB75c3xInqEY0s76vK+3y0XjCu6ohJjFkkepjtT3HKBdv4j5YJcPMveQoRalreC5n0XkwZ7+vLyv1KUFYpLqYf+gDZVF25DYE8SwUOVQaoefXatpP/5dSyjJ7BSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whnPM5+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137AFC4CEC7;
-	Tue,  8 Oct 2024 13:02:23 +0000 (UTC)
+	 MIME-Version; b=Wv87c4xyKjFeq8Dogh/so9JJ5Vid4bY+k80Aj7UFyrGhv9Vf5IK+RsDzyAY4v8U2gMjiC12wjuJMQucO/qTuUwOBfSZr8KdjgHSLSGapjkVNoMyI2lZ92VCq5bHxQeUeDdIgNWuI1Zbf7IxNKZ+0Mc719V3MPe4iROGowT5cKmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJtz9K5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C968BC4CEC7;
+	Tue,  8 Oct 2024 13:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392543;
-	bh=LMXjSp2RAGNFCxyBM7WXcasYU5GICOmaln8hFJwQudo=;
+	s=korg; t=1728393599;
+	bh=GgAbzGvKaLAYqVjcZSdRlr7PBbS00qlxCzQpN8PeHOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whnPM5+0zuXooVP8y23yQ4pEJZ7JnCYM/z3K0kMcgOza9wNAC6fZ3VKjZEyY2UEGt
-	 FNSLDTFK862oz6zZAo8CSk/ihCUSIfsj73Mf/s5SKBFHjYu6y5hZQBccdeosvVAQ4F
-	 YIKmc5F+bI7Qs6ZUY0eizVHS7TfPy1ptwwnW3Ysg=
+	b=rJtz9K5aPSAl1MDxl1rOYASO7rw/vqSxydI5mectJQes3tZuaEgwzhuomETOdgW33
+	 9uh2g6LHmSReH/s3QoUP65PAC67VNL+0kMUG6d35h/K7QYUT/DH5N+U4K+xv+BCvH2
+	 SB3F47uV9ZbM+nVJJLdBLBrBaEZGRvm9mMv/jo6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 415/558] ocfs2: cancel dqi_sync_work before freeing oinfo
+	David Hildenbrand <david@redhat.com>,
+	Mario Casquero <mcasquer@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 200/386] selftests/mm: fix charge_reserved_hugetlb.sh test
 Date: Tue,  8 Oct 2024 14:07:25 +0200
-Message-ID: <20241008115718.604591123@linuxfoundation.org>
+Message-ID: <20241008115637.276964644@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +66,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: David Hildenbrand <david@redhat.com>
 
-commit 35fccce29feb3706f649726d410122dd81b92c18 upstream.
+[ Upstream commit c41a701d18efe6b8aa402efab16edbaba50c9548 ]
 
-ocfs2_global_read_info() will initialize and schedule dqi_sync_work at the
-end, if error occurs after successfully reading global quota, it will
-trigger the following warning with CONFIG_DEBUG_OBJECTS_* enabled:
+Currently, running the charge_reserved_hugetlb.sh selftest we can
+sometimes observe something like:
 
-ODEBUG: free active (active state 0) object: 00000000d8b0ce28 object type: timer_list hint: qsync_work_fn+0x0/0x16c
+  $ ./charge_reserved_hugetlb.sh -cgroup-v2
+  ...
+  write_result is 0
+  After write:
+  hugetlb_usage=0
+  reserved_usage=10485760
+  killing write_to_hugetlbfs
+  Received 2.
+  Deleting the memory
+  Detach failure: Invalid argument
+  umount: /mnt/huge: target is busy.
 
-This reports that there is an active delayed work when freeing oinfo in
-error handling, so cancel dqi_sync_work first.  BTW, return status instead
-of -1 when .read_file_info fails.
+Both cases are issues in the test.
 
-Link: https://syzkaller.appspot.com/bug?extid=f7af59df5d6b25f0febd
-Link: https://lkml.kernel.org/r/20240904071004.2067695-1-joseph.qi@linux.alibaba.com
-Fixes: 171bf93ce11f ("ocfs2: Periodic quota syncing")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reported-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Tested-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
+While the unmount error seems to be racy, it will make the test fail:
+	$ ./run_vmtests.sh -t hugetlb
+	...
+	# [FAIL]
+	not ok 10 charge_reserved_hugetlb.sh -cgroup-v2 # exit=32
+
+The issue is that we are not waiting for the write_to_hugetlbfs process to
+quit.  So it might still have a hugetlbfs file open, about which umount is
+not happy.  Fix that by making "killall" wait for the process to quit.
+
+The other error ("Detach failure: Invalid argument") does not seem to
+result in a test error, but is misleading.  Turns out write_to_hugetlbfs.c
+unconditionally tries to cleanup using shmdt(), even when we only
+mmap()'ed a hugetlb file.  Even worse, shmaddr is never even set for the
+SHM case.  Fix that as well.
+
+With this change it seems to work as expected.
+
+Link: https://lkml.kernel.org/r/20240821123115.2068812-1-david@redhat.com
+Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Mario Casquero <mcasquer@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/quota_local.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .../selftests/mm/charge_reserved_hugetlb.sh   |  2 +-
+ .../testing/selftests/mm/write_to_hugetlbfs.c | 21 +++++++++++--------
+ 2 files changed, 13 insertions(+), 10 deletions(-)
 
---- a/fs/ocfs2/quota_local.c
-+++ b/fs/ocfs2/quota_local.c
-@@ -692,7 +692,7 @@ static int ocfs2_local_read_info(struct
- 	int status;
- 	struct buffer_head *bh = NULL;
- 	struct ocfs2_quota_recovery *rec;
--	int locked = 0;
-+	int locked = 0, global_read = 0;
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index e14bdd4455f2d..8e00276b4e69b 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -252,7 +252,7 @@ function cleanup_hugetlb_memory() {
+   local cgroup="$1"
+   if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
+     echo killing write_to_hugetlbfs
+-    killall -2 write_to_hugetlbfs
++    killall -2 --wait write_to_hugetlbfs
+     wait_for_hugetlb_memory_to_get_depleted $cgroup
+   fi
+   set -e
+diff --git a/tools/testing/selftests/mm/write_to_hugetlbfs.c b/tools/testing/selftests/mm/write_to_hugetlbfs.c
+index 6a2caba19ee1d..1289d311efd70 100644
+--- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
++++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
+@@ -28,7 +28,7 @@ enum method {
  
- 	info->dqi_max_spc_limit = 0x7fffffffffffffffLL;
- 	info->dqi_max_ino_limit = 0x7fffffffffffffffLL;
-@@ -700,6 +700,7 @@ static int ocfs2_local_read_info(struct
- 	if (!oinfo) {
- 		mlog(ML_ERROR, "failed to allocate memory for ocfs2 quota"
- 			       " info.");
-+		status = -ENOMEM;
- 		goto out_err;
- 	}
- 	info->dqi_priv = oinfo;
-@@ -712,6 +713,7 @@ static int ocfs2_local_read_info(struct
- 	status = ocfs2_global_read_info(sb, type);
- 	if (status < 0)
- 		goto out_err;
-+	global_read = 1;
+ /* Global variables. */
+ static const char *self;
+-static char *shmaddr;
++static int *shmaddr;
+ static int shmid;
  
- 	status = ocfs2_inode_lock(lqinode, &oinfo->dqi_lqi_bh, 1);
- 	if (status < 0) {
-@@ -782,10 +784,12 @@ out_err:
- 		if (locked)
- 			ocfs2_inode_unlock(lqinode, 1);
- 		ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
-+		if (global_read)
-+			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
- 		kfree(oinfo);
+ /*
+@@ -47,15 +47,17 @@ void sig_handler(int signo)
+ {
+ 	printf("Received %d.\n", signo);
+ 	if (signo == SIGINT) {
+-		printf("Deleting the memory\n");
+-		if (shmdt((const void *)shmaddr) != 0) {
+-			perror("Detach failure");
++		if (shmaddr) {
++			printf("Deleting the memory\n");
++			if (shmdt((const void *)shmaddr) != 0) {
++				perror("Detach failure");
++				shmctl(shmid, IPC_RMID, NULL);
++				exit(4);
++			}
++
+ 			shmctl(shmid, IPC_RMID, NULL);
+-			exit(4);
++			printf("Done deleting the memory\n");
+ 		}
+-
+-		shmctl(shmid, IPC_RMID, NULL);
+-		printf("Done deleting the memory\n");
  	}
- 	brelse(bh);
--	return -1;
-+	return status;
+ 	exit(2);
  }
+@@ -211,7 +213,8 @@ int main(int argc, char **argv)
+ 			shmctl(shmid, IPC_RMID, NULL);
+ 			exit(2);
+ 		}
+-		printf("shmaddr: %p\n", ptr);
++		shmaddr = ptr;
++		printf("shmaddr: %p\n", shmaddr);
  
- /* Write local info to quota file */
+ 		break;
+ 	default:
+-- 
+2.43.0
+
 
 
 
