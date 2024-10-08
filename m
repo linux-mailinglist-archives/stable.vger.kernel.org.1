@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D256E994DFD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086B5994C3C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C1601F2029E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2017283266
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429E01DF722;
-	Tue,  8 Oct 2024 13:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932C71DE898;
+	Tue,  8 Oct 2024 12:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wf06PNYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjftAfl4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40C21DF270;
-	Tue,  8 Oct 2024 13:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DC11CCB32;
+	Tue,  8 Oct 2024 12:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393088; cv=none; b=X36THVQp2hL++X6NaGytdHdSSvoLyXW+5+OG9cyp23EbDPzct+iAexgw5Pa1pV6jtj8EVTP2ZjrbR2s8C7Jl7jY2vvCvnIytf45cg1+iwYry/3JMsR59ux+E7NUcyJkxZb2agx30aXtWk7BhfhA0NGrTEs7pgnma1pxis6LrgM8=
+	t=1728391924; cv=none; b=CzcufMQAgZ2lSeDh5l8CUZpf3f8Y5S4bFSJYWGle2IINtRrqXck3xfJQBCND0dhxSiMSELuufSNBzn+9jKDbRXfvi4bpcLp3PDiqPulK5pZkdxNY03nNFTwdSPpNXsIws4B2efVCSmdUogYC7In2lIlEqCRwHVrV4mVNehlB35g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393088; c=relaxed/simple;
-	bh=/E8oonKZnhVLMuhLfqWuIfTw3qXA/uAiuVOei5GtTaQ=;
+	s=arc-20240116; t=1728391924; c=relaxed/simple;
+	bh=+MUYPQFIRAQHdsHFI2e5Ew+cZ2zMh9j5QGdtR8oI8Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJ7fFFKrVTCUgLprT/le66miqIAz190gHFFrLx3zv3IOcLOMwfFIlKUHc2Qyjj+X8mmBpfP3wsdq/9E6NeaUGhQWa9b2YTJFy1ZYRHqZSIloQL1Afcd6BQI+w00nt9AAC8zmf3k6F0/Z8RXz62cw/uybNLENmx5shx9cWOfxEg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wf06PNYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06267C4CEC7;
-	Tue,  8 Oct 2024 13:11:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AYfRjFv0mpDNXo4CRfjL0tgye81CCS2aSs/b/94Rib5xG+D1kunh/0qUshpRtg5376sGmyNw+riJe9+eZhcjWfbduEZU735gqGrDa9/EcNAOzYYW8GNuVV+Xp3Iaxi6BQ6hPy/UgpVi+IheEX2GILArBqlQZ5CmElWqa5h0/k48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjftAfl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4EFC4CEC7;
+	Tue,  8 Oct 2024 12:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393087;
-	bh=/E8oonKZnhVLMuhLfqWuIfTw3qXA/uAiuVOei5GtTaQ=;
+	s=korg; t=1728391924;
+	bh=+MUYPQFIRAQHdsHFI2e5Ew+cZ2zMh9j5QGdtR8oI8Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wf06PNYaX5daQ37Drun6oRlZb7ecFSHjgyvS5nxhXisU/qpALvle9DpL1p75VGUZB
-	 xOoh3mX15HGpUDm2nQQiaJiUSV3sFlqGU3DuVMA3s9ldMMQcLYLLSSsKIGf2hP/Xe4
-	 kmnlv6bg+umFOy79XQswzJIXNRTun2ryfZYjbtXo=
+	b=GjftAfl45FPhtAeQNfbtwZYGl7/7sGD14AmVhLy+G7flUTiyuhxSSjE6UCBGIohwD
+	 xjtYWm+lJkirYLbak90NroyB/KEAN1l59XKF1G+UMiwiIEf/RHEwG7RKnSekZV5fhA
+	 Nhy1vZYut7oeng5lZTH7JdlKU/bR7nP7Lf9Es7Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oder Chiou <oder_chiou@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/386] ALSA: hda/realtek: Fix the push button function for the ALC257
+Subject: [PATCH 6.11 263/558] drm/amdgpu/gfx9: properly handle error ints on all pipes
 Date: Tue,  8 Oct 2024 14:04:53 +0200
-Message-ID: <20241008115631.362788843@linuxfoundation.org>
+Message-ID: <20241008115712.683479469@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,172 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oder Chiou <oder_chiou@realtek.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 05df9732a0894846c46d0062d4af535c5002799d ]
+[ Upstream commit 48695573d2feaf42812c1ad54e01caff0d1c2d71 ]
 
-The headset push button cannot work properly in case of the ALC257.
-This patch reverted the previous commit to correct the side effect.
+Need to handle the interrupt enables for all pipes.
 
-Fixes: ef9718b3d54e ("ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7")
-Signed-off-by: Oder Chiou <oder_chiou@realtek.com>
-Link: https://patch.msgid.link/20240930105039.3473266-1-oder_chiou@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c   | 44 +++++++++++++++++++++-
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 50 +++++++++++++++++++++++--
+ 2 files changed, 89 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 130508f5ad9c8..657223c49515c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -585,6 +585,7 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
- 	case 0x10ec0285:
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index fc4153a87f947..7d517c94c3efb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -2638,7 +2638,7 @@ static void gfx_v9_0_enable_gui_idle_interrupt(struct amdgpu_device *adev,
+ 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CNTX_BUSY_INT_ENABLE, enable ? 1 : 0);
+ 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CNTX_EMPTY_INT_ENABLE, enable ? 1 : 0);
+ 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CMP_BUSY_INT_ENABLE, enable ? 1 : 0);
+-	if(adev->gfx.num_gfx_rings)
++	if (adev->gfx.num_gfx_rings)
+ 		tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, GFX_IDLE_INT_ENABLE, enable ? 1 : 0);
+ 
+ 	WREG32_SOC15(GC, 0, mmCP_INT_CNTL_RING0, tmp);
+@@ -5933,17 +5933,59 @@ static void gfx_v9_0_set_compute_eop_interrupt_state(struct amdgpu_device *adev,
+ 	}
+ }
+ 
++static u32 gfx_v9_0_get_cpc_int_cntl(struct amdgpu_device *adev,
++				     int me, int pipe)
++{
++	/*
++	 * amdgpu controls only the first MEC. That's why this function only
++	 * handles the setting of interrupts for this specific MEC. All other
++	 * pipes' interrupts are set by amdkfd.
++	 */
++	if (me != 1)
++		return 0;
++
++	switch (pipe) {
++	case 0:
++		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE0_INT_CNTL);
++	case 1:
++		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE1_INT_CNTL);
++	case 2:
++		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE2_INT_CNTL);
++	case 3:
++		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE3_INT_CNTL);
++	default:
++		return 0;
++	}
++}
++
+ static int gfx_v9_0_set_priv_reg_fault_state(struct amdgpu_device *adev,
+ 					     struct amdgpu_irq_src *source,
+ 					     unsigned type,
+ 					     enum amdgpu_interrupt_state state)
+ {
++	u32 cp_int_cntl_reg, cp_int_cntl;
++	int i, j;
++
+ 	switch (state) {
+ 	case AMDGPU_IRQ_STATE_DISABLE:
+ 	case AMDGPU_IRQ_STATE_ENABLE:
+ 		WREG32_FIELD15(GC, 0, CP_INT_CNTL_RING0,
+ 			       PRIV_REG_INT_ENABLE,
+ 			       state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
++		for (i = 0; i < adev->gfx.mec.num_mec; i++) {
++			for (j = 0; j < adev->gfx.mec.num_pipe_per_mec; j++) {
++				/* MECs start at 1 */
++				cp_int_cntl_reg = gfx_v9_0_get_cpc_int_cntl(adev, i + 1, j);
++
++				if (cp_int_cntl_reg) {
++					cp_int_cntl = RREG32_SOC15_IP(GC, cp_int_cntl_reg);
++					cp_int_cntl = REG_SET_FIELD(cp_int_cntl, CP_ME1_PIPE0_INT_CNTL,
++								    PRIV_REG_INT_ENABLE,
++								    state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
++					WREG32_SOC15_IP(GC, cp_int_cntl_reg, cp_int_cntl);
++				}
++			}
++		}
+ 		break;
+ 	default:
+ 		break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+index 20ea6cb01edfd..d95f9a84f97b4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -2886,21 +2886,63 @@ static void gfx_v9_4_3_xcc_set_compute_eop_interrupt_state(
+ 	}
+ }
+ 
++static u32 gfx_v9_4_3_get_cpc_int_cntl(struct amdgpu_device *adev,
++				     int xcc_id, int me, int pipe)
++{
++	/*
++	 * amdgpu controls only the first MEC. That's why this function only
++	 * handles the setting of interrupts for this specific MEC. All other
++	 * pipes' interrupts are set by amdkfd.
++	 */
++	if (me != 1)
++		return 0;
++
++	switch (pipe) {
++	case 0:
++		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE0_INT_CNTL);
++	case 1:
++		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE1_INT_CNTL);
++	case 2:
++		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE2_INT_CNTL);
++	case 3:
++		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE3_INT_CNTL);
++	default:
++		return 0;
++	}
++}
++
+ static int gfx_v9_4_3_set_priv_reg_fault_state(struct amdgpu_device *adev,
+ 					     struct amdgpu_irq_src *source,
+ 					     unsigned type,
+ 					     enum amdgpu_interrupt_state state)
+ {
+-	int i, num_xcc;
++	u32 mec_int_cntl_reg, mec_int_cntl;
++	int i, j, k, num_xcc;
+ 
+ 	num_xcc = NUM_XCC(adev->gfx.xcc_mask);
+ 	switch (state) {
+ 	case AMDGPU_IRQ_STATE_DISABLE:
+ 	case AMDGPU_IRQ_STATE_ENABLE:
+-		for (i = 0; i < num_xcc; i++)
++		for (i = 0; i < num_xcc; i++) {
+ 			WREG32_FIELD15_PREREG(GC, GET_INST(GC, i), CP_INT_CNTL_RING0,
+-				PRIV_REG_INT_ENABLE,
+-				state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
++					      PRIV_REG_INT_ENABLE,
++					      state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
++			for (j = 0; j < adev->gfx.mec.num_mec; j++) {
++				for (k = 0; k < adev->gfx.mec.num_pipe_per_mec; k++) {
++					/* MECs start at 1 */
++					mec_int_cntl_reg = gfx_v9_4_3_get_cpc_int_cntl(adev, i, j + 1, k);
++
++					if (mec_int_cntl_reg) {
++						mec_int_cntl = RREG32_XCC(mec_int_cntl_reg, i);
++						mec_int_cntl = REG_SET_FIELD(mec_int_cntl, CP_ME1_PIPE0_INT_CNTL,
++									     PRIV_REG_INT_ENABLE,
++									     state == AMDGPU_IRQ_STATE_ENABLE ?
++									     1 : 0);
++						WREG32_XCC(mec_int_cntl_reg, mec_int_cntl, i);
++					}
++				}
++			}
++		}
+ 		break;
+ 	default:
+ 		break;
 -- 
 2.43.0
 
