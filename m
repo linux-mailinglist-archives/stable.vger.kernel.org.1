@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A980994E99
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47481994A73
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4CD21F25848
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC5E28A134
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FF71DEFD7;
-	Tue,  8 Oct 2024 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6801CCB32;
+	Tue,  8 Oct 2024 12:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8AJEq27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAhyuy4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A6D1DE4CC;
-	Tue,  8 Oct 2024 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B89F1DE4CB;
+	Tue,  8 Oct 2024 12:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393534; cv=none; b=H/xGgSsVisF25OIzmVEu2A1V3lQDiOjH0OBEbm7SieoxvmxaonA2GeSZFIATM19AkF2YSEISNOXw5XxKUDqfmpmSMLeIKUQKSp41o8YTYxhIRapOnt8jBIChDPd+AOmTfpJrFSTCZ8sK7DqNtCPfG0qlIf1gJYJTtgkSytWTWjw=
+	t=1728390789; cv=none; b=K7ncFQwZHN/fBeoHJ1REHFKbepiNWH6/r6Ou3uOzSTw8wvPnC3nRTRcpem1L6e9Okm8tcU0j7kPX6ElsgvQ5VAZzaOIHZxrQNWwb4ulTNYEVBixguV3yNyKl+LhdlUQLxB5nbGHaumGQ7nsDP/9BJs7UPTwyRmHa2g5mMeqfe6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393534; c=relaxed/simple;
-	bh=klmo5sGMPzDGyc5KzwB3oTTwTGrdWhRLBc42BO8T4xg=;
+	s=arc-20240116; t=1728390789; c=relaxed/simple;
+	bh=UrskRZ24CRtoSfWEwUOeB2o29E6buFO5i1659SRTT98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1tvWOZFuY2B/sKn+tTLduU0Zz+L0YVDRFje6XaKSTRS37WkJSO6+LsWVaO8KdmSnTF5w7U5C3EcQW6CnStw+U1XNYimeS2NZXX/TGZQCeZBOR5uOjzKq0DScwOizxEKA5+zmlj7fcZZ24/JQAgiess0vVmRw3tFKLXwbYor1bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8AJEq27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0E8C4CEC7;
-	Tue,  8 Oct 2024 13:18:53 +0000 (UTC)
+	 MIME-Version; b=t9o3Y8fkssp+uLtxZSt8UGMb4JlU0V1GR0ebEueAlwxS8oKHDHruOOoB3A4jmfqVAx2wPD3iVF2k1nWLMJZDXjLWOlTXYu30qq80SXzpqdPjym/ERH/eWMMlazZvIZMwvz0LZUOUemCqML6Nq/I4pZc35i+HdQihu6+v738Qjbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAhyuy4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663AFC4CECD;
+	Tue,  8 Oct 2024 12:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393534;
-	bh=klmo5sGMPzDGyc5KzwB3oTTwTGrdWhRLBc42BO8T4xg=;
+	s=korg; t=1728390788;
+	bh=UrskRZ24CRtoSfWEwUOeB2o29E6buFO5i1659SRTT98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8AJEq27+80DZaFmMczjVmYOimTnon/ZfddXgB2aA1uuZ/AFrgIO+v9/0MQsxSBLj
-	 LTT6pPYqc/XCVABNKPAlk2dIKBZc1Gb1kBgRVFP2VygYWBEb6InQOv7xNLFsJxzaER
-	 er8YfkA+luYlCA5ZYiJ/foYaYsAmTxh1wDBSNgik=
+	b=GAhyuy4VGxpsjTpHtbxvyKo9966B5EY/1hkzWiCAG4dSoJvGqa8UoKEmvGeIkE/nb
+	 3NfDyo9pJTOXAva2E4T3NbV3rgkvFW+ETSOa2QCJKNUmOu3H2QMIe9bWomyckvgEoX
+	 DHspavJtnPcNiNL7aj4t4HaV4QaALltHwAJCDhSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/386] ext4: ext4_search_dir should return a proper error
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.10 362/482] arm64: fix selection of HAVE_DYNAMIC_FTRACE_WITH_ARGS
 Date: Tue,  8 Oct 2024 14:07:05 +0200
-Message-ID: <20241008115636.496487887@linuxfoundation.org>
+Message-ID: <20241008115702.668277655@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit cd69f8f9de280e331c9e6ff689ced0a688a9ce8f ]
+commit b3d6121eaeb22aee8a02f46706745b1968cc0292 upstream.
 
-ext4_search_dir currently returns -1 in case of a failure, while it returns
-0 when the name is not found. In such failure cases, it should return an
-error code instead.
+The Kconfig logic to select HAVE_DYNAMIC_FTRACE_WITH_ARGS is incorrect,
+and HAVE_DYNAMIC_FTRACE_WITH_ARGS may be selected when it is not
+supported by the combination of clang and GNU LD, resulting in link-time
+errors:
 
-This becomes even more important when ext4_find_inline_entry returns an
-error code as well in the next commit.
+  aarch64-linux-gnu-ld: .init.data has both ordered [`__patchable_function_entries' in init/main.o] and unordered [`.meminit.data' in mm/sparse.o] sections
+  aarch64-linux-gnu-ld: final link failed: bad value
 
--EFSCORRUPTED seems appropriate as such error code as these failures would
-be caused by unexpected record lengths and is in line with other instances
-of ext4_check_dir_entry failures.
+... which can be seen when building with CC=clang using a binutils
+version older than 2.36.
 
-In the case of ext4_dx_find_entry, the current use of ERR_BAD_DX_DIR was
-left as is to reduce the risk of regressions.
+We originally fixed that in commit:
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://patch.msgid.link/20240821152324.3621860-2-cascardo@igalia.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  45bd8951806eb5e8 ("arm64: Improve HAVE_DYNAMIC_FTRACE_WITH_REGS selection for clang")
+
+... by splitting the "select HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement
+into separete CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS and
+GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS options which individually select
+HAVE_DYNAMIC_FTRACE_WITH_ARGS.
+
+Subsequently we accidentally re-introduced the common "select
+HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement in commit:
+
+  26299b3f6ba26bfc ("ftrace: arm64: move from REGS to ARGS")
+
+... then we removed it again in commit:
+
+  68a63a412d18bd2e ("arm64: Fix build with CC=clang, CONFIG_FTRACE=y and CONFIG_STACK_TRACER=y")
+
+... then we accidentally re-introduced it again in commit:
+
+  2aa6ac03516d078c ("arm64: ftrace: Add direct call support")
+
+Fix this for the third time by keeping the unified select statement and
+making this depend onf either GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS or
+CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS. This is more consistent with
+usual style and less likely to go wrong in future.
+
+Fixes: 2aa6ac03516d ("arm64: ftrace: Add direct call support")
+Cc: <stable@vger.kernel.org> # 6.4.x
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240930120448.3352564-1-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm64/Kconfig |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-index 3bd2301cb48e7..9913aa37e697c 100644
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -1526,7 +1526,7 @@ static bool ext4_match(struct inode *parent,
- }
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -195,7 +195,8 @@ config ARM64
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
+-		if $(cc-option,-fpatchable-function-entry=2)
++		if (GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS || \
++		    CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS)
+ 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS \
+ 		if DYNAMIC_FTRACE_WITH_ARGS && DYNAMIC_FTRACE_WITH_CALL_OPS
+ 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
+@@ -268,12 +269,10 @@ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WIT
+ 	def_bool CC_IS_CLANG
+ 	# https://github.com/ClangBuiltLinux/linux/issues/1507
+ 	depends on AS_IS_GNU || (AS_IS_LLVM && (LD_IS_LLD || LD_VERSION >= 23600))
+-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
  
- /*
-- * Returns 0 if not found, -1 on failure, and 1 on success
-+ * Returns 0 if not found, -EFSCORRUPTED on failure, and 1 on success
-  */
- int ext4_search_dir(struct buffer_head *bh, char *search_buf, int buf_size,
- 		    struct inode *dir, struct ext4_filename *fname,
-@@ -1547,7 +1547,7 @@ int ext4_search_dir(struct buffer_head *bh, char *search_buf, int buf_size,
- 			 * a full check */
- 			if (ext4_check_dir_entry(dir, NULL, de, bh, search_buf,
- 						 buf_size, offset))
--				return -1;
-+				return -EFSCORRUPTED;
- 			*res_dir = de;
- 			return 1;
- 		}
-@@ -1555,7 +1555,7 @@ int ext4_search_dir(struct buffer_head *bh, char *search_buf, int buf_size,
- 		de_len = ext4_rec_len_from_disk(de->rec_len,
- 						dir->i_sb->s_blocksize);
- 		if (de_len <= 0)
--			return -1;
-+			return -EFSCORRUPTED;
- 		offset += de_len;
- 		de = (struct ext4_dir_entry_2 *) ((char *) de + de_len);
- 	}
-@@ -1707,8 +1707,10 @@ static struct buffer_head *__ext4_find_entry(struct inode *dir,
- 			goto cleanup_and_exit;
- 		} else {
- 			brelse(bh);
--			if (i < 0)
-+			if (i < 0) {
-+				ret = ERR_PTR(i);
- 				goto cleanup_and_exit;
-+			}
- 		}
- 	next:
- 		if (++block >= nblocks)
-@@ -1803,7 +1805,7 @@ static struct buffer_head * ext4_dx_find_entry(struct inode *dir,
- 		if (retval == 1)
- 			goto success;
- 		brelse(bh);
--		if (retval == -1) {
-+		if (retval < 0) {
- 			bh = ERR_PTR(ERR_BAD_DX_DIR);
- 			goto errout;
- 		}
--- 
-2.43.0
-
+ config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
+ 	def_bool CC_IS_GCC
+ 	depends on $(cc-option,-fpatchable-function-entry=2)
+-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
+ 
+ config 64BIT
+ 	def_bool y
 
 
 
