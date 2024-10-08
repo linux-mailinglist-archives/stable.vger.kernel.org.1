@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3EC5994A5D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE91994EDE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C1F6B25234
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E802328350E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0336192594;
-	Tue,  8 Oct 2024 12:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035011DF251;
+	Tue,  8 Oct 2024 13:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSaome5R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w12L4mGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F32C1E485;
-	Tue,  8 Oct 2024 12:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59E11DED7D;
+	Tue,  8 Oct 2024 13:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390743; cv=none; b=K0TvR+HCVstXf05fb69dvViNmP4d/qkUULB4jqlBosdQ9rb58Vh1gUInD+ITL8iaz3lbNzVy85prGnSE1SRFF/2N69LMiZ2sxJm5suHNufJhmCe2EKmZVZ6md2FNT0Xpgf9L0vTzFGy17AXdqa2TyxD6Ls/tOFtNnawsgUHXoYA=
+	t=1728393695; cv=none; b=lAzSvsC9lwvetYmPtVIftzW5txkVKJ1H7hgB7711hqE1ISkLCaYgI69Vkuoa+GMXPACvdtSNeecMvP9IJkGnCIiv4G5P7p6wHs9nFOQ8GMHcc7cayEghn7oj7a27/j8FSQ1VY57HniNJnG9tz6qdo8rt8zaJWDqctNP4T5lmbaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390743; c=relaxed/simple;
-	bh=OxkhQ4UD9bpZVZGmq2qIrQxBwmnjHaecHBWh+8W0S4k=;
+	s=arc-20240116; t=1728393695; c=relaxed/simple;
+	bh=l26c+m1UxV+/REX2J39chheficli1+fxegmrf1MGUjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/HeWDeUU0kF/jfv12agAQV9Bo4JysHvMVbkHitTonrSaCM6QsDMqy9uXOQOeruCG5RurEJYS2NjMvPJnZ3aQ4PgaiUey8Ofssd5k/lqzCaYJuYhQ23iqmjvQSF6bTsjdPh0CVf6jjGi0az/WpKvwLoW0NKGSUrVDleGgC9o/4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSaome5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F30BC4CEC7;
-	Tue,  8 Oct 2024 12:32:22 +0000 (UTC)
+	 MIME-Version; b=PCEFyPZMUR26QfgZzcdFWY5tLHkCzoOkzMPyOWZLJ94TIfXmtoZgdrIKBZtRAmVdLEmAHYxs5HabmQKyUEhHoQRkKwX3+4lFucb1AyjuhieADsXzZspNavdFCrLxu/kfWwOTby5CPesVy5pK1Y6RS277ER7ndNbyKyf8fYznIvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w12L4mGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E601DC4CECC;
+	Tue,  8 Oct 2024 13:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390743;
-	bh=OxkhQ4UD9bpZVZGmq2qIrQxBwmnjHaecHBWh+8W0S4k=;
+	s=korg; t=1728393695;
+	bh=l26c+m1UxV+/REX2J39chheficli1+fxegmrf1MGUjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSaome5RunOfnsm26hwIdOjgTrY+JgJJ0lb8ZwtglGNFDVP1EjwStYWwCGEkOgfDk
-	 Rrp/wQXmJ2GNJ55eamWQKN3HcrroHhvj96mlTUf64dkg2KUwuE0eX1N+b3d6q5lUFD
-	 32y+siIo6q7wj5FK9v/U4Pa0oBBoAl9/nq/PTDa0=
+	b=w12L4mGQKv4QuZRKG0FB+iqY3i1hcAWg+hkK0ulE/54dTl9/yRwRT9S8v93vqYwQ6
+	 r/+qMMHVR/14MToIW6M2nlgoyGqks3yPj465MXZn+ly9rEPmdaGByxVwssmGum/F81
+	 Vpe3CzsBrB2sLotfUaZX0aBZji3O4Xx7gE+FxOW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Stange <nstange@suse.com>,
-	Chun-Yi Lee <jlee@suse.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 379/482] aoe: fix the potential use-after-free problem in more places
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 197/386] selftests: vDSO: fix vDSO name for powerpc
 Date: Tue,  8 Oct 2024 14:07:22 +0200
-Message-ID: <20241008115703.333146305@linuxfoundation.org>
+Message-ID: <20241008115637.159815271@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Yi Lee <joeyli.kernel@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 6d6e54fc71ad1ab0a87047fd9c211e75d86084a3 upstream.
+[ Upstream commit 59eb856c3ed9b3552befd240c0c339f22eed3fa1 ]
 
-For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
-use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
-instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
-into use-after-free.
+Following error occurs when running vdso_test_correctness on powerpc:
 
-Then Nicolai Stange found more places in aoe have potential use-after-free
-problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
-and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
-packet to tx queue. So they should also use dev_hold() to increase the
-refcnt of skb->dev.
+~ # ./vdso_test_correctness
+[WARN]	failed to find vDSO
+[SKIP]	No vDSO, so skipping clock_gettime() tests
+[SKIP]	No vDSO, so skipping clock_gettime64() tests
+[RUN]	Testing getcpu...
+[OK]	CPU 0: syscall: cpu 0, node 0
 
-On the other hand, moving dev_put() to tx() causes that the refcnt of
-skb->dev be reduced to a negative value, because corresponding
-dev_hold() are not called in revalidate(), aoecmd_ata_rw(), resend(),
-probe(), and aoecmd_cfg_rsp(). This patch fixed this issue.
+On powerpc, vDSO is neither called linux-vdso.so.1 nor linux-gate.so.1
+but linux-vdso32.so.1 or linux-vdso64.so.1.
 
-Cc: stable@vger.kernel.org
-Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
-Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
-Reported-by: Nicolai Stange <nstange@suse.com>
-Signed-off-by: Chun-Yi Lee <jlee@suse.com>
-Link: https://lore.kernel.org/stable/20240624064418.27043-1-jlee%40suse.com
-Link: https://lore.kernel.org/r/20241002035458.24401-1-jlee@suse.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also search those two names before giving up.
+
+Fixes: c7e5789b24d3 ("kselftest: Move test_vdso to the vDSO test suite")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/aoe/aoecmd.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vDSO/vdso_test_correctness.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/block/aoe/aoecmd.c
-+++ b/drivers/block/aoe/aoecmd.c
-@@ -361,6 +361,7 @@ ata_rw_frameinit(struct frame *f)
- 	}
- 
- 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- }
- 
-@@ -401,6 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
- 	}
- 	return 1;
- }
-@@ -483,10 +486,13 @@ resend(struct aoedev *d, struct frame *f
- 	memcpy(h->dst, t->addr, sizeof h->dst);
- 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
- 
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- 	skb = skb_clone(skb, GFP_ATOMIC);
--	if (skb == NULL)
-+	if (skb == NULL) {
-+		dev_put(t->ifp->nd);
+diff --git a/tools/testing/selftests/vDSO/vdso_test_correctness.c b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+index e691a3cf14911..cdb697ae8343c 100644
+--- a/tools/testing/selftests/vDSO/vdso_test_correctness.c
++++ b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+@@ -114,6 +114,12 @@ static void fill_function_pointers()
+ 	if (!vdso)
+ 		vdso = dlopen("linux-gate.so.1",
+ 			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso32.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
++	if (!vdso)
++		vdso = dlopen("linux-vdso64.so.1",
++			      RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
+ 	if (!vdso) {
+ 		printf("[WARN]\tfailed to find vDSO\n");
  		return;
-+	}
- 	f->sent = ktime_get();
- 	__skb_queue_head_init(&queue);
- 	__skb_queue_tail(&queue, skb);
-@@ -617,6 +623,8 @@ probe(struct aoetgt *t)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
- 	}
- }
- 
-@@ -1395,6 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
- 	ah->cmdstat = ATA_CMD_ID_ATA;
- 	ah->lba3 = 0xa0;
- 
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- 
- 	d->rttavg = RTTAVG_INIT;
-@@ -1404,6 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
- 	skb = skb_clone(skb, GFP_ATOMIC);
- 	if (skb)
- 		f->sent = ktime_get();
-+	else
-+		dev_put(t->ifp->nd);
- 
- 	return skb;
- }
+-- 
+2.43.0
+
 
 
 
