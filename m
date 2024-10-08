@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D73E994E83
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA03994CDE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F617282B97
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83CF61F21B3E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D4E1DF275;
-	Tue,  8 Oct 2024 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E782D1DE8B1;
+	Tue,  8 Oct 2024 12:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWEOEtHI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSEaw4my"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E371DE89F;
-	Tue,  8 Oct 2024 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F90189910;
+	Tue,  8 Oct 2024 12:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393469; cv=none; b=fmFvc9g9rtILE1kYGE5mCGYUGkLqBGpjWBmIKWVG9/y2IzLFSskOOjW9q504KJWzzwHxU2/h4YlaP7O5jpkwW3NGQVYU6V6hl8J+LvSEk8DuSXG4JtKS1W2CpITnAMO8x29Js6udgZxh/heO2kj6phMc4MUT8I514c6pR1QZnfc=
+	t=1728392309; cv=none; b=pIEV2Fd1lI64pKfazAaYkRiuM2h9F+7x+A0oINubSeedsSqAx6M7VEZvS6F01waE61p7xfQNyxnRpKvcYXkIdJVU6uffBvQQwUiQ2zUU4+OSOq9di6VQXOvFbaQVJAxlbSjn+x5nFKASBenFMfM6b9FJF0GND82prAYtN+wSa3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393469; c=relaxed/simple;
-	bh=0chEUejavC1w2F3aMQpSuvllH4BbTgqD2h+1YZ5W+Yo=;
+	s=arc-20240116; t=1728392309; c=relaxed/simple;
+	bh=ioVm7Bopmtaij3vJgTgg/cwadWFufMZXFzkmp63SHvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=raKamw/cXIZEawCIfzabpFxqn+yQR8cqDxj4w9AE78XZAObM3HPShcwsgXPc1fiym742oqO8+hIaWwvsupkwUps1q0vJj60+JyCSNOE4U8BIyq47a2qYzNkDwux1sO0VxW3q7A7Oprcnm7VBlfBJrKoYYrxs7ZHHckSU0zPBr64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWEOEtHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02F1C4CEC7;
-	Tue,  8 Oct 2024 13:17:48 +0000 (UTC)
+	 MIME-Version; b=HufeCVq/uARZX/gGtx+6FW6Bx7BxG5293T3Iv9sA6IhGhH2uSsLsl+XCWxND5z3zfXDn7+Le22O+70WQzQMF2Tp3DR1VM9i6umeIaZOQ6WaUcTqXmqMDeVHAww/SPgOtD54+vuykVYjM5i+owsVUxlG2dLSZeMZtN47SbyAyrGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSEaw4my; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132BAC4CEC7;
+	Tue,  8 Oct 2024 12:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393469;
-	bh=0chEUejavC1w2F3aMQpSuvllH4BbTgqD2h+1YZ5W+Yo=;
+	s=korg; t=1728392309;
+	bh=ioVm7Bopmtaij3vJgTgg/cwadWFufMZXFzkmp63SHvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWEOEtHIz/9EOloDs2AHnzEs3GzxrCcEdBMFp0O2segFfHx6VjwWqbZu4ZSUQtcdX
-	 bI7bA8zdD3KOlrB6k6ALACf4zzB5qb0J5FECP/Q8SAAEG9s41yp08LtbfbtJNNRo/J
-	 Mv/6O9pXAmIyI1rtlGihZV9o5+a+0cOcZGCZE+3c=
+	b=fSEaw4my/1eVOr+DnIkASozNDzu6mr3bL1Kb68JO2uOq44eApQopeUHieWfO4rqEw
+	 ONF4sxuBcZyBomYAJeyQYmirC8NgIrjouQs2jkYauZWYbcZzRbCfA+1Saj8iRBcyCT
+	 l/yzOL3glNYKeHxib0aJSGTg+bgEC/aN6h+UUd4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/386] cgroup: Disallow mounting v1 hierarchies without controller implementation
-Date: Tue,  8 Oct 2024 14:06:15 +0200
-Message-ID: <20241008115634.553871918@linuxfoundation.org>
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.11 346/558] platform/x86: x86-android-tablets: Fix use after free on platform_device_register() errors
+Date: Tue,  8 Oct 2024 14:06:16 +0200
+Message-ID: <20241008115715.915150713@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 3c41382e920f1dd5c9f432948fe799c07af1cced ]
+commit 2fae3129c0c08e72b1fe93e61fd8fd203252094a upstream.
 
-The configs that disable some v1 controllers would still allow mounting
-them but with no controller-specific files. (Making such hierarchies
-equivalent to named v1 hierarchies.) To achieve behavior consistent with
-actual out-compilation of a whole controller, the mounts should treat
-respective controllers as non-existent.
+x86_android_tablet_remove() frees the pdevs[] array, so it should not
+be used after calling x86_android_tablet_remove().
 
-Wrap implementation into a helper function, leverage legacy_files to
-detect compiled out controllers. The effect is that mounts on v1 would
-fail and produce a message like:
-  [ 1543.999081] cgroup: Unknown subsys name 'memory'
+When platform_device_register() fails, store the pdevs[x] PTR_ERR() value
+into the local ret variable before calling x86_android_tablet_remove()
+to avoid using pdevs[] after it has been freed.
 
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5eba0141206e ("platform/x86: x86-android-tablets: Add support for instantiating platform-devs")
+Fixes: e2200d3f26da ("platform/x86: x86-android-tablets: Add gpio_keys support to x86_android_tablet_init()")
+Cc: stable@vger.kernel.org
+Reported-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Closes: https://lore.kernel.org/platform-driver-x86/20240917120458.7300-1-a.burakov@rosalinux.ru/
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241005130545.64136-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup-v1.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/platform/x86/x86-android-tablets/core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup-v1.c b/kernel/cgroup/cgroup-v1.c
-index 9cb00ebe9ac6d..01149e47e1a72 100644
---- a/kernel/cgroup/cgroup-v1.c
-+++ b/kernel/cgroup/cgroup-v1.c
-@@ -46,6 +46,12 @@ bool cgroup1_ssid_disabled(int ssid)
- 	return cgroup_no_v1_mask & (1 << ssid);
- }
+--- a/drivers/platform/x86/x86-android-tablets/core.c
++++ b/drivers/platform/x86/x86-android-tablets/core.c
+@@ -390,8 +390,9 @@ static __init int x86_android_tablet_pro
+ 	for (i = 0; i < pdev_count; i++) {
+ 		pdevs[i] = platform_device_register_full(&dev_info->pdev_info[i]);
+ 		if (IS_ERR(pdevs[i])) {
++			ret = PTR_ERR(pdevs[i]);
+ 			x86_android_tablet_remove(pdev);
+-			return PTR_ERR(pdevs[i]);
++			return ret;
+ 		}
+ 	}
  
-+static bool cgroup1_subsys_absent(struct cgroup_subsys *ss)
-+{
-+	/* Check also dfl_cftypes for file-less controllers, i.e. perf_event */
-+	return ss->legacy_cftypes == NULL && ss->dfl_cftypes;
-+}
-+
- /**
-  * cgroup_attach_task_all - attach task 'tsk' to all cgroups of task 'from'
-  * @from: attach to all cgroups of a given task
-@@ -932,7 +938,8 @@ int cgroup1_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 		if (ret != -ENOPARAM)
- 			return ret;
- 		for_each_subsys(ss, i) {
--			if (strcmp(param->key, ss->legacy_name))
-+			if (strcmp(param->key, ss->legacy_name) ||
-+			    cgroup1_subsys_absent(ss))
- 				continue;
- 			if (!cgroup_ssid_enabled(i) || cgroup1_ssid_disabled(i))
- 				return invalfc(fc, "Disabled controller '%s'",
-@@ -1024,7 +1031,8 @@ static int check_cgroupfs_options(struct fs_context *fc)
- 	mask = ~((u16)1 << cpuset_cgrp_id);
- #endif
- 	for_each_subsys(ss, i)
--		if (cgroup_ssid_enabled(i) && !cgroup1_ssid_disabled(i))
-+		if (cgroup_ssid_enabled(i) && !cgroup1_ssid_disabled(i) &&
-+		    !cgroup1_subsys_absent(ss))
- 			enabled |= 1 << i;
- 
- 	ctx->subsys_mask &= enabled;
--- 
-2.43.0
-
+@@ -443,8 +444,9 @@ static __init int x86_android_tablet_pro
+ 								  PLATFORM_DEVID_AUTO,
+ 								  &pdata, sizeof(pdata));
+ 		if (IS_ERR(pdevs[pdev_count])) {
++			ret = PTR_ERR(pdevs[pdev_count]);
+ 			x86_android_tablet_remove(pdev);
+-			return PTR_ERR(pdevs[pdev_count]);
++			return ret;
+ 		}
+ 		pdev_count++;
+ 	}
 
 
 
