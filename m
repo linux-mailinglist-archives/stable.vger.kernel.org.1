@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70FAD994AAD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA48E994D47
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6192854D6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD281C24B90
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45CF1B81CC;
-	Tue,  8 Oct 2024 12:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360001DE4CD;
+	Tue,  8 Oct 2024 13:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngsj07lw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdiBdRfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639861779B1;
-	Tue,  8 Oct 2024 12:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78701DFD1;
+	Tue,  8 Oct 2024 13:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390934; cv=none; b=YwgA8kken8AueIfgdoGAeOewahT8zTKKQ0hz1wWTrd4V4yn8nBkv5Ee/J9vZaPPWHLwCgaKrvbeOOCGCN9sR8H/qqtGLMCU5ulzJuaAqYe/8Ftt7JSjma0XLhNidycmMKjnI8mvF9sEQs6jbYbqcog7sLIjzXw9/Zgt866UMbNk=
+	t=1728392637; cv=none; b=a85cpuEP5daxWFJhg4xGF3GsszYN8gLtkIJfhAuyJKn9MjcGp90La/NVpDd0hOzp/Gwk0kggw7H1t5C6yk7G8DccGSXgbUjIza41tQdg5ubko+LYaPAmr4Uq4JYqAwhuPAR/OPYIe0+L7CVKsoDH4nzSO/AMIeknZOuY2Lr15+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390934; c=relaxed/simple;
-	bh=V7btzH06HqdZ6IZoGYKWpayy3s4rPn99jtAJ+lsbQ0Y=;
+	s=arc-20240116; t=1728392637; c=relaxed/simple;
+	bh=H0b8g9tgO+GfJe3dj75Pafw0n1KRt/UeOJr0aKDDD8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MkmXMINZZfWC7z4/hq7kuQIwBMg9Ds8K54uY/5HkkK4/wKYoSlm5fDEio+rnhG4W4QDJI8UDB5zfZoQ1A8HzJrZmvjRSreyL2BKwYqEXiXLk4QBB/Pg9r2sFulQr5DEhsEZVA4eziiBtsrHH27JXPJq55Ad+54GR0kRBEXxh3O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngsj07lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0D7C4CEC7;
-	Tue,  8 Oct 2024 12:35:33 +0000 (UTC)
+	 MIME-Version; b=eSoFl3aO2SBRBEfo+2WvqbeTlOkET+iRG+U2dtwTlZVH6UFRt1NyZcs8C4fVPy2ef+WDSvirtXIodpWnDLtPb1NNFmIWmpqnQDmiHEdb6Ml+aJFozLVnRT0MneMqAPfrsRj5+icA0TF/xGH0QGflKrJ/yKI5yw6BQmsDyudIxVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdiBdRfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6756DC4CEC7;
+	Tue,  8 Oct 2024 13:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390934;
-	bh=V7btzH06HqdZ6IZoGYKWpayy3s4rPn99jtAJ+lsbQ0Y=;
+	s=korg; t=1728392636;
+	bh=H0b8g9tgO+GfJe3dj75Pafw0n1KRt/UeOJr0aKDDD8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngsj07lwvMwCFN0K47YdcvSX70MhmYrLqZZwSzyvl7z/25iZfa8/gKLyATYISM4qW
-	 EOdPWwEHWnANkixbZgXlpjtvLs550OHEVA8Oxv0x6NK/Pz2ozEy6cTXyA70wbZf/2w
-	 +vOPx6v/7Ows5xSeUCAjKEU4AUpFtCHlQpzRDlPg=
+	b=XdiBdRfUZXOFAk2jUChBaH2oOKKdr01VHW0CbiKDDsZ+I0bNMdOpz/oBjoGro4RCF
+	 Fno4K6jLfnXkS0lW0LrEFCwPQtuiQlrOwMoUveuALxdmV5S8oezA5eGPpxru/Orctr
+	 xmAMrbO6JdYKLdu3tNDdA1V34M7YbuWy0hDeuRFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asahi Lina <lina@asahilina.net>,
-	Rob Clark <robdclark@chromium.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Janne Grunau <j@jannau.net>
-Subject: [PATCH 6.10 439/482] drm/sched: Fix dynamic job-flow control race
-Date: Tue,  8 Oct 2024 14:08:22 +0200
-Message-ID: <20241008115705.799383822@linuxfoundation.org>
+	Ben Greear <greearb@candelatech.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.11 473/558] vrf: revert "vrf: Remove unnecessary RCU-bh critical section"
+Date: Tue,  8 Oct 2024 14:08:23 +0200
+Message-ID: <20241008115720.858007665@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 440d52b370b03b366fd26ace36bab20552116145 upstream.
+commit b04c4d9eb4f25b950b33218e33b04c94e7445e51 upstream.
 
-Fixes a race condition reported here: https://github.com/AsahiLinux/linux/issues/309#issuecomment-2238968609
+This reverts commit 504fc6f4f7f681d2a03aa5f68aad549d90eab853.
 
-The whole premise of lockless access to a single-producer-single-
-consumer queue is that there is just a single producer and single
-consumer.  That means we can't call drm_sched_can_queue() (which is
-about queueing more work to the hw, not to the spsc queue) from
-anywhere other than the consumer (wq).
+dev_queue_xmit_nit is expected to be called with BH disabled.
+__dev_queue_xmit has the following:
 
-This call in the producer is just an optimization to avoid scheduling
-the consuming worker if it cannot yet queue more work to the hw.  It
-is safe to drop this optimization to avoid the race condition.
+        /* Disable soft irqs for various locks below. Also
+         * stops preemption for RCU.
+         */
+        rcu_read_lock_bh();
 
-Suggested-by: Asahi Lina <lina@asahilina.net>
-Fixes: a78422e9dff3 ("drm/sched: implement dynamic job-flow control")
-Closes: https://github.com/AsahiLinux/linux/issues/309
+VRF must follow this invariant. The referenced commit removed this
+protection. Which triggered a lockdep warning:
+
+	================================
+	WARNING: inconsistent lock state
+	6.11.0 #1 Tainted: G        W
+	--------------------------------
+	inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+	btserver/134819 [HC0[0]:SC0[0]:HE1:SE1] takes:
+	ffff8882da30c118 (rlock-AF_PACKET){+.?.}-{2:2}, at: tpacket_rcv+0x863/0x3b30
+	{IN-SOFTIRQ-W} state was registered at:
+	  lock_acquire+0x19a/0x4f0
+	  _raw_spin_lock+0x27/0x40
+	  packet_rcv+0xa33/0x1320
+	  __netif_receive_skb_core.constprop.0+0xcb0/0x3a90
+	  __netif_receive_skb_list_core+0x2c9/0x890
+	  netif_receive_skb_list_internal+0x610/0xcc0
+          [...]
+
+	other info that might help us debug this:
+	 Possible unsafe locking scenario:
+
+	       CPU0
+	       ----
+	  lock(rlock-AF_PACKET);
+	  <Interrupt>
+	    lock(rlock-AF_PACKET);
+
+	 *** DEADLOCK ***
+
+	Call Trace:
+	 <TASK>
+	 dump_stack_lvl+0x73/0xa0
+	 mark_lock+0x102e/0x16b0
+	 __lock_acquire+0x9ae/0x6170
+	 lock_acquire+0x19a/0x4f0
+	 _raw_spin_lock+0x27/0x40
+	 tpacket_rcv+0x863/0x3b30
+	 dev_queue_xmit_nit+0x709/0xa40
+	 vrf_finish_direct+0x26e/0x340 [vrf]
+	 vrf_l3_out+0x5f4/0xe80 [vrf]
+	 __ip_local_out+0x51e/0x7a0
+          [...]
+
+Fixes: 504fc6f4f7f6 ("vrf: Remove unnecessary RCU-bh critical section")
+Link: https://lore.kernel.org/netdev/20240925185216.1990381-1-greearb@candelatech.com/
+Reported-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Tested-by: Janne Grunau <j@jannau.net>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240913202301.16772-1-robdclark@gmail.com
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240929061839.1175300-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c | 4 ++--
- drivers/gpu/drm/scheduler/sched_main.c   | 7 ++-----
- include/drm/gpu_scheduler.h              | 2 +-
- 3 files changed, 5 insertions(+), 8 deletions(-)
+ drivers/net/vrf.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
-index 58c8161289fe..567e5ace6d0c 100644
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -380,7 +380,7 @@ static void drm_sched_entity_wakeup(struct dma_fence *f,
- 		container_of(cb, struct drm_sched_entity, cb);
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -607,7 +607,9 @@ static void vrf_finish_direct(struct sk_
+ 		eth_zero_addr(eth->h_dest);
+ 		eth->h_proto = skb->protocol;
  
- 	drm_sched_entity_clear_dep(f, cb);
--	drm_sched_wakeup(entity->rq->sched, entity);
-+	drm_sched_wakeup(entity->rq->sched);
- }
++		rcu_read_lock_bh();
+ 		dev_queue_xmit_nit(skb, vrf_dev);
++		rcu_read_unlock_bh();
  
- /**
-@@ -612,7 +612,7 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
- 		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
- 			drm_sched_rq_update_fifo(entity, submit_ts);
- 
--		drm_sched_wakeup(entity->rq->sched, entity);
-+		drm_sched_wakeup(entity->rq->sched);
+ 		skb_pull(skb, ETH_HLEN);
  	}
- }
- EXPORT_SYMBOL(drm_sched_entity_push_job);
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index 7e90c9f95611..a124d5e77b5e 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -1022,15 +1022,12 @@ EXPORT_SYMBOL(drm_sched_job_cleanup);
- /**
-  * drm_sched_wakeup - Wake up the scheduler if it is ready to queue
-  * @sched: scheduler instance
-- * @entity: the scheduler entity
-  *
-  * Wake up the scheduler if we can queue jobs.
-  */
--void drm_sched_wakeup(struct drm_gpu_scheduler *sched,
--		      struct drm_sched_entity *entity)
-+void drm_sched_wakeup(struct drm_gpu_scheduler *sched)
- {
--	if (drm_sched_can_queue(sched, entity))
--		drm_sched_run_job_queue(sched);
-+	drm_sched_run_job_queue(sched);
- }
- 
- /**
-diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
-index 5acc64954a88..e28bc649b5c9 100644
---- a/include/drm/gpu_scheduler.h
-+++ b/include/drm/gpu_scheduler.h
-@@ -574,7 +574,7 @@ void drm_sched_entity_modify_sched(struct drm_sched_entity *entity,
- 
- void drm_sched_tdr_queue_imm(struct drm_gpu_scheduler *sched);
- void drm_sched_job_cleanup(struct drm_sched_job *job);
--void drm_sched_wakeup(struct drm_gpu_scheduler *sched, struct drm_sched_entity *entity);
-+void drm_sched_wakeup(struct drm_gpu_scheduler *sched);
- bool drm_sched_wqueue_ready(struct drm_gpu_scheduler *sched);
- void drm_sched_wqueue_stop(struct drm_gpu_scheduler *sched);
- void drm_sched_wqueue_start(struct drm_gpu_scheduler *sched);
--- 
-2.46.2
-
 
 
 
