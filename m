@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3C2994C11
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9A999493D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1E77B20AB2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8BB6B228C0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322321DE4CD;
-	Tue,  8 Oct 2024 12:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B2B1DEFF7;
+	Tue,  8 Oct 2024 12:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWijxuC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH2bdXRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59131DE2CF;
-	Tue,  8 Oct 2024 12:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6EC1DED79;
+	Tue,  8 Oct 2024 12:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391796; cv=none; b=WEyz7abZLNM3x5VDhARruWOz1ErBlyTRmFpAoWvCXy6frsBnJfsJm6Dmj6zM34AfSD/6P4I8lkwQFt6S7C4tH2kEd7EkbqyGWnJRd4o8jGvpFzddDirk4JXqfZzPa+19pG7hGIBn/LsjwixCGVyWodPkrpC0TDZ5JWz8cF0O6n8=
+	t=1728390048; cv=none; b=hwkhkeyhQm1WYix1VzSmUqswJLmaoZiDc81yJ09zFyC7M6MrGSrvgzZdrRNtMtW95iXl8gvHvpoBJBdn/PF9qmFCfvNMzZX4OCk7aczhWTxhU3AQ0Wsl9DwQRs8UK1Qy3+jHy35HfywUlQWynvWwilT3DGidF+QrVFsBhfh5lSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391796; c=relaxed/simple;
-	bh=JZNeuNXTPViikHWTCE6PisxrsEomDLJKuylAYjMLiI4=;
+	s=arc-20240116; t=1728390048; c=relaxed/simple;
+	bh=sD4mLyjVZiJthb//pkHl34w+JzSwAIdI94yUUxbVr5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WcT8inxDbSjqEToF+om2d7QJinTdwXdRGMm3mwACEo6L8Ctg5etb2w5ceQbYNe14INdeMUFI7J5Z0ge7xD5x2yIAufhePIzThsR95g0FXhS0tOxSklE1YLBBLKtmLV9TbvVRox6lv1teAprYpot42Ov42z/Ns3CVO7aKb0PCuN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWijxuC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073CEC4CEC7;
-	Tue,  8 Oct 2024 12:49:54 +0000 (UTC)
+	 MIME-Version; b=Fur3bHVTODpWwqy6UTKmH4l1I8r+OwCZTC2qBHzW3oznies2zwdItk4c+2QcJmztAeRTTsVlQ1ni2S4r2JS/v9jHGGkWx5SAnt1iQe8IcmqDqv812ZKRflE4wTAhgIRwX5c55IkzD8g315glcCAxEE0NiH0kY/o29wfl3YlJ2zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH2bdXRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B3BC4CEC7;
+	Tue,  8 Oct 2024 12:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391795;
-	bh=JZNeuNXTPViikHWTCE6PisxrsEomDLJKuylAYjMLiI4=;
+	s=korg; t=1728390048;
+	bh=sD4mLyjVZiJthb//pkHl34w+JzSwAIdI94yUUxbVr5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWijxuC7f7ynXluSXZxhbFqiKnjQlDSJ44RhG8jq3lXWVWPkTVXHQeLKO3/VNQ/G0
-	 ZDNnIDlDNtOwJRhlF9R+GjNi2TPVfd6UTW9EFd77a7KTtBgHJBN7zu7qaphk8eWVB5
-	 If+EdWf2Kgt51PjAdOB9XJJzucrPVGmk32FDVRCE=
+	b=BH2bdXRJTGBfPAdOddCQ5n7H2gYKJII8YLW36/tRBjMwEfYyj1Jr0a7j90AOH3vEY
+	 7ou1zoDhx2bdmFRgl8PzfoObh9ZIUT1j18q3uPafW0chy+JmGEpflEwTbE/FxpRoYa
+	 tfboNI30EwCASZjQh9ZAhHhcOuYiw7yGAhWW0bn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 207/558] drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit
+Subject: [PATCH 6.10 174/482] drm/amd/display: Pass non-null to dcn20_validate_apply_pipe_split_flags
 Date: Tue,  8 Oct 2024 14:03:57 +0200
-Message-ID: <20241008115710.489493054@linuxfoundation.org>
+Message-ID: <20241008115655.153093967@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit fec5f8e8c6bcf83ed7a392801d7b44c5ecfc1e82 ]
+[ Upstream commit 5559598742fb4538e4c51c48ef70563c49c2af23 ]
 
-Before this commit, only submits with both a BO_HANDLES chunk and a
-'bo_list_handle' would be rejected (by amdgpu_cs_parser_bos).
+[WHAT & HOW]
+"dcn20_validate_apply_pipe_split_flags" dereferences merge, and thus it
+cannot be a null pointer. Let's pass a valid pointer to avoid null
+dereference.
 
-But if UMD sent multiple BO_HANDLES, what would happen is:
-* only the last one would be really used
-* all the others would leak memory as amdgpu_cs_p1_bo_handles would
-  overwrite the previous p->bo_list value
+This fixes 2 FORWARD_NULL issues reported by Coverity.
 
-This commit rejects submissions with multiple BO_HANDLES chunks to
-match the implementation of the parser.
-
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c | 3 ++-
+ drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 6dfdff58bffd1..78b3c067fea7e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -263,6 +263,10 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
- 			if (size < sizeof(struct drm_amdgpu_bo_list_in))
- 				goto free_partial_kdata;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
+index 6b380e037e3f8..c0d1b41eb9004 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
+@@ -2033,6 +2033,7 @@ bool dcn20_fast_validate_bw(
+ {
+ 	bool out = false;
+ 	int split[MAX_PIPES] = { 0 };
++	bool merge[MAX_PIPES] = { false };
+ 	int pipe_cnt, i, pipe_idx, vlevel;
  
-+			/* Only a single BO list is allowed to simplify handling. */
-+			if (p->bo_list)
-+				ret = -EINVAL;
-+
- 			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
- 			if (ret)
- 				goto free_partial_kdata;
+ 	ASSERT(pipes);
+@@ -2057,7 +2058,7 @@ bool dcn20_fast_validate_bw(
+ 	if (vlevel > context->bw_ctx.dml.soc.num_states)
+ 		goto validate_fail;
+ 
+-	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, NULL);
++	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, merge);
+ 
+ 	/*initialize pipe_just_split_from to invalid idx*/
+ 	for (i = 0; i < MAX_PIPES; i++)
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c
+index 8663cbc3d1cf5..347e6aaea582f 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn21/dcn21_resource.c
+@@ -774,6 +774,7 @@ bool dcn21_fast_validate_bw(struct dc *dc,
+ {
+ 	bool out = false;
+ 	int split[MAX_PIPES] = { 0 };
++	bool merge[MAX_PIPES] = { false };
+ 	int pipe_cnt, i, pipe_idx, vlevel;
+ 
+ 	ASSERT(pipes);
+@@ -816,7 +817,7 @@ bool dcn21_fast_validate_bw(struct dc *dc,
+ 			goto validate_fail;
+ 	}
+ 
+-	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, NULL);
++	vlevel = dcn20_validate_apply_pipe_split_flags(dc, context, vlevel, split, merge);
+ 
+ 	for (i = 0, pipe_idx = 0; i < dc->res_pool->pipe_count; i++) {
+ 		struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
 -- 
 2.43.0
 
