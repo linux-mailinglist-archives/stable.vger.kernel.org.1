@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-81975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B0A994A66
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BED994D0C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855181F22598
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BD11C25105
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A781CCB32;
-	Tue,  8 Oct 2024 12:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB791DE89A;
+	Tue,  8 Oct 2024 13:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boT+X6qE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ0MnNLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03539178384;
-	Tue,  8 Oct 2024 12:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFD31DE4CC;
+	Tue,  8 Oct 2024 13:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390763; cv=none; b=rqae0kCV+eTsnq9FIWEQJK5o7oHjVM1jILpKSRotn9EeKtpplXBdTI2iwjE+BgEPR9SW/kCDUE923lgrJMncSG/xLflIYkqyBxdM+SfAyfF/GYyJCIERfraiQJVoZ3K9K+jxI7gfaNQ8syrVRJ5jHouU3eYuk07rzLgzbjh7qz0=
+	t=1728392446; cv=none; b=cbVjzOk9UxxLPgGUN4tt+Dg66EnjXLyX76E25VF5Y+DyN0d9MrAUHxHszrcee0Ddq7VsZlOLI66f6liBz0LAxMwNylUQwF3uKjVc8ZlQrbI5ZXih+cgEeoRyldW/bH5CvKe+Al20zoe7iY8yTFf9GMJsa2PbFQbkqZNYvI4Anq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390763; c=relaxed/simple;
-	bh=6aNnBKhRvPZpL2Pa1t1HpLM7a2XSzwCEUksa6LJvA1s=;
+	s=arc-20240116; t=1728392446; c=relaxed/simple;
+	bh=uRRZMslZ48idI8vdHrgMlEIIl7itmAk2ueG2uY/W2UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9buP9BRUzn+XXWkRtguXOIHV/UuRYxHa9n6A4FB+Q83XRLSRqoUuD5yKxp/eRMcnh8j9EHvgDMh6NKzPjnhspN/VqhpALTYJDgso/NCtDUyA/Ng6JjH+qvO+/YGOF4HgomehNYfuBNYHJhLkj5ciYnZKfnyBVWo9LlBhYQ0Qpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boT+X6qE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65134C4CEC7;
-	Tue,  8 Oct 2024 12:32:42 +0000 (UTC)
+	 MIME-Version; b=FLHT12fez0If4PBxzVNAmB/mFZifj/DtpQXkVt3KW94a2on2R9WxtKqaCiaGvLIi7G4+ODLr7Mgys14rAW02FJ9ZQRcsT3zcj1gn2Y59b+PsL+FNm0O/f0hwcNRIlhwchbhrzIcaX6oq8A6SKICVj/urARj2bYWxxJuw7679Q+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ0MnNLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D25DC4CEC7;
+	Tue,  8 Oct 2024 13:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390762;
-	bh=6aNnBKhRvPZpL2Pa1t1HpLM7a2XSzwCEUksa6LJvA1s=;
+	s=korg; t=1728392445;
+	bh=uRRZMslZ48idI8vdHrgMlEIIl7itmAk2ueG2uY/W2UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boT+X6qEY1Jb77nZAdQsbicbuvXh7tklMg6ol+yp2tkJ8la0yWaUrZjgeAzNN47j/
-	 o4QSlUkFS+zOHVNqTiCkdV9x1J1NryuHNQUXlNVlTIs10RNbNnrJRlDnSyZGirYpr6
-	 +JXtO5w4MHlb4pTJJSlI1bhehHgItLQwag1JLTPs=
+	b=FZ0MnNLX2dNPxqM10HgAELW+iNy8SWdBp04lZWn/M61F3h9LE8iJlMaFEfO3tPeGF
+	 PppC8dnaBGujXsbQ142r6Q3yJkC++3EHuWD6JA+LSDWMXFYIlZ4cAQJlJk/Y8b1xjK
+	 fyMBvsDFL5/zGez2rRMIf5rQcQW8dCbR+K0ZlKgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 385/482] clk: qcom: dispcc-sm8250: use CLK_SET_RATE_PARENT for branch clocks
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 418/558] ocfs2: fix possible null-ptr-deref in ocfs2_set_buffer_uptodate
 Date: Tue,  8 Oct 2024 14:07:28 +0200
-Message-ID: <20241008115703.565371943@linuxfoundation.org>
+Message-ID: <20241008115718.723166576@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +69,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit 0e93c6320ecde0583de09f3fe801ce8822886fec upstream.
+commit 33b525cef4cff49e216e4133cc48452e11c0391e upstream.
 
-Add CLK_SET_RATE_PARENT for several branch clocks. Such clocks don't
-have a way to change the rate, so set the parent rate instead.
+When doing cleanup, if flags without OCFS2_BH_READAHEAD, it may trigger
+NULL pointer dereference in the following ocfs2_set_buffer_uptodate() if
+bh is NULL.
 
-Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-1-1149dd8399fe@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lkml.kernel.org/r/20240902023636.1843422-3-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: Heming Zhao <heming.zhao@suse.com>
+Suggested-by: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/dispcc-sm8250.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ocfs2/buffer_head_io.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -849,6 +849,7 @@ static struct clk_branch disp_cc_mdss_dp
- 				&disp_cc_mdss_dp_link1_div_clk_src.clkr.hw,
- 			},
- 			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -884,6 +885,7 @@ static struct clk_branch disp_cc_mdss_dp
- 				&disp_cc_mdss_dp_link_div_clk_src.clkr.hw,
- 			},
- 			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1009,6 +1011,7 @@ static struct clk_branch disp_cc_mdss_md
- 				&disp_cc_mdss_mdp_clk_src.clkr.hw,
- 			},
- 			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -388,7 +388,8 @@ read_failure:
+ 		/* Always set the buffer in the cache, even if it was
+ 		 * a forced read, or read-ahead which hasn't yet
+ 		 * completed. */
+-		ocfs2_set_buffer_uptodate(ci, bh);
++		if (bh)
++			ocfs2_set_buffer_uptodate(ci, bh);
+ 	}
+ 	ocfs2_metadata_cache_io_unlock(ci);
+ 
 
 
 
