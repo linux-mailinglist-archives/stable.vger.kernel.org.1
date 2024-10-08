@@ -1,150 +1,168 @@
-Return-Path: <stable+bounces-83064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444369953E7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:59:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136CE9953F0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 18:00:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039FD286F39
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:59:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D75F1F23435
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 16:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D801DFE00;
-	Tue,  8 Oct 2024 15:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116E21DF241;
+	Tue,  8 Oct 2024 16:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eS5Rh8Fh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3PvX3x1z"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87B41E0B70
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 15:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B11442040;
+	Tue,  8 Oct 2024 16:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728403150; cv=none; b=qf5OhGSWwozyoLqtdcXZ2Fa01Qyy6eEK4qJ1ipGeB7jJJlazwTfIMjGsuk/EP4bQqOPBZ2XKe+xGJu4e8q07eAsWQYwafZKcFiyH9KtxESBu6P5JjSAJAQ8PKysyrLy1Wl7esSgMYwB4CUwy5+4teAWQTqfORTQEBWP/+OCzPFY=
+	t=1728403235; cv=none; b=KBWe7ZQ/edMMrdcH2ah1sFS6yLPqSYM5RemtAoWwpaL4TY5jeCHSnVI1A5bOcDnov6JzxBO5FcdI7r7QhVeE9wszgCnWJxUr5KxMAePjN1Yqaiz06olnWVaRYWrw08v9TzxFZ4avNuQNvAc7qZpzwSxTALmyMQJXqIn5vAoX2q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728403150; c=relaxed/simple;
-	bh=scHOXN+0VRms3u9nmPGZD98vMx1hFpKbYIL6EgVogz4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QWgPnqJ0BJxMyhhv88EsuJ25PTmcSdwoO6GiAVunG9Y4oRQXXHk/t/A1RQvXyxAJfpojc8Apt5ZB8J7AUPATTg3YwG7LVP1Hj2ui07HtG+n0b0D1nJ8MpnAtFfLGjh7br9roYXGUFnMckrM3vuNkeWttNjNa+A5mFjEklhc/Jec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EAEDA113E;
-	Tue,  8 Oct 2024 08:59:37 -0700 (PDT)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 607673F73F;
-	Tue,  8 Oct 2024 08:59:07 -0700 (PDT)
-From: Mark Rutland <mark.rutland@arm.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: catalin.marinas@arm.com,
-	catalin.marnias@arm.com,
-	mark.rutland@arm.com,
-	stable@vger.kernel.org,
-	will@kernel.org
-Subject: [PATCH 6/6] arm64: probes: Remove probe_opcode_t
-Date: Tue,  8 Oct 2024 16:58:51 +0100
-Message-Id: <20241008155851.801546-7-mark.rutland@arm.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20241008155851.801546-1-mark.rutland@arm.com>
-References: <20241008155851.801546-1-mark.rutland@arm.com>
+	s=arc-20240116; t=1728403235; c=relaxed/simple;
+	bh=EHe+qHWiZeJKDtdvme+SoICmyhSuGm1KAYVwrxrOBak=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=a5RdOURpvIYCsrk+H8C9eOJ1y8N5Rf1K+W3acINVLw7TtolkFS3/44klhleCNCbaDQ1KKtIGCgMKdeRH4LCb9hPrILTYoT67CPT/1yBPoi7JZovREdJEn3T7DT8tfjnBXvFWI1tQFuHFgWT7yvTm5TQDmxNzHyslX0k5IDaOyD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eS5Rh8Fh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3PvX3x1z; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 08 Oct 2024 16:00:31 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1728403232;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nVFZSY/it/5yRpT48QavbslXbhdX6LTo6lZzonud1Dc=;
+	b=eS5Rh8FhKo2lPKcs9RlNYV2h7v0qAxMwI5Irnbm5n7x1LhA9cgLyWBQz0bNqbNRFaLDQ2F
+	t9FQ6IvRKJJl234lQi/1o4mUByJMNzMN8QnXb7vjDpPdXMTOw82OP1BD7v4gErktBUAjII
+	dsWe9Z0XQK78JPlMrQoCH75M63LafG07B8RdiuxwLbTbCMCpmmAQ+f645PKf/kVZv0GkCG
+	baCYZAh8sQaP5V6j7Fd06f3fl5CLv3WQPej1m9EjZWCl2rAR8pOy82vQ0PCL2+3J4IU4mf
+	jpA0zY5oePDZQgylId2Z1T2fimbLaTmnobCItooCa8xoAglroysbZ19yu0FIYA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1728403232;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nVFZSY/it/5yRpT48QavbslXbhdX6LTo6lZzonud1Dc=;
+	b=3PvX3x1zyk++cUYFqbmAfdC2mJOZnDSB+D0phTHkDGH/wX7SmVIqyjpJILeaP7H23pZTz9
+	BvB+o5g34VVa1/AA==
+From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: irq/urgent] irqchip/sifive-plic: Unmask interrupt in plic_irq_enable()
+Cc: Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20241003084152.2422969-1-namcao@linutronix.de>
+References: <20241003084152.2422969-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <172840323152.1442.13111325496403210240.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-The probe_opcode_t typedef for u32 isn't necessary, and is a source of
-confusion as it is easily confused with kprobe_opcode_t, which is a
-typedef for __le32.
+The following commit has been merged into the irq/urgent branch of tip:
 
-The typedef is only used within arch/arm64, and all of arm64's commn
-insn code uses u32 for the endian-agnostic value of an instruction, so
-it'd be clearer to use u32 consistently.
+Commit-ID:     6b1e0651e9ce8ce418ad4ff360e7b9925dc5da79
+Gitweb:        https://git.kernel.org/tip/6b1e0651e9ce8ce418ad4ff360e7b9925dc5da79
+Author:        Nam Cao <namcao@linutronix.de>
+AuthorDate:    Thu, 03 Oct 2024 10:41:52 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 08 Oct 2024 17:49:21 +02:00
 
-Remove probe_opcode_t and use u32 directly.
+irqchip/sifive-plic: Unmask interrupt in plic_irq_enable()
 
-There should be no functional change as a result of this patch.
+It is possible that an interrupt is disabled and masked at the same time.
+When the interrupt is enabled again by enable_irq(), only plic_irq_enable()
+is called, not plic_irq_unmask(). The interrupt remains masked and never
+raises.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marnias@arm.com>
-Cc: Will Deacon <will@kernel.org>
+An example where interrupt is both disabled and masked is when
+handle_fasteoi_irq() is the handler, and IRQS_ONESHOT is set. The interrupt
+handler:
+
+  1. Mask the interrupt
+  2. Handle the interrupt
+  3. Check if interrupt is still enabled, and unmask it (see
+     cond_unmask_eoi_irq())
+
+If another task disables the interrupt in the middle of the above steps,
+the interrupt will not get unmasked, and will remain masked when it is
+enabled in the future.
+
+The problem is occasionally observed when PREEMPT_RT is enabled, because
+PREEMPT_RT adds the IRQS_ONESHOT flag. But PREEMPT_RT only makes the problem
+more likely to appear, the bug has been around since commit a1706a1c5062
+("irqchip/sifive-plic: Separate the enable and mask operations").
+
+Fix it by unmasking interrupt in plic_irq_enable().
+
+Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241003084152.2422969-1-namcao@linutronix.de
 ---
- arch/arm64/include/asm/probes.h        | 1 -
- arch/arm64/kernel/probes/decode-insn.c | 4 ++--
- arch/arm64/kernel/probes/decode-insn.h | 2 +-
- arch/arm64/kernel/probes/uprobes.c     | 4 ++--
- 4 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/include/asm/probes.h b/arch/arm64/include/asm/probes.h
-index 11e809733b7d9..d493688863094 100644
---- a/arch/arm64/include/asm/probes.h
-+++ b/arch/arm64/include/asm/probes.h
-@@ -9,7 +9,6 @@
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 0b730e3..36dbcf2 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -126,16 +126,6 @@ static inline void plic_irq_toggle(const struct cpumask *mask,
+ 	}
+ }
  
- #include <asm/insn.h>
- 
--typedef u32 probe_opcode_t;
- typedef void (probes_handler_t) (u32 opcode, long addr, struct pt_regs *);
- 
- struct arch_probe_insn {
-diff --git a/arch/arm64/kernel/probes/decode-insn.c b/arch/arm64/kernel/probes/decode-insn.c
-index 147d6ddf3a4c9..41b100bcb041d 100644
---- a/arch/arm64/kernel/probes/decode-insn.c
-+++ b/arch/arm64/kernel/probes/decode-insn.c
-@@ -73,7 +73,7 @@ static bool __kprobes aarch64_insn_is_steppable(u32 insn)
-  *   INSN_GOOD_NO_SLOT If instruction is supported but doesn't use its slot.
-  */
- enum probe_insn __kprobes
--arm_probe_decode_insn(probe_opcode_t insn, struct arch_probe_insn *api)
-+arm_probe_decode_insn(u32 insn, struct arch_probe_insn *api)
+-static void plic_irq_enable(struct irq_data *d)
+-{
+-	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
+-}
+-
+-static void plic_irq_disable(struct irq_data *d)
+-{
+-	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
+-}
+-
+ static void plic_irq_unmask(struct irq_data *d)
  {
- 	/*
- 	 * Instructions reading or modifying the PC won't work from the XOL
-@@ -133,7 +133,7 @@ enum probe_insn __kprobes
- arm_kprobe_decode_insn(kprobe_opcode_t *addr, struct arch_specific_insn *asi)
+ 	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
+@@ -150,6 +140,17 @@ static void plic_irq_mask(struct irq_data *d)
+ 	writel(0, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
+ }
+ 
++static void plic_irq_enable(struct irq_data *d)
++{
++	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
++	plic_irq_unmask(d);
++}
++
++static void plic_irq_disable(struct irq_data *d)
++{
++	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
++}
++
+ static void plic_irq_eoi(struct irq_data *d)
  {
- 	enum probe_insn decoded;
--	probe_opcode_t insn = le32_to_cpu(*addr);
-+	u32 insn = le32_to_cpu(*addr);
- 	kprobe_opcode_t *scan_end = NULL;
- 	unsigned long size = 0, offset = 0;
- 	struct arch_probe_insn *api = &asi->api;
-diff --git a/arch/arm64/kernel/probes/decode-insn.h b/arch/arm64/kernel/probes/decode-insn.h
-index 8b758c5a20622..0e4195de82061 100644
---- a/arch/arm64/kernel/probes/decode-insn.h
-+++ b/arch/arm64/kernel/probes/decode-insn.h
-@@ -28,6 +28,6 @@ enum probe_insn __kprobes
- arm_kprobe_decode_insn(kprobe_opcode_t *addr, struct arch_specific_insn *asi);
- #endif
- enum probe_insn __kprobes
--arm_probe_decode_insn(probe_opcode_t insn, struct arch_probe_insn *asi);
-+arm_probe_decode_insn(u32 insn, struct arch_probe_insn *asi);
- 
- #endif /* _ARM_KERNEL_KPROBES_ARM64_H */
-diff --git a/arch/arm64/kernel/probes/uprobes.c b/arch/arm64/kernel/probes/uprobes.c
-index a2f137a595fc1..fa0b7941d204c 100644
---- a/arch/arm64/kernel/probes/uprobes.c
-+++ b/arch/arm64/kernel/probes/uprobes.c
-@@ -34,7 +34,7 @@ unsigned long uprobe_get_swbp_addr(struct pt_regs *regs)
- int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe, struct mm_struct *mm,
- 		unsigned long addr)
- {
--	probe_opcode_t insn;
-+	u32 insn;
- 
- 	/* TODO: Currently we do not support AARCH32 instruction probing */
- 	if (mm->context.flags & MMCF_AARCH32)
-@@ -102,7 +102,7 @@ bool arch_uprobe_xol_was_trapped(struct task_struct *t)
- 
- bool arch_uprobe_skip_sstep(struct arch_uprobe *auprobe, struct pt_regs *regs)
- {
--	probe_opcode_t insn;
-+	u32 insn;
- 	unsigned long addr;
- 
- 	if (!auprobe->simulate)
--- 
-2.30.2
-
+ 	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
 
