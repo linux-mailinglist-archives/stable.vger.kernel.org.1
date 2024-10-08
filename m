@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1A2994DA2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F92994FA0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41378B27AC2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA98D1C24B0C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7D81DF279;
-	Tue,  8 Oct 2024 13:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F6E1E0B9E;
+	Tue,  8 Oct 2024 13:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZg2XIrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvLMe+LW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5908B1DE88F;
-	Tue,  8 Oct 2024 13:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31981DF998;
+	Tue,  8 Oct 2024 13:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392810; cv=none; b=V+AANtnAuTmlGCO2o8j85eWa/yI83crbApJQkYeEHYwgw5H4vZdafHccvBoMWKi+E40bvZUO9pEC6hQl7yCABf+7YptsmwMLsUC0i6wbTfr2qcAu1fK2IXMXesljpBR8+SvMm6kKLhRtjemiEvVptelItEvuafW46EaU9TLm9c8=
+	t=1728393984; cv=none; b=M8UI3WWkYQet009njWZavyxcx2f9FEFJmVczCrfLwet7XZSpXbYyDQ9dKTK2KTV6yP6JOSTyRbEHX/aVbaHEnvTf+UGXQFBv3uC1yCrcO8MaTMbsKlLgrBmcR1sc70Qac/hXsRWv0Qw84lyAdG9L/d/sIkrR3pPM/S7Grb2A6Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392810; c=relaxed/simple;
-	bh=9FzyiAPmfy21hB91tHMPTtgeLRaHd0R468nB5CwsoLU=;
+	s=arc-20240116; t=1728393984; c=relaxed/simple;
+	bh=wDZDMEmW4plA50h8CXIXf9S+BeM4ViaHOwj6Z2zeQ8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1Um65Ik4iH1c/l2uEhypFZ+3uoXxerShkcO+WY0oh+jfBj+K4/xNoqxFm9EgzGWn70ytST0ptLsN3TFHRDtPaBUAmeT/mw+eKyWHo067nakQewX0YmGIuDlORzhI37T2wvPT/hcrG8b+NEYhaIK/LsxCgYLLbbe7OBOBCjUH4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZg2XIrL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46D1C4CEC7;
-	Tue,  8 Oct 2024 13:06:49 +0000 (UTC)
+	 MIME-Version; b=QQciwVyv+8R8R9TL/rPSLTga4m2Wy1SAqRD8vQT63yFPYrYinh9I0bWSwXFBpEn+41nxHywbQQLCkbnJtp19cOv3YvduluwG2v+1yrRmrXjag+KxeDbb8GU1ucMwV7HVexCNb3NDKGSojkzI4BnvNhTPbXCY+BIFk6ZRJeTs4Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvLMe+LW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6D6C4CEC7;
+	Tue,  8 Oct 2024 13:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392810;
-	bh=9FzyiAPmfy21hB91tHMPTtgeLRaHd0R468nB5CwsoLU=;
+	s=korg; t=1728393984;
+	bh=wDZDMEmW4plA50h8CXIXf9S+BeM4ViaHOwj6Z2zeQ8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZg2XIrLcP8koxyZ/PZTH29GemgnNRIRwiIsPanynZfE43c62lU0HRISlFNH3go2X
-	 u4JkXM2VO6OTUnARbxrMdhwV9FZlZtzQl6RBT4pLCImFuhALYI+k6Glp0fZTs5fWO0
-	 MJnSQU35iJODv5G6xSv3LpkgPc8udMDHrwN/UZ4U=
+	b=tvLMe+LW2cX2MmPjzVN01icct35mS73ZrpFViZWMtbBSqsxaSg9bB2nMSym4WEfaJ
+	 ONdF8O0k+8nISNcuJAbVJACfCUFed5b+iixwNdw7ZNk3W/iSTEToPG+8BEJqJHGxUW
+	 2LBjrbQdjRlC3bt6Dv9YL91qbFdDrPTIDVcru5aQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Li <sunpeng.li@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.11 526/558] drm/amd/display: Enable idle workqueue for more IPS modes
-Date: Tue,  8 Oct 2024 14:09:16 +0200
-Message-ID: <20241008115722.928620306@linuxfoundation.org>
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Keerthy <j-keerthy@ti.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 312/386] gpio: davinci: fix lazy disable
+Date: Tue,  8 Oct 2024 14:09:17 +0200
+Message-ID: <20241008115641.663986359@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Li <sunpeng.li@amd.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-commit ef785ca7f7c80891580cafd36c8dd86375684310 upstream.
+commit 3360d41f4ac490282fddc3ccc0b58679aa5c065d upstream.
 
-[Why]
+On a few platforms such as TI's AM69 device, disable_irq() fails to keep
+track of the interrupts that happen between disable_irq() and
+enable_irq() and those interrupts are missed. Use the ->irq_unmask() and
+->irq_mask() methods instead of ->irq_enable() and ->irq_disable() to
+correctly keep track of edges when disable_irq is called.
 
-There are more IPS modes other than DMUB_IPS_ENABLE that enables IPS. We
-need to enable the hotplug detect idle workqueue for those modes as
-well.
+This solves the issue of disable_irq() not working as expected on such
+platforms.
 
-[How]
-
-Modify the if condition to initialize the workqueue in all IPS modes
-except for DMUB_IPS_DISABLE_ALL.
-
-Fixes: 65444581a4ae ("drm/amd/display: Determine IPS mode by ASIC and PMFW versions")
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 181db30bcfed097ecc680539b1eabe935c11f57f)
+Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
+Acked-by: Keerthy <j-keerthy@ti.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240828133207.493961-1-parth105105@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-davinci.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2005,7 +2005,8 @@ static int amdgpu_dm_init(struct amdgpu_
- 			DRM_ERROR("amdgpu: failed to initialize vblank_workqueue.\n");
- 	}
+--- a/drivers/gpio/gpio-davinci.c
++++ b/drivers/gpio/gpio-davinci.c
+@@ -289,7 +289,7 @@ static int davinci_gpio_probe(struct pla
+  * serve as EDMA event triggers.
+  */
  
--	if (adev->dm.dc->caps.ips_support && adev->dm.dc->config.disable_ips == DMUB_IPS_ENABLE)
-+	if (adev->dm.dc->caps.ips_support &&
-+	    adev->dm.dc->config.disable_ips != DMUB_IPS_DISABLE_ALL)
- 		adev->dm.idle_workqueue = idle_create_workqueue(adev);
+-static void gpio_irq_disable(struct irq_data *d)
++static void gpio_irq_mask(struct irq_data *d)
+ {
+ 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
+ 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
+@@ -298,7 +298,7 @@ static void gpio_irq_disable(struct irq_
+ 	writel_relaxed(mask, &g->clr_rising);
+ }
  
- 	if (adev->dm.dc->caps.max_links > 0 && adev->family >= AMDGPU_FAMILY_RV) {
+-static void gpio_irq_enable(struct irq_data *d)
++static void gpio_irq_unmask(struct irq_data *d)
+ {
+ 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
+ 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
+@@ -324,8 +324,8 @@ static int gpio_irq_type(struct irq_data
+ 
+ static struct irq_chip gpio_irqchip = {
+ 	.name		= "GPIO",
+-	.irq_enable	= gpio_irq_enable,
+-	.irq_disable	= gpio_irq_disable,
++	.irq_unmask	= gpio_irq_unmask,
++	.irq_mask	= gpio_irq_mask,
+ 	.irq_set_type	= gpio_irq_type,
+ 	.flags		= IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE,
+ };
 
 
 
