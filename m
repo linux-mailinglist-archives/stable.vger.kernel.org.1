@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-82003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C338994A93
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F91994D4C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6233B2034D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C986A282E93
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54E71DE3D6;
-	Tue,  8 Oct 2024 12:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2611DE89F;
+	Tue,  8 Oct 2024 13:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfFTYksw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEPJVQlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8453A1C4631;
-	Tue,  8 Oct 2024 12:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A571DFD1;
+	Tue,  8 Oct 2024 13:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390850; cv=none; b=IooqfDyKppqtA58Inq0sXnWvjbomrsHXYcadVB8y+bkm/U+SfyTMj6ibvAISzpMe3t/v3Dgze0Ll9JzFX5EYPP/wLU2kUZ6aRdtLUqBbX60bnL6FYPIiLGf85AXzLrP2toadHqCsNRcadiEelnO7lY9EGJ7HmsLsFQxVlb+2GAQ=
+	t=1728392647; cv=none; b=HqhQ8O81R1Th3OZ1Byf2nbiAJuGZdyXTs0kewZLQ/RjTWCwXEe7Zo6YrVyDht/fXLadvdJe5Gyk54DSNsvUZ43krw3EEjUIJTzAOgdLc/Daha+HI7NcwQ6HqQt6uAW32KAgdatfXD4cVuouXHUZb8b28OJk6RY53Jwh2vU04iz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390850; c=relaxed/simple;
-	bh=z33OhbGcThErXem3Kc+yn188MieBQaAo0awGnaqWkxE=;
+	s=arc-20240116; t=1728392647; c=relaxed/simple;
+	bh=Q9/vv5na6TYO1Ga8z/TtOUAjDDkWNDuffl2c7hNQojs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0c229VBp71a7P4twGoRBHx7Ya2N9P0AVfWJQ+BYzbPnXNzODa5BuQasETeqFfSAYj0FjLDVA5KrJ08w4slVbw4+SxqXpXZsoMoGVsTYADdE/xFXnPBBdG2T6OuIe/+7Vqper/+z+JAEouMzfQeHUc3QpEQIN8D6E55qEJf1OIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfFTYksw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC447C4CEC7;
-	Tue,  8 Oct 2024 12:34:09 +0000 (UTC)
+	 MIME-Version; b=PFuwp2Fotwse9ONnw1Y4M+oHasKoNyFmSrjRG/hUUAjpKB+u5jL+Vvuv1nsTwgdkYsd76UWdQ3nSeIAgTnhyePITh1mOU2iyVYIFJTAgppRBDZ/sX92zf90DlUqY0mhZ5+Jd/+7n6mjCMBTAKdhny2LtlqBeYTBzZDV2Xk++bW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEPJVQlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDEDC4CEC7;
+	Tue,  8 Oct 2024 13:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390850;
-	bh=z33OhbGcThErXem3Kc+yn188MieBQaAo0awGnaqWkxE=;
+	s=korg; t=1728392646;
+	bh=Q9/vv5na6TYO1Ga8z/TtOUAjDDkWNDuffl2c7hNQojs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfFTYkswTmUiFZWbn7pocfkE71cy79UHsysv543ILdsJ/vMxb+uoczwRKZd4CWCBs
-	 Mo4xoUVDAnp8ro4NLQyuoOw8OoY+VI0YJEJq2M41esjQUBEWIkHNO9O6KLfVz3Sp40
-	 7IAsVCsznbwhaeHeP3aeOYTlOoxc6TQ3J111vgI0=
+	b=UEPJVQlGaiJDr8/D1G1J2ej3tkXpLwkZbWa2pCK6ZOCiFaXBZXiydGV2O+wLuiWmJ
+	 eem2spGoL1inKqbyCO+i8FdQxxBwp4+wJMOJmIOJqm//eUuvAzSr+bOsPSJVvRJZmy
+	 lzqeUmiMgz2UQ2WAFo17BKZJaDp9GevKGdJYRSMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 412/482] ACPI: video: Add backlight=native quirk for Dell OptiPlex 5480 AIO
-Date: Tue,  8 Oct 2024 14:07:55 +0200
-Message-ID: <20241008115704.619281557@linuxfoundation.org>
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.11 446/558] clk: rockchip: fix error for unknown clocks
+Date: Tue,  8 Oct 2024 14:07:56 +0200
+Message-ID: <20241008115719.814328196@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit ac78288fe062b64e45a479eaae74aaaafcc8ecdd upstream.
+commit 12fd64babaca4dc09d072f63eda76ba44119816a upstream.
 
-Dell All In One (AIO) models released after 2017 may use a backlight
-controller board connected to an UART.
+There is a clk == NULL check after the switch to check for
+unsupported clk types. Since clk is re-assigned in a loop,
+this check is useless right now for anything but the first
+round. Let's fix this up by assigning clk = NULL in the
+loop before the switch statement.
 
-In DSDT this uart port will be defined as:
-
-   Name (_HID, "DELL0501")
-   Name (_CID, EisaId ("PNP0501")
-
-The Dell OptiPlex 5480 AIO has an ACPI device for one of its UARTs with
-the above _HID + _CID. Loading the dell-uart-backlight driver fails with
-the following errors:
-
-[   18.261353] dell_uart_backlight serial0-0: Timed out waiting for response.
-[   18.261356] dell_uart_backlight serial0-0: error -ETIMEDOUT: getting firmware version
-[   18.261359] dell_uart_backlight serial0-0: probe with driver dell_uart_backlight failed with error -110
-
-Indicating that there is no backlight controller board attached to
-the UART, while the GPU's native backlight control method does work.
-
-Add a quirk to use the GPU's native backlight control method on this model.
-
-Fixes: cd8e468efb4f ("ACPI: video: Add Dell UART backlight controller detection")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240918153849.37221-1-hdegoede@redhat.com
-[ rjw: Changelog edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: a245fecbb806 ("clk: rockchip: add basic infrastructure for clock branches")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+[added fixes + stable-cc]
+Link: https://lore.kernel.org/r/20240325193609.237182-6-sebastian.reichel@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/video_detect.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/clk/rockchip/clk.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -845,6 +845,15 @@ static const struct dmi_system_id video_
- 	 * which need native backlight control nevertheless.
- 	 */
- 	{
-+	 /* https://github.com/zabbly/linux/issues/26 */
-+	 .callback = video_detect_force_native,
-+	 /* Dell OptiPlex 5480 AIO */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 5480 AIO"),
-+		},
-+	},
-+	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=2303936 */
- 	 .callback = video_detect_force_native,
- 	 /* Dell OptiPlex 7760 AIO */
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -450,12 +450,13 @@ void rockchip_clk_register_branches(stru
+ 				    struct rockchip_clk_branch *list,
+ 				    unsigned int nr_clk)
+ {
+-	struct clk *clk = NULL;
++	struct clk *clk;
+ 	unsigned int idx;
+ 	unsigned long flags;
+ 
+ 	for (idx = 0; idx < nr_clk; idx++, list++) {
+ 		flags = list->flags;
++		clk = NULL;
+ 
+ 		/* catch simple muxes */
+ 		switch (list->branch_type) {
 
 
 
