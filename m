@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BEC994F01
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB73994A8D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089DF284DD5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D3581C2482D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2835E1DF72E;
-	Tue,  8 Oct 2024 13:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A67D1DED7A;
+	Tue,  8 Oct 2024 12:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLUPExMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+OD2fLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB81DF730;
-	Tue,  8 Oct 2024 13:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3818F1D4141;
+	Tue,  8 Oct 2024 12:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393742; cv=none; b=Vua0B5WluFhpXxvmWbnNQso3Y0//vRgdgXnzdiTpHXWyglFIVnUW57Zcqb3qK/9Hoyjr07EycO0YQMajfNshSLYgJsLnlw6eeT8L12lejkwQjVMyfYsT5CPcGNw7qBUNWE2sL9pneHk7Zw6EFyOIdU1cynnXaWlYIX2+MRxFP2s=
+	t=1728390834; cv=none; b=SlhJKrqsWJgsnfF199yJxPWSQIGubgeB2480QbW9Wyt0cF0ku2P8EXfnFY3JQocyIJbh/L19eC6ybI81z8yORr1QEgmI2uMMX6gBaju63SN4P3jzJP2VOrVtsQDFkOZXwxkeaZ3FLi90AAC1orgQ3pPJYLmRuM7jL0p3GaacRnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393742; c=relaxed/simple;
-	bh=xthoKH+YOVRiZhwXXevZ301cU6GTjtt5F4B/GD1wkZ0=;
+	s=arc-20240116; t=1728390834; c=relaxed/simple;
+	bh=E9EARz8SzA+k4cIhPiZApRVt5kdqp5yD8jNP+fRddFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hdDlkaF+z6Jd2eBZ2PoxuYswQ/o3ZRJxzRqskquL44VePK2LECYw0Jh3xwUk/Z7aU/+DI2wPFjnaI3xkQpboGnA42QdeNJjO9Iup+2SWE6Qhh2iDiMhb6ndZqkY8z5rIEdz4nHzXp0IPys8CIVrg9cYqhS361tE1R57jhzDknIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLUPExMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABE8C4CECC;
-	Tue,  8 Oct 2024 13:22:22 +0000 (UTC)
+	 MIME-Version; b=eZs0+8wC7GRZWspvbjZmGRNbzihtwAb3xGQXTIpNJf4WTNeHE8AIYFb5F7GkIKFNzPeyl5mcKGIs9RTVRVPXSA+PFg0rfyO2+xnqTX7zrKaQ/zqnGENeM+wjSKBb1PUx9+2U/9zF+DV1BoCpWaD/3SLbW/Q1n8KRyos3X+baWx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+OD2fLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7971C4CEC7;
+	Tue,  8 Oct 2024 12:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393742;
-	bh=xthoKH+YOVRiZhwXXevZ301cU6GTjtt5F4B/GD1wkZ0=;
+	s=korg; t=1728390834;
+	bh=E9EARz8SzA+k4cIhPiZApRVt5kdqp5yD8jNP+fRddFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLUPExMNOGmYn6R5ruSv2EGqkCobUd/LC0N/lri+1jI4n5o9ziaBpHkfchYcz4PzC
-	 wN1UO+ERIEHHE+/XxmI+GhW8wPSakYczLRF7I/QMLX0iRUP8lvub9xjEVQzD6eOxvV
-	 UjMUJ3nqI/oFwwCE2/O7QImNoL7CApqpsGxJDgHI=
+	b=x+OD2fLCtOyYpp4KfQEc77Qf3d9QZA3zB/z8UNj3AsRUjUkoGimXHiObLqgIMNceH
+	 fo9Ioei9xCDGmCZMxfYwq4vaF13CaymJSosMb9lsdXW1nCcy7Z8kkgqkTntIFkzdBr
+	 EqPa9Izt4O4OSUoxzP4byDCMqD4jiSFATHpHpI/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 225/386] ALSA: core: add isascii() check to card ID generator
-Date: Tue,  8 Oct 2024 14:07:50 +0200
-Message-ID: <20241008115638.260348497@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.10 408/482] rtc: at91sam9: fix OF node leak in probe() error path
+Date: Tue,  8 Oct 2024 14:07:51 +0200
+Message-ID: <20241008115704.465340202@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit d278a9de5e1837edbe57b2f1f95a104ff6c84846 upstream.
+commit 73580e2ee6adfb40276bd420da3bb1abae204e10 upstream.
 
-The card identifier should contain only safe ASCII characters. The isalnum()
-returns true also for characters for non-ASCII characters.
+Driver is leaking an OF node reference obtained from
+of_parse_phandle_with_fixed_args().
 
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4135
-Link: https://lore.kernel.org/linux-sound/yk3WTvKkwheOon_LzZlJ43PPInz6byYfBzpKkbasww1yzuiMRqn7n6Y8vZcXB-xwFCu_vb8hoNjv7DTNwH5TWjpEuiVsyn9HPCEXqwF4120=@protonmail.com/
+Fixes: 43e112bb3dea ("rtc: at91sam9: make use of syscon/regmap to access GPBR registers")
 Cc: stable@vger.kernel.org
-Reported-by: Barnabás Pőcze <pobrn@protonmail.com>
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20241002194649.1944696-1-perex@perex.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240825183103.102904-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/init.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/rtc/rtc-at91sam9.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/core/init.c
-+++ b/sound/core/init.c
-@@ -666,13 +666,19 @@ void snd_card_free(struct snd_card *card
- }
- EXPORT_SYMBOL(snd_card_free);
+--- a/drivers/rtc/rtc-at91sam9.c
++++ b/drivers/rtc/rtc-at91sam9.c
+@@ -368,6 +368,7 @@ static int at91_rtc_probe(struct platfor
+ 		return ret;
  
-+/* check, if the character is in the valid ASCII range */
-+static inline bool safe_ascii_char(char c)
-+{
-+	return isascii(c) && isalnum(c);
-+}
-+
- /* retrieve the last word of shortname or longname */
- static const char *retrieve_id_from_card_name(const char *name)
- {
- 	const char *spos = name;
- 
- 	while (*name) {
--		if (isspace(*name) && isalnum(name[1]))
-+		if (isspace(*name) && safe_ascii_char(name[1]))
- 			spos = name + 1;
- 		name++;
- 	}
-@@ -699,12 +705,12 @@ static void copy_valid_id_string(struct
- {
- 	char *id = card->id;
- 
--	while (*nid && !isalnum(*nid))
-+	while (*nid && !safe_ascii_char(*nid))
- 		nid++;
- 	if (isdigit(*nid))
- 		*id++ = isalpha(*src) ? *src : 'D';
- 	while (*nid && (size_t)(id - card->id) < sizeof(card->id) - 1) {
--		if (isalnum(*nid))
-+		if (safe_ascii_char(*nid))
- 			*id++ = *nid;
- 		nid++;
- 	}
-@@ -800,7 +806,7 @@ static ssize_t id_store(struct device *d
- 
- 	for (idx = 0; idx < copy; idx++) {
- 		c = buf[idx];
--		if (!isalnum(c) && c != '_' && c != '-')
-+		if (!safe_ascii_char(c) && c != '_' && c != '-')
- 			return -EINVAL;
- 	}
- 	memcpy(buf1, buf, copy);
+ 	rtc->gpbr = syscon_node_to_regmap(args.np);
++	of_node_put(args.np);
+ 	rtc->gpbr_offset = args.args[0];
+ 	if (IS_ERR(rtc->gpbr)) {
+ 		dev_err(&pdev->dev, "failed to retrieve gpbr regmap, aborting.\n");
 
 
 
