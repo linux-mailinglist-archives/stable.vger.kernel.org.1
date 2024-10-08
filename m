@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-81811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48FB994983
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C44B5994C12
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A1471F2609E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E98D1B22101
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DF01DEFE1;
-	Tue,  8 Oct 2024 12:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D781DE2A5;
+	Tue,  8 Oct 2024 12:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ31ibfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgKthbsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD231DE4FA;
-	Tue,  8 Oct 2024 12:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048561D54D1;
+	Tue,  8 Oct 2024 12:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390212; cv=none; b=htv2MHEzOSaMQG78tWNcytmIm4y0n+FR44pYiJTqXMlpW7cwIXtnARCKg0h4pxdgbaqaAUC+K9NYr2hn9anzaqb8D2/EevqT1OWXt/YbN6IAOz9XW8OhzdSY+hQodxlV8nOJmKJuiUTqBMy67FdCEWmPFGCByXVLq/io39nQtPg=
+	t=1728391799; cv=none; b=qXQ7+eEVfTPYN+9wlKn3qRgLgMvquJ1JClDE+e5vw85vzo3lv9CpJL3m/zJAZfG332ielyO0NN/YFUqq2miFSI6oJPrq+1pplg4ttGinTUwg+ApasZikzzitZ56Y+LyPXgVwMURuy7cUnJVCmhJuSf4i+eNekr4xbTWaB21m8y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390212; c=relaxed/simple;
-	bh=glesbILIzO/3jYIgakAwVvDb0JZRDfoNWY2vG1NJid0=;
+	s=arc-20240116; t=1728391799; c=relaxed/simple;
+	bh=DqxbZeaQr/xE09Kauy446jvnKPS7JKFfM+oo9GjT7Os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxsbsFRuhOI8HlvFJrlFEA+vfgvvyKtQF1MKczvKooLWWwHXrgepjhVGGyA+dV0eyBpng5j4KsaX/IiaPUd8z1cRzWiyHertGLA46e6jQpiPcvhqYzASBGFxU4pjSbJa3PkJmboqvpQ/CgmTqVkqpHxTbh2O0OtxDE2zI6v4kGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ31ibfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F37C4CECE;
-	Tue,  8 Oct 2024 12:23:31 +0000 (UTC)
+	 MIME-Version; b=Ol/E1oF/UNOR9CYILGW4k+WxUk8J+GG3ykkhaSmCAR572ynZQu1g38eB3utO5apwKlZ2DOdG6LcqsBB8whnOu6jSiwSe2BJPQDKBfA7d5hpHXV0GkL81GJzQw450NyjLI4nNd1jHPZYNxOsMiV2AEdExj4sLMdBDImV16bv6vcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgKthbsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BD6C4CECD;
+	Tue,  8 Oct 2024 12:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390212;
-	bh=glesbILIzO/3jYIgakAwVvDb0JZRDfoNWY2vG1NJid0=;
+	s=korg; t=1728391798;
+	bh=DqxbZeaQr/xE09Kauy446jvnKPS7JKFfM+oo9GjT7Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQ31ibfc0SKlY1nK3lzZQIMduw1KwG4WBwkEB1M6IiOD2O0HUGE2f9PvuOvUyK05Y
-	 SSdWexFWpISQVbpuYKwO+oqsicmaHnSJMbf2jGD6kywxNkq71839a9EfKKFiu7g69X
-	 qFxgkGOj9hJuElKuLYqhp6yGLk3HaOPALRf0m/CY=
+	b=WgKthbsJFMUHElze8RCQOnsQ30xWhjeZcdPdzSNjTgjJMq1dqEXy4OLfppGgzwn5B
+	 JCrDS7Q5QfOlrxe6LNy7BKnIgoIB63kf/09ykMBNBrbh2RhXnC44Vt/Zx0oj56dsDn
+	 x6BUp4ReGh8HYudlSQluWVV7CsvaJ3yQej0pwCOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 192/482] drm/amd/display: Check null pointers before using dc->clk_mgr
+Subject: [PATCH 6.11 225/558] drm/amd/display: Add NULL check for function pointer in dcn20_set_output_transfer_func
 Date: Tue,  8 Oct 2024 14:04:15 +0200
-Message-ID: <20241008115655.859424739@linuxfoundation.org>
+Message-ID: <20241008115711.196383250@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +69,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 95d9e0803e51d5a24276b7643b244c7477daf463 ]
+[ Upstream commit 62ed6f0f198da04e884062264df308277628004f ]
 
-[WHY & HOW]
-dc->clk_mgr is null checked previously in the same function, indicating
-it might be null.
+This commit adds a null check for the set_output_gamma function pointer
+in the dcn20_set_output_transfer_func function. Previously,
+set_output_gamma was being checked for null at line 1030, but then it
+was being dereferenced without any null check at line 1048. This could
+potentially lead to a null pointer dereference error if set_output_gamma
+is null.
 
-Passing "dc" to "dc->hwss.apply_idle_power_optimizations", which
-dereferences null "dc->clk_mgr". (The function pointer resolves to
-"dcn35_apply_idle_power_optimizations".)
+To fix this, we now ensure that set_output_gamma is not null before
+dereferencing it. We do this by adding a null check for set_output_gamma
+before the call to set_output_gamma at line 1048.
 
-This fixes 1 FORWARD_NULL issue reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 3bd18e862945f..daeb80abf435f 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -5211,7 +5211,8 @@ void dc_allow_idle_optimizations_internal(struct dc *dc, bool allow, char const
- 	if (allow == dc->idle_optimizations_allowed)
- 		return;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index 17d1c195663a0..7ca0da88290af 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -1044,7 +1044,8 @@ bool dcn20_set_output_transfer_func(struct dc *dc, struct pipe_ctx *pipe_ctx,
+ 	/*
+ 	 * if above if is not executed then 'params' equal to 0 and set in bypass
+ 	 */
+-	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++	if (mpc->funcs->set_output_gamma)
++		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
  
--	if (dc->hwss.apply_idle_power_optimizations && dc->hwss.apply_idle_power_optimizations(dc, allow))
-+	if (dc->hwss.apply_idle_power_optimizations && dc->clk_mgr != NULL &&
-+	    dc->hwss.apply_idle_power_optimizations(dc, allow))
- 		dc->idle_optimizations_allowed = allow;
+ 	return true;
  }
- 
 -- 
 2.43.0
 
