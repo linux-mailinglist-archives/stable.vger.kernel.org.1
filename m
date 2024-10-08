@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438B9994C67
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2EA994974
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42608B29F99
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F64B1F23D3F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCA81DED48;
-	Tue,  8 Oct 2024 12:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8DE61DE2AE;
+	Tue,  8 Oct 2024 12:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1+ZjO2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZyoLxMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6C81DE2CF;
-	Tue,  8 Oct 2024 12:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D501DED6A;
+	Tue,  8 Oct 2024 12:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391957; cv=none; b=L4UXU/2+bbvSuNr1rHTUcjMX6Ekl0kOsMX/Nw9AiFpVxHAmydZ/QOrL73rLueHN9GalXurSLkyp8cBy5QhX4cWAWY+3sX4EMGtBqLeY1yIS74UOhuKjEOMKAkH80CLDvNwqMMSEOfD5WI8NcXKDd5SCOwtHaZd+JHEoXcbFbVag=
+	t=1728390164; cv=none; b=qh7JKw5hdmJivBE4J55bAk6Nywxnlx3HFbQK+HLG4yjSrVOT5Z54D9tUdA+UCPl/hWhTgVR55tgORE+WNUC4xR4BmQlqJtBL0SQsCeuq7tUu/2zCmHK/4+XM7cwvV7Z/ROQXr7m7uZ8qdbVFTW9lImIgAf1wAwgsA0iFDvNKT6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391957; c=relaxed/simple;
-	bh=uDu1vKbqHyoUsLQCh0bc86HH8hEu2Fw6naJpV8hcNWc=;
+	s=arc-20240116; t=1728390164; c=relaxed/simple;
+	bh=XbBO7kp2S/1do7MH3tU/4fXCIoEGAq4XfZV7n4daWFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJj+ZF6dQJ0Y0bJvOS83rHbvMExbxrdOPojrb46cWDZtEr+Rtuuews4E0xgZJb4XulvKxe1mnCJqCeUjF85JtUmEy01XTWYyQFOhcewK3/VAGlWBkRoRru9EkmkIKRNyo7RrPQErF9ivzvkzIOrw6Tm8jrsJgFEiTF83toq7Q94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1+ZjO2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E73FC4CEC7;
-	Tue,  8 Oct 2024 12:52:36 +0000 (UTC)
+	 MIME-Version; b=AsC++3+s/uAFNZZEqpQAySMzDkiEhOmTgKc9bnEtMR8RtEWYnslxmOgYqxKHF50emn/kGcbItyE9iOdBKW99HykHchJqmSnvl625+4u+JZTU+yDk5q06gbOis2Xf3t54UGiIefWt90oayafxFudZ/dAQTNTh6d6eXsQdUro51K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZyoLxMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87CEC4CEC7;
+	Tue,  8 Oct 2024 12:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391957;
-	bh=uDu1vKbqHyoUsLQCh0bc86HH8hEu2Fw6naJpV8hcNWc=;
+	s=korg; t=1728390164;
+	bh=XbBO7kp2S/1do7MH3tU/4fXCIoEGAq4XfZV7n4daWFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H1+ZjO2tQfEJ06guXyV5OjZDfE28AdD7sjY2IIT5EDOyeBjv/FwpECZuXBx3CimJX
-	 +s5oa8M7BSqI/dI4GC9WS4ZrwgG9uKOjeMPJzJOCOTUh5xNA4rWqGrYAAnJvURuSwC
-	 AtMny6X1OOsLhjNa910POoWeVcApwR3wbxjbVAlY=
+	b=HZyoLxMzqMB81nbKZznoi82spxc7d+PDVCjd1tJSeUKaVJbJWq+hQ9BsB7r4o8wiJ
+	 DB1yuw2cDrO6SE5Qme620VArX685knMOeF2wEs4TP5nyapZWZdJNfucG2Hu+NCPu5c
+	 d1xuycYBOVKdtmQjcpdlyF2uF7d/66nje0G5iJ50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Yannick Fertre <yannick.fertre@foss.st.com>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 242/558] jfs: Fix uninit-value access of new_ea in ea_buffer
+Subject: [PATCH 6.10 209/482] drm/stm: ltdc: reset plane transparency after plane disable
 Date: Tue,  8 Oct 2024 14:04:32 +0200
-Message-ID: <20241008115711.864217899@linuxfoundation.org>
+Message-ID: <20241008115656.534524370@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Yannick Fertre <yannick.fertre@foss.st.com>
 
-[ Upstream commit 2b59ffad47db1c46af25ccad157bb3b25147c35c ]
+[ Upstream commit 02fa62d41c8abff945bae5bfc3ddcf4721496aca ]
 
-syzbot reports that lzo1x_1_do_compress is using uninit-value:
+The plane's opacity should be reseted while the plane
+is disabled. It prevents from seeing a possible global
+or layer background color set earlier.
 
-=====================================================
-BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178
-
-...
-
-Uninit was stored to memory at:
- ea_put fs/jfs/xattr.c:639 [inline]
-
-...
-
-Local variable ea_buf created at:
- __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662
- __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934
-
-=====================================================
-
-The reason is ea_buf->new_ea is not initialized properly.
-
-Fix this by using memset to empty its content at the beginning
-in ea_get().
-
-Reported-by: syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=02341e0daa42a15ce130
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Yannick Fertre <yannick.fertre@foss.st.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240712131344.98113-1-yannick.fertre@foss.st.com
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/stm/ltdc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
-index 2999ed5d83f5e..0fb05e314edf6 100644
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -434,6 +434,8 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
- 	int rc;
- 	int quota_allocation = 0;
+diff --git a/drivers/gpu/drm/stm/ltdc.c b/drivers/gpu/drm/stm/ltdc.c
+index 056642d12265c..0832b749b66e7 100644
+--- a/drivers/gpu/drm/stm/ltdc.c
++++ b/drivers/gpu/drm/stm/ltdc.c
+@@ -1513,6 +1513,9 @@ static void ltdc_plane_atomic_disable(struct drm_plane *plane,
+ 	/* Disable layer */
+ 	regmap_write_bits(ldev->regmap, LTDC_L1CR + lofs, LXCR_LEN | LXCR_CLUTEN |  LXCR_HMEN, 0);
  
-+	memset(&ea_buf->new_ea, 0, sizeof(ea_buf->new_ea));
++	/* Reset the layer transparency to hide any related background color */
++	regmap_write_bits(ldev->regmap, LTDC_L1CACR + lofs, LXCACR_CONSTA, 0x00);
 +
- 	/* When fsck.jfs clears a bad ea, it doesn't clear the size */
- 	if (ji->ea.flag == 0)
- 		ea_size = 0;
+ 	/* Commit shadow registers = update plane at next vblank */
+ 	if (ldev->caps.plane_reg_shadow)
+ 		regmap_write_bits(ldev->regmap, LTDC_L1RCR + lofs,
 -- 
 2.43.0
 
