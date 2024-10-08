@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-82855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FAD994EC7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51475994D17
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F8B01C25509
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F100A1F23071
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DDB1DF74F;
-	Tue,  8 Oct 2024 13:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C9E1DE4CD;
+	Tue,  8 Oct 2024 13:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnma9FJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygDq5HNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24E81DE4CD;
-	Tue,  8 Oct 2024 13:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05B61DDC35;
+	Tue,  8 Oct 2024 13:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393652; cv=none; b=ZvMKj+SmjYNmkkHzQd1pMw6rpKp4LwShkXzPOVHCuxQ34ye5podTULfb+eLi3eXn2rZIFHDjp/4GY9qk0NegUkapM9MwqXi4UVq7xiEVcfVEPtpixM6Ts+ZDbitr3hgc28nAUoT3SqyE15KspLf5nLmgn3qLG2lnD7lSlnSIHkQ=
+	t=1728392491; cv=none; b=d+vRviG3d5U2LLPMLI0+IvJTDHr/CIBgry1lrtuvTDX6Upuf3/Sypfsm7oCr7q78iLlWtEWciQzVdH6lnwsFe08t/pjT3C7Luh6fA5Bnev8LBm9/y2mb5L3aWpkLHXysSisYEqs6f6B6p3vSGH4Zi+sJlrRWa/yjEfO2kLLwfmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393652; c=relaxed/simple;
-	bh=y/9Azo9Cy2bUjJ3DCGtC28SFlHhb8TEX0O57kVB343o=;
+	s=arc-20240116; t=1728392491; c=relaxed/simple;
+	bh=POCBnUxEJkzDdp55hvNbQQGdh5YQT39e+PqXN2zjAMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeaP2+aLvqN3mQx3+unMjpBqvsMZ4NZ0DjFGyZJ330tjEYOJn0c8C+QNZQULsTBg9pBs6gJb7ilOnPUB9zvF1j5ZcX6FTuImn052DwkT6ft5l+FuZlWqkII4b0BCjtvDyppxSP5nYAltIlszJubz21qPaNJsx8n0BlB38kRJLjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnma9FJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED94DC4CECF;
-	Tue,  8 Oct 2024 13:20:51 +0000 (UTC)
+	 MIME-Version; b=THYqFU+yxKGXayLchQlo3vXSZoW2M8vW6cAD9qvUKrskSUMiaPNBRLsKW0465h6JapDZCDq0wzgL5fE3/9xWrwG2px10FgkUGgPjTl7AyHZiV5PqC/Xg+rGzvcZ/Qd3TcOUVXV6Va6rtIMC8MHlRZiCOEOt8YAGUOriZb5T4Jd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygDq5HNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D539C4CEC7;
+	Tue,  8 Oct 2024 13:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393652;
-	bh=y/9Azo9Cy2bUjJ3DCGtC28SFlHhb8TEX0O57kVB343o=;
+	s=korg; t=1728392491;
+	bh=POCBnUxEJkzDdp55hvNbQQGdh5YQT39e+PqXN2zjAMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnma9FJ8igid6q92iMAWeeHblCf0OIQPCvQA9eeeiQ3VKNHpPb0Kp2n0LRrkkD1Ex
-	 XG5APuUqL582yLRD77yELuw+SV82/50YZKLRfdUy00y1U489EsERLW+B3zMDvVnxi5
-	 o7T1jYWjqaThIawDAzJFon3Y2NnJrJ27PcDkh/1E=
+	b=ygDq5HNPSSwWvTwGrwdPkJ5vI+HG8TEbuRTbz1he/JUvA3JhlQ3ij3NEIWCCxoCoL
+	 WeMYnEXzw+oXWu11WaWrLRG3kxDrLLMn1VYhkgfsRjrSEMUVILnYPZXJA2D5S++omz
+	 0R7p5eriOAopwoZTK/fBTnVxVq5WGLMrygq68BtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.6 215/386] memory: tegra186-emc: drop unused to_tegra186_emc()
+	Jisheng Zhang <jszhang@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.11 430/558] riscv: define ILLEGAL_POINTER_VALUE for 64bit
 Date: Tue,  8 Oct 2024 14:07:40 +0200
-Message-ID: <20241008115637.868218061@linuxfoundation.org>
+Message-ID: <20241008115719.193681211@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit 67dd9e861add38755a7c5d29e25dd0f6cb4116ab upstream.
+commit 5c178472af247c7b50f962495bb7462ba453b9fb upstream.
 
-to_tegra186_emc() is not used, W=1 builds:
+This is used in poison.h for poison pointer offset. Based on current
+SV39, SV48 and SV57 vm layout, 0xdead000000000000 is a proper value
+that is not mappable, this can avoid potentially turning an oops to
+an expolit.
 
-  tegra186-emc.c:38:36: error: unused function 'to_tegra186_emc' [-Werror,-Wunused-function]
-
-Fixes: 9a38cb27668e ("memory: tegra: Add interconnect support for DRAM scaling in Tegra234")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Fixes: fbe934d69eb7 ("RISC-V: Build Infrastructure")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240812123055.124123-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240705170210.3236-1-jszhang@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/memory/tegra/tegra186-emc.c |    5 -----
- 1 file changed, 5 deletions(-)
+ arch/riscv/Kconfig |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/memory/tegra/tegra186-emc.c
-+++ b/drivers/memory/tegra/tegra186-emc.c
-@@ -35,11 +35,6 @@ struct tegra186_emc {
- 	struct icc_provider provider;
- };
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -319,6 +319,11 @@ config GENERIC_HWEIGHT
+ config FIX_EARLYCON_MEM
+ 	def_bool MMU
  
--static inline struct tegra186_emc *to_tegra186_emc(struct icc_provider *provider)
--{
--	return container_of(provider, struct tegra186_emc, provider);
--}
--
- /*
-  * debugfs interface
-  *
++config ILLEGAL_POINTER_VALUE
++	hex
++	default 0 if 32BIT
++	default 0xdead000000000000 if 64BIT
++
+ config PGTABLE_LEVELS
+ 	int
+ 	default 5 if 64BIT
 
 
 
