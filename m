@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C567994AC8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C088994F4F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7B2DB26DBB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 214F2288350
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB681DA60C;
-	Tue,  8 Oct 2024 12:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46241E0E08;
+	Tue,  8 Oct 2024 13:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weoiLyoF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR1Pq/+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C404C190663;
-	Tue,  8 Oct 2024 12:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636981E0090;
+	Tue,  8 Oct 2024 13:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390980; cv=none; b=UyLMQJf+E3E+98mTRLRZ4MrW8ey4dPxtalkUZXX/yJFGNu0HoSYolCB53VOguTOdNVeJ1rcBu5vVabp8paLbtCtjWgEiC7e5Z21sNO8NG7bFBgwE1nPn+e5kdniW4q/DFmrmOa0oix6BVkWG/qCf3fQlzwPikTLTsQWsaIsp4rY=
+	t=1728393842; cv=none; b=La0q4XqdXd5xZTH3nHHR+fTJqlFLBxWaccZhUUBrwscZSWXf/c4WFBTBMvoEx7ZFbPrQe4sUWNTkUJ9bRm9KAomj8xlDYPXyR/UVXzpE7xI+2ZK8+Bba1QgiWMzqK3V6k7hli5GFWc3GEQo7QqTIwibQjqOSO2HsuLJZQYamPrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390980; c=relaxed/simple;
-	bh=+lx7GTgdgyRh+oGQoXlWhl+2tGxeQ9LEzvSdoosD/FQ=;
+	s=arc-20240116; t=1728393842; c=relaxed/simple;
+	bh=XM6ImjItchmkXVjm3BkDNpUkHElyhzAMwHNTnreDge8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTEDv4+lqSouquoq1NUIWyQOsSU7Vym3udCA/tLinhRV+W6ShMhLOrAhGN0TEVzg3q6MtgQ3d3eQKW9lQCu92AfXEFpBOw1i45UsRZ2ZFSb9+OP0v0EvYOUDDBthP+j3CmoNzNGG9CEV+fQlyQU7kq8Fn7SOspt5WHa2O8rsCOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weoiLyoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36813C4CECD;
-	Tue,  8 Oct 2024 12:36:20 +0000 (UTC)
+	 MIME-Version; b=DLUwTsbH81sf60zh5BgCOdvsa0S160Oj5D+TQQEoHEduUEuwdhdjBP1t1ai0R8CWkcHIrBJny2LM/SzVPScanp9Ulc44SbXnUKqO/m6zgdI1y7p0fr2x7h6/OvpqWmCaPSswqwuqlXybVb1QmCwPe134enY9OuY/uWBx9FxxhtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR1Pq/+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AAFC4CEC7;
+	Tue,  8 Oct 2024 13:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390980;
-	bh=+lx7GTgdgyRh+oGQoXlWhl+2tGxeQ9LEzvSdoosD/FQ=;
+	s=korg; t=1728393842;
+	bh=XM6ImjItchmkXVjm3BkDNpUkHElyhzAMwHNTnreDge8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=weoiLyoF6KPG8C0w1bDOBVCCGJ6RciSs/ijlJi3bissq5cj40PN2+ArtFYvEOQy3h
-	 BSSPIv7V8kNOL7t79UQORdqi8PFsY4m9BOO21pqOdB+rpt1zmOR9LUii747fnIphlY
-	 dBcsapD0Tbl8AODqAr0RmunKLkDvZtgy6bmvYXhA=
+	b=zR1Pq/+66zSP11aRaMxSf8Bbmznw2hEJ2DDJGwCGdf12KdypdV1nPljXnxGUOtuZI
+	 lHXrqdT+pOMHntLq2ztY+eLSPmF9hLtpLMVjb+va0DNe+hDJYW8Qrdp8A8QD83dc/A
+	 OSLc6HPloN6bfZhjWgZ945bFvubJVBDmHkqsw+yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 453/482] build-id: require program headers to be right after ELF header
-Date: Tue,  8 Oct 2024 14:08:36 +0200
-Message-ID: <20241008115706.345226133@linuxfoundation.org>
+	Olga Kornievskaia <okorniev@redhat.com>,
+	NeilBrown <neilb@suse.de>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 272/386] nfsd: fix delegation_blocked() to block correctly for at least 30 seconds
+Date: Tue,  8 Oct 2024 14:08:37 +0200
+Message-ID: <20241008115640.095592657@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 961a2851324561caed579764ffbee3db82b32829 ]
+commit 45bb63ed20e02ae146336412889fe5450316a84f upstream.
 
-Neither ELF spec not ELF loader require program header to be placed right
-after ELF header, but build-id code very much assumes such placement:
+The pair of bloom filtered used by delegation_blocked() was intended to
+block delegations on given filehandles for between 30 and 60 seconds.  A
+new filehandle would be recorded in the "new" bit set.  That would then
+be switch to the "old" bit set between 0 and 30 seconds later, and it
+would remain as the "old" bit set for 30 seconds.
 
-See
+Unfortunately the code intended to clear the old bit set once it reached
+30 seconds old, preparing it to be the next new bit set, instead cleared
+the *new* bit set before switching it to be the old bit set.  This means
+that the "old" bit set is always empty and delegations are blocked
+between 0 and 30 seconds.
 
-	find_get_page(vma->vm_file->f_mapping, 0);
+This patch updates bd->new before clearing the set with that index,
+instead of afterwards.
 
-line and checks against PAGE_SIZE.
-
-Returns errors for now until someone rewrites build-id parser
-to be more inline with load_elf_binary().
-
-Link: https://lkml.kernel.org/r/d58bc281-6ca7-467a-9a64-40fa214bd63e@p183
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 905415ff3ffb ("lib/buildid: harden build ID parsing logic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 6282cd565553 ("NFSD: Don't hand out delegations for 30 seconds after recalling them.")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/buildid.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/nfsd/nfs4state.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index 7954dd92e36c0..e02b5507418b4 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -73,6 +73,13 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- 	Elf32_Phdr *phdr;
- 	int i;
- 
-+	/*
-+	 * FIXME
-+	 * Neither ELF spec nor ELF loader require that program headers
-+	 * start immediately after ELF header.
-+	 */
-+	if (ehdr->e_phoff != sizeof(Elf32_Ehdr))
-+		return -EINVAL;
- 	/* only supports phdr that fits in one page */
- 	if (ehdr->e_phnum >
- 	    (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
-@@ -98,6 +105,13 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
- 	Elf64_Phdr *phdr;
- 	int i;
- 
-+	/*
-+	 * FIXME
-+	 * Neither ELF spec nor ELF loader require that program headers
-+	 * start immediately after ELF header.
-+	 */
-+	if (ehdr->e_phoff != sizeof(Elf64_Ehdr))
-+		return -EINVAL;
- 	/* only supports phdr that fits in one page */
- 	if (ehdr->e_phnum >
- 	    (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
--- 
-2.43.0
-
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1087,7 +1087,8 @@ static void nfs4_free_deleg(struct nfs4_
+  * When a delegation is recalled, the filehandle is stored in the "new"
+  * filter.
+  * Every 30 seconds we swap the filters and clear the "new" one,
+- * unless both are empty of course.
++ * unless both are empty of course.  This results in delegations for a
++ * given filehandle being blocked for between 30 and 60 seconds.
+  *
+  * Each filter is 256 bits.  We hash the filehandle to 32bit and use the
+  * low 3 bytes as hash-table indices.
+@@ -1116,9 +1117,9 @@ static int delegation_blocked(struct knf
+ 		if (ktime_get_seconds() - bd->swap_time > 30) {
+ 			bd->entries -= bd->old_entries;
+ 			bd->old_entries = bd->entries;
++			bd->new = 1-bd->new;
+ 			memset(bd->set[bd->new], 0,
+ 			       sizeof(bd->set[0]));
+-			bd->new = 1-bd->new;
+ 			bd->swap_time = ktime_get_seconds();
+ 		}
+ 		spin_unlock(&blocked_delegations_lock);
 
 
 
