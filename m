@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C24D994C56
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B68749949A1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1384B1F2490F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78643285615
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539C01DED4E;
-	Tue,  8 Oct 2024 12:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE451DF995;
+	Tue,  8 Oct 2024 12:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC8IEAWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EI46NDGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106051DE8BE;
-	Tue,  8 Oct 2024 12:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191C31DF98E;
+	Tue,  8 Oct 2024 12:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391981; cv=none; b=WJiXQueyc0xYTrq5cLfySb6YXu00Dr8NsTTCPLv5M9VukU6wDp1dcMptJKVa2fulA3afbVeBtkSiezuGZN9yZFL1eBEMDdI90u3ahm2JCoCaCJa6iCNVBvDThlT96CI3fKYRGu+Dn4gfhpeVXTrWThY6DQDH3/RxeM1haCYAcoI=
+	t=1728390266; cv=none; b=gfRuwsfVjsIEHG5IAZNOPI2qTnM6ChcaY1ZUTQARQ/gfuCJ0vCpwoRmRd4HT/tgTFefUd/S2XuKDL8a9TROrdLTJpdNZMWZcUpGxfwvB1eJBaUf5KomRw19ByUkbQp3pQwpTOEW0Zf8jpFd8HG2SWBR6du3xz2Xa+binEOpxRiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391981; c=relaxed/simple;
-	bh=0pRHOZb3S3lDGWyOr0YzBURiu7jG8MEsQLfcV5HguMA=;
+	s=arc-20240116; t=1728390266; c=relaxed/simple;
+	bh=0B+U/dLIko9gTvP/hBcUBLfFLTXB6et4xCxPKzTwCGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nN/CRwtWFm/UCoMrvh5GUvKjhTB86uTPcCwwIj6zwhtXP/lk67oA8J1NdWAcmKLoealEVXijq6WzUPwSv+nznNsAOzt1ArBTp2soUw+yB9e/yFXeKmyZeQZQEMSTEz/PHYm4xbvQteb2poKQWPLH7Mkk+qny0FcCcNGX2BCxf5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC8IEAWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C5FC4CEC7;
-	Tue,  8 Oct 2024 12:52:59 +0000 (UTC)
+	 MIME-Version; b=DgAZAPzOKifkMYgByO87FPs+uv2cS9yq4hFS6kRaPfJR008U/p2Htk3FKWXqhiEPcrc44cj0vuXR86K7BxoMjW1a+bmEjA/312ksGOswD2G9H76NN1p17We/WLJhc3s1hMeM3N+9DBqJ5c++C/oIqZoZbegBrKTcm/8wPUv0B2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EI46NDGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71839C4CED8;
+	Tue,  8 Oct 2024 12:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391980;
-	bh=0pRHOZb3S3lDGWyOr0YzBURiu7jG8MEsQLfcV5HguMA=;
+	s=korg; t=1728390265;
+	bh=0B+U/dLIko9gTvP/hBcUBLfFLTXB6et4xCxPKzTwCGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cC8IEAWfvyL8x0C1OFN4chq4T4Y4MblKYKtqOUe4nUCX0+ybghlgacwZv2B7gKbuB
-	 vGj7qBGI0h0TcGIkKnE0Sx31dgL1WTeHZorH2CgnIszmP5dkvsdWEEb1bNYeTKjhrx
-	 6QODMIum68cfjSBonM3ifeoUruz8z8DJMjA+sGwI=
+	b=EI46NDGZY3ICUJr+MhoiDAy3ozi8Eghp8RRLxDTf9vEUR36uz8wTuHb4Zsvgk5b0i
+	 TZYSsde5vxq+YP19akxLiHavgI5TDW6ZdO59MAXuf8Ax/dz1I0P/95YuyE6xg1MNkf
+	 UHhJsxODOfJXlnBfpfrtYPzTrDT7k6JW8RNdcFCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 273/558] scsi: lpfc: Update PRLO handling in direct attached topology
+	Amir Goldstein <amir73il@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Fei Lv <feilv@asrmicro.com>
+Subject: [PATCH 6.10 240/482] ovl: fsync after metadata copy-up
 Date: Tue,  8 Oct 2024 14:05:03 +0200
-Message-ID: <20241008115713.073257278@linuxfoundation.org>
+Message-ID: <20241008115657.741313238@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 1f0f7679ad8942f810b0f19ee9cf098c3502d66a ]
+[ Upstream commit 7d6899fb69d25e1bc6f4700b7c1d92e6b608593d ]
 
-A kref imbalance occurs when handling an unsolicited PRLO in direct
-attached topology.
+For upper filesystems which do not use strict ordering of persisting
+metadata changes (e.g. ubifs), when overlayfs file is modified for
+the first time, copy up will create a copy of the lower file and
+its parent directories in the upper layer. Permission lost of the
+new upper parent directory was observed during power-cut stress test.
 
-Rework PRLO rcv handling when in MAPPED state.  Save the state that we were
-handling a PRLO by setting nlp_last_elscmd to ELS_CMD_PRLO.  Then in the
-lpfc_cmpl_els_logo_acc() completion routine, manually restart discovery.
-By issuing the PLOGI, which nlp_gets, before nlp_put at the end of the
-lpfc_cmpl_els_logo_acc() routine, we are saving us from a final nlp_put.
-And, we are still allowing the unreg_rpi to happen.
+Fix by moving the fsync call to after metadata copy to make sure that the
+metadata copied up directory and files persists to disk before renaming
+from tmp to final destination.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240726231512.92867-7-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+With metacopy enabled, this change will hurt performance of workloads
+such as chown -R, so we keep the legacy behavior of fsync only on copyup
+of data.
+
+Link: https://lore.kernel.org/linux-unionfs/CAOQ4uxj-pOvmw1-uXR3qVdqtLjSkwcR9nVKcNU_vC10Zyf2miQ@mail.gmail.com/
+Reported-and-tested-by: Fei Lv <feilv@asrmicro.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c       | 27 ++++++++++++++++-----------
- drivers/scsi/lpfc/lpfc_nportdisc.c | 22 ++++++++++++++++++++--
- 2 files changed, 36 insertions(+), 13 deletions(-)
+ fs/overlayfs/copy_up.c | 43 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index 8c0926ffee1bf..e27f5d955edb4 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -5244,9 +5244,10 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 	/* ACC to LOGO completes to NPort <nlp_DID> */
- 	lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
- 			 "0109 ACC to LOGO completes to NPort x%x refcnt %d "
--			 "Data: x%x x%x x%x\n",
--			 ndlp->nlp_DID, kref_read(&ndlp->kref), ndlp->nlp_flag,
--			 ndlp->nlp_state, ndlp->nlp_rpi);
-+			 "last els x%x Data: x%x x%x x%x\n",
-+			 ndlp->nlp_DID, kref_read(&ndlp->kref),
-+			 ndlp->nlp_last_elscmd, ndlp->nlp_flag, ndlp->nlp_state,
-+			 ndlp->nlp_rpi);
- 
- 	/* This clause allows the LOGO ACC to complete and free resources
- 	 * for the Fabric Domain Controller.  It does deliberately skip
-@@ -5258,18 +5259,22 @@ lpfc_cmpl_els_logo_acc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 		goto out;
- 
- 	if (ndlp->nlp_state == NLP_STE_NPR_NODE) {
--		/* If PLOGI is being retried, PLOGI completion will cleanup the
--		 * node. The NLP_NPR_2B_DISC flag needs to be retained to make
--		 * progress on nodes discovered from last RSCN.
--		 */
--		if ((ndlp->nlp_flag & NLP_DELAY_TMO) &&
--		    (ndlp->nlp_last_elscmd == ELS_CMD_PLOGI))
--			goto out;
--
- 		if (ndlp->nlp_flag & NLP_RPI_REGISTERED)
- 			lpfc_unreg_rpi(vport, ndlp);
- 
-+		/* If came from PRLO, then PRLO_ACC is done.
-+		 * Start rediscovery now.
-+		 */
-+		if (ndlp->nlp_last_elscmd == ELS_CMD_PRLO) {
-+			spin_lock_irq(&ndlp->lock);
-+			ndlp->nlp_flag |= NLP_NPR_2B_DISC;
-+			spin_unlock_irq(&ndlp->lock);
-+			ndlp->nlp_prev_state = ndlp->nlp_state;
-+			lpfc_nlp_set_state(vport, ndlp, NLP_STE_PLOGI_ISSUE);
-+			lpfc_issue_els_plogi(vport, ndlp->nlp_DID, 0);
-+		}
- 	}
-+
-  out:
- 	/*
- 	 * The driver received a LOGO from the rport and has ACK'd it.
-diff --git a/drivers/scsi/lpfc/lpfc_nportdisc.c b/drivers/scsi/lpfc/lpfc_nportdisc.c
-index f6a53446e57f9..4574716c8764f 100644
---- a/drivers/scsi/lpfc/lpfc_nportdisc.c
-+++ b/drivers/scsi/lpfc/lpfc_nportdisc.c
-@@ -2652,8 +2652,26 @@ lpfc_rcv_prlo_mapped_node(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
- 	/* flush the target */
- 	lpfc_sli_abort_iocb(vport, ndlp->nlp_sid, 0, LPFC_CTX_TGT);
- 
--	/* Treat like rcv logo */
--	lpfc_rcv_logo(vport, ndlp, cmdiocb, ELS_CMD_PRLO);
-+	/* Send PRLO_ACC */
-+	spin_lock_irq(&ndlp->lock);
-+	ndlp->nlp_flag |= NLP_LOGO_ACC;
-+	spin_unlock_irq(&ndlp->lock);
-+	lpfc_els_rsp_acc(vport, ELS_CMD_PRLO, cmdiocb, ndlp, NULL);
-+
-+	/* Save ELS_CMD_PRLO as the last elscmd and then set to NPR.
-+	 * lpfc_cmpl_els_logo_acc is expected to restart discovery.
-+	 */
-+	ndlp->nlp_last_elscmd = ELS_CMD_PRLO;
-+	ndlp->nlp_prev_state = ndlp->nlp_state;
-+
-+	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE | LOG_ELS | LOG_DISCOVERY,
-+			 "3422 DID x%06x nflag x%x lastels x%x ref cnt %u\n",
-+			 ndlp->nlp_DID, ndlp->nlp_flag,
-+			 ndlp->nlp_last_elscmd,
-+			 kref_read(&ndlp->kref));
-+
-+	lpfc_nlp_set_state(vport, ndlp, NLP_STE_NPR_NODE);
-+
- 	return ndlp->nlp_state;
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index a5ef2005a2cc5..051a802893a18 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -243,8 +243,24 @@ static int ovl_verify_area(loff_t pos, loff_t pos2, loff_t len, loff_t totlen)
+ 	return 0;
  }
  
++static int ovl_sync_file(struct path *path)
++{
++	struct file *new_file;
++	int err;
++
++	new_file = ovl_path_open(path, O_LARGEFILE | O_RDONLY);
++	if (IS_ERR(new_file))
++		return PTR_ERR(new_file);
++
++	err = vfs_fsync(new_file, 0);
++	fput(new_file);
++
++	return err;
++}
++
+ static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
+-			    struct file *new_file, loff_t len)
++			    struct file *new_file, loff_t len,
++			    bool datasync)
+ {
+ 	struct path datapath;
+ 	struct file *old_file;
+@@ -342,7 +358,8 @@ static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
+ 
+ 		len -= bytes;
+ 	}
+-	if (!error && ovl_should_sync(ofs))
++	/* call fsync once, either now or later along with metadata */
++	if (!error && ovl_should_sync(ofs) && datasync)
+ 		error = vfs_fsync(new_file, 0);
+ out_fput:
+ 	fput(old_file);
+@@ -574,6 +591,7 @@ struct ovl_copy_up_ctx {
+ 	bool indexed;
+ 	bool metacopy;
+ 	bool metacopy_digest;
++	bool metadata_fsync;
+ };
+ 
+ static int ovl_link_up(struct ovl_copy_up_ctx *c)
+@@ -634,7 +652,8 @@ static int ovl_copy_up_data(struct ovl_copy_up_ctx *c, const struct path *temp)
+ 	if (IS_ERR(new_file))
+ 		return PTR_ERR(new_file);
+ 
+-	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size);
++	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size,
++			       !c->metadata_fsync);
+ 	fput(new_file);
+ 
+ 	return err;
+@@ -701,6 +720,10 @@ static int ovl_copy_up_metadata(struct ovl_copy_up_ctx *c, struct dentry *temp)
+ 		err = ovl_set_attr(ofs, temp, &c->stat);
+ 	inode_unlock(temp->d_inode);
+ 
++	/* fsync metadata before moving it into upper dir */
++	if (!err && ovl_should_sync(ofs) && c->metadata_fsync)
++		err = ovl_sync_file(&upperpath);
++
+ 	return err;
+ }
+ 
+@@ -860,7 +883,8 @@ static int ovl_copy_up_tmpfile(struct ovl_copy_up_ctx *c)
+ 
+ 	temp = tmpfile->f_path.dentry;
+ 	if (!c->metacopy && c->stat.size) {
+-		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size);
++		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size,
++				       !c->metadata_fsync);
+ 		if (err)
+ 			goto out_fput;
+ 	}
+@@ -1135,6 +1159,17 @@ static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
+ 	    !kgid_has_mapping(current_user_ns(), ctx.stat.gid))
+ 		return -EOVERFLOW;
+ 
++	/*
++	 * With metacopy disabled, we fsync after final metadata copyup, for
++	 * both regular files and directories to get atomic copyup semantics
++	 * on filesystems that do not use strict metadata ordering (e.g. ubifs).
++	 *
++	 * With metacopy enabled we want to avoid fsync on all meta copyup
++	 * that will hurt performance of workloads such as chown -R, so we
++	 * only fsync on data copyup as legacy behavior.
++	 */
++	ctx.metadata_fsync = !OVL_FS(dentry->d_sb)->config.metacopy &&
++			     (S_ISREG(ctx.stat.mode) || S_ISDIR(ctx.stat.mode));
+ 	ctx.metacopy = ovl_need_meta_copy_up(dentry, ctx.stat.mode, flags);
+ 
+ 	if (parent) {
 -- 
 2.43.0
 
