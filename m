@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9207994C64
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326939949F2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82DAE1F2490F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF15C2812A7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A971DED60;
-	Tue,  8 Oct 2024 12:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188D11DD552;
+	Tue,  8 Oct 2024 12:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZFPSb+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ85EUa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D7E1DE2CF;
-	Tue,  8 Oct 2024 12:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA64C97;
+	Tue,  8 Oct 2024 12:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392034; cv=none; b=F0MRt/fkvHFUmp0gWBjbF+ds4cg2iA5ftL+ZAL7acE+J4jf++d5d/A8GQ+XEajXtC8LOGoo6Omx/CXIPmiMaBUePnPgaU46fFeZhqG47tJF1pV/Vcw6lhixd+fkVc7+1+AxirGAsScdC8y+thCEt0IpTKrW22LBhUZoKsKuHeUY=
+	t=1728390456; cv=none; b=a4Vxnb6zJNAR9x+q1kgDQI0Y4vLRJyryfBRxPrpVcKgY/FpvGnmqhdiJSr3ZD/K8h5NFuqJO9dzRZpqHN93N4gjKzjy50noZf7Naq6wR4eBgF5nMTVa7pUUS54zwnVnnF3xkb/vGxfXZMGdfQtrFuK3Vvih8vrBGaEZJb+nRaz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392034; c=relaxed/simple;
-	bh=He2yA67+LiQyTNfPSPvuBpZYtN3wyq+s3qChVi3zmfk=;
+	s=arc-20240116; t=1728390456; c=relaxed/simple;
+	bh=IJfSVbSEmd5SXxZUmM3HizynEvzntg22tgUlMZ1ikxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFClsvq6eOisyR3c1FOkIzPaksVhXnmwjQ2s2208gNZUyDqEbgpNdLD4FFCp+31srqnUN3hGX/TDJ9Qd39wfgr7075xW5wW3c3t3d5C2JgouGia+NnaCB5909hZ1H0tXZNXRTF3zwLTSv10TIwUgMWKJMAOJrubSuCZgUeAlI34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZFPSb+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29309C4CECD;
-	Tue,  8 Oct 2024 12:53:53 +0000 (UTC)
+	 MIME-Version; b=jJoXvYoXr+J1i67PePalzRJCbgPjavuuQNWRVfEybpK7GafUjVrBZZrAxGKXre8fUhA2RhG+m8M3RN8WPxxCBC/3T0Kh3f1WIxM4qMmFLJxVg18IrWlzM0HzkTVoo8/m/yAbR83J7UqBPZOaSSJMw4fopdhRFmTOhPWQeRFiKs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ85EUa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409A0C4CEC7;
+	Tue,  8 Oct 2024 12:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392034;
-	bh=He2yA67+LiQyTNfPSPvuBpZYtN3wyq+s3qChVi3zmfk=;
+	s=korg; t=1728390456;
+	bh=IJfSVbSEmd5SXxZUmM3HizynEvzntg22tgUlMZ1ikxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZFPSb+ZOljKHlla+KOt4//T3pKIy+g+51vE1oNu6xS3fwAyL00frTWFLLbsp/lix
-	 X4WDNsJtG+AR7zXwjERbtLITGCia4w+75cl75/TN9j+6Uoa53KNRtN6ut76naSoVJC
-	 3Dqyo29gG0zRGsKwDc6somlDnpOPTPAAPA6FBCf0=
+	b=QJ85EUa1kooXopeuo/zGXJ8AVB7Xyxc3BMzGBPj4WDPr7piPXX1lCwfR3serxXEJ/
+	 Ofb9oDMGYZnu4FlESTJWQwx+7d12qtwSoOGXs77c0A1WK5/cVwWg/YqgqOKYumVxKV
+	 GPl60/fVzcCRNZnUbHpiBI3UzZ/u5E4HeuLzKgXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 296/558] drm/amdgpu/gfx11: use rlc safe mode for soft recovery
+Subject: [PATCH 6.10 263/482] spi: s3c64xx: fix timeout counters in flush_fifo
 Date: Tue,  8 Oct 2024 14:05:26 +0200
-Message-ID: <20241008115713.970411933@linuxfoundation.org>
+Message-ID: <20241008115658.633556300@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
 
-[ Upstream commit 3f2d35c325534c1b7ac5072173f0dc7ca969dec2 ]
+[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
 
-Protect the MMIO access with safe mode.
+In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
+in the do { } while(test && loops--) condition. This means the loops is
+left at the unsigned equivalent of -1 if the loop times out. The test
+after will never pass as if tests for loops == 0.
 
-Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 228124b389541..b80b1b6f2eea7 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -6008,7 +6008,9 @@ static void gfx_v11_0_ring_soft_recovery(struct amdgpu_ring *ring,
- 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
- 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
- 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
-+	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
- 	WREG32_SOC15(GC, 0, regSQ_CMD, value);
-+	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
- }
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 833c58c88e408..6ab416a339669 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -245,7 +245,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 	loops = msecs_to_loops(1);
+ 	do {
+ 		val = readl(regs + S3C64XX_SPI_STATUS);
+-	} while (TX_FIFO_LVL(val, sdd) && loops--);
++	} while (TX_FIFO_LVL(val, sdd) && --loops);
  
- static void
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
+@@ -258,7 +258,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 			readl(regs + S3C64XX_SPI_RX_DATA);
+ 		else
+ 			break;
+-	} while (loops--);
++	} while (--loops);
+ 
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
 -- 
 2.43.0
 
