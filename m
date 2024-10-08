@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-82066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E67994AE1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCCD994FAF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17BA11F2380E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6DE31F23B90
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A0D1DE89A;
-	Tue,  8 Oct 2024 12:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAED01DEFCE;
+	Tue,  8 Oct 2024 13:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIsZ+hnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opMnS8ac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B461DC759;
-	Tue,  8 Oct 2024 12:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997091DF256;
+	Tue,  8 Oct 2024 13:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391052; cv=none; b=Ml5fG/uxyGUqffkEApWPYjAXLrn5dSwscOpY+NFdLLyM1XJkb0mJOXfrS9NJT7jU2ErjqLNQPsgBrE5Eq+KVNUQOB8PJkdBg1kbGSv3bu7iKfsO389DFpgUWgsxYy5p18CpUkH72GPxI08JrPleSSl9d477ymneOlzNh9RXgEZo=
+	t=1728394031; cv=none; b=np2ZHlAubh4byX9sLYv+1/cK/Cns1os1L8pbiQl52UAW3daN9rpsKtxT6gqfiykCa9p4TQ1Fv2H2I/Kfy9+fNg47JDL+PBi1BkMLK4K7AQy8cfFj1UrNJTOLVLzxlXVWs9tkZkAu2NLOlVfRzoIGwVFLa+I/GRtlWxTT2GKcEU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391052; c=relaxed/simple;
-	bh=gv+3o8AGN9yzAeH5/VaXlj7jE2C8BRAPFhoiQsy1M1k=;
+	s=arc-20240116; t=1728394031; c=relaxed/simple;
+	bh=un62S25FCQXG34sF31XdxIlPGSKqn39faHgTZh6QgmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QISTRxkqAxrqOmb70jV/zI66BipP9ku5FDpqG9R2o3cAAWcSOgX/anAFFG7TscZtdZ3Fpx1T1ocphq8bBCkZ9tj+DqoXIKkvp0DjMJcbb6kPF8eGHeOrKtNndNrp+rVJPOGcIrhsjLekVT+g/EfUFdgZyZK5+nxfbRChFpGuU/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIsZ+hnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFD4C4CEC7;
-	Tue,  8 Oct 2024 12:37:31 +0000 (UTC)
+	 MIME-Version; b=ay4cPIZMszrpQVplISSNUYjLp4qcWo9Ae5KlTjvwXBhJFh3dpud5yB7v4BSMk5ffPjCh29UIgTyuNsjqzNnphMt64lSA5v4SxxUSrrhOnkFs2rRG0D/xsOjLlpSmBnRbqoo5v3gwn9xaWIRwyN5X5Jsw545ZQK6W3ghOmwjAGEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opMnS8ac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1E3C4CEC7;
+	Tue,  8 Oct 2024 13:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391052;
-	bh=gv+3o8AGN9yzAeH5/VaXlj7jE2C8BRAPFhoiQsy1M1k=;
+	s=korg; t=1728394031;
+	bh=un62S25FCQXG34sF31XdxIlPGSKqn39faHgTZh6QgmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIsZ+hnAlPxWFkgnvGv/y/QlFuNBAud7bJPE1QHr/nuBPYbnxPZJkE8bkA3KHWzs6
-	 xpKvIqP84LsprPzYlwpXA2lpSfdkmEeBvgTjpUN22Nm28mHYfFJwThOqHpLSUM5acy
-	 bvpVakr6xLajuWmFPEd4735OegdFOAFwNLeX5UCk=
+	b=opMnS8acBDW+/Xo2jwTRZsAOLC8XVuKZBxXWpnOcGuYpahVWJGNjB8+JG9nydaLbg
+	 q1OV2+cOugXqSp7obUXFO6SDEJ9hytUcquwr/X/aKSY0iOrHae95XccbdrhF7x/S1w
+	 OugCWWUIWRdQJcz66VerMuzLVerV3VjtTkCo6roM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	yuxuanzhe@outlook.com,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 476/482] rxrpc: Fix a race between socket set up and I/O thread creation
-Date: Tue,  8 Oct 2024 14:08:59 +0200
-Message-ID: <20241008115707.242909166@linuxfoundation.org>
+	wangrong <wangrong@uniontech.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 295/386] smb: client: use actual path when queryfs
+Date: Tue,  8 Oct 2024 14:09:00 +0200
+Message-ID: <20241008115640.995629220@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +62,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: wangrong <wangrong@uniontech.com>
 
-commit bc212465326e8587325f520a052346f0b57360e6 upstream.
+commit a421e3fe0e6abe27395078f4f0cec5daf466caea upstream.
 
-In rxrpc_open_socket(), it sets up the socket and then sets up the I/O
-thread that will handle it.  This is a problem, however, as there's a gap
-between the two phases in which a packet may come into rxrpc_encap_rcv()
-from the UDP packet but we oops when trying to wake the not-yet created I/O
-thread.
+Due to server permission control, the client does not have access to
+the shared root directory, but can access subdirectories normally, so
+users usually mount the shared subdirectories directly. In this case,
+queryfs should use the actual path instead of the root directory to
+avoid the call returning an error (EACCES).
 
-As a quick fix, just make rxrpc_encap_rcv() discard the packet if there's
-no I/O thread yet.
-
-A better, but more intrusive fix would perhaps be to rearrange things such
-that the socket creation is done by the I/O thread.
-
-Fixes: a275da62e8c1 ("rxrpc: Create a per-local endpoint receive queue and I/O thread")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: yuxuanzhe@outlook.com
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241001132702.3122709-2-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: wangrong <wangrong@uniontech.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/ar-internal.h  |    2 +-
- net/rxrpc/io_thread.c    |   10 ++++++++--
- net/rxrpc/local_object.c |    2 +-
- 3 files changed, 10 insertions(+), 4 deletions(-)
+ fs/smb/client/cifsfs.c   |   13 ++++++++++++-
+ fs/smb/client/cifsglob.h |    2 +-
+ fs/smb/client/smb1ops.c  |    2 +-
+ fs/smb/client/smb2ops.c  |   19 ++++++++++++-------
+ 4 files changed, 26 insertions(+), 10 deletions(-)
 
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1058,7 +1058,7 @@ bool rxrpc_direct_abort(struct sk_buff *
- int rxrpc_io_thread(void *data);
- static inline void rxrpc_wake_up_io_thread(struct rxrpc_local *local)
- {
--	wake_up_process(local->io_thread);
-+	wake_up_process(READ_ONCE(local->io_thread));
- }
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -312,8 +312,17 @@ cifs_statfs(struct dentry *dentry, struc
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	unsigned int xid;
+ 	int rc = 0;
++	const char *full_path;
++	void *page;
  
- static inline bool rxrpc_protocol_error(struct sk_buff *skb, enum rxrpc_abort_reason why)
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -27,11 +27,17 @@ int rxrpc_encap_rcv(struct sock *udp_sk,
- {
- 	struct sk_buff_head *rx_queue;
- 	struct rxrpc_local *local = rcu_dereference_sk_user_data(udp_sk);
-+	struct task_struct *io_thread;
- 
- 	if (unlikely(!local)) {
- 		kfree_skb(skb);
- 		return 0;
- 	}
-+	io_thread = READ_ONCE(local->io_thread);
-+	if (!io_thread) {
-+		kfree_skb(skb);
-+		return 0;
+ 	xid = get_xid();
++	page = alloc_dentry_path();
++
++	full_path = build_path_from_dentry(dentry, page);
++	if (IS_ERR(full_path)) {
++		rc = PTR_ERR(full_path);
++		goto statfs_out;
 +	}
- 	if (skb->tstamp == 0)
- 		skb->tstamp = ktime_get_real();
  
-@@ -47,7 +53,7 @@ int rxrpc_encap_rcv(struct sock *udp_sk,
- #endif
+ 	if (le32_to_cpu(tcon->fsAttrInfo.MaxPathNameComponentLength) > 0)
+ 		buf->f_namelen =
+@@ -329,8 +338,10 @@ cifs_statfs(struct dentry *dentry, struc
+ 	buf->f_ffree = 0;	/* unlimited */
  
- 	skb_queue_tail(rx_queue, skb);
--	rxrpc_wake_up_io_thread(local);
-+	wake_up_process(io_thread);
- 	return 0;
+ 	if (server->ops->queryfs)
+-		rc = server->ops->queryfs(xid, tcon, cifs_sb, buf);
++		rc = server->ops->queryfs(xid, tcon, full_path, cifs_sb, buf);
+ 
++statfs_out:
++	free_dentry_path(page);
+ 	free_xid(xid);
+ 	return rc;
  }
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -485,7 +485,7 @@ struct smb_version_operations {
+ 			__u16 net_fid, struct cifsInodeInfo *cifs_inode);
+ 	/* query remote filesystem */
+ 	int (*queryfs)(const unsigned int, struct cifs_tcon *,
+-		       struct cifs_sb_info *, struct kstatfs *);
++		       const char *, struct cifs_sb_info *, struct kstatfs *);
+ 	/* send mandatory brlock to the server */
+ 	int (*mand_lock)(const unsigned int, struct cifsFileInfo *, __u64,
+ 			 __u64, __u32, int, int, bool);
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -909,7 +909,7 @@ cifs_oplock_response(struct cifs_tcon *t
  
-@@ -565,7 +571,7 @@ int rxrpc_io_thread(void *data)
- 	__set_current_state(TASK_RUNNING);
- 	rxrpc_see_local(local, rxrpc_local_stop);
- 	rxrpc_destroy_local(local);
--	local->io_thread = NULL;
-+	WRITE_ONCE(local->io_thread, NULL);
- 	rxrpc_see_local(local, rxrpc_local_stopped);
- 	return 0;
- }
---- a/net/rxrpc/local_object.c
-+++ b/net/rxrpc/local_object.c
-@@ -232,7 +232,7 @@ static int rxrpc_open_socket(struct rxrp
- 	}
+ static int
+ cifs_queryfs(const unsigned int xid, struct cifs_tcon *tcon,
+-	     struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
++	     const char *path, struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
+ {
+ 	int rc = -EOPNOTSUPP;
  
- 	wait_for_completion(&local->io_thread_ready);
--	local->io_thread = io_thread;
-+	WRITE_ONCE(local->io_thread, io_thread);
- 	_leave(" = 0");
- 	return 0;
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -2783,7 +2783,7 @@ out_free_path:
+ 
+ static int
+ smb2_queryfs(const unsigned int xid, struct cifs_tcon *tcon,
+-	     struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
++	     const char *path, struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
+ {
+ 	struct smb2_query_info_rsp *rsp;
+ 	struct smb2_fs_full_size_info *info = NULL;
+@@ -2792,7 +2792,7 @@ smb2_queryfs(const unsigned int xid, str
+ 	int rc;
+ 
+ 
+-	rc = smb2_query_info_compound(xid, tcon, "",
++	rc = smb2_query_info_compound(xid, tcon, path,
+ 				      FILE_READ_ATTRIBUTES,
+ 				      FS_FULL_SIZE_INFORMATION,
+ 				      SMB2_O_INFO_FILESYSTEM,
+@@ -2820,28 +2820,33 @@ qfs_exit:
+ 
+ static int
+ smb311_queryfs(const unsigned int xid, struct cifs_tcon *tcon,
+-	       struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
++	       const char *path, struct cifs_sb_info *cifs_sb, struct kstatfs *buf)
+ {
+ 	int rc;
+-	__le16 srch_path = 0; /* Null - open root of share */
++	__le16 *utf16_path = NULL;
+ 	u8 oplock = SMB2_OPLOCK_LEVEL_NONE;
+ 	struct cifs_open_parms oparms;
+ 	struct cifs_fid fid;
+ 
+ 	if (!tcon->posix_extensions)
+-		return smb2_queryfs(xid, tcon, cifs_sb, buf);
++		return smb2_queryfs(xid, tcon, path, cifs_sb, buf);
+ 
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+-		.path = "",
++		.path = path,
+ 		.desired_access = FILE_READ_ATTRIBUTES,
+ 		.disposition = FILE_OPEN,
+ 		.create_options = cifs_create_options(cifs_sb, 0),
+ 		.fid = &fid,
+ 	};
+ 
+-	rc = SMB2_open(xid, &oparms, &srch_path, &oplock, NULL, NULL,
++	utf16_path = cifs_convert_path_to_utf16(path, cifs_sb);
++	if (utf16_path == NULL)
++		return -ENOMEM;
++
++	rc = SMB2_open(xid, &oparms, utf16_path, &oplock, NULL, NULL,
+ 		       NULL, NULL);
++	kfree(utf16_path);
+ 	if (rc)
+ 		return rc;
  
 
 
