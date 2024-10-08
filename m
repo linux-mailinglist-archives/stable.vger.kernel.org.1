@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A007899500F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:32:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5AF994DBB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0F91B23BD0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B716C1C233DC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7822F1DF272;
-	Tue,  8 Oct 2024 13:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FAA1DE4CD;
+	Tue,  8 Oct 2024 13:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1eMPWqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCWjdp62"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335E81DE88F;
-	Tue,  8 Oct 2024 13:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FA91DEFF7;
+	Tue,  8 Oct 2024 13:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394084; cv=none; b=VpbQdw6tNijpRARcbhBkmITCahmvAL+5b2iVLwDmtfrHOny9MruHTGx+9DpQpavIub0KdmYQwDd7j8jMRahVPUYm/fAN+IS6gY/PlfbI0UEaYhwkP5mnUNYTVBryg+z6MPQzgH13nKh+FHqibWIwFwGWBcG8GRLzp42efqfZumc=
+	t=1728392917; cv=none; b=HrPkUef9XsM3oGGo0EcH31pe7aRt/yUUM27lYlNUDgsvLaKA6IY5b5P9XnLYaiLv75IYi0GOWxGo7l01X6/N+/vqlLqpURl7xUkiprMeGUOtyJ0HgUHPz5hgLnOByqA1aJATDBw+qMWswzxbKPNMxiFdbP2ZFAwHl4mewwxzq6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394084; c=relaxed/simple;
-	bh=uBgsITFIV7jq0HSW3GTfMp8puVvbRiGOLOY2Yvo2mgk=;
+	s=arc-20240116; t=1728392917; c=relaxed/simple;
+	bh=DbJUlqVE7BbUxFv141qubAf0WD/NgKtlMfAL9aU8sOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbDc5xwvwZ1Jmb1W4Kgv/TswkHabkNsqr8pMH+C/0cTMh8uqPUR0xMvfSrr0cQLXC+CsQMk5KdMY8MMk372UKDZw9CuyCFkpPX8S/yEpiwQviNpniyfQ7Av/7mRkI6XUrT0b/+Pim0kn36xC4ENBub1lmUuEyZi2AgAnKJAJvz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1eMPWqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913EFC4CEC7;
-	Tue,  8 Oct 2024 13:28:03 +0000 (UTC)
+	 MIME-Version; b=dYJYatQsUlk9aEfjcJdGGOXvRuxRLhhvfJgdWAoU8w/ltXJaBSWZlbVSztcj/9wNH9/82kyeca/7CoQnH21dMTG6tOxH0GU2pgXd0wS5VU93A5aEQ4TptD2A6q4v6o5SbwZ/s7XlrBkRhrbri0sZ7VZqoQXKu9ta6tsFTOTU8kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCWjdp62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA31C4CECC;
+	Tue,  8 Oct 2024 13:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394084;
-	bh=uBgsITFIV7jq0HSW3GTfMp8puVvbRiGOLOY2Yvo2mgk=;
+	s=korg; t=1728392917;
+	bh=DbJUlqVE7BbUxFv141qubAf0WD/NgKtlMfAL9aU8sOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1eMPWqCZdZuYse6gq7mFM48RIRNWo3YCqWyjsAj7eFIyZhcGHi3hihmTUesORXGL
-	 ssxDO9Cxflvp3IREkimROa6U228Mu6519+eB7VCcKLmEYhR6A4hBAW7CFJZmMTl+L8
-	 GSR9OY5D5c9qp+8Vc7ylTTtXH9zDr2QeRfxypGVk=
+	b=SCWjdp62q88wJb2ICkOO38kOQRjh5SREfNXMIjAboOfEhAo62j4ximg7Vbkotaic4
+	 6IzgR6aWQMiTDqbg7/TJbvW8CEPlwX73Hw4H4TuFbbqFF3+4TtmqS7d97kyT1TaAWe
+	 coN4DpwYgeV7P4clkd5ziqlUg5UcQK53pIJ8QvRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brandon Duffany <brandon@buildbuddy.io>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 343/386] sched: psi: fix bogus pressure spikes from aggregation race
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.11 558/558] pmdomain: core: Reduce debug summary table width
 Date: Tue,  8 Oct 2024 14:09:48 +0200
-Message-ID: <20241008115642.880710914@linuxfoundation.org>
+Message-ID: <20241008115724.189586572@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,190 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3840cbe24cf060ea05a585ca497814609f5d47d1 ]
+commit c6ccb691d484544636bc4a097574c5c135ccccda upstream.
 
-Brandon reports sporadic, non-sensical spikes in cumulative pressure
-time (total=) when reading cpu.pressure at a high rate. This is due to
-a race condition between reader aggregation and tasks changing states.
+Commit 9094e53ff5c86ebe ("pmdomain: core: Use dev_name() instead of
+kobject_get_path() in debugfs") severely shortened the names of devices
+in a PM Domain.  Now the most common format[1] consists of a 32-bit
+unit-address (8 characters), followed by a dot and a node name (20
+characters for "air-pollution-sensor" and "interrupt-controller", which
+are the longest generic node names documented in the Devicetree
+Specification), for a typical maximum of 29 characters.
 
-While it affects all states and all resources captured by PSI, in
-practice it most likely triggers with CPU pressure, since scheduling
-events are so frequent compared to other resource events.
+This offers a good opportunity to reduce the table width of the debug
+summary:
+  - Reduce the device name field width from 50 to 30 characters, which
+    matches the PM Domain name width,
+  - Reduce the large inter-column space between the "performance" and
+    "managed by" columns.
 
-The race context is the live snooping of ongoing stalls during a
-pressure read. The read aggregates per-cpu records for stalls that
-have concluded, but will also incorporate ad-hoc the duration of any
-active state that hasn't been recorded yet. This is important to get
-timely measurements of ongoing stalls. Those ad-hoc samples are
-calculated on-the-fly up to the current time on that CPU; since the
-stall hasn't concluded, it's expected that this is the minimum amount
-of stall time that will enter the per-cpu records once it does.
+Visual impact:
+  - The "performance" column now starts at a position that is a
+    multiple of 16, just like the "status" and "children" columns,
+  - All of the "/device", "runtime status", and "managed by" columns are
+    now indented 4 characters more than the columns right above them,
+  - Everything fits in (one less than) 80 characters again ;-)
 
-The problem is that the path that concludes the state uses a CPU clock
-read that is not synchronized against aggregators; the clock is read
-outside of the seqlock protection. This allows aggregators to race and
-snoop a stall with a longer duration than will actually be recorded.
+[1] Note that some device names (e.g. TI AM335x interconnect target
+    modules) do not follow this convention, and may be much longer, but
+    these didn't fit in the old 50-character column width either.
 
-With the recorded stall time being less than the last snapshot
-remembered by the aggregator, a subsequent sample will underflow and
-observe a bogus delta value, resulting in an erratic jump in pressure.
-
-Fix this by moving the clock read of the state change into the seqlock
-protection. This ensures no aggregation can snoop live stalls past the
-time that's recorded when the state concludes.
-
-Reported-by: Brandon Duffany <brandon@buildbuddy.io>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219194
-Link: https://lore.kernel.org/lkml/20240827121851.GB438928@cmpxchg.org/
-Fixes: df77430639c9 ("psi: Reduce calls to sched_clock() in psi")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/f8e1821364b6d5d11350447c128f6d2b470f33fe.1725459707.git.geert+renesas@glider.be
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/psi.c | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ drivers/pmdomain/core.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 431971acc7632..f97e1473389ff 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -776,13 +776,14 @@ static void record_times(struct psi_group_cpu *groupc, u64 now)
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -3182,7 +3182,7 @@ static void rtpm_status_str(struct seq_f
+ 	else
+ 		WARN_ON(1);
+ 
+-	seq_printf(s, "%-25s  ", p);
++	seq_printf(s, "%-26s  ", p);
  }
  
- static void psi_group_change(struct psi_group *group, int cpu,
--			     unsigned int clear, unsigned int set, u64 now,
-+			     unsigned int clear, unsigned int set,
- 			     bool wake_clock)
- {
- 	struct psi_group_cpu *groupc;
- 	unsigned int t, m;
- 	enum psi_states s;
- 	u32 state_mask;
-+	u64 now;
+ static void mode_status_str(struct seq_file *s, struct device *dev)
+@@ -3191,7 +3191,7 @@ static void mode_status_str(struct seq_f
  
- 	lockdep_assert_rq_held(cpu_rq(cpu));
- 	groupc = per_cpu_ptr(group->pcpu, cpu);
-@@ -797,6 +798,7 @@ static void psi_group_change(struct psi_group *group, int cpu,
- 	 * SOME and FULL time these may have resulted in.
- 	 */
- 	write_seqcount_begin(&groupc->seq);
-+	now = cpu_clock(cpu);
+ 	gpd_data = to_gpd_data(dev->power.subsys_data->domain_data);
+ 
+-	seq_printf(s, "%9s", gpd_data->hw_mode ? "HW" : "SW");
++	seq_printf(s, "%2s", gpd_data->hw_mode ? "HW" : "SW");
+ }
+ 
+ static void perf_status_str(struct seq_file *s, struct device *dev)
+@@ -3226,7 +3226,7 @@ static int genpd_summary_one(struct seq_
+ 	else
+ 		snprintf(state, sizeof(state), "%s",
+ 			 status_lookup[genpd->status]);
+-	seq_printf(s, "%-30s  %-49s  %u", genpd->name, state, genpd->performance_state);
++	seq_printf(s, "%-30s  %-30s  %u", genpd->name, state, genpd->performance_state);
  
  	/*
- 	 * Start with TSK_ONCPU, which doesn't have a corresponding
-@@ -910,18 +912,15 @@ void psi_task_change(struct task_struct *task, int clear, int set)
- {
- 	int cpu = task_cpu(task);
- 	struct psi_group *group;
--	u64 now;
- 
- 	if (!task->pid)
- 		return;
- 
- 	psi_flags_change(task, clear, set);
- 
--	now = cpu_clock(cpu);
--
- 	group = task_psi_group(task);
- 	do {
--		psi_group_change(group, cpu, clear, set, now, true);
-+		psi_group_change(group, cpu, clear, set, true);
- 	} while ((group = group->parent));
- }
- 
-@@ -930,7 +929,6 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- {
- 	struct psi_group *group, *common = NULL;
- 	int cpu = task_cpu(prev);
--	u64 now = cpu_clock(cpu);
- 
- 	if (next->pid) {
- 		psi_flags_change(next, 0, TSK_ONCPU);
-@@ -947,7 +945,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 				break;
- 			}
- 
--			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
-+			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
- 		} while ((group = group->parent));
+ 	 * Modifications on the list require holding locks on both
+@@ -3242,7 +3242,7 @@ static int genpd_summary_one(struct seq_
  	}
  
-@@ -985,7 +983,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 		do {
- 			if (group == common)
- 				break;
--			psi_group_change(group, cpu, clear, set, now, wake_clock);
-+			psi_group_change(group, cpu, clear, set, wake_clock);
- 		} while ((group = group->parent));
+ 	list_for_each_entry(pm_data, &genpd->dev_list, list_node) {
+-		seq_printf(s, "\n    %-50s  ", dev_name(pm_data->dev));
++		seq_printf(s, "\n    %-30s  ", dev_name(pm_data->dev));
+ 		rtpm_status_str(s, pm_data->dev);
+ 		perf_status_str(s, pm_data->dev);
+ 		mode_status_str(s, pm_data->dev);
+@@ -3260,9 +3260,9 @@ static int summary_show(struct seq_file
+ 	struct generic_pm_domain *genpd;
+ 	int ret = 0;
  
- 		/*
-@@ -997,7 +995,7 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
- 		if ((prev->psi_flags ^ next->psi_flags) & ~TSK_ONCPU) {
- 			clear &= ~TSK_ONCPU;
- 			for (; group; group = group->parent)
--				psi_group_change(group, cpu, clear, set, now, wake_clock);
-+				psi_group_change(group, cpu, clear, set, wake_clock);
- 		}
- 	}
- }
-@@ -1008,8 +1006,8 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	int cpu = task_cpu(curr);
- 	struct psi_group *group;
- 	struct psi_group_cpu *groupc;
--	u64 now, irq;
- 	s64 delta;
-+	u64 irq;
+-	seq_puts(s, "domain                          status          children                           performance\n");
+-	seq_puts(s, "    /device                                             runtime status                           managed by\n");
+-	seq_puts(s, "------------------------------------------------------------------------------------------------------------\n");
++	seq_puts(s, "domain                          status          children        performance\n");
++	seq_puts(s, "    /device                         runtime status                  managed by\n");
++	seq_puts(s, "------------------------------------------------------------------------------\n");
  
- 	if (!curr->pid)
- 		return;
-@@ -1019,7 +1017,6 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	if (prev && task_psi_group(prev) == group)
- 		return;
- 
--	now = cpu_clock(cpu);
- 	irq = irq_time_read(cpu);
- 	delta = (s64)(irq - rq->psi_irq_time);
- 	if (delta < 0)
-@@ -1027,12 +1024,15 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
- 	rq->psi_irq_time = irq;
- 
- 	do {
-+		u64 now;
-+
- 		if (!group->enabled)
- 			continue;
- 
- 		groupc = per_cpu_ptr(group->pcpu, cpu);
- 
- 		write_seqcount_begin(&groupc->seq);
-+		now = cpu_clock(cpu);
- 
- 		record_times(groupc, now);
- 		groupc->times[PSI_IRQ_FULL] += delta;
-@@ -1231,11 +1231,9 @@ void psi_cgroup_restart(struct psi_group *group)
- 	for_each_possible_cpu(cpu) {
- 		struct rq *rq = cpu_rq(cpu);
- 		struct rq_flags rf;
--		u64 now;
- 
- 		rq_lock_irq(rq, &rf);
--		now = cpu_clock(cpu);
--		psi_group_change(group, cpu, 0, 0, now, true);
-+		psi_group_change(group, cpu, 0, 0, true);
- 		rq_unlock_irq(rq, &rf);
- 	}
- }
--- 
-2.43.0
-
+ 	ret = mutex_lock_interruptible(&gpd_list_lock);
+ 	if (ret)
 
 
 
