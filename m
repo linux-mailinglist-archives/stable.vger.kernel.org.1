@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238C8994AE7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83CE994FB3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9B85283A4E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54D8F1F241C5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46441DEFC8;
-	Tue,  8 Oct 2024 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72491DF97F;
+	Tue,  8 Oct 2024 13:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwWGntsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr4gruCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B891DE4DF;
-	Tue,  8 Oct 2024 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F131DF254;
+	Tue,  8 Oct 2024 13:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391067; cv=none; b=VnJQzTDv2/yK2BfHoBVJ2pUt0PG0kmgAK5DrLFuStz5bYGe9fzIhyiBo3QkDaMoRz6jMfRYNO1tpkMz4JQpYXK8H54L4QQH30HbNda9Z7bKG5Tq92PcV8PD7LeyE1f4WGpMBCGhNYacaWaW71hTK0gDNPSFw+hosRAI3L8+wrJ0=
+	t=1728394044; cv=none; b=dEPv4HnOqXWD8a0EQEacIxU3DCFPA4xCji2HcQWII1Upy2LQKeAnFsvHjlC9aa6JT49ebNhE6tCyBPTv2MFdXITp7XQWveRH2Oo45aLg3P+FZz3KWTkjLdYduviL+pA7u0Wt2fQzZWJWmhWasYkIZdhUY3LhqWbVzOuJY79f/ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391067; c=relaxed/simple;
-	bh=0ja6nYbnuy6y1WJSX+0bTqWriYvsCj74a78pvKx6je8=;
+	s=arc-20240116; t=1728394044; c=relaxed/simple;
+	bh=wv5Tjv0iNAv4ySFSBRSi8UkAqXbUPCGsRKNjrHmqmSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHIvPL94cHx+0WIDdI16Lpb41AEnwHm1VnYyZ7NYL2AUUaPpoVWYjxwzSSfqS1iKGJoT1B7Bxvl923ixZPcwFrLhLfyC97fCNqcnk+cm4PdcWFpjFY6CchdqPVJ5nlbZdnZ+ZhznrKYfjqt1eD+UcgchTOHb29nt2OWy//7NwNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwWGntsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275E8C4CECD;
-	Tue,  8 Oct 2024 12:37:46 +0000 (UTC)
+	 MIME-Version; b=Esbfjb9AYL0xhcJzuzpHHyvEbvEVkArIOs33H9JvzGiHLfGUXLTHyogHy8Ob3y+2cJKM1JZe9E1BBF1d4QNxff5oMUlTrgJPdYsAmLoRqKGvX2I+uRWnvdkEgqlqsKophsaecN4FAs8WuKH8mAfKIhSzg8CZrhZzW4UDiutBXxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr4gruCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45C4C4CEC7;
+	Tue,  8 Oct 2024 13:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391067;
-	bh=0ja6nYbnuy6y1WJSX+0bTqWriYvsCj74a78pvKx6je8=;
+	s=korg; t=1728394044;
+	bh=wv5Tjv0iNAv4ySFSBRSi8UkAqXbUPCGsRKNjrHmqmSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kwWGntslL6nQsoKWVigVLSmq8s80ENT0fvVPykSh4PjQuQaUvMV0aOLjmBAjOQlEO
-	 HAHWM5UESAALLXpbKuHUb5apnfuCrWTTvgoz3tsvyTFCm7tYlBmLpucvAY/Qgk3nQ5
-	 VMwBBihXifzdMMtXoKIsf2XqTQspQl7V/D7uW3cw=
+	b=kr4gruCJTG6FDqVmBcoQfrholsKLiRSW19YFDRhnAPNVru1NAnvtzsWe0KjxOxnD0
+	 E51Xu20LTHDore3Vkxle1hiIFn4tBIfmOGZEre2yn7IneF/UCPSBi01+Cx/UbpGSHv
+	 I8CWoW5Q8/3vVubfPdLVfcDPsflxkpKW05uZyAU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Gabe Teeger <Gabe.Teeger@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 480/482] drm/amd/display: Revert Avoid overflow assignment
-Date: Tue,  8 Oct 2024 14:09:03 +0200
-Message-ID: <20241008115707.398531209@linuxfoundation.org>
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 299/386] gso: fix udp gso fraglist segmentation after pull from frag_list
+Date: Tue,  8 Oct 2024 14:09:04 +0200
+Message-ID: <20241008115641.152043719@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabe Teeger <Gabe.Teeger@amd.com>
+From: Willem de Bruijn <willemb@google.com>
 
-commit e80f8f491df873ea2e07c941c747831234814612 upstream.
+commit a1e40ac5b5e9077fe1f7ae0eb88034db0f9ae1ab upstream.
 
-This reverts commit a15268787b79 ("drm/amd/display: Avoid overflow assignment in link_dp_cts")
-Due to regression causing DPMS hang.
+Detect gso fraglist skbs with corrupted geometry (see below) and
+pass these to skb_segment instead of skb_segment_list, as the first
+can segment them correctly.
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Gabe Teeger <Gabe.Teeger@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Valid SKB_GSO_FRAGLIST skbs
+- consist of two or more segments
+- the head_skb holds the protocol headers plus first gso_size
+- one or more frag_list skbs hold exactly one segment
+- all but the last must be gso_size
+
+Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
+modify these skbs, breaking these invariants.
+
+In extreme cases they pull all data into skb linear. For UDP, this
+causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
+udp_hdr(seg->next)->dest.
+
+Detect invalid geometry due to pull, by checking head_skb size.
+Don't just drop, as this may blackhole a destination. Convert to be
+able to pass to regular skb_segment.
+
+Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20241001171752.107580-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dp_types.h                  |    2 +-
- drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c |    3 +--
- drivers/gpu/drm/amd/display/include/dpcd_defs.h               |    1 -
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ net/ipv4/udp_offload.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
-@@ -727,7 +727,7 @@ struct dp_audio_test_data_flags {
- struct dp_audio_test_data {
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -290,8 +290,26 @@ struct sk_buff *__udp_gso_segment(struct
+ 		return NULL;
+ 	}
  
- 	struct dp_audio_test_data_flags flags;
--	uint32_t sampling_rate;
-+	uint8_t sampling_rate;
- 	uint8_t channel_count;
- 	uint8_t pattern_type;
- 	uint8_t pattern_period[8];
---- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-@@ -775,8 +775,7 @@ bool dp_set_test_pattern(
- 			core_link_read_dpcd(link, DP_TRAINING_PATTERN_SET,
- 					    &training_pattern.raw,
- 					    sizeof(training_pattern));
--			if (pattern <= PHY_TEST_PATTERN_END_DP11)
--				training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
-+			training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
- 			core_link_write_dpcd(link, DP_TRAINING_PATTERN_SET,
- 					     &training_pattern.raw,
- 					     sizeof(training_pattern));
---- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
-@@ -76,7 +76,6 @@ enum dpcd_phy_test_patterns {
- 	PHY_TEST_PATTERN_D10_2,
- 	PHY_TEST_PATTERN_SYMBOL_ERROR,
- 	PHY_TEST_PATTERN_PRBS7,
--	PHY_TEST_PATTERN_END_DP11 = PHY_TEST_PATTERN_PRBS7,
- 	PHY_TEST_PATTERN_80BIT_CUSTOM,/* For DP1.2 only */
- 	PHY_TEST_PATTERN_CP2520_1,
- 	PHY_TEST_PATTERN_CP2520_2,
+-	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
++		 /* Detect modified geometry and pass those to skb_segment. */
++		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
++			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++
++		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
++		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
++		gso_skb->csum_offset = offsetof(struct udphdr, check);
++		gso_skb->ip_summed = CHECKSUM_PARTIAL;
++
++		uh = udp_hdr(gso_skb);
++		if (is_ipv6)
++			uh->check = ~udp_v6_check(gso_skb->len,
++						  &ipv6_hdr(gso_skb)->saddr,
++						  &ipv6_hdr(gso_skb)->daddr, 0);
++		else
++			uh->check = ~udp_v4_check(gso_skb->len,
++						  ip_hdr(gso_skb)->saddr,
++						  ip_hdr(gso_skb)->daddr, 0);
++	}
+ 
+ 	skb_pull(gso_skb, sizeof(*uh));
+ 
 
 
 
