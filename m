@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-81862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC369949CF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1206E994C9F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165D41F235B1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4426D1C216BC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601031DED76;
-	Tue,  8 Oct 2024 12:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3797D1DF24E;
+	Tue,  8 Oct 2024 12:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFb08u7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjH9EQga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E93B33981;
-	Tue,  8 Oct 2024 12:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69F81DE894;
+	Tue,  8 Oct 2024 12:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390384; cv=none; b=bhDR2j8RZitUvuUwI97FZDrTtNOdrLfiOQ2p430K+QjAsYOlcU+OB48h6rCTPQUdK7EGfl9119GsiiE2WubeNQkRhXHlMRaG1BkBJqqmWshpkpeOlVrDjEcHbtc8aXi/3Cd1vChp58QzMtgu6VphpvalZhpObBvrJCLJ9ol3AaQ=
+	t=1728392133; cv=none; b=C/5jFe0YnSsW9h7BS9fSZUPaZEdkRl57qIE0MXUn0sR70FCuCGU6DQwQyVBYhvLcdnG0BAmhQgvr9vd6MMN/uHfTIjzJqTCsvPQZmfPPDuiE5u3DbYjCsIwZ8x/hnSFX/Ac9OD9AJML537RSj1YRD9mYDfVRnfKc7s1SwZY++Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390384; c=relaxed/simple;
-	bh=l1ZSDmmVQ2HZ6l3n6qQdk+/Bf/unMJlw9ag0N/08oOc=;
+	s=arc-20240116; t=1728392133; c=relaxed/simple;
+	bh=1xWD/pfL34j/ok6iEo/2ySRE7CKTbPqNRPvZO1h157Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNFCI5WsWaKY8YS3KyEqV3cD64LNiYDcl8WtbzzRUSQStqv7XA0GZvDnRB93NnrdT8T5TLjjfqsqmLX30BRrgrU0l8+eQYfAXDZvjk5oj7Fup8b5t0WPAURQ1FdZS/Xrez70Ilgikd52ipMnIoWk0Cd2Wjtr2LaSYn0Ab3Z16xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFb08u7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F74C4CEC7;
-	Tue,  8 Oct 2024 12:26:23 +0000 (UTC)
+	 MIME-Version; b=UtonIvGk/DyqD6di0CGar3yqrU/0FSF3xdAi8UCWZaI3FytF+e+R+xB8gWVxnWRjVuJGCmm5Bdmm5uWSBuzVksbFoMA4eVhHR7jmtIwpp9TV7qNg/WoSO+629CJXgnCbFIdWARoueRXJ84mnn9TcYg1JnEA3Kgcc0dCDl9XE5hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjH9EQga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531C3C4CEC7;
+	Tue,  8 Oct 2024 12:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390384;
-	bh=l1ZSDmmVQ2HZ6l3n6qQdk+/Bf/unMJlw9ag0N/08oOc=;
+	s=korg; t=1728392132;
+	bh=1xWD/pfL34j/ok6iEo/2ySRE7CKTbPqNRPvZO1h157Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFb08u7q+TxLJ/aeJC+uMeAfxQ+S319TbK/5LdOZJcPQJ7SteNRg40Yl+YkwmPvTn
-	 vBg1hGNrxsDVhHt33qnlraVWAgCsRtHuA2NVxO9b2XjT70hVrgJYPpokx9LyXubzE4
-	 ST47SeHwa6a8+CKxqquz1tc206hLLoT7JyPZaCrE=
+	b=DjH9EQga4BIMEEZNbOGaYUY+SW7Ntc7BN/+mNyVKKeie3d7lXjDQWRe2xH7mf/Lbx
+	 7c/C9Q5D9oSCcdOoc+7tg2eTHVgCp5hMEJM4Zj8lKFDZJYuccgfEKE+KAOH95G4UpI
+	 /ErnWBpMdwp0HETBWC6OcbDgg0ajp+9161BfHnLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 274/482] selftests: vDSO: fix vdso_config for powerpc
-Date: Tue,  8 Oct 2024 14:05:37 +0200
-Message-ID: <20241008115659.062996593@linuxfoundation.org>
+Subject: [PATCH 6.11 308/558] ext4: avoid use-after-free in ext4_ext_show_leaf()
+Date: Tue,  8 Oct 2024 14:05:38 +0200
+Message-ID: <20241008115714.435047699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 7d297c419b08eafa69ce27243ee9bbecab4fcaa4 ]
+[ Upstream commit 4e2524ba2ca5f54bdbb9e5153bea00421ef653f5 ]
 
-Running vdso_test_correctness on powerpc64 gives the following warning:
+In ext4_find_extent(), path may be freed by error or be reallocated, so
+using a previously saved *ppath may have been freed and thus may trigger
+use-after-free, as follows:
 
-  ~ # ./vdso_test_correctness
-  Warning: failed to find clock_gettime64 in vDSO
+ext4_split_extent
+  path = *ppath;
+  ext4_split_extent_at(ppath)
+  path = ext4_find_extent(ppath)
+  ext4_split_extent_at(ppath)
+    // ext4_find_extent fails to free path
+    // but zeroout succeeds
+  ext4_ext_show_leaf(inode, path)
+    eh = path[depth].p_hdr
+    // path use-after-free !!!
 
-This is because vdso_test_correctness was built with VDSO_32BIT defined.
+Similar to ext4_split_extent_at(), we use *ppath directly as an input to
+ext4_ext_show_leaf(). Fix a spelling error by the way.
 
-__powerpc__ macro is defined on both powerpc32 and powerpc64 so
-__powerpc64__ needs to be checked first in vdso_config.h
+Same problem in ext4_ext_handle_unwritten_extents(). Since 'path' is only
+used in ext4_ext_show_leaf(), remove 'path' and use *ppath directly.
 
-Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+This issue is triggered only when EXT_DEBUG is defined and therefore does
+not affect functionality.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-5-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/vdso_config.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/extents.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_config.h b/tools/testing/selftests/vDSO/vdso_config.h
-index 7b543e7f04d7b..00bfed6e4922e 100644
---- a/tools/testing/selftests/vDSO/vdso_config.h
-+++ b/tools/testing/selftests/vDSO/vdso_config.h
-@@ -18,13 +18,13 @@
- #elif defined(__aarch64__)
- #define VDSO_VERSION		3
- #define VDSO_NAMES		0
--#elif defined(__powerpc__)
-+#elif defined(__powerpc64__)
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
--#define VDSO_32BIT		1
--#elif defined(__powerpc64__)
-+#elif defined(__powerpc__)
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
-+#define VDSO_32BIT		1
- #elif defined (__s390__)
- #define VDSO_VERSION		2
- #define VDSO_NAMES		0
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index e067f2dd0335c..7954430f886d8 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3287,7 +3287,7 @@ static int ext4_split_extent_at(handle_t *handle,
+ }
+ 
+ /*
+- * ext4_split_extents() splits an extent and mark extent which is covered
++ * ext4_split_extent() splits an extent and mark extent which is covered
+  * by @map as split_flags indicates
+  *
+  * It may result in splitting the extent into multiple extents (up to three)
+@@ -3363,7 +3363,7 @@ static int ext4_split_extent(handle_t *handle,
+ 			goto out;
+ 	}
+ 
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ out:
+ 	return err ? err : allocated;
+ }
+@@ -3828,14 +3828,13 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 			struct ext4_ext_path **ppath, int flags,
+ 			unsigned int allocated, ext4_fsblk_t newblock)
+ {
+-	struct ext4_ext_path __maybe_unused *path = *ppath;
+ 	int ret = 0;
+ 	int err = 0;
+ 
+ 	ext_debug(inode, "logical block %llu, max_blocks %u, flags 0x%x, allocated %u\n",
+ 		  (unsigned long long)map->m_lblk, map->m_len, flags,
+ 		  allocated);
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ 
+ 	/*
+ 	 * When writing into unwritten space, we should not fail to
+@@ -3932,7 +3931,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+ 	if (allocated > map->m_len)
+ 		allocated = map->m_len;
+ 	map->m_len = allocated;
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ out2:
+ 	return err ? err : allocated;
+ }
 -- 
 2.43.0
 
