@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-81622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1AB994877
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E23B4994B96
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4756EB2477B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0B9EB232A9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357EA1CF297;
-	Tue,  8 Oct 2024 12:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56541DE2A5;
+	Tue,  8 Oct 2024 12:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s4bJ8sP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDmeGdru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C2E1DDA24;
-	Tue,  8 Oct 2024 12:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732BD192594;
+	Tue,  8 Oct 2024 12:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389578; cv=none; b=mQ3lrzeU0U9cLDX44zGH7qjY0t9VKEhH59RRexlNSLu6O55OqL/4AfP5ZBJG8IPqzJdrHzJlv5VefhqtWlBjUY0VtPKKyJzodWC8Lx9P6mLzKNYtUZgNRK3QrA5jgBpt5E6688T+qJoy9NZIlMrmVFk1E7LwD4UiUnnab3/eJCQ=
+	t=1728391425; cv=none; b=Q0IyVjpG4dtT9W9OzOpORXevMu/KynznzmFuJZd0wYUisOukVqdprR+daiX0jYzV2MX4yEdnJxe8gH5FHtwQlZjwQGLffL1RWCi6Ya8IcZKGaTWjLVMITyt/Cry5upNJy9ADcwBdbMOdXwIx3kO+nn9RvtftsIP/jJ0bl2SU5QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389578; c=relaxed/simple;
-	bh=05lbY+7BvHRpDhWkTfGOZRzPijxc0dZuXIqzJh5xCdc=;
+	s=arc-20240116; t=1728391425; c=relaxed/simple;
+	bh=zVDDnqPTKTBEvm99fVULcAbEp8scE/aMKhAVjkUHgHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViBX7AG+H0cwjj9ytx1ASX1e83MQJrkpafiOLrB2NVgf1M3K1uMZxeM5VIdFj4u7Yhg3pbvZvBuBi9UlXlPvKZkhVEzS2D1MEzYdvY7BLL9ry9KOl1zB6PN3VRlC88TpPCzoQfS+6rqjHM29VIVrHs15pSdQLDzOa3LsmNRrkE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s4bJ8sP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E14FC4CEC7;
-	Tue,  8 Oct 2024 12:12:56 +0000 (UTC)
+	 MIME-Version; b=mRnUmUUHukkHcLPHVuzmD2Pl8LYD1TqjQeKdmCvCdDXRJwCqN+pXMBlKOEmVc0SqH/QCGZmKV2xqiYD/W0wHyzFdm9z2ZPOAPrsxt8RyKxG70wy2hdtVlul59bpVoq4f8rlT54CMdDIpMa8pV5gI+sKRyaaaXKqsecWL9ryLESs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDmeGdru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB24C4CEC7;
+	Tue,  8 Oct 2024 12:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389577;
-	bh=05lbY+7BvHRpDhWkTfGOZRzPijxc0dZuXIqzJh5xCdc=;
+	s=korg; t=1728391425;
+	bh=zVDDnqPTKTBEvm99fVULcAbEp8scE/aMKhAVjkUHgHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2s4bJ8sPIT+2CjmUVmnOaG4n6PX4oRzFhCWCJalFnI/tgVqItKI38sathHALT0LUC
-	 sFhzFS6qkuPi9RiMSK9ahEQeeBVyAclT4MbI/Ev7uInsgH0d2zzutD7cmYidqdj8e+
-	 MpQHLPa8hU2Szam83wXCMAxozyGVKDwsJztVBsZM=
+	b=MDmeGdruOH8Mrpd8Jmg30l2Kk34Y5o+d+pognfU3kMuOYI7b2lzza9bs/swBOtkQY
+	 YyoD+oziIc9v4OgFo7rqbVb2B9G28I2eFxj9G3uSYMyKqsnAKOn8dv/MS+9r/ud3TJ
+	 eDyJxrMSxlhxBwn5oVauCVz9UoqwQmN5OOMnmZKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 035/482] net: Fix gso_features_check to check for both dev->gso_{ipv4_,}max_size
+Subject: [PATCH 6.11 068/558] ALSA: hda/generic: Unconditionally prefer preferred_dacs pairs
 Date: Tue,  8 Oct 2024 14:01:38 +0200
-Message-ID: <20241008115649.681918689@linuxfoundation.org>
+Message-ID: <20241008115704.891887854@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit e609c959a939660c7519895f853dfa5624c6827a ]
+[ Upstream commit 1c801e7f77445bc56e5e1fec6191fd4503534787 ]
 
-Commit 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
-added a dev->gso_max_size test to gso_features_check() in order to fall
-back to GSO when needed.
+Some time ago, we introduced the obey_preferred_dacs flag for choosing
+the DAC/pin pairs specified by the driver instead of parsing the
+paths.  This works as expected, per se, but there have been a few
+cases where we forgot to set this flag while preferred_dacs table is
+already set up.  It ended up with incorrect wiring and made us
+wondering why it doesn't work.
 
-This was added as it was noticed that some drivers could misbehave if TSO
-packets get too big. However, the check doesn't respect dev->gso_ipv4_max_size
-limit. For instance, a device could be configured with BIG TCP for IPv4,
-but not IPv6.
+Basically, when the preferred_dacs table is provided, it means that
+the driver really wants to wire up to follow that.  That is, the
+presence of the preferred_dacs table itself is already a "do-it"
+flag.
 
-Therefore, add a netif_get_gso_max_size() equivalent to netif_get_gro_max_size()
-and use the helper to respect both limits before falling back to GSO engine.
+In this patch, we simply replace the evaluation of obey_preferred_dacs
+flag with the presence of preferred_dacs table for fixing the
+misbehavior.  Another patch to drop of the obsoleted flag will
+follow.
 
-Fixes: 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240923212242.15669-2-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 242d990c158d ("ALSA: hda/generic: Add option to enforce preferred_dacs pairs")
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1219803
+Link: https://patch.msgid.link/20241001121439.26060-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 9 +++++++++
- net/core/dev.c            | 2 +-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ sound/pci/hda/hda_generic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 84a445ca4749a..238aaed5d7236 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -5009,6 +5009,15 @@ netif_get_gro_max_size(const struct net_device *dev, const struct sk_buff *skb)
- 	       READ_ONCE(dev->gro_ipv4_max_size);
- }
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index 9cff87dfbecbb..b34d84fedcc8a 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -1383,7 +1383,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		struct nid_path *path;
+ 		hda_nid_t pin = pins[i];
  
-+static inline unsigned int
-+netif_get_gso_max_size(const struct net_device *dev, const struct sk_buff *skb)
-+{
-+	/* pairs with WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
-+	return skb->protocol == htons(ETH_P_IPV6) ?
-+	       READ_ONCE(dev->gso_max_size) :
-+	       READ_ONCE(dev->gso_ipv4_max_size);
-+}
-+
- static inline bool netif_is_macsec(const struct net_device *dev)
- {
- 	return dev->priv_flags & IFF_MACSEC;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 2b4819b610b8a..d7380a6ecfabb 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3502,7 +3502,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	if (gso_segs > READ_ONCE(dev->gso_max_segs))
- 		return features & ~NETIF_F_GSO_MASK;
+-		if (!spec->obey_preferred_dacs) {
++		if (!spec->preferred_dacs) {
+ 			path = snd_hda_get_path_from_idx(codec, path_idx[i]);
+ 			if (path) {
+ 				badness += assign_out_path_ctls(codec, path);
+@@ -1395,7 +1395,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
+ 		if (dacs[i]) {
+ 			if (is_dac_already_used(codec, dacs[i]))
+ 				badness += bad->shared_primary;
+-		} else if (spec->obey_preferred_dacs) {
++		} else if (spec->preferred_dacs) {
+ 			badness += BAD_NO_PRIMARY_DAC;
+ 		}
  
--	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
-+	if (unlikely(skb->len >= netif_get_gso_max_size(dev, skb)))
- 		return features & ~NETIF_F_GSO_MASK;
- 
- 	if (!skb_shinfo(skb)->gso_type) {
 -- 
 2.43.0
 
