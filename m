@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08165994853
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DCB1994B26
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB0C828415D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:11:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44EFE285737
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36391DDA36;
-	Tue,  8 Oct 2024 12:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF451DE2AD;
+	Tue,  8 Oct 2024 12:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhmUgHzl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGdq3qxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D04E1DACBE;
-	Tue,  8 Oct 2024 12:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D17192594;
+	Tue,  8 Oct 2024 12:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389515; cv=none; b=L5RhW7gBpyNQ79FoN1DILPsFUnEmvXs97ZBWGktMnwfpj2BWtSoC2EQxVv2VRY2v9NP717ntyy80O7Z6/rvGylSh7fN1C9rLxrsyjmkmOOoA0j4uN8cY9s2Nj4Tw9CVJQ7xbRgNoTZNfKn0TAiaFEqLWNfrPgb/AOyiLNMHhBkE=
+	t=1728391236; cv=none; b=hvrbp/bUozic/mdumvc6Eep3sjL76JyKC8kZzvKJ77niMInV0qDKdpYVGZzCP7ALxwjCSVFPmLdlvhxEyOMCSUMWwhSH6N2T2GN2FDO5fxq85H27n1LwM0+Y2H1mODo6icCJT1Hjj1sb1D8qioGvA+juZidtDIaNUzhU9bC0Grg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389515; c=relaxed/simple;
-	bh=h0FdP+4uDD+DGlzdqAc3LQaAU2+NbNCfQitaIc/ggXo=;
+	s=arc-20240116; t=1728391236; c=relaxed/simple;
+	bh=HmZ6ry0l4sg3fd7KC8jtOIywsGGtnD17HeWBQWjmlcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXVYitWDWS9vimotzt3jS6xNGTXXBM3UXky3GXrG5/l1/kObpe8AfB0zi7OHt1yadUVPhxjtyuMeGqfsjoJDzVnOAiamJVAVBmfAiNZ7CMdbPr4PAkif7T/UpEIgqMo+c3ayIIHVhJckr/e870C8KTmZLwVOPnGuKLdEdDdDEqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhmUgHzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2296C4CEC7;
-	Tue,  8 Oct 2024 12:11:54 +0000 (UTC)
+	 MIME-Version; b=R5yKKQCxfEy2IPiD9SfKGBkMU4Sg5a3/3GwquxZrs1s1KL8BF7ta1NCuD/Wv+xR8FG4QWqibSIFea9RWkr6lI/4dHKzobVSumLtE85B7NwqTviY/TSdMuyqW+nfqzfrW37wwMJrwkWT9MTLz2+uV/WeLvCNU+9Gdzxamc5MMOQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGdq3qxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF24C4CEC7;
+	Tue,  8 Oct 2024 12:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389515;
-	bh=h0FdP+4uDD+DGlzdqAc3LQaAU2+NbNCfQitaIc/ggXo=;
+	s=korg; t=1728391236;
+	bh=HmZ6ry0l4sg3fd7KC8jtOIywsGGtnD17HeWBQWjmlcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhmUgHzl/130dxjpdDMYZOBNkVtQlDb7oC60r4WBnauR5Ay/b/qIuWKkjt1EOyCOH
-	 5kQ/3YKtSdW68MlZyKvqz/7oqtEqb4lD6l0rIBPmtoSn1LzZOipl6deAQbhnV2Pi82
-	 p7RGGk5hMae1vgtZzQEoqOKWRdtmUQpz33vJUXdo=
+	b=GGdq3qxZ7P150sMKHisfqfXdokifqo2QLqpkdvr45KbZ5sFJmmiwBakxuhRxfIGxc
+	 ISbSH5/TOZnlNeE3fz6JGkhJfkSM9y1EzCGF3lPljcxxek97X7KRsOJZhqdxuo4+2U
+	 KRdLIw41EjP5npbQAbMtpH4H+s7SUPY5/i1t4yIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aakash Menon <aakash.menon@protempis.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Eddie James <eajames@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 017/482] net: sparx5: Fix invalid timestamps
-Date: Tue,  8 Oct 2024 14:01:20 +0200
-Message-ID: <20241008115648.976939447@linuxfoundation.org>
+Subject: [PATCH 6.11 051/558] net/ncsi: Disable the ncsi work before freeing the associated structure
+Date: Tue,  8 Oct 2024 14:01:21 +0200
+Message-ID: <20241008115704.229812407@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aakash Menon <aakash.r.menon@gmail.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit 151ac45348afc5b56baa584c7cd4876addf461ff ]
+[ Upstream commit a0ffa68c70b367358b2672cdab6fa5bc4c40de2c ]
 
-Bit 270-271 are occasionally unexpectedly set by the hardware. This issue
-was observed with 10G SFPs causing huge time errors (> 30ms) in PTP. Only
-30 bits are needed for the nanosecond part of the timestamp, clear 2 most
-significant bits before extracting timestamp from the internal frame
-header.
+The work function can run after the ncsi device is freed, resulting
+in use-after-free bugs or kernel panic.
 
-Fixes: 70dfe25cd866 ("net: sparx5: Update extraction/injection for timestamping")
-Signed-off-by: Aakash Menon <aakash.menon@protempis.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 2d283bdd079c ("net/ncsi: Resource management")
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Link: https://patch.msgid.link/20240925155523.1017097-1-eajames@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_packet.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ncsi/ncsi-manage.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-index f3f5fb4204689..70427643f777c 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
-@@ -45,8 +45,12 @@ void sparx5_ifh_parse(u32 *ifh, struct frame_info *info)
- 	fwd = (fwd >> 5);
- 	info->src_port = FIELD_GET(GENMASK(7, 1), fwd);
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 5ecf611c88200..5cf55bde366d1 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1954,6 +1954,8 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ 	list_del_rcu(&ndp->node);
+ 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
  
-+	/*
-+	 * Bit 270-271 are occasionally unexpectedly set by the hardware,
-+	 * clear bits before extracting timestamp
-+	 */
- 	info->timestamp =
--		((u64)xtr_hdr[2] << 24) |
-+		((u64)(xtr_hdr[2] & GENMASK(5, 0)) << 24) |
- 		((u64)xtr_hdr[3] << 16) |
- 		((u64)xtr_hdr[4] <<  8) |
- 		((u64)xtr_hdr[5] <<  0);
++	disable_work_sync(&ndp->work);
++
+ 	kfree(ndp);
+ }
+ EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
 -- 
 2.43.0
 
