@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-82598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06757994DF5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AC8994FC2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED1E7B27F92
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D75DB21914
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5DE1DF25E;
-	Tue,  8 Oct 2024 13:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7220B1E0DAE;
+	Tue,  8 Oct 2024 13:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4L5dUxz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQ3zcbbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7901C9B99;
-	Tue,  8 Oct 2024 13:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306471DE8BE;
+	Tue,  8 Oct 2024 13:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392793; cv=none; b=bGetJaLboZQVn+IARdu2l7W+xqGrskwx0HH1bayNXVDRD+DmxcnZUZ8IucNnvaJ9YC8HZ/WX0hKvXTH1QiIiARJCNBGBk5PU2wqv9lp3z0KFixhSrgozch4fec34/hT2gwqO6Kd8oeLpyrNdxI0+HFWCoGwyGFuAfz2lmFNmtcQ=
+	t=1728393965; cv=none; b=YJZuGPw2/U6Ka2XDbBv1Wgh2wudayLDn70VCXK5tzsdFnpR4tBY/s2HdYlI/AHvSwd+SsRoHWQAMOt1rgjFRYgDE1VOnOieThPZI68Urz42AFOEr9nOd/WQ5LXrzSDqmFATVdIXySXyCsh0MojY2r1vE3WTHHJ9NiJt5k0Rr3w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392793; c=relaxed/simple;
-	bh=2TfEhMx5EioFduMCRmWMMeuHl/gVEQlr/ZEjFpQdiuI=;
+	s=arc-20240116; t=1728393965; c=relaxed/simple;
+	bh=pZ6A1jFg54LEICjmxnTBEzqIciu5wpq/NYmpfNIeZZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EQNnE0gejy6K5y2Rh/Gdg6sEGs3Nq3TFq0cGKXFHO1XQYHoV6kMYnveUm2ayX4M2b87gF2x0aoNZ4JuL6i7vcY7KyvilOLwWfk6j1ynSB3hExYuACmLlA2ZtOCHKAwOuHxDIxQ7EBtwDtsJbWyuQ4Fb6/KiDC2XTu31kba8mvdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4L5dUxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FB7C4CECE;
-	Tue,  8 Oct 2024 13:06:32 +0000 (UTC)
+	 MIME-Version; b=WIuJ+7KJkg2T/pV398iio1ADX0NkZuCYdXB96sjhNl7wQHfDyOAUGFEsOnOn5IxMl4OOIhwrRqF3dZQwomU+K6unEUw9AmK7/58Mjb4q0VL0lSuTonRs2vOXmfLrVvjUseKd9bMvcDByqB/DDwbhsaJJ6Pzr6KRpvvqoNZ8lBq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQ3zcbbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D5DC4CEC7;
+	Tue,  8 Oct 2024 13:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392793;
-	bh=2TfEhMx5EioFduMCRmWMMeuHl/gVEQlr/ZEjFpQdiuI=;
+	s=korg; t=1728393965;
+	bh=pZ6A1jFg54LEICjmxnTBEzqIciu5wpq/NYmpfNIeZZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4L5dUxzxXeS65aG5QIyZss+a5fnEA9RUNPPs21wm9EWOLoon3Qal5GSIHwLZjjwc
-	 wziH3YzyYCNt05D1TWd3dF9tuRLwzy3bu4ruCN3wmHQ5lcAGzpAj4A1MkMJfk4FMfI
-	 2cFhDgdahEb6IM2j4ZSyLYmqlxe8bj73P/nPn2Tg=
+	b=NQ3zcbbSCcrARacfMoR/w/n3gF1WWTO6kKf9HPhlWc5m1jQm1mOGgZjqdTVRk89bi
+	 SGg1MXmcUg7QhsSa5bdyVayHBZr/l40Pxu99B8GpuUpNvyuZ8+Q/9r5HDZXBvpvYSt
+	 8gs8y7auEeeiYEup2W2JQqv/0SCIgH4plTFnzPB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Luben Tuikov <ltuikov89@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Philipp Stanner <pstanner@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.11 522/558] drm/sched: Always wake up correct scheduler in drm_sched_entity_push_job
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 307/386] ACPI: resource: Add Asus ExpertBook B2502CVA to irq1_level_low_skip_override[]
 Date: Tue,  8 Oct 2024 14:09:12 +0200
-Message-ID: <20241008115722.770801147@linuxfoundation.org>
+Message-ID: <20241008115641.465392524@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit cbc8764e29c2318229261a679b2aafd0f9072885 upstream.
+commit 056301e7c7c886f96d799edd36f3406cc30e1822 upstream.
 
-Since drm_sched_entity_modify_sched() can modify the entities run queue,
-lets make sure to only dereference the pointer once so both adding and
-waking up are guaranteed to be consistent.
+Like other Asus ExpertBook models the B2502CVA has its keybopard IRQ (1)
+described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
+which breaks the keyboard.
 
-Alternative of moving the spin_unlock to after the wake up would for now
-be more problematic since the same lock is taken inside
-drm_sched_rq_update_fifo().
+Add the B2502CVA to the irq1_level_low_skip_override[] quirk table to fix
+this.
 
-v2:
- * Improve commit message. (Philipp)
- * Cache the scheduler pointer directly. (Christian)
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Luben Tuikov <ltuikov89@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Philipp Stanner <pstanner@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.7+
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240924101914.2713-3-tursulin@igalia.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217760
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-4-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -599,6 +599,9 @@ void drm_sched_entity_push_job(struct dr
- 
- 	/* first job wakes up scheduler */
- 	if (first) {
-+		struct drm_gpu_scheduler *sched;
-+		struct drm_sched_rq *rq;
-+
- 		/* Add the entity to the run queue */
- 		spin_lock(&entity->rq_lock);
- 		if (entity->stopped) {
-@@ -608,13 +611,16 @@ void drm_sched_entity_push_job(struct dr
- 			return;
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -510,6 +510,13 @@ static const struct dmi_system_id mainge
  		}
- 
--		drm_sched_rq_add_entity(entity->rq, entity);
-+		rq = entity->rq;
-+		sched = rq->sched;
-+
-+		drm_sched_rq_add_entity(rq, entity);
- 		spin_unlock(&entity->rq_lock);
- 
- 		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
- 			drm_sched_rq_update_fifo(entity, submit_ts);
- 
--		drm_sched_wakeup(entity->rq->sched);
-+		drm_sched_wakeup(sched);
- 	}
- }
- EXPORT_SYMBOL(drm_sched_entity_push_job);
+ 	},
+ 	{
++		/* Asus ExpertBook B2502CVA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502CVA"),
++		},
++	},
++	{
+ 		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
 
 
 
