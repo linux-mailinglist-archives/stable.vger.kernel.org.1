@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-81880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC95E9949EE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA36994E2D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 830571F232FC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A481C233B1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3A61DF75C;
-	Tue,  8 Oct 2024 12:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1A91DF74F;
+	Tue,  8 Oct 2024 13:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6AIJCaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIcO3wDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145591DF759;
-	Tue,  8 Oct 2024 12:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE261DEFF0;
+	Tue,  8 Oct 2024 13:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390447; cv=none; b=KUCetaoosVWmxJ9KH2a+3DBXlI6Bo83KaBSJSfqlFMmbeXqCKVk85TcufvwB9ydCnmiIam1MELYFbNtj+2n67MWNRBkQ2RbgmPcFT7d1GbZkhbGh1oTxzR2IChL6f9pmqxu2h2N96olAyEH9XzXBoCjFAUaZoTNqs6Ofc/LSYOc=
+	t=1728393190; cv=none; b=aAy1an/DERKi7FgWLowP+1e1VeJy4nq67yp2hBh70yzrQ1BkSh2NHxj3TYkdbI+01ldEpza+zvUxZWINa8KiBcX5Onre0Dmn+ib1zxfMlfwRpXpq+7m0f9fTV2HRGlYSOnBB/LB2CH9lgyZhTzevW+MXbwB6L//gfmrpLyjbxZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390447; c=relaxed/simple;
-	bh=QAp6zXhNeroWQGg/b8YBTVcRE8Ge+HmeNa69DgJtMh8=;
+	s=arc-20240116; t=1728393190; c=relaxed/simple;
+	bh=Diq4EJ5CcsG4uDbvdniNG8ADeXmKtaUQvTg1xnbgR6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEDzAZ+eWB5KVV5ry5xNRiEEOSNs7Uk6Uiks+WhuUulKVjSO9l3SQ9H9tuC+gCSG+UPqVShhCFKlThQpt9J/KMhFqm0qPHrK/0LDdH5d244FwvCZZXGqgSv4LYVErJpWzOZDwjALxhFU4V4tffisRR9tX5dwyLy8FZBNoOmPPDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6AIJCaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487B3C4CEC7;
-	Tue,  8 Oct 2024 12:27:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JEzS2jPC2XS0AbNtnpNoxpaOVi7/5jaHPUvjOiGAB61m1B4h/3b2nMHdX/Y7+WOe+n2NAo9MYl7nYgBLHuSL3zapywcK5nJGWi7vEc9kaUnIrrhiESAAlY0rHcAIPl9SfT6XgFZfbF/CZkY5NnnCkjycx6sZgEjjSo5KZSsf5Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIcO3wDN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A18C4CEC7;
+	Tue,  8 Oct 2024 13:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390446;
-	bh=QAp6zXhNeroWQGg/b8YBTVcRE8Ge+HmeNa69DgJtMh8=;
+	s=korg; t=1728393190;
+	bh=Diq4EJ5CcsG4uDbvdniNG8ADeXmKtaUQvTg1xnbgR6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6AIJCaFgxB4TyNULrSNCh3RKAHzaGryCI+vBkHuyLtU36Rw7Iog2Ds3hdrwjOrSo
-	 XbyzmXFOiAkCzJCpD9acbKMAIA7WaWNobBBK9NmlIFD8uCi/IbbqeuPANa+SKH1ROY
-	 2w261btVO0iM7P03P+JTnvYCfaucIRqPEy/4lN3U=
+	b=aIcO3wDNILf2ye4B8CtOkZDSS8PoJxpq9FbHmN8I+qRYG0Q5M4eRjpVwpDFl//ylB
+	 K1DTnU6UXiBYOsTCymIqAZm+gQ9ejJRl7NWgLc4iiWqMi5YZ+rHF47S62tPYfHz/2n
+	 yZ1JVGvSqhW6YuXPOs8989Mqr7ik1ZT4XA8lFMsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	al0uette@outlook.com,
+	vderp@icloud.com,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 260/482] spi: spi-cadence: Fix pm_runtime_set_suspended() with runtime pm enabled
-Date: Tue,  8 Oct 2024 14:05:23 +0200
-Message-ID: <20241008115658.517144313@linuxfoundation.org>
+Subject: [PATCH 6.6 079/386] ACPI: CPPC: Add support for setting EPP register in FFH
+Date: Tue,  8 Oct 2024 14:05:24 +0200
+Message-ID: <20241008115632.570198942@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 67d4a70faa662df07451e83db1546d3ca0695e08 ]
+[ Upstream commit aaf21ac93909e08a12931173336bdb52ac8499f1 ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+Some Asus AMD systems are reported to not be able to change EPP values
+because the BIOS doesn't advertise support for the CPPC MSR and the PCC
+region is not configured.
 
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240923040015.3009329-3-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+However the ACPI 6.2 specification allows CPC registers to be declared
+in FFH:
+```
+Starting with ACPI Specification 6.2, all _CPC registers can be in
+PCC, System Memory, System IO, or Functional Fixed Hardware address
+spaces. OSPM support for this more flexible register space scheme
+is indicated by the “Flexible Address Space for CPPC Registers” _OSC
+bit.
+```
+
+If this _OSC has been set allow using FFH to configure EPP.
+
+Reported-by: al0uette@outlook.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218686
+Suggested-by: al0uette@outlook.com
+Tested-by: vderp@icloud.com
+Tested-by: al0uette@outlook.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20240910031524.106387-1-superm1@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/cppc_acpi.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index e5140532071d2..316da99f798c8 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -665,8 +665,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 28217a995f795..7aced0b9bad7c 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -100,6 +100,11 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_ptr);
+ 				(cpc)->cpc_entry.reg.space_id ==	\
+ 				ACPI_ADR_SPACE_PLATFORM_COMM)
  
- clk_dis_all:
- 	if (!spi_controller_is_target(ctlr)) {
--		pm_runtime_set_suspended(&pdev->dev);
- 		pm_runtime_disable(&pdev->dev);
-+		pm_runtime_set_suspended(&pdev->dev);
++/* Check if a CPC register is in FFH */
++#define CPC_IN_FFH(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&		\
++				(cpc)->cpc_entry.reg.space_id ==	\
++				ACPI_ADR_SPACE_FIXED_HARDWARE)
++
+ /* Check if a CPC register is in SystemMemory */
+ #define CPC_IN_SYSTEM_MEMORY(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&	\
+ 				(cpc)->cpc_entry.reg.space_id ==	\
+@@ -1514,9 +1519,12 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
+ 		/* after writing CPC, transfer the ownership of PCC to platform */
+ 		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
+ 		up_write(&pcc_ss_data->pcc_lock);
++	} else if (osc_cpc_flexible_adr_space_confirmed &&
++		   CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
++		ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
+ 	} else {
+ 		ret = -ENOTSUPP;
+-		pr_debug("_CPC in PCC is not supported\n");
++		pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
  	}
- remove_ctlr:
- 	spi_controller_put(ctlr);
-@@ -688,8 +688,8 @@ static void cdns_spi_remove(struct platform_device *pdev)
  
- 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
- 
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
- 
- 	spi_unregister_controller(ctlr);
- }
+ 	return ret;
 -- 
 2.43.0
 
