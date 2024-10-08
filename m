@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B08E994E32
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58E3994C85
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68211F2029E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44CB0B29C89
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1241DF721;
-	Tue,  8 Oct 2024 13:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB091DEFE0;
+	Tue,  8 Oct 2024 12:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e27KJEZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZNWr7w4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A96A1DEFED;
-	Tue,  8 Oct 2024 13:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD251DE8B1;
+	Tue,  8 Oct 2024 12:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393210; cv=none; b=B3NhJWCNo9sQxoTguoFjJr244w8fLvsWhAqFcgn8uDrvbGbmOm4A6AB+wR3dnQwXr7x9881fPNOUHfSkOg1JaoKFcvz5kLTNKCw3JOVWQeOaVO4sojfyEKk14GWubZXPLYK+dvclS035B4EPzAJTn/1haZJVTRgNKBHI5DcyU/A=
+	t=1728392047; cv=none; b=ZCBoZJVjyliljF+vfrOkWKfvYR8VyEwovHpvIAQfMX4As9uwsvjPqJOXr/UvR5UZI1Szp+48xSEyq4MNjFS1bmOoRQi+U813F6L+/nGPUhetGkzBIWYs+ikCD4wy9YzHOrL8fevTyHswiEeU+YejbuZgCPcOrSBF93gjRxxk2k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393210; c=relaxed/simple;
-	bh=eY7aktInPHICZK/xFMjUfLs2fSblbTdpAqzE8HxTG90=;
+	s=arc-20240116; t=1728392047; c=relaxed/simple;
+	bh=KqZqLlsU2pBPlfbcA8/5KLOmHzRT1TjeDNJCMDmSBQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEGiDvDTAFdncQqiU9ybKchFl/EsIJarGY7cPUrh+lz1dLe84Kn58QAPZpJsXcZU9v7yizn0FLUe+mHBpYvFAPqGobRlfUN3xWhvGjl2s2ZnluBlOO5GqQWK/nbVxJa5QvDc08C/wwTgq3FtFbaamPXzJ35AMkpSLbdbZhPCbzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e27KJEZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB1DC4CEC7;
-	Tue,  8 Oct 2024 13:13:29 +0000 (UTC)
+	 MIME-Version; b=iTD7PCJWmhJsfYbkYo/+IyJKUJxbU8Febi2q3CT8v3HsoBkqbTnGdbR4NqzjC/HKs9SfTjVx1UhMPCsf+vWu+NnZ0wjORqA1uM7e/KsTO92fcbD3YrvcuWnl2wT3qyEEr+CV8XMS+pl73C1foXuZgn9RcLup7D0VaTO/xNX5pc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZNWr7w4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E7DC4CEC7;
+	Tue,  8 Oct 2024 12:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393210;
-	bh=eY7aktInPHICZK/xFMjUfLs2fSblbTdpAqzE8HxTG90=;
+	s=korg; t=1728392047;
+	bh=KqZqLlsU2pBPlfbcA8/5KLOmHzRT1TjeDNJCMDmSBQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e27KJEZGmySbLmCIalBNNYxJUEj+TCDgqqnQYPLECg1fRk0JS+53/BMN+Ctshrzdj
-	 vp9NbXgNvhmtRKRNR+7oqEbvpj+H40r8NEiVUdLgj7qVLOaBksEp+sjMlglQ8pMKMg
-	 KEpkelPWZxP9695soD/DRPCLoa0kKpKWgRuIy9Y8=
+	b=KZNWr7w4GaIq5DMn29RzufeYjuVHic3AtdafzicqcCmFAjhMuckD/91JGmWiBYPFj
+	 cKkNM3M+SGAUMwrSOittQ6fv0nxqBb4zJouv0tV9i6lJe5ZfFL7eUhmpVeiZzrCtor
+	 IWHdFVgOIjQIKi+ZJZoW28E9BmJgCLev0VYfSdzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Hans de Goede <hdegoede@redhat.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/386] ACPI: EC: Do not release locks during operation region accesses
-Date: Tue,  8 Oct 2024 14:05:29 +0200
-Message-ID: <20241008115632.763436035@linuxfoundation.org>
+Subject: [PATCH 6.11 300/558] HID: i2c-hid: ensure various commands do not interfere with each other
+Date: Tue,  8 Oct 2024 14:05:30 +0200
+Message-ID: <20241008115714.125130933@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,168 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit dc171114926ec390ab90f46534545420ec03e458 ]
+[ Upstream commit b4ed18a3d56eabd18cfd9841ff05111e3cfbe8f9 ]
 
-It is not particularly useful to release locks (the EC mutex and the
-ACPI global lock, if present) and re-acquire them immediately thereafter
-during EC address space accesses in acpi_ec_space_handler().
+i2c-hid uses 2 shared buffers: command and "raw" input buffer for
+sending requests to peripherals and read data from peripherals when
+executing variety of commands. Such commands include reading of HID
+registers, requesting particular power mode, getting and setting
+reports and so on. Because all such requests use the same 2 buffers
+they should not execute simultaneously.
 
-First, releasing them for a while before grabbing them again does not
-really help anyone because there may not be enough time for another
-thread to acquire them.
+Fix this by introducing "cmd_lock" mutex and acquire it whenever
+we needs to access ihid->cmdbuf or idid->rawbuf.
 
-Second, if another thread successfully acquires them and carries out
-a new EC write or read in the middle if an operation region access in
-progress, it may confuse the EC firmware, especially after the burst
-mode has been enabled.
-
-Finally, manipulating the locks after writing or reading every single
-byte of data is overhead that it is better to avoid.
-
-Accordingly, modify the code to carry out EC address space accesses
-entirely without releasing the locks.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/12473338.O9o76ZdvQC@rjwysocki.net
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 55 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 49 insertions(+), 6 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-core.c | 42 +++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 35e22a2af4e4b..115994dfefec1 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -783,6 +783,9 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
- 	unsigned long tmp;
- 	int ret = 0;
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 632eaf9e11a6b..2f8a9d3f1e861 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -105,6 +105,7 @@ struct i2c_hid {
  
-+	if (t->rdata)
-+		memset(t->rdata, 0, t->rlen);
-+
- 	/* start transaction */
- 	spin_lock_irqsave(&ec->lock, tmp);
- 	/* Enable GPE for command processing (IBF=0/OBF=1) */
-@@ -819,8 +822,6 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
+ 	wait_queue_head_t	wait;		/* For waiting the interrupt */
  
- 	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
- 		return -EINVAL;
--	if (t->rdata)
--		memset(t->rdata, 0, t->rlen);
++	struct mutex		cmd_lock;	/* protects cmdbuf and rawbuf */
+ 	struct mutex		reset_lock;
  
- 	mutex_lock(&ec->mutex);
- 	if (ec->global_lock) {
-@@ -847,7 +848,7 @@ static int acpi_ec_burst_enable(struct acpi_ec *ec)
- 				.wdata = NULL, .rdata = &d,
- 				.wlen = 0, .rlen = 1};
- 
--	return acpi_ec_transaction(ec, &t);
-+	return acpi_ec_transaction_unlocked(ec, &t);
- }
- 
- static int acpi_ec_burst_disable(struct acpi_ec *ec)
-@@ -857,7 +858,7 @@ static int acpi_ec_burst_disable(struct acpi_ec *ec)
- 				.wlen = 0, .rlen = 0};
- 
- 	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
--				acpi_ec_transaction(ec, &t) : 0;
-+				acpi_ec_transaction_unlocked(ec, &t) : 0;
- }
- 
- static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
-@@ -873,6 +874,19 @@ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
- 	return result;
- }
- 
-+static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
-+{
-+	int result;
-+	u8 d;
-+	struct transaction t = {.command = ACPI_EC_COMMAND_READ,
-+				.wdata = &address, .rdata = &d,
-+				.wlen = 1, .rlen = 1};
-+
-+	result = acpi_ec_transaction_unlocked(ec, &t);
-+	*data = d;
-+	return result;
-+}
-+
- static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
+ 	struct i2chid_ops	*ops;
+@@ -220,6 +221,8 @@ static int i2c_hid_xfer(struct i2c_hid *ihid,
+ static int i2c_hid_read_register(struct i2c_hid *ihid, __le16 reg,
+ 				 void *buf, size_t len)
  {
- 	u8 wdata[2] = { address, data };
-@@ -883,6 +897,16 @@ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
- 	return acpi_ec_transaction(ec, &t);
- }
++	guard(mutex)(&ihid->cmd_lock);
++
+ 	*(__le16 *)ihid->cmdbuf = reg;
  
-+static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
-+{
-+	u8 wdata[2] = { address, data };
-+	struct transaction t = {.command = ACPI_EC_COMMAND_WRITE,
-+				.wdata = wdata, .rdata = NULL,
-+				.wlen = 2, .rlen = 0};
+ 	return i2c_hid_xfer(ihid, ihid->cmdbuf, sizeof(__le16), buf, len);
+@@ -252,6 +255,8 @@ static int i2c_hid_get_report(struct i2c_hid *ihid,
+ 
+ 	i2c_hid_dbg(ihid, "%s\n", __func__);
+ 
++	guard(mutex)(&ihid->cmd_lock);
 +
-+	return acpi_ec_transaction_unlocked(ec, &t);
-+}
+ 	/* Command register goes first */
+ 	*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+ 	length += sizeof(__le16);
+@@ -342,6 +347,8 @@ static int i2c_hid_set_or_send_report(struct i2c_hid *ihid,
+ 	if (!do_set && le16_to_cpu(ihid->hdesc.wMaxOutputLength) == 0)
+ 		return -ENOSYS;
+ 
++	guard(mutex)(&ihid->cmd_lock);
 +
- int ec_read(u8 addr, u8 *val)
+ 	if (do_set) {
+ 		/* Command register goes first */
+ 		*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+@@ -384,6 +391,8 @@ static int i2c_hid_set_power_command(struct i2c_hid *ihid, int power_state)
  {
- 	int err;
-@@ -1323,6 +1347,7 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	struct acpi_ec *ec = handler_context;
- 	int result = 0, i, bytes = bits / 8;
- 	u8 *value = (u8 *)value64;
-+	u32 glk;
+ 	size_t length;
  
- 	if ((address > 0xFF) || !value || !handler_context)
- 		return AE_BAD_PARAMETER;
-@@ -1330,13 +1355,25 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (function != ACPI_READ && function != ACPI_WRITE)
- 		return AE_BAD_PARAMETER;
++	guard(mutex)(&ihid->cmd_lock);
++
+ 	/* SET_POWER uses command register */
+ 	*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+ 	length = sizeof(__le16);
+@@ -440,25 +449,27 @@ static int i2c_hid_start_hwreset(struct i2c_hid *ihid)
+ 	if (ret)
+ 		return ret;
  
-+	mutex_lock(&ec->mutex);
-+
-+	if (ec->global_lock) {
-+		acpi_status status;
-+
-+		status = acpi_acquire_global_lock(ACPI_EC_UDELAY_GLK, &glk);
-+		if (ACPI_FAILURE(status)) {
-+			result = -ENODEV;
-+			goto unlock;
+-	/* Prepare reset command. Command register goes first. */
+-	*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
+-	length += sizeof(__le16);
+-	/* Next is RESET command itself */
+-	length += i2c_hid_encode_command(ihid->cmdbuf + length,
+-					 I2C_HID_OPCODE_RESET, 0, 0);
++	scoped_guard(mutex, &ihid->cmd_lock) {
++		/* Prepare reset command. Command register goes first. */
++		*(__le16 *)ihid->cmdbuf = ihid->hdesc.wCommandRegister;
++		length += sizeof(__le16);
++		/* Next is RESET command itself */
++		length += i2c_hid_encode_command(ihid->cmdbuf + length,
++						 I2C_HID_OPCODE_RESET, 0, 0);
+ 
+-	set_bit(I2C_HID_RESET_PENDING, &ihid->flags);
++		set_bit(I2C_HID_RESET_PENDING, &ihid->flags);
+ 
+-	ret = i2c_hid_xfer(ihid, ihid->cmdbuf, length, NULL, 0);
+-	if (ret) {
+-		dev_err(&ihid->client->dev,
+-			"failed to reset device: %d\n", ret);
+-		goto err_clear_reset;
+-	}
++		ret = i2c_hid_xfer(ihid, ihid->cmdbuf, length, NULL, 0);
++		if (ret) {
++			dev_err(&ihid->client->dev,
++				"failed to reset device: %d\n", ret);
++			break;
 +		}
+ 
+-	return 0;
++		return 0;
 +	}
-+
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_enable(ec);
  
- 	for (i = 0; i < bytes; ++i, ++address, ++value) {
- 		result = (function == ACPI_READ) ?
--			acpi_ec_read(ec, address, value) :
--			acpi_ec_write(ec, address, *value);
-+			acpi_ec_read_unlocked(ec, address, value) :
-+			acpi_ec_write_unlocked(ec, address, *value);
- 		if (result < 0)
- 			break;
- 	}
-@@ -1344,6 +1381,12 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_disable(ec);
+-err_clear_reset:
++	/* Clean up if sending reset command failed */
+ 	clear_bit(I2C_HID_RESET_PENDING, &ihid->flags);
+ 	i2c_hid_set_power(ihid, I2C_HID_PWR_SLEEP);
+ 	return ret;
+@@ -1200,6 +1211,7 @@ int i2c_hid_core_probe(struct i2c_client *client, struct i2chid_ops *ops,
+ 	ihid->is_panel_follower = drm_is_panel_follower(&client->dev);
  
-+	if (ec->global_lock)
-+		acpi_release_global_lock(glk);
-+
-+unlock:
-+	mutex_unlock(&ec->mutex);
-+
- 	switch (result) {
- 	case -EINVAL:
- 		return AE_BAD_PARAMETER;
+ 	init_waitqueue_head(&ihid->wait);
++	mutex_init(&ihid->cmd_lock);
+ 	mutex_init(&ihid->reset_lock);
+ 	INIT_WORK(&ihid->panel_follower_prepare_work, ihid_core_panel_prepare_work);
+ 
 -- 
 2.43.0
 
