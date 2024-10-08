@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-82930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86161994F75
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3624994FB4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7371C212DF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87C161F246FF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324A61DFE02;
-	Tue,  8 Oct 2024 13:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C696E1DF979;
+	Tue,  8 Oct 2024 13:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osDFSe3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxll0E2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E081DFE1D;
-	Tue,  8 Oct 2024 13:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FA81DF256;
+	Tue,  8 Oct 2024 13:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393911; cv=none; b=rNCocw/MhIRSuqotq/vPBCJwDU4+IMZSJpe2963s1Hln+PZYJqxQIM7pEsr3IfNXAIRBFTQGfDJ16cYUAZAaEzkiC8Xm5/3q6UYw5pY4bxFJJfWP0sAMrbZwP+8fzFadHTBUfz1tba0Smlh1SK4YCaGbHpU1dM/3unuAR8e4SMU=
+	t=1728394047; cv=none; b=l5zSG9WwFHQ8oD5ETzNJprtmRO/t57N7uUX9CuMz5xbeUhepyF5iBkLmE1DwureETFgQZupaxZ9DJSRugZOtgGx+ok+ouU2HmG9PxaRSv0ZmmjUb33mWmrhwHeLPGeZtk3vl2N+YgnHEHu2engJVyegMJtu+w2YRywTN2N90wCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393911; c=relaxed/simple;
-	bh=2G6GXZ56OeyJSDKRzoQMWs7gpauEYqhxsU93t5BCXfM=;
+	s=arc-20240116; t=1728394047; c=relaxed/simple;
+	bh=XbbrajIq+Luz7orv+UoHn+xTq0v9SCCTWUs5vZyeRNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NceSI4v2krDL8HZFcJfDXsZVit5eWY9cQCkc2f1U25qpMKVlYZAxyDCL8E/S7bsqE3d9m7DPeXHNtZB3qM/oxtfhndqECgVI3+L5U624rzoIpwawei8h2rH0BFro891riVIFkeqtqxG8CGEngztx/8YO9jmAS/RAO1iGsQ8nrpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osDFSe3F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E95C4CECC;
-	Tue,  8 Oct 2024 13:25:09 +0000 (UTC)
+	 MIME-Version; b=gU5VvTY2GTBm525FFgA4hg9kOlC+DowncQjOYJUtZVohQkvldrvt9fD49O1ioFf8djbEDm+CEX0AT8yGKHSh1Odd2uWfpQhQkmv/mTFTE2lRcxRMEWx8HwH2aQhHwSWWzJcMnMFnRgCcZxZp3wy+O2vM81A/xA12TlOVZhHchQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxll0E2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0996EC4CEC7;
+	Tue,  8 Oct 2024 13:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393910;
-	bh=2G6GXZ56OeyJSDKRzoQMWs7gpauEYqhxsU93t5BCXfM=;
+	s=korg; t=1728394047;
+	bh=XbbrajIq+Luz7orv+UoHn+xTq0v9SCCTWUs5vZyeRNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=osDFSe3FmbmN77zbAPRkwiqjzXKveiJnAJzlT104Vv6b/2UunKlpgeAzYjg4tzvWQ
-	 P7xxD9pGXITljfnJW33SHC41N9nrjzEcQCUdlIG3Tb04qNi6njo08X2ssl4aJCrx8h
-	 oY6UjEhuSPMqd8DtvCx/QxgjGgnUXrAXlObkH++U=
+	b=yxll0E2pKV5am4ZlSFAogZqoSiYJbHM/jhEoZ/JL8NgCsIRHKCqSex9zz3R6Qiho2
+	 kx32MxePQ1Qmcm5rifUMOg3F/iHbojwASOFqkm17FxPjgddAI8+XpGLiEZIaYMOc+G
+	 HHIoODxSS0RhXux7n83KQjqU34wVnHftbAmXoYWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 289/386] media: venus: fix use after free bug in venus_remove due to race condition
-Date: Tue,  8 Oct 2024 14:08:54 +0200
-Message-ID: <20241008115640.758681542@linuxfoundation.org>
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 290/386] clk: qcom: gcc-sm8250: Do not turn off PCIe GDSCs during gdsc_disable()
+Date: Tue,  8 Oct 2024 14:08:55 +0200
+Message-ID: <20241008115640.797971338@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -67,51 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit c5a85ed88e043474161bbfe54002c89c1cb50ee2 upstream.
+commit ade508b545c969c72cd68479f275a5dd640fd8b9 upstream.
 
-in venus_probe, core->work is bound with venus_sys_error_handler, which is
-used to handle error. The code use core->sys_err_done to make sync work.
-The core->work is started in venus_event_notify.
+With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
+can happen during scenarios such as system suspend and breaks the resume
+of PCIe controllers from suspend.
 
-If we call venus_remove, there might be an unfished work. The possible
-sequence is as follows:
+So use PWRSTS_RET_ON to indicate the GDSC driver to not turn off the GDSCs
+during gdsc_disable() and allow the hardware to transition the GDSCs to
+retention when the parent domain enters low power state during system
+suspend.
 
-CPU0                  CPU1
-
-                     |venus_sys_error_handler
-venus_remove         |
-hfi_destroy	 		 |
-venus_hfi_destroy	 |
-kfree(hdev);	     |
-                     |hfi_reinit
-					 |venus_hfi_queues_reinit
-                     |//use hdev
-
-Fix it by canceling the work in venus_remove.
-
-Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: stable@vger.kernel.org # 5.7
+Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20240719134238.312191-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gcc-sm8250.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -424,6 +424,7 @@ static void venus_remove(struct platform
- 	struct device *dev = core->dev;
- 	int ret;
+--- a/drivers/clk/qcom/gcc-sm8250.c
++++ b/drivers/clk/qcom/gcc-sm8250.c
+@@ -3226,7 +3226,7 @@ static struct gdsc pcie_0_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
-+	cancel_delayed_work_sync(&core->work);
- 	ret = pm_runtime_get_sync(dev);
- 	WARN_ON(ret < 0);
+ static struct gdsc pcie_1_gdsc = {
+@@ -3234,7 +3234,7 @@ static struct gdsc pcie_1_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
  
+ static struct gdsc pcie_2_gdsc = {
+@@ -3242,7 +3242,7 @@ static struct gdsc pcie_2_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_2_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ };
+ 
+ static struct gdsc ufs_card_gdsc = {
 
 
 
