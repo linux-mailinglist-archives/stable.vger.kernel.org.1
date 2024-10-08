@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-82327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6C8994C31
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025E2994DEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 471CE2867FC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC9EA1F21373
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADDF1CCB32;
-	Tue,  8 Oct 2024 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBFC1DE8BE;
+	Tue,  8 Oct 2024 13:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcLMps4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z73Ax1Kz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0EC1DE2AD;
-	Tue,  8 Oct 2024 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6EF1C32EB;
+	Tue,  8 Oct 2024 13:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391891; cv=none; b=aKZlXrj1pvRQjnokPzHdNp9V9Rrte4qtwrl5qs4ujXqzoqK0DwYij2SwJv8ymGDrs12mfpUis5aDnyoAXcwApEwwQEOdT8F8UdlL1S0UcrarGbBay0cboqrq437qaiJ0sPBqXz4edU/RA7VCp2gAsTEc3m+Juueiqii7fvm4nPY=
+	t=1728393054; cv=none; b=d05joqwJgF/TkqHdmyPVZPOm+VGPNPi2/CmXK8zqW4CFE63H8wyh28ERL7MSEaCb+YUM4tVu5LPOVnuU2/JXYfn8Nuh6IDqeXPjV7cEfmathAEYFHV4mDiVeXa1Whhm5VFLnC3T2Om+uctOjSCVXkHb/s/ZgrOxOs+Vatnd/1zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391891; c=relaxed/simple;
-	bh=IjEe64gCEK0g4CeHTTzVzGL2bpUcjzHKdO/2NX3rA3A=;
+	s=arc-20240116; t=1728393054; c=relaxed/simple;
+	bh=Rpp/fHtUtw5Dqvylt96rPm6IMKq/Pr2ue69JmAyjIGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcrhSqoi2JCZqkWzNjPrUvA9wp4vXUOd4xj0fLhBRDYH8jSEWCSOI9gMRPrmj7fBEuTU7wF1dRL3pGogExUz7EtE0GZLcsxs6H1XieIZq1SwHPzvc8LFYkFpo6GrDcNcobwdKizD798kCxSlptUn98e4PUF6mWkM1gvMvzXMMAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcLMps4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C364BC4CECD;
-	Tue,  8 Oct 2024 12:51:30 +0000 (UTC)
+	 MIME-Version; b=iJKh/wZFXQXT0hU4s4aP+QdKwFowmMq0th4EyZ5hH67E0x6WlDITA6gCfOeYdMYpw/2DLZUZyeoIdAptgoWcZlQrdhsiAoJopLR9IS5uX+Oz8IDpCVSPpeGSMhlbAgGipC7rNck7mWDNs7pZxI3ddTC5RpMBG52Tvfg7/CNtjuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z73Ax1Kz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3F0C4CECD;
+	Tue,  8 Oct 2024 13:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391891;
-	bh=IjEe64gCEK0g4CeHTTzVzGL2bpUcjzHKdO/2NX3rA3A=;
+	s=korg; t=1728393053;
+	bh=Rpp/fHtUtw5Dqvylt96rPm6IMKq/Pr2ue69JmAyjIGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcLMps4NZEwRQrwD5bCNW6BfEs4EuWlWnn2kJ21DtYHlJzz5jENy8viD1T1f1Ajb9
-	 i0vAP+HdjTvL3jDamOUFNZUF9TQlfF3eqhATWuCBppdr6OKx/psd912d+bvAlNwMav
-	 9k5R4EoLbCmxW5fKHaMavdcDf3bTmXJ6mERx3eAc=
+	b=Z73Ax1KzlXgDeiFe/lJgfTQyxDZYMR2IoCpDCB2P1Bi145txSLpSj2Yx1Qn/Vk1JZ
+	 ujKtXf7qs3uJclJxx6iZU6Zg64mWMBzovMjrMaBXdjvqNjVL3wrH4yeco2mHZEw7x/
+	 cjtslt2qbWV1gnpO9z6gPV47ENB02QidOFph/igM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Marc Ferland <marc.ferland@sonatest.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 254/558] drm/amd/display: Check phantom_stream before it is used
+Subject: [PATCH 6.6 039/386] i2c: xiic: improve error message when transfer fails to start
 Date: Tue,  8 Oct 2024 14:04:44 +0200
-Message-ID: <20241008115712.331619326@linuxfoundation.org>
+Message-ID: <20241008115631.012812494@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Marc Ferland <marc.ferland@sonatest.com>
 
-[ Upstream commit 3718a619a8c0a53152e76bb6769b6c414e1e83f4 ]
+[ Upstream commit ee1691d0ae103ba7fd9439800ef454674fadad27 ]
 
-dcn32_enable_phantom_stream can return null, so returned value
-must be checked before used.
+xiic_start_xfer can fail for different reasons:
 
-This fixes 1 NULL_RETURNS issue reported by Coverity.
+- EBUSY: bus is busy or i2c messages still in tx_msg or rx_msg
+- ETIMEDOUT: timed-out trying to clear the RX fifo
+- EINVAL: wrong clock settings
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Both EINVAL and ETIMEDOUT will currently print a specific error
+message followed by a generic one, for example:
+
+    Failed to clear rx fifo
+    Error xiic_start_xfer
+
+however EBUSY will simply output the generic message:
+
+    Error xiic_start_xfer
+
+which is not really helpful.
+
+This commit adds a new error message when a busy condition is detected
+and also removes the generic message since it does not provide any
+relevant information to the user.
+
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Stable-dep-of: 1d4a1adbed25 ("i2c: xiic: Try re-initialization on bus busy timeout")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-xiic.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-index 6e2a08a9572b8..8bacff23c3563 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-@@ -1720,6 +1720,9 @@ void dcn32_add_phantom_pipes(struct dc *dc, struct dc_state *context,
- 	// be a valid candidate for SubVP (i.e. has a plane, stream, doesn't
- 	// already have phantom pipe assigned, etc.) by previous checks.
- 	phantom_stream = dcn32_enable_phantom_stream(dc, context, pipes, pipe_cnt, index);
-+	if (!phantom_stream)
-+		return;
-+
- 	dcn32_enable_phantom_plane(dc, context, phantom_stream, index);
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index 71391b590adae..19468565120e1 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -1105,8 +1105,11 @@ static int xiic_start_xfer(struct xiic_i2c *i2c, struct i2c_msg *msgs, int num)
+ 	mutex_lock(&i2c->lock);
  
- 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 	ret = xiic_busy(i2c);
+-	if (ret)
++	if (ret) {
++		dev_err(i2c->adap.dev.parent,
++			"cannot start a transfer while busy\n");
+ 		goto out;
++	}
+ 
+ 	i2c->tx_msg = msgs;
+ 	i2c->rx_msg = NULL;
+@@ -1164,10 +1167,8 @@ static int xiic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+ 		return err;
+ 
+ 	err = xiic_start_xfer(i2c, msgs, num);
+-	if (err < 0) {
+-		dev_err(adap->dev.parent, "Error xiic_start_xfer\n");
++	if (err < 0)
+ 		goto out;
+-	}
+ 
+ 	err = wait_for_completion_timeout(&i2c->completion, XIIC_XFER_TIMEOUT);
+ 	mutex_lock(&i2c->lock);
 -- 
 2.43.0
 
