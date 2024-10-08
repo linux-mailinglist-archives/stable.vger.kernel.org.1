@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B79E994E8D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD397994CE6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD5A01C252D5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF8E51C251A0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864881DEFE0;
-	Tue,  8 Oct 2024 13:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F28C1DF24D;
+	Tue,  8 Oct 2024 12:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sv81vqMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ephv8Mvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4330B1DE89F;
-	Tue,  8 Oct 2024 13:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3CF189910;
+	Tue,  8 Oct 2024 12:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393500; cv=none; b=EAdYm8LSNpBVpgM3Eoeb8XYLt0ONU0PZBnE5y8JBniwggduWAvxdKVl3cGaBYlJNVps9oLfGMMKOAtFbEvb0tzM/dVkSzH9B2QsP7D5tRH+z7nkIV84VYbtul/y4fEpZb+YCsrlvnGnVfYkAwrfbFUYsS7nn2tIuoqBwJrNbrZ4=
+	t=1728392337; cv=none; b=tA+SrnIP7RdXqz5GachS8WZsRoXAoTXRPa+cR5+hpYNdYkQ0A4Q2X4BE0sYxrxXMQiLsqe01odrqg1u9pIa8ILsUJpZ9VabsJwn9jGFrmyyG5itkSVaBNJFz9PWizDYMiiaCtTOpuFLD25qDM49s/e2k+DBKmdxX9XGo95A65bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393500; c=relaxed/simple;
-	bh=BiqpidloBbHw5fVM8zFp2xHIIZO6W7VQA5IagyrPgQA=;
+	s=arc-20240116; t=1728392337; c=relaxed/simple;
+	bh=gIl+IyspxKo5yWkgpzSGjbSH378HhCaGGtFfgBd4dHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SY+dagopwqzvVJK3R/CWMrgUkAx0elAnG7XY5P7brRilzTM4cH1dW/w63580ddNzgbSpq/3IAXcTut4b5j/WM+5timCgGnE+rz8ucfOwanu3bGdbECD87iap9q3f9R3L7h2f8jiqZOkw2ThV1BS3KYgEMjVyHJ34SpyAqdVmr5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sv81vqMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A5AC4CEC7;
-	Tue,  8 Oct 2024 13:18:18 +0000 (UTC)
+	 MIME-Version; b=N8TN1Q7s3s/KChK2Zu7ilsdZKJ+PXnhGLWoS3O51LTzQdyYsDfg+SyMRa61TW9NEW5aPz/QnlMxkPudPBNK3M+TQHDL7EiSkHfEVGWIm6D5BRLYSKBuVwj8TpWzG8bti5tVd78wPAj2/cyy1T/x/wWApfOw9gdq9bBl7zmt4SYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ephv8Mvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4D5C4CEC7;
+	Tue,  8 Oct 2024 12:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393500;
-	bh=BiqpidloBbHw5fVM8zFp2xHIIZO6W7VQA5IagyrPgQA=;
+	s=korg; t=1728392336;
+	bh=gIl+IyspxKo5yWkgpzSGjbSH378HhCaGGtFfgBd4dHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sv81vqMch9KlBRSpY/bvIuWTLrlnaY0riOF5hpXRBo0V/AQT+rlrQzUtb+pYV0ZjF
-	 d90IXlmJ6kU5ilovuw6ePSSl3NlUGtjZhS0S3l05SwCOGadQxbiEgzemU8wmLG+28x
-	 i9WLzKw9lm+8VSHR423ZUeD2NQopf0FFMbLs5K7c=
+	b=ephv8MvdrbL5RzGh1NV2ItzR3Br7gbZMjqAk9899MLJ+QqZcwUs2ZVcXHIMXSiOTL
+	 Z/KfyLUN/LjdNYqb99PIWKiXMmRzb3YyRHfJbXSagPolRmtJH+KNllLaTLlwLWnUOi
+	 IyovdOWY90AA3U0yvQBFcKhz3cmLnciEusS833PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <tim.huang@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/386] drm/amd/pm: ensure the fw_info is not null before using it
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.11 386/558] ext4: fix incorrect tid assumption in __jbd2_log_wait_for_space()
 Date: Tue,  8 Oct 2024 14:06:56 +0200
-Message-ID: <20241008115636.153012284@linuxfoundation.org>
+Message-ID: <20241008115717.477269836@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <tim.huang@amd.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit 186fb12e7a7b038c2710ceb2fb74068f1b5d55a4 ]
+commit 972090651ee15e51abfb2160e986fa050cfc7a40 upstream.
 
-This resolves the dereference null return value warning
-reported by Coverity.
+Function __jbd2_log_wait_for_space() assumes that '0' is not a valid value
+for transaction IDs, which is incorrect.  Don't assume that and invoke
+jbd2_log_wait_commit() if the journal had a committing transaction instead.
 
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240724161119.13448-3-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/jbd2/checkpoint.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-index 5794b64507bf9..56a2257525806 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-@@ -1185,6 +1185,8 @@ static int init_overdrive_limits(struct pp_hwmgr *hwmgr,
- 	fw_info = smu_atom_get_data_table(hwmgr->adev,
- 			 GetIndexIntoMasterTable(DATA, FirmwareInfo),
- 			 &size, &frev, &crev);
-+	PP_ASSERT_WITH_CODE(fw_info != NULL,
-+			    "Missing firmware info!", return -EINVAL);
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -79,9 +79,12 @@ __releases(&journal->j_state_lock)
+ 		if (space_left < nblocks) {
+ 			int chkpt = journal->j_checkpoint_transactions != NULL;
+ 			tid_t tid = 0;
++			bool has_transaction = false;
  
- 	if ((fw_info->ucTableFormatRevision == 1)
- 	    && (le16_to_cpu(fw_info->usStructureSize) >= sizeof(ATOM_FIRMWARE_INFO_V1_4)))
--- 
-2.43.0
-
+-			if (journal->j_committing_transaction)
++			if (journal->j_committing_transaction) {
+ 				tid = journal->j_committing_transaction->t_tid;
++				has_transaction = true;
++			}
+ 			spin_unlock(&journal->j_list_lock);
+ 			write_unlock(&journal->j_state_lock);
+ 			if (chkpt) {
+@@ -89,7 +92,7 @@ __releases(&journal->j_state_lock)
+ 			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
+ 				/* We were able to recover space; yay! */
+ 				;
+-			} else if (tid) {
++			} else if (has_transaction) {
+ 				/*
+ 				 * jbd2_journal_commit_transaction() may want
+ 				 * to take the checkpoint_mutex if JBD2_FLUSHED
 
 
 
