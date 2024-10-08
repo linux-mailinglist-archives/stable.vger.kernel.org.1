@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254DD9949AE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 601BF994C57
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE453285B77
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEBDD2839B0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BA81DE4FA;
-	Tue,  8 Oct 2024 12:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5D31DE8BE;
+	Tue,  8 Oct 2024 12:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGhzWKI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZkP0DE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CD81DE89A;
-	Tue,  8 Oct 2024 12:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EBE1DE3A3;
+	Tue,  8 Oct 2024 12:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390297; cv=none; b=BPL4PBixk2Usex/NFCXyM+xgTJlJr6pd/xgVR1UHrhLiB3NRJkM3qgVKNfUaGRola0AMgAED8BR0/NFEc93QCAW0OUpOhDQuIjjwi6jGbkjkLlObj3a1zF5u3CTbU+UhSQKojqq5dREYWj9OkvX6haIpbPzq5WT1ikuunLTseKs=
+	t=1728391984; cv=none; b=L1jUmsNiayVyyTavLSzXut02dNl8IMKtrdSvVmwm4CeqxoR1ha3hb6CpGLB5jn83CSrL3jFzUXolqKtjRwGzYeY1oN+bxkgv3pOd0TsyFVunlZnpChkic4hr+Flo1bpmj65q/AkSdZ7COt1jxWNCRVg/CNvgyO+MsZ2BclcbX+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390297; c=relaxed/simple;
-	bh=soYqjmR5rDWWGq+N1p8X4deAQOqe59uVAg9kez8eR5k=;
+	s=arc-20240116; t=1728391984; c=relaxed/simple;
+	bh=U0EA+t5ccVf6rSitBXb/KVEedLPN12rRZ6JJ9ngIous=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUATp1EOopxZQq3o/xj/dVSZ7sz0roBlbraoaHZDxBXBgPRKKg0LX+5x0cBGWKfQDc16sMqE0kbXyFpqa+tyYvdY+nJ+WZCLeYHmKiHn6RSIHIe9pMhUuWpImrY+8lzSc5KmKUoZIUDby6uBrVZw9sFOCCFJIH0GpQ9ZOGZj4zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGhzWKI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5BCC4CEC7;
-	Tue,  8 Oct 2024 12:24:56 +0000 (UTC)
+	 MIME-Version; b=G3tAtOWYwVwFs/AlfVkeir3aDGPszwKSCHFn4Xc88u5vQj/zY6NXXQza2iir//YXgCDF52/2ZADsYEVzCUhaiEuZvAebtQhhVqXi+QRY6Oloj878HiK2tpLk1C8Dp4Ows9T5lf6fkUsav0IHjAqxUteBSLc6z4a0cIrRT+12dc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZkP0DE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F908C4CEC7;
+	Tue,  8 Oct 2024 12:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390297;
-	bh=soYqjmR5rDWWGq+N1p8X4deAQOqe59uVAg9kez8eR5k=;
+	s=korg; t=1728391984;
+	bh=U0EA+t5ccVf6rSitBXb/KVEedLPN12rRZ6JJ9ngIous=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGhzWKI3W8o9/j6VGez2D/PdTS/dTM7ommxS4PolxGo9iwpDRsdNBJHk74foQNu//
-	 OTo6aDbWPmlFIHXGVhoIfv1pAl0TWf03A3VXTeovmUk6iXo9BKxeKT9KZF8f9DoBn4
-	 B5cpjH8wuZ7BqCOO1G/ljBRG7cwyytUKiB4MikAo=
+	b=VZkP0DE5aMr3caaEn4X61zY1+Cxw9hnoYcFNbVgcIHLp/Br+SfqijD6YmADg4tcQ2
+	 17yhloOK/W2dfolZCvrEIHRz3SB8Hvbo/gmWDfqBzAoi8KGMxK6wQs8fsAgnMiMsfZ
+	 Bh5/5Yv/r94G68WZF7xQE6sn5YxOF04By6EyDUeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sunil Khatri <sunil.khatri@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 249/482] ext4: dont set SB_RDONLY after filesystem errors
+Subject: [PATCH 6.11 282/558] drm/amdgpu: fix ptr check warning in gfx10 ip_dump
 Date: Tue,  8 Oct 2024 14:05:12 +0200
-Message-ID: <20241008115658.091520614@linuxfoundation.org>
+Message-ID: <20241008115713.423631740@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Sunil Khatri <sunil.khatri@amd.com>
 
-[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
+[ Upstream commit 98df5a7732e3b78bf8824d2938a8865a45cfc113 ]
 
-When the filesystem is mounted with errors=remount-ro, we were setting
-SB_RDONLY flag to stop all filesystem modifications. We knew this misses
-proper locking (sb->s_umount) and does not go through proper filesystem
-remount procedure but it has been the way this worked since early ext2
-days and it was good enough for catastrophic situation damage
-mitigation. Recently, syzbot has found a way (see link) to trigger
-warnings in filesystem freezing because the code got confused by
-SB_RDONLY changing under its hands. Since these days we set
-EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
-filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
-stop doing that.
+Change condition, if (ptr == NULL) to if (!ptr)
+for a better format and fix the warning.
 
-Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
-Reported-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index edc692984404d..04b78c479fd7a 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -735,11 +735,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index e444e621ddaa0..5b41c6a44068c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -4649,7 +4649,7 @@ static void gfx_v10_0_alloc_ip_dump(struct amdgpu_device *adev)
+ 	uint32_t inst;
  
- 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
- 	/*
--	 * Make sure updated value of ->s_mount_flags will be visible before
--	 * ->s_flags update
-+	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
-+	 * modifications. We don't set SB_RDONLY because that requires
-+	 * sb->s_umount semaphore and setting it without proper remount
-+	 * procedure is confusing code such as freeze_super() leading to
-+	 * deadlocks and other problems.
- 	 */
--	smp_wmb();
--	sb->s_flags |= SB_RDONLY;
- }
+ 	ptr = kcalloc(reg_count, sizeof(uint32_t), GFP_KERNEL);
+-	if (ptr == NULL) {
++	if (!ptr) {
+ 		DRM_ERROR("Failed to allocate memory for GFX IP Dump\n");
+ 		adev->gfx.ip_dump_core = NULL;
+ 	} else {
+@@ -4662,7 +4662,7 @@ static void gfx_v10_0_alloc_ip_dump(struct amdgpu_device *adev)
+ 		adev->gfx.mec.num_queue_per_pipe;
  
- static void update_super_work(struct work_struct *work)
+ 	ptr = kcalloc(reg_count * inst, sizeof(uint32_t), GFP_KERNEL);
+-	if (ptr == NULL) {
++	if (!ptr) {
+ 		DRM_ERROR("Failed to allocate memory for Compute Queues IP Dump\n");
+ 		adev->gfx.ip_dump_compute_queues = NULL;
+ 	} else {
+@@ -4675,7 +4675,7 @@ static void gfx_v10_0_alloc_ip_dump(struct amdgpu_device *adev)
+ 		adev->gfx.me.num_queue_per_pipe;
+ 
+ 	ptr = kcalloc(reg_count * inst, sizeof(uint32_t), GFP_KERNEL);
+-	if (ptr == NULL) {
++	if (!ptr) {
+ 		DRM_ERROR("Failed to allocate memory for GFX Queues IP Dump\n");
+ 		adev->gfx.ip_dump_gfx_queues = NULL;
+ 	} else {
 -- 
 2.43.0
 
