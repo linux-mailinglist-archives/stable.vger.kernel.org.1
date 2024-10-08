@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB10994D34
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D9B994F03
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA7371C25816
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5696928549B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581EE18F2FA;
-	Tue,  8 Oct 2024 13:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78C21DF27A;
+	Tue,  8 Oct 2024 13:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpgE04Ri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRqJDicT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175BF1DE4CC;
-	Tue,  8 Oct 2024 13:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AB1DEFE3;
+	Tue,  8 Oct 2024 13:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392583; cv=none; b=KBP7BAd9SgF6Dz2rJVRdkwLQ5wUXnFKqTP6EmJvTxG/3yr6xZyCHIVCbogxUuwqXrHYrA0kvqI3YhGtnMewK97I5QBb5Sm89oSQhiZ1ijhoPpdiA6kvxGTG2hdv77cpbUoqg3gjNt8SWq3zmrqED0crhDy0jvXmPezUYOckOgeY=
+	t=1728393749; cv=none; b=cF2MnwGdsjztgdd9R7T9ENgQ8xCWDHAAWzkGpOhg4JOevHDoTQ9eUbxzY/zdqlUt6Ugb7d2JujvOrnSMsR47n5RwU25e4B4lNEhbQpGzMrxYEokItLIHXTY2eM3IGaD1fmzmetVP1Q5p6m+txQfoxK3xcZA6VT68SRl++oA0JWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392583; c=relaxed/simple;
-	bh=rkllO0wDJ9K4bKCqTzNZDCaDSNuEdw7Ma0Yv3Yz2awM=;
+	s=arc-20240116; t=1728393749; c=relaxed/simple;
+	bh=VcNJuzPyVckSbfHCIDS6ujXGPQ0bek6l5VoIB0vrUlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eg5lzqXC3VFc4Yx23AmJYxuTzSSkW8jIgXVxuzVlicodUGb0Zkh6wpUTySH62tlJcSCA4Lz8+bLUSTN0Pe4/pDerFbcVeTGP6kZU4Dfjnu4NrfpfBYyLfT8XjemhSDE3i+7K84JOmwFaNbek574caXAFtDoCnvKiGww0IyjBlO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpgE04Ri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B36C4CEC7;
-	Tue,  8 Oct 2024 13:03:01 +0000 (UTC)
+	 MIME-Version; b=cfgPVkX6f8TwWNXCKVMiXDglk2vuvN/42E40sLusMvlivqvtqh2fcnkXMigPLpC3RnR/PmnpFet2tCRcmjKMadWQFE3tO5XAx+xGQj3lJIa5GD8mUCBOKybfpqR3415arjS52GLIWRZ4wJYrJHMYFUHeOCAsSE4jjGgAoVzF0+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRqJDicT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F46C4CEC7;
+	Tue,  8 Oct 2024 13:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392582;
-	bh=rkllO0wDJ9K4bKCqTzNZDCaDSNuEdw7Ma0Yv3Yz2awM=;
+	s=korg; t=1728393749;
+	bh=VcNJuzPyVckSbfHCIDS6ujXGPQ0bek6l5VoIB0vrUlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpgE04RiRgcGHDniuxEhseSlqbTm0XS/NDoVx+pNdA+4SsSy6gSRw1jKboGTVa6LD
-	 BnPu5VhuVUPzzr3p9YQNHceoKPiYKLALOA5X5urmoOh2zx9s1EJyKjUw+UiKXeiqxt
-	 ATQybl47clk13CRUC+0Ln5N+iy7iAN47xnMgOVeI=
+	b=QRqJDicTUXkYkkKUVG0t+RU/ZmKsPFF9YDHL/HHGA3zHx/asXuP0yXz/RqKPgfjoL
+	 WsDBMPz2IEC41KhKMWiiWNsjxuxVy+RQfwQn3VmRJrmg3fWekrHph+NgxrQpRxAisf
+	 aG3Czg4z6DBZUCv0utIdtqoVyEYmU8lPablITleE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.11 459/558] clk: qcom: gcc-sm8150: De-register gcc_cpuss_ahb_clk_src
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 244/386] ext4: fix incorrect tid assumption in jbd2_journal_shrink_checkpoint_list()
 Date: Tue,  8 Oct 2024 14:08:09 +0200
-Message-ID: <20241008115720.318128397@linuxfoundation.org>
+Message-ID: <20241008115638.998334869@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,129 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit bab0c7a0bc586e736b7cd2aac8e6391709a70ef2 upstream.
+commit 7a6443e1dad70281f99f0bd394d7fd342481a632 upstream.
 
-The branch clocks of gcc_cpuss_ahb_clk_src are marked critical
-and hence these clocks vote on XO blocking the suspend.
-De-register these clocks and its source as there is no rate
-setting happening on them.
+Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
+valid value for transaction IDs, which is incorrect.  Don't assume that and
+use two extra boolean variables to control the loop iterations and keep
+track of the first and last tid.
 
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Cc: stable@vger.kernel.org
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-5-8b3eaa5fb856@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240724161119.13448-4-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c |   63 -----------------------------------------
- 1 file changed, 63 deletions(-)
+ fs/jbd2/checkpoint.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -260,28 +260,6 @@ static const struct clk_parent_data gcc_
- 	{ .hw = &gpll0_out_even.clkr.hw },
- };
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -412,6 +412,7 @@ unsigned long jbd2_journal_shrink_checkp
+ 	tid_t tid = 0;
+ 	unsigned long nr_freed = 0;
+ 	unsigned long freed;
++	bool first_set = false;
  
--static const struct freq_tbl ftbl_gcc_cpuss_ahb_clk_src[] = {
--	F(19200000, P_BI_TCXO, 1, 0, 0),
--	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
--	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
--	{ }
--};
--
--static struct clk_rcg2 gcc_cpuss_ahb_clk_src = {
--	.cmd_rcgr = 0x48014,
--	.mnd_width = 0,
--	.hid_width = 5,
--	.parent_map = gcc_parent_map_0,
--	.freq_tbl = ftbl_gcc_cpuss_ahb_clk_src,
--	.clkr.hw.init = &(struct clk_init_data){
--		.name = "gcc_cpuss_ahb_clk_src",
--		.parent_data = gcc_parents_0,
--		.num_parents = ARRAY_SIZE(gcc_parents_0),
--		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
--	},
--};
--
- static const struct freq_tbl ftbl_gcc_emac_ptp_clk_src[] = {
- 	F(19200000, P_BI_TCXO, 1, 0, 0),
- 	F(50000000, P_GPLL0_OUT_EVEN, 6, 0, 0),
-@@ -1640,25 +1618,6 @@ static struct clk_branch gcc_cfg_noc_usb
- 	},
- };
+ again:
+ 	spin_lock(&journal->j_list_lock);
+@@ -431,8 +432,10 @@ again:
+ 	else
+ 		transaction = journal->j_checkpoint_transactions;
  
--/* For CPUSS functionality the AHB clock needs to be left enabled */
--static struct clk_branch gcc_cpuss_ahb_clk = {
--	.halt_reg = 0x48000,
--	.halt_check = BRANCH_HALT_VOTED,
--	.clkr = {
--		.enable_reg = 0x52004,
--		.enable_mask = BIT(21),
--		.hw.init = &(struct clk_init_data){
--			.name = "gcc_cpuss_ahb_clk",
--			.parent_hws = (const struct clk_hw *[]){
--				      &gcc_cpuss_ahb_clk_src.clkr.hw
--			},
--			.num_parents = 1,
--			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_cpuss_rbcpr_clk = {
- 	.halt_reg = 0x48008,
- 	.halt_check = BRANCH_HALT,
-@@ -3191,25 +3150,6 @@ static struct clk_branch gcc_sdcc4_apps_
- 	},
- };
+-	if (!first_tid)
++	if (!first_set) {
+ 		first_tid = transaction->t_tid;
++		first_set = true;
++	}
+ 	last_transaction = journal->j_checkpoint_transactions->t_cpprev;
+ 	next_transaction = transaction;
+ 	last_tid = last_transaction->t_tid;
+@@ -462,7 +465,7 @@ again:
+ 	spin_unlock(&journal->j_list_lock);
+ 	cond_resched();
  
--/* For CPUSS functionality the SYS NOC clock needs to be left enabled */
--static struct clk_branch gcc_sys_noc_cpuss_ahb_clk = {
--	.halt_reg = 0x4819c,
--	.halt_check = BRANCH_HALT_VOTED,
--	.clkr = {
--		.enable_reg = 0x52004,
--		.enable_mask = BIT(0),
--		.hw.init = &(struct clk_init_data){
--			.name = "gcc_sys_noc_cpuss_ahb_clk",
--			.parent_hws = (const struct clk_hw *[]){
--				      &gcc_cpuss_ahb_clk_src.clkr.hw
--			},
--			.num_parents = 1,
--			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
--			.ops = &clk_branch2_ops,
--		},
--	},
--};
--
- static struct clk_branch gcc_tsif_ahb_clk = {
- 	.halt_reg = 0x36004,
- 	.halt_check = BRANCH_HALT,
-@@ -4325,8 +4265,6 @@ static struct clk_regmap *gcc_sc8180x_cl
- 	[GCC_CFG_NOC_USB3_MP_AXI_CLK] = &gcc_cfg_noc_usb3_mp_axi_clk.clkr,
- 	[GCC_CFG_NOC_USB3_PRIM_AXI_CLK] = &gcc_cfg_noc_usb3_prim_axi_clk.clkr,
- 	[GCC_CFG_NOC_USB3_SEC_AXI_CLK] = &gcc_cfg_noc_usb3_sec_axi_clk.clkr,
--	[GCC_CPUSS_AHB_CLK] = &gcc_cpuss_ahb_clk.clkr,
--	[GCC_CPUSS_AHB_CLK_SRC] = &gcc_cpuss_ahb_clk_src.clkr,
- 	[GCC_CPUSS_RBCPR_CLK] = &gcc_cpuss_rbcpr_clk.clkr,
- 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
- 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
-@@ -4463,7 +4401,6 @@ static struct clk_regmap *gcc_sc8180x_cl
- 	[GCC_SDCC4_AHB_CLK] = &gcc_sdcc4_ahb_clk.clkr,
- 	[GCC_SDCC4_APPS_CLK] = &gcc_sdcc4_apps_clk.clkr,
- 	[GCC_SDCC4_APPS_CLK_SRC] = &gcc_sdcc4_apps_clk_src.clkr,
--	[GCC_SYS_NOC_CPUSS_AHB_CLK] = &gcc_sys_noc_cpuss_ahb_clk.clkr,
- 	[GCC_TSIF_AHB_CLK] = &gcc_tsif_ahb_clk.clkr,
- 	[GCC_TSIF_INACTIVITY_TIMERS_CLK] = &gcc_tsif_inactivity_timers_clk.clkr,
- 	[GCC_TSIF_REF_CLK] = &gcc_tsif_ref_clk.clkr,
+-	if (*nr_to_scan && next_tid)
++	if (*nr_to_scan && journal->j_shrink_transaction)
+ 		goto again;
+ out:
+ 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
 
 
 
