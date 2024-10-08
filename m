@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22828994C98
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:56:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1969949E9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A797B2A2AD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:56:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4126D1F23BDE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CEE1DEFC7;
-	Tue,  8 Oct 2024 12:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7BA1DF973;
+	Tue,  8 Oct 2024 12:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEqZnnun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hifDn8Al"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE11B1DEFC8;
-	Tue,  8 Oct 2024 12:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7151DF756;
+	Tue,  8 Oct 2024 12:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392109; cv=none; b=SkCGEXiOmkiUoTtxVq+vziJfKCAXmDNGCdn3BiVMGgwW+zvYf+l9yKBhELyyn7mae2h6R9/8Bc5SCDr3oGdpeaH+2Ilsb2rfIPc/+qisuW31J1aWruB4WbrNB9MoU67ebmiO8To8O2JW775EAVDrXTtjcGin42EM7/23wLvmc10=
+	t=1728390436; cv=none; b=A5C7839QogGnod8z7/vvpe0+nDjdJSSKxMyRbFJI3rZ2zajblhRtEGa/d8zZSOpHsFlEYsOcKZYi1L6PsIG6zR0ApqTmiydRjDx3Wm6uPK/xbloHq5PTuRo5XN7NQXHg663ZMp0oaPUw9ZuNf2LdBo0z3sctojmCD7vQxPgYnU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392109; c=relaxed/simple;
-	bh=uuzNveNYoyjEEAXMOeik+jjPgdcJlp0eqUEltQxUfXk=;
+	s=arc-20240116; t=1728390436; c=relaxed/simple;
+	bh=eGbeovqX/V6FBuWHwoT6RSmhJFgwPq2fbVoOG1c7ZbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvcKVlWLp+N9rZvJEg/hdnJ+k2KuhZuf+dG2dfUnt0+kP7YgZnwa4CWv9Wy5NVn7okNec25M6vOS3LwzFOa/cqXxIPv0Xttit84fKB9ryHBWBlcSibOB/UmXMJNC171YIGVTsC4EMt7+YzvOesAAsB55ceFA2TdmIV7MMNIQSmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEqZnnun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A78C4CECE;
-	Tue,  8 Oct 2024 12:55:08 +0000 (UTC)
+	 MIME-Version; b=rtBJlCvVOchbjjfv6xy7cMVFt/tsc8VuIA2zlkx5YWZAXBBt47SLyZqcpazpSLM8KwlHQ0fM17N9ADEvD2Fc2ivfn2w6ZZzYKZKtIAKuPiHWWJFLMtPua8ESgtL1RR/bwEpUAX8M+U9FInxbt1ZKMX60mwW/v5fRXmXOPN2ed8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hifDn8Al; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B558DC4CECC;
+	Tue,  8 Oct 2024 12:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392109;
-	bh=uuzNveNYoyjEEAXMOeik+jjPgdcJlp0eqUEltQxUfXk=;
+	s=korg; t=1728390436;
+	bh=eGbeovqX/V6FBuWHwoT6RSmhJFgwPq2fbVoOG1c7ZbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MEqZnnun3fe+kfBZXOlD4vsfA9/e/8UnWD5ZqixB80XBFBxIOnFwxD+NtmJCxie5e
-	 7Cdp+zlkXqgtdunildVLXdciOxcOSvr3pg6TcgWzZdztJNQeanOnh+MWrWf9MPDqeP
-	 TPukCjys8W3qmGhycCysvMMKjWMG5iQWJaoXyqiQ=
+	b=hifDn8AlgosaXVft4Yfac/lcRsCH4/quckPa+jwOlwYVDwxFmVRbGAKaQ7J41RlWL
+	 9GB1ZWQXSHEmEtvxcZ1BmO7Dn5ky9DIwjOCnGCJdsvyzeKYgoAQafgumDt/xmyk7a/
+	 IUUWeSb/AmEFhbRz93nm/c/52ggIbHGctgTPJxkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 319/558] spi: s3c64xx: fix timeout counters in flush_fifo
-Date: Tue,  8 Oct 2024 14:05:49 +0200
-Message-ID: <20241008115714.861280272@linuxfoundation.org>
+Subject: [PATCH 6.10 287/482] f2fs: forcibly migrate to secure space for zoned device file pinning
+Date: Tue,  8 Oct 2024 14:05:50 +0200
+Message-ID: <20241008115659.572903096@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
+[ Upstream commit 5cc69a27abfa91abbb39fc584f82d6c867b60f47 ]
 
-In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
-in the do { } while(test && loops--) condition. This means the loops is
-left at the unsigned equivalent of -1 if the loop times out. The test
-after will never pass as if tests for loops == 0.
+We need to migrate data blocks even though it is full to secure space
+for zoned device file pinning.
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/gc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 833c58c88e408..6ab416a339669 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -245,7 +245,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 	loops = msecs_to_loops(1);
- 	do {
- 		val = readl(regs + S3C64XX_SPI_STATUS);
--	} while (TX_FIFO_LVL(val, sdd) && loops--);
-+	} while (TX_FIFO_LVL(val, sdd) && --loops);
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 2fbac9965dc3f..e8bf72a88cac8 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -2057,8 +2057,7 @@ int f2fs_gc_range(struct f2fs_sb_info *sbi,
+ 			.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
+ 		};
  
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
-@@ -258,7 +258,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- 			readl(regs + S3C64XX_SPI_RX_DATA);
- 		else
- 			break;
--	} while (loops--);
-+	} while (--loops);
+-		do_garbage_collect(sbi, segno, &gc_list, FG_GC,
+-						dry_run_sections == 0, false);
++		do_garbage_collect(sbi, segno, &gc_list, FG_GC, true, false);
+ 		put_gc_inode(&gc_list);
  
- 	if (loops == 0)
- 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
+ 		if (!dry_run && get_valid_blocks(sbi, segno, true))
 -- 
 2.43.0
 
