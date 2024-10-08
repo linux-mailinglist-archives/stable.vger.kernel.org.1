@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-82259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE11C994BDD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCCC994920
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E19E28162F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 382EEB2765C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF461D54D1;
-	Tue,  8 Oct 2024 12:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D18E1DF72E;
+	Tue,  8 Oct 2024 12:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl1yH7/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbEGCTLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02541DC046;
-	Tue,  8 Oct 2024 12:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C881DF720;
+	Tue,  8 Oct 2024 12:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391662; cv=none; b=dztVm3ebc2Lk9QkIOjBXCwIYQ3hkwTjL+fIQNr2HbeIdgOHnC68Un3EJU0SXn8/sXUrdEMaoq1zNySbZnNOtkvJbhKF6AAjqHDhmZxjs/DXALvOrS8LMyElJ4VnIUs1LnRHp9RoaGXb3NaLVR0pvdge2/VNRqYvN/FydPIZOruE=
+	t=1728389981; cv=none; b=rkRJTal43iunWVaBqrsrWXQXzigMdH2yhP3j204/ia6Q2hvt7vO7LEPazbwqRODS3xO5UQY+y/QZQSG+I7bGwsgTYjkKP0lvUl9ounTPeK8RPINQy9lIvCwNPckkkPBhtbHrqrjZJJyy3uzvhElvjdEpQdd0YesyIxuSnks8AMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391662; c=relaxed/simple;
-	bh=CPMacX/Nx6GIC17zX5QpiIuFEsCI6/XdcQ8xQf4jvKs=;
+	s=arc-20240116; t=1728389981; c=relaxed/simple;
+	bh=e+UOOwUgaSAGwvZ95Qe6qANAJLjWZxbuBgBE3VI23eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hPq4joBhapP3OFg1qK3ZyO+bg5YRKcIMUcO0VzlhMqOHVBDUF5lHjDEixW7jcszQfXtfn6O6jKjtHG0jFLj8vXZzTizdTLnoLcY52AsKO7PuuC9gA9X1bqTtjs5+LpF/cot09OmPVSm1lxj+i3Aj46CuIX8mc6m8QptOWfO3ic8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl1yH7/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF76C4CECD;
-	Tue,  8 Oct 2024 12:47:42 +0000 (UTC)
+	 MIME-Version; b=aVKzSL2n8CFxe3Mr8YtUQt6dwwPX0vIP5T6lJj2NFjP/f0xurRPJHAxC4UWD7NUx5qpcp99/7EX/vNA7/Zp4+Irqc5H92c9fBJcH3E3TmJhnWJR9ypcSqoXw3lXz1EbYbkyk8xbEAm6WoPq/laHc3odEmQRH1Xiia57WkOyRzos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbEGCTLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB88C4CECC;
+	Tue,  8 Oct 2024 12:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391662;
-	bh=CPMacX/Nx6GIC17zX5QpiIuFEsCI6/XdcQ8xQf4jvKs=;
+	s=korg; t=1728389981;
+	bh=e+UOOwUgaSAGwvZ95Qe6qANAJLjWZxbuBgBE3VI23eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zl1yH7/TYG2ZX9XJ5mnIDnOI8M6d/YknPlvlb90r76t/WWnKJgyA41R9ZFcK7yG7I
-	 4ksQ7wQbmtM8NEke2507DiLHjVXG6nvifCjn6xkL2t+CBaE5in9ftjCNcGGzEu2RlV
-	 BENqf1DC8+wl3KFGs2NP0Pw1q64CLT85tGAxXVKE=
+	b=jbEGCTLyICZ4Fk5N5whovoe1RgUHmS5MfEymiJHmb9bTR89VIbQ2uHSDyBWsOzuWr
+	 iX/5ahPPsm4qMGuAbNDnC2qHKHCfYnlLmVA2P3Hthmq/B4xdfM1+OdLsw4d8vM6bFr
+	 ShZmmEZyqyWh2/1qEA8jCmyJ0MLDaesK8oH3xBrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Pavin Joseph <me@pavinjoseph.com>,
+	Sarah Brofeldt <srhb@dbc.dk>,
+	Eric Hagberg <ehagberg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 186/558] x86/syscall: Avoid memcpy() for ia32 syscall_get_arguments()
+Subject: [PATCH 6.10 153/482] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
 Date: Tue,  8 Oct 2024 14:03:36 +0200
-Message-ID: <20241008115709.670743850@linuxfoundation.org>
+Message-ID: <20241008115654.327782334@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Steve Wahl <steve.wahl@hpe.com>
 
-[ Upstream commit d19d638b1e6cf746263ef60b7d0dee0204d8216a ]
+[ Upstream commit cc31744a294584a36bf764a0ffa3255a8e69f036 ]
 
-Modern (fortified) memcpy() prefers to avoid writing (or reading) beyond
-the end of the addressed destination (or source) struct member:
+When ident_pud_init() uses only GB pages to create identity maps, large
+ranges of addresses not actually requested can be included in the resulting
+table; a 4K request will map a full GB.  This can include a lot of extra
+address space past that requested, including areas marked reserved by the
+BIOS.  That allows processor speculation into reserved regions, that on UV
+systems can cause system halts.
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘syscall_get_arguments’ at ./arch/x86/include/asm/syscall.h:85:2,
-    inlined from ‘populate_seccomp_data’ at kernel/seccomp.c:258:2,
-    inlined from ‘__seccomp_filter’ at kernel/seccomp.c:1231:3:
-./include/linux/fortify-string.h:580:25: error: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  580 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Only use GB pages when map creation requests include the full GB page of
+space.  Fall back to using smaller 2M pages when only portions of a GB page
+are included in the request.
 
-As already done for x86_64 and compat mode, do not use memcpy() to
-extract syscall arguments from struct pt_regs but rather just perform
-direct assignments. Binary output differences are negligible, and actually
-ends up using less stack space:
+No attempt is made to coalesce mapping requests. If a request requires a
+map entry at the 2M (pmd) level, subsequent mapping requests within the
+same 1G region will also be at the pmd level, even if adjacent or
+overlapping such requests could have been combined to map a full GB page.
+Existing usage starts with larger regions and then adds smaller regions, so
+this should not have any great consequence.
 
--       sub    $0x84,%esp
-+       sub    $0x6c,%esp
-
-and less text size:
-
-   text    data     bss     dec     hex filename
-  10794     252       0   11046    2b26 gcc-32b/kernel/seccomp.o.stock
-  10714     252       0   10966    2ad6 gcc-32b/kernel/seccomp.o.after
-
-Closes: https://lore.kernel.org/lkml/9b69fb14-df89-4677-9c82-056ea9e706f5@gmail.com/
-Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Link: https://lore.kernel.org/all/20240708202202.work.477-kees%40kernel.org
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Pavin Joseph <me@pavinjoseph.com>
+Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Eric Hagberg <ehagberg@gmail.com>
+Link: https://lore.kernel.org/all/20240717213121.3064030-3-steve.wahl@hpe.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/syscall.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/mm/ident_map.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
-index 2fc7bc3863ff6..7c488ff0c7641 100644
---- a/arch/x86/include/asm/syscall.h
-+++ b/arch/x86/include/asm/syscall.h
-@@ -82,7 +82,12 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 					 struct pt_regs *regs,
- 					 unsigned long *args)
- {
--	memcpy(args, &regs->bx, 6 * sizeof(args[0]));
-+	args[0] = regs->bx;
-+	args[1] = regs->cx;
-+	args[2] = regs->dx;
-+	args[3] = regs->si;
-+	args[4] = regs->di;
-+	args[5] = regs->bp;
- }
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index 968d7005f4a72..a204a332c71fc 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
++		bool use_gbpage;
  
- static inline int syscall_get_arch(struct task_struct *task)
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
+ 
+-		if (info->direct_gbpages) {
+-			pud_t pudval;
++		/* if this is already a gbpage, this portion is already mapped */
++		if (pud_leaf(*pud))
++			continue;
++
++		/* Is using a gbpage allowed? */
++		use_gbpage = info->direct_gbpages;
+ 
+-			if (pud_present(*pud))
+-				continue;
++		/* Don't use gbpage if it maps more than the requested region. */
++		/* at the begining: */
++		use_gbpage &= ((addr & ~PUD_MASK) == 0);
++		/* ... or at the end: */
++		use_gbpage &= ((next & ~PUD_MASK) == 0);
++
++		/* Never overwrite existing mappings */
++		use_gbpage &= !pud_present(*pud);
++
++		if (use_gbpage) {
++			pud_t pudval;
+ 
+-			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
+ 			continue;
 -- 
 2.43.0
 
