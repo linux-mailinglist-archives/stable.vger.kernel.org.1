@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958CF994F5B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B843994AF4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5B41F21780
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5811285295
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC841DF98F;
-	Tue,  8 Oct 2024 13:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9511CCB32;
+	Tue,  8 Oct 2024 12:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExpmM5n5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNI6Ofpb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6EA1DF75D;
-	Tue,  8 Oct 2024 13:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579351779B1;
+	Tue,  8 Oct 2024 12:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393866; cv=none; b=RettmrdIqjl3c8txnESKoKQa/44LxRB4S45SfeEVAhDt7EtpWhA+VobnY3LLML6n7Qre8VFnK60h1kpxDBkDrDv5IaaG7IHcEapB1LLeprlk/qg/hNUKwZwkfNF8g6mWwXYo29u5Eig+weSBoQ4Vljtqn24zEqVxLpLlS1OW8E0=
+	t=1728391099; cv=none; b=r63ulDs4C34MNNUgeQFA1i+jg+5geBeXWZ5J5DP/LZkcwSWN77vYuyXcfmWu8GDeAsrmXCxOf+CEOMjjL3Cx+PTUcq7ngPC7KLVM+AgbwrxyJvxyhvo32LrAlOBQ+OmNW84CAvtPeK7ZBERX2dLagSgB3L9gOSc4K49CHyW0edo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393866; c=relaxed/simple;
-	bh=2FKR13EhCNlanyq0N1AWqiOQUjEVzB7IYffecqAexbg=;
+	s=arc-20240116; t=1728391099; c=relaxed/simple;
+	bh=uCOJpE28WuMBySXC+OIcHpqt8zC/Glkw+tgppbW6WMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwmpNgevEHSDZ6+B96RU2SVRJkibJWp2rYqITyrPOATCp6W0Y6Ry7itVOGCVeys/lClmCDG+oLh4TSBaFVfAVYatFRVC+SA4PKDULy158PLeHiqyRBNzXjNsv7U8gf3KsWDI25x+wZRdh/DXk0jvWre37PrD2yCuRWLxRF1nS+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExpmM5n5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76128C4CEC7;
-	Tue,  8 Oct 2024 13:24:25 +0000 (UTC)
+	 MIME-Version; b=ncvwhqGX4Abf6cF3cRtjMUxgwxLRkE8eYizN/xeqDaRxF8xIqdxXnS9sUlvmijUL6jRRZHmZolBdB44e00i37V69xH2y4XIXrAkmRqd3sLADoZ9o+KFZdNxq63DPN8eFOFjTZTrdEb15EJ7n5T3yBc5btcI8ptJPr0i9PZqK7Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNI6Ofpb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851EAC4CEC7;
+	Tue,  8 Oct 2024 12:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393865;
-	bh=2FKR13EhCNlanyq0N1AWqiOQUjEVzB7IYffecqAexbg=;
+	s=korg; t=1728391098;
+	bh=uCOJpE28WuMBySXC+OIcHpqt8zC/Glkw+tgppbW6WMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExpmM5n57fel0PjHVpalv2NMKhcI72rM92KYFjVyXqjgjGKugPdxQeXu1LU+3uiCX
-	 myvY1lacHy26hpglB3ZMSsQ+9FK2QX06qAIp/UvmQo+ZujETuWRJ/UYQQhZYu85o7d
-	 pzud4OCjTnX58YJFBgeV/8ftGrqtiEnMhfSRW/Jg=
+	b=LNI6OfpbIu7jkmw7QZwGdH8tyTNHio6rePMcTycbEK9zD0fDgOks8Fh7dlrhWv+tV
+	 lG/7fevXp0UaQvVF0Tsv9yMUwyXsykPBGB2u5e4VoIo+M/VWdmpaIlahyju1Cez7Pw
+	 cgeG5mJEljmUBdMokoa+ODD9aPDN5J52VoSxWSGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Stange <nstange@suse.com>,
-	Chun-Yi Lee <jlee@suse.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 278/386] aoe: fix the potential use-after-free problem in more places
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 460/482] NFSD: Limit the number of concurrent async COPY operations
 Date: Tue,  8 Oct 2024 14:08:43 +0200
-Message-ID: <20241008115640.327670347@linuxfoundation.org>
+Message-ID: <20241008115706.616353379@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Yi Lee <joeyli.kernel@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 6d6e54fc71ad1ab0a87047fd9c211e75d86084a3 upstream.
+[ Upstream commit aadc3bbea163b6caaaebfdd2b6c4667fbc726752 ]
 
-For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
-use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
-instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
-into use-after-free.
+Nothing appears to limit the number of concurrent async COPY
+operations that clients can start. In addition, AFAICT each async
+COPY can copy an unlimited number of 4MB chunks, so can run for a
+long time. Thus IMO async COPY can become a DoS vector.
 
-Then Nicolai Stange found more places in aoe have potential use-after-free
-problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
-and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
-packet to tx queue. So they should also use dev_hold() to increase the
-refcnt of skb->dev.
+Add a restriction mechanism that bounds the number of concurrent
+background COPY operations. Start simple and try to be fair -- this
+patch implements a per-namespace limit.
 
-On the other hand, moving dev_put() to tx() causes that the refcnt of
-skb->dev be reduced to a negative value, because corresponding
-dev_hold() are not called in revalidate(), aoecmd_ata_rw(), resend(),
-probe(), and aoecmd_cfg_rsp(). This patch fixed this issue.
+An async COPY request that occurs while this limit is exceeded gets
+NFS4ERR_DELAY. The requesting client can choose to send the request
+again after a delay or fall back to a traditional read/write style
+copy.
+
+If there is need to make the mechanism more sophisticated, we can
+visit that in future patches.
 
 Cc: stable@vger.kernel.org
-Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
-Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
-Reported-by: Nicolai Stange <nstange@suse.com>
-Signed-off-by: Chun-Yi Lee <jlee@suse.com>
-Link: https://lore.kernel.org/stable/20240624064418.27043-1-jlee%40suse.com
-Link: https://lore.kernel.org/r/20241002035458.24401-1-jlee@suse.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/aoe/aoecmd.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/nfsd/netns.h     |  1 +
+ fs/nfsd/nfs4proc.c  | 11 +++++++++--
+ fs/nfsd/nfs4state.c |  1 +
+ fs/nfsd/xdr4.h      |  1 +
+ 4 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/block/aoe/aoecmd.c
-+++ b/drivers/block/aoe/aoecmd.c
-@@ -361,6 +361,7 @@ ata_rw_frameinit(struct frame *f)
- 	}
+diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
+index 14ec156563209..5cae26917436c 100644
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -148,6 +148,7 @@ struct nfsd_net {
+ 	u32		s2s_cp_cl_id;
+ 	struct idr	s2s_cp_stateids;
+ 	spinlock_t	s2s_cp_lock;
++	atomic_t	pending_async_copies;
  
- 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- }
- 
-@@ -401,6 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
- 	}
- 	return 1;
- }
-@@ -483,10 +486,13 @@ resend(struct aoedev *d, struct frame *f
- 	memcpy(h->dst, t->addr, sizeof h->dst);
- 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
- 
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
- 	skb = skb_clone(skb, GFP_ATOMIC);
--	if (skb == NULL)
-+	if (skb == NULL) {
-+		dev_put(t->ifp->nd);
+ 	/*
+ 	 * Version information
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 60c526adc27c6..5768b2ff1d1d1 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1279,6 +1279,7 @@ static void nfs4_put_copy(struct nfsd4_copy *copy)
+ {
+ 	if (!refcount_dec_and_test(&copy->refcount))
  		return;
-+	}
- 	f->sent = ktime_get();
- 	__skb_queue_head_init(&queue);
- 	__skb_queue_tail(&queue, skb);
-@@ -617,6 +623,8 @@ probe(struct aoetgt *t)
- 		__skb_queue_head_init(&queue);
- 		__skb_queue_tail(&queue, skb);
- 		aoenet_xmit(&queue);
-+	} else {
-+		dev_put(f->t->ifp->nd);
++	atomic_dec(&copy->cp_nn->pending_async_copies);
+ 	kfree(copy->cp_src);
+ 	kfree(copy);
+ }
+@@ -1833,10 +1834,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
+ 		sizeof(struct knfsd_fh));
+ 	if (nfsd4_copy_is_async(copy)) {
+-		status = nfserrno(-ENOMEM);
+ 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
+ 		if (!async_copy)
+ 			goto out_err;
++		async_copy->cp_nn = nn;
++		/* Arbitrary cap on number of pending async copy operations */
++		if (atomic_inc_return(&nn->pending_async_copies) >
++				(int)rqstp->rq_pool->sp_nrthreads) {
++			atomic_dec(&nn->pending_async_copies);
++			goto out_err;
++		}
+ 		INIT_LIST_HEAD(&async_copy->copies);
+ 		refcount_set(&async_copy->refcount, 1);
+ 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+@@ -1876,7 +1883,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
  	}
+ 	if (async_copy)
+ 		cleanup_async_copy(async_copy);
+-	status = nfserrno(-ENOMEM);
++	status = nfserr_jukebox;
+ 	goto out;
  }
  
-@@ -1395,6 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
- 	ah->cmdstat = ATA_CMD_ID_ATA;
- 	ah->lba3 = 0xa0;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index f4eae4b65572a..3837f4e417247 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8575,6 +8575,7 @@ static int nfs4_state_create_net(struct net *net)
+ 	spin_lock_init(&nn->client_lock);
+ 	spin_lock_init(&nn->s2s_cp_lock);
+ 	idr_init(&nn->s2s_cp_stateids);
++	atomic_set(&nn->pending_async_copies, 0);
  
-+	dev_hold(t->ifp->nd);
- 	skb->dev = t->ifp->nd;
+ 	spin_lock_init(&nn->blocked_locks_lock);
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
+diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
+index fbdd42cde1fa5..2a21a7662e030 100644
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -713,6 +713,7 @@ struct nfsd4_copy {
+ 	struct nfsd4_ssc_umount_item *ss_nsui;
+ 	struct nfs_fh		c_fh;
+ 	nfs4_stateid		stateid;
++	struct nfsd_net		*cp_nn;
+ };
  
- 	d->rttavg = RTTAVG_INIT;
-@@ -1404,6 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
- 	skb = skb_clone(skb, GFP_ATOMIC);
- 	if (skb)
- 		f->sent = ktime_get();
-+	else
-+		dev_put(t->ifp->nd);
- 
- 	return skb;
- }
+ static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
+-- 
+2.43.0
+
 
 
 
