@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657B2994ED1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5AD1994C86
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B309BB292DD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58D70283739
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1FF1DF99E;
-	Tue,  8 Oct 2024 13:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AEE1DEFF3;
+	Tue,  8 Oct 2024 12:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqapuDAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPFHpDqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C3C1DF726;
-	Tue,  8 Oct 2024 13:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF231DEFE3;
+	Tue,  8 Oct 2024 12:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393263; cv=none; b=F/RydS/8x8GmUs7LaoJ2wcLaoYOBYwKzmV4bZEHnJuhT7xzVbpbJuX0lqtSFbFS3C/YFu26FnMT13U5qBC2TPCDvsQZmSSjt95vo8pIz6J38K+kSRBzExzBacsw0T1G7bTM+GhVcPosYkDimwBPWgbNX2wgIAl4svPWOPMOAx9A=
+	t=1728392099; cv=none; b=nCX5fqcO1VyJtH3T1Xr8nGC0UhqOH01oFbcIZ+XqNYUHx3IuBW0LGHcofpw5NkDm27lXDMKdvKsLnX6zuutHK53J2yuVjrQh+38ZwZaIeMn0IXkz1lcHVyrZAeH1EKP9j7ypd9Xh8oyGJm5TDiw6lFVJ/NK8XetbXFLI1KKobAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393263; c=relaxed/simple;
-	bh=Y9uzUHEDef8bKPcTNEAT4IUqn48+O0lYHhTVgbPsRpc=;
+	s=arc-20240116; t=1728392099; c=relaxed/simple;
+	bh=IRG3ssFy0TJXhS0ozhXbr17q8H3/FOjITmC6kbSOjTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvp9PHDxLLAKMJON9UhCyjQ0rklky7zDPeyDK9siwKxPgl+hvVt2YISMJ8mICYF6HYePUydPQ8au4KaPpdjWpbHwhGljNGg+vHE30A6ZXWT386XbnmWamGKyijjIQwSQfS9rvkr8aqecTl4td/RHsLIEyHJA2ET4GHb6j0y+9w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqapuDAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5778CC4CEC7;
-	Tue,  8 Oct 2024 13:14:22 +0000 (UTC)
+	 MIME-Version; b=SIB5aZ2XUUriwa0KO1teduDRKwSy4yRmddNpFHuW1zkZzSVJiruNYpLpcVQ8IQoOdJx4FoDPqHCwARXnDkNS4rcziWE3Qojx/NwLvi8BLSK/uBLpGaJVlXkyp9A5LpFP/6eSD7Aq2U/7tfoW6999AnpFTX98MAMVfenPqPEvrQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPFHpDqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8D3C4AF0D;
+	Tue,  8 Oct 2024 12:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393263;
-	bh=Y9uzUHEDef8bKPcTNEAT4IUqn48+O0lYHhTVgbPsRpc=;
+	s=korg; t=1728392099;
+	bh=IRG3ssFy0TJXhS0ozhXbr17q8H3/FOjITmC6kbSOjTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqapuDAvfaKHHQ8CRKw4VcqZz8rlCJp2+qBfP2KnJGLo1R9r/vr5qLH6lG9IbksM5
-	 B3syaCiMO4s74/Oj01BJrfEiFi3J+hAiOu0Qa7DsE8gmJvF7wuWAbQRoJ39xLtfllO
-	 2U2HigXliLtUq5Xs4YmZQ3afaSYr0KW2NZVM7854=
+	b=zPFHpDqK9ojJWrgPg5qqNPaf6C7gAn6aWE5Q838OsWIiWW0/7yUOWRfxUJCB2BooP
+	 RXO7JzUj1iuoM3NbPegG2zrlsafMBP792YKIRDEqDkrAVNu7VhaV7aqNjPuBDBbQAp
+	 DF75fM6T8v2KAjVr24A4qRVlpjxSukj8SCiMGWxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Grant <al.grant@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/386] drivers/perf: arm_spe: Use perf_allow_kernel() for permissions
+Subject: [PATCH 6.11 316/558] spi: spi-cadence: Fix pm_runtime_set_suspended() with runtime pm enabled
 Date: Tue,  8 Oct 2024 14:05:46 +0200
-Message-ID: <20241008115633.424834683@linuxfoundation.org>
+Message-ID: <20241008115714.744541097@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 5e9629d0ae977d6f6916d7e519724804e95f0b07 ]
+[ Upstream commit 67d4a70faa662df07451e83db1546d3ca0695e08 ]
 
-Use perf_allow_kernel() for 'pa_enable' (physical addresses),
-'pct_enable' (physical timestamps) and context IDs. This means that
-perf_event_paranoid is now taken into account and LSM hooks can be used,
-which is more consistent with other perf_event_open calls. For example
-PERF_SAMPLE_PHYS_ADDR uses perf_allow_kernel() rather than just
-perfmon_capable().
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-This also indirectly fixes the following error message which is
-misleading because perf_event_paranoid is not taken into account by
-perfmon_capable():
-
-  $ perf record -e arm_spe/pa_enable/
-
-  Error:
-  Access to performance monitoring and observability operations is
-  limited. Consider adjusting /proc/sys/kernel/perf_event_paranoid
-  setting ...
-
-Suggested-by: Al Grant <al.grant@arm.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20240827145113.1224604-1-james.clark@linaro.org
-Link: https://lore.kernel.org/all/20240807120039.GD37996@noisy.programming.kicks-ass.net/
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240923040015.3009329-3-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_spe_pmu.c | 9 ++++-----
- include/linux/perf_event.h | 8 +-------
- kernel/events/core.c       | 9 +++++++++
- 3 files changed, 14 insertions(+), 12 deletions(-)
+ drivers/spi/spi-cadence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
-index d2b0cbf0e0c41..2bec2e3af0bd6 100644
---- a/drivers/perf/arm_spe_pmu.c
-+++ b/drivers/perf/arm_spe_pmu.c
-@@ -41,7 +41,7 @@
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index e07e081de5ea4..087e748d9cc95 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -678,8 +678,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
  
- /*
-  * Cache if the event is allowed to trace Context information.
-- * This allows us to perform the check, i.e, perfmon_capable(),
-+ * This allows us to perform the check, i.e, perf_allow_kernel(),
-  * in the context of the event owner, once, during the event_init().
-  */
- #define SPE_PMU_HW_FLAGS_CX			0x00001
-@@ -50,7 +50,7 @@ static_assert((PERF_EVENT_FLAG_ARCH & SPE_PMU_HW_FLAGS_CX) == SPE_PMU_HW_FLAGS_C
+ clk_dis_all:
+ 	if (!spi_controller_is_target(ctlr)) {
+-		pm_runtime_set_suspended(&pdev->dev);
+ 		pm_runtime_disable(&pdev->dev);
++		pm_runtime_set_suspended(&pdev->dev);
+ 	}
+ remove_ctlr:
+ 	spi_controller_put(ctlr);
+@@ -701,8 +701,8 @@ static void cdns_spi_remove(struct platform_device *pdev)
  
- static void set_spe_event_has_cx(struct perf_event *event)
- {
--	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && perfmon_capable())
-+	if (IS_ENABLED(CONFIG_PID_IN_CONTEXTIDR) && !perf_allow_kernel(&event->attr))
- 		event->hw.flags |= SPE_PMU_HW_FLAGS_CX;
+ 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
+ 
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 
+ 	spi_unregister_controller(ctlr);
  }
- 
-@@ -767,9 +767,8 @@ static int arm_spe_pmu_event_init(struct perf_event *event)
- 
- 	set_spe_event_has_cx(event);
- 	reg = arm_spe_event_to_pmscr(event);
--	if (!perfmon_capable() &&
--	    (reg & (PMSCR_EL1_PA | PMSCR_EL1_PCT)))
--		return -EACCES;
-+	if (reg & (PMSCR_EL1_PA | PMSCR_EL1_PCT))
-+		return perf_allow_kernel(&event->attr);
- 
- 	return 0;
- }
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 95d4118ee4a91..7a5563ffe61b5 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1599,13 +1599,7 @@ static inline int perf_is_paranoid(void)
- 	return sysctl_perf_event_paranoid > -1;
- }
- 
--static inline int perf_allow_kernel(struct perf_event_attr *attr)
--{
--	if (sysctl_perf_event_paranoid > 1 && !perfmon_capable())
--		return -EACCES;
--
--	return security_perf_event_open(attr, PERF_SECURITY_KERNEL);
--}
-+int perf_allow_kernel(struct perf_event_attr *attr);
- 
- static inline int perf_allow_cpu(struct perf_event_attr *attr)
- {
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 4d0abdace4e7c..d40809bdf4b30 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -13330,6 +13330,15 @@ const struct perf_event_attr *perf_event_attrs(struct perf_event *event)
- 	return &event->attr;
- }
- 
-+int perf_allow_kernel(struct perf_event_attr *attr)
-+{
-+	if (sysctl_perf_event_paranoid > 1 && !perfmon_capable())
-+		return -EACCES;
-+
-+	return security_perf_event_open(attr, PERF_SECURITY_KERNEL);
-+}
-+EXPORT_SYMBOL_GPL(perf_allow_kernel);
-+
- /*
-  * Inherit an event from parent task to child task.
-  *
 -- 
 2.43.0
 
