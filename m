@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB16A994CA5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360EE994A20
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 859BC1F21C3B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9587FB2166B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A3F1DF266;
-	Tue,  8 Oct 2024 12:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A72B1DE4FA;
+	Tue,  8 Oct 2024 12:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zc6Q9lcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TY+zwMHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FD31DF265;
-	Tue,  8 Oct 2024 12:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0921DE3AE;
+	Tue,  8 Oct 2024 12:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392150; cv=none; b=SFcNbbBHT0ehE9zUoTlfz2xN4w2/t+xqXgOIqGu4QR2Ov1WTRQJa+TKIIqqF4tDlm9Vf6tyNB337JFUknjb540FOGQ8upwbWnndD1zBBnEuOUqfH+eUYj7KftEIVqp7QzZcgPijECp2u9pZjZ9JnmaqiNBH5lB++huFvB2YUfXI=
+	t=1728390581; cv=none; b=l7DUR2GHirBUiGhUVxlOAerT2Cuo69R7cq7w6e6IDZrqays8SGuivnVGRsIGJYlT4O4N/EOPZtSpLhrryVxcXO36OgMShFSL+eINCinUh9TOTQkQmyDJGzu/7RCTROnWxew9us02yeRbLKIpUlelOeWcvN5/3JhKgWNk1ZL6Gcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392150; c=relaxed/simple;
-	bh=bfIQuPq8i/K0D5LWCXbb8vZXVbv0W3nqz7CobZ4PVzA=;
+	s=arc-20240116; t=1728390581; c=relaxed/simple;
+	bh=XGh4kDSfvedlWOLqo8PVtiXhAIXQ6fU5tMLKMvZXQKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxpW+vQrsLGKQ8FDejFyC4D9T2bNbEk8gCcd01tL47YNvYZhZk5Ei845sPiAwNAOyeFWrl/s6ds2FXMDdNcjjAY22y/6WyKdQM7++Bxio8SZNdUhMet2BJ6fZY8S+LMYyoB4gj52zbhUWA0EjxDoh6ELnBs+69aozXUUVqpgEt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zc6Q9lcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE1CC4CEC7;
-	Tue,  8 Oct 2024 12:55:49 +0000 (UTC)
+	 MIME-Version; b=I+VNYa0K/jj/MuCoHghiKBeIgQsswsfcMC8p+f2WRfibVscv3U6Dsx5kFr53WeW9CX7k01fTNLFY9bx+YouqJz3GtgNnOyolICCn5vWessv5ft5TWzD24XCPXY7z6JzVaLZ5txqvvsBMz1XDDJxF/OUkBmmtwonc/tvYUYfRiwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TY+zwMHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C5CC4CECD;
+	Tue,  8 Oct 2024 12:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392149;
-	bh=bfIQuPq8i/K0D5LWCXbb8vZXVbv0W3nqz7CobZ4PVzA=;
+	s=korg; t=1728390581;
+	bh=XGh4kDSfvedlWOLqo8PVtiXhAIXQ6fU5tMLKMvZXQKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zc6Q9lcsGfv6SKzkt7gJlsZFFHfJAK2UNwk5FqJxSegndfCoG+5WhqU0OAZsz2fDv
-	 55NHEY6BqFVTpSxmEaQlsGR5tzNYg95MJ7oSE1UzaqE63OjJLyW1092FKK9o77/NLS
-	 3ksz3nm32j3PzOEdnosaYOFSdCUq5d14UuXgHcXE=
+	b=TY+zwMHN0ULwfbS4XBuQcQuRrh7WAx6zHfS57R8M1oThezsoHcuDTAlJpNirxWoTC
+	 AoumbGVHMaQFTnDnnW957REgUmeyCj9FW4sQTc4yfOIZBCLAebUBVaCtovtyDx/muN
+	 y61t4A/hJJhXOzDshRxvEXCXxkSMCnZ2b4px1ttA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 330/558] selftests: vDSO: fix vdso_config for powerpc
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.10 297/482] i2c: xiic: Fix pm_runtime_set_suspended() with runtime pm enabled
 Date: Tue,  8 Oct 2024 14:06:00 +0200
-Message-ID: <20241008115715.291448008@linuxfoundation.org>
+Message-ID: <20241008115659.970174825@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 7d297c419b08eafa69ce27243ee9bbecab4fcaa4 ]
+commit 0c8d604dea437b69a861479b413d629bc9b3da70 upstream.
 
-Running vdso_test_correctness on powerpc64 gives the following warning:
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-  ~ # ./vdso_test_correctness
-  Warning: failed to find clock_gettime64 in vDSO
-
-This is because vdso_test_correctness was built with VDSO_32BIT defined.
-
-__powerpc__ macro is defined on both powerpc32 and powerpc64 so
-__powerpc64__ needs to be checked first in vdso_config.h
-
-Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 36ecbcab84d0 ("i2c: xiic: Implement power management")
+Cc: <stable@vger.kernel.org> # v4.6+
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vDSO/vdso_config.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-xiic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_config.h b/tools/testing/selftests/vDSO/vdso_config.h
-index 7b543e7f04d7b..00bfed6e4922e 100644
---- a/tools/testing/selftests/vDSO/vdso_config.h
-+++ b/tools/testing/selftests/vDSO/vdso_config.h
-@@ -18,13 +18,13 @@
- #elif defined(__aarch64__)
- #define VDSO_VERSION		3
- #define VDSO_NAMES		0
--#elif defined(__powerpc__)
-+#elif defined(__powerpc64__)
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
--#define VDSO_32BIT		1
--#elif defined(__powerpc64__)
-+#elif defined(__powerpc__)
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
-+#define VDSO_32BIT		1
- #elif defined (__s390__)
- #define VDSO_VERSION		2
- #define VDSO_NAMES		0
--- 
-2.43.0
-
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -1337,8 +1337,8 @@ static int xiic_i2c_probe(struct platfor
+ 	return 0;
+ 
+ err_pm_disable:
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 
+ 	return ret;
+ }
 
 
 
