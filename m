@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E584994F0B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3177994D0B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98D10B2BA71
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5C0D1C25212
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2187E1DF724;
-	Tue,  8 Oct 2024 13:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B204A1DED48;
+	Tue,  8 Oct 2024 13:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okC2QwcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="np7bluHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46BF1DE8BE;
-	Tue,  8 Oct 2024 13:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620BA1DE8B1;
+	Tue,  8 Oct 2024 13:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393682; cv=none; b=kr7m2ACiLkgqLwc2aIRKOKcTfO2nCCHOEFZWJZFC9rugKaw1Zz1sM/Qta/RvIhCUTdN+uMVorhqWoyH/lGmv/LQHm7iWlkKqQX9SRjMpZkorIYazw9Fegkj+RE50XsNrS1/bb4aNJ90w2kkwkAyITBqhkpdZzj1xQP2YVrvSl/E=
+	t=1728392442; cv=none; b=L7xd5AdCRdUl8K9mgCu+RS3o4I1s4ldOJ/oXTIFXPtOW0gSKNSQqrNe53TbdCodtcecM2aBBCkZvd3jG9HWQ5uJotDopDAmtiVVB70k39sk007+VPmOvK+DBKvS9cckMagKuqJLGRo+tttLXsjE63rt9cISiDOX7Y9q0WyJuczc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393682; c=relaxed/simple;
-	bh=HuSd7IoFmI1Oz0ItBCBNKYaAh6ngAGBb/ccDKVGNJWA=;
+	s=arc-20240116; t=1728392442; c=relaxed/simple;
+	bh=eQUmWTbqT9j/R6e9j263lP8hCHnufOAY3FO7qMrXwlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6QTOH4zNwiFIM5R/euLkrT7th+Zth2vwfqLVRWvXBmBFBqqjfn+KvpoPOtfVe+Erz3wZCrZrDWdyakYO7eQOR64N02EBp1iZunue/eVtKJaS2jbHbAowaFCSnOFC7Mi624RRfKqgQb4zXe5FEBPOwR85bEbLD02QR+Ov4qmuf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okC2QwcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F79C4CECC;
-	Tue,  8 Oct 2024 13:21:21 +0000 (UTC)
+	 MIME-Version; b=NINpkZ5NXbOaadLDKpiLTs7CaB4f+9nDhyy7A1Z7jqIudAoZlQLpiDXr/7pw1TCi9Qltw2JMBdPjOhLXtAzIX16M2Qz+1SR+aaluWsTblmbuBV9Ol4DzyvHJRA6ahIfAI+qCfzkSanwdOTHekocE+xg1Fcg1joldFHS1RyexcFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=np7bluHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3435C4CEC7;
+	Tue,  8 Oct 2024 13:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393682;
-	bh=HuSd7IoFmI1Oz0ItBCBNKYaAh6ngAGBb/ccDKVGNJWA=;
+	s=korg; t=1728392442;
+	bh=eQUmWTbqT9j/R6e9j263lP8hCHnufOAY3FO7qMrXwlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okC2QwcW9LscD7vQ5TtHqYJ+h41jq3GOkhN3SsK/TdviPMiw4LLGPvcIzfWcYbRhu
-	 2SDA+KQauHlrWTMBA5BR1UQv6Q96im04xe1MiuVsFfTsRzIyEnfmXQv+Iyj/ToPZMo
-	 O/zaMy4G38J7iYRRbhS6q2nk8agHwxzHm6mJgwak=
+	b=np7bluHHnCLsTtofzqhUsaZ38ysa39thwIGEKV+hdK6q2rCkhZjCf9f9QBjY0p3rw
+	 X2b2Dk7BuvmZ/r/aOjjIRwLNenb/uPTFXAYy1cFImxi49v3p/agSrV42LGAXdwtOKb
+	 pQU1hTzSwVczqfME7gbwyMlnTWtShCfSiUxPz17I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alexander F. Lent" <lx@xanderlent.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/386] accel/ivpu: Add missing MODULE_FIRMWARE metadata
-Date: Tue,  8 Oct 2024 14:07:18 +0200
-Message-ID: <20241008115637.002418828@linuxfoundation.org>
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.11 409/558] jbd2: stop waiting for space when jbd2_cleanup_journal_tail() returns error
+Date: Tue,  8 Oct 2024 14:07:19 +0200
+Message-ID: <20241008115718.369480175@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander F. Lent <lx@xanderlent.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 58b5618ba80a5e5a8d531a70eae12070e5bd713f ]
+commit f5cacdc6f2bb2a9bf214469dd7112b43dd2dd68a upstream.
 
-Modules that load firmware from various paths at runtime must declare
-those paths at compile time, via the MODULE_FIRMWARE macro, so that the
-firmware paths are included in the module's metadata.
+In __jbd2_log_wait_for_space(), we might call jbd2_cleanup_journal_tail()
+to recover some journal space. But if an error occurs while executing
+jbd2_cleanup_journal_tail() (e.g., an EIO), we don't stop waiting for free
+space right away, we try other branches, and if j_committing_transaction
+is NULL (i.e., the tid is 0), we will get the following complain:
 
-The accel/ivpu driver loads firmware but lacks this metadata,
-preventing dracut from correctly locating firmware files. Fix it.
+============================================
+JBD2: I/O error when updating journal superblock for sdd-8.
+__jbd2_log_wait_for_space: needed 256 blocks and only had 217 space available
+__jbd2_log_wait_for_space: no way to get more journal space in sdd-8
+------------[ cut here ]------------
+WARNING: CPU: 2 PID: 139804 at fs/jbd2/checkpoint.c:109 __jbd2_log_wait_for_space+0x251/0x2e0
+Modules linked in:
+CPU: 2 PID: 139804 Comm: kworker/u8:3 Not tainted 6.6.0+ #1
+RIP: 0010:__jbd2_log_wait_for_space+0x251/0x2e0
+Call Trace:
+ <TASK>
+ add_transaction_credits+0x5d1/0x5e0
+ start_this_handle+0x1ef/0x6a0
+ jbd2__journal_start+0x18b/0x340
+ ext4_dirty_inode+0x5d/0xb0
+ __mark_inode_dirty+0xe4/0x5d0
+ generic_update_time+0x60/0x70
+[...]
+============================================
 
-Fixes: 9ab43e95f922 ("accel/ivpu: Switch to generation based FW names")
-Fixes: 02d5b0aacd05 ("accel/ivpu: Implement firmware parsing and booting")
-Signed-off-by: Alexander F. Lent <lx@xanderlent.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709-fix-ivpu-firmware-metadata-v3-1-55f70bba055b@xanderlent.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So only if jbd2_cleanup_journal_tail() returns 1, i.e., there is nothing to
+clean up at the moment, continue to try to reclaim free space in other ways.
+
+Note that this fix relies on commit 6f6a6fda2945 ("jbd2: fix ocfs2 corrupt
+when updating journal superblock fails") to make jbd2_cleanup_journal_tail
+return the correct error code.
+
+Fixes: 8c3f25d8950c ("jbd2: don't give up looking for space so easily in __jbd2_log_wait_for_space")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240718115336.2554501-1-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_fw.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/jbd2/checkpoint.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
-index a277bbae78fc4..3b35d262ddd43 100644
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -55,6 +55,10 @@ static struct {
- 	{ IVPU_HW_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
- };
- 
-+/* Production fw_names from the table above */
-+MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
-+MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
-+
- static int ivpu_fw_request(struct ivpu_device *vdev)
- {
- 	int ret = -ENOENT;
--- 
-2.43.0
-
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -89,8 +89,11 @@ __releases(&journal->j_state_lock)
+ 			write_unlock(&journal->j_state_lock);
+ 			if (chkpt) {
+ 				jbd2_log_do_checkpoint(journal);
+-			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
+-				/* We were able to recover space; yay! */
++			} else if (jbd2_cleanup_journal_tail(journal) <= 0) {
++				/*
++				 * We were able to recover space or the
++				 * journal was aborted due to an error.
++				 */
+ 				;
+ 			} else if (has_transaction) {
+ 				/*
 
 
 
