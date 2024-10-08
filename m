@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-81998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB73994A8D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71948994D24
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D3581C2482D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3EE11C2553C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A67D1DED7A;
-	Tue,  8 Oct 2024 12:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6411DED4B;
+	Tue,  8 Oct 2024 13:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+OD2fLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXp/tzcX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3818F1D4141;
-	Tue,  8 Oct 2024 12:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA97F1DFD1;
+	Tue,  8 Oct 2024 13:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390834; cv=none; b=SlhJKrqsWJgsnfF199yJxPWSQIGubgeB2480QbW9Wyt0cF0ku2P8EXfnFY3JQocyIJbh/L19eC6ybI81z8yORr1QEgmI2uMMX6gBaju63SN4P3jzJP2VOrVtsQDFkOZXwxkeaZ3FLi90AAC1orgQ3pPJYLmRuM7jL0p3GaacRnQ=
+	t=1728392530; cv=none; b=UnL5rmCa6au5EWCRefA/1jyglpRJv7Q9OSZ3z4n05SRsRz1n+ZTntPr/nZJzH7zYN8ltuGfHNtOXnXJePSFWX/lNzYfZ0rcfuaNlvOhcteRCcKCpQqa+t/djkIOpHRWLi3nX/E1wzLNlS5jYS8RVoT99Aj8TJoiP0r74t30RrFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390834; c=relaxed/simple;
-	bh=E9EARz8SzA+k4cIhPiZApRVt5kdqp5yD8jNP+fRddFM=;
+	s=arc-20240116; t=1728392530; c=relaxed/simple;
+	bh=hJpFPurEWlACbmqLAtC+R116rZtkaPOjw/YjrQW7CAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZs0+8wC7GRZWspvbjZmGRNbzihtwAb3xGQXTIpNJf4WTNeHE8AIYFb5F7GkIKFNzPeyl5mcKGIs9RTVRVPXSA+PFg0rfyO2+xnqTX7zrKaQ/zqnGENeM+wjSKBb1PUx9+2U/9zF+DV1BoCpWaD/3SLbW/Q1n8KRyos3X+baWx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+OD2fLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7971C4CEC7;
-	Tue,  8 Oct 2024 12:33:53 +0000 (UTC)
+	 MIME-Version; b=TnuP0m+hf0qaM989B3sss1StiY+SMWNWLIYdHEoic4AkrwyUpOO2xN62QU6hQCmTYPU0tcSPrJ51HxFxLp3qiOBg29Q3W/8rAeaf/pJuiorA2j6IfyQeKu3omwgzJTZj87Ccbg/6rACYDiHRMlv5Ym4+ewt03aUOlC3KDO1U+ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXp/tzcX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1038BC4CEC7;
+	Tue,  8 Oct 2024 13:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390834;
-	bh=E9EARz8SzA+k4cIhPiZApRVt5kdqp5yD8jNP+fRddFM=;
+	s=korg; t=1728392530;
+	bh=hJpFPurEWlACbmqLAtC+R116rZtkaPOjw/YjrQW7CAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+OD2fLCtOyYpp4KfQEc77Qf3d9QZA3zB/z8UNj3AsRUjUkoGimXHiObLqgIMNceH
-	 fo9Ioei9xCDGmCZMxfYwq4vaF13CaymJSosMb9lsdXW1nCcy7Z8kkgqkTntIFkzdBr
-	 EqPa9Izt4O4OSUoxzP4byDCMqD4jiSFATHpHpI/o=
+	b=sXp/tzcX0+MF4oMfp0g2yxxowb5qsL7hJ4QHVifPtLYHP8Ue2VeNlhnsGN1lwZKrf
+	 ApMLQAkPGOe5iQRlcK+ufIUZVJOYgRdDvkdF2Kl2MrBEAZsWolV0xaP2vj8jWsqRQx
+	 B6izjTnhzw/Eyr9MtgUmAKi487REQezs2+GDNCu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.10 408/482] rtc: at91sam9: fix OF node leak in probe() error path
+	Pu Lehui <pulehui@huawei.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.11 441/558] drivers/perf: riscv: Align errno for unsupported perf event
 Date: Tue,  8 Oct 2024 14:07:51 +0200
-Message-ID: <20241008115704.465340202@linuxfoundation.org>
+Message-ID: <20241008115719.621779481@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Pu Lehui <pulehui@huawei.com>
 
-commit 73580e2ee6adfb40276bd420da3bb1abae204e10 upstream.
+commit c625154993d0d24a962b1830cd5ed92adda2cf86 upstream.
 
-Driver is leaking an OF node reference obtained from
-of_parse_phandle_with_fixed_args().
+RISC-V perf driver does not yet support PERF_TYPE_BREAKPOINT. It would
+be more appropriate to return -EOPNOTSUPP or -ENOENT for this type in
+pmu_sbi_event_map. Considering that other implementations return -ENOENT
+for unsupported perf types, let's synchronize this behavior. Due to this
+reason, a riscv bpf testcases perf_skip fail. Meanwhile, align that
+behavior to the rest of proper place.
 
-Fixes: 43e112bb3dea ("rtc: at91sam9: make use of syscon/regmap to access GPBR registers")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Fixes: 9b3e150e310e ("RISC-V: Add a simple platform driver for RISC-V legacy perf")
+Fixes: 16d3b1af0944 ("perf: RISC-V: Check standard event availability")
+Fixes: e9991434596f ("RISC-V: Add perf platform driver based on SBI PMU extension")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240825183103.102904-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20240831071520.1630360-1-pulehui@huaweicloud.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-at91sam9.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/perf/riscv_pmu_legacy.c |    4 ++--
+ drivers/perf/riscv_pmu_sbi.c    |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/rtc/rtc-at91sam9.c
-+++ b/drivers/rtc/rtc-at91sam9.c
-@@ -368,6 +368,7 @@ static int at91_rtc_probe(struct platfor
- 		return ret;
+--- a/drivers/perf/riscv_pmu_legacy.c
++++ b/drivers/perf/riscv_pmu_legacy.c
+@@ -22,13 +22,13 @@ static int pmu_legacy_ctr_get_idx(struct
+ 	struct perf_event_attr *attr = &event->attr;
  
- 	rtc->gpbr = syscon_node_to_regmap(args.np);
-+	of_node_put(args.np);
- 	rtc->gpbr_offset = args.args[0];
- 	if (IS_ERR(rtc->gpbr)) {
- 		dev_err(&pdev->dev, "failed to retrieve gpbr regmap, aborting.\n");
+ 	if (event->attr.type != PERF_TYPE_HARDWARE)
+-		return -EOPNOTSUPP;
++		return -ENOENT;
+ 	if (attr->config == PERF_COUNT_HW_CPU_CYCLES)
+ 		return RISCV_PMU_LEGACY_CYCLE;
+ 	else if (attr->config == PERF_COUNT_HW_INSTRUCTIONS)
+ 		return RISCV_PMU_LEGACY_INSTRET;
+ 	else
+-		return -EOPNOTSUPP;
++		return -ENOENT;
+ }
+ 
+ /* For legacy config & counter index are same */
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -309,7 +309,7 @@ static void pmu_sbi_check_event(struct s
+ 			  ret.value, 0x1, SBI_PMU_STOP_FLAG_RESET, 0, 0, 0);
+ 	} else if (ret.error == SBI_ERR_NOT_SUPPORTED) {
+ 		/* This event cannot be monitored by any counter */
+-		edata->event_idx = -EINVAL;
++		edata->event_idx = -ENOENT;
+ 	}
+ }
+ 
+@@ -543,7 +543,7 @@ static int pmu_sbi_event_map(struct perf
+ 		}
+ 		break;
+ 	default:
+-		ret = -EINVAL;
++		ret = -ENOENT;
+ 		break;
+ 	}
+ 
 
 
 
