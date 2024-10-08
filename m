@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-82322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83D5994C2A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E9B99497D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DD51C24F59
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 370E11C23F6D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E994A1DE3C1;
-	Tue,  8 Oct 2024 12:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DF01DF72F;
+	Tue,  8 Oct 2024 12:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAJUzI8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2Bw0eR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76F0183CB8;
-	Tue,  8 Oct 2024 12:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578871DF728;
+	Tue,  8 Oct 2024 12:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391874; cv=none; b=hYlcp7Ir4FOgLar/hxo18h4QDkvVnpEvseTXVtvN/KqKDqIFrvOChtIAMmN22jQEg1MukC3vD0HgBx5yEtgtQBmVJJQKaTeyzf76qBJQvx2fIzPZE+GsuKrdh1o5tm1nlrzaJZVbqQePZsZDcXP054Qdcl2iMlh+Gc9wLy6jATU=
+	t=1728390188; cv=none; b=TN0cygko36vJ5Pgc2FN6iBxfnYDqH+G3zSDOqGre8JLT698DLeAbt8R7LHF1uvw53Cjc+M4xOc1kRCvZldXWsLUtKRNCbEVosqVb/AC45Zgrc61WjbtitWySnCU7LcMG6ZXDbhKJSXLjsvkkJi5iTUI6xzs29qsDO400jwO5utA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391874; c=relaxed/simple;
-	bh=r2Ms1JhGRvS/VzTHonLsJkZL7xi7zd5tojEi7OBbC20=;
+	s=arc-20240116; t=1728390188; c=relaxed/simple;
+	bh=L9/PWHvfi5/2EEBdew0YGSmuZvkakF1RVBz3mAXxcCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6o6VPeXwNgYckmHNiwI35E4v7wKKqYICrVGK0594pJrJQTuFrY7MQZWjLvPHZui3vAPswFhz4P3coMEc2+ovKUHsKIVdwyPm9GKe2AoC76RkSCrP1ZViL1ltv91qJTyzAcpPIT8dJro0FJ03XEIQtk4wo9L2KY1PiCqFkkHypE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAJUzI8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF56C4CEC7;
-	Tue,  8 Oct 2024 12:51:13 +0000 (UTC)
+	 MIME-Version; b=PlW2EchNOkw37eJS1Kd910KlfFUW8jiomYajcPM+9RWCnIkWBxa7zkwzby7J/nnixvnJNajnJ9WdQZdcDrM+p68tOmgAGEj9BJAtE6jYV9GQZvHKNG+Vupe7r4E5YECtbJzd3mG8Pzd7bRN3A14p/lKDRiGbMr4rBo3EJGsBS60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2Bw0eR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B5BC4CEC7;
+	Tue,  8 Oct 2024 12:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391874;
-	bh=r2Ms1JhGRvS/VzTHonLsJkZL7xi7zd5tojEi7OBbC20=;
+	s=korg; t=1728390188;
+	bh=L9/PWHvfi5/2EEBdew0YGSmuZvkakF1RVBz3mAXxcCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAJUzI8GL1mhaaf8KW+XrgCSqpEzZpWSkMcxl1mk6JlKVTUpjHfooWElvgenKuVuG
-	 AVkTIXyfcermOq4kZJmdo2XqkNNzCXmhmU9IxsQL98vZDvQqlgCa22gVbYvOSUANGU
-	 nkoaK8kFv2f+m5x4I47owSBd43AhnY+k2Dd3Fc0s=
+	b=W2Bw0eR5mbqbFjJD0LIVsF8sT+9E41T0fMQ77aiLW41GOVIov/0CXHZ4+3JyVnn5r
+	 CYLULferWThFP0SjRz6wromX1LUhvD6d8lU0upe2Qs9UKX8yEzOlHPqaIGeAQcvkyQ
+	 qhopc/3zXba6a4j3zFTihUc6RV47ymWu4VoSGpHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 249/558] drm/xe: Add timeout to preempt fences
+Subject: [PATCH 6.10 216/482] drm/amd/display: Fix index out of bounds in DCN30 color transformation
 Date: Tue,  8 Oct 2024 14:04:39 +0200
-Message-ID: <20241008115712.136878374@linuxfoundation.org>
+Message-ID: <20241008115656.811495168@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,209 +69,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 627c961d672d3304564455ba471f5e4405170eec ]
+[ Upstream commit d81873f9e715b72d4f8d391c8eb243946f784dfc ]
 
-To adhere to dma fencing rules that fences must signal within a
-reasonable amount of time, add a 5 second timeout to preempt fences. If
-this timeout occurs, kill the associated VM as this fatal to the VM.
+This commit addresses a potential index out of bounds issue in the
+`cm3_helper_translate_curve_to_hw_format` function in the DCN30 color
+management module. The issue could occur when the index 'i' exceeds the
+number of transfer function points (TRANSFER_FUNC_POINTS).
 
-v2:
- - Add comment for smp_wmb (Checkpatch)
- - Fix kernel doc typo (Inspection)
- - Add comment for killed check (Niranjana)
-v3:
- - Drop smp_wmb (Matthew Auld)
- - Don't take vm->lock in preempt fence worker (Matthew Auld)
- - Drop RB given changes to patch
-v4:
- - Add WRITE/READ_ONCE (Niranjana)
- - Don't export xe_vm_kill (Niranjana)
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, the function returns
+false to indicate an error.
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Tested-by: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240626004137.4060806-1-matthew.brost@intel.com
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:180 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:181 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:182 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue_types.h |  6 ++--
- drivers/gpu/drm/xe/xe_execlist.c         |  3 +-
- drivers/gpu/drm/xe/xe_guc_submit.c       | 39 ++++++++++++++++++++----
- drivers/gpu/drm/xe/xe_preempt_fence.c    | 12 ++++++--
- drivers/gpu/drm/xe/xe_vm.c               | 12 +++++++-
- 5 files changed, 59 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-index f6ee0ae80fd63..fc2a1a20b7e4b 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-@@ -169,9 +169,11 @@ struct xe_exec_queue_ops {
- 	int (*suspend)(struct xe_exec_queue *q);
- 	/**
- 	 * @suspend_wait: Wait for an exec queue to suspend executing, should be
--	 * call after suspend.
-+	 * call after suspend. In dma-fencing path thus must return within a
-+	 * reasonable amount of time. -ETIME return shall indicate an error
-+	 * waiting for suspend resulting in associated VM getting killed.
- 	 */
--	void (*suspend_wait)(struct xe_exec_queue *q);
-+	int (*suspend_wait)(struct xe_exec_queue *q);
- 	/**
- 	 * @resume: Resume exec queue execution, exec queue must be in a suspended
- 	 * state and dma fence returned from most recent suspend call must be
-diff --git a/drivers/gpu/drm/xe/xe_execlist.c b/drivers/gpu/drm/xe/xe_execlist.c
-index db906117db6d6..7502e3486eafa 100644
---- a/drivers/gpu/drm/xe/xe_execlist.c
-+++ b/drivers/gpu/drm/xe/xe_execlist.c
-@@ -422,10 +422,11 @@ static int execlist_exec_queue_suspend(struct xe_exec_queue *q)
- 	return 0;
- }
- 
--static void execlist_exec_queue_suspend_wait(struct xe_exec_queue *q)
-+static int execlist_exec_queue_suspend_wait(struct xe_exec_queue *q)
- 
- {
- 	/* NIY */
-+	return 0;
- }
- 
- static void execlist_exec_queue_resume(struct xe_exec_queue *q)
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 64b3a7848f4ab..fd4ac3899edd2 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1318,6 +1318,15 @@ static void __guc_exec_queue_process_msg_set_sched_props(struct xe_sched_msg *ms
- 	kfree(msg);
- }
- 
-+static void __suspend_fence_signal(struct xe_exec_queue *q)
-+{
-+	if (!q->guc->suspend_pending)
-+		return;
-+
-+	WRITE_ONCE(q->guc->suspend_pending, false);
-+	wake_up(&q->guc->suspend_wait);
-+}
-+
- static void suspend_fence_signal(struct xe_exec_queue *q)
- {
- 	struct xe_guc *guc = exec_queue_to_guc(q);
-@@ -1327,9 +1336,7 @@ static void suspend_fence_signal(struct xe_exec_queue *q)
- 		  guc_read_stopped(guc));
- 	xe_assert(xe, q->guc->suspend_pending);
- 
--	q->guc->suspend_pending = false;
--	smp_wmb();
--	wake_up(&q->guc->suspend_wait);
-+	__suspend_fence_signal(q);
- }
- 
- static void __guc_exec_queue_process_msg_suspend(struct xe_sched_msg *msg)
-@@ -1486,6 +1493,7 @@ static void guc_exec_queue_kill(struct xe_exec_queue *q)
- {
- 	trace_xe_exec_queue_kill(q);
- 	set_exec_queue_killed(q);
-+	__suspend_fence_signal(q);
- 	xe_guc_exec_queue_trigger_cleanup(q);
- }
- 
-@@ -1584,12 +1592,31 @@ static int guc_exec_queue_suspend(struct xe_exec_queue *q)
- 	return 0;
- }
- 
--static void guc_exec_queue_suspend_wait(struct xe_exec_queue *q)
-+static int guc_exec_queue_suspend_wait(struct xe_exec_queue *q)
- {
- 	struct xe_guc *guc = exec_queue_to_guc(q);
-+	int ret;
-+
-+	/*
-+	 * Likely don't need to check exec_queue_killed() as we clear
-+	 * suspend_pending upon kill but to be paranoid but races in which
-+	 * suspend_pending is set after kill also check kill here.
-+	 */
-+	ret = wait_event_timeout(q->guc->suspend_wait,
-+				 !READ_ONCE(q->guc->suspend_pending) ||
-+				 exec_queue_killed(q) ||
-+				 guc_read_stopped(guc),
-+				 HZ * 5);
- 
--	wait_event(q->guc->suspend_wait, !q->guc->suspend_pending ||
--		   guc_read_stopped(guc));
-+	if (!ret) {
-+		xe_gt_warn(guc_to_gt(guc),
-+			   "Suspend fence, guc_id=%d, failed to respond",
-+			   q->guc->id);
-+		/* XXX: Trigger GT reset? */
-+		return -ETIME;
-+	}
-+
-+	return 0;
- }
- 
- static void guc_exec_queue_resume(struct xe_exec_queue *q)
-diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.c b/drivers/gpu/drm/xe/xe_preempt_fence.c
-index c453f45328b1c..83fbeea5aa201 100644
---- a/drivers/gpu/drm/xe/xe_preempt_fence.c
-+++ b/drivers/gpu/drm/xe/xe_preempt_fence.c
-@@ -17,10 +17,16 @@ static void preempt_fence_work_func(struct work_struct *w)
- 		container_of(w, typeof(*pfence), preempt_work);
- 	struct xe_exec_queue *q = pfence->q;
- 
--	if (pfence->error)
-+	if (pfence->error) {
- 		dma_fence_set_error(&pfence->base, pfence->error);
--	else
--		q->ops->suspend_wait(q);
-+	} else if (!q->ops->reset_status(q)) {
-+		int err = q->ops->suspend_wait(q);
-+
-+		if (err)
-+			dma_fence_set_error(&pfence->base, err);
-+	} else {
-+		dma_fence_set_error(&pfence->base, -ENOENT);
-+	}
- 
- 	dma_fence_signal(&pfence->base);
- 	/*
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index b49bee0dfac5d..743c8d79d79d2 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -133,8 +133,10 @@ static int wait_for_existing_preempt_fences(struct xe_vm *vm)
- 		if (q->lr.pfence) {
- 			long timeout = dma_fence_wait(q->lr.pfence, false);
- 
--			if (timeout < 0)
-+			/* Only -ETIME on fence indicates VM needs to be killed */
-+			if (timeout < 0 || q->lr.pfence->error == -ETIME)
- 				return -ETIME;
-+
- 			dma_fence_put(q->lr.pfence);
- 			q->lr.pfence = NULL;
- 		}
-@@ -311,6 +313,14 @@ int __xe_vm_userptr_needs_repin(struct xe_vm *vm)
- 
- #define XE_VM_REBIND_RETRY_TIMEOUT_MS 1000
- 
-+/*
-+ * xe_vm_kill() - VM Kill
-+ * @vm: The VM.
-+ * @unlocked: Flag indicates the VM's dma-resv is not held
-+ *
-+ * Kill the VM by setting banned flag indicated VM is no longer available for
-+ * use. If in preempt fence mode, also kill all exec queue attached to the VM.
-+ */
- static void xe_vm_kill(struct xe_vm *vm, bool unlocked)
- {
- 	struct xe_exec_queue *q;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+index edc77615d0973..0433f6b5dac78 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+@@ -177,6 +177,8 @@ bool cm3_helper_translate_curve_to_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS)
++				return false;
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
