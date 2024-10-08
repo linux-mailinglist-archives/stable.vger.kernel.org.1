@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEB4994A48
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB97994CD5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31D1B28948B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 111602865B0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B15A1DED48;
-	Tue,  8 Oct 2024 12:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A155D1DFD99;
+	Tue,  8 Oct 2024 12:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQ+em1bH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmDMzDnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B931DE8A0;
-	Tue,  8 Oct 2024 12:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D55F1DF75D;
+	Tue,  8 Oct 2024 12:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390691; cv=none; b=U/wFBNSBfTE0rbdQJqrxHVB7/Nq/Oy5cRCZesQt7B/7ZSjx0pxaXKE+ibN6mU7+RFD0uEIUGkkTupxFMGpdSryrtJb6NIUuNhyc7hUlyyicEGo9AGUOpX0Nm/9vqiJkTwDEp/cyj1Qn1uO0b9QMLXybf/aj3xQKyAZJ+bmwdjqI=
+	t=1728392275; cv=none; b=ZC3/MzYgUa5U33IBDHyi6eI4rZBB5peNI2AJP3tLJ7VSC5ZmOOrhnhu7jF90EW28MvDCikhS2ouOazLRCZfNeOPgrX+CPXxMKfLRGIFYQY8tdpdLg/lyV40naNBUrQVR3aL13psv1TVcL0NdQvra4te4D9orCPc9rXbcReH8QbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390691; c=relaxed/simple;
-	bh=QZnxWvW1v/CquHFLddJiO2icf+iGqjbxPIgpydhXVI0=;
+	s=arc-20240116; t=1728392275; c=relaxed/simple;
+	bh=U1v8M4SdVie6yimD5cOlc+VQ9JmdMODholHUqC5uSJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdBPNvlHlxX9hMnZCzw+T8L0JyV2a1+eHyBHbW8pfQCM4a4S5P8f5Uwf7N8yeiserYF0utmq4u9MOw7cYoYf8H2CxBRQFqeOerHIQwxXyRaaAPBmoce19ZejCPtp7jQaEo0iEABPf9Xs/efjSgKDL52uyBtkFxnsmRvnxy5GvTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQ+em1bH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C23C4CEC7;
-	Tue,  8 Oct 2024 12:31:30 +0000 (UTC)
+	 MIME-Version; b=kjnM95nCjfM34+UGMP2gbFpZlR7geq462QEH2Ut6BFOhzIiBjU9lSg2O5LGdFWk7jFX0VJQgURDkugNI4owAZBAYaZF/Iki4bKwkiWAgXXPgvmE0TijqhLB5TSm047ak63IW5JUjzdA8hWrX5wmN+yOVfT4xU92VoLZMXMYNynA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmDMzDnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE153C4CEC7;
+	Tue,  8 Oct 2024 12:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390691;
-	bh=QZnxWvW1v/CquHFLddJiO2icf+iGqjbxPIgpydhXVI0=;
+	s=korg; t=1728392275;
+	bh=U1v8M4SdVie6yimD5cOlc+VQ9JmdMODholHUqC5uSJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQ+em1bHLq+UOrpvVe/N6iLD0PxQH2lBXe9H1dzmYs9MXSiA4yU0Jaa3irF2s9GXh
-	 Zn0+LWsuAWXaIjMRtVY9AXL474zCM2RCtzk9T4HGEdgHsJiJp0iE+v/yFldhWzofdk
-	 VWnxajxB5ewQc7MY1QGgV8RAFa9ki3tpB6B3pOAA=
+	b=WmDMzDnfy6tT6zcYy/YEqXOGHQcd+yTCwbR1+aOK2BOura7V5yQeiSWcDoz4CIUQJ
+	 2h37Jqfdp56VPb4yI8UGkEwkjS3ZvCSUdhMYgCZzNevw5+vmaq1hrccrLSY9qz+j3r
+	 YVaYqDL+xiBPTSH6kqmfVB2DBaZccFNTtdXuNRvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.10 333/482] ext4: fix access to uninitialised lock in fc replay path
-Date: Tue,  8 Oct 2024 14:06:36 +0200
-Message-ID: <20241008115701.530134627@linuxfoundation.org>
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>
+Subject: [PATCH 6.11 367/558] perf/core: Fix small negative period being ignored
+Date: Tue,  8 Oct 2024 14:06:37 +0200
+Message-ID: <20241008115716.738091608@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-commit 23dfdb56581ad92a9967bcd720c8c23356af74c1 upstream.
+commit 62c0b1061593d7012292f781f11145b2d46f43ab upstream.
 
-The following kernel trace can be triggered with fstest generic/629 when
-executed against a filesystem with fast-commit feature enabled:
+In perf_adjust_period, we will first calculate period, and then use
+this period to calculate delta. However, when delta is less than 0,
+there will be a deviation compared to when delta is greater than or
+equal to 0. For example, when delta is in the range of [-14,-1], the
+range of delta = delta + 7 is between [-7,6], so the final value of
+delta/8 is 0. Therefore, the impact of -1 and -2 will be ignored.
+This is unacceptable when the target period is very short, because
+we will lose a lot of samples.
 
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 0 PID: 866 Comm: mount Not tainted 6.10.0+ #11
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x66/0x90
- register_lock_class+0x759/0x7d0
- __lock_acquire+0x85/0x2630
- ? __find_get_block+0xb4/0x380
- lock_acquire+0xd1/0x2d0
- ? __ext4_journal_get_write_access+0xd5/0x160
- _raw_spin_lock+0x33/0x40
- ? __ext4_journal_get_write_access+0xd5/0x160
- __ext4_journal_get_write_access+0xd5/0x160
- ext4_reserve_inode_write+0x61/0xb0
- __ext4_mark_inode_dirty+0x79/0x270
- ? ext4_ext_replay_set_iblocks+0x2f8/0x450
- ext4_ext_replay_set_iblocks+0x330/0x450
- ext4_fc_replay+0x14c8/0x1540
- ? jread+0x88/0x2e0
- ? rcu_is_watching+0x11/0x40
- do_one_pass+0x447/0xd00
- jbd2_journal_recover+0x139/0x1b0
- jbd2_journal_load+0x96/0x390
- ext4_load_and_init_journal+0x253/0xd40
- ext4_fill_super+0x2cc6/0x3180
-...
+Here are some tests and analyzes:
+before:
+  # perf record -e cs -F 1000  ./a.out
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.022 MB perf.data (518 samples) ]
 
-In the replay path there's an attempt to lock sbi->s_bdev_wb_lock in
-function ext4_check_bdev_write_error().  Unfortunately, at this point this
-spinlock has not been initialized yet.  Moving it's initialization to an
-earlier point in __ext4_fill_super() fixes this splat.
+  # perf script
+  ...
+  a.out     396   257.956048:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.957891:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.959730:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.961545:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.963355:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.965163:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.966973:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.968785:         23 cs:  ffffffff81f4eeec schedul>
+  a.out     396   257.970593:         23 cs:  ffffffff81f4eeec schedul>
+  ...
 
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Link: https://patch.msgid.link/20240718094356.7863-1-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+after:
+  # perf record -e cs -F 1000  ./a.out
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.058 MB perf.data (1466 samples) ]
+
+  # perf script
+  ...
+  a.out     395    59.338813:         11 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.339707:         12 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.340682:         13 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.341751:         13 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.342799:         12 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.343765:         11 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.344651:         11 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.345539:         12 cs:  ffffffff81f4eeec schedul>
+  a.out     395    59.346502:         13 cs:  ffffffff81f4eeec schedul>
+  ...
+
+test.c
+
+int main() {
+        for (int i = 0; i < 20000; i++)
+                usleep(10);
+
+        return 0;
+}
+
+  # time ./a.out
+  real    0m1.583s
+  user    0m0.040s
+  sys     0m0.298s
+
+The above results were tested on x86-64 qemu with KVM enabled using
+test.c as test program. Ideally, we should have around 1500 samples,
+but the previous algorithm had only about 500, whereas the modified
+algorithm now has about 1400. Further more, the new version shows 1
+sample per 0.001s, while the previous one is 1 sample per 0.002s.This
+indicates that the new algorithm is more sensitive to small negative
+values compared to old algorithm.
+
+Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20240831074316.2106159-2-luogengkun@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/events/core.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5332,6 +5332,8 @@ static int __ext4_fill_super(struct fs_c
- 	INIT_LIST_HEAD(&sbi->s_orphan); /* unlinked but open files */
- 	mutex_init(&sbi->s_orphan_lock);
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -4097,7 +4097,11 @@ static void perf_adjust_period(struct pe
+ 	period = perf_calculate_period(event, nsec, count);
  
-+	spin_lock_init(&sbi->s_bdev_wb_lock);
-+
- 	ext4_fast_commit_init(sb);
+ 	delta = (s64)(period - hwc->sample_period);
+-	delta = (delta + 7) / 8; /* low pass filter */
++	if (delta >= 0)
++		delta += 7;
++	else
++		delta -= 7;
++	delta /= 8; /* low pass filter */
  
- 	sb->s_root = NULL;
-@@ -5553,7 +5555,6 @@ static int __ext4_fill_super(struct fs_c
- 	 * Save the original bdev mapping's wb_err value which could be
- 	 * used to detect the metadata async write error.
- 	 */
--	spin_lock_init(&sbi->s_bdev_wb_lock);
- 	errseq_check_and_advance(&sb->s_bdev->bd_mapping->wb_err,
- 				 &sbi->s_bdev_wb_err);
- 	EXT4_SB(sb)->s_mount_state |= EXT4_ORPHAN_FS;
+ 	sample_period = hwc->sample_period + delta;
+ 
 
 
 
