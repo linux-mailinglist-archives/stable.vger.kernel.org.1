@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93682994A65
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A738994EC5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E828FB25489
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1440DB2871D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A6B1E485;
-	Tue,  8 Oct 2024 12:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294CC1DED7D;
+	Tue,  8 Oct 2024 13:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4eUKE7h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/8pfA+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75481E493;
-	Tue,  8 Oct 2024 12:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA79718C333;
+	Tue,  8 Oct 2024 13:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390759; cv=none; b=TN23jxJfm13uvdhqO5DNO5bUDJQyUq061QUPHQ3Dic+ksTB8rvRN0P9jXEnYoFjFCgpnMpCVV6h4ViaqTg42BSpTMuXx9cWVCAgPIv9MRHluLa7RsgoJcgd+IIWF5/fDxBZ5mfDXtwB3DmdxXQTfGWIxcwI2IkfptBXsZqKEdEc=
+	t=1728393608; cv=none; b=rx/T3mt3nrGXW2oS5STa2I6K14zYRBE3vWWEoL/pRvVLFl5y9VXHAHxgAyQRjON721KfUwF/8hRxRAo+M90qzd8MD6i0RhM5LbTcWl4sTK6PRVFrg8oKkwzLJuh35CuEdVE8wBpy+dYDe3Re5uhAj5m/1kOsBwgi2vkAqU9RqzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390759; c=relaxed/simple;
-	bh=DkNC7yNQR7lFOSjvRqXwmMY0cIuav0HGT5gRPrefNSU=;
+	s=arc-20240116; t=1728393608; c=relaxed/simple;
+	bh=odu0cmUwUdgUo9c8DK1/hEEuOLFjL3uqSMPUHe2Splk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+2/idgHqDk33/Em60gorr23tanDPcidCCPV4i0a89DRuIsISH2HizkLiLui1PiBFdOOkioDxcl2SVkuHnT84p7Svk3N+BWYsHWvyv7MO1bLUMjiBv4GLP0mGiYJvkK51T2GnKBb4gCXmpRSbgKiBELumvwjsvDuWfauqR8eH/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4eUKE7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB48C4CEC7;
-	Tue,  8 Oct 2024 12:32:38 +0000 (UTC)
+	 MIME-Version; b=KcJw3t/uD9Y6Ukw8XCXnwlKvpdH0GclZG7LvAuApmp9zkp5w/zIe3USHdQGXNT8n3t2gay+eYH4z1NzhyBLFvS/yf7o1eOZvUW5g0wWJt+1ObMuLD2QHp+m1SzrgJeMc2ksKDdU6HfcTDXUl0qusZaT5oeznUf7pbILY+U/YS1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/8pfA+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6210FC4CEC7;
+	Tue,  8 Oct 2024 13:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390759;
-	bh=DkNC7yNQR7lFOSjvRqXwmMY0cIuav0HGT5gRPrefNSU=;
+	s=korg; t=1728393608;
+	bh=odu0cmUwUdgUo9c8DK1/hEEuOLFjL3uqSMPUHe2Splk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4eUKE7h4oQDf05px55Qs3SjYnllWlKqG+84PDjAxhJEhLUkZTuYq1uT3b1tPeE6m
-	 awJA9LlcLGCq9/aV8fRd5663zAgXuGM+9RNRUYVybk4zZHDipTr5nlYUBGeBr4WXla
-	 0IHpzurHhuKBtRZ1zmwI85R087reDyc4JfIgO94k=
+	b=q/8pfA+hPKqBj15bavsxZTXNoBI7Ph4aRv+NhtTHg2j+2znI0r0SM8pqLNsGdgk7X
+	 +3MvwUO+uOjIyeUxTH0etc97Ff4qYUMQppbt5hqIu+xIXZLPhIqXqmngPqKttBToRJ
+	 A1/Lcb4IRigC1TYYfhVjofWfK9xqdJm8AvmG8BnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.10 384/482] media: videobuf2: Drop minimum allocation requirement of 2 buffers
-Date: Tue,  8 Oct 2024 14:07:27 +0200
-Message-ID: <20241008115703.527350639@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 203/386] selftests: vDSO: fix vdso_config for s390
+Date: Tue,  8 Oct 2024 14:07:28 +0200
+Message-ID: <20241008115637.395631706@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit e5700c9037727d5a69a677d6dba25010b485d65b upstream.
+[ Upstream commit a6e23fb8d3c0e3904da70beaf5d7e840a983c97f ]
 
-When introducing the ability for drivers to indicate the minimum number
-of buffers they require an application to allocate, commit 6662edcd32cc
-("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue
-structure") also introduced a global minimum of 2 buffers. It turns out
-this breaks the Renesas R-Car VSP test suite, where a test that
-allocates a single buffer fails when two buffers are used.
+Running vdso_test_correctness on s390x (aka s390 64 bit) emits a warning:
 
-One may consider debatable whether test suite failures without failures
-in production use cases should be considered as a regression, but
-operation with a single buffer is a valid use case. While full frame
-rate can't be maintained, memory-to-memory devices can still be used
-with a decent efficiency, and requiring applications to allocate
-multiple buffers for single-shot use cases with capture devices would
-just waste memory.
+Warning: failed to find clock_gettime64 in vDSO
 
-For those reasons, fix the regression by dropping the global minimum of
-buffers. Individual drivers can still set their own minimum.
+This is caused by the "#elif defined (__s390__)" check in vdso_config.h
+which the defines VDSO_32BIT.
 
-Fixes: 6662edcd32cc ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue structure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If __s390x__ is defined also __s390__ is defined. Therefore the correct
+check must make sure that only __s390__ is defined.
+
+Therefore add the missing !defined(__s390x__). Also use common
+__s390x__ define instead of __s390X__.
+
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/videobuf2/videobuf2-core.c |    7 -------
- 1 file changed, 7 deletions(-)
+ tools/testing/selftests/vDSO/vdso_config.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -2603,13 +2603,6 @@ int vb2_core_queue_init(struct vb2_queue
- 		return -EINVAL;
- 
- 	/*
--	 * The minimum requirement is 2: one buffer is used
--	 * by the hardware while the other is being processed by userspace.
--	 */
--	if (q->min_reqbufs_allocation < 2)
--		q->min_reqbufs_allocation = 2;
--
--	/*
- 	 * If the driver needs 'min_queued_buffers' in the queue before
- 	 * calling start_streaming() then the minimum requirement is
- 	 * 'min_queued_buffers + 1' to keep at least one buffer available
+diff --git a/tools/testing/selftests/vDSO/vdso_config.h b/tools/testing/selftests/vDSO/vdso_config.h
+index f9890584f6fb4..72de45f587b2c 100644
+--- a/tools/testing/selftests/vDSO/vdso_config.h
++++ b/tools/testing/selftests/vDSO/vdso_config.h
+@@ -25,11 +25,11 @@
+ #define VDSO_VERSION		1
+ #define VDSO_NAMES		0
+ #define VDSO_32BIT		1
+-#elif defined (__s390__)
++#elif defined (__s390__) && !defined(__s390x__)
+ #define VDSO_VERSION		2
+ #define VDSO_NAMES		0
+ #define VDSO_32BIT		1
+-#elif defined (__s390X__)
++#elif defined (__s390x__)
+ #define VDSO_VERSION		2
+ #define VDSO_NAMES		0
+ #elif defined(__mips__)
+-- 
+2.43.0
+
 
 
 
