@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-82965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18794994FAE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E67994AE1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC94F2880B7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17BA11F2380E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8541DF974;
-	Tue,  8 Oct 2024 13:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A0D1DE89A;
+	Tue,  8 Oct 2024 12:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTeTkyml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIsZ+hnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2891A1DF963;
-	Tue,  8 Oct 2024 13:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B461DC759;
+	Tue,  8 Oct 2024 12:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394028; cv=none; b=aZozWNTRvq0puiixOCzzrIpyRNz+rsYmrnjVdbki0h368JON7RbLItTeoOUrd41OxdEG8uvWQb3JXGv4jqp2smXX+tf2IrS2frg+LoVy6aMkxYm38LT0cQ8ohEXFG4em7sL3O42LxRiJDY9oJohPtEIJz8Ymb2/8OZTiy5FqPN8=
+	t=1728391052; cv=none; b=Ml5fG/uxyGUqffkEApWPYjAXLrn5dSwscOpY+NFdLLyM1XJkb0mJOXfrS9NJT7jU2ErjqLNQPsgBrE5Eq+KVNUQOB8PJkdBg1kbGSv3bu7iKfsO389DFpgUWgsxYy5p18CpUkH72GPxI08JrPleSSl9d477ymneOlzNh9RXgEZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394028; c=relaxed/simple;
-	bh=15MCAFLhLtNyNn9c2G5bMZg7eV8mIybQtYXLKADkePU=;
+	s=arc-20240116; t=1728391052; c=relaxed/simple;
+	bh=gv+3o8AGN9yzAeH5/VaXlj7jE2C8BRAPFhoiQsy1M1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDji9j8v1eF5w85+vt5Piq4RfS2Y6W/xBLjS8IknqMX+KDMfZDu7bhwRYHouQz74nKYYLYrSnbnp7m5KO07Vcer53rwlQM6tWjDXauU1id3Z61uib35zdpoBDHdh4w2hFa4ZGUl8FnTvrvgzcm6x0GGlATekleiBMCFtu2jIS3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTeTkyml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B95C4CEC7;
-	Tue,  8 Oct 2024 13:27:07 +0000 (UTC)
+	 MIME-Version; b=QISTRxkqAxrqOmb70jV/zI66BipP9ku5FDpqG9R2o3cAAWcSOgX/anAFFG7TscZtdZ3Fpx1T1ocphq8bBCkZ9tj+DqoXIKkvp0DjMJcbb6kPF8eGHeOrKtNndNrp+rVJPOGcIrhsjLekVT+g/EfUFdgZyZK5+nxfbRChFpGuU/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIsZ+hnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFD4C4CEC7;
+	Tue,  8 Oct 2024 12:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394028;
-	bh=15MCAFLhLtNyNn9c2G5bMZg7eV8mIybQtYXLKADkePU=;
+	s=korg; t=1728391052;
+	bh=gv+3o8AGN9yzAeH5/VaXlj7jE2C8BRAPFhoiQsy1M1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTeTkymlY4Lcl/Njd0l302+7XiZVN5qo8+ZqDpLCufAD51b1C3kfgGe/CDBwPNkF8
-	 acw1/bhTEzn2LXozVvKB92bqNr10vFrF9tg0cbIwbj1q3VjsJEeVLKXgYA/Llj3N8a
-	 eeF4nJYrH0k+/xbUnNYKiU2P1zYAywHnpnwXiEKo=
+	b=sIsZ+hnAlPxWFkgnvGv/y/QlFuNBAud7bJPE1QHr/nuBPYbnxPZJkE8bkA3KHWzs6
+	 xpKvIqP84LsprPzYlwpXA2lpSfdkmEeBvgTjpUN22Nm28mHYfFJwThOqHpLSUM5acy
+	 bvpVakr6xLajuWmFPEd4735OegdFOAFwNLeX5UCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajit Pandey <quic_ajipan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 294/386] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override for LUCID EVO PLL
+	David Howells <dhowells@redhat.com>,
+	yuxuanzhe@outlook.com,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 476/482] rxrpc: Fix a race between socket set up and I/O thread creation
 Date: Tue,  8 Oct 2024 14:08:59 +0200
-Message-ID: <20241008115640.955776608@linuxfoundation.org>
+Message-ID: <20241008115707.242909166@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +66,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajit Pandey <quic_ajipan@quicinc.com>
+From: David Howells <dhowells@redhat.com>
 
-commit fff617979f97c773aaa9432c31cf62444b3bdbd4 upstream.
+commit bc212465326e8587325f520a052346f0b57360e6 upstream.
 
-In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
-PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
-register using regmap_write() API in __alpha_pll_trion_set_rate
-callback will override LUCID EVO PLL initial configuration related
-to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
+In rxrpc_open_socket(), it sets up the socket and then sets up the I/O
+thread that will handle it.  This is a problem, however, as there's a gap
+between the two phases in which a packet may come into rxrpc_encap_rcv()
+from the UDP packet but we oops when trying to wake the not-yet created I/O
+thread.
 
-Observed random PLL lock failures during PLL enable due to such
-override in PLL calibration value. Use regmap_update_bits() with
-L_VAL bitfield mask instead of regmap_write() API to update only
-PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
+As a quick fix, just make rxrpc_encap_rcv() discard the packet if there's
+no I/O thread yet.
 
-Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20240611133752.2192401-2-quic_ajipan@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+A better, but more intrusive fix would perhaps be to rearrange things such
+that the socket creation is done by the I/O thread.
+
+Fixes: a275da62e8c1 ("rxrpc: Create a per-local endpoint receive queue and I/O thread")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: yuxuanzhe@outlook.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241001132702.3122709-2-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rxrpc/ar-internal.h  |    2 +-
+ net/rxrpc/io_thread.c    |   10 ++++++++--
+ net/rxrpc/local_object.c |    2 +-
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -1638,7 +1638,7 @@ static int __alpha_pll_trion_set_rate(st
- 	if (ret < 0)
- 		return ret;
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -1058,7 +1058,7 @@ bool rxrpc_direct_abort(struct sk_buff *
+ int rxrpc_io_thread(void *data);
+ static inline void rxrpc_wake_up_io_thread(struct rxrpc_local *local)
+ {
+-	wake_up_process(local->io_thread);
++	wake_up_process(READ_ONCE(local->io_thread));
+ }
  
--	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
-+	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
- 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
+ static inline bool rxrpc_protocol_error(struct sk_buff *skb, enum rxrpc_abort_reason why)
+--- a/net/rxrpc/io_thread.c
++++ b/net/rxrpc/io_thread.c
+@@ -27,11 +27,17 @@ int rxrpc_encap_rcv(struct sock *udp_sk,
+ {
+ 	struct sk_buff_head *rx_queue;
+ 	struct rxrpc_local *local = rcu_dereference_sk_user_data(udp_sk);
++	struct task_struct *io_thread;
  
- 	/* Latch the PLL input */
+ 	if (unlikely(!local)) {
+ 		kfree_skb(skb);
+ 		return 0;
+ 	}
++	io_thread = READ_ONCE(local->io_thread);
++	if (!io_thread) {
++		kfree_skb(skb);
++		return 0;
++	}
+ 	if (skb->tstamp == 0)
+ 		skb->tstamp = ktime_get_real();
+ 
+@@ -47,7 +53,7 @@ int rxrpc_encap_rcv(struct sock *udp_sk,
+ #endif
+ 
+ 	skb_queue_tail(rx_queue, skb);
+-	rxrpc_wake_up_io_thread(local);
++	wake_up_process(io_thread);
+ 	return 0;
+ }
+ 
+@@ -565,7 +571,7 @@ int rxrpc_io_thread(void *data)
+ 	__set_current_state(TASK_RUNNING);
+ 	rxrpc_see_local(local, rxrpc_local_stop);
+ 	rxrpc_destroy_local(local);
+-	local->io_thread = NULL;
++	WRITE_ONCE(local->io_thread, NULL);
+ 	rxrpc_see_local(local, rxrpc_local_stopped);
+ 	return 0;
+ }
+--- a/net/rxrpc/local_object.c
++++ b/net/rxrpc/local_object.c
+@@ -232,7 +232,7 @@ static int rxrpc_open_socket(struct rxrp
+ 	}
+ 
+ 	wait_for_completion(&local->io_thread_ready);
+-	local->io_thread = io_thread;
++	WRITE_ONCE(local->io_thread, io_thread);
+ 	_leave(" = 0");
+ 	return 0;
+ 
 
 
 
