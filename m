@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F215994DC6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84895994FC0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7F11F2401A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4EA28501C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6F31DED4E;
-	Tue,  8 Oct 2024 13:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5211E0088;
+	Tue,  8 Oct 2024 13:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+I9bpfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyIRuPG1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB301DE88F;
-	Tue,  8 Oct 2024 13:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1D51DFE36;
+	Tue,  8 Oct 2024 13:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392944; cv=none; b=Mozb/yayjeqfr0RWMkdCBBBwT9veonfyoQfHcCRDvXekEGCg0nfRuI43Wi/AyyuljQupMtJ9jXS/EnvmpSsLY/G2ekShhwfGAKA++qmGop2D3f7jA5aHmOJ9wZP0MuGdDE+NHmVQ2/CeF9a+iw8iEsv2rQZvafa3yJyvDNfCKTA=
+	t=1728394067; cv=none; b=AjcY5PTxK6BADlZ46Q4VeR8VY0miEfQrj5Q7sYAr5cJG986YiBsZoso20sEV9WQmhriRfcqMjDwiX7ZIbMC6i3qKDSMHoRSSCtkb0XPPHdvGHrQM8eU8f/O9JS2Jw/+LIQgsZw0Bhd6zGMQdieMkDc3ozUdHEHx+vjnlzt/b1Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392944; c=relaxed/simple;
-	bh=sT+DGNFKQXlt0ySWhedklsMz6iykLxnAIjGs31ps7/I=;
+	s=arc-20240116; t=1728394067; c=relaxed/simple;
+	bh=s8uBH/qD1xp5JCObtC8waIezkpDg9wsBMdAd6UI6Ewk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/2ef+9QLuiSqPUFfX0kIh36cP2sBskV+k5DDYLbbGWteyaDdCEj2Oq05VZ2biykKISLgBXJn3pCnL50atTRe91lpThbqLV2/okWqfGwe6XTHSNbeCFU1Xqfmy3XJKoRQ2uBwBj6Ml92/iul7Eui0LoRBOlTq29wlnEU1eNkX8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+I9bpfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26ADFC4CEC7;
-	Tue,  8 Oct 2024 13:09:03 +0000 (UTC)
+	 MIME-Version; b=U0WF7C5jBkhU9y9S28mhJ1AFlTvjpbdfcxiYze40UCXlhiA7bGUEZg/oSK7OIoJosWL1CSwTqEw7HAasf1OPQr/nly79kkw0mGV0CAVuNN6R8SaucRzMrWVq9XJnht5rvDWkAezl+NFP7xXBngaqlQF8lMM+iBlozRA6Wii0zUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyIRuPG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A64DC4CEC7;
+	Tue,  8 Oct 2024 13:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392944;
-	bh=sT+DGNFKQXlt0ySWhedklsMz6iykLxnAIjGs31ps7/I=;
+	s=korg; t=1728394067;
+	bh=s8uBH/qD1xp5JCObtC8waIezkpDg9wsBMdAd6UI6Ewk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+I9bpfphHRIa6vDWuJHsiLEW6yQ0EOyzm3XR5au3E+QM/ehIslASJg1jrCyBtE46
-	 bhSNEaqJStRflHBTzTQ8t4cNM8c1LKtPp+1pqSNcEIH/GPFKynXorxX/kuyeVnyT/x
-	 hDjXjS2cNWCOwniQJlrmNExQXQcmcjUZLkX8EUOI=
+	b=pyIRuPG1CkgJYUUCT2KTyn480/cj1lfr3osAGWWjsL4yXENNMUzd8AznUBhmuIzBv
+	 sTnUkd552Gj/3RmIAeJY+OFNIXBjqrgQnUfpxT4qNT0vDr1/HMiVwqlfxjnG+VftB3
+	 R5Kqdkf51UCEWQb1BL832RkSB1jFTRaqs8Jt6wOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoran Zhang <wh1sper@zju.edu.cn>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.11 553/558] vhost/scsi: null-ptr-dereference in vhost_scsi_get_req()
+	Will Deacon <will@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 338/386] uprobes: fix kernel info leak via "[uprobes]" vma
 Date: Tue,  8 Oct 2024 14:09:43 +0200
-Message-ID: <20241008115723.995079372@linuxfoundation.org>
+Message-ID: <20241008115642.684244284@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Zhang <wh1sper@zju.edu.cn>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 221af82f606d928ccef19a16d35633c63026f1be upstream.
+commit 34820304cc2cd1804ee1f8f3504ec77813d29c8e upstream.
 
-Since commit 3f8ca2e115e5 ("vhost/scsi: Extract common handling code
-from control queue handler") a null pointer dereference bug can be
-triggered when guest sends an SCSI AN request.
+xol_add_vma() maps the uninitialized page allocated by __create_xol_area()
+into userspace. On some architectures (x86) this memory is readable even
+without VM_READ, VM_EXEC results in the same pgprot_t as VM_EXEC|VM_READ,
+although this doesn't really matter, debugger can read this memory anyway.
 
-In vhost_scsi_ctl_handle_vq(), `vc.target` is assigned with
-`&v_req.tmf.lun[1]` within a switch-case block and is then passed to
-vhost_scsi_get_req() which extracts `vc->req` and `tpg`. However, for
-a `VIRTIO_SCSI_T_AN_*` request, tpg is not required, so `vc.target` is
-set to NULL in this branch. Later, in vhost_scsi_get_req(),
-`vc->target` is dereferenced without being checked, leading to a null
-pointer dereference bug. This bug can be triggered from guest.
+Link: https://lore.kernel.org/all/20240929162047.GA12611@redhat.com/
 
-When this bug occurs, the vhost_worker process is killed while holding
-`vq->mutex` and the corresponding tpg will remain occupied
-indefinitely.
-
-Below is the KASAN report:
-Oops: general protection fault, probably for non-canonical address
-0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 PID: 840 Comm: poc Not tainted 6.10.0+ #1
-Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS
-1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:vhost_scsi_get_req+0x165/0x3a0
-Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 2b 02 00 00
-48 b8 00 00 00 00 00 fc ff df 4d 8b 65 30 4c 89 e2 48 c1 ea 03 <0f> b6
-04 02 4c 89 e2 83 e2 07 38 d0 7f 08 84 c0 0f 85 be 01 00 00
-RSP: 0018:ffff888017affb50 EFLAGS: 00010246
-RAX: dffffc0000000000 RBX: ffff88801b000000 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888017affcb8
-RBP: ffff888017affb80 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888017affc88 R14: ffff888017affd1c R15: ffff888017993000
-FS:  000055556e076500(0000) GS:ffff88806b100000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200027c0 CR3: 0000000010ed0004 CR4: 0000000000370ef0
-Call Trace:
- <TASK>
- ? show_regs+0x86/0xa0
- ? die_addr+0x4b/0xd0
- ? exc_general_protection+0x163/0x260
- ? asm_exc_general_protection+0x27/0x30
- ? vhost_scsi_get_req+0x165/0x3a0
- vhost_scsi_ctl_handle_vq+0x2a4/0xca0
- ? __pfx_vhost_scsi_ctl_handle_vq+0x10/0x10
- ? __switch_to+0x721/0xeb0
- ? __schedule+0xda5/0x5710
- ? __kasan_check_write+0x14/0x30
- ? _raw_spin_lock+0x82/0xf0
- vhost_scsi_ctl_handle_kick+0x52/0x90
- vhost_run_work_list+0x134/0x1b0
- vhost_task_fn+0x121/0x350
-...
- </TASK>
----[ end trace 0000000000000000 ]---
-
-Let's add a check in vhost_scsi_get_req.
-
-Fixes: 3f8ca2e115e5 ("vhost/scsi: Extract common handling code from control queue handler")
-Signed-off-by: Haoran Zhang <wh1sper@zju.edu.cn>
-[whitespace fixes]
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <b26d7ddd-b098-4361-88f8-17ca7f90adf7@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Will Deacon <will@kernel.org>
+Fixes: d4b3b6384f98 ("uprobes/core: Allocate XOL slots for uprobes use")
+Cc: stable@vger.kernel.org
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c |   25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ kernel/events/uprobes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1029,20 +1029,23 @@ vhost_scsi_get_req(struct vhost_virtqueu
- 		/* virtio-scsi spec requires byte 0 of the lun to be 1 */
- 		vq_err(vq, "Illegal virtio-scsi lun: %u\n", *vc->lunp);
- 	} else {
--		struct vhost_scsi_tpg **vs_tpg, *tpg;
-+		struct vhost_scsi_tpg **vs_tpg, *tpg = NULL;
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 6876b7f152b10..6dac0b5798213 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1491,7 +1491,7 @@ static struct xol_area *__create_xol_area(unsigned long vaddr)
  
--		vs_tpg = vhost_vq_get_backend(vq);	/* validated at handler entry */
--
--		tpg = READ_ONCE(vs_tpg[*vc->target]);
--		if (unlikely(!tpg)) {
--			vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
--		} else {
--			if (tpgp)
--				*tpgp = tpg;
--			ret = 0;
-+		if (vc->target) {
-+			/* validated at handler entry */
-+			vs_tpg = vhost_vq_get_backend(vq);
-+			tpg = READ_ONCE(vs_tpg[*vc->target]);
-+			if (unlikely(!tpg)) {
-+				vq_err(vq, "Target 0x%x does not exist\n", *vc->target);
-+				goto out;
-+			}
- 		}
--	}
- 
-+		if (tpgp)
-+			*tpgp = tpg;
-+		ret = 0;
-+	}
-+out:
- 	return ret;
- }
- 
+ 	area->xol_mapping.name = "[uprobes]";
+ 	area->xol_mapping.pages = area->pages;
+-	area->pages[0] = alloc_page(GFP_HIGHUSER);
++	area->pages[0] = alloc_page(GFP_HIGHUSER | __GFP_ZERO);
+ 	if (!area->pages[0])
+ 		goto free_bitmap;
+ 	area->pages[1] = NULL;
+-- 
+2.43.0
+
 
 
 
