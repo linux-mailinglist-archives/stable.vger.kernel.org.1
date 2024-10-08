@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91766994F04
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DA5994AD7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5419F28520E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829D2283E00
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162AD1DEFE0;
-	Tue,  8 Oct 2024 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36341DE4F3;
+	Tue,  8 Oct 2024 12:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPG86beF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSuHF/I6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1361DEFE3;
-	Tue,  8 Oct 2024 13:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DAE1DE4CC;
+	Tue,  8 Oct 2024 12:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393752; cv=none; b=RZgaAp0zu+Wt4OneSC/hr7I1o+LrDPORCg5Rsw4h1OMMGtwNhhc2cNuihbzaqYHWokkxY/Es3lGf0BtRGSEeGXTqsqsW3YHps5//F7eqlQhxr/nv+YpELAk/LUN20EEuHO40UCh1Y+okdCKfAXLOisrIWoINL7ZBFVytJTf3QFI=
+	t=1728391027; cv=none; b=MR+khH3iN+UvKNCL5MtUB/mIba+8wVCFvQyBRq3EXyRjw3v1f8E9PgipXq+KUVql79SwvO07z4/DNnJESt47DdZ/masa1J+1eedCczJaJS1UyPSqaPBe1bBfthMuRqMkUBe7C3y2+zrFSYorxP1MS1NZPFpk8/KAk30qe7NGnso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393752; c=relaxed/simple;
-	bh=wVxq+9GNfyVOsoqXNWP6jxVPmIcATLiA3RuFNabSUN4=;
+	s=arc-20240116; t=1728391027; c=relaxed/simple;
+	bh=zSNTHHcdYlCb550mMfaZiQSP/NfF8iSSd9XUtIHjYI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+tV7bOFeWEiKrH7Oj3ITfQtimi5XCuy/EkeXr00cC0BpJ4SS1B9GOzsW88V1OeZ4H2vzcagf0PWpYCxOaRp7Bn/MITQZf1gXJhIgDVCg9GwzoP8fKcqTSCuZYxiiLSAHmdBPL8vIlyXHuRGJn+srqCuI+Sh1o+sUIsVU6iy0uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPG86beF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435F1C4CEC7;
-	Tue,  8 Oct 2024 13:22:32 +0000 (UTC)
+	 MIME-Version; b=Se/wMSL2hAOs+97xz3Dv+nxHyhoomJXsarYtdUrNc+0Q+F/HnLsUgpbEnKAtKI5dEOBQtdFYAkC7WZKx3FheOMuzok5xQOx8SqmSTYoWUkPnj6gDTk8MQZzaUc1NT703fYOTGkn7ViACfdzaf6+HYa23L/xRABCbKE5ZaMnAbwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSuHF/I6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07C3C4CEC7;
+	Tue,  8 Oct 2024 12:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393752;
-	bh=wVxq+9GNfyVOsoqXNWP6jxVPmIcATLiA3RuFNabSUN4=;
+	s=korg; t=1728391027;
+	bh=zSNTHHcdYlCb550mMfaZiQSP/NfF8iSSd9XUtIHjYI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPG86beFoc0JUNppf992ohyRFRasbczfoRhPYdrgb/K955Wh3GdlsTQldO6YGfQ4h
-	 x+18q9UB2uhq8vuwHkkbskY8w7CjrrZ57ZPZXgP67C+SvRneBOr0CY4tnxvJse5DGx
-	 ZyP5RVM4exQ/cnfO7Asx7nUen8s1BcltyArA2ohU=
+	b=FSuHF/I6IUWOlZCqEpXVY0WO77JjSEhW3kRaG/jEwk0nMw2/T4WrB4KArCUKJWb7H
+	 9Q0sraC3egrGevPsGLlTGQhOEBrnP5igmAS17ZGNbPjNdKZ+YzV/39Ung9UcCxqCD6
+	 fM6VealTWFdv50qmNLQlCbtI6XMEVtovFu6N5j/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 245/386] ext4: fix fast commit inode enqueueing during a full journal commit
+	Patrick Donnelly <pdonnell@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.10 427/482] ceph: fix cap ref leak via netfs init_request
 Date: Tue,  8 Oct 2024 14:08:10 +0200
-Message-ID: <20241008115639.036823410@linuxfoundation.org>
+Message-ID: <20241008115705.328004722@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Patrick Donnelly <pdonnell@redhat.com>
 
-commit 6db3c1575a750fd417a70e0178bdf6efa0dd5037 upstream.
+commit ccda9910d8490f4fb067131598e4b2e986faa5a0 upstream.
 
-When a full journal commit is on-going, any fast commit has to be enqueued
-into a different queue: FC_Q_STAGING instead of FC_Q_MAIN.  This enqueueing
-is done only once, i.e. if an inode is already queued in a previous fast
-commit entry it won't be enqueued again.  However, if a full commit starts
-_after_ the inode is enqueued into FC_Q_MAIN, the next fast commit needs to
-be done into FC_Q_STAGING.  And this is not being done in function
-ext4_fc_track_template().
+Log recovered from a user's cluster:
 
-This patch fixes the issue by re-enqueuing an inode into the STAGING queue
-during the fast commit clean-up callback when doing a full commit.  However,
-to prevent a race with a fast-commit, the clean-up callback has to be called
-with the journal locked.
+    <7>[ 5413.970692] ceph:  get_cap_refs 00000000958c114b ret 1 got Fr
+    <7>[ 5413.970695] ceph:  start_read 00000000958c114b, no cache cap
+    ...
+    <7>[ 5473.934609] ceph:   my wanted = Fr, used = Fr, dirty -
+    <7>[ 5473.934616] ceph:  revocation: pAsLsXsFr -> pAsLsXs (revoking Fr)
+    <7>[ 5473.934632] ceph:  __ceph_caps_issued 00000000958c114b cap 00000000f7784259 issued pAsLsXs
+    <7>[ 5473.934638] ceph:  check_caps 10000000e68.fffffffffffffffe file_want - used Fr dirty - flushing - issued pAsLsXs revoking Fr retain pAsLsXsFsr  AUTHONLY NOINVAL FLUSH_FORCE
 
-This bug was found using fstest generic/047.  This test creates several 32k
-bytes files, sync'ing each of them after it's creation, and then shutting
-down the filesystem.  Some data may be loss in this operation; for example a
-file may have it's size truncated to zero.
+The MDS subsequently complains that the kernel client is late releasing
+caps.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240717172220.14201-1-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Approximately, a series of changes to this code by commits 49870056005c
+("ceph: convert ceph_readpages to ceph_readahead"), 2de160417315
+("netfs: Change ->init_request() to return an error code") and
+a5c9dc445139 ("ceph: Make ceph_init_request() check caps on readahead")
+resulted in subtle resource cleanup to be missed. The main culprit is
+the change in error handling in 2de160417315 which meant that a failure
+in init_request() would no longer cause cleanup to be called. That
+would prevent the ceph_put_cap_refs() call which would cleanup the
+leaked cap ref.
+
+Cc: stable@vger.kernel.org
+Fixes: a5c9dc445139 ("ceph: Make ceph_init_request() check caps on readahead")
+Link: https://tracker.ceph.com/issues/67008
+Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/fast_commit.c |   15 ++++++++++++++-
- fs/jbd2/journal.c     |    2 +-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ fs/ceph/addr.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -1295,8 +1295,21 @@ static void ext4_fc_cleanup(journal_t *j
- 		list_del_init(&iter->i_fc_list);
- 		ext4_clear_inode_state(&iter->vfs_inode,
- 				       EXT4_STATE_FC_COMMITTING);
--		if (tid_geq(tid, iter->i_sync_tid))
-+		if (tid_geq(tid, iter->i_sync_tid)) {
- 			ext4_fc_reset_inode(&iter->vfs_inode);
-+		} else if (full) {
-+			/*
-+			 * We are called after a full commit, inode has been
-+			 * modified while the commit was running. Re-enqueue
-+			 * the inode into STAGING, which will then be splice
-+			 * back into MAIN. This cannot happen during
-+			 * fastcommit because the journal is locked all the
-+			 * time in that case (and tid doesn't increase so
-+			 * tid check above isn't reliable).
-+			 */
-+			list_add_tail(&EXT4_I(&iter->vfs_inode)->i_fc_list,
-+				      &sbi->s_fc_q[FC_Q_STAGING]);
-+		}
- 		/* Make sure EXT4_STATE_FC_COMMITTING bit is clear */
- 		smp_mb();
- #if (BITS_PER_LONG < 64)
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -755,9 +755,9 @@ EXPORT_SYMBOL(jbd2_fc_begin_commit);
-  */
- static int __jbd2_fc_end_commit(journal_t *journal, tid_t tid, bool fallback)
- {
--	jbd2_journal_unlock_updates(journal);
- 	if (journal->j_fc_cleanup_callback)
- 		journal->j_fc_cleanup_callback(journal, 0, tid);
-+	jbd2_journal_unlock_updates(journal);
- 	write_lock(&journal->j_state_lock);
- 	journal->j_flags &= ~JBD2_FAST_COMMIT_ONGOING;
- 	if (fallback)
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -468,8 +468,11 @@ static int ceph_init_request(struct netf
+ 	rreq->netfs_priv = priv;
+ 
+ out:
+-	if (ret < 0)
++	if (ret < 0) {
++		if (got)
++			ceph_put_cap_refs(ceph_inode(inode), got);
+ 		kfree(priv);
++	}
+ 
+ 	return ret;
+ }
 
 
 
