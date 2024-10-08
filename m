@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1045994CB8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B946994ED9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB02284A8C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25F51B207A7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B3C1DF994;
-	Tue,  8 Oct 2024 12:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA2D1DF273;
+	Tue,  8 Oct 2024 13:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LM1QtpeT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7s4K1tG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66F41DE8A0;
-	Tue,  8 Oct 2024 12:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B99D1DEFEA;
+	Tue,  8 Oct 2024 13:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392193; cv=none; b=UJ8Znm3uoWSfaSa3oUjLOY5owpTQm1PMTangaWSa9RfkuM8Bdc1Flp7FYxEZ+QAdoq3zvHQSeALIDD3p7YYEW/dR0Obut+rjOyJ5Jh8AY2hTbWCvNm0Bqn7GHsj5ApVaIaSthPvnScrnF9IqxVhqxeFBAONCqPOaZkF3mWtc80U=
+	t=1728393249; cv=none; b=bvkpfmQSokJ6RV3FzAaMzRyxaHt1O3xpSo+0cp8EzGUJf8+MtOPbRaK9U+NWEKpiDWehj2GjWzAsQllhbMoxclk/li0Hd/DuGocPDY5xRIrMPiZnLbG205JaIqo2vAbj2iJ+MqZL8QxWM12ipGzNamaJ3dio2r+rmF1/BsdhCOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392193; c=relaxed/simple;
-	bh=ku9t2aQRmZbFRGH0rWjHs+tnC+Wj4N/4wIdsfLQs3mA=;
+	s=arc-20240116; t=1728393249; c=relaxed/simple;
+	bh=o9/wU2DMdxatRmlpQkd8si3cUUg0rZPcrZPL/f/UwD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlIH5qEskKr2txYqTZ6LTmNbYtYPB4XyighIrxgsFrQrwowfTd5H5o9lvSfE/prgEv8vv7uEaX4H03Q5ERd9PjI+S8WR3XnNDLkpEVmNWfN0zn0+3wujTIrBLQoSBaJAvRzuSdmo3lWgcAO/4Yc3hYJtf8r4hQDMHyaJLehHwWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LM1QtpeT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC57C4CEC7;
-	Tue,  8 Oct 2024 12:56:33 +0000 (UTC)
+	 MIME-Version; b=jtgXW8pOKvcyKews9pk3BtEbi8f+FjgBmH7n3szq0hzsQQIKyTnd3ZuzLEB42dlQ03+cG+NM06iU8NbwBkXeU8OnGk4/jecwryCaC9koGHEO1elNiKEwlK4TQ0sGm0X5bRKm0RJnIdq0y2T91+E0hVJZDyClJUNYZDShVpeMHpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7s4K1tG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC94C4CEC7;
+	Tue,  8 Oct 2024 13:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392193;
-	bh=ku9t2aQRmZbFRGH0rWjHs+tnC+Wj4N/4wIdsfLQs3mA=;
+	s=korg; t=1728393249;
+	bh=o9/wU2DMdxatRmlpQkd8si3cUUg0rZPcrZPL/f/UwD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LM1QtpeT6I8a0w8IfrVOdPBEy5+4myBmo0lAiTIlErswlAIycmMFzRBsOgHRH4cDJ
-	 z/WyqhqH4Qwxed+kMzrB282bFxYQ1A2evaDP4ykNyRuDoVAyKuNr4Eaj77Mnai/Yne
-	 1cetzfskGsEsjI0kN8RvZIwdC+FbDTFcwLDWOt5g=
+	b=b7s4K1tGhG4uD2iU3H07w7NzLTZqjtbzvukCivDtMJYYDNHcfcv1nwLu2RF7zjMKO
+	 tOuC+T4t3cRY8aPknjeG2N2eW6DhVELAssbU3qDEM+KBacFVvEQDNtel6VYY/L6fAc
+	 PPRTcUfxAANHMDRWZMDJ9ekDsvv5pjNpBpsznUMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 312/558] bpftool: Fix undefined behavior in qsort(NULL, 0, ...)
+Subject: [PATCH 6.6 097/386] wifi: iwlwifi: mvm: avoid NULL pointer dereference
 Date: Tue,  8 Oct 2024 14:05:42 +0200
-Message-ID: <20241008115714.589546049@linuxfoundation.org>
+Message-ID: <20241008115633.266051069@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit f04e2ad394e2755d0bb2d858ecb5598718bf00d5 ]
+[ Upstream commit 557a6cd847645e667f3b362560bd7e7c09aac284 ]
 
-When netfilter has no entry to display, qsort is called with
-qsort(NULL, 0, ...). This results in undefined behavior, as UBSan
-reports:
+iwl_mvm_tx_skb_sta() and iwl_mvm_tx_mpdu() verify that the mvmvsta
+pointer is not NULL.
+It retrieves this pointer using iwl_mvm_sta_from_mac80211, which is
+dereferencing the ieee80211_sta pointer.
+If sta is NULL, iwl_mvm_sta_from_mac80211 will dereference a NULL
+pointer.
+Fix this by checking the sta pointer before retrieving the mvmsta
+from it. If sta is not NULL, then mvmsta isn't either.
 
-net.c:827:2: runtime error: null pointer passed as argument 1, which is declared to never be null
-
-Although the C standard does not explicitly state whether calling qsort
-with a NULL pointer when the size is 0 constitutes undefined behavior,
-Section 7.1.4 of the C standard (Use of library functions) mentions:
-
-"Each of the following statements applies unless explicitly stated
-otherwise in the detailed descriptions that follow: If an argument to a
-function has an invalid value (such as a value outside the domain of
-the function, or a pointer outside the address space of the program, or
-a null pointer, or a pointer to non-modifiable storage when the
-corresponding parameter is not const-qualified) or a type (after
-promotion) not expected by a function with variable number of
-arguments, the behavior is undefined."
-
-To avoid this, add an early return when nf_link_info is NULL to prevent
-calling qsort with a NULL pointer.
-
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910150207.3179306-1-visitorckw@gmail.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20240825191257.880921ce23b7.I340052d70ab6d3410724ce955eb00da10e08188f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/net.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index ad2ea6cf2db11..0f2106218e1f0 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -824,6 +824,9 @@ static void show_link_netfilter(void)
- 		nf_link_count++;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 3adb1acc07191..ce5f2bdde1388 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -1145,6 +1145,9 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	bool is_ampdu = false;
+ 	int hdrlen;
  
-+	if (!nf_link_info)
-+		return;
++	if (WARN_ON_ONCE(!sta))
++		return -1;
 +
- 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
+ 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 	fc = hdr->frame_control;
+ 	hdrlen = ieee80211_hdrlen(fc);
+@@ -1152,9 +1155,6 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	if (IWL_MVM_NON_TRANSMITTING_AP && ieee80211_is_probe_resp(fc))
+ 		return -1;
  
- 	for (id = 0; id < nf_link_count; id++) {
+-	if (WARN_ON_ONCE(!mvmsta))
+-		return -1;
+-
+ 	if (WARN_ON_ONCE(mvmsta->deflink.sta_id == IWL_MVM_INVALID_STA))
+ 		return -1;
+ 
+@@ -1285,7 +1285,7 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
+ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 		       struct ieee80211_sta *sta)
+ {
+-	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
++	struct iwl_mvm_sta *mvmsta;
+ 	struct ieee80211_tx_info info;
+ 	struct sk_buff_head mpdus_skbs;
+ 	struct ieee80211_vif *vif;
+@@ -1294,9 +1294,11 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	struct sk_buff *orig_skb = skb;
+ 	const u8 *addr3;
+ 
+-	if (WARN_ON_ONCE(!mvmsta))
++	if (WARN_ON_ONCE(!sta))
+ 		return -1;
+ 
++	mvmsta = iwl_mvm_sta_from_mac80211(sta);
++
+ 	if (WARN_ON_ONCE(mvmsta->deflink.sta_id == IWL_MVM_INVALID_STA))
+ 		return -1;
+ 
 -- 
 2.43.0
 
