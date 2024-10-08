@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-81999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC58A994A8F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CF1994D54
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75CEC1F21E6D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D95441F23033
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23F31DE2CF;
-	Tue,  8 Oct 2024 12:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AFD1DE2AE;
+	Tue,  8 Oct 2024 13:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylAZ8E4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6+9kaoi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD661DA60C;
-	Tue,  8 Oct 2024 12:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F231C9B99;
+	Tue,  8 Oct 2024 13:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390837; cv=none; b=PpL7noNoFEZwDHvdZ2wAqve/3la1XVL0/AclWbgYq/Q4gByVsJAme7TSYqVEyIukSUUrrZBLTyzusChwzdht4YVK4rf9NrjcWNHRYwAEyHOuZ+3eoiPKX4N3q6DCrtI/N2wrIhj4x4d1jaDMr4M4F6UfWM4fAbsNNZfAXzp19oA=
+	t=1728392667; cv=none; b=rhldkHIaXQeA9qbrJx3z3mcnWSz0rxrT2sx2TsbNI0lXQNNugcb+F+P9vfGNTbNTfKE5QJ8T9YG0uO0vsrbnMDShqTMjv3A4N8hUfeHxhyG9Xq0XpAc88ro5cifBkOzzXE89ngpky8Ps9YyIDFEaldNvFl3X+cRjXLx4WjGMtu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390837; c=relaxed/simple;
-	bh=XlV7Lb2irJH9K/dEZCSsCIH79uDb/V4rW170ctuBVZk=;
+	s=arc-20240116; t=1728392667; c=relaxed/simple;
+	bh=B/z36iSRDr2iiWOAEC5bjtlQ67068V6KAdpJ+h+9xcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/g1TqOtZGu8Iif4MNB2rbAuI2oha2dNq4fEmG10oa3f/4HgKRen9L8w1ghh5dTNDVLe+jLGoqb/0u6n7RSntuQe6Rc9gMi4Pr6ZZ/+kEE/vCklhrVm845XK8SLXnAfXBf2eCAw2yO9yKbdKLEut5NHxugVStOqBpAiW5kT2CxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylAZ8E4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02DFFC4CEC7;
-	Tue,  8 Oct 2024 12:33:56 +0000 (UTC)
+	 MIME-Version; b=bIS4aWIY6vDCjNTKPZuoXSbUIr5frzDemIrDHg0jgNgyoggHLWdCSUrDoe7i0xrSR8i31ojBwzLTih1HN/Xi04KIMXhH3FPq0om4T+cRLZ5xDVe6Y8bfxV8AIaom+EJWEOymE2iXoGiSOoXD6+esEGqcCEETv6RMfcMBBWAkvEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6+9kaoi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3E6C4CEC7;
+	Tue,  8 Oct 2024 13:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390837;
-	bh=XlV7Lb2irJH9K/dEZCSsCIH79uDb/V4rW170ctuBVZk=;
+	s=korg; t=1728392667;
+	bh=B/z36iSRDr2iiWOAEC5bjtlQ67068V6KAdpJ+h+9xcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylAZ8E4bGkv6CRsysoIJddxhsw0Z/rFf4AQX2h1TDCtVsvXhUaYS6GqJ7ZuMT9+uh
-	 VB2D6AEb6s+zeRurdXmvPEXr0bySPZSOXsOXr0tOGjwYwIYWQZ0VY3+JW6EXC95UaS
-	 zoNjszAiTpEjylptLMKA9aN/jy/ZpbuJAY1Oi6Yc=
+	b=x6+9kaoiEALZ75Yf7GPTzZJyyBQR0h2+Ukn7KoNjdIUTCjSoqvM76afTK252wZT3A
+	 JB/rc0fbHYFJjIiBVB7wXUaOwbCBhxQYWrGp85PPBI00HiO33ijDzbDLUvocwTQrSk
+	 AxHLAivJQnDmGnhwSmXoln+oc55BI9RvbJUiUmnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.10 409/482] Input: adp5589-keys - fix NULL pointer dereference
+	syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.11 442/558] riscv: Fix kernel stack size when KASAN is enabled
 Date: Tue,  8 Oct 2024 14:07:52 +0200
-Message-ID: <20241008115704.503645665@linuxfoundation.org>
+Message-ID: <20241008115719.659134230@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit fb5cc65f973661241e4a2b7390b429aa7b330c69 upstream.
+commit cfb10de18538e383dbc4f3ce7f477ce49287ff3d upstream.
 
-We register a devm action to call adp5589_clear_config() and then pass
-the i2c client as argument so that we can call i2c_get_clientdata() in
-order to get our device object. However, i2c_set_clientdata() is only
-being set at the end of the probe function which means that we'll get a
-NULL pointer dereference in case the probe function fails early.
+We use Kconfig to select the kernel stack size, doubling the default
+size if KASAN is enabled.
 
-Fixes: 30df385e35a4 ("Input: adp5589-keys - use devm_add_action_or_reset() for register clear")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-1-fca0149dfc47@analog.com
+But that actually only works if KASAN is selected from the beginning,
+meaning that if KASAN config is added later (for example using
+menuconfig), CONFIG_THREAD_SIZE_ORDER won't be updated, keeping the
+default size, which is not enough for KASAN as reported in [1].
+
+So fix this by moving the logic to compute the right kernel stack into a
+header.
+
+Fixes: a7555f6b62e7 ("riscv: stack: Add config of thread stack size")
+Reported-by: syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000eb301906222aadc2@google.com/ [1]
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240917150328.59831-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/adp5589-keys.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/riscv/Kconfig                   |    3 +--
+ arch/riscv/include/asm/thread_info.h |    7 ++++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/input/keyboard/adp5589-keys.c
-+++ b/drivers/input/keyboard/adp5589-keys.c
-@@ -936,10 +936,9 @@ static int adp5589_keypad_add(struct adp
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -763,8 +763,7 @@ config IRQ_STACKS
+ config THREAD_SIZE_ORDER
+ 	int "Kernel stack size (in power-of-two numbers of page size)" if VMAP_STACK && EXPERT
+ 	range 0 4
+-	default 1 if 32BIT && !KASAN
+-	default 3 if 64BIT && KASAN
++	default 1 if 32BIT
+ 	default 2
+ 	help
+ 	  Specify the Pages of thread stack size (from 4KB to 64KB), which also
+--- a/arch/riscv/include/asm/thread_info.h
++++ b/arch/riscv/include/asm/thread_info.h
+@@ -13,7 +13,12 @@
+ #include <linux/sizes.h>
  
- static void adp5589_clear_config(void *data)
- {
--	struct i2c_client *client = data;
--	struct adp5589_kpad *kpad = i2c_get_clientdata(client);
-+	struct adp5589_kpad *kpad = data;
+ /* thread information allocation */
+-#define THREAD_SIZE_ORDER	CONFIG_THREAD_SIZE_ORDER
++#ifdef CONFIG_KASAN
++#define KASAN_STACK_ORDER	1
++#else
++#define KASAN_STACK_ORDER	0
++#endif
++#define THREAD_SIZE_ORDER	(CONFIG_THREAD_SIZE_ORDER + KASAN_STACK_ORDER)
+ #define THREAD_SIZE		(PAGE_SIZE << THREAD_SIZE_ORDER)
  
--	adp5589_write(client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
-+	adp5589_write(kpad->client, kpad->var->reg(ADP5589_GENERAL_CFG), 0);
- }
- 
- static int adp5589_probe(struct i2c_client *client)
-@@ -983,7 +982,7 @@ static int adp5589_probe(struct i2c_clie
- 	}
- 
- 	error = devm_add_action_or_reset(&client->dev, adp5589_clear_config,
--					 client);
-+					 kpad);
- 	if (error)
- 		return error;
- 
-@@ -1010,8 +1009,6 @@ static int adp5589_probe(struct i2c_clie
- 	if (error)
- 		return error;
- 
--	i2c_set_clientdata(client, kpad);
--
- 	dev_info(&client->dev, "Rev.%d keypad, irq %d\n", revid, client->irq);
- 	return 0;
- }
+ /*
 
 
 
