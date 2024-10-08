@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-81888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6820D9949FA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EBA994ECE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A0071C24B18
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6EA2B24D38
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6954A1DEFEC;
-	Tue,  8 Oct 2024 12:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4768C1DF275;
+	Tue,  8 Oct 2024 13:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lugk0kGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+f+RTLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277DC1DEFE4;
-	Tue,  8 Oct 2024 12:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D311DED60;
+	Tue,  8 Oct 2024 13:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390473; cv=none; b=tzBF3wL3ChkOjPapMU4qpXC6NtyC5/c8gvErnJA4tgn38VGWYyRfKXmlrGkspx+x5ab5I/8wBkGw+potdPr30ECeI8jdGBCuzqmuiSKOAXyzEw/Kkl7tnSCo62qHzHGR+eEaFKo1Ed9E+xzs+ArEudUp2xOyUwD+Jvxz7PdfhZA=
+	t=1728393334; cv=none; b=VCC/LQTGjaL2ngi9GK8BYCQAYNeOfgaH5yx7qJHy1qnNjZvA2Zt05FAeEzaQXprGYVJeDoHoRuMcg9PyMyVG0/o36Qwg+oM3JpBfFW2RF3nnrTFqP3a0MqWimi1gvJ7GxJj0Ks9LQX83s/9+L0gjumBUflNznRhn7XinxSxx34M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390473; c=relaxed/simple;
-	bh=f6VHJpZGwmjZeCi0ukJuKH19S2yJ7mUB/azYCUngjS8=;
+	s=arc-20240116; t=1728393334; c=relaxed/simple;
+	bh=jDAjvmUc9qIfDdIp/Qnc0ZfTZDPm7I9FC+3cqbFbBUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RoTfeRzEj7K2K9xP/IeK/ga1fUzpfIC41Kf1t6osUvTWePeqUeu6p6ADKK3B9ebo0rWxNs50b9FJKL6DLrB2Nkg6a6/6i3rIcAYxvkP4QmrW+med/ff23E1Y/gcNWfVu/+xJS/NOYCEO/n33ICxzXiPUQ8T6v4vC9bEm7fSLTKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lugk0kGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E447C4CECF;
-	Tue,  8 Oct 2024 12:27:52 +0000 (UTC)
+	 MIME-Version; b=QR7bkPeOoq0NnljY4mAk/K8KL1hMZst5+5jN/pGMxy1ZwmhU7hqhs6xnB2JJIXtETw02iVxHz1Vi2XTUjLoEmEhJ5YYwKyS9/2vRHZdx8lRCgk+aPVr5m9D8icn4wI8+vAMVggCWf56EXdo69qu9BBYdYny/mNM73DYHUCUp/xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+f+RTLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C22EC4CECD;
+	Tue,  8 Oct 2024 13:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390473;
-	bh=f6VHJpZGwmjZeCi0ukJuKH19S2yJ7mUB/azYCUngjS8=;
+	s=korg; t=1728393333;
+	bh=jDAjvmUc9qIfDdIp/Qnc0ZfTZDPm7I9FC+3cqbFbBUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lugk0kGvCLZzcuZwlcnq/qHoOnuVHLa0UJU3f8sqNP30E7oixmbnp9IlNhkttYExM
-	 BxSQtAeZRT92vgkPDJWAXCaffsWoa+sN/GkyFtT489J9SLAhi4LdgXjJ+l1yNNVeli
-	 BbV9aVytmT2BvMQdxwQClnhCiT4q/3hYDJ/0vesE=
+	b=T+f+RTLTbdP0dBBJKxtbhx0rMWVBq7BFdJF/lGyRcgHIajRJj9c9rLiBN8Yt3ftMf
+	 p/h3nqNB0HjyzRtNa47eCTP2bhXLY4vKJwWeX/owr2vzgo2p9GKaQZw4Rc10pv8L5q
+	 USyh5lO87VWmlPy6Tl62WjBL7YhACqyHKqDXveuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.10 300/482] rust: sync: require `T: Sync` for `LockedBy::access`
-Date: Tue,  8 Oct 2024 14:06:03 +0200
-Message-ID: <20241008115700.090419466@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 119/386] ALSA: hdsp: Break infinite MIDI input flush loop
+Date: Tue,  8 Oct 2024 14:06:04 +0200
+Message-ID: <20241008115634.122525875@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit a8ee30f45d5d57467ddb7877ed6914d0eba0af7f upstream.
+[ Upstream commit c01f3815453e2d5f699ccd8c8c1f93a5b8669e59 ]
 
-The `LockedBy::access` method only requires a shared reference to the
-owner, so if we have shared access to the `LockedBy` from several
-threads at once, then two threads could call `access` in parallel and
-both obtain a shared reference to the inner value. Thus, require that
-`T: Sync` when calling the `access` method.
+The current MIDI input flush on HDSP and HDSPM drivers relies on the
+hardware reporting the right value.  If the hardware doesn't give the
+proper value but returns -1, it may be stuck at an infinite loop.
 
-An alternative is to require `T: Sync` in the `impl Sync for LockedBy`.
-This patch does not choose that approach as it gives up the ability to
-use `LockedBy` with `!Sync` types, which is okay as long as you only use
-`access_mut`.
+Add a counter and break if the loop is unexpectedly too long.
 
-Cc: stable@vger.kernel.org
-Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/r/20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20240808091513.31380-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/sync/locked_by.rs |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ sound/pci/rme9652/hdsp.c  | 6 ++++--
+ sound/pci/rme9652/hdspm.c | 6 ++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/rust/kernel/sync/locked_by.rs
-+++ b/rust/kernel/sync/locked_by.rs
-@@ -83,8 +83,12 @@ pub struct LockedBy<T: ?Sized, U: ?Sized
- // SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
- unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
+diff --git a/sound/pci/rme9652/hdsp.c b/sound/pci/rme9652/hdsp.c
+index e7d1b43471a29..713ca262a0e97 100644
+--- a/sound/pci/rme9652/hdsp.c
++++ b/sound/pci/rme9652/hdsp.c
+@@ -1298,8 +1298,10 @@ static int snd_hdsp_midi_output_possible (struct hdsp *hdsp, int id)
  
--// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
--// data it protects is `Send`.
-+// SAFETY: If `T` is not `Sync`, then parallel shared access to this `LockedBy` allows you to use
-+// `access_mut` to hand out `&mut T` on one thread at the time. The requirement that `T: Send` is
-+// sufficient to allow that.
-+//
-+// If `T` is `Sync`, then the `access` method also becomes available, which allows you to obtain
-+// several `&T` from several threads at once. However, this is okay as `T` is `Sync`.
- unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
+ static void snd_hdsp_flush_midi_input (struct hdsp *hdsp, int id)
+ {
+-	while (snd_hdsp_midi_input_available (hdsp, id))
+-		snd_hdsp_midi_read_byte (hdsp, id);
++	int count = 256;
++
++	while (snd_hdsp_midi_input_available(hdsp, id) && --count)
++		snd_hdsp_midi_read_byte(hdsp, id);
+ }
  
- impl<T, U> LockedBy<T, U> {
-@@ -118,7 +122,10 @@ impl<T: ?Sized, U> LockedBy<T, U> {
-     ///
-     /// Panics if `owner` is different from the data protected by the lock used in
-     /// [`new`](LockedBy::new).
--    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
-+    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-+    where
-+        T: Sync,
-+    {
-         build_assert!(
-             size_of::<U>() > 0,
-             "`U` cannot be a ZST because `owner` wouldn't be unique"
-@@ -127,7 +134,10 @@ impl<T: ?Sized, U> LockedBy<T, U> {
-             panic!("mismatched owners");
-         }
+ static int snd_hdsp_midi_output_write (struct hdsp_midi *hmidi)
+diff --git a/sound/pci/rme9652/hdspm.c b/sound/pci/rme9652/hdspm.c
+index 267c7848974ae..74215f57f4fc9 100644
+--- a/sound/pci/rme9652/hdspm.c
++++ b/sound/pci/rme9652/hdspm.c
+@@ -1838,8 +1838,10 @@ static inline int snd_hdspm_midi_output_possible (struct hdspm *hdspm, int id)
  
--        // SAFETY: `owner` is evidence that the owner is locked.
-+        // SAFETY: `owner` is evidence that there are only shared references to the owner for the
-+        // duration of 'a, so it's not possible to use `Self::access_mut` to obtain a mutable
-+        // reference to the inner value that aliases with this shared reference. The type is `Sync`
-+        // so there are no other requirements.
-         unsafe { &*self.data.get() }
-     }
+ static void snd_hdspm_flush_midi_input(struct hdspm *hdspm, int id)
+ {
+-	while (snd_hdspm_midi_input_available (hdspm, id))
+-		snd_hdspm_midi_read_byte (hdspm, id);
++	int count = 256;
++
++	while (snd_hdspm_midi_input_available(hdspm, id) && --count)
++		snd_hdspm_midi_read_byte(hdspm, id);
+ }
  
+ static int snd_hdspm_midi_output_write (struct hdspm_midi *hmidi)
+-- 
+2.43.0
+
 
 
 
