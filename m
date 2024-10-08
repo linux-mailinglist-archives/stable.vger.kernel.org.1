@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-82829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A929994EA6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3B4994EE5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF732834EC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26DCC1F2242F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E65D1DEFCE;
-	Tue,  8 Oct 2024 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376341DFD99;
+	Tue,  8 Oct 2024 13:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="047F3gpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGq/Fdhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4721DE4CD;
-	Tue,  8 Oct 2024 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE371DF97A;
+	Tue,  8 Oct 2024 13:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393565; cv=none; b=ekwwLJLOrG0ccRSPBTMHxjxCMlg778WznQvM+eC3sHzE4YmuxaSDdSQfs/pTWrSmPRL192kRuTJgdLCNxe0jTxQutQDAGJ4axXEkRK3O3CXT3mI6Bz6mSGUwsPCjwyEbd6NqhJyg8uzTGJSf+nUjlWdehFZonPiP2t8+a8n1lHQ=
+	t=1728393703; cv=none; b=Q0Uu0gx+/WzS6enB3GOSOf6DOLxAGwXFRxhuoBf9O14hs4MT6F211tUy5CsI/clgxeXQH4K/RRAibH1PiJcLQZnfYBa+Pgos4PcCwTADPmBdc1vnVvT5gpMyKpuwc4DYoEch5BVxbD3OKVBa2RRvD+6BqWKMYe/JswA5BW6JveA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393565; c=relaxed/simple;
-	bh=914+aOZ4B8g+5sXHzfee8MlAoPHg/vAdN09lF4nfxnM=;
+	s=arc-20240116; t=1728393703; c=relaxed/simple;
+	bh=DVIy1o1OrokRooawjd1rfFWLDOEYfFX4n/5tlle1bI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGWAtfXy3YueG0OXOUeua+vl3v5iBfKvS0alZ/JYmJ453cIXBhOy5Q9UPP/oI8p+qep5uErl7j/sQo015piTzViY7A1X0SUkA0OY9NYtdlYyZw6/8T9LmduAf8GDssBzmV0+CLggoCd76mLFVhziF7rnwhXKCfaVeMoxagdeGA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=047F3gpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44B7C4CEC7;
-	Tue,  8 Oct 2024 13:19:24 +0000 (UTC)
+	 MIME-Version; b=n9VQMt7YBDaZjSSY3iv+TVBiOWbr9Dgt/yO7UY+IbqMJxQbbBVrxGj/T0xt4fA26JBX35IsDnWr2k4/YyWY3c30MvsBIHUAQqJOc0ARNz63+8elgCOY8W8j6nN3Hy0+lnQlZIoHawz3mLvoGgYnbjddclSCOZQb5W2zBLWYNIMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGq/Fdhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B7DC4CEC7;
+	Tue,  8 Oct 2024 13:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393565;
-	bh=914+aOZ4B8g+5sXHzfee8MlAoPHg/vAdN09lF4nfxnM=;
+	s=korg; t=1728393702;
+	bh=DVIy1o1OrokRooawjd1rfFWLDOEYfFX4n/5tlle1bI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=047F3gpqiao/W080Y/brScRZ+IlV4XZ/7rToMMf6/Rme+Hj2BpEON6bNt5kR99HhD
-	 hQtw/degUbNb/3oroVdkp0GxGHVj45HI6cJ77W3hK70AOtZDdEvOsdcvhbDowRdzIg
-	 Kf9ar9C5843BKQuEqBPXqAbVAB5gDStoTBGeWHCU=
+	b=dGq/FdhuWJoiI1rocPTJxZTU2EqLfC+7CClnGDX9g2JvEPCR1HsvLM//2RaNG/bFm
+	 S4zOcQJgYIm0yfi8bk4JjfjAjbhMaRLw0vlB/oW2G398t35DLbzOnvt8fx+n8/yVlY
+	 ohp1n5MkGm4VuE2EHx8plomhiZfyFVXLtbgo5188=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/386] spi: spi-cadence: Fix pm_runtime_set_suspended() with runtime pm enabled
-Date: Tue,  8 Oct 2024 14:07:13 +0200
-Message-ID: <20241008115636.809384185@linuxfoundation.org>
+Subject: [PATCH 6.6 189/386] spi: spi-cadence: Fix missing spi_controller_is_target() check
+Date: Tue,  8 Oct 2024 14:07:14 +0200
+Message-ID: <20241008115636.848125554@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
 References: <20241008115629.309157387@linuxfoundation.org>
@@ -68,42 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 67d4a70faa662df07451e83db1546d3ca0695e08 ]
+[ Upstream commit 3eae4a916fc0eb6f85b5d399e10335dbd24dd765 ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+The spi_controller_is_target() check is missing for pm_runtime_disable()
+in cdns_spi_remove(), add it.
 
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+Fixes: b1b90514eaa3 ("spi: spi-cadence: Add support for Slave mode")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240923040015.3009329-3-ruanjinjie@huawei.com
+Link: https://patch.msgid.link/20240923040015.3009329-4-ruanjinjie@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-cadence.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index e5140532071d2..316da99f798c8 100644
+index 316da99f798c8..81edf0a3ddf84 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -665,8 +665,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 
- clk_dis_all:
- 	if (!spi_controller_is_target(ctlr)) {
--		pm_runtime_set_suspended(&pdev->dev);
- 		pm_runtime_disable(&pdev->dev);
-+		pm_runtime_set_suspended(&pdev->dev);
- 	}
- remove_ctlr:
- 	spi_controller_put(ctlr);
-@@ -688,8 +688,8 @@ static void cdns_spi_remove(struct platform_device *pdev)
+@@ -688,8 +688,10 @@ static void cdns_spi_remove(struct platform_device *pdev)
  
  	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
  
+-	pm_runtime_disable(&pdev->dev);
 -	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
++	if (!spi_controller_is_target(ctlr)) {
++		pm_runtime_disable(&pdev->dev);
++		pm_runtime_set_suspended(&pdev->dev);
++	}
  
  	spi_unregister_controller(ctlr);
  }
