@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-82449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E58994D44
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055A7994EA0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD59FB2B721
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36CAA1C24C8A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FF01DE8BE;
-	Tue,  8 Oct 2024 12:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367901DED48;
+	Tue,  8 Oct 2024 13:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIkMMsYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpvVi6gq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DA71DE89D;
-	Tue,  8 Oct 2024 12:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74221DE4CC;
+	Tue,  8 Oct 2024 13:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392299; cv=none; b=JHUZ62ttS0O3Kewf3QwbqZiQXeVDpd2BY1pLRMrWBxQlIhv9dNYuj2UYmQV/v5n99AAREhpvuNntAMkKzmH5YJ+zDo9NMpJMVasn902twx419cPFVpQB6RGeCBaELw2Ge5YHd92c0wKGsDlfgiYS8PncZJp3dYHPaY4O25MFOZQ=
+	t=1728393552; cv=none; b=GGDoYCWT5Jc2WQ9aF/Ow8BRx0BFwLbSX4vIXK/9SAyyTKN3jwpkBy+MEgFtZ7Gs5qCc0+7SCJLscOaoBDdG5MLsne+X/0njeoCxnX8Ii7o997hryIe3j847I7LY2cZtuHzIh+oA3gbZv5ro+hob6+dtx5RaZwfBPBpjvaO/r3bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392299; c=relaxed/simple;
-	bh=eWdvvsG6Y2OILL3tJfF3ri2BGVcBxXT/sOIVOL8Kfic=;
+	s=arc-20240116; t=1728393552; c=relaxed/simple;
+	bh=3x5AavfRmDvNRMiZnMjHR5ixBr/0YwEx2PtM7wRkDaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UN2SqLL1Kd+V69L+NiAOixeruAggvXUq8Y4eMHh6OZko44xiVEsw4Hq/7vxKHOOAxvzn+kyfYEVX+IblbzRLpSuXTcVgnCMjIVFGivAn9dGI+z2k9bq0U1CF4NEnWEcwwtYQJIIhekToievozzFj/0yrjjsCom8/dPUwmRk1ikE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIkMMsYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C76C4CEC7;
-	Tue,  8 Oct 2024 12:58:18 +0000 (UTC)
+	 MIME-Version; b=JtlN0BckDp+dPvEfR8naAJba2zA5hQaU1PQqGHADOxeJzuy/HMyezYY+OwJdMtCe6NvTjhV+vyafNJ/jNlb7qEHE9QzI+EQLfysiVQe53NQhR/EB1oZEaFMQktc/GT2OJYgYpT5nvlylYAQIkKC4GVCfiQjhQbE6FqQigCLdB3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpvVi6gq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04476C4CEC7;
+	Tue,  8 Oct 2024 13:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392299;
-	bh=eWdvvsG6Y2OILL3tJfF3ri2BGVcBxXT/sOIVOL8Kfic=;
+	s=korg; t=1728393551;
+	bh=3x5AavfRmDvNRMiZnMjHR5ixBr/0YwEx2PtM7wRkDaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MIkMMsYlFeNHeDdtKvQCzp/6vLHwjnALR7r4jpNrgdNT0vCYd2exDOEzUG5q4Dnxw
-	 RnuZPEHdqbaFIq2jnzD1ULr4VAt7S3ePR8U2+YdMQQFLrvmScx6jJ3dznV8T79b9+a
-	 trV1uWam3AKb2bTLYVLZa1RoSRijnMSc6JWOkc5E=
+	b=vpvVi6gqc5vBO18w1pgQHUdKGaj+RbNQ0GOF6AEzlRHZdz4EaPfxah9b5EsEkKX0V
+	 rzUZ9yDQaphY5hWQfBkhNfIns3fKrcDCEGBMOCs8fBTSn1Gu/KLBZn8q+mrdl79Fuj
+	 11iyvtG9nwJGR48eWbm9uN/fpvWljLlT0h88hcds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 373/558] ALSA: core: add isascii() check to card ID generator
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 158/386] drm/amd/display: Fix index out of bounds in DCN30 color transformation
 Date: Tue,  8 Oct 2024 14:06:43 +0200
-Message-ID: <20241008115716.973629715@linuxfoundation.org>
+Message-ID: <20241008115635.643797285@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +67,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit d278a9de5e1837edbe57b2f1f95a104ff6c84846 upstream.
+[ Upstream commit d81873f9e715b72d4f8d391c8eb243946f784dfc ]
 
-The card identifier should contain only safe ASCII characters. The isalnum()
-returns true also for characters for non-ASCII characters.
+This commit addresses a potential index out of bounds issue in the
+`cm3_helper_translate_curve_to_hw_format` function in the DCN30 color
+management module. The issue could occur when the index 'i' exceeds the
+number of transfer function points (TRANSFER_FUNC_POINTS).
 
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4135
-Link: https://lore.kernel.org/linux-sound/yk3WTvKkwheOon_LzZlJ43PPInz6byYfBzpKkbasww1yzuiMRqn7n6Y8vZcXB-xwFCu_vb8hoNjv7DTNwH5TWjpEuiVsyn9HPCEXqwF4120=@protonmail.com/
-Cc: stable@vger.kernel.org
-Reported-by: Barnabás Pőcze <pobrn@protonmail.com>
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20241002194649.1944696-1-perex@perex.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, the function returns
+false to indicate an error.
+
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:180 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:181 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:182 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/init.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/core/init.c
-+++ b/sound/core/init.c
-@@ -654,13 +654,19 @@ void snd_card_free(struct snd_card *card
- }
- EXPORT_SYMBOL(snd_card_free);
- 
-+/* check, if the character is in the valid ASCII range */
-+static inline bool safe_ascii_char(char c)
-+{
-+	return isascii(c) && isalnum(c);
-+}
-+
- /* retrieve the last word of shortname or longname */
- static const char *retrieve_id_from_card_name(const char *name)
- {
- 	const char *spos = name;
- 
- 	while (*name) {
--		if (isspace(*name) && isalnum(name[1]))
-+		if (isspace(*name) && safe_ascii_char(name[1]))
- 			spos = name + 1;
- 		name++;
- 	}
-@@ -687,12 +693,12 @@ static void copy_valid_id_string(struct
- {
- 	char *id = card->id;
- 
--	while (*nid && !isalnum(*nid))
-+	while (*nid && !safe_ascii_char(*nid))
- 		nid++;
- 	if (isdigit(*nid))
- 		*id++ = isalpha(*src) ? *src : 'D';
- 	while (*nid && (size_t)(id - card->id) < sizeof(card->id) - 1) {
--		if (isalnum(*nid))
-+		if (safe_ascii_char(*nid))
- 			*id++ = *nid;
- 		nid++;
- 	}
-@@ -787,7 +793,7 @@ static ssize_t id_store(struct device *d
- 
- 	for (idx = 0; idx < copy; idx++) {
- 		c = buf[idx];
--		if (!isalnum(c) && c != '_' && c != '-')
-+		if (!safe_ascii_char(c) && c != '_' && c != '-')
- 			return -EINVAL;
- 	}
- 	memcpy(buf1, buf, copy);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+index e0b1fc92ed186..62c02adae7e76 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+@@ -178,6 +178,8 @@ bool cm3_helper_translate_curve_to_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS)
++				return false;
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+-- 
+2.43.0
+
 
 
 
