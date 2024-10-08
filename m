@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256029949CB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0617994E3B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7767282AE4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE041F22F71
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E7E1DEFDD;
-	Tue,  8 Oct 2024 12:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B9A1DF971;
+	Tue,  8 Oct 2024 13:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyCLVdiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXVvHLT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E606C1DEFD6;
-	Tue,  8 Oct 2024 12:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AF11DE8BE;
+	Tue,  8 Oct 2024 13:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390372; cv=none; b=uuZ0dJL5hTMDzoXx96Ni4mIvqOzDJEZ8T7SVai6dirV2sqDxkAVUpIFKrkTO0ENh5gg3acMfnmNIoux+m94OKbV/6dGEX32E+ATaufkFYUvERaNadEWDnUJkPEaVDeCqz+XOvIgexhsjh2zPAtTWAZ2Wdbp4eKKim6Qx1y9BG9Y=
+	t=1728393246; cv=none; b=PZL0vD+bWx9H813C0AerDfo5dGlfAMkYj+Fwals7cvhsaWKHnb3hY+efsO3UWCO6qMjnk8SrrGYWHLlj5Zat8qZYnRvJd9nVJeVUJDI0P7cDFbQvHmI4FgUsbfXG8R6eIh1t2Dxo/C4ULqlJpkgX41fAuLxJ0LydhCwTcAGAmvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390372; c=relaxed/simple;
-	bh=Dw3qzdsBYRnzfOcBWtfh91FYTCpbuCavPo6KBDPhkXA=;
+	s=arc-20240116; t=1728393246; c=relaxed/simple;
+	bh=hunVHJpD1oRAKYPJ9am59t9++gi0DfwaHnSTz5fqpk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eV2xWoJLpXyRkFKdS5nEH3k9fgVSeQ68n6ARZTPvwPUm9ghQKK/H13Spz2Pwj8P33lkGThDS8jondjhz+Z9jTysUPjQKKiwT1NEV/4BpAz0MO4cZZGHfKlkRX5GBh+Nd1Gl4oyceqzjQNtZaAf7OZAVrOOwBLp4KKIDr67sGeVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyCLVdiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CED1C4CEC7;
-	Tue,  8 Oct 2024 12:26:11 +0000 (UTC)
+	 MIME-Version; b=iY0VDoI19lmD8b/2xrg1fjymuiR9idwRHBCcLn7uK4hirh24sX0NFftV5i8bh9EmssMBmiDfWReEY+Hnvi0KQL3a5iWHZ2cutEG492banqRlfXJSJk4MBE1s3MFA8wAeoagIvYoxhEHvhvG5PVWqpZo2PS84ybr8q4hsUbIJd7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXVvHLT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C43C4CEC7;
+	Tue,  8 Oct 2024 13:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390371;
-	bh=Dw3qzdsBYRnzfOcBWtfh91FYTCpbuCavPo6KBDPhkXA=;
+	s=korg; t=1728393245;
+	bh=hunVHJpD1oRAKYPJ9am59t9++gi0DfwaHnSTz5fqpk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyCLVdiDhfyWC2g9S75YVMDS+8kni/rVmY98LfHAyapLmB0xuXBm9yDIeYCcS42g1
-	 1mCR9Nt4eaTDAgptStsumcCO4h8log2ZpiAPcQezOUlGPQYSvJpVWbe8Tc4z/D3kvo
-	 ZKdtKwoQA3ZXFI4mq1Cn+45hisyrpTc0jGNQTTFc=
+	b=jXVvHLT3Tx+8YmOoPJV3pWiVp7HQSJ5JUgcqYWPD3dItf7e6XQESwzc+jF/gG0k0o
+	 o9LMJx0IjNGfuREXtPi5k4TDZrwmFm1RhyTIbKbtL4+7bqa5fPpsLozxCAsxymXPJj
+	 xZG3H8Za3F6kOOLw7ftgyP6ng/tHqJqfi/VXrVGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Simon Horman <horms@kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 270/482] perf: Really fix event_function_call() locking
+Subject: [PATCH 6.6 088/386] bnxt_en: Extend maximum length of version string by 1 byte
 Date: Tue,  8 Oct 2024 14:05:33 +0200
-Message-ID: <20241008115658.906945403@linuxfoundation.org>
+Message-ID: <20241008115632.918306814@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit fe826cc2654e8561b64246325e6a51b62bf2488c ]
+[ Upstream commit ffff7ee843c351ce71d6e0d52f0f20bea35e18c9 ]
 
-Commit 558abc7e3f89 ("perf: Fix event_function_call() locking") lost
-IRQ disabling by mistake.
+This corrects an out-by-one error in the maximum length of the package
+version string. The size argument of snprintf includes space for the
+trailing '\0' byte, so there is no need to allow extra space for it by
+reducing the value of the size argument by 1.
 
-Fixes: 558abc7e3f89 ("perf: Fix event_function_call() locking")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Found by inspection.
+Compile tested only.
+
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20240813-bnxt-str-v2-1-872050a157e7@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e18a07de9920a..e5188b0899b63 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -263,8 +263,8 @@ static int event_function(void *info)
- static void event_function_call(struct perf_event *event, event_f func, void *data)
- {
- 	struct perf_event_context *ctx = event->ctx;
--	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
-+	struct perf_cpu_context *cpuctx;
- 	struct event_function_struct efs = {
- 		.event = event,
- 		.func = func,
-@@ -292,22 +292,25 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
- 	if (!task_function_call(task, event_function, &efs))
- 		return;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 3c36dd8051485..2e7ddbca9d53b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -3021,7 +3021,7 @@ static void bnxt_get_pkgver(struct net_device *dev)
  
-+	local_irq_disable();
-+	cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	perf_ctx_lock(cpuctx, ctx);
- 	/*
- 	 * Reload the task pointer, it might have been changed by
- 	 * a concurrent perf_event_context_sched_out().
- 	 */
- 	task = ctx->task;
--	if (task == TASK_TOMBSTONE) {
--		perf_ctx_unlock(cpuctx, ctx);
--		return;
--	}
-+	if (task == TASK_TOMBSTONE)
-+		goto unlock;
- 	if (ctx->is_active) {
- 		perf_ctx_unlock(cpuctx, ctx);
-+		local_irq_enable();
- 		goto again;
+ 	if (!bnxt_get_pkginfo(dev, buf, sizeof(buf))) {
+ 		len = strlen(bp->fw_ver_str);
+-		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len - 1,
++		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len,
+ 			 "/pkg %s", buf);
  	}
- 	func(event, NULL, ctx, data);
-+unlock:
- 	perf_ctx_unlock(cpuctx, ctx);
-+	local_irq_enable();
  }
- 
- /*
 -- 
 2.43.0
 
