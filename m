@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-81763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4661B99493C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F01994C1A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4A521F25B4A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7843F283CC9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5F31DF251;
-	Tue,  8 Oct 2024 12:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6D51C9B61;
+	Tue,  8 Oct 2024 12:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uj8aqc0G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZI1ziMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE851DED55;
-	Tue,  8 Oct 2024 12:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FB01D54D1;
+	Tue,  8 Oct 2024 12:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390051; cv=none; b=GZEUzptpHvZPl55EIGLtUJD6QssqcU+G8UAw1evlIhvHO3V6F0sCOb/Xb6791xujHbq0EkP8T+X+hhjOFPw65n98XwfMa7wfVG1EUp2pDaa2NGe509dfkkIx8PHlCRsYaBfgyF3S2bHFvDCBUfB0bJO/ufxo5fKcj+bxiJJULSU=
+	t=1728391831; cv=none; b=UWHYrPdsVlkPNOUxAHpA0gJCBK8vzLEVnhhWekbKbQwpqo0Uq8DrTu1wDXuO8jjFAjgKJh8qSdvzDTy3HBOOCoKonTYB7VxP+PiAmyHfZuBlyYuaXLm7Q2ZmGUrI1+Qop7SDSznrScTG4zkoOZgdXbnabl/dxgT7d1nls9EMEXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390051; c=relaxed/simple;
-	bh=Ws782mtOJxQCEAMRMTr42LUt4DNAWNbS1Y6c/GFduCk=;
+	s=arc-20240116; t=1728391831; c=relaxed/simple;
+	bh=66ABoS6fM6PjsE66djZZxWVfzl0Kv+Ak6QnkcwO7sJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfp6F4FUSeotTHlyom+JokH8cQwgAP5nqr1yVZ+nVRf+NUGb9R+zajGNpKK3Z7Lq6hs9Jk/Yyy0LPsLeATjY/kiOfTr42GtM1S6N67aq7ukjci8TRjugXh++SE1XNGp/zNj5JeyQg9+nlnkj9Fb2uZYxYVJwEC94h1TvINYxIzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uj8aqc0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EFFC4CEC7;
-	Tue,  8 Oct 2024 12:20:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tuCF5p1oQZ32lxyc207p/nBBbEK/EQKZ0aJUJHpj3JyF8OZrok/YYetIE3Ctpz1Y5Ec8ck0lcbAsCa4FtSMgQSx2O5sGDmTgI+mNCHoodFstOik003XuFMYrLYIj631dgS869RqjTi9xEbBOuFMB5gjDtYswYM2EjtCGJ4fFHyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZI1ziMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20290C4CEC7;
+	Tue,  8 Oct 2024 12:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390051;
-	bh=Ws782mtOJxQCEAMRMTr42LUt4DNAWNbS1Y6c/GFduCk=;
+	s=korg; t=1728391831;
+	bh=66ABoS6fM6PjsE66djZZxWVfzl0Kv+Ak6QnkcwO7sJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uj8aqc0Ge6nMwYDwY4cAazyu9XkcogfR0gCnqR+O59SrNq112B5mAsY/IVzDsx409
-	 UVxbPbS5ldED2XbwXGzbzpllxrt7EM1g/FWJV8Pin9lgxxMd+DHHnZ5eJUF11H3mFw
-	 YRIPnqylVwXAXK7+3nfCNgYc8RQ+ikkWNquZxTrc=
+	b=uZI1ziMO32xejcRSLUwXrE03ja7iQbG7/dVhnEDN+M9wJQAKZ7iTkTmgNpzK46ttV
+	 QAysPAJnA322MWWo1Q8wuEama6nQHfpXxCT/TNpwlVdKUZhz5Vo4InLxqc5qChkCyV
+	 hg7d7328ZA2hWiZRVXJdKsWC+te1yq0/3Pdw/7FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 175/482] drm/amd/display: Check null pointers before using them
+Subject: [PATCH 6.11 208/558] drm/amdkfd: amdkfd_free_gtt_mem clear the correct pointer
 Date: Tue,  8 Oct 2024 14:03:58 +0200
-Message-ID: <20241008115655.192606061@linuxfoundation.org>
+Message-ID: <20241008115710.528594001@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,166 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 1ff12bcd7deaeed25efb5120433c6a45dd5504a8 ]
+[ Upstream commit c86ad39140bbcb9dc75a10046c2221f657e8083b ]
 
-[WHAT & HOW]
-These pointers are null checked previously in the same function,
-indicating they might be null as reported by Coverity. As a result,
-they need to be checked when used again.
+Pass pointer reference to amdgpu_bo_unref to clear the correct pointer,
+otherwise amdgpu_bo_unref clear the local variable, the original pointer
+not set to NULL, this could cause use-after-free bug.
 
-This fixes 3 FORWARD_NULL issue reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c         | 14 +++++++-------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h         |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c           |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_device.c            |  4 ++--
+ .../gpu/drm/amd/amdkfd/kfd_device_queue_manager.c  |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c       |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c           |  2 +-
+ .../gpu/drm/amd/amdkfd/kfd_process_queue_manager.c |  4 ++--
+ 8 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 3541d154cc8d0..9a578b1df141f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6951,6 +6951,9 @@ create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 	int requested_bpc = drm_state ? drm_state->max_requested_bpc : 8;
- 	enum dc_status dc_result = DC_OK;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+index 03205e3c37463..c272461d70a9a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
+@@ -364,15 +364,15 @@ int amdgpu_amdkfd_alloc_gtt_mem(struct amdgpu_device *adev, size_t size,
+ 	return r;
+ }
  
-+	if (!dm_state)
-+		return NULL;
-+
- 	do {
- 		stream = create_stream_for_sink(connector, drm_mode,
- 						dm_state, old_stream,
-@@ -8963,7 +8966,7 @@ static void amdgpu_dm_commit_streams(struct drm_atomic_state *state,
- 		if (acrtc)
- 			old_crtc_state = drm_atomic_get_old_crtc_state(state, &acrtc->base);
+-void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj)
++void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void **mem_obj)
+ {
+-	struct amdgpu_bo *bo = (struct amdgpu_bo *) mem_obj;
++	struct amdgpu_bo **bo = (struct amdgpu_bo **) mem_obj;
  
--		if (!acrtc->wb_enabled)
-+		if (!acrtc || !acrtc->wb_enabled)
- 			continue;
+-	amdgpu_bo_reserve(bo, true);
+-	amdgpu_bo_kunmap(bo);
+-	amdgpu_bo_unpin(bo);
+-	amdgpu_bo_unreserve(bo);
+-	amdgpu_bo_unref(&(bo));
++	amdgpu_bo_reserve(*bo, true);
++	amdgpu_bo_kunmap(*bo);
++	amdgpu_bo_unpin(*bo);
++	amdgpu_bo_unreserve(*bo);
++	amdgpu_bo_unref(bo);
+ }
  
- 		dm_old_crtc_state = to_dm_crtc_state(old_crtc_state);
-@@ -9362,9 +9365,10 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ int amdgpu_amdkfd_alloc_gws(struct amdgpu_device *adev, size_t size,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+index e7bb1ca358014..8b4108a23636a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+@@ -235,7 +235,7 @@ int amdgpu_amdkfd_bo_validate_and_fence(struct amdgpu_bo *bo,
+ int amdgpu_amdkfd_alloc_gtt_mem(struct amdgpu_device *adev, size_t size,
+ 				void **mem_obj, uint64_t *gpu_addr,
+ 				void **cpu_ptr, bool mqd_gfx9);
+-void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void *mem_obj);
++void amdgpu_amdkfd_free_gtt_mem(struct amdgpu_device *adev, void **mem_obj);
+ int amdgpu_amdkfd_alloc_gws(struct amdgpu_device *adev, size_t size,
+ 				void **mem_obj);
+ void amdgpu_amdkfd_free_gws(struct amdgpu_device *adev, void *mem_obj);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 32e5db509560e..546b02f2241a6 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -423,7 +423,7 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
  
- 			DRM_INFO("[HDCP_DM] hdcp_update_display enable_encryption = %x\n", enable_encryption);
- 
--			hdcp_update_display(
--				adev->dm.hdcp_workqueue, aconnector->dc_link->link_index, aconnector,
--				new_con_state->hdcp_content_type, enable_encryption);
-+			if (aconnector->dc_link)
-+				hdcp_update_display(
-+					adev->dm.hdcp_workqueue, aconnector->dc_link->link_index, aconnector,
-+					new_con_state->hdcp_content_type, enable_encryption);
- 		}
+ err_create_queue:
+ 	if (wptr_bo)
+-		amdgpu_amdkfd_free_gtt_mem(dev->adev, wptr_bo);
++		amdgpu_amdkfd_free_gtt_mem(dev->adev, (void **)&wptr_bo);
+ err_wptr_map_gart:
+ err_bind_process:
+ err_pdd:
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device.c b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+index f4d20adaa0689..6619028dd58ba 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device.c
+@@ -907,7 +907,7 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
+ kfd_doorbell_error:
+ 	kfd_gtt_sa_fini(kfd);
+ kfd_gtt_sa_init_error:
+-	amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
++	amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
+ alloc_gtt_mem_failure:
+ 	dev_err(kfd_device,
+ 		"device %x:%x NOT added due to errors\n",
+@@ -925,7 +925,7 @@ void kgd2kfd_device_exit(struct kfd_dev *kfd)
+ 		kfd_doorbell_fini(kfd);
+ 		ida_destroy(&kfd->doorbell_ida);
+ 		kfd_gtt_sa_fini(kfd);
+-		amdgpu_amdkfd_free_gtt_mem(kfd->adev, kfd->gtt_mem);
++		amdgpu_amdkfd_free_gtt_mem(kfd->adev, &kfd->gtt_mem);
  	}
+ 
+ 	kfree(kfd);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+index 4f48507418d2f..420444eb8e982 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -2621,7 +2621,7 @@ static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
+ {
+ 	WARN(!mqd, "No hiq sdma mqd trunk to free");
+ 
+-	amdgpu_amdkfd_free_gtt_mem(dev->adev, mqd->gtt_mem);
++	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
+ }
+ 
+ void device_queue_manager_uninit(struct device_queue_manager *dqm)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+index 50a81da43ce19..d9ae854b69084 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+@@ -225,7 +225,7 @@ void kfd_free_mqd_cp(struct mqd_manager *mm, void *mqd,
+ 	      struct kfd_mem_obj *mqd_mem_obj)
+ {
+ 	if (mqd_mem_obj->gtt_mem) {
+-		amdgpu_amdkfd_free_gtt_mem(mm->dev->adev, mqd_mem_obj->gtt_mem);
++		amdgpu_amdkfd_free_gtt_mem(mm->dev->adev, &mqd_mem_obj->gtt_mem);
+ 		kfree(mqd_mem_obj);
+ 	} else {
+ 		kfd_gtt_sa_free(mm->dev, mqd_mem_obj);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 17e42161b0151..9e29b92eb523d 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -1048,7 +1048,7 @@ static void kfd_process_destroy_pdds(struct kfd_process *p)
+ 
+ 		if (pdd->dev->kfd->shared_resources.enable_mes)
+ 			amdgpu_amdkfd_free_gtt_mem(pdd->dev->adev,
+-						   pdd->proc_ctx_bo);
++						   &pdd->proc_ctx_bo);
+ 		/*
+ 		 * before destroying pdd, make sure to report availability
+ 		 * for auto suspend
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 21f5a1fb3bf88..36f0460cbffe6 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -204,9 +204,9 @@ static void pqm_clean_queue_resource(struct process_queue_manager *pqm,
+ 	}
+ 
+ 	if (dev->kfd->shared_resources.enable_mes) {
+-		amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->gang_ctx_bo);
++		amdgpu_amdkfd_free_gtt_mem(dev->adev, &pqn->q->gang_ctx_bo);
+ 		if (pqn->q->wptr_bo)
+-			amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->wptr_bo);
++			amdgpu_amdkfd_free_gtt_mem(dev->adev, (void **)&pqn->q->wptr_bo);
+ 	}
+ }
  
 -- 
 2.43.0
