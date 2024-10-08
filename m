@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FD9994D02
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AACCE994A52
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 729C11C24DDE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 480472896DE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2B61DEFE0;
-	Tue,  8 Oct 2024 13:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C7E192594;
+	Tue,  8 Oct 2024 12:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQU8bj6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/qVxd8b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E9C1DF24B;
-	Tue,  8 Oct 2024 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02901E485;
+	Tue,  8 Oct 2024 12:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392408; cv=none; b=lP3c/ddpCeNjL/IniWK+1/FO5RX86b5mqpWjrPEL2P9lPhALTI7mhdic84/gksuBURblBUADqN0iseUHrXFOQjyBNlp/C4SlOP7D6kRiCKFcqMap7LBb3TUxFPDy6eeWPov1ZABAAKTdern7+iH4rJbD9guiouturLwIZFbutGo=
+	t=1728390718; cv=none; b=EUWsQ8V8yECstsj8mHoBlKzzugaNpoRnSevIQ/9JYVByzqXAUTd82m1LNnb25jmtT0jfWY0YJ71eLArI2H7Rx3pmwSKMRf88B06SmSG/I+VOyHl1jz3Pj3izt1g8XerFABNWPACwAHA+wHsf9jsd//8cqut3RPk8/36Bz0QUSBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392408; c=relaxed/simple;
-	bh=XZ13529PkFsHtRntSuizE3wjufMCVgqSkPYRR/OnM4c=;
+	s=arc-20240116; t=1728390718; c=relaxed/simple;
+	bh=K4T63JSNCZEebNE63XflIExmdHjU89GH+XAX7ju4cAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbIrkDRWMD4B5BRASq4qYCJ8A13T2fFtxetgE8LQMmxY5zxQh1uhw3Hd2GxcuUy4ym2TImDv/VoZHRBrAKuwYVn+DYyIH/TNY4OBGH7cWvDFVIgg44skd9KUdqPEMQsFUV1ptlga+/v7QDrU47WyXJ0I0KAEEqFzgFlGrttjYzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQU8bj6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FCFC4CEC7;
-	Tue,  8 Oct 2024 13:00:06 +0000 (UTC)
+	 MIME-Version; b=TYWb60ik1+mKqcH3YDJPPFMlii4ZpT8zxnW95d2DgVvUC7oSOQ9PNs0TIEZVSbqqdhKg8bU6mfW5+RxZLRgdLpyH4Nkq+hP9DaPbLdBP6snINqHSMYKEn9gtigXFYSAJm2+32wHja/FEuamB7TrClfwFB+0J/FrRkbqKbVGfu/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/qVxd8b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EC9C4CEC7;
+	Tue,  8 Oct 2024 12:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392407;
-	bh=XZ13529PkFsHtRntSuizE3wjufMCVgqSkPYRR/OnM4c=;
+	s=korg; t=1728390718;
+	bh=K4T63JSNCZEebNE63XflIExmdHjU89GH+XAX7ju4cAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQU8bj6zT6OopMS+Ur3TOalOXlgLAcuyj6d078t0in8kAv7iKjNgolXQFuhMmy3Pi
-	 GQXzaPKHatI2EgrDHbHwB0knCA6VGq2nXJ7GSPwMzTyoHE7yu6XA6WZ2Sv9JoSekU4
-	 rGDHIs0G5RDgxh321uql3v0hWrXGGWH2zPd+b4Mg=
+	b=y/qVxd8b6aeZygA6/OES2/qkYSWr7dHbayiYWyz+xuKWFsxODe1Wyqkr3lEUAwEib
+	 56C5SVVdBAi7InRCmhTUWb1SEzoEKa35TyX5sYiDk0ExL0FCXvd3VpQChsF6grUClk
+	 01AMo67n3g5umkOqGp6CU/cQ31YSxFvxJ9g+cJLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.11 405/558] of/irq: Support #msi-cells=<0> in of_msi_get_domain
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.10 372/482] nfsd: map the EBADMSG to nfserr_io to avoid warning
 Date: Tue,  8 Oct 2024 14:07:15 +0200
-Message-ID: <20241008115718.216378395@linuxfoundation.org>
+Message-ID: <20241008115703.061914459@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit db8e81132cf051843c9a59b46fa5a071c45baeb3 upstream.
+commit 340e61e44c1d2a15c42ec72ade9195ad525fd048 upstream.
 
-An 'msi-parent' property with a single entry and no accompanying
-'#msi-cells' property is considered the legacy definition as opposed
-to its definition after being expanded with commit 126b16e2ad98
-("Docs: dt: add generic MSI bindings"). However, the legacy
-definition is completely compatible with the current definition and,
-since of_phandle_iterator_next() tolerates missing and present-but-
-zero *cells properties since commit e42ee61017f5 ("of: Let
-of_for_each_phandle fallback to non-negative cell_count"), there's no
-need anymore to special case the legacy definition in
-of_msi_get_domain().
+Ext4 will throw -EBADMSG through ext4_readdir when a checksum error
+occurs, resulting in the following WARNING.
 
-Indeed, special casing has turned out to be harmful, because, as of
-commit 7c025238b47a ("dt-bindings: irqchip: Describe the IMX MU block
-as a MSI controller"), MSI controller DT bindings have started
-specifying '#msi-cells' as a required property (even when the value
-must be zero) as an effort to make the bindings more explicit. But,
-since the special casing of 'msi-parent' only uses the existence of
-'#msi-cells' for its heuristic, and not whether or not it's also
-nonzero, the legacy path is not taken. Furthermore, the path to
-support the new, broader definition isn't taken either since that
-path has been restricted to the platform-msi bus.
+Fix it by mapping EBADMSG to nfserr_io.
 
-But, neither the definition of 'msi-parent' nor the definition of
-'#msi-cells' is platform-msi-specific (the platform-msi bus was just
-the first bus that needed '#msi-cells'), so remove both the special
-casing and the restriction. The code removal also requires changing
-to of_parse_phandle_with_optional_args() in order to ensure the
-legacy (but compatible) use of 'msi-parent' remains supported. This
-not only simplifies the code but also resolves an issue with PCI
-devices finding their MSI controllers on riscv, as the riscv,imsics
-binding requires '#msi-cells=<0>'.
+nfsd_buffered_readdir
+ iterate_dir // -EBADMSG -74
+  ext4_readdir // .iterate_shared
+   ext4_dx_readdir
+    ext4_htree_fill_tree
+     htree_dirblock_to_tree
+      ext4_read_dirblock
+       __ext4_read_dirblock
+        ext4_dirblock_csum_verify
+         warn_no_space_for_csum
+          __warn_no_space_for_csum
+        return ERR_PTR(-EFSBADCRC) // -EBADMSG -74
+ nfserrno // WARNING
 
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240817074107.31153-2-ajones@ventanamicro.com
+[  161.115610] ------------[ cut here ]------------
+[  161.116465] nfsd: non-standard errno: -74
+[  161.117315] WARNING: CPU: 1 PID: 780 at fs/nfsd/nfsproc.c:878 nfserrno+0x9d/0xd0
+[  161.118596] Modules linked in:
+[  161.119243] CPU: 1 PID: 780 Comm: nfsd Not tainted 5.10.0-00014-g79679361fd5d #138
+[  161.120684] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qe
+mu.org 04/01/2014
+[  161.123601] RIP: 0010:nfserrno+0x9d/0xd0
+[  161.124676] Code: 0f 87 da 30 dd 00 83 e3 01 b8 00 00 00 05 75 d7 44 89 ee 48 c7 c7 c0 57 24 98 89 44 24 04 c6
+ 05 ce 2b 61 03 01 e8 99 20 d8 00 <0f> 0b 8b 44 24 04 eb b5 4c 89 e6 48 c7 c7 a0 6d a4 99 e8 cc 15 33
+[  161.127797] RSP: 0018:ffffc90000e2f9c0 EFLAGS: 00010286
+[  161.128794] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[  161.130089] RDX: 1ffff1103ee16f6d RSI: 0000000000000008 RDI: fffff520001c5f2a
+[  161.131379] RBP: 0000000000000022 R08: 0000000000000001 R09: ffff8881f70c1827
+[  161.132664] R10: ffffed103ee18304 R11: 0000000000000001 R12: 0000000000000021
+[  161.133949] R13: 00000000ffffffb6 R14: ffff8881317c0000 R15: ffffc90000e2fbd8
+[  161.135244] FS:  0000000000000000(0000) GS:ffff8881f7080000(0000) knlGS:0000000000000000
+[  161.136695] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  161.137761] CR2: 00007fcaad70b348 CR3: 0000000144256006 CR4: 0000000000770ee0
+[  161.139041] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  161.140291] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  161.141519] PKRU: 55555554
+[  161.142076] Call Trace:
+[  161.142575]  ? __warn+0x9b/0x140
+[  161.143229]  ? nfserrno+0x9d/0xd0
+[  161.143872]  ? report_bug+0x125/0x150
+[  161.144595]  ? handle_bug+0x41/0x90
+[  161.145284]  ? exc_invalid_op+0x14/0x70
+[  161.146009]  ? asm_exc_invalid_op+0x12/0x20
+[  161.146816]  ? nfserrno+0x9d/0xd0
+[  161.147487]  nfsd_buffered_readdir+0x28b/0x2b0
+[  161.148333]  ? nfsd4_encode_dirent_fattr+0x380/0x380
+[  161.149258]  ? nfsd_buffered_filldir+0xf0/0xf0
+[  161.150093]  ? wait_for_concurrent_writes+0x170/0x170
+[  161.151004]  ? generic_file_llseek_size+0x48/0x160
+[  161.151895]  nfsd_readdir+0x132/0x190
+[  161.152606]  ? nfsd4_encode_dirent_fattr+0x380/0x380
+[  161.153516]  ? nfsd_unlink+0x380/0x380
+[  161.154256]  ? override_creds+0x45/0x60
+[  161.155006]  nfsd4_encode_readdir+0x21a/0x3d0
+[  161.155850]  ? nfsd4_encode_readlink+0x210/0x210
+[  161.156731]  ? write_bytes_to_xdr_buf+0x97/0xe0
+[  161.157598]  ? __write_bytes_to_xdr_buf+0xd0/0xd0
+[  161.158494]  ? lock_downgrade+0x90/0x90
+[  161.159232]  ? nfs4svc_decode_voidarg+0x10/0x10
+[  161.160092]  nfsd4_encode_operation+0x15a/0x440
+[  161.160959]  nfsd4_proc_compound+0x718/0xe90
+[  161.161818]  nfsd_dispatch+0x18e/0x2c0
+[  161.162586]  svc_process_common+0x786/0xc50
+[  161.163403]  ? nfsd_svc+0x380/0x380
+[  161.164137]  ? svc_printk+0x160/0x160
+[  161.164846]  ? svc_xprt_do_enqueue.part.0+0x365/0x380
+[  161.165808]  ? nfsd_svc+0x380/0x380
+[  161.166523]  ? rcu_is_watching+0x23/0x40
+[  161.167309]  svc_process+0x1a5/0x200
+[  161.168019]  nfsd+0x1f5/0x380
+[  161.168663]  ? nfsd_shutdown_threads+0x260/0x260
+[  161.169554]  kthread+0x1c4/0x210
+[  161.170224]  ? kthread_insert_work_sanity_check+0x80/0x80
+[  161.171246]  ret_from_fork+0x1f/0x30
+
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |   34 +++++++---------------------------
- 1 file changed, 7 insertions(+), 27 deletions(-)
+ fs/nfsd/vfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -716,8 +716,7 @@ struct irq_domain *of_msi_map_get_device
-  * @np: device node for @dev
-  * @token: bus type for this domain
-  *
-- * Parse the msi-parent property (both the simple and the complex
-- * versions), and returns the corresponding MSI domain.
-+ * Parse the msi-parent property and returns the corresponding MSI domain.
-  *
-  * Returns: the MSI domain for this device (or NULL on failure).
-  */
-@@ -725,33 +724,14 @@ struct irq_domain *of_msi_get_domain(str
- 				     struct device_node *np,
- 				     enum irq_domain_bus_token token)
- {
--	struct device_node *msi_np;
-+	struct of_phandle_iterator it;
- 	struct irq_domain *d;
-+	int err;
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -100,6 +100,7 @@ nfserrno (int errno)
+ 		{ nfserr_io, -EUCLEAN },
+ 		{ nfserr_perm, -ENOKEY },
+ 		{ nfserr_no_grace, -ENOGRACE},
++		{ nfserr_io, -EBADMSG },
+ 	};
+ 	int	i;
  
--	/* Check for a single msi-parent property */
--	msi_np = of_parse_phandle(np, "msi-parent", 0);
--	if (msi_np && !of_property_read_bool(msi_np, "#msi-cells")) {
--		d = irq_find_matching_host(msi_np, token);
--		if (!d)
--			of_node_put(msi_np);
--		return d;
--	}
--
--	if (token == DOMAIN_BUS_PLATFORM_MSI) {
--		/* Check for the complex msi-parent version */
--		struct of_phandle_args args;
--		int index = 0;
--
--		while (!of_parse_phandle_with_args(np, "msi-parent",
--						   "#msi-cells",
--						   index, &args)) {
--			d = irq_find_matching_host(args.np, token);
--			if (d)
--				return d;
--
--			of_node_put(args.np);
--			index++;
--		}
-+	of_for_each_phandle(&it, err, np, "msi-parent", "#msi-cells", 0) {
-+		d = irq_find_matching_host(it.node, token);
-+		if (d)
-+			return d;
- 	}
- 
- 	return NULL;
 
 
 
