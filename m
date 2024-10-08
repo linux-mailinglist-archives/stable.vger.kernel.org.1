@@ -1,170 +1,154 @@
-Return-Path: <stable+bounces-81509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B075993E17
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 06:52:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BD4993E34
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 07:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D2381C23537
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 04:52:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47DBF1F254A8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 05:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2BF1311B6;
-	Tue,  8 Oct 2024 04:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014B313A271;
+	Tue,  8 Oct 2024 05:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="d6ADtaRB"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IXr1PZBk"
 X-Original-To: stable@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04B12AE77;
-	Tue,  8 Oct 2024 04:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB531DA5F
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 05:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728363128; cv=none; b=ZXDfiKsnvM/AlPevPG1PtSiUf89lJJAWP6rBSfrGB/W8lhh8YwWmf7UpFtmNYONmxppdbcWVUx/QmX9kAHm8WAYQH5c/JLHl0dJ9UWwLrAKkdYQ9opqFf7U13JgDVjsqAsK/2TzqIpAqjskFucAzIkZgsHPMDbkd1xPrdodwdZM=
+	t=1728364315; cv=none; b=LbXnMBu6s5q5OXytAjALAjT6/IjsceYfaUmUBSZ0fFALWe6ydN4qh90CWgFyVWvBMT1ai5HATJYVrlShgsC3Kc5uQ/nadeZt4hMJWwhOJjzIf0F1AY9A0wW8b3fQmZNnIft6BQy4eYHgyV7jhQCqFMd4e234745AaiQIauxh6aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728363128; c=relaxed/simple;
-	bh=dFtszke0zpIjulGjyDtcKGLzGnllBUfkv3uWVLJlt/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tr9iNmTusRGG/k0ADnKRT9QN1IMgCYrJzNLt9mtBChN2YKV8fHVAeleQiwQwF/A5C5OAOzVJpo8fwX2CgMUu/W1l0Wrp6St90rDIwj7BWCjj5KTEOqfazKz5tWlHSQjTbuO4Hc+avaAV+AlgkKl1vjIxanx1sTus0ltIjjKYxp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=d6ADtaRB; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=n+zQbghErJQIvBNG0813bgVJbMCpjIgARP/D+S4a0BI=; b=d6ADtaRBMSEV8rFznw2jS6vuYS
-	zv737teyo8W3rwrv6ELyRQI0yLqGsK7fGZdPFIyZg1U6TWYuQK8x8/CoL9Z35M2G9DqAeY1Fa68Yc
-	QwPNJMgfFY+3J6mb5eqKEDP/3Z9w0tDocA2pXWxEJc6UmeXHQh0OgJFZPECwSsR4mK7O8G+TBZQsX
-	w8trUUIsZ2pivZwp7ar0X0LaNhYXEz2UJZn+HIC92r2SoxZJHotVuKyrE86ixIb89EDHkwqM4OtF0
-	BpuzIRFRAitRQYNQAeNeEsS4IDvlre+djZ4PRMk6CgN8GQrE2Va0l9ztxm3a4U6rfXP2HY/mZxX5T
-	G6C+sDdg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1sy2CZ-00000001lvf-46YG;
-	Tue, 08 Oct 2024 04:52:04 +0000
-Date: Tue, 8 Oct 2024 05:52:03 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Xi Ruoyao <xry111@xry111.site>, Christian Brauner <brauner@kernel.org>,
-	Miao Wang <shankerwangmiao@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] vfs: Make sure {statx,fstatat}(..., AT_EMPTY_PATH |
- ..., NULL, ...) behave as (..., AT_EMPTY_PATH | ..., "", ...)
-Message-ID: <20241008045203.GX4017910@ZenIV>
-References: <20241007130825.10326-1-xry111@xry111.site>
- <20241007130825.10326-3-xry111@xry111.site>
- <CAGudoHHdccL5Lh8zAO-0swqqRCW4GXMSXhq4jQGoVj=UdBK-Lg@mail.gmail.com>
- <20241008041621.GV4017910@ZenIV>
- <20241008042751.GW4017910@ZenIV>
+	s=arc-20240116; t=1728364315; c=relaxed/simple;
+	bh=SLh25qXOWVmw4SCKmmsEBzMRI0rs9M22+5MD2EXMFRo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OCNPT2elwTRSUZQV37RI+mN8PwSnjBMqFBq0tFAC4Ro0qGwEQcIQYxjWpPNMDC7N7uVDlVjAVvyPd+pYagdd6CTdveFk7WPdio7kvWkayJRsTfZMZPVBjNIVqzZObsUo9YLmymJEdEq1I1zhJGW+jm3MvAEdFGhi0aFQXB0rHbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IXr1PZBk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728364312;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tic6eRj2qzs0tb10TUTBxQR/oXtJbgGmgQXaAU//xHA=;
+	b=IXr1PZBk7uncTEt61mHEfP4ENhtAM7xQm/gsd0pYm/qRhmRXk5n34LRk1pqHeUgGB6AnUQ
+	rueBRUe/74o//v2bnCxgP2j3ccXkB5YVvwQAII8VFIb/1Ve5p02gHuQPG6dCw0UEusVCh3
+	AU4as9JEwnuh57CtmTWZjyHF2Zoa7hQ=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-f-VD9jQdNsmZJevsGsOOkA-1; Tue, 08 Oct 2024 01:11:51 -0400
+X-MC-Unique: f-VD9jQdNsmZJevsGsOOkA-1
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-20b4efbb863so51308355ad.3
+        for <stable@vger.kernel.org>; Mon, 07 Oct 2024 22:11:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728364310; x=1728969110;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tic6eRj2qzs0tb10TUTBxQR/oXtJbgGmgQXaAU//xHA=;
+        b=VWVo6DTs4YiPa4rQNe4H9REBST0LnK2ZHBKWDEnyBpaymbWhcy7KQm2mXEDnV0L4pu
+         IZdzMMHGU+RzOYtvbIXOmangp8WBB0ER9vfWJZQI0QlQ+FwC2Qyvr178Y2zwca7WZ9YL
+         jouReEw90TCNWkmXnKnauBntrFQSCZRqwMy66s5Mwbe2TTxpu5HfFZgAHcMi4v9kQZdc
+         DkxtdGnl7IeDSQvwBk2dkItgkVanAYu1pEDvHXcbQYPQCWqFvDwV+8uWFGIsQ1e0x4ey
+         pt6ePpTHyxJ5vvIEnTzsySqHQxkzq2WsPeI+ARTwCwXBcOr38uoPsaWnea9lhsELQwJm
+         8IUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUJrVx54NgvnCBpmepDktYfumMZtqO1wGdSqL93gCWwQQE4HUhg5MhuwKg2N6B6oqikTiu/5I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytlkZiG/NITolEKwfPDG0cV+721CX6q/2Xdgi7175JR+hq46ne
+	cjXFRekELbFNWhnmnQDITv1hvmLUKzvzs8ikIL690aPSkVh/MTmIGgk9p/GCgjpZrwrpleafi7v
+	rsZqK4JNC1eNPed1/s2I25KCnqfnNsSTTp9vLtP8BJn1+qBO8kHh8vg==
+X-Received: by 2002:a17:902:ecc6:b0:20b:7250:e744 with SMTP id d9443c01a7336-20bff224cc5mr153889855ad.56.1728364310161;
+        Mon, 07 Oct 2024 22:11:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF0Uxz8LXRrdNf1WhECQYg5MY0qjfcxniTa+aF4mi4a2jy2Z32EREelBAIdcmIUg3bfv1+WZg==
+X-Received: by 2002:a17:902:ecc6:b0:20b:7250:e744 with SMTP id d9443c01a7336-20bff224cc5mr153889655ad.56.1728364309790;
+        Mon, 07 Oct 2024 22:11:49 -0700 (PDT)
+Received: from [10.72.116.34] ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c138d0cd9sm48174755ad.107.2024.10.07.22.11.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Oct 2024 22:11:49 -0700 (PDT)
+Message-ID: <b21e1214-20e5-4dc8-846d-d3a14d66fc1a@redhat.com>
+Date: Tue, 8 Oct 2024 13:11:41 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241008042751.GW4017910@ZenIV>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ceph: fix cap ref leak via netfs init_request
+To: Patrick Donnelly <batrick@batbytes.com>, Ilya Dryomov
+ <idryomov@gmail.com>, Jeff Layton <jlayton@kernel.org>,
+ David Howells <dhowells@redhat.com>
+Cc: Patrick Donnelly <pdonnell@redhat.com>, stable@vger.kernel.org,
+ ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241003010512.58559-1-batrick@batbytes.com>
+Content-Language: en-US
+From: Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <20241003010512.58559-1-batrick@batbytes.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 08, 2024 at 05:27:51AM +0100, Al Viro wrote:
-> On Tue, Oct 08, 2024 at 05:16:21AM +0100, Al Viro wrote:
-> 
-> > Folks, please don't go there.  Really.  IMO vfs_empty_path() is a wrong API
-> > in the first place.  Too low-level and racy as well.
-> > 
-> > 	See the approach in #work.xattr; I'm going to lift that into fs/namei.c
-> > (well, the slow path - everything after "if path is NULL, we are done") and
-> > yes, fs/stat.c users get handled better that way.
-> 
-> FWIW, the intermediate (just after that commit) state of those functions is
-> 
-> int vfs_fstatat(int dfd, const char __user *filename,
->                               struct kstat *stat, int flags)
-> {
->         int ret;
->         int statx_flags = flags | AT_NO_AUTOMOUNT;
->         struct filename *name = getname_maybe_null(filename, flags);
-> 
->         if (!name)
->                 return vfs_fstat(dfd, stat);
-> 
->         ret = vfs_statx(dfd, name, statx_flags, stat, STATX_BASIC_STATS);
->         putname(name); 
-> 
->         return ret;  
-> }
-> 
-> and
-> 
-> SYSCALL_DEFINE5(statx,
->                 int, dfd, const char __user *, filename, unsigned, flags,
->                 unsigned int, mask,
->                 struct statx __user *, buffer)
-> {
->         int ret;
->         unsigned lflags;
->         struct filename *name = getname_maybe_null(filename, flags);
-> 
->         /*
->          * Short-circuit handling of NULL and "" paths.
->          *
->          * For a NULL path we require and accept only the AT_EMPTY_PATH flag
->          * (possibly |'d with AT_STATX flags).
->          *
->          * However, glibc on 32-bit architectures implements fstatat as statx
->          * with the "" pathname and AT_NO_AUTOMOUNT | AT_EMPTY_PATH flags.
->          * Supporting this results in the uglification below.
->          */
->         lflags = flags & ~(AT_NO_AUTOMOUNT | AT_STATX_SYNC_TYPE);
->         if (!name)
->                 return do_statx_fd(dfd, flags & ~AT_NO_AUTOMOUNT, mask, buffer);
-> 
->         ret = do_statx(dfd, name, flags, mask, buffer);
->         putname(name);
-> 
->         return ret;
-> }
-> 
-> static inline struct filename *getname_maybe_null(const char __user *name, int flags)
-> {
->         if (!(flags & AT_EMPTY_PATH))
->                 return getname(name);
-> 
->         if (!name)
->                 return NULL;
->         return __getname_maybe_null(name);
-> }
-> 
-> struct filename *__getname_maybe_null(const char __user *pathname)
-> {
->         struct filename *name;
->         char c;
-> 
->         /* try to save on allocations; loss on um, though */
->         if (get_user(c, pathname))
->                 return ERR_PTR(-EFAULT);
->         if (!c)
->                 return NULL;
-> 
->         name = getname_flags(pathname, LOOKUP_EMPTY);
->         if (!IS_ERR(name) && !(name->name[0])) {
->                 putname(name);
->                 name = NULL;
->         }
->         return name;   
-> }
 
-Incidentally, the name 'getname_statx_lookup_flags' is an atrocity:
-	* getname and its variants do not give a fuck for the state of
-any flags besides AT_EMPTY_PATH
-	* lookups, OTOH, ignore LOOKUP_EMPTY (which shouldn't have been
-in the LOOKUP_... namespace to start with).
+On 10/3/24 09:05, Patrick Donnelly wrote:
+> From: Patrick Donnelly <pdonnell@redhat.com>
+>
+> Log recovered from a user's cluster:
+>
+>      <7>[ 5413.970692] ceph:  get_cap_refs 00000000958c114b ret 1 got Fr
+>      <7>[ 5413.970695] ceph:  start_read 00000000958c114b, no cache cap
+>      ...
+>      <7>[ 5473.934609] ceph:   my wanted = Fr, used = Fr, dirty -
+>      <7>[ 5473.934616] ceph:  revocation: pAsLsXsFr -> pAsLsXs (revoking Fr)
+>      <7>[ 5473.934632] ceph:  __ceph_caps_issued 00000000958c114b cap 00000000f7784259 issued pAsLsXs
+>      <7>[ 5473.934638] ceph:  check_caps 10000000e68.fffffffffffffffe file_want - used Fr dirty - flushing - issued pAsLsXs revoking Fr retain pAsLsXsFsr  AUTHONLY NOINVAL FLUSH_FORCE
+>
+> The MDS subsequently complains that the kernel client is late releasing caps.
+>
+> Approximately, a series of changes to this code by the three commits cited
+> below resulted in subtle resource cleanup to be missed. The main culprit is the
+> change in error handling in 2d31604 which meant that a failure in init_request
+> would no longer cause cleanup to be called. That would prevent the
+> ceph_put_cap_refs which would cleanup the leaked cap ref.
+>
+> Closes: https://tracker.ceph.com/issues/67008
+> Fixes: 49870056005ca9387e5ee31451991491f99cc45f ("ceph: convert ceph_readpages to ceph_readahead")
+> Fixes: 2de160417315b8d64455fe03e9bb7d3308ac3281 ("netfs: Change ->init_request() to return an error code")
+> Fixes: a5c9dc4451394b2854493944dcc0ff71af9705a3 ("ceph: Make ceph_init_request() check caps on readahead")
+> Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
+> Cc: stable@vger.kernel.org
+> ---
+>   fs/ceph/addr.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index 53fef258c2bc..702c6a730b70 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -489,8 +489,11 @@ static int ceph_init_request(struct netfs_io_request *rreq, struct file *file)
+>   	rreq->io_streams[0].sreq_max_len = fsc->mount_options->rsize;
+>   
+>   out:
+> -	if (ret < 0)
+> +	if (ret < 0) {
+> +		if (got)
+> +			ceph_put_cap_refs(ceph_inode(inode), got);
+>   		kfree(priv);
+> +	}
+>   
+>   	return ret;
+>   }
+>
+> base-commit: e32cde8d2bd7d251a8f9b434143977ddf13dcec6
 
-Another fun question: why do we play with setting ->mnt_id, etc. in
-vfs_statx_path() if vfs_getattr() returns non-zero?  Or when we hit
-it via vfs_statx() from vfs_fstatat()...
+Good catch!
+
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+
 
