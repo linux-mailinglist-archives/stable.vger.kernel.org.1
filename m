@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BBC5994ACF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DA7994F08
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE2D61C24B03
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76C4F1C24E02
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4A01CCB32;
-	Tue,  8 Oct 2024 12:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225D21DFD8B;
+	Tue,  8 Oct 2024 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0krgO1Jy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2jOn8CV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF221779B1;
-	Tue,  8 Oct 2024 12:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37D71DF975;
+	Tue,  8 Oct 2024 13:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391008; cv=none; b=ieFnefdGk3USarlGNSbbCqK3g4ZYbjPr4eD6qD1O/SKeMyZgtKpiFGZdfPf7ujgK28uO9NgR6aVTLT1/5FSTYD6pzGMdkWVu7WksJ2D7gEk0BdrDKPz8G+b0hhBRWrdxp25y3mU0m55LMpU5EQ9HwyZhfeOOFjwnTGptJgWf+PU=
+	t=1728393765; cv=none; b=X75pQIVHav2vvSNLJarR9gSF43Buo4zRj5ZQPZf5+M2UcCIH6Y+wNxNRSfrWdc0aJZ7Pn6sdn5W3SUNPOPd+kKCmmgnJ20qtkFQVObG7YCslVESIXSl+o7M4I9aigX2E8PTFMsaI5x20z35ikRIacilvGCUwoPUOMNS3R1ZBaFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391008; c=relaxed/simple;
-	bh=P4rlnpOw4w8IsyAKUaDtN/DT8vppY4gqVwvuBMeioXU=;
+	s=arc-20240116; t=1728393765; c=relaxed/simple;
+	bh=MUgeSD1QzEJJgqTpbCUJQbw0NvwCDYBhMq+oLZBZ8Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYKTepN6XwIAckaqd1m+ULMaVUscEANKie4/TUyFvb72UdMc/2QySCMojRwnS1pkiXqQEBmapDBpr22DBElAfRG6sS83CABBwYbFVfA3h4sIurUPpL2ymhv7F0ZkIPvQcU/SbiLuH0bb3OZeLm2CIyAyxgCrqLvS9408+4Y3EUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0krgO1Jy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFABC4CEC7;
-	Tue,  8 Oct 2024 12:36:46 +0000 (UTC)
+	 MIME-Version; b=NLvlbPx6tzQuiA6Ks/kukzXOQyaIlaKk+vNia2CgYvUHORDLAMzxyhKDwzDMY3lNwcK7vOaDYjGUXUIF262WmSw/CgKWTw01wysoA9BKnOS/2mU/CjH4E3jUvc+u/UBYt2CY2KR3DplTpIXLjEVZKm4JeTU1AjS3k4BGk4Tylb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2jOn8CV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3FBC4CEC7;
+	Tue,  8 Oct 2024 13:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391008;
-	bh=P4rlnpOw4w8IsyAKUaDtN/DT8vppY4gqVwvuBMeioXU=;
+	s=korg; t=1728393765;
+	bh=MUgeSD1QzEJJgqTpbCUJQbw0NvwCDYBhMq+oLZBZ8Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0krgO1JyFUuk6BmDkclQxEFhV1fzZjI0w6aIQVnkYhFHXRXCp4aBY6lQuWsMZVaKF
-	 Egsh3X6iLvmthFMO9z3CIb5S77EIEHjfEC5HuzNcySoRL/2sYYb4cvZQL0ibT3paqU
-	 edGnEFHnxCw719jFvKbJ5+6AybMgCByN7NtCpo8k=
+	b=S2jOn8CV3dVRsf1X7hldTRkWOUqLxYihMGliP7sbf4d3SuzsCPKfC1wUPXQbNJ/C2
+	 RjUJmA1fsOBYeamrB578yWmpO3Te8Z6ruz0jWr/2lF2z8y7VltopCMg2uBI76QNQGE
+	 tctEja4yzchB6eUhJolRxFz+xapkjeWmYQjHLs3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Wei Li <liwei391@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.10 431/482] tracing/timerlat: Fix duplicated kthread creation due to CPU online/offline
+	Camm Maguire <camm@maguirefamily.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 249/386] parisc: Allow mmap(MAP_STACK) memory to automatically expand upwards
 Date: Tue,  8 Oct 2024 14:08:14 +0200
-Message-ID: <20241008115705.484343411@linuxfoundation.org>
+Message-ID: <20241008115639.192695344@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Li <liwei391@huawei.com>
+From: Helge Deller <deller@kernel.org>
 
-commit 0bb0a5c12ecf36ad561542bbb95f96355e036a02 upstream.
+commit 5d698966fa7b452035c44c937d704910bf3440dd upstream.
 
-osnoise_hotplug_workfn() is the asynchronous online callback for
-"trace/osnoise:online". It may be congested when a CPU goes online and
-offline repeatedly and is invoked for multiple times after a certain
-online.
+When userspace allocates memory with mmap() in order to be used for stack,
+allow this memory region to automatically expand upwards up until the
+current maximum process stack size.
+The fault handler checks if the VM_GROWSUP bit is set in the vm_flags field
+of a memory area before it allows it to expand.
+This patch modifies the parisc specific code only.
+A RFC for a generic patch to modify mmap() for all architectures was sent
+to the mailing list but did not get enough Acks.
 
-This will lead to kthread leak and timer corruption. Add a check
-in start_kthread() to prevent this situation.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20240924094515.3561410-2-liwei391@huawei.com
-Fixes: c8895e271f79 ("trace/osnoise: Support hotplug operations")
-Signed-off-by: Wei Li <liwei391@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Camm Maguire <camm@maguirefamily.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org	# v5.10+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_osnoise.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/parisc/include/asm/mman.h |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -2006,6 +2006,10 @@ static int start_kthread(unsigned int cp
- 	void *main = osnoise_main;
- 	char comm[24];
+--- a/arch/parisc/include/asm/mman.h
++++ b/arch/parisc/include/asm/mman.h
+@@ -11,4 +11,18 @@ static inline bool arch_memory_deny_writ
+ }
+ #define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
  
-+	/* Do not start a new thread if it is already running */
-+	if (per_cpu(per_cpu_osnoise_var, cpu).kthread)
-+		return 0;
++static inline unsigned long arch_calc_vm_flag_bits(unsigned long flags)
++{
++	/*
++	 * The stack on parisc grows upwards, so if userspace requests memory
++	 * for a stack, mark it with VM_GROWSUP so that the stack expansion in
++	 * the fault handler will work.
++	 */
++	if (flags & MAP_STACK)
++		return VM_GROWSUP;
 +
- 	if (timerlat_enabled()) {
- 		snprintf(comm, 24, "timerlat/%d", cpu);
- 		main = timerlat_main;
-@@ -2060,11 +2064,10 @@ static int start_per_cpu_kthreads(void)
- 		if (cpumask_test_and_clear_cpu(cpu, &kthread_cpumask)) {
- 			struct task_struct *kthread;
- 
--			kthread = per_cpu(per_cpu_osnoise_var, cpu).kthread;
-+			kthread = xchg_relaxed(&(per_cpu(per_cpu_osnoise_var, cpu).kthread), NULL);
- 			if (!WARN_ON(!kthread))
- 				kthread_stop(kthread);
- 		}
--		per_cpu(per_cpu_osnoise_var, cpu).kthread = NULL;
- 	}
- 
- 	for_each_cpu(cpu, current_mask) {
++	return 0;
++}
++#define arch_calc_vm_flag_bits(flags) arch_calc_vm_flag_bits(flags)
++
+ #endif /* __ASM_MMAN_H__ */
 
 
 
