@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD88994B9A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83C89948A4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A79111F27C16
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01B431C24914
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EB31DEFC5;
-	Tue,  8 Oct 2024 12:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378B71DE892;
+	Tue,  8 Oct 2024 12:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPV1Y3Fw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w38qDv72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A399B192594;
-	Tue,  8 Oct 2024 12:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98CF185B58;
+	Tue,  8 Oct 2024 12:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391463; cv=none; b=iXFXH+I416YC6zAdwq4G7Pl+C+vK114yt1ek/tF5U2w50VahJR88yUZVu21zj6v/lTuWmN4rZw5yTvqKPcPxdPkRL2jFX3p7oc0/H/9j6zcbtyMoBPOUfQjiiAFDYLbeyk829b9J32MgqbfJJ7f9IgNeNSEYxFHE7OwuIYjiBuA=
+	t=1728389711; cv=none; b=gwF0yeZhylnAquBRRBqcJHW74/ZfbmJoH9bPAORsjljDHez2KC02IGKGV1UngzoOVTVdo/cl8BY+NYtzAehkLYZLF4RL8J4XAHGA6JuUhaBjGXtdU1mQznTLt4U9AGAhtwo7fXD9lC2SLulmy/NISj4cS5ddVl/i4zFnyCWH4ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391463; c=relaxed/simple;
-	bh=fHvC2Y2b4lyeGUs/ncuXAo6bXjnsQkJp8ya4QFyXofE=;
+	s=arc-20240116; t=1728389711; c=relaxed/simple;
+	bh=4vblZl7POhcR5bW7g2TJq4cCWLCfUw7eIip2TyGRMuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5oEHqIaojuTJLwx+uozvvbf3CFFdf25yFUrCS4LLcBta2nyFujZRwbF0oizaO2f1TM/nyxZE5vVXXxT5hIc2XQugVr7vDmDH4tuabKPe4YaS97R8gzRXPPXcTCxEM7qaAG99Bvhlj6IO4ouDjJ86MVS0Qsgb+V6ZRIASAMcmSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPV1Y3Fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0957FC4CEC7;
-	Tue,  8 Oct 2024 12:44:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DfmuBhdRHHzfUdXlGw4MNoW/PFFQA9JGbdy13Vz2VGyDBkxqC3THPkHY7bYJCmwfC1XcGUJ7AydBu0Uy8Bl+vzt6GswPPcOZz9ou7NNe676BG2rNEIZp1kcjtAnuSYs+UIeiJoKKD4CwzLC0uQrBb9my57XD5Y7C9iueGAyJZB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w38qDv72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F71CC4CECD;
+	Tue,  8 Oct 2024 12:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391463;
-	bh=fHvC2Y2b4lyeGUs/ncuXAo6bXjnsQkJp8ya4QFyXofE=;
+	s=korg; t=1728389710;
+	bh=4vblZl7POhcR5bW7g2TJq4cCWLCfUw7eIip2TyGRMuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPV1Y3FwBsc2VvkxBa2C56PADxdQ7ap4t++0nwD2BQV11CmDrktHTSDJRm+1/t/Ns
-	 /xQU0Kr8F9GXFSgYynJIbSzmLMlngSf+vW37dIJJZBV4O33qEkkJRbPrhLiUqBRklX
-	 BnILnxNuVRBsjKx0Vdm5Zq/DBSCSw8KhEVKd4SkY=
+	b=w38qDv72ynALfUi9TPBs33RrOu6Y0Z/pLGBnSHiRUpi8CBhiIqnjs61ya1oUcn5uL
+	 3C1pQW/E9fNvLhKMQUupBwvxtIPzlONjo5adZAL9shotY/L8kew3KfVbfRMVUp4QH/
+	 Js83dA89IS08aGFMMK5EqZL2hEvL/GgweWFfCzXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamim Khan <tamim@fusetak.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 105/558] ACPI: resource: Skip IRQ override on Asus Vivobook Go E1404GAB
-Date: Tue,  8 Oct 2024 14:02:15 +0200
-Message-ID: <20241008115706.500247990@linuxfoundation.org>
+Subject: [PATCH 6.10 073/482] wifi: ath9k_htc: Use __skb_set_length() for resetting urb before resubmit
+Date: Tue,  8 Oct 2024 14:02:16 +0200
+Message-ID: <20241008115651.179384506@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit 49e9cc315604972cc14868cb67831e3e8c3f1470 ]
+[ Upstream commit 94745807f3ebd379f23865e6dab196f220664179 ]
 
-Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
-that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
+Syzbot points out that skb_trim() has a sanity check on the existing length of
+the skb, which can be uninitialised in some error paths. The intent here is
+clearly just to reset the length to zero before resubmitting, so switch to
+calling __skb_set_length(skb, 0) directly. In addition, __skb_set_length()
+already contains a call to skb_reset_tail_pointer(), so remove the redundant
+call.
 
-This override prevents the internal keyboard from working.
+The syzbot report came from ath9k_hif_usb_reg_in_cb(), but there's a similar
+usage of skb_trim() in ath9k_hif_usb_rx_cb(), change both while we're at it.
 
-Fix the problem by adding this laptop to the table that prevents the kernel
-from overriding the IRQ.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Link: https://patch.msgid.link/20240903014317.38858-1-tamim@fusetak.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240812142447.12328-1-toke@toke.dk
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index cb2aacbb93357..8a4726e2eb693 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Go E1404GAB */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
-+		},
-+	},
- 	{
- 		/* Asus Vivobook E1504GA */
- 		.matches = {
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 0c7841f952287..a3733c9b484e4 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -716,8 +716,7 @@ static void ath9k_hif_usb_rx_cb(struct urb *urb)
+ 	}
+ 
+ resubmit:
+-	skb_reset_tail_pointer(skb);
+-	skb_trim(skb, 0);
++	__skb_set_length(skb, 0);
+ 
+ 	usb_anchor_urb(urb, &hif_dev->rx_submitted);
+ 	ret = usb_submit_urb(urb, GFP_ATOMIC);
+@@ -754,8 +753,7 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
+ 	case -ESHUTDOWN:
+ 		goto free_skb;
+ 	default:
+-		skb_reset_tail_pointer(skb);
+-		skb_trim(skb, 0);
++		__skb_set_length(skb, 0);
+ 
+ 		goto resubmit;
+ 	}
 -- 
 2.43.0
 
