@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683E0994AD9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9496E994D79
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9132E1C24E30
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C67DA1C20FBD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244451DE89D;
-	Tue,  8 Oct 2024 12:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A222D1DF251;
+	Tue,  8 Oct 2024 13:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqYBYt6b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2UfB+mS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ED71D27B3;
-	Tue,  8 Oct 2024 12:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF871DFD1;
+	Tue,  8 Oct 2024 13:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391036; cv=none; b=dFA5zXpytCUDqIPhevNKoItGp/5rgxp8B2wo2/8BwcQIzC96ziHAapVRoYAvWKrMZPlHenEtV//qxSCWyh2fRxU1pfra8jLp2DJyk6AsKTfKqPIPInWlP908iUdgNAk+Apvpx9pNAXW+zDwEWHTMQPuhYoFa58IfGPV4rdy0W9Q=
+	t=1728392739; cv=none; b=azC+r2dGv/01pO+g+KOw6uR0SbvZMgJyn1ewKjwIF9pPDyMnhfdriKuWPfiYmfy4yDtVD7UqLHy/bHb3wSskjlMirjW0DtwRl0dKt36F3N8ZJPJy8SbvPJgwPPZIoMyDb/6uCf92jxim1KiClL6fFP2f+AZQ9Eu90elZxtRRGBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391036; c=relaxed/simple;
-	bh=07bX+4aVAbh5nDFmEtZ3sjvqfiat0XOX1HLn+ZyRGnA=;
+	s=arc-20240116; t=1728392739; c=relaxed/simple;
+	bh=QGCNvcpl7uDXQF/ZECf3gRf3uGbeBwI6hr8Vb5XLNSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P+h1EkbfvarCC3UHcApzqqKzQiEfcbtRvUaESxCFgHlb1iAlwLHMAgHKeB6GKWjpp6qpW1Scs4MCVh8qv7p0U9zluPox3OBsMZ4unowUQ1TKRVTmEmUAMnfedh2GiFOYhx7GhcOpWQsoyzU4sERUH1dasbJbNgfk9DtQxa5MPe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqYBYt6b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC61C4CEC7;
-	Tue,  8 Oct 2024 12:37:16 +0000 (UTC)
+	 MIME-Version; b=EV8ootNsG6+7altAHmXkDd/P43K9lrgdau4qkkdXfJevKtef9+SjbdCpeSX15g9bl8rntVQusV97Gds2u1eOHe5JOVvLCHC2wyV9Fo5C+D8H6QGAGqmrctPkJu01zzvl9QZFmLrFX/gTypM5v/8nl0Y80SbjAh3KScmJnYvPdag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2UfB+mS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE18C4CEC7;
+	Tue,  8 Oct 2024 13:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391036;
-	bh=07bX+4aVAbh5nDFmEtZ3sjvqfiat0XOX1HLn+ZyRGnA=;
+	s=korg; t=1728392738;
+	bh=QGCNvcpl7uDXQF/ZECf3gRf3uGbeBwI6hr8Vb5XLNSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hqYBYt6bhzWo6UOZdvLC0khfgJduEd7SXvWOL+GpMNa+SD0seyTJYNMrkzSNzfa2b
-	 r3YoN7jhr7Uj7yQdjmFnPFS1VWThAGX28+Dw2gSnj8bWW2VZ/FXnfVqCBAvMuxFrfC
-	 qJViHXGw0ccOXwu5w5i4pbS98eARHsmHCJ81P30c=
+	b=B2UfB+mSvc4V5o4Y9LkaOYaPowrBhp5qR/XoFjuLZh8soA5wqs3OIKbBTAp0vkdoz
+	 1mK6RnIRolWKEVG7lV51yyVEstTD4SQyjg66EtJSOlC9fOVNkOk8rCQES9rViul+Xg
+	 kv/5v7hp3U4AQKvPs4PtLNNIbLAXFZRYvuiX3w3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 471/482] ACPI: battery: Simplify battery hook locking
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.11 504/558] net: pcs: xpcs: fix the wrong register that was written back
 Date: Tue,  8 Oct 2024 14:08:54 +0200
-Message-ID: <20241008115707.048801301@linuxfoundation.org>
+Message-ID: <20241008115722.064772397@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 86309cbed26139e1caae7629dcca1027d9a28e75 ]
+commit 93ef6ee5c20e9330477930ec6347672c9e0cf5a6 upstream.
 
-Move the conditional locking from __battery_hook_unregister()
-into battery_hook_unregister() and rename the low-level function
-to simplify the locking during battery hook removal.
+The value is read from the register TXGBE_RX_GEN_CTL3, and it should be
+written back to TXGBE_RX_GEN_CTL3 when it changes some fields.
 
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20241001212835.341788-2-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 76959aff14a0 ("ACPI: battery: Fix possible crash when unregistering a battery hook")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f629acc6f210 ("net: pcs: xpcs: support to switch mode for Wangxun NICs")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20240924022857.865422-1-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/pcs/pcs-xpcs-wx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 44ca989f16466..04610036e5dc5 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -703,28 +703,28 @@ static LIST_HEAD(acpi_battery_list);
- static LIST_HEAD(battery_hook_list);
- static DEFINE_MUTEX(hook_mutex);
+--- a/drivers/net/pcs/pcs-xpcs-wx.c
++++ b/drivers/net/pcs/pcs-xpcs-wx.c
+@@ -109,7 +109,7 @@ static void txgbe_pma_config_1g(struct d
+ 	txgbe_write_pma(xpcs, TXGBE_DFE_TAP_CTL0, 0);
+ 	val = txgbe_read_pma(xpcs, TXGBE_RX_GEN_CTL3);
+ 	val = u16_replace_bits(val, 0x4, TXGBE_RX_GEN_CTL3_LOS_TRSHLD0);
+-	txgbe_write_pma(xpcs, TXGBE_RX_EQ_ATTN_CTL, val);
++	txgbe_write_pma(xpcs, TXGBE_RX_GEN_CTL3, val);
  
--static void __battery_hook_unregister(struct acpi_battery_hook *hook, int lock)
-+static void battery_hook_unregister_unlocked(struct acpi_battery_hook *hook)
- {
- 	struct acpi_battery *battery;
-+
- 	/*
- 	 * In order to remove a hook, we first need to
- 	 * de-register all the batteries that are registered.
- 	 */
--	if (lock)
--		mutex_lock(&hook_mutex);
- 	list_for_each_entry(battery, &acpi_battery_list, list) {
- 		if (!hook->remove_battery(battery->bat, hook))
- 			power_supply_changed(battery->bat);
- 	}
- 	list_del(&hook->list);
--	if (lock)
--		mutex_unlock(&hook_mutex);
-+
- 	pr_info("extension unregistered: %s\n", hook->name);
- }
- 
- void battery_hook_unregister(struct acpi_battery_hook *hook)
- {
--	__battery_hook_unregister(hook, 1);
-+	mutex_lock(&hook_mutex);
-+	battery_hook_unregister_unlocked(hook);
-+	mutex_unlock(&hook_mutex);
- }
- EXPORT_SYMBOL_GPL(battery_hook_unregister);
- 
-@@ -750,7 +750,7 @@ void battery_hook_register(struct acpi_battery_hook *hook)
- 			 * hooks.
- 			 */
- 			pr_err("extension failed to load: %s", hook->name);
--			__battery_hook_unregister(hook, 0);
-+			battery_hook_unregister_unlocked(hook);
- 			goto end;
- 		}
- 
-@@ -789,7 +789,7 @@ static void battery_hook_add_battery(struct acpi_battery *battery)
- 			 */
- 			pr_err("error in extension, unloading: %s",
- 					hook_node->name);
--			__battery_hook_unregister(hook_node, 0);
-+			battery_hook_unregister_unlocked(hook_node);
- 		}
- 	}
- 	mutex_unlock(&hook_mutex);
-@@ -822,7 +822,7 @@ static void __exit battery_hook_exit(void)
- 	 * need to remove the hooks.
- 	 */
- 	list_for_each_entry_safe(hook, ptr, &battery_hook_list, list) {
--		__battery_hook_unregister(hook, 1);
-+		battery_hook_unregister(hook);
- 	}
- 	mutex_destroy(&hook_mutex);
- }
--- 
-2.43.0
-
+ 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL0, 0x20);
+ 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL3, 0x46);
 
 
 
