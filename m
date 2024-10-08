@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6F19949F3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E34994C65
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BDFC1C24B07
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E98AF283A0A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B131DE8AA;
-	Tue,  8 Oct 2024 12:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C771D1DED65;
+	Tue,  8 Oct 2024 12:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GL/8FbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDON8WYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015921E493;
-	Tue,  8 Oct 2024 12:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862AD1CCB32;
+	Tue,  8 Oct 2024 12:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390460; cv=none; b=GzV32QKKdlLrsa1I6p8XBoIDzL0bkK5Ako6b8S3PLCzPOadKeTVkti63MCmRqjHo7ixDNijzOXo0B1VCXUtFJCodjCpwvZ+rfP2NZmGJFqMyM2kJza5RGJlVEAvJpV3PkWoDu3xvKMuxTVnv/NRL1uUV1SXag1jFjQZw6uRapmI=
+	t=1728392037; cv=none; b=e8QtopFt3Sq5AnMoxqYhuKiKZ7GfC0i8HO2JLcnzo78VOaylAF4GXfsOLKPFzTs/teTyVGZwzxrM8duRVBbkI+rHfE77GBgh5J6t2R9YjxDk/YnTxz5/pPYvyu0ct7xndmOKqNJwbwO0aD1TMFwcTSf+HwvPpMkenwH5gyRKe54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390460; c=relaxed/simple;
-	bh=wdZKVDgmWZ40DQfU+NhUV+TEZB1VefoYdAcuZ3q7v00=;
+	s=arc-20240116; t=1728392037; c=relaxed/simple;
+	bh=L+sldHu0w1X6PkZQfpnN0+J65ZpwdvMMl0IdZ5Uz1/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qxcOgvAfl5SPgrkj4Ns7RZDCdjMD39H1Ma+INmNMbAAEy+YW8eatc5R4R5+FOLYxaOOWJjI7OdqvXwozOsHhvNl39DiRIT59voR5jHo1lK8cLcaFi+HHwwYBExQWblB9W4zTChN1v662M1DRg4ZagMDF4U/p0OW8t1F+sXCtR/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GL/8FbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7149DC4CECC;
-	Tue,  8 Oct 2024 12:27:39 +0000 (UTC)
+	 MIME-Version; b=EwPVGVOlc1HlbGtKB0P6ndCm3NXG7dclnRjYWviMAiNPrUzNA3ckL3J/gMz/zd6UYY/fekVjjhZzyjo9JNrMMQ2VyQmLfLsYAkuZjUH/I1cAgxSQT56z1RtE4Qc7p1ki8QxMun9CrD09NNEehsBgIS1ykm6q/YQbqJa3DnuHf1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDON8WYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4E8C4CEC7;
+	Tue,  8 Oct 2024 12:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390459;
-	bh=wdZKVDgmWZ40DQfU+NhUV+TEZB1VefoYdAcuZ3q7v00=;
+	s=korg; t=1728392037;
+	bh=L+sldHu0w1X6PkZQfpnN0+J65ZpwdvMMl0IdZ5Uz1/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0GL/8FbXx2l99a9iqrQB8wXG8tXvqeF6wxPWKjZ2mvqasH9x3jqoz5txCUJPI62ld
-	 DZdaEL4GOK7+MIcNdWPBSsFIEHc/cugVnRVX8BcxaDqf75sNFLA09c+ljqNga07HeN
-	 5K411FWP8xs8zgr+TV2wnz2t36/cp2IQcdJTKkV0=
+	b=lDON8WYriWrWGHy9wTXlJ9yQRCyNO3pZLD1CMtfWL2bSHWSLo/hOFnJoJjBPjO3Zf
+	 pKdIzpdmYmEJqO+NEm9v4JSpeyWWwGHk43SxqYazXhJDR1+9GevGbNppuP2QLG4bSU
+	 uDGwgGZpkrfa4VIctFMBLKqx/mkTlYgVGUtTbSQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Alessandro Zanni <alessandro.zanni87@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 264/482] kselftest/devices/probe: Fix SyntaxWarning in regex strings for Python3
+Subject: [PATCH 6.11 297/558] drm/amdgpu/gfx10: use rlc safe mode for soft recovery
 Date: Tue,  8 Oct 2024 14:05:27 +0200
-Message-ID: <20241008115658.672677107@linuxfoundation.org>
+Message-ID: <20241008115714.008633477@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Zanni <alessandro.zanni87@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit a19008256d05e726f29f43c6a307e45482c082c3 ]
+[ Upstream commit ead60e9c4e29c8574cae1be4fe3af1d9a978fb0f ]
 
-Insert raw strings to prevent Python3 from interpreting string literals
-as Unicode strings and "\d" as invalid escaped sequence.
+Protect the MMIO access with safe mode.
 
-Fix the warnings:
-
-tools/testing/selftests/devices/probe/test_discoverable_devices.py:48:
-SyntaxWarning: invalid escape sequence '\d' usb_controller_sysfs_dir =
-"usb[\d]+"
-
-tools/testing/selftests/devices/probe/test_discoverable_devices.py: 94:
-SyntaxWarning: invalid escape sequence '\d' re_usb_version =
-re.compile("PRODUCT=.*/(\d)/.*")
-
-Fixes: dacf1d7a78bf ("kselftest: Add test to verify probe of devices from discoverable buses")
-
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/devices/test_discoverable_devices.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/devices/test_discoverable_devices.py b/tools/testing/selftests/devices/test_discoverable_devices.py
-index fbae8deb593d5..37a58e94e7c3a 100755
---- a/tools/testing/selftests/devices/test_discoverable_devices.py
-+++ b/tools/testing/selftests/devices/test_discoverable_devices.py
-@@ -39,7 +39,7 @@ def find_pci_controller_dirs():
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 5b41c6a44068c..1bb602c4f9b3f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -8889,7 +8889,9 @@ static void gfx_v10_0_ring_soft_recovery(struct amdgpu_ring *ring,
+ 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
+ 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
+ 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
++	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
+ 	WREG32_SOC15(GC, 0, mmSQ_CMD, value);
++	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+ }
  
- 
- def find_usb_controller_dirs():
--    usb_controller_sysfs_dir = "usb[\d]+"
-+    usb_controller_sysfs_dir = r"usb[\d]+"
- 
-     dir_regex = re.compile(usb_controller_sysfs_dir)
-     for d in os.scandir(sysfs_usb_devices):
-@@ -69,7 +69,7 @@ def get_acpi_uid(sysfs_dev_dir):
- 
- 
- def get_usb_version(sysfs_dev_dir):
--    re_usb_version = re.compile("PRODUCT=.*/(\d)/.*")
-+    re_usb_version = re.compile(r"PRODUCT=.*/(\d)/.*")
-     with open(os.path.join(sysfs_dev_dir, "uevent")) as f:
-         return int(re_usb_version.search(f.read()).group(1))
- 
+ static void
 -- 
 2.43.0
 
