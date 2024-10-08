@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0309949B7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559EA994C7F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDC161C248FB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 198EEB2A72D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51685EEC8;
-	Tue,  8 Oct 2024 12:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CF51DEFF3;
+	Tue,  8 Oct 2024 12:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9DB6YjC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSarKk39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDE91E485;
-	Tue,  8 Oct 2024 12:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35C61DE3A3;
+	Tue,  8 Oct 2024 12:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390330; cv=none; b=E87Hc97d3zRvMVjqmAqr85/S+Ox4pgb1xHup8AwAL0KLvezulG+ehw1EFF7Dv6uIpbTfEVhsbIbZ/gBgY0I1xgAJztJbqUCRVthVpi3Ggk7S8/xOOwoeK7sstkO69n/cKa76t6jaN+N6ziqwfmOcHw+JvYtbcM3ryrT/Y0FDqTM=
+	t=1728392003; cv=none; b=osvievXP/3F3xk9HrMAPjxzrvC4QwiMp1E9nhtlE54FX3chGvZK3RJedIeuHtTFRA1tcM0GKl3THCd+/5PiN6LHMBOguP2bl2CXGbrc6MwnZSty5D3FjaTx03MrM9AulJjY5oU2mPOkpZhWzw76IV87c2q+J5Px1Y3FzJ0uLUi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390330; c=relaxed/simple;
-	bh=xzjoFnjSPlmJBNNqOs3sqy3ncjg6Y5bXvbOZpnPXTcg=;
+	s=arc-20240116; t=1728392003; c=relaxed/simple;
+	bh=XNHfl0pIERliQ5sNrqtYjBLQFdtAhLItyxSstCD37rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4zGQDsLIzh9Rg4x7XsFQKBqVOt/E4vJTg92MT09CiFZmamZw0sPwdWMKUjc/A79FDeSnhZtuJLlffolo4yTkqZeuYbFiOhVCP79dvKew1e5PT95sAtxqqsjnZjbf/VhT+Udg+TafMZAyQuqFljeb4WaGA+bBA/BmWIAM/BPInY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9DB6YjC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7082EC4CECC;
-	Tue,  8 Oct 2024 12:25:29 +0000 (UTC)
+	 MIME-Version; b=Lzku6VFeGiQkxQ3mSAiasDSuxUef7nZNzJmlstN97ZjtFXmSbjuMjQUO0rXxv6J+AA3fclbmK2tV25dvHBd/2JrfW1Yit1WlfDrPktYO7/shCRtWXomXvqBxnG6m4r+YZNUDouabV4aX78B4Wscyc3+22CGWpB5hpbGUr1AYMdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSarKk39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C405C4CECC;
+	Tue,  8 Oct 2024 12:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390329;
-	bh=xzjoFnjSPlmJBNNqOs3sqy3ncjg6Y5bXvbOZpnPXTcg=;
+	s=korg; t=1728392003;
+	bh=XNHfl0pIERliQ5sNrqtYjBLQFdtAhLItyxSstCD37rQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9DB6YjCC1BF7UJsNyjuqKZBXkFDjGXM09AFatur+LcO72CYLodYAlBNMos4lfvwN
-	 1Dabr453BofhbXHpMr9CzS3dsfbUXpAqOCrAA5ryNUpwyVGKa84OLM1PrWcBnMPEpH
-	 Hfuab6mCjv9y3p0gNyQzPr5d3X/7XrwJAZLXr9cE=
+	b=CSarKk39wR2yioKFZ8L/zNoyFjUHTM8lGA4XzCcf8nzc/xEZNQ8P5wZef4CDzHx5z
+	 ZRxByJpymIBFEAL43Srk47JzropUnTio8uuHErPfB9UPJ8Iqa3NfZpdJCCpWXOUA58
+	 hTz00hW9zfSLL7WOEDgxesYzYsJaRzfJb40TvRts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Tim Huang <tim.huang@amd.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 255/482] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
+Subject: [PATCH 6.11 288/558] drm/amd/pm: ensure the fw_info is not null before using it
 Date: Tue,  8 Oct 2024 14:05:18 +0200
-Message-ID: <20241008115658.322424492@linuxfoundation.org>
+Message-ID: <20241008115713.659523225@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Tim Huang <tim.huang@amd.com>
 
-[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
+[ Upstream commit 186fb12e7a7b038c2710ceb2fb74068f1b5d55a4 ]
 
-When direct I/O completions invalidates the page cache it holds neither the
-i_rwsem nor the invalidate_lock so it can be racing with
-iomap_write_delalloc_release.  If the search for the end of the region that
-contains data returns the start offset we hit such a race and just need to
-look for the end of the newly created hole instead.
+This resolves the dereference null return value warning
+reported by Coverity.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index e817564e80e01..b9b035a5e7793 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1226,7 +1226,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
- 			error = data_end;
- 			goto out_unlock;
- 		}
--		WARN_ON_ONCE(data_end <= start_byte);
-+
-+		/*
-+		 * If we race with post-direct I/O invalidation of the page cache,
-+		 * there might be no data left at start_byte.
-+		 */
-+		if (data_end == start_byte)
-+			continue;
-+
-+		WARN_ON_ONCE(data_end < start_byte);
- 		WARN_ON_ONCE(data_end > scan_end_byte);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
+index ca1c7ae8d146d..f06b29e33ba45 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
+@@ -1183,6 +1183,8 @@ static int init_overdrive_limits(struct pp_hwmgr *hwmgr,
+ 	fw_info = smu_atom_get_data_table(hwmgr->adev,
+ 			 GetIndexIntoMasterTable(DATA, FirmwareInfo),
+ 			 &size, &frev, &crev);
++	PP_ASSERT_WITH_CODE(fw_info != NULL,
++			    "Missing firmware info!", return -EINVAL);
  
- 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
+ 	if ((fw_info->ucTableFormatRevision == 1)
+ 	    && (le16_to_cpu(fw_info->usStructureSize) >= sizeof(ATOM_FIRMWARE_INFO_V1_4)))
 -- 
 2.43.0
 
