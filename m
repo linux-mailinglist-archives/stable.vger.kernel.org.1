@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2083C994DFA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBCC6994FAB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F4D0B27EF6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 876081F23D26
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A34F1DED7A;
-	Tue,  8 Oct 2024 13:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0941DEFF6;
+	Tue,  8 Oct 2024 13:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5BbCxIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB5v8uQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9401DE88F;
-	Tue,  8 Oct 2024 13:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874CA1D9A43;
+	Tue,  8 Oct 2024 13:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392846; cv=none; b=HoOSsRLVlIo6gYCUwnPuM/wsUbR+d1KwTM8QL8fVixCqK3Gv198njOjbVB9dbWYQrdyBrYbjGOdB8beibTxpUt59+mA46XYYbPGRXSavKSz3Xd7n5/nYrPAJv9x40+waSljMmbGDVZEAwUqaddu5PVKLeGAvgCeLSD7RpmOj6Og=
+	t=1728394018; cv=none; b=CmmSaRMdRBIxo92iZAB6BVIiwKVyYYQNcD76H4q4XmdaeuT6/kNR8E0pMa2BklfxX+wZ5oC0mU2eiDjFRMNS0MPzpNWiM+lZrFq6d87F8uOIYq6IQdDzTqSfqTpfjaIomHZGhSdVoqPEne2W2/uN+0nRZAWLLgeW+Pn4FAVfsms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392846; c=relaxed/simple;
-	bh=QB7nJDlcDLOi1Rd0Baea0L6s7RRVztaM5UmcWIsw+ow=;
+	s=arc-20240116; t=1728394018; c=relaxed/simple;
+	bh=/OjirSvEQhU6eEPAGIqwjEpean7Sf4rf1A6bsBOerKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rx3sAlPvz4dcYl7hqX6CXN02qFhX7fDI7bd/ADl0Qrx+QsiHdNaIdwmpQFcm88EB7NhTl9Tg5Ip5qjEJTby5d783UNYUL7M/qGtvCOF05+sU6n4YrJTeBZ6ip1JqOAfdZgSYisnx5Pt2YBpe/6wsDKKlBf5EWffb2ELszdIEbWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5BbCxIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E167C4CEC7;
-	Tue,  8 Oct 2024 13:07:26 +0000 (UTC)
+	 MIME-Version; b=qpfR09pujPMxQNfKMsevo2F/xZwjcSdTgS0WPGSuCzDojSKydS189/0/z/oDeNm2aWxNt+y0BABG0lKQFeCG8ccno+hQvEoKoCGUcIgKEjPEH5MkwHdSglXLVzVSmg9d6DCK4Q1WamsRK5pSfGOjl7rFugOjRqPH4F/4qrGNg3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB5v8uQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89018C4CEC7;
+	Tue,  8 Oct 2024 13:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392846;
-	bh=QB7nJDlcDLOi1Rd0Baea0L6s7RRVztaM5UmcWIsw+ow=;
+	s=korg; t=1728394018;
+	bh=/OjirSvEQhU6eEPAGIqwjEpean7Sf4rf1A6bsBOerKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N5BbCxIKilgiKJjHwL/+/ptUOELmIZXUbDLZ0/VIAkffzqXXQZialAg2D4iROSW1E
-	 YeZc4qcClCgBc/acmycFLsZSzYPez61iC/Dp+5R9t7/vsdLfmXTxVbbZsKWmtMdpvs
-	 yiwcg+9uwRakL9JtRTa9iDSb8rF4JxUA68gV7HA0=
+	b=lB5v8uQjbZeKTB2is2mwVokjwRu9G80uRDIJz1ARSGm32eKuaW5F+wgOhm1bqrFqw
+	 pwaCkXcX2IMQykXiiJbgJiv5TWoWGEWyBD0BIsoTBQexLL5d5iQgnJklyPn/X+E71l
+	 UaghDTvE0naAUKDMnZpv9NA/JquTa1nlMSjYICVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 536/558] drm/amd/display: Allow backlight to go below `AMDGPU_DM_DEFAULT_MIN_BACKLIGHT`
+	Tomas Glozar <tglozar@redhat.com>,
+	Eder Zulian <ezulian@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 321/386] rtla: Fix the help text in osnoise and timerlat top tools
 Date: Tue,  8 Oct 2024 14:09:26 +0200
-Message-ID: <20241008115723.325033309@linuxfoundation.org>
+Message-ID: <20241008115642.017184716@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Eder Zulian <ezulian@redhat.com>
 
-[ Upstream commit 87d749a6aab73d8069d0345afaa98297816cb220 ]
+commit 3d7b8ea7a8a20a45d019382c4dc6ed79e8bb95cf upstream.
 
-The issue with panel power savings compatibility below
-`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` happens at
-`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` as well.
+The help text in osnoise top and timerlat top had some minor errors
+and omissions. The -d option was missing the 's' (second) abbreviation and
+the error message for '-d' used '-D'.
 
-That issue will be fixed separately, so don't prevent the backlight
-brightness from going that low.
-
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/amd-gfx/be04226a-a9e3-4a45-a83b-6d263c6557d8@t-8ch.de/T/#m400dee4e2fc61fe9470334d20a7c8c89c9aef44f
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1eceb2fc2ca54 ("rtla/osnoise: Add osnoise top mode")
+Fixes: a828cd18bc4ad ("rtla: Add timerlat tool and timelart top mode")
+Link: https://lore.kernel.org/20240813155831.384446-1-ezulian@redhat.com
+Suggested-by: Tomas Glozar <tglozar@redhat.com>
+Reviewed-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Eder Zulian <ezulian@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/rtla/src/osnoise_top.c  |    2 +-
+ tools/tracing/rtla/src/timerlat_top.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index ccb1883a67ff5..1ab7cd8a6b6ae 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4485,7 +4485,7 @@ static void amdgpu_dm_update_backlight_caps(struct amdgpu_display_manager *dm,
- 		int spread = caps.max_input_signal - caps.min_input_signal;
- 
- 		if (caps.max_input_signal > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
--		    caps.min_input_signal < AMDGPU_DM_DEFAULT_MIN_BACKLIGHT ||
-+		    caps.min_input_signal < 0 ||
- 		    spread > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
- 		    spread < AMDGPU_DM_MIN_SPREAD) {
- 			DRM_DEBUG_KMS("DM: Invalid backlight caps: min=%d, max=%d\n",
--- 
-2.43.0
-
+--- a/tools/tracing/rtla/src/osnoise_top.c
++++ b/tools/tracing/rtla/src/osnoise_top.c
+@@ -428,7 +428,7 @@ struct osnoise_top_params *osnoise_top_p
+ 		case 'd':
+ 			params->duration = parse_seconds_duration(optarg);
+ 			if (!params->duration)
+-				osnoise_top_usage(params, "Invalid -D duration\n");
++				osnoise_top_usage(params, "Invalid -d duration\n");
+ 			break;
+ 		case 'e':
+ 			tevent = trace_event_alloc(optarg);
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -339,7 +339,7 @@ static void timerlat_top_usage(char *usa
+ 		"	  -c/--cpus cpus: run the tracer only on the given cpus",
+ 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
+ 		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
+-		"	  -d/--duration time[m|h|d]: duration of the session in seconds",
++		"	  -d/--duration time[s|m|h|d]: duration of the session",
+ 		"	  -D/--debug: print debug info",
+ 		"	     --dump-tasks: prints the task running on all CPUs if stop conditions are met (depends on !--no-aa)",
+ 		"	  -t/--trace[=file]: save the stopped trace to [file|timerlat_trace.txt]",
+@@ -485,7 +485,7 @@ static struct timerlat_top_params
+ 		case 'd':
+ 			params->duration = parse_seconds_duration(optarg);
+ 			if (!params->duration)
+-				timerlat_top_usage("Invalid -D duration\n");
++				timerlat_top_usage("Invalid -d duration\n");
+ 			break;
+ 		case 'e':
+ 			tevent = trace_event_alloc(optarg);
 
 
 
