@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5314A994A13
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DBF994CBF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2A31287F93
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 983DB1C250BE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8011E493;
-	Tue,  8 Oct 2024 12:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA4D1DFD80;
+	Tue,  8 Oct 2024 12:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUE100TU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLZR2l5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4B6EEC8;
-	Tue,  8 Oct 2024 12:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE0C1DEFFE;
+	Tue,  8 Oct 2024 12:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390536; cv=none; b=jZ9eNpAu1hEstmfoF1QS9otBKox9mMxu++E56y8T/kt5HZg3q3Qi+cJZ70SjIMin923i9lP/lGMJiltRyoZTYtMMXwe+K/J/yJ6xkWi1bzAdvwHWAo3QszJtlR1srEFll+Oy1MPHSAcJ00qcJjtVpUwGDHRgFuWyDGecl0kKMxM=
+	t=1728392218; cv=none; b=Yjb3JLCNZVKmxClKWlw/7NKIuEX28M6NRwiKD3+H6gv3z3sl/KYNkPgNrJIBY/P5TQejhoJUBezZ7bqN+t1swMHbgXM71fmHmmHKM7raOncTQ4Nkph4VmMfDM4dB9Yibmr2NKUcwXEyKnPnkZIqMKKjwiLoy/tY/uU0Ti1bSh2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390536; c=relaxed/simple;
-	bh=YbpIGsGblL6+nKZkODa70iJNVwCyKKI1bOMkEWgouYM=;
+	s=arc-20240116; t=1728392218; c=relaxed/simple;
+	bh=7meT5Zg4FIliPmPRdTU+zQjNgM7+d3Rpo8SVXYIvG44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oKeHxIIHlhthR/lCoI0uiPMHQA+xIQdr9W0MIr4PnHqAYuhvKlfO1B95B8/BWLwPD0TpfI01ZMe2tdZYqc7EGr6BpQDZRXSQEtqbp0Yph69r6FuZVCnVOfCaaEKzLmhAD+rn0M8fS3WPO75OmQhegkHdQDveVJnf8dDSbwZ83Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUE100TU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A39C4CEC7;
-	Tue,  8 Oct 2024 12:28:55 +0000 (UTC)
+	 MIME-Version; b=k/KiiFCWGHs10uLrBQLICqpovZLHc+aXb9izYTPM9vHaDbZxp6e8X9BdIFUFtCi1g4/FWLnf+pjuQMIUZ8NP2zEcIt2JvpBF2E3XpjY1L+YoOob2jvGLsmwnY0qeSMn5tnf+NrbD2VAve4DZtYx2CTXgtM/s+qlSYGP6KavdfIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLZR2l5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A29C4CEC7;
+	Tue,  8 Oct 2024 12:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390536;
-	bh=YbpIGsGblL6+nKZkODa70iJNVwCyKKI1bOMkEWgouYM=;
+	s=korg; t=1728392218;
+	bh=7meT5Zg4FIliPmPRdTU+zQjNgM7+d3Rpo8SVXYIvG44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUE100TU3xBtbMQuVrnqN0wPVWv3FKiK0h+UQBi0eeNQF8cNJVTNvreUf1kQLGzdH
-	 iLOf9dcICit7C5fhvCWZj0fcB9vkGaBh/OSdBZck2MKoZbqLeM3x3NWrI7IzPgUJHi
-	 POwobMfVCRliKtKV5AE86oRiZ54So139Ga0t725o=
+	b=pLZR2l5b2tc9/VwrAN4WjYfideq+NJoYGTqKEDVuGWFy9GTLaRWHI+AQpmiKJEFjK
+	 zMT5eGxH1WhsuedSk0GmR2Ks6QfGHtqL6nS3KPNT88DCu2ztuY+7Pms/CIeU/F0pp4
+	 Jz9LBslDKKpzW1DaeuEewtnEIyjAzXLHaQGMbF3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Hans P. Moller" <hmoller@uc.cl>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 318/482] ALSA: line6: add hw monitor volume control to POD HD500X
+	Robert Hancock <robert.hancock@calian.com>,
+	Manikanta Guntupalli <manikanta.guntupalli@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.11 351/558] i2c: xiic: Wait for TX empty to avoid missed TX NAKs
 Date: Tue,  8 Oct 2024 14:06:21 +0200
-Message-ID: <20241008115700.946316542@linuxfoundation.org>
+Message-ID: <20241008115716.111810820@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans P. Moller <hmoller@uc.cl>
+From: Robert Hancock <robert.hancock@calian.com>
 
-commit 703235a244e533652346844cfa42623afb36eed1 upstream.
+commit 521da1e9225450bd323db5fa5bca942b1dc485b7 upstream.
 
-Add hw monitor volume control for POD HD500X. This is done adding
-LINE6_CAP_HWMON_CTL to the capabilities
+Frequently an I2C write will be followed by a read, such as a register
+address write followed by a read of the register value. In this driver,
+when the TX FIFO half empty interrupt was raised and it was determined
+that there was enough space in the TX FIFO to send the following read
+command, it would do so without waiting for the TX FIFO to actually
+empty.
 
-Signed-off-by: Hans P. Moller <hmoller@uc.cl>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241003232828.5819-1-hmoller@uc.cl
+Unfortunately it appears that in some cases this can result in a NAK
+that was raised by the target device on the write, such as due to an
+unsupported register address, being ignored and the subsequent read
+being done anyway. This can potentially put the I2C bus into an
+invalid state and/or result in invalid read data being processed.
+
+To avoid this, once a message has been fully written to the TX FIFO,
+wait for the TX FIFO empty interrupt before moving on to the next
+message, to ensure NAKs are handled properly.
+
+Fixes: e1d5b6598cdc ("i2c: Add support for Xilinx XPS IIC Bus Interface")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Reviewed-by: Manikanta Guntupalli <manikanta.guntupalli@amd.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/line6/podhd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-xiic.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/sound/usb/line6/podhd.c
-+++ b/sound/usb/line6/podhd.c
-@@ -507,7 +507,7 @@ static const struct line6_properties pod
- 	[LINE6_PODHD500X] = {
- 		.id = "PODHD500X",
- 		.name = "POD HD500X",
--		.capabilities	= LINE6_CAP_CONTROL
-+		.capabilities	= LINE6_CAP_CONTROL | LINE6_CAP_HWMON_CTL
- 				| LINE6_CAP_PCM | LINE6_CAP_HWMON,
- 		.altsetting = 1,
- 		.ep_ctrl_r = 0x81,
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -772,14 +772,17 @@ static irqreturn_t xiic_process(int irq,
+ 			goto out;
+ 		}
+ 
+-		xiic_fill_tx_fifo(i2c);
+-
+-		/* current message sent and there is space in the fifo */
+-		if (!xiic_tx_space(i2c) && xiic_tx_fifo_space(i2c) >= 2) {
++		if (xiic_tx_space(i2c)) {
++			xiic_fill_tx_fifo(i2c);
++		} else {
++			/* current message fully written */
+ 			dev_dbg(i2c->adap.dev.parent,
+ 				"%s end of message sent, nmsgs: %d\n",
+ 				__func__, i2c->nmsgs);
+-			if (i2c->nmsgs > 1) {
++			/* Don't move onto the next message until the TX FIFO empties,
++			 * to ensure that a NAK is not missed.
++			 */
++			if (i2c->nmsgs > 1 && (pend & XIIC_INTR_TX_EMPTY_MASK)) {
+ 				i2c->nmsgs--;
+ 				i2c->tx_msg++;
+ 				xfer_more = 1;
+@@ -790,11 +793,7 @@ static irqreturn_t xiic_process(int irq,
+ 					"%s Got TX IRQ but no more to do...\n",
+ 					__func__);
+ 			}
+-		} else if (!xiic_tx_space(i2c) && (i2c->nmsgs == 1))
+-			/* current frame is sent and is last,
+-			 * make sure to disable tx half
+-			 */
+-			xiic_irq_dis(i2c, XIIC_INTR_TX_HALF_MASK);
++		}
+ 	}
+ 
+ 	if (pend & XIIC_INTR_BNB_MASK) {
 
 
 
