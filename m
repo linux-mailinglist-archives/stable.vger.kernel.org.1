@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-81903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36689994A0C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C4B994E56
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF1691F21D0A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25BE11F24FC6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81C11DF249;
-	Tue,  8 Oct 2024 12:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D101DEFDD;
+	Tue,  8 Oct 2024 13:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+nKfVDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9xCT+59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AD51DEFFE;
-	Tue,  8 Oct 2024 12:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918BA1D3653;
+	Tue,  8 Oct 2024 13:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390519; cv=none; b=IJ/YOW/E1Pngx2Zbsf6f4wGX2rAidDllRIczq9RdcnctOSbo9bhfQksjk6y76ZCDnEdTSPDjPVA4O0iRHJYs57pZICdohRW575KE0gPhqhKjMiy0IlCWfnBxIBhwMwjn65s1NpBPZuxhysiZ1HIp85xY+/vn9dzuXoKXC8eRcDY=
+	t=1728393367; cv=none; b=K3qJ1bBjJrp2zEapQ8ou0DyxX1kwq0TS24xxQ8hratGbK0Xsr2M0kEtoEdyu4G3T+Nq6dHNY38/nzj76z9QKykgfLnlx+6rEMHdKmdpQk4NvTfExxWnm8t5aICUIGut+1hHBF1w04OVRGJkUiq7EmVdc4MyTV+bHyEiB34RHmgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390519; c=relaxed/simple;
-	bh=XiwaFGQgkikWrao917ib5JPC/74aagfr9iWd8pix59U=;
+	s=arc-20240116; t=1728393367; c=relaxed/simple;
+	bh=zOWx1OXUHnhgYnu0rAgqDQsLapHN+j7zv8lv22AOHas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KUuvT3Xa4vQzThMdl/Do8trVVdfcj5tK8XfWPpb7TRZBec1ti/RHZ1UhzOPfQQYUJasYTMs00McNxs0cY01Q/8/tCfJWrA8ziKNkex/T4rzHe7bT63PwQvoYuC3qBGol6N2FiZoAqYx9AaK/lVojJYTGgZoIbVoNqcOQglUgZaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+nKfVDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACEEC4CEC7;
-	Tue,  8 Oct 2024 12:28:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iyftOjcH2bjMXrT7/+wPUuGra57t8PBnR/UaNWespaljj+XE+AiMNQh97+HjbCMFscJAUIa5qveRolswOWnlh6j4oyMmOQ6DkErp3krRH3seVawH6Dc9fWjCmoGxpEIeHYYq1OZtzebj88kVW9jFc9Ms+aee3NPEkPC+C0cQOoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9xCT+59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F240EC4CEC7;
+	Tue,  8 Oct 2024 13:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390519;
-	bh=XiwaFGQgkikWrao917ib5JPC/74aagfr9iWd8pix59U=;
+	s=korg; t=1728393367;
+	bh=zOWx1OXUHnhgYnu0rAgqDQsLapHN+j7zv8lv22AOHas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+nKfVDRIhTLMmJpGKzoeGKNHsFh3Zwxoaee18a9bGigk7PgU4Pj1dsoygbJ9V2ue
-	 VxEVESHhHF2WHevLTeIHYL8sAmzYAI4Fkst+geA87ESv/Tkr0pMuGBNbAwj+KHOOqD
-	 PCfiBYlkyurwiELnknTzOx/BmpDPjLQVBYgUGCS4=
+	b=i9xCT+59DaJmQJtJ0yMhL6f2ZqB1lvMLF072/pOVlN6ljg/y+wwZ2Ee/zo7XXDwu4
+	 EJg45eJmti/IFJ32W414B+MJaf4RwKD7g9D4Bxi4+LdzZVKCu1YKisfBgU05KSCvJu
+	 7e6s/TIbWcswCM1VpffJeuBjtqExYauc4zIwr4As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>,
-	Deepak Rawat <drawat@vmware.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Thomas Hellstrom <thellstrom@vmware.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.10 313/482] drm: Consistently use struct drm_mode_rect for FB_DAMAGE_CLIPS
+	Katya Orlova <e.orlova@ispras.ru>,
+	=?UTF-8?q?Rapha=C3=ABl=20Gallais-Pou?= <raphael.gallais-pou@foss.st.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 131/386] drm/stm: Avoid use-after-free issues with crtc and plane
 Date: Tue,  8 Oct 2024 14:06:16 +0200
-Message-ID: <20241008115700.750528908@linuxfoundation.org>
+Message-ID: <20241008115634.591931252@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,52 +63,256 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Katya Orlova <e.orlova@ispras.ru>
 
-commit 8b0d2f61545545ab5eef923ed6e59fc3be2385e0 upstream.
+[ Upstream commit 19dd9780b7ac673be95bf6fd6892a184c9db611f ]
 
-FB_DAMAGE_CLIPS is a plane property for damage handling. Its UAPI
-should only use UAPI types. Hence replace struct drm_rect with
-struct drm_mode_rect in drm_atomic_plane_set_property(). Both types
-are identical in practice, so there's no change in behavior.
+ltdc_load() calls functions drm_crtc_init_with_planes(),
+drm_universal_plane_init() and drm_encoder_init(). These functions
+should not be called with parameters allocated with devm_kzalloc()
+to avoid use-after-free issues [1].
 
-Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Closes: https://lore.kernel.org/dri-devel/Zu1Ke1TuThbtz15E@intel.com/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: d3b21767821e ("drm: Add a new plane property to send damage during plane update")
-Cc: Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>
-Cc: Deepak Rawat <drawat@vmware.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Thomas Hellstrom <thellstrom@vmware.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.0+
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240923075841.16231-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use allocations managed by the DRM framework.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+[1]
+https://lore.kernel.org/lkml/u366i76e3qhh3ra5oxrtngjtm2u5lterkekcz6y2jkndhuxzli@diujon4h7qwb/
+
+Signed-off-by: Katya Orlova <e.orlova@ispras.ru>
+Acked-by: Raphaël Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240216125040.8968-1-e.orlova@ispras.ru
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/stm/drv.c  |  3 +-
+ drivers/gpu/drm/stm/ltdc.c | 73 ++++++++++----------------------------
+ 2 files changed, 20 insertions(+), 56 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -543,7 +543,7 @@ static int drm_atomic_plane_set_property
- 					&state->fb_damage_clips,
- 					val,
- 					-1,
--					sizeof(struct drm_rect),
-+					sizeof(struct drm_mode_rect),
- 					&replaced);
+diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
+index 4d2db079ad4ff..e1232f74dfa53 100644
+--- a/drivers/gpu/drm/stm/drv.c
++++ b/drivers/gpu/drm/stm/drv.c
+@@ -25,6 +25,7 @@
+ #include <drm/drm_module.h>
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
++#include <drm/drm_managed.h>
+ 
+ #include "ltdc.h"
+ 
+@@ -75,7 +76,7 @@ static int drv_load(struct drm_device *ddev)
+ 
+ 	DRM_DEBUG("%s\n", __func__);
+ 
+-	ldev = devm_kzalloc(ddev->dev, sizeof(*ldev), GFP_KERNEL);
++	ldev = drmm_kzalloc(ddev, sizeof(*ldev), GFP_KERNEL);
+ 	if (!ldev)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/gpu/drm/stm/ltdc.c b/drivers/gpu/drm/stm/ltdc.c
+index 5aec1e58c968c..056642d12265c 100644
+--- a/drivers/gpu/drm/stm/ltdc.c
++++ b/drivers/gpu/drm/stm/ltdc.c
+@@ -36,6 +36,7 @@
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_simple_kms_helper.h>
+ #include <drm/drm_vblank.h>
++#include <drm/drm_managed.h>
+ 
+ #include <video/videomode.h>
+ 
+@@ -1199,7 +1200,6 @@ static void ltdc_crtc_atomic_print_state(struct drm_printer *p,
+ }
+ 
+ static const struct drm_crtc_funcs ltdc_crtc_funcs = {
+-	.destroy = drm_crtc_cleanup,
+ 	.set_config = drm_atomic_helper_set_config,
+ 	.page_flip = drm_atomic_helper_page_flip,
+ 	.reset = drm_atomic_helper_crtc_reset,
+@@ -1212,7 +1212,6 @@ static const struct drm_crtc_funcs ltdc_crtc_funcs = {
+ };
+ 
+ static const struct drm_crtc_funcs ltdc_crtc_with_crc_support_funcs = {
+-	.destroy = drm_crtc_cleanup,
+ 	.set_config = drm_atomic_helper_set_config,
+ 	.page_flip = drm_atomic_helper_page_flip,
+ 	.reset = drm_atomic_helper_crtc_reset,
+@@ -1545,7 +1544,6 @@ static void ltdc_plane_atomic_print_state(struct drm_printer *p,
+ static const struct drm_plane_funcs ltdc_plane_funcs = {
+ 	.update_plane = drm_atomic_helper_update_plane,
+ 	.disable_plane = drm_atomic_helper_disable_plane,
+-	.destroy = drm_plane_cleanup,
+ 	.reset = drm_atomic_helper_plane_reset,
+ 	.atomic_duplicate_state = drm_atomic_helper_plane_duplicate_state,
+ 	.atomic_destroy_state = drm_atomic_helper_plane_destroy_state,
+@@ -1572,7 +1570,6 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
+ 	const u64 *modifiers = ltdc_format_modifiers;
+ 	u32 lofs = index * LAY_OFS;
+ 	u32 val;
+-	int ret;
+ 
+ 	/* Allocate the biggest size according to supported color formats */
+ 	formats = devm_kzalloc(dev, (ldev->caps.pix_fmt_nb +
+@@ -1615,14 +1612,10 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
+ 		}
+ 	}
+ 
+-	plane = devm_kzalloc(dev, sizeof(*plane), GFP_KERNEL);
+-	if (!plane)
+-		return NULL;
+-
+-	ret = drm_universal_plane_init(ddev, plane, possible_crtcs,
+-				       &ltdc_plane_funcs, formats, nb_fmt,
+-				       modifiers, type, NULL);
+-	if (ret < 0)
++	plane = drmm_universal_plane_alloc(ddev, struct drm_plane, dev,
++					   possible_crtcs, &ltdc_plane_funcs, formats,
++					   nb_fmt, modifiers, type, NULL);
++	if (IS_ERR(plane))
+ 		return NULL;
+ 
+ 	if (ldev->caps.ycbcr_input) {
+@@ -1645,15 +1638,6 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
+ 	return plane;
+ }
+ 
+-static void ltdc_plane_destroy_all(struct drm_device *ddev)
+-{
+-	struct drm_plane *plane, *plane_temp;
+-
+-	list_for_each_entry_safe(plane, plane_temp,
+-				 &ddev->mode_config.plane_list, head)
+-		drm_plane_cleanup(plane);
+-}
+-
+ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
+ {
+ 	struct ltdc_device *ldev = ddev->dev_private;
+@@ -1679,14 +1663,14 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
+ 
+ 	/* Init CRTC according to its hardware features */
+ 	if (ldev->caps.crc)
+-		ret = drm_crtc_init_with_planes(ddev, crtc, primary, NULL,
+-						&ltdc_crtc_with_crc_support_funcs, NULL);
++		ret = drmm_crtc_init_with_planes(ddev, crtc, primary, NULL,
++						 &ltdc_crtc_with_crc_support_funcs, NULL);
+ 	else
+-		ret = drm_crtc_init_with_planes(ddev, crtc, primary, NULL,
+-						&ltdc_crtc_funcs, NULL);
++		ret = drmm_crtc_init_with_planes(ddev, crtc, primary, NULL,
++						 &ltdc_crtc_funcs, NULL);
+ 	if (ret) {
+ 		DRM_ERROR("Can not initialize CRTC\n");
+-		goto cleanup;
++		return ret;
+ 	}
+ 
+ 	drm_crtc_helper_add(crtc, &ltdc_crtc_helper_funcs);
+@@ -1700,9 +1684,8 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
+ 	for (i = 1; i < ldev->caps.nb_layers; i++) {
+ 		overlay = ltdc_plane_create(ddev, DRM_PLANE_TYPE_OVERLAY, i);
+ 		if (!overlay) {
+-			ret = -ENOMEM;
+ 			DRM_ERROR("Can not create overlay plane %d\n", i);
+-			goto cleanup;
++			return -ENOMEM;
+ 		}
+ 		if (ldev->caps.dynamic_zorder)
+ 			drm_plane_create_zpos_property(overlay, i, 0, ldev->caps.nb_layers - 1);
+@@ -1715,10 +1698,6 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
+ 	}
+ 
+ 	return 0;
+-
+-cleanup:
+-	ltdc_plane_destroy_all(ddev);
+-	return ret;
+ }
+ 
+ static void ltdc_encoder_disable(struct drm_encoder *encoder)
+@@ -1778,23 +1757,19 @@ static int ltdc_encoder_init(struct drm_device *ddev, struct drm_bridge *bridge)
+ 	struct drm_encoder *encoder;
+ 	int ret;
+ 
+-	encoder = devm_kzalloc(ddev->dev, sizeof(*encoder), GFP_KERNEL);
+-	if (!encoder)
+-		return -ENOMEM;
++	encoder = drmm_simple_encoder_alloc(ddev, struct drm_encoder, dev,
++					    DRM_MODE_ENCODER_DPI);
++	if (IS_ERR(encoder))
++		return PTR_ERR(encoder);
+ 
+ 	encoder->possible_crtcs = CRTC_MASK;
+ 	encoder->possible_clones = 0;	/* No cloning support */
+ 
+-	drm_simple_encoder_init(ddev, encoder, DRM_MODE_ENCODER_DPI);
+-
+ 	drm_encoder_helper_add(encoder, &ltdc_encoder_helper_funcs);
+ 
+ 	ret = drm_bridge_attach(encoder, bridge, NULL, 0);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			drm_encoder_cleanup(encoder);
++	if (ret)
  		return ret;
- 	} else if (property == plane->scaling_filter_property) {
+-	}
+ 
+ 	DRM_DEBUG_DRIVER("Bridge encoder:%d created\n", encoder->base.id);
+ 
+@@ -1964,8 +1939,7 @@ int ltdc_load(struct drm_device *ddev)
+ 			goto err;
+ 
+ 		if (panel) {
+-			bridge = drm_panel_bridge_add_typed(panel,
+-							    DRM_MODE_CONNECTOR_DPI);
++			bridge = drmm_panel_bridge_add(ddev, panel);
+ 			if (IS_ERR(bridge)) {
+ 				DRM_ERROR("panel-bridge endpoint %d\n", i);
+ 				ret = PTR_ERR(bridge);
+@@ -2047,7 +2021,7 @@ int ltdc_load(struct drm_device *ddev)
+ 		}
+ 	}
+ 
+-	crtc = devm_kzalloc(dev, sizeof(*crtc), GFP_KERNEL);
++	crtc = drmm_kzalloc(ddev, sizeof(*crtc), GFP_KERNEL);
+ 	if (!crtc) {
+ 		DRM_ERROR("Failed to allocate crtc\n");
+ 		ret = -ENOMEM;
+@@ -2074,9 +2048,6 @@ int ltdc_load(struct drm_device *ddev)
+ 
+ 	return 0;
+ err:
+-	for (i = 0; i < nb_endpoints; i++)
+-		drm_of_panel_bridge_remove(ddev->dev->of_node, 0, i);
+-
+ 	clk_disable_unprepare(ldev->pixel_clk);
+ 
+ 	return ret;
+@@ -2084,16 +2055,8 @@ int ltdc_load(struct drm_device *ddev)
+ 
+ void ltdc_unload(struct drm_device *ddev)
+ {
+-	struct device *dev = ddev->dev;
+-	int nb_endpoints, i;
+-
+ 	DRM_DEBUG_DRIVER("\n");
+ 
+-	nb_endpoints = of_graph_get_endpoint_count(dev->of_node);
+-
+-	for (i = 0; i < nb_endpoints; i++)
+-		drm_of_panel_bridge_remove(ddev->dev->of_node, 0, i);
+-
+ 	pm_runtime_disable(ddev->dev);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
