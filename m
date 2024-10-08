@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF80994DAA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC5A994FDC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 195021C24D69
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:08:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF45B284181
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB3E1DED4E;
-	Tue,  8 Oct 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0775C1E0481;
+	Tue,  8 Oct 2024 13:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq39ooaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1rhPo3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC13E1DE8BE;
-	Tue,  8 Oct 2024 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67981E04B1;
+	Tue,  8 Oct 2024 13:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392873; cv=none; b=MtdMWzAJ1vQ3q1y07Oe4bWjgurzmHJF9Byzq8rSZ4Qc9iGcvPWMjKpdci+3KpMsjVRm8+uMIJ6+Esa1O0u8muMW/kCsOn9u/aYA7SmIU+t9cdDTNZ0BPuWjwh9RbHAoqMILU4MP3qRLtw8tc0rHv82bmvYfM9MDUkCFJwhu7hnw=
+	t=1728394141; cv=none; b=C9+V69Vsj3x4u1Zs4lLzBme0Tp2TYjFUhXzXJMIdMju3Ta0Xs+TcHOjHDUYgIGA3lwpL3qqla+Bl/uJdmz9iaXv5ry7XOGnCLFaTea05Nn9ZUbVNN7FGxWQ8i2mknGsSf301yORMA7gULdEIuIBEP0qCc/ZOHI2GSsLSSnje7es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392873; c=relaxed/simple;
-	bh=1KZigy7hQ1RyKsBA4kShwynllhp/qu7ZlB15Sx0X0Qk=;
+	s=arc-20240116; t=1728394141; c=relaxed/simple;
+	bh=F2U8gnE1xZpAZR6F5MjYyBrhZJiUzFvSbmUP63SXloI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1Re1oDso2Yy4PcbfPtiDxdK2te8WfApeMOoVpRE3jv15iIwIKMTnodLaK0WWek2pF8fKzYPvQ28b98EVR0j6mRbtevY3axaIagL7f3OJQY7Rb9B/UjFEb7YfZj12vZ9Nj+klY87LA4PoE4cNZmVpKOdkgqrX9VZOC4bvH/8REA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq39ooaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B831C4CEC7;
-	Tue,  8 Oct 2024 13:07:52 +0000 (UTC)
+	 MIME-Version; b=tNWiFB1qwd3LscRV2bRZeoJrQh67fX0B35wZtNEmhjHPwhpTTeBYi8WFJWzkD8OgXdJb/BSZsx/D2pHK0NZp/fZbO41JHMjO+tcQOSQH4YT1fAIJlHuLi3X9T1qHr4DR/G+jS7sqB7Ry2E0EHAALWM+/3vtPUlJtKqzDAP9JfVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1rhPo3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2339CC4CEC7;
+	Tue,  8 Oct 2024 13:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392873;
-	bh=1KZigy7hQ1RyKsBA4kShwynllhp/qu7ZlB15Sx0X0Qk=;
+	s=korg; t=1728394141;
+	bh=F2U8gnE1xZpAZR6F5MjYyBrhZJiUzFvSbmUP63SXloI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yq39ooaM0GKwJbuTxwfNPTOeiqyhwVSFv1/ZexHK55sbDFeM46j2ZGQ2Sc3H9KVmo
-	 KRYxGn6KimqKDRfrQalznsMYjUTWt9WIGZACKLGFPlZsxLdsjtXwNtIgvUtUEplLi0
-	 M9WZmqDkFd7WHnqvQU54wwBIAVNqmeTZJYWYwNlY=
+	b=W1rhPo3Yz0BcWcU5HpTY49CrYn2c1c//O9l7AtZ9kR4XC9WYFahZcw6/LhsVRUM9A
+	 TTOryq5xQnKWX2wxV1F34It6cffZZN8+5IsfZUjjTtpxPvBswnakrLfUhVOQYYAIck
+	 RQugmliyS5DPh9x1Pu7VepnomqZe0ygC0f7a2yV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 543/558] r8169: add tally counter fields added with RTL8125
+Subject: [PATCH 6.6 328/386] kconfig: qconf: fix buffer overflow in debug links
 Date: Tue,  8 Oct 2024 14:09:33 +0200
-Message-ID: <20241008115723.603452506@linuxfoundation.org>
+Message-ID: <20241008115642.291923970@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit ced8e8b8f40accfcce4a2bbd8b150aa76d5eff9a ]
+[ Upstream commit 984ed20ece1c6c20789ece040cbff3eb1a388fa9 ]
 
-RTL8125 added fields to the tally counter, what may result in the chip
-dma'ing these new fields to unallocated memory. Therefore make sure
-that the allocated memory area is big enough to hold all of the
-tally counter values, even if we use only parts of it.
+If you enable "Option -> Show Debug Info" and click a link, the program
+terminates with the following error:
 
-Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/741d26a9-2b2b-485d-91d9-ecb302e345b5@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    *** buffer overflow detected ***: terminated
+
+The buffer overflow is caused by the following line:
+
+    strcat(data, "$");
+
+The buffer needs one more byte to accommodate the additional character.
+
+Fixes: c4f7398bee9c ("kconfig: qconf: make debug links work again")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 27 +++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ scripts/kconfig/qconf.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 4c22e6f602702..01e18f645c0ed 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -577,6 +577,33 @@ struct rtl8169_counters {
- 	__le32	rx_multicast;
- 	__le16	tx_aborted;
- 	__le16	tx_underrun;
-+	/* new since RTL8125 */
-+	__le64 tx_octets;
-+	__le64 rx_octets;
-+	__le64 rx_multicast64;
-+	__le64 tx_unicast64;
-+	__le64 tx_broadcast64;
-+	__le64 tx_multicast64;
-+	__le32 tx_pause_on;
-+	__le32 tx_pause_off;
-+	__le32 tx_pause_all;
-+	__le32 tx_deferred;
-+	__le32 tx_late_collision;
-+	__le32 tx_all_collision;
-+	__le32 tx_aborted32;
-+	__le32 align_errors32;
-+	__le32 rx_frame_too_long;
-+	__le32 rx_runt;
-+	__le32 rx_pause_on;
-+	__le32 rx_pause_off;
-+	__le32 rx_pause_all;
-+	__le32 rx_unknown_opcode;
-+	__le32 rx_mac_error;
-+	__le32 tx_underrun32;
-+	__le32 rx_mac_missed;
-+	__le32 rx_tcam_dropped;
-+	__le32 tdu;
-+	__le32 rdu;
- };
+diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
+index 620a3527c767a..4f3ba3debc08e 100644
+--- a/scripts/kconfig/qconf.cc
++++ b/scripts/kconfig/qconf.cc
+@@ -1174,7 +1174,7 @@ void ConfigInfoView::clicked(const QUrl &url)
+ {
+ 	QByteArray str = url.toEncoded();
+ 	const std::size_t count = str.size();
+-	char *data = new char[count + 1];
++	char *data = new char[count + 2];  // '$' + '\0'
+ 	struct symbol **result;
+ 	struct menu *m = NULL;
  
- struct rtl8169_tc_offsets {
 -- 
 2.43.0
 
