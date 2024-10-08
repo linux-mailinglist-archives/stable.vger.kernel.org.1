@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-81614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFC5994865
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:12:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D19994B29
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB47281FE2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:12:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977671C24CE2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4C51DE4DB;
-	Tue,  8 Oct 2024 12:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15FC1DE3AE;
+	Tue,  8 Oct 2024 12:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rk03UZaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2WKF7nA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879061DE4CB;
-	Tue,  8 Oct 2024 12:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FC61DE2A5;
+	Tue,  8 Oct 2024 12:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389550; cv=none; b=kIGs7GsL5SeqwIfn5QItUlCqmC9hw2xQuZC79hQnaWfgY1FIzgs8mIkzfjT+Rg96Hy7VwLQe10VpaHC6X72K2tdgvTk4GbdFAH9JwVwSNglj5JUxk4MompO0c3rtpSHdrZFusYEDscm27BnSDYm9sQNWX4FQ3y5UdEB4oy0FxpE=
+	t=1728391239; cv=none; b=eKBk+ooYOhY5jx7C/1FBthxKYOWGW6yQmu9/fhjPjiCJbbsFcgE1k5fMMWy789HJtb89CAsF510RGhUdu6YlfLhK/6GRMcOtrQD9KdjhnzExzyl08mGXXr1cfKgMHZhHakxgjrDXdv6cnbwAXDDS/uo1MloElD7eiBW15hbBQU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389550; c=relaxed/simple;
-	bh=YNOvBTwptXHiLlVVQ2A1iAgnh0hzy0gVFzLDuxHLqDU=;
+	s=arc-20240116; t=1728391239; c=relaxed/simple;
+	bh=WE5TWBchW2WYi+88TcHXaBIgarP95du5gDDegbMn2go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qn0tQZs8n7+UQ+W/q6iOrGW/41uCgMFANoqH540hwf/PFBiPuJ9Z+dDQmMvBlezXjqruLPsYPNdqyef5C5qqM94FDkVrX67IGvFqiPhebPpWZl6KeFPa+1GmJvZjXGXUtMlNPRmRmW6hzt1qekhDETM2xnV0ylmtE3njMyaVPow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rk03UZaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE105C4CECC;
-	Tue,  8 Oct 2024 12:12:29 +0000 (UTC)
+	 MIME-Version; b=KMgUwa29+cR7Yc1whyW8fe5AIuqcn0titR2DFHzzS6rowiHRNtE7MjMBMo9NPaCWn94HGDVD3dOkM2dg6heWtSl/4+OSKCFR4JdyoS+LBZ8DHwKOo1LvqbzTEjWupvsmXpyXxqN0uBl4tou/Oy0Eio1OnqCNb9SabF9aGvzdcfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2WKF7nA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F282EC4CECC;
+	Tue,  8 Oct 2024 12:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389550;
-	bh=YNOvBTwptXHiLlVVQ2A1iAgnh0hzy0gVFzLDuxHLqDU=;
+	s=korg; t=1728391239;
+	bh=WE5TWBchW2WYi+88TcHXaBIgarP95du5gDDegbMn2go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rk03UZaqFSfxsMSDM49oIRcbRuClui4VvE3zWAZTydUz7BAJqak6GCcbrTiiQ0KGV
-	 A7OLZlVHZDnlDwxN+kCmMoPPcJPZ72Rl0U/JEkUYnpWcw2u2DBYyP50hyqpUMLw1GW
-	 pyYqZj9HU/2sP1MvRD6qYKhIOPcD4ok/ye8gRjEA=
+	b=t2WKF7nAqdOIxoIEmMInvD7MibdRv+62Q2PIeO1LKwjMV4bTnNenaV5vO4vvDDu3i
+	 fmb+fET0X0Wk3eXei9uAuYdwM6zNW+TfJkqbGciWoy17QYJKje9kVG+nQ0aZFMc7Lj
+	 14aVxt6NJ4pmoDNbpksTHgdbPy4SNaLIaafGnZzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanyuan Zhong <yzhong@purestorage.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Brian Foster <bfoster@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 019/482] net/mlx5: Added cond_resched() to crdump collection
+Subject: [PATCH 6.11 052/558] iomap: constrain the file range passed to iomap_file_unshare
 Date: Tue,  8 Oct 2024 14:01:22 +0200
-Message-ID: <20241008115649.055319241@linuxfoundation.org>
+Message-ID: <20241008115704.269748768@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit ec793155894140df7421d25903de2e6bc12c695b ]
+[ Upstream commit a311a08a4237241fb5b9d219d3e33346de6e83e0 ]
 
-Collecting crdump involves reading vsc registers from pci config space
-of mlx device, which can take long time to complete. This might result
-in starving other threads waiting to run on the cpu.
+File contents can only be shared (i.e. reflinked) below EOF, so it makes
+no sense to try to unshare ranges beyond EOF.  Constrain the file range
+parameters here so that we don't have to do that in the callers.
 
-Numbers I got from testing ConnectX-5 Ex MCX516A-CDAT in the lab:
-
-- mlx5_vsc_gw_read_block_fast() was called with length = 1310716.
-- mlx5_vsc_gw_read_fast() reads 4 bytes at a time. It was not used to
-  read the entire 1310716 bytes. It was called 53813 times because
-  there are jumps in read_addr.
-- On average mlx5_vsc_gw_read_fast() took 35284.4ns.
-- In total mlx5_vsc_wait_on_flag() called vsc_read() 54707 times.
-  The average time for each call was 17548.3ns. In some instances
-  vsc_read() was called more than one time when the flag was not set.
-  As expected the thread released the cpu after 16 iterations in
-  mlx5_vsc_wait_on_flag().
-- Total time to read crdump was 35284.4ns * 53813 ~= 1.898s.
-
-It was seen in the field that crdump can take more than 5 seconds to
-complete. During that time mlx5_vsc_wait_on_flag() did not release the
-cpu because it did not complete 16 iterations. It is believed that pci
-config reads were slow. Adding cond_resched() every 128 register read
-improves the situation. In the common case the, crdump takes ~1.8989s,
-the thread yields the cpu every ~4.51ms. If crdump takes ~5s, the thread
-yields the cpu every ~18.0ms.
-
-Fixes: 8b9d8baae1de ("net/mlx5: Add Crdump support")
-Reviewed-by: Yuanyuan Zhong <yzhong@purestorage.com>
-Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 5f4e5752a8a3 ("fs: add iomap_file_dirty")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20241002150213.GC21853@frogsfrogsfrogs
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/pci_vsc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/dax.c               | 6 +++++-
+ fs/iomap/buffered-io.c | 6 +++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/pci_vsc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/pci_vsc.c
-index d0b595ba61101..432c98f2626db 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/pci_vsc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/pci_vsc.c
-@@ -24,6 +24,11 @@
- 	pci_write_config_dword((dev)->pdev, (dev)->vsc_addr + (offset), (val))
- #define VSC_MAX_RETRIES 2048
+diff --git a/fs/dax.c b/fs/dax.c
+index becb4a6920c6a..c62acd2812f8d 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1305,11 +1305,15 @@ int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
+ 	struct iomap_iter iter = {
+ 		.inode		= inode,
+ 		.pos		= pos,
+-		.len		= len,
+ 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE | IOMAP_DAX,
+ 	};
++	loff_t size = i_size_read(inode);
+ 	int ret;
  
-+/* Reading VSC registers can take relatively long time.
-+ * Yield the cpu every 128 registers read.
-+ */
-+#define VSC_GW_READ_BLOCK_COUNT 128
++	if (pos < 0 || pos >= size)
++		return 0;
 +
- enum {
- 	VSC_CTRL_OFFSET = 0x4,
- 	VSC_COUNTER_OFFSET = 0x8,
-@@ -273,6 +278,7 @@ int mlx5_vsc_gw_read_block_fast(struct mlx5_core_dev *dev, u32 *data,
- {
- 	unsigned int next_read_addr = 0;
- 	unsigned int read_addr = 0;
-+	unsigned int count = 0;
++	iter.len = min(len, size - pos);
+ 	while ((ret = iomap_iter(&iter, ops)) > 0)
+ 		iter.processed = dax_unshare_iter(&iter);
+ 	return ret;
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index f420c53d86acc..389de94715b53 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1382,11 +1382,15 @@ iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
+ 	struct iomap_iter iter = {
+ 		.inode		= inode,
+ 		.pos		= pos,
+-		.len		= len,
+ 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE,
+ 	};
++	loff_t size = i_size_read(inode);
+ 	int ret;
  
- 	while (read_addr < length) {
- 		if (mlx5_vsc_gw_read_fast(dev, read_addr, &next_read_addr,
-@@ -280,6 +286,10 @@ int mlx5_vsc_gw_read_block_fast(struct mlx5_core_dev *dev, u32 *data,
- 			return read_addr;
- 
- 		read_addr = next_read_addr;
-+		if (++count == VSC_GW_READ_BLOCK_COUNT) {
-+			cond_resched();
-+			count = 0;
-+		}
- 	}
- 	return length;
- }
++	if (pos < 0 || pos >= size)
++		return 0;
++
++	iter.len = min(len, size - pos);
+ 	while ((ret = iomap_iter(&iter, ops)) > 0)
+ 		iter.processed = iomap_unshare_iter(&iter);
+ 	return ret;
 -- 
 2.43.0
 
