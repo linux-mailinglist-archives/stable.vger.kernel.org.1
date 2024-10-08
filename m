@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1206E994C9F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394AC994E51
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4426D1C216BC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC20A1F2189F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3797D1DF24E;
-	Tue,  8 Oct 2024 12:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592F21DED6F;
+	Tue,  8 Oct 2024 13:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjH9EQga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEpOqVRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69F81DE894;
-	Tue,  8 Oct 2024 12:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185551DE4CD;
+	Tue,  8 Oct 2024 13:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392133; cv=none; b=C/5jFe0YnSsW9h7BS9fSZUPaZEdkRl57qIE0MXUn0sR70FCuCGU6DQwQyVBYhvLcdnG0BAmhQgvr9vd6MMN/uHfTIjzJqTCsvPQZmfPPDuiE5u3DbYjCsIwZ8x/hnSFX/Ac9OD9AJML537RSj1YRD9mYDfVRnfKc7s1SwZY++Js=
+	t=1728393347; cv=none; b=S4FMPWh4dnA4EeDVE6MWw2Pw7px5A/5A79/7S3+bEzVnmXTlXX+xu4sl/YBcgfEy6EV9vZ0nkGySXB9HbklHCUlh9SBcEM4i6RuJxmqPgFLvk09rzl/sxEdaXDPIDZve78kGDOR4ZWGIggLJkpStGFIZUyBCx0KP+rpgWQ07/Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392133; c=relaxed/simple;
-	bh=1xWD/pfL34j/ok6iEo/2ySRE7CKTbPqNRPvZO1h157Q=;
+	s=arc-20240116; t=1728393347; c=relaxed/simple;
+	bh=TH/ajmhnzO/Xe/sjrYZbrQLTPT0DGz2IhHIKYTuAdPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtonIvGk/DyqD6di0CGar3yqrU/0FSF3xdAi8UCWZaI3FytF+e+R+xB8gWVxnWRjVuJGCmm5Bdmm5uWSBuzVksbFoMA4eVhHR7jmtIwpp9TV7qNg/WoSO+629CJXgnCbFIdWARoueRXJ84mnn9TcYg1JnEA3Kgcc0dCDl9XE5hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjH9EQga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531C3C4CEC7;
-	Tue,  8 Oct 2024 12:55:32 +0000 (UTC)
+	 MIME-Version; b=gZppLHWJSek13AcL9y7yG/osyR3QgtAuU5H2kM2ogRweQPFuZOcUiRc+664fZT3s2wAt6RDEmcbj+virwXXoDotvVdGRUtzjEn35yimSFoEVv8PRqwe5aIvCUtI4Wi1j9N2RH0K5zqNMXXMYY8hYYCR7HtdQwJa/37vzxVOgQ1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEpOqVRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6F8C4CEC7;
+	Tue,  8 Oct 2024 13:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392132;
-	bh=1xWD/pfL34j/ok6iEo/2ySRE7CKTbPqNRPvZO1h157Q=;
+	s=korg; t=1728393347;
+	bh=TH/ajmhnzO/Xe/sjrYZbrQLTPT0DGz2IhHIKYTuAdPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjH9EQga4BIMEEZNbOGaYUY+SW7Ntc7BN/+mNyVKKeie3d7lXjDQWRe2xH7mf/Lbx
-	 7c/C9Q5D9oSCcdOoc+7tg2eTHVgCp5hMEJM4Zj8lKFDZJYuccgfEKE+KAOH95G4UpI
-	 /ErnWBpMdwp0HETBWC6OcbDgg0ajp+9161BfHnLU=
+	b=BEpOqVRjJ4WyMCZoM/PUU/QA8guIYGnw3rtzXFg0bNoVhuftQcfA6ZEtO9uCQiiCT
+	 EptrG6cW1SZ+SOpBDlOu8erRHcQ9uos45F2wp/Yqag5NeIOou/DSEHtE0blqShiqPY
+	 h/eCLCJLeyqnWYM/9wTZXdilgoBgVlqJshHWLyTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 308/558] ext4: avoid use-after-free in ext4_ext_show_leaf()
+Subject: [PATCH 6.6 093/386] crypto: simd - Do not call crypto_alloc_tfm during registration
 Date: Tue,  8 Oct 2024 14:05:38 +0200
-Message-ID: <20241008115714.435047699@linuxfoundation.org>
+Message-ID: <20241008115633.110632943@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +61,251 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 4e2524ba2ca5f54bdbb9e5153bea00421ef653f5 ]
+[ Upstream commit 3c44d31cb34ce4eb8311a2e73634d57702948230 ]
 
-In ext4_find_extent(), path may be freed by error or be reallocated, so
-using a previously saved *ppath may have been freed and thus may trigger
-use-after-free, as follows:
+Algorithm registration is usually carried out during module init,
+where as little work as possible should be carried out.  The SIMD
+code violated this rule by allocating a tfm, this then triggers a
+full test of the algorithm which may dead-lock in certain cases.
 
-ext4_split_extent
-  path = *ppath;
-  ext4_split_extent_at(ppath)
-  path = ext4_find_extent(ppath)
-  ext4_split_extent_at(ppath)
-    // ext4_find_extent fails to free path
-    // but zeroout succeeds
-  ext4_ext_show_leaf(inode, path)
-    eh = path[depth].p_hdr
-    // path use-after-free !!!
+SIMD is only allocating the tfm to get at the alg object, which is
+in fact already available as it is what we are registering.  Use
+that directly and remove the crypto_alloc_tfm call.
 
-Similar to ext4_split_extent_at(), we use *ppath directly as an input to
-ext4_ext_show_leaf(). Fix a spelling error by the way.
+Also remove some obsolete and unused SIMD API.
 
-Same problem in ext4_ext_handle_unwritten_extents(). Since 'path' is only
-used in ext4_ext_show_leaf(), remove 'path' and use *ppath directly.
-
-This issue is triggered only when EXT_DEBUG is defined and therefore does
-not affect functionality.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-5-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm/crypto/aes-ce-glue.c     |  2 +-
+ arch/arm/crypto/aes-neonbs-glue.c |  2 +-
+ crypto/simd.c                     | 76 ++++++-------------------------
+ include/crypto/internal/simd.h    | 12 +----
+ 4 files changed, 19 insertions(+), 73 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index e067f2dd0335c..7954430f886d8 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3287,7 +3287,7 @@ static int ext4_split_extent_at(handle_t *handle,
+diff --git a/arch/arm/crypto/aes-ce-glue.c b/arch/arm/crypto/aes-ce-glue.c
+index b668c97663ec0..f5b66f4cf45d9 100644
+--- a/arch/arm/crypto/aes-ce-glue.c
++++ b/arch/arm/crypto/aes-ce-glue.c
+@@ -711,7 +711,7 @@ static int __init aes_init(void)
+ 		algname = aes_algs[i].base.cra_name + 2;
+ 		drvname = aes_algs[i].base.cra_driver_name + 2;
+ 		basename = aes_algs[i].base.cra_driver_name;
+-		simd = simd_skcipher_create_compat(algname, drvname, basename);
++		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto unregister_simds;
+diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
+index f00f042ef3570..0ca94b90bc4ec 100644
+--- a/arch/arm/crypto/aes-neonbs-glue.c
++++ b/arch/arm/crypto/aes-neonbs-glue.c
+@@ -539,7 +539,7 @@ static int __init aes_init(void)
+ 		algname = aes_algs[i].base.cra_name + 2;
+ 		drvname = aes_algs[i].base.cra_driver_name + 2;
+ 		basename = aes_algs[i].base.cra_driver_name;
+-		simd = simd_skcipher_create_compat(algname, drvname, basename);
++		simd = simd_skcipher_create_compat(aes_algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto unregister_simds;
+diff --git a/crypto/simd.c b/crypto/simd.c
+index edaa479a1ec5e..d109866641a26 100644
+--- a/crypto/simd.c
++++ b/crypto/simd.c
+@@ -136,27 +136,19 @@ static int simd_skcipher_init(struct crypto_skcipher *tfm)
+ 	return 0;
  }
  
- /*
-- * ext4_split_extents() splits an extent and mark extent which is covered
-+ * ext4_split_extent() splits an extent and mark extent which is covered
-  * by @map as split_flags indicates
-  *
-  * It may result in splitting the extent into multiple extents (up to three)
-@@ -3363,7 +3363,7 @@ static int ext4_split_extent(handle_t *handle,
- 			goto out;
+-struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
++struct simd_skcipher_alg *simd_skcipher_create_compat(struct skcipher_alg *ialg,
++						      const char *algname,
+ 						      const char *drvname,
+ 						      const char *basename)
+ {
+ 	struct simd_skcipher_alg *salg;
+-	struct crypto_skcipher *tfm;
+-	struct skcipher_alg *ialg;
+ 	struct skcipher_alg *alg;
+ 	int err;
+ 
+-	tfm = crypto_alloc_skcipher(basename, CRYPTO_ALG_INTERNAL,
+-				    CRYPTO_ALG_INTERNAL | CRYPTO_ALG_ASYNC);
+-	if (IS_ERR(tfm))
+-		return ERR_CAST(tfm);
+-
+-	ialg = crypto_skcipher_alg(tfm);
+-
+ 	salg = kzalloc(sizeof(*salg), GFP_KERNEL);
+ 	if (!salg) {
+ 		salg = ERR_PTR(-ENOMEM);
+-		goto out_put_tfm;
++		goto out;
  	}
  
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- out:
- 	return err ? err : allocated;
+ 	salg->ialg_name = basename;
+@@ -195,30 +187,16 @@ struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
+ 	if (err)
+ 		goto out_free_salg;
+ 
+-out_put_tfm:
+-	crypto_free_skcipher(tfm);
++out:
+ 	return salg;
+ 
+ out_free_salg:
+ 	kfree(salg);
+ 	salg = ERR_PTR(err);
+-	goto out_put_tfm;
++	goto out;
  }
-@@ -3828,14 +3828,13 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 			struct ext4_ext_path **ppath, int flags,
- 			unsigned int allocated, ext4_fsblk_t newblock)
+ EXPORT_SYMBOL_GPL(simd_skcipher_create_compat);
+ 
+-struct simd_skcipher_alg *simd_skcipher_create(const char *algname,
+-					       const char *basename)
+-{
+-	char drvname[CRYPTO_MAX_ALG_NAME];
+-
+-	if (snprintf(drvname, CRYPTO_MAX_ALG_NAME, "simd-%s", basename) >=
+-	    CRYPTO_MAX_ALG_NAME)
+-		return ERR_PTR(-ENAMETOOLONG);
+-
+-	return simd_skcipher_create_compat(algname, drvname, basename);
+-}
+-EXPORT_SYMBOL_GPL(simd_skcipher_create);
+-
+ void simd_skcipher_free(struct simd_skcipher_alg *salg)
  {
--	struct ext4_ext_path __maybe_unused *path = *ppath;
- 	int ret = 0;
- 	int err = 0;
- 
- 	ext_debug(inode, "logical block %llu, max_blocks %u, flags 0x%x, allocated %u\n",
- 		  (unsigned long long)map->m_lblk, map->m_len, flags,
- 		  allocated);
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- 
- 	/*
- 	 * When writing into unwritten space, we should not fail to
-@@ -3932,7 +3931,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
- 	if (allocated > map->m_len)
- 		allocated = map->m_len;
- 	map->m_len = allocated;
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- out2:
- 	return err ? err : allocated;
+ 	crypto_unregister_skcipher(&salg->alg);
+@@ -246,7 +224,7 @@ int simd_register_skciphers_compat(struct skcipher_alg *algs, int count,
+ 		algname = algs[i].base.cra_name + 2;
+ 		drvname = algs[i].base.cra_driver_name + 2;
+ 		basename = algs[i].base.cra_driver_name;
+-		simd = simd_skcipher_create_compat(algname, drvname, basename);
++		simd = simd_skcipher_create_compat(algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto err_unregister;
+@@ -383,27 +361,19 @@ static int simd_aead_init(struct crypto_aead *tfm)
+ 	return 0;
  }
+ 
+-struct simd_aead_alg *simd_aead_create_compat(const char *algname,
+-					      const char *drvname,
+-					      const char *basename)
++static struct simd_aead_alg *simd_aead_create_compat(struct aead_alg *ialg,
++						     const char *algname,
++						     const char *drvname,
++						     const char *basename)
+ {
+ 	struct simd_aead_alg *salg;
+-	struct crypto_aead *tfm;
+-	struct aead_alg *ialg;
+ 	struct aead_alg *alg;
+ 	int err;
+ 
+-	tfm = crypto_alloc_aead(basename, CRYPTO_ALG_INTERNAL,
+-				CRYPTO_ALG_INTERNAL | CRYPTO_ALG_ASYNC);
+-	if (IS_ERR(tfm))
+-		return ERR_CAST(tfm);
+-
+-	ialg = crypto_aead_alg(tfm);
+-
+ 	salg = kzalloc(sizeof(*salg), GFP_KERNEL);
+ 	if (!salg) {
+ 		salg = ERR_PTR(-ENOMEM);
+-		goto out_put_tfm;
++		goto out;
+ 	}
+ 
+ 	salg->ialg_name = basename;
+@@ -442,36 +412,20 @@ struct simd_aead_alg *simd_aead_create_compat(const char *algname,
+ 	if (err)
+ 		goto out_free_salg;
+ 
+-out_put_tfm:
+-	crypto_free_aead(tfm);
++out:
+ 	return salg;
+ 
+ out_free_salg:
+ 	kfree(salg);
+ 	salg = ERR_PTR(err);
+-	goto out_put_tfm;
+-}
+-EXPORT_SYMBOL_GPL(simd_aead_create_compat);
+-
+-struct simd_aead_alg *simd_aead_create(const char *algname,
+-				       const char *basename)
+-{
+-	char drvname[CRYPTO_MAX_ALG_NAME];
+-
+-	if (snprintf(drvname, CRYPTO_MAX_ALG_NAME, "simd-%s", basename) >=
+-	    CRYPTO_MAX_ALG_NAME)
+-		return ERR_PTR(-ENAMETOOLONG);
+-
+-	return simd_aead_create_compat(algname, drvname, basename);
++	goto out;
+ }
+-EXPORT_SYMBOL_GPL(simd_aead_create);
+ 
+-void simd_aead_free(struct simd_aead_alg *salg)
++static void simd_aead_free(struct simd_aead_alg *salg)
+ {
+ 	crypto_unregister_aead(&salg->alg);
+ 	kfree(salg);
+ }
+-EXPORT_SYMBOL_GPL(simd_aead_free);
+ 
+ int simd_register_aeads_compat(struct aead_alg *algs, int count,
+ 			       struct simd_aead_alg **simd_algs)
+@@ -493,7 +447,7 @@ int simd_register_aeads_compat(struct aead_alg *algs, int count,
+ 		algname = algs[i].base.cra_name + 2;
+ 		drvname = algs[i].base.cra_driver_name + 2;
+ 		basename = algs[i].base.cra_driver_name;
+-		simd = simd_aead_create_compat(algname, drvname, basename);
++		simd = simd_aead_create_compat(algs + i, algname, drvname, basename);
+ 		err = PTR_ERR(simd);
+ 		if (IS_ERR(simd))
+ 			goto err_unregister;
+diff --git a/include/crypto/internal/simd.h b/include/crypto/internal/simd.h
+index d2316242a9884..be97b97a75dd2 100644
+--- a/include/crypto/internal/simd.h
++++ b/include/crypto/internal/simd.h
+@@ -14,11 +14,10 @@
+ struct simd_skcipher_alg;
+ struct skcipher_alg;
+ 
+-struct simd_skcipher_alg *simd_skcipher_create_compat(const char *algname,
++struct simd_skcipher_alg *simd_skcipher_create_compat(struct skcipher_alg *ialg,
++						      const char *algname,
+ 						      const char *drvname,
+ 						      const char *basename);
+-struct simd_skcipher_alg *simd_skcipher_create(const char *algname,
+-					       const char *basename);
+ void simd_skcipher_free(struct simd_skcipher_alg *alg);
+ 
+ int simd_register_skciphers_compat(struct skcipher_alg *algs, int count,
+@@ -32,13 +31,6 @@ void simd_unregister_skciphers(struct skcipher_alg *algs, int count,
+ struct simd_aead_alg;
+ struct aead_alg;
+ 
+-struct simd_aead_alg *simd_aead_create_compat(const char *algname,
+-					      const char *drvname,
+-					      const char *basename);
+-struct simd_aead_alg *simd_aead_create(const char *algname,
+-				       const char *basename);
+-void simd_aead_free(struct simd_aead_alg *alg);
+-
+ int simd_register_aeads_compat(struct aead_alg *algs, int count,
+ 			       struct simd_aead_alg **simd_algs);
+ 
 -- 
 2.43.0
 
