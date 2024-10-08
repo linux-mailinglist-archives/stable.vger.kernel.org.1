@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-82994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5425994FD6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D19994E22
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EA3F1C24E27
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4952B28746
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D7F1DEFF7;
-	Tue,  8 Oct 2024 13:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CEE1DED74;
+	Tue,  8 Oct 2024 13:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ia8b4ww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUYIl7Ni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB3F1E04A5;
-	Tue,  8 Oct 2024 13:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507241DED48;
+	Tue,  8 Oct 2024 13:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394124; cv=none; b=Jq30RUph3TTKOIVz/bLBBpExrZz9ICkQoUFfzUzrF2ZbJrdItniwCgK4TihFeNCrjHNkw6bDI4wtRSX0wxRfHNLrlRsKdoPWcphADo3eWxhY1mG0j4GaISgh+ZGiW8XW9rJdHpfRO6zYzuzNVrEKZiokjhs3SUlS/DhVvl1AIhI=
+	t=1728392870; cv=none; b=gw5oUHuJJZ10qZWY61D1nMb3BzFaFtJTYbhkO73vmLqygIc4OMkvx2j6fEGpJ0dj/jLTL25lC+wiFr4DXsHl/NOgD3TFf6Mc7A7KXWJIdjwIu6NrkNxQNFDZrvu7Pz2PFrw+5NsKwAup9eVUrA4+SnYqeFhQBoAgwyCDGJ3M02Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394124; c=relaxed/simple;
-	bh=fXpZLfTL1khFBiS/WZHXzROhywKZsoJ5DZ6uHMat8nM=;
+	s=arc-20240116; t=1728392870; c=relaxed/simple;
+	bh=kPqd2+0KAi/sU9miErBMAqyDCHWNcXCXPqW6xXAyxqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=myyHFcz1Pm6ANA3A4Li0ov5BurnZdiYmhTtL+1wcAj3fWFSq58w6UvDqn/BqLTdS6BY9lPpHsB3ZO++P/XcQqPShUc9IHHE5xrkaCEMG/Oh4P62XK2hLYRZlxUqAv/llqDU75bfTkbiG5oHDaDMmja7ggPHpPMiG6v6woQ69w/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ia8b4ww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDA0C4CEC7;
-	Tue,  8 Oct 2024 13:28:43 +0000 (UTC)
+	 MIME-Version; b=QfWHYg1F6l9ye8d8n5vBrawnLbmzsqOgUKMQOO4IF91ntuIhp/7evgp3/balti+UoGVwUl+TC9FmBpOy+eXuPzfXA8flLWzA3KYqglEte04jCXYWeenGUEtBd+oQcCEXqrRV5SoO/82zh9H+OSPIyk3ycDcZ0PWkD2u+QkMxKLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUYIl7Ni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B213DC4CECC;
+	Tue,  8 Oct 2024 13:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728394124;
-	bh=fXpZLfTL1khFBiS/WZHXzROhywKZsoJ5DZ6uHMat8nM=;
+	s=korg; t=1728392870;
+	bh=kPqd2+0KAi/sU9miErBMAqyDCHWNcXCXPqW6xXAyxqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ia8b4wwOzEPKZngd3oxHQYf9rhYQEKbzsd7sSMWnwZ6HQEyQlejrRtUcQr1ME4s6
-	 CejMvV9u/aYM3OdT77j/Bqinr/m3CsClWPfcJb9qHvy09J0BrvMBZsOXdtOTgOJWQh
-	 Ua+JBXeIBznWjWzTF9anquQNbiur941HXfIBASLM=
+	b=gUYIl7Nill7MejPcKPIJ2nBwaQOMSJQoei2WLXewW7Ck48mrpq++1E0poK4xNSSsn
+	 5Yrm+oe7Ms0lPtlLa4dE3DBAh2O31/BNn2K8YaafnxHDhre3r87kpNBtFNP01n2PPr
+	 s+xj2TJOj6oYWLEKuJcKkrjBKyr/ZcPzhEwbqVNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xiao sheng wen <atzlinux@sina.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 327/386] cpufreq: intel_pstate: Make hwp_notify_lock a raw spinlock
+Subject: [PATCH 6.11 542/558] r8169: Fix spelling mistake: "tx_underun" -> "tx_underrun"
 Date: Tue,  8 Oct 2024 14:09:32 +0200
-Message-ID: <20241008115642.253655718@linuxfoundation.org>
+Message-ID: <20241008115723.564131331@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <ukleinek@debian.org>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit 8b4865cd904650cbed7f2407e653934c621b8127 upstream.
+[ Upstream commit 8df9439389a44fb2cc4ef695e08d6a8870b1616c ]
 
-notify_hwp_interrupt() is called via sysvec_thermal() ->
-smp_thermal_vector() -> intel_thermal_interrupt() in hard irq context.
-For this reason it must not use a simple spin_lock that sleeps with
-PREEMPT_RT enabled. So convert it to a raw spinlock.
+There is a spelling mistake in the struct field tx_underun, rename
+it to tx_underrun.
 
-Reported-by: xiao sheng wen <atzlinux@sina.com>
-Link: https://bugs.debian.org/1076483
-Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: xiao sheng wen <atzlinux@sina.com>
-Link: https://patch.msgid.link/20240919081121.10784-2-ukleinek@debian.org
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-[ukleinek: Backport to v6.6.y]
-Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20240909140021.64884-1-colin.i.king@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ced8e8b8f40a ("r8169: add tally counter fields added with RTL8125")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 0ee3a04bb1022..8a4fdf212ce0d 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1632,7 +1632,7 @@ static void intel_pstate_notify_work(struct work_struct *work)
- 	wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_STATUS, 0);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 3507c2e28110d..4c22e6f602702 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -576,7 +576,7 @@ struct rtl8169_counters {
+ 	__le64	rx_broadcast;
+ 	__le32	rx_multicast;
+ 	__le16	tx_aborted;
+-	__le16	tx_underun;
++	__le16	tx_underrun;
+ };
+ 
+ struct rtl8169_tc_offsets {
+@@ -1841,7 +1841,7 @@ static void rtl8169_get_ethtool_stats(struct net_device *dev,
+ 	data[9] = le64_to_cpu(counters->rx_broadcast);
+ 	data[10] = le32_to_cpu(counters->rx_multicast);
+ 	data[11] = le16_to_cpu(counters->tx_aborted);
+-	data[12] = le16_to_cpu(counters->tx_underun);
++	data[12] = le16_to_cpu(counters->tx_underrun);
  }
  
--static DEFINE_SPINLOCK(hwp_notify_lock);
-+static DEFINE_RAW_SPINLOCK(hwp_notify_lock);
- static cpumask_t hwp_intr_enable_mask;
- 
- void notify_hwp_interrupt(void)
-@@ -1649,7 +1649,7 @@ void notify_hwp_interrupt(void)
- 	if (!(value & 0x01))
- 		return;
- 
--	spin_lock_irqsave(&hwp_notify_lock, flags);
-+	raw_spin_lock_irqsave(&hwp_notify_lock, flags);
- 
- 	if (!cpumask_test_cpu(this_cpu, &hwp_intr_enable_mask))
- 		goto ack_intr;
-@@ -1673,13 +1673,13 @@ void notify_hwp_interrupt(void)
- 
- 	schedule_delayed_work(&cpudata->hwp_notify_work, msecs_to_jiffies(10));
- 
--	spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- 
- 	return;
- 
- ack_intr:
- 	wrmsrl_safe(MSR_HWP_STATUS, 0);
--	spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- }
- 
- static void intel_pstate_disable_hwp_interrupt(struct cpudata *cpudata)
-@@ -1692,10 +1692,10 @@ static void intel_pstate_disable_hwp_interrupt(struct cpudata *cpudata)
- 	/* wrmsrl_on_cpu has to be outside spinlock as this can result in IPC */
- 	wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_INTERRUPT, 0x00);
- 
--	spin_lock_irqsave(&hwp_notify_lock, flags);
-+	raw_spin_lock_irqsave(&hwp_notify_lock, flags);
- 	if (cpumask_test_and_clear_cpu(cpudata->cpu, &hwp_intr_enable_mask))
- 		cancel_delayed_work(&cpudata->hwp_notify_work);
--	spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- }
- 
- static void intel_pstate_enable_hwp_interrupt(struct cpudata *cpudata)
-@@ -1704,10 +1704,10 @@ static void intel_pstate_enable_hwp_interrupt(struct cpudata *cpudata)
- 	if (boot_cpu_has(X86_FEATURE_HWP_NOTIFY)) {
- 		unsigned long flags;
- 
--		spin_lock_irqsave(&hwp_notify_lock, flags);
-+		raw_spin_lock_irqsave(&hwp_notify_lock, flags);
- 		INIT_DELAYED_WORK(&cpudata->hwp_notify_work, intel_pstate_notify_work);
- 		cpumask_set_cpu(cpudata->cpu, &hwp_intr_enable_mask);
--		spin_unlock_irqrestore(&hwp_notify_lock, flags);
-+		raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
- 
- 		/* wrmsrl_on_cpu has to be outside spinlock as this can result in IPC */
- 		wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_INTERRUPT, 0x01);
-@@ -3136,10 +3136,10 @@ static void intel_pstate_driver_cleanup(void)
- 			if (intel_pstate_driver == &intel_pstate)
- 				intel_pstate_clear_update_util_hook(cpu);
- 
--			spin_lock(&hwp_notify_lock);
-+			raw_spin_lock(&hwp_notify_lock);
- 			kfree(all_cpu_data[cpu]);
- 			WRITE_ONCE(all_cpu_data[cpu], NULL);
--			spin_unlock(&hwp_notify_lock);
-+			raw_spin_unlock(&hwp_notify_lock);
- 		}
- 	}
- 	cpus_read_unlock();
+ static void rtl8169_get_strings(struct net_device *dev, u32 stringset, u8 *data)
 -- 
 2.43.0
 
