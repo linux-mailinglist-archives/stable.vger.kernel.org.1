@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B348994D51
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8EA994EF3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BFD71C24873
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FDBC1F23A4D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECF61DE4CD;
-	Tue,  8 Oct 2024 13:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6701DF997;
+	Tue,  8 Oct 2024 13:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1n+kNOcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UU0b0Mtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7D41C9B99;
-	Tue,  8 Oct 2024 13:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B5D1DF270;
+	Tue,  8 Oct 2024 13:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392660; cv=none; b=fDFsa7zDRZ6G7K/0XmHtQA8iZMvQTeyHA1XhEbFH1AjKCb22xgLXh523f8BKkSSu9bdK68M0rqRosb3fXj1Z9kjSh+GnZCnQBsFEshb2zIoUEGEW9NZObtvDkBNmfSCCADqTKM2SXGwuCIWS9dtOk69G/dQNUSI6tC4dA1eCJL0=
+	t=1728393719; cv=none; b=BaQFqdPQAG9mkla6zKUHBOBiai7EtdaQ53DDXjxiJMaYGiPUvGFUfMc3X5YBkZlfV8xuQCV7R6SOZYq7A0cZlGcfnkc3gDhcOF+xS1lcI/pTX5cewJ7ErXLnQTRkVqvJibfaLGe3w22w19OblSU7zfDs9KnSl8za1B6YkcBtN+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392660; c=relaxed/simple;
-	bh=Lu6lXt7t7/PbH9JJQOTTGQw56c+56Qa/CkfMZxBmlkk=;
+	s=arc-20240116; t=1728393719; c=relaxed/simple;
+	bh=n/SFRhDuBRF9tCOusw4XhR8/FnEv14pvoPA3UiuwgTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL89cxULx7IBDA2Em0Z1ZFr0JZI1O5msi8R3W/RqufQBppKq/1S1iGPAzkHgh3WSIllxMMv4WfH5nV9zrUzdFGIaGSGHbf0IefsD6/ri7LKG6uJ2AhlJa11WRpdsCvg7nAjkpldUw3YlRew7HRJnj4Ty3ZpsGST0uU+YYj+0KpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1n+kNOcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6CCC4CEC7;
-	Tue,  8 Oct 2024 13:04:19 +0000 (UTC)
+	 MIME-Version; b=tjvf3MrlzIqAnelB9RP6BnunLcc3l4RgyS2ZXt0dYE9Ya0nAInXtQ8RJPODc4uUW+GBWdU95yt2lVArnjsNWdz5OPVopLmrRVVfgNgmoGOJS6AFW/slYAUynf4HHCOS0u6wHLId9ZYF2yFTHQIk8kQNV7OTeJqsQQVyHU8gA0io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UU0b0Mtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8ECC4CECC;
+	Tue,  8 Oct 2024 13:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392660;
-	bh=Lu6lXt7t7/PbH9JJQOTTGQw56c+56Qa/CkfMZxBmlkk=;
+	s=korg; t=1728393719;
+	bh=n/SFRhDuBRF9tCOusw4XhR8/FnEv14pvoPA3UiuwgTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1n+kNOcfbificOUS/yZr/6OFEb6dmGaJV5mG+wiDRG0knc6GZOwQcFhMFZr/Vq+eD
-	 LvwrwFjb2GV7/+0hjSC6WtkT5oO14Zi2xBdYQscW42YKzWUFLpYq55qP/Au052kxEE
-	 tZL6+fQ8mGWmXNd6xJgf+Cfw9OYK6bHJEZFa5H7k=
+	b=UU0b0Mtr8nOJeDvQpyjtys+I3BOhuSE2Q66Tpjhhgqls4zT5oPi41568W12OmFzbT
+	 Mokb64J87vCT8X3NaPqJ/3vP2trOkjvaUFpl8ITq1wA59opunW0BxynVwALwWb1yiL
+	 qOr0obzuvbBaNwjVXU+rpFlY6oKgWRpgYZ8X6SzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 6.11 450/558] media: videobuf2: Drop minimum allocation requirement of 2 buffers
-Date: Tue,  8 Oct 2024 14:08:00 +0200
-Message-ID: <20241008115719.970420056@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 236/386] ext4: dax: fix overflowing extents beyond inode size when partially writing
+Date: Tue,  8 Oct 2024 14:08:01 +0200
+Message-ID: <20241008115638.687933155@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit e5700c9037727d5a69a677d6dba25010b485d65b upstream.
+commit dda898d7ffe85931f9cca6d702a51f33717c501e upstream.
 
-When introducing the ability for drivers to indicate the minimum number
-of buffers they require an application to allocate, commit 6662edcd32cc
-("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue
-structure") also introduced a global minimum of 2 buffers. It turns out
-this breaks the Renesas R-Car VSP test suite, where a test that
-allocates a single buffer fails when two buffers are used.
+The dax_iomap_rw() does two things in each iteration: map written blocks
+and copy user data to blocks. If the process is killed by user(See signal
+handling in dax_iomap_iter()), the copied data will be returned and added
+on inode size, which means that the length of written extents may exceed
+the inode size, then fsck will fail. An example is given as:
 
-One may consider debatable whether test suite failures without failures
-in production use cases should be considered as a regression, but
-operation with a single buffer is a valid use case. While full frame
-rate can't be maintained, memory-to-memory devices can still be used
-with a decent efficiency, and requiring applications to allocate
-multiple buffers for single-shot use cases with capture devices would
-just waste memory.
+dd if=/dev/urandom of=file bs=4M count=1
+ dax_iomap_rw
+  iomap_iter // round 1
+   ext4_iomap_begin
+    ext4_iomap_alloc // allocate 0~2M extents(written flag)
+  dax_iomap_iter // copy 2M data
+  iomap_iter // round 2
+   iomap_iter_advance
+    iter->pos += iter->processed // iter->pos = 2M
+   ext4_iomap_begin
+    ext4_iomap_alloc // allocate 2~4M extents(written flag)
+  dax_iomap_iter
+   fatal_signal_pending
+  done = iter->pos - iocb->ki_pos // done = 2M
+ ext4_handle_inode_extension
+  ext4_update_inode_size // inode size = 2M
 
-For those reasons, fix the regression by dropping the global minimum of
-buffers. Individual drivers can still set their own minimum.
+fsck reports: Inode 13, i_size is 2097152, should be 4194304.  Fix?
 
-Fixes: 6662edcd32cc ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue structure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fix the problem by truncating extents if the written length is smaller
+than expected.
+
+Fixes: 776722e85d3b ("ext4: DAX iomap write support")
+CC: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219136
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://patch.msgid.link/20240809121532.2105494-1-chengzhihao@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/videobuf2/videobuf2-core.c |    7 -------
- 1 file changed, 7 deletions(-)
+ fs/ext4/file.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -2602,13 +2602,6 @@ int vb2_core_queue_init(struct vb2_queue
- 		return -EINVAL;
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -334,10 +334,10 @@ static ssize_t ext4_handle_inode_extensi
+  * Clean up the inode after DIO or DAX extending write has completed and the
+  * inode size has been updated using ext4_handle_inode_extension().
+  */
+-static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
++static void ext4_inode_extension_cleanup(struct inode *inode, bool need_trunc)
+ {
+ 	lockdep_assert_held_write(&inode->i_rwsem);
+-	if (count < 0) {
++	if (need_trunc) {
+ 		ext4_truncate_failed_write(inode);
+ 		/*
+ 		 * If the truncate operation failed early, then the inode may
+@@ -586,7 +586,7 @@ static ssize_t ext4_dio_write_iter(struc
+ 		 * writeback of delalloc blocks.
+ 		 */
+ 		WARN_ON_ONCE(ret == -EIOCBQUEUED);
+-		ext4_inode_extension_cleanup(inode, ret);
++		ext4_inode_extension_cleanup(inode, ret < 0);
+ 	}
  
- 	/*
--	 * The minimum requirement is 2: one buffer is used
--	 * by the hardware while the other is being processed by userspace.
--	 */
--	if (q->min_reqbufs_allocation < 2)
--		q->min_reqbufs_allocation = 2;
--
--	/*
- 	 * If the driver needs 'min_queued_buffers' in the queue before
- 	 * calling start_streaming() then the minimum requirement is
- 	 * 'min_queued_buffers + 1' to keep at least one buffer available
+ out:
+@@ -670,7 +670,7 @@ ext4_dax_write_iter(struct kiocb *iocb,
+ 
+ 	if (extend) {
+ 		ret = ext4_handle_inode_extension(inode, offset, ret);
+-		ext4_inode_extension_cleanup(inode, ret);
++		ext4_inode_extension_cleanup(inode, ret < (ssize_t)count);
+ 	}
+ out:
+ 	inode_unlock(inode);
 
 
 
