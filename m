@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-82780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8684C994EE0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AFE994CC8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30B80B26A33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F04F1C250CD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE7B1DE88B;
-	Tue,  8 Oct 2024 13:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32B71DED43;
+	Tue,  8 Oct 2024 12:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQbbHNNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOn9Llwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59510192594;
-	Tue,  8 Oct 2024 13:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B134D1DE2A5;
+	Tue,  8 Oct 2024 12:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393403; cv=none; b=cZqGiRoJvTBMBt83rmuhDgsuzdVU0bwSfcx1pRmj3Onk3VF4nh1SkYJ/lw2cwRQflryeE9YKQFITF4KkpsTYuL8Mxmyi7CxKl0jacclM+FWctZnL5gPdaxol+3VOb9UAsnm1RuKPqJpsnhwjAQtitSnYihYaTT9PzC8RdU2y0VU=
+	t=1728392234; cv=none; b=H8MQ7HmoxYsdeqNHaxOUFeymykQ2PG7cd/5lHxKzzfLyc1/SDwj3gLxTfwBZOYy8Qcji8RsIm2Yy20aC2jhSu2rc3YQQgJ9FO8juOOGk7cTcwswY3gQHONGt8LkVTtbGoWX0hItOoEUF0LXyfERzRtF+f6fjdFWSqieNBYcm43s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393403; c=relaxed/simple;
-	bh=LhkLuGERgCqK3Bo33Yugh5Y9N5rYysCrXyTnR8kOhF4=;
+	s=arc-20240116; t=1728392234; c=relaxed/simple;
+	bh=NIw6lxH6G9Ucsb826YFFTxA8a85axywxzHOSi9UUokY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nnmjsoIyTCxB18OcQPQ8Dz0+xGBU0WxlIUiMwGOasCTCnUUhLWJMmEL3vIB51oGsV32CTLHvndTEXY6pNDErBLuH7akr3wftSq51IL2qXDxjG9YA2mocPmlNKbZkr/BPc5DJoZZi8zsvIB97VE5ZQDzfrSLHZw/a8owa/o8tr6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQbbHNNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CB2C4CEC7;
-	Tue,  8 Oct 2024 13:16:42 +0000 (UTC)
+	 MIME-Version; b=J9e70RQfFBP9fBkLG6PyobyWZ678tB5hyZHkYHmI8VzDlkVLyS7B0wIM5eFriDLrETkKRcmS7LhZ4gS3ehCY+9EBLKvJ3i6gsWNj/PWTSbEt2g5diEIrfW/GuPFPMCSwseeoFKq/FIwZtvDD60NVCZjRAxhc1HjcX6ZfTfQpQFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOn9Llwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC5CC4CEC7;
+	Tue,  8 Oct 2024 12:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393403;
-	bh=LhkLuGERgCqK3Bo33Yugh5Y9N5rYysCrXyTnR8kOhF4=;
+	s=korg; t=1728392234;
+	bh=NIw6lxH6G9Ucsb826YFFTxA8a85axywxzHOSi9UUokY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQbbHNNwoElDTA/KH316MfGSmW4nA2PAsxYhqWp2tmCX9sL9v0mq1O64UKxjgtFxm
-	 p3zkgD0DMEv421Y4kA3f2BolmGiAZcoWo+F3aMER45F+I+Z7syOrMQfv4fLYNiDCfU
-	 sOhY37WKKnxapyrKpd9hO6nZHQndXw4/HoZOHuJI=
+	b=fOn9LlwkefPnvc5e5d4GU4uXqAzDa157g0ebHRmbjE1wsKKRM8dlBsTbeIQ2bbRmB
+	 WiHhkYYNxkcCoHBCJB4dkoxIZ7aOBkF8NSsMHcpIvrRxlbg/t/45CzU6ijW+lQ1wCL
+	 iumZp+5MmAfFHz3TM3yk0gDZ4p0U8g9wZi/drZL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Tim Huang <tim.huang@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/386] drm/amd/display: fix double free issue during amdgpu module unload
+	Andi Shyti <andi.shyti@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.11 356/558] i2c: synquacer: Deal with optional PCLK correctly
 Date: Tue,  8 Oct 2024 14:06:26 +0200
-Message-ID: <20241008115634.980435581@linuxfoundation.org>
+Message-ID: <20241008115716.309203393@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <tim.huang@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 20b5a8f9f4670a8503aa9fa95ca632e77c6bf55d ]
+commit f2990f8630531a99cad4dc5c44cb2a11ded42492 upstream.
 
-Flexible endpoints use DIGs from available inflexible endpoints,
-so only the encoders of inflexible links need to be freed.
-Otherwise, a double free issue may occur when unloading the
-amdgpu module.
+ACPI boot does not provide clocks and regulators, but instead, provides
+the PCLK rate directly, and enables the clock in firmware. So deal
+gracefully with this.
 
-[  279.190523] RIP: 0010:__slab_free+0x152/0x2f0
-[  279.190577] Call Trace:
-[  279.190580]  <TASK>
-[  279.190582]  ? show_regs+0x69/0x80
-[  279.190590]  ? die+0x3b/0x90
-[  279.190595]  ? do_trap+0xc8/0xe0
-[  279.190601]  ? do_error_trap+0x73/0xa0
-[  279.190605]  ? __slab_free+0x152/0x2f0
-[  279.190609]  ? exc_invalid_op+0x56/0x70
-[  279.190616]  ? __slab_free+0x152/0x2f0
-[  279.190642]  ? asm_exc_invalid_op+0x1f/0x30
-[  279.190648]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191096]  ? __slab_free+0x152/0x2f0
-[  279.191102]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191469]  kfree+0x260/0x2b0
-[  279.191474]  dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191821]  link_destroy+0xd7/0x130 [amdgpu]
-[  279.192248]  dc_destruct+0x90/0x270 [amdgpu]
-[  279.192666]  dc_destroy+0x19/0x40 [amdgpu]
-[  279.193020]  amdgpu_dm_fini+0x16e/0x200 [amdgpu]
-[  279.193432]  dm_hw_fini+0x26/0x40 [amdgpu]
-[  279.193795]  amdgpu_device_fini_hw+0x24c/0x400 [amdgpu]
-[  279.194108]  amdgpu_driver_unload_kms+0x4f/0x70 [amdgpu]
-[  279.194436]  amdgpu_pci_remove+0x40/0x80 [amdgpu]
-[  279.194632]  pci_device_remove+0x3a/0xa0
-[  279.194638]  device_remove+0x40/0x70
-[  279.194642]  device_release_driver_internal+0x1ad/0x210
-[  279.194647]  driver_detach+0x4e/0xa0
-[  279.194650]  bus_remove_driver+0x6f/0xf0
-[  279.194653]  driver_unregister+0x33/0x60
-[  279.194657]  pci_unregister_driver+0x44/0x90
-[  279.194662]  amdgpu_exit+0x19/0x1f0 [amdgpu]
-[  279.194939]  __do_sys_delete_module.isra.0+0x198/0x2f0
-[  279.194946]  __x64_sys_delete_module+0x16/0x20
-[  279.194950]  do_syscall_64+0x58/0x120
-[  279.194954]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-[  279.194980]  </TASK>
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 55750148e559 ("i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()")
+Cc: stable@vger.kernel.org # v6.10+
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_factory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-synquacer.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index 33bb96f770b86..eb7c9f226af5c 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -403,7 +403,7 @@ static void link_destruct(struct dc_link *link)
- 	if (link->panel_cntl)
- 		link->panel_cntl->funcs->destroy(&link->panel_cntl);
+--- a/drivers/i2c/busses/i2c-synquacer.c
++++ b/drivers/i2c/busses/i2c-synquacer.c
+@@ -550,12 +550,13 @@ static int synquacer_i2c_probe(struct pl
+ 	device_property_read_u32(&pdev->dev, "socionext,pclk-rate",
+ 				 &i2c->pclkrate);
  
--	if (link->link_enc) {
-+	if (link->link_enc && !link->is_dig_mapping_flexible) {
- 		/* Update link encoder resource tracking variables. These are used for
- 		 * the dynamic assignment of link encoders to streams. Virtual links
- 		 * are not assigned encoder resources on creation.
--- 
-2.43.0
-
+-	pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
++	pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
+ 	if (IS_ERR(pclk))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(pclk),
+ 				     "failed to get and enable clock\n");
+ 
+-	i2c->pclkrate = clk_get_rate(pclk);
++	if (pclk)
++		i2c->pclkrate = clk_get_rate(pclk);
+ 
+ 	if (i2c->pclkrate < SYNQUACER_I2C_MIN_CLK_RATE ||
+ 	    i2c->pclkrate > SYNQUACER_I2C_MAX_CLK_RATE)
 
 
 
