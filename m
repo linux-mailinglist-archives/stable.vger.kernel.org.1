@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-82034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CE0994AB9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C54994F78
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C41D11F21029
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51AF8288106
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF6E1DC759;
-	Tue,  8 Oct 2024 12:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C951E048F;
+	Tue,  8 Oct 2024 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUZvSs2g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0suLwL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20501779B1;
-	Tue,  8 Oct 2024 12:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDA31E0485;
+	Tue,  8 Oct 2024 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390950; cv=none; b=SBK5p+fFGogLbc1gbBBu3Q3VQQEayi/U1NTKkCzZ9USPfb26tHQYKHqSxC8XHiUgPve8bvIDIANMxpicaNYFJwDPME7VeVIiwXKkHP8A1Mc6hcT+/alF1UvOqQqE9JYy9S9F3AoDPIWLWyQeGlurQajT9kNsL3UVOXuWi72JnkU=
+	t=1728393917; cv=none; b=Kkuq2iQVuFiCjXQE5pqFEKs5YRQv84Y5jaHU0Ix3cIscECdIDvYEoNAaM42Jl1urDLUbJx+lJIAmOYwxU7gGJsCQE8ohyRHnHLSK96ilIf1283EpEpE7iVSrNRTe574Bnf+f6KZQveUQx1pRfC/+J3nWLnNTw+sH59FVM3TF4l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390950; c=relaxed/simple;
-	bh=LR5DWMJ4YZ+cxIKNa4n72QpPnb4+mTS5Ck5g6roFMKg=;
+	s=arc-20240116; t=1728393917; c=relaxed/simple;
+	bh=6VZY7mLPQ8lh2c+V8hw78k+PToRN4eLxe3nLrYqwo5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECZdRluzN469z0Ev8E1ZJCuDmKIoC9cT9beXhdsXYMK2MGcoo3SPSxY0XKgs+cBupILlcRPznvMIK8q9uSjws3NQOcoody6/IDz+5pQ4RWYA5ZupIjYrwuia9CiX7xFwVNtRVWj4thooxNCdWz+vv6qMnTlbroj9Il0Yz/HwODc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUZvSs2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6276EC4CEC7;
-	Tue,  8 Oct 2024 12:35:49 +0000 (UTC)
+	 MIME-Version; b=rqYOHIjKAfPP3gw70i0NlE5M6WY8e6MB5qJu7CSJ4nJIKmfpqaZdwt5PLE/nATcElah4hEJZ9aCzsNet68fHFfQw524dUweSv2QL1f6mwG7q7FlQ6YGvUjfFiT8EIlm9P2qrvAHxdKfErOWF2rW2+cAlVZ+uc/1dInGZ5F9QO6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0suLwL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52588C4CEC7;
+	Tue,  8 Oct 2024 13:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390949;
-	bh=LR5DWMJ4YZ+cxIKNa4n72QpPnb4+mTS5Ck5g6roFMKg=;
+	s=korg; t=1728393917;
+	bh=6VZY7mLPQ8lh2c+V8hw78k+PToRN4eLxe3nLrYqwo5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUZvSs2gQrkIW3CXUTup+J0Z0fBjH4PpbYOevpx/0ok1FWDDYj8waaiC8lby76jLT
-	 ffhloFPOh4zIKffSNyW2bpD2sb9flNcywbFG1N4SOPj6gO1doWcRW5+GnxIK3RocgG
-	 OUt4fT+S2/0x47VYNhnDzL10OUxBRUxzbwBPLI00=
+	b=N0suLwL3Jj6thpf/RxatDN1HYHQbOlgPgRa6CiO89T+F3PXzJdx+aQalzFkfujnYn
+	 WgbBZ1L2txjw+dKF5HDSHawgeIpsFw0t6ILGYYkFPqhXTdGpL7zCCkkeujnrpHHgA4
+	 ULY2o4996UZp7EHkcfDmM8spM5frxr6WBo56Ujg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.10 444/482] drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 262/386] ocfs2: cancel dqi_sync_work before freeing oinfo
 Date: Tue,  8 Oct 2024 14:08:27 +0200
-Message-ID: <20241008115705.996141269@linuxfoundation.org>
+Message-ID: <20241008115639.700709620@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +69,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-commit 0d5e5e8a0aa49ea2163abf128da3b509a6c58286 upstream.
+commit 35fccce29feb3706f649726d410122dd81b92c18 upstream.
 
-[WHY & HOW]
-Mismatch in DCN35 DML2 cause bw validation failed to acquire unexpected DPP pipe to cause
-grey screen and system hang. Remove EnhancedPrefetchScheduleAccelerationFinal value override
-to match HW spec.
+ocfs2_global_read_info() will initialize and schedule dqi_sync_work at the
+end, if error occurs after successfully reading global quota, it will
+trigger the following warning with CONFIG_DEBUG_OBJECTS_* enabled:
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9dad21f910fcea2bdcff4af46159101d7f9cd8ba)
-Cc: stable@vger.kernel.org
+ODEBUG: free active (active state 0) object: 00000000d8b0ce28 object type: timer_list hint: qsync_work_fn+0x0/0x16c
+
+This reports that there is an active delayed work when freeing oinfo in
+error handling, so cancel dqi_sync_work first.  BTW, return status instead
+of -1 when .read_file_info fails.
+
+Link: https://syzkaller.appspot.com/bug?extid=f7af59df5d6b25f0febd
+Link: https://lkml.kernel.org/r/20240904071004.2067695-1-joseph.qi@linux.alibaba.com
+Fixes: 171bf93ce11f ("ocfs2: Periodic quota syncing")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reported-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
+Tested-by: syzbot+f7af59df5d6b25f0febd@syzkaller.appspotmail.com
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/ocfs2/quota_local.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-@@ -303,7 +303,6 @@ void build_unoptimized_policy_settings(e
- 	if (project == dml_project_dcn35 ||
- 		project == dml_project_dcn351) {
- 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
--		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
- 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
- 		policy->UseOnlyMaxPrefetchModes = 1;
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -689,7 +689,7 @@ static int ocfs2_local_read_info(struct
+ 	int status;
+ 	struct buffer_head *bh = NULL;
+ 	struct ocfs2_quota_recovery *rec;
+-	int locked = 0;
++	int locked = 0, global_read = 0;
+ 
+ 	info->dqi_max_spc_limit = 0x7fffffffffffffffLL;
+ 	info->dqi_max_ino_limit = 0x7fffffffffffffffLL;
+@@ -697,6 +697,7 @@ static int ocfs2_local_read_info(struct
+ 	if (!oinfo) {
+ 		mlog(ML_ERROR, "failed to allocate memory for ocfs2 quota"
+ 			       " info.");
++		status = -ENOMEM;
+ 		goto out_err;
  	}
+ 	info->dqi_priv = oinfo;
+@@ -709,6 +710,7 @@ static int ocfs2_local_read_info(struct
+ 	status = ocfs2_global_read_info(sb, type);
+ 	if (status < 0)
+ 		goto out_err;
++	global_read = 1;
+ 
+ 	status = ocfs2_inode_lock(lqinode, &oinfo->dqi_lqi_bh, 1);
+ 	if (status < 0) {
+@@ -779,10 +781,12 @@ out_err:
+ 		if (locked)
+ 			ocfs2_inode_unlock(lqinode, 1);
+ 		ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
++		if (global_read)
++			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
+ 		kfree(oinfo);
+ 	}
+ 	brelse(bh);
+-	return -1;
++	return status;
+ }
+ 
+ /* Write local info to quota file */
 
 
 
