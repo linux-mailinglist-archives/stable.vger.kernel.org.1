@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-82043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B22994AC6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53639994D86
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A34CE1C24C40
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 856B91C25229
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FD01DC759;
-	Tue,  8 Oct 2024 12:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9A81DE4DB;
+	Tue,  8 Oct 2024 13:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGl5+rJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RZJXleJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C2F192594;
-	Tue,  8 Oct 2024 12:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DBC1C5793;
+	Tue,  8 Oct 2024 13:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390977; cv=none; b=phz30ttuPptpFlAx7I5SgXjOGJ2DEP3LuXEcdLhHEYGiNBs7mnZ/5mgPhaMNfQTeFP6yHM0EA+/xFPo2hUZrBwowhWBRn4oQ9kd9THtFKtfWskA+lOrTpzXnE/yMZn8Y6cZs8VyDV5Tmx2kMiGAycMw0zyFPZrLmwaS/0QpaN/s=
+	t=1728392777; cv=none; b=LbcxX34hw98UWQngSJEmTnIRQtEvGLyOcapNUYwWT7YlAj1W5w2G8JZgr9xc9P0CgJtEXeFXv9Lunc9DyQOs4deDs8AGDPggsZb3HHU/TqGqWk+pWn6hHSvgS6kb7OISop9KATExumDcn8QRLbqVHQ/7eCaf83jPOgk/J3I426U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390977; c=relaxed/simple;
-	bh=EfKKo307UtEOv/T+MKGne6fEe7GrIHKMLeC/nn6G07Q=;
+	s=arc-20240116; t=1728392777; c=relaxed/simple;
+	bh=KyIY5r8X7jGeBO5es3HLKichb64PQVhISU2+qX5JgH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cGvWGyJy5X2AQENtBu29HzS/vHGBJ7nMMKDWx30nSJBmrT+iza6kZ21rCkcaDqhld0rxByANM4tqRdt4dSlnbctBxF0xThqXR1OrxjLmzgEU/v6BgLrYMKPZ9VthzRp5N9NvTETRMl7ozumVA+jci6PW5nhMjPqlQMx6URbSLbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGl5+rJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2070BC4CEC7;
-	Tue,  8 Oct 2024 12:36:16 +0000 (UTC)
+	 MIME-Version; b=Tze1xA2ygIu9ZwWNK7g1U4jGiFmTyEUqxL3HXh43cGRyNOjnkzE3e8hfkBprpzs/Ir2o2I+0/5hTJM/9kQMXI8BlW+hMoeoy8zIBEP48RiRrZkyWFU6qSAM0aPRFY3HrfKjJ8EyN2nplzRVUC3fwciLo9V8qe8UkQ+yS2d1vI3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RZJXleJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44C4C4CEC7;
+	Tue,  8 Oct 2024 13:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390977;
-	bh=EfKKo307UtEOv/T+MKGne6fEe7GrIHKMLeC/nn6G07Q=;
+	s=korg; t=1728392777;
+	bh=KyIY5r8X7jGeBO5es3HLKichb64PQVhISU2+qX5JgH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGl5+rJllojLU3eoFjGHyxhIVr738jNfPE8F4IsULva1dzp6hXSWDQ9iTVhm5Jre+
-	 6VAmFM1dTtkZicXmljgJgdeDnccW3dECbj4CurSXfimhfNTVzwLlTkc5u7i7SBb6s+
-	 eufQAETfaqVjtjk6uCeZNJ2wngPkSTYiXf9Sr/Jk=
+	b=2RZJXleJndiUi2g0XZ9MjqSUSO6HeBDtEYZElsL3UX5GtaNl9/ItxGATGB4vV3xpx
+	 +NR0L8yvZZ6qRNl95deyCiKDplc2NFSGD6Ue539/NrYKuwT0o48Hq0PqWuGx1j37CD
+	 pmsK4kGHGmx1n7OVZ6f4dGRKv/j2mMaUsriQjPDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 452/482] drm/amd/display: Allow backlight to go below `AMDGPU_DM_DEFAULT_MIN_BACKLIGHT`
+	Steve Sistare <steven.sistare@oracle.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.11 485/558] mm/hugetlb: simplify refs in memfd_alloc_folio
 Date: Tue,  8 Oct 2024 14:08:35 +0200
-Message-ID: <20241008115706.305897026@linuxfoundation.org>
+Message-ID: <20241008115721.320902391@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-[ Upstream commit 87d749a6aab73d8069d0345afaa98297816cb220 ]
+commit dc677b5f3765cfd0944c8873d1ea57f1a3439676 upstream.
 
-The issue with panel power savings compatibility below
-`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` happens at
-`AMDGPU_DM_DEFAULT_MIN_BACKLIGHT` as well.
+The folio_try_get in memfd_alloc_folio is not necessary.  Delete it, and
+delete the matching folio_put in memfd_pin_folios.  This also avoids
+leaking a ref if the memfd_alloc_folio call to hugetlb_add_to_page_cache
+fails.  That error path is also broken in a second way -- when its
+folio_put causes the ref to become 0, it will implicitly call
+free_huge_folio, but then the path *explicitly* calls free_huge_folio.
+Delete the latter.
 
-That issue will be fixed separately, so don't prevent the backlight
-brightness from going that low.
+This is a continuation of the fix
+  "mm/hugetlb: fix memfd_pin_folios free_huge_pages leak"
 
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/amd-gfx/be04226a-a9e3-4a45-a83b-6d263c6557d8@t-8ch.de/T/#m400dee4e2fc61fe9470334d20a7c8c89c9aef44f
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[steven.sistare@oracle.com: remove explicit call to free_huge_folio(), per Matthew]
+  Link: https://lkml.kernel.org/r/Zti-7nPVMcGgpcbi@casper.infradead.org
+  Link: https://lkml.kernel.org/r/1725481920-82506-1-git-send-email-steven.sistare@oracle.com
+Link: https://lkml.kernel.org/r/1725478868-61732-1-git-send-email-steven.sistare@oracle.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Suggested-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/gup.c   |    4 +---
+ mm/memfd.c |    3 +--
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index d2554b4a14fe9..83f4ff9e848d7 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4176,7 +4176,7 @@ static void amdgpu_dm_update_backlight_caps(struct amdgpu_display_manager *dm,
- 		int spread = caps.max_input_signal - caps.min_input_signal;
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -3618,7 +3618,7 @@ long memfd_pin_folios(struct file *memfd
+ 	pgoff_t start_idx, end_idx, next_idx;
+ 	struct folio *folio = NULL;
+ 	struct folio_batch fbatch;
+-	struct hstate *h = NULL;
++	struct hstate *h;
+ 	long ret = -EINVAL;
  
- 		if (caps.max_input_signal > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
--		    caps.min_input_signal < AMDGPU_DM_DEFAULT_MIN_BACKLIGHT ||
-+		    caps.min_input_signal < 0 ||
- 		    spread > AMDGPU_DM_DEFAULT_MAX_BACKLIGHT ||
- 		    spread < AMDGPU_DM_MIN_SPREAD) {
- 			DRM_DEBUG_KMS("DM: Invalid backlight caps: min=%d, max=%d\n",
--- 
-2.43.0
-
+ 	if (start < 0 || start > end || !max_folios)
+@@ -3662,8 +3662,6 @@ long memfd_pin_folios(struct file *memfd
+ 							     &fbatch);
+ 			if (folio) {
+ 				folio_put(folio);
+-				if (h)
+-					folio_put(folio);
+ 				folio = NULL;
+ 			}
+ 
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -89,13 +89,12 @@ struct folio *memfd_alloc_folio(struct f
+ 						    numa_node_id(),
+ 						    NULL,
+ 						    gfp_mask);
+-		if (folio && folio_try_get(folio)) {
++		if (folio) {
+ 			err = hugetlb_add_to_page_cache(folio,
+ 							memfd->f_mapping,
+ 							idx);
+ 			if (err) {
+ 				folio_put(folio);
+-				free_huge_folio(folio);
+ 				return ERR_PTR(err);
+ 			}
+ 			folio_unlock(folio);
 
 
 
