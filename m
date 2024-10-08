@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719A3994B8D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AC79948AB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316C7288505
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1E21C20E88
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8821DE2CF;
-	Tue,  8 Oct 2024 12:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E30A17B4EC;
+	Tue,  8 Oct 2024 12:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yB1+Fkge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="angWKaEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1884D192594;
-	Tue,  8 Oct 2024 12:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4151E485;
+	Tue,  8 Oct 2024 12:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391432; cv=none; b=sW/1R2Nwc6m84XB76Ays+MW/qHA5HVOJIP651zkxGJNTBjmZvU9hj0sVt4E3Ci37NMyN7WnnhE4xjbUX6LJqwVqIMHTpPf+2fzEM8R0Tq6/LW4Ja3ntw55Tu54Jebh1OECTV0j2gvagAImAFpOajvwklTnNhkEXz59o6djWF+F8=
+	t=1728389734; cv=none; b=Xdj3JzNBoTfC100GRP+4xTznMAsFY2kYTZdYiFjkL10jFMSPbE4dEAievDeEwOYMRPDbZSTASDG4NyAlowdTokVdbzZV41ppe0bHaHHgk0c/xiHhbaanuZkb/ir2DDnpLHkW95qampq2Ehy8ckx8XuUKBfx9qURzQwO1XDwfRPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391432; c=relaxed/simple;
-	bh=k8g34/4EbTBFrT6ldn9SAO2F7JRla5e2IVsKQehIt0g=;
+	s=arc-20240116; t=1728389734; c=relaxed/simple;
+	bh=KPvEndCVal1HGXyLB/aXiU723IL9MtaqRrH8BlXCReQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPGXjFFe8Pey59yhnbt9vw5fAwnB9ekvVMPWXLoUdun0acdK6ePqnTh0hecVDWzXAYzqQ4CUvaAaXSM07hLC0d2zMYDFLokZciL1azwU79xfReFnpqMZou+HM7zANrrmnq/OkjECY2RpEKG94+xTYdFx9r+hE1+GZ3JPrP0iewg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yB1+Fkge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA14C4CEC7;
-	Tue,  8 Oct 2024 12:43:51 +0000 (UTC)
+	 MIME-Version; b=ZHpNKJNf+Xhs8kqZsFhdi76ZEHeCNfrzNBb9SCjtLXjaRdLIQ9WF/rYicTB24IXVu2fOYSwEB2EpHpsCHlXXF7XeLGub6U9Cd6NRQTVZSW9PC6G4GpwGsK2cw2lwpB3xab/A3jsGZfpjAQ89xGDpvrgzX4WEeCnGDqq4AeLHHb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=angWKaEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FE2C4CEC7;
+	Tue,  8 Oct 2024 12:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391432;
-	bh=k8g34/4EbTBFrT6ldn9SAO2F7JRla5e2IVsKQehIt0g=;
+	s=korg; t=1728389734;
+	bh=KPvEndCVal1HGXyLB/aXiU723IL9MtaqRrH8BlXCReQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yB1+FkgemfL881Qob+VPiP2fY94FKjsxL9/EfhXpBVMc5wa2WjwUI6va7TaFqQeIb
-	 ax7s5up1sk0uDXMEljMs0PY5ugffTEzNLF/ng+WSzFSIwfGNAIXwOsVx0rLX1nEBmJ
-	 BlI2yDrOERHR9LKNl8KZjomPzlxJRwewi2mG5ndI=
+	b=angWKaEJJXserkxB2lEC2qi9fud4Ft7hy2rPD0usM5B112t9Qb50NftlU57ETOLV4
+	 jLRpUD38Y02ePzrDtDGO2J9XFXML2ChRyFCkDiAR8JJ6v+hRkVb1Pjtl0zA+cWE5aJ
+	 GoMUoFlUxlWhRQ3oCFC2ruGSbKt87iFwI5GoGyNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>,
+	Issam Hamdi <ih@simonwunderlich.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 113/558] btrfs: dont readahead the relocation inode on RST
+Subject: [PATCH 6.10 080/482] wifi: cfg80211: Set correct chandef when starting CAC
 Date: Tue,  8 Oct 2024 14:02:23 +0200
-Message-ID: <20241008115706.812641789@linuxfoundation.org>
+Message-ID: <20241008115651.454629286@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,164 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <jthumshirn@wdc.com>
+From: Issam Hamdi <ih@simonwunderlich.de>
 
-[ Upstream commit 04915240e2c3a018e4c7f23418478d27226c8957 ]
+[ Upstream commit 20361712880396e44ce80aaeec2d93d182035651 ]
 
-On relocation we're doing readahead on the relocation inode, but if the
-filesystem is backed by a RAID stripe tree we can get ENOENT (e.g. due to
-preallocated extents not being mapped in the RST) from the lookup.
+When starting CAC in a mode other than AP mode, it return a
+"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
+caused by the chandef.chan being null at the end of CAC.
 
-But readahead doesn't handle the error and submits invalid reads to the
-device, causing an assertion in the scatter-gather list code:
+Solution: Ensure the channel definition is set for the different modes
+when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
 
-  BTRFS info (device nvme1n1): balance: start -d -m -s
-  BTRFS info (device nvme1n1): relocating block group 6480920576 flags data|raid0
-  BTRFS error (device nvme1n1): cannot find raid-stripe for logical [6481928192, 6481969152] devid 2, profile raid0
-  ------------[ cut here ]------------
-  kernel BUG at include/linux/scatterlist.h:115!
-  Oops: invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  CPU: 0 PID: 1012 Comm: btrfs Not tainted 6.10.0-rc7+ #567
-  RIP: 0010:__blk_rq_map_sg+0x339/0x4a0
-  RSP: 0018:ffffc90001a43820 EFLAGS: 00010202
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffea00045d4802
-  RDX: 0000000117520000 RSI: 0000000000000000 RDI: ffff8881027d1000
-  RBP: 0000000000003000 R08: ffffea00045d4902 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000001000 R12: ffff8881003d10b8
-  R13: ffffc90001a438f0 R14: 0000000000000000 R15: 0000000000003000
-  FS:  00007fcc048a6900(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 000000002cd11000 CR3: 00000001109ea001 CR4: 0000000000370eb0
-  Call Trace:
-   <TASK>
-   ? __die_body.cold+0x14/0x25
-   ? die+0x2e/0x50
-   ? do_trap+0xca/0x110
-   ? do_error_trap+0x65/0x80
-   ? __blk_rq_map_sg+0x339/0x4a0
-   ? exc_invalid_op+0x50/0x70
-   ? __blk_rq_map_sg+0x339/0x4a0
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? __blk_rq_map_sg+0x339/0x4a0
-   nvme_prep_rq.part.0+0x9d/0x770
-   nvme_queue_rq+0x7d/0x1e0
-   __blk_mq_issue_directly+0x2a/0x90
-   ? blk_mq_get_budget_and_tag+0x61/0x90
-   blk_mq_try_issue_list_directly+0x56/0xf0
-   blk_mq_flush_plug_list.part.0+0x52b/0x5d0
-   __blk_flush_plug+0xc6/0x110
-   blk_finish_plug+0x28/0x40
-   read_pages+0x160/0x1c0
-   page_cache_ra_unbounded+0x109/0x180
-   relocate_file_extent_cluster+0x611/0x6a0
-   ? btrfs_search_slot+0xba4/0xd20
-   ? balance_dirty_pages_ratelimited_flags+0x26/0xb00
-   relocate_data_extent.constprop.0+0x134/0x160
-   relocate_block_group+0x3f2/0x500
-   btrfs_relocate_block_group+0x250/0x430
-   btrfs_relocate_chunk+0x3f/0x130
-   btrfs_balance+0x71b/0xef0
-   ? kmalloc_trace_noprof+0x13b/0x280
-   btrfs_ioctl+0x2c2e/0x3030
-   ? kvfree_call_rcu+0x1e6/0x340
-   ? list_lru_add_obj+0x66/0x80
-   ? mntput_no_expire+0x3a/0x220
-   __x64_sys_ioctl+0x96/0xc0
-   do_syscall_64+0x54/0x110
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7fcc04514f9b
-  Code: Unable to access opcode bytes at 0x7fcc04514f71.
-  RSP: 002b:00007ffeba923370 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fcc04514f9b
-  RDX: 00007ffeba923460 RSI: 00000000c4009420 RDI: 0000000000000003
-  RBP: 0000000000000000 R08: 0000000000000013 R09: 0000000000000001
-  R10: 00007fcc043fbba8 R11: 0000000000000246 R12: 00007ffeba924fc5
-  R13: 00007ffeba923460 R14: 0000000000000002 R15: 00000000004d4bb0
-   </TASK>
-  Modules linked in:
-  ---[ end trace 0000000000000000 ]---
-  RIP: 0010:__blk_rq_map_sg+0x339/0x4a0
-  RSP: 0018:ffffc90001a43820 EFLAGS: 00010202
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffea00045d4802
-  RDX: 0000000117520000 RSI: 0000000000000000 RDI: ffff8881027d1000
-  RBP: 0000000000003000 R08: ffffea00045d4902 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000001000 R12: ffff8881003d10b8
-  R13: ffffc90001a438f0 R14: 0000000000000000 R15: 0000000000003000
-  FS:  00007fcc048a6900(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007fcc04514f71 CR3: 00000001109ea001 CR4: 0000000000370eb0
-  Kernel panic - not syncing: Fatal exception
-  Kernel Offset: disabled
-  ---[ end Kernel panic - not syncing: Fatal exception ]---
+ Call Trace:
+  ? show_regs.part.0+0x14/0x16
+  ? __warn+0x67/0xc0
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? report_bug+0xa7/0x130
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x50
+  ? exc_invalid_op+0x18/0x60
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
+  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
+  ? process_one_work+0x165/0x280
+  ? worker_thread+0x120/0x3f0
+  ? kthread+0xc2/0xf0
+  ? process_one_work+0x280/0x280
+  ? kthread_complete_and_exit+0x20/0x20
+  ? ret_from_fork+0x19/0x24
 
-So in case of a relocation on a RAID stripe-tree based file system, skip
-the readahead.
-
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Link: https://patch.msgid.link/20240816142418.3381951-1-ih@simonwunderlich.de
+[shorten subject, remove OCB, reorder cases to match previous list]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ net/wireless/nl80211.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 0533d0f82dc99..ea4ed85919ec8 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -36,6 +36,7 @@
- #include "relocation.h"
- #include "super.h"
- #include "tree-checker.h"
-+#include "raid-stripe-tree.h"
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index e3bf14e489c5d..9675ceaa5bf60 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10024,7 +10024,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
  
- /*
-  * Relocation overview
-@@ -2965,21 +2966,34 @@ static int relocate_one_folio(struct reloc_control *rc,
- 	u64 folio_end;
- 	u64 cur;
- 	int ret;
-+	const bool use_rst = btrfs_need_stripe_tree_update(fs_info, rc->block_group->flags);
- 
- 	ASSERT(index <= last_index);
- 	folio = filemap_lock_folio(inode->i_mapping, index);
- 	if (IS_ERR(folio)) {
--		page_cache_sync_readahead(inode->i_mapping, ra, NULL,
--					  index, last_index + 1 - index);
-+
-+		/*
-+		 * On relocation we're doing readahead on the relocation inode,
-+		 * but if the filesystem is backed by a RAID stripe tree we can
-+		 * get ENOENT (e.g. due to preallocated extents not being
-+		 * mapped in the RST) from the lookup.
-+		 *
-+		 * But readahead doesn't handle the error and submits invalid
-+		 * reads to the device, causing a assertion failures.
-+		 */
-+		if (!use_rst)
-+			page_cache_sync_readahead(inode->i_mapping, ra, NULL,
-+						  index, last_index + 1 - index);
- 		folio = __filemap_get_folio(inode->i_mapping, index,
--					    FGP_LOCK | FGP_ACCESSED | FGP_CREAT, mask);
-+					    FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
-+					    mask);
- 		if (IS_ERR(folio))
- 			return PTR_ERR(folio);
- 	}
- 
- 	WARN_ON(folio_order(folio));
- 
--	if (folio_test_readahead(folio))
-+	if (folio_test_readahead(folio) && !use_rst)
- 		page_cache_async_readahead(inode->i_mapping, ra, NULL,
- 					   folio, last_index + 1 - index);
- 
+ 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+ 	if (!err) {
+-		wdev->links[0].ap.chandef = chandef;
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_P2P_GO:
++			wdev->links[0].ap.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_ADHOC:
++			wdev->u.ibss.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_MESH_POINT:
++			wdev->u.mesh.chandef = chandef;
++			break;
++		default:
++			break;
++		}
+ 		wdev->cac_started = true;
+ 		wdev->cac_start_time = jiffies;
+ 		wdev->cac_time_ms = cac_time_ms;
 -- 
 2.43.0
 
