@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2478E99493A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3C2994C11
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C7641F23D3F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1E77B20AB2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002DC1DEFF1;
-	Tue,  8 Oct 2024 12:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322321DE4CD;
+	Tue,  8 Oct 2024 12:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/6VeJwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWijxuC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28B31DEFE1;
-	Tue,  8 Oct 2024 12:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59131DE2CF;
+	Tue,  8 Oct 2024 12:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390041; cv=none; b=RMgDHQl4MkYAaj5R5ObhhB4cLG0/m/BT0ojNdLth/x0A9OhWLrNWwwc2mcSOt+GtF4+GAnlwJR4JcOmb7pB/30tdDzNwWjgW1ZtPguaRTm8pD10DPDMEspN3t4oElaUyDdw22J+A3fteL3qUm1JRjIaFNzgXwm5xHeMjWTqcfU4=
+	t=1728391796; cv=none; b=WEyz7abZLNM3x5VDhARruWOz1ErBlyTRmFpAoWvCXy6frsBnJfsJm6Dmj6zM34AfSD/6P4I8lkwQFt6S7C4tH2kEd7EkbqyGWnJRd4o8jGvpFzddDirk4JXqfZzPa+19pG7hGIBn/LsjwixCGVyWodPkrpC0TDZ5JWz8cF0O6n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390041; c=relaxed/simple;
-	bh=Ub/HuRS9WoQmskrPmicmxmDzwWnnCi049r5uW3WPjDg=;
+	s=arc-20240116; t=1728391796; c=relaxed/simple;
+	bh=JZNeuNXTPViikHWTCE6PisxrsEomDLJKuylAYjMLiI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pk625s+sN2NHMQJMOg0sWzUJnRw0EjK/4bLDs/vjSpsU66sWLYwBlcXv3XmzLcoKhWBxZk2kGzpvTJwCnGKMwE3ifhmrOMZxtfbNTEL7imCylGYNf2jz8GH0liPg40RhboS0MdOH09vR4eQmu/riHy5RpDq3HQrKD3NuMm8BBc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/6VeJwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F65C4CEC7;
-	Tue,  8 Oct 2024 12:20:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WcT8inxDbSjqEToF+om2d7QJinTdwXdRGMm3mwACEo6L8Ctg5etb2w5ceQbYNe14INdeMUFI7J5Z0ge7xD5x2yIAufhePIzThsR95g0FXhS0tOxSklE1YLBBLKtmLV9TbvVRox6lv1teAprYpot42Ov42z/Ns3CVO7aKb0PCuN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWijxuC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073CEC4CEC7;
+	Tue,  8 Oct 2024 12:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390041;
-	bh=Ub/HuRS9WoQmskrPmicmxmDzwWnnCi049r5uW3WPjDg=;
+	s=korg; t=1728391795;
+	bh=JZNeuNXTPViikHWTCE6PisxrsEomDLJKuylAYjMLiI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/6VeJwas5g4qWrQVHC/rMyV9vf8PtPaiK5vOOON2K6QzUel6ZZapNUjWrZZ9pVGF
-	 Zm+wb51muwyI3PzieYMknWW/1MhBrbD0vjZHxQZiSDMrVQT74E+FIFAo8qWM7afJ0I
-	 v3aK7z+5f3plsf0bIe4nPJQINEElVknobkukCmfM=
+	b=QWijxuC7f7ynXluSXZxhbFqiKnjQlDSJ44RhG8jq3lXWVWPkTVXHQeLKO3/VNQ/G0
+	 ZDNnIDlDNtOwJRhlF9R+GjNi2TPVfd6UTW9EFd77a7KTtBgHJBN7zu7qaphk8eWVB5
+	 If+EdWf2Kgt51PjAdOB9XJJzucrPVGmk32FDVRCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Katya Orlova <e.orlova@ispras.ru>,
-	=?UTF-8?q?Rapha=C3=ABl=20Gallais-Pou?= <raphael.gallais-pou@foss.st.com>,
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 173/482] drm/stm: Avoid use-after-free issues with crtc and plane
-Date: Tue,  8 Oct 2024 14:03:56 +0200
-Message-ID: <20241008115655.113925490@linuxfoundation.org>
+Subject: [PATCH 6.11 207/558] drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit
+Date: Tue,  8 Oct 2024 14:03:57 +0200
+Message-ID: <20241008115710.489493054@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,253 +64,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Katya Orlova <e.orlova@ispras.ru>
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
-[ Upstream commit 19dd9780b7ac673be95bf6fd6892a184c9db611f ]
+[ Upstream commit fec5f8e8c6bcf83ed7a392801d7b44c5ecfc1e82 ]
 
-ltdc_load() calls functions drm_crtc_init_with_planes(),
-drm_universal_plane_init() and drm_encoder_init(). These functions
-should not be called with parameters allocated with devm_kzalloc()
-to avoid use-after-free issues [1].
+Before this commit, only submits with both a BO_HANDLES chunk and a
+'bo_list_handle' would be rejected (by amdgpu_cs_parser_bos).
 
-Use allocations managed by the DRM framework.
+But if UMD sent multiple BO_HANDLES, what would happen is:
+* only the last one would be really used
+* all the others would leak memory as amdgpu_cs_p1_bo_handles would
+  overwrite the previous p->bo_list value
 
-Found by Linux Verification Center (linuxtesting.org).
+This commit rejects submissions with multiple BO_HANDLES chunks to
+match the implementation of the parser.
 
-[1]
-https://lore.kernel.org/lkml/u366i76e3qhh3ra5oxrtngjtm2u5lterkekcz6y2jkndhuxzli@diujon4h7qwb/
-
-Signed-off-by: Katya Orlova <e.orlova@ispras.ru>
-Acked-by: Raphaël Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240216125040.8968-1-e.orlova@ispras.ru
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/stm/drv.c  |  3 +-
- drivers/gpu/drm/stm/ltdc.c | 73 ++++++++++----------------------------
- 2 files changed, 20 insertions(+), 56 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/stm/drv.c b/drivers/gpu/drm/stm/drv.c
-index 4d2db079ad4ff..e1232f74dfa53 100644
---- a/drivers/gpu/drm/stm/drv.c
-+++ b/drivers/gpu/drm/stm/drv.c
-@@ -25,6 +25,7 @@
- #include <drm/drm_module.h>
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_vblank.h>
-+#include <drm/drm_managed.h>
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 6dfdff58bffd1..78b3c067fea7e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -263,6 +263,10 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
+ 			if (size < sizeof(struct drm_amdgpu_bo_list_in))
+ 				goto free_partial_kdata;
  
- #include "ltdc.h"
- 
-@@ -75,7 +76,7 @@ static int drv_load(struct drm_device *ddev)
- 
- 	DRM_DEBUG("%s\n", __func__);
- 
--	ldev = devm_kzalloc(ddev->dev, sizeof(*ldev), GFP_KERNEL);
-+	ldev = drmm_kzalloc(ddev, sizeof(*ldev), GFP_KERNEL);
- 	if (!ldev)
- 		return -ENOMEM;
- 
-diff --git a/drivers/gpu/drm/stm/ltdc.c b/drivers/gpu/drm/stm/ltdc.c
-index 5aec1e58c968c..056642d12265c 100644
---- a/drivers/gpu/drm/stm/ltdc.c
-+++ b/drivers/gpu/drm/stm/ltdc.c
-@@ -36,6 +36,7 @@
- #include <drm/drm_probe_helper.h>
- #include <drm/drm_simple_kms_helper.h>
- #include <drm/drm_vblank.h>
-+#include <drm/drm_managed.h>
- 
- #include <video/videomode.h>
- 
-@@ -1199,7 +1200,6 @@ static void ltdc_crtc_atomic_print_state(struct drm_printer *p,
- }
- 
- static const struct drm_crtc_funcs ltdc_crtc_funcs = {
--	.destroy = drm_crtc_cleanup,
- 	.set_config = drm_atomic_helper_set_config,
- 	.page_flip = drm_atomic_helper_page_flip,
- 	.reset = drm_atomic_helper_crtc_reset,
-@@ -1212,7 +1212,6 @@ static const struct drm_crtc_funcs ltdc_crtc_funcs = {
- };
- 
- static const struct drm_crtc_funcs ltdc_crtc_with_crc_support_funcs = {
--	.destroy = drm_crtc_cleanup,
- 	.set_config = drm_atomic_helper_set_config,
- 	.page_flip = drm_atomic_helper_page_flip,
- 	.reset = drm_atomic_helper_crtc_reset,
-@@ -1545,7 +1544,6 @@ static void ltdc_plane_atomic_print_state(struct drm_printer *p,
- static const struct drm_plane_funcs ltdc_plane_funcs = {
- 	.update_plane = drm_atomic_helper_update_plane,
- 	.disable_plane = drm_atomic_helper_disable_plane,
--	.destroy = drm_plane_cleanup,
- 	.reset = drm_atomic_helper_plane_reset,
- 	.atomic_duplicate_state = drm_atomic_helper_plane_duplicate_state,
- 	.atomic_destroy_state = drm_atomic_helper_plane_destroy_state,
-@@ -1572,7 +1570,6 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
- 	const u64 *modifiers = ltdc_format_modifiers;
- 	u32 lofs = index * LAY_OFS;
- 	u32 val;
--	int ret;
- 
- 	/* Allocate the biggest size according to supported color formats */
- 	formats = devm_kzalloc(dev, (ldev->caps.pix_fmt_nb +
-@@ -1615,14 +1612,10 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
- 		}
- 	}
- 
--	plane = devm_kzalloc(dev, sizeof(*plane), GFP_KERNEL);
--	if (!plane)
--		return NULL;
--
--	ret = drm_universal_plane_init(ddev, plane, possible_crtcs,
--				       &ltdc_plane_funcs, formats, nb_fmt,
--				       modifiers, type, NULL);
--	if (ret < 0)
-+	plane = drmm_universal_plane_alloc(ddev, struct drm_plane, dev,
-+					   possible_crtcs, &ltdc_plane_funcs, formats,
-+					   nb_fmt, modifiers, type, NULL);
-+	if (IS_ERR(plane))
- 		return NULL;
- 
- 	if (ldev->caps.ycbcr_input) {
-@@ -1645,15 +1638,6 @@ static struct drm_plane *ltdc_plane_create(struct drm_device *ddev,
- 	return plane;
- }
- 
--static void ltdc_plane_destroy_all(struct drm_device *ddev)
--{
--	struct drm_plane *plane, *plane_temp;
--
--	list_for_each_entry_safe(plane, plane_temp,
--				 &ddev->mode_config.plane_list, head)
--		drm_plane_cleanup(plane);
--}
--
- static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
- {
- 	struct ltdc_device *ldev = ddev->dev_private;
-@@ -1679,14 +1663,14 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
- 
- 	/* Init CRTC according to its hardware features */
- 	if (ldev->caps.crc)
--		ret = drm_crtc_init_with_planes(ddev, crtc, primary, NULL,
--						&ltdc_crtc_with_crc_support_funcs, NULL);
-+		ret = drmm_crtc_init_with_planes(ddev, crtc, primary, NULL,
-+						 &ltdc_crtc_with_crc_support_funcs, NULL);
- 	else
--		ret = drm_crtc_init_with_planes(ddev, crtc, primary, NULL,
--						&ltdc_crtc_funcs, NULL);
-+		ret = drmm_crtc_init_with_planes(ddev, crtc, primary, NULL,
-+						 &ltdc_crtc_funcs, NULL);
- 	if (ret) {
- 		DRM_ERROR("Can not initialize CRTC\n");
--		goto cleanup;
-+		return ret;
- 	}
- 
- 	drm_crtc_helper_add(crtc, &ltdc_crtc_helper_funcs);
-@@ -1700,9 +1684,8 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
- 	for (i = 1; i < ldev->caps.nb_layers; i++) {
- 		overlay = ltdc_plane_create(ddev, DRM_PLANE_TYPE_OVERLAY, i);
- 		if (!overlay) {
--			ret = -ENOMEM;
- 			DRM_ERROR("Can not create overlay plane %d\n", i);
--			goto cleanup;
-+			return -ENOMEM;
- 		}
- 		if (ldev->caps.dynamic_zorder)
- 			drm_plane_create_zpos_property(overlay, i, 0, ldev->caps.nb_layers - 1);
-@@ -1715,10 +1698,6 @@ static int ltdc_crtc_init(struct drm_device *ddev, struct drm_crtc *crtc)
- 	}
- 
- 	return 0;
--
--cleanup:
--	ltdc_plane_destroy_all(ddev);
--	return ret;
- }
- 
- static void ltdc_encoder_disable(struct drm_encoder *encoder)
-@@ -1778,23 +1757,19 @@ static int ltdc_encoder_init(struct drm_device *ddev, struct drm_bridge *bridge)
- 	struct drm_encoder *encoder;
- 	int ret;
- 
--	encoder = devm_kzalloc(ddev->dev, sizeof(*encoder), GFP_KERNEL);
--	if (!encoder)
--		return -ENOMEM;
-+	encoder = drmm_simple_encoder_alloc(ddev, struct drm_encoder, dev,
-+					    DRM_MODE_ENCODER_DPI);
-+	if (IS_ERR(encoder))
-+		return PTR_ERR(encoder);
- 
- 	encoder->possible_crtcs = CRTC_MASK;
- 	encoder->possible_clones = 0;	/* No cloning support */
- 
--	drm_simple_encoder_init(ddev, encoder, DRM_MODE_ENCODER_DPI);
--
- 	drm_encoder_helper_add(encoder, &ltdc_encoder_helper_funcs);
- 
- 	ret = drm_bridge_attach(encoder, bridge, NULL, 0);
--	if (ret) {
--		if (ret != -EPROBE_DEFER)
--			drm_encoder_cleanup(encoder);
-+	if (ret)
- 		return ret;
--	}
- 
- 	DRM_DEBUG_DRIVER("Bridge encoder:%d created\n", encoder->base.id);
- 
-@@ -1964,8 +1939,7 @@ int ltdc_load(struct drm_device *ddev)
- 			goto err;
- 
- 		if (panel) {
--			bridge = drm_panel_bridge_add_typed(panel,
--							    DRM_MODE_CONNECTOR_DPI);
-+			bridge = drmm_panel_bridge_add(ddev, panel);
- 			if (IS_ERR(bridge)) {
- 				DRM_ERROR("panel-bridge endpoint %d\n", i);
- 				ret = PTR_ERR(bridge);
-@@ -2047,7 +2021,7 @@ int ltdc_load(struct drm_device *ddev)
- 		}
- 	}
- 
--	crtc = devm_kzalloc(dev, sizeof(*crtc), GFP_KERNEL);
-+	crtc = drmm_kzalloc(ddev, sizeof(*crtc), GFP_KERNEL);
- 	if (!crtc) {
- 		DRM_ERROR("Failed to allocate crtc\n");
- 		ret = -ENOMEM;
-@@ -2074,9 +2048,6 @@ int ltdc_load(struct drm_device *ddev)
- 
- 	return 0;
- err:
--	for (i = 0; i < nb_endpoints; i++)
--		drm_of_panel_bridge_remove(ddev->dev->of_node, 0, i);
--
- 	clk_disable_unprepare(ldev->pixel_clk);
- 
- 	return ret;
-@@ -2084,16 +2055,8 @@ int ltdc_load(struct drm_device *ddev)
- 
- void ltdc_unload(struct drm_device *ddev)
- {
--	struct device *dev = ddev->dev;
--	int nb_endpoints, i;
--
- 	DRM_DEBUG_DRIVER("\n");
- 
--	nb_endpoints = of_graph_get_endpoint_count(dev->of_node);
--
--	for (i = 0; i < nb_endpoints; i++)
--		drm_of_panel_bridge_remove(ddev->dev->of_node, 0, i);
--
- 	pm_runtime_disable(ddev->dev);
- }
- 
++			/* Only a single BO list is allowed to simplify handling. */
++			if (p->bo_list)
++				ret = -EINVAL;
++
+ 			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
+ 			if (ret)
+ 				goto free_partial_kdata;
 -- 
 2.43.0
 
