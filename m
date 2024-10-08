@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A69A994D31
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 272CD994EC0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45BCEB2C401
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0F981F25DB6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9351DE8BE;
-	Tue,  8 Oct 2024 13:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387871DE8BE;
+	Tue,  8 Oct 2024 13:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDdKQqS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAokwHAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AB81DE88B;
-	Tue,  8 Oct 2024 13:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFFA1DED48;
+	Tue,  8 Oct 2024 13:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392484; cv=none; b=MOBUCukdelQ0UpDEYHHGhAi0B46QQw/n3LOtmCz4PmsuWsLuNCwFI1J92QjqSPzDRo+ua7HPuvGz3pbzuHY69cr5Q6NFBmvzVZWFB65Ca5qX/NY9b/MPv7MywoMI5pZ5NIhZ3T7GgSKLrwlob+HTvsiihG6/qmRZGpH0PAL4C1I=
+	t=1728393646; cv=none; b=qqGpzVbcGIMH4UpWNOdft6IL0oYSh9byTb0GBLZbhWndb8OxkuX7LnL9zebUfng2apRiF0NngEb18tgv5dQZzCARhFoF3p4K0EMw3gvtQPuE0ISysNfdYpVc4GVLxQsdmF5WV8xShOPjdqwygVclqwPZYmDT5mp+lgVOWOTWEs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392484; c=relaxed/simple;
-	bh=oQeuID/8/+3aR9dQu42ygwzzvSWuu/Q1UGKcEkL7ZaM=;
+	s=arc-20240116; t=1728393646; c=relaxed/simple;
+	bh=CUMT90Whp9d9P9n8EUwvxPzoqVjmkcTXL7WwLLCQgN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A59xeq3gyUQORETw3kyHxgXg8O4QDLN8el9wdMrixQWprK3e5SpvKVSUttKKjSAVcjAaFfN/LgN3ViDegrJxMXy+kbPlfiNlar0Jki47SzFgzxe8j2uCzfHB8yajpydUzN8EIuKq5iCU+mzRsbYCCKQ7TojgBih9cwccR8wnyOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDdKQqS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D41DC4CEC7;
-	Tue,  8 Oct 2024 13:01:23 +0000 (UTC)
+	 MIME-Version; b=SillGiHAobPaY/dRzBBj2uzlIGtYrIvu3CawZNFvS5MAhOpTuF42toiSo09vg8ivNnrTmniw695Qqu6TghJQQ0IiRE7w/FRGJp5VATnEykhs4ykqgUYR2BtBAKETYmnuO1hqLBbjpwtPrLduBqpzfUYTXsqMfG4LN5BmzXv70zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAokwHAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C57C4CEC7;
+	Tue,  8 Oct 2024 13:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392483;
-	bh=oQeuID/8/+3aR9dQu42ygwzzvSWuu/Q1UGKcEkL7ZaM=;
+	s=korg; t=1728393645;
+	bh=CUMT90Whp9d9P9n8EUwvxPzoqVjmkcTXL7WwLLCQgN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDdKQqS1CYqQOIoULwBtG1wWo+pUNPxMTGvm4nL7YEcSxlbmTlffHkPOMO+VizMML
-	 y/adyzSIsqm9ewRZlj5mePsRal2eYiKk0IThZXEn1h6uL0kt8hz8yGEgZP0CKY5tav
-	 Li/AXGbHeRESt3cQ5fErKv4onYMg3FkaS/wKgPVQ=
+	b=YAokwHAuC5hJpLRgyelJO3IVWohOR/6NA8uLXMRAJUGrhtV7L1IClDFrm7aaI26w4
+	 4rXMQiOfe2QjatvqDm6Y1qoLEoDoABEUQs7TAZHebJyZEd/gjgUgpKkTs5nNlCehxt
+	 Vw2x1lSvVU6iT92RNVDbXzoqUKzWF/Xvq5fbVNos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youssef Esmat <youssefesmat@google.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>
-Subject: [PATCH 6.11 428/558] sched/core: Clear prev->dl_server in CFS pick fast path
+	Mike Baynton <mike@mbaynton.com>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.6 213/386] ovl: fail if trusted xattrs are needed but caller lacks permission
 Date: Tue,  8 Oct 2024 14:07:38 +0200
-Message-ID: <20241008115719.115698296@linuxfoundation.org>
+Message-ID: <20241008115637.788512786@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youssef Esmat <youssefesmat@google.com>
+From: Mike Baynton <mike@mbaynton.com>
 
-commit a741b82423f41501e301eb6f9820b45ca202e877 upstream.
+commit 6c4a5f96450415735c31ed70ff354f0ee5cbf67b upstream.
 
-In case the previous pick was a DL server pick, ->dl_server might be
-set. Clear it in the fast path as well.
+Some overlayfs features require permission to read/write trusted.*
+xattrs. These include redirect_dir, verity, metacopy, and data-only
+layers. This patch adds additional validations at mount time to stop
+overlays from mounting in certain cases where the resulting mount would
+not function according to the user's expectations because they lack
+permission to access trusted.* xattrs (for example, not global root.)
 
-Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
-Signed-off-by: Youssef Esmat <youssefesmat@google.com>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/7f7381ccba09efcb4a1c1ff808ed58385eccc222.1716811044.git.bristot@kernel.org
+Similar checks in ovl_make_workdir() that disable features instead of
+failing are still relevant and used in cases where the resulting mount
+can still work "reasonably well." Generally, if the feature was enabled
+through kernel config or module option, any mount that worked before
+will still work the same; this applies to redirect_dir and metacopy. The
+user must explicitly request these features in order to generate a mount
+failure. Verity and data-only layers on the other hand must be explictly
+requested and have no "reasonable" disabled or degraded alternative, so
+mounts attempting either always fail.
+
+"lower data-only dirs require metacopy support" moved down in case
+userxattr is set, which disables metacopy.
+
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Mike Baynton <mike@mbaynton.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/overlayfs/params.c |   38 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5828,6 +5828,13 @@ __pick_next_task(struct rq *rq, struct t
- 		}
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -761,11 +761,6 @@ int ovl_fs_params_verify(const struct ov
+ {
+ 	struct ovl_opt_set set = ctx->set;
  
- 		/*
-+		 * This is a normal CFS pick, but the previous could be a DL pick.
-+		 * Clear it as previous is no longer picked.
-+		 */
-+		if (prev->dl_server)
-+			prev->dl_server = NULL;
-+
+-	if (ctx->nr_data > 0 && !config->metacopy) {
+-		pr_err("lower data-only dirs require metacopy support.\n");
+-		return -EINVAL;
+-	}
+-
+ 	/* Workdir/index are useless in non-upper mount */
+ 	if (!config->upperdir) {
+ 		if (config->workdir) {
+@@ -917,6 +912,39 @@ int ovl_fs_params_verify(const struct ov
+ 		config->metacopy = false;
+ 	}
+ 
++	/*
++	 * Fail if we don't have trusted xattr capability and a feature was
++	 * explicitly requested that requires them.
++	 */
++	if (!config->userxattr && !capable(CAP_SYS_ADMIN)) {
++		if (set.redirect &&
++		    config->redirect_mode != OVL_REDIRECT_NOFOLLOW) {
++			pr_err("redirect_dir requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (config->metacopy && set.metacopy) {
++			pr_err("metacopy requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (config->verity_mode) {
++			pr_err("verity requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (ctx->nr_data > 0) {
++			pr_err("lower data-only dirs require permission to access trusted xattrs\n");
++			return -EPERM;
++		}
 +		/*
- 		 * This is the fast path; it cannot be a DL server pick;
- 		 * therefore even if @p == @prev, ->dl_server must be NULL.
- 		 */
++		 * Other xattr-dependent features should be disabled without
++		 * great disturbance to the user in ovl_make_workdir().
++		 */
++	}
++
++	if (ctx->nr_data > 0 && !config->metacopy) {
++		pr_err("lower data-only dirs require metacopy support.\n");
++		return -EINVAL;
++	}
++
+ 	return 0;
+ }
+ 
 
 
 
