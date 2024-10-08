@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DAD994B33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:41:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0852199488C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFFCAB23944
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AE121F27D56
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01ED31DE89D;
-	Tue,  8 Oct 2024 12:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C821DE4F4;
+	Tue,  8 Oct 2024 12:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0MaRv92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFqBr9rW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51C41DE4FA;
-	Tue,  8 Oct 2024 12:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE9D1DE892;
+	Tue,  8 Oct 2024 12:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391251; cv=none; b=QeI3s45UcM1hXMF0t5TNrOipU2N/hMx8XwY7+0a5tvwprahgL1TFoTqxNa0etEklwwCEYJ6KH+4Dvbw2bEaF7epv0a9HvGV297nZpAy1SiKSkd+kThR/V0ZSFsvibjna0I+QrKzIQPJQaPaYsOC/dxxpz7W/ABildXhgucvja1U=
+	t=1728389643; cv=none; b=O5CKdQHRtJfNHPmT/IiCxL8MfpkM8Yaqf+6OJKWK9hMP8TQv2HLH+wIDaWwBvHjnQ1WN7CzTJtce5UgNbKad4gysFHzvnoHa4h5b0Zdp13DmTJhD2O/fpcFCqxOx8NNYNLfXE1E0iAHApbVzB8VOVrSA3QzutHxh0qY3ayAu7XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391251; c=relaxed/simple;
-	bh=nfMKLV2fopPBn3BoxE8A0HVFSNHNsF3m3qTwJGeHjQA=;
+	s=arc-20240116; t=1728389643; c=relaxed/simple;
+	bh=VOr2TVCwRxderfHeOulA7YkRR2oQoHqL8XyNr8gw5nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SYzcQjkAa4zJ00H5//fLd0AF1mcBC6L1cJ5dkcKzhajsgEWsW1g3M2mveMMoZlnZQ8hl9/6rj+hCrKYIuad/aSxgZbpklhQ90N+Nj7I4acHRLmyWaOJ6r/dh51DwKYILE+GAGMV3AAi8elitYp/irHnyV+adRBNYnSD+YHMfl7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0MaRv92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27940C4CECD;
-	Tue,  8 Oct 2024 12:40:50 +0000 (UTC)
+	 MIME-Version; b=DlSV1S55+Cm+nFA+nIZQCt1urGJKLGkvcbkKFFOBnDsvJ8MBNfAElD5MJ//M4AQUJMd14WlKIB7K5FsZK+sotmgQpvOpf6PJBIaO7sBSOAhAj6NExwjo55eQU1Bwj3qkLCZw1KeT2ihmJ00IMzLYf6qoqJakRGFP6F6VQkp53Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFqBr9rW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558F3C4CEC7;
+	Tue,  8 Oct 2024 12:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391251;
-	bh=nfMKLV2fopPBn3BoxE8A0HVFSNHNsF3m3qTwJGeHjQA=;
+	s=korg; t=1728389642;
+	bh=VOr2TVCwRxderfHeOulA7YkRR2oQoHqL8XyNr8gw5nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0MaRv92kWJscB98E+tZfBXp65lfpbYEVJGOxxCbXjTk/Jh9zlC3AkoOEze6fyFbV
-	 ho5h5c+kaqHEPlD+SOAklzSTY5rV+hHu/pF4l7QBWXJN9x50tli5h61bRLNX3jFa6w
-	 1zu+MWllsbxheNFNEnevO0xVX7MLI1aCRgb9/gmI=
+	b=AFqBr9rWic7bV7iz0V+hjczIrd9ATwdXMsA/j90tSQb2YJV4ykpd96R6f1xSuXe0v
+	 bHbTVCaFe/CmGRKX3H/qxb6+oS88bM/af4jw8A0uuVPJ6JccAlyFNoLKWjPScOIZfW
+	 BCRQ4Ky8WgC+YYpUaSxQpuzZAzfEl+xfVoH3/9Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tang Bin <tangbin@cmss.chinamobile.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 055/558] ASoC: topology: Fix incorrect addressing assignments
+Subject: [PATCH 6.10 022/482] netfilter: uapi: NFTA_FLOWTABLE_HOOK is NLA_NESTED
 Date: Tue,  8 Oct 2024 14:01:25 +0200
-Message-ID: <20241008115704.385093423@linuxfoundation.org>
+Message-ID: <20241008115649.172850591@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tang Bin <tangbin@cmss.chinamobile.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 85109780543b5100aba1d0842b6a7c3142be74d2 ]
+[ Upstream commit 76f1ed087b562a469f2153076f179854b749c09a ]
 
-The variable 'kc' is handled in the function
-soc_tplg_control_dbytes_create(), and 'kc->private_value'
-is assigned to 'sbe', so In the function soc_tplg_dbytes_create(),
-the right 'sbe' should be 'kc.private_value', the same logical error
-in the function soc_tplg_dmixer_create(), thus fix them.
+Fix the comment which incorrectly defines it as NLA_U32.
 
-Fixes: 0867278200f7 ("ASoC: topology: Unify code for creating standalone and widget bytes control")
-Fixes: 4654ca7cc8d6 ("ASoC: topology: Unify code for creating standalone and widget mixer control")
-Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://patch.msgid.link/20240914081608.3514-1-tangbin@cmss.chinamobile.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-topology.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/uapi/linux/netfilter/nf_tables.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index af5d42b57be7e..3d82570293b29 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -889,7 +889,7 @@ static int soc_tplg_dbytes_create(struct soc_tplg *tplg, size_t size)
- 		return ret;
- 
- 	/* register dynamic object */
--	sbe = (struct soc_bytes_ext *)&kc.private_value;
-+	sbe = (struct soc_bytes_ext *)kc.private_value;
- 
- 	INIT_LIST_HEAD(&sbe->dobj.list);
- 	sbe->dobj.type = SND_SOC_DOBJ_BYTES;
-@@ -923,7 +923,7 @@ static int soc_tplg_dmixer_create(struct soc_tplg *tplg, size_t size)
- 		return ret;
- 
- 	/* register dynamic object */
--	sm = (struct soc_mixer_control *)&kc.private_value;
-+	sm = (struct soc_mixer_control *)kc.private_value;
- 
- 	INIT_LIST_HEAD(&sm->dobj.list);
- 	sm->dobj.type = SND_SOC_DOBJ_MIXER;
+diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
+index 639894ed1b973..2f71d91462331 100644
+--- a/include/uapi/linux/netfilter/nf_tables.h
++++ b/include/uapi/linux/netfilter/nf_tables.h
+@@ -1694,7 +1694,7 @@ enum nft_flowtable_flags {
+  *
+  * @NFTA_FLOWTABLE_TABLE: name of the table containing the expression (NLA_STRING)
+  * @NFTA_FLOWTABLE_NAME: name of this flow table (NLA_STRING)
+- * @NFTA_FLOWTABLE_HOOK: netfilter hook configuration(NLA_U32)
++ * @NFTA_FLOWTABLE_HOOK: netfilter hook configuration (NLA_NESTED)
+  * @NFTA_FLOWTABLE_USE: number of references to this flow table (NLA_U32)
+  * @NFTA_FLOWTABLE_HANDLE: object handle (NLA_U64)
+  * @NFTA_FLOWTABLE_FLAGS: flags (NLA_U32)
 -- 
 2.43.0
 
