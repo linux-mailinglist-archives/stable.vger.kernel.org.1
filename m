@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60A9994AAC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F00994F1B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E79041C23C84
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDEF91F257B9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576AF192594;
-	Tue,  8 Oct 2024 12:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CBE1DF994;
+	Tue,  8 Oct 2024 13:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DzKGpAk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpctSvFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162061779B1;
-	Tue,  8 Oct 2024 12:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333431DFDBF;
+	Tue,  8 Oct 2024 13:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390931; cv=none; b=CmcU+VRHvuHlUAdxHU5kH3TwjgdZlDPj9laT5PKwDuPxtkv0Jd4socHBHvKbMdQ931Xn0L0/wPKnQPz+NUTmmI+1QHIOQyaTiB5RYLjjyNh5kngfnsZhsU8lrlB1gcXd9vhuDN28EkRqno6Q1bajDY0HAu9pBjeeym3GwwhcXOs=
+	t=1728393795; cv=none; b=lX07mQYhY5YVa6TR/manhZZRTbeNdpIMhi+DazoQ7j8Ti3lQRRsQZPKWxeDRfal3g4E0y3T+lB1Y6WY8tdEDVcKv9jmSpYByL8MwDh22PY1m/+e2WB63v2jzJrA9yvtyM8POLpBIAD8auvF1X0mh9Tni7nphyty8pg0TuolPFHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390931; c=relaxed/simple;
-	bh=CXwiQnk/SwQPzbvhnmyxA3XwE/1F9Um1TaYpNk6EDCc=;
+	s=arc-20240116; t=1728393795; c=relaxed/simple;
+	bh=mijUXsVd5v++8Xh2DqmAW4xnTPKgkjC8/CIEfvJYqYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipfXXOGW+TDb4v1lWEKYxn6snj3Fxpdh9TrYldi2h+ScRUkvWI78ZhgjPlziPl47tpfnFHnKLQtv+l2Vr2WxrNBGSnizyTC7ebWZ8yM+vdmytUhJcJ0kQsOHGnTOMxbKFo3CQYoN/ISKMot0htxxuT41SmgTbSqHUUY61+gpKeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DzKGpAk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B697C4CECC;
-	Tue,  8 Oct 2024 12:35:30 +0000 (UTC)
+	 MIME-Version; b=b8SKq+cEIFLeTfin71o42ZZV6lahbrlq635xKYbbfs82ntOg85OcHK4x3K9FrUF9wIEwcsyZxcIkmu5wYmZPRo6jAGlYx0nYSSJANqlMxj8rQESaEbs1UIr714k0XDjA334TBsZd/T4ASQCeVYBXIRs2oD/yaFyxt5DqowM13yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpctSvFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A439BC4CEC7;
+	Tue,  8 Oct 2024 13:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390930;
-	bh=CXwiQnk/SwQPzbvhnmyxA3XwE/1F9Um1TaYpNk6EDCc=;
+	s=korg; t=1728393795;
+	bh=mijUXsVd5v++8Xh2DqmAW4xnTPKgkjC8/CIEfvJYqYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DzKGpAkRUI/un6yHgYDEcRCVQhFvUEgGn3FsICqtHqRKCbtgt7NAmvtcbdRMwgj7
-	 AdMZkKIxSGzo3Yw3M4wCEHlSw2OKSTeE07qmRRE/B4dayqy3vkgzhpCRn+1H1uXXGp
-	 p95chHXM6bEyka/eVrwZRK23bd6WX84FMkIUPjo4=
+	b=zpctSvFVBbTkpEWc3oUAaMscHD26KrmTZ8M3Gruq56cepAlDjVpmGk6nxOKi6KUv+
+	 bejmM7SfhUcRUHe/BaojPubHXlhMVDhaEzsNVYfaIQ/rQGyi6aGdsUKz8/PsSgbcyE
+	 Yu+amF7Fd5hF6V196KFeq2aAV9Wj/9Jca5f1zl9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH 6.10 438/482] drm/panthor: Dont declare a queue blocked if deferred operations are pending
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 256/386] jbd2: stop waiting for space when jbd2_cleanup_journal_tail() returns error
 Date: Tue,  8 Oct 2024 14:08:21 +0200
-Message-ID: <20241008115705.761038691@linuxfoundation.org>
+Message-ID: <20241008115639.468802159@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 7a1f30afe97294281a2ba05977688385744f9844 upstream.
+commit f5cacdc6f2bb2a9bf214469dd7112b43dd2dd68a upstream.
 
-If deferred operations are pending, we want to wait for those to
-land before declaring the queue blocked on a SYNC_WAIT. We need
-this to deal with the case where the sync object is signalled through
-a deferred SYNC_{ADD,SET} from the same queue. If we don't do that
-and the group gets scheduled out before the deferred SYNC_{SET,ADD}
-is executed, we'll end up with a timeout, because no external
-SYNC_{SET,ADD} will make the scheduler reconsider the group for
-execution.
+In __jbd2_log_wait_for_space(), we might call jbd2_cleanup_journal_tail()
+to recover some journal space. But if an error occurs while executing
+jbd2_cleanup_journal_tail() (e.g., an EIO), we don't stop waiting for free
+space right away, we try other branches, and if j_committing_transaction
+is NULL (i.e., the tid is 0), we will get the following complain:
 
-Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240905071914.3278599-1-boris.brezillon@collabora.com
+============================================
+JBD2: I/O error when updating journal superblock for sdd-8.
+__jbd2_log_wait_for_space: needed 256 blocks and only had 217 space available
+__jbd2_log_wait_for_space: no way to get more journal space in sdd-8
+------------[ cut here ]------------
+WARNING: CPU: 2 PID: 139804 at fs/jbd2/checkpoint.c:109 __jbd2_log_wait_for_space+0x251/0x2e0
+Modules linked in:
+CPU: 2 PID: 139804 Comm: kworker/u8:3 Not tainted 6.6.0+ #1
+RIP: 0010:__jbd2_log_wait_for_space+0x251/0x2e0
+Call Trace:
+ <TASK>
+ add_transaction_credits+0x5d1/0x5e0
+ start_this_handle+0x1ef/0x6a0
+ jbd2__journal_start+0x18b/0x340
+ ext4_dirty_inode+0x5d/0xb0
+ __mark_inode_dirty+0xe4/0x5d0
+ generic_update_time+0x60/0x70
+[...]
+============================================
+
+So only if jbd2_cleanup_journal_tail() returns 1, i.e., there is nothing to
+clean up at the moment, continue to try to reclaim free space in other ways.
+
+Note that this fix relies on commit 6f6a6fda2945 ("jbd2: fix ocfs2 corrupt
+when updating journal superblock fails") to make jbd2_cleanup_journal_tail
+return the correct error code.
+
+Fixes: 8c3f25d8950c ("jbd2: don't give up looking for space so easily in __jbd2_log_wait_for_space")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240718115336.2554501-1-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/jbd2/checkpoint.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
-index 145d983bb129..2aff02ba6949 100644
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -1103,7 +1103,13 @@ cs_slot_sync_queue_state_locked(struct panthor_device *ptdev, u32 csg_id, u32 cs
- 			list_move_tail(&group->wait_node,
- 				       &group->ptdev->scheduler->groups.waiting);
- 		}
--		group->blocked_queues |= BIT(cs_id);
-+
-+		/* The queue is only blocked if there's no deferred operation
-+		 * pending, which can be checked through the scoreboard status.
-+		 */
-+		if (!cs_iface->output->status_scoreboards)
-+			group->blocked_queues |= BIT(cs_id);
-+
- 		queue->syncwait.gpu_va = cs_iface->output->status_wait_sync_ptr;
- 		queue->syncwait.ref = cs_iface->output->status_wait_sync_value;
- 		status_wait_cond = cs_iface->output->status_wait & CS_STATUS_WAIT_SYNC_COND_MASK;
--- 
-2.46.2
-
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -89,8 +89,11 @@ __releases(&journal->j_state_lock)
+ 			write_unlock(&journal->j_state_lock);
+ 			if (chkpt) {
+ 				jbd2_log_do_checkpoint(journal);
+-			} else if (jbd2_cleanup_journal_tail(journal) == 0) {
+-				/* We were able to recover space; yay! */
++			} else if (jbd2_cleanup_journal_tail(journal) <= 0) {
++				/*
++				 * We were able to recover space or the
++				 * journal was aborted due to an error.
++				 */
+ 				;
+ 			} else if (has_transaction) {
+ 				/*
 
 
 
