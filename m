@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE6E99484F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:11:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1338994B1B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E26BAB22AB6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A60DE285DE0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8636A1DDC24;
-	Tue,  8 Oct 2024 12:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2598A1DA60C;
+	Tue,  8 Oct 2024 12:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mw3a9dAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxKxfqW5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0331D9A43;
-	Tue,  8 Oct 2024 12:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72DB1779B1;
+	Tue,  8 Oct 2024 12:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389495; cv=none; b=EKJS2YKWl3IO6iuoCmkUt3Pv06wbnguMvOzdl1WC1wJatA6MzrEA2I/elyn6RJLnFWLFEd9DZCnznbYEBsDn5sWdOBX/8UoN5V33hi0p/slsF7P7G4dOrVSc2t4NM7JG/UcJ87uqlsik0WGftYUQ4E7lcieho1TNJl5y4s0dUsY=
+	t=1728391213; cv=none; b=UMEPtUGhcTEvjhk8bFizHrA4LXDY9Y5lCb2wuSMjfVgp5xb36+vn4zWe/fMO+WjEeIQwy1pr9SK2EtDYVUs+1xgiX9fx/Qjj1zn7y+k9/32xFeDdtLucfW4LB2dJ/00a/b1HjD2x0OM8BBUPq3Y4gCw1aRXxgBSgwzhyEY9jLxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389495; c=relaxed/simple;
-	bh=4Ebeejko71NiDi+WNL98qfvro8+SXM7NZSVV6Bc+N4s=;
+	s=arc-20240116; t=1728391213; c=relaxed/simple;
+	bh=Bdg/FbGZ4bxaVNlXZ97s/waUuYBdsO7oB7wxj3FHz80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dziJJ6ycY8GmOeRVNwiTo5fzJU9PtHQN/RaMesBeNheH2k+XCG1LJmF7Ss4udPbH5Kt4SkR6iqJdp9rA7qDUbTAPqaXO1gj02+oKinX3q14uaKO7lGk4CPN7dYqP7DMYrqUnftIbuyYKoQl8d0TFS8Rn2n6t2ivwjX1VFtaDG7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mw3a9dAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C62C4CEC7;
-	Tue,  8 Oct 2024 12:11:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fx+AkGqNjh7PIvtMvqKkT3+xxie02JXodFpUXcgTNffiy86ZafOaoz/UU5Tmnx0yJvd+RDinzK1RtdHfAzqpibVV3tDHMHxw6eV3c2w7LqAgIRnI7tYvKNNIKo2Ftez6uVI5uZHhIluoDKDHIiW3aij4NHYK2ymN9SML66IwAic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxKxfqW5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FD7C4CEC7;
+	Tue,  8 Oct 2024 12:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389494;
-	bh=4Ebeejko71NiDi+WNL98qfvro8+SXM7NZSVV6Bc+N4s=;
+	s=korg; t=1728391213;
+	bh=Bdg/FbGZ4bxaVNlXZ97s/waUuYBdsO7oB7wxj3FHz80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mw3a9dAamBU9OHwGeufUEC441sb3xQLMWVV8EPZ453SLZf8wM/JjKie9b56EOMVz2
-	 UNputU57gq29w7QWwO/Hwrb2S6mRTxWGnyWTfuvKDXJWhveMubNx1IYqc36bhfqDdl
-	 OAUpFZPthqoWqWXAowt/1hTcYEMng/qWjB1d5kDU=
+	b=GxKxfqW5s8DJV7jn+kDZyMixpi2oiijuex8t6I9FFyZTi7EnfwnKMQSipb2za8Ibp
+	 Rg0bBDhkDy63Dkofaqzijf95vSuqH004nsSmsCUrKdedaZ5KaxBZ8H6ks98cpnlgg+
+	 C8MZryhC7joX/CkMLFdEptoEw2fKc/LG5R0m83fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 011/482] mailbox: rockchip: fix a typo in module autoloading
+Subject: [PATCH 6.11 044/558] net: stmmac: dwmac4: extend timeout for VLAN Tag register busy bit check
 Date: Tue,  8 Oct 2024 14:01:14 +0200
-Message-ID: <20241008115648.744623839@linuxfoundation.org>
+Message-ID: <20241008115703.958712499@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-[ Upstream commit e92d87c9c5d769e4cb1dd7c90faa38dddd7e52e3 ]
+[ Upstream commit 4c1b56671b68ffcbe6b78308bfdda6bcce6491ae ]
 
-MODULE_DEVICE_TABLE(of, rockchip_mbox_of_match) could let the module
-properly autoloaded based on the alias from of_device_id table. It
-should be 'rockchip_mbox_of_match' instead of 'rockchp_mbox_of_match',
-just fix it.
+Increase the timeout for checking the busy bit of the VLAN Tag register
+from 10µs to 500ms. This change is necessary to accommodate scenarios
+where Energy Efficient Ethernet (EEE) is enabled.
 
-Fixes: f70ed3b5dc8b ("mailbox: rockchip: Add Rockchip mailbox driver")
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Overnight testing revealed that when EEE is active, the busy bit can
+remain set for up to approximately 300ms. The new 500ms timeout provides
+a safety margin.
+
+Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Link: https://patch.msgid.link/20240924205424.573913-1-shenwei.wang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/rockchip-mailbox.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/dwmac4_core.c  | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mailbox/rockchip-mailbox.c b/drivers/mailbox/rockchip-mailbox.c
-index 8ffad059e8984..4d966cb2ed036 100644
---- a/drivers/mailbox/rockchip-mailbox.c
-+++ b/drivers/mailbox/rockchip-mailbox.c
-@@ -159,7 +159,7 @@ static const struct of_device_id rockchip_mbox_of_match[] = {
- 	{ .compatible = "rockchip,rk3368-mailbox", .data = &rk3368_drv_data},
- 	{ },
- };
--MODULE_DEVICE_TABLE(of, rockchp_mbox_of_match);
-+MODULE_DEVICE_TABLE(of, rockchip_mbox_of_match);
- 
- static int rockchip_mbox_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+index 31c387cc5f269..5e64cf15670b1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -14,6 +14,7 @@
+ #include <linux/slab.h>
+ #include <linux/ethtool.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include "stmmac.h"
+ #include "stmmac_pcs.h"
+ #include "dwmac4.h"
+@@ -475,7 +476,7 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
+ 				    u8 index, u32 data)
  {
+ 	void __iomem *ioaddr = (void __iomem *)dev->base_addr;
+-	int i, timeout = 10;
++	int ret;
+ 	u32 val;
+ 
+ 	if (index >= hw->num_vlan)
+@@ -491,16 +492,15 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
+ 
+ 	writel(val, ioaddr + GMAC_VLAN_TAG);
+ 
+-	for (i = 0; i < timeout; i++) {
+-		val = readl(ioaddr + GMAC_VLAN_TAG);
+-		if (!(val & GMAC_VLAN_TAG_CTRL_OB))
+-			return 0;
+-		udelay(1);
++	ret = readl_poll_timeout(ioaddr + GMAC_VLAN_TAG, val,
++				 !(val & GMAC_VLAN_TAG_CTRL_OB),
++				 1000, 500000);
++	if (ret) {
++		netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
++		return -EBUSY;
+ 	}
+ 
+-	netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
+-
+-	return -EBUSY;
++	return 0;
+ }
+ 
+ static int dwmac4_add_hw_vlan_rx_fltr(struct net_device *dev,
 -- 
 2.43.0
 
