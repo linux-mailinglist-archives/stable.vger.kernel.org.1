@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-82379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A0E994C6C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE24F9949CD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79BC21C24E8F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4331C24A77
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903EF1DE89A;
-	Tue,  8 Oct 2024 12:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A827C1DE8A0;
+	Tue,  8 Oct 2024 12:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNcCaHCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzdOsDMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9421D31A0;
-	Tue,  8 Oct 2024 12:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669C01DED55;
+	Tue,  8 Oct 2024 12:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392059; cv=none; b=dMB9IuJR7TAS8oHu+tJm7aAIJU2lC+/1XWFcJxVyLXhGMffJMkobTRmMLDd32NDZsf5XkUjPafIn4BU+N3DUxsGeKsERt3uGjL9PzoBL62iLpD+CAy2vFTJVvnUWvTm4RVc6SGW0zNG8IMvPEn4ksM4NwtiowMP+nl2RFyW5Db4=
+	t=1728390375; cv=none; b=Y7SPYL+D19tVgoNMSrBZgl+If8+3GPNZkOZogpO+fef+7aGV8uTQbgyKS8y6D33nKpSF0O1G4yQ3q8xs6pgiE2pHryfGLyZsI/iL0S/bwD69SbUbzdNSyqK9yvDWLWSTKNpDIYEhiyfRKzsm74iMGLPwxV3rGp8VXuCoi5ulw1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392059; c=relaxed/simple;
-	bh=YGHat8HaXF0xbYf9qVbYuMu2yJyUKhF32F6q6+MOqRo=;
+	s=arc-20240116; t=1728390375; c=relaxed/simple;
+	bh=PM0m8xyBO3kV7qxtIGAkLaURMkGFU6xWyNWcL37+/Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3u/M8I8+nmF+VWpzG4XRXWx2fA1BLlEEeC+25X/knXTnhfExREKV96V72NZHs8SDyXy95x/8w0EKWyMPT+r1ctxAyXQhepB2mWcy2mMN2qGNTdOW0BbY66S2s7bKOynVhOcKU+W0KAXD6MUQ5m2emRtlJpVoIgToyOmuhdkCYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNcCaHCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE71C4CEC7;
-	Tue,  8 Oct 2024 12:54:18 +0000 (UTC)
+	 MIME-Version; b=L7Uh1a8JfQ4tyiJpZA34kIGj0jldb3w7d8/XtK3QNkVs5j9FEzY7A0DQwu5EbkVkNYRvqm8b9J6Cuvj5UeGK7718+AqyqfVHvyglCKbMX3nrfrZcpOWDAxbyZnNcooRepi6OesS/OMNuUbdCj5Ia1EuRp+Zy/nI4AgHZrg41EGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzdOsDMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98029C4CEC7;
+	Tue,  8 Oct 2024 12:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392059;
-	bh=YGHat8HaXF0xbYf9qVbYuMu2yJyUKhF32F6q6+MOqRo=;
+	s=korg; t=1728390375;
+	bh=PM0m8xyBO3kV7qxtIGAkLaURMkGFU6xWyNWcL37+/Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNcCaHCeM/Nk6xjDnKYgTn2/oCz2AiNTb83yc48uZHx3tltGVXKNzPl2TmIvUzG2O
-	 0Lf2Csb8B59i/q+LGWT9JPM2IUG535dDKE1Plg4/ei1hjHeglPDMFVxDWWUJJyo0A8
-	 bBQdSdwfVcZFppmDFtKVAoWnf8qe9qDXyMO6O9J0=
+	b=qzdOsDMpb3Ymlq0oU+H0hiwYFusbxfhVd7/RqG2vjZJNROdCv38TA0UapN/lUs2w9
+	 qKS5IV8lO8lNbQxWIdxzmp5bHAUEGr+arSoOCEyEyDXmgvh0HPrnKZHgpmpgkBp4/G
+	 EGzqHE8+bvGh7ZjLQTNsWw/tNtKqnVSZ1EdcQ9k8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 303/558] platform/x86: x86-android-tablets: Adjust Xiaomi Pad 2 bottom bezel touch buttons LED
-Date: Tue,  8 Oct 2024 14:05:33 +0200
-Message-ID: <20241008115714.242265386@linuxfoundation.org>
+Subject: [PATCH 6.10 271/482] drm/xe: fixup xe_alloc_pf_queue
+Date: Tue,  8 Oct 2024 14:05:34 +0200
+Message-ID: <20241008115658.945890800@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit df40a23cc34c200cfde559eda7ca540f3ae7bd9e ]
+[ Upstream commit 321d6b4b9cbe3dd0bc99937d5e5b4d730b5b5798 ]
 
-The "input-events" LED trigger used to turn on the backlight LEDs had to
-be rewritten to use led_trigger_register_simple() + led_trigger_event()
-to fix a serious locking issue.
+kzalloc expects number of bytes, therefore we should convert the number
+of dw into bytes, otherwise we are likely just accessing beyond the
+array causing all kinds of carnage. Also fixup the error handling while
+we are here.
 
-This means it no longer supports using blink_brightness to set a per LED
-brightness for the trigger and it no longer sets LED_CORE_SUSPENDRESUME.
+v2:
+ - Prefer kcalloc (dim)
 
-Adjust the MiPad 2 bottom bezel touch buttons LED class device to match:
-
-1. Make LED_FULL the maximum brightness to fix the LED brightness
-   being very low when on.
-2. Set flags = LED_CORE_SUSPENDRESUME.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240916090255.35548-1-hdegoede@redhat.com
+Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Stuart Summers <stuart.summers@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240821171917.417386-2-matthew.auld@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/other.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_pagefault.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/other.c b/drivers/platform/x86/x86-android-tablets/other.c
-index eb0e55c69dfed..2549c348c8825 100644
---- a/drivers/platform/x86/x86-android-tablets/other.c
-+++ b/drivers/platform/x86/x86-android-tablets/other.c
-@@ -670,7 +670,7 @@ static const struct software_node *ktd2026_node_group[] = {
-  * is controlled by the "pwm_soc_lpss_2" PWM output.
-  */
- #define XIAOMI_MIPAD2_LED_PERIOD_NS		19200
--#define XIAOMI_MIPAD2_LED_DEFAULT_DUTY		 6000 /* From Android kernel */
-+#define XIAOMI_MIPAD2_LED_MAX_DUTY_NS		 6000 /* From Android kernel */
+diff --git a/drivers/gpu/drm/xe/xe_gt_pagefault.c b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+index ee78b4e47dfcb..28cf90e8989c6 100644
+--- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
++++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+@@ -437,7 +437,10 @@ static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
+ 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
  
- static struct pwm_device *xiaomi_mipad2_led_pwm;
+ 	pf_queue->gt = gt;
+-	pf_queue->data = kzalloc(pf_queue->num_dw, GFP_KERNEL);
++	pf_queue->data = kcalloc(pf_queue->num_dw, sizeof(u32), GFP_KERNEL);
++	if (!pf_queue->data)
++		return -ENOMEM;
++
+ 	spin_lock_init(&pf_queue->lock);
+ 	INIT_WORK(&pf_queue->worker, pf_queue_work_func);
  
-@@ -679,7 +679,7 @@ static int xiaomi_mipad2_brightness_set(struct led_classdev *led_cdev,
- {
- 	struct pwm_state state = {
- 		.period = XIAOMI_MIPAD2_LED_PERIOD_NS,
--		.duty_cycle = val,
-+		.duty_cycle = XIAOMI_MIPAD2_LED_MAX_DUTY_NS * val / LED_FULL,
- 		/* Always set PWM enabled to avoid the pin floating */
- 		.enabled = true,
- 	};
-@@ -701,11 +701,11 @@ static int __init xiaomi_mipad2_init(struct device *dev)
- 		return -ENOMEM;
- 
- 	led_cdev->name = "mipad2:white:touch-buttons-backlight";
--	led_cdev->max_brightness = XIAOMI_MIPAD2_LED_PERIOD_NS;
--	/* "input-events" trigger uses blink_brightness */
--	led_cdev->blink_brightness = XIAOMI_MIPAD2_LED_DEFAULT_DUTY;
-+	led_cdev->max_brightness = LED_FULL;
- 	led_cdev->default_trigger = "input-events";
- 	led_cdev->brightness_set_blocking = xiaomi_mipad2_brightness_set;
-+	/* Turn LED off during suspend */
-+	led_cdev->flags = LED_CORE_SUSPENDRESUME;
- 
- 	ret = devm_led_classdev_register(dev, led_cdev);
- 	if (ret)
 -- 
 2.43.0
 
