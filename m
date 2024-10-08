@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9B0994EA7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C33E994A34
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81E5C1C24C8A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C1B8288DFB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DF31DE4CC;
-	Tue,  8 Oct 2024 13:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962471DC759;
+	Tue,  8 Oct 2024 12:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmIyVteg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wO+UWYbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD0F1DED7D;
-	Tue,  8 Oct 2024 13:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5430F1CEE8E;
+	Tue,  8 Oct 2024 12:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393575; cv=none; b=AE8OB4SBhg41/KTZ22YDd1mp1mM74aPXS47TWcanViQSOwgXjf/d+HFHe7MknJfbfr9lw8mPPmPrPy5l4f6aMSAEtId1l5EmZ6vuNaJiqGGcLwOnr4rM+JS5QW5yu+lLeHWSYWP28iSi2vJZRHqUZVWgjDfLB9jhOZcgAzhBkUA=
+	t=1728390623; cv=none; b=cU9NFPjZVWS7I5L/wolhBrt2qIx3eLtPxVsfAmgoAfyV85FbopDoXZiiBGQrK+QymJx7zzqnG7MWj7Ck7OP7mAhFolzLbBJNVSsvXjft4WVNn79rtfaDpSE7p/uz/pgjEaNTjzIXFC4eJBKy3aCVwQsc8mkCTqWjWvz5m2nWPuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393575; c=relaxed/simple;
-	bh=nQjvNfrzD+p1XEqG4ynvvqIVCXZzmmlDDQBHMgC0eq0=;
+	s=arc-20240116; t=1728390623; c=relaxed/simple;
+	bh=3MHCLJ24FOxFxj+swqL1wW+zpJYd3X+t0orsgCjT5BQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omSs91SGyEk/EAV//QAnQjQq/BNYA6HaCwT6qEnw5nJmAZbVOflIBSOY4kkBpS37Rx8i/7/jtUgj7l4OokV/XkjYTN+y7AQcGTLTfeuXLd2pNavPwc2INVHYQrhyGF4wklJsqUY1SYFrTRIP4a5JSYrks3F2EeyapHE9S/AhAXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmIyVteg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D9FC4CECC;
-	Tue,  8 Oct 2024 13:19:34 +0000 (UTC)
+	 MIME-Version; b=nkymmjCqZyACTe4+ecTidTmVxk/wC2PSjUlcektj44fWaRZv+Xnrqhr7Q1e5bjXoRzUqpo10JsgByyls/z9iJUlgSnL1uPSdjbcFQLGMZ1qZdkL22JKlJTl/9mg9j+GwJUwqk0bP60rr7r+JZpAvw6VC9qZiXO+lV2I1cVzijq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wO+UWYbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC95C4CECC;
+	Tue,  8 Oct 2024 12:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393575;
-	bh=nQjvNfrzD+p1XEqG4ynvvqIVCXZzmmlDDQBHMgC0eq0=;
+	s=korg; t=1728390623;
+	bh=3MHCLJ24FOxFxj+swqL1wW+zpJYd3X+t0orsgCjT5BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmIyVtegYsrZg3lmvp8++nIGJGoaSrCu33kTzfKxGVdfwuHYgPag1rYm0ranO5NuC
-	 LG70xOOxPzsjzxpU/YgGHfq2Ei4u0UmxcwBOpOfPMXfLdWkFHeeLRwTkVIHLTGSqyF
-	 EZZV/EHk/V2mP5MBer0FL41+H1Ddvzqi7aHLPilU=
+	b=wO+UWYbTenjWf/lPp+P7dV1BJs8Qd0EYJZ9Dcbo6bTV4TAdstZsefeVKm5TIalSFH
+	 H/iUdms+OCCtsZkIjivGYQDH6KQV48OSmmFzHaA06Bf7I4+llae656Ni72BUbw/Igc
+	 AaojHdX4lG4EpbifCzP3X95UQaO9yd5AtqnNM6Ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/386] drm/printer: Allow NULL data in devcoredump printer
+	Camm Maguire <camm@maguirefamily.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.10 343/482] parisc: Fix stack start for ADDR_NO_RANDOMIZE personality
 Date: Tue,  8 Oct 2024 14:06:46 +0200
-Message-ID: <20241008115635.761607504@linuxfoundation.org>
+Message-ID: <20241008115701.922683828@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,149 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 53369581dc0c68a5700ed51e1660f44c4b2bb524 ]
+commit f31b256994acec6929306dfa86ac29716e7503d6 upstream.
 
-We want to determine the size of the devcoredump before writing it out.
-To that end, we will run the devcoredump printer with NULL data to get
-the size, alloc data based on the generated offset, then run the
-devcorecump again with a valid data pointer to print.  This necessitates
-not writing data to the data pointer on the initial pass, when it is
-NULL.
+Fix the stack start address calculation for the parisc architecture in
+setup_arg_pages() when address randomization is disabled. When the
+ADDR_NO_RANDOMIZE process personality is disabled there is no need to add
+additional space for the stack.
+Note that this patch touches code inside an #ifdef CONFIG_STACK_GROWSUP hunk,
+which is why only the parisc architecture is affected since it's the
+only Linux architecture where the stack grows upwards.
 
-v5:
- - Better commit message (Jonathan)
- - Add kerenl doc with examples (Jani)
+Without this patch you will find the stack in the middle of some
+mapped libaries and suddenly limited to 6MB instead of 8MB:
 
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Acked-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240801154118.2547543-3-matthew.brost@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+root@parisc:~# setarch -R /bin/bash -c "cat /proc/self/maps"
+00010000-00019000 r-xp 00000000 08:05 1182034           /usr/bin/cat
+00019000-0001a000 rwxp 00009000 08:05 1182034           /usr/bin/cat
+0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
+f90c4000-f9283000 r-xp 00000000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
+f9283000-f9285000 r--p 001bf000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
+f9285000-f928a000 rwxp 001c1000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
+f928a000-f9294000 rwxp 00000000 00:00 0
+f9301000-f9323000 rwxp 00000000 00:00 0                 [stack]
+f98b4000-f98e4000 r-xp 00000000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
+f98e4000-f98e5000 r--p 00030000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
+f98e5000-f98e9000 rwxp 00031000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
+f9ad8000-f9b00000 rw-p 00000000 00:00 0
+f9b00000-f9b01000 r-xp 00000000 00:00 0                 [vdso]
+
+With the patch the stack gets correctly mapped at the end
+of the process memory map:
+
+root@panama:~# setarch -R /bin/bash -c "cat /proc/self/maps"
+00010000-00019000 r-xp 00000000 08:13 16385582          /usr/bin/cat
+00019000-0001a000 rwxp 00009000 08:13 16385582          /usr/bin/cat
+0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
+fef29000-ff0eb000 r-xp 00000000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
+ff0eb000-ff0ed000 r--p 001c2000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
+ff0ed000-ff0f2000 rwxp 001c4000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
+ff0f2000-ff0fc000 rwxp 00000000 00:00 0
+ff4b4000-ff4e4000 r-xp 00000000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
+ff4e4000-ff4e6000 r--p 00030000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
+ff4e6000-ff4ea000 rwxp 00032000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
+ff6d7000-ff6ff000 rw-p 00000000 00:00 0
+ff6ff000-ff700000 r-xp 00000000 00:00 0                 [vdso]
+ff700000-ff722000 rwxp 00000000 00:00 0                 [stack]
+
+Reported-by: Camm Maguire <camm@maguirefamily.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: d045c77c1a69 ("parisc,metag: Fix crashes due to stack randomization on stack-grows-upwards architectures")
+Fixes: 17d9822d4b4c ("parisc: Consider stack randomization for mmap base only when necessary")
+Cc: stable@vger.kernel.org	# v5.2+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_print.c | 13 +++++----
- include/drm/drm_print.h     | 54 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 61 insertions(+), 6 deletions(-)
+ fs/exec.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_print.c b/drivers/gpu/drm/drm_print.c
-index 5b93c11895bb1..aab76334083e8 100644
---- a/drivers/gpu/drm/drm_print.c
-+++ b/drivers/gpu/drm/drm_print.c
-@@ -100,8 +100,9 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
- 			copy = iterator->remain;
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -782,7 +782,8 @@ int setup_arg_pages(struct linux_binprm
+ 	stack_base = calc_max_stack_size(stack_base);
  
- 		/* Copy out the bit of the string that we need */
--		memcpy(iterator->data,
--			str + (iterator->start - iterator->offset), copy);
-+		if (iterator->data)
-+			memcpy(iterator->data,
-+			       str + (iterator->start - iterator->offset), copy);
+ 	/* Add space for stack randomization. */
+-	stack_base += (STACK_RND_MASK << PAGE_SHIFT);
++	if (current->flags & PF_RANDOMIZE)
++		stack_base += (STACK_RND_MASK << PAGE_SHIFT);
  
- 		iterator->offset = iterator->start + copy;
- 		iterator->remain -= copy;
-@@ -110,7 +111,8 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
- 
- 		len = min_t(ssize_t, strlen(str), iterator->remain);
- 
--		memcpy(iterator->data + pos, str, len);
-+		if (iterator->data)
-+			memcpy(iterator->data + pos, str, len);
- 
- 		iterator->offset += len;
- 		iterator->remain -= len;
-@@ -140,8 +142,9 @@ void __drm_printfn_coredump(struct drm_printer *p, struct va_format *vaf)
- 	if ((iterator->offset >= iterator->start) && (len < iterator->remain)) {
- 		ssize_t pos = iterator->offset - iterator->start;
- 
--		snprintf(((char *) iterator->data) + pos,
--			iterator->remain, "%pV", vaf);
-+		if (iterator->data)
-+			snprintf(((char *) iterator->data) + pos,
-+				 iterator->remain, "%pV", vaf);
- 
- 		iterator->offset += len;
- 		iterator->remain -= len;
-diff --git a/include/drm/drm_print.h b/include/drm/drm_print.h
-index a93a387f8a1a1..2ad9c9f9e90ff 100644
---- a/include/drm/drm_print.h
-+++ b/include/drm/drm_print.h
-@@ -122,7 +122,8 @@ drm_vprintf(struct drm_printer *p, const char *fmt, va_list *va)
- 
- /**
-  * struct drm_print_iterator - local struct used with drm_printer_coredump
-- * @data: Pointer to the devcoredump output buffer
-+ * @data: Pointer to the devcoredump output buffer, can be NULL if using
-+ * drm_printer_coredump to determine size of devcoredump
-  * @start: The offset within the buffer to start writing
-  * @remain: The number of bytes to write for this iteration
-  */
-@@ -167,6 +168,57 @@ struct drm_print_iterator {
-  *			coredump_read, ...)
-  *	}
-  *
-+ * The above example has a time complexity of O(N^2), where N is the size of the
-+ * devcoredump. This is acceptable for small devcoredumps but scales poorly for
-+ * larger ones.
-+ *
-+ * Another use case for drm_coredump_printer is to capture the devcoredump into
-+ * a saved buffer before the dev_coredump() callback. This involves two passes:
-+ * one to determine the size of the devcoredump and another to print it to a
-+ * buffer. Then, in dev_coredump(), copy from the saved buffer into the
-+ * devcoredump read buffer.
-+ *
-+ * For example::
-+ *
-+ *	char *devcoredump_saved_buffer;
-+ *
-+ *	ssize_t __coredump_print(char *buffer, ssize_t count, ...)
-+ *	{
-+ *		struct drm_print_iterator iter;
-+ *		struct drm_printer p;
-+ *
-+ *		iter.data = buffer;
-+ *		iter.start = 0;
-+ *		iter.remain = count;
-+ *
-+ *		p = drm_coredump_printer(&iter);
-+ *
-+ *		drm_printf(p, "foo=%d\n", foo);
-+ *		...
-+ *		return count - iter.remain;
-+ *	}
-+ *
-+ *	void coredump_print(...)
-+ *	{
-+ *		ssize_t count;
-+ *
-+ *		count = __coredump_print(NULL, INT_MAX, ...);
-+ *		devcoredump_saved_buffer = kvmalloc(count, GFP_KERNEL);
-+ *		__coredump_print(devcoredump_saved_buffer, count, ...);
-+ *	}
-+ *
-+ *	void coredump_read(char *buffer, loff_t offset, size_t count,
-+ *			   void *data, size_t datalen)
-+ *	{
-+ *		...
-+ *		memcpy(buffer, devcoredump_saved_buffer + offset, count);
-+ *		...
-+ *	}
-+ *
-+ * The above example has a time complexity of O(N*2), where N is the size of the
-+ * devcoredump. This scales better than the previous example for larger
-+ * devcoredumps.
-+ *
-  * RETURNS:
-  * The &drm_printer object
-  */
--- 
-2.43.0
-
+ 	/* Make sure we didn't let the argument array grow too large. */
+ 	if (vma->vm_end - vma->vm_start > stack_base)
 
 
 
