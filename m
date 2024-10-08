@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D562994F53
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59643994DBF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 961571C2264A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B733B27C6E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9031DF97C;
-	Tue,  8 Oct 2024 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D061DE8BE;
+	Tue,  8 Oct 2024 13:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjVAIih9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnZnhyxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870A91DED7D;
-	Tue,  8 Oct 2024 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B7E1DE2AE;
+	Tue,  8 Oct 2024 13:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393852; cv=none; b=qq+u7icXdkTIzxyVojhwMkgA9cii6s6Y87U7vlicCUZ+rfXuuuXL0s908RQpGAW1dxsA5jPQzF+0F4GXjTkyTgcgUHyOd6kZMXwBdlEDZYFD4qioMqhkZ5/V6h+/u3z99UmcUta2Kg3luZqqphOSJGgu+vohZDGNTPRPjaQUYKQ=
+	t=1728392691; cv=none; b=ZntMfoEqeUjmW+iswM0DuZ5cMDaJiOGnQayWoKrkWM0iPOJhPjm5kt2NDSfQV3kVAoaNBjrz64LPWlj6d4JCfho5f/e6ZQDy1frRi65ZqjvyYReERm60u40ZwmcJJqz2/AKt/PUg8Yh+53GME0YHuR2FXAAbQSq+5B+Cyr2daiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393852; c=relaxed/simple;
-	bh=wiLGbU+XUb5RXzW2bcSiZBtRhGj28eU40GKyBEf9kGs=;
+	s=arc-20240116; t=1728392691; c=relaxed/simple;
+	bh=nuD1LVts31aq1YgfjNRvV8t8YOp/ElGz6XjH8tE4Eb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F36D8dkly5IXaI3nwN6AIAo3vSZKjZlc8vwK1tqUmox+huGPThoyixgWXcnbxKTYtI9HhpnhAdIY+rERaxCgayvXb4sGD/kmQJn57AS+247+DN5nvspXAX9jN8NOCNVt42oWcuVZ/SJ72+0zCemJln1RssQYSNYHwI+9yJXWrfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjVAIih9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBA4C4CEC7;
-	Tue,  8 Oct 2024 13:24:11 +0000 (UTC)
+	 MIME-Version; b=m/McmYIfnm8SQciOGKTEMFFfgndE+xR2U0TzQrtZ4wO+N4bNizQaWc/0xKrD0WQxYVH3iegreaknD94eSg8E7oJNewIsrKdgZ7S5R5dWKxqzEiFExvXM1prfJjJjVYCop7+hZKPsUDHmHUXA454cjPtkpJ0NTCZU/4J9spNMuZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnZnhyxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5374C4CEC7;
+	Tue,  8 Oct 2024 13:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393852;
-	bh=wiLGbU+XUb5RXzW2bcSiZBtRhGj28eU40GKyBEf9kGs=;
+	s=korg; t=1728392691;
+	bh=nuD1LVts31aq1YgfjNRvV8t8YOp/ElGz6XjH8tE4Eb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjVAIih9qyaWLtQpLMAcPXvGpqbm+dLL+aBvlt/nH/8cejo4od0Ff8gjRpA9/fL7Q
-	 6hln3n5oUrtQouMCqiG9F7bU2wSJnumm9cJv6oWS3kSPgRWXpyFpsyktOadFSexmDU
-	 C1GulCOAsuCBiFkDgTx+UTgP9xLBIDZ6+urWcewc=
+	b=NnZnhyxaO3Zy6KjCtElI5mvPEJW7277PfyuD8v+neunalvwDwRwzCraeoz8PAe60G
+	 mJGVfbV6w/6Kq2Zhc6KjuSE0fovWMw+UITLFeae+p++x618pXw8iCe+GBeyyiuRpDo
+	 DzVTNnzJyuftfSV3KkKSVo1ou5v9hRVcqnSmoN0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 275/386] i3c: master: svc: Fix use after free vulnerability in svc_i3c_master Driver Due to Race Condition
-Date: Tue,  8 Oct 2024 14:08:40 +0200
-Message-ID: <20241008115640.212332912@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.11 491/558] ACPI: video: Add backlight=native quirk for Dell OptiPlex 5480 AIO
+Date: Tue,  8 Oct 2024 14:08:41 +0200
+Message-ID: <20241008115721.554622029@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 61850725779709369c7e907ae8c7c75dc7cec4f3 upstream.
+commit ac78288fe062b64e45a479eaae74aaaafcc8ecdd upstream.
 
-In the svc_i3c_master_probe function, &master->hj_work is bound with
-svc_i3c_master_hj_work, &master->ibi_work is bound with
-svc_i3c_master_ibi_work. And svc_i3c_master_ibi_work  can start the
-hj_work, svc_i3c_master_irq_handler can start the ibi_work.
+Dell All In One (AIO) models released after 2017 may use a backlight
+controller board connected to an UART.
 
-If we remove the module which will call svc_i3c_master_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
+In DSDT this uart port will be defined as:
 
-CPU0                                         CPU1
+   Name (_HID, "DELL0501")
+   Name (_CID, EisaId ("PNP0501")
 
-                                    | svc_i3c_master_hj_work
-svc_i3c_master_remove               |
-i3c_master_unregister(&master->base)|
-device_unregister(&master->dev)     |
-device_release                      |
-//free master->base                 |
-                                    | i3c_master_do_daa(&master->base)
-                                    | //use master->base
+The Dell OptiPlex 5480 AIO has an ACPI device for one of its UARTs with
+the above _HID + _CID. Loading the dell-uart-backlight driver fails with
+the following errors:
 
-Fix it by ensuring that the work is canceled before proceeding with the
-cleanup in svc_i3c_master_remove.
+[   18.261353] dell_uart_backlight serial0-0: Timed out waiting for response.
+[   18.261356] dell_uart_backlight serial0-0: error -ETIMEDOUT: getting firmware version
+[   18.261359] dell_uart_backlight serial0-0: probe with driver dell_uart_backlight failed with error -110
 
-Fixes: 0f74f8b6675c ("i3c: Make i3c_master_unregister() return void")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/stable/20240914154030.180-1-kxwang23%40m.fudan.edu.cn
-Link: https://lore.kernel.org/r/20240914163932.253-1-kxwang23@m.fudan.edu.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Indicating that there is no backlight controller board attached to
+the UART, while the GPU's native backlight control method does work.
+
+Add a quirk to use the GPU's native backlight control method on this model.
+
+Fixes: cd8e468efb4f ("ACPI: video: Add Dell UART backlight controller detection")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240918153849.37221-1-hdegoede@redhat.com
+[ rjw: Changelog edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/video_detect.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1697,6 +1697,7 @@ static void svc_i3c_master_remove(struct
- {
- 	struct svc_i3c_master *master = platform_get_drvdata(pdev);
- 
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
- 
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -845,6 +845,15 @@ static const struct dmi_system_id video_
+ 	 * which need native backlight control nevertheless.
+ 	 */
+ 	{
++	 /* https://github.com/zabbly/linux/issues/26 */
++	 .callback = video_detect_force_native,
++	 /* Dell OptiPlex 5480 AIO */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 5480 AIO"),
++		},
++	},
++	{
+ 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=2303936 */
+ 	 .callback = video_detect_force_native,
+ 	 /* Dell OptiPlex 7760 AIO */
 
 
 
