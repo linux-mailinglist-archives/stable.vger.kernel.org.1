@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DA3994B66
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54907994861
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AB912874F4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7969F1C253A0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6218F1DE4CB;
-	Tue,  8 Oct 2024 12:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725811DED55;
+	Tue,  8 Oct 2024 12:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faP43Y2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpbrEF3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED431DE2AD;
-	Tue,  8 Oct 2024 12:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278911DED47;
+	Tue,  8 Oct 2024 12:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391302; cv=none; b=R2ZJy21MQmhTwLECB1LSastEmi2IBgkAiHax9zqF/Nw8bdxlIFfDVO7O/ifAhEf2PLGy3IuzUysieli4DSVg9uetcytMk3JT4qVrQySxa/Ha5qDBO/OHA9c6vJLzGmxgZinuJ/LkBpuqJqKqFHvn6O3UwjC3irWKPFjJHmCbWPM=
+	t=1728389536; cv=none; b=ivo5oNvMI3jmpgfrPUWVgbXjrQusrtD7TifJWQgYA/ank8rsozImDscDjSrBusZY7/SAK/fvLAcvDcZwugtrR5GUCyw3/TTdPTDKRnKgUSUAKCKGirGjZmWMwH+YOri0dzS1qTsLl86sx3JWHV7blyaVt39Y0HbolbPiUgpAIQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391302; c=relaxed/simple;
-	bh=3vIG+G5h9tU+v6THAs2N3TPzPCgqJ+hgLDYoPtFMNaw=;
+	s=arc-20240116; t=1728389536; c=relaxed/simple;
+	bh=yKSFDSXHRkTs4DvXItke3PKg+9qFhSgI79kKcPYP7X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XlNpW47Bl//PWh5P7Ki7wK/YuTkAgKI3SGgtZPJ4Mla4OaCD2SQpsA6+wAPK5Sc9csSfGk1r24Ycy/W3hV4b/AyOl0zhz8uDwgFmzBfuSGE49JcidAs+CBsDs0DCYAV3eu4UfmUh22jpeKECSNEsxvoJSDcnn4PMIO3BP5reFJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faP43Y2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9400EC4CEC7;
-	Tue,  8 Oct 2024 12:41:41 +0000 (UTC)
+	 MIME-Version; b=LNmHqujUyPjW4ehHKzaWrhs5/bY7HE4KVCGcUaQDsWOH/k2LobXUp+IJCwFaKNqEHcbg/UPTK/PYq5x8VIpqeyv19fgGEWRMJBvKOWYaI3pfj2Ea0amp1Gwl9oVTBjOOLPvMYelxhFmT2LSDgnjnx/JFBuueVzJubcCJJ9iQy1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpbrEF3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208D9C4CECF;
+	Tue,  8 Oct 2024 12:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391302;
-	bh=3vIG+G5h9tU+v6THAs2N3TPzPCgqJ+hgLDYoPtFMNaw=;
+	s=korg; t=1728389535;
+	bh=yKSFDSXHRkTs4DvXItke3PKg+9qFhSgI79kKcPYP7X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=faP43Y2sb/4PyiWFfqYul/TqBNhAS9ySf/h44e8W0NCj+LnDItoK38xXysQRZYVCp
-	 PG91FlvUrKWXySX0f5PH9j/CniDXtlZVb0WMdut4K6jJXgVHTtZG8KfwvS4791xgCN
-	 5/u7iXfrrG1XmGuQIaYUlN/pbH/pjbhWta+DoH8o=
+	b=CpbrEF3JxkItPO2bHmTckOlkRsPT7ST5K/VHZH/l/F7G7dfO3OYTyGoA5pIi+GZQc
+	 51WrrO26Hg/CiHDE85a1RICpAYNnqfE8IH6fQE15mCqU0BLQ2BcefpkpupFi9aF90y
+	 PHHfTXN5kilkalsObi0yFzDIBjDwICvcbyuAR6w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>,
+	Animesh Manna <animesh.manna@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 040/558] net: fec: Restart PPS after link state change
+Subject: [PATCH 6.10 007/482] drm/i915/dp: Fix AUX IO power enabling for eDP PSR
 Date: Tue,  8 Oct 2024 14:01:10 +0200
-Message-ID: <20241008115703.801148899@linuxfoundation.org>
+Message-ID: <20241008115648.585472199@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,138 +62,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit a1477dc87dc4996dcf65a4893d4e2c3a6b593002 ]
+[ Upstream commit ec2231b8dd2dc515912ff7816c420153b4a95e92 ]
 
-On link state change, the controller gets reset,
-causing PPS to drop out. Re-enable PPS if it was
-enabled before the controller reset.
+Panel Self Refresh on eDP requires the AUX IO power to be enabled
+whenever the output (main link) is enabled. This is required by the
+AUX_PHY_WAKE/ML_PHY_LOCK signaling initiated by the HW automatically to
+re-enable the main link after it got disabled in power saving states
+(see eDP v1.4b, sections 5.1, 6.1.3.3.1.1).
 
-Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20240924093705.2897329-1-csokas.bence@prolan.hu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The Panel Replay mode on non-eDP outputs on the other hand is only
+supported by keeping the main link active, thus not requiring the above
+AUX_PHY_WAKE/ML_PHY_LOCK signaling (eDP v1.4b, section 6.1.3.3.1.2).
+Thus enabling the AUX IO power for this case is not required either.
+
+Based on the above enable the AUX IO power only for eDP/PSR outputs.
+
+Bspec: 49274, 53370
+
+v2:
+- Add a TODO comment to adjust the requirement for AUX IO based on
+  whether the ALPM/main-link off mode gets enabled. (Rodrigo)
+
+Cc: Animesh Manna <animesh.manna@intel.com>
+Fixes: b8cf5b5d266e ("drm/i915/panelreplay: Initializaton and compute config for panel replay")
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240910111847.2995725-1-imre.deak@intel.com
+(cherry picked from commit f7c2ed9d4ce80a2570c492825de239dc8b500f2e)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec.h      |  6 +++++
- drivers/net/ethernet/freescale/fec_main.c | 11 ++++++++-
- drivers/net/ethernet/freescale/fec_ptp.c  | 30 +++++++++++++++++++++++
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_ddi.c |  2 +-
+ drivers/gpu/drm/i915/display/intel_psr.c | 19 +++++++++++++++++++
+ drivers/gpu/drm/i915/display/intel_psr.h |  2 ++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index a19cb2a786fd2..0552317a2554b 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -691,10 +691,16 @@ struct fec_enet_private {
- 	/* XDP BPF Program */
- 	struct bpf_prog *xdp_prog;
- 
-+	struct {
-+		int pps_enable;
-+	} ptp_saved_state;
-+
- 	u64 ethtool_stats[];
- };
- 
- void fec_ptp_init(struct platform_device *pdev, int irq_idx);
-+void fec_ptp_restore_state(struct fec_enet_private *fep);
-+void fec_ptp_save_state(struct fec_enet_private *fep);
- void fec_ptp_stop(struct platform_device *pdev);
- void fec_ptp_start_cyclecounter(struct net_device *ndev);
- int fec_ptp_set(struct net_device *ndev, struct kernel_hwtstamp_config *config,
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index a923cb95cdc62..570f8a14d975b 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1077,6 +1077,8 @@ fec_restart(struct net_device *ndev)
- 	u32 rcntl = OPT_FRAME_SIZE | 0x04;
- 	u32 ecntl = FEC_ECR_ETHEREN;
- 
-+	fec_ptp_save_state(fep);
-+
- 	/* Whack a reset.  We should wait for this.
- 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
- 	 * instead of reset MAC itself.
-@@ -1244,8 +1246,10 @@ fec_restart(struct net_device *ndev)
- 	writel(ecntl, fep->hwp + FEC_ECNTRL);
- 	fec_enet_active_rxring(ndev);
- 
--	if (fep->bufdesc_ex)
-+	if (fep->bufdesc_ex) {
- 		fec_ptp_start_cyclecounter(ndev);
-+		fec_ptp_restore_state(fep);
-+	}
- 
- 	/* Enable interrupts we wish to service */
- 	if (fep->link)
-@@ -1336,6 +1340,8 @@ fec_stop(struct net_device *ndev)
- 			netdev_err(ndev, "Graceful transmit stop did not complete!\n");
- 	}
- 
-+	fec_ptp_save_state(fep);
-+
- 	/* Whack a reset.  We should wait for this.
- 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
- 	 * instead of reset MAC itself.
-@@ -1366,6 +1372,9 @@ fec_stop(struct net_device *ndev)
- 		val = readl(fep->hwp + FEC_ECNTRL);
- 		val |= FEC_ECR_EN1588;
- 		writel(val, fep->hwp + FEC_ECNTRL);
-+
-+		fec_ptp_start_cyclecounter(ndev);
-+		fec_ptp_restore_state(fep);
- 	}
+diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
+index 6bff169fa8d4c..f92c46297ec4b 100644
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -908,7 +908,7 @@ intel_ddi_main_link_aux_domain(struct intel_digital_port *dig_port,
+ 	 * instead of a specific AUX_IO_<port> reference without powering up any
+ 	 * extra wells.
+ 	 */
+-	if (intel_encoder_can_psr(&dig_port->base))
++	if (intel_psr_needs_aux_io_power(&dig_port->base, crtc_state))
+ 		return intel_display_power_aux_io_domain(i915, dig_port->aux_ch);
+ 	else if (DISPLAY_VER(i915) < 14 &&
+ 		 (intel_crtc_has_dp_encoder(crtc_state) ||
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 7173ffc7c66c1..857f776e55509 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -201,6 +201,25 @@ bool intel_encoder_can_psr(struct intel_encoder *encoder)
+ 		return false;
  }
  
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 2e4f3e1782a25..8027b532de078 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -770,6 +770,36 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- 	schedule_delayed_work(&fep->time_keep, HZ);
- }
- 
-+void fec_ptp_save_state(struct fec_enet_private *fep)
++bool intel_psr_needs_aux_io_power(struct intel_encoder *encoder,
++				  const struct intel_crtc_state *crtc_state)
 +{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&fep->tmreg_lock, flags);
-+
-+	fep->ptp_saved_state.pps_enable = fep->pps_enable;
-+
-+	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
++	/*
++	 * For PSR/PR modes only eDP requires the AUX IO power to be enabled whenever
++	 * the output is enabled. For non-eDP outputs the main link is always
++	 * on, hence it doesn't require the HW initiated AUX wake-up signaling used
++	 * for eDP.
++	 *
++	 * TODO:
++	 * - Consider leaving AUX IO disabled for eDP / PR as well, in case
++	 *   the ALPM with main-link off mode is not enabled.
++	 * - Leave AUX IO enabled for DP / PR, once support for ALPM with
++	 *   main-link off mode is added for it and this mode gets enabled.
++	 */
++	return intel_crtc_has_type(crtc_state, INTEL_OUTPUT_EDP) &&
++	       intel_encoder_can_psr(encoder);
 +}
 +
-+/* Restore PTP functionality after a reset */
-+void fec_ptp_restore_state(struct fec_enet_private *fep)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&fep->tmreg_lock, flags);
-+
-+	/* Reset turned it off, so adjust our status flag */
-+	fep->pps_enable = 0;
-+
-+	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+
-+	/* Restart PPS if needed */
-+	if (fep->ptp_saved_state.pps_enable) {
-+		/* Re-enable PPS */
-+		fec_ptp_enable_pps(fep, 1);
-+	}
-+}
-+
- void fec_ptp_stop(struct platform_device *pdev)
+ static bool psr_global_enabled(struct intel_dp *intel_dp)
  {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
+ 	struct intel_connector *connector = intel_dp->attached_connector;
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.h b/drivers/gpu/drm/i915/display/intel_psr.h
+index d483c85870e1d..e719f548e1606 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.h
++++ b/drivers/gpu/drm/i915/display/intel_psr.h
+@@ -25,6 +25,8 @@ struct intel_plane_state;
+ 				    (intel_dp)->psr.source_panel_replay_support)
+ 
+ bool intel_encoder_can_psr(struct intel_encoder *encoder);
++bool intel_psr_needs_aux_io_power(struct intel_encoder *encoder,
++				  const struct intel_crtc_state *crtc_state);
+ void intel_psr_init_dpcd(struct intel_dp *intel_dp);
+ void intel_psr_enable_sink(struct intel_dp *intel_dp,
+ 			   const struct intel_crtc_state *crtc_state);
 -- 
 2.43.0
 
