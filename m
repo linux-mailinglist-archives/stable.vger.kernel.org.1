@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2860E994AC9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DAB994D62
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7F31C24CE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB7E11C25013
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0411DE4CD;
-	Tue,  8 Oct 2024 12:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8531DF25B;
+	Tue,  8 Oct 2024 13:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCdur05F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEYrFz1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E54190663;
-	Tue,  8 Oct 2024 12:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597D41DF24E;
+	Tue,  8 Oct 2024 13:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390989; cv=none; b=CFeShZUfByIrJl7LA0oMMWg9F9JDeQoJJbMyZJOsxuVjB8cLvhR6ks8PwbcSMGAKAnAJBy2Efuc8XCJgW7ZYlYJY06CiWwWhbS0Ew95Ncy5bscFfEjt9L0OsClANoJudMWVaA6HBwZ2kx8VJOddoSWnl1DzgCLXo0qFrvyKq50o=
+	t=1728392684; cv=none; b=Z4MX6Zg8Ni/xmdsqJyaTy8+hu2XPx0CavPqtTs8/esWOGI+KHyw+r44XJyuut1guHgqDC36L20lPqgICEybm7kGANRDKiGm4/QMpAUsV+Agio4P3Hf4ngWx5SZdJqpd2v3FSZEyPxtvC/vJ2Ud2OaCY0l3+QRm0zi5sM8/e3wqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390989; c=relaxed/simple;
-	bh=VaFJKPl9spYSFXVs14CSlD77LJaBNQSLRaIrf+OBFFg=;
+	s=arc-20240116; t=1728392684; c=relaxed/simple;
+	bh=ieDlIDrXRQ819gpGPYhqgtWRZph31ffy4h9GG0Y0q4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbIMt9zyR6mKclNnNTGktKLmxtCbLkJOOlI4YRSDnyGFYheaO/KyZpjBbqhaxZNFBFg6FJe27zJ59W6tIqkvBmgMcAWLdqLBB0lDqlWHc9FNAliHTM3tpWnYg3QqcyCg110f19NaNDne4LR13ma6JscO594k/8gBpXGZkKvXMMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCdur05F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0683EC4CEC7;
-	Tue,  8 Oct 2024 12:36:28 +0000 (UTC)
+	 MIME-Version; b=bLMxACPT+4MWVo2aHO09HaDE78ES5adVKH1HsOA97V61afFN8in8yykDkWV2A81vLdYyuzkNf+j1hEaBzk+XwqqOBKCwSJDlwtaQnJKeFtfUyIEoavtrahisjHvZTazIOPEtgFR1KL1P3Qx+qmizHyA7edgSCgm0XXdmqL6fdio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEYrFz1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC141C4CECC;
+	Tue,  8 Oct 2024 13:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390989;
-	bh=VaFJKPl9spYSFXVs14CSlD77LJaBNQSLRaIrf+OBFFg=;
+	s=korg; t=1728392684;
+	bh=ieDlIDrXRQ819gpGPYhqgtWRZph31ffy4h9GG0Y0q4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCdur05FhCJ5B8OIXsNrjGxreWPhfwo2CWH2L54huUT5m4U30NGvAQum26D5hWa3f
-	 k6CEde9thYhHkCbWn8vSEZHsHl2VLdWhR/4sLvJiGCxu2UxbqA2NeTipXXwAhwcMWC
-	 mLG8JxqaO/Uw94UOPX/NLGU7foMd83cgdHSwaZKo=
+	b=AEYrFz1yzlHradqabJZPi3y6SLJwp8ykNJl3pDLD93mUfk+Y9Gcu3KmJdPwE/9YYe
+	 75l7Z3Vl6MVmhzYrtKHDBFCGEFLwlHxWN2p83JAavJYTspijnZ5WOSxYSaxiSApSgY
+	 uVQbslMZk/ubfvrAs+wyI35k9QjwRyq+PG/bBJfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 456/482] drm/xe: fix UAF around queue destruction
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.11 489/558] cachefiles: fix dentry leak in cachefiles_open_file()
 Date: Tue,  8 Oct 2024 14:08:39 +0200
-Message-ID: <20241008115706.460797135@linuxfoundation.org>
+Message-ID: <20241008115721.476456395@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 2d2be279f1ca9e7288282d4214f16eea8a727cdb ]
+commit da6ef2dffe6056aad3435e6cf7c6471c2a62187c upstream.
 
-We currently do stuff like queuing the final destruction step on a
-random system wq, which will outlive the driver instance. With bad
-timing we can teardown the driver with one or more work workqueue still
-being alive leading to various UAF splats. Add a fini step to ensure
-user queues are properly torn down. At this point GuC should already be
-nuked so queue itself should no longer be referenced from hw pov.
+A dentry leak may be caused when a lookup cookie and a cull are concurrent:
 
-v2 (Matt B)
- - Looks much safer to use a waitqueue and then just wait for the
-   xa_array to become empty before triggering the drain.
+            P1             |             P2
+-----------------------------------------------------------
+cachefiles_lookup_cookie
+  cachefiles_look_up_object
+    lookup_one_positive_unlocked
+     // get dentry
+                            cachefiles_cull
+                              inode->i_flags |= S_KERNEL_FILE;
+    cachefiles_open_file
+      cachefiles_mark_inode_in_use
+        __cachefiles_mark_inode_in_use
+          can_use = false
+          if (!(inode->i_flags & S_KERNEL_FILE))
+            can_use = true
+	  return false
+        return false
+        // Returns an error but doesn't put dentry
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2317
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240923145647.77707-2-matthew.auld@intel.com
-(cherry picked from commit 861108666cc0e999cffeab6aff17b662e68774e3)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After that the following WARNING will be triggered when the backend folder
+is umounted:
+
+==================================================================
+BUG: Dentry 000000008ad87947{i=7a,n=Dx_1_1.img}  still in use (1) [unmount of ext4 sda]
+WARNING: CPU: 4 PID: 359261 at fs/dcache.c:1767 umount_check+0x5d/0x70
+CPU: 4 PID: 359261 Comm: umount Not tainted 6.6.0-dirty #25
+RIP: 0010:umount_check+0x5d/0x70
+Call Trace:
+ <TASK>
+ d_walk+0xda/0x2b0
+ do_one_tree+0x20/0x40
+ shrink_dcache_for_umount+0x2c/0x90
+ generic_shutdown_super+0x20/0x160
+ kill_block_super+0x1a/0x40
+ ext4_kill_sb+0x22/0x40
+ deactivate_locked_super+0x35/0x80
+ cleanup_mnt+0x104/0x160
+==================================================================
+
+Whether cachefiles_open_file() returns true or false, the reference count
+obtained by lookup_positive_unlocked() in cachefiles_look_up_object()
+should be released.
+
+Therefore release that reference count in cachefiles_look_up_object() to
+fix the above issue and simplify the code.
+
+Fixes: 1f08c925e7a3 ("cachefiles: Implement backing file wrangling")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240829083409.3788142-1-libaokun@huaweicloud.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_device.c       |  6 +++++-
- drivers/gpu/drm/xe/xe_device_types.h |  3 +++
- drivers/gpu/drm/xe/xe_guc_submit.c   | 26 +++++++++++++++++++++++++-
- drivers/gpu/drm/xe/xe_guc_types.h    |  2 ++
- 4 files changed, 35 insertions(+), 2 deletions(-)
+ fs/cachefiles/namei.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index a1cbdafbff75e..599bf7f9e8c5c 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -231,6 +231,9 @@ static void xe_device_destroy(struct drm_device *dev, void *dummy)
- 	if (xe->unordered_wq)
- 		destroy_workqueue(xe->unordered_wq);
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -595,14 +595,12 @@ static bool cachefiles_open_file(struct
+ 	 * write and readdir but not lookup or open).
+ 	 */
+ 	touch_atime(&file->f_path);
+-	dput(dentry);
+ 	return true;
  
-+	if (xe->destroy_wq)
-+		destroy_workqueue(xe->destroy_wq);
-+
- 	ttm_device_fini(&xe->ttm);
+ check_failed:
+ 	fscache_cookie_lookup_negative(object->cookie);
+ 	cachefiles_unmark_inode_in_use(object, file);
+ 	fput(file);
+-	dput(dentry);
+ 	if (ret == -ESTALE)
+ 		return cachefiles_create_file(object);
+ 	return false;
+@@ -611,7 +609,6 @@ error_fput:
+ 	fput(file);
+ error:
+ 	cachefiles_do_unmark_inode_in_use(object, d_inode(dentry));
+-	dput(dentry);
+ 	return false;
  }
  
-@@ -293,8 +296,9 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
- 	xe->preempt_fence_wq = alloc_ordered_workqueue("xe-preempt-fence-wq", 0);
- 	xe->ordered_wq = alloc_ordered_workqueue("xe-ordered-wq", 0);
- 	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", 0, 0);
-+	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", 0, 0);
- 	if (!xe->ordered_wq || !xe->unordered_wq ||
--	    !xe->preempt_fence_wq) {
-+	    !xe->preempt_fence_wq || !xe->destroy_wq) {
- 		/*
- 		 * Cleanup done in xe_device_destroy via
- 		 * drmm_add_action_or_reset register above
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index 2e62450d86e18..f671300e0c9bd 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -376,6 +376,9 @@ struct xe_device {
- 	/** @unordered_wq: used to serialize unordered work, mostly display */
- 	struct workqueue_struct *unordered_wq;
+@@ -654,7 +651,9 @@ bool cachefiles_look_up_object(struct ca
+ 		goto new_file;
+ 	}
  
-+	/** @destroy_wq: used to serialize user destroy work, like queue */
-+	struct workqueue_struct *destroy_wq;
-+
- 	/** @tiles: device tiles */
- 	struct xe_tile tiles[XE_MAX_TILES_PER_DEVICE];
+-	if (!cachefiles_open_file(object, dentry))
++	ret = cachefiles_open_file(object, dentry);
++	dput(dentry);
++	if (!ret)
+ 		return false;
  
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index a40287a7c3de8..a0f8299488030 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -233,10 +233,26 @@ static struct workqueue_struct *get_submit_wq(struct xe_guc *guc)
- }
- #endif
- 
-+static void xe_guc_submit_fini(struct xe_guc *guc)
-+{
-+	struct xe_device *xe = guc_to_xe(guc);
-+	struct xe_gt *gt = guc_to_gt(guc);
-+	int ret;
-+
-+	ret = wait_event_timeout(guc->submission_state.fini_wq,
-+				 xa_empty(&guc->submission_state.exec_queue_lookup),
-+				 HZ * 5);
-+
-+	drain_workqueue(xe->destroy_wq);
-+
-+	xe_gt_assert(gt, ret);
-+}
-+
- static void guc_submit_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc *guc = arg;
- 
-+	xe_guc_submit_fini(guc);
- 	xa_destroy(&guc->submission_state.exec_queue_lookup);
- 	free_submit_wq(guc);
- }
-@@ -278,6 +294,8 @@ int xe_guc_submit_init(struct xe_guc *guc)
- 
- 	xa_init(&guc->submission_state.exec_queue_lookup);
- 
-+	init_waitqueue_head(&guc->submission_state.fini_wq);
-+
- 	primelockdep(guc);
- 
- 	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
-@@ -294,6 +312,9 @@ static void __release_guc_id(struct xe_guc *guc, struct xe_exec_queue *q, u32 xa
- 
- 	xe_guc_id_mgr_release_locked(&guc->submission_state.idm,
- 				     q->guc->id, q->width);
-+
-+	if (xa_empty(&guc->submission_state.exec_queue_lookup))
-+		wake_up(&guc->submission_state.fini_wq);
- }
- 
- static int alloc_guc_id(struct xe_guc *guc, struct xe_exec_queue *q)
-@@ -1025,13 +1046,16 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
- 
- static void guc_exec_queue_fini_async(struct xe_exec_queue *q)
- {
-+	struct xe_guc *guc = exec_queue_to_guc(q);
-+	struct xe_device *xe = guc_to_xe(guc);
-+
- 	INIT_WORK(&q->guc->fini_async, __guc_exec_queue_fini_async);
- 
- 	/* We must block on kernel engines so slabs are empty on driver unload */
- 	if (q->flags & EXEC_QUEUE_FLAG_PERMANENT)
- 		__guc_exec_queue_fini_async(&q->guc->fini_async);
- 	else
--		queue_work(system_wq, &q->guc->fini_async);
-+		queue_work(xe->destroy_wq, &q->guc->fini_async);
- }
- 
- static void __guc_exec_queue_fini(struct xe_guc *guc, struct xe_exec_queue *q)
-diff --git a/drivers/gpu/drm/xe/xe_guc_types.h b/drivers/gpu/drm/xe/xe_guc_types.h
-index 546ac6350a31f..69046f6982717 100644
---- a/drivers/gpu/drm/xe/xe_guc_types.h
-+++ b/drivers/gpu/drm/xe/xe_guc_types.h
-@@ -81,6 +81,8 @@ struct xe_guc {
- #endif
- 		/** @submission_state.enabled: submission is enabled */
- 		bool enabled;
-+		/** @submission_state.fini_wq: submit fini wait queue */
-+		wait_queue_head_t fini_wq;
- 	} submission_state;
- 	/** @hwconfig: Hardware config state */
- 	struct {
--- 
-2.43.0
-
+ 	_leave(" = t [%lu]", file_inode(object->file)->i_ino);
 
 
 
