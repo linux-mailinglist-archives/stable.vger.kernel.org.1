@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-81773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20CA994946
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8AC3994DD2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 908B82837D7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70FAD1F22B60
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DFE1DE3BB;
-	Tue,  8 Oct 2024 12:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286431DED47;
+	Tue,  8 Oct 2024 13:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKDj1qc2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qu/Ih3K5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465EE1D26F2;
-	Tue,  8 Oct 2024 12:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCE11C32EB;
+	Tue,  8 Oct 2024 13:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390083; cv=none; b=bXMuK5xtlpfZnfIR6K6glpvrJrYs/wMIeri9QYooDx27w/KTo83AcwwZNJLF9HXW6H+l1/268R2mFCOq1GyObPaOTFj5DsaUozhmaR5hUL5VqYY28nwl/igIFh2JGBeWPfCjOrLJR64F0rtzBNYStL6YysMP21Z94+wzOtnK2Oo=
+	t=1728392988; cv=none; b=rA6wUSfl5Z8vlh1SRVCg/tNph/Je3tpXmfAhQ7mLymGlbwlUVborQK2JjqmZGT0KuwoJyEp+rX5V/l+9nkQEmJT09UvVWxumetOtfy113FqGarYOZPmF6JcGaCn4FCzvMvpRy1FxRD7sCtUQKx+iZ7vSyaW6pM8D+EqD99GUhf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390083; c=relaxed/simple;
-	bh=zOKuV6A58S0ZoIPqc71wySToAzckcGY2J1Mx8l6dp4k=;
+	s=arc-20240116; t=1728392988; c=relaxed/simple;
+	bh=98RcWH8Mmbc00GzguhW9oTxXeRllHo6MYmVId/NELHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tU9IzSaNnufwWmNWrdQCNcAeo2ThM+uFKkVo++kJV6xleDFDswfk52OyDSMU7whC9wbV7d2C8fEis4mmM62VhIP+k2ZotYoF3y+CdjQRMz6Q2p/7LzRfSozvyX/W2cfkHs0ByNfgtzX9KMuALihOfvsURRTo89dIfrUakN9cqt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKDj1qc2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAA5C4CEC7;
-	Tue,  8 Oct 2024 12:21:22 +0000 (UTC)
+	 MIME-Version; b=V4QOp/yBmC7/5tTmU84Hd4oK7siOO2sZItiR+aGiB2b2+Nc/AYUdHsBOLU4nVr6h4ILSM/MVs34sCA1ljIbfJVc4Aqk/t4ihoog6++tcPED1kjt1uZ+G1ZouqN2yWw743cQtzpPkzIzGQYJYu5CRLm42WuEuLJcaC3dk01iY8z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qu/Ih3K5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5B1C4CEC7;
+	Tue,  8 Oct 2024 13:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390082;
-	bh=zOKuV6A58S0ZoIPqc71wySToAzckcGY2J1Mx8l6dp4k=;
+	s=korg; t=1728392988;
+	bh=98RcWH8Mmbc00GzguhW9oTxXeRllHo6MYmVId/NELHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKDj1qc2Px/fTNguSsbFXoMoyHstc61zhiHB/je2yfY0EtiEVN8Ugi+Tph8My3V6Y
-	 8QBuMaeDLRKHwxrwswI+gd4+RXnUIPy6x64oFO2WqjnGMmJypP+ynyxN6rxFsN+arF
-	 agq5pPTEPhqXbWfee7yVW38qimoCTn4XPBWoPbTo=
+	b=qu/Ih3K55kidoNquWgM7d+SwjoMND9vSYwjVAt1QaskQywXm5Ypf06GksREVZcR+3
+	 jJNjMG4pD8S4iHLnWbpHWvrhix31ix45huqfNOa45cHIeK82GdCxxO2CI5tSNm+6Ko
+	 HnMuqS8NSgcyltwfIIDvJooUUxMSFJ5GEiCC7lCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Jun Lei <jun.lei@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 184/482] drm/amd/display: Use gpuvm_min_page_size_kbytes for DML2 surfaces
+Subject: [PATCH 6.6 002/386] static_call: Replace pointless WARN_ON() in static_call_module_notify()
 Date: Tue,  8 Oct 2024 14:04:07 +0200
-Message-ID: <20241008115655.545014912@linuxfoundation.org>
+Message-ID: <20241008115629.413533155@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 31663521ede2edb622ee1b397ae3ac666d6351c5 ]
+[ Upstream commit fe513c2ef0a172a58f158e2e70465c4317f0a9a2 ]
 
-[Why]
-It's currently hard coded to 256 when it should be using the SOC
-provided values. This can result in corruption with linear surfaces
-where we prefetch more PTE than the buffer can hold.
+static_call_module_notify() triggers a WARN_ON(), when memory allocation
+fails in __static_call_add_module().
 
-[How]
-Update the min page size correctly for the plane.
+That's not really justified, because the failure case must be correctly
+handled by the well known call chain and the error code is passed
+through to the initiating userspace application.
 
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+A memory allocation fail is not a fatal problem, but the WARN_ON() takes
+the machine out when panic_on_warn is set.
+
+Replace it with a pr_warn().
+
+Fixes: 9183c3f9ed71 ("static_call: Add inline static call infrastructure")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/8734mf7pmb.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/dml2/dml2_translation_helper.c | 20 +++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ kernel/static_call_inline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index edff6b447680c..d5dbfb33f93dc 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -828,7 +828,9 @@ static void get_scaler_data_for_plane(const struct dc_plane_state *in, struct dc
- 	memcpy(out, &temp_pipe->plane_res.scl_data, sizeof(*out));
- }
- 
--static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_stream_state *in)
-+static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location,
-+					 const struct dc_stream_state *in,
-+					 const struct soc_bounding_box_st *soc)
- {
- 	dml_uint_t width, height;
- 
-@@ -845,7 +847,7 @@ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned
- 	out->CursorBPP[location] = dml_cur_32bit;
- 	out->CursorWidth[location] = 256;
- 
--	out->GPUVMMinPageSizeKBytes[location] = 256;
-+	out->GPUVMMinPageSizeKBytes[location] = soc->gpuvm_min_page_size_kbytes;
- 
- 	out->ViewportWidth[location] = width;
- 	out->ViewportHeight[location] = height;
-@@ -882,7 +884,9 @@ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned
- 	out->ScalerEnabled[location] = false;
- }
- 
--static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_plane_state *in, struct dc_state *context)
-+static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out, unsigned int location,
-+						    const struct dc_plane_state *in, struct dc_state *context,
-+						    const struct soc_bounding_box_st *soc)
- {
- 	struct scaler_data *scaler_data = kzalloc(sizeof(*scaler_data), GFP_KERNEL);
- 	if (!scaler_data)
-@@ -893,7 +897,7 @@ static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out
- 	out->CursorBPP[location] = dml_cur_32bit;
- 	out->CursorWidth[location] = 256;
- 
--	out->GPUVMMinPageSizeKBytes[location] = 256;
-+	out->GPUVMMinPageSizeKBytes[location] = soc->gpuvm_min_page_size_kbytes;
- 
- 	out->ViewportWidth[location] = scaler_data->viewport.width;
- 	out->ViewportHeight[location] = scaler_data->viewport.height;
-@@ -1174,7 +1178,8 @@ void map_dc_state_into_dml_display_cfg(struct dml2_context *dml2, struct dc_stat
- 			disp_cfg_plane_location = dml_dispcfg->num_surfaces++;
- 
- 			populate_dummy_dml_surface_cfg(&dml_dispcfg->surface, disp_cfg_plane_location, context->streams[i]);
--			populate_dummy_dml_plane_cfg(&dml_dispcfg->plane, disp_cfg_plane_location, context->streams[i]);
-+			populate_dummy_dml_plane_cfg(&dml_dispcfg->plane, disp_cfg_plane_location,
-+						     context->streams[i], &dml2->v20.dml_core_ctx.soc);
- 
- 			dml_dispcfg->plane.BlendingAndTiming[disp_cfg_plane_location] = disp_cfg_stream_location;
- 
-@@ -1190,7 +1195,10 @@ void map_dc_state_into_dml_display_cfg(struct dml2_context *dml2, struct dc_stat
- 				ASSERT(disp_cfg_plane_location >= 0 && disp_cfg_plane_location <= __DML2_WRAPPER_MAX_STREAMS_PLANES__);
- 
- 				populate_dml_surface_cfg_from_plane_state(dml2->v20.dml_core_ctx.project, &dml_dispcfg->surface, disp_cfg_plane_location, context->stream_status[i].plane_states[j]);
--				populate_dml_plane_cfg_from_plane_state(&dml_dispcfg->plane, disp_cfg_plane_location, context->stream_status[i].plane_states[j], context);
-+				populate_dml_plane_cfg_from_plane_state(
-+					&dml_dispcfg->plane, disp_cfg_plane_location,
-+					context->stream_status[i].plane_states[j], context,
-+					&dml2->v20.dml_core_ctx.soc);
- 
- 				if (stream_mall_type == SUBVP_MAIN) {
- 					dml_dispcfg->plane.UseMALLForPStateChange[disp_cfg_plane_location] = dml_use_mall_pstate_change_sub_viewport;
+diff --git a/kernel/static_call_inline.c b/kernel/static_call_inline.c
+index 7bb0962b52291..5259cda486d05 100644
+--- a/kernel/static_call_inline.c
++++ b/kernel/static_call_inline.c
+@@ -453,7 +453,7 @@ static int static_call_module_notify(struct notifier_block *nb,
+ 	case MODULE_STATE_COMING:
+ 		ret = static_call_add_module(mod);
+ 		if (ret) {
+-			WARN(1, "Failed to allocate memory for static calls");
++			pr_warn("Failed to allocate memory for static calls\n");
+ 			static_call_del_module(mod);
+ 		}
+ 		break;
 -- 
 2.43.0
 
