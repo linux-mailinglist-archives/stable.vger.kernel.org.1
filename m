@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-82839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E455994F34
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:25:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94929994A60
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 254B5B298AF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15F5BB251BB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F0A1DED48;
-	Tue,  8 Oct 2024 13:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12B11E485;
+	Tue,  8 Oct 2024 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJtz9K5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvC9mxWP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F50618C333;
-	Tue,  8 Oct 2024 13:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E111E493;
+	Tue,  8 Oct 2024 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393599; cv=none; b=sNXfQCrLgjKCvoUGw/1HPkkxCP18CDOw3iBOGh85atFqgP+sgScVR25tmATFUYD5Vgj07MDm5BBzjJ4TOQcGcI3T3bfvJhXqEgFuAW373QChfc3RSC0zI+PdA3dCsHUBTkhVH6PjSAFslcY8MmnezlDg7ZsyNuyxdf11CA3KD1k=
+	t=1728390753; cv=none; b=nvuvsWX7tsFXBJU7muHcRvimqZMD4ojHVTToJ83inbHXlBBpr4BSUEErKpnVUlhhEuUyIbhv5UVnFc45OvPIyYvRERdsaFXAlouqjTszgvALLSmuoO9wXc6Cq0aQzvUpwWvfRPn8cOytgMiWBGuYLPzjXT6FyT2Kyah24Vs91s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393599; c=relaxed/simple;
-	bh=GgAbzGvKaLAYqVjcZSdRlr7PBbS00qlxCzQpN8PeHOE=;
+	s=arc-20240116; t=1728390753; c=relaxed/simple;
+	bh=RdrBGepv/0v3RVZKnVDVgYRVy5tIwWzw9/hEgnQFsE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wv87c4xyKjFeq8Dogh/so9JJ5Vid4bY+k80Aj7UFyrGhv9Vf5IK+RsDzyAY4v8U2gMjiC12wjuJMQucO/qTuUwOBfSZr8KdjgHSLSGapjkVNoMyI2lZ92VCq5bHxQeUeDdIgNWuI1Zbf7IxNKZ+0Mc719V3MPe4iROGowT5cKmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJtz9K5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C968BC4CEC7;
-	Tue,  8 Oct 2024 13:19:58 +0000 (UTC)
+	 MIME-Version; b=WHNWndhzFxpPuZnhzBytt9a4y3Jom++WID4fT+hem+BXQGx2lwRCG232pTbMddBKbYXMMFKoYVxyM0lZWOoa1DF+pz8u8lypo2i6NwjptvX/MZfVR2CWO+hC3IUJZ/dDNDhE44+fvZPqWMEz+6TdudswPC8A/VGdvD3gzLOhCJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvC9mxWP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C79C4CEC7;
+	Tue,  8 Oct 2024 12:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393599;
-	bh=GgAbzGvKaLAYqVjcZSdRlr7PBbS00qlxCzQpN8PeHOE=;
+	s=korg; t=1728390753;
+	bh=RdrBGepv/0v3RVZKnVDVgYRVy5tIwWzw9/hEgnQFsE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJtz9K5aPSAl1MDxl1rOYASO7rw/vqSxydI5mectJQes3tZuaEgwzhuomETOdgW33
-	 9uh2g6LHmSReH/s3QoUP65PAC67VNL+0kMUG6d35h/K7QYUT/DH5N+U4K+xv+BCvH2
-	 SB3F47uV9ZbM+nVJJLdBLBrBaEZGRvm9mMv/jo6k=
+	b=xvC9mxWPQls75ZWgEUY77vp8pewxJ2y1VmaGghALgwUjmpYo2L++NGt7+AC5NlxaZ
+	 evkuxLbCOtASCTxTuBmNWinQpaePzguu0XptNgbe08imGc8JADr+EYcY6Fl0lEqrJm
+	 sjEOAG/zPSjGbGYCPrwhcfnMCX72DW+8J619KSmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Mario Casquero <mcasquer@redhat.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 200/386] selftests/mm: fix charge_reserved_hugetlb.sh test
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.10 382/482] clk: rockchip: fix error for unknown clocks
 Date: Tue,  8 Oct 2024 14:07:25 +0200
-Message-ID: <20241008115637.276964644@linuxfoundation.org>
+Message-ID: <20241008115703.450306997@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,128 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit c41a701d18efe6b8aa402efab16edbaba50c9548 ]
+commit 12fd64babaca4dc09d072f63eda76ba44119816a upstream.
 
-Currently, running the charge_reserved_hugetlb.sh selftest we can
-sometimes observe something like:
+There is a clk == NULL check after the switch to check for
+unsupported clk types. Since clk is re-assigned in a loop,
+this check is useless right now for anything but the first
+round. Let's fix this up by assigning clk = NULL in the
+loop before the switch statement.
 
-  $ ./charge_reserved_hugetlb.sh -cgroup-v2
-  ...
-  write_result is 0
-  After write:
-  hugetlb_usage=0
-  reserved_usage=10485760
-  killing write_to_hugetlbfs
-  Received 2.
-  Deleting the memory
-  Detach failure: Invalid argument
-  umount: /mnt/huge: target is busy.
-
-Both cases are issues in the test.
-
-While the unmount error seems to be racy, it will make the test fail:
-	$ ./run_vmtests.sh -t hugetlb
-	...
-	# [FAIL]
-	not ok 10 charge_reserved_hugetlb.sh -cgroup-v2 # exit=32
-
-The issue is that we are not waiting for the write_to_hugetlbfs process to
-quit.  So it might still have a hugetlbfs file open, about which umount is
-not happy.  Fix that by making "killall" wait for the process to quit.
-
-The other error ("Detach failure: Invalid argument") does not seem to
-result in a test error, but is misleading.  Turns out write_to_hugetlbfs.c
-unconditionally tries to cleanup using shmdt(), even when we only
-mmap()'ed a hugetlb file.  Even worse, shmaddr is never even set for the
-SHM case.  Fix that as well.
-
-With this change it seems to work as expected.
-
-Link: https://lkml.kernel.org/r/20240821123115.2068812-1-david@redhat.com
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Mario Casquero <mcasquer@redhat.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a245fecbb806 ("clk: rockchip: add basic infrastructure for clock branches")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+[added fixes + stable-cc]
+Link: https://lore.kernel.org/r/20240325193609.237182-6-sebastian.reichel@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/mm/charge_reserved_hugetlb.sh   |  2 +-
- .../testing/selftests/mm/write_to_hugetlbfs.c | 21 +++++++++++--------
- 2 files changed, 13 insertions(+), 10 deletions(-)
+ drivers/clk/rockchip/clk.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index e14bdd4455f2d..8e00276b4e69b 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -252,7 +252,7 @@ function cleanup_hugetlb_memory() {
-   local cgroup="$1"
-   if [[ "$(pgrep -f write_to_hugetlbfs)" != "" ]]; then
-     echo killing write_to_hugetlbfs
--    killall -2 write_to_hugetlbfs
-+    killall -2 --wait write_to_hugetlbfs
-     wait_for_hugetlb_memory_to_get_depleted $cgroup
-   fi
-   set -e
-diff --git a/tools/testing/selftests/mm/write_to_hugetlbfs.c b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-index 6a2caba19ee1d..1289d311efd70 100644
---- a/tools/testing/selftests/mm/write_to_hugetlbfs.c
-+++ b/tools/testing/selftests/mm/write_to_hugetlbfs.c
-@@ -28,7 +28,7 @@ enum method {
- 
- /* Global variables. */
- static const char *self;
--static char *shmaddr;
-+static int *shmaddr;
- static int shmid;
- 
- /*
-@@ -47,15 +47,17 @@ void sig_handler(int signo)
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -450,12 +450,13 @@ void rockchip_clk_register_branches(stru
+ 				    struct rockchip_clk_branch *list,
+ 				    unsigned int nr_clk)
  {
- 	printf("Received %d.\n", signo);
- 	if (signo == SIGINT) {
--		printf("Deleting the memory\n");
--		if (shmdt((const void *)shmaddr) != 0) {
--			perror("Detach failure");
-+		if (shmaddr) {
-+			printf("Deleting the memory\n");
-+			if (shmdt((const void *)shmaddr) != 0) {
-+				perror("Detach failure");
-+				shmctl(shmid, IPC_RMID, NULL);
-+				exit(4);
-+			}
-+
- 			shmctl(shmid, IPC_RMID, NULL);
--			exit(4);
-+			printf("Done deleting the memory\n");
- 		}
--
--		shmctl(shmid, IPC_RMID, NULL);
--		printf("Done deleting the memory\n");
- 	}
- 	exit(2);
- }
-@@ -211,7 +213,8 @@ int main(int argc, char **argv)
- 			shmctl(shmid, IPC_RMID, NULL);
- 			exit(2);
- 		}
--		printf("shmaddr: %p\n", ptr);
-+		shmaddr = ptr;
-+		printf("shmaddr: %p\n", shmaddr);
+-	struct clk *clk = NULL;
++	struct clk *clk;
+ 	unsigned int idx;
+ 	unsigned long flags;
  
- 		break;
- 	default:
--- 
-2.43.0
-
+ 	for (idx = 0; idx < nr_clk; idx++, list++) {
+ 		flags = list->flags;
++		clk = NULL;
+ 
+ 		/* catch simple muxes */
+ 		switch (list->branch_type) {
 
 
 
