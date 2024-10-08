@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-81533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6888D994132
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 10:23:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3E1994197
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 10:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AAD42878DE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 08:23:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9B21F2884A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 08:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AE41E04AF;
-	Tue,  8 Oct 2024 07:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8301E3DC6;
+	Tue,  8 Oct 2024 07:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="glh3wjA1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YXsDbxDW"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37D61E04AD
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 07:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47BD1E3769
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 07:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728373822; cv=none; b=HMV29BgTx5MjSp9bI940k/7j2mjANfBPKTDBdeVAOz5UUn80hs8B9hqshpe6eTVqPTsiKUVhd/HC1NJfqf3ZsJsFmChINunU56dTQrV4etErGHT0APhLyj/VqCmj543bkAVxO5TBG/QzPxRO4oCDOOvOUVgOWJ2tkfDHxGsD/nc=
+	t=1728373968; cv=none; b=ZBLHBLHLV649/Hn3aU60Z3dQiHgIg33wmPUopvGE1kq3+CAP8VmRYeLfYPfKRmP3VaiUcgBNJC/tiDT6VUPuutMFmuRb8Uhm17vyc4sPn66M+HGEppVuQUa4v2B0hbkqod8DjvvUrXCpkTN2jrNIuWclH7+Sqw86gzO8YPh1mYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728373822; c=relaxed/simple;
-	bh=aONYALUEi47AhYG18AZ8I3Jue6GwQ11/Z7xT2lcouw0=;
+	s=arc-20240116; t=1728373968; c=relaxed/simple;
+	bh=B0Zd/SxC02PIQZK9wRMAHf0GJJUGb8QGgqvT+QxuqNo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GAF91tANkakt2/nER48GE5Ae7zn9YIO5Ip3CxJEWZs+t3UxOrsm6S4XSefbbKgzL3+jtWlF25vHQuWH05zIkLjurY6qRnYP0mpe+MMDUjRnhqRElgqpD1ocA5yGzp44n1mZQxwgTsbFQzsPNZNetaxNU6OTWIxFSljOW6QTjjOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=glh3wjA1; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=UnEGRGAcLa01SnBGzDEFoFKIVmutgD6ckjRuV07HxmF/0OfCuzqTVMiDuSB+DXipr1wJYRatCtSZfnSFz/iZReA4e81AavRW2js02EwzvrI5mmPXRdxDwUyefbBhLojJWiubR1AlUDaSrRCCKWUA1OGiA4nD7smd3gN2Up2j1UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YXsDbxDW; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728373819;
+	s=mimecast20190719; t=1728373965;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=8xv2thTV3Zvu6oGxZvIbDIQfodchFrQbt6h0I4tmoIY=;
-	b=glh3wjA17BWPz0WWTWEza8tI3h8X1+Py3kVCwUTmNtPJElrc5Ki1luzIonYMA5v4OFuKLk
-	qrHnD6rvbWAabFKT6bmR1fTf8EjQIDJxCClkvU47XhkKPxH3NUPGKSts+T+rzYmojAnY1+
-	HtpMC+kCoc6FvQTTjxPUPGE8FTLUtQU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=25lALwZwb1PU97HFjPipcsWkCDl7P4A0WPaz1iPQJQA=;
+	b=YXsDbxDW+hiR/MgMLTOQdLS2C2LtmoXdf72GSeB082k+0VHUJzMO235bUhBV6/Ur3FFZNB
+	UTufXfv3HxROXEZR3SzWVoDXm89DFMG4+GJeJ0Yx3S4i8fhQwPfP1Znlv2m8UrygCyoKZd
+	dsebLuDVUe/MezFs47/FZn1xFkBYgXE=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-kiotgIPeOoWqawLwCf8hBw-1; Tue, 08 Oct 2024 03:50:18 -0400
-X-MC-Unique: kiotgIPeOoWqawLwCf8hBw-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-42f89a68c29so22138635e9.1
-        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 00:50:17 -0700 (PDT)
+ us-mta-367-MS_9gT4YMBySHKPCfDpETw-1; Tue, 08 Oct 2024 03:52:43 -0400
+X-MC-Unique: MS_9gT4YMBySHKPCfDpETw-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-53987fc3625so4356327e87.0
+        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 00:52:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728373817; x=1728978617;
+        d=1e100.net; s=20230601; t=1728373960; x=1728978760;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8xv2thTV3Zvu6oGxZvIbDIQfodchFrQbt6h0I4tmoIY=;
-        b=jDdO0VjCyb5TiEfryVS1ufFJ73nnIdmrGwj9TgIU1kzK01KWycOMLFaR6IKIPWrOFO
-         bvZzPMVdgBKxPADQVQRzGKM2wwtsH2UX84qcMo7OSlzH92GXI7ngdSMLBZq/wd65FuIO
-         zjt0wIe4PXbzYgw/D/Wjgpqq+ELfbdiDOi0mSYS4cQkUET7043YWt1o5z4HfiVcVSUOI
-         boeaZXz8KLyc5pbl24zsMRsr/zE9LxXeS53TCUlIGmsFx6WZt0E9zfWrGLzSo1s6KnnY
-         VRf9os8GJtx03fEiqmzrsTCNadU4N8drzQ4pIrEeH3UrbrL2GO/mg+w7GC+GXortli4F
-         GNGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCGB2jV/AzDDR5boWH885Nhy7+VyoE1PWqxjgPlb6LAO2EFfETfmoN4dSt3ruueVtd1vwmsN8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIda+LnhXLP1sNB18xWe0myK+jsOZSwXM6RWwD4xbPL8/7WJwg
-	pLgGdQ/yWDLnj0q7F+XjrW8WAiZ1K6xyHycXYSYZZVHcfEJr+TZYW/W/bSwyll7srsm7csnUjhz
-	q2FXQajGPDNEtVdTK6th5lQWEttI2oRQQWWfXkEdKjfodhrnNuHsYWg==
-X-Received: by 2002:a05:600c:1d0f:b0:42c:b9b1:8342 with SMTP id 5b1f17b1804b1-42f91e2a687mr38306965e9.19.1728373816831;
-        Tue, 08 Oct 2024 00:50:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFg6ruzLn8LDKgfXnV6MKx6jltNtVtvGccSyCiFxaUA0QIsJGSSjTpd1hqO4U9OGDmYchlXgg==
-X-Received: by 2002:a05:600c:1d0f:b0:42c:b9b1:8342 with SMTP id 5b1f17b1804b1-42f91e2a687mr38306785e9.19.1728373816396;
-        Tue, 08 Oct 2024 00:50:16 -0700 (PDT)
+        bh=25lALwZwb1PU97HFjPipcsWkCDl7P4A0WPaz1iPQJQA=;
+        b=l5olqUI1pxhVeSVk9PuFLdFeKrMgEOYcUvjcK8ds5cOKEEDDdkPEPxQDCgzB0LoNl0
+         7Y1Zf/sxV2eQpwxnIflovhAEUZrtU0Gg4vP29oFVTCKpfp2xW5ZmwjzAP6vYEAmLPJ5F
+         YwZk1Yuq1yhnYdCYt0M9UW67TUsmPbGaUsOo7FC0X8o7quyCTswM9PktMzpZd8NVyjgE
+         BjLiIfjFZodtPnl7NF1yCfsobl7Tu+61kCU7WpvXiZqnMpQoO6w468sKGVX6VBGPHNZp
+         yORmzJuXHlwyac9juasZ0/K2NKQqzdgT5mLy0SIDTzh8uk4BSXGbULbJMA6W31lcSlcJ
+         s1ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVA6bt+382LQxm69Gqf3RNdr3UKfZKub0kA4e6vHwOdNlQaACc8L1dii4HXz1I12cgHM1DEpdQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1O1SqQUZVHayPjYFcEUEPkmPb5V9J4sK4eNX5d3O+hMSlPdpf
+	m4nRrEDBFpzcgOc86I7OmCC8r3LPMXqQkPRqGdqT+HdGbwDVTTRXtXOfP559oDuqJjqs0So/aih
+	fe2VEr3U4kInendjbXMojq71azaZ/P5WuGTJaVe+YsA90o8ZACc5STwZ45kMZsQ==
+X-Received: by 2002:a05:6512:3d93:b0:533:d3e:16fe with SMTP id 2adb3069b0e04-539ab9eae13mr7371329e87.38.1728373959651;
+        Tue, 08 Oct 2024 00:52:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrLWQZap6ReWjPsbtxajYy1aDLLfJbV8H6PL5MUUysCkaPVdqC8/q5O52n67bkKlWj7ncI7w==
+X-Received: by 2002:a05:6512:3d93:b0:533:d3e:16fe with SMTP id 2adb3069b0e04-539ab9eae13mr7371313e87.38.1728373959149;
+        Tue, 08 Oct 2024 00:52:39 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c72f:c700:a76f:473d:d5cf:25a8? (p200300cbc72fc700a76f473dd5cf25a8.dip0.t-ipconnect.de. [2003:cb:c72f:c700:a76f:473d:d5cf:25a8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86a20595sm117161735e9.14.2024.10.08.00.50.14
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43017465f3bsm15971755e9.0.2024.10.08.00.52.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Oct 2024 00:50:15 -0700 (PDT)
-Message-ID: <316dadcb-b199-4b94-8d07-94b40bf534df@redhat.com>
-Date: Tue, 8 Oct 2024 09:50:14 +0200
+        Tue, 08 Oct 2024 00:52:38 -0700 (PDT)
+Message-ID: <75fac79a-0ff2-4ba0-bdd7-954efe2d9f41@redhat.com>
+Date: Tue, 8 Oct 2024 09:52:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,11 +84,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/mremap: Fix move_normal_pmd/retract_page_tables race
-To: Jann Horn <jannh@google.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, willy@infradead.org, hughd@google.com,
- lorenzo.stoakes@oracle.com, joel@joelfernandes.org,
+To: Qi Zheng <zhengqi.arch@bytedance.com>, Jann Horn <jannh@google.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, willy@infradead.org,
+ hughd@google.com, lorenzo.stoakes@oracle.com, joel@joelfernandes.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20241007-move_normal_pmd-vs-collapse-fix-2-v1-1-5ead9631f2ea@google.com>
+ <1c114925-9206-42b1-b24b-bb123853a359@bytedance.com>
 Content-Language: en-US
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
@@ -136,92 +137,53 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20241007-move_normal_pmd-vs-collapse-fix-2-v1-1-5ead9631f2ea@google.com>
+In-Reply-To: <1c114925-9206-42b1-b24b-bb123853a359@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 07.10.24 23:42, Jann Horn wrote:
-> In mremap(), move_page_tables() looks at the type of the PMD entry and the
-> specified address range to figure out by which method the next chunk of
-> page table entries should be moved.
-> At that point, the mmap_lock is held in write mode, but no rmap locks are
-> held yet. For PMD entries that point to page tables and are fully covered
-> by the source address range, move_pgt_entry(NORMAL_PMD, ...) is called,
-> which first takes rmap locks, then does move_normal_pmd().
-> move_normal_pmd() takes the necessary page table locks at source and
-> destination, then moves an entire page table from the source to the
-> destination.
+On 08.10.24 05:53, Qi Zheng wrote:
+> Hi Jann,
 > 
-> The problem is: The rmap locks, which protect against concurrent page table
-> removal by retract_page_tables() in the THP code, are only taken after the
-> PMD entry has been read and it has been decided how to move it.
-> So we can race as follows (with two processes that have mappings of the
-> same tmpfs file that is stored on a tmpfs mount with huge=advise); note
-> that process A accesses page tables through the MM while process B does it
-> through the file rmap:
+> On 2024/10/8 05:42, Jann Horn wrote:
 > 
+> [...]
 > 
-> process A                      process B
-> =========                      =========
-> mremap
->    mremap_to
->      move_vma
->        move_page_tables
->          get_old_pmd
->          alloc_new_pmd
->                        *** PREEMPT ***
->                                 madvise(MADV_COLLAPSE)
->                                   do_madvise
->                                     madvise_walk_vmas
->                                       madvise_vma_behavior
->                                         madvise_collapse
->                                           hpage_collapse_scan_file
->                                             collapse_file
->                                               retract_page_tables
->                                                 i_mmap_lock_read(mapping)
->                                                 pmdp_collapse_flush
->                                                 i_mmap_unlock_read(mapping)
->          move_pgt_entry(NORMAL_PMD, ...)
->            take_rmap_locks
->            move_normal_pmd
->            drop_rmap_locks
+>>
+>> diff --git a/mm/mremap.c b/mm/mremap.c
+>> index 24712f8dbb6b..dda09e957a5d 100644
+>> --- a/mm/mremap.c
+>> +++ b/mm/mremap.c
+>> @@ -238,6 +238,7 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>>    {
+>>    	spinlock_t *old_ptl, *new_ptl;
+>>    	struct mm_struct *mm = vma->vm_mm;
+>> +	bool res = false;
+>>    	pmd_t pmd;
+>>    
+>>    	if (!arch_supports_page_table_move())
+>> @@ -277,19 +278,25 @@ static bool move_normal_pmd(struct vm_area_struct *vma, unsigned long old_addr,
+>>    	if (new_ptl != old_ptl)
+>>    		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+>>    
+>> -	/* Clear the pmd */
+>>    	pmd = *old_pmd;
+>> +
+>> +	/* Racing with collapse? */
+>> +	if (unlikely(!pmd_present(pmd) || pmd_leaf(pmd)))
 > 
-> When this happens, move_normal_pmd() can end up creating bogus PMD entries
-> in the line `pmd_populate(mm, new_pmd, pmd_pgtable(pmd))`.
-> The effect depends on arch-specific and machine-specific details; on x86,
-> you can end up with physical page 0 mapped as a page table, which is likely
-> exploitable for user->kernel privilege escalation.
-> 
-> 
-> Fix the race by letting process B recheck that the PMD still points to a
-> page table after the rmap locks have been taken. Otherwise, we bail and let
-> the caller fall back to the PTE-level copying path, which will then bail
-> immediately at the pmd_none() check.
-> 
-> Bug reachability: Reaching this bug requires that you can create shmem/file
-> THP mappings - anonymous THP uses different code that doesn't zap stuff
-> under rmap locks. File THP is gated on an experimental config flag
-> (CONFIG_READ_ONLY_THP_FOR_FS), so on normal distro kernels you need shmem
-> THP to hit this bug. As far as I know, getting shmem THP normally requires
-> that you can mount your own tmpfs with the right mount flags, which would
-> require creating your own user+mount namespace; though I don't know if some
-> distros maybe enable shmem THP by default or something like that.
-> 
-> Bug impact: This issue can likely be used for user->kernel privilege
-> escalation when it is reachable.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
-> Closes: https://project-zero.issues.chromium.org/371047675
-> Co-developed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
-> @David: please confirm we can add your Signed-off-by to this patch after
-> the Co-developed-by.
+> Since we already hold the exclusive mmap lock, after a racing
+> with collapse occurs, the pmd entry cannot be refilled with
+> new content by page fault. So maybe we only need to recheck
+> pmd_none(pmd) here?
 
-Sure, thanks for sending this out!
+My thinking was that it is cheap and more future proof to check that we 
+really still have a page table here. For example, what if collapse code 
+is ever changed to replace the page table by the collapsed PMD?
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
+So unless there is a good reason not to have this check here, I would 
+keep it like that.
+
+Thanks!
 
 -- 
 Cheers,
