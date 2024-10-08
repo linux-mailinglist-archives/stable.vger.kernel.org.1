@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-81786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9274994961
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE731994C25
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66F42285245
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2F9BB24DF4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38E51DEFF6;
-	Tue,  8 Oct 2024 12:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996E81DE8B1;
+	Tue,  8 Oct 2024 12:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGfNtcnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ1CyS12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20501DED79;
-	Tue,  8 Oct 2024 12:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5642C1D54D1;
+	Tue,  8 Oct 2024 12:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390125; cv=none; b=YOplqqAmXjWQ42xyu7gVrndYBEW9UZkqxHsG6TBRORqG5O4nF1HejoctkWbb2Gt15rUFMJrBBse4vASLgFA2XYXJTRRqhEUg3ANmVYpBSS0GWLhe1TyIVTaSRZif4P1pU5b2N2VYYEsAlNPkf08j6Z+VGUCi71ILFkFTkybCl2A=
+	t=1728391822; cv=none; b=CJeLr2VLSCDORrsLuoYUNczE2DncszT63R9rx7tWLWfJUFUDDoOga2W6cRuEGPiPxEFgJjeOmT068c6K/pCCvYfCKsaUyavJgfKjxkYh540ldUTpW5lEDWaegbjVqfCNvy705gw2QOQyIaHde7FYgXMvuT9brMDLXGJSK3xPPE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390125; c=relaxed/simple;
-	bh=F9W+ew9OilhKTjt5s11a8pwOIdBDuv2pYWAvzk95WFs=;
+	s=arc-20240116; t=1728391822; c=relaxed/simple;
+	bh=+t9VqaikdCr0lV/0CyLFqJJ2gxixQwQluVIYPgKan4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dSefrZC7gSGjt+b2oVQjX9DCDs8Yz++YT0ShEj8G2qniV5FVHQRnwHjBKMMjLdGSw0WYGYKTT6pdtT+p52hwJld8zVh8juaSMOwd1Yf5NY7RXmQqBrXCjVlg9YxZGCHqA5B+tY4s9XoR5kRQTCSvWni1W94RlsJEiPtb5DIUnjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGfNtcnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E3AC4CEC7;
-	Tue,  8 Oct 2024 12:22:04 +0000 (UTC)
+	 MIME-Version; b=Ohrd88OHhPgawG/nxLTefo3rBkBNadu2macWKYg/AErS9CUImDR8Vms/pYlokXC3wUnEtc5T4jVjbaWwedLEShW0KdPbIRrYiPI2LHaYbwrQ9icJr32IJb1TpWY+/6DG1md1IeY0es4rEwmxsOyvvkAyr8VcNOV1uJSk2dEwSx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ1CyS12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F26C4CEC7;
+	Tue,  8 Oct 2024 12:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390125;
-	bh=F9W+ew9OilhKTjt5s11a8pwOIdBDuv2pYWAvzk95WFs=;
+	s=korg; t=1728391822;
+	bh=+t9VqaikdCr0lV/0CyLFqJJ2gxixQwQluVIYPgKan4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGfNtcnbJgBLMEeXtOjDjZgmfH5+ATRvsgTuhKXmfJT+AEAIWuvFzzoVWav20O6OT
-	 IjAx1LBQefVDIuxPqfbha+D4ZWEvAhpc6IEryhhcwGd7Owd2ask10LTdoJ31tI1U7q
-	 wvzmgYb+5YwVbnkFHEOEMstA5SVctMFE1Jkz1srQ=
+	b=MZ1CyS12knsDgd6otEmLjM0IJv0PLhDf8vTQF/UWEsOkjLRDa6bnRmFqI1P+7B/qH
+	 6XvKNQzeFrE9wGXEY7M7GfcRgIoFPQInLVQA4NyqoP8AAKs7FzsYquVSU114OjQ8jJ
+	 ZN1YGeqsLZj74rnPI+fFGQwXNC5sTQCjiu136XYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Scott Teel <scott.teel@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 199/482] scsi: smartpqi: correct stream detection
+Subject: [PATCH 6.11 232/558] drm/amd/display: Add null check for afb in amdgpu_dm_plane_handle_cursor_update (v2)
 Date: Tue,  8 Oct 2024 14:04:22 +0200
-Message-ID: <20241008115656.140215791@linuxfoundation.org>
+Message-ID: <20241008115711.472806351@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +68,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 4c76114932d1d6fad2e72823e7898a3c960cf2a7 ]
+[ Upstream commit cd9e9e0852d501f169aa3bb34e4b413d2eb48c37 ]
 
-Correct stream detection by initializing the structure
-pqi_scsi_dev_raid_map_data to 0s.
+This commit adds a null check for the 'afb' variable in the
+amdgpu_dm_plane_handle_cursor_update function. Previously, 'afb' was
+assumed to be null, but was used later in the code without a null check.
+This could potentially lead to a null pointer dereference.
 
-When the OS issues SCSI READ commands, the driver erroneously considers
-them as SCSI WRITES. If they are identified as sequential IOs, the driver
-then submits those requests via the RAID path instead of the AIO path.
+Changes since v1:
+- Moved the null check for 'afb' to the line where 'afb' is used. (Alex)
 
-The 'is_write' flag might be set for SCSI READ commands also.  The driver
-may interpret SCSI READ commands as SCSI WRITE commands, resulting in IOs
-being submitted through the RAID path.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_plane.c:1298 amdgpu_dm_plane_handle_cursor_update() error: we previously assumed 'afb' could be null (see line 1252)
 
-Note: This does not cause data corruption.
-
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20240827185501.692804-3-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Co-developed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 02d16fddd3123..a4719af88718e 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -5917,7 +5917,7 @@ static bool pqi_is_parity_write_stream(struct pqi_ctrl_info *ctrl_info,
- 	int rc;
- 	struct pqi_scsi_dev *device;
- 	struct pqi_stream_data *pqi_stream_data;
--	struct pqi_scsi_dev_raid_map_data rmd;
-+	struct pqi_scsi_dev_raid_map_data rmd = { 0 };
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index 5cb11cc2d0636..a573a66398984 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1377,7 +1377,8 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
+ 	    adev->dm.dc->caps.color.dpp.gamma_corr)
+ 		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
  
- 	if (!ctrl_info->enable_stream_detection)
- 		return false;
+-	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
++	if (afb)
++		attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
+ 
+ 	if (crtc_state->stream) {
+ 		mutex_lock(&adev->dm.dc_lock);
 -- 
 2.43.0
 
