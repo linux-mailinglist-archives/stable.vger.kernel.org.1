@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A523994EA2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D86994A7F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9D072841B9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91070B2559B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6581DE4CC;
-	Tue,  8 Oct 2024 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CA11DE2C4;
+	Tue,  8 Oct 2024 12:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dApZnxtL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVCsRytl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA531DED4E;
-	Tue,  8 Oct 2024 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639811DE4CC;
+	Tue,  8 Oct 2024 12:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393555; cv=none; b=pm3pBGUyL2QmD7zXedjS/qntAUaNM9CU+pZ/n4B0VWywNS8krJyIrxB3lduyDZ/o2S5sMSXJLKlMCXxm+qkdgdAc8XezQRo8N7/sSJSxRdCIg4rFP+Pfr2DcfH5I7GdbmVsJGthcN02kowBWJT/uKs0k3SzOGy+vRkC3ls8KamE=
+	t=1728390805; cv=none; b=X/JOuwHtyFk2dIJALPZOOQY1QHBoR2pORkUy90mmP3V4R4AJeJc/gxkfPIEbBVCD97/AM22n6wGvy6YdE8K0vK/kbMi6IzO90TwSWwL/MevfrecrL4Q98pwjgJyJTicEh3RiUMo+r1u27Dqy/ZTmYPPqWGoHLYnc3E1SlozVnV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393555; c=relaxed/simple;
-	bh=YC9E3bvTJ7hN49WtkAHje9Qk2NVVPjrS7COHf2H/ZGI=;
+	s=arc-20240116; t=1728390805; c=relaxed/simple;
+	bh=Wzw2rGRg610jnvXOAuJzm/NGhjmbnfYoqZpSHY7f69s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dd0X+ZgN0vgHxOr/iogi8FaPGgJJZsYDj8AOdfxFvzIk0nndKx/8iSFlgj72i1prmgceQTCHwTgBOVXtEtB3YU9pfolXZ6nNcBw9T138Rird66SEjP47aWlnJYVmM5hbTo09xvk84NRIfbq0NILJs5bDI7by5t+zwWeoML0jtZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dApZnxtL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD3FC4CEC7;
-	Tue,  8 Oct 2024 13:19:14 +0000 (UTC)
+	 MIME-Version; b=oPer+BrTbI+ecJ4XY+mRYN+Ah5GlDPCMuyA08o8grUDxu1eq0adiP+CmG3N74rdmX39MgUZK/IBK8w59usVaJtvvZvc3Z7vWztBh5WJaxobOp0f+HjBdA30tBOR+uRIUg2Ptw8q2hEhV+Gx4oNzMzFloty+G9w5zbGOHjNGiehE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVCsRytl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93195C4CEC7;
+	Tue,  8 Oct 2024 12:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393555;
-	bh=YC9E3bvTJ7hN49WtkAHje9Qk2NVVPjrS7COHf2H/ZGI=;
+	s=korg; t=1728390805;
+	bh=Wzw2rGRg610jnvXOAuJzm/NGhjmbnfYoqZpSHY7f69s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dApZnxtLMnt0YgJcB+w4GBmBp9WOvkLo1W6qPFwelPIAHcHNT3SvK7jBVFCmHG0mx
-	 mpV4w9wkHJ22kfYuzs0eGB2GQ5435bV6cQVyDKslAeQfghmXuA8dYwkUj/nrDvdUUg
-	 p0hkK7YRysPmvbhWM/u6afVMZRQQwbV/cfCFVJlM=
+	b=QVCsRytlXpNXSvYI3r0DhzGZIby1GUolfI8Re6K/mjQaHUBB1IvWG8i8Zw5I5bJeX
+	 Q7V4xfQb2QEqWfynnAWTkkJPFJOuFlApr8IB0diYXrijCKHNZfEElu1XhYMs2gX8iy
+	 c2sCrvyPXCtmnERjdV0qXUCsdOAZHxg1Evm0lIEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/386] bpftool: Fix undefined behavior in qsort(NULL, 0, ...)
+	Jisheng Zhang <jszhang@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.10 367/482] riscv: define ILLEGAL_POINTER_VALUE for 64bit
 Date: Tue,  8 Oct 2024 14:07:10 +0200
-Message-ID: <20241008115636.692458161@linuxfoundation.org>
+Message-ID: <20241008115702.864304586@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit f04e2ad394e2755d0bb2d858ecb5598718bf00d5 ]
+commit 5c178472af247c7b50f962495bb7462ba453b9fb upstream.
 
-When netfilter has no entry to display, qsort is called with
-qsort(NULL, 0, ...). This results in undefined behavior, as UBSan
-reports:
+This is used in poison.h for poison pointer offset. Based on current
+SV39, SV48 and SV57 vm layout, 0xdead000000000000 is a proper value
+that is not mappable, this can avoid potentially turning an oops to
+an expolit.
 
-net.c:827:2: runtime error: null pointer passed as argument 1, which is declared to never be null
-
-Although the C standard does not explicitly state whether calling qsort
-with a NULL pointer when the size is 0 constitutes undefined behavior,
-Section 7.1.4 of the C standard (Use of library functions) mentions:
-
-"Each of the following statements applies unless explicitly stated
-otherwise in the detailed descriptions that follow: If an argument to a
-function has an invalid value (such as a value outside the domain of
-the function, or a pointer outside the address space of the program, or
-a null pointer, or a pointer to non-modifiable storage when the
-corresponding parameter is not const-qualified) or a type (after
-promotion) not expected by a function with variable number of
-arguments, the behavior is undefined."
-
-To avoid this, add an early return when nf_link_info is NULL to prevent
-calling qsort with a NULL pointer.
-
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910150207.3179306-1-visitorckw@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Fixes: fbe934d69eb7 ("RISC-V: Build Infrastructure")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240705170210.3236-1-jszhang@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/bpf/bpftool/net.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/Kconfig |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index fd54ff436493f..28e9417a5c2e3 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -819,6 +819,9 @@ static void show_link_netfilter(void)
- 		nf_link_count++;
- 	}
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -312,6 +312,11 @@ config GENERIC_HWEIGHT
+ config FIX_EARLYCON_MEM
+ 	def_bool MMU
  
-+	if (!nf_link_info)
-+		return;
++config ILLEGAL_POINTER_VALUE
++	hex
++	default 0 if 32BIT
++	default 0xdead000000000000 if 64BIT
 +
- 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
- 
- 	for (id = 0; id < nf_link_count; id++) {
--- 
-2.43.0
-
+ config PGTABLE_LEVELS
+ 	int
+ 	default 5 if 64BIT
 
 
 
