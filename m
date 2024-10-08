@@ -1,95 +1,132 @@
-Return-Path: <stable+bounces-83088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35056995614
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 19:58:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84401995639
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 20:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D50861F23E23
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:58:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4246128B17A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 18:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18D520CCE5;
-	Tue,  8 Oct 2024 17:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7B320A5EF;
+	Tue,  8 Oct 2024 18:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="H7lFaxRn"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XKhitnH8"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D292F1FA254;
-	Tue,  8 Oct 2024 17:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50222940F
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 18:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728410299; cv=none; b=Q2/gBmWizzzD1sO8FAXpOEgDjKDo/1+KpAa6MzNqNxYLWqVXEhklM9EjT8n+svHoIEr/r+9Fiy+tkGihG6bfJDPlM9hZnEqxfq8mMv/YMJannQHiGfK0wYsoSV1c/pCMxliSj3fJFepSoF1NV04KpxSbXVnoQAutnNqND+qk+20=
+	t=1728411137; cv=none; b=idvWnaAhXaNy0o3Y4jSghrXINreXrIdoRv1XrNw0zDVz3P8ju/lHEZJQIQxjB9/tqQQ3g0ZEjbr33aCqNvUA0/5IsTcQbxNef01lI5y2l4z/a4lKRrIhBSvubOwl99NjZKNsc7oPF2KbbjnirslK9ZDORzjkotfftQg5zBlaW6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728410299; c=relaxed/simple;
-	bh=4U1UeKZlaCfqzLoEn1fO7sTNMI+RyozZNZBl5ZowbL4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l/m7L7k7RK/kaj/tWYwgCmvmrONw+q4Fr6cUhdN4OkSY7jry2mq0JiECPavnCbcxN0qSZqcUwcg2im1uCW+gXqnBg8MBvlslAAGnxooIhPYx6YCVj40cS6GllXBMxIrf3xFLhFHkG9KLbhlu2CRiqq80bF9Z0V7oO7mqxC0Xmus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=H7lFaxRn; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XNNzR62Fhz6ClY9T;
-	Tue,  8 Oct 2024 17:58:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1728410285; x=1731002286; bh=4U1UeKZlaCfqzLoEn1fO7sTN
-	MI+RyozZNZBl5ZowbL4=; b=H7lFaxRn1xw2wn2LDW/u/CpFkHpOGamVeOWYBS2V
-	DvVGxY2G/0hXDL6K3bdlwOuzluAFfY5DUR3k540PvQ39xfiWIjGJJDrKjUMkIt1L
-	Jom7OQcOXiLbUS6y555iHeCL6ZdEFva2JnlGwH+chppj2elhO1XilUWhU1X4JJKu
-	IwQPDF0QbwB6HK3WjYptr0lyhIiAtqBlgl7586RVz0yfZ3TnRhAAa1mxBG84I6rO
-	twIIKHQudjdrHkn2Ax69JihAtZ2glxBA61ksF4y199nvRz5ROUg9jZ/3PWxxFW2B
-	ieK2v1VDbFmwDYMKvAlOKQVh9VgybWyG7jZf80DywNaVHg==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id w_FNwSulsJTo; Tue,  8 Oct 2024 17:58:05 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XNNzG0VGhz6ClY9R;
-	Tue,  8 Oct 2024 17:58:01 +0000 (UTC)
-Message-ID: <210ebb75-d384-4787-9e1a-d08643cc4843@acm.org>
-Date: Tue, 8 Oct 2024 10:58:00 -0700
+	s=arc-20240116; t=1728411137; c=relaxed/simple;
+	bh=vhTuNa6pMB03W6hOrEtrcOG4oqbqI2buTXqpaiOtkBY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tpQoX4yntvDQoaeRtedLQeRu7ERs+sQQOR5sqaNof2JpU+RnO2NlgvVREGrlGDTcyHaRqFbEzIf/mIJTh1iAkUogThBS84pu6s8IT2vKgAhoexzpMBUC00U/hhfOwRBP1HsdMkk4r2r17rGsQsioHoQToS4cKFLreFGzeqZivro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XKhitnH8; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20b061b7299so17605ad.1
+        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 11:12:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728411135; x=1729015935; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZLNgHa4srZj0Mj779t5wUVINDT2m3pKrdkBQ7dK1eHE=;
+        b=XKhitnH8xx02Lx74q+kNI05rV4EM27pagjiY5lyI5FGWpmB7AYg2Y146oreAlf9gwC
+         jq+mpASdxGWDQcwz7ykMLY+y9aAkFTZTokqV0UgPSWdiy7rI2jRczjVw4x5rSdpd1rFA
+         7YskH287Eq8hOkFWs+WbPpXl55cCytrAIvX6aXgKv5ik8+RKDu8kQseAEycClJwngwC4
+         sBxkzPLUm7GWhs4SPH1vb8i9bec/JAkv6nAeiZCIyP2Rh72Gb0R7zBYNEWgJczRWKaX3
+         urcLoqJ+9ka9YIqWpXQbtWCAekVmhJvXtX8xw9gC1xttT3PpuBmEUDjiAsBRGeNIylE2
+         F1aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728411135; x=1729015935;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZLNgHa4srZj0Mj779t5wUVINDT2m3pKrdkBQ7dK1eHE=;
+        b=Wdr2C+V8nU+mPyVwO6aXH33WcLqD0ry3QEY+MAIUUOMnmmvRDRDowAgkcpjB5BHPCt
+         kgbxvykMNbmEY4ZOUwBJMG4ujMTsBwPKVYWiSFv7utwGC9WW3Skb4kAzXbG54ZN9VNB/
+         mMWCCF2WqKkKvfcBYVvueMRA4F6ZPXiNeuuVJ83RGwp+uSf96iW9J9FFgZ1R1mCUg6Fb
+         WhdLCsBA51nZSqAVJUuzo+YhU42G6Kh9F9Kvn/FTOpIYWC3UzFY5k+aLqpIYNdATEKPe
+         Yj//iGxtmFZy83A6zuwyHgd30lSYAtA8ebBjkPDAO8X4cyLoSc5YM+tF5B+TFJ6aGXaP
+         AWKw==
+X-Forwarded-Encrypted: i=1; AJvYcCU12ls4tysi87ZFOP3thtSTBDZwgo/abZa5QmtKVX0ES8zW7OKPbm9hg/f/NnNnNspV2WvM4U0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwReML0HZYjxZ7zfFrDqZKePKEdA6LSNNW0XIq7TyBa3QqYjNF5
+	PPNWJwsYdGzF1eUJ0RFOEOTLmtX6wFpWxXfRwoXlXM9Tksd5ITgn3R+CMq6J7w==
+X-Google-Smtp-Source: AGHT+IFGbvMNhmGPIjWwxbX/N19uSMRxtazGFYqmRVyqrj+mjywXVsQ6bS22W3yESMUJOnNeL3nZ3w==
+X-Received: by 2002:a17:903:1212:b0:1ff:3b0f:d61d with SMTP id d9443c01a7336-20c62b11bf2mr219545ad.24.1728411135048;
+        Tue, 08 Oct 2024 11:12:15 -0700 (PDT)
+Received: from google.com (201.215.168.34.bc.googleusercontent.com. [34.168.215.201])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e9f6c4a16esm7084074a12.85.2024.10.08.11.12.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2024 11:12:14 -0700 (PDT)
+Date: Tue, 8 Oct 2024 18:12:10 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Yu-Ting Tseng <yutingtseng@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-kernel@vger.kernel.org, kernel-team@android.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 6/8] binder: allow freeze notification for dead nodes
+Message-ID: <ZwV1-svdRZCF2x2H@google.com>
+References: <20240926233632.821189-1-cmllamas@google.com>
+ <20240926233632.821189-7-cmllamas@google.com>
+ <CAH5fLggS7C4QdmDFqEy5KARUj+4oNWfstyno3d43joG5haysDw@mail.gmail.com>
+ <CAN5Drs3TCGT1rWJjujo3FP3HxnSFUFo5hcWh=4+xhOYzDg4JqQ@mail.gmail.com>
+ <CAH5fLgjnyKtXsnPbvCFz64BBRqvWPwh6reM-myWA9AEBKFhcJg@mail.gmail.com>
+ <ZvbeCg5Ho6p-VU5o@google.com>
+ <CAH5fLgjB-ia+UhE1P8gOxHTdjSJJ1=xKSS0c75AvGA91uo_fEw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
-To: Seunghwan Baek <sh8267.baek@samsung.com>, linux-kernel@vger.kernel.org,
- linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
- James.Bottomley@HansenPartnership.com, avri.altman@wdc.com,
- alim.akhtar@samsung.com
-Cc: grant.jung@samsung.com, jt77.jang@samsung.com, junwoo80.lee@samsung.com,
- dh0421.hwang@samsung.com, jangsub.yi@samsung.com, sh043.lee@samsung.com,
- cw9316.lee@samsung.com, wkon.kim@samsung.com, stable@vger.kernel.org
-References: <20240829093913.6282-1-sh8267.baek@samsung.com>
- <CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
- <20240829093913.6282-2-sh8267.baek@samsung.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240829093913.6282-2-sh8267.baek@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgjB-ia+UhE1P8gOxHTdjSJJ1=xKSS0c75AvGA91uo_fEw@mail.gmail.com>
 
-On 8/29/24 2:39 AM, Seunghwan Baek wrote:
-> There is a history of dead lock as reboot is performed at the beginning of
-> booting. SDEV_QUIESCE was set for all lu's scsi_devices by ufs shutdown,
-> and at that time the audio driver was waiting on blk_mq_submit_bio holding
-> a mutex_lock while reading the fw binary. After that, a deadlock issue
-> occurred while audio driver shutdown was waiting for mutex_unlock of
-> blk_mq_submit_bio. To solve this, set SDEV_OFFLINE for all lus except wlun,
-> so that any i/o that comes down after a ufs shutdown will return an error.
+On Mon, Sep 30, 2024 at 03:30:01PM +0200, Alice Ryhl wrote:
+> On Fri, Sep 27, 2024 at 6:32 PM Carlos Llamas <cmllamas@google.com> wrote:
+> >
+> > There are different ways to proceed with this dead node scenario:
+> >
+> > 1. return ESRCH
+> > 2. silently fail and don't allocate a ref->freeze
+> > 3. allocate a ref->freeze but don't notify the current state
+> > 4. allocate and send a "fake" state notification.
+> >
+> > I like 1 just because it is technically the correct thing to do from the
+> > driver's perspective. However, it does complicate things in userspace as
+> > we've discussed. Option 2, could work but it would also fail with EINVAL
+> > if a "clear notification" is sent later anyway. Option 3 changes the
+> > behavior of guaranteeing a notification upon success. Option 4 can cause
+> > trouble on how a "not-frozen" notification is handled in userspace e.g
+> > start sending transactions.
+> >
+> > As you can see there is no clear winner here, we have to compromise
+> > something and option #3 is the best we can do IMO.
+> 
+> I am happy with both #3 and #4. I think #1 and #2 are problematic
+> because they will lead to userspace getting errors on correct use of
+> Binder.
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+After talking with userspace folks it seems that #3 would be their
+preferred approach. So this v2 patch it the way to go then!
+
+Thanks,
+Carlos Llamas
 
