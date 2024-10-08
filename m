@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272CD994EC0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F585994A9C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0F981F25DB6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B3E1C24993
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387871DE8BE;
-	Tue,  8 Oct 2024 13:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5999E1DDA15;
+	Tue,  8 Oct 2024 12:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAokwHAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVeq5Ett"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFFA1DED48;
-	Tue,  8 Oct 2024 13:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5A192D69;
+	Tue,  8 Oct 2024 12:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393646; cv=none; b=qqGpzVbcGIMH4UpWNOdft6IL0oYSh9byTb0GBLZbhWndb8OxkuX7LnL9zebUfng2apRiF0NngEb18tgv5dQZzCARhFoF3p4K0EMw3gvtQPuE0ISysNfdYpVc4GVLxQsdmF5WV8xShOPjdqwygVclqwPZYmDT5mp+lgVOWOTWEs8=
+	t=1728390884; cv=none; b=eJwjpFNWkJ+JEDeGP5WsHI6kah/VwYrqeQaKJRigJTE+1s7waBrqOGRzcfVjPbUtCPj0qDQObaNMHuv8ECRe2CE3urEjdTXt87/ISIX509iaYdBwfTHNvyLZ2ohfuayN56RdOwiFjpO0bz4wmu6VN6KQtdY6a9enmkTQfGFGU5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393646; c=relaxed/simple;
-	bh=CUMT90Whp9d9P9n8EUwvxPzoqVjmkcTXL7WwLLCQgN4=;
+	s=arc-20240116; t=1728390884; c=relaxed/simple;
+	bh=/Mza5eVi97xpRiSHza1AiKb07ZZEDBu58r7MhRa0SPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SillGiHAobPaY/dRzBBj2uzlIGtYrIvu3CawZNFvS5MAhOpTuF42toiSo09vg8ivNnrTmniw695Qqu6TghJQQ0IiRE7w/FRGJp5VATnEykhs4ykqgUYR2BtBAKETYmnuO1hqLBbjpwtPrLduBqpzfUYTXsqMfG4LN5BmzXv70zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAokwHAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C57C4CEC7;
-	Tue,  8 Oct 2024 13:20:45 +0000 (UTC)
+	 MIME-Version; b=cEw2tGNYizAFsGvRT98AEuuVfDpq+jsC1prkt9T+IrtHjLOI1OQ/OCMNTFujS6Th/DdKi+n4KNo8fULzwttvvr3xBru+T/OBti35oNvI0vrrV3iZ/yDqN0yEFgmVUjCEUMe2ydoHFCedNJJ3twAD6oH45uw5USeeji0jaHzMOh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVeq5Ett; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23839C4CEC7;
+	Tue,  8 Oct 2024 12:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393645;
-	bh=CUMT90Whp9d9P9n8EUwvxPzoqVjmkcTXL7WwLLCQgN4=;
+	s=korg; t=1728390883;
+	bh=/Mza5eVi97xpRiSHza1AiKb07ZZEDBu58r7MhRa0SPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAokwHAuC5hJpLRgyelJO3IVWohOR/6NA8uLXMRAJUGrhtV7L1IClDFrm7aaI26w4
-	 4rXMQiOfe2QjatvqDm6Y1qoLEoDoABEUQs7TAZHebJyZEd/gjgUgpKkTs5nNlCehxt
-	 Vw2x1lSvVU6iT92RNVDbXzoqUKzWF/Xvq5fbVNos=
+	b=mVeq5Ett3e3KUOfuW0iqs6Vri4txeEdjFWp/ONJN0qYx5gsMJQW8gBET3611lJvNl
+	 KU8mq3cDwMvnynSkP91lsvB8+49h9+g7bhcjSiprvxz48K9JtE6rYVNzZgaOtoOnNE
+	 SHCDBOc64vlpgDVOPEdrIOaAzxFNPtDZ/YVabVxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Baynton <mike@mbaynton.com>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 6.6 213/386] ovl: fail if trusted xattrs are needed but caller lacks permission
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 395/482] media: qcom: camss: Remove use_count guard in stop_streaming
 Date: Tue,  8 Oct 2024 14:07:38 +0200
-Message-ID: <20241008115637.788512786@linuxfoundation.org>
+Message-ID: <20241008115703.955801789@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Baynton <mike@mbaynton.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 6c4a5f96450415735c31ed70ff354f0ee5cbf67b upstream.
+commit 25f18cb1b673220b76a86ebef8e7fb79bd303b27 upstream.
 
-Some overlayfs features require permission to read/write trusted.*
-xattrs. These include redirect_dir, verity, metacopy, and data-only
-layers. This patch adds additional validations at mount time to stop
-overlays from mounting in certain cases where the resulting mount would
-not function according to the user's expectations because they lack
-permission to access trusted.* xattrs (for example, not global root.)
+The use_count check was introduced so that multiple concurrent Raw Data
+Interfaces RDIs could be driven by different virtual channels VCs on the
+CSIPHY input driving the video pipeline.
 
-Similar checks in ovl_make_workdir() that disable features instead of
-failing are still relevant and used in cases where the resulting mount
-can still work "reasonably well." Generally, if the feature was enabled
-through kernel config or module option, any mount that worked before
-will still work the same; this applies to redirect_dir and metacopy. The
-user must explicitly request these features in order to generate a mount
-failure. Verity and data-only layers on the other hand must be explictly
-requested and have no "reasonable" disabled or degraded alternative, so
-mounts attempting either always fail.
+This is an invalid use of use_count though as use_count pertains to the
+number of times a video entity has been opened by user-space not the number
+of active streams.
 
-"lower data-only dirs require metacopy support" moved down in case
-userxattr is set, which disables metacopy.
+If use_count and stream-on count don't agree then stop_streaming() will
+break as is currently the case and has become apparent when using CAMSS
+with libcamera's released softisp 0.3.
 
-Cc: stable@vger.kernel.org # v6.6+
-Signed-off-by: Mike Baynton <mike@mbaynton.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+The use of use_count like this is a bit hacky and right now breaks regular
+usage of CAMSS for a single stream case. Stopping qcam results in the splat
+below, and then it cannot be started again and any attempts to do so fails
+with -EBUSY.
+
+[ 1265.509831] WARNING: CPU: 5 PID: 919 at drivers/media/common/videobuf2/videobuf2-core.c:2183 __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
+...
+[ 1265.510630] Call trace:
+[ 1265.510636]  __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
+[ 1265.510648]  vb2_core_streamoff+0x24/0xcc [videobuf2_common]
+[ 1265.510660]  vb2_ioctl_streamoff+0x5c/0xa8 [videobuf2_v4l2]
+[ 1265.510673]  v4l_streamoff+0x24/0x30 [videodev]
+[ 1265.510707]  __video_do_ioctl+0x190/0x3f4 [videodev]
+[ 1265.510732]  video_usercopy+0x304/0x8c4 [videodev]
+[ 1265.510757]  video_ioctl2+0x18/0x34 [videodev]
+[ 1265.510782]  v4l2_ioctl+0x40/0x60 [videodev]
+...
+[ 1265.510944] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 0 in active state
+[ 1265.511175] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 1 in active state
+[ 1265.511398] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 2 in active st
+
+One CAMSS specific way to handle multiple VCs on the same RDI might be:
+
+- Reference count each pipeline enable for CSIPHY, CSID, VFE and RDIx.
+- The video buffers are already associated with msm_vfeN_rdiX so
+  release video buffers when told to do so by stop_streaming.
+- Only release the power-domains for the CSIPHY, CSID and VFE when
+  their internal refcounts drop.
+
+Either way refusing to release video buffers based on use_count is
+erroneous and should be reverted. The silicon enabling code for selecting
+VCs is perfectly fine. Its a "known missing feature" that concurrent VCs
+won't work with CAMSS right now.
+
+Initial testing with this code didn't show an error but, SoftISP and "real"
+usage with Google Hangouts breaks the upstream code pretty quickly, we need
+to do a partial revert and take another pass at VCs.
+
+This commit partially reverts commit 89013969e232 ("media: camss: sm8250:
+Pipeline starting and stopping for multiple virtual channels")
+
+Fixes: 89013969e232 ("media: camss: sm8250: Pipeline starting and stopping for multiple virtual channels")
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/params.c |   38 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 5 deletions(-)
+ drivers/media/platform/qcom/camss/camss-video.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -761,11 +761,6 @@ int ovl_fs_params_verify(const struct ov
- {
- 	struct ovl_opt_set set = ctx->set;
+--- a/drivers/media/platform/qcom/camss/camss-video.c
++++ b/drivers/media/platform/qcom/camss/camss-video.c
+@@ -557,12 +557,6 @@ static void video_stop_streaming(struct
  
--	if (ctx->nr_data > 0 && !config->metacopy) {
--		pr_err("lower data-only dirs require metacopy support.\n");
--		return -EINVAL;
--	}
+ 		ret = v4l2_subdev_call(subdev, video, s_stream, 0);
+ 
+-		if (entity->use_count > 1) {
+-			/* Don't stop if other instances of the pipeline are still running */
+-			dev_dbg(video->camss->dev, "Video pipeline still used, don't stop streaming.\n");
+-			return;
+-		}
 -
- 	/* Workdir/index are useless in non-upper mount */
- 	if (!config->upperdir) {
- 		if (config->workdir) {
-@@ -917,6 +912,39 @@ int ovl_fs_params_verify(const struct ov
- 		config->metacopy = false;
- 	}
- 
-+	/*
-+	 * Fail if we don't have trusted xattr capability and a feature was
-+	 * explicitly requested that requires them.
-+	 */
-+	if (!config->userxattr && !capable(CAP_SYS_ADMIN)) {
-+		if (set.redirect &&
-+		    config->redirect_mode != OVL_REDIRECT_NOFOLLOW) {
-+			pr_err("redirect_dir requires permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		if (config->metacopy && set.metacopy) {
-+			pr_err("metacopy requires permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		if (config->verity_mode) {
-+			pr_err("verity requires permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		if (ctx->nr_data > 0) {
-+			pr_err("lower data-only dirs require permission to access trusted xattrs\n");
-+			return -EPERM;
-+		}
-+		/*
-+		 * Other xattr-dependent features should be disabled without
-+		 * great disturbance to the user in ovl_make_workdir().
-+		 */
-+	}
-+
-+	if (ctx->nr_data > 0 && !config->metacopy) {
-+		pr_err("lower data-only dirs require metacopy support.\n");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
+ 		if (ret) {
+ 			dev_err(video->camss->dev, "Video pipeline stop failed: %d\n", ret);
+ 			return;
 
 
 
