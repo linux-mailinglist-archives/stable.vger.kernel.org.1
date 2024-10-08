@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-82552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F91994D4C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4E2994A96
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C986A282E93
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A3B4B21D87
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2611DE89F;
-	Tue,  8 Oct 2024 13:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DBF1DE4DF;
+	Tue,  8 Oct 2024 12:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEPJVQlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZXmC16k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A571DFD1;
-	Tue,  8 Oct 2024 13:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E7E1779B1;
+	Tue,  8 Oct 2024 12:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392647; cv=none; b=HqhQ8O81R1Th3OZ1Byf2nbiAJuGZdyXTs0kewZLQ/RjTWCwXEe7Zo6YrVyDht/fXLadvdJe5Gyk54DSNsvUZ43krw3EEjUIJTzAOgdLc/Daha+HI7NcwQ6HqQt6uAW32KAgdatfXD4cVuouXHUZb8b28OJk6RY53Jwh2vU04iz8=
+	t=1728390854; cv=none; b=ikovWI2X4QAqym39IzgJTRx/E4xVD+aaNmtZnsNipSCkEy7enBNIhrFj8sb0bqViESzDfZ49XLqS43gHhRk1Wrxx/VF/03NT1SYkcSwpE4bPlaBDKKEWkVXTE96HvT4kindt8kEuuWu1z6BJZuiK98nSCuIp9IArLQNcu/7bCwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392647; c=relaxed/simple;
-	bh=Q9/vv5na6TYO1Ga8z/TtOUAjDDkWNDuffl2c7hNQojs=;
+	s=arc-20240116; t=1728390854; c=relaxed/simple;
+	bh=mTlk/bvVXCwyNnIIlhCH8wgC50d8ZVVm3cokhe7pKAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFuwp2Fotwse9ONnw1Y4M+oHasKoNyFmSrjRG/hUUAjpKB+u5jL+Vvuv1nsTwgdkYsd76UWdQ3nSeIAgTnhyePITh1mOU2iyVYIFJTAgppRBDZ/sX92zf90DlUqY0mhZ5+Jd/+7n6mjCMBTAKdhny2LtlqBeYTBzZDV2Xk++bW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEPJVQlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDEDC4CEC7;
-	Tue,  8 Oct 2024 13:04:06 +0000 (UTC)
+	 MIME-Version; b=QHKOoUDlE1kti2cMMzZYhX2eMDlI7qp7szcYS+w6elw64vjLa6egicUnx44f7UBs8SuYSieAk+GOVVhZooO7WTElcdCiAaHZEJKHT2oJtU0VdJdVV2hC87wZ+2/0/Xziy+WAKvWFqqVOzWvXS1Y/p/dTfiJ9RSebYMVSK5jjACA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZXmC16k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549DAC4CEC7;
+	Tue,  8 Oct 2024 12:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392646;
-	bh=Q9/vv5na6TYO1Ga8z/TtOUAjDDkWNDuffl2c7hNQojs=;
+	s=korg; t=1728390853;
+	bh=mTlk/bvVXCwyNnIIlhCH8wgC50d8ZVVm3cokhe7pKAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEPJVQlGaiJDr8/D1G1J2ej3tkXpLwkZbWa2pCK6ZOCiFaXBZXiydGV2O+wLuiWmJ
-	 eem2spGoL1inKqbyCO+i8FdQxxBwp4+wJMOJmIOJqm//eUuvAzSr+bOsPSJVvRJZmy
-	 lzqeUmiMgz2UQ2WAFo17BKZJaDp9GevKGdJYRSMg=
+	b=IZXmC16kaW5TVcpO3fodAuyXUqL2chEyzLnceYLjAmNP+5PeNN8XXU0FaNdVOKonC
+	 aZUDbrI9rEhOQ++51PenpWCT1ijKeyeG8oONUAUmdC3aVtKNjEIgpxukmlOQWeLizO
+	 vbqEO6BTgX6/iOuuObSk7gk9vobTo/FU9NyeBigA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.11 446/558] clk: rockchip: fix error for unknown clocks
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 413/482] ACPI: resource: Remove duplicate Asus E1504GAB IRQ override
 Date: Tue,  8 Oct 2024 14:07:56 +0200
-Message-ID: <20241008115719.814328196@linuxfoundation.org>
+Message-ID: <20241008115704.657330411@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 12fd64babaca4dc09d072f63eda76ba44119816a upstream.
+commit 65bdebf38e5fac7c56a9e05d3479a707e6dc783c upstream.
 
-There is a clk == NULL check after the switch to check for
-unsupported clk types. Since clk is re-assigned in a loop,
-this check is useless right now for anything but the first
-round. Let's fix this up by assigning clk = NULL in the
-loop before the switch statement.
+Commit d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook
+E1504GA and E1504GAB") does exactly what the subject says, adding DMI
+matches for both the E1504GA and E1504GAB.
 
-Fixes: a245fecbb806 ("clk: rockchip: add basic infrastructure for clock branches")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-[added fixes + stable-cc]
-Link: https://lore.kernel.org/r/20240325193609.237182-6-sebastian.reichel@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+But DMI_MATCH() does a substring match, so checking for E1504GA will also
+match E1504GAB.
+
+Drop the unnecessary E1504GAB entry since that is covered already by
+the E1504GA entry.
+
+Fixes: d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook E1504GA and E1504GAB")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/drivers/clk/rockchip/clk.c
-+++ b/drivers/clk/rockchip/clk.c
-@@ -450,12 +450,13 @@ void rockchip_clk_register_branches(stru
- 				    struct rockchip_clk_branch *list,
- 				    unsigned int nr_clk)
- {
--	struct clk *clk = NULL;
-+	struct clk *clk;
- 	unsigned int idx;
- 	unsigned long flags;
- 
- 	for (idx = 0; idx < nr_clk; idx++, list++) {
- 		flags = list->flags;
-+		clk = NULL;
- 
- 		/* catch simple muxes */
- 		switch (list->branch_type) {
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 8a4726e2eb69..1ff251fd1901 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -511,19 +511,12 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 		},
+ 	},
+ 	{
+-		/* Asus Vivobook E1504GA */
++		/* Asus Vivobook E1504GA* */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
+ 		},
+ 	},
+-	{
+-		/* Asus Vivobook E1504GAB */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
+-		},
+-	},
+ 	{
+ 		/* Asus Vivobook Pro N6506MV */
+ 		.matches = {
+-- 
+2.46.2
+
 
 
 
