@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327CD9948D8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:17:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DCD994BF3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96B43B26C1C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:17:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D296B29615
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999E71DE2CF;
-	Tue,  8 Oct 2024 12:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7921D54D1;
+	Tue,  8 Oct 2024 12:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+ft1WC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJRPG7iU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548931E485;
-	Tue,  8 Oct 2024 12:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690581DC046;
+	Tue,  8 Oct 2024 12:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389813; cv=none; b=Ng2W3e9Ejb2z4x/gUM6PZgeJsdbpocjV+o/wYO172YALqdb4eDlH0i890lm2PDqkGnOGk34LtUmjHIAaBxXKzUEE1xpxHVJCpHETx0CHfUj0/KgEe8Ky0EmL1dQamcMaVT4VBi3Q1goYVwobHwTueNaXAe5W3uVyEWGPzfjgEgE=
+	t=1728391636; cv=none; b=rWhFIXDgnUc1DMODaW/kLXLQWM+OHBJn8VDJvXYa9h9a1G0fQjBf51YdJBCVLk1a4C4GKjr0RdtAz3/Mzv95WPkiRmHwWobqJIb9cwbr1KgyyVi3Da1lFr5ZmRC6vMoDsoN98YsK2hWa0LJzIrG93ys8uyxwZJdirio30u8g5Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389813; c=relaxed/simple;
-	bh=uDgBPktkfQYAn1ym1C01hKmktb7FPEi13R5svyjBS80=;
+	s=arc-20240116; t=1728391636; c=relaxed/simple;
+	bh=U3WN305E/ZmY+S5zQrOuR8QmwNW8kDFBUemVMLpCJn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcbla7xsCk9uQf0A61zgvWviwQP8o2yTR1k8J2jIh2LeXCwHZUyZYXjYxiWmZQe/IejqDA92HVLq+yFadytcRyjx5gfgMwjEdpDFSk2lAq+zScAMXB8nnusUoaSjF81NW89go5nOiL/PC43YwPAiUBglY8qDEDQlCdHJAKyj7OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+ft1WC4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88CDC4CEC7;
-	Tue,  8 Oct 2024 12:16:52 +0000 (UTC)
+	 MIME-Version; b=CIDHY2HnBVlG4Fu3d7CibXeionZjPJtRCTW0iezLA79vKon4qk2O2Gs3HCQDvVynWeQ4Q1o/MJbq1bIGCPeniqg5ppglO/VlfrEFDsGekDNhRbVyaW4lNF3pqBDkAV6y9Dlojx2Mp05yHzN2vOA+u0Hyrktg/XQogqxLsu04PS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJRPG7iU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29A1C4CECC;
+	Tue,  8 Oct 2024 12:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389813;
-	bh=uDgBPktkfQYAn1ym1C01hKmktb7FPEi13R5svyjBS80=;
+	s=korg; t=1728391636;
+	bh=U3WN305E/ZmY+S5zQrOuR8QmwNW8kDFBUemVMLpCJn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+ft1WC4PVXWvEY8DLZ8WO53Aen0qM50xLWPBVihS3MhgcHUskpe43/xWj0OSFesX
-	 jCwDre+vkhS20KduRWEVaT0uJC3rcWyhwyVDKvXTIcTzh9B1PdQwH/TwqGmIuvdJuZ
-	 f7ZBVM/sfCwoNNzQ+6sq2xsYv3c9qFOh2zk+hunA=
+	b=xJRPG7iUfTcRRiprnuwAzKcmxNkLTCzQc6uzw/PrLOuMXJfLKRxnOvSu7sKB/AwXL
+	 Tn844zhI7mM6vxxKXqp4WIgedEUBZH1F6OmtDKGc4CUldkE+kp9jyYmCsg8+s9OhIJ
+	 0FgfxcnJE8jW5MHA8m0i0fivGKv2jZblat6z66Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 104/482] net: mvpp2: Increase size of queue_name buffer
+Subject: [PATCH 6.11 137/558] wifi: iwlwifi: mvm: use correct key iteration
 Date: Tue,  8 Oct 2024 14:02:47 +0200
-Message-ID: <20241008115652.402115157@linuxfoundation.org>
+Message-ID: <20241008115707.755896497@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 91d516d4de48532d967a77967834e00c8c53dfe6 ]
+[ Upstream commit 4f1591d292277eec51d027405a92f0d4ef5e299e ]
 
-Increase size of queue_name buffer from 30 to 31 to accommodate
-the largest string written to it. This avoids truncation in
-the possibly unlikely case where the string is name is the
-maximum size.
+In the cases changed here, key iteration isn't done from
+an RCU critical section, but rather using the wiphy lock
+as protection. Therefore, just use ieee80211_iter_keys().
+The link switch case can therefore also use sync commands.
 
-Flagged by gcc-14:
-
-  .../mvpp2_main.c: In function 'mvpp2_probe':
-  .../mvpp2_main.c:7636:32: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
-   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
-        |                                ^
-  .../mvpp2_main.c:7635:9: note: 'snprintf' output between 10 and 31 bytes into a destination of size 30
-   7635 |         snprintf(priv->queue_name, sizeof(priv->queue_name),
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
-        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   7637 |                  priv->port_count > 1 ? "+" : "");
-        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Introduced by commit 118d6298f6f0 ("net: mvpp2: add ethtool GOP statistics").
-I am not flagging this as a bug as I am not aware that it is one.
-
-Compile tested only.
-
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Marcin Wojtas <marcin.s.wojtas@gmail.com>
-Link: https://patch.msgid.link/20240806-mvpp2-namelen-v1-1-6dc773653f2f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240729201718.69a2d18580c1.I2148e04d4b467d0b100beac8f7e449bfaaf775a5@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-index e809f91c08fb9..9e02e4367bec8 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-@@ -1088,7 +1088,7 @@ struct mvpp2 {
- 	unsigned int max_port_rxqs;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+index 8a38fc4b0b0f9..455f5f4175064 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+@@ -144,7 +144,7 @@ static void iwl_mvm_mld_update_sta_key(struct ieee80211_hw *hw,
+ 	if (sta != data->sta || key->link_id >= 0)
+ 		return;
  
- 	/* Workqueue to gather hardware statistics */
--	char queue_name[30];
-+	char queue_name[31];
- 	struct workqueue_struct *stats_queue;
+-	err = iwl_mvm_send_cmd_pdu(mvm, cmd_id, CMD_ASYNC, sizeof(cmd), &cmd);
++	err = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, sizeof(cmd), &cmd);
  
- 	/* Debugfs root entry */
+ 	if (err)
+ 		data->err = err;
+@@ -162,8 +162,8 @@ int iwl_mvm_mld_update_sta_keys(struct iwl_mvm *mvm,
+ 		.new_sta_mask = new_sta_mask,
+ 	};
+ 
+-	ieee80211_iter_keys_rcu(mvm->hw, vif, iwl_mvm_mld_update_sta_key,
+-				&data);
++	ieee80211_iter_keys(mvm->hw, vif, iwl_mvm_mld_update_sta_key,
++			    &data);
+ 	return data.err;
+ }
+ 
+@@ -402,7 +402,7 @@ void iwl_mvm_sec_key_remove_ap(struct iwl_mvm *mvm,
+ 	if (!sec_key_ver)
+ 		return;
+ 
+-	ieee80211_iter_keys_rcu(mvm->hw, vif,
+-				iwl_mvm_sec_key_remove_ap_iter,
+-				(void *)(uintptr_t)link_id);
++	ieee80211_iter_keys(mvm->hw, vif,
++			    iwl_mvm_sec_key_remove_ap_iter,
++			    (void *)(uintptr_t)link_id);
+ }
 -- 
 2.43.0
 
