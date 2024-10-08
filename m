@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70623994CE2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF7F994A02
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 319DD286D0D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1EC1C20953
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2E41DEFFC;
-	Tue,  8 Oct 2024 12:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3F11CF297;
+	Tue,  8 Oct 2024 12:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Haat+2pk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO/tG8z6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA141DE89A;
-	Tue,  8 Oct 2024 12:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF6A1DE3AE;
+	Tue,  8 Oct 2024 12:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392323; cv=none; b=rcJd5U71Oy4B5u8dK2gouX4dx+fgnyMPg1q6E1qChbcWA9jNn5Q1FG1ejmsoLd1bX+eIdA21a182hxGh1QhhUMumA6Xhdvqc/ozuCcm9hw+XIkMhFhUQ4Tv2Jxm4kLmCTkQHDbjH+Tsawksn1QYhb/64BYikyG6Po6ojmhgHFL4=
+	t=1728390496; cv=none; b=dDjMt/g7Yo6baF7RjMNfj9hRhsYUBqL+Qa5W6CqoKyuNPm+Eas9YUWgfGleP+Xsx/fZFJB21ifAiXBb+X6bN9+4OqzZDD/YzuXhGaVSPMdsi2oxOaT1LdFceZERdCd69Li3Ta64wvpTooHROH/ymRLBuUDqbonHTJTa0wmJggXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392323; c=relaxed/simple;
-	bh=b4LTQgaRyYiT5a7KW+gN4e1I1VrXkasXILMTa+NuJXo=;
+	s=arc-20240116; t=1728390496; c=relaxed/simple;
+	bh=gzueCPlRjqTcB5Ada1PS5YK9y1MyYJrPUX6BPfGz9OE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8HzDjfzuBPZo2Vn40OU6FhLEu0rCvvEJg7RTMa8QomJ/1bsuKUYXhrMPBg9k+CFLv7C/sbQIQevpbKwemPrcDicjBQAJqS5TGz9HGAi7v8eYJlwVpVGRfmOPyumgrg+Rf3k/P3xQ9z9BU4+vv0oWHSdOxVGcD5ELIQv3UIHiZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Haat+2pk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3D4C4CECF;
-	Tue,  8 Oct 2024 12:58:42 +0000 (UTC)
+	 MIME-Version; b=CK/DeXAJCN57jgQZe4O3o18dOLmG+2L7xomPWhHVXrJI9A9t169e2+PcxH43DWXEvEIaTPFRg3ai9LlQ85hXW8+d7L0xZq6zT4fQCb1+bM2vgAY62ZinpCMJ8jf6u8oKwWAVNOFV7b+CNS+LEtKN/b+gsR4lewj41XYh2Td7njo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO/tG8z6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887EAC4CEC7;
+	Tue,  8 Oct 2024 12:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392323;
-	bh=b4LTQgaRyYiT5a7KW+gN4e1I1VrXkasXILMTa+NuJXo=;
+	s=korg; t=1728390495;
+	bh=gzueCPlRjqTcB5Ada1PS5YK9y1MyYJrPUX6BPfGz9OE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Haat+2pk1MzCqiXrvZIly6B/ckYpIlj2lEVSlbcYOEk3kgs105r3JV8LM32Y4Afyw
-	 u85OB0bdtHRY7wI2pwFt2Gz2Hc1Bm6h56ZldQNotOj6Y3FSB0BqPyr4i3iM5PhFYJD
-	 DBIETYZqiP5FlHejXfY0ItCSWbVDJ2ljxDNQItO4=
+	b=fO/tG8z6YNhBaTtpkFFYY0m7rLpk2EmwVwxAddlXSa3zIxtQ4eTMz2WOX9ZOi0UuW
+	 TjVKbmrUQ+skHG1ZbVa+BaDiAxEg2Htdz7AEPtVfD4G8UlioYkFysUpNRIVzf1hezZ
+	 7QumlJK0rPdhKkZOs3CKH7BQUmqfNTjvP7rTbGs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 340/558] f2fs: make BG GC more aggressive for zoned devices
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.10 307/482] power: supply: hwmon: Fix missing temp1_max_alarm attribute
 Date: Tue,  8 Oct 2024 14:06:10 +0200
-Message-ID: <20241008115715.682315739@linuxfoundation.org>
+Message-ID: <20241008115700.516159384@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 5062b5bed4323275f2f89bc185c6a28d62cfcfd5 ]
+commit e50a57d16f897e45de1112eb6478577b197fab52 upstream.
 
-Since we don't have any GC on device side for zoned devices, need more
-aggressive BG GC. So, tune the parameters for that.
+Temp channel 0 aka temp1 can have a temp1_max_alarm attribute for
+power_supply devices which have a POWER_SUPPLY_PROP_TEMP_ALERT_MAX
+property.
 
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 5cc69a27abfa ("f2fs: forcibly migrate to secure space for zoned device file pinning")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+HWMON_T_MAX_ALARM was missing from power_supply_hwmon_info for
+temp channel 0, causing the hwmon temp1_max_alarm attribute to be
+missing from such power_supply devices.
+
+Add this to power_supply_hwmon_info to fix this.
+
+Fixes: f1d33ae806ec ("power: supply: remove duplicated argument in power_supply_hwmon_info")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240908185337.103696-2-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  | 20 ++++++++++++++++++--
- fs/f2fs/gc.c    | 25 +++++++++++++++++++++----
- fs/f2fs/gc.h    | 21 +++++++++++++++++++++
- fs/f2fs/super.c |  5 +++++
- 4 files changed, 65 insertions(+), 6 deletions(-)
+ drivers/power/supply/power_supply_hwmon.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 0fb2b3b323c31..ad3b39a953120 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2870,13 +2870,26 @@ static inline bool is_inflight_io(struct f2fs_sb_info *sbi, int type)
- 	return false;
- }
+--- a/drivers/power/supply/power_supply_hwmon.c
++++ b/drivers/power/supply/power_supply_hwmon.c
+@@ -299,7 +299,8 @@ static const struct hwmon_channel_info *
+ 			   HWMON_T_INPUT     |
+ 			   HWMON_T_MAX       |
+ 			   HWMON_T_MIN       |
+-			   HWMON_T_MIN_ALARM,
++			   HWMON_T_MIN_ALARM |
++			   HWMON_T_MAX_ALARM,
  
-+static inline bool is_inflight_read_io(struct f2fs_sb_info *sbi)
-+{
-+	return get_pages(sbi, F2FS_RD_DATA) || get_pages(sbi, F2FS_DIO_READ);
-+}
-+
- static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
- {
-+	bool zoned_gc = (type == GC_TIME &&
-+			F2FS_HAS_FEATURE(sbi, F2FS_FEATURE_BLKZONED));
-+
- 	if (sbi->gc_mode == GC_URGENT_HIGH)
- 		return true;
- 
--	if (is_inflight_io(sbi, type))
--		return false;
-+	if (zoned_gc) {
-+		if (is_inflight_read_io(sbi))
-+			return false;
-+	} else {
-+		if (is_inflight_io(sbi, type))
-+			return false;
-+	}
- 
- 	if (sbi->gc_mode == GC_URGENT_MID)
- 		return true;
-@@ -2885,6 +2898,9 @@ static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
- 			(type == DISCARD_TIME || type == GC_TIME))
- 		return true;
- 
-+	if (zoned_gc)
-+		return true;
-+
- 	return f2fs_time_over(sbi, type);
- }
- 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 724bbcb447d32..46e3bc26b78a6 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -116,7 +116,17 @@ static int gc_thread_func(void *data)
- 			goto next;
- 		}
- 
--		if (has_enough_invalid_blocks(sbi))
-+		if (f2fs_sb_has_blkzoned(sbi)) {
-+			if (has_enough_free_blocks(sbi, LIMIT_NO_ZONED_GC)) {
-+				wait_ms = gc_th->no_gc_sleep_time;
-+				f2fs_up_write(&sbi->gc_lock);
-+				goto next;
-+			}
-+			if (wait_ms == gc_th->no_gc_sleep_time)
-+				wait_ms = gc_th->max_sleep_time;
-+		}
-+
-+		if (need_to_boost_gc(sbi))
- 			decrease_sleep_time(gc_th, &wait_ms);
- 		else
- 			increase_sleep_time(gc_th, &wait_ms);
-@@ -179,9 +189,16 @@ int f2fs_start_gc_thread(struct f2fs_sb_info *sbi)
- 		return -ENOMEM;
- 
- 	gc_th->urgent_sleep_time = DEF_GC_THREAD_URGENT_SLEEP_TIME;
--	gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME;
--	gc_th->max_sleep_time = DEF_GC_THREAD_MAX_SLEEP_TIME;
--	gc_th->no_gc_sleep_time = DEF_GC_THREAD_NOGC_SLEEP_TIME;
-+
-+	if (f2fs_sb_has_blkzoned(sbi)) {
-+		gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME_ZONED;
-+		gc_th->max_sleep_time = DEF_GC_THREAD_MAX_SLEEP_TIME_ZONED;
-+		gc_th->no_gc_sleep_time = DEF_GC_THREAD_NOGC_SLEEP_TIME_ZONED;
-+	} else {
-+		gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME;
-+		gc_th->max_sleep_time = DEF_GC_THREAD_MAX_SLEEP_TIME;
-+		gc_th->no_gc_sleep_time = DEF_GC_THREAD_NOGC_SLEEP_TIME;
-+	}
- 
- 	gc_th->gc_wake = false;
- 
-diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
-index a8ea3301b815a..55c4ba73362ef 100644
---- a/fs/f2fs/gc.h
-+++ b/fs/f2fs/gc.h
-@@ -15,6 +15,11 @@
- #define DEF_GC_THREAD_MAX_SLEEP_TIME	60000
- #define DEF_GC_THREAD_NOGC_SLEEP_TIME	300000	/* wait 5 min */
- 
-+/* GC sleep parameters for zoned deivces */
-+#define DEF_GC_THREAD_MIN_SLEEP_TIME_ZONED	10
-+#define DEF_GC_THREAD_MAX_SLEEP_TIME_ZONED	20
-+#define DEF_GC_THREAD_NOGC_SLEEP_TIME_ZONED	60000
-+
- /* choose candidates from sections which has age of more than 7 days */
- #define DEF_GC_THREAD_AGE_THRESHOLD		(60 * 60 * 24 * 7)
- #define DEF_GC_THREAD_CANDIDATE_RATIO		20	/* select 20% oldest sections as candidates */
-@@ -25,6 +30,9 @@
- #define LIMIT_INVALID_BLOCK	40 /* percentage over total user space */
- #define LIMIT_FREE_BLOCK	40 /* percentage over invalid + free space */
- 
-+#define LIMIT_NO_ZONED_GC	60 /* percentage over total user space of no gc for zoned devices */
-+#define LIMIT_BOOST_ZONED_GC	25 /* percentage over total user space of boosted gc for zoned devices */
-+
- #define DEF_GC_FAILED_PINNED_FILES	2048
- #define MAX_GC_FAILED_PINNED_FILES	USHRT_MAX
- 
-@@ -152,6 +160,12 @@ static inline void decrease_sleep_time(struct f2fs_gc_kthread *gc_th,
- 		*wait -= min_time;
- }
- 
-+static inline bool has_enough_free_blocks(struct f2fs_sb_info *sbi,
-+						unsigned int limit_perc)
-+{
-+	return free_sections(sbi) > ((sbi->total_sections * limit_perc) / 100);
-+}
-+
- static inline bool has_enough_invalid_blocks(struct f2fs_sb_info *sbi)
- {
- 	block_t user_block_count = sbi->user_block_count;
-@@ -167,3 +181,10 @@ static inline bool has_enough_invalid_blocks(struct f2fs_sb_info *sbi)
- 		free_user_blocks(sbi) <
- 			limit_free_user_blocks(invalid_user_blocks));
- }
-+
-+static inline bool need_to_boost_gc(struct f2fs_sb_info *sbi)
-+{
-+	if (f2fs_sb_has_blkzoned(sbi))
-+		return !has_enough_free_blocks(sbi, LIMIT_BOOST_ZONED_GC);
-+	return has_enough_invalid_blocks(sbi);
-+}
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index d0c5305248c0d..2a2ac02ddedf6 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -707,6 +707,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 			if (!strcmp(name, "on")) {
- 				F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_ON;
- 			} else if (!strcmp(name, "off")) {
-+				if (f2fs_sb_has_blkzoned(sbi)) {
-+					f2fs_warn(sbi, "zoned devices need bggc");
-+					kfree(name);
-+					return -EINVAL;
-+				}
- 				F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_OFF;
- 			} else if (!strcmp(name, "sync")) {
- 				F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_SYNC;
--- 
-2.43.0
-
+ 			   HWMON_T_LABEL     |
+ 			   HWMON_T_INPUT     |
 
 
 
