@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F0E994C41
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53855994999
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37C1028406D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E681F26D45
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BC21DE89F;
-	Tue,  8 Oct 2024 12:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69911DED4D;
+	Tue,  8 Oct 2024 12:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4WgiVLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2Qg9Rli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E311DE886;
-	Tue,  8 Oct 2024 12:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849251DD54F;
+	Tue,  8 Oct 2024 12:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391944; cv=none; b=Xnt9IJZK9iGXmdspHCE9MLvCbLLC4R1WBcIRI2F96iDr3TXLUwI6uaEDcTBJjsusYIGT7xR8JZplSk0SGBWmvB9tpudRax5sYqCV0P5dnslPR4HQ4qbtEJMVL2srfTsOPUuzbdCM6HLKkV8PwWbrO7lqvF4YTjV7PZKE46nvc4A=
+	t=1728390252; cv=none; b=GM0USWICgj3rN16YUZZoNYVah8DfvoEgublguZ0Ynt1wupqb/K577BgB9zAfHUAfbF1Q4GAPNdAZ5vq8B03dZiq9M7FSLoj5ozYRbOfRhk/74BnNukSwqxRsb4BYNhC5tEWYrs2nLNOREP6zEpRfFAAd3utbIx7qFzyEwfsl1Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391944; c=relaxed/simple;
-	bh=u0fJzuB9GgG6QtjjXtd/UGlG3CW/1+5UELuAfN3Co7w=;
+	s=arc-20240116; t=1728390252; c=relaxed/simple;
+	bh=2A3waWSOUg94SEYwMuuII9392tJwkTW7H8Lq+pfq6rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YqOTy7flIhPZWBP4OiCTb0ZVazuK5tqc+oMaY34sbeEaohUmWAAcLc39qUBtGRspuRKqgOtbWtfchZomBRNLg8lg4iU13DmAo7UnjlBRjVJe+paQFP2zbKRrptGaIrvYmkxBOwSpZIyLI59wXF6RlFkOI28pGK3vOkZiZhEDHvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4WgiVLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F72C4CEC7;
-	Tue,  8 Oct 2024 12:52:23 +0000 (UTC)
+	 MIME-Version; b=XR9wDmzIuKGGoc5fz+QohCbYpZkV+YpSAZYUbC34/KXNJvWsjpOFwfL3pYSJg8JE2NFeBvcwYcKqavuSan+4GXGx0VjuQ96PQqtApzGU0jlD7LqCIYXMcrnS+4+xMz+lH5Se8h9/n3RYos2fJC2jpPbqYgUnpzWY2N0aTvP5NoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2Qg9Rli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7190C4CEC7;
+	Tue,  8 Oct 2024 12:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391944;
-	bh=u0fJzuB9GgG6QtjjXtd/UGlG3CW/1+5UELuAfN3Co7w=;
+	s=korg; t=1728390252;
+	bh=2A3waWSOUg94SEYwMuuII9392tJwkTW7H8Lq+pfq6rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4WgiVLMAwusiUK5IgpViFs7l74kUtYV1QlaViMj2x0nxRmPBMX2Q/qVy+1EMTWbx
-	 K9qubCChRDOZqWOvpiisxj9O9F5SwuYB4SKriggmHck2ZM7pvrjZ6ZpwY+5uN42EY3
-	 JLXQPIltZ6t4Nm3aSzFmEl3XdmzgWUL67bagXrs8=
+	b=d2Qg9RliA4vOpVKz+Dfn91HSC7gd0tf7ZoqvLYIFa3TNO5ImudRmrcbcQpyQ4owZV
+	 XOwyB2MmrxAEGKR/2Mbm4F6hiiH3S2IpyOH9c6yFJilmtU9klUZ93YazvM1eGdmYhA
+	 qa8w8BOvhyQp7G5CN8sAfpxYaeKH5VqoVzuAV0p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 268/558] drm/printer: Allow NULL data in devcoredump printer
-Date: Tue,  8 Oct 2024 14:04:58 +0200
-Message-ID: <20241008115712.877562184@linuxfoundation.org>
+Subject: [PATCH 6.10 236/482] drm/amdkfd: Check int source id for utcl2 poison event
+Date: Tue,  8 Oct 2024 14:04:59 +0200
+Message-ID: <20241008115657.586215281@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Hawking Zhang <Hawking.Zhang@amd.com>
 
-[ Upstream commit 53369581dc0c68a5700ed51e1660f44c4b2bb524 ]
+[ Upstream commit db6341a9168d2a24ded526277eeab29724d76e9d ]
 
-We want to determine the size of the devcoredump before writing it out.
-To that end, we will run the devcoredump printer with NULL data to get
-the size, alloc data based on the generated offset, then run the
-devcorecump again with a valid data pointer to print.  This necessitates
-not writing data to the data pointer on the initial pass, when it is
-NULL.
+Traditional utcl2 fault_status polling does not
+work in SRIOV environment. The polling of fault
+status register from guest side will be dropped
+by hardware.
 
-v5:
- - Better commit message (Jonathan)
- - Add kerenl doc with examples (Jani)
+Driver should switch to check utcl2 interrupt
+source id to identify utcl2 poison event. It is
+set to 1 when poisoned data interrupts are
+signaled.
 
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Acked-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240801154118.2547543-3-matthew.brost@intel.com
+v2: drop the unused local variable (Tao)
+
+Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_print.c | 13 +++++----
- include/drm/drm_print.h     | 54 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 61 insertions(+), 6 deletions(-)
+ .../gpu/drm/amd/amdkfd/kfd_int_process_v9.c    | 18 +-----------------
+ drivers/gpu/drm/amd/amdkfd/soc15_int.h         |  1 +
+ 2 files changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_print.c b/drivers/gpu/drm/drm_print.c
-index cf24dfdeb6b27..0081190201a7f 100644
---- a/drivers/gpu/drm/drm_print.c
-+++ b/drivers/gpu/drm/drm_print.c
-@@ -100,8 +100,9 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
- 			copy = iterator->remain;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
+index 78dde62fb04ad..c282f5253c445 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
+@@ -414,25 +414,9 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
+ 		   client_id == SOC15_IH_CLIENTID_UTCL2) {
+ 		struct kfd_vm_fault_info info = {0};
+ 		uint16_t ring_id = SOC15_RING_ID_FROM_IH_ENTRY(ih_ring_entry);
+-		uint32_t node_id = SOC15_NODEID_FROM_IH_ENTRY(ih_ring_entry);
+-		uint32_t vmid_type = SOC15_VMID_TYPE_FROM_IH_ENTRY(ih_ring_entry);
+-		int hub_inst = 0;
+ 		struct kfd_hsa_memory_exception_data exception_data;
  
- 		/* Copy out the bit of the string that we need */
--		memcpy(iterator->data,
--			str + (iterator->start - iterator->offset), copy);
-+		if (iterator->data)
-+			memcpy(iterator->data,
-+			       str + (iterator->start - iterator->offset), copy);
- 
- 		iterator->offset = iterator->start + copy;
- 		iterator->remain -= copy;
-@@ -110,7 +111,8 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
- 
- 		len = min_t(ssize_t, strlen(str), iterator->remain);
- 
--		memcpy(iterator->data + pos, str, len);
-+		if (iterator->data)
-+			memcpy(iterator->data + pos, str, len);
- 
- 		iterator->offset += len;
- 		iterator->remain -= len;
-@@ -140,8 +142,9 @@ void __drm_printfn_coredump(struct drm_printer *p, struct va_format *vaf)
- 	if ((iterator->offset >= iterator->start) && (len < iterator->remain)) {
- 		ssize_t pos = iterator->offset - iterator->start;
- 
--		snprintf(((char *) iterator->data) + pos,
--			iterator->remain, "%pV", vaf);
-+		if (iterator->data)
-+			snprintf(((char *) iterator->data) + pos,
-+				 iterator->remain, "%pV", vaf);
- 
- 		iterator->offset += len;
- 		iterator->remain -= len;
-diff --git a/include/drm/drm_print.h b/include/drm/drm_print.h
-index 5d9dff5149c99..d2676831d765d 100644
---- a/include/drm/drm_print.h
-+++ b/include/drm/drm_print.h
-@@ -221,7 +221,8 @@ drm_vprintf(struct drm_printer *p, const char *fmt, va_list *va)
- 
- /**
-  * struct drm_print_iterator - local struct used with drm_printer_coredump
-- * @data: Pointer to the devcoredump output buffer
-+ * @data: Pointer to the devcoredump output buffer, can be NULL if using
-+ * drm_printer_coredump to determine size of devcoredump
-  * @start: The offset within the buffer to start writing
-  * @remain: The number of bytes to write for this iteration
-  */
-@@ -266,6 +267,57 @@ struct drm_print_iterator {
-  *			coredump_read, ...)
-  *	}
-  *
-+ * The above example has a time complexity of O(N^2), where N is the size of the
-+ * devcoredump. This is acceptable for small devcoredumps but scales poorly for
-+ * larger ones.
-+ *
-+ * Another use case for drm_coredump_printer is to capture the devcoredump into
-+ * a saved buffer before the dev_coredump() callback. This involves two passes:
-+ * one to determine the size of the devcoredump and another to print it to a
-+ * buffer. Then, in dev_coredump(), copy from the saved buffer into the
-+ * devcoredump read buffer.
-+ *
-+ * For example::
-+ *
-+ *	char *devcoredump_saved_buffer;
-+ *
-+ *	ssize_t __coredump_print(char *buffer, ssize_t count, ...)
-+ *	{
-+ *		struct drm_print_iterator iter;
-+ *		struct drm_printer p;
-+ *
-+ *		iter.data = buffer;
-+ *		iter.start = 0;
-+ *		iter.remain = count;
-+ *
-+ *		p = drm_coredump_printer(&iter);
-+ *
-+ *		drm_printf(p, "foo=%d\n", foo);
-+ *		...
-+ *		return count - iter.remain;
-+ *	}
-+ *
-+ *	void coredump_print(...)
-+ *	{
-+ *		ssize_t count;
-+ *
-+ *		count = __coredump_print(NULL, INT_MAX, ...);
-+ *		devcoredump_saved_buffer = kvmalloc(count, GFP_KERNEL);
-+ *		__coredump_print(devcoredump_saved_buffer, count, ...);
-+ *	}
-+ *
-+ *	void coredump_read(char *buffer, loff_t offset, size_t count,
-+ *			   void *data, size_t datalen)
-+ *	{
-+ *		...
-+ *		memcpy(buffer, devcoredump_saved_buffer + offset, count);
-+ *		...
-+ *	}
-+ *
-+ * The above example has a time complexity of O(N*2), where N is the size of the
-+ * devcoredump. This scales better than the previous example for larger
-+ * devcoredumps.
-+ *
-  * RETURNS:
-  * The &drm_printer object
-  */
+-		/* gfxhub */
+-		if (!vmid_type && dev->adev->gfx.funcs->ih_node_to_logical_xcc) {
+-			hub_inst = dev->adev->gfx.funcs->ih_node_to_logical_xcc(dev->adev,
+-				node_id);
+-			if (hub_inst < 0)
+-				hub_inst = 0;
+-		}
+-
+-		/* mmhub */
+-		if (vmid_type && client_id == SOC15_IH_CLIENTID_VMC)
+-			hub_inst = node_id / 4;
+-
+-		if (amdgpu_amdkfd_ras_query_utcl2_poison_status(dev->adev,
+-					hub_inst, vmid_type)) {
++		if (source_id == SOC15_INTSRC_VMC_UTCL2_POISON) {
+ 			event_interrupt_poison_consumption_v9(dev, pasid, client_id);
+ 			return;
+ 		}
+diff --git a/drivers/gpu/drm/amd/amdkfd/soc15_int.h b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
+index 10138676f27fd..e5c0205f26181 100644
+--- a/drivers/gpu/drm/amd/amdkfd/soc15_int.h
++++ b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
+@@ -29,6 +29,7 @@
+ #define SOC15_INTSRC_CP_BAD_OPCODE	183
+ #define SOC15_INTSRC_SQ_INTERRUPT_MSG	239
+ #define SOC15_INTSRC_VMC_FAULT		0
++#define SOC15_INTSRC_VMC_UTCL2_POISON	1
+ #define SOC15_INTSRC_SDMA_TRAP		224
+ #define SOC15_INTSRC_SDMA_ECC		220
+ #define SOC21_INTSRC_SDMA_TRAP		49
 -- 
 2.43.0
 
