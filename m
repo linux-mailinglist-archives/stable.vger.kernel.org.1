@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B7E994B98
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 322149948A3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F149AB2799D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05EA1F2830A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A451DE8A0;
-	Tue,  8 Oct 2024 12:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5A61DE3A3;
+	Tue,  8 Oct 2024 12:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWHz0M2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGzCV6K7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CB51DE2CF;
-	Tue,  8 Oct 2024 12:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07211D0E23;
+	Tue,  8 Oct 2024 12:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391428; cv=none; b=HFH2nO9L13O3w3y6HJJHSvIWRXildaYCnTG55BKDcJrGMdbuRvyd6R9ZkmdCP7TAzWjbPZJH4fRFB9eHWj7eMMJxzrfpKl+at11Ffw0b5TE+DrGYRELHMBttevbtocTglwNEnaa6uwT0j5NuOHnjy2Zb+Cx2qF4Fsy4ERc5N9IA=
+	t=1728389708; cv=none; b=UJYP1kn2KNf8XR88PZvwbQk36b+ENKX4vgZxw/Rph5PJc/TJumuQG6H3x/FsKG4ugTXroMsbQlgtNmu/4k9UsoJvB8xhEPPkecIR1t7WV6FVmrMbSqyEn1ygSHFxDaXkhFr/O4T46uzYMFBBZxaN26nx3iDUP0HW1dDW2TZ+T44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391428; c=relaxed/simple;
-	bh=/tl25x99j27BrdoNbFNLUNPSRk1/Y0/whtOo41j77VI=;
+	s=arc-20240116; t=1728389708; c=relaxed/simple;
+	bh=T29U0R38DOR+v9AnMPyq7HONS0RrqhRKGnEVTJ0EI9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=luc4CfbtijTk1/jQjh0d3ylVRpjHkzuYoECpLQTw2G4El3PvqfbPoKUus7c4+QUKUU0nV8UcEvaGk9gAmffTdBTjgZP2KlNgZrln1LI07/IsOk7u0Gj+0rOiWv7pMnXQfXSzaomDqKwuK4Envl6WeF+PvxSpBr41mDUr5Mcyrfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWHz0M2W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF0EC4CEC7;
-	Tue,  8 Oct 2024 12:43:47 +0000 (UTC)
+	 MIME-Version; b=dWB8sOgTin3NYJDhdCI4fjMxGhswUZHr+ncr/IFWAZI5YHCXhj/j5I6cfuJaUiPyXKG0BoSYyTITA0pgIz03zjOhsuUAS09xO0hvZEWm+dyr0GwJOYivO75S4Hgf2s/5zl+PQ7sNx/rtvOY0UN4QcYGkgg6TVpPU2ShUmZWrfqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGzCV6K7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29451C4CEC7;
+	Tue,  8 Oct 2024 12:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391428;
-	bh=/tl25x99j27BrdoNbFNLUNPSRk1/Y0/whtOo41j77VI=;
+	s=korg; t=1728389707;
+	bh=T29U0R38DOR+v9AnMPyq7HONS0RrqhRKGnEVTJ0EI9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWHz0M2Wx+d4IMxtbCkzLn/eul2SsRFrXDlMww4I6ySRMhqddQiSDMTZBn/o19zvd
-	 kfgHvMq+zjb2l02nRIuvPKCWUG10cv4EdSI4XnJCg3iz9OeE7C0RcC2RsufFqvsXpA
-	 CESzag5cO14jXlzGHCEyIsvIaVjmzXJPQWesNgt0=
+	b=pGzCV6K79SBAhfA23wMt7dLQhXU5Sf+tMNyhpSM8tcQSKqSUD+dW+tI1PkRAD7m20
+	 6XFkxNGYYOj0f4Dymcn3ARALR/wdFROarkTcQb8nR2xwoi7uZb3lgAG0fUV8Zvk0cw
+	 tJPHnFowBpN0FL3B2d+8j33w3h2vAjWn+qmYYvq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 104/558] fs/inode: Prevent dump_mapping() accessing invalid dentry.d_name.name
-Date: Tue,  8 Oct 2024 14:02:14 +0200
-Message-ID: <20241008115706.461322421@linuxfoundation.org>
+Subject: [PATCH 6.10 072/482] wifi: rtw89: avoid to add interface to list twice when SER
+Date: Tue,  8 Oct 2024 14:02:15 +0200
+Message-ID: <20241008115651.140192059@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 7f7b850689ac06a62befe26e1fd1806799e7f152 ]
+[ Upstream commit 7dd5d2514a8ea58f12096e888b0bd050d7eae20a ]
 
-It's observed that a crash occurs during hot-remove a memory device,
-in which user is accessing the hugetlb. See calltrace as following:
+If SER L2 occurs during the WoWLAN resume flow, the add interface flow
+is triggered by ieee80211_reconfig(). However, due to
+rtw89_wow_resume() return failure, it will cause the add interface flow
+to be executed again, resulting in a double add list and causing a kernel
+panic. Therefore, we have added a check to prevent double adding of the
+list.
 
+list_add double add: new=ffff99d6992e2010, prev=ffff99d6992e2010, next=ffff99d695302628.
 ------------[ cut here ]------------
-WARNING: CPU: 1 PID: 14045 at arch/x86/mm/fault.c:1278 do_user_addr_fault+0x2a0/0x790
-Modules linked in: kmem device_dax cxl_mem cxl_pmem cxl_port cxl_pci dax_hmem dax_pmem nd_pmem cxl_acpi nd_btt cxl_core crc32c_intel nvme virtiofs fuse nvme_core nfit libnvdimm dm_multipath scsi_dh_rdac scsi_dh_emc s
-mirror dm_region_hash dm_log dm_mod
-CPU: 1 PID: 14045 Comm: daxctl Not tainted 6.10.0-rc2-lizhijian+ #492
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:do_user_addr_fault+0x2a0/0x790
-Code: 48 8b 00 a8 04 0f 84 b5 fe ff ff e9 1c ff ff ff 4c 89 e9 4c 89 e2 be 01 00 00 00 bf 02 00 00 00 e8 b5 ef 24 00 e9 42 fe ff ff <0f> 0b 48 83 c4 08 4c 89 ea 48 89 ee 4c 89 e7 5b 5d 41 5c 41 5d 41
-RSP: 0000:ffffc90000a575f0 EFLAGS: 00010046
-RAX: ffff88800c303600 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000001000 RSI: ffffffff82504162 RDI: ffffffff824b2c36
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffc90000a57658
-R13: 0000000000001000 R14: ffff88800bc2e040 R15: 0000000000000000
-FS:  00007f51cb57d880(0000) GS:ffff88807fd00000(0000) knlGS:0000000000000000
+kernel BUG at lib/list_debug.c:37!
+invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W  O       6.6.30-02659-gc18865c4dfbd #1 770df2933251a0e3c888ba69d1053a817a6376a7
+Hardware name: HP Grunt/Grunt, BIOS Google_Grunt.11031.169.0 06/24/2021
+Workqueue: events_freezable ieee80211_restart_work [mac80211]
+RIP: 0010:__list_add_valid_or_report+0x5e/0xb0
+Code: c7 74 18 48 39 ce 74 13 b0 01 59 5a 5e 5f 41 58 41 59 41 5a 5d e9 e2 d6 03 00 cc 48 c7 c7 8d 4f 17 83 48 89 c2 e8 02 c0 00 00 <0f> 0b 48 c7 c7 aa 8c 1c 83 e8 f4 bf 00 00 0f 0b 48 c7 c7 c8 bc 12
+RSP: 0018:ffffa91b8007bc50 EFLAGS: 00010246
+RAX: 0000000000000058 RBX: ffff99d6992e0900 RCX: a014d76c70ef3900
+RDX: ffffa91b8007bae8 RSI: 00000000ffffdfff RDI: 0000000000000001
+RBP: ffffa91b8007bc88 R08: 0000000000000000 R09: ffffa91b8007bae0
+R10: 00000000ffffdfff R11: ffffffff83a79800 R12: ffff99d695302060
+R13: ffff99d695300900 R14: ffff99d6992e1be0 R15: ffff99d6992e2010
+FS:  0000000000000000(0000) GS:ffff99d6aac00000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000001000 CR3: 00000000072e2004 CR4: 00000000001706f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+CR2: 000078fbdba43480 CR3: 000000010e464000 CR4: 00000000001506f0
 Call Trace:
  <TASK>
- ? __warn+0x8d/0x190
- ? do_user_addr_fault+0x2a0/0x790
- ? report_bug+0x1c3/0x1d0
- ? handle_bug+0x3c/0x70
- ? exc_invalid_op+0x14/0x70
+ ? __die_body+0x1f/0x70
+ ? die+0x3d/0x60
+ ? do_trap+0xa4/0x110
+ ? __list_add_valid_or_report+0x5e/0xb0
+ ? do_error_trap+0x6d/0x90
+ ? __list_add_valid_or_report+0x5e/0xb0
+ ? handle_invalid_op+0x30/0x40
+ ? __list_add_valid_or_report+0x5e/0xb0
+ ? exc_invalid_op+0x3c/0x50
  ? asm_exc_invalid_op+0x16/0x20
- ? do_user_addr_fault+0x2a0/0x790
- ? exc_page_fault+0x31/0x200
- exc_page_fault+0x68/0x200
-<...snip...>
-BUG: unable to handle page fault for address: 0000000000001000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 800000000ad92067 P4D 800000000ad92067 PUD 7677067 PMD 0
- Oops: Oops: 0000 [#1] PREEMPT SMP PTI
- ---[ end trace 0000000000000000 ]---
- BUG: unable to handle page fault for address: 0000000000001000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 800000000ad92067 P4D 800000000ad92067 PUD 7677067 PMD 0
- Oops: Oops: 0000 [#1] PREEMPT SMP PTI
- CPU: 1 PID: 14045 Comm: daxctl Kdump: loaded Tainted: G        W          6.10.0-rc2-lizhijian+ #492
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
- RIP: 0010:dentry_name+0x1f4/0x440
-<...snip...>
-? dentry_name+0x2fa/0x440
-vsnprintf+0x1f3/0x4f0
-vprintk_store+0x23a/0x540
-vprintk_emit+0x6d/0x330
-_printk+0x58/0x80
-dump_mapping+0x10b/0x1a0
-? __pfx_free_object_rcu+0x10/0x10
-__dump_page+0x26b/0x3e0
-? vprintk_emit+0xe0/0x330
-? _printk+0x58/0x80
-? dump_page+0x17/0x50
-dump_page+0x17/0x50
-do_migrate_range+0x2f7/0x7f0
-? do_migrate_range+0x42/0x7f0
-? offline_pages+0x2f4/0x8c0
-offline_pages+0x60a/0x8c0
-memory_subsys_offline+0x9f/0x1c0
-? lockdep_hardirqs_on+0x77/0x100
-? _raw_spin_unlock_irqrestore+0x38/0x60
-device_offline+0xe3/0x110
-state_store+0x6e/0xc0
-kernfs_fop_write_iter+0x143/0x200
-vfs_write+0x39f/0x560
-ksys_write+0x65/0xf0
-do_syscall_64+0x62/0x130
+ ? __list_add_valid_or_report+0x5e/0xb0
+ rtw89_ops_add_interface+0x309/0x310 [rtw89_core 7c32b1ee6854761c0321027c8a58c5160e41f48f]
+ drv_add_interface+0x5c/0x130 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
+ ieee80211_reconfig+0x241/0x13d0 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
+ ? finish_wait+0x3e/0x90
+ ? synchronize_rcu_expedited+0x174/0x260
+ ? sync_rcu_exp_done_unlocked+0x50/0x50
+ ? wake_bit_function+0x40/0x40
+ ieee80211_restart_work+0xf0/0x140 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
+ process_scheduled_works+0x1e5/0x480
+ worker_thread+0xea/0x1e0
+ kthread+0xdb/0x110
+ ? move_linked_works+0x90/0x90
+ ? kthread_associate_blkcg+0xa0/0xa0
+ ret_from_fork+0x3b/0x50
+ ? kthread_associate_blkcg+0xa0/0xa0
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
+Modules linked in: dm_integrity async_xor xor async_tx lz4 lz4_compress zstd zstd_compress zram zsmalloc rfcomm cmac uinput algif_hash algif_skcipher af_alg btusb btrtl iio_trig_hrtimer industrialio_sw_trigger btmtk industrialio_configfs btbcm btintel uvcvideo videobuf2_vmalloc iio_trig_sysfs videobuf2_memops videobuf2_v4l2 videobuf2_common uvc snd_hda_codec_hdmi veth snd_hda_intel snd_intel_dspcfg acpi_als snd_hda_codec industrialio_triggered_buffer kfifo_buf snd_hwdep industrialio i2c_piix4 snd_hda_core designware_i2s ip6table_nat snd_soc_max98357a xt_MASQUERADE xt_cgroup snd_soc_acp_rt5682_mach fuse rtw89_8922ae(O) rtw89_8922a(O) rtw89_pci(O) rtw89_core(O) 8021q mac80211(O) bluetooth ecdh_generic ecc cfg80211 r8152 mii joydev
+gsmi: Log Shutdown Reason 0x03
+---[ end trace 0000000000000000 ]---
 
-Previously, some sanity check have been done in dump_mapping() before
-the print facility parsing '%pd' though, it's still possible to run into
-an invalid dentry.d_name.name.
-
-Since dump_mapping() only needs to dump the filename only, retrieve it
-by itself in a safer way to prevent an unnecessary crash.
-
-Note that either retrieving the filename with '%pd' or
-strncpy_from_kernel_nofault(), the filename could be unreliable.
-
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://lore.kernel.org/r/20240826055503.1522320-1-lizhijian@fujitsu.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240731070506.46100-4-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/inode.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  4 +++-
+ drivers/net/wireless/realtek/rtw89/util.h     | 18 ++++++++++++++++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 7125b73b53675..551ba352072fa 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -595,6 +595,7 @@ void dump_mapping(const struct address_space *mapping)
- 	struct hlist_node *dentry_first;
- 	struct dentry *dentry_ptr;
- 	struct dentry dentry;
-+	char fname[64] = {};
- 	unsigned long ino;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 1ec97250e88e5..4fae0bd566f6a 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -126,7 +126,9 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
+ 	rtwvif->rtwdev = rtwdev;
+ 	rtwvif->roc.state = RTW89_ROC_IDLE;
+ 	rtwvif->offchan = false;
+-	list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
++	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif))
++		list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
++
+ 	INIT_WORK(&rtwvif->update_beacon_work, rtw89_core_update_beacon_work);
+ 	INIT_DELAYED_WORK(&rtwvif->roc.roc_work, rtw89_roc_work);
+ 	rtw89_leave_ps_mode(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/util.h b/drivers/net/wireless/realtek/rtw89/util.h
+index e2ed4565025dd..d4ee9078a4f48 100644
+--- a/drivers/net/wireless/realtek/rtw89/util.h
++++ b/drivers/net/wireless/realtek/rtw89/util.h
+@@ -14,6 +14,24 @@
+ #define rtw89_for_each_rtwvif(rtwdev, rtwvif)				       \
+ 	list_for_each_entry(rtwvif, &(rtwdev)->rtwvifs_list, list)
  
- 	/*
-@@ -631,11 +632,14 @@ void dump_mapping(const struct address_space *mapping)
- 		return;
- 	}
- 
-+	if (strncpy_from_kernel_nofault(fname, dentry.d_name.name, 63) < 0)
-+		strscpy(fname, "<invalid>");
- 	/*
--	 * if dentry is corrupted, the %pd handler may still crash,
--	 * but it's unlikely that we reach here with a corrupt mapping
-+	 * Even if strncpy_from_kernel_nofault() succeeded,
-+	 * the fname could be unreliable
- 	 */
--	pr_warn("aops:%ps ino:%lx dentry name:\"%pd\"\n", a_ops, ino, &dentry);
-+	pr_warn("aops:%ps ino:%lx dentry name(?):\"%s\"\n",
-+		a_ops, ino, fname);
- }
- 
- void clear_inode(struct inode *inode)
++/* Before adding rtwvif to list, we need to check if it already exist, beacase
++ * in some case such as SER L2 happen during WoWLAN flow, calling reconfig
++ * twice cause the list to be added twice.
++ */
++static inline bool rtw89_rtwvif_in_list(struct rtw89_dev *rtwdev,
++					struct rtw89_vif *new)
++{
++	struct rtw89_vif *rtwvif;
++
++	lockdep_assert_held(&rtwdev->mutex);
++
++	rtw89_for_each_rtwvif(rtwdev, rtwvif)
++		if (rtwvif == new)
++			return true;
++
++	return false;
++}
++
+ /* The result of negative dividend and positive divisor is undefined, but it
+  * should be one case of round-down or round-up. So, make it round-down if the
+  * result is round-up.
 -- 
 2.43.0
 
