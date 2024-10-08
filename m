@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FF2994DD3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D70F994C09
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B6A3283359
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 054D51F287A7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE9D1DE88F;
-	Tue,  8 Oct 2024 13:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732721DE4CC;
+	Tue,  8 Oct 2024 12:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeLlUGsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kwwxOWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF2C1C32EB;
-	Tue,  8 Oct 2024 13:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7FE1C2420;
+	Tue,  8 Oct 2024 12:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392992; cv=none; b=db2t1FkTTk+w0ygxWjoImr1Jo1CPl5v3pBn8NBS+NgwM1bKeedzIEwXaVtU1sGQJdr7t+DgERGrQysTqeWfUjF1WRIFRKDlxf9j/UdeoUUvQb/IOP9MgV+GG7iIGv0ThRNUjpqDKFhTrOME9miqTaM4xRuM6+5+dDDE3liowZfQ=
+	t=1728391775; cv=none; b=G45FlsgxM+I5ard0KObDGkRiUcp7SSZsiOI3Ge56pvacGbZYfcSd19JIua7Bg+KUZ64db+mfa7KLw8mCeuX4sDFBqtXY5DEH+DkeNvsRffl8rJib9D2qQAom/rkiX6FgnBajw2Zy0G0kuHFG4DK6GOGZrPE1PCdTf4IUNmfpc6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392992; c=relaxed/simple;
-	bh=vBSjwA/sRmMRLLivj8NdfdkAzwrlWjFN84RNuukDFZ0=;
+	s=arc-20240116; t=1728391775; c=relaxed/simple;
+	bh=LuM7Z4rjGAz3TYiOJ/N55CgHzTPuUhZeFWgNHQl1HhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u908iQVvYmO6zbgsXJgS+4mFq7xHHwn9W91b56JyZkEdptYK9RvwR/tMaKL6F3jj2nq68Qx2E0P4kcYpLWI8CN+T9epHaMRPwvowicphUbmab5zbq5tZ2oUWDc5amwNKr5rOn/J2rEFFGDTDYL/n52d9Wx+olTx3JsToFPYhO4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeLlUGsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E2BC4CECD;
-	Tue,  8 Oct 2024 13:09:51 +0000 (UTC)
+	 MIME-Version; b=GH4+UwxlxE//fIYNY+ROhcz20hIEcndPYl2U+tMxRSvI2QvRblD7HSAN6f8ztaJn7gweQFd/Ii8NwWGpifaSArKVjwjvgou/8nXqmtaKgL6qbNCc9G+hvpC/RkfQZWrITAozFYV1CflywDijoOl7N2yYpOkwN6JT2iGf+1Vfi8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kwwxOWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859CAC4CEC7;
+	Tue,  8 Oct 2024 12:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392992;
-	bh=vBSjwA/sRmMRLLivj8NdfdkAzwrlWjFN84RNuukDFZ0=;
+	s=korg; t=1728391775;
+	bh=LuM7Z4rjGAz3TYiOJ/N55CgHzTPuUhZeFWgNHQl1HhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeLlUGsU9p+rfsctxHICL5zIlYhQ3qA3TU4RZISDq9JoL4N6hWU5SDWt8DByxeGtg
-	 nkJPJuz+X2S6sP8X1fte3YSBooQZ/5i9r+iZfik2hL/1AIa/h4+yCugMS1nJ02XGY5
-	 eUSEwKAoh2i4j/zJf8dB5GZDKK5KSnUvZJly+tZc=
+	b=1kwwxOWH+6K1BVfLsR+AyO2EIN8thg6dKt/jgIGLyauAKkda9X0g3kam0I3oQ/rFd
+	 4ygwX9ajEuSiiwWdHH4kbcNy4BxA8tkxxglzKm4hRAAH00OwQ0avZrjWLaUydZdbD6
+	 GKaBVcjlh/qqWEiEaJTsCfMhbzawM07y9t90hhTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/386] jump_label: Simplify and clarify static_key_fast_inc_cpus_locked()
-Date: Tue,  8 Oct 2024 14:04:08 +0200
-Message-ID: <20241008115629.451506990@linuxfoundation.org>
+Subject: [PATCH 6.11 219/558] ata: sata_sil: Rename sil_blacklist to sil_quirks
+Date: Tue,  8 Oct 2024 14:04:09 +0200
+Message-ID: <20241008115710.961000923@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 9bc2ff871f00437ad2f10c1eceff51aaa72b478f ]
+[ Upstream commit 93b0f9e11ce511353c65b7f924cf5f95bd9c3aba ]
 
-Make the code more obvious and add proper comments to avoid future head
-scratching.
+Rename the array sil_blacklist to sil_quirks as this name is more
+neutral and is also consistent with how this driver define quirks with
+the SIL_QUIRK_XXX flags.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240610124406.548322963@linutronix.de
-Stable-dep-of: 1d7f856c2ca4 ("jump_label: Fix static_key_slow_dec() yet again")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/jump_label.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/ata/sata_sil.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index 1ed269b2c4035..7374053bbe049 100644
---- a/kernel/jump_label.c
-+++ b/kernel/jump_label.c
-@@ -159,22 +159,24 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
- 	if (static_key_fast_inc_not_disabled(key))
- 		return true;
+diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
+index cc77c02482843..df095659bae0f 100644
+--- a/drivers/ata/sata_sil.c
++++ b/drivers/ata/sata_sil.c
+@@ -128,7 +128,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
+ static const struct sil_drivelist {
+ 	const char *product;
+ 	unsigned int quirk;
+-} sil_blacklist [] = {
++} sil_quirks[] = {
+ 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
+ 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
+@@ -600,8 +600,8 @@ static void sil_thaw(struct ata_port *ap)
+  *	list, and apply the fixups to only the specific
+  *	devices/hosts/firmwares that need it.
+  *
+- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
+- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
++ *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
++ *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
+  *	pessimistic fix for the following reasons...
+  *	- There seems to be less info on it, only one device gleaned off the
+  *	Windows	driver, maybe only one is affected.  More info would be greatly
+@@ -620,9 +620,9 @@ static void sil_dev_config(struct ata_device *dev)
  
--	jump_label_lock();
--	if (atomic_read(&key->enabled) == 0) {
--		atomic_set(&key->enabled, -1);
-+	guard(mutex)(&jump_label_mutex);
-+	/* Try to mark it as 'enabling in progress. */
-+	if (!atomic_cmpxchg(&key->enabled, 0, -1)) {
- 		jump_label_update(key);
- 		/*
--		 * Ensure that if the above cmpxchg loop observes our positive
--		 * value, it must also observe all the text changes.
-+		 * Ensure that when static_key_fast_inc_not_disabled() or
-+		 * static_key_slow_try_dec() observe the positive value,
-+		 * they must also observe all the text changes.
- 		 */
- 		atomic_set_release(&key->enabled, 1);
- 	} else {
--		if (WARN_ON_ONCE(!static_key_fast_inc_not_disabled(key))) {
--			jump_label_unlock();
-+		/*
-+		 * While holding the mutex this should never observe
-+		 * anything else than a value >= 1 and succeed
-+		 */
-+		if (WARN_ON_ONCE(!static_key_fast_inc_not_disabled(key)))
- 			return false;
--		}
- 	}
--	jump_label_unlock();
- 	return true;
- }
+ 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
+ 
+-	for (n = 0; sil_blacklist[n].product; n++)
+-		if (!strcmp(sil_blacklist[n].product, model_num)) {
+-			quirks = sil_blacklist[n].quirk;
++	for (n = 0; sil_quirks[n].product; n++)
++		if (!strcmp(sil_quirks[n].product, model_num)) {
++			quirks = sil_quirks[n].quirk;
+ 			break;
+ 		}
  
 -- 
 2.43.0
