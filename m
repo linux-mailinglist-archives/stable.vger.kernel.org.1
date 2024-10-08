@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C49A994922
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAB0994BC4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE0D8281BD4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2C0128651F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AC81CF297;
-	Tue,  8 Oct 2024 12:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479B61DE4C4;
+	Tue,  8 Oct 2024 12:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A54qUe0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVuzRmx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AB91D12EA;
-	Tue,  8 Oct 2024 12:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0703A1DE2CF;
+	Tue,  8 Oct 2024 12:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389991; cv=none; b=EZ+6sV9D9E5WtZrsv84wbksa2I8MPRJesRgZBQXW5+Oun3sHgDSCsVhqats8iTmThbRYqJdVF4KCrk4F4UN9F+nQUQEoGnXGo96LAzFvoNnW9qN4p2gIl8OLWb//xc1UsPBgtnrl7V4nvYJg8XXmuDnmnDmahlitHe4cmI3/2XA=
+	t=1728391582; cv=none; b=CQ35JFUvjLohfxbfZGA6ftljd8zSZfuWArJG8wDYGsQC/wduNK5nLaI/s0eVLk+89wtOmgdNjxoZs0Pr6BwlHTYIpNDEsFNGYx99PL346osU5ZA1/INSmVGVQ8Om+Nu7zbXSPsGfGtzgERlJzRG2xYE4rzuhNUPOj1zc9iCvLEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389991; c=relaxed/simple;
-	bh=Pq5ehgab07yw8iwjmxgr+TUpbteoluAVk4WbVtA2YmI=;
+	s=arc-20240116; t=1728391582; c=relaxed/simple;
+	bh=sahE01RuJPa54Uic5RkBrF0JU4D4uDH4bwcXT/CGhE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O6P3GZIedYONW8spuzJAd5erxi3OHeoc/xpA2qkGpZfxUzrk2NONA+hI7830LtzwF0WQGCYUZenqiFQ8lGTj5uY4BTugpEjCwpw950AuVP/01CPAWAj9lQe2nprjSN1lFnuYo7c4vxuKPMV3E2feLRc2+9V0iQ0CDeptC8bVKmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A54qUe0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B40C4CEC7;
-	Tue,  8 Oct 2024 12:19:50 +0000 (UTC)
+	 MIME-Version; b=Zchse91GvOk44c9l8QXrQuUuBYn2q+TiPszIfm/3YjnEJDsOXD8gIRNNCJyXA+LeePUYqsCwJTkf9d6XdTFTqrsJLCO3QpDRCFnSTKIbrLT6cI3wVTNrfTc8tkJn7p/aBt4zJ8SDNreoQ4f9mwfpb7fRm8OTPJa/cJkkJDgUiXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVuzRmx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762D9C4CEC7;
+	Tue,  8 Oct 2024 12:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389991;
-	bh=Pq5ehgab07yw8iwjmxgr+TUpbteoluAVk4WbVtA2YmI=;
+	s=korg; t=1728391581;
+	bh=sahE01RuJPa54Uic5RkBrF0JU4D4uDH4bwcXT/CGhE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A54qUe0rfODjKdDxklc1PLG9qjbCF+/eOVT7OhSLWROpr1fNn0RikLPBKf4aMeSSY
-	 6W84Zcpr88vGv2ZeqwosfoEcM9FCWjipIzYciujW+QQOfG9F0cAvyPM4HoEceBN4W9
-	 1u8ElDxIqxQo1VN6Bj5cOOGCadaAgyVIu2ln6CxE=
+	b=wVuzRmx7faw/QwsoFqmh7ahnUFQfNkpxTeuO5JNyBk2GXm2U44YNl+xXAkGbod62A
+	 wHvof9wRd795KlDuil9mhu31w8IZPlqJ/V4Wp7hK0IZ0gQqtY4qNT8N6xjCn0rcE+0
+	 N3zuZNQQa9G4tLv3MB2gOhd4mci0ICGW/1KAivgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
-	Fares Mehanna <faresx@amazon.de>,
-	Will Deacon <will@kernel.org>,
+	Yang Shen <shenyang39@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 126/482] arm64: trans_pgd: mark PTEs entries as valid to avoid dead kexec()
+Subject: [PATCH 6.11 159/558] crypto: hisilicon - fix missed error branch
 Date: Tue,  8 Oct 2024 14:03:09 +0200
-Message-ID: <20241008115653.263756905@linuxfoundation.org>
+Message-ID: <20241008115708.617673332@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fares Mehanna <faresx@amazon.de>
+From: Yang Shen <shenyang39@huawei.com>
 
-[ Upstream commit 7eced90b202d63cdc1b9b11b1353adb1389830f9 ]
+[ Upstream commit f386dc64e1a5d3dcb84579119ec350ab026fea88 ]
 
-The reasons for PTEs in the kernel direct map to be marked invalid are not
-limited to kfence / debug pagealloc machinery. In particular,
-memfd_secret() also steals pages with set_direct_map_invalid_noflush().
+If an error occurs in the process after the SGL is mapped
+successfully, it need to unmap the SGL.
 
-When building the transitional page tables for kexec from the current
-kernel's page tables, those pages need to become regular writable pages,
-otherwise, if the relocation places kexec segments over such pages, a fault
-will occur during kexec, leading to host going dark during kexec.
+Otherwise, memory problems may occur.
 
-This patch addresses the kexec issue by marking any PTE as valid if it is
-not none. While this fixes the kexec crash, it does not address the
-security concern that if processes owning secret memory are not terminated
-before kexec, the secret content will be mapped in the new kernel without
-being scrubbed.
-
-Suggested-by: Jan H. Schönherr <jschoenh@amazon.de>
-Signed-off-by: Fares Mehanna <faresx@amazon.de>
-Link: https://lore.kernel.org/r/20240902163309.97113-1-faresx@amazon.de
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Yang Shen <shenyang39@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/trans_pgd.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/crypto/hisilicon/sgl.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
-index 5139a28130c08..0f7b484cb2ff2 100644
---- a/arch/arm64/mm/trans_pgd.c
-+++ b/arch/arm64/mm/trans_pgd.c
-@@ -42,14 +42,16 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
- 		 * the temporary mappings we use during restore.
- 		 */
- 		__set_pte(dst_ptep, pte_mkwrite_novma(pte));
--	} else if ((debug_pagealloc_enabled() ||
--		   is_kfence_address((void *)addr)) && !pte_none(pte)) {
-+	} else if (!pte_none(pte)) {
- 		/*
- 		 * debug_pagealloc will removed the PTE_VALID bit if
- 		 * the page isn't in use by the resume kernel. It may have
- 		 * been in use by the original kernel, in which case we need
- 		 * to put it back in our copy to do the restore.
- 		 *
-+		 * Other cases include kfence / vmalloc / memfd_secret which
-+		 * may call `set_direct_map_invalid_noflush()`.
-+		 *
- 		 * Before marking this entry valid, check the pfn should
- 		 * be mapped.
- 		 */
+diff --git a/drivers/crypto/hisilicon/sgl.c b/drivers/crypto/hisilicon/sgl.c
+index 568acd0aee3fa..c974f95cd126f 100644
+--- a/drivers/crypto/hisilicon/sgl.c
++++ b/drivers/crypto/hisilicon/sgl.c
+@@ -225,7 +225,7 @@ hisi_acc_sg_buf_map_to_hw_sgl(struct device *dev,
+ 	dma_addr_t curr_sgl_dma = 0;
+ 	struct acc_hw_sge *curr_hw_sge;
+ 	struct scatterlist *sg;
+-	int sg_n;
++	int sg_n, ret;
+ 
+ 	if (!dev || !sgl || !pool || !hw_sgl_dma || index >= pool->count)
+ 		return ERR_PTR(-EINVAL);
+@@ -240,14 +240,15 @@ hisi_acc_sg_buf_map_to_hw_sgl(struct device *dev,
+ 
+ 	if (sg_n_mapped > pool->sge_nr) {
+ 		dev_err(dev, "the number of entries in input scatterlist is bigger than SGL pool setting.\n");
+-		return ERR_PTR(-EINVAL);
++		ret = -EINVAL;
++		goto err_unmap;
+ 	}
+ 
+ 	curr_hw_sgl = acc_get_sgl(pool, index, &curr_sgl_dma);
+ 	if (IS_ERR(curr_hw_sgl)) {
+ 		dev_err(dev, "Get SGL error!\n");
+-		dma_unmap_sg(dev, sgl, sg_n, DMA_BIDIRECTIONAL);
+-		return ERR_PTR(-ENOMEM);
++		ret = -ENOMEM;
++		goto err_unmap;
+ 	}
+ 	curr_hw_sgl->entry_length_in_sgl = cpu_to_le16(pool->sge_nr);
+ 	curr_hw_sge = curr_hw_sgl->sge_entries;
+@@ -262,6 +263,11 @@ hisi_acc_sg_buf_map_to_hw_sgl(struct device *dev,
+ 	*hw_sgl_dma = curr_sgl_dma;
+ 
+ 	return curr_hw_sgl;
++
++err_unmap:
++	dma_unmap_sg(dev, sgl, sg_n, DMA_BIDIRECTIONAL);
++
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(hisi_acc_sg_buf_map_to_hw_sgl);
+ 
 -- 
 2.43.0
 
