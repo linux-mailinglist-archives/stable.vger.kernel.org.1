@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-82674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2203994E37
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A26994980
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 626C4B2307A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34BE1F23C78
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DE81DED60;
-	Tue,  8 Oct 2024 13:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B5A1DF732;
+	Tue,  8 Oct 2024 12:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZs59c+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxfEFqHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F3B1DE89F;
-	Tue,  8 Oct 2024 13:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC7B1DE898;
+	Tue,  8 Oct 2024 12:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393043; cv=none; b=SaS99SPXCzbOaMaDV3fySRCgizz8KwhjMhzW6ZWTjlbN5LS/M5W7LQjiMesh96f+JnX0OkAVqDxNW6jP/yt/pJoFYFvnspH767MfrbEZXmPjFm9w8OevO82GnLxBtpLimKnqsx7ayDE2NULXCS4EGAzXk7q4q6mS+c+UIZf2cDE=
+	t=1728390199; cv=none; b=mAgFyIw8S6iLQvjS3srol52PfoDCJLnmrmgexVjPai5NKdEmCrjRAOJPJtbOpACmqGm2KKlZpki6ldEplZMBG2+zRLX1F6oFrTZ70U1VxQWc0lUieffPnJDSaD+AvvCP4UMX0x42bVzJMeWSZnbpTcuI6PYBviuLC/ic9LrlrCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393043; c=relaxed/simple;
-	bh=xpufS9yN+SMtNmWd9+Wlg9qYehzXNI0G2sZF2xuraEQ=;
+	s=arc-20240116; t=1728390199; c=relaxed/simple;
+	bh=uh6N15Ts1lYXhJqjulzqBcFR8cqzSajDRhigulC4dIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0u6RIiBcSE6+xnJvyognh1IZdAQzlhTYm5mFX5iGzlHPK/xO1SMsQhwXIV/TsEwcjaqbmvoLIjnQ13AA+4a5KI2EXgMWprYpejUj8LsFBJUQWOdk3+2AIGZkKumqomqPset0V4Z09iLMgW2KYMqTsRW4XLAwvTQWSrA7yZaPAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZs59c+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30719C4CEC7;
-	Tue,  8 Oct 2024 13:10:42 +0000 (UTC)
+	 MIME-Version; b=TIu1cZ2PWdfAXPYAxXxnYt0X7x1nPe2w/Mg0J2tNoExxnNnmZNGHE7/2P4STsoHKlo7ZaGfK7WSFD1hM7t4SU1BwP+kIrpOKiAsHiX9zC2ibF6cNeU5lXod6zeB2nSqTEcK3AP9qnI9hZmPfA9ARz2WtrNhE9fOzS8DGvpQpovE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxfEFqHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D521C4CEC7;
+	Tue,  8 Oct 2024 12:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393043;
-	bh=xpufS9yN+SMtNmWd9+Wlg9qYehzXNI0G2sZF2xuraEQ=;
+	s=korg; t=1728390198;
+	bh=uh6N15Ts1lYXhJqjulzqBcFR8cqzSajDRhigulC4dIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZs59c+6XD89mrO+x0HAAeRB/vgmuJ6jqrx9VfWO1+D5LbEp4/bn6Lll60SbKheha
-	 A3f6JwPkF4uJnJZseIIuLTqGFQwXCYWGLwPU6RrH7jhzJr6ndCokPf/lvGbN9Jm6B1
-	 HCfUqBUd3SO9j9Gq7NCVgB4xLMaIv32IMNYmUtak=
+	b=cxfEFqHHVfDTTCnt7D+qd/MK0xKKNuplcKWUhuB3AvMQgcWQyriHqRFCXBfjKn7Vt
+	 7EfoeEkCnLmE3QINuayBNsDvlpHPl1K3UNJGk4XRGSHpED9j8hy0XZuUWg3pvF+0dw
+	 kYGrQ1lo944Qf3tCUuG5ugdlOtSEAwkHibV1kCyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Alex Hung <alex.hung@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/386] iomap: constrain the file range passed to iomap_file_unshare
+Subject: [PATCH 6.10 218/482] drm/amd/display: Avoid overflow assignment in link_dp_cts
 Date: Tue,  8 Oct 2024 14:04:41 +0200
-Message-ID: <20241008115630.897625438@linuxfoundation.org>
+Message-ID: <20241008115656.890976084@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit a311a08a4237241fb5b9d219d3e33346de6e83e0 ]
+[ Upstream commit a15268787b79fd183dd526cc16bec9af4f4e49a1 ]
 
-File contents can only be shared (i.e. reflinked) below EOF, so it makes
-no sense to try to unshare ranges beyond EOF.  Constrain the file range
-parameters here so that we don't have to do that in the callers.
+sampling_rate is an uint8_t but is assigned an unsigned int, and thus it
+can overflow. As a result, sampling_rate is changed to uint32_t.
 
-Fixes: 5f4e5752a8a3 ("fs: add iomap_file_dirty")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/20241002150213.GC21853@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Similarly, LINK_QUAL_PATTERN_SET has a size of 2 bits, and it should
+only be assigned to a value less or equal than 4.
+
+This fixes 2 INTEGER_OVERFLOW issues reported by Coverity.
+
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dax.c               | 6 +++++-
- fs/iomap/buffered-io.c | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dp_types.h                  | 2 +-
+ drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c | 3 ++-
+ drivers/gpu/drm/amd/display/include/dpcd_defs.h               | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 3380b43cb6bbb..d48b4fc7a4838 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1305,11 +1305,15 @@ int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 	struct iomap_iter iter = {
- 		.inode		= inode,
- 		.pos		= pos,
--		.len		= len,
- 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE | IOMAP_DAX,
- 	};
-+	loff_t size = i_size_read(inode);
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+index 519c3df78ee5b..95c275bf649bd 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+@@ -727,7 +727,7 @@ struct dp_audio_test_data_flags {
+ struct dp_audio_test_data {
  
-+	if (pos < 0 || pos >= size)
-+		return 0;
-+
-+	iter.len = min(len, size - pos);
- 	while ((ret = iomap_iter(&iter, ops)) > 0)
- 		iter.processed = dax_unshare_iter(&iter);
- 	return ret;
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 975fd88c1f0f4..5371b16341fff 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1316,11 +1316,15 @@ iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 	struct iomap_iter iter = {
- 		.inode		= inode,
- 		.pos		= pos,
--		.len		= len,
- 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE,
- 	};
-+	loff_t size = i_size_read(inode);
- 	int ret;
- 
-+	if (pos < 0 || pos >= size)
-+		return 0;
-+
-+	iter.len = min(len, size - pos);
- 	while ((ret = iomap_iter(&iter, ops)) > 0)
- 		iter.processed = iomap_unshare_iter(&iter);
- 	return ret;
+ 	struct dp_audio_test_data_flags flags;
+-	uint8_t sampling_rate;
++	uint32_t sampling_rate;
+ 	uint8_t channel_count;
+ 	uint8_t pattern_type;
+ 	uint8_t pattern_period[8];
+diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+index 8d1a1cc94a8b3..6b27ac56f60d8 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
++++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+@@ -775,7 +775,8 @@ bool dp_set_test_pattern(
+ 			core_link_read_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					    &training_pattern.raw,
+ 					    sizeof(training_pattern));
+-			training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
++			if (pattern <= PHY_TEST_PATTERN_END_DP11)
++				training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
+ 			core_link_write_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					     &training_pattern.raw,
+ 					     sizeof(training_pattern));
+diff --git a/drivers/gpu/drm/amd/display/include/dpcd_defs.h b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+index aee5170f5fb23..c246235e4afec 100644
+--- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
++++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+@@ -76,6 +76,7 @@ enum dpcd_phy_test_patterns {
+ 	PHY_TEST_PATTERN_D10_2,
+ 	PHY_TEST_PATTERN_SYMBOL_ERROR,
+ 	PHY_TEST_PATTERN_PRBS7,
++	PHY_TEST_PATTERN_END_DP11 = PHY_TEST_PATTERN_PRBS7,
+ 	PHY_TEST_PATTERN_80BIT_CUSTOM,/* For DP1.2 only */
+ 	PHY_TEST_PATTERN_CP2520_1,
+ 	PHY_TEST_PATTERN_CP2520_2,
 -- 
 2.43.0
 
