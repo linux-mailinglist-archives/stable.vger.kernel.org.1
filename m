@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-82319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0E4994C23
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D80994C03
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD4932850F6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521E128148A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731221D31A0;
-	Tue,  8 Oct 2024 12:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70BB1DE4C4;
+	Tue,  8 Oct 2024 12:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAeetx75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lGgLfk9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319711DE2CF;
-	Tue,  8 Oct 2024 12:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8515D1C2420;
+	Tue,  8 Oct 2024 12:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391865; cv=none; b=dpGTcy4kqQ40UOrxEdVLBW+fujn3Rva8IeROlU12LCnTje4az2eV5CHdlpTdIDgiq72WZaZrVftgDI/HVGfGxzQkBg6qoiGd2RxCvJ7cdKIuaI+1xtI/K6pWN6CBp+ipHE3mVeZXz4MlDjPl4lSlD/DPI/fs9uNkRV9gK3iv5KM=
+	t=1728391758; cv=none; b=H7QIk9mmT58HFmw4gF6LINXQY0ZPLi6WB5xhKEnlKwCl3+HDe9yWuEb3IBtmnyrwspCxAwEd1vpwf2YrxVHQJRuOuEnsWtauB6f1mXc5MgEuA2Vst80qPU4EomeMXjVjk42qsfCu0FDkYpTViwbG5WzRebNUVY1/GE7irsnGa3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391865; c=relaxed/simple;
-	bh=6ul1ueODuLorEpPNRKvPOlBbU+HzG4KQUsHsHj3SMN8=;
+	s=arc-20240116; t=1728391758; c=relaxed/simple;
+	bh=P+nLC9VhkPVL7j8OTLg7xsrvCL/0DHb+ZIy51f7n8Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezhtXG44mLg/jUfmP/1O3bOFZAmWpIyIqUg2g/BSuy1zv3D5+lOEq3elvJP59pZL/+GI3vLHJqcTvhgVVlssGlVrqxSgHYIyOM7LozEq+xbpYXhd0OKbARLrecsQ9rKLEFtzUNyexkfp9qVx4K6SrpbsCyywoidLJazwfrxlogk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAeetx75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B39C4CECC;
-	Tue,  8 Oct 2024 12:51:03 +0000 (UTC)
+	 MIME-Version; b=epuzHV8+7TMMWlqt1f4+ivmyqdQGL/Ud4aT7VL0Z+EjRRlF8Bs302tnnGhvW2whPQ/J3Gtx8oxZMm7/cDWOTuuPliXfW/OC55gKlvW9I7zZEB4193fFlwb9mcF9BXH2kGo0WdYTC2hxaZepPdXbKt6F6ZjliIpf3gqsqRoiTKCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lGgLfk9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA5FC4CEC7;
+	Tue,  8 Oct 2024 12:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391864;
-	bh=6ul1ueODuLorEpPNRKvPOlBbU+HzG4KQUsHsHj3SMN8=;
+	s=korg; t=1728391758;
+	bh=P+nLC9VhkPVL7j8OTLg7xsrvCL/0DHb+ZIy51f7n8Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAeetx75q4ZwEcmxbwFeqzFCFV7UoACIsxAcHm79i7qNijRTg2cM8uD/5nEwgUGr4
-	 F+sCNjURPpkz3LbwOpmqVCpgpi/YlNpYwIkLxu9GhToaCpVT6AEz4DwCY9Aeckr7ys
-	 mt8Gzu68ZA8vNO6W/+dpnx72gQ0XnmJUsKgBmIGY=
+	b=0lGgLfk9W856oaqngzUQ9P3/ts8KSHN+KNoCiPZ6Di80vHZxNWTW4ZSx6ACPxuTdr
+	 GdmrBaZKWtgwIVWh4m9r8ahN3y6AGJxdu3jnd6T71tOd9H53kr+ziLjkvUiaAJgl/H
+	 Yhb39312nm6n592+bInaYkJOeWJR1pLr+v2lpmPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 205/558] drm/amd/display: Check null pointers before used
-Date: Tue,  8 Oct 2024 14:03:55 +0200
-Message-ID: <20241008115710.412050604@linuxfoundation.org>
+Subject: [PATCH 6.11 206/558] drm/amd/display: Check null pointers before multiple uses
+Date: Tue,  8 Oct 2024 14:03:56 +0200
+Message-ID: <20241008115710.451128532@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
 References: <20241008115702.214071228@linuxfoundation.org>
@@ -71,12 +71,13 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit be1fb44389ca3038ad2430dac4234669bc177ee3 ]
+[ Upstream commit fdd5ecbbff751c3b9061d8ebb08e5c96119915b4 ]
 
 [WHAT & HOW]
-Poniters, such as dc->clk_mgr, are null checked previously in the same
-function, so Coverity warns "implies that "dc->clk_mgr" might be null".
-As a result, these pointers need to be checked when used again.
+Poniters, such as stream_enc and dc->bw_vbios, are null checked previously
+in the same function, so Coverity warns "implies that stream_enc and
+dc->bw_vbios might be null". They are used multiple times in the
+subsequent code and need to be checked.
 
 This fixes 10 FORWARD_NULL issues reported by Coverity.
 
@@ -87,167 +88,244 @@ Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c    | 2 +-
- drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c    | 3 ++-
- drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c    | 3 ++-
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 5 +++--
- drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 4 ++--
- drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c   | 4 ++--
- drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c   | 8 ++++----
- .../amd/display/dc/link/protocols/link_dp_capability.c    | 2 +-
- 8 files changed, 17 insertions(+), 14 deletions(-)
+ .../drm/amd/display/dc/core/dc_hw_sequencer.c | 96 ++++++++++---------
+ .../amd/display/dc/hwss/dcn20/dcn20_hwseq.c   |  8 +-
+ .../display/dc/link/accessories/link_dp_cts.c |  5 +-
+ .../amd/display/dc/link/hwss/link_hwss_dio.c  |  5 +-
+ .../dc/resource/dce112/dce112_resource.c      |  5 +-
+ .../dc/resource/dcn32/dcn32_resource.c        |  3 +
+ .../resource/dcn32/dcn32_resource_helpers.c   | 10 +-
+ 7 files changed, 76 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-index 78df96882d6ec..f8409453434c1 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -195,7 +195,7 @@ void dce11_pplib_apply_display_requirements(
- 	 * , then change minimum memory clock based on real-time bandwidth
- 	 * limitation.
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+index 87e36d51c56d8..4a88412fdfab1 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+@@ -636,57 +636,59 @@ void hwss_build_fast_sequence(struct dc *dc,
+ 	while (current_pipe) {
+ 		current_mpc_pipe = current_pipe;
+ 		while (current_mpc_pipe) {
+-			if (dc->hwss.set_flip_control_gsl && current_mpc_pipe->plane_state && current_mpc_pipe->plane_state->update_flags.raw) {
+-				block_sequence[*num_steps].params.set_flip_control_gsl_params.pipe_ctx = current_mpc_pipe;
+-				block_sequence[*num_steps].params.set_flip_control_gsl_params.flip_immediate = current_mpc_pipe->plane_state->flip_immediate;
+-				block_sequence[*num_steps].func = HUBP_SET_FLIP_CONTROL_GSL;
+-				(*num_steps)++;
+-			}
+-			if (dc->hwss.program_triplebuffer && dc->debug.enable_tri_buf && current_mpc_pipe->plane_state->update_flags.raw) {
+-				block_sequence[*num_steps].params.program_triplebuffer_params.dc = dc;
+-				block_sequence[*num_steps].params.program_triplebuffer_params.pipe_ctx = current_mpc_pipe;
+-				block_sequence[*num_steps].params.program_triplebuffer_params.enableTripleBuffer = current_mpc_pipe->plane_state->triplebuffer_flips;
+-				block_sequence[*num_steps].func = HUBP_PROGRAM_TRIPLEBUFFER;
+-				(*num_steps)++;
+-			}
+-			if (dc->hwss.update_plane_addr && current_mpc_pipe->plane_state->update_flags.bits.addr_update) {
+-				if (resource_is_pipe_type(current_mpc_pipe, OTG_MASTER) &&
+-						stream_status->mall_stream_config.type == SUBVP_MAIN) {
+-					block_sequence[*num_steps].params.subvp_save_surf_addr.dc_dmub_srv = dc->ctx->dmub_srv;
+-					block_sequence[*num_steps].params.subvp_save_surf_addr.addr = &current_mpc_pipe->plane_state->address;
+-					block_sequence[*num_steps].params.subvp_save_surf_addr.subvp_index = current_mpc_pipe->subvp_index;
+-					block_sequence[*num_steps].func = DMUB_SUBVP_SAVE_SURF_ADDR;
++			if (current_mpc_pipe->plane_state) {
++				if (dc->hwss.set_flip_control_gsl && current_mpc_pipe->plane_state->update_flags.raw) {
++					block_sequence[*num_steps].params.set_flip_control_gsl_params.pipe_ctx = current_mpc_pipe;
++					block_sequence[*num_steps].params.set_flip_control_gsl_params.flip_immediate = current_mpc_pipe->plane_state->flip_immediate;
++					block_sequence[*num_steps].func = HUBP_SET_FLIP_CONTROL_GSL;
++					(*num_steps)++;
++				}
++				if (dc->hwss.program_triplebuffer && dc->debug.enable_tri_buf && current_mpc_pipe->plane_state->update_flags.raw) {
++					block_sequence[*num_steps].params.program_triplebuffer_params.dc = dc;
++					block_sequence[*num_steps].params.program_triplebuffer_params.pipe_ctx = current_mpc_pipe;
++					block_sequence[*num_steps].params.program_triplebuffer_params.enableTripleBuffer = current_mpc_pipe->plane_state->triplebuffer_flips;
++					block_sequence[*num_steps].func = HUBP_PROGRAM_TRIPLEBUFFER;
++					(*num_steps)++;
++				}
++				if (dc->hwss.update_plane_addr && current_mpc_pipe->plane_state->update_flags.bits.addr_update) {
++					if (resource_is_pipe_type(current_mpc_pipe, OTG_MASTER) &&
++							stream_status->mall_stream_config.type == SUBVP_MAIN) {
++						block_sequence[*num_steps].params.subvp_save_surf_addr.dc_dmub_srv = dc->ctx->dmub_srv;
++						block_sequence[*num_steps].params.subvp_save_surf_addr.addr = &current_mpc_pipe->plane_state->address;
++						block_sequence[*num_steps].params.subvp_save_surf_addr.subvp_index = current_mpc_pipe->subvp_index;
++						block_sequence[*num_steps].func = DMUB_SUBVP_SAVE_SURF_ADDR;
++						(*num_steps)++;
++					}
++
++					block_sequence[*num_steps].params.update_plane_addr_params.dc = dc;
++					block_sequence[*num_steps].params.update_plane_addr_params.pipe_ctx = current_mpc_pipe;
++					block_sequence[*num_steps].func = HUBP_UPDATE_PLANE_ADDR;
+ 					(*num_steps)++;
+ 				}
+ 
+-				block_sequence[*num_steps].params.update_plane_addr_params.dc = dc;
+-				block_sequence[*num_steps].params.update_plane_addr_params.pipe_ctx = current_mpc_pipe;
+-				block_sequence[*num_steps].func = HUBP_UPDATE_PLANE_ADDR;
+-				(*num_steps)++;
+-			}
+-
+-			if (hws->funcs.set_input_transfer_func && current_mpc_pipe->plane_state->update_flags.bits.gamma_change) {
+-				block_sequence[*num_steps].params.set_input_transfer_func_params.dc = dc;
+-				block_sequence[*num_steps].params.set_input_transfer_func_params.pipe_ctx = current_mpc_pipe;
+-				block_sequence[*num_steps].params.set_input_transfer_func_params.plane_state = current_mpc_pipe->plane_state;
+-				block_sequence[*num_steps].func = DPP_SET_INPUT_TRANSFER_FUNC;
+-				(*num_steps)++;
+-			}
++				if (hws->funcs.set_input_transfer_func && current_mpc_pipe->plane_state->update_flags.bits.gamma_change) {
++					block_sequence[*num_steps].params.set_input_transfer_func_params.dc = dc;
++					block_sequence[*num_steps].params.set_input_transfer_func_params.pipe_ctx = current_mpc_pipe;
++					block_sequence[*num_steps].params.set_input_transfer_func_params.plane_state = current_mpc_pipe->plane_state;
++					block_sequence[*num_steps].func = DPP_SET_INPUT_TRANSFER_FUNC;
++					(*num_steps)++;
++				}
+ 
+-			if (dc->hwss.program_gamut_remap && current_mpc_pipe->plane_state->update_flags.bits.gamut_remap_change) {
+-				block_sequence[*num_steps].params.program_gamut_remap_params.pipe_ctx = current_mpc_pipe;
+-				block_sequence[*num_steps].func = DPP_PROGRAM_GAMUT_REMAP;
+-				(*num_steps)++;
+-			}
+-			if (current_mpc_pipe->plane_state->update_flags.bits.input_csc_change) {
+-				block_sequence[*num_steps].params.setup_dpp_params.pipe_ctx = current_mpc_pipe;
+-				block_sequence[*num_steps].func = DPP_SETUP_DPP;
+-				(*num_steps)++;
+-			}
+-			if (current_mpc_pipe->plane_state->update_flags.bits.coeff_reduction_change) {
+-				block_sequence[*num_steps].params.program_bias_and_scale_params.pipe_ctx = current_mpc_pipe;
+-				block_sequence[*num_steps].func = DPP_PROGRAM_BIAS_AND_SCALE;
+-				(*num_steps)++;
++				if (dc->hwss.program_gamut_remap && current_mpc_pipe->plane_state->update_flags.bits.gamut_remap_change) {
++					block_sequence[*num_steps].params.program_gamut_remap_params.pipe_ctx = current_mpc_pipe;
++					block_sequence[*num_steps].func = DPP_PROGRAM_GAMUT_REMAP;
++					(*num_steps)++;
++				}
++				if (current_mpc_pipe->plane_state->update_flags.bits.input_csc_change) {
++					block_sequence[*num_steps].params.setup_dpp_params.pipe_ctx = current_mpc_pipe;
++					block_sequence[*num_steps].func = DPP_SETUP_DPP;
++					(*num_steps)++;
++				}
++				if (current_mpc_pipe->plane_state->update_flags.bits.coeff_reduction_change) {
++					block_sequence[*num_steps].params.program_bias_and_scale_params.pipe_ctx = current_mpc_pipe;
++					block_sequence[*num_steps].func = DPP_PROGRAM_BIAS_AND_SCALE;
++					(*num_steps)++;
++				}
+ 			}
+ 			if (hws->funcs.set_output_transfer_func && current_mpc_pipe->stream->update_flags.bits.out_tf) {
+ 				block_sequence[*num_steps].params.set_output_transfer_func_params.dc = dc;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index 2532ad410cb56..456e19e0d415c 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -2283,6 +2283,9 @@ void dcn20_post_unlock_program_front_end(
+ 		}
+ 	}
+ 
++	if (!hwseq)
++		return;
++
+ 	/* P-State support transitions:
+ 	 * Natural -> FPO: 		P-State disabled in prepare, force disallow anytime is safe
+ 	 * FPO -> Natural: 		Unforce anytime after FW disable is safe (P-State will assert naturally)
+@@ -2290,7 +2293,7 @@ void dcn20_post_unlock_program_front_end(
+ 	 * FPO -> Unsupported:	P-State disabled in prepare, unforce disallow anytime is safe
+ 	 * FPO <-> SubVP:		Force disallow is maintained on the FPO / SubVP pipes
  	 */
--	if ((dc->ctx->asic_id.chip_family == FAMILY_AI) &&
-+	if (dc->bw_vbios && (dc->ctx->asic_id.chip_family == FAMILY_AI) &&
- 	     ASICREV_IS_VEGA20_P(dc->ctx->asic_id.hw_internal_rev) && (context->stream_count >= 2)) {
- 		pp_display_cfg->min_memory_clock_khz = max(pp_display_cfg->min_memory_clock_khz,
- 							   (uint32_t) div64_s64(
-diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c
-index bf399819ca800..22ac2b7e49aea 100644
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c
-@@ -749,7 +749,8 @@ bool hubp1_is_flip_pending(struct hubp *hubp)
- 	if (flip_pending)
- 		return true;
+-	if (hwseq && hwseq->funcs.update_force_pstate)
++	if (hwseq->funcs.update_force_pstate)
+ 		dc->hwseq->funcs.update_force_pstate(dc, context);
  
--	if (earliest_inuse_address.grph.addr.quad_part != hubp->request_address.grph.addr.quad_part)
-+	if (hubp &&
-+	    earliest_inuse_address.grph.addr.quad_part != hubp->request_address.grph.addr.quad_part)
- 		return true;
- 
- 	return false;
-diff --git a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-index 6bba020ad6fbf..0637e4c552d8a 100644
---- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
-@@ -927,7 +927,8 @@ bool hubp2_is_flip_pending(struct hubp *hubp)
- 	if (flip_pending)
- 		return true;
- 
--	if (earliest_inuse_address.grph.addr.quad_part != hubp->request_address.grph.addr.quad_part)
-+	if (hubp &&
-+	    earliest_inuse_address.grph.addr.quad_part != hubp->request_address.grph.addr.quad_part)
- 		return true;
- 
- 	return false;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index fc0d2077aaec4..96371dac72fc1 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -950,7 +950,7 @@ void dce110_edp_backlight_control(
+ 	/* Only program the MALL registers after all the main and phantom pipes
+@@ -2529,6 +2532,9 @@ bool dcn20_wait_for_blank_complete(
  {
- 	struct dc_context *ctx = link->ctx;
- 	struct bp_transmitter_control cntl = { 0 };
--	uint8_t pwrseq_instance;
-+	uint8_t pwrseq_instance = 0;
- 	unsigned int pre_T11_delay = OLED_PRE_T11_DELAY;
- 	unsigned int post_T7_delay = OLED_POST_T7_DELAY;
+ 	int counter;
  
-@@ -1003,7 +1003,8 @@ void dce110_edp_backlight_control(
- 	 */
- 	/* dc_service_sleep_in_milliseconds(50); */
- 		/*edp 1.2*/
--	pwrseq_instance = link->panel_cntl->pwrseq_inst;
-+	if (link->panel_cntl)
-+		pwrseq_instance = link->panel_cntl->pwrseq_inst;
- 
- 	if (cntl.action == TRANSMITTER_CONTROL_BACKLIGHT_ON) {
- 		if (!link->dc->config.edp_no_power_sequencing)
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index 1d2be574f6680..83942abd08e84 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -1554,7 +1554,7 @@ void dcn10_init_hw(struct dc *dc)
- 		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
- 
- 	/* Align bw context with hw config when system resume. */
--	if (dc->clk_mgr->clks.dispclk_khz != 0 && dc->clk_mgr->clks.dppclk_khz != 0) {
-+	if (dc->clk_mgr && dc->clk_mgr->clks.dispclk_khz != 0 && dc->clk_mgr->clks.dppclk_khz != 0) {
- 		dc->current_state->bw_ctx.bw.dcn.clk.dispclk_khz = dc->clk_mgr->clks.dispclk_khz;
- 		dc->current_state->bw_ctx.bw.dcn.clk.dppclk_khz = dc->clk_mgr->clks.dppclk_khz;
- 	}
-@@ -1674,7 +1674,7 @@ void dcn10_init_hw(struct dc *dc)
- 		REG_UPDATE(DCFCLK_CNTL, DCFCLK_GATE_DIS, 0);
- 	}
- 
--	if (dc->clk_mgr->funcs->notify_wm_ranges)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-index 746c522adf84c..3d4b31bd99469 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-@@ -256,10 +256,10 @@ void dcn31_init_hw(struct dc *dc)
- 	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
- 		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
- 
--	if (dc->clk_mgr->funcs->notify_wm_ranges)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
- 
--	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
- 
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-index 80db40787e019..12a39dbc35419 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -235,7 +235,7 @@ void dcn35_init_hw(struct dc *dc)
- 	if (hws->funcs.enable_power_gating_plane)
- 		hws->funcs.enable_power_gating_plane(dc->hwseq, true);
- */
--	if (res_pool->hubbub->funcs->dchubbub_init)
-+	if (res_pool->hubbub && res_pool->hubbub->funcs->dchubbub_init)
- 		res_pool->hubbub->funcs->dchubbub_init(dc->res_pool->hubbub);
- 	/* If taking control over from VBIOS, we may want to optimize our first
- 	 * mode set, so we need to skip powering down pipes until we know which
-@@ -328,10 +328,10 @@ void dcn35_init_hw(struct dc *dc)
- 	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
- 		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
- 
--	if (dc->clk_mgr->funcs->notify_wm_ranges)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
- 
--	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
- 
- 
-@@ -1054,7 +1054,7 @@ void dcn35_calc_blocks_to_gate(struct dc *dc, struct dc_state *context,
- 		if (pipe_ctx->plane_res.hubp)
- 			update_state->pg_pipe_res_update[PG_HUBP][pipe_ctx->plane_res.hubp->inst] = false;
- 
--		if (pipe_ctx->plane_res.dpp)
-+		if (pipe_ctx->plane_res.dpp && pipe_ctx->plane_res.hubp)
- 			update_state->pg_pipe_res_update[PG_DPP][pipe_ctx->plane_res.hubp->inst] = false;
- 
- 		if (pipe_ctx->plane_res.dpp || pipe_ctx->stream_res.opp)
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-index 46bb7a855bc21..60015e94c4aa8 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -2254,7 +2254,7 @@ bool dp_verify_link_cap_with_retries(
- 
- 		memset(&link->verified_link_cap, 0,
- 				sizeof(struct dc_link_settings));
--		if (!link_detect_connection_type(link, &type) || type == dc_connection_none) {
-+		if (link->link_enc && (!link_detect_connection_type(link, &type) || type == dc_connection_none)) {
- 			link->verified_link_cap = fail_safe_link_settings;
++	if (!opp)
++		return false;
++
+ 	for (counter = 0; counter < 1000; counter++) {
+ 		if (!opp->funcs->dpg_is_pending(opp))
  			break;
- 		} else if (dp_verify_link_cap(link, known_limit_link_setting, &fail_count)) {
+diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+index 555c1c484cfdd..df3781081da7a 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
++++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+@@ -804,8 +804,11 @@ bool dp_set_test_pattern(
+ 			break;
+ 		}
+ 
++		if (!pipe_ctx->stream)
++			return false;
++
+ 		if (pipe_ctx->stream_res.tg->funcs->lock_doublebuffer_enable) {
+-			if (pipe_ctx->stream && should_use_dmub_lock(pipe_ctx->stream->link)) {
++			if (should_use_dmub_lock(pipe_ctx->stream->link)) {
+ 				union dmub_hw_lock_flags hw_locks = { 0 };
+ 				struct dmub_hw_lock_inst_flags inst_flags = { 0 };
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_dio.c b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_dio.c
+index b76737b7b9e41..3e47a6735912a 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_dio.c
++++ b/drivers/gpu/drm/amd/display/dc/link/hwss/link_hwss_dio.c
+@@ -74,7 +74,10 @@ void reset_dio_stream_encoder(struct pipe_ctx *pipe_ctx)
+ 	struct link_encoder *link_enc = link_enc_cfg_get_link_enc(pipe_ctx->stream->link);
+ 	struct stream_encoder *stream_enc = pipe_ctx->stream_res.stream_enc;
+ 
+-	if (stream_enc && stream_enc->funcs->disable_fifo)
++	if (!stream_enc)
++		return;
++
++	if (stream_enc->funcs->disable_fifo)
+ 		stream_enc->funcs->disable_fifo(stream_enc);
+ 	if (stream_enc->funcs->set_input_mode)
+ 		stream_enc->funcs->set_input_mode(stream_enc, 0);
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
+index 88afb2a30eef5..162856c523e40 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce112/dce112_resource.c
+@@ -1067,7 +1067,10 @@ static void bw_calcs_data_update_from_pplib(struct dc *dc)
+ 	struct dm_pp_clock_levels clks = {0};
+ 	int memory_type_multiplier = MEMORY_TYPE_MULTIPLIER_CZ;
+ 
+-	if (dc->bw_vbios && dc->bw_vbios->memory_type == bw_def_hbm)
++	if (!dc->bw_vbios)
++		return;
++
++	if (dc->bw_vbios->memory_type == bw_def_hbm)
+ 		memory_type_multiplier = MEMORY_TYPE_HBM;
+ 
+ 	/*do system clock  TODO PPLIB: after PPLIB implement,
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+index 969658313fd65..a43ffa53890af 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+@@ -1651,6 +1651,9 @@ static void dcn32_enable_phantom_plane(struct dc *dc,
+ 		else
+ 			phantom_plane = dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state);
+ 
++		if (!phantom_plane)
++			continue;
++
+ 		memcpy(&phantom_plane->address, &curr_pipe->plane_state->address, sizeof(phantom_plane->address));
+ 		memcpy(&phantom_plane->scaling_quality, &curr_pipe->plane_state->scaling_quality,
+ 				sizeof(phantom_plane->scaling_quality));
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
+index d184105ce2b3e..47c8a9fbe7546 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource_helpers.c
+@@ -218,12 +218,12 @@ bool dcn32_is_center_timing(struct pipe_ctx *pipe)
+ 				pipe->stream->timing.v_addressable != pipe->stream->src.height) {
+ 			is_center_timing = true;
+ 		}
+-	}
+ 
+-	if (pipe->plane_state) {
+-		if (pipe->stream->timing.v_addressable != pipe->plane_state->dst_rect.height &&
+-				pipe->stream->timing.v_addressable != pipe->plane_state->src_rect.height) {
+-			is_center_timing = true;
++		if (pipe->plane_state) {
++			if (pipe->stream->timing.v_addressable != pipe->plane_state->dst_rect.height &&
++					pipe->stream->timing.v_addressable != pipe->plane_state->src_rect.height) {
++				is_center_timing = true;
++			}
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
