@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF5399499A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C348D994C4B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 442141F26D79
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80BD0281E17
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B9D1DED66;
-	Tue,  8 Oct 2024 12:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218581DEFF7;
+	Tue,  8 Oct 2024 12:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmLOq0W0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2jgvcAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49D31CF7A2;
-	Tue,  8 Oct 2024 12:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D448E1DEFEA;
+	Tue,  8 Oct 2024 12:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390255; cv=none; b=h5F7/Vo64QxnHZhkYQ5H4FxXMo1bU4JOECJX+Har0A+fh1eps4JFkVvKLbiUg8XV4E3oKJ8xum+/+7CtWjjKzH7kCHW1kIaLkAvFGqBenl4WiJgpu9s34TGVW3FGTTum+StYbzJFXPLAmVzQ2vShLryTg2fs4FutCRvBs1BNC+0=
+	t=1728391950; cv=none; b=WWbhwjHrRySVSAlw7VDnvbvilBGByrrfcRvTjukCYCCHZuIL/szseLp5cin96rF9fM5TbA5Gor43D6WCoejaXp3RGLN2SI623wp38WEWBCsUCrXIhIkeA3oMFQ+Tf43kfSXKJokpTcEpz3H7JEXehXNpIqsb/X3z6SBSfDZJHhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390255; c=relaxed/simple;
-	bh=7nBdqxRv33MHDMAS8LhNDpx3kOpdO2NK1NVAA0rinqg=;
+	s=arc-20240116; t=1728391950; c=relaxed/simple;
+	bh=liUyWHogXWgcJH7Ow1x/H33PBvO844p3umY5WAnvzYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnzRJmXAlNVstojthCb74JpwACuk8qsLe+wX64WvXc7qgLrvlmcEJoy5Pi4rm2KAEwHuQMZx6qZkg6AnV8EdeoXkDMzTBP3QzMDhlVH/qu8qQfQor8m52tYo5tPAZNG9/QhhTsYAD/n8sgy3Z3qpGeP4tiQ7HZi/BiqF48B4OSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmLOq0W0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F62C4CEC7;
-	Tue,  8 Oct 2024 12:24:15 +0000 (UTC)
+	 MIME-Version; b=B880I5s1sjSPbafPd8HS6zkDNDDiJQUxNQYzTmp9WJgOUYSZsJwsk+4FVHwk+iNMRy9vZ6HUMysNjQM0shMcDpDN5tA0/mSAF3pUVXwKX3M4qv1HsyXlMFQIHprPZaMjbLa3618gkNFX65RlOynPSgEpXda4YYs6LyRjhiwwRrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2jgvcAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A5DC4CECC;
+	Tue,  8 Oct 2024 12:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390255;
-	bh=7nBdqxRv33MHDMAS8LhNDpx3kOpdO2NK1NVAA0rinqg=;
+	s=korg; t=1728391950;
+	bh=liUyWHogXWgcJH7Ow1x/H33PBvO844p3umY5WAnvzYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmLOq0W0jp/ruDZZLUJNkCipZW+4vR5cd1Wc3d4FRA4/UPD2yRLPbtJF71dhc/QG7
-	 0Z7H53a9cMqTDBtBZtBGga5prHSUJprt7Gd2Fed4s15A64QCa7Cr90bTlbdBYSyGZq
-	 JpBAP6l9VT1rb+zlXd/VwWxqRVc0/pmN1Zey6JXI=
+	b=M2jgvcAvPyGMKJpv2yVRoDzX782faXjOwau9sJJevynwsOLv3xQx+2JaDM5XD2wPa
+	 xrrSflJBW149HmOFgQNXZ+FExY6QVY8gc2vV6vqNQpuWdMfTHCAFQzA9dscZM0RJWr
+	 SAoPwWjiLUrGsrhVibIUNz0f4C87x9xwV8YvqTJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 237/482] drm/xe: Drop warn on xe_guc_pc_gucrc_disable in guc pc fini
+Subject: [PATCH 6.11 270/558] scsi: aacraid: Rearrange order of struct aac_srb_unit
 Date: Tue,  8 Oct 2024 14:05:00 +0200
-Message-ID: <20241008115657.624079187@linuxfoundation.org>
+Message-ID: <20241008115712.956851350@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit a323782567812ee925e9b7926445532c7afe331b ]
+[ Upstream commit 6e5860b0ad4934baee8c7a202c02033b2631bb44 ]
 
-Not a big deal if CT is down as driver is unloading, no need to warn.
+struct aac_srb_unit contains struct aac_srb, which contains struct sgmap,
+which ends in a (currently) "fake" (1-element) flexible array.  Converting
+this to a flexible array is needed so that runtime bounds checking won't
+think the array is fixed size (i.e. under CONFIG_FORTIFY_SOURCE=y and/or
+CONFIG_UBSAN_BOUNDS=y), as other parts of aacraid use struct sgmap as a
+flexible array.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240820172958.1095143-4-matthew.brost@intel.com
+It is not legal to have a flexible array in the middle of a structure, so
+it either needs to be split up or rearranged so that it is at the end of
+the structure. Luckily, struct aac_srb_unit, which is exclusively
+consumed/updated by aac_send_safw_bmic_cmd(), does not depend on member
+ordering.
+
+The values set in the on-stack struct aac_srb_unit instance "srbu" by the
+only two callers, aac_issue_safw_bmic_identify() and
+aac_get_safw_ciss_luns(), do not contain anything in srbu.srb.sgmap.sg, and
+they both implicitly initialize srbu.srb.sgmap.count to 0 during
+memset(). For example:
+
+        memset(&srbu, 0, sizeof(struct aac_srb_unit));
+
+        srbcmd = &srbu.srb;
+        srbcmd->flags   = cpu_to_le32(SRB_DataIn);
+        srbcmd->cdb[0]  = CISS_REPORT_PHYSICAL_LUNS;
+        srbcmd->cdb[1]  = 2; /* extended reporting */
+        srbcmd->cdb[8]  = (u8)(datasize >> 8);
+        srbcmd->cdb[9]  = (u8)(datasize);
+
+        rcode = aac_send_safw_bmic_cmd(dev, &srbu, phys_luns, datasize);
+
+During aac_send_safw_bmic_cmd(), a separate srb is mapped into DMA, and has
+srbu.srb copied into it:
+
+        srb = fib_data(fibptr);
+        memcpy(srb, &srbu->srb, sizeof(struct aac_srb));
+
+Only then is srb.sgmap.count written and srb->sg populated:
+
+        srb->count              = cpu_to_le32(xfer_len);
+
+        sg64 = (struct sgmap64 *)&srb->sg;
+        sg64->count             = cpu_to_le32(1);
+        sg64->sg[0].addr[1]     = cpu_to_le32(upper_32_bits(addr));
+        sg64->sg[0].addr[0]     = cpu_to_le32(lower_32_bits(addr));
+        sg64->sg[0].count       = cpu_to_le32(xfer_len);
+
+But this is happening in the DMA memory, not in srbu.srb. An attempt to
+copy the changes back to srbu does happen:
+
+        /*
+         * Copy the updated data for other dumping or other usage if
+         * needed
+         */
+        memcpy(&srbu->srb, srb, sizeof(struct aac_srb));
+
+But this was never correct: the sg64 (3 u32s) overlap of srb.sg (2 u32s)
+always meant that srbu.srb would have held truncated information and any
+attempt to walk srbu.srb.sg.sg based on the value of srbu.srb.sg.count
+would result in attempting to parse past the end of srbu.srb.sg.sg[0] into
+srbu.srb_reply.
+
+After getting a reply from hardware, the reply is copied into
+srbu.srb_reply:
+
+        srb_reply = (struct aac_srb_reply *)fib_data(fibptr);
+        memcpy(&srbu->srb_reply, srb_reply, sizeof(struct aac_srb_reply));
+
+This has always been fixed-size, so there's no issue here. It is worth
+noting that the two callers _never check_ srbu contents -- neither
+srbu.srb nor srbu.srb_reply is examined. (They depend on the mapped
+xfer_buf instead.)
+
+Therefore, the ordering of members in struct aac_srb_unit does not matter,
+and the flexible array member can moved to the end.
+
+(Additionally, the two memcpy()s that update srbu could be entirely
+removed as they are never consumed, but I left that as-is.)
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20240711215739.208776-1-kees@kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_pc.c | 2 +-
+ drivers/scsi/aacraid/aacraid.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
-index 23382ced4ea74..69f8b6fdaeaea 100644
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -897,7 +897,7 @@ static void xe_guc_pc_fini(struct drm_device *drm, void *arg)
- 	struct xe_guc_pc *pc = arg;
+diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
+index 7d5a155073c62..9b66fa29fb05c 100644
+--- a/drivers/scsi/aacraid/aacraid.h
++++ b/drivers/scsi/aacraid/aacraid.h
+@@ -2029,8 +2029,8 @@ struct aac_srb_reply
+ };
  
- 	XE_WARN_ON(xe_force_wake_get(gt_to_fw(pc_to_gt(pc)), XE_FORCEWAKE_ALL));
--	XE_WARN_ON(xe_guc_pc_gucrc_disable(pc));
-+	xe_guc_pc_gucrc_disable(pc);
- 	XE_WARN_ON(xe_guc_pc_stop(pc));
- 	xe_force_wake_put(gt_to_fw(pc_to_gt(pc)), XE_FORCEWAKE_ALL);
- }
+ struct aac_srb_unit {
+-	struct aac_srb		srb;
+ 	struct aac_srb_reply	srb_reply;
++	struct aac_srb		srb;
+ };
+ 
+ /*
 -- 
 2.43.0
 
