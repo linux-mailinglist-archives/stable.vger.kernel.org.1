@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-82614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B95994DA1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0A2994FAC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E4D2281745
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832E51F22743
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5E21DED4E;
-	Tue,  8 Oct 2024 13:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB171D9A43;
+	Tue,  8 Oct 2024 13:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnZ5bQPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFS77lh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DFD1DE88F;
-	Tue,  8 Oct 2024 13:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1181DF963;
+	Tue,  8 Oct 2024 13:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392850; cv=none; b=UYkZWMyJa+bztovKLdKtlNr8cy0sc4Cb7zXbtP57QRnDu7VOcvme1CHULzOV5KbMHCDXsHhgcnW/MhcJCzUzdOBe3P/HDjyZady74QFUQUDZsDmMTtR/7Dxru0knb3mJXgICNQVTTtxJVRa/iRjogKRFYQ3HCMCnWl3sDo9LBVM=
+	t=1728394021; cv=none; b=t2XwvAZPQiIjLFK+rOmE43D2fbZ2Arfwt1FfG1xPmk1LRE0yIRaxkEx9cknprjn/FrbiShyqOBWru5M6NNPAKuUStWy8+ysIQoZbrAHZyK1CKA/XxDn6y5XL1A1PVs9WbldNPkB39V53zG6Zk30AIJxrIIyFMOKRODbuzSZCjvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392850; c=relaxed/simple;
-	bh=zNgC0l4B0gNOEmLQ6ySG9GD56m7nfCurqRttVlnNiBw=;
+	s=arc-20240116; t=1728394021; c=relaxed/simple;
+	bh=XbG0fiHx9kv/daCA8xMMqgi65Uwe7GfH4xF1rri2ZMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TxMaJKF5lyhskfvGwTAKY4xtAQKrd9y4+VnWw+TiA6TG0IyJZcnxlq3ozzOAfzhzgiIyZ3w5db7/D+EYY/oszOBQKYILp5xBGZ/n1FGQnDM4EE+Jv6riDGEkckwefgsEoDQmPZrZperemGxhzi0s2lNcJTitQtVPlnKj2D9D204=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnZ5bQPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC1FC4CEC7;
-	Tue,  8 Oct 2024 13:07:29 +0000 (UTC)
+	 MIME-Version; b=alKHIER5WjtyY/uI6RwnG7iikkCHXfKI8DgV5yL3TG1+hvQ3ZvWyNKYNAMnhtOv6OAwEjdauZ4CX5jWysbnrAM9UNqY8slK3nCVFw4iuTP40RItRmwo3EgK8snzMQ4PSqFjE3rtr32s9p2CDC9HwyF+bf9+q7U2wkgCx+KF4PBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFS77lh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E33C4CECC;
+	Tue,  8 Oct 2024 13:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392849;
-	bh=zNgC0l4B0gNOEmLQ6ySG9GD56m7nfCurqRttVlnNiBw=;
+	s=korg; t=1728394021;
+	bh=XbG0fiHx9kv/daCA8xMMqgi65Uwe7GfH4xF1rri2ZMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnZ5bQPbRuAyIJYWxHkCytr7TJ+GVUbY6CJqVkdM5DMwM9QRdZ8eoEoL8IWOZKuIt
-	 a8qZCKeTjyaVsWNP+zA5L3Y1ad8pfPgThfrEmxHa1UDZALgPGNYraCzFtyi6ILf1D7
-	 e/64piOlp+rQrF7REUpqOaSxHq5pd6Jl833JQvzQ=
+	b=ZFS77lh7lj5wriKbPnDU6kQ36o2i+FckFAGpsSTU96Q74R6yrS6WUc8nTDL85DvOr
+	 OUAac4z8RO2JSCbMJcQB0outQi0zCqXIUJbhqg2VcGF2Tn6O+kjUwVtYh1clNYRz2H
+	 Q8jXpZl9OqVjHbZXJMmSZXJYXX/kEnIx9CFKcVRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 537/558] sunrpc: change sp_nrthreads from atomic_t to unsigned int.
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.6 322/386] close_range(): fix the logics in descriptor table trimming
 Date: Tue,  8 Oct 2024 14:09:27 +0200
-Message-ID: <20241008115723.365178179@linuxfoundation.org>
+Message-ID: <20241008115642.056069015@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +60,357 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 60749cbe3d8ae572a6c7dda675de3e8b25797a18 ]
+commit 678379e1d4f7443b170939525d3312cfc37bf86b upstream.
 
-sp_nrthreads is only ever accessed under the service mutex
-  nlmsvc_mutex nfs_callback_mutex nfsd_mutex
-so these is no need for it to be an atomic_t.
+Cloning a descriptor table picks the size that would cover all currently
+opened files.  That's fine for clone() and unshare(), but for close_range()
+there's an additional twist - we clone before we close, and it would be
+a shame to have
+	close_range(3, ~0U, CLOSE_RANGE_UNSHARE)
+leave us with a huge descriptor table when we are not going to keep
+anything past stderr, just because some large file descriptor used to
+be open before our call has taken it out.
 
-The fact that all code using it is single-threaded means that we can
-simplify svc_pool_victim and remove the temporary elevation of
-sp_nrthreads.
+Unfortunately, it had been dealt with in an inherently racy way -
+sane_fdtable_size() gets a "don't copy anything past that" argument
+(passed via unshare_fd() and dup_fd()), close_range() decides how much
+should be trimmed and passes that to unshare_fd().
 
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is, a range that used to extend to the end of descriptor
+table back when close_range() had looked at it might very well have stuff
+grown after it by the time dup_fd() has allocated a new files_struct
+and started to figure out the capacity of fdtable to be attached to that.
+
+That leads to interesting pathological cases; at the very least it's a
+QoI issue, since unshare(CLONE_FILES) is atomic in a sense that it takes
+a snapshot of descriptor table one might have observed at some point.
+Since CLOSE_RANGE_UNSHARE close_range() is supposed to be a combination
+of unshare(CLONE_FILES) with plain close_range(), ending up with a
+weird state that would never occur with unshare(2) is confusing, to put
+it mildly.
+
+It's not hard to get rid of - all it takes is passing both ends of the
+range down to sane_fdtable_size().  There we are under ->files_lock,
+so the race is trivially avoided.
+
+So we do the following:
+	* switch close_files() from calling unshare_fd() to calling
+dup_fd().
+	* undo the calling convention change done to unshare_fd() in
+60997c3d45d9 "close_range: add CLOSE_RANGE_UNSHARE"
+	* introduce struct fd_range, pass a pointer to that to dup_fd()
+and sane_fdtable_size() instead of "trim everything past that point"
+they are currently getting.  NULL means "we are not going to be punching
+any holes"; NR_OPEN_MAX is gone.
+	* make sane_fdtable_size() use find_last_bit() instead of
+open-coding it; it's easier to follow that way.
+	* while we are at it, have dup_fd() report errors by returning
+ERR_PTR(), no need to use a separate int *errorp argument.
+
+Fixes: 60997c3d45d9 "close_range: add CLOSE_RANGE_UNSHARE"
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c           |  2 +-
- fs/nfsd/nfssvc.c           |  2 +-
- include/linux/sunrpc/svc.h |  4 ++--
- net/sunrpc/svc.c           | 31 +++++++++++--------------------
- 4 files changed, 15 insertions(+), 24 deletions(-)
+ fs/file.c               |   93 +++++++++++++++++-------------------------------
+ include/linux/fdtable.h |    8 ++--
+ kernel/fork.c           |   32 +++++++---------
+ 3 files changed, 51 insertions(+), 82 deletions(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 34eb2c2cbcde3..e8704a4e848ca 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1762,7 +1762,7 @@ int nfsd_nl_threads_get_doit(struct sk_buff *skb, struct genl_info *info)
- 			struct svc_pool *sp = &nn->nfsd_serv->sv_pools[i];
- 
- 			err = nla_put_u32(skb, NFSD_A_SERVER_THREADS,
--					  atomic_read(&sp->sp_nrthreads));
-+					  sp->sp_nrthreads);
- 			if (err)
- 				goto err_unlock;
- 		}
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 0bc8eaa5e0098..8103c3c90cd11 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -705,7 +705,7 @@ int nfsd_get_nrthreads(int n, int *nthreads, struct net *net)
- 
- 	if (serv)
- 		for (i = 0; i < serv->sv_nrpools && i < n; i++)
--			nthreads[i] = atomic_read(&serv->sv_pools[i].sp_nrthreads);
-+			nthreads[i] = serv->sv_pools[i].sp_nrthreads;
- 	return 0;
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -267,59 +267,45 @@ static inline void __clear_open_fd(unsig
+ 	__clear_bit(fd / BITS_PER_LONG, fdt->full_fds_bits);
  }
  
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index a7d0406b9ef59..6811681033c0f 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -33,9 +33,9 @@
-  * node traffic on multi-node NUMA NFS servers.
+-static unsigned int count_open_files(struct fdtable *fdt)
+-{
+-	unsigned int size = fdt->max_fds;
+-	unsigned int i;
+-
+-	/* Find the last open fd */
+-	for (i = size / BITS_PER_LONG; i > 0; ) {
+-		if (fdt->open_fds[--i])
+-			break;
+-	}
+-	i = (i + 1) * BITS_PER_LONG;
+-	return i;
+-}
+-
+ /*
+  * Note that a sane fdtable size always has to be a multiple of
+  * BITS_PER_LONG, since we have bitmaps that are sized by this.
+  *
+- * 'max_fds' will normally already be properly aligned, but it
+- * turns out that in the close_range() -> __close_range() ->
+- * unshare_fd() -> dup_fd() -> sane_fdtable_size() we can end
+- * up having a 'max_fds' value that isn't already aligned.
+- *
+- * Rather than make close_range() have to worry about this,
+- * just make that BITS_PER_LONG alignment be part of a sane
+- * fdtable size. Becuase that's really what it is.
++ * punch_hole is optional - when close_range() is asked to unshare
++ * and close, we don't need to copy descriptors in that range, so
++ * a smaller cloned descriptor table might suffice if the last
++ * currently opened descriptor falls into that range.
   */
- struct svc_pool {
--	unsigned int		sp_id;	    	/* pool id; also node id on NUMA */
-+	unsigned int		sp_id;		/* pool id; also node id on NUMA */
- 	struct lwq		sp_xprts;	/* pending transports */
--	atomic_t		sp_nrthreads;	/* # of threads in pool */
-+	unsigned int		sp_nrthreads;	/* # of threads in pool */
- 	struct list_head	sp_all_threads;	/* all server threads */
- 	struct llist_head	sp_idle_threads; /* idle server threads */
+-static unsigned int sane_fdtable_size(struct fdtable *fdt, unsigned int max_fds)
++static unsigned int sane_fdtable_size(struct fdtable *fdt, struct fd_range *punch_hole)
+ {
+-	unsigned int count;
++	unsigned int last = find_last_bit(fdt->open_fds, fdt->max_fds);
  
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 88a59cfa5583c..df06b152ed94e 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -713,7 +713,7 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
- 	serv->sv_nrthreads += 1;
- 	spin_unlock_bh(&serv->sv_lock);
+-	count = count_open_files(fdt);
+-	if (max_fds < NR_OPEN_DEFAULT)
+-		max_fds = NR_OPEN_DEFAULT;
+-	return ALIGN(min(count, max_fds), BITS_PER_LONG);
++	if (last == fdt->max_fds)
++		return NR_OPEN_DEFAULT;
++	if (punch_hole && punch_hole->to >= last && punch_hole->from <= last) {
++		last = find_last_bit(fdt->open_fds, punch_hole->from);
++		if (last == punch_hole->from)
++			return NR_OPEN_DEFAULT;
++	}
++	return ALIGN(last + 1, BITS_PER_LONG);
+ }
  
--	atomic_inc(&pool->sp_nrthreads);
-+	pool->sp_nrthreads += 1;
+ /*
+- * Allocate a new files structure and copy contents from the
+- * passed in files structure.
+- * errorp will be valid only when the returned files_struct is NULL.
++ * Allocate a new descriptor table and copy contents from the passed in
++ * instance.  Returns a pointer to cloned table on success, ERR_PTR()
++ * on failure.  For 'punch_hole' see sane_fdtable_size().
+  */
+-struct files_struct *dup_fd(struct files_struct *oldf, unsigned int max_fds, int *errorp)
++struct files_struct *dup_fd(struct files_struct *oldf, struct fd_range *punch_hole)
+ {
+ 	struct files_struct *newf;
+ 	struct file **old_fds, **new_fds;
+ 	unsigned int open_files, i;
+ 	struct fdtable *old_fdt, *new_fdt;
++	int error;
  
- 	/* Protected by whatever lock the service uses when calling
- 	 * svc_set_num_threads()
-@@ -768,31 +768,22 @@ svc_pool_victim(struct svc_serv *serv, struct svc_pool *target_pool,
- 	struct svc_pool *pool;
- 	unsigned int i;
+-	*errorp = -ENOMEM;
+ 	newf = kmem_cache_alloc(files_cachep, GFP_KERNEL);
+ 	if (!newf)
+-		goto out;
++		return ERR_PTR(-ENOMEM);
  
--retry:
- 	pool = target_pool;
+ 	atomic_set(&newf->count, 1);
  
--	if (pool != NULL) {
--		if (atomic_inc_not_zero(&pool->sp_nrthreads))
--			goto found_pool;
--		return NULL;
--	} else {
-+	if (!pool) {
- 		for (i = 0; i < serv->sv_nrpools; i++) {
- 			pool = &serv->sv_pools[--(*state) % serv->sv_nrpools];
--			if (atomic_inc_not_zero(&pool->sp_nrthreads))
--				goto found_pool;
-+			if (pool->sp_nrthreads)
-+				break;
+@@ -336,7 +322,7 @@ struct files_struct *dup_fd(struct files
+ 
+ 	spin_lock(&oldf->file_lock);
+ 	old_fdt = files_fdtable(oldf);
+-	open_files = sane_fdtable_size(old_fdt, max_fds);
++	open_files = sane_fdtable_size(old_fdt, punch_hole);
+ 
+ 	/*
+ 	 * Check whether we need to allocate a larger fd array and fd set.
+@@ -349,14 +335,14 @@ struct files_struct *dup_fd(struct files
+ 
+ 		new_fdt = alloc_fdtable(open_files - 1);
+ 		if (!new_fdt) {
+-			*errorp = -ENOMEM;
++			error = -ENOMEM;
+ 			goto out_release;
  		}
--		return NULL;
+ 
+ 		/* beyond sysctl_nr_open; nothing to do */
+ 		if (unlikely(new_fdt->max_fds < open_files)) {
+ 			__free_fdtable(new_fdt);
+-			*errorp = -EMFILE;
++			error = -EMFILE;
+ 			goto out_release;
+ 		}
+ 
+@@ -367,7 +353,7 @@ struct files_struct *dup_fd(struct files
+ 		 */
+ 		spin_lock(&oldf->file_lock);
+ 		old_fdt = files_fdtable(oldf);
+-		open_files = sane_fdtable_size(old_fdt, max_fds);
++		open_files = sane_fdtable_size(old_fdt, punch_hole);
  	}
  
--found_pool:
--	set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
--	set_bit(SP_NEED_VICTIM, &pool->sp_flags);
--	if (!atomic_dec_and_test(&pool->sp_nrthreads))
-+	if (pool && pool->sp_nrthreads) {
-+		set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
-+		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
- 		return pool;
--	/* Nothing left in this pool any more */
--	clear_bit(SP_NEED_VICTIM, &pool->sp_flags);
--	clear_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
--	goto retry;
-+	}
-+	return NULL;
+ 	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
+@@ -401,8 +387,7 @@ struct files_struct *dup_fd(struct files
+ 
+ out_release:
+ 	kmem_cache_free(files_cachep, newf);
+-out:
+-	return NULL;
++	return ERR_PTR(error);
  }
  
- static int
-@@ -871,7 +862,7 @@ svc_set_num_threads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
- 	if (!pool)
- 		nrservs -= serv->sv_nrthreads;
- 	else
--		nrservs -= atomic_read(&pool->sp_nrthreads);
-+		nrservs -= pool->sp_nrthreads;
+ static struct fdtable *close_files(struct files_struct * files)
+@@ -736,37 +721,25 @@ int __close_range(unsigned fd, unsigned
+ 	if (fd > max_fd)
+ 		return -EINVAL;
  
- 	if (nrservs > 0)
- 		return svc_start_kthreads(serv, pool, nrservs);
-@@ -959,7 +950,7 @@ svc_exit_thread(struct svc_rqst *rqstp)
+-	if (flags & CLOSE_RANGE_UNSHARE) {
+-		int ret;
+-		unsigned int max_unshare_fds = NR_OPEN_MAX;
++	if ((flags & CLOSE_RANGE_UNSHARE) && atomic_read(&cur_fds->count) > 1) {
++		struct fd_range range = {fd, max_fd}, *punch_hole = &range;
  
- 	list_del_rcu(&rqstp->rq_all);
+ 		/*
+ 		 * If the caller requested all fds to be made cloexec we always
+ 		 * copy all of the file descriptors since they still want to
+ 		 * use them.
+ 		 */
+-		if (!(flags & CLOSE_RANGE_CLOEXEC)) {
+-			/*
+-			 * If the requested range is greater than the current
+-			 * maximum, we're closing everything so only copy all
+-			 * file descriptors beneath the lowest file descriptor.
+-			 */
+-			rcu_read_lock();
+-			if (max_fd >= last_fd(files_fdtable(cur_fds)))
+-				max_unshare_fds = fd;
+-			rcu_read_unlock();
+-		}
+-
+-		ret = unshare_fd(CLONE_FILES, max_unshare_fds, &fds);
+-		if (ret)
+-			return ret;
++		if (flags & CLOSE_RANGE_CLOEXEC)
++			punch_hole = NULL;
  
--	atomic_dec(&pool->sp_nrthreads);
-+	pool->sp_nrthreads -= 1;
++		fds = dup_fd(cur_fds, punch_hole);
++		if (IS_ERR(fds))
++			return PTR_ERR(fds);
+ 		/*
+ 		 * We used to share our file descriptor table, and have now
+ 		 * created a private one, make sure we're using it below.
+ 		 */
+-		if (fds)
+-			swap(cur_fds, fds);
++		swap(cur_fds, fds);
+ 	}
  
- 	spin_lock_bh(&serv->sv_lock);
- 	serv->sv_nrthreads -= 1;
--- 
-2.43.0
-
+ 	if (flags & CLOSE_RANGE_CLOEXEC)
+--- a/include/linux/fdtable.h
++++ b/include/linux/fdtable.h
+@@ -22,7 +22,6 @@
+  * as this is the granularity returned by copy_fdset().
+  */
+ #define NR_OPEN_DEFAULT BITS_PER_LONG
+-#define NR_OPEN_MAX ~0U
+ 
+ struct fdtable {
+ 	unsigned int max_fds;
+@@ -117,7 +116,10 @@ struct task_struct;
+ 
+ void put_files_struct(struct files_struct *fs);
+ int unshare_files(void);
+-struct files_struct *dup_fd(struct files_struct *, unsigned, int *) __latent_entropy;
++struct fd_range {
++	unsigned int from, to;
++};
++struct files_struct *dup_fd(struct files_struct *, struct fd_range *) __latent_entropy;
+ void do_close_on_exec(struct files_struct *);
+ int iterate_fd(struct files_struct *, unsigned,
+ 		int (*)(const void *, struct file *, unsigned),
+@@ -126,8 +128,6 @@ int iterate_fd(struct files_struct *, un
+ extern int close_fd(unsigned int fd);
+ extern int __close_range(unsigned int fd, unsigned int max_fd, unsigned int flags);
+ extern struct file *close_fd_get_file(unsigned int fd);
+-extern int unshare_fd(unsigned long unshare_flags, unsigned int max_fds,
+-		      struct files_struct **new_fdp);
+ 
+ extern struct kmem_cache *files_cachep;
+ 
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1767,33 +1767,30 @@ static int copy_files(unsigned long clon
+ 		      int no_files)
+ {
+ 	struct files_struct *oldf, *newf;
+-	int error = 0;
+ 
+ 	/*
+ 	 * A background process may not have any files ...
+ 	 */
+ 	oldf = current->files;
+ 	if (!oldf)
+-		goto out;
++		return 0;
+ 
+ 	if (no_files) {
+ 		tsk->files = NULL;
+-		goto out;
++		return 0;
+ 	}
+ 
+ 	if (clone_flags & CLONE_FILES) {
+ 		atomic_inc(&oldf->count);
+-		goto out;
++		return 0;
+ 	}
+ 
+-	newf = dup_fd(oldf, NR_OPEN_MAX, &error);
+-	if (!newf)
+-		goto out;
++	newf = dup_fd(oldf, NULL);
++	if (IS_ERR(newf))
++		return PTR_ERR(newf);
+ 
+ 	tsk->files = newf;
+-	error = 0;
+-out:
+-	return error;
++	return 0;
+ }
+ 
+ static int copy_sighand(unsigned long clone_flags, struct task_struct *tsk)
+@@ -3358,17 +3355,16 @@ static int unshare_fs(unsigned long unsh
+ /*
+  * Unshare file descriptor table if it is being shared
+  */
+-int unshare_fd(unsigned long unshare_flags, unsigned int max_fds,
+-	       struct files_struct **new_fdp)
++static int unshare_fd(unsigned long unshare_flags, struct files_struct **new_fdp)
+ {
+ 	struct files_struct *fd = current->files;
+-	int error = 0;
+ 
+ 	if ((unshare_flags & CLONE_FILES) &&
+ 	    (fd && atomic_read(&fd->count) > 1)) {
+-		*new_fdp = dup_fd(fd, max_fds, &error);
+-		if (!*new_fdp)
+-			return error;
++		fd = dup_fd(fd, NULL);
++		if (IS_ERR(fd))
++			return PTR_ERR(fd);
++		*new_fdp = fd;
+ 	}
+ 
+ 	return 0;
+@@ -3426,7 +3422,7 @@ int ksys_unshare(unsigned long unshare_f
+ 	err = unshare_fs(unshare_flags, &new_fs);
+ 	if (err)
+ 		goto bad_unshare_out;
+-	err = unshare_fd(unshare_flags, NR_OPEN_MAX, &new_fd);
++	err = unshare_fd(unshare_flags, &new_fd);
+ 	if (err)
+ 		goto bad_unshare_cleanup_fs;
+ 	err = unshare_userns(unshare_flags, &new_cred);
+@@ -3518,7 +3514,7 @@ int unshare_files(void)
+ 	struct files_struct *old, *copy = NULL;
+ 	int error;
+ 
+-	error = unshare_fd(CLONE_FILES, NR_OPEN_MAX, &copy);
++	error = unshare_fd(CLONE_FILES, &copy);
+ 	if (error || !copy)
+ 		return error;
+ 
 
 
 
