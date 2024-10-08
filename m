@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-81984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92C7994A76
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B59994E9B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F9CEB2207F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7289B1C25413
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BC01DE8AA;
-	Tue,  8 Oct 2024 12:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24BE1DEFC8;
+	Tue,  8 Oct 2024 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIuLAaVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXYQiGaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607961D27B3;
-	Tue,  8 Oct 2024 12:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7671DE8BE;
+	Tue,  8 Oct 2024 13:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390792; cv=none; b=qzSBEbrH72+5DLOSTmBRQtAgnLmtIfxJeYPjZ6xAHHqD1p49fO7l5OiMKNkVzUhSz0R6xs6g1EPh5k4z1+s7CKCVGiC+5zdEjhwpcGHnncSP84PM5TSObrVyZvOjmQVTfXCKM5RBuYFrALdgpASc2oLf2KKI9vcjawM2/JjGL7Y=
+	t=1728393541; cv=none; b=XwrP9qM/nrSaR0PIe8yKT9ack37ikS2NYUSkRHhhKK2OKn3grh3crPpEDxqo54TmO/ZHJWkA/4DK89DJ+tnoKyOrU7FEpkHWWkcoGQ4rKSDnWJwY100/WdfzSQSxCiI8dCUzN54uRsjNDC9I3uIlhk8haBZeJk4T4URBETSql7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390792; c=relaxed/simple;
-	bh=k4teYPH8mUWW+PO2wQo/wca5qzvEO+haNG7GzJnCwLM=;
+	s=arc-20240116; t=1728393541; c=relaxed/simple;
+	bh=5/vBPj0P4Yy5jdw8OKgofMrNOupAIvllHvVTZZSTF44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxAK7FzV72i1yJmXNN0fD18Wu2JCg2+PCVnoPK2fgonvKT/TsB2G0fv0usqdSSk4TvFttPK+zxCBuirDyWCe27omal0InZRmXov6KHUuI2ojKGtb30XAF/QycsLn3u6fQvtQ1WVArgbsjJPdN7kHLI/CW/o6mYrMHLZ3nJ3Yv28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIuLAaVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EEDC4CECF;
-	Tue,  8 Oct 2024 12:33:11 +0000 (UTC)
+	 MIME-Version; b=s6jY2Z3IVDM938VbWJpV8RQGQzsGB5M7Q3d/BbPTXsZLDk36STdGsrmHVN1e61djEYddzK52QQPqI/LGUOs2iWTE0woOgaTpumTVDZ+nz4I+diJN/X8CBYqI4senUPfJP0DLgpgIS66bAePoQBd97SLMwdL2IUtb9nrokHabrOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXYQiGaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8699C4CECC;
+	Tue,  8 Oct 2024 13:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390792;
-	bh=k4teYPH8mUWW+PO2wQo/wca5qzvEO+haNG7GzJnCwLM=;
+	s=korg; t=1728393541;
+	bh=5/vBPj0P4Yy5jdw8OKgofMrNOupAIvllHvVTZZSTF44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rIuLAaVmMILeYGaBOza6Zjy/NLjJ4giS6sNiPX8VOz6gpK0Nrjsr9H5m7LOmaPx6t
-	 Wp+VtRLlxPDY/qj4LFofZvVUhTpRGNF1+nETfnvah+A7/ADB3mm1g+Hc1srntIE0wJ
-	 q5bHZa4sxOPDLCj6CfQRRw24HGVEX81r4W5ZpTEw=
+	b=SXYQiGaRsK3/gyT5tneeacHtySteoi1dWWVFv1MSiMAuEEVE+RRwsAmwkx1yMjAns
+	 Kq90t4Ozu1Ezt10fWwCk85OdFUtS6ObTcNR9ncyVP13WNOvk0ywwbNm13TrsRzdMjS
+	 c/9fAmJF34MI1ej0AlU1IUTGrCRYlvdThS1nnBL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James More <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.10 363/482] arm64: Subscribe Microsoft Azure Cobalt 100 to erratum 3194386
-Date: Tue,  8 Oct 2024 14:07:06 +0200
-Message-ID: <20241008115702.708105117@linuxfoundation.org>
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+	Artem Sadovnikov <ancowi69@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 182/386] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
+Date: Tue,  8 Oct 2024 14:07:07 +0200
+Message-ID: <20241008115636.574578801@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Artem Sadovnikov <ancowi69@gmail.com>
 
-commit 3eddb108abe3de6723cc4b77e8558ce1b3047987 upstream.
+[ Upstream commit cc749e61c011c255d81b192a822db650c68b313f ]
 
-Add the Microsoft Azure Cobalt 100 CPU to the list of CPUs suffering
-from erratum 3194386 added in commit 75b3c43eab59 ("arm64: errata:
-Expand speculative SSBS workaround")
+Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
 
-CC: Mark Rutland <mark.rutland@arm.com>
-CC: James More <james.morse@arm.com>
-CC: Will Deacon <will@kernel.org>
-CC: stable@vger.kernel.org # 6.6+
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20241003225239.321774-1-eahariha@linux.microsoft.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue is triggered when an EXT4_IOC_MIGRATE ioctl is set to require
+synchronous updates because the file descriptor is opened with O_SYNC.
+This can lead to the jbd2_journal_stop() function calling
+jbd2_might_wait_for_commit(), potentially causing a deadlock if the
+EXT4_IOC_MIGRATE call races with a write(2) system call.
+
+This problem only arises when CONFIG_PROVE_LOCKING is enabled. In this
+case, the jbd2_might_wait_for_commit macro locks jbd2_handle in the
+jbd2_journal_stop function while i_data_sem is locked. This triggers
+lockdep because the jbd2_journal_start function might also lock the same
+jbd2_handle simultaneously.
+
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20240404095000.5872-1-mish.uxin2012%40yandex.ru
+Link: https://patch.msgid.link/20240829152210.2754-1-ancowi69@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |    2 ++
- arch/arm64/kernel/cpu_errata.c              |    1 +
- 2 files changed, 3 insertions(+)
+ fs/ext4/migrate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -289,3 +289,5 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #3324339        | ARM64_ERRATUM_3194386       |
-++----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -447,6 +447,7 @@ static const struct midr_range erratum_s
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
+index d98ac2af8199f..a5e1492bbaaa5 100644
+--- a/fs/ext4/migrate.c
++++ b/fs/ext4/migrate.c
+@@ -663,8 +663,8 @@ int ext4_ind_migrate(struct inode *inode)
+ 	if (unlikely(ret2 && !ret))
+ 		ret = ret2;
+ errout:
+-	ext4_journal_stop(handle);
+ 	up_write(&EXT4_I(inode)->i_data_sem);
++	ext4_journal_stop(handle);
+ out_unlock:
+ 	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
+ 	return ret;
+-- 
+2.43.0
+
 
 
 
