@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-82302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C21994C17
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B958994DCA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9440D1C24F5E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02AAC282E85
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343F61DE4FA;
-	Tue,  8 Oct 2024 12:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF841DF25A;
+	Tue,  8 Oct 2024 13:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbhmH6vb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1V9jvjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79F61D54D1;
-	Tue,  8 Oct 2024 12:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA5E1DE4CC;
+	Tue,  8 Oct 2024 13:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391809; cv=none; b=o6v3WlN8AmgyfrMa+7e+BTFKsy4bywldsq0EQV2gzkoHIFZwRMhLvxr1w75uVuQVNQIPXqwSSQrVbXbVt2E/TuU7q7MDz7GNbnWvumHMFONZpYUugzIKr1bLzs8XTMT6SpgjrqPq+j1xj1SxXuvYrub72ixn7r58X3APJHP7gdM=
+	t=1728392965; cv=none; b=Ho9rZsBUFzSh+ciKo+5OYep/bQ7XYoQDGD32LjGQhJMmoE7ZxtA5N1LpLn6TCMA3V43WVVS0a08ehw73ecU47AAJGOb/I3gFP7qKYwKgR3i7iX8np3xus7drVKV1q+dzcCZYZFSR4fG1XDwPFKd/FrI0NRhbkAj8LS2yRr1MGHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391809; c=relaxed/simple;
-	bh=IeP5h8OpIA0lXbqYoQ9xzr45ENT7vudB+Eqg5f6R+d8=;
+	s=arc-20240116; t=1728392965; c=relaxed/simple;
+	bh=WZ9ZInv4don8Jf7dtUAcMVE2CSbTRpnYusfhe7NYjaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKw9T5MUyD/xP69z8UQAd4bbshU8jTrpty1mgDTTuL7kEwqxvXRipmk5F0mdXHB4J3jRSv2KOJcXytEvtBkgJdIEIOJZ5Oz46q2YYJK30hmgw9qpvrEr2OETQe3rPi7cyPTiKnbkZL7Ux8bYVt3+GLFnWZBSvrATCEZHNluc/88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbhmH6vb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54725C4CEC7;
-	Tue,  8 Oct 2024 12:50:08 +0000 (UTC)
+	 MIME-Version; b=Ip2Ti0tqgrQKQk59ijIDBZ3odcOITSA1NjjPVR7W1UjM3wftO4fyk6QW51TieEmQiPoTEtmJTg3vTABJu5mGSfJ9dTdoUY/kbVTZyv0aLADhZPtL5kkpbzU3Rcb1vxjRRLvU8zrOK7XOOgW9XxnJywmubXJnEDbsg4rWr/Bv/KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1V9jvjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D536BC4CEC7;
+	Tue,  8 Oct 2024 13:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391808;
-	bh=IeP5h8OpIA0lXbqYoQ9xzr45ENT7vudB+Eqg5f6R+d8=;
+	s=korg; t=1728392965;
+	bh=WZ9ZInv4don8Jf7dtUAcMVE2CSbTRpnYusfhe7NYjaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbhmH6vbxoazY7c3vjQOXRMy9gDSoUH94Kc/vZc+JFCXsy7d8/4urqXTJFv1V3pij
-	 VOPBgpL+xBLc/So/yhInCS34+1dvcfA1hd322zmHUrGzJv+Tg3NF5tEJRpY9CG0WoL
-	 lXcYtb+irc2DYuxFfYQA7VEhTlkuI7yhUPgt2YqQ=
+	b=E1V9jvjCoDO/cQPA6paRE1NiS3NS96zK1w4BF6NP1gfojaZcozOWmbh8iEcxOX6lc
+	 hKkDlPPL8nNJqgcsaV0bqpANTghFkEEBh54WTCZSn70WgvHK0FuzmHcwcD4gjdlglz
+	 DLx5b3JZftRtMOFfnq7dhdBsTJkqfoLhGiqA78KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 228/558] drm/amd/display: fix a UBSAN warning in DML2.1
+Subject: [PATCH 6.6 013/386] net/mlx5: Fix error path in multi-packet WQE transmit
 Date: Tue,  8 Oct 2024 14:04:18 +0200
-Message-ID: <20241008115711.313720361@linuxfoundation.org>
+Message-ID: <20241008115629.843486997@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,188 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit eaf3adb8faab611ba57594fa915893fc93a7788c ]
+[ Upstream commit 2bcae12c795f32ddfbf8c80d1b5f1d3286341c32 ]
 
-When programming phantom pipe, since cursor_width is explicity set to 0,
-this causes calculation logic to trigger overflow for an unsigned int
-triggering the kernel's UBSAN check as below:
+Remove the erroneous unmap in case no DMA mapping was established
 
-[   40.962845] UBSAN: shift-out-of-bounds in /tmp/amd.EfpumTkO/amd/amdgpu/../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:3312:34
-[   40.962849] shift exponent 4294967170 is too large for 32-bit type 'unsigned int'
-[   40.962852] CPU: 1 PID: 1670 Comm: gnome-shell Tainted: G        W  OE      6.5.0-41-generic #41~22.04.2-Ubuntu
-[   40.962854] Hardware name: Gigabyte Technology Co., Ltd. X670E AORUS PRO X/X670E AORUS PRO X, BIOS F21 01/10/2024
-[   40.962856] Call Trace:
-[   40.962857]  <TASK>
-[   40.962860]  dump_stack_lvl+0x48/0x70
-[   40.962870]  dump_stack+0x10/0x20
-[   40.962872]  __ubsan_handle_shift_out_of_bounds+0x1ac/0x360
-[   40.962878]  calculate_cursor_req_attributes.cold+0x1b/0x28 [amdgpu]
-[   40.963099]  dml_core_mode_support+0x6b91/0x16bc0 [amdgpu]
-[   40.963327]  ? srso_alias_return_thunk+0x5/0x7f
-[   40.963331]  ? CalculateWatermarksMALLUseAndDRAMSpeedChangeSupport+0x18b8/0x2790 [amdgpu]
-[   40.963534]  ? srso_alias_return_thunk+0x5/0x7f
-[   40.963536]  ? dml_core_mode_support+0xb3db/0x16bc0 [amdgpu]
-[   40.963730]  dml2_core_calcs_mode_support_ex+0x2c/0x90 [amdgpu]
-[   40.963906]  ? srso_alias_return_thunk+0x5/0x7f
-[   40.963909]  ? dml2_core_calcs_mode_support_ex+0x2c/0x90 [amdgpu]
-[   40.964078]  core_dcn4_mode_support+0x72/0xbf0 [amdgpu]
-[   40.964247]  dml2_top_optimization_perform_optimization_phase+0x1d3/0x2a0 [amdgpu]
-[   40.964420]  dml2_build_mode_programming+0x23d/0x750 [amdgpu]
-[   40.964587]  dml21_validate+0x274/0x770 [amdgpu]
-[   40.964761]  ? srso_alias_return_thunk+0x5/0x7f
-[   40.964763]  ? resource_append_dpp_pipes_for_plane_composition+0x27c/0x3b0 [amdgpu]
-[   40.964942]  dml2_validate+0x504/0x750 [amdgpu]
-[   40.965117]  ? dml21_copy+0x95/0xb0 [amdgpu]
-[   40.965291]  ? srso_alias_return_thunk+0x5/0x7f
-[   40.965295]  dcn401_validate_bandwidth+0x4e/0x70 [amdgpu]
-[   40.965491]  update_planes_and_stream_state+0x38d/0x5c0 [amdgpu]
-[   40.965672]  update_planes_and_stream_v3+0x52/0x1e0 [amdgpu]
-[   40.965845]  ? srso_alias_return_thunk+0x5/0x7f
-[   40.965849]  dc_update_planes_and_stream+0x71/0xb0 [amdgpu]
+The multi-packet WQE transmit code attempts to obtain a DMA mapping for
+the skb. This could fail, e.g. under memory pressure, when the IOMMU
+driver just can't allocate more memory for page tables. While the code
+tries to handle this in the path below the err_unmap label it erroneously
+unmaps one entry from the sq's FIFO list of active mappings. Since the
+current map attempt failed this unmap is removing some random DMA mapping
+that might still be required. If the PCI function now presents that IOVA,
+the IOMMU may assumes a rogue DMA access and e.g. on s390 puts the PCI
+function in error state.
 
-Fix this by adding a guard for checking cursor width before triggering
-the size calculation.
+The erroneous behavior was seen in a stress-test environment that created
+memory pressure.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 5af75c747e2a ("net/mlx5e: Enhanced TX MPWQE for SKBs")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Acked-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../src/dml2_core/dml2_core_dcn4_calcs.c      | 93 ++++++++++---------
- 1 file changed, 49 insertions(+), 44 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-index 6f4026e396e09..c40cd5d634568 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -7231,10 +7231,9 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
- 	/* Cursor Support Check */
- 	mode_lib->ms.support.CursorSupport = true;
- 	for (k = 0; k < mode_lib->ms.num_active_planes; k++) {
--		if (display_cfg->plane_descriptors[k].cursor.cursor_width > 0.0) {
--			if (display_cfg->plane_descriptors[k].cursor.cursor_bpp == 64 && mode_lib->ip.cursor_64bpp_support == false) {
-+		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
-+			if (display_cfg->plane_descriptors[k].cursor.cursor_bpp == 64 && mode_lib->ip.cursor_64bpp_support == false)
- 				mode_lib->ms.support.CursorSupport = false;
--			}
- 		}
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+index 3001a52e1ac2e..85d6334308e31 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+@@ -642,7 +642,6 @@ mlx5e_sq_xmit_mpwqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
+ 	return;
  
-@@ -8091,27 +8090,31 @@ static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out
- 	for (k = 0; k < mode_lib->ms.num_active_planes; ++k) {
- 		double line_time_us = (double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total / ((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
- 		bool cursor_not_enough_urgent_latency_hiding = 0;
--		calculate_cursor_req_attributes(
--			display_cfg->plane_descriptors[k].cursor.cursor_width,
--			display_cfg->plane_descriptors[k].cursor.cursor_bpp,
- 
--			// output
--			&s->cursor_lines_per_chunk[k],
--			&s->cursor_bytes_per_line[k],
--			&s->cursor_bytes_per_chunk[k],
--			&s->cursor_bytes[k]);
--
--		calculate_cursor_urgent_burst_factor(
--			mode_lib->ip.cursor_buffer_size,
--			display_cfg->plane_descriptors[k].cursor.cursor_width,
--			s->cursor_bytes_per_chunk[k],
--			s->cursor_lines_per_chunk[k],
--			line_time_us,
--			mode_lib->ms.UrgLatency,
-+		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
-+			calculate_cursor_req_attributes(
-+				display_cfg->plane_descriptors[k].cursor.cursor_width,
-+				display_cfg->plane_descriptors[k].cursor.cursor_bpp,
-+
-+				// output
-+				&s->cursor_lines_per_chunk[k],
-+				&s->cursor_bytes_per_line[k],
-+				&s->cursor_bytes_per_chunk[k],
-+				&s->cursor_bytes[k]);
-+
-+			calculate_cursor_urgent_burst_factor(
-+				mode_lib->ip.cursor_buffer_size,
-+				display_cfg->plane_descriptors[k].cursor.cursor_width,
-+				s->cursor_bytes_per_chunk[k],
-+				s->cursor_lines_per_chunk[k],
-+				line_time_us,
-+				mode_lib->ms.UrgLatency,
-+
-+				// output
-+				&mode_lib->ms.UrgentBurstFactorCursor[k],
-+				&cursor_not_enough_urgent_latency_hiding);
-+		}
- 
--			// output
--			&mode_lib->ms.UrgentBurstFactorCursor[k],
--			&cursor_not_enough_urgent_latency_hiding);
- 		mode_lib->ms.UrgentBurstFactorCursorPre[k] = mode_lib->ms.UrgentBurstFactorCursor[k];
- 
- #ifdef __DML_VBA_DEBUG__
-@@ -10592,31 +10595,33 @@ static bool dml_core_mode_programming(struct dml2_core_calcs_mode_programming_ex
- 
- 	for (k = 0; k < s->num_active_planes; ++k) {
- 		bool cursor_not_enough_urgent_latency_hiding = 0;
--		double line_time_us;
-+		double line_time_us = 0.0;
- 
--		calculate_cursor_req_attributes(
--			display_cfg->plane_descriptors[k].cursor.cursor_width,
--			display_cfg->plane_descriptors[k].cursor.cursor_bpp,
-+		line_time_us = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total /
-+			((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
-+		if (display_cfg->plane_descriptors[k].cursor.num_cursors > 0) {
-+			calculate_cursor_req_attributes(
-+				display_cfg->plane_descriptors[k].cursor.cursor_width,
-+				display_cfg->plane_descriptors[k].cursor.cursor_bpp,
- 
--			// output
--			&s->cursor_lines_per_chunk[k],
--			&s->cursor_bytes_per_line[k],
--			&s->cursor_bytes_per_chunk[k],
--			&s->cursor_bytes[k]);
--
--		line_time_us = display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.h_total / ((double)display_cfg->stream_descriptors[display_cfg->plane_descriptors[k].stream_index].timing.pixel_clock_khz / 1000);
--
--		calculate_cursor_urgent_burst_factor(
--			mode_lib->ip.cursor_buffer_size,
--			display_cfg->plane_descriptors[k].cursor.cursor_width,
--			s->cursor_bytes_per_chunk[k],
--			s->cursor_lines_per_chunk[k],
--			line_time_us,
--			mode_lib->mp.UrgentLatency,
-+				// output
-+				&s->cursor_lines_per_chunk[k],
-+				&s->cursor_bytes_per_line[k],
-+				&s->cursor_bytes_per_chunk[k],
-+				&s->cursor_bytes[k]);
-+
-+			calculate_cursor_urgent_burst_factor(
-+				mode_lib->ip.cursor_buffer_size,
-+				display_cfg->plane_descriptors[k].cursor.cursor_width,
-+				s->cursor_bytes_per_chunk[k],
-+				s->cursor_lines_per_chunk[k],
-+				line_time_us,
-+				mode_lib->mp.UrgentLatency,
- 
--			// output
--			&mode_lib->mp.UrgentBurstFactorCursor[k],
--			&cursor_not_enough_urgent_latency_hiding);
-+				// output
-+				&mode_lib->mp.UrgentBurstFactorCursor[k],
-+				&cursor_not_enough_urgent_latency_hiding);
-+		}
- 		mode_lib->mp.UrgentBurstFactorCursorPre[k] = mode_lib->mp.UrgentBurstFactorCursor[k];
- 
- 		CalculateUrgentBurstFactor(
+ err_unmap:
+-	mlx5e_dma_unmap_wqe_err(sq, 1);
+ 	sq->stats->dropped++;
+ 	dev_kfree_skb_any(skb);
+ 	mlx5e_tx_flush(sq);
 -- 
 2.43.0
 
