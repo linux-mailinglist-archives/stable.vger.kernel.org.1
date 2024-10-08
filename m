@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D6C994A01
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70623994CE2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F32782839A0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 319DD286D0D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5F61DE2AE;
-	Tue,  8 Oct 2024 12:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2E41DEFFC;
+	Tue,  8 Oct 2024 12:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQiQgTeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Haat+2pk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6BF1D0BAA;
-	Tue,  8 Oct 2024 12:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA141DE89A;
+	Tue,  8 Oct 2024 12:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390492; cv=none; b=cFGC302vLuO80GxIh78Ptjn0CBXoAny9/n3femTkOQoaaXffQCwFwqhVUZsGP/pXSHaw6Jp91D+L37xCQvCSYqdBWcs4qL0Dnw5jSXk0gFAD20R395RjzvRLFwK1vHXPr6CZQW8FcPuRUTWG7uTT/lTOn7kW+yNK4Lxl2M21DxE=
+	t=1728392323; cv=none; b=rcJd5U71Oy4B5u8dK2gouX4dx+fgnyMPg1q6E1qChbcWA9jNn5Q1FG1ejmsoLd1bX+eIdA21a182hxGh1QhhUMumA6Xhdvqc/ozuCcm9hw+XIkMhFhUQ4Tv2Jxm4kLmCTkQHDbjH+Tsawksn1QYhb/64BYikyG6Po6ojmhgHFL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390492; c=relaxed/simple;
-	bh=LwOS6LnhyiF33ggj2Vw6uBKAjZFWHkKUymZUdR9d9HI=;
+	s=arc-20240116; t=1728392323; c=relaxed/simple;
+	bh=b4LTQgaRyYiT5a7KW+gN4e1I1VrXkasXILMTa+NuJXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awq1tYZlSx4HlE/Aue0MKxqSFPE0xqGQwCdee7OKc4yHJUb0cxNs0WB/0lfevJFw1+NhRC8q7LCphzry3AgjrjGh8+y8/j9rBUqRXBbgSB5CBl+Z1wyxmU/mwPCD4/VhKwOVF954l739vIhrE4qUc8qvVar6K5cQ2TEG+eae4QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQiQgTeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4F2C4CEC7;
-	Tue,  8 Oct 2024 12:28:11 +0000 (UTC)
+	 MIME-Version; b=G8HzDjfzuBPZo2Vn40OU6FhLEu0rCvvEJg7RTMa8QomJ/1bsuKUYXhrMPBg9k+CFLv7C/sbQIQevpbKwemPrcDicjBQAJqS5TGz9HGAi7v8eYJlwVpVGRfmOPyumgrg+Rf3k/P3xQ9z9BU4+vv0oWHSdOxVGcD5ELIQv3UIHiZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Haat+2pk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3D4C4CECF;
+	Tue,  8 Oct 2024 12:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390492;
-	bh=LwOS6LnhyiF33ggj2Vw6uBKAjZFWHkKUymZUdR9d9HI=;
+	s=korg; t=1728392323;
+	bh=b4LTQgaRyYiT5a7KW+gN4e1I1VrXkasXILMTa+NuJXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQiQgTeMRVBZoDm3nmOP/yUiUpJwjTujFneetKxs+z1eX7xZ+gqm7hdKqg/e+SgJu
-	 hQ53rf6YQUbFV1Ln7iEMQMsPh3nk4vDE3wlaNtj8PzwiBgPGhuMHVR4ExzrxMUdsVH
-	 FBpmZkCIWkHmhr01tMpUrGdjiiBle40jWAxJiPgs=
+	b=Haat+2pk1MzCqiXrvZIly6B/ckYpIlj2lEVSlbcYOEk3kgs105r3JV8LM32Y4Afyw
+	 u85OB0bdtHRY7wI2pwFt2Gz2Hc1Bm6h56ZldQNotOj6Y3FSB0BqPyr4i3iM5PhFYJD
+	 DBIETYZqiP5FlHejXfY0ItCSWbVDJ2ljxDNQItO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.10 306/482] spi: bcm63xx: Fix missing pm_runtime_disable()
-Date: Tue,  8 Oct 2024 14:06:09 +0200
-Message-ID: <20241008115700.476659310@linuxfoundation.org>
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 340/558] f2fs: make BG GC more aggressive for zoned devices
+Date: Tue,  8 Oct 2024 14:06:10 +0200
+Message-ID: <20241008115715.682315739@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-commit 265697288ec2160ca84707565d6641d46f69b0ff upstream.
+[ Upstream commit 5062b5bed4323275f2f89bc185c6a28d62cfcfd5 ]
 
-The pm_runtime_disable() is missing in the remove function, fix it
-by using devm_pm_runtime_enable(), so the pm_runtime_disable() in
-the probe error path can also be removed.
+Since we don't have any GC on device side for zoned devices, need more
+aggressive BG GC. So, tune the parameters for that.
 
-Fixes: 2d13f2ff6073 ("spi: bcm63xx-spi: fix pm_runtime")
-Cc: stable@vger.kernel.org # v5.13+
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20240819123349.4020472-3-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 5cc69a27abfa ("f2fs: forcibly migrate to secure space for zoned device file pinning")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/f2fs/f2fs.h  | 20 ++++++++++++++++++--
+ fs/f2fs/gc.c    | 25 +++++++++++++++++++++----
+ fs/f2fs/gc.h    | 21 +++++++++++++++++++++
+ fs/f2fs/super.c |  5 +++++
+ 4 files changed, 65 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -584,13 +584,15 @@ static int bcm63xx_spi_probe(struct plat
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 0fb2b3b323c31..ad3b39a953120 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -2870,13 +2870,26 @@ static inline bool is_inflight_io(struct f2fs_sb_info *sbi, int type)
+ 	return false;
+ }
  
- 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
++static inline bool is_inflight_read_io(struct f2fs_sb_info *sbi)
++{
++	return get_pages(sbi, F2FS_RD_DATA) || get_pages(sbi, F2FS_DIO_READ);
++}
++
+ static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
+ {
++	bool zoned_gc = (type == GC_TIME &&
++			F2FS_HAS_FEATURE(sbi, F2FS_FEATURE_BLKZONED));
++
+ 	if (sbi->gc_mode == GC_URGENT_HIGH)
+ 		return true;
  
--	pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		goto out_clk_disable;
+-	if (is_inflight_io(sbi, type))
+-		return false;
++	if (zoned_gc) {
++		if (is_inflight_read_io(sbi))
++			return false;
++	} else {
++		if (is_inflight_io(sbi, type))
++			return false;
++	}
  
- 	/* register and we are done */
- 	ret = devm_spi_register_controller(dev, host);
- 	if (ret) {
- 		dev_err(dev, "spi register failed\n");
--		goto out_pm_disable;
-+		goto out_clk_disable;
- 	}
+ 	if (sbi->gc_mode == GC_URGENT_MID)
+ 		return true;
+@@ -2885,6 +2898,9 @@ static inline bool is_idle(struct f2fs_sb_info *sbi, int type)
+ 			(type == DISCARD_TIME || type == GC_TIME))
+ 		return true;
  
- 	dev_info(dev, "at %pr (irq %d, FIFOs size %d)\n",
-@@ -598,8 +600,6 @@ static int bcm63xx_spi_probe(struct plat
++	if (zoned_gc)
++		return true;
++
+ 	return f2fs_time_over(sbi, type);
+ }
  
- 	return 0;
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 724bbcb447d32..46e3bc26b78a6 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -116,7 +116,17 @@ static int gc_thread_func(void *data)
+ 			goto next;
+ 		}
  
--out_pm_disable:
--	pm_runtime_disable(&pdev->dev);
- out_clk_disable:
- 	clk_disable_unprepare(clk);
- out_err:
+-		if (has_enough_invalid_blocks(sbi))
++		if (f2fs_sb_has_blkzoned(sbi)) {
++			if (has_enough_free_blocks(sbi, LIMIT_NO_ZONED_GC)) {
++				wait_ms = gc_th->no_gc_sleep_time;
++				f2fs_up_write(&sbi->gc_lock);
++				goto next;
++			}
++			if (wait_ms == gc_th->no_gc_sleep_time)
++				wait_ms = gc_th->max_sleep_time;
++		}
++
++		if (need_to_boost_gc(sbi))
+ 			decrease_sleep_time(gc_th, &wait_ms);
+ 		else
+ 			increase_sleep_time(gc_th, &wait_ms);
+@@ -179,9 +189,16 @@ int f2fs_start_gc_thread(struct f2fs_sb_info *sbi)
+ 		return -ENOMEM;
+ 
+ 	gc_th->urgent_sleep_time = DEF_GC_THREAD_URGENT_SLEEP_TIME;
+-	gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME;
+-	gc_th->max_sleep_time = DEF_GC_THREAD_MAX_SLEEP_TIME;
+-	gc_th->no_gc_sleep_time = DEF_GC_THREAD_NOGC_SLEEP_TIME;
++
++	if (f2fs_sb_has_blkzoned(sbi)) {
++		gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME_ZONED;
++		gc_th->max_sleep_time = DEF_GC_THREAD_MAX_SLEEP_TIME_ZONED;
++		gc_th->no_gc_sleep_time = DEF_GC_THREAD_NOGC_SLEEP_TIME_ZONED;
++	} else {
++		gc_th->min_sleep_time = DEF_GC_THREAD_MIN_SLEEP_TIME;
++		gc_th->max_sleep_time = DEF_GC_THREAD_MAX_SLEEP_TIME;
++		gc_th->no_gc_sleep_time = DEF_GC_THREAD_NOGC_SLEEP_TIME;
++	}
+ 
+ 	gc_th->gc_wake = false;
+ 
+diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
+index a8ea3301b815a..55c4ba73362ef 100644
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -15,6 +15,11 @@
+ #define DEF_GC_THREAD_MAX_SLEEP_TIME	60000
+ #define DEF_GC_THREAD_NOGC_SLEEP_TIME	300000	/* wait 5 min */
+ 
++/* GC sleep parameters for zoned deivces */
++#define DEF_GC_THREAD_MIN_SLEEP_TIME_ZONED	10
++#define DEF_GC_THREAD_MAX_SLEEP_TIME_ZONED	20
++#define DEF_GC_THREAD_NOGC_SLEEP_TIME_ZONED	60000
++
+ /* choose candidates from sections which has age of more than 7 days */
+ #define DEF_GC_THREAD_AGE_THRESHOLD		(60 * 60 * 24 * 7)
+ #define DEF_GC_THREAD_CANDIDATE_RATIO		20	/* select 20% oldest sections as candidates */
+@@ -25,6 +30,9 @@
+ #define LIMIT_INVALID_BLOCK	40 /* percentage over total user space */
+ #define LIMIT_FREE_BLOCK	40 /* percentage over invalid + free space */
+ 
++#define LIMIT_NO_ZONED_GC	60 /* percentage over total user space of no gc for zoned devices */
++#define LIMIT_BOOST_ZONED_GC	25 /* percentage over total user space of boosted gc for zoned devices */
++
+ #define DEF_GC_FAILED_PINNED_FILES	2048
+ #define MAX_GC_FAILED_PINNED_FILES	USHRT_MAX
+ 
+@@ -152,6 +160,12 @@ static inline void decrease_sleep_time(struct f2fs_gc_kthread *gc_th,
+ 		*wait -= min_time;
+ }
+ 
++static inline bool has_enough_free_blocks(struct f2fs_sb_info *sbi,
++						unsigned int limit_perc)
++{
++	return free_sections(sbi) > ((sbi->total_sections * limit_perc) / 100);
++}
++
+ static inline bool has_enough_invalid_blocks(struct f2fs_sb_info *sbi)
+ {
+ 	block_t user_block_count = sbi->user_block_count;
+@@ -167,3 +181,10 @@ static inline bool has_enough_invalid_blocks(struct f2fs_sb_info *sbi)
+ 		free_user_blocks(sbi) <
+ 			limit_free_user_blocks(invalid_user_blocks));
+ }
++
++static inline bool need_to_boost_gc(struct f2fs_sb_info *sbi)
++{
++	if (f2fs_sb_has_blkzoned(sbi))
++		return !has_enough_free_blocks(sbi, LIMIT_BOOST_ZONED_GC);
++	return has_enough_invalid_blocks(sbi);
++}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index d0c5305248c0d..2a2ac02ddedf6 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -707,6 +707,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 			if (!strcmp(name, "on")) {
+ 				F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_ON;
+ 			} else if (!strcmp(name, "off")) {
++				if (f2fs_sb_has_blkzoned(sbi)) {
++					f2fs_warn(sbi, "zoned devices need bggc");
++					kfree(name);
++					return -EINVAL;
++				}
+ 				F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_OFF;
+ 			} else if (!strcmp(name, "sync")) {
+ 				F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_SYNC;
+-- 
+2.43.0
+
 
 
 
