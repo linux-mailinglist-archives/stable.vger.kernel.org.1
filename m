@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-82367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A715E994C61
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59521994E2A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A28281832
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DB071F223D8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DA71DED4B;
-	Tue,  8 Oct 2024 12:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE2B1DEFD7;
+	Tue,  8 Oct 2024 13:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhV9jSug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSG5yNIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34C71DE4CC;
-	Tue,  8 Oct 2024 12:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F023F1DE8A0;
+	Tue,  8 Oct 2024 13:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392018; cv=none; b=VWdkIo66YYSWmt+srxGbLZCq+MRM9+BCw4A0yoikuhgO5VEbp5cTf1c6JIQccAyknQHnm9vR1jCd/v3i8+DyZmJqDenHRWu+xqVzDrdm7K9+FZuuxNXSL+ryxN4DEhOqo7IEyqoQRyYFMfGuOZsQw/8Vv8SvDyKEXVrmn+fJRfA=
+	t=1728393187; cv=none; b=o7yQdSGYGfr+5W3bzBrk+xAqE6j/f68qETF+YCUKMAS2cwaflkhrngljp9Ujm5E3/0GcBZ1zbP+q9fpw6hvI3y1sk402cd9A/9qOYcybHMRA8Yi59M0AZTxGHeiwSGQNX9FM1rIy1vTTCTlrrlDa8zT217+Rpfc062V79JJCbHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392018; c=relaxed/simple;
-	bh=K5iRI8sBmPog/67WUZJpNUNIURUGjsr0iI8mcRk6PMc=;
+	s=arc-20240116; t=1728393187; c=relaxed/simple;
+	bh=SrprZEYxNoSeSUG/1SJ7qBwmWrtzpgmCq1Y11gQ22hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhM5E78NG15u9RaIyr1QYRHfeR0JheqnYqtGflYk5lyrE4SLdAstQ+jhGieFMis66pisRGiHTcG2/859VIa7TIAc0qWAlCDfxwpSHGakJHMmKBW6m1gXXTxbGrCa6Tu4j1v+8UOtm6IQ9FIhiM5q15IPzZOTmmBRsu+5MDbwMDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhV9jSug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53049C4CEC7;
-	Tue,  8 Oct 2024 12:53:38 +0000 (UTC)
+	 MIME-Version; b=df6jf8fPuli4FtAGcgzUk7FVvUlqS0JLZNwD7434DoKzKbn/3IIRuRobNJCpkj4gBSMd6d1rHhEqBolGgG7+lVy/2lVISQd3BpnbCm0jo516pjl6R8XCTB6dwDf4S3ylxTGyELE1UE3dSGD/R0G0LhJv+I576sD1s2Xh9/CZiBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSG5yNIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599F6C4CEC7;
+	Tue,  8 Oct 2024 13:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392018;
-	bh=K5iRI8sBmPog/67WUZJpNUNIURUGjsr0iI8mcRk6PMc=;
+	s=korg; t=1728393186;
+	bh=SrprZEYxNoSeSUG/1SJ7qBwmWrtzpgmCq1Y11gQ22hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhV9jSugScOHMUVZQIyrN4rKEKXxEgmxDeTl0lqm9nYJ8NxW0bX+8w/DdIQWdMTDR
-	 4EoVGYG6hCTgFJ+ulLyJ+yKpL0Mc0CWgLDc5KIiYZC1IsehZgOGbM55szyAWccf3q0
-	 9Xb32nxEGNqLreCLv3bvFUCE6HP5TOGZhOZCe6Og=
+	b=pSG5yNIOdvE/Q9+SV1lPpnu2CVfHQCfXsF+TLuBNghxeCnY08272itoiRx1iw9oQg
+	 bTeaObeZDlNDTlZJ5PnoIvuQ+P8S4Q3k/sKlsHUquzLYbsrQOemM4RbX6ahqC1/v9M
+	 boKgf7FtCPPIPv1Qv8AHdIMGSIpvaxZVbeC4V+N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	"Ahmed, Muhammad" <Ahmed.Ahmed@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 292/558] drm/amd/display: guard write a 0 post_divider value to HW
-Date: Tue,  8 Oct 2024 14:05:22 +0200
-Message-ID: <20241008115713.814380363@linuxfoundation.org>
+Subject: [PATCH 6.6 078/386] ACPI: video: Add force_vendor quirk for Panasonic Toughbook CF-18
+Date: Tue,  8 Oct 2024 14:05:23 +0200
+Message-ID: <20241008115632.531460183@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed, Muhammad <Ahmed.Ahmed@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 5d666496c24129edeb2bcb500498b87cc64e7f07 ]
+[ Upstream commit eb7b0f12e13ba99e64e3a690c2166895ed63b437 ]
 
-[why]
-post_divider_value should not be 0.
+The Panasonic Toughbook CF-18 advertises both native and vendor backlight
+control interfaces. But only the vendor one actually works.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Ahmed, Muhammad <Ahmed.Ahmed@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+acpi_video_get_backlight_type() will pick the non working native backlight
+by default, add a quirk to select the working vendor backlight instead.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240907124419.21195-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-index 68cd3258f4a97..a64d8f3ec93a3 100644
---- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-+++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -47,7 +47,8 @@ static void dccg35_trigger_dio_fifo_resync(struct dccg *dccg)
- 	uint32_t dispclk_rdivider_value = 0;
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 16ab2d9ef67f3..e96afb1622f95 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -260,6 +260,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "PCG-FRV35"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_vendor,
++	 /* Panasonic Toughbook CF-18 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Matsushita Electric Industrial"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "CF-18"),
++		},
++	},
  
- 	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_RDIVIDER, &dispclk_rdivider_value);
--	REG_UPDATE(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, dispclk_rdivider_value);
-+	if (dispclk_rdivider_value != 0)
-+		REG_UPDATE(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, dispclk_rdivider_value);
- }
- 
- static void dcn35_set_dppclk_enable(struct dccg *dccg,
+ 	/*
+ 	 * Toshiba models with Transflective display, these need to use
 -- 
 2.43.0
 
