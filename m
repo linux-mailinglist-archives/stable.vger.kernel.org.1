@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F89994B6E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAAD994882
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12711F27359
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EBBE1C22619
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639061DF273;
-	Tue,  8 Oct 2024 12:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5841DED4B;
+	Tue,  8 Oct 2024 12:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvBdUTxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02j0DBJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF551DED64;
-	Tue,  8 Oct 2024 12:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8231DE2AE;
+	Tue,  8 Oct 2024 12:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391322; cv=none; b=lxrRGnxXmjVg5hNteYHObyKdhgi39HE6g8CV7WaQR+mlRHuyqp/7+BPnp98scwAAgIlIIIDj36EhK0Y3VD9GLr2kblJXsd0t0QNwDj0RRS/h0ZLujcOgDiJlsii4e77JjEupyps/M+hX+eLXnN5WjHfEbQgOPqSPbwN9nhE0JF0=
+	t=1728389616; cv=none; b=D94s+U4LDRd0UPQVPk0PH0jlUwcsAXQ4JoWZsVpQSsvhWIxqpSbhJmGOggXnmvDTW+FF31sjwT+/kFK4G8KOvzWUebR45KiEDz7FBILoXxob8g3sBq8ALzlWqFRfL+FcDixPGy2dQHyDb0BnAHlPuRTKIMNK+RVdSxsvNHBIRY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391322; c=relaxed/simple;
-	bh=Vu6fnFr0xVYr+N+aARf6tjPVq+koNQ+7jzsKhXuKFNA=;
+	s=arc-20240116; t=1728389616; c=relaxed/simple;
+	bh=783+hWHknDZ9UB2OxHzlYPi4vJ0DKnVYf+JhQx/A3uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FtochfEovtwMvLeas6KEwtKoH2e0cmaWhxgfTb57Wn5ovipExF9R+PnHG39vuA47XGOpotm/x04RnV+a9E92oynKcDj86dxjVvhtTa6eMJYPbtIzXJfC4Uq7lAZ5UlvMuSGc1muDPjgwQd/d65u+pcbobJxtE7yo1q2CHWj5WU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvBdUTxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98420C4CEC7;
-	Tue,  8 Oct 2024 12:42:01 +0000 (UTC)
+	 MIME-Version; b=eeWSxf1haT0ueqIl7d80SqzVUg5CQ1Hgae8oIFgnO8rDrC45DXFiH7uvkE7cGE1DrHWOB5zRVU16RXb7We3l96vPxkmgUtVLRN/3oaf7kOWCJrDX6JjZYkorJP/rRjUBfQbf2fvYJ2FSR2Jtvol3oXqQRScK5P6NZb2oW4xCCYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02j0DBJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3E2C4CEC7;
+	Tue,  8 Oct 2024 12:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391322;
-	bh=Vu6fnFr0xVYr+N+aARf6tjPVq+koNQ+7jzsKhXuKFNA=;
+	s=korg; t=1728389615;
+	bh=783+hWHknDZ9UB2OxHzlYPi4vJ0DKnVYf+JhQx/A3uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvBdUTxBBXPg3T0MOqkltnTfnNVPzFWXK41XzXlvL6C6bTBXRBrivDNbePL7y7QU4
-	 GriLhx9z+MqH++dhf6G3Tt2fOaC0FVVsktp8PBEnMYCFMZVWvRJHLuiote2Btv3g2S
-	 kFB6kTfh6JDMYUIPJE2jj6ea89fDLDknySHFyokA=
+	b=02j0DBJB9eAUXDAmHWqDIfVYLc2hpGI0ApRkZqzw+HtDSsN/lhHUOP4MS3qbqbB84
+	 JXmJI4UIwF+whTGSHldTHsdbyp3qpbho8OC4rs0K+IUiVY0y1gP4azvhC0fAZ9neBP
+	 Enqx6TYDImAhawvZoRh+ffJmgSFGAByzXD5wk4Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 078/558] ALSA: gus: Fix some error handling paths related to get_bpos() usage
+Subject: [PATCH 6.10 045/482] bridge: mcast: Fail MDB get request on empty entry
 Date: Tue,  8 Oct 2024 14:01:48 +0200
-Message-ID: <20241008115705.445942829@linuxfoundation.org>
+Message-ID: <20241008115650.078422565@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 9df39a872c462ea07a3767ebd0093c42b2ff78a2 ]
+[ Upstream commit 555f45d24ba7cd5527716553031641cdebbe76c7 ]
 
-If get_bpos() fails, it is likely that the corresponding error code should
-be returned.
+When user space deletes a port from an MDB entry, the port is removed
+synchronously. If this was the last port in the entry and the entry is
+not joined by the host itself, then the entry is scheduled for deletion
+via a timer.
 
-Fixes: a6970bb1dd99 ("ALSA: gus: Convert to the new PCM ops")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/d9ca841edad697154afa97c73a5d7a14919330d9.1727984008.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The above means that it is possible for the MDB get netlink request to
+retrieve an empty entry which is scheduled for deletion. This is
+problematic as after deleting the last port in an entry, user space
+cannot rely on a non-zero return code from the MDB get request as an
+indication that the port was successfully removed.
+
+Fix by returning an error when the entry's port list is empty and the
+entry is not joined by the host.
+
+Fixes: 68b380a395a7 ("bridge: mcast: Add MDB get support")
+Reported-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/netdev/c92569919307749f879b9482b0f3e125b7d9d2e3.1726480066.git.jamie.bainbridge@gmail.com/
+Tested-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20240929123640.558525-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/gus/gus_pcm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/br_mdb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/isa/gus/gus_pcm.c b/sound/isa/gus/gus_pcm.c
-index 850544725da79..d55c3dc229c0e 100644
---- a/sound/isa/gus/gus_pcm.c
-+++ b/sound/isa/gus/gus_pcm.c
-@@ -378,7 +378,7 @@ static int snd_gf1_pcm_playback_copy(struct snd_pcm_substream *substream,
+diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
+index bc37e47ad8299..1a52a0bca086d 100644
+--- a/net/bridge/br_mdb.c
++++ b/net/bridge/br_mdb.c
+@@ -1674,7 +1674,7 @@ int br_mdb_get(struct net_device *dev, struct nlattr *tb[], u32 portid, u32 seq,
+ 	spin_lock_bh(&br->multicast_lock);
  
- 	bpos = get_bpos(pcmp, voice, pos, len);
- 	if (bpos < 0)
--		return pos;
-+		return bpos;
- 	if (copy_from_iter(runtime->dma_area + bpos, len, src) != len)
- 		return -EFAULT;
- 	return playback_copy_ack(substream, bpos, len);
-@@ -395,7 +395,7 @@ static int snd_gf1_pcm_playback_silence(struct snd_pcm_substream *substream,
- 	
- 	bpos = get_bpos(pcmp, voice, pos, len);
- 	if (bpos < 0)
--		return pos;
-+		return bpos;
- 	snd_pcm_format_set_silence(runtime->format, runtime->dma_area + bpos,
- 				   bytes_to_samples(runtime, count));
- 	return playback_copy_ack(substream, bpos, len);
+ 	mp = br_mdb_ip_get(br, &group);
+-	if (!mp) {
++	if (!mp || (!mp->ports && !mp->host_joined)) {
+ 		NL_SET_ERR_MSG_MOD(extack, "MDB entry not found");
+ 		err = -ENOENT;
+ 		goto unlock;
 -- 
 2.43.0
 
