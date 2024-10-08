@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-82559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E651994D55
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CE0994AB9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475061F250F7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:04:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C41D11F21029
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E424E1DE88B;
-	Tue,  8 Oct 2024 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF6E1DC759;
+	Tue,  8 Oct 2024 12:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjawc9RH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUZvSs2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17C01DE2A5;
-	Tue,  8 Oct 2024 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20501779B1;
+	Tue,  8 Oct 2024 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392670; cv=none; b=n+nHVSvROxXqtSHXkFf2zVoePBxNrotBWT8yXhOJf/i/xdgF2Fmfut/YUDK6ZCV810daSd52sckySeieZ2n9xCncNuF/G3ZC17Xo+X1VcYzsRVGqSms6y0uIR3tn77OpL7Uc8S7yXnwiLH8dqPKnJw7W1UQLrqI+3baj3PP72O4=
+	t=1728390950; cv=none; b=SBK5p+fFGogLbc1gbBBu3Q3VQQEayi/U1NTKkCzZ9USPfb26tHQYKHqSxC8XHiUgPve8bvIDIANMxpicaNYFJwDPME7VeVIiwXKkHP8A1Mc6hcT+/alF1UvOqQqE9JYy9S9F3AoDPIWLWyQeGlurQajT9kNsL3UVOXuWi72JnkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392670; c=relaxed/simple;
-	bh=MPT1gJv/Qv0182ozBiSDAgSFxhRCrghwcK1/qM7kQF0=;
+	s=arc-20240116; t=1728390950; c=relaxed/simple;
+	bh=LR5DWMJ4YZ+cxIKNa4n72QpPnb4+mTS5Ck5g6roFMKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGvxM73VyW8eeLHGvMI5dCPFppXB2Snf51lxgSRB3idxFU/gYHMdYUsSyiWTfwGyNTnN8xtQhimhu+OIkARlMJ9mfNkz1AcNidAgtLwy7Ic0YjzkcjhVQ2+Y3BnpdleHWvUYca1vpHXBLQVMXYeajjROWBIH3IC2WoDnQdJQxOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjawc9RH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9A6C4CECC;
-	Tue,  8 Oct 2024 13:04:29 +0000 (UTC)
+	 MIME-Version; b=ECZdRluzN469z0Ev8E1ZJCuDmKIoC9cT9beXhdsXYMK2MGcoo3SPSxY0XKgs+cBupILlcRPznvMIK8q9uSjws3NQOcoody6/IDz+5pQ4RWYA5ZupIjYrwuia9CiX7xFwVNtRVWj4thooxNCdWz+vv6qMnTlbroj9Il0Yz/HwODc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUZvSs2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6276EC4CEC7;
+	Tue,  8 Oct 2024 12:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392670;
-	bh=MPT1gJv/Qv0182ozBiSDAgSFxhRCrghwcK1/qM7kQF0=;
+	s=korg; t=1728390949;
+	bh=LR5DWMJ4YZ+cxIKNa4n72QpPnb4+mTS5Ck5g6roFMKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjawc9RHT0VGQuGnf1p228B/jgWP6UnxSNlX7pPXhV86eZsBzdsE0A4M1HYsuQoSO
-	 dohO4gsDofXpVcG3gt26aP7lJYyAgHHRFD/lLLsn3YRRHldCtiA06dfgi40z3Ka5tC
-	 btSDA2AwfWPJIIS6eBL0b5fNZChuKzRJrIt/cLwo=
+	b=dUZvSs2gQrkIW3CXUTup+J0Z0fBjH4PpbYOevpx/0ok1FWDDYj8waaiC8lby76jLT
+	 ffhloFPOh4zIKffSNyW2bpD2sb9flNcywbFG1N4SOPj6gO1doWcRW5+GnxIK3RocgG
+	 OUt4fT+S2/0x47VYNhnDzL10OUxBRUxzbwBPLI00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 477/558] kselftests: mm: fix wrong __NR_userfaultfd value
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.10 444/482] drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35
 Date: Tue,  8 Oct 2024 14:08:27 +0200
-Message-ID: <20241008115721.011890270@linuxfoundation.org>
+Message-ID: <20241008115705.996141269@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-commit f30beffd977e98c33550bbeb6f278d157ff54844 upstream.
+commit 0d5e5e8a0aa49ea2163abf128da3b509a6c58286 upstream.
 
-grep -rnIF "#define __NR_userfaultfd"
-tools/include/uapi/asm-generic/unistd.h:681:#define __NR_userfaultfd 282
-arch/x86/include/generated/uapi/asm/unistd_32.h:374:#define
-__NR_userfaultfd 374
-arch/x86/include/generated/uapi/asm/unistd_64.h:327:#define
-__NR_userfaultfd 323
-arch/x86/include/generated/uapi/asm/unistd_x32.h:282:#define
-__NR_userfaultfd (__X32_SYSCALL_BIT + 323)
-arch/arm/include/generated/uapi/asm/unistd-eabi.h:347:#define
-__NR_userfaultfd (__NR_SYSCALL_BASE + 388)
-arch/arm/include/generated/uapi/asm/unistd-oabi.h:359:#define
-__NR_userfaultfd (__NR_SYSCALL_BASE + 388)
-include/uapi/asm-generic/unistd.h:681:#define __NR_userfaultfd 282
+[WHY & HOW]
+Mismatch in DCN35 DML2 cause bw validation failed to acquire unexpected DPP pipe to cause
+grey screen and system hang. Remove EnhancedPrefetchScheduleAccelerationFinal value override
+to match HW spec.
 
-The number is dependent on the architecture. The above data shows that:
-x86	374
-x86_64	323
-
-The value of __NR_userfaultfd was changed to 282 when asm-generic/unistd.h
-was included.  It makes the test to fail every time as the correct number
-of this syscall on x86_64 is 323.  Fix the header to asm/unistd.h.
-
-Link: https://lkml.kernel.org/r/20240923053836.3270393-1-usama.anjum@collabora.com
-Fixes: a5c6bc590094 ("selftests/mm: remove local __NR_* definitions")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9dad21f910fcea2bdcff4af46159101d7f9cd8ba)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/pagemap_ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index fc90af2a97b8..bcc73b4e805c 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -15,7 +15,7 @@
- #include <sys/ioctl.h>
- #include <sys/stat.h>
- #include <math.h>
--#include <asm-generic/unistd.h>
-+#include <asm/unistd.h>
- #include <pthread.h>
- #include <sys/resource.h>
- #include <assert.h>
--- 
-2.46.2
-
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
+@@ -303,7 +303,6 @@ void build_unoptimized_policy_settings(e
+ 	if (project == dml_project_dcn35 ||
+ 		project == dml_project_dcn351) {
+ 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
+-		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
+ 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
+ 		policy->UseOnlyMaxPrefetchModes = 1;
+ 	}
 
 
 
