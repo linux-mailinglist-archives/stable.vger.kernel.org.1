@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0617994E3B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A0E994C6C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE041F22F71
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79BC21C24E8F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B9A1DF971;
-	Tue,  8 Oct 2024 13:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903EF1DE89A;
+	Tue,  8 Oct 2024 12:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXVvHLT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNcCaHCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AF11DE8BE;
-	Tue,  8 Oct 2024 13:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9421D31A0;
+	Tue,  8 Oct 2024 12:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393246; cv=none; b=PZL0vD+bWx9H813C0AerDfo5dGlfAMkYj+Fwals7cvhsaWKHnb3hY+efsO3UWCO6qMjnk8SrrGYWHLlj5Zat8qZYnRvJd9nVJeVUJDI0P7cDFbQvHmI4FgUsbfXG8R6eIh1t2Dxo/C4ULqlJpkgX41fAuLxJ0LydhCwTcAGAmvE=
+	t=1728392059; cv=none; b=dMB9IuJR7TAS8oHu+tJm7aAIJU2lC+/1XWFcJxVyLXhGMffJMkobTRmMLDd32NDZsf5XkUjPafIn4BU+N3DUxsGeKsERt3uGjL9PzoBL62iLpD+CAy2vFTJVvnUWvTm4RVc6SGW0zNG8IMvPEn4ksM4NwtiowMP+nl2RFyW5Db4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393246; c=relaxed/simple;
-	bh=hunVHJpD1oRAKYPJ9am59t9++gi0DfwaHnSTz5fqpk8=;
+	s=arc-20240116; t=1728392059; c=relaxed/simple;
+	bh=YGHat8HaXF0xbYf9qVbYuMu2yJyUKhF32F6q6+MOqRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iY0VDoI19lmD8b/2xrg1fjymuiR9idwRHBCcLn7uK4hirh24sX0NFftV5i8bh9EmssMBmiDfWReEY+Hnvi0KQL3a5iWHZ2cutEG492banqRlfXJSJk4MBE1s3MFA8wAeoagIvYoxhEHvhvG5PVWqpZo2PS84ybr8q4hsUbIJd7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXVvHLT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C43C4CEC7;
-	Tue,  8 Oct 2024 13:14:04 +0000 (UTC)
+	 MIME-Version; b=k3u/M8I8+nmF+VWpzG4XRXWx2fA1BLlEEeC+25X/knXTnhfExREKV96V72NZHs8SDyXy95x/8w0EKWyMPT+r1ctxAyXQhepB2mWcy2mMN2qGNTdOW0BbY66S2s7bKOynVhOcKU+W0KAXD6MUQ5m2emRtlJpVoIgToyOmuhdkCYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNcCaHCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE71C4CEC7;
+	Tue,  8 Oct 2024 12:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393245;
-	bh=hunVHJpD1oRAKYPJ9am59t9++gi0DfwaHnSTz5fqpk8=;
+	s=korg; t=1728392059;
+	bh=YGHat8HaXF0xbYf9qVbYuMu2yJyUKhF32F6q6+MOqRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXVvHLT3Tx+8YmOoPJV3pWiVp7HQSJ5JUgcqYWPD3dItf7e6XQESwzc+jF/gG0k0o
-	 o9LMJx0IjNGfuREXtPi5k4TDZrwmFm1RhyTIbKbtL4+7bqa5fPpsLozxCAsxymXPJj
-	 xZG3H8Za3F6kOOLw7ftgyP6ng/tHqJqfi/VXrVGc=
+	b=pNcCaHCeM/Nk6xjDnKYgTn2/oCz2AiNTb83yc48uZHx3tltGVXKNzPl2TmIvUzG2O
+	 0Lf2Csb8B59i/q+LGWT9JPM2IUG535dDKE1Plg4/ei1hjHeglPDMFVxDWWUJJyo0A8
+	 bBQdSdwfVcZFppmDFtKVAoWnf8qe9qDXyMO6O9J0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/386] bnxt_en: Extend maximum length of version string by 1 byte
+Subject: [PATCH 6.11 303/558] platform/x86: x86-android-tablets: Adjust Xiaomi Pad 2 bottom bezel touch buttons LED
 Date: Tue,  8 Oct 2024 14:05:33 +0200
-Message-ID: <20241008115632.918306814@linuxfoundation.org>
+Message-ID: <20241008115714.242265386@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ffff7ee843c351ce71d6e0d52f0f20bea35e18c9 ]
+[ Upstream commit df40a23cc34c200cfde559eda7ca540f3ae7bd9e ]
 
-This corrects an out-by-one error in the maximum length of the package
-version string. The size argument of snprintf includes space for the
-trailing '\0' byte, so there is no need to allow extra space for it by
-reducing the value of the size argument by 1.
+The "input-events" LED trigger used to turn on the backlight LEDs had to
+be rewritten to use led_trigger_register_simple() + led_trigger_event()
+to fix a serious locking issue.
 
-Found by inspection.
-Compile tested only.
+This means it no longer supports using blink_brightness to set a per LED
+brightness for the trigger and it no longer sets LED_CORE_SUSPENDRESUME.
 
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20240813-bnxt-str-v2-1-872050a157e7@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Adjust the MiPad 2 bottom bezel touch buttons LED class device to match:
+
+1. Make LED_FULL the maximum brightness to fix the LED brightness
+   being very low when on.
+2. Set flags = LED_CORE_SUSPENDRESUME.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240916090255.35548-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/x86-android-tablets/other.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 3c36dd8051485..2e7ddbca9d53b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -3021,7 +3021,7 @@ static void bnxt_get_pkgver(struct net_device *dev)
+diff --git a/drivers/platform/x86/x86-android-tablets/other.c b/drivers/platform/x86/x86-android-tablets/other.c
+index eb0e55c69dfed..2549c348c8825 100644
+--- a/drivers/platform/x86/x86-android-tablets/other.c
++++ b/drivers/platform/x86/x86-android-tablets/other.c
+@@ -670,7 +670,7 @@ static const struct software_node *ktd2026_node_group[] = {
+  * is controlled by the "pwm_soc_lpss_2" PWM output.
+  */
+ #define XIAOMI_MIPAD2_LED_PERIOD_NS		19200
+-#define XIAOMI_MIPAD2_LED_DEFAULT_DUTY		 6000 /* From Android kernel */
++#define XIAOMI_MIPAD2_LED_MAX_DUTY_NS		 6000 /* From Android kernel */
  
- 	if (!bnxt_get_pkginfo(dev, buf, sizeof(buf))) {
- 		len = strlen(bp->fw_ver_str);
--		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len - 1,
-+		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len,
- 			 "/pkg %s", buf);
- 	}
- }
+ static struct pwm_device *xiaomi_mipad2_led_pwm;
+ 
+@@ -679,7 +679,7 @@ static int xiaomi_mipad2_brightness_set(struct led_classdev *led_cdev,
+ {
+ 	struct pwm_state state = {
+ 		.period = XIAOMI_MIPAD2_LED_PERIOD_NS,
+-		.duty_cycle = val,
++		.duty_cycle = XIAOMI_MIPAD2_LED_MAX_DUTY_NS * val / LED_FULL,
+ 		/* Always set PWM enabled to avoid the pin floating */
+ 		.enabled = true,
+ 	};
+@@ -701,11 +701,11 @@ static int __init xiaomi_mipad2_init(struct device *dev)
+ 		return -ENOMEM;
+ 
+ 	led_cdev->name = "mipad2:white:touch-buttons-backlight";
+-	led_cdev->max_brightness = XIAOMI_MIPAD2_LED_PERIOD_NS;
+-	/* "input-events" trigger uses blink_brightness */
+-	led_cdev->blink_brightness = XIAOMI_MIPAD2_LED_DEFAULT_DUTY;
++	led_cdev->max_brightness = LED_FULL;
+ 	led_cdev->default_trigger = "input-events";
+ 	led_cdev->brightness_set_blocking = xiaomi_mipad2_brightness_set;
++	/* Turn LED off during suspend */
++	led_cdev->flags = LED_CORE_SUSPENDRESUME;
+ 
+ 	ret = devm_led_classdev_register(dev, led_cdev);
+ 	if (ret)
 -- 
 2.43.0
 
