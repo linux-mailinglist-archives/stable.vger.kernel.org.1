@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-81860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FFA9949CE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF83994E4F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E4111F2390F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8802F1F2406A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54D11DEFD7;
-	Tue,  8 Oct 2024 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5AD1DF27E;
+	Tue,  8 Oct 2024 13:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvtAuXCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cD1cITxI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A211DEFE5;
-	Tue,  8 Oct 2024 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E871DE8BE;
+	Tue,  8 Oct 2024 13:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390378; cv=none; b=cg0ERtSjH8Clx2PDLPPHcwAJQEvA55/Gs5by7y/Na74c5ZRVAtRyDiksW5DZ/1XiQLpbVf7vGZf/aFV0+wzHUmu/bb7LW9FdC54Nv2Z2Ty3FdyxF7HnSQVz28QiTz9czVrgUglctcDCASHp3nfoI3Js7y6P0NhQPXUefzsKhUKs=
+	t=1728393341; cv=none; b=LrpYVsKSKJjEMDRWATGzJRbD86VIXvNjHV5lUI7FytRIzqcBSZk5P93Xe44OAhinLQ4Q4ehMNt+urLLdGzJAHQH7blBwxsnLSwij+vIU9zqq3kWcyMwAhyKBFLqhauLrYpTfzNupXaEkVZglalYFcL/GTQ3OzEazHQ8TFuSY4oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390378; c=relaxed/simple;
-	bh=AiBxuKCbXVWr1OcXYJVtHUUrwQ2Hm0/yWQsKXpLjqNk=;
+	s=arc-20240116; t=1728393341; c=relaxed/simple;
+	bh=Z6Aq3Bn7j/GrA6RdMA8PrO6VBMINE7X/uf66GMSbCLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2LlxkE927C6horVpnZFR0IKTSL0KYmVTdN282Cygbm9yC5fGiU8zVh157qeFIVGgzoEmItYhXQsNKVAnQtxQ3/jPgihqmwI9eG/ijayRh/W6agu4B1U9lChnTFNRkedP7at/P90B4UYHOswQeAAaDQHw8xupJ8PnDnRVajH1zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvtAuXCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B06C4CEC7;
-	Tue,  8 Oct 2024 12:26:17 +0000 (UTC)
+	 MIME-Version; b=iXYlfZv9BS/d62p6WMrAUab3DfgaIQPYSgiVOM6l3Wms4VccaZjvIfxAyjWfovvDYstvu708JH3dJLM4aTK0LlhljKebMIXk/jNKHXi0c05k+8fm69QZsgIPirYijybTm2e/MCMpeu/246Tvrge0hJLZMI5y0HPJdYWQGhKOxIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cD1cITxI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BF8C4CECC;
+	Tue,  8 Oct 2024 13:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390378;
-	bh=AiBxuKCbXVWr1OcXYJVtHUUrwQ2Hm0/yWQsKXpLjqNk=;
+	s=korg; t=1728393340;
+	bh=Z6Aq3Bn7j/GrA6RdMA8PrO6VBMINE7X/uf66GMSbCLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvtAuXCOKiXfYKQs+USvrBp/DYuCt1ZOD+N95ZchYTklwY6H6mZPp0W6kdjfblIx9
-	 lGMWaHSU1XG84Tzp1obSr1QX/s03USFEY8+YNhOo0Dz9kJ0a42JxeTwSzoEo5sNMPJ
-	 267p5zfjK+PCBtwfansb/OXUGFquBXvNXjCMzr/E=
+	b=cD1cITxIpTdU1vQZhWRcO+wAxda7Ien42neErDyQGzOAf6AzkSy+OmFovIg21QPYC
+	 AWgiwCHEL7lXpOBMoqTq8wdIGwFhLCG7yh/lgNahOIcbNzJ2QVeNdqI7WbbE0R2cGd
+	 9Zf9t3LBkXXTwXk3+hFBJ0I7ru5A8r0Ira7JhC/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 272/482] drm/xe: Fix memory leak on xe_alloc_pf_queue failure
-Date: Tue,  8 Oct 2024 14:05:35 +0200
-Message-ID: <20241008115658.984178263@linuxfoundation.org>
+Subject: [PATCH 6.6 091/386] ipv4: Mask upper DSCP bits and ECN bits in NETLINK_FIB_LOOKUP family
+Date: Tue,  8 Oct 2024 14:05:36 +0200
+Message-ID: <20241008115633.033720609@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit c5f728de696caa35481fd84202dfbc9fecc18e0b ]
+[ Upstream commit 8fed54758cd248cd311a2b5c1e180abef1866237 ]
 
-Simplify memory unwinding on error also fixing current memory
-leak that can happen on error.
+The NETLINK_FIB_LOOKUP netlink family can be used to perform a FIB
+lookup according to user provided parameters and communicate the result
+back to user space.
 
-v2: use devm_kcalloc(Matt A)
+However, unlike other users of the FIB lookup API, the upper DSCP bits
+and the ECN bits of the DS field are not masked, which can result in the
+wrong result being returned.
 
-Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Stuart Summers <stuart.summers@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240826162035.20462-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Solve this by masking the upper DSCP bits and the ECN bits using
+IPTOS_RT_MASK.
+
+The structure that communicates the request and the response is not
+exported to user space, so it is unlikely that this netlink family is
+actually in use [1].
+
+[1] https://lore.kernel.org/netdev/ZpqpB8vJU%2FQ6LSqa@debian/
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_pagefault.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ net/ipv4/fib_frontend.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_pagefault.c b/drivers/gpu/drm/xe/xe_gt_pagefault.c
-index 28cf90e8989c6..d924fdd8f6f97 100644
---- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
-+++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
-@@ -408,20 +408,17 @@ static void pagefault_fini(void *arg)
- {
- 	struct xe_gt *gt = arg;
- 	struct xe_device *xe = gt_to_xe(gt);
--	int i;
- 
- 	if (!xe->info.has_usm)
- 		return;
- 
- 	destroy_workqueue(gt->usm.acc_wq);
- 	destroy_workqueue(gt->usm.pf_wq);
--
--	for (i = 0; i < NUM_PF_QUEUE; ++i)
--		kfree(gt->usm.pf_queue[i].data);
- }
- 
- static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
- {
-+	struct xe_device *xe = gt_to_xe(gt);
- 	xe_dss_mask_t all_dss;
- 	int num_dss, num_eus;
- 
-@@ -437,7 +434,8 @@ static int xe_alloc_pf_queue(struct xe_gt *gt, struct pf_queue *pf_queue)
- 		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
- 
- 	pf_queue->gt = gt;
--	pf_queue->data = kcalloc(pf_queue->num_dw, sizeof(u32), GFP_KERNEL);
-+	pf_queue->data = devm_kcalloc(xe->drm.dev, pf_queue->num_dw,
-+				      sizeof(u32), GFP_KERNEL);
- 	if (!pf_queue->data)
- 		return -ENOMEM;
- 
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index 390f4be7f7bec..90ce87ffed461 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -1343,7 +1343,7 @@ static void nl_fib_lookup(struct net *net, struct fib_result_nl *frn)
+ 	struct flowi4           fl4 = {
+ 		.flowi4_mark = frn->fl_mark,
+ 		.daddr = frn->fl_addr,
+-		.flowi4_tos = frn->fl_tos,
++		.flowi4_tos = frn->fl_tos & IPTOS_RT_MASK,
+ 		.flowi4_scope = frn->fl_scope,
+ 	};
+ 	struct fib_table *tb;
 -- 
 2.43.0
 
