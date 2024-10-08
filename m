@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE319994AD1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1356994D3B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E4B1C24CA7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E1BA283815
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DC31DDC24;
-	Tue,  8 Oct 2024 12:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036D91DE2AE;
+	Tue,  8 Oct 2024 13:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmsxPz0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMTz8ZKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54511DA60C;
-	Tue,  8 Oct 2024 12:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CEA1DFD1;
+	Tue,  8 Oct 2024 13:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391011; cv=none; b=QlTDlJveYs7YkKhNXGI13jcjXizF2uFc94eNaXMUe0XOCWLOtoc4FCNtwZ9cQCekDsU1uEfCT765qKhC4VydT/HxZ0/qle26wYqxNv7/1wJ5pc4Wqx9nWwdBxJncVo3W9+ExE8ioFoK1PPC+/FS5LUmfuUZ+bMj02VWOeGfdXRc=
+	t=1728392606; cv=none; b=L9kqjTpED+U2HCclo9jK5mMwTF1BG1LGyTq/qGe8DVEMMV9zGcl39w/PDFk3KvBvbUYS7G2wrSAm/6bwrS/pR0QKuPuRSltFFtkM4iObwVhcaxdEgQdcabzWw7nMNuYLGA0EkxKae6ltdcBnSEZI0yBWUGqakk+U2WghmP9DsXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391011; c=relaxed/simple;
-	bh=5ZTmKkIK0UdHqcObQcFDI6bY1jRJtCXBQ+9J9r2NovU=;
+	s=arc-20240116; t=1728392606; c=relaxed/simple;
+	bh=tb/sbKwpjC3iHlQBsZSqkAy+6+Zkl1uK2CL1dgl5yAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrTUNwBSYG7W1Yt1G8VtnYVfG68IrfBpKqeIJmBrudTCOHj1NRTgLKoqTVBq9VP1fk9Wa/Zb+VArGcZlsijU6ujqIUfNUw91oqHHZIeOnSegF1dkAWwZBHrPG0iAnLPokqzt6Np5Tfgoe99Tqk0tEcX/LRo0PYUGCQDiZcHrAhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmsxPz0j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF55C4CEC7;
-	Tue,  8 Oct 2024 12:36:51 +0000 (UTC)
+	 MIME-Version; b=RKGMQuAm349yk/6TMiBHulYEVMlq+aNcTFN7NT57N53db3BvKrwqqbH9G4B+wivL/AJdAyddIS35MdRAauJZG8WUO3qhdEUU4W3//WNqglCxxBVqwVAPtFXDDfXNDwjmLURjFZ9+qpENq/dXhJHKNQbUboy+QmG96zeCtso6Mfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMTz8ZKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EBBC4CEC7;
+	Tue,  8 Oct 2024 13:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391011;
-	bh=5ZTmKkIK0UdHqcObQcFDI6bY1jRJtCXBQ+9J9r2NovU=;
+	s=korg; t=1728392606;
+	bh=tb/sbKwpjC3iHlQBsZSqkAy+6+Zkl1uK2CL1dgl5yAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmsxPz0j1zfhVnU072mGoJ8s0Xq2SexaIdLwtybrRhGuyEl20wF7yxgmoert8uy/i
-	 2ZKUw5pI+U9roFbHEh8wNcJQLh6hW3sKyHitsAJHm7LKissWumGWZvmx+Tzc6reBjy
-	 7xD65pbwStnv+z+a/1ygPuhkSRTmi0zsFrjimep4=
+	b=iMTz8ZKbhv438sjpiNj++qeGeyqB5y9XiSx1RPeaZiyX/M8xHSpV38eoqfDFUHU0z
+	 4RdvBkaSRDHeeJstv3p2YEZuSa5OY5P4LdMfW6hdSPGBwkBTOFPfJvL7g6CXLpRobM
+	 nUBFPyNT7yc2bkFHVS06b9JDogHaoRkGTKhyWnmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Glozar <tglozar@redhat.com>,
-	Eder Zulian <ezulian@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.10 432/482] rtla: Fix the help text in osnoise and timerlat top tools
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 465/558] clk: qcom: gcc-sc8180x: Fix the sdcc2 and sdcc4 clocks freq table
 Date: Tue,  8 Oct 2024 14:08:15 +0200
-Message-ID: <20241008115705.523508867@linuxfoundation.org>
+Message-ID: <20241008115720.550031627@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eder Zulian <ezulian@redhat.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 3d7b8ea7a8a20a45d019382c4dc6ed79e8bb95cf upstream.
+commit b8acaf2de8081371761ab4cf1e7a8ee4e7acc139 upstream.
 
-The help text in osnoise top and timerlat top had some minor errors
-and omissions. The -d option was missing the 's' (second) abbreviation and
-the error message for '-d' used '-D'.
+Update the frequency tables of gcc_sdcc2_apps_clk and gcc_sdcc4_apps_clk
+as per the latest frequency plan.
 
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
 Cc: stable@vger.kernel.org
-Fixes: 1eceb2fc2ca54 ("rtla/osnoise: Add osnoise top mode")
-Fixes: a828cd18bc4ad ("rtla: Add timerlat tool and timelart top mode")
-Link: https://lore.kernel.org/20240813155831.384446-1-ezulian@redhat.com
-Suggested-by: Tomas Glozar <tglozar@redhat.com>
-Reviewed-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Eder Zulian <ezulian@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-4-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/osnoise_top.c  |    2 +-
- tools/tracing/rtla/src/timerlat_top.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/tools/tracing/rtla/src/osnoise_top.c
-+++ b/tools/tracing/rtla/src/osnoise_top.c
-@@ -434,7 +434,7 @@ struct osnoise_top_params *osnoise_top_p
- 		case 'd':
- 			params->duration = parse_seconds_duration(optarg);
- 			if (!params->duration)
--				osnoise_top_usage(params, "Invalid -D duration\n");
-+				osnoise_top_usage(params, "Invalid -d duration\n");
- 			break;
- 		case 'e':
- 			tevent = trace_event_alloc(optarg);
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -459,7 +459,7 @@ static void timerlat_top_usage(char *usa
- 		"	  -c/--cpus cpus: run the tracer only on the given cpus",
- 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
- 		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
--		"	  -d/--duration time[m|h|d]: duration of the session in seconds",
-+		"	  -d/--duration time[s|m|h|d]: duration of the session",
- 		"	  -D/--debug: print debug info",
- 		"	     --dump-tasks: prints the task running on all CPUs if stop conditions are met (depends on !--no-aa)",
- 		"	  -t/--trace[file]: save the stopped trace to [file|timerlat_trace.txt]",
-@@ -613,7 +613,7 @@ static struct timerlat_top_params
- 		case 'd':
- 			params->duration = parse_seconds_duration(optarg);
- 			if (!params->duration)
--				timerlat_top_usage("Invalid -D duration\n");
-+				timerlat_top_usage("Invalid -d duration\n");
- 			break;
- 		case 'e':
- 			tevent = trace_event_alloc(optarg);
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -952,7 +952,7 @@ static const struct freq_tbl ftbl_gcc_sd
+ 	F(25000000, P_GPLL0_OUT_MAIN, 12, 1, 2),
+ 	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+ 	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+-	F(200000000, P_GPLL0_OUT_MAIN, 3, 0, 0),
++	F(202000000, P_GPLL9_OUT_MAIN, 4, 0, 0),
+ 	{ }
+ };
+ 
+@@ -975,9 +975,8 @@ static const struct freq_tbl ftbl_gcc_sd
+ 	F(400000, P_BI_TCXO, 12, 1, 4),
+ 	F(9600000, P_BI_TCXO, 2, 0, 0),
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+-	F(37500000, P_GPLL0_OUT_MAIN, 16, 0, 0),
+ 	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+-	F(75000000, P_GPLL0_OUT_MAIN, 8, 0, 0),
++	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+ 	{ }
+ };
+ 
 
 
 
