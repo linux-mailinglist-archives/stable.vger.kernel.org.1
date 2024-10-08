@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-82376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C414994C69
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C353A994C97
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F751F24AAA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84DBDB2AAFF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB25F1DED4E;
-	Tue,  8 Oct 2024 12:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E243F1DE4CC;
+	Tue,  8 Oct 2024 12:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6GMjQtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvpAd5hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666991DED48;
-	Tue,  8 Oct 2024 12:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5981D31A0;
+	Tue,  8 Oct 2024 12:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392050; cv=none; b=fj75wwb23QpzOK3BRhMcHQtQ9kdQ32u7uSz609pVI2qBGCDmcvaY0ZRm90VTrwZd2BVYGw5TeObsRwdBrBF1ASeKljIqsNZ8rpgc7O31s/DEc+9IkqIV/ZwQqnVOpDwrN4BuW73inYVuuCA+vNTdWqaB0kjhtbTGPZbOOEGe/aY=
+	t=1728392056; cv=none; b=TJwhH3kBaHf2OQdBxbWlz26p0ZFzFNdjBhx6SDzw7WaIpzTI3YFo7lXxhrS7LjbcTNp3jktyy6CZZCpJ9ZR9zhFYHlE+90/kgMhzBKSdkYqws7kix1ZG+oC5honipmM0kKL3OnuL6wCN4G4Nao+/AwW2Zt2jT4ncck835naGs24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392050; c=relaxed/simple;
-	bh=D09YErFA9Yac0kEwRnmny/40ZW3hFZS/KsrEou3hbcQ=;
+	s=arc-20240116; t=1728392056; c=relaxed/simple;
+	bh=yW/T/QRSPO4MMpsK+CAe9cs0ioFABZ7sTm8PJ5uAbwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2ks72gX6fG3+IOUvzsr3UMiqqaZBeClgmnLRWMnKyRNaALWDuaS/boSf4ubinsMxwE6TuYyOjIWXG4UYyk7Xqa1GHgci+s4XqCW2nexMdiLFZEY60FOmjKZ3F0UXadIWE98hHcTJFBa5J4saW8X2sWJWiSTQDlD25KuG+R87L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6GMjQtB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0719C4CEC7;
-	Tue,  8 Oct 2024 12:54:09 +0000 (UTC)
+	 MIME-Version; b=AQ1QvzmQXLXeoMilQo7hMiwUuXraXI0k48LtV7L6qVz9XZ7Od8Vt2//BYI+M2ghlxAhpIdf6ZNLlYLSatQrahjyRN1zL7GF2ouvDkXx+5fgFtBSEBYJwauwoVBDBFr8TVWAqsx0KqtzXTXzITJNb26A1oH4Qz3Jz7LiTkrHI/HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvpAd5hX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11FCC4CEC7;
+	Tue,  8 Oct 2024 12:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392050;
-	bh=D09YErFA9Yac0kEwRnmny/40ZW3hFZS/KsrEou3hbcQ=;
+	s=korg; t=1728392056;
+	bh=yW/T/QRSPO4MMpsK+CAe9cs0ioFABZ7sTm8PJ5uAbwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6GMjQtBT79mbiQNvD/F8bYBGYgyBEU3phl3mNmK/56CDtROv2pesGu2uDJ/KH1lh
-	 8bMxlb5HTc/oz1KYZ4/xHgcnnobrgKaMi9DnMmxWqocX4eEGXuoDgHbJ4haAzQx/Ga
-	 hWXWXqINT873BU/H3GjnLVLwQHggH6x87dPCiz68=
+	b=DvpAd5hXgF2awFWhUWAdIzsD2GzpNO5VXg/7L5nMQ4ndfNdjPXtFOBPM9R9x4lUEc
+	 bx9PZrDf28odnOPOy9p0+/+owpC7M/YqJywIHNhrnhcT7kANbfRe7nM6tfZfKA5FQV
+	 DZr9rrGhKGZP3ESRWYayIeeL+SA07e5yS9sRnLV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Luiz Capitulino <luizcap@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 301/558] ksmbd: add refcnt to ksmbd_conn struct
-Date: Tue,  8 Oct 2024 14:05:31 +0200
-Message-ID: <20241008115714.164450028@linuxfoundation.org>
+Subject: [PATCH 6.11 302/558] platform/mellanox: mlxbf-pmc: fix lockdep warning
+Date: Tue,  8 Oct 2024 14:05:32 +0200
+Message-ID: <20241008115714.203419557@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
 References: <20241008115702.214071228@linuxfoundation.org>
@@ -66,243 +66,133 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
 
-[ Upstream commit ee426bfb9d09b29987369b897fe9b6485ac2be27 ]
+[ Upstream commit 305790dd91057a3f7497c9d128614a4f8486b62b ]
 
-When sending an oplock break request, opinfo->conn is used,
-But freed ->conn can be used on multichannel.
-This patch add a reference count to the ksmbd_conn struct
-so that it can be freed when it is no longer used.
+It seems the mlxbf-pmc driver is missing initializing sysfs attributes
+which causes the warning below when CONFIG_LOCKDEP and
+CONFIG_DEBUG_LOCK_ALLOC are enabled. This commit fixes it.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+[  155.380843] BUG: key ffff470f45dfa6d8 has not been registered!
+[  155.386749] ------------[ cut here ]------------
+[  155.391361] DEBUG_LOCKS_WARN_ON(1)
+[  155.391381] WARNING: CPU: 4 PID: 1828 at kernel/locking/lockdep.c:4894 lockdep_init_map_type+0x1d0/0x288
+[  155.404254] Modules linked in: mlxbf_pmc(+) xfs libcrc32c mmc_block mlx5_core crct10dif_ce mlxfw ghash_ce virtio_net tls net_failover sha2
+_ce failover psample sha256_arm64 dw_mmc_bluefield pci_hyperv_intf sha1_ce dw_mmc_pltfm sbsa_gwdt dw_mmc micrel mmc_core nfit i2c_mlxbf pwr_m
+lxbf gpio_generic libnvdimm mlxbf_tmfifo mlxbf_gige dm_mirror dm_region_hash dm_log dm_mod
+[  155.436786] CPU: 4 UID: 0 PID: 1828 Comm: modprobe Kdump: loaded Not tainted 6.11.0-rc7-rep1+ #1
+[  155.445562] Hardware name: https://www.mellanox.com BlueField SoC/BlueField SoC, BIOS 4.8.0.13249 Aug  7 2024
+[  155.455463] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  155.462413] pc : lockdep_init_map_type+0x1d0/0x288
+[  155.467196] lr : lockdep_init_map_type+0x1d0/0x288
+[  155.471976] sp : ffff80008a1734e0
+[  155.475279] x29: ffff80008a1734e0 x28: ffff470f45df0240 x27: 00000000ffffee4b
+[  155.482406] x26: 00000000000011b4 x25: 0000000000000000 x24: 0000000000000000
+[  155.489532] x23: ffff470f45dfa6d8 x22: 0000000000000000 x21: ffffd54ef6bea000
+[  155.496659] x20: ffff470f45dfa6d8 x19: ffff470f49cdc638 x18: ffffffffffffffff
+[  155.503784] x17: 2f30303a31444642 x16: ffffd54ef48a65e8 x15: ffff80010a172fe7
+[  155.510911] x14: 0000000000000000 x13: 284e4f5f4e524157 x12: 5f534b434f4c5f47
+[  155.518037] x11: 0000000000000001 x10: 0000000000000001 x9 : ffffd54ef3f48a14
+[  155.525163] x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 : 00000000002bffa8
+[  155.532289] x5 : ffff4712bdcb6088 x4 : 0000000000000000 x3 : 0000000000000027
+[  155.539416] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff470f43e5be00
+[  155.546542] Call trace:
+[  155.548976]  lockdep_init_map_type+0x1d0/0x288
+[  155.553410]  __kernfs_create_file+0x80/0x138
+[  155.557673]  sysfs_add_file_mode_ns+0x94/0x150
+[  155.562106]  create_files+0xb0/0x248
+[  155.565672]  internal_create_group+0x10c/0x328
+[  155.570105]  internal_create_groups.part.0+0x50/0xc8
+[  155.575060]  sysfs_create_groups+0x20/0x38
+[  155.579146]  device_add_attrs+0x1b8/0x228
+[  155.583146]  device_add+0x2a4/0x690
+[  155.586625]  device_register+0x24/0x38
+[  155.590362]  __hwmon_device_register+0x1e0/0x3c8
+[  155.594969]  devm_hwmon_device_register_with_groups+0x78/0xe0
+[  155.600703]  mlxbf_pmc_probe+0x224/0x3a0 [mlxbf_pmc]
+[  155.605669]  platform_probe+0x6c/0xe0
+[  155.609320]  really_probe+0xc4/0x398
+[  155.612887]  __driver_probe_device+0x80/0x168
+[  155.617233]  driver_probe_device+0x44/0x120
+[  155.621405]  __driver_attach+0xf4/0x200
+[  155.625230]  bus_for_each_dev+0x7c/0xe8
+[  155.629055]  driver_attach+0x28/0x38
+[  155.632619]  bus_add_driver+0x110/0x238
+[  155.636445]  driver_register+0x64/0x128
+[  155.640270]  __platform_driver_register+0x2c/0x40
+[  155.644965]  pmc_driver_init+0x24/0xff8 [mlxbf_pmc]
+[  155.649833]  do_one_initcall+0x70/0x3d0
+[  155.653660]  do_init_module+0x64/0x220
+[  155.657400]  load_module+0x628/0x6a8
+[  155.660964]  init_module_from_file+0x8c/0xd8
+[  155.665222]  idempotent_init_module+0x194/0x290
+[  155.669742]  __arm64_sys_finit_module+0x6c/0xd8
+[  155.674261]  invoke_syscall.constprop.0+0x74/0xd0
+[  155.678957]  do_el0_svc+0xb4/0xd0
+[  155.682262]  el0_svc+0x5c/0x248
+[  155.685394]  el0t_64_sync_handler+0x134/0x150
+[  155.689739]  el0t_64_sync+0x17c/0x180
+[  155.693390] irq event stamp: 6407
+[  155.696693] hardirqs last  enabled at (6407): [<ffffd54ef3f48564>] console_unlock+0x154/0x1b8
+[  155.705207] hardirqs last disabled at (6406): [<ffffd54ef3f485ac>] console_unlock+0x19c/0x1b8
+[  155.713719] softirqs last  enabled at (6404): [<ffffd54ef3e9740c>] handle_softirqs+0x4f4/0x518
+[  155.722320] softirqs last disabled at (6395): [<ffffd54ef3df0160>] __do_softirq+0x18/0x20
+[  155.730484] ---[ end trace 0000000000000000 ]---
+
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+Link: https://lore.kernel.org/r/20240912190532.377097-1-luizcap@redhat.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c |  4 ++-
- fs/smb/server/connection.h |  1 +
- fs/smb/server/oplock.c     | 55 +++++++++++---------------------------
- fs/smb/server/vfs_cache.c  |  3 +++
- 4 files changed, 23 insertions(+), 40 deletions(-)
+ drivers/platform/mellanox/mlxbf-pmc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 7889df8112b4e..cac80e7bfefc7 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -39,7 +39,8 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
- 	xa_destroy(&conn->sessions);
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
--	kfree(conn);
-+	if (atomic_dec_and_test(&conn->refcnt))
-+		kfree(conn);
- }
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 4ed9c7fd2b62a..9d18dfca6a673 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -1774,6 +1774,7 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, unsigned int blk_
  
- /**
-@@ -68,6 +69,7 @@ struct ksmbd_conn *ksmbd_conn_alloc(void)
- 		conn->um = NULL;
- 	atomic_set(&conn->req_running, 0);
- 	atomic_set(&conn->r_count, 0);
-+	atomic_set(&conn->refcnt, 1);
- 	conn->total_credits = 1;
- 	conn->outstanding_credits = 0;
+ 	/* "event_list" sysfs to list events supported by the block */
+ 	attr = &pmc->block[blk_num].attr_event_list;
++	sysfs_attr_init(&attr->dev_attr.attr);
+ 	attr->dev_attr.attr.mode = 0444;
+ 	attr->dev_attr.show = mlxbf_pmc_event_list_show;
+ 	attr->nr = blk_num;
+@@ -1787,6 +1788,7 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, unsigned int blk_
+ 	if (strstr(pmc->block_name[blk_num], "l3cache") ||
+ 	    ((pmc->block[blk_num].type == MLXBF_PMC_TYPE_CRSPACE))) {
+ 		attr = &pmc->block[blk_num].attr_enable;
++		sysfs_attr_init(&attr->dev_attr.attr);
+ 		attr->dev_attr.attr.mode = 0644;
+ 		attr->dev_attr.show = mlxbf_pmc_enable_show;
+ 		attr->dev_attr.store = mlxbf_pmc_enable_store;
+@@ -1814,6 +1816,7 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, unsigned int blk_
+ 	/* "eventX" and "counterX" sysfs to program and read counter values */
+ 	for (j = 0; j < pmc->block[blk_num].counters; ++j) {
+ 		attr = &pmc->block[blk_num].attr_counter[j];
++		sysfs_attr_init(&attr->dev_attr.attr);
+ 		attr->dev_attr.attr.mode = 0644;
+ 		attr->dev_attr.show = mlxbf_pmc_counter_show;
+ 		attr->dev_attr.store = mlxbf_pmc_counter_store;
+@@ -1826,6 +1829,7 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, unsigned int blk_
+ 		attr = NULL;
  
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 5b947175c048e..b379ae4fdcdff 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -106,6 +106,7 @@ struct ksmbd_conn {
- 	bool				signing_negotiated;
- 	__le16				signing_algorithm;
- 	bool				binding;
-+	atomic_t			refcnt;
- };
- 
- struct ksmbd_conn_ops {
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index e546ffa57b55a..8ee86478287f9 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -51,6 +51,7 @@ static struct oplock_info *alloc_opinfo(struct ksmbd_work *work,
- 	init_waitqueue_head(&opinfo->oplock_brk);
- 	atomic_set(&opinfo->refcount, 1);
- 	atomic_set(&opinfo->breaking_cnt, 0);
-+	atomic_inc(&opinfo->conn->refcnt);
- 
- 	return opinfo;
- }
-@@ -124,6 +125,8 @@ static void free_opinfo(struct oplock_info *opinfo)
- {
- 	if (opinfo->is_lease)
- 		free_lease(opinfo);
-+	if (opinfo->conn && atomic_dec_and_test(&opinfo->conn->refcnt))
-+		kfree(opinfo->conn);
- 	kfree(opinfo);
- }
- 
-@@ -163,9 +166,7 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
- 		    !atomic_inc_not_zero(&opinfo->refcount))
- 			opinfo = NULL;
- 		else {
--			atomic_inc(&opinfo->conn->r_count);
- 			if (ksmbd_conn_releasing(opinfo->conn)) {
--				atomic_dec(&opinfo->conn->r_count);
- 				atomic_dec(&opinfo->refcount);
- 				opinfo = NULL;
- 			}
-@@ -177,26 +178,11 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
- 	return opinfo;
- }
- 
--static void opinfo_conn_put(struct oplock_info *opinfo)
-+void opinfo_put(struct oplock_info *opinfo)
- {
--	struct ksmbd_conn *conn;
--
- 	if (!opinfo)
- 		return;
- 
--	conn = opinfo->conn;
--	/*
--	 * Checking waitqueue to dropping pending requests on
--	 * disconnection. waitqueue_active is safe because it
--	 * uses atomic operation for condition.
--	 */
--	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
--		wake_up(&conn->r_count_q);
--	opinfo_put(opinfo);
--}
--
--void opinfo_put(struct oplock_info *opinfo)
--{
- 	if (!atomic_dec_and_test(&opinfo->refcount))
- 		return;
- 
-@@ -1127,14 +1113,11 @@ void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
- 			if (!atomic_inc_not_zero(&opinfo->refcount))
- 				continue;
- 
--			atomic_inc(&opinfo->conn->r_count);
--			if (ksmbd_conn_releasing(opinfo->conn)) {
--				atomic_dec(&opinfo->conn->r_count);
-+			if (ksmbd_conn_releasing(opinfo->conn))
- 				continue;
--			}
- 
- 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
--			opinfo_conn_put(opinfo);
-+			opinfo_put(opinfo);
- 		}
- 	}
- 	up_read(&p_ci->m_lock);
-@@ -1167,13 +1150,10 @@ void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp)
- 			if (!atomic_inc_not_zero(&opinfo->refcount))
- 				continue;
- 
--			atomic_inc(&opinfo->conn->r_count);
--			if (ksmbd_conn_releasing(opinfo->conn)) {
--				atomic_dec(&opinfo->conn->r_count);
-+			if (ksmbd_conn_releasing(opinfo->conn))
- 				continue;
--			}
- 			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
--			opinfo_conn_put(opinfo);
-+			opinfo_put(opinfo);
- 		}
- 	}
- 	up_read(&p_ci->m_lock);
-@@ -1252,7 +1232,7 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
- 	prev_opinfo = opinfo_get_list(ci);
- 	if (!prev_opinfo ||
- 	    (prev_opinfo->level == SMB2_OPLOCK_LEVEL_NONE && lctx)) {
--		opinfo_conn_put(prev_opinfo);
-+		opinfo_put(prev_opinfo);
- 		goto set_lev;
- 	}
- 	prev_op_has_lease = prev_opinfo->is_lease;
-@@ -1262,19 +1242,19 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
- 	if (share_ret < 0 &&
- 	    prev_opinfo->level == SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
- 		err = share_ret;
--		opinfo_conn_put(prev_opinfo);
-+		opinfo_put(prev_opinfo);
- 		goto err_out;
- 	}
- 
- 	if (prev_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
- 	    prev_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
--		opinfo_conn_put(prev_opinfo);
-+		opinfo_put(prev_opinfo);
- 		goto op_break_not_needed;
- 	}
- 
- 	list_add(&work->interim_entry, &prev_opinfo->interim_list);
- 	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II);
--	opinfo_conn_put(prev_opinfo);
-+	opinfo_put(prev_opinfo);
- 	if (err == -ENOENT)
- 		goto set_lev;
- 	/* Check all oplock was freed by close */
-@@ -1337,14 +1317,14 @@ static void smb_break_all_write_oplock(struct ksmbd_work *work,
- 		return;
- 	if (brk_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
- 	    brk_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
--		opinfo_conn_put(brk_opinfo);
-+		opinfo_put(brk_opinfo);
- 		return;
- 	}
- 
- 	brk_opinfo->open_trunc = is_trunc;
- 	list_add(&work->interim_entry, &brk_opinfo->interim_list);
- 	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II);
--	opinfo_conn_put(brk_opinfo);
-+	opinfo_put(brk_opinfo);
- }
- 
- /**
-@@ -1376,11 +1356,8 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		if (!atomic_inc_not_zero(&brk_op->refcount))
- 			continue;
- 
--		atomic_inc(&brk_op->conn->r_count);
--		if (ksmbd_conn_releasing(brk_op->conn)) {
--			atomic_dec(&brk_op->conn->r_count);
-+		if (ksmbd_conn_releasing(brk_op->conn))
- 			continue;
--		}
- 
- 		rcu_read_unlock();
- 		if (brk_op->is_lease && (brk_op->o_lease->state &
-@@ -1411,7 +1388,7 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		brk_op->open_trunc = is_trunc;
- 		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE);
- next:
--		opinfo_conn_put(brk_op);
-+		opinfo_put(brk_op);
- 		rcu_read_lock();
- 	}
- 	rcu_read_unlock();
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 4d4ee696e37cd..a19f4e563c7e5 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -863,6 +863,8 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
- 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
- 		if (op->conn != conn)
- 			continue;
-+		if (op->conn && atomic_dec_and_test(&op->conn->refcnt))
-+			kfree(op->conn);
- 		op->conn = NULL;
- 	}
- 	up_write(&ci->m_lock);
-@@ -965,6 +967,7 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
- 		if (op->conn)
- 			continue;
- 		op->conn = fp->conn;
-+		atomic_inc(&op->conn->refcnt);
- 	}
- 	up_write(&ci->m_lock);
- 
+ 		attr = &pmc->block[blk_num].attr_event[j];
++		sysfs_attr_init(&attr->dev_attr.attr);
+ 		attr->dev_attr.attr.mode = 0644;
+ 		attr->dev_attr.show = mlxbf_pmc_event_show;
+ 		attr->dev_attr.store = mlxbf_pmc_event_store;
+@@ -1861,6 +1865,7 @@ static int mlxbf_pmc_init_perftype_reg(struct device *dev, unsigned int blk_num)
+ 	while (count > 0) {
+ 		--count;
+ 		attr = &pmc->block[blk_num].attr_event[count];
++		sysfs_attr_init(&attr->dev_attr.attr);
+ 		attr->dev_attr.attr.mode = 0644;
+ 		attr->dev_attr.show = mlxbf_pmc_counter_show;
+ 		attr->dev_attr.store = mlxbf_pmc_counter_store;
 -- 
 2.43.0
 
