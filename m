@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A66994BA9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BFE9948A6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 644CE1F280FB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2FEAB2670C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FFF1DED43;
-	Tue,  8 Oct 2024 12:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C0533981;
+	Tue,  8 Oct 2024 12:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgLHip+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1d1y1La"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168431DDA15;
-	Tue,  8 Oct 2024 12:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4574D1D26F2;
+	Tue,  8 Oct 2024 12:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391498; cv=none; b=jyfbVzTbscJSNEftooxnlA8jC1RgbKFbmKUyE8HBGekWCWMZmJvgjct1eJ6jdbJvz+zQ6r4s4OdvhWLvZinXoQ0hlaDAKDSyquO7wMCNdl8mNH9WQhggLg/F8BROtDmBGKipgkES9xCXzAibNKXssE7LQ24SxBzmOHx9sEZXlLE=
+	t=1728389714; cv=none; b=UOyVx7iyOK2F/YvMyrIMR8P3QtUJPB04Cc+4TTjPjrdRngDcx7uKPEpl+Y4cfXqSiJxJ2nIHbPS7N5DIjEYEkVagqP271CR0mEGchglNfF70mL8vQMOHbP9IPKtRKxrg2Ts+dVhuQmS7zlrQeZGoq4+7dE4uDLXqf827RxLwW1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391498; c=relaxed/simple;
-	bh=JU91iSpyq8mEQW/sp2AtesI29xiyt7imqjHTCc6wjK8=;
+	s=arc-20240116; t=1728389714; c=relaxed/simple;
+	bh=qPWUANz9h+JMnckvKzA7K3FJmYzYxWJKUi+i3MbMS0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3m/aXxQrtrpm1rO3N+LyIhRRsdoXi34ByuMYwnKGiDD319jDWbaCtSs5Xy3NEbgwVynGvBN3hv27cq3fdv/j8xvmHYo5ec6DtF/ft8NaiYecvKVBvnsdm2fkSlAqIhEWexdFL4eBOWOcEfvMYiAKF69n+HQVbi/LDLsDJqdLuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgLHip+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90647C4CEC7;
-	Tue,  8 Oct 2024 12:44:57 +0000 (UTC)
+	 MIME-Version; b=HVKOramAzAPt6gaZmZwS2HQLjj2r5+9BPUc4ajyANvNoSKgguga5vNDxfuja9UNChZdmqmX2xHwpIj7NOo9yDH4JTMmgXi1JYYNma9wbdg78DoRmbexkxvMa09M40dr4cTs+OxcOGHq6ZFNIWbblxe1wINyOsZ3+SsgAZr/I+K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1d1y1La; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F513C4CEC7;
+	Tue,  8 Oct 2024 12:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391498;
-	bh=JU91iSpyq8mEQW/sp2AtesI29xiyt7imqjHTCc6wjK8=;
+	s=korg; t=1728389713;
+	bh=qPWUANz9h+JMnckvKzA7K3FJmYzYxWJKUi+i3MbMS0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgLHip+9NSpE5tTTNpOux9rAt5uvvxTbAZUY9F3KpkpHozD8Vn4X/N5fHrlfF5Uiq
-	 w28CaUi7TZ2DTn9lUShZ1VHdGiFfnuN0G/a8Gw1gayx5y9sfPvSAYIcuvnTdtT0TFf
-	 xD3txK81sDqZ7qerxdyAzDLsmy83MIuBy4VyRXsY=
+	b=t1d1y1LaHruZeC56dP4LfPRQFw0lHdIcc2B6Y3AJRh2rKBmhvosqpUiOB+lPYRRsM
+	 V/qhoAQ1jlYaS3/PKBs0nCo5sv6SCkSGTWQhQQCXuMC8jgsAysMVxvoEyJa8u8MyTq
+	 hrmWBIBC4Y6zjszUPeMeNnMFmZdmidIwIYhapvPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Fangrui Song <maskray@google.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 106/558] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
-Date: Tue,  8 Oct 2024 14:02:16 +0200
-Message-ID: <20241008115706.539658635@linuxfoundation.org>
+Subject: [PATCH 6.10 074/482] crypto: x86/sha256 - Add parentheses around macros single arguments
+Date: Tue,  8 Oct 2024 14:02:17 +0200
+Message-ID: <20241008115651.218337564@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Fangrui Song <maskray@google.com>
 
-[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
+[ Upstream commit 3363c460ef726ba693704dbcd73b7e7214ccc788 ]
 
-Avoids firmware race condition.
+The macros FOUR_ROUNDS_AND_SCHED and DO_4ROUNDS rely on an
+unexpected/undocumented behavior of the GNU assembler, which might
+change in the future
+(https://sourceware.org/bugzilla/show_bug.cgi?id=32073).
 
-Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+    M (1) (2) // 1 arg !? Future: 2 args
+    M 1 + 2   // 1 arg !? Future: 3 args
+
+    M 1 2     // 2 args
+
+Add parentheses around the single arguments to support future GNU
+assembler and LLVM integrated assembler (when the IsOperator hack from
+the following link is dropped).
+
+Link: https://github.com/llvm/llvm-project/commit/055006475e22014b28a070db1bff41ca15f322f0
+Signed-off-by: Fangrui Song <maskray@google.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/crypto/sha256-avx2-asm.S | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 2185cd24e2e1c..2f4755820b3cd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -690,13 +690,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
- {
- 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
- 	struct mt7915_vif *mvif = msta->vif;
-+	int ret;
+diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
+index 0ffb072be9561..0bbec1c75cd0b 100644
+--- a/arch/x86/crypto/sha256-avx2-asm.S
++++ b/arch/x86/crypto/sha256-avx2-asm.S
+@@ -592,22 +592,22 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	leaq	K256+0*32(%rip), INP		## reuse INP as scratch reg
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 0*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 0*32)
  
-+	mt76_worker_disable(&dev->mt76.tx_worker);
- 	if (enable && !params->amsdu)
- 		msta->wcid.amsdu = false;
-+	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
-+				     MCU_EXT_CMD(STA_REC_UPDATE),
-+				     enable, true);
-+	mt76_worker_enable(&dev->mt76.tx_worker);
+ 	leaq	K256+1*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 1*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 1*32)
  
--	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
--				      MCU_EXT_CMD(STA_REC_UPDATE),
--				      enable, true);
-+	return ret;
- }
+ 	leaq	K256+2*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 2*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 2*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 2*32)
  
- int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
+ 	leaq	K256+3*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 3*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 3*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 3*32)
+ 
+ 	add	$4*32, SRND
+ 	cmp	$3*4*32, SRND
+@@ -618,12 +618,12 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	leaq	K256+0*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
+-	DO_4ROUNDS	_XFER + 0*32
++	DO_4ROUNDS	(_XFER + 0*32)
+ 
+ 	leaq	K256+1*32(%rip), INP
+ 	vpaddd	(INP, SRND), X1, XFER
+ 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
+-	DO_4ROUNDS	_XFER + 1*32
++	DO_4ROUNDS	(_XFER + 1*32)
+ 	add	$2*32, SRND
+ 
+ 	vmovdqa	X2, X0
+@@ -651,8 +651,8 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	xor	SRND, SRND
+ .align 16
+ .Lloop3:
+-	DO_4ROUNDS	 _XFER + 0*32 + 16
+-	DO_4ROUNDS	 _XFER + 1*32 + 16
++	DO_4ROUNDS	(_XFER + 0*32 + 16)
++	DO_4ROUNDS	(_XFER + 1*32 + 16)
+ 	add	$2*32, SRND
+ 	cmp	$4*4*32, SRND
+ 	jb	.Lloop3
 -- 
 2.43.0
 
