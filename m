@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D24994E05
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E52994C40
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77BFB1F22156
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE6D283E48
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43311DF260;
-	Tue,  8 Oct 2024 13:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244121DE88F;
+	Tue,  8 Oct 2024 12:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUpKXyIw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PASDTLLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C031DF25E;
-	Tue,  8 Oct 2024 13:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BE61DED60;
+	Tue,  8 Oct 2024 12:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393114; cv=none; b=C9Ycg0MqXh764Yzg++Sc+RNIEnB7JDwRSvL0mhIeMTpKZR/ZmDWKaDeCXYoHuEma9JKv7FjozzntnjVDj3wHwJ91hRCSeKIfzYD3vDDkLQ2tCiy/fBwBIKbK3D04FVJTiHZYAf2lqLlwfDxKznUe4ORieUZxBcq6se7LW17hdxc=
+	t=1728391940; cv=none; b=WtMMSExsAAz7UBVVmEL1IR7HTl+4n7g2QuwcIJA47L6cbpigeJYqZ5bsGsEq0MYpAVS99ePXwVQBTTVVKTKFh+K1kWwejLFixoAID1yuMMDsWCEQVimUJQ+5HMCZJff5WicR5eRhw5z5sBB6EQgqqLnDmQrJlXhpAUveIZx4H9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393114; c=relaxed/simple;
-	bh=xMTNw4YxaV7b7HUFNHai1pikViQxj7RzBh5qfb9+yug=;
+	s=arc-20240116; t=1728391940; c=relaxed/simple;
+	bh=B1rcXRWWW5oYjg4Woj6i2U1Nfk0U8/3jyaA1pk4tkk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heNjwp5K84G1M2eNXMmaXYcFPBqHZ9IeekXMuqDFeUdNfQ1Ap4HBMJiJ7yG4vrfo+aoOVapsBMuIW5F8wXkSVuH4/0v87j9aEbftw6oGfOftZaxgg+hhCHXlfPvkoKt7c9uDXBEVPl3jkUzF/cN7S9NTIM7S5fwbSB5rIRp3bQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUpKXyIw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838F4C4CECC;
-	Tue,  8 Oct 2024 13:11:53 +0000 (UTC)
+	 MIME-Version; b=sKlWm7uYWRYUz3k/nRoeWHGZ90Hohd5sO3POAoAqg04T1h0PsEoWe4sTEFJeWPoKh0PNyWIlKUw3zqrdGvGtLEVcQY9qOnx4C2YecSUoQ/s/U5K2EjLrfj5SSQpff+cSbW5191ig6AxhbiIwIBdQ4xxC1ihjNSrxA/LLeX6QNFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PASDTLLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549EFC4CEC7;
+	Tue,  8 Oct 2024 12:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393114;
-	bh=xMTNw4YxaV7b7HUFNHai1pikViQxj7RzBh5qfb9+yug=;
+	s=korg; t=1728391940;
+	bh=B1rcXRWWW5oYjg4Woj6i2U1Nfk0U8/3jyaA1pk4tkk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUpKXyIwREO8aY7+6MhHSpPu7Gaz3HsHnjsAZlUobpPb/H/JjSo+xc+U5cBOmJ5zL
-	 j3attpC5s2XqzY3WwIw6Tib7pTvInkLSAUyp5Yi10u0UHwQ3bJkcLIBKdr8qLnn1q/
-	 qF8SiGY8ZI/2a4RfkarbXr+QiArQB46jgafv8OtE=
+	b=PASDTLLwCq9vTX+B0M1ASzbT1liXoTSRf/hGFg1rNd2Z1KEQ//Cnp92DiKanjzRm9
+	 f5JIwyIecfxulvdW1klvA7xwEYY0pvswch+V7lFETm7XocGxWmD5X93FFVGVLuxSBX
+	 /UarTD78ppqnS9t4oT/2JZneuJ65wtxrsGOecx+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/386] net: Fix gso_features_check to check for both dev->gso_{ipv4_,}max_size
+Subject: [PATCH 6.11 241/558] drm/msm/adreno: Assign msm_gpu->pdev earlier to avoid nullptrs
 Date: Tue,  8 Oct 2024 14:04:31 +0200
-Message-ID: <20241008115630.507100530@linuxfoundation.org>
+Message-ID: <20241008115711.825191852@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit e609c959a939660c7519895f853dfa5624c6827a ]
+[ Upstream commit 16007768551d5bfe53426645401435ca8d2ef54f ]
 
-Commit 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
-added a dev->gso_max_size test to gso_features_check() in order to fall
-back to GSO when needed.
+There are some cases, such as the one uncovered by Commit 46d4efcccc68
+("drm/msm/a6xx: Avoid a nullptr dereference when speedbin setting fails")
+where
 
-This was added as it was noticed that some drivers could misbehave if TSO
-packets get too big. However, the check doesn't respect dev->gso_ipv4_max_size
-limit. For instance, a device could be configured with BIG TCP for IPv4,
-but not IPv6.
+msm_gpu_cleanup() : platform_set_drvdata(gpu->pdev, NULL);
 
-Therefore, add a netif_get_gso_max_size() equivalent to netif_get_gro_max_size()
-and use the helper to respect both limits before falling back to GSO engine.
+is called on gpu->pdev == NULL, as the GPU device has not been fully
+initialized yet.
 
-Fixes: 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240923212242.15669-2-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Turns out that there's more than just the aforementioned path that
+causes this to happen (e.g. the case when there's speedbin data in the
+catalog, but opp-supported-hw is missing in DT).
+
+Assigning msm_gpu->pdev earlier seems like the least painful solution
+to this, therefore do so.
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/602742/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 9 +++++++++
- net/core/dev.c            | 2 +-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 1 +
+ drivers/gpu/drm/msm/msm_gpu.c           | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index e4f02e638b9d9..8f5ac20b4c03d 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -5038,6 +5038,15 @@ netif_get_gro_max_size(const struct net_device *dev, const struct sk_buff *skb)
- 	       READ_ONCE(dev->gro_ipv4_max_size);
- }
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index 3896123ec51c9..83caca2c4026a 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -1083,6 +1083,7 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
+ 	adreno_gpu->chip_id = config->chip_id;
  
-+static inline unsigned int
-+netif_get_gso_max_size(const struct net_device *dev, const struct sk_buff *skb)
-+{
-+	/* pairs with WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
-+	return skb->protocol == htons(ETH_P_IPV6) ?
-+	       READ_ONCE(dev->gso_max_size) :
-+	       READ_ONCE(dev->gso_ipv4_max_size);
-+}
-+
- static inline bool netif_is_macsec(const struct net_device *dev)
- {
- 	return dev->priv_flags & IFF_MACSEC;
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 5a5bd339f11eb..decfa7cbba50a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3500,7 +3500,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	if (gso_segs > READ_ONCE(dev->gso_max_segs))
- 		return features & ~NETIF_F_GSO_MASK;
+ 	gpu->allow_relocs = config->info->family < ADRENO_6XX_GEN1;
++	gpu->pdev = pdev;
  
--	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
-+	if (unlikely(skb->len >= netif_get_gso_max_size(dev, skb)))
- 		return features & ~NETIF_F_GSO_MASK;
+ 	/* Only handle the core clock when GMU is not in use (or is absent). */
+ 	if (adreno_has_gmu_wrapper(adreno_gpu) ||
+diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
+index 3666b42b4ecd7..a274b84664237 100644
+--- a/drivers/gpu/drm/msm/msm_gpu.c
++++ b/drivers/gpu/drm/msm/msm_gpu.c
+@@ -931,7 +931,6 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
+ 	if (IS_ERR(gpu->gpu_cx))
+ 		gpu->gpu_cx = NULL;
  
- 	if (!skb_shinfo(skb)->gso_type) {
+-	gpu->pdev = pdev;
+ 	platform_set_drvdata(pdev, &gpu->adreno_smmu);
+ 
+ 	msm_devfreq_init(gpu);
 -- 
 2.43.0
 
