@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-81708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40569948EA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B96994BBD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3A61F290D8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CC9C1F287B0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBCC1DEFC8;
-	Tue,  8 Oct 2024 12:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1823F1DEFE0;
+	Tue,  8 Oct 2024 12:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOatJtfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3eohDWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B62B1DEFC5;
-	Tue,  8 Oct 2024 12:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9C01DEFC7;
+	Tue,  8 Oct 2024 12:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389868; cv=none; b=rd9cArubHNm4lzC+axjh6PysK0TLswYaGK8OoKFnkaEcKs1hD6wudggRCwURp5ZRD+GwUPowUTDXWsAG6RrN5bbi1vXQJmMwJWwnnz2wIkUBSvxa5zah+/mOWU3bCl/b2AeuRxwrCGd190P4ouej21DfP2Y9cklWGC4AAooxAiQ=
+	t=1728391557; cv=none; b=Ojd9PXM1/W2huLq60J0F6V6SP7npqirI+LG1QyTyCeJbcA5M8VBOIcGNptfJfehQ8m/EaMN8Fqy1ixvw/SpxLSPAdbKXxb3+Ca0LLs7SN63bv9mDykzztz4gW6xFd7fnu8pTMijBIWI0FUfWc1GBVnX0Wx8nQXhjlvSOPbzudOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389868; c=relaxed/simple;
-	bh=KlEt9qGrvz2hIkTSOvorhe+uPJ42QrGb5OJfYfrL5O8=;
+	s=arc-20240116; t=1728391557; c=relaxed/simple;
+	bh=kAvyEQczXtFcCqFzmE9LnNMf+/lasG7aDU/dJTc4bE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rs2f08+v4BBabgehRkfl0/OR8YV6aqZNguUwYD1sRSbrUybFEf+Gfld3VDJ7K4Smp5K6eEnA3uAUh1Yz2mL9gD8zPzt6gw8z1GHpEIv0BClpPx+1nF9A/r64lzVUQwp0GOFDMfAuV8cZPw0Nd0nYPYPyjFjv6ZRaEd2tSMurgRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOatJtfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3094C4CEC7;
-	Tue,  8 Oct 2024 12:17:47 +0000 (UTC)
+	 MIME-Version; b=YSA+jpjWMdCQp/AnVGlTkYR+7KkJXPxu+Gta+b/X6+GKilvBad501rDqfRlprMLxQrDn3+lW+PLfqb03olaaLTUmGXanoG2rO+hzaoWFW3+gU4YAZ/typsLIG7LNyqEk3m+4H1UX7o3qaz05klfch2aMKx7CcG0Nk19F4jRB3tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3eohDWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E8DC4CEC7;
+	Tue,  8 Oct 2024 12:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389868;
-	bh=KlEt9qGrvz2hIkTSOvorhe+uPJ42QrGb5OJfYfrL5O8=;
+	s=korg; t=1728391557;
+	bh=kAvyEQczXtFcCqFzmE9LnNMf+/lasG7aDU/dJTc4bE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOatJtfr5/UiEzqpZdMzA5fVCc4BTrSuZv1UIJsL+lYi3zDCd4ztkapPQxMq43xjE
-	 Sr2W8hhpPXF4kQ6ltR/qNIe+ZZt+de7OPp7WI7J90DiO4hsWZc5xmno0p7jEuhEJck
-	 pKsPATxR+5NcvrU8dUovJ0Bspp79rc6rGAEGi/2o=
+	b=w3eohDWynUVOHl1MRMoRucXZZF4qMdtOoyvZy7MGM6xgMfNJqfbl09v4aVqSfFw4R
+	 6Yg5lS9Glm2pxNMIsX7kRHcz/pG3C8jzON0tHBg/hrkPbjghmNVrcxXXzCE2rBp8vD
+	 Iw4cMETkWmdHTFOjC9QhDUouLL4bmVGAXT9TNmdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 119/482] wifi: mac80211: fix RCU list iterations
+Subject: [PATCH 6.11 152/558] cpufreq: loongson3: Use raw_smp_processor_id() in do_service_request()
 Date: Tue,  8 Oct 2024 14:03:02 +0200
-Message-ID: <20241008115652.990698371@linuxfoundation.org>
+Message-ID: <20241008115708.343772613@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit ac35180032fbc5d80b29af00ba4881815ceefcb6 ]
+[ Upstream commit 2b7ec33e534f7a10033a5cf07794acf48b182bbe ]
 
-There are a number of places where RCU list iteration is
-used, but that aren't (always) called with RCU held. Use
-just list_for_each_entry() in most, and annotate iface
-iteration with the required locks.
+Use raw_smp_processor_id() instead of plain smp_processor_id() in
+do_service_request(), otherwise we may get some errors with the driver
+enabled:
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240827094939.ed8ac0b2f897.I8443c9c3c0f8051841353491dae758021b53115e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+ BUG: using smp_processor_id() in preemptible [00000000] code: (udev-worker)/208
+ caller is loongson3_cpufreq_probe+0x5c/0x250 [loongson3_cpufreq]
+
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Tested-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/chan.c | 4 +++-
- net/mac80211/mlme.c | 2 +-
- net/mac80211/scan.c | 2 +-
- net/mac80211/util.c | 4 +++-
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/cpufreq/loongson3_cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index e6a7ff6ca6797..db5675d24e488 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -281,7 +281,9 @@ ieee80211_get_max_required_bw(struct ieee80211_link_data *link)
- 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
- 	struct sta_info *sta;
+diff --git a/drivers/cpufreq/loongson3_cpufreq.c b/drivers/cpufreq/loongson3_cpufreq.c
+index 5f79b6de127c9..6b5e6798d9a28 100644
+--- a/drivers/cpufreq/loongson3_cpufreq.c
++++ b/drivers/cpufreq/loongson3_cpufreq.c
+@@ -176,7 +176,7 @@ static DEFINE_PER_CPU(struct loongson3_freq_data *, freq_data);
+ static inline int do_service_request(u32 id, u32 info, u32 cmd, u32 val, u32 extra)
+ {
+ 	int retries;
+-	unsigned int cpu = smp_processor_id();
++	unsigned int cpu = raw_smp_processor_id();
+ 	unsigned int package = cpu_data[cpu].package;
+ 	union smc_message msg, last;
  
--	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
-+	lockdep_assert_wiphy(sdata->local->hw.wiphy);
-+
-+	list_for_each_entry(sta, &sdata->local->sta_list, list) {
- 		if (sdata != sta->sdata &&
- 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
- 			continue;
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 1faf4d7c115f0..71cc5eb35bfcb 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1020,7 +1020,7 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
- 		bool disable_mu_mimo = false;
- 		struct ieee80211_sub_if_data *other;
- 
--		list_for_each_entry_rcu(other, &local->interfaces, list) {
-+		list_for_each_entry(other, &local->interfaces, list) {
- 			if (other->vif.bss_conf.mu_mimo_owner) {
- 				disable_mu_mimo = true;
- 				break;
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 1c5d99975ad04..3b2bde6360bcb 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -504,7 +504,7 @@ static void __ieee80211_scan_completed(struct ieee80211_hw *hw, bool aborted)
- 	 * the scan was in progress; if there was none this will
- 	 * just be a no-op for the particular interface.
- 	 */
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-+	list_for_each_entry(sdata, &local->interfaces, list) {
- 		if (ieee80211_sdata_running(sdata))
- 			wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- 	}
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index c11dbe82ae1b3..d10e0c528c1bf 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -751,7 +751,9 @@ static void __iterate_interfaces(struct ieee80211_local *local,
- 	struct ieee80211_sub_if_data *sdata;
- 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
- 
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-+	list_for_each_entry_rcu(sdata, &local->interfaces, list,
-+				lockdep_is_held(&local->iflist_mtx) ||
-+				lockdep_is_held(&local->hw.wiphy->mtx)) {
- 		switch (sdata->vif.type) {
- 		case NL80211_IFTYPE_MONITOR:
- 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
 -- 
 2.43.0
 
