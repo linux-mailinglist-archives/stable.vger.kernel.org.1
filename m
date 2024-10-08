@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AFE994CC8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 484AF994A1A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F04F1C250CD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9303288186
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32B71DED43;
-	Tue,  8 Oct 2024 12:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8711DE886;
+	Tue,  8 Oct 2024 12:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOn9Llwk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hUzOgB+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B134D1DE2A5;
-	Tue,  8 Oct 2024 12:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BD61DDA36;
+	Tue,  8 Oct 2024 12:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392234; cv=none; b=H8MQ7HmoxYsdeqNHaxOUFeymykQ2PG7cd/5lHxKzzfLyc1/SDwj3gLxTfwBZOYy8Qcji8RsIm2Yy20aC2jhSu2rc3YQQgJ9FO8juOOGk7cTcwswY3gQHONGt8LkVTtbGoWX0hItOoEUF0LXyfERzRtF+f6fjdFWSqieNBYcm43s=
+	t=1728390560; cv=none; b=QdHrT4Ae8THHJS4HlQXoSRwow/o7ZKcNjW9K0Xk8nXcDUmg5trLp3NmRH5N/aC7QhZxfDwptvpiQlv8GAqO1ET7awJv2FkDwwGOb2whGFop5UYQYJtcdhnejZX7D4/W8VZlGGLeaTKH2k2qxhIFfn8A18fNjEF1KYqwByKdq/VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392234; c=relaxed/simple;
-	bh=NIw6lxH6G9Ucsb826YFFTxA8a85axywxzHOSi9UUokY=;
+	s=arc-20240116; t=1728390560; c=relaxed/simple;
+	bh=wYGeDDVI20hhLsLaZETg9dmGJAZq+ksmQ0dFkoL4DMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9e70RQfFBP9fBkLG6PyobyWZ678tB5hyZHkYHmI8VzDlkVLyS7B0wIM5eFriDLrETkKRcmS7LhZ4gS3ehCY+9EBLKvJ3i6gsWNj/PWTSbEt2g5diEIrfW/GuPFPMCSwseeoFKq/FIwZtvDD60NVCZjRAxhc1HjcX6ZfTfQpQFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOn9Llwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC5CC4CEC7;
-	Tue,  8 Oct 2024 12:57:13 +0000 (UTC)
+	 MIME-Version; b=ZCTGcVtJALLlK2Jd60FE64Wal/N5sTJpOd3DaDQ7CceklCvbkprI54zGRTBLBHFXt0BPx+dpvu/C1gDr2dhzIZ67He51OSOxyGsfR0LpM8uRDXzwYzgCD8jJOJznKwXD7wNloodVu/5N10P1iLAt+4yJQ5EjmwBcLYaMHRGonzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hUzOgB+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E08C4CEC7;
+	Tue,  8 Oct 2024 12:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392234;
-	bh=NIw6lxH6G9Ucsb826YFFTxA8a85axywxzHOSi9UUokY=;
+	s=korg; t=1728390560;
+	bh=wYGeDDVI20hhLsLaZETg9dmGJAZq+ksmQ0dFkoL4DMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOn9LlwkefPnvc5e5d4GU4uXqAzDa157g0ebHRmbjE1wsKKRM8dlBsTbeIQ2bbRmB
-	 WiHhkYYNxkcCoHBCJB4dkoxIZ7aOBkF8NSsMHcpIvrRxlbg/t/45CzU6ijW+lQ1wCL
-	 iumZp+5MmAfFHz3TM3yk0gDZ4p0U8g9wZi/drZL0=
+	b=1hUzOgB+/FJig/4njYqZCCBiXQESOm1WbbJPPvapRIqn1L73+720PY7dV8o4iZtOK
+	 yzGG0HuMMV7XGICAXOGlN/wgktXquMMPZarod2fTRogXzfRhqHfsYM69ZJqWSR7yLR
+	 XP7DXbITj/TKfQqyozRx7Exrc51LEZEkrA2v1Gu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.11 356/558] i2c: synquacer: Deal with optional PCLK correctly
+	"yao.ly" <yao.ly@linux.alibaba.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.10 323/482] ext4: correct encrypted dentry name hash when not casefolded
 Date: Tue,  8 Oct 2024 14:06:26 +0200
-Message-ID: <20241008115716.309203393@linuxfoundation.org>
+Message-ID: <20241008115701.138512250@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: yao.ly <yao.ly@linux.alibaba.com>
 
-commit f2990f8630531a99cad4dc5c44cb2a11ded42492 upstream.
+commit 70dd7b573afeba9b8f8a33f2ae1e4a9a2ec8c1ec upstream.
 
-ACPI boot does not provide clocks and regulators, but instead, provides
-the PCLK rate directly, and enables the clock in firmware. So deal
-gracefully with this.
+EXT4_DIRENT_HASH and EXT4_DIRENT_MINOR_HASH will access struct
+ext4_dir_entry_hash followed ext4_dir_entry. But there is no ext4_dir_entry_hash
+followed when inode is encrypted and not casefolded
 
-Fixes: 55750148e559 ("i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()")
-Cc: stable@vger.kernel.org # v6.10+
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: yao.ly <yao.ly@linux.alibaba.com>
+Link: https://patch.msgid.link/1719816219-128287-1-git-send-email-yao.ly@linux.alibaba.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-synquacer.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ext4/dir.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-synquacer.c
-+++ b/drivers/i2c/busses/i2c-synquacer.c
-@@ -550,12 +550,13 @@ static int synquacer_i2c_probe(struct pl
- 	device_property_read_u32(&pdev->dev, "socionext,pclk-rate",
- 				 &i2c->pclkrate);
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -279,12 +279,20 @@ static int ext4_readdir(struct file *fil
+ 					struct fscrypt_str de_name =
+ 							FSTR_INIT(de->name,
+ 								de->name_len);
++					u32 hash;
++					u32 minor_hash;
++
++					if (IS_CASEFOLDED(inode)) {
++						hash = EXT4_DIRENT_HASH(de);
++						minor_hash = EXT4_DIRENT_MINOR_HASH(de);
++					} else {
++						hash = 0;
++						minor_hash = 0;
++					}
  
--	pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
-+	pclk = devm_clk_get_optional_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(pclk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(pclk),
- 				     "failed to get and enable clock\n");
- 
--	i2c->pclkrate = clk_get_rate(pclk);
-+	if (pclk)
-+		i2c->pclkrate = clk_get_rate(pclk);
- 
- 	if (i2c->pclkrate < SYNQUACER_I2C_MIN_CLK_RATE ||
- 	    i2c->pclkrate > SYNQUACER_I2C_MAX_CLK_RATE)
+ 					/* Directory is encrypted */
+ 					err = fscrypt_fname_disk_to_usr(inode,
+-						EXT4_DIRENT_HASH(de),
+-						EXT4_DIRENT_MINOR_HASH(de),
+-						&de_name, &fstr);
++						hash, minor_hash, &de_name, &fstr);
+ 					de_name = fstr;
+ 					fstr.len = save_len;
+ 					if (err)
 
 
 
