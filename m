@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B7C994C72
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8132B994E28
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9CEEB22213
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 391D91F223AC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4721DF26D;
-	Tue,  8 Oct 2024 12:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7498C1DEFC8;
+	Tue,  8 Oct 2024 13:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvmgk8Y/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAt0ztwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1791DF265;
-	Tue,  8 Oct 2024 12:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3E01DE88F;
+	Tue,  8 Oct 2024 13:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392012; cv=none; b=FpN0xkP/fEgsKGka1yZYrir16BNh4ReNdz5ngijykXCgkqGnA8iboYfNMQy+dvd7CAWsrMc98yMy+vkaNmYrRh0XWIPaOEhD7qMqfvL4ImbVfvJBpUCKAigBkQsGwnyUSMoT75ORoxMmz3ThEkDrJE8dHNcKgDN6Jb2Iguub0LM=
+	t=1728393180; cv=none; b=ngoqzaEkKJaZsmA6vSRz8tI7FxeglF/VYTGaMilpCNUBjpiiElD2wqc2bzLRWN46QeZT+l+d9Szfjpa+Qk0jGLXZRcviJ/hdlB94TUEcO4D7wFrsmpzx2Tvdf5lkKXdkh83LvG3ZcgUPUjkXpchgIugjMtgdkiqtBZyAxX120GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392012; c=relaxed/simple;
-	bh=FrWj1nSZGzbZvT/MangkpWs/ni2Effe3Pb7V4Cdh5io=;
+	s=arc-20240116; t=1728393180; c=relaxed/simple;
+	bh=epKWvcMgt6UvEkc4W/yEzh7VfFJv0bjvKkFW9WfOO7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j60NwgOGmSQwqS8MhvyvEBE7HD5wtLi4OruVxTr4nm7Y4WT0jmpJdBFvPkWrLEDMyzYVpFTL3iW/4UCw+9zcSPn6Ghxe8bBDHwPjppk3ii8MIO/vSD7pLqHRpnlHpQt4N9foJxIsOCNR9ovXv01vbzQIwFdp2msNuJnnxQhgLhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvmgk8Y/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F90BC4CECC;
-	Tue,  8 Oct 2024 12:53:32 +0000 (UTC)
+	 MIME-Version; b=ePJC24OBRopiuhzuZ0kDew9i+6r7fe6G4472F8VEOvyKa2XKIlWLTfGc6NgBX5akDjRjxp8y8cvcaSeAYxmdo5BacUaf0xW/GzWlSMHLk6VBmySbmqriMXjcg429mggW3irW07+zjNHLPWG4ApTa4FkYPZFyObxmu9e8/NNAO54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAt0ztwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E03C4CECC;
+	Tue,  8 Oct 2024 13:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392012;
-	bh=FrWj1nSZGzbZvT/MangkpWs/ni2Effe3Pb7V4Cdh5io=;
+	s=korg; t=1728393180;
+	bh=epKWvcMgt6UvEkc4W/yEzh7VfFJv0bjvKkFW9WfOO7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvmgk8Y/1OZiojtlt5LsMjfdtH8O4qxPyvusUwrVkG1CTckd1M0jkU/Kv9bFQclyO
-	 x1m1aC6OXvXsmJsOfYx51rYw869VbPc5fnRBrb/zCPHwCA9aLcfSqIH7GlXAdbahVQ
-	 j1eLiOawlMvubr65af6XfauWeyMOpmZEJHMIulqk=
+	b=DAt0ztwB2nHMgQFXYAlxKTR5icHDlKAZ5sTmnJHGYy5OAXgtyfpyi3Jgx/UvInpmt
+	 EBSO30CMZ0JIWCPeRiiOJkQCTv0hTk3TwNK3T6leITkgN88FqxSzrKh1/LTj/fIKny
+	 Nw19o/wnU+YBMuKBKC46aD96Ak2wh5ZUZhsYpeIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 291/558] of/irq: Refer to actual buffer size in of_irq_parse_one()
+Subject: [PATCH 6.6 076/386] Bluetooth: btusb: Add Realtek RTL8852C support ID 0x0489:0xe122
 Date: Tue,  8 Oct 2024 14:05:21 +0200
-Message-ID: <20241008115713.775608943@linuxfoundation.org>
+Message-ID: <20241008115632.452262265@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Hilda Wu <hildawu@realtek.com>
 
-[ Upstream commit 39ab331ab5d377a18fbf5a0e0b228205edfcc7f4 ]
+[ Upstream commit bdf9557f70e7512bb2f754abf90d9e9958745316 ]
 
-Replace two open-coded calculations of the buffer size by invocations of
-sizeof() on the buffer itself, to make sure the code will always use the
-actual buffer size.
+Add the support ID (0x0489, 0xe122) to usb_device_id table for
+Realtek RTL8852C.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/817c0b9626fd30790fc488c472a3398324cfcc0c.1724156125.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+The device info from /sys/kernel/debug/usb/devices as below.
+
+T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e122 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 8fd63100ba8f0..d67b69cb84bfe 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -357,8 +357,8 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
- 	addr = of_get_property(device, "reg", &addr_len);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 0a58106207b0c..bc53da383f855 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -537,6 +537,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3592), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe122), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
- 	/* Prevent out-of-bounds read in case of longer interrupt parent address size */
--	if (addr_len > (3 * sizeof(__be32)))
--		addr_len = 3 * sizeof(__be32);
-+	if (addr_len > sizeof(addr_buf))
-+		addr_len = sizeof(addr_buf);
- 	if (addr)
- 		memcpy(addr_buf, addr, addr_len);
- 
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
 -- 
 2.43.0
 
