@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED2E994EE6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBE39949E2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91F53B22F5B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57A9B2290A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5001DF24B;
-	Tue,  8 Oct 2024 13:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA0C1DF243;
+	Tue,  8 Oct 2024 12:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJN6Y3/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbPBiHvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D351DE89A;
-	Tue,  8 Oct 2024 13:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382E6EEC8;
+	Tue,  8 Oct 2024 12:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393270; cv=none; b=Lxj1fkMKOvUH40Kb+XVSUHXQfPFNpC9+3IYysTs3okbJkkMoXIdkrs2Ig7/OTVq95qiPfGVtOfnQoU3gOPv1asgsLEYQgfw9GQZpcIHO1XquaTREVFAef+ZNFIblDXg9JLX8wU6KdP1WBI8nFyh0/8NLYIUKIA2wrHg/42okMKs=
+	t=1728390426; cv=none; b=nG6B9U7XVqRIaYoICP3d/9CWXisYdw+/tMbDWogE//TG5YjZ94qFodUZQ1jf3HFE/QKyjImd5L5GZ65+cjA/XQYZtRkw6dXdOeymleSm//YTjAR3TC6mBk6yRS12wCjpsAe8XLU2U9OoMNHDD/guUjkEpuo6P/t/q7I0K+6fmgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393270; c=relaxed/simple;
-	bh=sHFh0TAIgd+oEPBCve9LsuFSdTV7PML3G/FGU0uffKU=;
+	s=arc-20240116; t=1728390426; c=relaxed/simple;
+	bh=qX5dZH03xGSgwz6is5o6uPqUDsbB6IgP3+WXIcvl1MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1BI500L8fx7j4rwlK5A7Pr0t0EN4ObtjMs/QnYEjalb8R9qUHGHq+H08Z95KUyGNtVhiMekUwTnYiKoqWud6KddQKmJ5tD9+z82Df7pga5wKmAb1h14NigfOaWRatluuNMhHzZYktAL/Bmx3bHvDUVLTkUVBp+IgmKH3Wqa5q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJN6Y3/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A862C4CEC7;
-	Tue,  8 Oct 2024 13:14:29 +0000 (UTC)
+	 MIME-Version; b=F85io4EAT2mCD6mliTQNY4VZBr+b6BkXncOM8c1/3+dhfdbwby7H90o+M7goc8EGGHL/tyDLKX07zwgZW9EYyKFBioT0bqdjCtwwpBU5DGRsUhh9aOmvCom/0Bb+NmvqmdyoORHMqD+FMpDWzk5e6B1B6CELYTH2RkCorrjCRWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbPBiHvy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1238C4CEC7;
+	Tue,  8 Oct 2024 12:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393269;
-	bh=sHFh0TAIgd+oEPBCve9LsuFSdTV7PML3G/FGU0uffKU=;
+	s=korg; t=1728390426;
+	bh=qX5dZH03xGSgwz6is5o6uPqUDsbB6IgP3+WXIcvl1MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJN6Y3/24fiYaVg+2/NGCaRr0saiCLhj34DBVzHJ6VjIo9BxhbrnDAIBXAGcK/pj/
-	 x125a8xZl9VMUmU/zBPYIh035Krqo1Jcp0Z2/13DSvTLjWZ0kDG1RB7Gkn8HUVZb3H
-	 srShPJ0RKgmrlT7KcQGYCjkvweeDLKSoFsps0hww=
+	b=UbPBiHvyhMSzHs93lCmgVWFiiCZwp3ttKX1aZwlLa238VLjVs6H/CL3tn2aMK12UM
+	 ruSVDVrXUUZeZIZCMEMgyYD4Llnh//6yiJxZ+6ctVc8RIH5K5CT54kMzuijuLsEQgZ
+	 jJEQHUWek91h8U5SoORO3VRB8seLs+xuINj2TAnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/386] wifi: mt76: mt7915: add dummy HW offload of IEEE 802.11 fragmentation
+Subject: [PATCH 6.10 285/482] f2fs: increase BG GC migration window granularity when boosted for zoned devices
 Date: Tue,  8 Oct 2024 14:05:48 +0200
-Message-ID: <20241008115633.501029411@linuxfoundation.org>
+Message-ID: <20241008115659.495014349@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Daeho Jeong <daehojeong@google.com>
 
-[ Upstream commit f2cc859149240d910fdc6405717673e0b84bfda8 ]
+[ Upstream commit 2223fe652f759649ae1d520e47e5f06727c0acbd ]
 
-Currently, CONNAC2 series do not support encryption for fragmented Tx frames.
-Therefore, add dummy function mt7915_set_frag_threshold() to prevent SW
-IEEE 802.11 fragmentation.
+Need bigger BG GC migration window granularity when free section is
+running low.
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Link: https://patch.msgid.link/20240827093011.18621-16-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 5cc69a27abfa ("f2fs: forcibly migrate to secure space for zoned device file pinning")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+ fs/f2fs/gc.c | 12 ++++++++++--
+ fs/f2fs/gc.h |  1 +
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index e6af7318a9e38..5ff260319282c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -388,6 +388,7 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
- 	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
- 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
- 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
-+	ieee80211_hw_set(hw, SUPPORTS_TX_FRAG);
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 0605f87d1aca4..e59a87dc5130b 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1728,10 +1728,18 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
+ 			sec_end_segno -= SEGS_PER_SEC(sbi) -
+ 					f2fs_usable_segs_in_sec(sbi, segno);
  
- 	hw->max_tx_fragments = 4;
+-		if (gc_type == BG_GC)
+-			end_segno = start_segno +
++		if (gc_type == BG_GC) {
++			unsigned int window_granularity =
+ 				sbi->migration_window_granularity;
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 27655dcb79142..4fd5fd555191a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1561,6 +1561,12 @@ mt7915_twt_teardown_request(struct ieee80211_hw *hw,
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
-+static int
-+mt7915_set_frag_threshold(struct ieee80211_hw *hw, u32 val)
-+{
-+	return 0;
-+}
++			if (f2fs_sb_has_blkzoned(sbi) &&
++					!has_enough_free_blocks(sbi,
++					LIMIT_BOOST_ZONED_GC))
++				window_granularity *= BOOST_GC_MULTIPLE;
 +
- static int
- mt7915_set_radar_background(struct ieee80211_hw *hw,
- 			    struct cfg80211_chan_def *chandef)
-@@ -1687,6 +1693,7 @@ const struct ieee80211_ops mt7915_ops = {
- 	.sta_set_decap_offload = mt7915_sta_set_decap_offload,
- 	.add_twt_setup = mt7915_mac_add_twt_setup,
- 	.twt_teardown_request = mt7915_twt_teardown_request,
-+	.set_frag_threshold = mt7915_set_frag_threshold,
- 	CFG80211_TESTMODE_CMD(mt76_testmode_cmd)
- 	CFG80211_TESTMODE_DUMP(mt76_testmode_dump)
- #ifdef CONFIG_MAC80211_DEBUGFS
++			end_segno = start_segno + window_granularity;
++		}
++
+ 		if (end_segno > sec_end_segno)
+ 			end_segno = sec_end_segno;
+ 	}
+diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
+index 245f93663745a..78abeebd68b5e 100644
+--- a/fs/f2fs/gc.h
++++ b/fs/f2fs/gc.h
+@@ -33,6 +33,7 @@
+ #define LIMIT_NO_ZONED_GC	60 /* percentage over total user space of no gc for zoned devices */
+ #define LIMIT_BOOST_ZONED_GC	25 /* percentage over total user space of boosted gc for zoned devices */
+ #define DEF_MIGRATION_WINDOW_GRANULARITY_ZONED	3
++#define BOOST_GC_MULTIPLE	5
+ 
+ #define DEF_GC_FAILED_PINNED_FILES	2048
+ #define MAX_GC_FAILED_PINNED_FILES	USHRT_MAX
 -- 
 2.43.0
 
