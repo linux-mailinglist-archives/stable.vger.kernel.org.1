@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF53994E17
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC71994C76
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA6B02827C6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD3C1F21EAB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E52A1DED6F;
-	Tue,  8 Oct 2024 13:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE80A1DE2CF;
+	Tue,  8 Oct 2024 12:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwqCdenz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puJ0Zr7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4D01DE4CD;
-	Tue,  8 Oct 2024 13:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97D81D31A0;
+	Tue,  8 Oct 2024 12:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393140; cv=none; b=OnKTGYofbicrZxu2Zq1selm9sJxfvY96aOqyu0DM0orVINURUW5+8p3atV5n/SLVYfBubVyUUIurmzHFp0mS+J/H3RA0FMYdic9OWrMOltIUNfC5CCMhh9X0S5YDJEPa53YhDyU3zpBPBCaOyDjFgruaVweYZ4+CupjQAwG86r0=
+	t=1728392085; cv=none; b=W+e0kOLcR9qS8t0H2VdmfOiXPo/p1lSSN2O3np389LhX3w8vFhJjFk9yzussVQIHSww0LERGdt+ypcoRXFatdweZ4TZqmzjUFipS7ArnppjHuUq1bCBo05zcQ0XdzKNnBmHY1GVKQprU363n1mAGiSrP15xj3qvtzrsWJ0n4WVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393140; c=relaxed/simple;
-	bh=ETmzzjOkHlCDIZa+qOz2jMtAu+zykEg+G7yE4XvkzxA=;
+	s=arc-20240116; t=1728392085; c=relaxed/simple;
+	bh=OJ1WScoMeLpiFU7jAOJXc+eAXqfkBwguRgiQ5EzVcfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URIwHwyMhXTeQfzI5H7xqmS70RV9ue3E40FQuxGGGzCDXTRt1QB6t2am+03w+1NFoyr7Y06SVe3kJSonk5TMkni/AFnauDFmokMwS/z5J0Ypt1hNwLuIEk9QqComGz6z35hc4OqkmAM65plp4MmCQM4APXFT+NpVFiWcO9a8BR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwqCdenz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA31C4CEC7;
-	Tue,  8 Oct 2024 13:12:19 +0000 (UTC)
+	 MIME-Version; b=u0ZbPwhdtSwnYFa3b4PdYYgSm/SppshcACuSa3pj2p7Kj/Aa1wcyLtP1qqzyIbVrAo7VkvMRMAfrIASf0vE3+ZlvpCWjt3hKq8OlMLa+QCiBVyK/jzsQSRsErXFjSHpXELIMLANj7NImVqHRArHc4Va3Ubtx9B3fTi07tS17XJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puJ0Zr7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A913C4CECE;
+	Tue,  8 Oct 2024 12:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393139;
-	bh=ETmzzjOkHlCDIZa+qOz2jMtAu+zykEg+G7yE4XvkzxA=;
+	s=korg; t=1728392085;
+	bh=OJ1WScoMeLpiFU7jAOJXc+eAXqfkBwguRgiQ5EzVcfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwqCdenzkDqEHLWF6/5hQh+t+PW3SMY/6I4N9z9DPzbPsmLBBzk+ILHZ/pgIN3v7X
-	 Qwf1M61xzwIZyHQN0R19sLYArArJrJElBLBkOzRjBmTB2yhvhwjDkRd2SxNU9BF1+p
-	 kBodeXlCaIZjvNjctDCn31LwbRn+DlPMpV7JSfAY=
+	b=puJ0Zr7NkB9D5kNqiWGP5diBMX2M6TDNqUoNnzxqcOYtVKLQomxdPSE1TmQD2JulH
+	 isWipYaC3wkANgp0AzFpuhq19wQXyEBfnj5Y8RA8UVgThKGomHa989kb1k9mkWI6BN
+	 ncKXqyzQaK6SleXLP4DB+NBEJzflsR6Sn7V+bJBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>,
-	Issam Hamdi <ih@simonwunderlich.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Austin Zheng <Austin.Zheng@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/386] wifi: cfg80211: Set correct chandef when starting CAC
+Subject: [PATCH 6.11 280/558] drm/amd/display: Unlock Pipes Based On DET Allocation
 Date: Tue,  8 Oct 2024 14:05:10 +0200
-Message-ID: <20241008115632.026381955@linuxfoundation.org>
+Message-ID: <20241008115713.345212908@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +65,266 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Issam Hamdi <ih@simonwunderlich.de>
+From: Austin Zheng <Austin.Zheng@amd.com>
 
-[ Upstream commit 20361712880396e44ce80aaeec2d93d182035651 ]
+[ Upstream commit 4af0d8ebf74ccbb60d33fdd410891283dd6cb109 ]
 
-When starting CAC in a mode other than AP mode, it return a
-"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
-caused by the chandef.chan being null at the end of CAC.
+[Why]
+DML21 does not allocate DET evenly between pipes.
+May result in underflow when unlocking the pipes as DET could
+be overallocated.
 
-Solution: Ensure the channel definition is set for the different modes
-when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
+[How]
+1. Unlock pipes that have a decreased amount of DET allocation
+2. Wait for the double buffer to be updated.
+3. Unlock the remaining pipes.
 
- Call Trace:
-  ? show_regs.part.0+0x14/0x16
-  ? __warn+0x67/0xc0
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? report_bug+0xa7/0x130
-  ? exc_overflow+0x30/0x30
-  ? handle_bug+0x27/0x50
-  ? exc_invalid_op+0x18/0x60
-  ? handle_exception+0xf6/0xf6
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
-  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
-  ? process_one_work+0x165/0x280
-  ? worker_thread+0x120/0x3f0
-  ? kthread+0xc2/0xf0
-  ? process_one_work+0x280/0x280
-  ? kthread_complete_and_exit+0x20/0x20
-  ? ret_from_fork+0x19/0x24
-
-Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
-Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
-Link: https://patch.msgid.link/20240816142418.3381951-1-ih@simonwunderlich.de
-[shorten subject, remove OCB, reorder cases to match previous list]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/core/dc_resource.c | 28 ++++++
+ .../display/dc/hubbub/dcn401/dcn401_hubbub.c  | 23 +++++
+ .../amd/display/dc/hwss/dcn401/dcn401_hwseq.c | 91 +++++++++++++++++++
+ .../amd/display/dc/hwss/dcn401/dcn401_hwseq.h |  2 +
+ .../amd/display/dc/hwss/dcn401/dcn401_init.c  |  2 +-
+ .../gpu/drm/amd/display/dc/inc/hw/dchubbub.h  |  1 +
+ drivers/gpu/drm/amd/display/dc/inc/resource.h |  5 +
+ 7 files changed, 151 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 4ce23762b1c95..9e74f249cb45f 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10048,7 +10048,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
- 
- 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
- 	if (!err) {
--		wdev->links[0].ap.chandef = chandef;
-+		switch (wdev->iftype) {
-+		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_P2P_GO:
-+			wdev->links[0].ap.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_ADHOC:
-+			wdev->u.ibss.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_MESH_POINT:
-+			wdev->u.mesh.chandef = chandef;
-+			break;
-+		default:
-+			break;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 913adca531fc4..5ab5866dc73af 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -5275,3 +5275,31 @@ void resource_init_common_dml2_callbacks(struct dc *dc, struct dml2_configuratio
+ 	dml2_options->svp_pstate.callbacks.remove_phantom_streams_and_planes = &dc_state_remove_phantom_streams_and_planes;
+ 	dml2_options->svp_pstate.callbacks.release_phantom_streams_and_planes = &dc_state_release_phantom_streams_and_planes;
+ }
++
++/* Returns number of DET segments allocated for a given OTG_MASTER pipe */
++int resource_calculate_det_for_stream(struct dc_state *state, struct pipe_ctx *otg_master)
++{
++	struct pipe_ctx *opp_heads[MAX_PIPES];
++	struct pipe_ctx *dpp_pipes[MAX_PIPES];
++
++	int dpp_count = 0;
++	int det_segments = 0;
++
++	if (!otg_master->stream)
++		return 0;
++
++	int slice_count = resource_get_opp_heads_for_otg_master(otg_master,
++			&state->res_ctx, opp_heads);
++
++	for (int slice_idx = 0; slice_idx < slice_count; slice_idx++) {
++		if (opp_heads[slice_idx]->plane_state) {
++			dpp_count = resource_get_dpp_pipes_for_opp_head(
++					opp_heads[slice_idx],
++					&state->res_ctx,
++					dpp_pipes);
++			for (int dpp_idx = 0; dpp_idx < dpp_count; dpp_idx++)
++				det_segments += dpp_pipes[dpp_idx]->hubp_regs.det_size;
 +		}
- 		wdev->cac_started = true;
- 		wdev->cac_start_time = jiffies;
- 		wdev->cac_time_ms = cac_time_ms;
++	}
++	return det_segments;
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/hubbub/dcn401/dcn401_hubbub.c b/drivers/gpu/drm/amd/display/dc/hubbub/dcn401/dcn401_hubbub.c
+index 181041d6d177c..70ddc0392a5b6 100644
+--- a/drivers/gpu/drm/amd/display/dc/hubbub/dcn401/dcn401_hubbub.c
++++ b/drivers/gpu/drm/amd/display/dc/hubbub/dcn401/dcn401_hubbub.c
+@@ -1170,6 +1170,28 @@ static void dcn401_program_compbuf_segments(struct hubbub *hubbub, unsigned comp
+ 	}
+ }
+ 
++static void dcn401_wait_for_det_update(struct hubbub *hubbub, int hubp_inst)
++{
++	struct dcn20_hubbub *hubbub2 = TO_DCN20_HUBBUB(hubbub);
++
++	switch (hubp_inst) {
++	case 0:
++		REG_WAIT(DCHUBBUB_DET0_CTRL, DET0_SIZE_CURRENT, hubbub2->det0_size, 1, 100000); /* 1 vupdate at 10hz */
++		break;
++	case 1:
++		REG_WAIT(DCHUBBUB_DET1_CTRL, DET1_SIZE_CURRENT, hubbub2->det1_size, 1, 100000);
++		break;
++	case 2:
++		REG_WAIT(DCHUBBUB_DET2_CTRL, DET2_SIZE_CURRENT, hubbub2->det2_size, 1, 100000);
++		break;
++	case 3:
++		REG_WAIT(DCHUBBUB_DET3_CTRL, DET3_SIZE_CURRENT, hubbub2->det3_size, 1, 100000);
++		break;
++	default:
++		break;
++	}
++}
++
+ static const struct hubbub_funcs hubbub4_01_funcs = {
+ 	.update_dchub = hubbub2_update_dchub,
+ 	.init_dchub_sys_ctx = hubbub3_init_dchub_sys_ctx,
+@@ -1192,6 +1214,7 @@ static const struct hubbub_funcs hubbub4_01_funcs = {
+ 	.set_request_limit = hubbub32_set_request_limit,
+ 	.program_det_segments = dcn401_program_det_segments,
+ 	.program_compbuf_segments = dcn401_program_compbuf_segments,
++	.wait_for_det_update = dcn401_wait_for_det_update,
+ };
+ 
+ void hubbub401_construct(struct dcn20_hubbub *hubbub2,
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+index 7c724cf682840..edd302ebbdfcf 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+@@ -1677,3 +1677,94 @@ void dcn401_hardware_release(struct dc *dc)
+ 	}
+ }
+ 
++void dcn401_wait_for_det_buffer_update(struct dc *dc, struct dc_state *context, struct pipe_ctx *otg_master)
++{
++	struct pipe_ctx *opp_heads[MAX_PIPES];
++	struct pipe_ctx *dpp_pipes[MAX_PIPES];
++	struct hubbub *hubbub = dc->res_pool->hubbub;
++	int dpp_count = 0;
++
++	if (!otg_master->stream)
++		return;
++
++	int slice_count = resource_get_opp_heads_for_otg_master(otg_master,
++			&context->res_ctx, opp_heads);
++
++	for (int slice_idx = 0; slice_idx < slice_count; slice_idx++) {
++		if (opp_heads[slice_idx]->plane_state) {
++			dpp_count = resource_get_dpp_pipes_for_opp_head(
++					opp_heads[slice_idx],
++					&context->res_ctx,
++					dpp_pipes);
++			for (int dpp_idx = 0; dpp_idx < dpp_count; dpp_idx++) {
++				struct pipe_ctx *dpp_pipe = dpp_pipes[dpp_idx];
++					if (dpp_pipe && hubbub &&
++						dpp_pipe->plane_res.hubp &&
++						hubbub->funcs->wait_for_det_update)
++						hubbub->funcs->wait_for_det_update(hubbub, dpp_pipe->plane_res.hubp->inst);
++			}
++		}
++	}
++}
++
++void dcn401_interdependent_update_lock(struct dc *dc,
++		struct dc_state *context, bool lock)
++{
++	unsigned int i = 0;
++	struct pipe_ctx *pipe = NULL;
++	struct timing_generator *tg = NULL;
++	bool pipe_unlocked[MAX_PIPES] = {0};
++
++	if (lock) {
++		for (i = 0; i < dc->res_pool->pipe_count; i++) {
++			pipe = &context->res_ctx.pipe_ctx[i];
++			tg = pipe->stream_res.tg;
++
++			if (!resource_is_pipe_type(pipe, OTG_MASTER) ||
++					!tg->funcs->is_tg_enabled(tg) ||
++					dc_state_get_pipe_subvp_type(context, pipe) == SUBVP_PHANTOM)
++				continue;
++			dc->hwss.pipe_control_lock(dc, pipe, true);
++		}
++	} else {
++		/* Unlock pipes based on the change in DET allocation instead of pipe index
++		 * Prevents over allocation of DET during unlock process
++		 * e.g. 2 pipe config with different streams with a max of 20 DET segments
++		 *	Before:								After:
++		 *		- Pipe0: 10 DET segments			- Pipe0: 12 DET segments
++		 *		- Pipe1: 10 DET segments			- Pipe1: 8 DET segments
++		 * If Pipe0 gets updated first, 22 DET segments will be allocated
++		 */
++		for (i = 0; i < dc->res_pool->pipe_count; i++) {
++			pipe = &context->res_ctx.pipe_ctx[i];
++			tg = pipe->stream_res.tg;
++			int current_pipe_idx = i;
++
++			if (!resource_is_pipe_type(pipe, OTG_MASTER) ||
++					!tg->funcs->is_tg_enabled(tg) ||
++					dc_state_get_pipe_subvp_type(context, pipe) == SUBVP_PHANTOM) {
++				pipe_unlocked[i] = true;
++				continue;
++			}
++
++			// If the same stream exists in old context, ensure the OTG_MASTER pipes for the same stream get compared
++			struct pipe_ctx *old_otg_master = resource_get_otg_master_for_stream(&dc->current_state->res_ctx, pipe->stream);
++
++			if (old_otg_master)
++				current_pipe_idx = old_otg_master->pipe_idx;
++			if (resource_calculate_det_for_stream(context, pipe) <
++					resource_calculate_det_for_stream(dc->current_state, &dc->current_state->res_ctx.pipe_ctx[current_pipe_idx])) {
++				dc->hwss.pipe_control_lock(dc, pipe, false);
++				pipe_unlocked[i] = true;
++				dcn401_wait_for_det_buffer_update(dc, context, pipe);
++			}
++		}
++
++		for (i = 0; i < dc->res_pool->pipe_count; i++) {
++			if (pipe_unlocked[i])
++				continue;
++			pipe = &context->res_ctx.pipe_ctx[i];
++			dc->hwss.pipe_control_lock(dc, pipe, false);
++		}
++	}
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h
+index 8e9c1c17aa662..3ecb1ebffcee8 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h
+@@ -81,4 +81,6 @@ void dcn401_hardware_release(struct dc *dc);
+ void dcn401_update_odm(struct dc *dc, struct dc_state *context,
+ 		struct pipe_ctx *otg_master);
+ void adjust_hotspot_between_slices_for_2x_magnify(uint32_t cursor_width, struct dc_cursor_position *pos_cpy);
++void dcn401_wait_for_det_buffer_update(struct dc *dc, struct dc_state *context, struct pipe_ctx *otg_master);
++void dcn401_interdependent_update_lock(struct dc *dc, struct dc_state *context, bool lock);
+ #endif /* __DC_HWSS_DCN401_H__ */
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c
+index 6a768702c7bde..28f3eb8f4b2d8 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c
+@@ -38,7 +38,7 @@ static const struct hw_sequencer_funcs dcn401_funcs = {
+ 	.disable_audio_stream = dce110_disable_audio_stream,
+ 	.disable_plane = dcn20_disable_plane,
+ 	.pipe_control_lock = dcn20_pipe_control_lock,
+-	.interdependent_update_lock = dcn32_interdependent_update_lock,
++	.interdependent_update_lock = dcn401_interdependent_update_lock,
+ 	.cursor_lock = dcn10_cursor_lock,
+ 	.prepare_bandwidth = dcn401_prepare_bandwidth,
+ 	.optimize_bandwidth = dcn401_optimize_bandwidth,
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/dchubbub.h b/drivers/gpu/drm/amd/display/dc/inc/hw/dchubbub.h
+index dd2b2864876c7..67c32401893e8 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/dchubbub.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/dchubbub.h
+@@ -227,6 +227,7 @@ struct hubbub_funcs {
+ 	void (*get_mall_en)(struct hubbub *hubbub, unsigned int *mall_in_use);
+ 	void (*program_det_segments)(struct hubbub *hubbub, int hubp_inst, unsigned det_buffer_size_seg);
+ 	void (*program_compbuf_segments)(struct hubbub *hubbub, unsigned compbuf_size_seg, bool safe_to_increase);
++	void (*wait_for_det_update)(struct hubbub *hubbub, int hubp_inst);
+ };
+ 
+ struct hubbub {
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/resource.h b/drivers/gpu/drm/amd/display/dc/inc/resource.h
+index 96d40d33a1f99..9cd80d3864c7b 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/resource.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/resource.h
+@@ -639,4 +639,9 @@ struct dscl_prog_data *resource_get_dscl_prog_data(struct pipe_ctx *pipe_ctx);
+  * @dml2_options: struct to hold callbacks
+  */
+ void resource_init_common_dml2_callbacks(struct dc *dc, struct dml2_configuration_options *dml2_options);
++
++/*
++ *Calculate total DET allocated for all pipes for a given OTG_MASTER pipe
++ */
++int resource_calculate_det_for_stream(struct dc_state *state, struct pipe_ctx *otg_master);
+ #endif /* DRIVERS_GPU_DRM_AMD_DC_DEV_DC_INC_RESOURCE_H_ */
 -- 
 2.43.0
 
