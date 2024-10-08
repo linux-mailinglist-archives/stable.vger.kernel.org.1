@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B237C994D3A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9BE994EB7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1448BB298AE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 293FD285401
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8FE1DE4CC;
-	Tue,  8 Oct 2024 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A20A1DEFC8;
+	Tue,  8 Oct 2024 13:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tguekBts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Es5i7I+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A21C18F2FA;
-	Tue,  8 Oct 2024 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDED918C333;
+	Tue,  8 Oct 2024 13:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392456; cv=none; b=sncg0yUv1j3Idr8TCZBuK/bctUFUlb33nUnXqHSHWKadT9ddodIEb5DHihyNiQjcG7p/hh+MlG3M5aOza5Wo2Eov/jIZ0S/JzeBb/XxV1UcUT0znPn5ScUzXAPLmBZDfMYSDZmZaK55DmXOhJpJ3hgZr98C+pLTuLX1gADY0V4Q=
+	t=1728393618; cv=none; b=W7Ni0j56XDSzB6xsgamE/+9H48a2keK4e+560Rv5cugNTVmieh1hu+SGCcOgMFfaCGxnVmNI0+49YsHLprP4sSNr8261hu1q82fYHTPRu9JbgcglV6rH4htD2J0NRXTLtkaRUrhYxGKE8QP8r3Hq0riXDraUCBTZElo6YkfQXHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392456; c=relaxed/simple;
-	bh=EzX1pT7obh1XN9wBYP2dD74SUzkikKZyPPICHhm96aE=;
+	s=arc-20240116; t=1728393618; c=relaxed/simple;
+	bh=LIu407/BZuCj1UwyuF0MIKeZ2gMuOSODAkJXfUMYD00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFo1I2ca4i6g7Kvr4lqOe7ILtD3TMrD60ECohMI7R7/UlfJ5oXeGNGZENPk1uaMf+Jak1f4ht54DE+/lW/azAMJO5naE2kFfhqgojWX2ipt0szW/sm7QR8HfCuPG6QqQniegWO8siMc6Xu9yy7N7zRzfkJIHIOnm6Dg+gO4BM2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tguekBts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08C9C4CEC7;
-	Tue,  8 Oct 2024 13:00:55 +0000 (UTC)
+	 MIME-Version; b=XbsslTQpY1GY4nIjm3tjnFdrL0KxFqP6pLuvteKvtAD/+AHnQeluzfxCcYND8PnKc79SOsbnKCOgMlN8Uon8M2iFzt7XXbk6qvbZnrXZVtifYaMtisE6Sm3VWq+orUo1giXD5DCH1QWxUfxvTpND4jDp2Uykl40sZ2rGb1NVMfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Es5i7I+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEFAC4CEC7;
+	Tue,  8 Oct 2024 13:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392456;
-	bh=EzX1pT7obh1XN9wBYP2dD74SUzkikKZyPPICHhm96aE=;
+	s=korg; t=1728393618;
+	bh=LIu407/BZuCj1UwyuF0MIKeZ2gMuOSODAkJXfUMYD00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tguekBtse+28cEfKwIjQh3a0NJc1Xn0r3e8MtZC1y+ZuYkJ+RbWXCJlh6MHzL46DU
-	 6jcuS6qihGc0hb95Xwskx5iPUcg6oo5oaeBs1xw+8Lw8Jmw3yIoUlM2dauk0NXdCIL
-	 3ysb6QeixzDj+2CPAk39K68Z9I7spwx0Dzfk6qLg=
+	b=Es5i7I+HhCevTGXrd8kPdVvnO0ZwdPv0+ZDl1ULBcNTAPKNlTsR8gMrwk0Zj2/3c6
+	 O1LSyvzp0SOVaZkKsmXjEhaV2qbMWTkcobtvl9vmrHzOGMctrXxj2Xcq0lnrgk3QqD
+	 BrKDzPDQIakzZPzLsbOsc94uFCwOdj1qBEmbQT0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Ying Lee <kuan-ying.lee@canonical.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 421/558] scripts/gdb: fix lx-mounts command error
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Marek Vasut <marex@denx.de>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 206/386] i2c: stm32f7: Do not prepare/unprepare clock during runtime suspend/resume
 Date: Tue,  8 Oct 2024 14:07:31 +0200
-Message-ID: <20241008115718.839988830@linuxfoundation.org>
+Message-ID: <20241008115637.510685053@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 4b183f613924ad536be2f8bd12b307e9c5a96bf6 upstream.
+commit 048bbbdbf85e5e00258dfb12f5e368f908801d7b upstream.
 
-(gdb) lx-mounts
-      mount          super_block     devname pathname fstype options
-Python Exception <class 'gdb.error'>: There is no member named list.
-Error occurred in Python: There is no member named list.
+In case there is any sort of clock controller attached to this I2C bus
+controller, for example Versaclock or even an AIC32x4 I2C codec, then
+an I2C transfer triggered from the clock controller clk_ops .prepare
+callback may trigger a deadlock on drivers/clk/clk.c prepare_lock mutex.
 
-We encounter the above issue after commit 2eea9ce4310d ("mounts: keep
-list of mounts in an rbtree"). The commit move a mount from list into
-rbtree.
+This is because the clock controller first grabs the prepare_lock mutex
+and then performs the prepare operation, including its I2C access. The
+I2C access resumes this I2C bus controller via .runtime_resume callback,
+which calls clk_prepare_enable(), which attempts to grab the prepare_lock
+mutex again and deadlocks.
 
-So we can instead use rbtree to iterate all mounts information.
+Since the clock are already prepared since probe() and unprepared in
+remove(), use simple clk_enable()/clk_disable() calls to enable and
+disable the clock on runtime suspend and resume, to avoid hitting the
+prepare_lock mutex.
 
-Link: https://lkml.kernel.org/r/20240723064902.124154-4-kuan-ying.lee@canonical.com
-Fixes: 2eea9ce4310d ("mounts: keep list of mounts in an rbtree")
-Signed-off-by: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Fixes: 4e7bca6fc07b ("i2c: i2c-stm32f7: add PM Runtime support")
+Cc: <stable@vger.kernel.org> # v5.0+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gdb/linux/proc.py |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/scripts/gdb/linux/proc.py
-+++ b/scripts/gdb/linux/proc.py
-@@ -18,6 +18,7 @@ from linux import utils
- from linux import tasks
- from linux import lists
- from linux import vfs
-+from linux import rbtree
- from struct import *
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -2394,7 +2394,7 @@ static int __maybe_unused stm32f7_i2c_ru
+ 	struct stm32f7_i2c_dev *i2c_dev = dev_get_drvdata(dev);
  
+ 	if (!stm32f7_i2c_is_slave_registered(i2c_dev))
+-		clk_disable_unprepare(i2c_dev->clk);
++		clk_disable(i2c_dev->clk);
  
-@@ -172,8 +173,7 @@ values of that process namespace"""
-         gdb.write("{:^18} {:^15} {:>9} {} {} options\n".format(
-                   "mount", "super_block", "devname", "pathname", "fstype"))
+ 	return 0;
+ }
+@@ -2405,9 +2405,9 @@ static int __maybe_unused stm32f7_i2c_ru
+ 	int ret;
  
--        for mnt in lists.list_for_each_entry(namespace['list'],
--                                             mount_ptr_type, "mnt_list"):
-+        for mnt in rbtree.rb_inorder_for_each_entry(namespace['mounts'], mount_ptr_type, "mnt_node"):
-             devname = mnt['mnt_devname'].string()
-             devname = devname if devname else "none"
- 
+ 	if (!stm32f7_i2c_is_slave_registered(i2c_dev)) {
+-		ret = clk_prepare_enable(i2c_dev->clk);
++		ret = clk_enable(i2c_dev->clk);
+ 		if (ret) {
+-			dev_err(dev, "failed to prepare_enable clock\n");
++			dev_err(dev, "failed to enable clock\n");
+ 			return ret;
+ 		}
+ 	}
 
 
 
