@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-81643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD0E99488F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9603994B3D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AA702812A7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13CC9B23F70
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA651DE4C9;
-	Tue,  8 Oct 2024 12:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5782C1DED6F;
+	Tue,  8 Oct 2024 12:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3JnR4AT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1s6BuoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97761D618C;
-	Tue,  8 Oct 2024 12:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED121DE2AD;
+	Tue,  8 Oct 2024 12:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389649; cv=none; b=TqakudD6mjc3XRrB4HF1q0R1n6Tb/iChrZVZjctBQ2fhQqXAh8/wyF/XB82pjNmyNktVhe/2rimd7PN3TibeHSURINECD/Fnaj37CMaEI5ci5lqWdSNGDCf+sdOv9QaRcXcrJYmpoyw/l1FDFC52YICKOziSliB7VEbk3NmVhPk=
+	t=1728391258; cv=none; b=ZA9mMxCqc1Y1mbL+q92uR4Ly/L1+0hyDa75l/4APOUGL29Xw7+CCMxdbV9erj0LP4wH11RBQH/3pmbvfgaRvZvHnON0XWq7hNtr+P7l+u2/as98zNS91LE9TSQJm9RcEbyYmRXcNAILo3KTfBZZFNVTYiA+6FBCKTMdGJxfovis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389649; c=relaxed/simple;
-	bh=zO0dbYS8HEPor5BPZvKaE/wSJplAYbQDSPfW/1ug/bs=;
+	s=arc-20240116; t=1728391258; c=relaxed/simple;
+	bh=K8hYv2vcgO3wjlL7xogyOsmrPoYUFUB+rgGRlEL9eXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZ7EdA7T0mhTgEXH9PqVaMidU3uDXido9fIjG5HoKIvMXeP4sWZiceyjH0ff/UyHfA2QB+mOp3yxa2n8LxZS/OPb/XMc9Mv50tgwLzMCrDVCvEB2faNMOpgQBvlOXmnN0PKJT1u4X1DAfFUPWLCLQPXfEf9EIPC8JLKf4Xr030s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3JnR4AT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DC5C4CEC7;
-	Tue,  8 Oct 2024 12:14:08 +0000 (UTC)
+	 MIME-Version; b=b9oRkl2bv3uYE/WyK74cL1Hp33wzyPaMvL399apF7kxV1w0dhdjNaq4EYl6BOoc1MXqRx3QfrI+qEVSV2tda6uEwXTyILHPJE5IFzNEPc1fHEIlF/s/JvCliVhv/icH61qRHmMg0/c3kBSn+GEGdtXG8+GuiUOCD+FZwhgQ/KSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1s6BuoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59667C4CEC7;
+	Tue,  8 Oct 2024 12:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389649;
-	bh=zO0dbYS8HEPor5BPZvKaE/wSJplAYbQDSPfW/1ug/bs=;
+	s=korg; t=1728391257;
+	bh=K8hYv2vcgO3wjlL7xogyOsmrPoYUFUB+rgGRlEL9eXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3JnR4ATk57nSv82xepqq17vP8B5SyvokS28aZEAV+jCy+ka7s3j2ksCV3yU+Ls4/
-	 2p9LbeVCOJGxxOYE0OIUyuZhagXc+NtzAFiWMyRj7PEXpTrZnUKs+9SvYhJlLVUUFR
-	 6pClM5rDf2XnfgDndFgf0ruWOBgu7OUFc8X8nhiA=
+	b=A1s6BuoGXHQalMM4YtNstdyjc0VP9oSEyk6PJlfEFbXgL81LWik5cGzYCApJIw/pw
+	 T+blr+JODS6hY/mAkN3Ao+C67ytSBmXRC6J32BLaZ6t+Jm2OHnDVKdmiyc+y/c0+oa
+	 TnpNM05ZVx8k1rroqL0ar0iKabeAquWhXPqKNozE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 024/482] net: wwan: qcom_bam_dmux: Fix missing pm_runtime_disable()
+Subject: [PATCH 6.11 057/558] ASoC: atmel: mchp-pdmc: Skip ALSA restoration if substream runtime is uninitialized
 Date: Tue,  8 Oct 2024 14:01:27 +0200
-Message-ID: <20241008115649.250278641@linuxfoundation.org>
+Message-ID: <20241008115704.463918032@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Andrei Simion <andrei.simion@microchip.com>
 
-[ Upstream commit d505d3593b52b6c43507f119572409087416ba28 ]
+[ Upstream commit 09cfc6a532d249a51d3af5022d37ebbe9c3d31f6 ]
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time.
+Update the driver to prevent alsa-restore.service from failing when
+reading data from /var/lib/alsa/asound.state at boot. Ensure that the
+restoration of ALSA mixer configurations is skipped if substream->runtime
+is NULL.
 
-But the pm_runtime_disable() and pm_runtime_dont_use_autosuspend()
-is missing in the error path for bam_dmux_probe(). So add it.
-
-Found by code review. Compile-tested only.
-
-Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
-Suggested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 50291652af52 ("ASoC: atmel: mchp-pdmc: add PDMC driver")
+Signed-off-by: Andrei Simion <andrei.simion@microchip.com>
+Link: https://patch.msgid.link/20240924081237.50046-1-andrei.simion@microchip.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/qcom_bam_dmux.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ sound/soc/atmel/mchp-pdmc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-index 26ca719fa0de4..5dcb9a84a12e3 100644
---- a/drivers/net/wwan/qcom_bam_dmux.c
-+++ b/drivers/net/wwan/qcom_bam_dmux.c
-@@ -823,17 +823,17 @@ static int bam_dmux_probe(struct platform_device *pdev)
- 	ret = devm_request_threaded_irq(dev, pc_ack_irq, NULL, bam_dmux_pc_ack_irq,
- 					IRQF_ONESHOT, NULL, dmux);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
+diff --git a/sound/soc/atmel/mchp-pdmc.c b/sound/soc/atmel/mchp-pdmc.c
+index dcc4e14b3dde2..206bbb5aaab5d 100644
+--- a/sound/soc/atmel/mchp-pdmc.c
++++ b/sound/soc/atmel/mchp-pdmc.c
+@@ -285,6 +285,9 @@ static int mchp_pdmc_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 	if (!substream)
+ 		return -ENODEV;
  
- 	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
- 					IRQF_ONESHOT, NULL, dmux);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
- 
- 	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
- 				    &dmux->pc_state);
- 	if (ret)
--		return ret;
-+		goto err_disable_pm;
- 
- 	/* Check if remote finished initialization before us */
- 	if (dmux->pc_state) {
-@@ -844,6 +844,11 @@ static int bam_dmux_probe(struct platform_device *pdev)
- 	}
- 
- 	return 0;
++	if (!substream->runtime)
++		return 0; /* just for avoiding error from alsactl restore */
 +
-+err_disable_pm:
-+	pm_runtime_disable(dev);
-+	pm_runtime_dont_use_autosuspend(dev);
-+	return ret;
- }
- 
- static void bam_dmux_remove(struct platform_device *pdev)
+ 	map = mchp_pdmc_chmap_get(substream, info);
+ 	if (!map)
+ 		return -EINVAL;
 -- 
 2.43.0
 
