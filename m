@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-82247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE8A994BD1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6A19948E0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF901C24C64
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51A3D1C216F9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9061DE2A5;
-	Tue,  8 Oct 2024 12:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A44E1DE8B0;
+	Tue,  8 Oct 2024 12:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihmoWo73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqyM1L+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFBA190663;
-	Tue,  8 Oct 2024 12:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDDF13D24C;
+	Tue,  8 Oct 2024 12:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391624; cv=none; b=izsSPY1JZUCgOafL7e8Ig2V90K1jXHWl5QP9HaFcwt3z9aV+R4ziYh+8giPIeA4B+kmCOKgpNEHgGo1lmQTewfQGERFxI48sr9+mwaT7bGPtVjEBMJ3gVY0CaQ784y3uyljIAypJH/meUXWFqvuLosP4/nyJNfaZA88gp6lGNvY=
+	t=1728389840; cv=none; b=atUkMyhCgfZhUGHrE85dQDKrWAEe6Cv9qCfKd/tsdqLZRiWX/fy80hsRmCg7dtY5YVyWyf6J6ufuB+u0/hooQBmkI8WJS5feajVoQiX0eTsKdwLx5qPPQUZTJ0tARMrl1Qy+q1w7eRs7F8xbcJ8Lwz6U8XLNtMD7TCZoK4pOyxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391624; c=relaxed/simple;
-	bh=Vg1ED+ucQj3Uu3qKdjqdt1yffx2mMnjghCQu3ONEiUU=;
+	s=arc-20240116; t=1728389840; c=relaxed/simple;
+	bh=dLDEWW3BPd4ALPdUaSdRoLy/igx9idXJdd2YC0hm4kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDhGsABl/FyD2uI9JBu3niUJWXYf4I8DP0P6SVnqlXCNLCH8Uq/52R4D2+oox0KHVX3VXYxVcglJAWKYqvgDJFOl5tzhNmdFpRCG5FmSWUhi4bOkmPyqB+BTlWu+MuWQanw45bQm3Pm9ePiJscmTB/SCymySkUGA+97sfqtqWn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihmoWo73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD48C4CEC7;
-	Tue,  8 Oct 2024 12:47:04 +0000 (UTC)
+	 MIME-Version; b=kR/zqHPT4ihOU5R4bloON8hZe4pGySRj5c4w4F9ecm/VUO9juOcwQEWNyD9Y1GICQwisIA0uiC/nmDTF7XaLfBAIcAFDvwYrExc1ltRZ6GBTcitmdYcnwI1lB0IjfaTfJzXOiaAHQnF828zEhlpvk0rPsHzFjV+AyoRuGOchwlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqyM1L+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2998C4CEC7;
+	Tue,  8 Oct 2024 12:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391624;
-	bh=Vg1ED+ucQj3Uu3qKdjqdt1yffx2mMnjghCQu3ONEiUU=;
+	s=korg; t=1728389839;
+	bh=dLDEWW3BPd4ALPdUaSdRoLy/igx9idXJdd2YC0hm4kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihmoWo73DbNpn1Uv2j3DEFK3vfwe6WdAQQ5j/pNKEckw/jtf0j1BZfWPrJpg/FHVJ
-	 BBSdFsfrd/U8pOffMyc723SV2h5xQXbPZH9LfP1qeyajtOiPBOt2E2JEmOUYorx8dO
-	 jWVke96+NW71sPrbREFrhjwaoyuF0XsIz9wxULk4=
+	b=EqyM1L+ocfYhGIJp/wjWrQ2Z9GK7ahVCqo64IMgLCKl/tYrMqQBEM+yjqlOo1CXsa
+	 5XcBFB32m5MZyZp+uTrZrAhrs06EQqxpxTqrytp2CnhCdWAJmwkhTokGNy/naq2/8o
+	 F3XIqgivyLhSvTLOfnQ/Rs0BnwfrzHlsLnVbIR5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Anderson <dianders@chromium.org>,
-	Jeff Xu <jeffxu@google.com>,
-	Jann Horn <jannh@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 143/558] proc: add config & param to block forcing mem writes
-Date: Tue,  8 Oct 2024 14:02:53 +0200
-Message-ID: <20241008115707.991386023@linuxfoundation.org>
+Subject: [PATCH 6.10 111/482] nvme-tcp: check for invalidated or revoked key
+Date: Tue,  8 Oct 2024 14:02:54 +0200
+Message-ID: <20241008115652.676217376@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,202 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Ratiu <adrian.ratiu@collabora.com>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit 41e8149c8892ed1962bd15350b3c3e6e90cba7f4 ]
+[ Upstream commit 5bc46b49c828a6dfaab80b71ecb63fe76a1096d2 ]
 
-This adds a Kconfig option and boot param to allow removing
-the FOLL_FORCE flag from /proc/pid/mem write calls because
-it can be abused.
+key_lookup() will always return a key, even if that key is revoked
+or invalidated. So check for invalid keys before continuing.
 
-The traditional forcing behavior is kept as default because
-it can break GDB and some other use cases.
-
-Previously we tried a more sophisticated approach allowing
-distributions to fine-tune /proc/pid/mem behavior, however
-that got NAK-ed by Linus [1], who prefers this simpler
-approach with semantics also easier to understand for users.
-
-Link: https://lore.kernel.org/lkml/CAHk-=wiGWLChxYmUA5HrT5aopZrB7_2VTa0NLZcxORgkUe5tEQ@mail.gmail.com/ [1]
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Jeff Xu <jeffxu@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Adrian Ratiu <adrian.ratiu@collabora.com>
-Link: https://lore.kernel.org/r/20240802080225.89408-1-adrian.ratiu@collabora.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../admin-guide/kernel-parameters.txt         | 10 +++
- fs/proc/base.c                                | 61 ++++++++++++++++++-
- security/Kconfig                              | 32 ++++++++++
- 3 files changed, 102 insertions(+), 1 deletion(-)
+ drivers/nvme/common/keyring.c | 22 ++++++++++++++++++++++
+ drivers/nvme/host/Kconfig     |  1 +
+ drivers/nvme/host/fabrics.c   |  2 +-
+ drivers/nvme/host/tcp.c       |  2 +-
+ include/linux/nvme-keyring.h  |  6 +++++-
+ 5 files changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 09126bb8cc9ff..be010fec76541 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4788,6 +4788,16 @@
- 	printk.time=	Show timing data prefixed to each printk message line
- 			Format: <bool>  (1/Y/y=enable, 0/N/n=disable)
- 
-+	proc_mem.force_override= [KNL]
-+			Format: {always | ptrace | never}
-+			Traditionally /proc/pid/mem allows memory permissions to be
-+			overridden without restrictions. This option may be set to
-+			restrict that. Can be one of:
-+			- 'always': traditional behavior always allows mem overrides.
-+			- 'ptrace': only allow mem overrides for active ptracers.
-+			- 'never':  never allow mem overrides.
-+			If not specified, default is the CONFIG_PROC_MEM_* choice.
-+
- 	processor.max_cstate=	[HW,ACPI]
- 			Limit processor to maximum C-state
- 			max_cstate=9 overrides any DMI blacklist limit.
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 72a1acd03675c..f389c69767fa5 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -85,6 +85,7 @@
- #include <linux/elf.h>
- #include <linux/pid_namespace.h>
- #include <linux/user_namespace.h>
-+#include <linux/fs_parser.h>
- #include <linux/fs_struct.h>
- #include <linux/slab.h>
- #include <linux/sched/autogroup.h>
-@@ -117,6 +118,40 @@
- static u8 nlink_tid __ro_after_init;
- static u8 nlink_tgid __ro_after_init;
- 
-+enum proc_mem_force {
-+	PROC_MEM_FORCE_ALWAYS,
-+	PROC_MEM_FORCE_PTRACE,
-+	PROC_MEM_FORCE_NEVER
-+};
-+
-+static enum proc_mem_force proc_mem_force_override __ro_after_init =
-+	IS_ENABLED(CONFIG_PROC_MEM_NO_FORCE) ? PROC_MEM_FORCE_NEVER :
-+	IS_ENABLED(CONFIG_PROC_MEM_FORCE_PTRACE) ? PROC_MEM_FORCE_PTRACE :
-+	PROC_MEM_FORCE_ALWAYS;
-+
-+static const struct constant_table proc_mem_force_table[] __initconst = {
-+	{ "always", PROC_MEM_FORCE_ALWAYS },
-+	{ "ptrace", PROC_MEM_FORCE_PTRACE },
-+	{ "never", PROC_MEM_FORCE_NEVER },
-+	{ }
-+};
-+
-+static int __init early_proc_mem_force_override(char *buf)
-+{
-+	if (!buf)
-+		return -EINVAL;
-+
-+	/*
-+	 * lookup_constant() defaults to proc_mem_force_override to preseve
-+	 * the initial Kconfig choice in case an invalid param gets passed.
-+	 */
-+	proc_mem_force_override = lookup_constant(proc_mem_force_table,
-+						  buf, proc_mem_force_override);
-+
-+	return 0;
-+}
-+early_param("proc_mem.force_override", early_proc_mem_force_override);
-+
- struct pid_entry {
- 	const char *name;
- 	unsigned int len;
-@@ -835,6 +870,28 @@ static int mem_open(struct inode *inode, struct file *file)
- 	return ret;
+diff --git a/drivers/nvme/common/keyring.c b/drivers/nvme/common/keyring.c
+index 05e89307c8aa3..ed5167f942d89 100644
+--- a/drivers/nvme/common/keyring.c
++++ b/drivers/nvme/common/keyring.c
+@@ -20,6 +20,28 @@ key_serial_t nvme_keyring_id(void)
  }
+ EXPORT_SYMBOL_GPL(nvme_keyring_id);
  
-+static bool proc_mem_foll_force(struct file *file, struct mm_struct *mm)
++static bool nvme_tls_psk_revoked(struct key *psk)
 +{
-+	struct task_struct *task;
-+	bool ptrace_active = false;
-+
-+	switch (proc_mem_force_override) {
-+	case PROC_MEM_FORCE_NEVER:
-+		return false;
-+	case PROC_MEM_FORCE_PTRACE:
-+		task = get_proc_task(file_inode(file));
-+		if (task) {
-+			ptrace_active =	READ_ONCE(task->ptrace) &&
-+					READ_ONCE(task->mm) == mm &&
-+					READ_ONCE(task->parent) == current;
-+			put_task_struct(task);
-+		}
-+		return ptrace_active;
-+	default:
-+		return true;
-+	}
++	return test_bit(KEY_FLAG_REVOKED, &psk->flags) ||
++		test_bit(KEY_FLAG_INVALIDATED, &psk->flags);
 +}
 +
- static ssize_t mem_rw(struct file *file, char __user *buf,
- 			size_t count, loff_t *ppos, int write)
++struct key *nvme_tls_key_lookup(key_serial_t key_id)
++{
++	struct key *key = key_lookup(key_id);
++
++	if (IS_ERR(key)) {
++		pr_err("key id %08x not found\n", key_id);
++		return key;
++	}
++	if (nvme_tls_psk_revoked(key)) {
++		pr_err("key id %08x revoked\n", key_id);
++		return ERR_PTR(-EKEYREVOKED);
++	}
++	return key;
++}
++EXPORT_SYMBOL_GPL(nvme_tls_key_lookup);
++
+ static void nvme_tls_psk_describe(const struct key *key, struct seq_file *m)
  {
-@@ -855,7 +912,9 @@ static ssize_t mem_rw(struct file *file, char __user *buf,
- 	if (!mmget_not_zero(mm))
- 		goto free;
+ 	seq_puts(m, key->description);
+diff --git a/drivers/nvme/host/Kconfig b/drivers/nvme/host/Kconfig
+index b309c8be720f4..854eb26ac3db9 100644
+--- a/drivers/nvme/host/Kconfig
++++ b/drivers/nvme/host/Kconfig
+@@ -110,6 +110,7 @@ config NVME_HOST_AUTH
+ 	bool "NVMe over Fabrics In-Band Authentication in host side"
+ 	depends on NVME_CORE
+ 	select NVME_AUTH
++	select NVME_KEYRING if NVME_TCP_TLS
+ 	help
+ 	  This provides support for NVMe over Fabrics In-Band Authentication in
+ 	  host side.
+diff --git a/drivers/nvme/host/fabrics.c b/drivers/nvme/host/fabrics.c
+index b5a4b5fd573e0..3e3db6a6524e0 100644
+--- a/drivers/nvme/host/fabrics.c
++++ b/drivers/nvme/host/fabrics.c
+@@ -650,7 +650,7 @@ static struct key *nvmf_parse_key(int key_id)
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
--	flags = FOLL_FORCE | (write ? FOLL_WRITE : 0);
-+	flags = write ? FOLL_WRITE : 0;
-+	if (proc_mem_foll_force(file, mm))
-+		flags |= FOLL_FORCE;
+-	key = key_lookup(key_id);
++	key = nvme_tls_key_lookup(key_id);
+ 	if (IS_ERR(key))
+ 		pr_err("key id %08x not found\n", key_id);
+ 	else
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index f551609691807..8c79af3ed1f23 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1596,7 +1596,7 @@ static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
+ 		goto out_complete;
+ 	}
  
- 	while (count > 0) {
- 		size_t this_len = min_t(size_t, count, PAGE_SIZE);
-diff --git a/security/Kconfig b/security/Kconfig
-index 412e76f1575d0..a93c1a9b7c283 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -19,6 +19,38 @@ config SECURITY_DMESG_RESTRICT
+-	tls_key = key_lookup(pskid);
++	tls_key = nvme_tls_key_lookup(pskid);
+ 	if (IS_ERR(tls_key)) {
+ 		dev_warn(ctrl->ctrl.device, "queue %d: Invalid key %x\n",
+ 			 qid, pskid);
+diff --git a/include/linux/nvme-keyring.h b/include/linux/nvme-keyring.h
+index e10333d78dbbe..19d2b256180fd 100644
+--- a/include/linux/nvme-keyring.h
++++ b/include/linux/nvme-keyring.h
+@@ -12,7 +12,7 @@ key_serial_t nvme_tls_psk_default(struct key *keyring,
+ 		const char *hostnqn, const char *subnqn);
  
- 	  If you are unsure how to answer this question, answer N.
+ key_serial_t nvme_keyring_id(void);
+-
++struct key *nvme_tls_key_lookup(key_serial_t key_id);
+ #else
  
-+choice
-+	prompt "Allow /proc/pid/mem access override"
-+	default PROC_MEM_ALWAYS_FORCE
-+	help
-+	  Traditionally /proc/pid/mem allows users to override memory
-+	  permissions for users like ptrace, assuming they have ptrace
-+	  capability.
-+
-+	  This allows people to limit that - either never override, or
-+	  require actual active ptrace attachment.
-+
-+	  Defaults to the traditional behavior (for now)
-+
-+config PROC_MEM_ALWAYS_FORCE
-+	bool "Traditional /proc/pid/mem behavior"
-+	help
-+	  This allows /proc/pid/mem accesses to override memory mapping
-+	  permissions if you have ptrace access rights.
-+
-+config PROC_MEM_FORCE_PTRACE
-+	bool "Require active ptrace() use for access override"
-+	help
-+	  This allows /proc/pid/mem accesses to override memory mapping
-+	  permissions for active ptracers like gdb.
-+
-+config PROC_MEM_NO_FORCE
-+	bool "Never"
-+	help
-+	  Never override memory mapping permissions
-+
-+endchoice
-+
- config SECURITY
- 	bool "Enable different security models"
- 	depends on SYSFS
+ static inline key_serial_t nvme_tls_psk_default(struct key *keyring,
+@@ -24,5 +24,9 @@ static inline key_serial_t nvme_keyring_id(void)
+ {
+ 	return 0;
+ }
++static inline struct key *nvme_tls_key_lookup(key_serial_t key_id)
++{
++	return ERR_PTR(-ENOTSUPP);
++}
+ #endif /* !CONFIG_NVME_KEYRING */
+ #endif /* _NVME_KEYRING_H */
 -- 
 2.43.0
 
