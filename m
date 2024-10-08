@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29C89949E1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85181994E41
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 531CA1F22AE0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 033BD1F23061
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EEC1DF251;
-	Tue,  8 Oct 2024 12:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CC31DF728;
+	Tue,  8 Oct 2024 13:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfe6f4q6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmY+wiHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06804EEC8;
-	Tue,  8 Oct 2024 12:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970541DF24B;
+	Tue,  8 Oct 2024 13:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390423; cv=none; b=dQXKDgq2v44lEcj1sn0kgyxO0TZCP/BILbq8QAc7hwM6tF6rgCmi+aje+ITpwccTlEzHXolTBTga568n14unLfxXfddMV8y6xhyTbSl71NCOz044kkIklq9kr1V92TKAC91QnqvAkST0qmIi8pBxLm3zJrJ3Dl2YMxb++zJXVwE=
+	t=1728393266; cv=none; b=KpmH+mO6KWpOTJu5g7gITS77Pn8CFzTQqJ0QmL8+5/Fc8AZlUYST/31sEPCYi+zY5TSDo+Nm0tAXX5e9d6M37EQCuqOvff40AIjpwv/gSLx5K1QRNnMgLEtUQcV8Te05K2od3VmHOfUoVh+3l+qpinM7e1cKtRxJqk4D2ZPFY8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390423; c=relaxed/simple;
-	bh=wT/svnprnyrp0SCU30vgz+3RdNLFeqlfXh6BqMP6MwI=;
+	s=arc-20240116; t=1728393266; c=relaxed/simple;
+	bh=vk5H6tS1eDe7o1/HGKdBxFzI6qw/wHKgGr50zhJM7FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSD1SaORWZ6ZDmc0ijHUNqeTAQx5EX1UkEFV2/vSDQdQt72mBMegtmgum1pGGaf8bKpXYETvXWjW8V+mCdyIgkQ6KuPLGTiflESDhTQyKd7/ohU0XY5+dvyi0imBzGYHW3nSnvZh8w8BYjMgSCODzijkM4kM+uj6mClYB0cHoNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfe6f4q6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF0AC4CECF;
-	Tue,  8 Oct 2024 12:27:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V7hSycmUbVmc0VQRAa9aovHQ5lsWe1ITWzUpNuQFZjDJiOEwpoZ4jP/0gIsgncm9ug6gRV63xsb7NC4QJ1f23JZ0yTNe62AS3WGmlErxbBCHJET1Gd+YzWkGWH2TEnRcbS2QK9V5o8t2kq76m6d3YIBtheLIhE04tKIn7Ww10MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmY+wiHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C52C4CEC7;
+	Tue,  8 Oct 2024 13:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390422;
-	bh=wT/svnprnyrp0SCU30vgz+3RdNLFeqlfXh6BqMP6MwI=;
+	s=korg; t=1728393266;
+	bh=vk5H6tS1eDe7o1/HGKdBxFzI6qw/wHKgGr50zhJM7FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cfe6f4q64gfGZaSyRb6+C3alvyhoo9ZFXHKxyhInPRVi0nqsqNByxzAr8ir//XXBR
-	 4L7gYy79DVeUx2cdPeftSug9DPyyBfIXrW6mQPvqTpoIIrapuTtNGRuDFDlE92p5wu
-	 y2QLTavLr/P873OiwiO9rsSNYvtuCSlaFcrO9muw=
+	b=gmY+wiHayq+RkWkBNofBEx6ZFPsGishlXBbwrV3hlIunlMQB96mHM8/5CUqEdB7rX
+	 2w/tumlYv8uSvB4VYQF/IQS7nZGm9FeM6FWlf5w3tFNfpaXUIm0nEWlMmawbJc3WHN
+	 sTavtYDxZ4XX2bmE0HV39qy6udE9esoFrN1WxGbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	=?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 284/482] f2fs: introduce migration_window_granularity
+Subject: [PATCH 6.6 102/386] can: netlink: avoid call to do_set_data_bittiming callback with stale can_priv::ctrlmode
 Date: Tue,  8 Oct 2024 14:05:47 +0200
-Message-ID: <20241008115659.455897142@linuxfoundation.org>
+Message-ID: <20241008115633.462827897@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,178 +60,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daeho Jeong <daehojeong@google.com>
+From: Stefan Mätje <stefan.maetje@esd.eu>
 
-[ Upstream commit 8c890c4c60342719526520133fb1b6f69f196ab8 ]
+[ Upstream commit 2423cc20087ae9a7b7af575aa62304ef67cad7b6 ]
 
-We can control the scanning window granularity for GC migration. For
-more frequent scanning and GC on zoned devices, we need a fine grained
-control knob for it.
+This patch moves the evaluation of data[IFLA_CAN_CTRLMODE] in function
+can_changelink in front of the evaluation of data[IFLA_CAN_BITTIMING].
 
-Signed-off-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 5cc69a27abfa ("f2fs: forcibly migrate to secure space for zoned device file pinning")
+This avoids a call to do_set_data_bittiming providing a stale
+can_priv::ctrlmode with a CAN_CTRLMODE_FD flag not matching the
+requested state when switching between a CAN Classic and CAN-FD bitrate.
+
+In the same manner the evaluation of data[IFLA_CAN_CTRLMODE] in function
+can_validate is also moved in front of the evaluation of
+data[IFLA_CAN_BITTIMING].
+
+This is a preparation for patches where the nominal and data bittiming
+may have interdependencies on the driver side depending on the
+CAN_CTRLMODE_FD flag state.
+
+Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
+Link: https://patch.msgid.link/20240808164224.213522-1-stefan.maetje@esd.eu
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs |  8 +++++++
- fs/f2fs/f2fs.h                          |  2 ++
- fs/f2fs/gc.c                            | 31 +++++++++++++++++--------
- fs/f2fs/gc.h                            |  1 +
- fs/f2fs/super.c                         |  2 ++
- fs/f2fs/sysfs.c                         |  7 ++++++
- 6 files changed, 41 insertions(+), 10 deletions(-)
+ drivers/net/can/dev/netlink.c | 102 +++++++++++++++++-----------------
+ 1 file changed, 51 insertions(+), 51 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index 3500920ab7ce0..d0c1acfcad405 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -777,3 +777,11 @@ Description:	The zone UFS we are currently using consists of two parts:
- 		blkzone_alloc_policy = 1  Only allow writing to sequential zones
- 		blkzone_alloc_policy = 2  Prioritize writing to conventional zones
- 		========================  =========================================
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index dfdc039d92a6c..01aacdcda2606 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -65,15 +65,6 @@ static int can_validate(struct nlattr *tb[], struct nlattr *data[],
+ 	if (!data)
+ 		return 0;
+ 
+-	if (data[IFLA_CAN_BITTIMING]) {
+-		struct can_bittiming bt;
+-
+-		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
+-		err = can_validate_bittiming(&bt, extack);
+-		if (err)
+-			return err;
+-	}
+-
+ 	if (data[IFLA_CAN_CTRLMODE]) {
+ 		struct can_ctrlmode *cm = nla_data(data[IFLA_CAN_CTRLMODE]);
+ 		u32 tdc_flags = cm->flags & CAN_CTRLMODE_TDC_MASK;
+@@ -114,6 +105,15 @@ static int can_validate(struct nlattr *tb[], struct nlattr *data[],
+ 		}
+ 	}
+ 
++	if (data[IFLA_CAN_BITTIMING]) {
++		struct can_bittiming bt;
 +
-+What:		/sys/fs/f2fs/<disk>/migration_window_granularity
-+Date:		September 2024
-+Contact:	"Daeho Jeong" <daehojeong@google.com>
-+Description:	Controls migration window granularity of garbage collection on large
-+		section. it can control the scanning window granularity for GC migration
-+		in a unit of segment, while migration_granularity controls the number
-+		of segments which can be migrated at the same turn.
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 6fd5fc486a703..9796ad64727a6 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1697,6 +1697,8 @@ struct f2fs_sb_info {
- 	unsigned int max_victim_search;
- 	/* migration granularity of garbage collection, unit: segment */
- 	unsigned int migration_granularity;
-+	/* migration window granularity of garbage collection, unit: segment */
-+	unsigned int migration_window_granularity;
++		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
++		err = can_validate_bittiming(&bt, extack);
++		if (err)
++			return err;
++	}
++
+ 	if (is_can_fd) {
+ 		if (!data[IFLA_CAN_BITTIMING] || !data[IFLA_CAN_DATA_BITTIMING])
+ 			return -EOPNOTSUPP;
+@@ -195,48 +195,6 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	/* We need synchronization with dev->stop() */
+ 	ASSERT_RTNL();
  
- 	/*
- 	 * for stat information.
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 7f61d6915e767..0605f87d1aca4 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1708,24 +1708,34 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 	struct blk_plug plug;
- 	unsigned int segno = start_segno;
- 	unsigned int end_segno = start_segno + SEGS_PER_SEC(sbi);
-+	unsigned int sec_end_segno;
- 	int seg_freed = 0, migrated = 0;
- 	unsigned char type = IS_DATASEG(get_seg_entry(sbi, segno)->type) ?
- 						SUM_TYPE_DATA : SUM_TYPE_NODE;
- 	unsigned char data_type = (type == SUM_TYPE_DATA) ? DATA : NODE;
- 	int submitted = 0;
+-	if (data[IFLA_CAN_BITTIMING]) {
+-		struct can_bittiming bt;
+-
+-		/* Do not allow changing bittiming while running */
+-		if (dev->flags & IFF_UP)
+-			return -EBUSY;
+-
+-		/* Calculate bittiming parameters based on
+-		 * bittiming_const if set, otherwise pass bitrate
+-		 * directly via do_set_bitrate(). Bail out if neither
+-		 * is given.
+-		 */
+-		if (!priv->bittiming_const && !priv->do_set_bittiming &&
+-		    !priv->bitrate_const)
+-			return -EOPNOTSUPP;
+-
+-		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
+-		err = can_get_bittiming(dev, &bt,
+-					priv->bittiming_const,
+-					priv->bitrate_const,
+-					priv->bitrate_const_cnt,
+-					extack);
+-		if (err)
+-			return err;
+-
+-		if (priv->bitrate_max && bt.bitrate > priv->bitrate_max) {
+-			NL_SET_ERR_MSG_FMT(extack,
+-					   "arbitration bitrate %u bps surpasses transceiver capabilities of %u bps",
+-					   bt.bitrate, priv->bitrate_max);
+-			return -EINVAL;
+-		}
+-
+-		memcpy(&priv->bittiming, &bt, sizeof(bt));
+-
+-		if (priv->do_set_bittiming) {
+-			/* Finally, set the bit-timing registers */
+-			err = priv->do_set_bittiming(dev);
+-			if (err)
+-				return err;
+-		}
+-	}
+-
+ 	if (data[IFLA_CAN_CTRLMODE]) {
+ 		struct can_ctrlmode *cm;
+ 		u32 ctrlstatic;
+@@ -284,6 +242,48 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 			priv->ctrlmode &= cm->flags | ~CAN_CTRLMODE_TDC_MASK;
+ 	}
  
--	if (__is_large_section(sbi))
--		end_segno = rounddown(end_segno, SEGS_PER_SEC(sbi));
-+	if (__is_large_section(sbi)) {
-+		sec_end_segno = rounddown(end_segno, SEGS_PER_SEC(sbi));
- 
--	/*
--	 * zone-capacity can be less than zone-size in zoned devices,
--	 * resulting in less than expected usable segments in the zone,
--	 * calculate the end segno in the zone which can be garbage collected
--	 */
--	if (f2fs_sb_has_blkzoned(sbi))
--		end_segno -= SEGS_PER_SEC(sbi) -
-+		/*
-+		 * zone-capacity can be less than zone-size in zoned devices,
-+		 * resulting in less than expected usable segments in the zone,
-+		 * calculate the end segno in the zone which can be garbage
-+		 * collected
++	if (data[IFLA_CAN_BITTIMING]) {
++		struct can_bittiming bt;
++
++		/* Do not allow changing bittiming while running */
++		if (dev->flags & IFF_UP)
++			return -EBUSY;
++
++		/* Calculate bittiming parameters based on
++		 * bittiming_const if set, otherwise pass bitrate
++		 * directly via do_set_bitrate(). Bail out if neither
++		 * is given.
 +		 */
-+		if (f2fs_sb_has_blkzoned(sbi))
-+			sec_end_segno -= SEGS_PER_SEC(sbi) -
- 					f2fs_usable_segs_in_sec(sbi, segno);
- 
-+		if (gc_type == BG_GC)
-+			end_segno = start_segno +
-+				sbi->migration_window_granularity;
++		if (!priv->bittiming_const && !priv->do_set_bittiming &&
++		    !priv->bitrate_const)
++			return -EOPNOTSUPP;
 +
-+		if (end_segno > sec_end_segno)
-+			end_segno = sec_end_segno;
-+	}
++		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
++		err = can_get_bittiming(dev, &bt,
++					priv->bittiming_const,
++					priv->bitrate_const,
++					priv->bitrate_const_cnt,
++					extack);
++		if (err)
++			return err;
 +
- 	sanity_check_seg_type(sbi, get_seg_entry(sbi, segno)->type);
- 
- 	/* readahead multi ssa blocks those have contiguous address */
-@@ -1804,7 +1814,8 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 
- 		if (__is_large_section(sbi))
- 			sbi->next_victim_seg[gc_type] =
--				(segno + 1 < end_segno) ? segno + 1 : NULL_SEGNO;
-+				(segno + 1 < sec_end_segno) ?
-+					segno + 1 : NULL_SEGNO;
- skip:
- 		f2fs_put_page(sum_page, 0);
- 	}
-diff --git a/fs/f2fs/gc.h b/fs/f2fs/gc.h
-index 55c4ba73362ef..245f93663745a 100644
---- a/fs/f2fs/gc.h
-+++ b/fs/f2fs/gc.h
-@@ -32,6 +32,7 @@
- 
- #define LIMIT_NO_ZONED_GC	60 /* percentage over total user space of no gc for zoned devices */
- #define LIMIT_BOOST_ZONED_GC	25 /* percentage over total user space of boosted gc for zoned devices */
-+#define DEF_MIGRATION_WINDOW_GRANULARITY_ZONED	3
- 
- #define DEF_GC_FAILED_PINNED_FILES	2048
- #define MAX_GC_FAILED_PINNED_FILES	USHRT_MAX
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 1a1b87c4c803f..b0932a4a8e047 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -3801,6 +3801,8 @@ static void init_sb_info(struct f2fs_sb_info *sbi)
- 	sbi->next_victim_seg[FG_GC] = NULL_SEGNO;
- 	sbi->max_victim_search = DEF_MAX_VICTIM_SEARCH;
- 	sbi->migration_granularity = SEGS_PER_SEC(sbi);
-+	sbi->migration_window_granularity = f2fs_sb_has_blkzoned(sbi) ?
-+		DEF_MIGRATION_WINDOW_GRANULARITY_ZONED : SEGS_PER_SEC(sbi);
- 	sbi->seq_file_ra_mul = MIN_RA_MUL;
- 	sbi->max_fragment_chunk = DEF_FRAGMENT_SIZE;
- 	sbi->max_fragment_hole = DEF_FRAGMENT_SIZE;
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 15c8678581afc..bb0dbe7665f9c 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -561,6 +561,11 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 			return -EINVAL;
- 	}
- 
-+	if (!strcmp(a->attr.name, "migration_window_granularity")) {
-+		if (t == 0 || t > SEGS_PER_SEC(sbi))
++		if (priv->bitrate_max && bt.bitrate > priv->bitrate_max) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "arbitration bitrate %u bps surpasses transceiver capabilities of %u bps",
++					   bt.bitrate, priv->bitrate_max);
 +			return -EINVAL;
++		}
++
++		memcpy(&priv->bittiming, &bt, sizeof(bt));
++
++		if (priv->do_set_bittiming) {
++			/* Finally, set the bit-timing registers */
++			err = priv->do_set_bittiming(dev);
++			if (err)
++				return err;
++		}
 +	}
 +
- 	if (!strcmp(a->attr.name, "gc_urgent")) {
- 		if (t == 0) {
- 			sbi->gc_mode = GC_NORMAL;
-@@ -1010,6 +1015,7 @@ F2FS_SBI_RW_ATTR(gc_pin_file_thresh, gc_pin_file_threshold);
- F2FS_SBI_RW_ATTR(gc_reclaimed_segments, gc_reclaimed_segs);
- F2FS_SBI_GENERAL_RW_ATTR(max_victim_search);
- F2FS_SBI_GENERAL_RW_ATTR(migration_granularity);
-+F2FS_SBI_GENERAL_RW_ATTR(migration_window_granularity);
- F2FS_SBI_GENERAL_RW_ATTR(dir_level);
- #ifdef CONFIG_F2FS_IOSTAT
- F2FS_SBI_GENERAL_RW_ATTR(iostat_enable);
-@@ -1150,6 +1156,7 @@ static struct attribute *f2fs_attrs[] = {
- 	ATTR_LIST(min_ssr_sections),
- 	ATTR_LIST(max_victim_search),
- 	ATTR_LIST(migration_granularity),
-+	ATTR_LIST(migration_window_granularity),
- 	ATTR_LIST(dir_level),
- 	ATTR_LIST(ram_thresh),
- 	ATTR_LIST(ra_nid_pages),
+ 	if (data[IFLA_CAN_RESTART_MS]) {
+ 		/* Do not allow changing restart delay while running */
+ 		if (dev->flags & IFF_UP)
 -- 
 2.43.0
 
