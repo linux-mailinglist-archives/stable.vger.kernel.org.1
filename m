@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06576994BB9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4929948E3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B2051F286B9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6AE282F5A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D221DED48;
-	Tue,  8 Oct 2024 12:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70F71D26F2;
+	Tue,  8 Oct 2024 12:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWYM50hX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qbLvBOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BFA1DE8A0;
-	Tue,  8 Oct 2024 12:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9FB1DE8BB;
+	Tue,  8 Oct 2024 12:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391541; cv=none; b=Bbu+zoCHXaBEd/wIKd53JTfbituVjWxYEQXU2R57+k0SyV3z7o5cZoNfjggVG7ciabP8rHsbvQCaaWmf8WYny1jXXZKpF29tLCmCHEpMHf4awFV4u0KKggXsBRXH+0I3PWlDKA6fXJaPgl+G7LsMD/mFfdLwJOsi4oEQLXhE8gw=
+	t=1728389848; cv=none; b=cXO6uCAXiGDXJ0ktaA1iofhKvKe3bFd664rUDNT6hQzqsiKbGysznH9z1apuCZ/KCX/4H+KG9SsMxoyiq110CK7x5kQcKVlLAxyfeopgs2ZWCAZ9LoZ62UNT7B0rjbBh5NPcyZKB/VMON+2kIiBTpPhzLzvx8n+O+6/T2lEzU68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391541; c=relaxed/simple;
-	bh=RtwFmkHR+3Yxo2Ooc+fMDihduaPR+MLZfOp/i4Ey0dY=;
+	s=arc-20240116; t=1728389848; c=relaxed/simple;
+	bh=WTJFPRt7EgNjksS1pET65rbAEbK16MxY3Q7v421F2OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gxMPaCVrSiqWFTyIvrG2eF7jNV+2umHe2lmlEMcevXMv28mzpcuDEUU0/gkEFAGW7axOhNSPdLxgeKojH2yI6pzGPYWV+CUJWdgLzTZhJPeZ8zret2tqP8f54uuPm5LRIH1Mrkc1i7zyeOUSCbZrjPn22s19MwEim07MskLV2fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWYM50hX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4605EC4CEC7;
-	Tue,  8 Oct 2024 12:45:41 +0000 (UTC)
+	 MIME-Version; b=fx8poXTH31yFKadpEb894lJNbD+cCDr+Rv9NAIvKF2W766CNU8Y75lVpnIAaTwG35b/KNz0K4d7CYIb5Me6cO1GFGaIfRP03dXxbtMYJJOEiqZuSJrtMtOGfPtVh0jyZKz5oFCL1jgNo8ujhBFFhu+NWJzujDXujPG2KOb8cJzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qbLvBOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53F5C4CEC7;
+	Tue,  8 Oct 2024 12:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391541;
-	bh=RtwFmkHR+3Yxo2Ooc+fMDihduaPR+MLZfOp/i4Ey0dY=;
+	s=korg; t=1728389848;
+	bh=WTJFPRt7EgNjksS1pET65rbAEbK16MxY3Q7v421F2OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWYM50hXmtgo3P2YoNzS5E5hemI/5A5IVDVjnMRSV/xrCXGJgOezlN+uTH5zYC8TA
-	 P+uc/Z3HGqcrejiYbJycN+2GIQ20hdsf7AyFAVsFxQIDb0xpPpWUY0897HYKr+nvg+
-	 +oh8Ps5+HMtTd9tu0XMbH4HgmswZxVIg6QZlH1q0=
+	b=0qbLvBOrp8rkPT1Nru+8ldgs9LPw/kDFJ6elJPxMR6LAx25gkzcTAvxQtaHbBmxCA
+	 YlD2ll53NgOUlMKXI5gq248g7zRAIdBVXg1RCSTr2neQxWNL5a3Fw/+tMLAC/b8Gyd
+	 YtdwNhfphn6b1JK8v7uLDxsv8MiqTcUIhGZ1wQCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 147/558] can: netlink: avoid call to do_set_data_bittiming callback with stale can_priv::ctrlmode
+Subject: [PATCH 6.10 114/482] netpoll: Ensure clean state on setup failures
 Date: Tue,  8 Oct 2024 14:02:57 +0200
-Message-ID: <20241008115708.148878824@linuxfoundation.org>
+Message-ID: <20241008115652.794626880@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,174 +61,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Mätje <stefan.maetje@esd.eu>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 2423cc20087ae9a7b7af575aa62304ef67cad7b6 ]
+[ Upstream commit ae5a0456e0b4cfd7e61619e55251ffdf1bc7adfb ]
 
-This patch moves the evaluation of data[IFLA_CAN_CTRLMODE] in function
-can_changelink in front of the evaluation of data[IFLA_CAN_BITTIMING].
+Modify netpoll_setup() and __netpoll_setup() to ensure that the netpoll
+structure (np) is left in a clean state if setup fails for any reason.
+This prevents carrying over misconfigured fields in case of partial
+setup success.
 
-This avoids a call to do_set_data_bittiming providing a stale
-can_priv::ctrlmode with a CAN_CTRLMODE_FD flag not matching the
-requested state when switching between a CAN Classic and CAN-FD bitrate.
+Key changes:
+- np->dev is now set only after successful setup, ensuring it's always
+  NULL if netpoll is not configured or if netpoll_setup() fails.
+- np->local_ip is zeroed if netpoll setup doesn't complete successfully.
+- Added DEBUG_NET_WARN_ON_ONCE() checks to catch unexpected states.
+- Reordered some operations in __netpoll_setup() for better logical flow.
 
-In the same manner the evaluation of data[IFLA_CAN_CTRLMODE] in function
-can_validate is also moved in front of the evaluation of
-data[IFLA_CAN_BITTIMING].
+These changes improve the reliability of netpoll configuration, since it
+assures that the structure is fully initialized or totally unset.
 
-This is a preparation for patches where the nominal and data bittiming
-may have interdependencies on the driver side depending on the
-CAN_CTRLMODE_FD flag state.
-
-Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
-Link: https://patch.msgid.link/20240808164224.213522-1-stefan.maetje@esd.eu
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20240822111051.179850-2-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/netlink.c | 102 +++++++++++++++++-----------------
- 1 file changed, 51 insertions(+), 51 deletions(-)
+ net/core/netpoll.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index dfdc039d92a6c..01aacdcda2606 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -65,15 +65,6 @@ static int can_validate(struct nlattr *tb[], struct nlattr *data[],
- 	if (!data)
- 		return 0;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 55bcacf67df3b..e082139004093 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -626,12 +626,9 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 	const struct net_device_ops *ops;
+ 	int err;
  
--	if (data[IFLA_CAN_BITTIMING]) {
--		struct can_bittiming bt;
+-	np->dev = ndev;
+-	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
 -
--		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
--		err = can_validate_bittiming(&bt, extack);
--		if (err)
--			return err;
--	}
--
- 	if (data[IFLA_CAN_CTRLMODE]) {
- 		struct can_ctrlmode *cm = nla_data(data[IFLA_CAN_CTRLMODE]);
- 		u32 tdc_flags = cm->flags & CAN_CTRLMODE_TDC_MASK;
-@@ -114,6 +105,15 @@ static int can_validate(struct nlattr *tb[], struct nlattr *data[],
- 		}
+ 	if (ndev->priv_flags & IFF_DISABLE_NETPOLL) {
+ 		np_err(np, "%s doesn't support polling, aborting\n",
+-		       np->dev_name);
++		       ndev->name);
+ 		err = -ENOTSUPP;
+ 		goto out;
+ 	}
+@@ -649,7 +646,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 
+ 		refcount_set(&npinfo->refcnt, 1);
+ 
+-		ops = np->dev->netdev_ops;
++		ops = ndev->netdev_ops;
+ 		if (ops->ndo_netpoll_setup) {
+ 			err = ops->ndo_netpoll_setup(ndev, npinfo);
+ 			if (err)
+@@ -660,6 +657,8 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 		refcount_inc(&npinfo->refcnt);
  	}
  
-+	if (data[IFLA_CAN_BITTIMING]) {
-+		struct can_bittiming bt;
-+
-+		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
-+		err = can_validate_bittiming(&bt, extack);
-+		if (err)
-+			return err;
-+	}
-+
- 	if (is_can_fd) {
- 		if (!data[IFLA_CAN_BITTIMING] || !data[IFLA_CAN_DATA_BITTIMING])
- 			return -EOPNOTSUPP;
-@@ -195,48 +195,6 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 	/* We need synchronization with dev->stop() */
- 	ASSERT_RTNL();
++	np->dev = ndev;
++	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
+ 	npinfo->netpoll = np;
  
--	if (data[IFLA_CAN_BITTIMING]) {
--		struct can_bittiming bt;
--
--		/* Do not allow changing bittiming while running */
--		if (dev->flags & IFF_UP)
--			return -EBUSY;
--
--		/* Calculate bittiming parameters based on
--		 * bittiming_const if set, otherwise pass bitrate
--		 * directly via do_set_bitrate(). Bail out if neither
--		 * is given.
--		 */
--		if (!priv->bittiming_const && !priv->do_set_bittiming &&
--		    !priv->bitrate_const)
--			return -EOPNOTSUPP;
--
--		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
--		err = can_get_bittiming(dev, &bt,
--					priv->bittiming_const,
--					priv->bitrate_const,
--					priv->bitrate_const_cnt,
--					extack);
--		if (err)
--			return err;
--
--		if (priv->bitrate_max && bt.bitrate > priv->bitrate_max) {
--			NL_SET_ERR_MSG_FMT(extack,
--					   "arbitration bitrate %u bps surpasses transceiver capabilities of %u bps",
--					   bt.bitrate, priv->bitrate_max);
--			return -EINVAL;
--		}
--
--		memcpy(&priv->bittiming, &bt, sizeof(bt));
--
--		if (priv->do_set_bittiming) {
--			/* Finally, set the bit-timing registers */
--			err = priv->do_set_bittiming(dev);
--			if (err)
--				return err;
--		}
--	}
--
- 	if (data[IFLA_CAN_CTRLMODE]) {
- 		struct can_ctrlmode *cm;
- 		u32 ctrlstatic;
-@@ -284,6 +242,48 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 			priv->ctrlmode &= cm->flags | ~CAN_CTRLMODE_TDC_MASK;
- 	}
+ 	/* last thing to do is link it to the net device structure */
+@@ -677,6 +676,7 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
+ int netpoll_setup(struct netpoll *np)
+ {
+ 	struct net_device *ndev = NULL;
++	bool ip_overwritten = false;
+ 	struct in_device *in_dev;
+ 	int err;
  
-+	if (data[IFLA_CAN_BITTIMING]) {
-+		struct can_bittiming bt;
-+
-+		/* Do not allow changing bittiming while running */
-+		if (dev->flags & IFF_UP)
-+			return -EBUSY;
-+
-+		/* Calculate bittiming parameters based on
-+		 * bittiming_const if set, otherwise pass bitrate
-+		 * directly via do_set_bitrate(). Bail out if neither
-+		 * is given.
-+		 */
-+		if (!priv->bittiming_const && !priv->do_set_bittiming &&
-+		    !priv->bitrate_const)
-+			return -EOPNOTSUPP;
-+
-+		memcpy(&bt, nla_data(data[IFLA_CAN_BITTIMING]), sizeof(bt));
-+		err = can_get_bittiming(dev, &bt,
-+					priv->bittiming_const,
-+					priv->bitrate_const,
-+					priv->bitrate_const_cnt,
-+					extack);
-+		if (err)
-+			return err;
-+
-+		if (priv->bitrate_max && bt.bitrate > priv->bitrate_max) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "arbitration bitrate %u bps surpasses transceiver capabilities of %u bps",
-+					   bt.bitrate, priv->bitrate_max);
-+			return -EINVAL;
-+		}
-+
-+		memcpy(&priv->bittiming, &bt, sizeof(bt));
-+
-+		if (priv->do_set_bittiming) {
-+			/* Finally, set the bit-timing registers */
-+			err = priv->do_set_bittiming(dev);
-+			if (err)
-+				return err;
-+		}
-+	}
-+
- 	if (data[IFLA_CAN_RESTART_MS]) {
- 		/* Do not allow changing restart delay while running */
- 		if (dev->flags & IFF_UP)
+@@ -741,6 +741,7 @@ int netpoll_setup(struct netpoll *np)
+ 			}
+ 
+ 			np->local_ip.ip = ifa->ifa_local;
++			ip_overwritten = true;
+ 			np_info(np, "local IP %pI4\n", &np->local_ip.ip);
+ 		} else {
+ #if IS_ENABLED(CONFIG_IPV6)
+@@ -757,6 +758,7 @@ int netpoll_setup(struct netpoll *np)
+ 					    !!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
+ 						continue;
+ 					np->local_ip.in6 = ifp->addr;
++					ip_overwritten = true;
+ 					err = 0;
+ 					break;
+ 				}
+@@ -787,6 +789,9 @@ int netpoll_setup(struct netpoll *np)
+ 	return 0;
+ 
+ put:
++	DEBUG_NET_WARN_ON_ONCE(np->dev);
++	if (ip_overwritten)
++		memset(&np->local_ip, 0, sizeof(np->local_ip));
+ 	netdev_put(ndev, &np->dev_tracker);
+ unlock:
+ 	rtnl_unlock();
 -- 
 2.43.0
 
