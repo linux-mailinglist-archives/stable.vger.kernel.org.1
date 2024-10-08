@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15CF3994EFD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D1A994DA6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF6121F21D34
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 470ADB26032
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB591DF733;
-	Tue,  8 Oct 2024 13:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D251DE4CC;
+	Tue,  8 Oct 2024 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ryeq1zR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xtkv6uTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0171DE8BE;
-	Tue,  8 Oct 2024 13:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3841DFD1;
+	Tue,  8 Oct 2024 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393736; cv=none; b=nD3y4rnwwdAMNkjao2/Kb9Pm+nooiZwlLvGbYQ0dWDHUT0+MjQiJf+GieH5YFfjw4V+L/MpeCdS31/2h94Dl51NoL3poqNBNEOWp+K4dcBqj+mgCDePa9HSkk5r8/CBsd4Fe2apSZM4YoxJf/NHfPSOv8IciT+QPgcBibwgXw7k=
+	t=1728392573; cv=none; b=TM9/1/T7akKVwfvQhyOfOXCr1r2hdRaJDaiY2cfxMhfcjJzy4tOS8hvOSNfzALSPuZIfS5awXTXzCO3v/MgsDCZjFIN0sYG7Xefdz0vPOYPogsfohXsbxHbFiOmXFpWnzx3aKNcGwVraXqtr4IAW6TwlFZwrVIJWmMpJxHr69WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393736; c=relaxed/simple;
-	bh=4w8QtQKmIUcweIKwxAJR8D7bZqctae8O/sWBPQrVvSE=;
+	s=arc-20240116; t=1728392573; c=relaxed/simple;
+	bh=2lBJx9pFbeGOD4ic8DxSDRh++77FBFvInJ6Fx3Q+f1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UpcTas0GQiC+5SpVAcKFGLzUPe8voE/5zH5eqdKlv7y9nqUvQsEapF3ztNrTZS8aGdzt6NNDVIuNwU/UXS7vvN5jB+hy1lnXtSp4yOtdNcZ2NCxg8IKpX5x3wTwCUzTSiDaUIaegBuZPvka9WQSERtuF7QFT2hCAYt3KpGJe19I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ryeq1zR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1F2C4CEC7;
-	Tue,  8 Oct 2024 13:22:15 +0000 (UTC)
+	 MIME-Version; b=dxgCwkj+g2VL72ddn3VoL8FDI+QmeMGFn2BTLdQHuj3e422dXV49QFbJgegpN3N5bY0Bajq39+yd4g8RkU46FjF1ewrpdYkLXmlwtHJUv5ORADbaKXKQ1kITjnORS47FN3smiFSMJRGez5hL2p1WRVFi7TEO9OKP/CiQKJw4Fkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xtkv6uTr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B18C4CEC7;
+	Tue,  8 Oct 2024 13:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393736;
-	bh=4w8QtQKmIUcweIKwxAJR8D7bZqctae8O/sWBPQrVvSE=;
+	s=korg; t=1728392573;
+	bh=2lBJx9pFbeGOD4ic8DxSDRh++77FBFvInJ6Fx3Q+f1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ryeq1zRPANR0NEHJcfBScxYv3zGGmbF+z6J1Zg+BQTt/2vT1+4rfv7UhKBk2F5fF
-	 s/3WcE1qF5WGxzylJBiJujUDXSFNPlOWvQLSsDEIXFfuiyj2wKMx8xu1cYwbluZAxn
-	 OinDptuL9sqSth6BjLHfMHnIlQ0KXIeWLUBltnAo=
+	b=Xtkv6uTri77M/KoKQcb+qmR24Reh7P1KWPY/XgXAwykg6/pcuSlhwF2yJIPJmTZQ+
+	 MTTj695pNlfLtdlLd7GPuAklEkgqxl5KFRA40F2jJKqsehHlynQLTU66MktLDqYe8/
+	 7zu++MMkBuaSifjeQ4gKv7Pxeh/nuxQ/XsgS82tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaxi Shen <shenxiaxi26@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 241/386] ext4: fix timer use-after-free on failed mount
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 456/558] clk: qcom: gcc-sc8180x: Register QUPv3 RCGs for DFS on sc8180x
 Date: Tue,  8 Oct 2024 14:08:06 +0200
-Message-ID: <20241008115638.880779029@linuxfoundation.org>
+Message-ID: <20241008115720.203813566@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,550 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaxi Shen <shenxiaxi26@gmail.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
+commit 1fc8c02e1d80463ce1b361d82b83fc43bb92d964 upstream.
 
-Syzbot has found an ODEBUG bug in ext4_fill_super
+QUPv3 clocks support DFS on sc8180x platform but currently the code
+changes for it are missing from the driver, this results in not
+populating all the DFS supported frequencies and returns incorrect
+frequency when the clients request for them. Hence add the DFS
+registration for QUPv3 RCGs.
 
-The del_timer_sync function cancels the s_err_report timer,
-which reminds about filesystem errors daily. We should
-guarantee the timer is no longer active before kfree(sbi).
-
-When filesystem mounting fails, the flow goes to failed_mount3,
-where an error occurs when ext4_stop_mmpd is called, causing
-a read I/O failure. This triggers the ext4_handle_error function
-that ultimately re-arms the timer,
-leaving the s_err_report timer active before kfree(sbi) is called.
-
-Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
-
-Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
-Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
-Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Cc: stable@vger.kernel.org
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-1-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sc8180x.c |  350 ++++++++++++++++++++++++-----------------
+ 1 file changed, 210 insertions(+), 140 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5659,8 +5659,8 @@ failed_mount3a:
- failed_mount3:
- 	/* flush s_sb_upd_work before sbi destroy */
- 	flush_work(&sbi->s_sb_upd_work);
--	del_timer_sync(&sbi->s_err_report);
- 	ext4_stop_mmpd(sbi);
-+	del_timer_sync(&sbi->s_err_report);
- 	ext4_group_desc_free(sbi);
- failed_mount:
- 	if (sbi->s_chksum_driver)
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -609,19 +609,29 @@ static const struct freq_tbl ftbl_gcc_qu
+ 	{ }
+ };
+ 
++static struct clk_init_data gcc_qupv3_wrap0_s0_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s0_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
++};
++
+ static struct clk_rcg2 gcc_qupv3_wrap0_s0_clk_src = {
+ 	.cmd_rcgr = 0x17148,
+ 	.mnd_width = 16,
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s0_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s0_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap0_s1_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s1_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap0_s1_clk_src = {
+@@ -630,13 +640,15 @@ static struct clk_rcg2 gcc_qupv3_wrap0_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s1_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s1_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap0_s2_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s2_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap0_s2_clk_src = {
+@@ -645,13 +657,15 @@ static struct clk_rcg2 gcc_qupv3_wrap0_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s2_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s2_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap0_s3_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s3_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap0_s3_clk_src = {
+@@ -660,13 +674,15 @@ static struct clk_rcg2 gcc_qupv3_wrap0_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s3_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s3_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap0_s4_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s4_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap0_s4_clk_src = {
+@@ -675,13 +691,15 @@ static struct clk_rcg2 gcc_qupv3_wrap0_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s4_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s4_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap0_s5_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s5_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap0_s5_clk_src = {
+@@ -690,13 +708,15 @@ static struct clk_rcg2 gcc_qupv3_wrap0_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s5_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s5_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap0_s6_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s6_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap0_s6_clk_src = {
+@@ -705,13 +725,15 @@ static struct clk_rcg2 gcc_qupv3_wrap0_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s6_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s6_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap0_s7_clk_src_init = {
++	.name = "gcc_qupv3_wrap0_s7_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap0_s7_clk_src = {
+@@ -720,13 +742,15 @@ static struct clk_rcg2 gcc_qupv3_wrap0_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap0_s7_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap0_s7_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap1_s0_clk_src_init = {
++	.name = "gcc_qupv3_wrap1_s0_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s0_clk_src = {
+@@ -735,13 +759,15 @@ static struct clk_rcg2 gcc_qupv3_wrap1_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap1_s0_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap1_s0_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap1_s1_clk_src_init = {
++	.name = "gcc_qupv3_wrap1_s1_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s1_clk_src = {
+@@ -750,13 +776,15 @@ static struct clk_rcg2 gcc_qupv3_wrap1_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap1_s1_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap1_s1_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap1_s2_clk_src_init = {
++	.name = "gcc_qupv3_wrap1_s2_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s2_clk_src = {
+@@ -765,13 +793,15 @@ static struct clk_rcg2 gcc_qupv3_wrap1_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap1_s2_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap1_s2_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap1_s3_clk_src_init = {
++	.name = "gcc_qupv3_wrap1_s3_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s3_clk_src = {
+@@ -780,13 +810,15 @@ static struct clk_rcg2 gcc_qupv3_wrap1_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap1_s3_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap1_s3_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap1_s4_clk_src_init = {
++	.name = "gcc_qupv3_wrap1_s4_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s4_clk_src = {
+@@ -795,13 +827,15 @@ static struct clk_rcg2 gcc_qupv3_wrap1_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap1_s4_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap1_s4_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap1_s5_clk_src_init = {
++	.name = "gcc_qupv3_wrap1_s5_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s5_clk_src = {
+@@ -810,13 +844,15 @@ static struct clk_rcg2 gcc_qupv3_wrap1_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap1_s5_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap1_s5_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap2_s0_clk_src_init = {
++	.name = "gcc_qupv3_wrap2_s0_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s0_clk_src = {
+@@ -825,13 +861,15 @@ static struct clk_rcg2 gcc_qupv3_wrap2_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap2_s0_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap2_s0_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap2_s1_clk_src_init = {
++	.name = "gcc_qupv3_wrap2_s1_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s1_clk_src = {
+@@ -840,28 +878,33 @@ static struct clk_rcg2 gcc_qupv3_wrap2_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap2_s1_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap2_s1_clk_src_init,
+ };
+ 
++static struct clk_init_data gcc_qupv3_wrap2_s2_clk_src_init = {
++	.name = "gcc_qupv3_wrap2_s2_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
++};
++
++
+ static struct clk_rcg2 gcc_qupv3_wrap2_s2_clk_src = {
+ 	.cmd_rcgr = 0x1e3a8,
+ 	.mnd_width = 16,
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap2_s2_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap2_s2_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap2_s3_clk_src_init = {
++	.name = "gcc_qupv3_wrap2_s3_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s3_clk_src = {
+@@ -870,13 +913,15 @@ static struct clk_rcg2 gcc_qupv3_wrap2_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap2_s3_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap2_s3_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap2_s4_clk_src_init = {
++	.name = "gcc_qupv3_wrap2_s4_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s4_clk_src = {
+@@ -885,13 +930,15 @@ static struct clk_rcg2 gcc_qupv3_wrap2_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap2_s4_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap2_s4_clk_src_init,
++};
++
++static struct clk_init_data gcc_qupv3_wrap2_s5_clk_src_init = {
++	.name = "gcc_qupv3_wrap2_s5_clk_src",
++	.parent_data = gcc_parents_0,
++	.num_parents = ARRAY_SIZE(gcc_parents_0),
++	.flags = CLK_SET_RATE_PARENT,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s5_clk_src = {
+@@ -900,13 +947,7 @@ static struct clk_rcg2 gcc_qupv3_wrap2_s
+ 	.hid_width = 5,
+ 	.parent_map = gcc_parent_map_0,
+ 	.freq_tbl = ftbl_gcc_qupv3_wrap0_s0_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_qupv3_wrap2_s5_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
++	.clkr.hw.init = &gcc_qupv3_wrap2_s5_clk_src_init,
+ };
+ 
+ static const struct freq_tbl ftbl_gcc_sdcc2_apps_clk_src[] = {
+@@ -4561,6 +4602,29 @@ static const struct qcom_reset_map gcc_s
+ 	[GCC_VIDEO_AXI1_CLK_BCR] = { .reg = 0xb028, .bit = 2, .udelay = 150 },
+ };
+ 
++static const struct clk_rcg_dfs_data gcc_dfs_clocks[] = {
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s0_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s1_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s2_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s3_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s4_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s5_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s6_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap0_s7_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap1_s0_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap1_s1_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap1_s2_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap1_s3_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap1_s4_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap1_s5_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap2_s0_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap2_s1_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap2_s2_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap2_s3_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap2_s4_clk_src),
++	DEFINE_RCG_DFS(gcc_qupv3_wrap2_s5_clk_src),
++};
++
+ static struct gdsc *gcc_sc8180x_gdscs[] = {
+ 	[EMAC_GDSC] = &emac_gdsc,
+ 	[PCIE_0_GDSC] = &pcie_0_gdsc,
+@@ -4602,6 +4666,7 @@ MODULE_DEVICE_TABLE(of, gcc_sc8180x_matc
+ static int gcc_sc8180x_probe(struct platform_device *pdev)
+ {
+ 	struct regmap *regmap;
++	int ret;
+ 
+ 	regmap = qcom_cc_map(pdev, &gcc_sc8180x_desc);
+ 	if (IS_ERR(regmap))
+@@ -4623,6 +4688,11 @@ static int gcc_sc8180x_probe(struct plat
+ 	regmap_update_bits(regmap, 0x4d110, 0x3, 0x3);
+ 	regmap_update_bits(regmap, 0x71028, 0x3, 0x3);
+ 
++	ret = qcom_cc_register_rcg_dfs(regmap, gcc_dfs_clocks,
++					ARRAY_SIZE(gcc_dfs_clocks));
++	if (ret)
++		return ret;
++
+ 	return qcom_cc_really_probe(&pdev->dev, &gcc_sc8180x_desc, regmap);
+ }
+ 
 
 
 
