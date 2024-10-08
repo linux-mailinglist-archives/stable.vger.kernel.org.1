@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2CE994BEE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E7999495D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3569280A0E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535BC284011
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4051DE2A5;
-	Tue,  8 Oct 2024 12:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADCF1DF73A;
+	Tue,  8 Oct 2024 12:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQOS0g0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vfo2YSg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498D21C4613;
-	Tue,  8 Oct 2024 12:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784851DEFE3;
+	Tue,  8 Oct 2024 12:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391700; cv=none; b=i0QgdKf+atoVaTGT/Mg6Ce3bNDELnvS0sJthpcXWHZK6zS3HkoJhmHu7BA+p3aTV9aamnYZq2OVtFSJ6qigHu/H6PDUJcHUjjBubR5VVPAp6cv6lEnN4xa0TtBlxEOVKSLqmY4jMIaWUmC3nTotINjRFR87XxE7T+KASSpOokQs=
+	t=1728390113; cv=none; b=i/SpjoRkqoBQouxD4deQOgg7Y2ngVMgTlG8lFvhzEAXw+yAIwm54T/VjScADOcDge8HFVZGlEdVaEub/4pFtAM45kLon8XJW0Kvw3W27pm2hRR2uOrDLQN4Z+WJChm248xEJOO0WFK/Fe0+vS7CsSvP/9bZ+i8TUU6ujqRULIns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391700; c=relaxed/simple;
-	bh=vjMQ8MLHwQ3PcpKHtEKhuA5HvEfp2EexcbYYtbBfNT8=;
+	s=arc-20240116; t=1728390113; c=relaxed/simple;
+	bh=xjCYzuOfGregGM5uFsDYzphNKPve6BK5rU73xXT6zdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mvsHSHymIfiFeA6yHIhJ17pRrv40jESjRYyKmj2prhBUZJ52/t/jLz7ogwl5UXXbUFmVg0gM9YcI6pSrOgDNBmrWGi/GlssX+g6teuRnDPslXj70ar96sxRwhBkCkpqHnhHrummSYsmkujCH8M3PBcP3R79KGd2BZl0wELT9Bd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQOS0g0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D6BC4CEC7;
-	Tue,  8 Oct 2024 12:48:19 +0000 (UTC)
+	 MIME-Version; b=QArR1hdB29lBrA2BU/EL1bFuVvJ0PrU1Lmvyd6B2V6yVk9zgZqEX43ezy3L3idbvgD72qPQ8qfaRa0mIgg4yw5SM9T9Q8f0iu1farzl/Q6RyyOE2+2iYTNAyomuBxA/zcgu26cTLmRal+IAfGGEU4g1qyoM+bFgFL97hSXACrvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vfo2YSg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED03AC4CEC7;
+	Tue,  8 Oct 2024 12:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391700;
-	bh=vjMQ8MLHwQ3PcpKHtEKhuA5HvEfp2EexcbYYtbBfNT8=;
+	s=korg; t=1728390113;
+	bh=xjCYzuOfGregGM5uFsDYzphNKPve6BK5rU73xXT6zdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQOS0g0J6HnZdqGOupCh4z2woc3lvI5oczmofW1Gw+mmFuE2fA70qfqniYVFPge/l
-	 fPpRQYu/xTo1dkC+rzOeVORZmUrZAc3gSBObROhsg0oD7BWImAl2dNgoYhwPioQ0OI
-	 T+PadusnmoCCh7uZiS21+kz8s+r0Zn8sjlIBEAmc=
+	b=Vfo2YSg/6YPg+83anlJcDuINmarpvd63NoZkIjwUm2GI9ERKeGXjplm7m7AknGnD+
+	 cNcMXRrj62uONg0e/9FxjEQZn4+syE5+MIZIIrHpKxnFqpBtXRh6RJqlcolZ2gH5xk
+	 YfDWuu46VIl5lQgRwJxsBTrV8+QSLkLATpBSDQfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Will Deacon <will@kernel.org>,
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 196/558] iommu/arm-smmu-v3: Match Stall behaviour for S2
+Subject: [PATCH 6.10 163/482] fbdev: pxafb: Fix possible use after free in pxafb_task()
 Date: Tue,  8 Oct 2024 14:03:46 +0200
-Message-ID: <20241008115710.063802837@linuxfoundation.org>
+Message-ID: <20241008115654.719860558@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit ce7cb08e22e09f43649b025c849a3ae3b80833c4 ]
+[ Upstream commit 4a6921095eb04a900e0000da83d9475eb958e61e ]
 
-According to the spec (ARM IHI 0070 F.b), in
-"5.5 Fault configuration (A, R, S bits)":
-    A STE with stage 2 translation enabled and STE.S2S == 0 is
-    considered ILLEGAL if SMMU_IDR0.STALL_MODEL == 0b10.
+In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
+after which &fbi->task is associated with pxafb_task. Moreover,
+within this pxafb_init_fbinfo function, the pxafb_blank function
+within the &pxafb_ops struct is capable of scheduling work.
 
-Also described in the pseudocode “SteIllegal()”
-    if STE.Config == '11x' then
-        [..]
-        if eff_idr0_stall_model == '10' && STE.S2S == '0' then
-            // stall_model forcing stall, but S2S == 0
-            return TRUE;
+If we remove the module which will call pxafb_remove to make cleanup,
+it will call unregister_framebuffer function which can call
+do_unregister_framebuffer to free fbi->fb through
+put_fb_info(fb_info), while the work mentioned above will be used.
+The sequence of operations that may lead to a UAF bug is as follows:
 
-Which means, S2S must be set when stall model is
-"ARM_SMMU_FEAT_STALL_FORCE", but currently the driver ignores that.
+CPU0                                                CPU1
 
-Although, the driver can do the minimum and only set S2S for
-“ARM_SMMU_FEAT_STALL_FORCE”, it is more consistent to match S1
-behaviour, which also sets it for “ARM_SMMU_FEAT_STALL” if the
-master has requested stalls.
+                                   | pxafb_task
+pxafb_remove                       |
+unregister_framebuffer(info)       |
+do_unregister_framebuffer(fb_info) |
+put_fb_info(fb_info)               |
+// free fbi->fb                    | set_ctrlr_state(fbi, state)
+                                   | __pxafb_lcd_power(fbi, 0)
+                                   | fbi->lcd_power(on, &fbi->fb.var)
+                                   | //use fbi->fb
 
-Also, since S2 stalls are enabled now, report them to the IOMMU layer
-and for VFIO devices it will fail anyway as VFIO doesn’t register an
-iopf handler.
+Fix it by ensuring that the work is canceled before proceeding
+with the cleanup in pxafb_remove.
 
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20240830110349.797399-2-smostafa@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Note that only root user can remove the driver at runtime.
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 8 +++-----
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h | 1 +
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/pxafb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index f490385c13605..d271525fa3917 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1012,7 +1012,8 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
- 		used_bits[2] |=
- 			cpu_to_le64(STRTAB_STE_2_S2VMID | STRTAB_STE_2_VTCR |
- 				    STRTAB_STE_2_S2AA64 | STRTAB_STE_2_S2ENDI |
--				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2R);
-+				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2S |
-+				    STRTAB_STE_2_S2R);
- 		used_bits[3] |= cpu_to_le64(STRTAB_STE_3_S2TTB_MASK);
- 	}
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index 2ef56fa28aff3..5ce02495cda63 100644
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -2403,6 +2403,7 @@ static void pxafb_remove(struct platform_device *dev)
+ 	info = &fbi->fb;
  
-@@ -1646,6 +1647,7 @@ void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
- 		STRTAB_STE_2_S2ENDI |
- #endif
- 		STRTAB_STE_2_S2PTW |
-+		(master->stall_enabled ? STRTAB_STE_2_S2S : 0) |
- 		STRTAB_STE_2_S2R);
+ 	pxafb_overlay_exit(fbi);
++	cancel_work_sync(&fbi->task);
+ 	unregister_framebuffer(info);
  
- 	target->data[3] = cpu_to_le64(pgtbl_cfg->arm_lpae_s2_cfg.vttbr &
-@@ -1739,10 +1741,6 @@ static int arm_smmu_handle_evt(struct arm_smmu_device *smmu, u64 *evt)
- 		return -EOPNOTSUPP;
- 	}
- 
--	/* Stage-2 is always pinned at the moment */
--	if (evt[1] & EVTQ_1_S2)
--		return -EFAULT;
--
- 	if (!(evt[1] & EVTQ_1_STALL))
- 		return -EOPNOTSUPP;
- 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-index 14bca41a981b4..0dc7ad43c64c0 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -267,6 +267,7 @@ struct arm_smmu_ste {
- #define STRTAB_STE_2_S2AA64		(1UL << 51)
- #define STRTAB_STE_2_S2ENDI		(1UL << 52)
- #define STRTAB_STE_2_S2PTW		(1UL << 54)
-+#define STRTAB_STE_2_S2S		(1UL << 57)
- #define STRTAB_STE_2_S2R		(1UL << 58)
- 
- #define STRTAB_STE_3_S2TTB_MASK		GENMASK_ULL(51, 4)
+ 	pxafb_disable_controller(fbi);
 -- 
 2.43.0
 
