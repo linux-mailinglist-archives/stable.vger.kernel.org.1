@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-81976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D98C994A68
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2786A994EB4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48ABE1F22663
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A281C25405
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7E31DE4CD;
-	Tue,  8 Oct 2024 12:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59091DF251;
+	Tue,  8 Oct 2024 13:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTgR7cYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtF1wnDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487CB1DE3AE;
-	Tue,  8 Oct 2024 12:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6363A1DEFEA;
+	Tue,  8 Oct 2024 13:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390766; cv=none; b=ENRfDdd02PoOJ4c15kV+Iv7f/ATxfvQiT09b2Yo1t73N0eVx5EXjOW7X2WcNymG5QGJwQaNmx3Jt6BeezVaxvQP4h6GHpADpS6ArTEqAtVLjMT8dPpytPmhYb4gI+KVipY9sljSsGJiFVtmrBRlzmq3i30USOfaAD7aUjj0fO00=
+	t=1728393612; cv=none; b=ffjSYKb0q82G0W/zEC2+yUTOHt4LNTBlzEkOkDSf1CuYrG63B0BDYg7HiW6ctLvH181Vyw2aTtUvaqLN8bvUq7VLdxsnQyxa3iXOnB0TufBNBE+29MscnNyu1UO4ut3lUKi8l18eT6EazbK4FKCTgQiT5H1QCWfKGXL/NTSi8I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390766; c=relaxed/simple;
-	bh=aE2SB4+gGX5revB6cpObNI2HL03/2Yd2aKHBwDHIDzQ=;
+	s=arc-20240116; t=1728393612; c=relaxed/simple;
+	bh=0bW8dZwXG4xZnMshE8rH8Xf+0ubTvoU9ppaoI9RV7/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNyLY5YA6ps30nG4Cg1kPTcKv3FRRRvVBFIlZ8f4MWWRA4zX0EkMAEZcaXz7Nr/OD5w/cdbHAETn7e6wYr46LKtmyZuu4Ql7W3DkOeJvRNk75kxVHAG2mK5kwsRxqkCUupgSUuXlb0tPC1V9CRlsLkb0FAiTWnSZFm1oXxkzspM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTgR7cYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9282C4CECD;
-	Tue,  8 Oct 2024 12:32:45 +0000 (UTC)
+	 MIME-Version; b=T3OWWziI6uEQiHfXCkfx8/nuBOdpOo6XZx5DLlPcJG1djnL7bhp4ZsTagbUguhJxdOJL9XewS660TUYfkSVuAU2BCdNAnr5pJYKEJ0U8MfalojWGvkIQkcSSZHdrRTYhKrwtcCxIxzK2nxMKmlykVbZCtkOsTTi04G9a/UG+n+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtF1wnDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB815C4CECE;
+	Tue,  8 Oct 2024 13:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390766;
-	bh=aE2SB4+gGX5revB6cpObNI2HL03/2Yd2aKHBwDHIDzQ=;
+	s=korg; t=1728393612;
+	bh=0bW8dZwXG4xZnMshE8rH8Xf+0ubTvoU9ppaoI9RV7/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTgR7cYWiqvZcRjSEBD9LuHXXcx8Ud64cp5Jttx8DYNxDgTooeIx3fNNR71A6jiN1
-	 VljDea8SnPPFNwPvCgqaWTqrjNMs6pLb1TEx1wY1Ib3qf72f/IE/wx4OhufNcDP0lu
-	 ApEEDO0mxz45X/cZzaCc66Mi6tRQ/9MrXU0Sx2dQ=
+	b=rtF1wnDjB/YCKDrZJONMSZOa/k2SgO7xL/WkynBy7JslAUY7SFwvIz7HvnojA7L8Z
+	 3TtE00p1+WeDy1Y9+oO4G+bJVFKrq2PY25IiX/Hzh99v7AjW4eIDGuAsYRSvy7nO3a
+	 Z0OGl+WIz8e/YHYh0kVQjU/Su4e/AzH69SMshFOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.10 386/482] media: sun4i_csi: Implement link validate for sun4i_csi subdev
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 204/386] Revert "ALSA: hda: Conditionally use snooping for AMD HDMI"
 Date: Tue,  8 Oct 2024 14:07:29 +0200
-Message-ID: <20241008115703.603847194@linuxfoundation.org>
+Message-ID: <20241008115637.435200441@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 2dc5d5d401f5c6cecd97800ffef82e8d17d228f0 upstream.
+commit 3f7f36a4559ef78a6418c5f0447fbfbdcf671956 upstream.
 
-The sun4i_csi driver doesn't implement link validation for the subdev it
-registers, leaving the link between the subdev and its source
-unvalidated. Fix it, using the v4l2_subdev_link_validate() helper.
+This reverts commit 478689b5990deb626a0b3f1ebf165979914d6be4.
 
-Fixes: 577bbf23b758 ("media: sunxi: Add A10 CSI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Acked-by: Chen-Yu Tsai <wens@csie.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+The fix seems leading to regressions for other systems.
+Also, the way to check the presence of IOMMU via get_dma_ops() isn't
+reliable and it's no longer applicable for 6.12.  After all, it's no
+right fix, so let's revert it at first.
+
+To be noted, the PCM buffer allocation has been changed to try the
+continuous pages at first since 6.12, so the problem could be already
+addressed without this hackish workaround.
+
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Closes: https://lore.kernel.org/ZvgCdYfKgwHpJXGE@eldamar.lan
+Link: https://patch.msgid.link/20241002155948.4859-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/hda_controller.h |    2 +-
+ sound/pci/hda/hda_intel.c      |   10 +---------
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
---- a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
-+++ b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
-@@ -39,6 +39,10 @@ static const struct media_entity_operati
- 	.link_validate = v4l2_subdev_link_validate,
- };
+--- a/sound/pci/hda/hda_controller.h
++++ b/sound/pci/hda/hda_controller.h
+@@ -28,7 +28,7 @@
+ #else
+ #define AZX_DCAPS_I915_COMPONENT 0		/* NOP */
+ #endif
+-#define AZX_DCAPS_AMD_ALLOC_FIX	(1 << 14)	/* AMD allocation workaround */
++/* 14 unused */
+ #define AZX_DCAPS_CTX_WORKAROUND (1 << 15)	/* X-Fi workaround */
+ #define AZX_DCAPS_POSFIX_LPIB	(1 << 16)	/* Use LPIB as default */
+ #define AZX_DCAPS_AMD_WORKAROUND (1 << 17)	/* AMD-specific workaround */
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -40,7 +40,6 @@
  
-+static const struct media_entity_operations sun4i_csi_subdev_entity_ops = {
-+	.link_validate = v4l2_subdev_link_validate,
-+};
-+
- static int sun4i_csi_notify_bound(struct v4l2_async_notifier *notifier,
- 				  struct v4l2_subdev *subdev,
- 				  struct v4l2_async_connection *asd)
-@@ -214,6 +218,7 @@ static int sun4i_csi_probe(struct platfo
- 	subdev->internal_ops = &sun4i_csi_subdev_internal_ops;
- 	subdev->flags = V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
- 	subdev->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
-+	subdev->entity.ops = &sun4i_csi_subdev_entity_ops;
- 	subdev->owner = THIS_MODULE;
- 	snprintf(subdev->name, sizeof(subdev->name), "sun4i-csi-0");
- 	v4l2_set_subdevdata(subdev, csi);
+ #ifdef CONFIG_X86
+ /* for snoop control */
+-#include <linux/dma-map-ops.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpufeature.h>
+ #endif
+@@ -302,7 +301,7 @@ enum {
+ 
+ /* quirks for ATI HDMI with snoop off */
+ #define AZX_DCAPS_PRESET_ATI_HDMI_NS \
+-	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_AMD_ALLOC_FIX)
++	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_SNOOP_OFF)
+ 
+ /* quirks for AMD SB */
+ #define AZX_DCAPS_PRESET_AMD_SB \
+@@ -1716,13 +1715,6 @@ static void azx_check_snoop_available(st
+ 	if (chip->driver_caps & AZX_DCAPS_SNOOP_OFF)
+ 		snoop = false;
+ 
+-#ifdef CONFIG_X86
+-	/* check the presence of DMA ops (i.e. IOMMU), disable snoop conditionally */
+-	if ((chip->driver_caps & AZX_DCAPS_AMD_ALLOC_FIX) &&
+-	    !get_dma_ops(chip->card->dev))
+-		snoop = false;
+-#endif
+-
+ 	chip->snoop = snoop;
+ 	if (!snoop) {
+ 		dev_info(chip->card->dev, "Force to non-snoop mode\n");
 
 
 
