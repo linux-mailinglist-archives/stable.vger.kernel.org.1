@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCB1994B26
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101A6994893
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44EFE285737
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4CA1F27DBD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF451DE2AD;
-	Tue,  8 Oct 2024 12:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88431DE3BB;
+	Tue,  8 Oct 2024 12:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGdq3qxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpFJ8Czf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D17192594;
-	Tue,  8 Oct 2024 12:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C031D9A43;
+	Tue,  8 Oct 2024 12:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391236; cv=none; b=hvrbp/bUozic/mdumvc6Eep3sjL76JyKC8kZzvKJ77niMInV0qDKdpYVGZzCP7ALxwjCSVFPmLdlvhxEyOMCSUMWwhSH6N2T2GN2FDO5fxq85H27n1LwM0+Y2H1mODo6icCJT1Hjj1sb1D8qioGvA+juZidtDIaNUzhU9bC0Grg=
+	t=1728389663; cv=none; b=GLhFfLiXZHZGNiuZQckMCLxE7Tfa8+jrWF+cdiLaqeIXy4nE7tw+Glpsw3c+0NO2HLWExw61aMHnuUb+aQ5VsU5mtCLnYiGEjtuupt154Z5IWPZhXaLIi9TBN+S/ePpDN+BdrWda12V83PPJ4TQm6kekhZDy08fIvgqMzCFnX0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391236; c=relaxed/simple;
-	bh=HmZ6ry0l4sg3fd7KC8jtOIywsGGtnD17HeWBQWjmlcs=;
+	s=arc-20240116; t=1728389663; c=relaxed/simple;
+	bh=g5WXhstBSI/EeFsBa50AXqmqBEtSAJVeQA8OBJFk1j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5yKKQCxfEy2IPiD9SfKGBkMU4Sg5a3/3GwquxZrs1s1KL8BF7ta1NCuD/Wv+xR8FG4QWqibSIFea9RWkr6lI/4dHKzobVSumLtE85B7NwqTviY/TSdMuyqW+nfqzfrW37wwMJrwkWT9MTLz2+uV/WeLvCNU+9Gdzxamc5MMOQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGdq3qxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF24C4CEC7;
-	Tue,  8 Oct 2024 12:40:35 +0000 (UTC)
+	 MIME-Version; b=MPfbnvGuOUZXvmebUOYwihYc0gex5gtrytk3GhH+Kwyfm/LZisDl+i6AUZJVLSrLrshnOD1u6jywzuhNJs5cG8E1mFrKOC++kGapjR7ULGK0Z3yoOwzI7wFBT/FVJEJRdhrZb9mDSCdfZmVh1M3s5rgmmO5MCuGS2xi5oYwNccQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpFJ8Czf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BAEC4CEC7;
+	Tue,  8 Oct 2024 12:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391236;
-	bh=HmZ6ry0l4sg3fd7KC8jtOIywsGGtnD17HeWBQWjmlcs=;
+	s=korg; t=1728389663;
+	bh=g5WXhstBSI/EeFsBa50AXqmqBEtSAJVeQA8OBJFk1j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGdq3qxZ7P150sMKHisfqfXdokifqo2QLqpkdvr45KbZ5sFJmmiwBakxuhRxfIGxc
-	 ISbSH5/TOZnlNeE3fz6JGkhJfkSM9y1EzCGF3lPljcxxek97X7KRsOJZhqdxuo4+2U
-	 KRdLIw41EjP5npbQAbMtpH4H+s7SUPY5/i1t4yIQ=
+	b=SpFJ8CzfdkvbuAh/5RkQfTR+ATYE+ksIMsqNfX372QqIv4GICuFDfgklPgd0ppPeF
+	 /aCVhwyC6vJlyE6+093UTUOhF4HTkL21UGEWgbtBA6a3ZCrCtwTY/VZLFlUnXTEEhi
+	 npxB62s3sH7n4FV62q/mfBDNH8STZZiPIanpmxOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eddie James <eajames@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 051/558] net/ncsi: Disable the ncsi work before freeing the associated structure
+Subject: [PATCH 6.10 018/482] net/mlx5: Fix error path in multi-packet WQE transmit
 Date: Tue,  8 Oct 2024 14:01:21 +0200
-Message-ID: <20241008115704.229812407@linuxfoundation.org>
+Message-ID: <20241008115649.015991966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eddie James <eajames@linux.ibm.com>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit a0ffa68c70b367358b2672cdab6fa5bc4c40de2c ]
+[ Upstream commit 2bcae12c795f32ddfbf8c80d1b5f1d3286341c32 ]
 
-The work function can run after the ncsi device is freed, resulting
-in use-after-free bugs or kernel panic.
+Remove the erroneous unmap in case no DMA mapping was established
 
-Fixes: 2d283bdd079c ("net/ncsi: Resource management")
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Link: https://patch.msgid.link/20240925155523.1017097-1-eajames@linux.ibm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The multi-packet WQE transmit code attempts to obtain a DMA mapping for
+the skb. This could fail, e.g. under memory pressure, when the IOMMU
+driver just can't allocate more memory for page tables. While the code
+tries to handle this in the path below the err_unmap label it erroneously
+unmaps one entry from the sq's FIFO list of active mappings. Since the
+current map attempt failed this unmap is removing some random DMA mapping
+that might still be required. If the PCI function now presents that IOVA,
+the IOMMU may assumes a rogue DMA access and e.g. on s390 puts the PCI
+function in error state.
+
+The erroneous behavior was seen in a stress-test environment that created
+memory pressure.
+
+Fixes: 5af75c747e2a ("net/mlx5e: Enhanced TX MPWQE for SKBs")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Acked-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-manage.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 5ecf611c88200..5cf55bde366d1 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1954,6 +1954,8 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
- 	list_del_rcu(&ndp->node);
- 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+index b09e9abd39f37..f8c7912abe0e3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+@@ -642,7 +642,6 @@ mlx5e_sq_xmit_mpwqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
+ 	return;
  
-+	disable_work_sync(&ndp->work);
-+
- 	kfree(ndp);
- }
- EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
+ err_unmap:
+-	mlx5e_dma_unmap_wqe_err(sq, 1);
+ 	sq->stats->dropped++;
+ 	dev_kfree_skb_any(skb);
+ 	mlx5e_tx_flush(sq);
 -- 
 2.43.0
 
