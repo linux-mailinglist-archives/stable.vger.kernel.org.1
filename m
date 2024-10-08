@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-83017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF71994FEE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA63995006
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E60BC1C22560
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:31:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E1461C24918
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018B91DFD9E;
-	Tue,  8 Oct 2024 13:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D0618C333;
+	Tue,  8 Oct 2024 13:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Rnkfu+wc"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="YbPX0ehB"
 X-Original-To: stable@vger.kernel.org
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D531DFD93
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CE51DE885
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 13:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728394197; cv=none; b=gM8uuBSf0j61UNP4MY07k15Fqt/1sfjbuA2k15wezN4sVN4qtipBY9Cg1PeaQ7GP/RtIJeKuTyNyILJ7Fue3Z4/CxcjSLYnWOK3JN5uEjz44N7R1y70lg8Q8v9Hd4yOLodvbVo1RSsnz13AXvVSLgbVmQm+XUBjPqVZc6tRnkgQ=
+	t=1728394255; cv=none; b=h7zrdYm0q8p3IvvECIdBGhJ5yYrKS0nqzXrWAOSoaZP5aPKoNxlht4Y+Y4rtEfr74oDF8Ne2rKgx/qyTpVDs09BIWJyUvHTyRe3pSmj66CpBVjHqDKKuMSqYvrKBR42NP4z2bXnJVvYMEQt8QkM2DsUoBqBFbeFzOW8/7JX5NQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728394197; c=relaxed/simple;
-	bh=wUJsYMjLnuE/iK4Bzv+FwlzUaqqNhg9YlaYjRKRiz4c=;
+	s=arc-20240116; t=1728394255; c=relaxed/simple;
+	bh=vF11pzvR5dwQyWu0VtUt60c+6/yDKn7Ny1ltqg50KiI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jIqiwd0xP5lEuIflHncs57o3EfEzNGzAWhKBYVEq3AXOCh1Y4MPo1sYh9YtQqZO+nQx9RUCGSPhnAF7zxYpMQhxWPCG52nQpHc4ULWtfp8LvlvgM8VSzRfVRNwzBI5cQDd+futaSAYfogZEBo4Snx9uQqNiOGaxEI63zK3J7+iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Rnkfu+wc; arc=none smtp.client-ip=193.68.50.107
+	 In-Reply-To:Content-Type; b=eXIa4gGFpB+JY3ULDGptlad/M9f8z+xXuvpnrui5nrY0CthoNUf2gyZBKdEMSTBaD+WNKpNUuYO/cd1ZwPpc6W1wx8K53QsQvgHGZjy+QKWrbIf+1Vu1XSO8hiJvhmhjuEbEGBufZ5pLfISNFVueFYcwv56eTq5vQxzjZczvejU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=YbPX0ehB; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id E5BA1A07D0;
-	Tue,  8 Oct 2024 15:29:52 +0200 (CEST)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 61528A07D0;
+	Tue,  8 Oct 2024 15:30:52 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=iqKIw1C200HxWCKhJTWv
-	rw0lyQ/ZThlhbXrIeKyy2Tg=; b=Rnkfu+wcUEAfLpYiv6mM3ZM3PR27lpEg4BZv
-	HBvWzZu44jE8kky5wEY8drxERw8cYhbPr8yQ01zXFInOlNv0GUf1kRSK+9+Qjv9r
-	r4t85w0EkBiEQSOnRwPqfN+PFOFZCFA6x1GGD82GV3nKwNiGm5oWMjxXRcUnw1ig
-	aZ3DfnHpC8SGRM6A9rxEdoS0+qtJj9njBwWIs9KGmj3hOqjQurNfzzIa/OffqKdW
-	l5MsDFNWxkFwpk93+9G+xweN32TXk2LNt0o2hlHLH36cZucW1dS2+ZwdZyj0YW7c
-	Q/ve9anHvpvE3i1vRbfQVi5xxlI6gzmkPCmziXueGRCKajhCY4g5sfIiBcWBwmRC
-	1ijKM5y3gk/y+Qx/YhvLLbdF+2exiExL08G4OrH8IrHgiQGkp8c4bih2+PJ/stI5
-	APbgDW0FZ1mxmJm6zY/UvNc/N2OXkOPLYHQRrbUqKb3ww5UPG0eAxrY2SERmOlAs
-	zpX+wqJHSuVPDBW/Z9hI7rwq0CmZOX7+unlNwYgIh6aPk/VTcNEWOXHhPM7DkfZe
-	WUkBPvnndxH9wNjks7us86MpxeqodIpZFUUcPs68juRT13P4FUlLk8SqqcEJNwDa
-	6B5ei2v0DbpRulH9iC+XFquqam6CjZoyHGHgoRs1hCS/vIocncPbKHceZmwt3XVs
-	r2swZ54=
-Message-ID: <ba0b3409-1cf6-4e16-8fdf-6d30b20217ce@prolan.hu>
-Date: Tue, 8 Oct 2024 15:29:51 +0200
+	:reply-to:subject:subject:to:to; s=mail; bh=tB9EDnGwWTC12u9P8tpr
+	ADElod0ztB5FhqWHXJ1bkcw=; b=YbPX0ehBCQVpB2hkDGBgOS7ypIFFBFq130jX
+	Xr7SU5vxAsvzzdt+4GRNeg/NEB4sr6qUVDNkrRC95Facxi9CHHNXUZkNxJHfsdtT
+	i7xtIEqn2G+GQjtQ6z7UXqqZbVeOYCFQYUZUXWxiaDWLBmV7PW1AO6woyiGMFXut
+	aRnlQUxG6+xby30WTQe31N1C03v8D20AwStqFlTL6Ze1rBf0DNoEkoBp6vPyyUV9
+	H2iVnmKovX8LeFuI4z1X3AHP+NedqAEUARPhP63WLz7juPxySUwfITxfOpKu/kOF
+	p9jJlvb8X89LOI0vcycLt2ty4Ks+H1f0qFB0U7TXxtWAKuVeDynYkOqmKRrb9dFh
+	GkQPeVeoNj0Ntm3rUI2UGzfcIv++TGP82Oj1+Xtj7S4Dy9NxvODjb4+L7pUqxhYN
+	jy+63jLikfA3maT1PusVuOptDf1tatfjBDrQuEa7aOKRg7FwhxyDTYqhNzgK5KmX
+	ikZJpq3xfGM6fn3bZez6RBUblZCrLb+zKyLulSM0ihmXXmGYAssq9C0OTyzvWBDy
+	wY7ZAovebJo7iP0996K02elYcqgbuSVP+Irc9vgjhZT2PpoihkV39BqsCvPE96QV
+	6VLtg6gRzFoZixfuXXjt3nWOQxOZ3M/cGRTyPW4zbtP5PAa9qU9gU5o9BU1l6EA6
+	qWIPnzc=
+Message-ID: <1af647ce-69e4-4f86-b0a5-6ac76ec25d12@prolan.hu>
+Date: Tue, 8 Oct 2024 15:30:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,16 +59,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.11 040/558] net: fec: Restart PPS after link state
- change
+Subject: Re: [PATCH 6.6 028/386] net: fec: Restart PPS after link state change
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
 CC: <patches@lists.linux.dev>, Paolo Abeni <pabeni@redhat.com>, Sasha Levin
-	<sashal@kernel.org>
-References: <20241008115702.214071228@linuxfoundation.org>
- <20241008115703.801148899@linuxfoundation.org>
+	<sashal@kernel.org>, Wei Fang <wei.fang@nxp.com>
+References: <20241008115629.309157387@linuxfoundation.org>
+ <20241008115630.584472371@linuxfoundation.org>
 Content-Language: en-US
 From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <20241008115703.801148899@linuxfoundation.org>
+In-Reply-To: <20241008115630.584472371@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
@@ -78,8 +77,8 @@ X-EsetId: 37303A2980D94855657D61
 
 Hi!
 
-On 2024. 10. 08. 14:01, Greg Kroah-Hartman wrote:
-> 6.11-stable review patch.  If anyone has any objections, please let me know.
+On 2024. 10. 08. 14:04, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
 > 
 > ------------------
 > 
