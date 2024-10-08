@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46479949A7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:26:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE28994C70
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5F0E1C24A9E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:26:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74D1F28241D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B3533981;
-	Tue,  8 Oct 2024 12:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D01D1DE88F;
+	Tue,  8 Oct 2024 12:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+XxoxBo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhKIwEfY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355FD1DF27C;
-	Tue,  8 Oct 2024 12:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CDD1CCB32;
+	Tue,  8 Oct 2024 12:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390282; cv=none; b=a/1SJ8P0MT6zgBJm38RoUQoje4bstU80b/1QoBG/I2QrYfhEzWwgpRuCa4xctuasQDZJNI2VDJNcnjPzGsY9vmP7k5H60prZORIra7M4eiNQTl3khvbaMiRrldHloBQuID4+rvZZ3xkGR0ZnVIzXIKs1pYCMQNPRe3Lb+Of1pLk=
+	t=1728392078; cv=none; b=I1KZrk0JQwIjc4EHWptpYl2y3prD7PrE59H5F8pUCBegM8aPGOsQwk+oe9csP7m4ACiIAj6KvPE2hNdf+b6Nvm1sDPCY3VjLfGwnm1sytKXZI+HPUQ7O1/tebSCHWa4Xbymj39YPiMNfC2FAMlWMfKU+v5abiqkDm8a4CeFZHu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390282; c=relaxed/simple;
-	bh=2dxySYWyf4Z9YW3D5OpQbiONkQmgPSFEH+PWce8+rZM=;
+	s=arc-20240116; t=1728392078; c=relaxed/simple;
+	bh=vvwnCEBlb/dsTiFjTtF7JAObfFAC7Em/1K9zmUNct40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzHWUszKhB6Pha4WbEyAsqpvCA4gP1TqmbKPPNgrgMmoDOADXyT5IP26PlpU779K50IREA3DDth7BcGWsMxIC+9fsaBvhGupMc5fGD9hF9h0YQc4YKcQRG+Az4ol+1DEAHC+Nxj0xIE2/ffIk2m03asMkFtP+Wfb2nXkrSUTf2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+XxoxBo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76F8C4CECC;
-	Tue,  8 Oct 2024 12:24:41 +0000 (UTC)
+	 MIME-Version; b=KliOV41poseTYao5tS8EU76wkcMr8GgbunHSmMax6w4CByU006aIryk/ivecl3B9E/0aHbu9NZX1NIGF0gv+sZXxzk+Yo3dIEyjZfuxcZq4GKDvtoW506PvLJzodFaHenXuzg1esU1iA8vCIXjXAil8DHbh8NEgfV1KrGOBBG00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhKIwEfY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179C3C4CEC7;
+	Tue,  8 Oct 2024 12:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390282;
-	bh=2dxySYWyf4Z9YW3D5OpQbiONkQmgPSFEH+PWce8+rZM=;
+	s=korg; t=1728392077;
+	bh=vvwnCEBlb/dsTiFjTtF7JAObfFAC7Em/1K9zmUNct40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+XxoxBoBubGcr0mPi18GfDeTydIkUPA2M2v9gqTsZ7ZlkFdtfBugjJAcYFkSoSko
-	 bwCT3hNOH3aPKwfxLnAZZyyc/p7JsoSTDe++pX7paPQxksIOg0Qca34mbrOkclgnmG
-	 vyjYOHB6fSKgUu9nNyBrbUqc8DNgvx/pe2+eI1p4=
+	b=HhKIwEfYMEdHgVTEZ7TFZNmdNBqxRLC7ZRCiskVonXv9C9YcBqWa0wpGRZioGfCVz
+	 jR9YQH4mSnOrV5QQIbzdTJdcMQ1zPvenNVCRu8iC70gd23ULs5c5KPsSh4+iO2Jw0S
+	 fdYpvLE7k73xvV/I50KyQfzaXbbrJb1f/tBhO8O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Stan Johnson <userm57@yahoo.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 244/482] tools/hv: Add memory allocation check in hv_fcopy_start
-Date: Tue,  8 Oct 2024 14:05:07 +0200
-Message-ID: <20241008115657.897962956@linuxfoundation.org>
+Subject: [PATCH 6.11 278/558] scsi: NCR5380: Initialize buffer for MSG IN and STATUS transfers
+Date: Tue,  8 Oct 2024 14:05:08 +0200
+Message-ID: <20241008115713.268233317@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 94e86b174d103d941b4afc4f016af8af9e5352fa ]
+[ Upstream commit 1c71065df2df693d208dd32758171c1dece66341 ]
 
-Added error handling for memory allocation failures
-of file_name and path_name.
+Following an incomplete transfer in MSG IN phase, the driver would not
+notice the problem and would make use of invalid data. Initialize 'tmp'
+appropriately and bail out if no message was received. For STATUS phase,
+preserve the existing status code unless a new value was transferred.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240906091333.11419-1-zhujun2@cmss.chinamobile.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240906091333.11419-1-zhujun2@cmss.chinamobile.com>
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/52e02a8812ae1a2d810d7f9f7fd800c3ccc320c4.1723001788.git.fthain@linux-m68k.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/hv/hv_fcopy_uio_daemon.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/NCR5380.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/hv/hv_fcopy_uio_daemon.c b/tools/hv/hv_fcopy_uio_daemon.c
-index 3ce316cc9f970..7a00f3066a980 100644
---- a/tools/hv/hv_fcopy_uio_daemon.c
-+++ b/tools/hv/hv_fcopy_uio_daemon.c
-@@ -296,6 +296,13 @@ static int hv_fcopy_start(struct hv_start_fcopy *smsg_in)
- 	file_name = (char *)malloc(file_size * sizeof(char));
- 	path_name = (char *)malloc(path_size * sizeof(char));
+diff --git a/drivers/scsi/NCR5380.c b/drivers/scsi/NCR5380.c
+index 00e245173320c..4fcb73b727aa5 100644
+--- a/drivers/scsi/NCR5380.c
++++ b/drivers/scsi/NCR5380.c
+@@ -1807,8 +1807,11 @@ static void NCR5380_information_transfer(struct Scsi_Host *instance)
+ 				return;
+ 			case PHASE_MSGIN:
+ 				len = 1;
++				tmp = 0xff;
+ 				data = &tmp;
+ 				NCR5380_transfer_pio(instance, &phase, &len, &data, 0);
++				if (tmp == 0xff)
++					break;
+ 				ncmd->message = tmp;
  
-+	if (!file_name || !path_name) {
-+		free(file_name);
-+		free(path_name);
-+		syslog(LOG_ERR, "Can't allocate memory for file name and/or path name");
-+		return HV_E_FAIL;
-+	}
-+
- 	wcstoutf8(file_name, (__u16 *)in_file_name, file_size);
- 	wcstoutf8(path_name, (__u16 *)in_path_name, path_size);
- 
+ 				switch (tmp) {
+@@ -1996,6 +1999,7 @@ static void NCR5380_information_transfer(struct Scsi_Host *instance)
+ 				break;
+ 			case PHASE_STATIN:
+ 				len = 1;
++				tmp = ncmd->status;
+ 				data = &tmp;
+ 				NCR5380_transfer_pio(instance, &phase, &len, &data, 0);
+ 				ncmd->status = tmp;
 -- 
 2.43.0
 
