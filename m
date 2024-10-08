@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-82683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A056C994DF6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B1994C3A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E648285660
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B85287763
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B961DE8B1;
-	Tue,  8 Oct 2024 13:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979AC1DE4CC;
+	Tue,  8 Oct 2024 12:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAiEjS7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRc2LFkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805711DEFEA;
-	Tue,  8 Oct 2024 13:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563641DE8A0;
+	Tue,  8 Oct 2024 12:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393074; cv=none; b=jeY3nc8vPVqKodVy49pRQn29y+Fta/zIrI0bgk9e1gi/OfumTpoy0cfeSLTB/HNHZqH0o58eAHS0xzfYpJ47Av53BLhGVuQlM/I93/gCkcmNsSC1DS/AAglFJYyRnevZmDP/Ctqm5men3gMrfUsMJ1lAUluRCdtFNSNEUzQZ/9o=
+	t=1728391914; cv=none; b=ex1QQhk5BQZ91uQZOh679ItvomE6DOV2zIjInRmUoYjcXcdGiMxXb/Dd3FNufBVIQkn4z9XqOFmIvI+vCO7Y7nb8//1XpCoujUuzcWDu9DoNPdLxSMWfZlEBll1gUrhLMfS9qB2LkdCdKnumkE2wHVRQqX97hHbIEz/jIWXYRc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393074; c=relaxed/simple;
-	bh=3Gw0zqpbHrihBy6riCbGUkfmdZfWSGP2+cfg3nazBvw=;
+	s=arc-20240116; t=1728391914; c=relaxed/simple;
+	bh=O8zs4gRvxME/UBI020xwRkzrGt5QuTt8QimKIlOOVEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F69XtEIZsxFcCN8oRmUEkLyZPLeh71J0ZQ5lMFNmToKzh01XNebJ94g2j70jO1CBX4MvrPeiVzFJ1geEHYu6DOSpJw7EnBmE2U1es0jt2PbjT6ELcml1+hTrkq/SzKjy2ne3221mnrYKtA3BJCv7dcsez4f998oN4xaWBJUH8lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAiEjS7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6E9C4CEC7;
-	Tue,  8 Oct 2024 13:11:13 +0000 (UTC)
+	 MIME-Version; b=ky3chVjdWJN1yQWdUaKJHtHjSf3sbuITQQfkoNjxtb5pX7A7LxOR2g7zEJ2taKeJdEjeWJZtSzpmy+Y36HAJdVoJI6Wm8uqXotCqFg8SG07SFhquJx1flA+oH6PzBjKmNZCmMc3AlYI/twXje7pkERVUiL+2JZnjrYXq2Rgb0j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRc2LFkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9829FC4CEC7;
+	Tue,  8 Oct 2024 12:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393074;
-	bh=3Gw0zqpbHrihBy6riCbGUkfmdZfWSGP2+cfg3nazBvw=;
+	s=korg; t=1728391914;
+	bh=O8zs4gRvxME/UBI020xwRkzrGt5QuTt8QimKIlOOVEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAiEjS7KxRNdK37TRZK/6+N39KZGBLBze0axRnCiEwUsdNrhikomTxXA3dafbHRg/
-	 LKlqoqRBvDc5wHS1ZktaoXRrU0JfciolU+gWu8UNflgvL3U90zekT6+OiQREZUWdME
-	 D9D+G/xM90EH2dQmp1xyeDB/wVkkzc2v5dGqNkpk=
+	b=cRc2LFkOLMoGjNAA1orB/Ggp8G15uW6x5hmZVOZ57GffiCiGlyqsFGTJuXYiWkGj0
+	 7Dm5c3TZrtMg4fdwHfsuTo/TsT9y6PFdPlQk4y6siNGdZ+sndKpdJ955OugOR7aB94
+	 VrXw6ley6QJlEKobXu6d1b5cpRKAApBaG6t/M9rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/386] Bluetooth: ISO: Fix not validating setsockopt user input
-Date: Tue,  8 Oct 2024 14:04:49 +0200
-Message-ID: <20241008115631.207443956@linuxfoundation.org>
+Subject: [PATCH 6.11 260/558] drm/amd/display: Implement bounds check for stream encoder creation in DCN401
+Date: Tue,  8 Oct 2024 14:04:50 +0200
+Message-ID: <20241008115712.564732348@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +69,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 9e8742cdfc4b0e65266bb4a901a19462bda9285e ]
+[ Upstream commit bdf606810210e8e07a0cdf1af3c467291363b295 ]
 
-Check user input length before copying data.
+'stream_enc_regs' array is an array of dcn10_stream_enc_registers
+structures. The array is initialized with four elements, corresponding
+to the four calls to stream_enc_regs() in the array initializer. This
+means that valid indices for this array are 0, 1, 2, and 3.
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Fixes: 0731c5ab4d51 ("Bluetooth: ISO: Add support for BT_PKT_STATUS")
-Fixes: f764a6c2c1e4 ("Bluetooth: ISO: Add broadcast support")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+The error message 'stream_enc_regs' 4 <= 5 below, is indicating that
+there is an attempt to access this array with an index of 5, which is
+out of bounds. This could lead to undefined behavior
+
+Here, eng_id is used as an index to access the stream_enc_regs array. If
+eng_id is 5, this would result in an out-of-bounds access on the
+stream_enc_regs array.
+
+Thus fixing Buffer overflow error in dcn401_stream_encoder_create
+
+Found by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn401/dcn401_resource.c:1209 dcn401_stream_encoder_create() error: buffer overflow 'stream_enc_regs' 4 <= 5
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 36 ++++++++++++------------------------
- 1 file changed, 12 insertions(+), 24 deletions(-)
+ .../gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 3ccba592f7349..c46d123c30e14 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1349,7 +1349,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 			       sockptr_t optval, unsigned int optlen)
- {
- 	struct sock *sk = sock->sk;
--	int len, err = 0;
-+	int err = 0;
- 	struct bt_iso_qos qos = default_qos;
- 	u32 opt;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
+index 34b02147881dd..3e76732ac0dca 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
+@@ -1188,7 +1188,7 @@ static struct stream_encoder *dcn401_stream_encoder_create(
+ 	vpg = dcn401_vpg_create(ctx, vpg_inst);
+ 	afmt = dcn401_afmt_create(ctx, afmt_inst);
  
-@@ -1364,10 +1364,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
-@@ -1376,10 +1375,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case BT_PKT_STATUS:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			set_bit(BT_SK_PKT_STATUS, &bt_sk(sk)->flags);
-@@ -1394,17 +1392,9 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		len = min_t(unsigned int, sizeof(qos), optlen);
--
--		if (copy_from_sockptr(&qos, optval, len)) {
--			err = -EFAULT;
--			break;
--		}
--
--		if (len == sizeof(qos.ucast) && !check_ucast_qos(&qos)) {
--			err = -EINVAL;
-+		err = bt_copy_from_sockptr(&qos, sizeof(qos), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		iso_pi(sk)->qos = qos;
- 		iso_pi(sk)->qos_user_set = true;
-@@ -1419,18 +1409,16 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 		}
- 
- 		if (optlen > sizeof(iso_pi(sk)->base)) {
--			err = -EOVERFLOW;
-+			err = -EINVAL;
- 			break;
- 		}
- 
--		len = min_t(unsigned int, sizeof(iso_pi(sk)->base), optlen);
--
--		if (copy_from_sockptr(iso_pi(sk)->base, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(iso_pi(sk)->base, optlen, optval,
-+					   optlen);
-+		if (err)
- 			break;
--		}
- 
--		iso_pi(sk)->base_len = len;
-+		iso_pi(sk)->base_len = optlen;
- 
- 		break;
- 
+-	if (!enc1 || !vpg || !afmt) {
++	if (!enc1 || !vpg || !afmt || eng_id >= ARRAY_SIZE(stream_enc_regs)) {
+ 		kfree(enc1);
+ 		kfree(vpg);
+ 		kfree(afmt);
 -- 
 2.43.0
 
