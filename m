@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFB2994CD2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41932994A49
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6FC81F230D5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D7A28943B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F431DF73D;
-	Tue,  8 Oct 2024 12:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10951DE8BA;
+	Tue,  8 Oct 2024 12:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DltwGjxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOUytV8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCD81DED60;
-	Tue,  8 Oct 2024 12:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FAD1CEE8E;
+	Tue,  8 Oct 2024 12:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392265; cv=none; b=HjofCGYDnuq25AzFewis1dF7f6iN2RSehc4Hk59RyG1kqVhZsq6dY/BURxHl9fIaWIHgQqQHIK9kIVxMISon5xfUEe1c22+3fAtYzNHFTX4BEVK36Y2AuFv0vYWCIWo5eEprnB31kFNrUaYwL8v92piowX+pxdS/roo9ElLGZzw=
+	t=1728390687; cv=none; b=rk7F0sg545MtpzIiMdbZdT7peauCBa93b/eezOc6apR7hlnGE9/6+GqcYLUO+YG2QbvCzNfcBFQJgMiHXqMXpgWe/H2qRpSvNXqblCRkvbcBgkj95NIFqfldHHouq0rJeHZMsYqqac5olIZMYm/QTXd+iUtYPkxKN3I3VPSHYnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392265; c=relaxed/simple;
-	bh=SsqLOCF1c4Jkt5i37cymNIexji/3pyVh9be3C/6klgs=;
+	s=arc-20240116; t=1728390687; c=relaxed/simple;
+	bh=FGu6DRva7wmifzA8g5CsoUeUoj2lSorOq/O74qvIexk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0DLLjv1kxkNKcbK09bjnEDQfqXeFyvZ5hSM7secGQR0Wo7gfK+SWrtNU6kLCjNV5XdsXgDdBtaJroM8tJ6RdmessCIX8w1KF2eq83pPYV+DBLEX5h3UlK+tTr9Rzxsi09yJKII/7iUihDdzdM/cnboyyARg6nZ2tYw3gsc9qag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DltwGjxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD50C4CEC7;
-	Tue,  8 Oct 2024 12:57:44 +0000 (UTC)
+	 MIME-Version; b=mLPmsBz5PlCppPelKG05ZR6r8oXoFcYI+/6BvLPX6EgOF5EysTma+rl+9/2XRKwa0sxeG60VJsGOL6NT1dJ3fqcF7XeYFkjX1EIZDS47ISL6chyCsSYRmB26vbUGbtW3Q5j1ZlkEblW31rYSopJZovProMiS2qsEnd0N3uu559E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOUytV8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A83C4CEC7;
+	Tue,  8 Oct 2024 12:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392265;
-	bh=SsqLOCF1c4Jkt5i37cymNIexji/3pyVh9be3C/6klgs=;
+	s=korg; t=1728390687;
+	bh=FGu6DRva7wmifzA8g5CsoUeUoj2lSorOq/O74qvIexk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DltwGjxm50WwfxiZ3WzLTuDoaIFSfEm3rWOmyzNJSYbTQJuLzpF4qB04J8RCmfMLu
-	 phozOY/nlcYU5UEuD0sJMAFeCl46S5I+h+y79YcUd6tfE66CS+J3H/au9i8NzW8S3P
-	 tokM1QVmK3WgPbFtT1PMC6ZTEUc8J1GdYsZxiWGI=
+	b=XOUytV8O+q8mMVUdeh2kAMLM5Kj+vF/XLak1w5ShpfNwk6W0bVvJWUPtTnPlVe1sj
+	 vABEWXKClrurrcNMvDnOzKRew1mWwkdPTMNeDJ0Dnr/O57bF1pOfqfr1aLwX7BAhud
+	 7oZIzlThSWdRqpUMuDC0Y/phuX9OyseuBV9UrcuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.11 364/558] power: supply: hwmon: Fix missing temp1_max_alarm attribute
-Date: Tue,  8 Oct 2024 14:06:34 +0200
-Message-ID: <20241008115716.621778461@linuxfoundation.org>
+	Xiaxi Shen <shenxiaxi26@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Subject: [PATCH 6.10 332/482] ext4: fix timer use-after-free on failed mount
+Date: Tue,  8 Oct 2024 14:06:35 +0200
+Message-ID: <20241008115701.491594767@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Xiaxi Shen <shenxiaxi26@gmail.com>
 
-commit e50a57d16f897e45de1112eb6478577b197fab52 upstream.
+commit 0ce160c5bdb67081a62293028dc85758a8efb22a upstream.
 
-Temp channel 0 aka temp1 can have a temp1_max_alarm attribute for
-power_supply devices which have a POWER_SUPPLY_PROP_TEMP_ALERT_MAX
-property.
+Syzbot has found an ODEBUG bug in ext4_fill_super
 
-HWMON_T_MAX_ALARM was missing from power_supply_hwmon_info for
-temp channel 0, causing the hwmon temp1_max_alarm attribute to be
-missing from such power_supply devices.
+The del_timer_sync function cancels the s_err_report timer,
+which reminds about filesystem errors daily. We should
+guarantee the timer is no longer active before kfree(sbi).
 
-Add this to power_supply_hwmon_info to fix this.
+When filesystem mounting fails, the flow goes to failed_mount3,
+where an error occurs when ext4_stop_mmpd is called, causing
+a read I/O failure. This triggers the ext4_handle_error function
+that ultimately re-arms the timer,
+leaving the s_err_report timer active before kfree(sbi) is called.
 
-Fixes: f1d33ae806ec ("power: supply: remove duplicated argument in power_supply_hwmon_info")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240908185337.103696-2-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fix the issue by canceling the s_err_report timer after calling ext4_stop_mmpd.
+
+Signed-off-by: Xiaxi Shen <shenxiaxi26@gmail.com>
+Reported-and-tested-by: syzbot+59e0101c430934bc9a36@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=59e0101c430934bc9a36
+Link: https://patch.msgid.link/20240715043336.98097-1-shenxiaxi26@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/power_supply_hwmon.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/power/supply/power_supply_hwmon.c
-+++ b/drivers/power/supply/power_supply_hwmon.c
-@@ -318,7 +318,8 @@ static const struct hwmon_channel_info *
- 			   HWMON_T_INPUT     |
- 			   HWMON_T_MAX       |
- 			   HWMON_T_MIN       |
--			   HWMON_T_MIN_ALARM,
-+			   HWMON_T_MIN_ALARM |
-+			   HWMON_T_MAX_ALARM,
- 
- 			   HWMON_T_LABEL     |
- 			   HWMON_T_INPUT     |
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5633,8 +5633,8 @@ failed_mount3a:
+ failed_mount3:
+ 	/* flush s_sb_upd_work before sbi destroy */
+ 	flush_work(&sbi->s_sb_upd_work);
+-	del_timer_sync(&sbi->s_err_report);
+ 	ext4_stop_mmpd(sbi);
++	del_timer_sync(&sbi->s_err_report);
+ 	ext4_group_desc_free(sbi);
+ failed_mount:
+ 	if (sbi->s_chksum_driver)
 
 
 
