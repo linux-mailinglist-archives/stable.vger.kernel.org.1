@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-81913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFDE994A19
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C169994EFC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA3421F21DB4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 652BAB25892
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9C91DE2A5;
-	Tue,  8 Oct 2024 12:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A7B1DED48;
+	Tue,  8 Oct 2024 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvrjDSsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWOKh5Or"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ADB1DDA15;
-	Tue,  8 Oct 2024 12:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709C01DE88F;
+	Tue,  8 Oct 2024 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390557; cv=none; b=nY7ZAO2Olxs0xHn6art6a5rd+HcV3urTlqsM/zRpGXhw/RQ1I9vSdOJP37ahWZQgieRqKmH4uzPu12mgKsOeF+OdOmzK+jMDG61oPKbDI22+0Ag8O6hdWT8kvKlulcemcyG/7RKi04F/J03KfZFZ4tAF1F4+iFL+35y2wpwLuBc=
+	t=1728393396; cv=none; b=DnCYjX16FOQyVfkQ/1NKI6SXYugr9HMd55jhTqMnrSlzrLxElIUY/Nmc8NQ0Ie3C5GwUAwkIsgVmceKfmttTIPPB/FG2s86ZZ+DMxlGvgbP6WTTjPuPPrE3vthgu4IRPhJD+rUApBE+AodFt1pH1JnMJGhCCBrLywVY1hW7x+DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390557; c=relaxed/simple;
-	bh=9w9MG/UjwBDDK047W8FyqhPL0fmodjl9IL+QFZET91c=;
+	s=arc-20240116; t=1728393396; c=relaxed/simple;
+	bh=uxEBHUaZlTgPJHip2ZK+uJXmiFqt/ru2Ak5IubfMYq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRHOszQYHa2fbbQJuU+M+ygUgQ0eCrXC5YzuMcR0B4TCXRUWVq94zpDNE3N46TSUG29uMXuzm+emul2ofR+RIDy8QR6SfRz10rsHrg7DzZ7uxRQ/nGuJDN/E/8EfEKSBF3zjijJea6KLIKZwjccGwUSJTbHUa5164iorcXGb/yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvrjDSsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90EFC4CEC7;
-	Tue,  8 Oct 2024 12:29:16 +0000 (UTC)
+	 MIME-Version; b=qAC0+duxbQhXjmMpD/C4GfMHHGIAWzF31YEC78iQSbXNpNg/wjiTysqBWnD5XbvhHrFGPfIQf8io2PvMsSWtQqCw0Qz7iZn7Yt1w+HGKy+vL+2SYZfmqyz9Bzp/fRyAOdnKPPLAy7PZz5FkxQsthyeQF6+9r84ZT5SC4t+dW3DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWOKh5Or; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD92C4CEC7;
+	Tue,  8 Oct 2024 13:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390557;
-	bh=9w9MG/UjwBDDK047W8FyqhPL0fmodjl9IL+QFZET91c=;
+	s=korg; t=1728393396;
+	bh=uxEBHUaZlTgPJHip2ZK+uJXmiFqt/ru2Ak5IubfMYq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvrjDSslWWHNqmvaLcYBqb/IVD7/0MhSe3XczOnuSr83cUzDvpDdIoe8YvxdQ5JkR
-	 bSQ1S/XwK42AVEVBByFQtnDdpaiy9vfQebWF+k3cLkNoMix1BFU+mRjH7OD9x/y57n
-	 EBo6OWHO9wHrM4IquuJkyHRBOWE+AmpqN7CguyCw=
+	b=lWOKh5Or3KQKBYq/54p7ckj3lF+QTc+ejzvzJhrVGdcHK9nhuYANocQewMSL+TQ5v
+	 RS3S4TUN64xELy7JfEcDoS7tXt6GucNbti1k+SFHcq5+zvy33yK/VAS0B9pw1DhLGC
+	 qejFERnUe6M72VtCmKm01U676Z0GelzSReo93ch4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.10 322/482] ext4: no need to continue when the number of entries is 1
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 140/386] drm/amd/display: Add null check for afb in amdgpu_dm_plane_handle_cursor_update (v2)
 Date: Tue,  8 Oct 2024 14:06:25 +0200
-Message-ID: <20241008115701.099585142@linuxfoundation.org>
+Message-ID: <20241008115634.941651111@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +68,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 1a00a393d6a7fb1e745a41edd09019bd6a0ad64c upstream.
+[ Upstream commit cd9e9e0852d501f169aa3bb34e4b413d2eb48c37 ]
 
-Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-and-tested-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/tencent_BE7AEE6C7C2D216CB8949CE8E6EE7ECC2C0A@qq.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit adds a null check for the 'afb' variable in the
+amdgpu_dm_plane_handle_cursor_update function. Previously, 'afb' was
+assumed to be null, but was used later in the code without a null check.
+This could potentially lead to a null pointer dereference.
+
+Changes since v1:
+- Moved the null check for 'afb' to the line where 'afb' is used. (Alex)
+
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_plane.c:1298 amdgpu_dm_plane_handle_cursor_update() error: we previously assumed 'afb' could be null (see line 1252)
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Co-developed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -2046,7 +2046,7 @@ static struct ext4_dir_entry_2 *do_split
- 		split = count/2;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index fa9f53b310793..d1329f20b7bd4 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1281,7 +1281,8 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
+ 	    adev->dm.dc->caps.color.dpp.gamma_corr)
+ 		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
  
- 	hash2 = map[split].hash;
--	continued = hash2 == map[split - 1].hash;
-+	continued = split > 0 ? hash2 == map[split - 1].hash : 0;
- 	dxtrace(printk(KERN_INFO "Split block %lu at %x, %i/%i\n",
- 			(unsigned long)dx_get_block(frame->at),
- 					hash2, split, count-split));
+-	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
++	if (afb)
++		attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
+ 
+ 	if (crtc_state->stream) {
+ 		mutex_lock(&adev->dm.dc_lock);
+-- 
+2.43.0
+
 
 
 
