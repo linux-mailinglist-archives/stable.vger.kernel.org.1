@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73216994BA4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C8E9948EF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE264B213FE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2825D1F291AD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CC61DF273;
-	Tue,  8 Oct 2024 12:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD741DDA24;
+	Tue,  8 Oct 2024 12:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgIKD5IR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVvUOfF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55CD1DC759;
-	Tue,  8 Oct 2024 12:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFC5165F08;
+	Tue,  8 Oct 2024 12:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391476; cv=none; b=OqgeFygb6oR4QSLfSMxsUrGRjrq/uATuhdxDpcJ3Q/kjJ8nUoJhKIXLrX9h3TCfZ7+vaKmh72oAUitB0K2dNtRNyy/bz8Y6UPQIoAuoZV0RWPTZKhJvliiGpnct9wdE+f/xwqa3/hHGgVipY+UWKiKHsB6CwJJuaEpclZDmiU5U=
+	t=1728389885; cv=none; b=SpvTviG2qYK/8gWdnVp9O2uEtnyygtP1jtxc3Z9Hv1bArgKuSByVSBYjHEHO9LZ/p6qhetqpMO3E3cMeFyxEJf/xQVS447dccpi5ix99iWdu/JDR28xiXgAHACY9Xt3mZNDDfgRed7avWL52sHvZL2bzeuePxlK4KPCwkodS2cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391476; c=relaxed/simple;
-	bh=7hZOdFkkecq9Fr0W2I5jDwX+VYRGhxBNJCGDzs6MNBM=;
+	s=arc-20240116; t=1728389885; c=relaxed/simple;
+	bh=yoX/zKUxWT0aPRb0yOl2pnzvE3bU7mCwY5ZohbTdydk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMKnQI0/AysnDEtbcY0ZrZ1J/395VkttZFSD+2dDseuiv0LgOIhgLY5ndDNcXdhac1SOc+gErte8R0Nq3T/kWBqTchEioyhgYkGLGznfff7UHeUjPlSizTypBSJ/k/KR2DnSt+6G0RDILOAK7qmfhPy4roQrwPLF+wUd4CCntuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgIKD5IR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528AFC4CECD;
-	Tue,  8 Oct 2024 12:44:35 +0000 (UTC)
+	 MIME-Version; b=QstmkTTlWkxP8vwVA49yob3hlipGrqDZqVEc7p8dRBQnsOEN7C7c+rk97/bfEx+rsVjVFuly6fOQ5StdFd+Vdp26F6ls0mWrgMyCwwtAs3UVdJeGOabxZZUzJAP+mctUyexNRHba3n+Xoj5J1rT40HppbLDH4OMAqGu1AC1vM6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVvUOfF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9189EC4CEC7;
+	Tue,  8 Oct 2024 12:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391475;
-	bh=7hZOdFkkecq9Fr0W2I5jDwX+VYRGhxBNJCGDzs6MNBM=;
+	s=korg; t=1728389885;
+	bh=yoX/zKUxWT0aPRb0yOl2pnzvE3bU7mCwY5ZohbTdydk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgIKD5IRsEXpZm6DcoGOkHdk6eIN3lUq3flEBG7cYJol67Werwz+Rq/1xu3/g3aYl
-	 f3x20vFnJAZijxjYsWWpXZXGS85NSfQ3zL+IfvhvPP8PU9egQiPgft1r4uVoayXYWV
-	 whmw7NnvmcnioC+O3naibL89qwSU+MJ8Zh6DNFG0=
+	b=wVvUOfF5a0drcmbovM8z1/akjfwzaeoUJdhlDPwbMUMHrXMHP5ij8+ujQuwPcHep6
+	 9HNoaViW0hKqbX3wVZ01ZmLePfa/eaIk936VxG+6fQBkvCRHNehvTm/sfVgsP1klU3
+	 Er6bG2hwKRBNpaK4KZMy4o/tE71R09Qchqi3RJ7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 126/558] ipv4: Check !in_dev earlier for ioctl(SIOCSIFADDR).
-Date: Tue,  8 Oct 2024 14:02:36 +0200
-Message-ID: <20241008115707.323205806@linuxfoundation.org>
+Subject: [PATCH 6.10 094/482] Bluetooth: btrtl: Set msft ext address filter quirk for RTL8852B
+Date: Tue,  8 Oct 2024 14:02:37 +0200
+Message-ID: <20241008115652.010136542@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Hilda Wu <hildawu@realtek.com>
 
-[ Upstream commit e3af3d3c5b26c33a7950e34e137584f6056c4319 ]
+[ Upstream commit 9a0570948c5def5c59e588dc0e009ed850a1f5a1 ]
 
-dev->ip_ptr could be NULL if we set an invalid MTU.
+For tracking multiple devices concurrently with a condition.
+The patch enables the HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER quirk
+on RTL8852B controller.
 
-Even then, if we issue ioctl(SIOCSIFADDR) for a new IPv4 address,
-devinet_ioctl() allocates struct in_ifaddr and fails later in
-inet_set_ifa() because in_dev is NULL.
+The quirk setting is based on commit 9e14606d8f38 ("Bluetooth: msft:
+Extended monitor tracking by address filter")
 
-Let's move the check earlier.
+With this setting, when a pattern monitor detects a device, this
+feature issues an address monitor for tracking that device. Let the
+original pattern monitor keep monitor new devices.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240809235406.50187-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btrtl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index d96f3e452fef6..ddab151164542 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -574,10 +574,6 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index bfcb41a57655f..78b5d44558d73 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -1296,6 +1296,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
+ 			btrealtek_set_flag(hdev, REALTEK_ALT6_CONTINUOUS_TX_CHIP);
  
- 	ASSERT_RTNL();
+ 		if (btrtl_dev->project_id == CHIP_ID_8852A ||
++		    btrtl_dev->project_id == CHIP_ID_8852B ||
+ 		    btrtl_dev->project_id == CHIP_ID_8852C)
+ 			set_bit(HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER, &hdev->quirks);
  
--	if (!in_dev) {
--		inet_free_ifa(ifa);
--		return -ENOBUFS;
--	}
- 	ipv4_devconf_setall(in_dev);
- 	neigh_parms_data_state_setall(in_dev->arp_parms);
- 	if (ifa->ifa_dev != in_dev) {
-@@ -1184,6 +1180,8 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
- 
- 		if (!ifa) {
- 			ret = -ENOBUFS;
-+			if (!in_dev)
-+				break;
- 			ifa = inet_alloc_ifa();
- 			if (!ifa)
- 				break;
 -- 
 2.43.0
 
