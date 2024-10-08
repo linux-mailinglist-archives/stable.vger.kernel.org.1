@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75C1994F61
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E0C994AEB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7197C1F22584
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231AB1C25244
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F7C1DFDB7;
-	Tue,  8 Oct 2024 13:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871A61DE3A2;
+	Tue,  8 Oct 2024 12:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j21ta5QS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZbtn03U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BB41DEFD7;
-	Tue,  8 Oct 2024 13:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463011DA60C;
+	Tue,  8 Oct 2024 12:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393884; cv=none; b=d43VtAhb2JbUiGaFFiMwH8Qmsp+hT1VNHT7kkzpL+nlqgQkwE8ssw9tsCVE6NZfUVwfs3H4w1dyLvmDknmIzmd99Z0eNy1eEfFSKSs96oZ9JTO0yX5rpmQHwkskaH8TSescP4fv0iYxxh2vRfdAF+TdtrQ+/BPA+fpjld49qJZs=
+	t=1728391080; cv=none; b=df89mp5FXkv7+YLY45rPX2v9RJglVQsEFL/7Ur0G9e9FLY/dckqvU5bUREkyZpKzU0vWFQYa2IEC3zOaNi92Ig/y5P5ehf1uve3tTQdfioHYVj/St/oiQIVdd6SunRhDW9scNTKYR6ItRt9Yl7mLFUiW5P8M1p64KTlsCkXid2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393884; c=relaxed/simple;
-	bh=0MK4+47xUtj2+HtbuBWsSzrzWhBPq4HrAiKbgpGjq9Y=;
+	s=arc-20240116; t=1728391080; c=relaxed/simple;
+	bh=VcvJ/1B0I73SUXv3K2qHCSVzRm6oWGHB6zexIM5T1r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiL6jWGppNhOg9FJhgnoEWZwbYFS+v8xIpZ/w9XO/iPfFqoUmp/WepDZwVycK/x9wReOz6RvjktiaVNrekfwjMJPYfMHxiEV0eLU8TDobkN4f89gFTfo1aJrH8UXQ4drTCndsUXdEg6RNf7vdLnJ7zVRrrfBOfcDu8vC39CfLpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j21ta5QS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2EFC4CEC7;
-	Tue,  8 Oct 2024 13:24:43 +0000 (UTC)
+	 MIME-Version; b=f2hWKE4wRlAiSevLgYMATfQLyJ7S5jO92s/x5PP4L4ZqOFKcO3C2f37sT2utoMEiFZ+pgFT27Q7GlOsJvGBCZsKEJWeGXLkV9mwQj7UwCi/9afNB1au/MU0r6sok0Bu065hro+X9HB4Qf+EYaPbhZN3xMk4n7EtMnXeSV+l3HUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZbtn03U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DCAC4CEC7;
+	Tue,  8 Oct 2024 12:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393883;
-	bh=0MK4+47xUtj2+HtbuBWsSzrzWhBPq4HrAiKbgpGjq9Y=;
+	s=korg; t=1728391080;
+	bh=VcvJ/1B0I73SUXv3K2qHCSVzRm6oWGHB6zexIM5T1r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j21ta5QSwQYYcQid0y0XgcQWdquj6yu8lCU6UmTQ8Rt8vtzs1nJnTsjoNpJux5TXA
-	 Lej8Mwr3h00y9ogyW7X6Ijnb7AXr4y6uSG9flOZEXj553vLsNzBIAN+H8u/wqONB7S
-	 88MRi/WKIDa4XMNCVIEskuQLeCsz3wEfJlFk5VRg=
+	b=xZbtn03ULMjjdDEr7W/nUygJsEndTUFPJB3aapjI09AnFecl12BJtERD+X7oo/Dnt
+	 05BQE81jX/owIp82YRmjW75DWT2QB2t0k2p4Tz87eRNXO1rzBb0Qf0N7mlgZQx4JIA
+	 qpxFPjbVw81VGyzQX/Aou5dL7e+Qc5oOh4xrwXKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 282/386] clk: qcom: dispcc-sm8250: use CLK_SET_RATE_PARENT for branch clocks
+	Udit Kumar <u-kumar1@ti.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 464/482] remoteproc: k3-r5: Delay notification of wakeup event
 Date: Tue,  8 Oct 2024 14:08:47 +0200
-Message-ID: <20241008115640.484633263@linuxfoundation.org>
+Message-ID: <20241008115706.773442122@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Udit Kumar <u-kumar1@ti.com>
 
-commit 0e93c6320ecde0583de09f3fe801ce8822886fec upstream.
+[ Upstream commit 8fa052c29e509f3e47d56d7fc2ca28094d78c60a ]
 
-Add CLK_SET_RATE_PARENT for several branch clocks. Such clocks don't
-have a way to change the rate, so set the parent rate instead.
+Few times, core1 was scheduled to boot first before core0, which leads
+to error:
 
-Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
+'k3_r5_rproc_start: can not start core 1 before core 0'.
+
+This was happening due to some scheduling between prepare and start
+callback. The probe function waits for event, which is getting
+triggered by prepare callback. To avoid above condition move event
+trigger to start instead of prepare callback.
+
+Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up before powering up core1")
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+[ Applied wakeup event trigger only for Split-Mode booted rprocs ]
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-1-1149dd8399fe@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240820105004.2788327-1-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8250.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -851,6 +851,7 @@ static struct clk_branch disp_cc_mdss_dp
- 				&disp_cc_mdss_dp_link1_div_clk_src.clkr.hw,
- 			},
- 			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -886,6 +887,7 @@ static struct clk_branch disp_cc_mdss_dp
- 				&disp_cc_mdss_dp_link_div_clk_src.clkr.hw,
- 			},
- 			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1011,6 +1013,7 @@ static struct clk_branch disp_cc_mdss_md
- 				&disp_cc_mdss_mdp_clk_src.clkr.hw,
- 			},
- 			.num_parents = 1,
-+			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index 6424b347aa4f2..2992fd4eca648 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -469,8 +469,6 @@ static int k3_r5_rproc_prepare(struct rproc *rproc)
+ 			ret);
+ 		return ret;
+ 	}
+-	core->released_from_reset = true;
+-	wake_up_interruptible(&cluster->core_transition);
+ 
+ 	/*
+ 	 * Newer IP revisions like on J7200 SoCs support h/w auto-initialization
+@@ -587,6 +585,9 @@ static int k3_r5_rproc_start(struct rproc *rproc)
+ 		ret = k3_r5_core_run(core);
+ 		if (ret)
+ 			return ret;
++
++		core->released_from_reset = true;
++		wake_up_interruptible(&cluster->core_transition);
+ 	}
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
