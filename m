@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-81639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1412599488B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3B1994B71
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5ACE281600
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F14BF287D9E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FB31DC759;
-	Tue,  8 Oct 2024 12:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5107F1DED43;
+	Tue,  8 Oct 2024 12:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiXP2ApJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMZCiJrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7611DE3C1;
-	Tue,  8 Oct 2024 12:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3521DDC24;
+	Tue,  8 Oct 2024 12:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389636; cv=none; b=g91GsVxndNIxWi1ofdoMjcXmyELXS/FyA8qCCI4ABnnKejA8yiDXaJCOkAwLTL/RuNG5X6Nuhqinbdl6BvmMaZ6920ADySQ2Pf5p//OauHrcthZVKpxk5bzehaAv/+2y6GwHcZ+08+jWOsy0pf17479xt20n9t6bMiCk64TFDyg=
+	t=1728391338; cv=none; b=P9QnT8dOuskZkdzCyN3lkUWFYRNM9MILM8ZAggSHVqsZbQI4IEWR76x8jbGx9nRDZDd65+762hI4rKn2f3Wy9Rf7d19tOZ4dNOJVdGaGDHj9fzviQfjW6LfBrGz8lOrDcOtcKCOSKaKz9YdHfyUDLemy8/mKBRCENrzVHwU2QZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389636; c=relaxed/simple;
-	bh=9FJcBzhpwps6JLy1gSV0qgFSnbc6miQNSOsyb8V4oCE=;
+	s=arc-20240116; t=1728391338; c=relaxed/simple;
+	bh=Avej4pBkmIfgWuxQIxhuVIWg9O6swJLHgfBX943MXas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKRYdt8veMNsnict6gqIws3B3bh56vjhfejZqnZTxBkrNDrXoiSUG29Ppuu2ccvEgojgwzZi3X9hiI/awDKAX4m++LX6chO5RaznS9Ffiv8cl8+lV1+ewaTFp9XfXCKHBMYjvqmYORXU+CJ8CY5SYjuKD1IS4gkXpc1ZCdee9U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiXP2ApJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630C0C4CEC7;
-	Tue,  8 Oct 2024 12:13:55 +0000 (UTC)
+	 MIME-Version; b=tPjupwdzXNppE/Z+ZKWgqOihKDZ0NqWai/7hnQaOMB9FLHoTQWZotAoWopBWTi1v7i4aoyNFqjlzvKlJIHexDIsGLfjHtwLy2S/X/wSXHuMmJhwo1srg/kN8OPSkVABLJUb45VTnZfs8aVbF+p81cs+NWuKhvUbAKYPOLGky6Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMZCiJrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89432C4CEC7;
+	Tue,  8 Oct 2024 12:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389636;
-	bh=9FJcBzhpwps6JLy1gSV0qgFSnbc6miQNSOsyb8V4oCE=;
+	s=korg; t=1728391337;
+	bh=Avej4pBkmIfgWuxQIxhuVIWg9O6swJLHgfBX943MXas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiXP2ApJ5OW93ygrZkmzaYqO/ISGVYpLWbUASj40PGZlyZBvhpLGCwqopGqC7jG5x
-	 uMg1MRGOdfySp7UHBBuF0nDQONyBq3c96PC11EhFwHQhfUp1KtX0SeVL9a4HHwRfHy
-	 axoLiydjqysIqyzx1Y35wDYBuRg8o/iHXnXjet3Y=
+	b=mMZCiJrNu6FkKIMVdvm1QHDQlfsyjwR0pSiUWZy0Z1x+WLt9Gz/4TXLVFfgSjvTTA
+	 43cte6+f5TSvXl+JOZlGx1DuD4zLrPNmAT4Jf15X3yrqqtiiIrbmzuVkemEKZKyU2T
+	 jGtr82ptsAGMEtQdyaztcS1et6wY8J/2YdCTI/IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Xu <jeffxu@chromium.org>,
-	Pedro Falcato <pedro.falcato@gmail.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Dima Ruinskiy <dima.ruinskiy@intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 050/482] selftest mm/mseal: fix test_seal_mremap_move_dontunmap_anyaddr
+Subject: [PATCH 6.11 083/558] e1000e: avoid failing the system during pm_suspend
 Date: Tue,  8 Oct 2024 14:01:53 +0200
-Message-ID: <20241008115650.274712296@linuxfoundation.org>
+Message-ID: <20241008115705.640313682@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,206 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Xu <jeffxu@chromium.org>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 072cd213b75eb01fcf40eff898f8d5c008ce1457 ]
+[ Upstream commit 0a6ad4d9e1690c7faa3a53f762c877e477093657 ]
 
-the syscall remap accepts following:
+Occasionally when the system goes into pm_suspend, the suspend might fail
+due to a PHY access error on the network adapter. Previously, this would
+have caused the whole system to fail to go to a low power state.
+An example of this was reported in the following Bugzilla:
+https://bugzilla.kernel.org/show_bug.cgi?id=205015
 
-mremap(src, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, dst)
+[ 1663.694828] e1000e 0000:00:19.0 eth0: Failed to disable ULP
+[ 1664.731040] asix 2-3:1.0 eth1: link up, 100Mbps, full-duplex, lpa 0xC1E1
+[ 1665.093513] e1000e 0000:00:19.0 eth0: Hardware Error
+[ 1665.596760] e1000e 0000:00:19.0: pci_pm_resume+0x0/0x80 returned 0 after 2975399 usecs
 
-when the src is sealed, the call will fail with error code:
-EPERM
+and then the system never recovers from it, and all the following suspend failed due to this
+[22909.393854] PM: pci_pm_suspend(): e1000e_pm_suspend+0x0/0x760 [e1000e] returns -2
+[22909.393858] PM: dpm_run_callback(): pci_pm_suspend+0x0/0x160 returns -2
+[22909.393861] PM: Device 0000:00:1f.6 failed to suspend async: error -2
 
-Previously, the test uses hard-coded 0xdeaddead as dst, and it
-will fail on the system with newer glibc installed.
+This can be avoided by changing the return values of __e1000_shutdown and
+e1000e_pm_suspend functions so that they always return 0 (success). This
+is consistent with what other drivers do.
 
-This patch removes test's dependency on glibc for mremap(), also
-fix the test and remove the hardcoded address.
+If the e1000e driver encounters a hardware error during suspend, potential
+side effects include slightly higher power draw or non-working wake on
+LAN. This is preferred to a system-level suspend failure, and a warning
+message is written to the system log, so that the user can be aware that
+the LAN controller experienced a problem during suspend.
 
-Link: https://lkml.kernel.org/r/20240807212320.2831848-1-jeffxu@chromium.org
-Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
-Signed-off-by: Jeff Xu <jeffxu@chromium.org>
-Reported-by: Pedro Falcato <pedro.falcato@gmail.com>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=205015
+Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/mseal_test.c | 57 ++++++++++++++++---------
- 1 file changed, 36 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/mseal_test.c b/tools/testing/selftests/mm/mseal_test.c
-index 09faffbc3d87c..43e6d0c53fe4c 100644
---- a/tools/testing/selftests/mm/mseal_test.c
-+++ b/tools/testing/selftests/mm/mseal_test.c
-@@ -146,6 +146,16 @@ static int sys_madvise(void *start, size_t len, int types)
- 	return sret;
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 360ee26557f77..f103249b12fac 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -6671,8 +6671,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 		if (adapter->flags2 & FLAG2_HAS_PHY_WAKEUP) {
+ 			/* enable wakeup by the PHY */
+ 			retval = e1000_init_phy_wakeup(adapter, wufc);
+-			if (retval)
+-				return retval;
++			if (retval) {
++				e_err("Failed to enable wakeup\n");
++				goto skip_phy_configurations;
++			}
+ 		} else {
+ 			/* enable wakeup by the MAC */
+ 			ew32(WUFC, wufc);
+@@ -6693,8 +6695,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 			 * or broadcast.
+ 			 */
+ 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
+-			if (retval)
+-				return retval;
++			if (retval) {
++				e_err("Failed to enable ULP\n");
++				goto skip_phy_configurations;
++			}
+ 		}
+ 	}
+ 
+@@ -6726,6 +6730,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 		hw->phy.ops.release(hw);
+ 	}
+ 
++skip_phy_configurations:
+ 	/* Release control of h/w to f/w.  If f/w is AMT enabled, this
+ 	 * would have already happened in close and is redundant.
+ 	 */
+@@ -6968,15 +6973,13 @@ static int e1000e_pm_suspend(struct device *dev)
+ 	e1000e_pm_freeze(dev);
+ 
+ 	rc = __e1000_shutdown(pdev, false);
+-	if (rc) {
+-		e1000e_pm_thaw(dev);
+-	} else {
++	if (!rc) {
+ 		/* Introduce S0ix implementation */
+ 		if (adapter->flags2 & FLAG2_ENABLE_S0IX_FLOWS)
+ 			e1000e_s0ix_entry_flow(adapter);
+ 	}
+ 
+-	return rc;
++	return 0;
  }
  
-+static void *sys_mremap(void *addr, size_t old_len, size_t new_len,
-+	unsigned long flags, void *new_addr)
-+{
-+	void *sret;
-+
-+	errno = 0;
-+	sret = (void *) syscall(__NR_mremap, addr, old_len, new_len, flags, new_addr);
-+	return sret;
-+}
-+
- static int sys_pkey_alloc(unsigned long flags, unsigned long init_val)
- {
- 	int ret = syscall(__NR_pkey_alloc, flags, init_val);
-@@ -1151,12 +1161,12 @@ static void test_seal_mremap_shrink(bool seal)
- 	}
- 
- 	/* shrink from 4 pages to 2 pages. */
--	ret2 = mremap(ptr, size, 2 * page_size, 0, 0);
-+	ret2 = sys_mremap(ptr, size, 2 * page_size, 0, 0);
- 	if (seal) {
--		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
-+		FAIL_TEST_IF_FALSE(ret2 == (void *) MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
--		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
-+		FAIL_TEST_IF_FALSE(ret2 != (void *) MAP_FAILED);
- 
- 	}
- 
-@@ -1183,7 +1193,7 @@ static void test_seal_mremap_expand(bool seal)
- 	}
- 
- 	/* expand from 2 page to 4 pages. */
--	ret2 = mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
-+	ret2 = sys_mremap(ptr, 2 * page_size, 4 * page_size, 0, 0);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
-@@ -1216,7 +1226,7 @@ static void test_seal_mremap_move(bool seal)
- 	}
- 
- 	/* move from ptr to fixed address. */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newPtr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
-@@ -1335,7 +1345,7 @@ static void test_seal_mremap_shrink_fixed(bool seal)
- 	}
- 
- 	/* mremap to move and shrink to fixed address */
--	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
-+	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
- 			newAddr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
-@@ -1366,7 +1376,7 @@ static void test_seal_mremap_expand_fixed(bool seal)
- 	}
- 
- 	/* mremap to move and expand to fixed address */
--	ret2 = mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
-+	ret2 = sys_mremap(ptr, page_size, size, MREMAP_MAYMOVE | MREMAP_FIXED,
- 			newAddr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
-@@ -1397,7 +1407,7 @@ static void test_seal_mremap_move_fixed(bool seal)
- 	}
- 
- 	/* mremap to move to fixed address */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_FIXED, newAddr);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
-@@ -1426,14 +1436,13 @@ static void test_seal_mremap_move_fixed_zero(bool seal)
- 	/*
- 	 * MREMAP_FIXED can move the mapping to zero address
- 	 */
--	ret2 = mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
-+	ret2 = sys_mremap(ptr, size, 2 * page_size, MREMAP_MAYMOVE | MREMAP_FIXED,
- 			0);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
- 		FAIL_TEST_IF_FALSE(ret2 == 0);
--
- 	}
- 
- 	TEST_END_CHECK();
-@@ -1456,13 +1465,13 @@ static void test_seal_mremap_move_dontunmap(bool seal)
- 	}
- 
- 	/* mremap to move, and don't unmap src addr. */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP, 0);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
-+		/* kernel will allocate a new address */
- 		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
--
- 	}
- 
- 	TEST_END_CHECK();
-@@ -1470,7 +1479,7 @@ static void test_seal_mremap_move_dontunmap(bool seal)
- 
- static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
- {
--	void *ptr;
-+	void *ptr, *ptr2;
- 	unsigned long page_size = getpagesize();
- 	unsigned long size = 4 * page_size;
- 	int ret;
-@@ -1485,24 +1494,30 @@ static void test_seal_mremap_move_dontunmap_anyaddr(bool seal)
- 	}
- 
- 	/*
--	 * The 0xdeaddead should not have effect on dest addr
--	 * when MREMAP_DONTUNMAP is set.
-+	 * The new address is any address that not allocated.
-+	 * use allocate/free to similate that.
- 	 */
--	ret2 = mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
--			0xdeaddead);
-+	setup_single_address(size, &ptr2);
-+	FAIL_TEST_IF_FALSE(ptr2 != (void *)-1);
-+	ret = sys_munmap(ptr2, size);
-+	FAIL_TEST_IF_FALSE(!ret);
-+
-+	/*
-+	 * remap to any address.
-+	 */
-+	ret2 = sys_mremap(ptr, size, size, MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
-+			(void *) ptr2);
- 	if (seal) {
- 		FAIL_TEST_IF_FALSE(ret2 == MAP_FAILED);
- 		FAIL_TEST_IF_FALSE(errno == EPERM);
- 	} else {
--		FAIL_TEST_IF_FALSE(ret2 != MAP_FAILED);
--		FAIL_TEST_IF_FALSE((long)ret2 != 0xdeaddead);
--
-+		/* remap success and return ptr2 */
-+		FAIL_TEST_IF_FALSE(ret2 ==  ptr2);
- 	}
- 
- 	TEST_END_CHECK();
- }
- 
--
- static void test_seal_merge_and_split(void)
- {
- 	void *ptr;
+ static int e1000e_pm_resume(struct device *dev)
 -- 
 2.43.0
 
