@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B048C994ACE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE85994D64
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E28F51C24127
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41ABB1F26061
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375C3192594;
-	Tue,  8 Oct 2024 12:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477921DED47;
+	Tue,  8 Oct 2024 13:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZPGe1h3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZgwk+8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8571DA60C;
-	Tue,  8 Oct 2024 12:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C231DE2AE;
+	Tue,  8 Oct 2024 13:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391002; cv=none; b=Ced9KPS/bF+o0xVUw19RrZ4kNcrTMnza2wNHnnlXAksRAMOaK2m/DoGpV9ZfwxklTWlVotNfKBkxnhxqFN+zr+5M0VqFLnNgsbWVr9kKzt7UC0dvGKmfKNeF/bAIhBU1SbsEli7/M/1Ddod4pxWo9GzWE7JxASWXjfHzoUtXdq0=
+	t=1728392695; cv=none; b=Kw/mfYC1z3nDIWTSBHzT/pbjs/FKJ2HppE1XhIsnRRGUB9mKQ9S4+0DFmn1hBB5Lcpe+5lz3fyRCEVUNOfxVDs1zS/PNV6MpkC7WM5YzC56Ealsf1GTx6mM7UuSOiqdVzHKl56jBg1wM11gDLNANCsygf90p6FsZSvNH2idC3+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391002; c=relaxed/simple;
-	bh=o2foW+hte8pAfblKBAD7Y9awikx5j1W2pgA2+PHmSkE=;
+	s=arc-20240116; t=1728392695; c=relaxed/simple;
+	bh=HFA/C0L8jQe6tIIkFBoagGRLEkrBmKM7yUQuMMMNO9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZlYPrciuLgBxo8Vl+bJT9Z/gfIjGde0Jp27kJCe/RJqPiC/4A1NqIHz0cM/69i74JOweSCMoGCKJPrC0vzoX5ZhdrmNRZOkiieUx/gzMypKnin+Miqn66pY0u8i0ksa81h6ls0y/gUY7ag5o/5hrs0gsHNPwpAz8D5EwU3VKFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZPGe1h3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6C4C4CEC7;
-	Tue,  8 Oct 2024 12:36:40 +0000 (UTC)
+	 MIME-Version; b=LG8G14twFP7Vx7uV1eaVLjtAFQ/H1EVlfnVGiB5sq1vJ8Bn462JDSprkl3VLa5Bfn7MHO/yDCiKkT0rkU3O6zptvH55/M1woAb6xb8iBRO6bqKXyNIcmajJxePMurZFKFMz24GrmtM1u7faDcCMSGxeLm/OF1JBC5gxNtKQD8Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZgwk+8e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670E8C4CECC;
+	Tue,  8 Oct 2024 13:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391001;
-	bh=o2foW+hte8pAfblKBAD7Y9awikx5j1W2pgA2+PHmSkE=;
+	s=korg; t=1728392694;
+	bh=HFA/C0L8jQe6tIIkFBoagGRLEkrBmKM7yUQuMMMNO9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZPGe1h3fr7ZokLRUUt0BnaZY+mK5+aiG05NlCodSNHIZUYugmbN7C8vfP1lJnUsh
-	 4ZcpHilgC3nMTo+1mBqXeVDAuMxAfzwTUMInldbv1zBc1GU14aW7re0M+veYUeaBaT
-	 XBmpg5/Fdo7bCCuHjg587rv+jySVYWjrE8hJd4oE=
+	b=qZgwk+8e+Oyr77810PmpR7H3PPhvzPdTJMWgtUDINq3R6qxDMHpe+ligC6y+5SGSX
+	 ITNEV56rrWIkdRVULXdPQwXhxEb2UMXYM3gQtfWcd4t+sQLt29U9Ze8EMgJq7P8PpR
+	 aS1OkS+NS6tcmAyxyM0mOp0u1sm90DjNBuFDmI2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 459/482] NFSD: Async COPY result needs to return a write verifier
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.11 492/558] ACPI: resource: Remove duplicate Asus E1504GAB IRQ override
 Date: Tue,  8 Oct 2024 14:08:42 +0200
-Message-ID: <20241008115706.578307425@linuxfoundation.org>
+Message-ID: <20241008115721.593800335@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9ed666eba4e0a2bb8ffaa3739d830b64d4f2aaad ]
+commit 65bdebf38e5fac7c56a9e05d3479a707e6dc783c upstream.
 
-Currently, when NFSD handles an asynchronous COPY, it returns a
-zero write verifier, relying on the subsequent CB_OFFLOAD callback
-to pass the write verifier and a stable_how4 value to the client.
+Commit d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook
+E1504GA and E1504GAB") does exactly what the subject says, adding DMI
+matches for both the E1504GA and E1504GAB.
 
-However, if the CB_OFFLOAD never arrives at the client (for example,
-if a network partition occurs just as the server sends the
-CB_OFFLOAD operation), the client will never receive this verifier.
-Thus, if the client sends a follow-up COMMIT, there is no way for
-the client to assess the COMMIT result.
+But DMI_MATCH() does a substring match, so checking for E1504GA will also
+match E1504GAB.
 
-The usual recovery for a missing CB_OFFLOAD is for the client to
-send an OFFLOAD_STATUS operation, but that operation does not carry
-a write verifier in its result. Neither does it carry a stable_how4
-value, so the client /must/ send a COMMIT in this case -- which will
-always fail because currently there's still no write verifier in the
-COPY result.
+Drop the unnecessary E1504GAB entry since that is covered already by
+the E1504GA entry.
 
-Thus the server needs to return a normal write verifier in its COPY
-result even if the COPY operation is to be performed asynchronously.
-
-If the server recognizes the callback stateid in subsequent
-OFFLOAD_STATUS operations, then obviously it has not restarted, and
-the write verifier the client received in the COPY result is still
-valid and can be used to assess a COMMIT of the copied data, if one
-is needed.
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook E1504GA and E1504GAB")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240927141606.66826-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ drivers/acpi/resource.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 2e39cf2e502a3..60c526adc27c6 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -751,15 +751,6 @@ nfsd4_access(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 			   &access->ac_supported);
- }
- 
--static void gen_boot_verifier(nfs4_verifier *verifier, struct net *net)
--{
--	__be32 *verf = (__be32 *)verifier->data;
--
--	BUILD_BUG_ON(2*sizeof(*verf) != sizeof(verifier->data));
--
--	nfsd_copy_write_verifier(verf, net_generic(net, nfsd_net_id));
--}
--
- static __be32
- nfsd4_commit(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	     union nfsd4_op_u *u)
-@@ -1630,7 +1621,6 @@ static void nfsd4_init_copy_res(struct nfsd4_copy *copy, bool sync)
- 		test_bit(NFSD4_COPY_F_COMMITTED, &copy->cp_flags) ?
- 			NFS_FILE_SYNC : NFS_UNSTABLE;
- 	nfsd4_copy_set_sync(copy, sync);
--	gen_boot_verifier(&copy->cp_res.wr_verifier, copy->cp_clp->net);
- }
- 
- static ssize_t _nfsd_copy_file_range(struct nfsd4_copy *copy,
-@@ -1803,9 +1793,11 @@ static __be32
- nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		union nfsd4_op_u *u)
- {
-+	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
-+	struct nfsd4_copy *async_copy = NULL;
- 	struct nfsd4_copy *copy = &u->copy;
-+	struct nfsd42_write_res *result;
- 	__be32 status;
--	struct nfsd4_copy *async_copy = NULL;
- 
- 	/*
- 	 * Currently, async COPY is not reliable. Force all COPY
-@@ -1814,6 +1806,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	 */
- 	nfsd4_copy_set_sync(copy, true);
- 
-+	result = &copy->cp_res;
-+	nfsd_copy_write_verifier((__be32 *)&result->wr_verifier.data, nn);
-+
- 	copy->cp_clp = cstate->clp;
- 	if (nfsd4_ssc_is_inter(copy)) {
- 		trace_nfsd_copy_inter(copy);
-@@ -1838,8 +1833,6 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
- 		sizeof(struct knfsd_fh));
- 	if (nfsd4_copy_is_async(copy)) {
--		struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
--
- 		status = nfserrno(-ENOMEM);
- 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
- 		if (!async_copy)
-@@ -1851,8 +1844,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 			goto out_err;
- 		if (!nfs4_init_copy_state(nn, copy))
- 			goto out_err;
--		memcpy(&copy->cp_res.cb_stateid, &copy->cp_stateid.cs_stid,
--			sizeof(copy->cp_res.cb_stateid));
-+		memcpy(&result->cb_stateid, &copy->cp_stateid.cs_stid,
-+			sizeof(result->cb_stateid));
- 		dup_copy_fields(copy, async_copy);
- 		async_copy->copy_task = kthread_create(nfsd4_do_async_copy,
- 				async_copy, "%s", "copy thread");
--- 
-2.43.0
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -511,20 +511,13 @@ static const struct dmi_system_id irq1_l
+ 		},
+ 	},
+ 	{
+-		/* Asus Vivobook E1504GA */
++		/* Asus Vivobook E1504GA* */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
+ 		},
+ 	},
+ 	{
+-		/* Asus Vivobook E1504GAB */
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
+-		},
+-	},
+-	{
+ 		/* Asus Vivobook Pro N6506MV */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
