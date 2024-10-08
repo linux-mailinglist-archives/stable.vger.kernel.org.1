@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8372E994B1C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC9B99484D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 483A228614B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB86B1F25E48
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3DE1DC759;
-	Tue,  8 Oct 2024 12:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F341DE2AE;
+	Tue,  8 Oct 2024 12:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMsqwuQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6fsLFyD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776DC1779B1;
-	Tue,  8 Oct 2024 12:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A211A1DA60C;
+	Tue,  8 Oct 2024 12:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391217; cv=none; b=uOQ/19baRlc7B6jllHooLAUv+dBXZASAHX9dzHCZsqL6Mi3zLQVRvgfas09DACXOmmqCaH5uJqxo1uVqgOqqbYPh+ZoEAq6xnz6ty2GgQCobEQueK82pok4TOhGEPGfMON7nh8RpHKYF41sBiaAPLMopVq0txuWif9Lj+kC52Ds=
+	t=1728389498; cv=none; b=SMt8+n5I9KAafn5HS25dFT315gokUWD2tSp1SfiiEcCqFz0m79gg/EznuNpM5HXHoaj9xRz+/7SO1oR7qK9Iw4s6SJQDlfF34GRoJ+96S7rwWEJxU9JwmNCi7rxN42o+1FoLAh5RtJy2K8U7WFSPESwPM4aNH0yGMPfKds7QETk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391217; c=relaxed/simple;
-	bh=QhtyMImzP45DmfCtOsRv1y4C5fVe4uyNupR9vjnuCy8=;
+	s=arc-20240116; t=1728389498; c=relaxed/simple;
+	bh=/sM1vLVix2QPeg+rWWiLt+HxXbJxUVbXer0Rhgwvd60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqwXSGhO8DnAman1hE/6Xp8NNDZKC1hldHJVISCl8dkRkV9nuJIZoqQDn1ZBLwhQX6XnsA4SklId6qyJd8ihGcahDpoRlG6Lx1s7SJLW0c5Lpe0hjP8XZ53QX1VwfKZH6uQWzDwE5Wu2Zh9HwUjaxVh0mxtUfEwgq8gJFCLukBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMsqwuQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3119C4CEC7;
-	Tue,  8 Oct 2024 12:40:16 +0000 (UTC)
+	 MIME-Version; b=Ta09Yr1SR52RUXm6SeaQd4oquE/4emKuBWjBYDQ5MX1HWKbBNCX6OuilzMTADhyRxtAB1QRt8Ul57hlYicT6jbucDwXnPhlkuYzU3CCaOHR6rEerX0tw/NZeGNyjNa0jYvrIBF/XhAKlcghV7bXivqs8W6LR8PGbgWc6btWK9mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6fsLFyD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B27C4CEC7;
+	Tue,  8 Oct 2024 12:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391217;
-	bh=QhtyMImzP45DmfCtOsRv1y4C5fVe4uyNupR9vjnuCy8=;
+	s=korg; t=1728389498;
+	bh=/sM1vLVix2QPeg+rWWiLt+HxXbJxUVbXer0Rhgwvd60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMsqwuQmrwfh3wVoJZZ9CCoEkn9NZdHfzTb9do6wLZINRoDeKhG8Wy2KJ1Hww0eGE
-	 kJzBd0Qz2ngTYZf1fo6ktxUYUS8lGMBO858DkTo41JkJOJC7B5awuP+ulXrDzxZdZt
-	 PMhlW9wxm5S9k9s9aD+8w9LDVoZNBx1Gx/JAeomo=
+	b=S6fsLFyDKb2uBe2dMHtqXNV61vYwC9HGUkPCiDSd3qX/X4IM/+mDAB9cASNTDYO9A
+	 bltY911sHxCSuWS1eAD2xUnSjLQ7QrePqQ7of7Hd5roNyxpK2bHd40nPxzPI5T7Opp
+	 g7ioT3IAB2mG3HAblHc5FSXw8mSuCdnJz1aYou84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Danilov <littlesmilingcloud@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 045/558] ipv4: ip_gre: Fix drops of small packets in ipgre_xmit
+Subject: [PATCH 6.10 012/482] mailbox: bcm2835: Fix timeout during suspend mode
 Date: Tue,  8 Oct 2024 14:01:15 +0200
-Message-ID: <20241008115703.997126550@linuxfoundation.org>
+Message-ID: <20241008115648.783040631@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Danilov <littlesmilingcloud@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit c4a14f6d9d17ad1e41a36182dd3b8a5fd91efbd7 ]
+[ Upstream commit dc09f007caed3b2f6a3b6bd7e13777557ae22bfd ]
 
-Regression Description:
+During noirq suspend phase the Raspberry Pi power driver suffer of
+firmware property timeouts. The reason is that the IRQ of the underlying
+BCM2835 mailbox is disabled and rpi_firmware_property_list() will always
+run into a timeout [1].
 
-Depending on the options specified for the GRE tunnel device, small
-packets may be dropped. This occurs because the pskb_network_may_pull
-function fails due to the packet's insufficient length.
+Since the VideoCore side isn't consider as a wakeup source, set the
+IRQF_NO_SUSPEND flag for the mailbox IRQ in order to keep it enabled
+during suspend-resume cycle.
 
-For example, if only the okey option is specified for the tunnel device,
-original (before encapsulation) packets smaller than 28 bytes (including
-the IPv4 header) will be dropped. This happens because the required
-length is calculated relative to the network header, not the skb->head.
+[1]
+PM: late suspend of devices complete after 1.754 msecs
+WARNING: CPU: 0 PID: 438 at drivers/firmware/raspberrypi.c:128
+ rpi_firmware_property_list+0x204/0x22c
+Firmware transaction 0x00028001 timeout
+Modules linked in:
+CPU: 0 PID: 438 Comm: bash Tainted: G         C         6.9.3-dirty #17
+Hardware name: BCM2835
+Call trace:
+unwind_backtrace from show_stack+0x18/0x1c
+show_stack from dump_stack_lvl+0x34/0x44
+dump_stack_lvl from __warn+0x88/0xec
+__warn from warn_slowpath_fmt+0x7c/0xb0
+warn_slowpath_fmt from rpi_firmware_property_list+0x204/0x22c
+rpi_firmware_property_list from rpi_firmware_property+0x68/0x8c
+rpi_firmware_property from rpi_firmware_set_power+0x54/0xc0
+rpi_firmware_set_power from _genpd_power_off+0xe4/0x148
+_genpd_power_off from genpd_sync_power_off+0x7c/0x11c
+genpd_sync_power_off from genpd_finish_suspend+0xcc/0xe0
+genpd_finish_suspend from dpm_run_callback+0x78/0xd0
+dpm_run_callback from device_suspend_noirq+0xc0/0x238
+device_suspend_noirq from dpm_suspend_noirq+0xb0/0x168
+dpm_suspend_noirq from suspend_devices_and_enter+0x1b8/0x5ac
+suspend_devices_and_enter from pm_suspend+0x254/0x2e4
+pm_suspend from state_store+0xa8/0xd4
+state_store from kernfs_fop_write_iter+0x154/0x1a0
+kernfs_fop_write_iter from vfs_write+0x12c/0x184
+vfs_write from ksys_write+0x78/0xc0
+ksys_write from ret_fast_syscall+0x0/0x54
+Exception stack(0xcc93dfa8 to 0xcc93dff0)
+[...]
+PM: noirq suspend of devices complete after 3095.584 msecs
 
-Here is how the required length is computed and checked:
-
-* The pull_len variable is set to 28 bytes, consisting of:
-  * IPv4 header: 20 bytes
-  * GRE header with Key field: 8 bytes
-
-* The pskb_network_may_pull function adds the network offset, shifting
-the checkable space further to the beginning of the network header and
-extending it to the beginning of the packet. As a result, the end of
-the checkable space occurs beyond the actual end of the packet.
-
-Instead of ensuring that 28 bytes are present in skb->head, the function
-is requesting these 28 bytes starting from the network header. For small
-packets, this requested length exceeds the actual packet size, causing
-the check to fail and the packets to be dropped.
-
-This issue affects both locally originated and forwarded packets in
-DMVPN-like setups.
-
-How to reproduce (for local originated packets):
-
-  ip link add dev gre1 type gre ikey 1.9.8.4 okey 1.9.8.4 \
-          local <your-ip> remote 0.0.0.0
-
-  ip link set mtu 1400 dev gre1
-  ip link set up dev gre1
-  ip address add 192.168.13.1/24 dev gre1
-  ip neighbor add 192.168.13.2 lladdr <remote-ip> dev gre1
-  ping -s 1374 -c 10 192.168.13.2
-  tcpdump -vni gre1
-  tcpdump -vni <your-ext-iface> 'ip proto 47'
-  ip -s -s -d link show dev gre1
-
-Solution:
-
-Use the pskb_may_pull function instead the pskb_network_may_pull.
-
-Fixes: 80d875cfc9d3 ("ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()")
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240924235158.106062-1-littlesmilingcloud@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://github.com/raspberrypi/firmware/issues/1894
+Fixes: 0bae6af6d704 ("mailbox: Enable BCM2835 mailbox support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mailbox/bcm2835-mailbox.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index ba205473522e4..868ef18ad656c 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -661,11 +661,11 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 		if (skb_cow_head(skb, 0))
- 			goto free_skb;
+diff --git a/drivers/mailbox/bcm2835-mailbox.c b/drivers/mailbox/bcm2835-mailbox.c
+index fbfd0202047c3..ea12fb8d24015 100644
+--- a/drivers/mailbox/bcm2835-mailbox.c
++++ b/drivers/mailbox/bcm2835-mailbox.c
+@@ -145,7 +145,8 @@ static int bcm2835_mbox_probe(struct platform_device *pdev)
+ 	spin_lock_init(&mbox->lock);
  
--		tnl_params = (const struct iphdr *)skb->data;
--
--		if (!pskb_network_may_pull(skb, pull_len))
-+		if (!pskb_may_pull(skb, pull_len))
- 			goto free_skb;
- 
-+		tnl_params = (const struct iphdr *)skb->data;
-+
- 		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
- 		skb_pull(skb, pull_len);
- 		skb_reset_mac_header(skb);
+ 	ret = devm_request_irq(dev, irq_of_parse_and_map(dev->of_node, 0),
+-			       bcm2835_mbox_irq, 0, dev_name(dev), mbox);
++			       bcm2835_mbox_irq, IRQF_NO_SUSPEND, dev_name(dev),
++			       mbox);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to register a mailbox IRQ handler: %d\n",
+ 			ret);
 -- 
 2.43.0
 
