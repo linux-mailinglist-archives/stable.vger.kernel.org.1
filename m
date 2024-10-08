@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1FE994E9C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A621E994A1E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE951B255BC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69A5728835A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420421DEFC8;
-	Tue,  8 Oct 2024 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396761D9586;
+	Tue,  8 Oct 2024 12:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gcsA/v1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LugYYQb0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B3217C7C9;
-	Tue,  8 Oct 2024 13:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB8A165F08;
+	Tue,  8 Oct 2024 12:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393313; cv=none; b=XvC88TSEmexPStpXPpVaLNqmwX2p8pXrVBzcbSKaOdAULfBOL87qovgCTGgfvhGYyNLA/LkzjrVOEcu6SLKkGkJFHFCKqMjpCS8Y4KlTEFylBUwYtUbm7X+q2sJp+MeOwbcEqG26SXeatLUDg0lHJEptBfk7LngBdvviepbg9ig=
+	t=1728390579; cv=none; b=K/fwv1NBnAoidrhra1QN8/XTrCi1ykC+OM+C2A1nliev0IwZZrSHTS7/51iGqTPwOOjd1/QlLfb8iKFK6qR3DAA3DbZCG1W5uKYHfNs51ylFNZB1ERoELPwW3nGD/293ckV6YQdaKkEMJK7cQyZSxrbFAZq7nbNrn5qRgpAkjD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393313; c=relaxed/simple;
-	bh=5bKBOrGIgxClZFqWghhmid2DPCqOP8m2UGHxnZwn75Q=;
+	s=arc-20240116; t=1728390579; c=relaxed/simple;
+	bh=SZpmYqhfSahMTDAEV/p73nzRoaL9SIh6nfpSmnLaloQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ixM5LCEXbbz+68wEpGd+WdRXHeZ+7iL1cVOA2IymTexNnNHBNTToeJnVkLrUWbNoqfTXpfnsuyLpA1lrLIAK+IeNpzyAoWf8ScJWo02+2oo9c7CZUSy7meOYEB0GQC2nDVsKNJ1cY2AOKHSNPRxwdpXHIswDjO32aUzspJdFE1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gcsA/v1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64977C4CEC7;
-	Tue,  8 Oct 2024 13:15:12 +0000 (UTC)
+	 MIME-Version; b=Q//oTtCFM+mf+YgVgwC0+0sjSRiTFpNKXcH92fYZbYwLrXb0necLQbRd4eWYpVgOQWy8JDGpv6ikqQxdSoMNLn/0dZ2Q97VvSIe+MoautBaj1OOj+2F3MVXZUS7SRSU7lbgK9l1OA77jrrVBLCTImUiK26yL7bm8ydV6wBNThoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LugYYQb0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B404C4CEC7;
+	Tue,  8 Oct 2024 12:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393312;
-	bh=5bKBOrGIgxClZFqWghhmid2DPCqOP8m2UGHxnZwn75Q=;
+	s=korg; t=1728390578;
+	bh=SZpmYqhfSahMTDAEV/p73nzRoaL9SIh6nfpSmnLaloQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gcsA/v1XRFczgX8EI9YR0qUqJBy2iRIspim05R4KhgxfOc+uG6cR1Jsi3ypK5FqI
-	 PofJbycsAQHWA9e9rGcbNmUz4ygt/t4ndcRMbO2I6Nwa1HdM3FtCV6J5fwB+6gFCGf
-	 Zzzw4lKUvtvV2MU0Y2D8hzbeIug3kkyV2xbgBLw0=
+	b=LugYYQb05gRk4NYpEAy4Bk21qFSjzsdCbHr46CQ4zz7ome/rEaBECKWQfHgHHGRZM
+	 Sb0QZtQFS2IoyLPWbdc22ywpnbO8JWRasK3F6985joOByIj6Nt2dcAIBLlnfp+28YL
+	 SgxmndsTBkHKFwROtbenfVemBwpwxGExXMJNiKbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/386] tools/x86/kcpuid: Protect against faulty "max subleaf" values
+	Krzysztof Piotr Oledzki <ole@ans.pl>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 6.10 296/482] i2c: core: Lock address during client device instantiation
 Date: Tue,  8 Oct 2024 14:05:59 +0200
-Message-ID: <20241008115633.930535185@linuxfoundation.org>
+Message-ID: <20241008115659.930371333@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit cf96ab1a966b87b09fdd9e8cc8357d2d00776a3a ]
+commit 8d3cefaf659265aa82b0373a563fdb9d16a2b947 upstream.
 
-Protect against the kcpuid code parsing faulty max subleaf numbers
-through a min() expression.  Thus, ensuring that max_subleaf will always
-be ≤ MAX_SUBLEAF_NUM.
+Krzysztof reported an issue [0] which is caused by parallel attempts to
+instantiate the same I2C client device. This can happen if driver
+supports auto-detection, but certain devices are also instantiated
+explicitly.
+The original change isn't actually wrong, it just revealed that I2C core
+isn't prepared yet to handle this scenario.
+Calls to i2c_new_client_device() can be nested, therefore we can't use a
+simple mutex here. Parallel instantiation of devices at different addresses
+is ok, so we just have to prevent parallel instantiation at the same address.
+We can use a bitmap with one bit per 7-bit I2C client address, and atomic
+bit operations to set/check/clear bits.
+Now a parallel attempt to instantiate a device at the same address will
+result in -EBUSY being returned, avoiding the "sysfs: cannot create duplicate
+filename" splash.
 
-Use "u32" for the subleaf numbers since kcpuid is compiled with -Wextra,
-which includes signed/unsigned comparisons warnings.
+Note: This patch version includes small cosmetic changes to the Tested-by
+      version, only functional change is that address locking is supported
+      for slave addresses too.
 
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240718134755.378115-5-darwi@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[0] https://lore.kernel.org/linux-i2c/9479fe4e-eb0c-407e-84c0-bd60c15baf74@ans.pl/T/#m12706546e8e2414d8f1a0dc61c53393f731685cc
+
+Fixes: caba40ec3531 ("eeprom: at24: Probe for DDR3 thermal sensor in the SPD case")
+Cc: stable@vger.kernel.org
+Tested-by: Krzysztof Piotr Oledzki <ole@ans.pl>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/arch/x86/kcpuid/kcpuid.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/i2c/i2c-core-base.c |   28 ++++++++++++++++++++++++++++
+ include/linux/i2c.h         |    3 +++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/tools/arch/x86/kcpuid/kcpuid.c b/tools/arch/x86/kcpuid/kcpuid.c
-index 24b7d017ec2c1..b7965dfff33a9 100644
---- a/tools/arch/x86/kcpuid/kcpuid.c
-+++ b/tools/arch/x86/kcpuid/kcpuid.c
-@@ -7,7 +7,8 @@
- #include <string.h>
- #include <getopt.h>
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -915,6 +915,27 @@ int i2c_dev_irq_from_resources(const str
+ 	return 0;
+ }
  
--#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-+#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
-+#define min(a, b)	(((a) < (b)) ? (a) : (b))
++/*
++ * Serialize device instantiation in case it can be instantiated explicitly
++ * and by auto-detection
++ */
++static int i2c_lock_addr(struct i2c_adapter *adap, unsigned short addr,
++			 unsigned short flags)
++{
++	if (!(flags & I2C_CLIENT_TEN) &&
++	    test_and_set_bit(addr, adap->addrs_in_instantiation))
++		return -EBUSY;
++
++	return 0;
++}
++
++static void i2c_unlock_addr(struct i2c_adapter *adap, unsigned short addr,
++			    unsigned short flags)
++{
++	if (!(flags & I2C_CLIENT_TEN))
++		clear_bit(addr, adap->addrs_in_instantiation);
++}
++
+ /**
+  * i2c_new_client_device - instantiate an i2c device
+  * @adap: the adapter managing the device
+@@ -962,6 +983,10 @@ i2c_new_client_device(struct i2c_adapter
+ 		goto out_err_silent;
+ 	}
  
- typedef unsigned int u32;
- typedef unsigned long long u64;
-@@ -207,12 +208,9 @@ static void raw_dump_range(struct cpuid_range *range)
- #define MAX_SUBLEAF_NUM		32
- struct cpuid_range *setup_cpuid_range(u32 input_eax)
- {
--	u32 max_func, idx_func;
--	int subleaf;
-+	u32 max_func, idx_func, subleaf, max_subleaf;
-+	u32 eax, ebx, ecx, edx, f = input_eax;
- 	struct cpuid_range *range;
--	u32 eax, ebx, ecx, edx;
--	u32 f = input_eax;
--	int max_subleaf;
- 	bool allzero;
++	status = i2c_lock_addr(adap, client->addr, client->flags);
++	if (status)
++		goto out_err_silent;
++
+ 	/* Check for address business */
+ 	status = i2c_check_addr_busy(adap, i2c_encode_flags_to_addr(client));
+ 	if (status)
+@@ -993,6 +1018,8 @@ i2c_new_client_device(struct i2c_adapter
+ 	dev_dbg(&adap->dev, "client [%s] registered with bus id %s\n",
+ 		client->name, dev_name(&client->dev));
  
- 	eax = input_eax;
-@@ -258,7 +256,7 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
- 		 * others have to be tried (0xf)
- 		 */
- 		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18)
--			max_subleaf = (eax & 0xff) + 1;
-+			max_subleaf = min((eax & 0xff) + 1, max_subleaf);
++	i2c_unlock_addr(adap, client->addr, client->flags);
++
+ 	return client;
  
- 		if (f == 0xb)
- 			max_subleaf = 2;
--- 
-2.43.0
-
+ out_remove_swnode:
+@@ -1004,6 +1031,7 @@ out_err:
+ 	dev_err(&adap->dev,
+ 		"Failed to register i2c client %s at 0x%02x (%d)\n",
+ 		client->name, client->addr, status);
++	i2c_unlock_addr(adap, client->addr, client->flags);
+ out_err_silent:
+ 	if (need_put)
+ 		put_device(&client->dev);
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -748,6 +748,9 @@ struct i2c_adapter {
+ 	struct regulator *bus_regulator;
+ 
+ 	struct dentry *debugfs;
++
++	/* 7bit address space */
++	DECLARE_BITMAP(addrs_in_instantiation, 1 << 7);
+ };
+ #define to_i2c_adapter(d) container_of(d, struct i2c_adapter, dev)
+ 
 
 
 
