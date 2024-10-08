@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-81718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74589948F6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A765994BCA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619D228278E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 484CA28590A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5531DED4B;
-	Tue,  8 Oct 2024 12:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4D91DE2A5;
+	Tue,  8 Oct 2024 12:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfOThclV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0CffP/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485E41DE8A6;
-	Tue,  8 Oct 2024 12:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3D61C9B61;
+	Tue,  8 Oct 2024 12:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389901; cv=none; b=lNpeguo5pMCeOo728jgyYIYR9xTEbm9G4vW7t65V5ck4+akLmzeg/vCYW8nOIMAglsfh6Zl0vVSRYVjImRt0QmdJJmGjP6vvdclWQJVcXO7tRKXeYTersovfKKHELtiq/faBLs1ZPCbCjZRRPnIeVLflBPqaWHGd8oD4wQvcaTk=
+	t=1728391600; cv=none; b=re+OMfvXoPu3lD1LZPqROW2PJaNQQOToHqeaWsdEUJvxsgzoKRprtMK86owL397TfMwlpNf/o/nluh8POL0lJaHGzwVFjGjw/Ls450YVOpebHE7IFgjQBZgEIQ/ZUpdMZhRr2DBjZBPvsCeZXsGN6cj6PM7ZFc8j/HJ8gZLpkIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389901; c=relaxed/simple;
-	bh=kbZ55wadEMi3PtGsHqkU2l9KYzTZbeOqk9qUt6pNBhU=;
+	s=arc-20240116; t=1728391600; c=relaxed/simple;
+	bh=xNSVZpJOdKgolk9WqqUj505HS455A95/Upzxm8xIATQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyGh7t7IITcFL8JijYYPJCBl0uUWJx3zlLVJkz/gGmJVCeh7tDyOB7bZDcOfBu0Fkh7wBHPbCl5pUGpp5+kyFRzGhbndzQvR3bjUoA2FFuBpVWSjrPXfeW4Dxo+ROX7XxhNcNAzV493GUb3Yh8BMXsg/ra6ssAvZD+LsLuaa+Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfOThclV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCD3C4CEC7;
-	Tue,  8 Oct 2024 12:18:20 +0000 (UTC)
+	 MIME-Version; b=b3d3ZI1v4FjfggVeDrv9KaseD8DHBKcStRJiGawab+gUJzMiyn6dRQSaCe5Av73noiu/qvzmyiSZR2D2zSktlFsXNYxDskNiR0U7etUHJo3kYChj43cFR3OImtl8qdfq2pEpM7wUXG8WwfZKboo6nGY9dP3hpx+AOrLXvypJVN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0CffP/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7B5C4CEC7;
+	Tue,  8 Oct 2024 12:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389901;
-	bh=kbZ55wadEMi3PtGsHqkU2l9KYzTZbeOqk9qUt6pNBhU=;
+	s=korg; t=1728391600;
+	bh=xNSVZpJOdKgolk9WqqUj505HS455A95/Upzxm8xIATQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfOThclV0CS+fqcTPjgzWy++zdTe7FENVsY+RhP68hHzc7m/qNxXNjVZhZRQWJFQf
-	 2SaZiMi8n+lXB9CjH5JTou2dzwHnWzqpYBlTB8QivP2zGmwGHzFJg4mbLKwK1MErYV
-	 /gN1bJnugz4qWRryXj8mwqQ3H+/fGYmxm/xtrZwA=
+	b=O0CffP/llyOv1xeRYKhHGcBAWbEm/BFFKZ5bWuX2TBS6if5Ut960vi7gfnjFA+h47
+	 YYswMOzQRffW5ILJ35v7YHwfh7uKSfnLkIfHGBgYLQl+29Eg6uLvsf3lUM1lkSBFqw
+	 jFG388mynzY9YEQ3TyoR2WlyF894GK3fj1Pc0wuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Joe Damato <jdamato@fastly.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 131/482] net: napi: Prevent overflow of napi_defer_hard_irqs
-Date: Tue,  8 Oct 2024 14:03:14 +0200
-Message-ID: <20241008115653.460033707@linuxfoundation.org>
+Subject: [PATCH 6.11 165/558] ALSA: usb-audio: Add input value sanity checks for standard types
+Date: Tue,  8 Oct 2024 14:03:15 +0200
+Message-ID: <20241008115708.850341527@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Damato <jdamato@fastly.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 08062af0a52107a243f7608fd972edb54ca5b7f8 ]
+[ Upstream commit 901e85677ec0bb9a69fb9eab1feafe0c4eb7d07e ]
 
-In commit 6f8b12d661d0 ("net: napi: add hard irqs deferral feature")
-napi_defer_irqs was added to net_device and napi_defer_irqs_count was
-added to napi_struct, both as type int.
+For an invalid input value that is out of the given range, currently
+USB-audio driver corrects the value silently and accepts without
+errors.  This is no wrong behavior, per se, but the recent kselftest
+rather wants to have an error in such a case, hence a different
+behavior is expected now.
 
-This value never goes below zero, so there is not reason for it to be a
-signed int. Change the type for both from int to u32, and add an
-overflow check to sysfs to limit the value to S32_MAX.
+This patch adds a sanity check at each control put for the standard
+mixer types and returns an error if an invalid value is given.
 
-The limit of S32_MAX was chosen because the practical limit before this
-patch was S32_MAX (anything larger was an overflow) and thus there are
-no behavioral changes introduced. If the extra bit is needed in the
-future, the limit can be raised.
+Note that this covers only the standard mixer types.  The mixer quirks
+that have own control callbacks would need different coverage.
 
-Before this patch:
-
-$ sudo bash -c 'echo 2147483649 > /sys/class/net/eth4/napi_defer_hard_irqs'
-$ cat /sys/class/net/eth4/napi_defer_hard_irqs
--2147483647
-
-After this patch:
-
-$ sudo bash -c 'echo 2147483649 > /sys/class/net/eth4/napi_defer_hard_irqs'
-bash: line 0: echo: write error: Numerical result out of range
-
-Similarly, /sys/class/net/XXXXX/tx_queue_len is defined as unsigned:
-
-include/linux/netdevice.h:      unsigned int            tx_queue_len;
-
-And has an overflow check:
-
-dev_change_tx_queue_len(..., unsigned long new_len):
-
-  if (new_len != (unsigned int)new_len)
-          return -ERANGE;
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240904153431.307932-1-jdamato@fastly.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20240806124651.28203-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/net_cachelines/net_device.rst | 2 +-
- include/linux/netdevice.h                              | 4 ++--
- net/core/net-sysfs.c                                   | 6 +++++-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ sound/usb/mixer.c | 35 +++++++++++++++++++++++++++--------
+ sound/usb/mixer.h |  1 +
+ 2 files changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
-index 70c4fb9d4e5ce..d68f37f5b1f82 100644
---- a/Documentation/networking/net_cachelines/net_device.rst
-+++ b/Documentation/networking/net_cachelines/net_device.rst
-@@ -98,7 +98,7 @@ unsigned_int                        num_rx_queues
- unsigned_int                        real_num_rx_queues      -                   read_mostly         get_rps_cpu
- struct_bpf_prog*                    xdp_prog                -                   read_mostly         netif_elide_gro()
- unsigned_long                       gro_flush_timeout       -                   read_mostly         napi_complete_done
--int                                 napi_defer_hard_irqs    -                   read_mostly         napi_complete_done
-+u32                                 napi_defer_hard_irqs    -                   read_mostly         napi_complete_done
- unsigned_int                        gro_max_size            -                   read_mostly         skb_gro_receive
- unsigned_int                        gro_ipv4_max_size       -                   read_mostly         skb_gro_receive
- rx_handler_func_t*                  rx_handler              read_mostly         -                   __netif_receive_skb_core
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 238aaed5d7236..bf3eba0d9bdca 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -354,7 +354,7 @@ struct napi_struct {
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index f7ce8e8c3c3ea..2d27d729c3bea 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1377,6 +1377,19 @@ static int get_min_max_with_quirks(struct usb_mixer_elem_info *cval,
  
- 	unsigned long		state;
- 	int			weight;
--	int			defer_hard_irqs_count;
-+	u32			defer_hard_irqs_count;
- 	unsigned long		gro_bitmask;
- 	int			(*poll)(struct napi_struct *, int);
- #ifdef CONFIG_NETPOLL
-@@ -2089,7 +2089,7 @@ struct net_device {
- 	unsigned int		real_num_rx_queues;
- 	struct netdev_rx_queue	*_rx;
- 	unsigned long		gro_flush_timeout;
--	int			napi_defer_hard_irqs;
-+	u32			napi_defer_hard_irqs;
- 	unsigned int		gro_max_size;
- 	unsigned int		gro_ipv4_max_size;
- 	rx_handler_func_t __rcu	*rx_handler;
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 15ad775ddd3c1..dc0c622d453e1 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -32,6 +32,7 @@
- #ifdef CONFIG_SYSFS
- static const char fmt_hex[] = "%#x\n";
- static const char fmt_dec[] = "%d\n";
-+static const char fmt_uint[] = "%u\n";
- static const char fmt_ulong[] = "%lu\n";
- static const char fmt_u64[] = "%llu\n";
+ #define get_min_max(cval, def)	get_min_max_with_quirks(cval, def, NULL)
  
-@@ -425,6 +426,9 @@ NETDEVICE_SHOW_RW(gro_flush_timeout, fmt_ulong);
- 
- static int change_napi_defer_hard_irqs(struct net_device *dev, unsigned long val)
- {
-+	if (val > S32_MAX)
-+		return -ERANGE;
++/* get the max value advertised via control API */
++static int get_max_exposed(struct usb_mixer_elem_info *cval)
++{
++	if (!cval->max_exposed) {
++		if (cval->res)
++			cval->max_exposed =
++				DIV_ROUND_UP(cval->max - cval->min, cval->res);
++		else
++			cval->max_exposed = cval->max - cval->min;
++	}
++	return cval->max_exposed;
++}
 +
- 	WRITE_ONCE(dev->napi_defer_hard_irqs, val);
+ /* get a feature/mixer unit info */
+ static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
+ 				  struct snd_ctl_elem_info *uinfo)
+@@ -1389,11 +1402,8 @@ static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
+ 	else
+ 		uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
+ 	uinfo->count = cval->channels;
+-	if (cval->val_type == USB_MIXER_BOOLEAN ||
+-	    cval->val_type == USB_MIXER_INV_BOOLEAN) {
+-		uinfo->value.integer.min = 0;
+-		uinfo->value.integer.max = 1;
+-	} else {
++	if (cval->val_type != USB_MIXER_BOOLEAN &&
++	    cval->val_type != USB_MIXER_INV_BOOLEAN) {
+ 		if (!cval->initialized) {
+ 			get_min_max_with_quirks(cval, 0, kcontrol);
+ 			if (cval->initialized && cval->dBmin >= cval->dBmax) {
+@@ -1405,10 +1415,10 @@ static int mixer_ctl_feature_info(struct snd_kcontrol *kcontrol,
+ 					       &kcontrol->id);
+ 			}
+ 		}
+-		uinfo->value.integer.min = 0;
+-		uinfo->value.integer.max =
+-			DIV_ROUND_UP(cval->max - cval->min, cval->res);
+ 	}
++
++	uinfo->value.integer.min = 0;
++	uinfo->value.integer.max = get_max_exposed(cval);
  	return 0;
  }
-@@ -438,7 +442,7 @@ static ssize_t napi_defer_hard_irqs_store(struct device *dev,
  
- 	return netdev_store(dev, attr, buf, len, change_napi_defer_hard_irqs);
- }
--NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_dec);
-+NETDEVICE_SHOW_RW(napi_defer_hard_irqs, fmt_uint);
+@@ -1449,6 +1459,7 @@ static int mixer_ctl_feature_put(struct snd_kcontrol *kcontrol,
+ 				 struct snd_ctl_elem_value *ucontrol)
+ {
+ 	struct usb_mixer_elem_info *cval = kcontrol->private_data;
++	int max_val = get_max_exposed(cval);
+ 	int c, cnt, val, oval, err;
+ 	int changed = 0;
  
- static ssize_t ifalias_store(struct device *dev, struct device_attribute *attr,
- 			     const char *buf, size_t len)
+@@ -1461,6 +1472,8 @@ static int mixer_ctl_feature_put(struct snd_kcontrol *kcontrol,
+ 			if (err < 0)
+ 				return filter_error(cval, err);
+ 			val = ucontrol->value.integer.value[cnt];
++			if (val < 0 || val > max_val)
++				return -EINVAL;
+ 			val = get_abs_value(cval, val);
+ 			if (oval != val) {
+ 				snd_usb_set_cur_mix_value(cval, c + 1, cnt, val);
+@@ -1474,6 +1487,8 @@ static int mixer_ctl_feature_put(struct snd_kcontrol *kcontrol,
+ 		if (err < 0)
+ 			return filter_error(cval, err);
+ 		val = ucontrol->value.integer.value[0];
++		if (val < 0 || val > max_val)
++			return -EINVAL;
+ 		val = get_abs_value(cval, val);
+ 		if (val != oval) {
+ 			snd_usb_set_cur_mix_value(cval, 0, 0, val);
+@@ -2337,6 +2352,8 @@ static int mixer_ctl_procunit_put(struct snd_kcontrol *kcontrol,
+ 	if (err < 0)
+ 		return filter_error(cval, err);
+ 	val = ucontrol->value.integer.value[0];
++	if (val < 0 || val > get_max_exposed(cval))
++		return -EINVAL;
+ 	val = get_abs_value(cval, val);
+ 	if (val != oval) {
+ 		set_cur_ctl_value(cval, cval->control << 8, val);
+@@ -2699,6 +2716,8 @@ static int mixer_ctl_selector_put(struct snd_kcontrol *kcontrol,
+ 	if (err < 0)
+ 		return filter_error(cval, err);
+ 	val = ucontrol->value.enumerated.item[0];
++	if (val < 0 || val >= cval->max) /* here cval->max = # elements */
++		return -EINVAL;
+ 	val = get_abs_value(cval, val);
+ 	if (val != oval) {
+ 		set_cur_ctl_value(cval, cval->control << 8, val);
+diff --git a/sound/usb/mixer.h b/sound/usb/mixer.h
+index d43895c1ae5c6..167fbfcf01ace 100644
+--- a/sound/usb/mixer.h
++++ b/sound/usb/mixer.h
+@@ -88,6 +88,7 @@ struct usb_mixer_elem_info {
+ 	int channels;
+ 	int val_type;
+ 	int min, max, res;
++	int max_exposed; /* control API exposes the value in 0..max_exposed */
+ 	int dBmin, dBmax;
+ 	int cached;
+ 	int cache_val[MAX_CHANNELS];
 -- 
 2.43.0
 
