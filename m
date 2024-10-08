@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-82064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E12994ADF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110E3994D7E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884D61C24F57
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFEE31F21E00
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4CE1DED60;
-	Tue,  8 Oct 2024 12:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B1E1DED48;
+	Tue,  8 Oct 2024 13:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGycmua8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdJtZNVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA911DE8A0;
-	Tue,  8 Oct 2024 12:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3409F1DE8BA;
+	Tue,  8 Oct 2024 13:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391046; cv=none; b=j4+uea3t4+y8bK9gyG9EhihbuRw0aYuGOfZkoujqbvyX3l9ItqAcmYBpcCnr85TEaqIdCxu/Z37PS3AHI5/Oh6L1IQn7qcy748FKDMZBrkp5eerdki84dl/DaYyewbGdX49FgcsBWGPVxhywy8Em9wsHw+TLhx0jQWwKHCcJPLs=
+	t=1728392753; cv=none; b=H8M6HYz/TN3GWo63Ewvehd5gY9748nuLDo/UNbHWi97w3BpjhxeggQwKKmOlu0NQd/cW0+Xwz30VPRjCdDjgpMuZjCwq4pRhXS9Xp2DPJSl0g9ujPish5ayaUwywv2LnZi+J2bEz+viHG08UzjT3lOlQhijZyUnG/ZJKRbe+b3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391046; c=relaxed/simple;
-	bh=/JT32A7u8KTIcd+E94FJ69emo1e22W0Tc5RwkUqF0dc=;
+	s=arc-20240116; t=1728392753; c=relaxed/simple;
+	bh=shJKHnb3pkvfhWoTVsRomYrLAqhS/ouWzjstlfQpaRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snyMe96uaS7zv2BOxHRL2qHoFQ+i96ebmg4kfT1pkl+3ogEMUNEm37myAsF8RsLkR820tz2RqLxaO4tnotSrubC8FMxTlnc89dm8eFowGnDBUeLrv1eQqF3cFhSa1ApeNZrGounA7lRHYuh4MOLoCUcYCC8AsZJD1F7C9QVN4ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGycmua8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAF8C4CEC7;
-	Tue,  8 Oct 2024 12:37:25 +0000 (UTC)
+	 MIME-Version; b=uBANdx0PBeEfQBjKrIOq1XDdELf4e92m/GENmXEYIuBYXfuLrE9H5QKAaJbHSmQjj6xjSqgmUvFUzeBokL+7vjcpPRoQxhOTHHyUvKDsNAvDbyC/tunLqDEl9jZ8JLsv3IEZnoxjx6jDOX0/ZVi6dLcj6D0EfdwI3S5wXIHJtfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdJtZNVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DDFC4CEC7;
+	Tue,  8 Oct 2024 13:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391045;
-	bh=/JT32A7u8KTIcd+E94FJ69emo1e22W0Tc5RwkUqF0dc=;
+	s=korg; t=1728392753;
+	bh=shJKHnb3pkvfhWoTVsRomYrLAqhS/ouWzjstlfQpaRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGycmua8Hq2CxXd4FgIYuiMLd6gNr8z3XNrRi16ZIK4RuJmbciPPk63/KVPjMhiog
-	 zfJL1+668ajAmoklgRt+NfdCFCxJjfZBeJNADiu7z/3GAJzeWq4MmDMt7inkG6GWDV
-	 /ss6uujcUKoR+drzsIBsW+r1DffNe3oQOOi13RKg=
+	b=ZdJtZNVJJLNEfoj6TAqkV+D7IJ2QI4JMOzF83slFFW/X03K5ECM3jLDrLPojiloP8
+	 ONYoUGFIOSLafMi5jbkiXckxU6SnAL8GoXqYgkBIZyRNguNiSzKdUikd372RvR76k7
+	 w8tiIFJcQ9N0s6HNQzZCkF2d+E5k5HAlBjFzxln0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Gray <jsg@jsg.id.au>
-Subject: [PATCH 6.10 474/482] Revert "drm/amd/display: Skip Recompute DSC Params if no Stream on Link"
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.11 507/558] io_uring/net: harden multishot termination case for recv
 Date: Tue,  8 Oct 2024 14:08:57 +0200
-Message-ID: <20241008115707.165489287@linuxfoundation.org>
+Message-ID: <20241008115722.182557355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +60,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Gray <jsg@jsg.id.au>
+From: Jens Axboe <axboe@kernel.dk>
 
-This reverts commit 6f9c39e8169384d2a5ca9bf323a0c1b81b3d0f3a.
+commit c314094cb4cfa6fc5a17f4881ead2dfebfa717a7 upstream.
 
-duplicated a change made in 6.10.5
-70275bb960c71d313254473d38c14e7101cee5ad
+If the recv returns zero, or an error, then it doesn't matter if more
+data has already been received for this buffer. A condition like that
+should terminate the multishot receive. Rather than pass in the
+collected return value, pass in whether to terminate or keep the recv
+going separately.
 
-Cc: stable@vger.kernel.org # 6.10
-Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+Note that this isn't a bug right now, as the only way to get there is
+via setting MSG_WAITALL with multishot receive. And if an application
+does that, then -EINVAL is returned anyway. But it seems like an easy
+bug to introduce, so let's make it a bit more explicit.
+
+Link: https://github.com/axboe/liburing/issues/1246
+Cc: stable@vger.kernel.org
+Fixes: b3fdea6ecb55 ("io_uring: multishot recv")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    3 ---
- 1 file changed, 3 deletions(-)
+ io_uring/net.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1267,9 +1267,6 @@ static bool is_dsc_need_re_compute(
- 	if (new_stream_on_link_num == 0)
- 		return false;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1126,6 +1126,7 @@ int io_recv(struct io_kiocb *req, unsign
+ 	int ret, min_ret = 0;
+ 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
+ 	size_t len = sr->len;
++	bool mshot_finished;
  
--	if (new_stream_on_link_num == 0)
--		return false;
--
- 	/* check current_state if there stream on link but it is not in
- 	 * new request state
- 	 */
+ 	if (!(req->flags & REQ_F_POLLED) &&
+ 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
+@@ -1180,6 +1181,7 @@ out_free:
+ 		req_set_fail(req);
+ 	}
+ 
++	mshot_finished = ret <= 0;
+ 	if (ret > 0)
+ 		ret += sr->done_io;
+ 	else if (sr->done_io)
+@@ -1187,7 +1189,7 @@ out_free:
+ 	else
+ 		io_kbuf_recycle(req, issue_flags);
+ 
+-	if (!io_recv_finish(req, &ret, kmsg, ret <= 0, issue_flags))
++	if (!io_recv_finish(req, &ret, kmsg, mshot_finished, issue_flags))
+ 		goto retry_multishot;
+ 
+ 	return ret;
 
 
 
