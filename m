@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF850994AEC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:38:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E86B2994F88
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E62D5B22BFF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59F5CB29343
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAAF1DC759;
-	Tue,  8 Oct 2024 12:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9345D1DFDBB;
+	Tue,  8 Oct 2024 13:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoGR2rQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqL7WPxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A003B1DA60C;
-	Tue,  8 Oct 2024 12:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5388C1DEFD7;
+	Tue,  8 Oct 2024 13:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391077; cv=none; b=mKjpZfWwKkrEIBPX2TfIN1OVZ7bl+ObHQTYYt4uyjPIBRq1LZSOZmj2jL72CeGnEwJ2TzWq6uGTnjzEgHZ1tJK3Ssi8ev82sWrBQW7VLFyPR5enQ84X42Bw8CF105/Qk+ha2BUzIBZwDsAYj6rOqApU2uoRZ1drNgO73t+lZW1A=
+	t=1728393881; cv=none; b=L+NU8SDDHHKmvqN7nXTfs7uG7HWYNelV80Sh2d6o3ELRY5ywdH+RSnSh5V2eGSJil8MubRxrGI4e1iFDhL2zAFZUZyxvDr0OzIzDR/NFsNgiCwL/JTaxi+yg0l5L/JOsQbsa4mJDjHUYxGTCCTLjXGDEZ+h1BD8hzZUv9LSfDWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391077; c=relaxed/simple;
-	bh=zQi/SIGPAWQ9SMG4xY5MY9qi6QWyt1GpzArbdyXqD8s=;
+	s=arc-20240116; t=1728393881; c=relaxed/simple;
+	bh=bY9b8JR5oBac3Rv6psrPmBYPThvKYrQX5Qes9wDPAXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHBoIyryzNKyFDFgm9vAC8+4WTrOZU+/H9cn3h8wcXSnH3/Hv7AcZujOScmlGH2aG/3t0unOkMO/pkXRvKW3ZA6YB1aXQt+WWQ7DV1TRH/ws3zYHt8/UR/PTPc2I36EaD2nII3DVz2+s8dWvvrrbAuR1cvhNRJH7k+7ncsLI8z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoGR2rQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3DBC4CEC7;
-	Tue,  8 Oct 2024 12:37:56 +0000 (UTC)
+	 MIME-Version; b=A73aISzc618ifUvyEX8/o0ajn5vv69xfvpIHZwgklRMaAC2RMozmyq4Dh+qZMpVxzPihuWloYaEA3IrthyaOPBQkGwbqQfTBsazPXeunrptpcb8VRbFhr5fxJmcMFPGK999rjATSNbGSkwRCrdxPO0jhNIg+EguSCxcjmEbO7U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqL7WPxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46510C4CEC7;
+	Tue,  8 Oct 2024 13:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391077;
-	bh=zQi/SIGPAWQ9SMG4xY5MY9qi6QWyt1GpzArbdyXqD8s=;
+	s=korg; t=1728393880;
+	bh=bY9b8JR5oBac3Rv6psrPmBYPThvKYrQX5Qes9wDPAXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OoGR2rQRbyuDjytM0CAYXZBoqVh+/PZlmym0/sjGwGnFrzgR2NJGcZal2x9NyMqqc
-	 pbxocKIr2rujLuXNP4JC7bAd/Sw0URZg4ouDoYQQvlJMuEiBB7Eqhj7dyECQkFJYCQ
-	 YfmJED18UgrNtKgzZDkO/rZ+MXEPyQx35buCBjyM=
+	b=gqL7WPxCZMBuiSA7FF7APRmFJmm5oRVBhpts54tw623S35OW1oeDUEaDsNEn1A79n
+	 r5kaSeFahMNJq9Gmaddo1sXOZIRuZDt4T4XcnM/MwmqRNzj9xaQNAr3MOrflvpcHPR
+	 WhkJNR+p4ITCZnjFs1VDkEzDkv1TaR8roAAU7q7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jan Kiszka <jan.kiszka@siemens.com>,
 	Beleswar Padhi <b-padhi@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 463/482] remoteproc: k3-r5: Acquire mailbox handle during probe routine
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.6 281/386] remoteproc: k3-r5: Fix error handling when power-up failed
 Date: Tue,  8 Oct 2024 14:08:46 +0200
-Message-ID: <20241008115706.734873402@linuxfoundation.org>
+Message-ID: <20241008115640.446095122@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,200 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beleswar Padhi <b-padhi@ti.com>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-[ Upstream commit f3f11cfe890733373ddbb1ce8991ccd4ee5e79e1 ]
+commit 9ab27eb5866ccbf57715cfdba4b03d57776092fb upstream.
 
-Acquire the mailbox handle during device probe and do not release handle
-in stop/detach routine or error paths. This removes the redundant
-requests for mbox handle later during rproc start/attach. This also
-allows to defer remoteproc driver's probe if mailbox is not probed yet.
+By simply bailing out, the driver was violating its rule and internal
+assumptions that either both or no rproc should be initialized. E.g.,
+this could cause the first core to be available but not the second one,
+leading to crashes on its shutdown later on while trying to dereference
+that second instance.
 
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Link: https://lore.kernel.org/r/20240808074127.2688131-3-b-padhi@ti.com
+Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up before powering up core1")
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Acked-by: Beleswar Padhi <b-padhi@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/9f481156-f220-4adf-b3d9-670871351e26@siemens.com
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Stable-dep-of: 8fa052c29e50 ("remoteproc: k3-r5: Delay notification of wakeup event")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c | 78 +++++++++---------------
- 1 file changed, 30 insertions(+), 48 deletions(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-index eb09d2e9b32a4..6424b347aa4f2 100644
 --- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
 +++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -194,6 +194,10 @@ static void k3_r5_rproc_mbox_callback(struct mbox_client *client, void *data)
- 	const char *name = kproc->rproc->name;
- 	u32 msg = omap_mbox_message(data);
- 
-+	/* Do not forward message from a detached core */
-+	if (kproc->rproc->state == RPROC_DETACHED)
-+		return;
-+
- 	dev_dbg(dev, "mbox msg: 0x%x\n", msg);
- 
- 	switch (msg) {
-@@ -229,6 +233,10 @@ static void k3_r5_rproc_kick(struct rproc *rproc, int vqid)
- 	mbox_msg_t msg = (mbox_msg_t)vqid;
- 	int ret;
- 
-+	/* Do not forward message to a detached core */
-+	if (kproc->rproc->state == RPROC_DETACHED)
-+		return;
-+
- 	/* send the index of the triggered virtqueue in the mailbox payload */
- 	ret = mbox_send_message(kproc->mbox, (void *)msg);
- 	if (ret < 0)
-@@ -399,12 +407,9 @@ static int k3_r5_rproc_request_mbox(struct rproc *rproc)
- 	client->knows_txdone = false;
- 
- 	kproc->mbox = mbox_request_channel(client, 0);
--	if (IS_ERR(kproc->mbox)) {
--		ret = -EBUSY;
--		dev_err(dev, "mbox_request_channel failed: %ld\n",
--			PTR_ERR(kproc->mbox));
--		return ret;
--	}
-+	if (IS_ERR(kproc->mbox))
-+		return dev_err_probe(dev, PTR_ERR(kproc->mbox),
-+				     "mbox_request_channel failed\n");
- 
- 	/*
- 	 * Ping the remote processor, this is only for sanity-sake for now;
-@@ -552,10 +557,6 @@ static int k3_r5_rproc_start(struct rproc *rproc)
- 	u32 boot_addr;
- 	int ret;
- 
--	ret = k3_r5_rproc_request_mbox(rproc);
--	if (ret)
--		return ret;
--
- 	boot_addr = rproc->bootaddr;
- 	/* TODO: add boot_addr sanity checking */
- 	dev_dbg(dev, "booting R5F core using boot addr = 0x%x\n", boot_addr);
-@@ -564,7 +565,7 @@ static int k3_r5_rproc_start(struct rproc *rproc)
- 	core = kproc->core;
- 	ret = ti_sci_proc_set_config(core->tsp, boot_addr, 0, 0);
- 	if (ret)
--		goto put_mbox;
-+		return ret;
- 
- 	/* unhalt/run all applicable cores */
- 	if (cluster->mode == CLUSTER_MODE_LOCKSTEP) {
-@@ -580,13 +581,12 @@ static int k3_r5_rproc_start(struct rproc *rproc)
- 		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
- 			dev_err(dev, "%s: can not start core 1 before core 0\n",
- 				__func__);
--			ret = -EPERM;
--			goto put_mbox;
-+			return -EPERM;
+@@ -1331,7 +1331,7 @@ init_rmem:
+ 			dev_err(dev,
+ 				"Timed out waiting for %s core to power up!\n",
+ 				rproc->name);
+-			return ret;
++			goto err_powerup;
  		}
- 
- 		ret = k3_r5_core_run(core);
- 		if (ret)
--			goto put_mbox;
-+			return ret;
  	}
  
- 	return 0;
-@@ -596,8 +596,6 @@ static int k3_r5_rproc_start(struct rproc *rproc)
- 		if (k3_r5_core_halt(core))
- 			dev_warn(core->dev, "core halt back failed\n");
- 	}
--put_mbox:
--	mbox_free_channel(kproc->mbox);
- 	return ret;
- }
- 
-@@ -658,8 +656,6 @@ static int k3_r5_rproc_stop(struct rproc *rproc)
- 			goto out;
- 	}
- 
--	mbox_free_channel(kproc->mbox);
--
- 	return 0;
- 
- unroll_core_halt:
-@@ -674,42 +670,22 @@ static int k3_r5_rproc_stop(struct rproc *rproc)
- /*
-  * Attach to a running R5F remote processor (IPC-only mode)
-  *
-- * The R5F attach callback only needs to request the mailbox, the remote
-- * processor is already booted, so there is no need to issue any TI-SCI
-- * commands to boot the R5F cores in IPC-only mode. This callback is invoked
-- * only in IPC-only mode.
-+ * The R5F attach callback is a NOP. The remote processor is already booted, and
-+ * all required resources have been acquired during probe routine, so there is
-+ * no need to issue any TI-SCI commands to boot the R5F cores in IPC-only mode.
-+ * This callback is invoked only in IPC-only mode and exists because
-+ * rproc_validate() checks for its existence.
-  */
--static int k3_r5_rproc_attach(struct rproc *rproc)
--{
--	struct k3_r5_rproc *kproc = rproc->priv;
--	struct device *dev = kproc->dev;
--	int ret;
--
--	ret = k3_r5_rproc_request_mbox(rproc);
--	if (ret)
--		return ret;
--
--	dev_info(dev, "R5F core initialized in IPC-only mode\n");
--	return 0;
--}
-+static int k3_r5_rproc_attach(struct rproc *rproc) { return 0; }
- 
- /*
-  * Detach from a running R5F remote processor (IPC-only mode)
-  *
-- * The R5F detach callback performs the opposite operation to attach callback
-- * and only needs to release the mailbox, the R5F cores are not stopped and
-- * will be left in booted state in IPC-only mode. This callback is invoked
-- * only in IPC-only mode.
-+ * The R5F detach callback is a NOP. The R5F cores are not stopped and will be
-+ * left in booted state in IPC-only mode. This callback is invoked only in
-+ * IPC-only mode and exists for sanity sake.
-  */
--static int k3_r5_rproc_detach(struct rproc *rproc)
--{
--	struct k3_r5_rproc *kproc = rproc->priv;
--	struct device *dev = kproc->dev;
--
--	mbox_free_channel(kproc->mbox);
--	dev_info(dev, "R5F core deinitialized in IPC-only mode\n");
--	return 0;
--}
-+static int k3_r5_rproc_detach(struct rproc *rproc) { return 0; }
- 
- /*
-  * This function implements the .get_loaded_rsc_table() callback and is used
-@@ -1278,6 +1254,10 @@ static int k3_r5_cluster_rproc_init(struct platform_device *pdev)
- 		kproc->rproc = rproc;
- 		core->rproc = rproc;
- 
-+		ret = k3_r5_rproc_request_mbox(rproc);
-+		if (ret)
-+			return ret;
-+
- 		ret = k3_r5_rproc_configure_mode(kproc);
- 		if (ret < 0)
- 			goto err_config;
-@@ -1396,6 +1376,8 @@ static void k3_r5_cluster_rproc_exit(void *data)
- 			}
+@@ -1347,6 +1347,7 @@ err_split:
  		}
+ 	}
  
-+		mbox_free_channel(kproc->mbox);
-+
- 		rproc_del(rproc);
- 
- 		k3_r5_reserved_mem_exit(kproc);
--- 
-2.43.0
-
++err_powerup:
+ 	rproc_del(rproc);
+ err_add:
+ 	k3_r5_reserved_mem_exit(kproc);
 
 
 
