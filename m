@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA36994E2D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6876994C62
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A481C233B1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A2C1F22D63
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1A91DF74F;
-	Tue,  8 Oct 2024 13:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D0F1DE89D;
+	Tue,  8 Oct 2024 12:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIcO3wDN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcJcvSZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE261DEFF0;
-	Tue,  8 Oct 2024 13:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009AD1DE2CF;
+	Tue,  8 Oct 2024 12:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393190; cv=none; b=aAy1an/DERKi7FgWLowP+1e1VeJy4nq67yp2hBh70yzrQ1BkSh2NHxj3TYkdbI+01ldEpza+zvUxZWINa8KiBcX5Onre0Dmn+ib1zxfMlfwRpXpq+7m0f9fTV2HRGlYSOnBB/LB2CH9lgyZhTzevW+MXbwB6L//gfmrpLyjbxZA=
+	t=1728392029; cv=none; b=kZAnacKC0CbQOnZ7yarPbKEGBiDJ+YYIlq2r1LnM7DufZqiLtFBGtTCVFKc1UeDiqt40K4SErize07puiI9/BDmkNXZbH32XdQWBzMV0hkp+BLvpw1Bfm05EX7b+95f1Jj3mr9GKEmfbLul4zT15PvaYq+A0lC3SKhQN5TdCbgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393190; c=relaxed/simple;
-	bh=Diq4EJ5CcsG4uDbvdniNG8ADeXmKtaUQvTg1xnbgR6Y=;
+	s=arc-20240116; t=1728392029; c=relaxed/simple;
+	bh=WKLwMdba6R+DZ/tVToBgg4jjUX+P8574PNMlsFEp8ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JEzS2jPC2XS0AbNtnpNoxpaOVi7/5jaHPUvjOiGAB61m1B4h/3b2nMHdX/Y7+WOe+n2NAo9MYl7nYgBLHuSL3zapywcK5nJGWi7vEc9kaUnIrrhiESAAlY0rHcAIPl9SfT6XgFZfbF/CZkY5NnnCkjycx6sZgEjjSo5KZSsf5Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIcO3wDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A18C4CEC7;
-	Tue,  8 Oct 2024 13:13:09 +0000 (UTC)
+	 MIME-Version; b=aXyHl7aP/ZTE3+SRTH/TQXavradDaClkB8uRXWGHWCXNN4PS4ntWDrjyqa9Mq9mviDMPLkVa68jcL6MTSSNmDFAtb45+zqiQOFwttCeyv2VyyRhl1f22m0H9ZJwN7nlh5sVi1qcaSmlV3ZUFK+FSm0nysyQX5y5+/xsWkI3am9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcJcvSZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408D7C4CEC7;
+	Tue,  8 Oct 2024 12:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393190;
-	bh=Diq4EJ5CcsG4uDbvdniNG8ADeXmKtaUQvTg1xnbgR6Y=;
+	s=korg; t=1728392028;
+	bh=WKLwMdba6R+DZ/tVToBgg4jjUX+P8574PNMlsFEp8ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIcO3wDNILf2ye4B8CtOkZDSS8PoJxpq9FbHmN8I+qRYG0Q5M4eRjpVwpDFl//ylB
-	 K1DTnU6UXiBYOsTCymIqAZm+gQ9ejJRl7NWgLc4iiWqMi5YZ+rHF47S62tPYfHz/2n
-	 yZ1JVGvSqhW6YuXPOs8989Mqr7ik1ZT4XA8lFMsg=
+	b=fcJcvSZgXPZgfZZIP6kaku6TCpX/vOJZejPIb3nrLbOgCjL2OauR85M98Gr7r4SRq
+	 QBP1gXNxVYwlHOyMFh2dgfo8Ho9Jx+KcOvNIWe8WirdPX739aGrw/OKTUhvlKOBps7
+	 PK/T/4j8CF2lMxICRfH4/Rp5B/pXlDuqNYJQA7a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	al0uette@outlook.com,
-	vderp@icloud.com,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/386] ACPI: CPPC: Add support for setting EPP register in FFH
+	Amir Goldstein <amir73il@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Fei Lv <feilv@asrmicro.com>
+Subject: [PATCH 6.11 294/558] ovl: fsync after metadata copy-up
 Date: Tue,  8 Oct 2024 14:05:24 +0200
-Message-ID: <20241008115632.570198942@linuxfoundation.org>
+Message-ID: <20241008115713.892534457@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +60,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit aaf21ac93909e08a12931173336bdb52ac8499f1 ]
+[ Upstream commit 7d6899fb69d25e1bc6f4700b7c1d92e6b608593d ]
 
-Some Asus AMD systems are reported to not be able to change EPP values
-because the BIOS doesn't advertise support for the CPPC MSR and the PCC
-region is not configured.
+For upper filesystems which do not use strict ordering of persisting
+metadata changes (e.g. ubifs), when overlayfs file is modified for
+the first time, copy up will create a copy of the lower file and
+its parent directories in the upper layer. Permission lost of the
+new upper parent directory was observed during power-cut stress test.
 
-However the ACPI 6.2 specification allows CPC registers to be declared
-in FFH:
-```
-Starting with ACPI Specification 6.2, all _CPC registers can be in
-PCC, System Memory, System IO, or Functional Fixed Hardware address
-spaces. OSPM support for this more flexible register space scheme
-is indicated by the “Flexible Address Space for CPPC Registers” _OSC
-bit.
-```
+Fix by moving the fsync call to after metadata copy to make sure that the
+metadata copied up directory and files persists to disk before renaming
+from tmp to final destination.
 
-If this _OSC has been set allow using FFH to configure EPP.
+With metacopy enabled, this change will hurt performance of workloads
+such as chown -R, so we keep the legacy behavior of fsync only on copyup
+of data.
 
-Reported-by: al0uette@outlook.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218686
-Suggested-by: al0uette@outlook.com
-Tested-by: vderp@icloud.com
-Tested-by: al0uette@outlook.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20240910031524.106387-1-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/linux-unionfs/CAOQ4uxj-pOvmw1-uXR3qVdqtLjSkwcR9nVKcNU_vC10Zyf2miQ@mail.gmail.com/
+Reported-and-tested-by: Fei Lv <feilv@asrmicro.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/overlayfs/copy_up.c | 43 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 28217a995f795..7aced0b9bad7c 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -100,6 +100,11 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_ptr);
- 				(cpc)->cpc_entry.reg.space_id ==	\
- 				ACPI_ADR_SPACE_PLATFORM_COMM)
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index a5ef2005a2cc5..051a802893a18 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -243,8 +243,24 @@ static int ovl_verify_area(loff_t pos, loff_t pos2, loff_t len, loff_t totlen)
+ 	return 0;
+ }
  
-+/* Check if a CPC register is in FFH */
-+#define CPC_IN_FFH(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&		\
-+				(cpc)->cpc_entry.reg.space_id ==	\
-+				ACPI_ADR_SPACE_FIXED_HARDWARE)
++static int ovl_sync_file(struct path *path)
++{
++	struct file *new_file;
++	int err;
 +
- /* Check if a CPC register is in SystemMemory */
- #define CPC_IN_SYSTEM_MEMORY(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&	\
- 				(cpc)->cpc_entry.reg.space_id ==	\
-@@ -1514,9 +1519,12 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
- 		/* after writing CPC, transfer the ownership of PCC to platform */
- 		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
- 		up_write(&pcc_ss_data->pcc_lock);
-+	} else if (osc_cpc_flexible_adr_space_confirmed &&
-+		   CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
-+		ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
- 	} else {
- 		ret = -ENOTSUPP;
--		pr_debug("_CPC in PCC is not supported\n");
-+		pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
- 	}
++	new_file = ovl_path_open(path, O_LARGEFILE | O_RDONLY);
++	if (IS_ERR(new_file))
++		return PTR_ERR(new_file);
++
++	err = vfs_fsync(new_file, 0);
++	fput(new_file);
++
++	return err;
++}
++
+ static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
+-			    struct file *new_file, loff_t len)
++			    struct file *new_file, loff_t len,
++			    bool datasync)
+ {
+ 	struct path datapath;
+ 	struct file *old_file;
+@@ -342,7 +358,8 @@ static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
  
- 	return ret;
+ 		len -= bytes;
+ 	}
+-	if (!error && ovl_should_sync(ofs))
++	/* call fsync once, either now or later along with metadata */
++	if (!error && ovl_should_sync(ofs) && datasync)
+ 		error = vfs_fsync(new_file, 0);
+ out_fput:
+ 	fput(old_file);
+@@ -574,6 +591,7 @@ struct ovl_copy_up_ctx {
+ 	bool indexed;
+ 	bool metacopy;
+ 	bool metacopy_digest;
++	bool metadata_fsync;
+ };
+ 
+ static int ovl_link_up(struct ovl_copy_up_ctx *c)
+@@ -634,7 +652,8 @@ static int ovl_copy_up_data(struct ovl_copy_up_ctx *c, const struct path *temp)
+ 	if (IS_ERR(new_file))
+ 		return PTR_ERR(new_file);
+ 
+-	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size);
++	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size,
++			       !c->metadata_fsync);
+ 	fput(new_file);
+ 
+ 	return err;
+@@ -701,6 +720,10 @@ static int ovl_copy_up_metadata(struct ovl_copy_up_ctx *c, struct dentry *temp)
+ 		err = ovl_set_attr(ofs, temp, &c->stat);
+ 	inode_unlock(temp->d_inode);
+ 
++	/* fsync metadata before moving it into upper dir */
++	if (!err && ovl_should_sync(ofs) && c->metadata_fsync)
++		err = ovl_sync_file(&upperpath);
++
+ 	return err;
+ }
+ 
+@@ -860,7 +883,8 @@ static int ovl_copy_up_tmpfile(struct ovl_copy_up_ctx *c)
+ 
+ 	temp = tmpfile->f_path.dentry;
+ 	if (!c->metacopy && c->stat.size) {
+-		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size);
++		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size,
++				       !c->metadata_fsync);
+ 		if (err)
+ 			goto out_fput;
+ 	}
+@@ -1135,6 +1159,17 @@ static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
+ 	    !kgid_has_mapping(current_user_ns(), ctx.stat.gid))
+ 		return -EOVERFLOW;
+ 
++	/*
++	 * With metacopy disabled, we fsync after final metadata copyup, for
++	 * both regular files and directories to get atomic copyup semantics
++	 * on filesystems that do not use strict metadata ordering (e.g. ubifs).
++	 *
++	 * With metacopy enabled we want to avoid fsync on all meta copyup
++	 * that will hurt performance of workloads such as chown -R, so we
++	 * only fsync on data copyup as legacy behavior.
++	 */
++	ctx.metadata_fsync = !OVL_FS(dentry->d_sb)->config.metacopy &&
++			     (S_ISREG(ctx.stat.mode) || S_ISDIR(ctx.stat.mode));
+ 	ctx.metacopy = ovl_need_meta_copy_up(dentry, ctx.stat.mode, flags);
+ 
+ 	if (parent) {
 -- 
 2.43.0
 
