@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAB8994C52
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42854994977
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519141F2491F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0CEC1F21E1A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A48B1DF260;
-	Tue,  8 Oct 2024 12:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BD01DDA36;
+	Tue,  8 Oct 2024 12:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqO9Aze8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzDPFVFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C621CCB32;
-	Tue,  8 Oct 2024 12:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514F41DED74;
+	Tue,  8 Oct 2024 12:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391967; cv=none; b=S24KdpCo/lYHoFuzn0PGG1ONXZrSwoEzQ4/78bc1vFoAN7wfbOCdUkKuQl9Y9Ua1Lfxj67bh9tkDFh46CMJy4bVUykM1E7Ey/tMRVF4N0jY0fcsxItsxsmrnQiUsAk6r++WEDvO36CX5n/t3tIagkdnohviAKd8WF9ITUCO1G0A=
+	t=1728390174; cv=none; b=A8SH+56ZbbEUiz/Y1isyPzV7cAF3B3Ogo+P0PonnwTwK4UXN8TL3tpV05qlnF0q3DSkFRL/f4kA4v7wNSWJ9oG5zEtpd9J3KmuCTcBlEC914uNgEdvCx9X9yX46a/mzE5yjWmZlG09cz10Ea1ktFypERGjDVcNU/y6hoIeUrSvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391967; c=relaxed/simple;
-	bh=+IB9NfzAhLFuIvmojBNEP1MwfyWL9AyXG+l1CeP98hI=;
+	s=arc-20240116; t=1728390174; c=relaxed/simple;
+	bh=CVIYPIo3KfdMZCXNbfC3vpCUfqvWWt1hqn/ENp4MoFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJzTGuOtUJC5z4K8JHgrVS7zXq/gf/UruIgxQIvP92DNMbSy0oirk9vZD2wP5ur6bRZrEdQjpXhaaoTEH5yxfJ42ikr4YhWptfb+Zsxw8zzBhdemR/ZvXTRzQF9k8lWcYcmvZTPnIOF3ADWu9IMGl/KTjglvo/LqhXZixQ9ItgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqO9Aze8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9B0C4CEC7;
-	Tue,  8 Oct 2024 12:52:46 +0000 (UTC)
+	 MIME-Version; b=uGZ0uIqVtqulYOd5Ompa8SdSv0dMfyb7xmOwcYSy4APNf5bbln2ryyFBcmmMWHU4gK5Spfp3pBx5xypi9kQ6v454jL+TggNPc5guh7BDRhjo8pkZgsM+QTLz+EpwmL+R5nXJjeq3cKy9Jc/PryjmVxTwaG3dWYFUZAFR4CeGAqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzDPFVFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C6DC4CEC7;
+	Tue,  8 Oct 2024 12:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391966;
-	bh=+IB9NfzAhLFuIvmojBNEP1MwfyWL9AyXG+l1CeP98hI=;
+	s=korg; t=1728390174;
+	bh=CVIYPIo3KfdMZCXNbfC3vpCUfqvWWt1hqn/ENp4MoFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqO9Aze8kL5mCDN1EOzUqeML2YM9dpauyTa7w85MfXiWShpTWmD9foOYRBrZmRjmX
-	 U3FJQgJeI2Bw6CygkjIIWsWq7g5DKDG0Z9vsliFKn1S51kCEYPBJNS2Cljn9TVWOwY
-	 P7yeoUG8Z0h4NWPna9nABURDTu+rJGdhMCixCo0c=
+	b=qzDPFVFBvFL6Fq8x/anGSSFSvElUEUwlGB95XOUUxfH3osi28w7Cb6DM4erz0w0fg
+	 WA9carnTz6sjeE6h6W9tm54J1VH9mm9rOJ8bN/vvDwLMWjxIPjUdR9CWKhK7VTDJt3
+	 eH5ectfntR1sQEG8u8pk0GLB86KQZflCBFJK3KNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Tim Huang <tim.huang@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 245/558] drm/amdkfd: Fix resource leak in criu restore queue
+Subject: [PATCH 6.10 212/482] drm/amd/display: Check stream before comparing them
 Date: Tue,  8 Oct 2024 14:04:35 +0200
-Message-ID: <20241008115711.980346158@linuxfoundation.org>
+Message-ID: <20241008115656.654841152@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit aa47fe8d3595365a935921a90d00bc33ee374728 ]
+[ Upstream commit 35ff747c86767937ee1e0ca987545b7eed7a0810 ]
 
-To avoid memory leaks, release q_extra_data when exiting the restore queue.
-v2: Correct the proto (Alex)
+[WHAT & HOW]
+amdgpu_dm can pass a null stream to dc_is_stream_unchanged. It is
+necessary to check for null before dereferencing them.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-by: Tim Huang <tim.huang@amd.com>
+This fixes 1 FORWARD_NULL issue reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index 36f0460cbffe6..e0f19f3ae2207 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -988,6 +988,7 @@ int kfd_criu_restore_queue(struct kfd_process *p,
- 		pr_debug("Queue id %d was restored successfully\n", queue_id);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 7462c34793799..58f6155fecc5a 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -3134,6 +3134,8 @@ static bool are_stream_backends_same(
+ bool dc_is_stream_unchanged(
+ 	struct dc_stream_state *old_stream, struct dc_stream_state *stream)
+ {
++	if (!old_stream || !stream)
++		return false;
  
- 	kfree(q_data);
-+	kfree(q_extra_data);
- 
- 	return ret;
- }
+ 	if (!are_stream_backends_same(old_stream, stream))
+ 		return false;
 -- 
 2.43.0
 
