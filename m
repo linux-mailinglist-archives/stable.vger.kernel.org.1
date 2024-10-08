@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D304994CCF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49728994ECF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63EC528657F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F1AEB26D9F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294AC1DF733;
-	Tue,  8 Oct 2024 12:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05691DEFC6;
+	Tue,  8 Oct 2024 13:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrqDb62C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+Kkol3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99471DF728;
-	Tue,  8 Oct 2024 12:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA891DE89A;
+	Tue,  8 Oct 2024 13:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392254; cv=none; b=iqhfrahcnLt9AC4hx9dEEW0xTEfmA0Rnt/Uf1B8IEp2sLe7gNVC7pTdFPpZMJWgQmSv+k9dpn1rjmZdOnioyoKtD0lntk4LRWjxag403g8sm3uE/gBobxe4eni9PgxxABmVOqC+4rfzQ8P7ZS/yV3bbY8g5IOMxzLODzRqF4vaQ=
+	t=1728393419; cv=none; b=QCgIRw723d3T8HipzEm+Ry+2LY0O7Co8zFvniYY+sqrpALufLVcJoozmSngkr+hCyPZiYnMlPxmsaTKxD8su9XqFI4AVytJdYyyBa2rt09sjhhf3n2GMiv9PCXvcNbh+Y+2pVvLeVu4MoWEe80DHAbfJmYVSiOD5WFpdAMZ4G1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392254; c=relaxed/simple;
-	bh=SwDBiWCyxfm0uOoymBnzzlatXjXYWxjgPJl/ooXgius=;
+	s=arc-20240116; t=1728393419; c=relaxed/simple;
+	bh=7+e3hu20vrPFb7Sc5470jCq0pt+moX1dkK7exfrDLAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9ULypX5KJYSHGFd+Jfn6OrE8Zi9j2ucn+l+9sNzNfTZxitcEj4fqxoiYHguObLy6enKtmPCWse3dgNz/UJnfLfLYQ9e5edrm4iQl8P8Uw7yrXqh87ZywvmaQ3RNMi2+kYeI2SUbWtWwbKRfWp1K085V8q6a0rRsDSEstTY3PT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrqDb62C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4972AC4CEC7;
-	Tue,  8 Oct 2024 12:57:34 +0000 (UTC)
+	 MIME-Version; b=XpEFVmP55/vaQo/hV8Z97emuCT8G2QTF+v3cVDwp/MdW4imUnUFC8mF5nPGt/FxMzSvVUFwJpcc9eANDfPu2QcFByQkt1rdG87PR9qFExOLR1IXPXO0SVkvJReFoEUuBSt4tk8EqksHs7okJeqO3amVxz0l5aQcfgqFbm46+SJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+Kkol3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBE1C4CECC;
+	Tue,  8 Oct 2024 13:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392254;
-	bh=SwDBiWCyxfm0uOoymBnzzlatXjXYWxjgPJl/ooXgius=;
+	s=korg; t=1728393419;
+	bh=7+e3hu20vrPFb7Sc5470jCq0pt+moX1dkK7exfrDLAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrqDb62C4n8dLrUs3Fugm7+/ohivFLDoArQmlko2zY509wtdVgET74VpdOiblY4ha
-	 Ez7MGlTiWPevVCeXJ11j6yKHZ8eNroZCfJpxWz4MXdaeQPQswTFKn5ihM2SoT8JjaO
-	 dKfP1x+pqg/Yy4ZmdsRyQKIl7XMAqOzjJk89lGFI=
+	b=z+Kkol3fFlREqxdVXXmQejs2knAF5pIgki1CLOMJrBFMNLItFEvkCJWde6kjjpqb4
+	 FWIoFl7zEDSu9NcG9dUOzdUu8vxxpZ+wVZ0+YAqfMpnrqmVaYrzpMxhCeD4aM9xyBL
+	 NgeQi8qFizojWKrgVK9oZSuAWbDmOoydZlZJiNrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Virag <virag.david003@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.11 361/558] dt-bindings: clock: exynos7885: Fix duplicated binding
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 146/386] drm/msm/adreno: Assign msm_gpu->pdev earlier to avoid nullptrs
 Date: Tue,  8 Oct 2024 14:06:31 +0200
-Message-ID: <20241008115716.504472759@linuxfoundation.org>
+Message-ID: <20241008115635.174515518@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Virag <virag.david003@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit abf3a3ea9acb5c886c8729191a670744ecd42024 upstream.
+[ Upstream commit 16007768551d5bfe53426645401435ca8d2ef54f ]
 
-The numbering in Exynos7885's FSYS CMU bindings has 4 duplicated by
-accident, with the rest of the bindings continuing with 5.
+There are some cases, such as the one uncovered by Commit 46d4efcccc68
+("drm/msm/a6xx: Avoid a nullptr dereference when speedbin setting fails")
+where
 
-Fix this by moving CLK_MOUT_FSYS_USB30DRD_USER to the end as 11.
+msm_gpu_cleanup() : platform_set_drvdata(gpu->pdev, NULL);
 
-Since CLK_MOUT_FSYS_USB30DRD_USER is not used in any device tree as of
-now, and there are no other clocks affected (maybe apart from
-CLK_MOUT_FSYS_MMC_SDIO_USER which the number was shared with, also not
-used in a device tree), this is the least impactful way to solve this
-problem.
+is called on gpu->pdev == NULL, as the GPU device has not been fully
+initialized yet.
 
-Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Virag <virag.david003@gmail.com>
-Link: https://lore.kernel.org/r/20240806121157.479212-2-virag.david003@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Turns out that there's more than just the aforementioned path that
+causes this to happen (e.g. the case when there's speedbin data in the
+catalog, but opp-supported-hw is missing in DT).
+
+Assigning msm_gpu->pdev earlier seems like the least painful solution
+to this, therefore do so.
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/602742/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/exynos7885.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 1 +
+ drivers/gpu/drm/msm/msm_gpu.c           | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/dt-bindings/clock/exynos7885.h
-+++ b/include/dt-bindings/clock/exynos7885.h
-@@ -136,12 +136,12 @@
- #define CLK_MOUT_FSYS_MMC_CARD_USER	2
- #define CLK_MOUT_FSYS_MMC_EMBD_USER	3
- #define CLK_MOUT_FSYS_MMC_SDIO_USER	4
--#define CLK_MOUT_FSYS_USB30DRD_USER	4
- #define CLK_GOUT_MMC_CARD_ACLK		5
- #define CLK_GOUT_MMC_CARD_SDCLKIN	6
- #define CLK_GOUT_MMC_EMBD_ACLK		7
- #define CLK_GOUT_MMC_EMBD_SDCLKIN	8
- #define CLK_GOUT_MMC_SDIO_ACLK		9
- #define CLK_GOUT_MMC_SDIO_SDCLKIN	10
-+#define CLK_MOUT_FSYS_USB30DRD_USER	11
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index 4127e2762dcd1..a2df8bd7aa940 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -1071,6 +1071,7 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
+ 	adreno_gpu->chip_id = config->chip_id;
  
- #endif /* _DT_BINDINGS_CLOCK_EXYNOS_7885_H */
+ 	gpu->allow_relocs = config->info->family < ADRENO_6XX_GEN1;
++	gpu->pdev = pdev;
+ 
+ 	/* Only handle the core clock when GMU is not in use (or is absent). */
+ 	if (adreno_has_gmu_wrapper(adreno_gpu) ||
+diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
+index 5c10b559a5957..5a7541597d0ce 100644
+--- a/drivers/gpu/drm/msm/msm_gpu.c
++++ b/drivers/gpu/drm/msm/msm_gpu.c
+@@ -927,7 +927,6 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
+ 	if (IS_ERR(gpu->gpu_cx))
+ 		gpu->gpu_cx = NULL;
+ 
+-	gpu->pdev = pdev;
+ 	platform_set_drvdata(pdev, &gpu->adreno_smmu);
+ 
+ 	msm_devfreq_init(gpu);
+-- 
+2.43.0
+
 
 
 
