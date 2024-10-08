@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABFC994EDB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC0E994A57
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63E301F22D20
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A65D1C24180
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96921DF730;
-	Tue,  8 Oct 2024 13:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5565D192D69;
+	Tue,  8 Oct 2024 12:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udVOH/Bx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7sWthr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F391DFD84;
-	Tue,  8 Oct 2024 13:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1170E178384;
+	Tue,  8 Oct 2024 12:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393686; cv=none; b=IdHU3nOpJTpJdXMWV9is8FIWOoJ8YWRTXtfw5GeQBT8nclYjHLKlKOzG6gLpdubkgqUC6WK+Wn3u8V+ajqzpqZE6lZSes5FcNx+A/dYMRses+F4+GEUP8AJgxrBCcYcAKGBzzAFUvtP2+kYBKJnJgDxSfl+dTk+t3F+Ag3NyV1A=
+	t=1728390731; cv=none; b=hkw+99m7KskD7KhJUcPTlupRLDFVFJ19zkTPjCPTWqrb0wiChUW3vlml6E2dhPFn/kIFKFjF46R6FtIUWkGDjqYGbtaynaN/sRS+Ogt2zSyyWCGh77/G+WVhfskP8rBEWJ1obxYC2XwxYkxqayHhpAmYcjd0w0FR5XFPpfocAl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393686; c=relaxed/simple;
-	bh=Q4Ke3hEnA3g7wZGt2XV7zw6eIIq4D3h16TMgHgVmU4k=;
+	s=arc-20240116; t=1728390731; c=relaxed/simple;
+	bh=UlkUnpLkQldaM8DuB+BiwtEbZkIUsyZ/XUoB2NMpM5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4E7go0MPrSA3Kb5e4lXSAiCBtte0amsO8MlKc3E8vS2ga0Cb8BEqx/sG50jqVdXU6XWUsSqYStY6k4mGy2aea58knQM953OTb1ml8FC4oAMX9o4SlGVF2yDTiCjTI6YXyHQjOrQU2b5kEZL6UAzL6VPFaZHTv/yfqJrRMbJKgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udVOH/Bx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A86C4CEC7;
-	Tue,  8 Oct 2024 13:21:25 +0000 (UTC)
+	 MIME-Version; b=gIqxTC/MYsEynMm+2aUtmFeF3Sg9hmV30ws/H9xEm2sOmMCLFUMFn1aFk8jBTz8XUE4yc9rxvBRaez/JlPeBF0rPkb1YDJOwSV3kRxSb9p5uFZvzaK0oxv8jIzW3BlpSbVyz1zPV1wohX+tA3mwqGG463lcdEw1jtyNpXTWTzI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7sWthr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877A8C4CEC7;
+	Tue,  8 Oct 2024 12:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393686;
-	bh=Q4Ke3hEnA3g7wZGt2XV7zw6eIIq4D3h16TMgHgVmU4k=;
+	s=korg; t=1728390730;
+	bh=UlkUnpLkQldaM8DuB+BiwtEbZkIUsyZ/XUoB2NMpM5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udVOH/BxYD5jy+UFCgKHPQsPHA5Qy4fRDjdMo+ge2+vIJXnL8e8sJzpPFYx9O1GwA
-	 K2lkFPYsPdxZFM1OkSToMIW63jN7tNzwNCgNT7BQP4ifA0yjzq4DJzT2+wddkC7AwY
-	 EyxMT6m9Lul7Ygqug8W/wCGBcnWYQyiwUWsGNc3E=
+	b=M7sWthr1Lw9nlD48qKuIbP1T/gQZP3Q0jWxFBTIGbk0IVJMfeRuzWhk0jbgwU0Mhl
+	 ccU1TVtSLJPk0CrQOtWCowQliY1mJNCBd1uchs5a0gkfXyMbgn1L4/tQm8pYRFtBT+
+	 WN72eC4Nzemia1BKqamel59UeuPSc2pyzQyxIFvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/386] spi: rpc-if: Add missing MODULE_DEVICE_TABLE
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.10 376/482] RDMA/mana_ib: use the correct page size for mapping user-mode doorbell page
 Date: Tue,  8 Oct 2024 14:07:19 +0200
-Message-ID: <20241008115637.040137034@linuxfoundation.org>
+Message-ID: <20241008115703.216967736@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit 0880f669436028c5499901e5acd8f4b4ea0e0c6a ]
+commit 4a3b99bc04e501b816db78f70064e26a01257910 upstream.
 
-Add missing MODULE_DEVICE_TABLE definition for automatic loading of the
-driver when it is built as a module.
+When mapping doorbell page from user-mode, the driver should use the system
+page size as this memory is allocated via mmap() from user-mode.
 
-Fixes: eb8d6d464a27 ("spi: add Renesas RPC-IF driver")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20240731072955.224125-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/1725030993-16213-2-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rpc-if.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/infiniband/hw/mana/main.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
-index e11146932828a..7cce2d2ab9ca6 100644
---- a/drivers/spi/spi-rpc-if.c
-+++ b/drivers/spi/spi-rpc-if.c
-@@ -198,9 +198,16 @@ static int __maybe_unused rpcif_spi_resume(struct device *dev)
+--- a/drivers/infiniband/hw/mana/main.c
++++ b/drivers/infiniband/hw/mana/main.c
+@@ -511,13 +511,13 @@ int mana_ib_mmap(struct ib_ucontext *ibc
+ 	      PAGE_SHIFT;
+ 	prot = pgprot_writecombine(vma->vm_page_prot);
  
- static SIMPLE_DEV_PM_OPS(rpcif_spi_pm_ops, rpcif_spi_suspend, rpcif_spi_resume);
+-	ret = rdma_user_mmap_io(ibcontext, vma, pfn, gc->db_page_size, prot,
++	ret = rdma_user_mmap_io(ibcontext, vma, pfn, PAGE_SIZE, prot,
+ 				NULL);
+ 	if (ret)
+ 		ibdev_dbg(ibdev, "can't rdma_user_mmap_io ret %d\n", ret);
+ 	else
+-		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %u, ret %d\n",
+-			  pfn, gc->db_page_size, ret);
++		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %lu, ret %d\n",
++			  pfn, PAGE_SIZE, ret);
  
-+static const struct platform_device_id rpc_if_spi_id_table[] = {
-+	{ .name = "rpc-if-spi" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(platform, rpc_if_spi_id_table);
-+
- static struct platform_driver rpcif_spi_driver = {
- 	.probe	= rpcif_spi_probe,
- 	.remove_new = rpcif_spi_remove,
-+	.id_table = rpc_if_spi_id_table,
- 	.driver = {
- 		.name	= "rpc-if-spi",
- #ifdef CONFIG_PM_SLEEP
--- 
-2.43.0
-
+ 	return ret;
+ }
 
 
 
