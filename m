@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC18A994E00
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04178994991
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86D151F220C7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D73EB25603
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D641DEFCE;
-	Tue,  8 Oct 2024 13:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDCD1DDC24;
+	Tue,  8 Oct 2024 12:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbeTd1iB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYKlsiIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970DA1DE8A0;
-	Tue,  8 Oct 2024 13:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2811D27B3;
+	Tue,  8 Oct 2024 12:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393097; cv=none; b=rNn6JXvo1n7q0BTlnF1XBXuQ9HHNvDhxuCMvsvJf2IbtHhctQr1ww9GwPse9ZmiYTbewS7yDucqtWgv6q2bk8BTmVZ6WEzlTutvmhSzcRSDWvp/oc0MloO7wiILS8tziyHQGcqNNKuHDzNAWr15x08xgxINbXbA2eKKBMlYLan0=
+	t=1728390239; cv=none; b=iz0LmUGnL8L7GGr9h1T0mhHjvryk+esoOcklBmmAUaZj8DaYEMqQT3GKErPyvStacxKiGOyRZ22PLafoiukFhz2QM62Ws0nIOaksCjZQnr6qQEUdYbobL0Qs0eplEt7pJCzfEl7JRculgBZmENQtUON2cBDZxV6GHk8N8UHcZMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393097; c=relaxed/simple;
-	bh=lDvZP+D5LKHJfHX+3pUXT7v7B266yho6giQ4V7QN3cY=;
+	s=arc-20240116; t=1728390239; c=relaxed/simple;
+	bh=lU0vmN1yUuplXu4/fS8WLPq/fLuDnAL1gE8jCC3j0YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHPlrdo44cMLHHuxXw8YF/GrNtRlx8UCOWMlg2KsUL1aw7LFGi8cJzwMWFunRoKUo+xzVQI/9sYNfXFxuH6E2XyUhe3hBDn3m7ts+u6kgXxJDA58PwGTCMBWXlLrvxlQRX/b66yEH1cWrjohkhR4DkUxKRRpjRuyYmMQkbFGEbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbeTd1iB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9008C4CEC7;
-	Tue,  8 Oct 2024 13:11:36 +0000 (UTC)
+	 MIME-Version; b=F3tqIYKHHIcsHHSFWT0gHM541ojl3t1TmHVIcWJ2GvyGd0zwvbXI019hX1N9CBSnkB3Lz3QpawJ31/OZcMR9N3HJqh21m7jW25CJRyCHkp0hkDDgNgcI8KQNEpRQIiQKXDAaLGB8zZ64S95VzlLJEAMayy/tawKopEZUgQvwF8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYKlsiIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23EFC4CEC7;
+	Tue,  8 Oct 2024 12:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393097;
-	bh=lDvZP+D5LKHJfHX+3pUXT7v7B266yho6giQ4V7QN3cY=;
+	s=korg; t=1728390239;
+	bh=lU0vmN1yUuplXu4/fS8WLPq/fLuDnAL1gE8jCC3j0YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbeTd1iBcsSCxq/f+uppLvKsDWuQBFLO4QzpPT+0FGg5Px77/RQKFjaMY1MBf2l2B
-	 mxe0g0KvoXlikiP5H7GK3PhxXNoIjUHufL9JEDvVnvv3Cc3OuK0B1NTZd6ByrogEWC
-	 Q2dIWZP7TJ4wDelxbIJTzH4Zkq77jBB6P1L+BxxU=
+	b=gYKlsiIuErCwgHRA9ILXMmZkq9+EWimNsj4AJPLTYPWRvQZ0fTUlMae1Yt0jcKlaF
+	 tmBnvLHAIIq6muSvifD4nw7YjSOWtftDvZYMNus/rRSgZ/Rx605yAqQgKuzxthR0Ft
+	 bUOS55G/oigwTMYDbagensRfjgamtRmBU8ZyJ4RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/386] ALSA: hda/generic: Unconditionally prefer preferred_dacs pairs
+Subject: [PATCH 6.10 232/482] drm/amdgpu/gfx9: use rlc safe mode for soft recovery
 Date: Tue,  8 Oct 2024 14:04:55 +0200
-Message-ID: <20241008115631.440357142@linuxfoundation.org>
+Message-ID: <20241008115657.431146143@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 1c801e7f77445bc56e5e1fec6191fd4503534787 ]
+[ Upstream commit 3ec2ad7c34c412bd9264cd1ff235d0812be90e82 ]
 
-Some time ago, we introduced the obey_preferred_dacs flag for choosing
-the DAC/pin pairs specified by the driver instead of parsing the
-paths.  This works as expected, per se, but there have been a few
-cases where we forgot to set this flag while preferred_dacs table is
-already set up.  It ended up with incorrect wiring and made us
-wondering why it doesn't work.
+Protect the MMIO access with safe mode.
 
-Basically, when the preferred_dacs table is provided, it means that
-the driver really wants to wire up to follow that.  That is, the
-presence of the preferred_dacs table itself is already a "do-it"
-flag.
-
-In this patch, we simply replace the evaluation of obey_preferred_dacs
-flag with the presence of preferred_dacs table for fixing the
-misbehavior.  Another patch to drop of the obsoleted flag will
-follow.
-
-Fixes: 242d990c158d ("ALSA: hda/generic: Add option to enforce preferred_dacs pairs")
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1219803
-Link: https://patch.msgid.link/20241001121439.26060-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_generic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
-index d3ed3e21b1979..8e8d4c667923c 100644
---- a/sound/pci/hda/hda_generic.c
-+++ b/sound/pci/hda/hda_generic.c
-@@ -1383,7 +1383,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
- 		struct nid_path *path;
- 		hda_nid_t pin = pins[i];
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index b278453cad6d4..d8d3d2c93d8ee 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -5701,7 +5701,9 @@ static void gfx_v9_0_ring_soft_recovery(struct amdgpu_ring *ring, unsigned vmid)
+ 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
+ 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
+ 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
++	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
+ 	WREG32_SOC15(GC, 0, mmSQ_CMD, value);
++	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+ }
  
--		if (!spec->obey_preferred_dacs) {
-+		if (!spec->preferred_dacs) {
- 			path = snd_hda_get_path_from_idx(codec, path_idx[i]);
- 			if (path) {
- 				badness += assign_out_path_ctls(codec, path);
-@@ -1395,7 +1395,7 @@ static int try_assign_dacs(struct hda_codec *codec, int num_outs,
- 		if (dacs[i]) {
- 			if (is_dac_already_used(codec, dacs[i]))
- 				badness += bad->shared_primary;
--		} else if (spec->obey_preferred_dacs) {
-+		} else if (spec->preferred_dacs) {
- 			badness += BAD_NO_PRIMARY_DAC;
- 		}
- 
+ static void gfx_v9_0_set_gfx_eop_interrupt_state(struct amdgpu_device *adev,
 -- 
 2.43.0
 
