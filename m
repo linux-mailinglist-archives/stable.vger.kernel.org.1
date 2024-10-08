@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631C3994ABB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75EB994F7C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 952E11C24CE9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FC62856A5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8961DDA15;
-	Tue,  8 Oct 2024 12:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7CD1E0484;
+	Tue,  8 Oct 2024 13:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTLldsrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOne0AsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1B11B81CC;
-	Tue,  8 Oct 2024 12:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AC11DF722;
+	Tue,  8 Oct 2024 13:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390962; cv=none; b=ApIRhxGxZz8BHQZRT1Y7Ojb6uxM9FrUX7RsNGzHhkRHun0VQZYM36sfbH6txmST1GQO0iOWzr44f8VkmG0z3fYZZY3KDZEEbL6IzuVlMZDPxDy0Okbdl4xIDT0Qf9+mvSbveUdpI7bofxKoR3k5+CvjDAb0We6LM/i2Z9wpeGGg=
+	t=1728393930; cv=none; b=uS4YUH7EUaTzvHCJcp/8SGpdRGTN2GjTpU8A15yUh83Ne1z8SZSeJ/rkXt/ruQ5qKzSzODRkOkae3kENhxIEhDFLU8cn6CdyoAsjztLnanDlfnQkbGPVt5TskC5GcLxlCTym8scJYK5eAJUhmSRAkfP+SurRtqdF72R5T/aybmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390962; c=relaxed/simple;
-	bh=UhgENZiIs/mKFaHyoyLQtepFnXxZkzopPy7MYylNsn0=;
+	s=arc-20240116; t=1728393930; c=relaxed/simple;
+	bh=Ee4XHyNCE/wG47qWagWibGBZPWUZKdwKj6Nauxn5T6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLKlYp09B0NFYu91xcEOS5f55e+P80CU1GpljFn++WUjW6Lkh0QBd4dNqMyzaywS4xnn1z2Ep+UBcvbGZVQykpJyKfVLqPFlehlP0c6gxNaJwB6ePUM1TJ5BgL8nBWYoDCGZTJmX+Ln5dQF+oUn0y4WDFa255LZ35HKgKanQois=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTLldsrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F224CC4CEC7;
-	Tue,  8 Oct 2024 12:36:01 +0000 (UTC)
+	 MIME-Version; b=rI9bfjhErQnFvT/bXWUp28DDxT0NFGrG49E4kfAKoYaMLBspMwthRpXxVNzEHV7+br4o4u+0CzcTVup5Ihlj6thXxCWfcKxu/D+ER/6y5WiLYa6zhqplWsDYXHLxJ7cLRHxrSbGokv0vWC1C2cnudfPE3WlAWQ6fOTqeK75Ukxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOne0AsI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F413CC4CEC7;
+	Tue,  8 Oct 2024 13:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390962;
-	bh=UhgENZiIs/mKFaHyoyLQtepFnXxZkzopPy7MYylNsn0=;
+	s=korg; t=1728393930;
+	bh=Ee4XHyNCE/wG47qWagWibGBZPWUZKdwKj6Nauxn5T6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTLldsrNS3r9R7BytNYDrPJ56uCQKOeAp02e7+XhLTOytGjg9K8omkpY/k5YJEzck
-	 9jQXhIitd+/jMmwaMiNcRr2onEWqLeegnvOpVkgWoGcZmCJMF3pojgSEu8K4/uyu45
-	 1JRBD/1989X6zbTRG96verbXt6uQwzV7CSOPyqJs=
+	b=VOne0AsIkrmP/bgKYyHYzAOGjLmlVKBHaf7vnmoZlGa5dWgIBapsGwikF/OiPeENy
+	 HAJ9hnTncZRZDg1pfIjA8fgdOiUyDfe6IP8a+Kj+DQFmrgLUbdOqGAbr0Y3fxlHJu9
+	 G7DgHTMgQ0JXqLWklP+2EgFuuaCPMw46qXW+z+Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 447/482] kconfig: qconf: fix buffer overflow in debug links
-Date: Tue,  8 Oct 2024 14:08:30 +0200
-Message-ID: <20241008115706.112401488@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.6 266/386] arm64: fix selection of HAVE_DYNAMIC_FTRACE_WITH_ARGS
+Date: Tue,  8 Oct 2024 14:08:31 +0200
+Message-ID: <20241008115639.858795949@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 984ed20ece1c6c20789ece040cbff3eb1a388fa9 ]
+commit b3d6121eaeb22aee8a02f46706745b1968cc0292 upstream.
 
-If you enable "Option -> Show Debug Info" and click a link, the program
-terminates with the following error:
+The Kconfig logic to select HAVE_DYNAMIC_FTRACE_WITH_ARGS is incorrect,
+and HAVE_DYNAMIC_FTRACE_WITH_ARGS may be selected when it is not
+supported by the combination of clang and GNU LD, resulting in link-time
+errors:
 
-    *** buffer overflow detected ***: terminated
+  aarch64-linux-gnu-ld: .init.data has both ordered [`__patchable_function_entries' in init/main.o] and unordered [`.meminit.data' in mm/sparse.o] sections
+  aarch64-linux-gnu-ld: final link failed: bad value
 
-The buffer overflow is caused by the following line:
+... which can be seen when building with CC=clang using a binutils
+version older than 2.36.
 
-    strcat(data, "$");
+We originally fixed that in commit:
 
-The buffer needs one more byte to accommodate the additional character.
+  45bd8951806eb5e8 ("arm64: Improve HAVE_DYNAMIC_FTRACE_WITH_REGS selection for clang")
 
-Fixes: c4f7398bee9c ("kconfig: qconf: make debug links work again")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+... by splitting the "select HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement
+into separete CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS and
+GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS options which individually select
+HAVE_DYNAMIC_FTRACE_WITH_ARGS.
+
+Subsequently we accidentally re-introduced the common "select
+HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement in commit:
+
+  26299b3f6ba26bfc ("ftrace: arm64: move from REGS to ARGS")
+
+... then we removed it again in commit:
+
+  68a63a412d18bd2e ("arm64: Fix build with CC=clang, CONFIG_FTRACE=y and CONFIG_STACK_TRACER=y")
+
+... then we accidentally re-introduced it again in commit:
+
+  2aa6ac03516d078c ("arm64: ftrace: Add direct call support")
+
+Fix this for the third time by keeping the unified select statement and
+making this depend onf either GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS or
+CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS. This is more consistent with
+usual style and less likely to go wrong in future.
+
+Fixes: 2aa6ac03516d ("arm64: ftrace: Add direct call support")
+Cc: <stable@vger.kernel.org> # 6.4.x
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240930120448.3352564-1-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/qconf.cc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/Kconfig |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
-index c6c42c0f4e5d5..b7fc5aeb78cc0 100644
---- a/scripts/kconfig/qconf.cc
-+++ b/scripts/kconfig/qconf.cc
-@@ -1174,7 +1174,7 @@ void ConfigInfoView::clicked(const QUrl &url)
- {
- 	QByteArray str = url.toEncoded();
- 	const std::size_t count = str.size();
--	char *data = new char[count + 1];
-+	char *data = new char[count + 2];  // '$' + '\0'
- 	struct symbol **result;
- 	struct menu *m = NULL;
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -191,7 +191,8 @@ config ARM64
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
+-		if $(cc-option,-fpatchable-function-entry=2)
++		if (GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS || \
++		    CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS)
+ 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS \
+ 		if DYNAMIC_FTRACE_WITH_ARGS && DYNAMIC_FTRACE_WITH_CALL_OPS
+ 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
+@@ -262,12 +263,10 @@ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WIT
+ 	def_bool CC_IS_CLANG
+ 	# https://github.com/ClangBuiltLinux/linux/issues/1507
+ 	depends on AS_IS_GNU || (AS_IS_LLVM && (LD_IS_LLD || LD_VERSION >= 23600))
+-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
  
--- 
-2.43.0
-
+ config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
+ 	def_bool CC_IS_GCC
+ 	depends on $(cc-option,-fpatchable-function-entry=2)
+-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
+ 
+ config 64BIT
+ 	def_bool y
 
 
 
