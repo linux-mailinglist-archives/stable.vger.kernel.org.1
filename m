@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-82757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303A0994E63
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2429F994CA9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D27EB2BA0F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4864F1C20E87
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0503F1DF265;
-	Tue,  8 Oct 2024 13:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282DE1DF735;
+	Tue,  8 Oct 2024 12:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rK+kVFt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDBDQsos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DBA192594;
-	Tue,  8 Oct 2024 13:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C081DF27C;
+	Tue,  8 Oct 2024 12:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393327; cv=none; b=n1AO1OMuxmpXy9YWZNov1IhR1iDZS+Z7kf/VuKeMi/T1rZhDGlBijaq2ws1SM8Is93wRTm2kdpja8HIOWFqtrMMhb3FAtO8tnc1xYUGSe0byvC1b4lJQP4JiJoDa1GL36aagk+9ZjcBnVUIlsWrwjPfbRzyQl1Pz4L5vpXBWhgA=
+	t=1728392156; cv=none; b=apgQO4eQqBBxLAMG5nJ7/x8adBXgUwC1QtaEAKI3HUefYkDuM3yD8mp9kc6e7/tJ/xkFfhXQpGty0AGh8VracKAXglg7Jen6KjZPsf8Cn0G1u8iwzfLNlfkbwz/QwP3tIb6wABre7TTKw5TsLIAUW1dLwP0BbzF5qLJ2mbyS9GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393327; c=relaxed/simple;
-	bh=KP28jVeeLzb8+9R1v3oSZDeoF+LEOA+uqRz0JB4v3kA=;
+	s=arc-20240116; t=1728392156; c=relaxed/simple;
+	bh=8vOaPVSZShk7w7tVhzMr7X8e6V9x/FMlidK4LM2FbYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYp1J0p3FWLCW7yMFxezf24S/YkgSHXUIeJ+yNQKngqMoI+xKz7s9xdrTzzyiJgL/FcObfu9V7vnEp19ugFJYN+sChwu2VZMI2LMjE9zLiFM/ozx3wPBEPZN6JqSF5OXOiquO8y4QceEn8GkW/IehSQrQ04Dd5jQVpjZGR918nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rK+kVFt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82D6C4CEC7;
-	Tue,  8 Oct 2024 13:15:26 +0000 (UTC)
+	 MIME-Version; b=BR5zrf1G0kI/gfIhdhd4bDADqnM0W7jD+CLWz8b2yfmIIQn0d2KNR5VjLtuhXvgLotxA4HG6yOMlJanXIBm4lNt5R0psZuI5cfEjxGZzOGOeUWs5EHQJVa2jSleyY+96Dv322bPBpYBs+rIUIYhT4uMYci+ehPj5vDiF0tiUoQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDBDQsos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499C3C4CEC7;
+	Tue,  8 Oct 2024 12:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393327;
-	bh=KP28jVeeLzb8+9R1v3oSZDeoF+LEOA+uqRz0JB4v3kA=;
+	s=korg; t=1728392156;
+	bh=8vOaPVSZShk7w7tVhzMr7X8e6V9x/FMlidK4LM2FbYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rK+kVFt9wC16Jxqnskz759h1pkQgU51CVGe0mzvGkPmFTkTkbztlPHyDXVet7apI+
-	 MPF0Fkp9IgvFd2ihoou02Ni6TIk/eVHA5merotBB9klZ4NkbiilkVMAFf9fj/6kGm9
-	 TtKsPjzR5kKILE7dAm6c65ZybsC43EMwVBoSA83Q=
+	b=pDBDQsos/4lZrUeT0OieMbg107LAWhKGOpAlN2jdm4lxOmuMk399+aDHM0xz5CrYi
+	 N+n+4ciOnzefyX/AHr2Mycl/4aEbHJDMNC7sMPcaxCxCA4oF253DE9HA/S3GxR4heN
+	 KEwnXObVbE3HzXSZsOr+9W+HJRbrUwkS6GeEzLPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Liu <ltao@redhat.com>,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Pavin Joseph <me@pavinjoseph.com>,
-	Sarah Brofeldt <srhb@dbc.dk>,
-	Eric Hagberg <ehagberg@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/386] x86/kexec: Add EFI config table identity mapping for kexec kernel
+Subject: [PATCH 6.11 332/558] ext4: fix error message when rejecting the default hash
 Date: Tue,  8 Oct 2024 14:06:02 +0200
-Message-ID: <20241008115634.046185758@linuxfoundation.org>
+Message-ID: <20241008115715.369198435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,118 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Liu <ltao@redhat.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 5760929f6545c651682de3c2c6c6786816b17bb1 ]
+[ Upstream commit a2187431c395cdfbf144e3536f25468c64fc7cfa ]
 
-A kexec kernel boot failure is sometimes observed on AMD CPUs due to an
-unmapped EFI config table array.  This can be seen when "nogbpages" is on
-the kernel command line, and has been observed as a full BIOS reboot rather
-than a successful kexec.
+Commit 985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash") properly rejects volumes where
+s_def_hash_version is set to DX_HASH_SIPHASH, but the check and the
+error message should not look into casefold setup - a filesystem should
+never have DX_HASH_SIPHASH as the default hash.  Fix it and, since we
+are there, move the check to ext4_hash_info_init.
 
-This was also the cause of reported regressions attributed to Commit
-7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should
-be mapped.") which was subsequently reverted.
+Fixes:985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash")
 
-To avoid this page fault, explicitly include the EFI config table array in
-the kexec identity map.
-
-Further explanation:
-
-The following 2 commits caused the EFI config table array to be
-accessed when enabling sev at kernel startup.
-
-    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
-                          earlier during boot")
-    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
-                          detection/setup")
-
-This is in the code that examines whether SEV should be enabled or not, so
-it can even affect systems that are not SEV capable.
-
-This may result in a page fault if the EFI config table array's address is
-unmapped. Since the page fault occurs before the new kernel establishes its
-own identity map and page fault routines, it is unrecoverable and kexec
-fails.
-
-Most often, this problem is not seen because the EFI config table array
-gets included in the map by the luck of being placed at a memory address
-close enough to other memory areas that *are* included in the map created
-by kexec.
-
-Both the "nogbpages" command line option and the "use gpbages only where
-full GB page should be mapped" change greatly reduce the chance of being
-included in the map by luck, which is why the problem appears.
-
-Signed-off-by: Tao Liu <ltao@redhat.com>
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Pavin Joseph <me@pavinjoseph.com>
-Tested-by: Sarah Brofeldt <srhb@dbc.dk>
-Tested-by: Eric Hagberg <ehagberg@gmail.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/all/20240717213121.3064030-2-steve.wahl@hpe.com
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://patch.msgid.link/87jzg1en6j.fsf_-_@mailhost.krisman.be
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ fs/ext4/ext4.h  |  1 +
+ fs/ext4/super.c | 27 +++++++++++++++++----------
+ 2 files changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index d287fe290c9ab..2fa12d1dc6760 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -28,6 +28,7 @@
- #include <asm/setup.h>
- #include <asm/set_memory.h>
- #include <asm/cpu.h>
-+#include <asm/efi.h>
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 08acd152261ed..8bd302392d759 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2462,6 +2462,7 @@ static inline __le16 ext4_rec_len_to_disk(unsigned len, unsigned blocksize)
+ #define DX_HASH_HALF_MD4_UNSIGNED	4
+ #define DX_HASH_TEA_UNSIGNED		5
+ #define DX_HASH_SIPHASH			6
++#define DX_HASH_LAST 			DX_HASH_SIPHASH
  
- #ifdef CONFIG_ACPI
- /*
-@@ -90,6 +91,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ static inline u32 ext4_chksum(struct ext4_sb_info *sbi, u32 crc,
+ 			      const void *address, unsigned int length)
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index b3f47d6879ebf..1cd4e20cc320d 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3583,13 +3583,6 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+ 			 "mounted without CONFIG_UNICODE");
+ 		return 0;
+ 	}
+-	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
+-	    !ext4_has_feature_casefold(sb)) {
+-		ext4_msg(sb, KERN_ERR,
+-			 "Filesystem without casefold feature cannot be "
+-			 "mounted with siphash");
+-		return 0;
+-	}
+ 
+ 	if (readonly)
+ 		return 1;
+@@ -5095,16 +5088,27 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
+ 	return ret;
+ }
+ 
+-static void ext4_hash_info_init(struct super_block *sb)
++static int ext4_hash_info_init(struct super_block *sb)
  {
- #ifdef CONFIG_EFI
- 	unsigned long mstart, mend;
-+	void *kaddr;
-+	int ret;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+ 	unsigned int i;
  
- 	if (!efi_enabled(EFI_BOOT))
- 		return 0;
-@@ -105,6 +108,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
- 	if (!mstart)
- 		return 0;
- 
-+	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
-+	if (ret)
-+		return ret;
++	sbi->s_def_hash_version = es->s_def_hash_version;
 +
-+	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
-+	if (!kaddr) {
-+		pr_err("Could not map UEFI system table\n");
-+		return -ENOMEM;
++	if (sbi->s_def_hash_version > DX_HASH_LAST) {
++		ext4_msg(sb, KERN_ERR,
++			 "Invalid default hash set in the superblock");
++		return -EINVAL;
++	} else if (sbi->s_def_hash_version == DX_HASH_SIPHASH) {
++		ext4_msg(sb, KERN_ERR,
++			 "SIPHASH is not a valid default hash value");
++		return -EINVAL;
 +	}
 +
-+	mstart = efi_config_table;
-+
-+	if (efi_enabled(EFI_64BIT)) {
-+		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
-+
-+		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
-+	} else {
-+		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
-+
-+		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
-+	}
-+
-+	memunmap(kaddr);
-+
- 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
+ 	for (i = 0; i < 4; i++)
+ 		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
+ 
+-	sbi->s_def_hash_version = es->s_def_hash_version;
+ 	if (ext4_has_feature_dir_index(sb)) {
+ 		i = le32_to_cpu(es->s_flags);
+ 		if (i & EXT2_FLAGS_UNSIGNED_HASH)
+@@ -5122,6 +5126,7 @@ static void ext4_hash_info_init(struct super_block *sb)
  #endif
- 	return 0;
+ 		}
+ 	}
++	return 0;
+ }
+ 
+ static int ext4_block_group_meta_init(struct super_block *sb, int silent)
+@@ -5269,7 +5274,9 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	if (err)
+ 		goto failed_mount;
+ 
+-	ext4_hash_info_init(sb);
++	err = ext4_hash_info_init(sb);
++	if (err)
++		goto failed_mount;
+ 
+ 	err = ext4_handle_clustersize(sb);
+ 	if (err)
 -- 
 2.43.0
 
