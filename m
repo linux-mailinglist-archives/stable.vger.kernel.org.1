@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-81735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F04399490F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDCF994C04
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6BF31C22661
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56F3FB28E3F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB161DE3B2;
-	Tue,  8 Oct 2024 12:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FE01DE4C4;
+	Tue,  8 Oct 2024 12:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRIMJyKg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7/JqnRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695E733981;
-	Tue,  8 Oct 2024 12:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6958A1C9B61;
+	Tue,  8 Oct 2024 12:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389958; cv=none; b=tqYXoXRwK3mPSdwnkrFnX2hBRySJlAo7wPacedIUwuQA6IHnGLV3UXY4ygONp8NzY2HUoPe2ys9jh9uA4dEhCyZ/Kl9I6iYEe92fxL7iT+pgRgT+sNJ4oybqtnBLk4l4/qB18GHs2sU3RGJWRorBisZ9jMrTP5xKPQq8rK+Akew=
+	t=1728391642; cv=none; b=O7TFSI1DJRCeYXJFnC8incOWSS8BA2I3+nExTh6qPFJTF3tohdpr8KRIUsg2EuNhFudQo1MepSdf3rin6w40C/5+UeYyuDFhU154DAgyGY1b0yN2RT+0peXjJiCA0q5HMOKFzyEj2U4HWmGmTSMEUxIdowdrmhqm0cLPRDVtTcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389958; c=relaxed/simple;
-	bh=cOGabxGkDKHjTOKiD7P4SUGiVEWNeTDJlA+uBWGCKN4=;
+	s=arc-20240116; t=1728391642; c=relaxed/simple;
+	bh=QZU5jsz180GfV8bE4TLV7N57bPrkG3biuHXCcWMFcJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQ1rS77X9s7JSEVTAqp385ReULTg1oX+f4H7WkQc3r7Y5oZ3O035W0MVsCrjtz1BP6iYaSLbjYr5onqgVsfB5exhZH5OfMPQsIH0jge1XVe8uvnhe0i6rvX6UZWuojWEUC89uEsdd7wGK/BVgdJ3GI2azCwHSdtA+eN8VcAUtbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRIMJyKg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4C0C4CEC7;
-	Tue,  8 Oct 2024 12:19:17 +0000 (UTC)
+	 MIME-Version; b=tytD798Ym6rxHED+WejtzjR0C5Ja0OOMk00SynrcePTqfeynrtrAexLKHTLNoYHVfAtowSYfgTcvdA/yviMg/tsvn/87E132zqIPcZ+sFrZqCCnfgKAddYQdDu3fdEf419yg3JVAQhEGNoN8VMT2PB2N0++UQFH2iefMOwtCkik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7/JqnRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF44C4CEC7;
+	Tue,  8 Oct 2024 12:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389958;
-	bh=cOGabxGkDKHjTOKiD7P4SUGiVEWNeTDJlA+uBWGCKN4=;
+	s=korg; t=1728391642;
+	bh=QZU5jsz180GfV8bE4TLV7N57bPrkG3biuHXCcWMFcJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRIMJyKgiFVy30tvNqxQIf8UC18+g194Yc0YeuEUQgjTeA0fdJksSGT31/s3MRQlU
-	 5AR+wN291IOIN55iK60l41iLvES7FVH/pQ9qN2NHFsM7IGFo36hOQIaQf9qrNDi2yb
-	 hUzrh/R1xpxcaOuGp5GH5irpcGfy95nT53QmfAys=
+	b=Y7/JqnRoM4VpXlejZxpJ5ySXsKT/Q8tw9zSgJ9Gh77sPhhlqU9vj2GVVHebBPAxiR
+	 rGcjqvsuLc4v4ogelXI5V7maGUdJy8kVOt3JRyi7/bvK337E/joceNgpm6/XnYIH5W
+	 ZLPkjFBwwjUvp3VBR1q5EqWNR0vxx2+rJ6H63h2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Tao Liu <ltao@redhat.com>,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Pavin Joseph <me@pavinjoseph.com>,
+	Sarah Brofeldt <srhb@dbc.dk>,
+	Eric Hagberg <ehagberg@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 147/482] ASoC: codecs: wsa883x: Handle reading version failure
+Subject: [PATCH 6.11 180/558] x86/kexec: Add EFI config table identity mapping for kexec kernel
 Date: Tue,  8 Oct 2024 14:03:30 +0200
-Message-ID: <20241008115654.092597925@linuxfoundation.org>
+Message-ID: <20241008115709.437412339@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +67,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tao Liu <ltao@redhat.com>
 
-[ Upstream commit 2fbf16992e5aa14acf0441320033a01a32309ded ]
+[ Upstream commit 5760929f6545c651682de3c2c6c6786816b17bb1 ]
 
-If reading version and variant from registers fails (which is unlikely
-but possible, because it is a read over bus), the driver will proceed
-and perform device configuration based on uninitialized stack variables.
-Handle it a bit better - bail out without doing any init and failing the
-update status Soundwire callback.
+A kexec kernel boot failure is sometimes observed on AMD CPUs due to an
+unmapped EFI config table array.  This can be seen when "nogbpages" is on
+the kernel command line, and has been observed as a full BIOS reboot rather
+than a successful kexec.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240710-asoc-wsa88xx-version-v1-2-f1c54966ccde@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This was also the cause of reported regressions attributed to Commit
+7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should
+be mapped.") which was subsequently reverted.
+
+To avoid this page fault, explicitly include the EFI config table array in
+the kexec identity map.
+
+Further explanation:
+
+The following 2 commits caused the EFI config table array to be
+accessed when enabling sev at kernel startup.
+
+    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
+                          earlier during boot")
+    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
+                          detection/setup")
+
+This is in the code that examines whether SEV should be enabled or not, so
+it can even affect systems that are not SEV capable.
+
+This may result in a page fault if the EFI config table array's address is
+unmapped. Since the page fault occurs before the new kernel establishes its
+own identity map and page fault routines, it is unrecoverable and kexec
+fails.
+
+Most often, this problem is not seen because the EFI config table array
+gets included in the map by the luck of being placed at a memory address
+close enough to other memory areas that *are* included in the map created
+by kexec.
+
+Both the "nogbpages" command line option and the "use gpbages only where
+full GB page should be mapped" change greatly reduce the chance of being
+included in the map by luck, which is why the problem appears.
+
+Signed-off-by: Tao Liu <ltao@redhat.com>
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Pavin Joseph <me@pavinjoseph.com>
+Tested-by: Sarah Brofeldt <srhb@dbc.dk>
+Tested-by: Eric Hagberg <ehagberg@gmail.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/all/20240717213121.3064030-2-steve.wahl@hpe.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa883x.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index 2169d93989841..1831d4487ba9d 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -998,15 +998,19 @@ static const struct reg_sequence reg_init[] = {
- 	{WSA883X_GMAMP_SUP1, 0xE2},
- };
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index cc0f7f70b17ba..9c9ac606893e9 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -28,6 +28,7 @@
+ #include <asm/setup.h>
+ #include <asm/set_memory.h>
+ #include <asm/cpu.h>
++#include <asm/efi.h>
  
--static void wsa883x_init(struct wsa883x_priv *wsa883x)
-+static int wsa883x_init(struct wsa883x_priv *wsa883x)
+ #ifdef CONFIG_ACPI
+ /*
+@@ -87,6 +88,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
  {
- 	struct regmap *regmap = wsa883x->regmap;
--	int variant, version;
-+	int variant, version, ret;
+ #ifdef CONFIG_EFI
+ 	unsigned long mstart, mend;
++	void *kaddr;
++	int ret;
  
--	regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
-+	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
+ 	if (!efi_enabled(EFI_BOOT))
+ 		return 0;
+@@ -102,6 +105,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
+ 	if (!mstart)
+ 		return 0;
+ 
++	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
 +	if (ret)
 +		return ret;
- 	wsa883x->variant = variant & WSA883X_ID_MASK;
- 
--	regmap_read(regmap, WSA883X_CHIP_ID0, &version);
-+	ret = regmap_read(regmap, WSA883X_CHIP_ID0, &version);
-+	if (ret)
-+		return ret;
- 	wsa883x->version = version;
- 
- 	switch (wsa883x->variant) {
-@@ -1041,6 +1045,8 @@ static void wsa883x_init(struct wsa883x_priv *wsa883x)
- 				   WSA883X_DRE_OFFSET_MASK,
- 				   wsa883x->comp_offset);
- 	}
 +
-+	return 0;
- }
- 
- static int wsa883x_update_status(struct sdw_slave *slave,
-@@ -1049,7 +1055,7 @@ static int wsa883x_update_status(struct sdw_slave *slave,
- 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
- 
- 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
--		wsa883x_init(wsa883x);
-+		return wsa883x_init(wsa883x);
- 
++	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
++	if (!kaddr) {
++		pr_err("Could not map UEFI system table\n");
++		return -ENOMEM;
++	}
++
++	mstart = efi_config_table;
++
++	if (efi_enabled(EFI_64BIT)) {
++		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
++	} else {
++		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
++
++		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
++	}
++
++	memunmap(kaddr);
++
+ 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
+ #endif
  	return 0;
- }
 -- 
 2.43.0
 
