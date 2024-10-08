@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA12994A0F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78641994CBE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5561F21990
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A8A1F2366B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEAA1DF724;
-	Tue,  8 Oct 2024 12:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DA51DF751;
+	Tue,  8 Oct 2024 12:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Xqkf+71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK+Dcqfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E081DED48;
-	Tue,  8 Oct 2024 12:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D52D1DE8A0;
+	Tue,  8 Oct 2024 12:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390529; cv=none; b=O+TV3oooUEoKBC3mCrX1SZiUw97MnBqhCOjx/XyKo3neeUEdIkxBzrVChyxTmE8STQOvx08lRQsO2guXcd7PUaPR9bxFZ5nPM14LL6DcfqWr/nbtEiQPmthYUzErKWltUFcOpws6Z16/CZIRQmzYRTFod1ogCL8UGAhnwLq842I=
+	t=1728392215; cv=none; b=ZyfxFE16ls91UsMkEa2YZxb6uR8BP5GTk5Vs3jhFEt/TCh5GtyOmMqrzDCOpVZJHjOPCij41jx9eJD5la75lZAl+cQpeJkELl46fPLyO5nP2ysWeNiDOiu43wvt91FI1jm57Akb1wCK9YaPdKYmdFMxhgGt3DrWdR3uAqhDIQAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390529; c=relaxed/simple;
-	bh=K2RyHokKjlMOf0xi76pfDEYYEebpA/wex9thjuDH/SM=;
+	s=arc-20240116; t=1728392215; c=relaxed/simple;
+	bh=XFpYcSjl/1fOOfYLAf4NJvDcpvB0bu/bLqEqRu4oKqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IwEuWlSMQy/fsKkAqLDXDAxI3RB3FNEZX5Rho4Ce98C/LoBmg72RSc6AMlBtt2gN2lXxzfQ0onfLZ7QydDYtTbvAmtt4noYMsyP2vElXLXCyLZC2fabOrAZvORWEwn+4q/pGTjLBuxdzigcvLlmjUeRhPYDWYsD4jOK8qh2YpJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Xqkf+71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC62EC4CECC;
-	Tue,  8 Oct 2024 12:28:48 +0000 (UTC)
+	 MIME-Version; b=q+ut9a+RFxZQBwrtp2a68G+ht1CwBCpJh79aKIC9meh4Ua/nTkq9N6Zj42OKGkIVpX0okV8m3S8kwbE5aYhlu4XIlXp6y1buBhkD2uCEsYUn5IrnmK3CK2aY2RgTcSzPbaGr3rYv7gPa3U+K00n3ZvSzAhbobp3hM+rG3g0QIU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK+Dcqfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52F1C4CEC7;
+	Tue,  8 Oct 2024 12:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390529;
-	bh=K2RyHokKjlMOf0xi76pfDEYYEebpA/wex9thjuDH/SM=;
+	s=korg; t=1728392215;
+	bh=XFpYcSjl/1fOOfYLAf4NJvDcpvB0bu/bLqEqRu4oKqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Xqkf+71Fu/4CrzfY+7DwQrP4m1VGYbVqAQBpcgBpULJBjtEIObSmSKnJSigvvaDu
-	 iMGNJAVAG6peQMNrvjMB+vmLmoWfv+PVVl4O/b2mvmRGyMeiH5H0MP4RTk53UbiwBZ
-	 1lbm2VW3p0cMnUGnd0JWJ++stJAPb6cyi7cOmNUw=
+	b=PK+Dcqfygob30Iof0Dyj929wrgfAj5GvblGx36mYYC+SxUVmgJpy5Rr1XgIJE9//e
+	 8Wh/jboWJJeAsrENqk+YMmmlsKm+oXYR2NT/T43R5yfk0jR30ievvglgWCSnVYMtyH
+	 7eJBlsbKzSuBy8Z6NNZ8LQWTkWS129f8MxM8PhwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lianqin Hu <hulianqin@vivo.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 316/482] ALSA: usb-audio: Add delay quirk for VIVO USB-C HEADSET
-Date: Tue,  8 Oct 2024 14:06:19 +0200
-Message-ID: <20241008115700.868690603@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.11 350/558] i2c: qcom-geni: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  8 Oct 2024 14:06:20 +0200
+Message-ID: <20241008115716.071482312@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 73385f3e0d8088b715ae8f3f66d533c482a376ab upstream.
+commit e2c85d85a05f16af2223fcc0195ff50a7938b372 upstream.
 
-Audio control requests that sets sampling frequency sometimes fail on
-this card. Adding delay between control messages eliminates that problem.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/TYUPR06MB62177E629E9DEF2401333BF7D2692@TYUPR06MB6217.apcprd06.prod.outlook.com
+Fixes: 37692de5d523 ("i2c: i2c-qcom-geni: Add bus driver for the Qualcomm GENI I2C controller")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: <stable@vger.kernel.org> # v4.19+
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-qcom-geni.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2279,6 +2279,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
-+	DEVICE_FLG(0x2d95, 0x8011, /* VIVO USB-C HEADSET */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -818,15 +818,13 @@ static int geni_i2c_probe(struct platfor
+ 	init_completion(&gi2c->done);
+ 	spin_lock_init(&gi2c->lock);
+ 	platform_set_drvdata(pdev, gi2c);
+-	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, 0,
++	ret = devm_request_irq(dev, gi2c->irq, geni_i2c_irq, IRQF_NO_AUTOEN,
+ 			       dev_name(dev), gi2c);
+ 	if (ret) {
+ 		dev_err(dev, "Request_irq failed:%d: err:%d\n",
+ 			gi2c->irq, ret);
+ 		return ret;
+ 	}
+-	/* Disable the interrupt so that the system can enter low-power mode */
+-	disable_irq(gi2c->irq);
+ 	i2c_set_adapdata(&gi2c->adap, gi2c);
+ 	gi2c->adap.dev.parent = dev;
+ 	gi2c->adap.dev.of_node = dev->of_node;
 
 
 
