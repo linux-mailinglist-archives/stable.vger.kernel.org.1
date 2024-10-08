@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-82816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3487994E96
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC30C994A7D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99337281163
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 879511F2217D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC451DE4CD;
-	Tue,  8 Oct 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6C41DE4CC;
+	Tue,  8 Oct 2024 12:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3z/wu10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7gReDi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2AD1DF27A;
-	Tue,  8 Oct 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8601CCB32;
+	Tue,  8 Oct 2024 12:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393520; cv=none; b=lc6tBKTwCMf+9pe5Uy7G8YS70FRAIinhuHZNYg9yYNgwffcaq1r7GHpNpGXRza2zynHUwH3GoYnIOd/TmGsEGblNw3DLZndx3GhupgId18323xkuUV08y6IdJR/M9DA3xt4mI87Q9zifzxjlmlVNSw4K3RC3wuvSYLro/7WNWnI=
+	t=1728390808; cv=none; b=NY0p78fLewCUGVofRlZSrBxBmdVHRDry4sw3MDZ6k8dQE2GPDBzMFSzb7lGC9qEfeUytEIsT5hapRJgQJEb/jb3bDQAshMVhoeT9gZSZ7ZIkVS2sg71s3jDyIZ4JHAK4hhedqhB6VdfrVmcfyY5C1JuOkK7AyBFKxlIrwNwxWTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393520; c=relaxed/simple;
-	bh=VMZsKRIoxL8/jjVx9eDJuCBAiNxQZbQ84eMQ6zo7+O0=;
+	s=arc-20240116; t=1728390808; c=relaxed/simple;
+	bh=7hiKeLaEmWKIQtwn/0OYgGmU+Fh1Svk5X1QtqwH4F6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnGCSf/UecC2zKZsd2b97xumDS6UnmQ6TTRZaC8ofgxkds7O41KhKYcB2XY/vR0bPylrx4BFr05B7hQ2nxvUHeMnm+1T+FmZ+erw4VqjPl+QbgOVSXyawLH6jmeKHpHQidYbnpuAXNApmPHl3DgAiiO3n7P3VXo0e1/j4J0I7ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3z/wu10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F105BC4CEC7;
-	Tue,  8 Oct 2024 13:18:39 +0000 (UTC)
+	 MIME-Version; b=uLQkcL6W6/Irn1/or89lTIU1qHNFM9QyZxr4Woz9pTaNFMTEGZTK2ZH8KyzbjU2oPIXJ9Ex4GDUCJFhzKlpz1+svGBgmHYOkZAGW9hMYgBpDRuPKu/IyPXV4XMwmR768cIvu+RtJtbo0aiI55W6TyvvSFoQ5IWDCZwUMcyJDdZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7gReDi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1B0C4CEC7;
+	Tue,  8 Oct 2024 12:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393520;
-	bh=VMZsKRIoxL8/jjVx9eDJuCBAiNxQZbQ84eMQ6zo7+O0=;
+	s=korg; t=1728390808;
+	bh=7hiKeLaEmWKIQtwn/0OYgGmU+Fh1Svk5X1QtqwH4F6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3z/wu10Ewcjo2DmlQP7g9WZjOHNgVs2+oX/NGkJjVBOufjoWR4JeIeEud1VlYVx0
-	 hdNCEgW4FOMCfRUc/vjltEy5i+lRsFhUJJQ+grtEIXkXhNbcLPeR+7zSp1bsYInz/G
-	 bxk5ASbYrtHjzKFsDRYi3ClGt9DE+LK3PRF9FhGc=
+	b=S7gReDi2kBhIzOhvRCAJhggTHUKXwLPFuN4/cgE+Z13Xg9lKpo0Yl2Ccx1H00aS/c
+	 rr54zCS9G/5G2WqKqDO5B31LLLJ+O8lDXh8eYlmUISLuKUvQqxbGwNFZ83tloY7kdL
+	 YA82Kgehni+dpI26X5xquc4Tpi89ZdDjNihZjxWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/386] platform/x86: lenovo-ymc: Ignore the 0x0 state
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 358/482] ocfs2: fix possible null-ptr-deref in ocfs2_set_buffer_uptodate
 Date: Tue,  8 Oct 2024 14:07:01 +0200
-Message-ID: <20241008115636.344266519@linuxfoundation.org>
+Message-ID: <20241008115702.509915220@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +69,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit d9dca215708d32e7f88ac0591fbb187cbf368adb ]
+commit 33b525cef4cff49e216e4133cc48452e11c0391e upstream.
 
-While booting, Lenovo 14ARB7 reports 'lenovo-ymc: Unknown key 0 pressed'
-warning. This is caused by lenovo_ymc_probe() calling lenovo_ymc_notify()
-at probe time to get the initial tablet-mode-switch state and the key-code
-lenovo_ymc_notify() reads from the firmware is not initialized at probe
-time yet on the Lenovo 14ARB7.
+When doing cleanup, if flags without OCFS2_BH_READAHEAD, it may trigger
+NULL pointer dereference in the following ocfs2_set_buffer_uptodate() if
+bh is NULL.
 
-The hardware/firmware does an ACPI notify on the WMI device itself when
-it initializes the tablet-mode-switch state later on.
-
-Add 0x0 YMC state to the sparse keymap to silence the warning.
-
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Link: https://lore.kernel.org/r/08ab73bb74c4ad448409f2ce707b1148874a05ce.1724340562.git.soyer@irl.hu
-[hdegoede@redhat.com: Reword commit message]
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240902023636.1843422-3-joseph.qi@linux.alibaba.com
+Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: Heming Zhao <heming.zhao@suse.com>
+Suggested-by: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>	[4.20+]
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/lenovo-ymc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ocfs2/buffer_head_io.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/lenovo-ymc.c b/drivers/platform/x86/lenovo-ymc.c
-index e1fbc35504d49..ef2c267ab485c 100644
---- a/drivers/platform/x86/lenovo-ymc.c
-+++ b/drivers/platform/x86/lenovo-ymc.c
-@@ -78,6 +78,8 @@ static void lenovo_ymc_trigger_ec(struct wmi_device *wdev, struct lenovo_ymc_pri
- }
+--- a/fs/ocfs2/buffer_head_io.c
++++ b/fs/ocfs2/buffer_head_io.c
+@@ -388,7 +388,8 @@ read_failure:
+ 		/* Always set the buffer in the cache, even if it was
+ 		 * a forced read, or read-ahead which hasn't yet
+ 		 * completed. */
+-		ocfs2_set_buffer_uptodate(ci, bh);
++		if (bh)
++			ocfs2_set_buffer_uptodate(ci, bh);
+ 	}
+ 	ocfs2_metadata_cache_io_unlock(ci);
  
- static const struct key_entry lenovo_ymc_keymap[] = {
-+	/* Ignore the uninitialized state */
-+	{ KE_IGNORE, 0x00 },
- 	/* Laptop */
- 	{ KE_SW, 0x01, { .sw = { SW_TABLET_MODE, 0 } } },
- 	/* Tablet */
--- 
-2.43.0
-
 
 
 
