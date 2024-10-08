@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5D3994A97
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25355994EF2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E89A1C23CAE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D12201F23F2D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E90F1DE89A;
-	Tue,  8 Oct 2024 12:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85451DFE23;
+	Tue,  8 Oct 2024 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYO8sDC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgPiB+e+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87A91779B1;
-	Tue,  8 Oct 2024 12:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CCC1DFE14;
+	Tue,  8 Oct 2024 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390863; cv=none; b=mflfpPdjv/HBND989AXAI515w9T06RM6vItAuDbZMLoALqBiytrPlCHQsHlf+qxOt9bsvrDT5t4W08wjNLrvuYT7ztjebsaWXCjZU0MEg7gmCJ1eqvEP+gHTEimmG4kq/frMBe4qphbYFvsi6kq13G4e9JM7YvGUzV0AyhmHvn4=
+	t=1728393715; cv=none; b=VmYtEC2gWlDpEBEXbpSuaBA7YGQ/SRogJhuJjwtcjmCAM29gnTi69buslRUT3dGvWRNr0U6/eE6fpm/QXJIXnClMsLBLbVVlXLX4+OHlSSmBuXxxT+PdL8JKQACaH/rXJQnfEqUMsP9Cip+omePTZ2RkYXkuJPCW2nJa+QDnEnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390863; c=relaxed/simple;
-	bh=mmV8vfE+y57oUk5iiRGVW5D+GUyCjlZc/je11ESt1XA=;
+	s=arc-20240116; t=1728393715; c=relaxed/simple;
+	bh=JNf9szA5fD6fgg6aKNWG+RlUKI9Ob5dyuP+aenthJ/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=figk9JnrIvAOxPaTkXdyJ/5KYmzkHpoGjlhHxKzY2rt/3kcYu4NdlqvotIli/gNlb+uBFTiCjQ0b10QtO2JiTeJpqu4TTeJ/7T3O7OgR3+vbkfeGcOFGEvL9SBu3aR9/Or3ZI01ijhs0raSWqqu6eRR77mNikq+jEqQZnYg31tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYO8sDC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EF8C4CEC7;
-	Tue,  8 Oct 2024 12:34:23 +0000 (UTC)
+	 MIME-Version; b=KR0mLv3YcKx4RIJYhw6UqhTjdzpZ+S8TxcoG6B49uwF1kRIjHpvD+77NnJ1myTqEnqw1PRCkft8/PpS1x4orGk/ZNbmAl+AGn2O6BIlUVuvWgugvqRjd4jm/0HTmvDrLGXHvwRLq3EtwcHaKXO8VObh7607h8/C38Q+lRKuEpi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgPiB+e+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6503CC4CECC;
+	Tue,  8 Oct 2024 13:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390863;
-	bh=mmV8vfE+y57oUk5iiRGVW5D+GUyCjlZc/je11ESt1XA=;
+	s=korg; t=1728393715;
+	bh=JNf9szA5fD6fgg6aKNWG+RlUKI9Ob5dyuP+aenthJ/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYO8sDC+s+umxLj6aH2t0s9obAKa4SghD0xgg6/KEHAGwYwb016PRKd6vuKZpZOz0
-	 MtBfC69RkBRX9/xRP4VBPYXIxpdF34rLSKgKRYjKYIMSw4PGogKAUh5vJLGJB2idbJ
-	 MbJRpdyefcGOv9Akb3e9yUJODU0I6FBI+UYf8feI=
+	b=mgPiB+e+gv+UliEecTvVsYDeW7n2dgct8y3jvtvCWjL6ReioJdwFR0QzUBOtbkLIO
+	 WQ72uPr0ZVWypOMv5c8Nenqh8CpWCPxP8Pr+lVsmRTT+v2tkabMQ06xkCj7XLcLz7q
+	 yW7D396emOp0jkEh4TSCkNl0Jg9iNm93kInhbTXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 416/482] ACPI: resource: Add Asus ExpertBook B2502CVA to irq1_level_low_skip_override[]
-Date: Tue,  8 Oct 2024 14:07:59 +0200
-Message-ID: <20241008115704.773911007@linuxfoundation.org>
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 235/386] ext4: fix incorrect tid assumption in ext4_fc_mark_ineligible()
+Date: Tue,  8 Oct 2024 14:08:00 +0200
+Message-ID: <20241008115638.648966556@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 056301e7c7c886f96d799edd36f3406cc30e1822 upstream.
+commit ebc4b2c1ac92fc0f8bf3f5a9c285a871d5084a6b upstream.
 
-Like other Asus ExpertBook models the B2502CVA has its keybopard IRQ (1)
-described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
-which breaks the keyboard.
+Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
+valid value for transaction IDs, which is incorrect.
 
-Add the B2502CVA to the irq1_level_low_skip_override[] quirk table to fix
-this.
+Furthermore, the sbi->s_fc_ineligible_tid handling also makes the same
+assumption by being initialised to '0'.  Fortunately, the sb flag
+EXT4_MF_FC_INELIGIBLE can be used to check whether sbi->s_fc_ineligible_tid
+has been previously set instead of comparing it with '0'.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217760
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240927141606.66826-4-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240724161119.13448-5-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/fast_commit.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -511,6 +511,13 @@ static const struct dmi_system_id irq1_l
- 		},
- 	},
- 	{
-+		/* Asus ExpertBook B2502CVA */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B2502CVA"),
-+		},
-+	},
-+	{
- 		/* Asus Vivobook Go E1404GA* */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -339,22 +339,29 @@ void ext4_fc_mark_ineligible(struct supe
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	tid_t tid;
++	bool has_transaction = true;
++	bool is_ineligible;
+ 
+ 	if (ext4_fc_disabled(sb))
+ 		return;
+ 
+-	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	if (handle && !IS_ERR(handle))
+ 		tid = handle->h_transaction->t_tid;
+ 	else {
+ 		read_lock(&sbi->s_journal->j_state_lock);
+-		tid = sbi->s_journal->j_running_transaction ?
+-				sbi->s_journal->j_running_transaction->t_tid : 0;
++		if (sbi->s_journal->j_running_transaction)
++			tid = sbi->s_journal->j_running_transaction->t_tid;
++		else
++			has_transaction = false;
+ 		read_unlock(&sbi->s_journal->j_state_lock);
+ 	}
+ 	spin_lock(&sbi->s_fc_lock);
+-	if (tid_gt(tid, sbi->s_fc_ineligible_tid))
++	is_ineligible = ext4_test_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
++	if (has_transaction &&
++	    (!is_ineligible ||
++	     (is_ineligible && tid_gt(tid, sbi->s_fc_ineligible_tid))))
+ 		sbi->s_fc_ineligible_tid = tid;
++	ext4_set_mount_flag(sb, EXT4_MF_FC_INELIGIBLE);
+ 	spin_unlock(&sbi->s_fc_lock);
+ 	WARN_ON(reason >= EXT4_FC_REASON_MAX);
+ 	sbi->s_fc_stats.fc_ineligible_reason_count[reason]++;
 
 
 
