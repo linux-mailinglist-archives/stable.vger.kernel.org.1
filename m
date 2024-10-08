@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-82895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8347B994F12
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B73C994ADE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25CC51F24AF3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0DE1B272A6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7C21DF96C;
-	Tue,  8 Oct 2024 13:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D53D1DE4CD;
+	Tue,  8 Oct 2024 12:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqUCbgaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt/7lilb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611C21DED7A;
-	Tue,  8 Oct 2024 13:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521891779B1;
+	Tue,  8 Oct 2024 12:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393788; cv=none; b=XjvLObCEETnvuRVCl/JthX4sFi6afJS/PusGtttgfmU6y21Qh3xbIHiCeR0NA5zLlrEM4hJh+bz42oZjFIrzN0XTmiPA2uM3ODt2j3LX07KqhNFDdukYiprqjdTI6rHxWCg7qXJ9jXqDAWsSY3r7XzlK9GL56OSVG3leVSrps/A=
+	t=1728391024; cv=none; b=NGkmqSLWWGlNSljE1pdLqXEwqgAKoxGQI/uwOMriI02JuY5ODp7EhBKObV8v7hhyhdA48TfJBTGH8kgqwpsglXEX4EgHS9BqglKRBugDpxeVmm6KgfAeFYv5zgy/fA1n7CYRpbx06fEz7F4T1kL7d04A7ckIVx3iw2DcUZJbaco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393788; c=relaxed/simple;
-	bh=Vy+tfQX9nE4tl0QmTHaFFNonIOjsOB/v8CyV/RbC4tg=;
+	s=arc-20240116; t=1728391024; c=relaxed/simple;
+	bh=92v5ZQv+el85ndIF/MtEwaUCWokX8F2P8nIk2n9tYtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTYqTDhDCV5DEEJt1/SSAAiiW9n53mMvP5G7wmKcNwwLWOf+524CNI60wq+ddWWpKFc/cwhHtmMmqulyyU8CoCZkh1YNSIfzLcvnfKocxgEZzzxNx0t/wVX3ZbcX/sXC9pdJUUXCBBIwRAplG89Ox4XSMZDkkkX0fRlamMkDDuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqUCbgaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B130C4CEC7;
-	Tue,  8 Oct 2024 13:23:07 +0000 (UTC)
+	 MIME-Version; b=JsvGKPg8y2vbSj0Qjrgs5sYOcnxuiraWF52X2dBUUr4rokr/qAfD6v4GLdXIt2lRSum8GddL6GQG0RId065GesuHXDPxu5j/IlOoRJ3p30hx1GovqDo6PBxMGs0SFijPmgyXL5UDmBBFy6osaab8LM1CBKDrM87/vJKDL/NWkwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt/7lilb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF23DC4CEC7;
+	Tue,  8 Oct 2024 12:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393788;
-	bh=Vy+tfQX9nE4tl0QmTHaFFNonIOjsOB/v8CyV/RbC4tg=;
+	s=korg; t=1728391024;
+	bh=92v5ZQv+el85ndIF/MtEwaUCWokX8F2P8nIk2n9tYtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqUCbgaV+V89LC11v5R9VZu6+Sk95pwBTwSrA1XvDNKi/f4b5tPpEFznefMG9aacp
-	 Z6kK0sX6R77sY8lbc42tNDTJOSHexVbKKri8go2Qcxz5Th27Z/d/YkAoXdbCI8vOrf
-	 2oyh6qLO4myHzcx7GXNOm22Id8RzxnytnaqAxyGs=
+	b=Qt/7lilb/NEWYUwcYTl19EHQiqt272sO4XzfLEtJlcIa24+axOKNSxPWf5O1dk76s
+	 bJy/SNktjZrCyh2rhfikj018q9Nt+1weBx96ymjAoektxKWeKr7JbosKO+ZSDcvbvv
+	 h+2nQpruIVk8ZI0LVV6oZlXpJ/UCttvlJbg+OAdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.6 254/386] drm: omapdrm: Add missing check for alloc_ordered_workqueue
+	Matthew Brost <matthew.brost@intel.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>
+Subject: [PATCH 6.10 436/482] drm/panthor: Dont add write fences to the shared BOs
 Date: Tue,  8 Oct 2024 14:08:19 +0200
-Message-ID: <20241008115639.389323132@linuxfoundation.org>
+Message-ID: <20241008115705.682701417@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-commit e794b7b9b92977365c693760a259f8eef940c536 upstream.
+commit f9e7ac6e2e9986c2ee63224992cb5c8276e46b2a upstream.
 
-As it may return NULL pointer and cause NULL pointer dereference. Add check
-for the return value of alloc_ordered_workqueue.
+The only user (the mesa gallium driver) is already assuming explicit
+synchronization and doing the export/import dance on shared BOs. The
+only reason we were registering ourselves as writers on external BOs
+is because Xe, which was the reference back when we developed Panthor,
+was doing so. Turns out Xe was wrong, and we really want bookkeep on
+all registered fences, so userspace can explicitly upgrade those to
+read/write when needed.
 
-Cc: stable@vger.kernel.org
-Fixes: 2f95bc6d324a ("drm: omapdrm: Perform initialization/cleanup at probe/remove time")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240808061336.2796729-1-make24@iscas.ac.cn
+Fixes: 4bdca1150792 ("drm/panthor: Add the driver frontend block")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240905070155.3254011-1-boris.brezillon@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/omapdrm/omap_drv.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/panthor/panthor_sched.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/omapdrm/omap_drv.c
-+++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-@@ -695,6 +695,10 @@ static int omapdrm_init(struct omap_drm_
- 	soc = soc_device_match(omapdrm_soc_devices);
- 	priv->omaprev = soc ? (uintptr_t)soc->data : 0;
- 	priv->wq = alloc_ordered_workqueue("omapdrm", 0);
-+	if (!priv->wq) {
-+		ret = -ENOMEM;
-+		goto err_alloc_workqueue;
-+	}
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -3436,13 +3436,8 @@ void panthor_job_update_resvs(struct drm
+ {
+ 	struct panthor_job *job = container_of(sched_job, struct panthor_job, base);
  
- 	mutex_init(&priv->list_lock);
- 	INIT_LIST_HEAD(&priv->obj_list);
-@@ -753,6 +757,7 @@ err_gem_deinit:
- 	drm_mode_config_cleanup(ddev);
- 	omap_gem_deinit(ddev);
- 	destroy_workqueue(priv->wq);
-+err_alloc_workqueue:
- 	omap_disconnect_pipelines(ddev);
- 	drm_dev_put(ddev);
- 	return ret;
+-	/* Still not sure why we want USAGE_WRITE for external objects, since I
+-	 * was assuming this would be handled through explicit syncs being imported
+-	 * to external BOs with DMA_BUF_IOCTL_IMPORT_SYNC_FILE, but other drivers
+-	 * seem to pass DMA_RESV_USAGE_WRITE, so there must be a good reason.
+-	 */
+ 	panthor_vm_update_resvs(job->group->vm, exec, &sched_job->s_fence->finished,
+-				DMA_RESV_USAGE_BOOKKEEP, DMA_RESV_USAGE_WRITE);
++				DMA_RESV_USAGE_BOOKKEEP, DMA_RESV_USAGE_BOOKKEEP);
+ }
+ 
+ void panthor_sched_unplug(struct panthor_device *ptdev)
 
 
 
