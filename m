@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68DC994DE1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65547994C53
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C28728407E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB052283FC9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DCA1DEFEA;
-	Tue,  8 Oct 2024 13:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35D61DE8A0;
+	Tue,  8 Oct 2024 12:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWi2wIR4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNjJljZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9175C1DED7A;
-	Tue,  8 Oct 2024 13:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F541CCB32;
+	Tue,  8 Oct 2024 12:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393026; cv=none; b=ncYG6e4vxZwMKixXZbaNwW5ImYrLes9SAUlMDZgch67/gzU/kW2cUtlPueh4lrtqt5S1kmBkrNHtHn2kYk2avWdWpOU5Vx8Oykeh2Q7rmMWc8bFElA3k3dLNiBEyNKWff7rn0WKb9I03Se5Va2v1nZHn0kdxmnps0nle4K+PwEs=
+	t=1728391970; cv=none; b=lZM0oJOnIHDfAkDt1PSih4Ge/lhmPofK4/O800xhK+stn78IoPR4HDPYQOyH4K8kWY5YYJdIW9HkQK5s0vPtsX0AxvdJ3dhWKMSCcoHx6djX8Ay+s10HSJIrd+TFCESGVX98tj1ZSEgaZ5vGG0DbfY7hCMwETAH7t8ECTYoj2zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393026; c=relaxed/simple;
-	bh=gxifK8jGBNQ4K4eq8Rr64uwOP4eMWOQYZ65yw6nAwkM=;
+	s=arc-20240116; t=1728391970; c=relaxed/simple;
+	bh=jyFA3vhtwsDQTwzA1Qfm12YPcWkZ7Abs4nwDAjeZO+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3QobOYm/ozdcgNm4ITA4f4rFcA1vgIn5HF7y9l2542Y4XqrYo7NMpZXgtO7YexBbzgmv9C3OW2gy/7R6GzupajKwDcuK+iBGyUSQopsHOBz9uYnPjbNeYyrXn5KbFYmgUOJgFx8qK50VoXy77pBWwTtf2PJpSFm6KPby9vsuCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWi2wIR4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FAEC4CEC7;
-	Tue,  8 Oct 2024 13:10:25 +0000 (UTC)
+	 MIME-Version; b=NKLnIzFAitA4BOLo4H7qS8Jf0RsQHYZFoEUW71ajjoATumJaZ6hJG7VTGha2I1M5qCeGNT3ZjMe6/cIaevOTj8WPTnX3ypIP5mZrXwtKFnFeVa1T8u4VhJofJZYPHMHRIANyc/fxtt/f8xWFax5w5AqSrhcsbxavgfkG9t7QroE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNjJljZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3DBC4CEC7;
+	Tue,  8 Oct 2024 12:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393026;
-	bh=gxifK8jGBNQ4K4eq8Rr64uwOP4eMWOQYZ65yw6nAwkM=;
+	s=korg; t=1728391970;
+	bh=jyFA3vhtwsDQTwzA1Qfm12YPcWkZ7Abs4nwDAjeZO+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zWi2wIR4KCC106+XzwCJXv4NXdrepOgDWXpNXHeDAg2Pv+X8c1nUTqGLZnEC4LWt/
-	 MXj1B2cq7oupg+ZuTQlJNqxt/bKWGX6KL6UUTb2tMAKwtGzK7gipdHAE2CC3x0qSpA
-	 tHJ25ZRjMUT1geopN0JrBxblU0awBdPdwQ3/PHH4=
+	b=TNjJljZ/zaUHj4coRW9mmCQ17ufomz0gD8Wgw8uL3MBWJzAwUQmhuwOPX6LvNHNBQ
+	 nDC14/rjUBeahEOBuhBrB0zsRrEkBUqj3XWcXmwL58bGxnK9kdQMUC6d6+rAgby2Kx
+	 DYsxrG7xDvIFXwYr3hVCJgP7tSovhBF3Rf27Dypg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vishnu Sankar <vishnuocv@gmail.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/386] net: add more sanity checks to qdisc_pkt_len_init()
+Subject: [PATCH 6.11 246/558] HID: multitouch: Add support for Thinkpad X12 Gen 2 Kbd Portfolio
 Date: Tue,  8 Oct 2024 14:04:36 +0200
-Message-ID: <20241008115630.704378546@linuxfoundation.org>
+Message-ID: <20241008115712.019945952@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vishnu Sankar <vishnuocv@gmail.com>
 
-[ Upstream commit ab9a9a9e9647392a19e7a885b08000e89c86b535 ]
+[ Upstream commit 65b72ea91a257a5f0cb5a26b01194d3dd4b85298 ]
 
-One path takes care of SKB_GSO_DODGY, assuming
-skb->len is bigger than hdr_len.
+This applies similar quirks used by previous generation device, so that
+Trackpoint and buttons on the touchpad works.  New USB KBD PID 0x61AE for
+Thinkpad X12 Tab is added.
 
-virtio_net_hdr_to_skb() does not fully dissect TCP headers,
-it only make sure it is at least 20 bytes.
-
-It is possible for an user to provide a malicious 'GSO' packet,
-total length of 80 bytes.
-
-- 20 bytes of IPv4 header
-- 60 bytes TCP header
-- a small gso_size like 8
-
-virtio_net_hdr_to_skb() would declare this packet as a normal
-GSO packet, because it would see 40 bytes of payload,
-bigger than gso_size.
-
-We need to make detect this case to not underflow
-qdisc_skb_cb(skb)->pkt_len.
-
-Fixes: 1def9238d4aa ("net_sched: more precise pkt_len computation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 877ebaff95586..70f757707f1a2 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3754,10 +3754,14 @@ static void qdisc_pkt_len_init(struct sk_buff *skb)
- 				hdr_len += sizeof(struct udphdr);
- 		}
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 53655f81d9950..06104a4e0fdc1 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -794,6 +794,7 @@
+ #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
+ #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
+ #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
++#define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
+ #define USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E	0x600e
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D	0x608d
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019	0x6019
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 99812c0f830b5..c4a6908bbe540 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2113,6 +2113,12 @@ static const struct hid_device_id mt_devices[] = {
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
  
--		if (shinfo->gso_type & SKB_GSO_DODGY)
--			gso_segs = DIV_ROUND_UP(skb->len - hdr_len,
--						shinfo->gso_size);
-+		if (unlikely(shinfo->gso_type & SKB_GSO_DODGY)) {
-+			int payload = skb->len - hdr_len;
- 
-+			/* Malicious packet. */
-+			if (payload <= 0)
-+				return;
-+			gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
-+		}
- 		qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
- 	}
- }
++	/* Lenovo X12 TAB Gen 2 */
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			   USB_VENDOR_ID_LENOVO,
++			   USB_DEVICE_ID_LENOVO_X12_TAB2) },
++
+ 	/* Logitech devices */
+ 	{ .driver_data = MT_CLS_NSMU,
+ 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
 -- 
 2.43.0
 
