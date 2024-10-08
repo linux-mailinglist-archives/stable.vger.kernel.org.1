@@ -1,138 +1,146 @@
-Return-Path: <stable+bounces-81581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E013E994751
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A004994757
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096AF1C25233
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:38:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C7011C24D3B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 11:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA431D460F;
-	Tue,  8 Oct 2024 11:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916C31DEFE0;
+	Tue,  8 Oct 2024 11:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0PGcpYq"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A454B1D4342
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 11:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2E21DED79;
+	Tue,  8 Oct 2024 11:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728387329; cv=none; b=q/0VLl+qgXqLqvfyT+pUYSNRdsip5tVyi8A0f6LuooMcMTUThH31Jw+5ujHn2gALf+EKzyu/BBMQbA+bifzbUQ/N3DbQ7BM3QlWkS0fjUDLlk2YCdDgMRMwXamDWNp654fSeG0cape+6vsE23/Unl6H074VixboQ2kHdqKz3hwQ=
+	t=1728387389; cv=none; b=fWkbCWfpDLfdCVm1+96tA/PRKPQv14awV+ZmbYVvo+bJDMzhDg3DzpDsY4aDjGcBMIURGkuwRo3yDmamLXXbaIPDJSqgIU+hqvMiV1f1BRJtA3GdK94VTCiOcsepyc8zD3J2QclU2lbptTqoKEowsHLLR4EHXbizIe1zVOkbWPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728387329; c=relaxed/simple;
-	bh=s+h0DDSyCHiqN3H6W/w/6Fr1FaeU/MGaGG5TaLBF/8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IgF3bMdq15pTFKNm/5+Y/vHE0w0iWJQreZy1WqzqEjycne6iapfVQLc3/ZGt7/3WhypH/T3QkJRg1b/GCPWIuKxGojU4rqz+n/kWR8QPqLG5zAYEZ1zAKQo3r88Eef370ZJigbN9vFcp8pLVdYprp09qL/TQK0BuU3bQmx13qtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 704C91C006B; Tue,  8 Oct 2024 13:35:25 +0200 (CEST)
-Date: Tue, 8 Oct 2024 13:35:24 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Pavel Machek <pavel@denx.de>, Jens Axboe <axboe@kernel.dk>,
-	Vegard Nossum <vegard.nossum@oracle.com>, stable@vger.kernel.org,
-	cengiz.can@canonical.com, mheyne@amazon.de, mngyadam@amazon.com,
-	kuntal.nayak@broadcom.com, ajay.kaher@broadcom.com,
-	zsm@chromium.org, dan.carpenter@linaro.org,
-	shivani.agarwal@broadcom.com, ahalaney@redhat.com,
-	alsi@bang-olufsen.dk, ardb@kernel.org,
-	benjamin.gaignard@collabora.com, bli@bang-olufsen.dk,
-	chengzhihao1@huawei.com, christophe.jaillet@wanadoo.fr,
-	ebiggers@kernel.org, edumazet@google.com, fancer.lancer@gmail.com,
-	florian.fainelli@broadcom.com, harshit.m.mogalapalli@oracle.com,
-	hdegoede@redhat.com, horms@kernel.org, hverkuil-cisco@xs4all.nl,
-	ilpo.jarvinen@linux.intel.com, jgg@nvidia.com, kevin.tian@intel.com,
-	kirill.shutemov@linux.intel.com, kuba@kernel.org,
-	luiz.von.dentz@intel.com, md.iqbal.hossain@intel.com,
-	mpearson-lenovo@squebb.ca, nicolinc@nvidia.com, pablo@netfilter.org,
-	rfoss@kernel.org, richard@nod.at, tfiga@chromium.org,
-	vladimir.oltean@nxp.com, xiaolei.wang@windriver.com,
-	yanjun.zhu@linux.dev, yi.zhang@redhat.com, yu.c.chen@intel.com,
-	yukuai3@huawei.com
-Subject: Re: [PATCH RFC 6.6.y 00/15] Some missing CVE fixes
-Message-ID: <ZwUY/BMXwxq0Y9+F@duo.ucw.cz>
-References: <20241002150606.11385-1-vegard.nossum@oracle.com>
- <612f0415-96c2-4d52-bd3d-46ffa8afbeef@kernel.dk>
- <ZwUUjKD7peMgODGB@duo.ucw.cz>
- <2024100820-endnote-seldom-127c@gregkh>
+	s=arc-20240116; t=1728387389; c=relaxed/simple;
+	bh=tNXsqqFWbMFr3g+ctOdBFLt8QeRqJ7KGw2pmNQ53Cz0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YnF/g6bA2u84KzDMGrimH207QgjqgVEuXWEAXe2LrtfxTvytPjz2JLg6paI36fGvtWAXR2AzIm7wkKghDLNHn4Lz0rka+b/4iJ2Q6D6VqWp5uqn/lG7ScFkF17i8Fkh79hN5/qVYgyew3Ct2fMZXc/rtgPhRNfSYJn5GUmXmywk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0PGcpYq; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5c721803a89so7443683a12.1;
+        Tue, 08 Oct 2024 04:36:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728387386; x=1728992186; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NRvHMUxY4zFz42GUBqqGufyMy0VLstlvaUm3YEpzbjw=;
+        b=I0PGcpYq3at0jZCqitGr1W3quaDHbCoerAG7kHDsiIB+yFaaRAHQkF2tMeHyIgrIkk
+         nVuhWHB8EnNhjVZCFenh8jHZgjgxM20uCyGXJxdtcv/wveY72q7gBDxVJZVX2euCeBG4
+         DCiKKDEZnuXwKGOxAQ7Ap4ujCWui7Knb1UJuj3JxtPGtthIogel9cnNoZnjpBdrm4hoH
+         I0wPsUvIfIOZQNz9OHI4YdCrLhw0yjjO80kzuekLWxnNdv3iZO0t313cVNcFKU+V+Vgz
+         WWg2ePC7Sw/ZAGotAnnv/VWS9SV/J9tdAYHypTcseMkFm6unFImrjlPnzNufZtp+Cc+i
+         d12g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728387386; x=1728992186;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NRvHMUxY4zFz42GUBqqGufyMy0VLstlvaUm3YEpzbjw=;
+        b=m7C0duZDudvNKBfFqU80bvzBtCjylrfnQ5VJfW9LDI2lC6Myge3tB7vGF/wR4v3pJz
+         NkciHNe5I5jdauSOd9a3TeSAvQF+A0ZRSwABWy/dZ0+ER3gCnEnLhyOQ8Dp8BmsI6qTJ
+         ohyMOUTsvAh2JIcXdobKg4c8O271xvtmPluEgVVyohGbhw/qz+s2lC4XJb3sX+FpT+wh
+         hYexE2zjGtoGN9Nmujo0Wj8p+iegPORoc6pnK8mamtjPMCOnP9E8FcO0jhCeoTsraUEd
+         lwNLImomKyTxcE0GNWoO4Dl3yL+Wwq7rfhIYBwL8/7pIQLDb3LmNlFOH72GvM8f1KEls
+         aWRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVECjnMPPcvGYDEYkHC0gmB4T7jTxZ7fvvHZR9VgGeWl/XfPx80CnMEpO+zsFZhip9a8C8l6r7LY9mUgn4=@vger.kernel.org, AJvYcCVmPfckk3x/lq8g0N4A6YX90tTQybtSnHicduChnDltgx//HBnHN9RHdNqlsDOgU/zK7ECrrD0PAKuRUe0=@vger.kernel.org, AJvYcCWHN7O6prrL+93E2cGRBBN2uWEITlnP56k+YL1Pkp13z7foug9wyu2YBz/wY4LBznMsReBUzV60@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj3TlLe6canZ4CCyUsUcXtd2U/TqL8tocOaIHTafAtO8BCly7T
+	dkep1WvIuSEVcSOihnUC+Tmxf0ftHl8KX5zrutGQodvmmtZUfOVs
+X-Google-Smtp-Source: AGHT+IHFBZAP0UjOuvIZiyy54gdCEXyBMbpVvwQbpLknYjjq3h4+A4coza4bM8lsTfSDV0XcUPu91A==
+X-Received: by 2002:a17:906:4fcc:b0:a99:6791:5449 with SMTP id a640c23a62f3a-a9967915cbbmr258151866b.52.1728387385837;
+        Tue, 08 Oct 2024 04:36:25 -0700 (PDT)
+Received: from [127.0.1.1] ([2001:67c:2330:2002:af84:a410:1c4f:f793])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99399c6735sm451283366b.9.2024.10.08.04.36.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2024 04:36:25 -0700 (PDT)
+From: Benjamin Bara <bbara93@gmail.com>
+Date: Tue, 08 Oct 2024 13:36:14 +0200
+Subject: [PATCH v2] ASoC: dapm: avoid container_of() to get component
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0ucz3kCwoKIM+ygt"
-Content-Disposition: inline
-In-Reply-To: <2024100820-endnote-seldom-127c@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241008-tegra-dapm-v2-1-5e999cb5f0e7@skidata.com>
+X-B4-Tracking: v=1; b=H4sIAC0ZBWcC/23MywqDMBCF4VeRWXeKSYvRrnyP4mI0Ex2KF5IgL
+ ZJ3b+q6y//A+Q4I7IUDPIoDPO8SZF1y6EsBw0TLyCg2N+hS31VZGow8ekJL24zsmqrpa2cqTZA
+ Pm2cn7xN7drknCXH1n9Pe1W/9y+wKFfZs2TT1zZGp2vASS5GuwzpDl1L6AsoaTZKmAAAA
+X-Change-ID: 20241007-tegra-dapm-ef969b8f762a
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-sound@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Benjamin Bara <benjamin.bara@skidata.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
---0ucz3kCwoKIM+ygt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The current implementation does not work for widgets of DAPMs without
+component, as snd_soc_dapm_to_component() requires it. If the widget is
+directly owned by the card, e.g. as it is the case for the tegra
+implementation, the call leads to UB. Therefore directly access the
+component of the widget's DAPM to be able to check if a component is
+available.
 
-On Tue 2024-10-08 13:24:05, Greg Kroah-Hartman wrote:
-> On Tue, Oct 08, 2024 at 01:16:28PM +0200, Pavel Machek wrote:
-> > On Wed 2024-10-02 09:26:46, Jens Axboe wrote:
-> > > On 10/2/24 9:05 AM, Vegard Nossum wrote:
-> > > > Christophe JAILLET (1):
-> > > >   null_blk: Remove usage of the deprecated ida_simple_xx() API
-> > > >=20
-> > > > Yu Kuai (1):
-> > > >   null_blk: fix null-ptr-dereference while configuring 'power' and
-> > > >     'submit_queues'
-> > >=20
-> > > I don't see how either of these are CVEs? Obviously not a problem to
-> > > backport either of them to stable, but I wonder what the reasoning for
-> > > that is. IOW, feels like those CVEs are bogus, which I guess is hardly
-> > > surprising :-)
-> >=20
-> > "CVE" has become meaningless for kernel. Greg simply assigns CVE to
-> > anything that remotely resembles a bug.
->=20
-> Stop spreading nonsense.  We are following the cve.org rules with
-> regards to assigning vulnerabilities to their definition.
+Fixes: f82eb06a40c8 ("ASoC: tegra: machine: Handle component name prefix")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+---
+Hi!
 
-Stop attacking me.
+I handled the new patch as V2 of the initial one, although it has a
+different summary. Hope this is fine.
+---
+Changes in v2:
+- fix snd_soc_dapm_widget_name_cmp() instead of reverting commit
+- don't pick up R-b of Krzysztof, as different implementation
+- Link to v1: https://lore.kernel.org/r/20241007-tegra-dapm-v1-1-bede7983fa76@skidata.com
+---
+ sound/soc/soc-dapm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> And yes, many bugs at this level (turns out about 25% of all stable
-> commits) match that definition, which is fine.  If you have a problem
-> with this, please take it up with cve.org and their rules, but don't go
-> making stuff up please.
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index 9330f1a3f7589dc467c04238830f2009a619a998..c34934c31ffec3970b34b24dcaa0826dfb7d8e86 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -2785,10 +2785,10 @@ EXPORT_SYMBOL_GPL(snd_soc_dapm_update_dai);
+ 
+ int snd_soc_dapm_widget_name_cmp(struct snd_soc_dapm_widget *widget, const char *s)
+ {
+-	struct snd_soc_component *component = snd_soc_dapm_to_component(widget->dapm);
++	struct snd_soc_component *component = widget->dapm->component;
+ 	const char *wname = widget->name;
+ 
+-	if (component->name_prefix)
++	if (component && component->name_prefix)
+ 		wname += strlen(component->name_prefix) + 1; /* plus space */
+ 
+ 	return strcmp(wname, s);
 
-You are assigning CVE for any bug. No, it is not fine, and while CVE
-rules may permit you to do that, it is unhelpful, because the CVE feed
-became useless.
+---
+base-commit: 8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+change-id: 20241007-tegra-dapm-ef969b8f762a
 
-(And yes, some people are trying to mitigate damage you are doing by
-disputing worst offenders, and process shows that quite often CVEs get
-assigned when they should not have been.)
+Best regards,
+-- 
+Benjamin Bara <benjamin.bara@skidata.com>
 
-And yes, I have problem with that.
-
-Just because you are not breaking cve.org rules does not mean you are
-doing good thing. (And yes, probably cve.org rules should be fixed.)
-
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---0ucz3kCwoKIM+ygt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZwUY/AAKCRAw5/Bqldv6
-8oPsAKC7ACotpjIvVl8gQ0OJhzV+G7AM5ACeNXXpXeMBUUdckHcO9e+zpSRfTnk=
-=uPkd
------END PGP SIGNATURE-----
-
---0ucz3kCwoKIM+ygt--
 
