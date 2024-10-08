@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCD3994B5F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F994994873
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B846B218D1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:42:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1F202808B4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4A41779B1;
-	Tue,  8 Oct 2024 12:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729AC1DE3B2;
+	Tue,  8 Oct 2024 12:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCfUcC/5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkUchfe9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1E81DEFEC;
-	Tue,  8 Oct 2024 12:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232EF1DDC24;
+	Tue,  8 Oct 2024 12:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391287; cv=none; b=V5W9IJzZ9vPYmr5o1lS+yCOzXVnCDzqiqHIXU7eRj/xgEBQN50Im4kKYgFP/k8KLH19wSbk/NL2y+8yBEP3g8ZkXeqEeaF5WhLIfmH2RxaUjImVpVwqQmGv+I7FX8eNzbZuiL+JfNCmFV11cvKbw2ljDWccWxWVhjYkQvJ7HTh8=
+	t=1728389571; cv=none; b=Hl3wPzhNcLjlPl7SQUQjdx51IduRdtlyRPsGOIYa1IImKWeRPfYIqtmQFyLYDcQ5MEMFV6O1vG0sAVzgpjGm13qo6oPdlG6sCPCQh0Wk4z4CZgvwKkB0oF7QoD4nR0oUq1vVlvkuTMvUVU+Jg6B44irPmVR7jrlTjSFX165cL9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391287; c=relaxed/simple;
-	bh=MFb8yhRjVfX7J6MTGWpmj0neMlQZYdorh+p6vmTJzZo=;
+	s=arc-20240116; t=1728389571; c=relaxed/simple;
+	bh=AeZyHMfnhJ1D1xD/M/zNahqMU0AxOT0+9I+ePQwh7zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qAz7GBgpKW/5hCS74ekqK4RzzJ07Z856rHA5UBaAJwasBhWWxqp803+6QROtszH7nKvk2IxXcUIgpYjjAO1ZjRcVnKWHwNkPsneRS4YAloJ2QzLYkxCS1eW3iKvttopa5z8LTGWJOriz90EkcqoM4LG5JfPsgLE74bHt9MO//C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCfUcC/5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E1CC4CEC7;
-	Tue,  8 Oct 2024 12:41:26 +0000 (UTC)
+	 MIME-Version; b=Dk7TBfR5IKDOrMJpUx/P9riVSBAHQ6H4mFxlIhDEboYHE3HYcGArGZyuiVXZaq4GlxaSb4ymMVejJcO6YqZlyQGHqjFtuhlv2cS+0CPGlAZS37En8ar7Id8nFDBVr0YgHzV8YXxwSbR/l6vx6taOcPTK916apGOBDvpBwYBVI1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkUchfe9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE4AC4CEC7;
+	Tue,  8 Oct 2024 12:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391287;
-	bh=MFb8yhRjVfX7J6MTGWpmj0neMlQZYdorh+p6vmTJzZo=;
+	s=korg; t=1728389570;
+	bh=AeZyHMfnhJ1D1xD/M/zNahqMU0AxOT0+9I+ePQwh7zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCfUcC/56uZ9cg2mUhhnuG91gCM2k8IWRSQb9APxW8UOm8OdGKM3CCc9aZoL0SGeW
-	 iXvf9WlkZ6i/iJM624DKu0cWkmbYgjT2pG5RTx8F9qcrz1zaEam8vDmDfKQHd4clvS
-	 vq5uA9HlkSNXICWv8H2gvmfj6Ekemsft3QUhwUCs=
+	b=FkUchfe9yiRQfjW84KJEuAQHHCQ4OSYNpHL6ZRc52SN1r0nnBKFkSWr9W6Dd4YTn8
+	 Upn243GJFaO69TtMXuD3mrkO8HgeVhPP7oLPEV5gwdiohFp3RkPlc7QntCfpysySXV
+	 qDgIsA4YV2p0E6S2DS71ZC9VUjzA/VdAb1EiVr+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 065/558] cifs: Remove intermediate object of failed create reparse call
-Date: Tue,  8 Oct 2024 14:01:35 +0200
-Message-ID: <20241008115704.775993273@linuxfoundation.org>
+Subject: [PATCH 6.10 033/482] net: dsa: improve shutdown sequence
+Date: Tue,  8 Oct 2024 14:01:36 +0200
+Message-ID: <20241008115649.603257389@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit c9432ad5e32f066875b1bf95939c363bc46d6a45 ]
+[ Upstream commit 6c24a03a61a245fe34d47582898331fa034b6ccd ]
 
-If CREATE was successful but SMB2_OP_SET_REPARSE failed then remove the
-intermediate object created by CREATE. Otherwise empty object stay on the
-server when reparse call failed.
+Alexander Sverdlin presents 2 problems during shutdown with the
+lan9303 driver. One is specific to lan9303 and the other just happens
+to reproduce there.
 
-This ensures that if the creating of special files is unsupported by the
-server then no empty file stay on the server as a result of unsupported
-operation.
+The first problem is that lan9303 is unique among DSA drivers in that it
+calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
+not remove):
 
-Fixes: 102466f303ff ("smb: client: allow creating special files via reparse points")
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+phy_state_machine()
+-> ...
+   -> dsa_user_phy_read()
+      -> ds->ops->phy_read()
+         -> lan9303_phy_read()
+            -> chip->ops->phy_read()
+               -> lan9303_mdio_phy_read()
+                  -> dev_get_drvdata()
+
+But we never stop the phy_state_machine(), so it may continue to run
+after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
+to set drvdata to NULL to suppress the remove() method that may come
+afterwards. But in this case it will result in an NPD.
+
+The second problem is that the way in which we set
+dp->conduit->dsa_ptr = NULL; is concurrent with receive packet
+processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
+but afterwards, rather than continuing to use that non-NULL value,
+dev->dsa_ptr is dereferenced again and again without NULL checks:
+dsa_conduit_find_user() and many other places. In between dereferences,
+there is no locking to ensure that what was valid once continues to be
+valid.
+
+Both problems have the common aspect that closing the conduit interface
+solves them.
+
+In the first case, dev_close(conduit) triggers the NETDEV_GOING_DOWN
+event in dsa_user_netdevice_event() which closes user ports as well.
+dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
+the phylink state machine, and ds->ops->phy_read() will thus no longer
+call into the driver after this point.
+
+In the second case, dev_close(conduit) should do this, as per
+Documentation/networking/driver.rst:
+
+| Quiescence
+| ----------
+|
+| After the ndo_stop routine has been called, the hardware must
+| not receive or transmit any data.  All in flight packets must
+| be aborted. If necessary, poll or wait for completion of
+| any reset commands.
+
+So it should be sufficient to ensure that later, when we zeroize
+conduit->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
+on this conduit.
+
+The addition of the netif_device_detach() function is to ensure that
+ioctls, rtnetlinks and ethtool requests on the user ports no longer
+propagate down to the driver - we're no longer prepared to handle them.
+
+The race condition actually did not exist when commit 0650bf52b31f
+("net: dsa: be compatible with masters which unregister on shutdown")
+first introduced dsa_switch_shutdown(). It was created later, when we
+stopped unregistering the user interfaces from a bad spot, and we just
+replaced that sequence with a racy zeroization of conduit->dsa_ptr
+(one which doesn't ensure that the interfaces aren't up).
+
+Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
+Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
+Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ net/dsa/dsa.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 11a1c53c64e0b..a6dab60e2c01e 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -1205,9 +1205,12 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
- 	struct cifsFileInfo *cfile;
- 	struct inode *new = NULL;
-+	int out_buftype[4] = {};
-+	struct kvec out_iov[4] = {};
- 	struct kvec in_iov[2];
- 	int cmds[2];
- 	int rc;
-+	int i;
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 12521a7d40481..03ef2a2af4309 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1579,6 +1579,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch);
+ void dsa_switch_shutdown(struct dsa_switch *ds)
+ {
+ 	struct net_device *conduit, *user_dev;
++	LIST_HEAD(close_list);
+ 	struct dsa_port *dp;
  
- 	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
- 			     SYNCHRONIZE | DELETE |
-@@ -1228,7 +1231,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
- 		cmds[1] = SMB2_OP_POSIX_QUERY_INFO;
- 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
- 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
--				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
-+				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
- 		if (!rc) {
- 			rc = smb311_posix_get_inode_info(&new, full_path,
- 							 data, sb, xid);
-@@ -1237,12 +1240,29 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
- 		cmds[1] = SMB2_OP_QUERY_INFO;
- 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
- 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
--				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
-+				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
- 		if (!rc) {
- 			rc = cifs_get_inode_info(&new, full_path,
- 						 data, sb, xid, NULL);
- 		}
+ 	mutex_lock(&dsa2_mutex);
+@@ -1588,10 +1589,16 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
+ 
+ 	rtnl_lock();
+ 
++	dsa_switch_for_each_cpu_port(dp, ds)
++		list_add(&dp->conduit->close_list, &close_list);
++
++	dev_close_many(&close_list, true);
++
+ 	dsa_switch_for_each_user_port(dp, ds) {
+ 		conduit = dsa_port_to_conduit(dp);
+ 		user_dev = dp->user;
+ 
++		netif_device_detach(user_dev);
+ 		netdev_upper_dev_unlink(conduit, user_dev);
  	}
-+
-+
-+	/*
-+	 * If CREATE was successful but SMB2_OP_SET_REPARSE failed then
-+	 * remove the intermediate object created by CREATE. Otherwise
-+	 * empty object stay on the server when reparse call failed.
-+	 */
-+	if (rc &&
-+	    out_iov[0].iov_base != NULL && out_buftype[0] != CIFS_NO_BUFFER &&
-+	    ((struct smb2_hdr *)out_iov[0].iov_base)->Status == STATUS_SUCCESS &&
-+	    (out_iov[1].iov_base == NULL || out_buftype[1] == CIFS_NO_BUFFER ||
-+	     ((struct smb2_hdr *)out_iov[1].iov_base)->Status != STATUS_SUCCESS))
-+		smb2_unlink(xid, tcon, full_path, cifs_sb, NULL);
-+
-+	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
-+		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
-+
- 	return rc ? ERR_PTR(rc) : new;
- }
  
 -- 
 2.43.0
