@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601BF994C57
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C019F994E19
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEBDD2839B0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F212C1C24DC3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5D31DE8BE;
-	Tue,  8 Oct 2024 12:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A521DEFE3;
+	Tue,  8 Oct 2024 13:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZkP0DE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vW6y9g9k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EBE1DE3A3;
-	Tue,  8 Oct 2024 12:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A621DE4CD;
+	Tue,  8 Oct 2024 13:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391984; cv=none; b=L1jUmsNiayVyyTavLSzXut02dNl8IMKtrdSvVmwm4CeqxoR1ha3hb6CpGLB5jn83CSrL3jFzUXolqKtjRwGzYeY1oN+bxkgv3pOd0TsyFVunlZnpChkic4hr+Flo1bpmj65q/AkSdZ7COt1jxWNCRVg/CNvgyO+MsZ2BclcbX+Y=
+	t=1728393146; cv=none; b=opc8auxIJR+JpENxLbs+yKpJ94gUu7JKFWZIFqVcZ6dne0W/ifWhgMCq9mbkpmlR7A2JjltLYEE/DUn42oSbrKwPhiGyNn/MRlXojgjdb4h9ZrZqXObpdgr3hH4/XHaCu8c2HWssoacDYcdXSgb2+jH/Yq/un0qdzk5+4VG+9MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391984; c=relaxed/simple;
-	bh=U0EA+t5ccVf6rSitBXb/KVEedLPN12rRZ6JJ9ngIous=;
+	s=arc-20240116; t=1728393146; c=relaxed/simple;
+	bh=7E+fN1vL+Q6xiIadVaw8MgTaMPwUL7MtUCzeNBC+ycs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3tAtOWYwVwFs/AlfVkeir3aDGPszwKSCHFn4Xc88u5vQj/zY6NXXQza2iir//YXgCDF52/2ZADsYEVzCUhaiEuZvAebtQhhVqXi+QRY6Oloj878HiK2tpLk1C8Dp4Ows9T5lf6fkUsav0IHjAqxUteBSLc6z4a0cIrRT+12dc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZkP0DE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F908C4CEC7;
-	Tue,  8 Oct 2024 12:53:03 +0000 (UTC)
+	 MIME-Version; b=uiSN/BcLWYG5jcg+v5w+SJVktbsJ9DjKJk7/l47fTvdajYDXQJVjqWMpBBolqzzgYtdYNJ6pMdjU58g5cLpqXwC855tH4d+sGRcDGSkmceNMeBEsJPxRwOsF0h595XEGAusiwxLWFOaee6wrsXkSsH3rzVbhmkWjqdTNK7mNIz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vW6y9g9k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9075C4CECC;
+	Tue,  8 Oct 2024 13:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391984;
-	bh=U0EA+t5ccVf6rSitBXb/KVEedLPN12rRZ6JJ9ngIous=;
+	s=korg; t=1728393146;
+	bh=7E+fN1vL+Q6xiIadVaw8MgTaMPwUL7MtUCzeNBC+ycs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZkP0DE5aMr3caaEn4X61zY1+Cxw9hnoYcFNbVgcIHLp/Br+SfqijD6YmADg4tcQ2
-	 17yhloOK/W2dfolZCvrEIHRz3SB8Hvbo/gmWDfqBzAoi8KGMxK6wQs8fsAgnMiMsfZ
-	 Bh5/5Yv/r94G68WZF7xQE6sn5YxOF04By6EyDUeI=
+	b=vW6y9g9kcc/7fcER4L11ak65QKZkmnfjKB+1sUQkiqUTzDkZgTtpMoIdhwD6+Q75u
+	 FQn4ioED8Qh9v+f+flAY0+erB+PgQY/SyXif+HPd7D9ex9q+iFL2I+hsuiwll6sUEQ
+	 YnpQe6TbaOSdHv/aPtXCyG7t7B9DvMmf+lbyeurE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sunil Khatri <sunil.khatri@amd.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 282/558] drm/amdgpu: fix ptr check warning in gfx10 ip_dump
+Subject: [PATCH 6.6 067/386] net: hisilicon: hip04: fix OF node leak in probe()
 Date: Tue,  8 Oct 2024 14:05:12 +0200
-Message-ID: <20241008115713.423631740@linuxfoundation.org>
+Message-ID: <20241008115632.102975231@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunil Khatri <sunil.khatri@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 98df5a7732e3b78bf8824d2938a8865a45cfc113 ]
+[ Upstream commit 17555297dbd5bccc93a01516117547e26a61caf1 ]
 
-Change condition, if (ptr == NULL) to if (!ptr)
-for a better format and fix the warning.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in probe().
 
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sunil Khatri <sunil.khatri@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240827144421.52852-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hip04_eth.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index e444e621ddaa0..5b41c6a44068c 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -4649,7 +4649,7 @@ static void gfx_v10_0_alloc_ip_dump(struct amdgpu_device *adev)
- 	uint32_t inst;
+diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
+index ecf92a5d56bbf..4b893d162e85d 100644
+--- a/drivers/net/ethernet/hisilicon/hip04_eth.c
++++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
+@@ -947,6 +947,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
+ 	priv->tx_coalesce_timer.function = tx_done;
  
- 	ptr = kcalloc(reg_count, sizeof(uint32_t), GFP_KERNEL);
--	if (ptr == NULL) {
-+	if (!ptr) {
- 		DRM_ERROR("Failed to allocate memory for GFX IP Dump\n");
- 		adev->gfx.ip_dump_core = NULL;
- 	} else {
-@@ -4662,7 +4662,7 @@ static void gfx_v10_0_alloc_ip_dump(struct amdgpu_device *adev)
- 		adev->gfx.mec.num_queue_per_pipe;
- 
- 	ptr = kcalloc(reg_count * inst, sizeof(uint32_t), GFP_KERNEL);
--	if (ptr == NULL) {
-+	if (!ptr) {
- 		DRM_ERROR("Failed to allocate memory for Compute Queues IP Dump\n");
- 		adev->gfx.ip_dump_compute_queues = NULL;
- 	} else {
-@@ -4675,7 +4675,7 @@ static void gfx_v10_0_alloc_ip_dump(struct amdgpu_device *adev)
- 		adev->gfx.me.num_queue_per_pipe;
- 
- 	ptr = kcalloc(reg_count * inst, sizeof(uint32_t), GFP_KERNEL);
--	if (ptr == NULL) {
-+	if (!ptr) {
- 		DRM_ERROR("Failed to allocate memory for GFX Queues IP Dump\n");
- 		adev->gfx.ip_dump_gfx_queues = NULL;
- 	} else {
+ 	priv->map = syscon_node_to_regmap(arg.np);
++	of_node_put(arg.np);
+ 	if (IS_ERR(priv->map)) {
+ 		dev_warn(d, "no syscon hisilicon,hip04-ppe\n");
+ 		ret = PTR_ERR(priv->map);
 -- 
 2.43.0
 
