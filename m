@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503DF994A95
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C43994EE9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5FA1C24C0D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 864C51C25CBE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225EA1DE88B;
-	Tue,  8 Oct 2024 12:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABE21DF265;
+	Tue,  8 Oct 2024 13:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxJUczjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEHN6NHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30621C4631;
-	Tue,  8 Oct 2024 12:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC181DF983;
+	Tue,  8 Oct 2024 13:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390860; cv=none; b=g1M36oMlk8yFjRuJWwFDYnPaXL5z2JfMssbQI/WfnCM05aZoNR2kW1MAkss4TYEmuiyEovYomTwa2bpmpZFdo5Lzhn78XfGJcnYKG0K26AIjeo3F80xxbKQUmYpVkb1Y6yVtMs2cZ7fV9T/OuoDk/F7xqN6CIcgXq8DFAMnC0MI=
+	t=1728393708; cv=none; b=SbxUJtLbzwPe88kTFI9C7mcM2f9JvOB7cv1Ei6VcwVIq9caJc557kbH0tV36u41oisnCoIyIUgwgXIRM03Tv6AmH/sJu7UCLrGpnX0G1AWSgK4znGdFoFgFlFO13Z+41k67PTi1N7Cf1vbxWSjTDuhVc5liety7ECLefvy0+enA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390860; c=relaxed/simple;
-	bh=o/OsH4V6SI2GTdnQFGeSb5FVOljGanie1dC7SlOrpGM=;
+	s=arc-20240116; t=1728393708; c=relaxed/simple;
+	bh=Q5fOgbh2/RQbPCHzpzEBWaS9MqiRW5AZescsLMLzlVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HF2YrV1Una2EPpaaylxfKxmVsEy9iYGscTK4Q8SMGWZ6dJgxSvOnwr2cDGf7kmgGDwjDWofjcdinjax1EDsMVktF2kjXu/9IHTXia83kU4H5t5P1q9FpGbTouKOJcL6h7cVaLjWJN34BCG9KdYl/UUmK/yWZQsG/mo9Mx480t3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxJUczjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005A0C4CEC7;
-	Tue,  8 Oct 2024 12:34:19 +0000 (UTC)
+	 MIME-Version; b=VMn5ewAzThaDMKEZIv8bv8MzAKS3RSKQJg+bh7yNVScYbp62k6MKwiAyUuw5z+fIviHpIV69iv/HlERKrLZD41m/OryEZAZHFJa1xrt73+Z9PdZ2x9mBDgJYsYxjJzE2GQuAiWM14o4xN9L9fCPgmtLbwQFzHUetgARIqcVtChQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEHN6NHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597F5C4CEC7;
+	Tue,  8 Oct 2024 13:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390860;
-	bh=o/OsH4V6SI2GTdnQFGeSb5FVOljGanie1dC7SlOrpGM=;
+	s=korg; t=1728393708;
+	bh=Q5fOgbh2/RQbPCHzpzEBWaS9MqiRW5AZescsLMLzlVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxJUczjMrX+/ewI3FyQGnIkqs7UB5taHiqekSJqk1hjdtUdVM80sw1J+yARxSSseq
-	 SRA1dxzNbODxkADxwJ/69xFXFi+tUOvjTv0Dbv7GPt3hMGPzBDKOLUwnYhsSLq+NLH
-	 M9x6HW1K2Q56DnllpEfMWvM+bAv7M+4svnwRWhxI=
+	b=fEHN6NHeBLx6OEtVIHwH1Ny8hdrrEkPoMYmphcMmhV+Tj7zFtUMS3LOiMCpnt5vWc
+	 ICO1m6hvABuy4zzwaSADfZrui32DwToV935PE7qhCEeHP3KTlt0e/6M/rl0U4lIKKk
+	 uHE06OHzd7zimAxANKtyrWT90cA0UaiQctR7LpbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lamome Julien <julien.lamome@wanadoo.fr>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 415/482] ACPI: resource: Add Asus Vivobook X1704VAP to irq1_level_low_skip_override[]
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 233/386] ext4: fix slab-use-after-free in ext4_split_extent_at()
 Date: Tue,  8 Oct 2024 14:07:58 +0200
-Message-ID: <20241008115704.734762131@linuxfoundation.org>
+Message-ID: <20241008115638.570719921@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 2f80ce0b78c340e332f04a5801dee5e4ac8cfaeb upstream.
+commit c26ab35702f8cd0cdc78f96aa5856bfb77be798f upstream.
 
-Like other Asus Vivobook models the X1704VAP has its keybopard IRQ (1)
-described as ActiveLow in the DSDT, which the kernel overrides to EdgeHigh
-which breaks the keyboard.
+We hit the following use-after-free:
 
-Add the X1704VAP to the irq1_level_low_skip_override[] quirk table to fix
-this.
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
+Read of size 2 at addr ffff88810548ed08 by task kworker/u20:0/40
+CPU: 0 PID: 40 Comm: kworker/u20:0 Not tainted 6.9.0-dirty #724
+Call Trace:
+ <TASK>
+ kasan_report+0x93/0xc0
+ ext4_split_extent_at+0xba8/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
 
-Reported-by: Lamome Julien <julien.lamome@wanadoo.fr>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078696
-Closes: https://lore.kernel.org/all/1226760b-4699-4529-bf57-6423938157a3@wanadoo.fr/
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240927141606.66826-3-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Allocated by task 40:
+ __kmalloc_noprof+0x1ac/0x480
+ ext4_find_extent+0xf3b/0x1e70
+ ext4_ext_map_blocks+0x188/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+
+Freed by task 40:
+ kfree+0xf1/0x2b0
+ ext4_find_extent+0xa71/0x1e70
+ ext4_ext_insert_extent+0xa22/0x3260
+ ext4_split_extent_at+0x3ef/0xcc0
+ ext4_split_extent.isra.0+0x18f/0x500
+ ext4_split_convert_extents+0x275/0x750
+ ext4_ext_handle_unwritten_extents+0x73e/0x1580
+ ext4_ext_map_blocks+0xe20/0x2dc0
+ ext4_map_blocks+0x724/0x1700
+ ext4_do_writepages+0x12d6/0x2a70
+[...]
+==================================================================
+
+The flow of issue triggering is as follows:
+
+ext4_split_extent_at
+  path = *ppath
+  ext4_ext_insert_extent(ppath)
+    ext4_ext_create_new_leaf(ppath)
+      ext4_find_extent(orig_path)
+        path = *orig_path
+        read_extent_tree_block
+          // return -ENOMEM or -EIO
+        ext4_free_ext_path(path)
+          kfree(path)
+        *orig_path = NULL
+  a. If err is -ENOMEM:
+  ext4_ext_dirty(path + path->p_depth)
+  // path use-after-free !!!
+  b. If err is -EIO and we have EXT_DEBUG defined:
+  ext4_ext_show_leaf(path)
+    eh = path[depth].p_hdr
+    // path also use-after-free !!!
+
+So when trying to zeroout or fix the extent length, call ext4_find_extent()
+to update the path.
+
+In addition we use *ppath directly as an ext4_ext_show_leaf() input to
+avoid possible use-after-free when EXT_DEBUG is defined, and to avoid
+unnecessary path updates.
+
+Fixes: dfe5080939ea ("ext4: drop EXT4_EX_NOFREE_ON_ERR from rest of extents handling code")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20240822023545.1994557-4-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/extents.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -441,6 +441,13 @@ static const struct dmi_system_id irq1_l
- 		},
- 	},
- 	{
-+		/* Asus Vivobook X1704VAP */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "X1704VAP"),
-+		},
-+	},
-+	{
- 		/* Asus ExpertBook B1402CBA */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3230,6 +3230,25 @@ static int ext4_split_extent_at(handle_t
+ 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
+ 		goto out;
+ 
++	/*
++	 * Update path is required because previous ext4_ext_insert_extent()
++	 * may have freed or reallocated the path. Using EXT4_EX_NOFAIL
++	 * guarantees that ext4_find_extent() will not return -ENOMEM,
++	 * otherwise -ENOMEM will cause a retry in do_writepages(), and a
++	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
++	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
++	 */
++	path = ext4_find_extent(inode, ee_block, ppath,
++				flags | EXT4_EX_NOFAIL);
++	if (IS_ERR(path)) {
++		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
++				 split, PTR_ERR(path));
++		return PTR_ERR(path);
++	}
++	depth = ext_depth(inode);
++	ex = path[depth].p_ext;
++	*ppath = path;
++
+ 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
+ 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
+ 			if (split_flag & EXT4_EXT_DATA_VALID1) {
+@@ -3282,7 +3301,7 @@ fix_extent_len:
+ 	ext4_ext_dirty(handle, inode, path + path->p_depth);
+ 	return err;
+ out:
+-	ext4_ext_show_leaf(inode, path);
++	ext4_ext_show_leaf(inode, *ppath);
+ 	return err;
+ }
+ 
 
 
 
