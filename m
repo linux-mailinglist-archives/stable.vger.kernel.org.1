@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-82447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8427994CD9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8BA994A30
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98D1E2869D1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009FE1F220C6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1E31DF96E;
-	Tue,  8 Oct 2024 12:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31D31DED74;
+	Tue,  8 Oct 2024 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0eUNB/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9vFnHTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD561DE89D;
-	Tue,  8 Oct 2024 12:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DF616FF26;
+	Tue,  8 Oct 2024 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392292; cv=none; b=p9piP+5N040MQAwOf/iJ3pmFaID/EI1i2TlycGy+SO8IAH/SAbu4beRzPxu2hF5MfVLK7R+Hr/2fuA6XAaQbBtuBuBdhLdtrvj1xhV03+KCpIrEtLEEIvbGV8yeV3JBn9q/vnYcSb+YGiafEYMRat2Zo86X4NfrgfHEatSRI2gg=
+	t=1728390610; cv=none; b=QVCN1yrKnigxAXrmCJN71/ycwdkwD0RDqvubBnJf4OlOBtoOkPE9d12fN2O9/AreS3Emfx/Gav9f38/PZSoCkFdRMfYibk9rb47/7PZDhhhBHW+H7+W3huw/17Ri5urZ5uPY5EdBf0YLSXC2OPgGkN+N12ApjIGkC0ob48wfWFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392292; c=relaxed/simple;
-	bh=6lVGrxcUjZcOyMDe9MmGtWsyGRN06TU3Ii7/52lpRdo=;
+	s=arc-20240116; t=1728390610; c=relaxed/simple;
+	bh=jf8Lovz9RuWrLAhsSUmOhga/MGu3uhXLrDhHgcuYFIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bp31YIgHXut+i4rrHpGg716BVuBXjMfDbbQPTGrx8YSRnV/8z4oGjwciZjZQ4TEOEovOq4s854YSU0IhFYuhUOoJ7dWfokCi5y3Rf+tWxN00GgyRzIOqvDyUASlZhWMJ61RNIS0nQVM2kvBZYzUPNBg8WEP7reQJTkKsogd1I6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0eUNB/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D2EC4CEC7;
-	Tue,  8 Oct 2024 12:58:11 +0000 (UTC)
+	 MIME-Version; b=sgsQwrCOKPGT4kM6C9GA8twJAE8nYb31HTm9gmejb0vYlwv0Ys/7kjgf2ZzgtVUQjczor5l8Sbk+g377Zv45vvohM4eYqkp8Y/48ik356GFgVX06fz/uD/hqSmym/OnaiSN1LqXnH1t9AFtHH+gfqPZGRc1op0Oiuz6Te9dSclg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9vFnHTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4645C4CEC7;
+	Tue,  8 Oct 2024 12:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392292;
-	bh=6lVGrxcUjZcOyMDe9MmGtWsyGRN06TU3Ii7/52lpRdo=;
+	s=korg; t=1728390610;
+	bh=jf8Lovz9RuWrLAhsSUmOhga/MGu3uhXLrDhHgcuYFIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0eUNB/y3fmDB2PVqc1cdXA8DjyDO/eJYD6UbZHE81CiGF39jNjsQ2Hx10wzS1J2p
-	 r3HKLUwcPmfaDKzGNch6qHXWHepyeJwmI5JPx0z0S/hZWpKwosmflLGpgUIW/59aeG
-	 WEguoJONJssScSOrmMPhBhCKBGJdwYbUQqBilMEE=
+	b=B9vFnHTEyxwkrWNTTyZW4goM1zHWN4KEU9O/s2epLEBaCKscvXW3G+MfrxRvGvgAT
+	 6s8Kxz+9+HQJkQdyy7B3TDKm12FW8Tyh1Tf6TUCDEQ/agFMwK1hGJ9/9EjKW0/g3IB
+	 9AZMu7p3tRmdU3vmhsFFGlbgbSr4nX7/Y8MrijUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>,
-	Deepak Rawat <drawat@vmware.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Thomas Hellstrom <thellstrom@vmware.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.11 371/558] drm: Consistently use struct drm_mode_rect for FB_DAMAGE_CLIPS
-Date: Tue,  8 Oct 2024 14:06:41 +0200
-Message-ID: <20241008115716.894470016@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.10 339/482] ext4: mark fc as ineligible using an handle in ext4_xattr_set()
+Date: Tue,  8 Oct 2024 14:06:42 +0200
+Message-ID: <20241008115701.765736694@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,55 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 8b0d2f61545545ab5eef923ed6e59fc3be2385e0 upstream.
+commit 04e6ce8f06d161399e5afde3df5dcfa9455b4952 upstream.
 
-FB_DAMAGE_CLIPS is a plane property for damage handling. Its UAPI
-should only use UAPI types. Hence replace struct drm_rect with
-struct drm_mode_rect in drm_atomic_plane_set_property(). Both types
-are identical in practice, so there's no change in behavior.
+Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
+in a fast-commit being done before the filesystem is effectively marked as
+ineligible.  This patch moves the call to this function so that an handle
+can be used.  If a transaction fails to start, then there's not point in
+trying to mark the filesystem as ineligible, and an error will eventually be
+returned to user-space.
 
-Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Closes: https://lore.kernel.org/dri-devel/Zu1Ke1TuThbtz15E@intel.com/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: d3b21767821e ("drm: Add a new plane property to send damage during plane update")
-Cc: Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>
-Cc: Deepak Rawat <drawat@vmware.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Thomas Hellstrom <thellstrom@vmware.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.0+
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240923075841.16231-1-tzimmermann@suse.de
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240923104909.18342-3-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/xattr.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -543,7 +543,7 @@ static int drm_atomic_plane_set_property
- 					&state->fb_damage_clips,
- 					val,
- 					-1,
--					sizeof(struct drm_rect),
-+					sizeof(struct drm_mode_rect),
- 					&replaced);
- 		return ret;
- 	} else if (property == plane->scaling_filter_property) {
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -2559,6 +2559,8 @@ retry:
+ 
+ 		error = ext4_xattr_set_handle(handle, inode, name_index, name,
+ 					      value, value_len, flags);
++		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
++					handle);
+ 		error2 = ext4_journal_stop(handle);
+ 		if (error == -ENOSPC &&
+ 		    ext4_should_retry_alloc(sb, &retries))
+@@ -2566,7 +2568,6 @@ retry:
+ 		if (error == 0)
+ 			error = error2;
+ 	}
+-	ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR, NULL);
+ 
+ 	return error;
+ }
 
 
 
