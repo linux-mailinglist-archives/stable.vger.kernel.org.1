@@ -1,128 +1,110 @@
-Return-Path: <stable+bounces-81523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4BC993F92
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 09:35:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A343994067
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 10:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 610D61F213AD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 07:35:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B41181F268EA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 08:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06631D3199;
-	Tue,  8 Oct 2024 07:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B74A1F9A8E;
+	Tue,  8 Oct 2024 07:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="hitiBLfc"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="BaGPzpUi"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E4A1684A4;
-	Tue,  8 Oct 2024 07:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18821D54D3
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 07:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728370973; cv=none; b=Q2NIa0vwcIwYAsa50Vitewc8luIOd17HB5gGLTx9RA8ERMAYzplCtFHhLcTMpTqsmx81tnFLCgGI+aAhB+cIe6KkAI1XphQnfoH0xUvUoM27wq3TqNon1pLT3oRSBkeD96jS0seBVL8VG0Ep4U1YZN2pp8GfzHCJcutL33YTFaY=
+	t=1728371180; cv=none; b=j1YHrKHrh86DPFOiGaYynhiEZ0IF6B4V+k4sJjmxlwg92g6V2zQV44vqhOBdbLELZ/mvqTlDsbv1poXfdBB0UaCkeo7ZNwGtqlCU6gPd4xAjksR1WMWQSf3YwkilPOgPk5aerQZDPWf5aBOvkR5FjEMsIjnr7E6mGevkb5bxR+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728370973; c=relaxed/simple;
-	bh=ElP/1DsJ1SBVGAYoYPCabCmpw3LC7jlnlpUJkga3fmM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZXbpAmFEiOaa4oZmVhuQNf8PRYES3FbJBz8k46g4oIYmFvrrGKKmTJEWJ/1WHOLj4hpGr9m4L2nPwRl30HgzU4hu9sUXZNcZakqbkRBQqpt1AQP4beLvqffy55AWW6IzHaNn0OZipeLAvacqH/2urT2Aclyo8WEw8ygxXSKrhDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=hitiBLfc; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1728370968; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=2K/TI2R+orKZwv6yzUwCQNAVGw2JbrSqrc0qhfIpEZU=;
-	b=hitiBLfcYAUO7KUO/+WUOPOwiJdmqQBev4gdeu5B9k2gyuj+ReKEytsnbyWLoWgqdM2nwGg2s643slXCSMdCfpofJSFxZxDnI81KHtWzZLtr/e9JuYLI119A3lHYKq6+UwUw60j4pnZFL3F6Mc9qvB32YVrRC8lRllKHRwXcnEQ=
-Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WGbLQhQ_1728370648)
-          by smtp.aliyun-inc.com;
-          Tue, 08 Oct 2024 14:57:29 +0800
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-erofs@lists.ozlabs.org,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6.1.y 5/5] erofs: fix incorrect symlink detection in fast symlink
-Date: Tue,  8 Oct 2024 14:57:08 +0800
-Message-ID: <20241008065708.727659-5-hsiangkao@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20241008065708.727659-1-hsiangkao@linux.alibaba.com>
-References: <20241008065708.727659-1-hsiangkao@linux.alibaba.com>
+	s=arc-20240116; t=1728371180; c=relaxed/simple;
+	bh=H+geuf57kVocWSPbWf92D4pkiMUajwoEqTqIsmSA53c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RRaoQ8tzzsnUOJSEM2RmMfQu/QLoKdT59wxwPei0Wmwifs2s4rLh6cNqvR9u23NL6mI8GY7ShU0N2YwRAoEKGgF4LPVBHegazC2K9gnJO0eL4h+gpsb5if8u/9R/RhaiP87T3bglti7iDA2G7sbW2oWUsD0b97IyIMormKxn3vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=BaGPzpUi; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-45d8f76eca7so54435331cf.2
+        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 00:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1728371177; x=1728975977; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TsZBFSwMT7x1FLd0qN3fP1nAhawS9beuZBZhTUuWxl0=;
+        b=BaGPzpUi/oIMI4+Qs213dlM0XfqbzPknBBk6MFB97qvb064Y8RM8p7oe2bnjcgiJg9
+         kdjPRTkXGYavnfTdy3f/Ok8KsbQtv5ZP+3m8pk5q0BrMXjns6stRitjvSNhq7+aSk/Sy
+         cJIE8RwXsOJNxaBwJbQTbt/4PAEiWRnroPLZc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728371177; x=1728975977;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TsZBFSwMT7x1FLd0qN3fP1nAhawS9beuZBZhTUuWxl0=;
+        b=iI1C7sgYsRoxsdEC5taClS8/CqT/ngr9BkBlEK1CBs7m8MaiyeQEtOngSn7C9ACcQr
+         jui5MxitoWAT+prvFFqjfRdmB4kpS5btccbI3Cgkmqp2kjLR7Iq75IC5ga8VcySjZAwN
+         TSbBnodOhIj6II71Bg177MGffpZK/kch6tE7SBQi6b6EIPyVEQ+SA5wlEoTkazdAcOzQ
+         slLh2JQuo2DI/lFG2LU2DmFZflAo74GfMmIYRe1O6VTnquKw4qqUjvcKEuavEsjMOB14
+         eX0425Bugml/VxCwUT27V+Km7pzV+PUvTOrZZ5i7/D8FlCRrKEzmoqODnazZJ6rRD8F7
+         0kUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjdHuMxpFUbvmjDwkuG0OPWGjwWhWWDKzWFuJqn+91ys7YMCPejb0dQeSttMf3JmH7rk0zYok=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyA3hYwCGzV0tsUJPuXvSWll66rZjW25ZZSpsZYlEShxs1JM2pg
+	qrK5SbndhPzmBYw06/YsS8nYqThYRR5LIqcNINgvHo8YLt++umXWnKlLU4xqVw==
+X-Google-Smtp-Source: AGHT+IHx9p9tIVNfNz7+zbY6K/yGm0H8IQgkQooFDPYNa5377HZYiurQcINypBPsFkW86cXRYwoTvg==
+X-Received: by 2002:a05:622a:124e:b0:458:3cb6:13cb with SMTP id d75a77b69052e-45d9bb47d37mr245733751cf.56.1728371176699;
+        Tue, 08 Oct 2024 00:06:16 -0700 (PDT)
+Received: from denia.c.googlers.com (76.224.245.35.bc.googleusercontent.com. [35.245.224.76])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45da764043esm33801921cf.88.2024.10.08.00.06.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2024 00:06:15 -0700 (PDT)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH 0/3] media: uvcvideo: Support partial control reads and
+ minor changes
+Date: Tue, 08 Oct 2024 07:06:13 +0000
+Message-Id: <20241008-uvc-readless-v1-0-042ac4581f44@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOXZBGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDAwML3dKyZN2i1MSUnNTiYl0j4zTLJIvkxBSDJGMloJaCotS0zAqwcdG
+ xtbUA3vPO/l4AAAA=
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
 
-commit 9ed50b8231e37b1ae863f5dec8153b98d9f389b4 upstream.
+Some cameras do not return all the bytes requested from a control
+if it can fit in less bytes. Eg: returning 0xab instead of 0x00ab.
+Support these devices.
 
-Fast symlink can be used if the on-disk symlink data is stored
-in the same block as the on-disk inode, so we don’t need to trigger
-another I/O for symlink data.  However, currently fs correction could be
-reported _incorrectly_ if inode xattrs are too large.
+Also, now that we are at it, improve uvc_query_ctrl().
 
-In fact, these should be valid images although they cannot be handled as
-fast symlinks.
-
-Many thanks to Colin for reporting this!
-
-Reported-by: Colin Walters <walters@verbum.org>
-Reported-by: https://honggfuzz.dev/
-Link: https://lore.kernel.org/r/bb2dd430-7de0-47da-ae5b-82ab2dd4d945@app.fastmail.com
-Fixes: 431339ba9042 ("staging: erofs: add inode operations")
-[ Note that it's a runtime misbehavior instead of a security issue. ]
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240909031911.1174718-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 ---
- fs/erofs/inode.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+Ricardo Ribalda (3):
+      media: uvcvideo: Support partial control reads
+      media: uvcvideo: Refactor uvc_query_ctrl
+      media: uvcvideo: Add more logging to uvc_query_ctrl_error()
 
-diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
-index 8fc41fd1620c..7dcf350b9fef 100644
---- a/fs/erofs/inode.c
-+++ b/fs/erofs/inode.c
-@@ -212,12 +212,14 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
- 			      unsigned int m_pofs)
- {
- 	struct erofs_inode *vi = EROFS_I(inode);
--	unsigned int bsz = i_blocksize(inode);
-+	loff_t off;
- 	char *lnk;
- 
--	/* if it cannot be handled with fast symlink scheme */
--	if (vi->datalayout != EROFS_INODE_FLAT_INLINE ||
--	    inode->i_size >= bsz || inode->i_size < 0) {
-+	m_pofs += vi->xattr_isize;
-+	/* check if it cannot be handled with fast symlink scheme */
-+	if (vi->datalayout != EROFS_INODE_FLAT_INLINE || inode->i_size < 0 ||
-+	    check_add_overflow(m_pofs, inode->i_size, &off) ||
-+	    off > i_blocksize(inode)) {
- 		inode->i_op = &erofs_symlink_iops;
- 		return 0;
- 	}
-@@ -226,16 +228,6 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
- 	if (!lnk)
- 		return -ENOMEM;
- 
--	m_pofs += vi->xattr_isize;
--	/* inline symlink data shouldn't cross block boundary */
--	if (m_pofs + inode->i_size > bsz) {
--		kfree(lnk);
--		erofs_err(inode->i_sb,
--			  "inline data cross block boundary @ nid %llu",
--			  vi->nid);
--		DBG_BUGON(1);
--		return -EFSCORRUPTED;
--	}
- 	memcpy(lnk, kaddr + m_pofs, inode->i_size);
- 	lnk[inode->i_size] = '\0';
- 
+ drivers/media/usb/uvc/uvc_video.c | 44 +++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 16 deletions(-)
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241008-uvc-readless-23f9b8cad0b3
+
+Best regards,
 -- 
-2.43.5
+Ricardo Ribalda <ribalda@chromium.org>
 
 
