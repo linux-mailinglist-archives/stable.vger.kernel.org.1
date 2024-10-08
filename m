@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C2B994B6F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C89A994884
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F04D287DC2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8563F1C248F1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6881DF743;
-	Tue,  8 Oct 2024 12:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4018E1DED60;
+	Tue,  8 Oct 2024 12:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cipek/lg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcmreGU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BBB1DF727;
-	Tue,  8 Oct 2024 12:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05911DE4FA;
+	Tue,  8 Oct 2024 12:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391325; cv=none; b=XTotnP8uGAaNM7DXjA/oLwvVaz6fY5YZbL9Avl+cx3TES8BcXnanPWzKcQgeTNzcBVSmGhZNan+uJLVVEHD85XesDmT2UqAM8qXAEd+4TAybWdv3YcXlVjVeivN38yhnCCYDD3xnLynoBIM4FkFjaGIK5TGqflMErWcW3R+Soo4=
+	t=1728389619; cv=none; b=u2oGxGPQrVS9IDt/isR5MZVpnc1wdHSm5BUcFjZMRaj51DUiAXtqC/5By49EyKm1/JRzSXSuNzP768whpHLM12fwY1gYmp93ql+wayjFcGMKNsHxZEy+k9yfoyjc/OPdl/4pg2qyiFX/7dXSHu0AfqUM1xrA1r/NF3xaLWPcpT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391325; c=relaxed/simple;
-	bh=mi17jRozsgfsuRwFZ714CSPSzpQJGFxcTbH6O/qHrWg=;
+	s=arc-20240116; t=1728389619; c=relaxed/simple;
+	bh=rKMseqNElhe6blnws2qWPt8H83uQKUXkxr8OQEWnCCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwLZAJYvx8fUMmrIjzLNJija9lZhSA2cocuo2sEE4KlDOIxKbhqn7seWVGqxNnjqeMkQ4fKPvzktVh2L/VK32j5IBKxP1gwJ3+c+xtAMaR9DkRDqR1XwO1AdgHCrFHEpb80IkfzYHbEp73TpEcoN6KC6l+dJT3FUfUAf0Hz9Xug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cipek/lg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD12CC4CEC7;
-	Tue,  8 Oct 2024 12:42:04 +0000 (UTC)
+	 MIME-Version; b=lU5q2mdrH7ghTDBBTJS4KAnVwtbU6Tf6q6DCZbLDEs4M73vSIDtM5aqzZXoMmDP2EoV2mZ0Gesg49OcspZSLBNtNoa8QPH4261jK6zs/z1CYyhBmXXQjNsvxJq8iJe17tffKae97JhYkCe1Lmt4DK1t6S6uWJfiB1DZPAt6yhQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcmreGU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA0AC4CEC7;
+	Tue,  8 Oct 2024 12:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391325;
-	bh=mi17jRozsgfsuRwFZ714CSPSzpQJGFxcTbH6O/qHrWg=;
+	s=korg; t=1728389618;
+	bh=rKMseqNElhe6blnws2qWPt8H83uQKUXkxr8OQEWnCCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cipek/lg964sL/oNw6J3hCTjy5Zh/7wv1CeirgGqpjklS1gRKHhgiC0XmzL18CtQs
-	 YxlbrMlxyHedLrpLcnTtScduIrQjsuV7OanJPen3UHtZFX/7K77DUgxnQy2RklyKRh
-	 nlQ6jlb9MqHQrcZzUqtgj4hDho/ss/s/mfUYlguA=
+	b=zcmreGU3P/WN7vy8iPEKd7RZ6UeGX6OB7uXyTbrPKvieCtwpPYccXxrfVnaY3gI5M
+	 mYqpj84AGMkZbQ0Suz2bnwZwf7gkGyE4MH137k5uO0/oKVfi+Tg1S/NJXUldNQmHu8
+	 p9EXd+MCUdCw6oru5gobdqA4Eux5cyyCS3O78Sec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
-	Jerry <jerryluo225@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Eddie James <eajames@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 079/558] ALSA: hda/conexant: Fix conflicting quirk for System76 Pangolin
+Subject: [PATCH 6.10 046/482] net/ncsi: Disable the ncsi work before freeing the associated structure
 Date: Tue,  8 Oct 2024 14:01:49 +0200
-Message-ID: <20241008115705.485194065@linuxfoundation.org>
+Message-ID: <20241008115650.117155894@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit b3ebb007060f89d5a45c9b99f06a55e36a1945b5 ]
+[ Upstream commit a0ffa68c70b367358b2672cdab6fa5bc4c40de2c ]
 
-We received a regression report for System76 Pangolin (pang14) due to
-the recent fix for Tuxedo Sirius devices to support the top speaker.
-The reason was the conflicting PCI SSID, as often seen.
+The work function can run after the ncsi device is freed, resulting
+in use-after-free bugs or kernel panic.
 
-As a workaround, now the codec SSID is checked and the quirk is
-applied conditionally only to Sirius devices.
-
-Fixes: 4178d78cd7a8 ("ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices")
-Reported-by: Christian Heusel <christian@heusel.eu>
-Reported-by: Jerry <jerryluo225@gmail.com>
-Closes: https://lore.kernel.org/c930b6a6-64e5-498f-b65a-1cd5e0a1d733@heusel.eu
-Link: https://patch.msgid.link/20241004082602.29016-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 2d283bdd079c ("net/ncsi: Resource management")
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Link: https://patch.msgid.link/20240925155523.1017097-1-eajames@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ net/ncsi/ncsi-manage.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index e851785ff0581..4a2c8274c3df7 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -816,6 +816,23 @@ static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
- 	{}
- };
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 5ecf611c88200..5cf55bde366d1 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -1954,6 +1954,8 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ 	list_del_rcu(&ndp->node);
+ 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
  
-+/* pincfg quirk for Tuxedo Sirius;
-+ * unfortunately the (PCI) SSID conflicts with System76 Pangolin pang14,
-+ * which has incompatible pin setup, so we check the codec SSID (luckily
-+ * different one!) and conditionally apply the quirk here
-+ */
-+static void cxt_fixup_sirius_top_speaker(struct hda_codec *codec,
-+					 const struct hda_fixup *fix,
-+					 int action)
-+{
-+	/* ignore for incorrectly picked-up pang14 */
-+	if (codec->core.subsystem_id == 0x278212b3)
-+		return;
-+	/* set up the top speaker pin */
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE)
-+		snd_hda_codec_set_pincfg(codec, 0x1d, 0x82170111);
-+}
++	disable_work_sync(&ndp->work);
 +
- static const struct hda_fixup cxt_fixups[] = {
- 	[CXT_PINCFG_LENOVO_X200] = {
- 		.type = HDA_FIXUP_PINS,
-@@ -976,11 +993,8 @@ static const struct hda_fixup cxt_fixups[] = {
- 		.v.pins = cxt_pincfg_sws_js201d,
- 	},
- 	[CXT_PINCFG_TOP_SPEAKER] = {
--		.type = HDA_FIXUP_PINS,
--		.v.pins = (const struct hda_pintbl[]) {
--			{ 0x1d, 0x82170111 },
--			{ }
--		},
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cxt_fixup_sirius_top_speaker,
- 	},
- };
- 
+ 	kfree(ndp);
+ }
+ EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
 -- 
 2.43.0
 
