@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1C7994E43
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A4B994CAB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF4041C25224
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4529B22ACA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958271DF736;
-	Tue,  8 Oct 2024 13:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BAF1DFD8F;
+	Tue,  8 Oct 2024 12:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYUENVp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+2i5Iy+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E6D1DEFDD;
-	Tue,  8 Oct 2024 13:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03D21DEFFC;
+	Tue,  8 Oct 2024 12:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393280; cv=none; b=vBYvO7UVrIQNSlZ2qE6jQPwowYBsWqdyB+QvTb/qg94fXgtA/Jz3/w47Ah3Wp5Kf+Bmu4HIGbGBbcB44fKlItmiPQpkuWj5ckf0dbHDYqMwhtQNxfiJT7Kgo1HdUmMle7euYYgSFcmqzLGsiHG/jW5mGJ5KG0NXmznJ1FQw+Cok=
+	t=1728392116; cv=none; b=pDOL7RIab98AdD2qBISfpnefikb0uIN3QPr/vI9pZe1vOnNS940I0J98Yx9jg2qTufaP2LMFvQ+YHBvFi1rWCLSx2GZsqlLu/FleJ+dne9rw4d9rlw3Tmc4hr6/V2Sxuq53HuTTZ4azmX2sZ3m6GUIXIRzo6+VVztJRGV8Scq1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393280; c=relaxed/simple;
-	bh=6v7/FTXG/rs555X1JWMoFNRxv/eV5Wk/JJUmT/2VdS4=;
+	s=arc-20240116; t=1728392116; c=relaxed/simple;
+	bh=5itvwY/H43SR4cZzLG+3oPDYCZSQMydXEB4pRG0HJJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkT8MKykXLBaE/F309wI9RRPKrkJW2u/7cUIgCbrM7g5NwAOPLM2nZ5BdeQFIaDjdroz1OBp8yUPsLawDtg2339rvr7Q/s8N0TgFVrC4+AmwMXSU8lQ650snDGJ6DqL7wVFZzo6p0cNBKEorTMSIBtHVH+A5OxOjPnzqSZfAs18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYUENVp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA097C4CECC;
-	Tue,  8 Oct 2024 13:14:39 +0000 (UTC)
+	 MIME-Version; b=TT5fTZX3wEqerT0NyWjt+dUavB9gG8r13NW6IvfMQl2yXX1jx13IO3qxf1EVX/2gOyH3FOU6uclu/bGoffsI0NZQMImx0a6VgtJT2KBUyeYOnxyuiimYqwLESSmKgIFLdKW7/+2ml00qvJtoRCFm30emTsfiIZ1qHPrhZx+KFRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+2i5Iy+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAC2C4CECD;
+	Tue,  8 Oct 2024 12:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393280;
-	bh=6v7/FTXG/rs555X1JWMoFNRxv/eV5Wk/JJUmT/2VdS4=;
+	s=korg; t=1728392116;
+	bh=5itvwY/H43SR4cZzLG+3oPDYCZSQMydXEB4pRG0HJJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYUENVp2lohZM1a3vgt0JT934YeBbk+pcEDk1uECg9kEEjhi/BR/4ExEnEjSoT544
-	 sUszF1VqPeY1fSHvW7FFbTEkgEdoGjLKzWoCQx5xjMlT532DuZHQ8/JIgIhzq9XG/7
-	 fmrPTedQer/J1aqsN1vTYvB8WffD639KU3+/FjOs=
+	b=w+2i5Iy+6eM/CJN8WeDLb1plLr34I0pOQkssshQ4aoBuioLYZZQ4DsOdPnuk9Ia8R
+	 ZG5RdfdIfoNtvVqHX2StdrZbJlkTbTprESEQRu25/zE5iSlo3jWNf+ePkySFWk9OQ/
+	 SywvizSr3qwVaxNBLQONbUvv0KbLYK+WIiqWpDJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Peens <louis.peens@corigine.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sinadin Shan <sinadin.shan@oracle.com>,
+	Yifei Liu <yifei.l.liu@oracle.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/386] nfp: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 6.11 321/558] selftests: breakpoints: use remaining time to check if suspend succeed
 Date: Tue,  8 Oct 2024 14:05:51 +0200
-Message-ID: <20241008115633.615685831@linuxfoundation.org>
+Message-ID: <20241008115714.939672554@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Yifei Liu <yifei.l.liu@oracle.com>
 
-[ Upstream commit daaba19d357f0900b303a530ced96c78086267ea ]
+[ Upstream commit c66be905cda24fb782b91053b196bd2e966f95b7 ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+step_after_suspend_test fails with device busy error while
+writing to /sys/power/state to start suspend. The test believes
+it failed to enter suspend state with
 
-Reviewed-by: Louis Peens <louis.peens@corigine.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240911094445.1922476-4-ruanjinjie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+$ sudo ./step_after_suspend_test
+TAP version 13
+Bail out! Failed to enter Suspend state
+
+However, in the kernel message, I indeed see the system get
+suspended and then wake up later.
+
+[611172.033108] PM: suspend entry (s2idle)
+[611172.044940] Filesystems sync: 0.006 seconds
+[611172.052254] Freezing user space processes
+[611172.059319] Freezing user space processes completed (elapsed 0.001 seconds)
+[611172.067920] OOM killer disabled.
+[611172.072465] Freezing remaining freezable tasks
+[611172.080332] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[611172.089724] printk: Suspending console(s) (use no_console_suspend to debug)
+[611172.117126] serial 00:03: disabled
+some other hardware get reconnected
+[611203.136277] OOM killer enabled.
+[611203.140637] Restarting tasks ...
+[611203.141135] usb 1-8.1: USB disconnect, device number 7
+[611203.141755] done.
+[611203.155268] random: crng reseeded on system resumption
+[611203.162059] PM: suspend exit
+
+After investigation, I noticed that for the code block
+if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
+	ksft_exit_fail_msg("Failed to enter Suspend state\n");
+
+The write will return -1 and errno is set to 16 (device busy).
+It should be caused by the write function is not successfully returned
+before the system suspend and the return value get messed when waking up.
+As a result, It may be better to check the time passed of those few
+instructions to determine whether the suspend is executed correctly for
+it is pretty hard to execute those few lines for 5 seconds.
+
+The timer to wake up the system is set to expire after 5 seconds and
+no re-arm. If the timer remaining time is 0 second and 0 nano secomd,
+it means the timer expired and wake the system up. Otherwise, the system
+could be considered to enter the suspend state failed if there is any
+remaining time.
+
+After appling this patch, the test would not fail for it believes the
+system does not go to suspend by mistake. It now could continue to the
+rest part of the test after suspend.
+
+Fixes: bfd092b8c272 ("selftests: breakpoint: add step_after_suspend_test")
+Reported-by: Sinadin Shan <sinadin.shan@oracle.com>
+Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ .../testing/selftests/breakpoints/step_after_suspend_test.c  | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-index f2085340a1cfe..fceb4abea2365 100644
---- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-@@ -821,14 +821,13 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
+diff --git a/tools/testing/selftests/breakpoints/step_after_suspend_test.c b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+index dfec31fb9b30d..8d275f03e977f 100644
+--- a/tools/testing/selftests/breakpoints/step_after_suspend_test.c
++++ b/tools/testing/selftests/breakpoints/step_after_suspend_test.c
+@@ -152,7 +152,10 @@ void suspend(void)
+ 	if (err < 0)
+ 		ksft_exit_fail_msg("timerfd_settime() failed\n");
  
- 	snprintf(r_vec->name, sizeof(r_vec->name),
- 		 "%s-rxtx-%d", nfp_net_name(nn), idx);
--	err = request_irq(r_vec->irq_vector, r_vec->handler, 0, r_vec->name,
--			  r_vec);
-+	err = request_irq(r_vec->irq_vector, r_vec->handler, IRQF_NO_AUTOEN,
-+			  r_vec->name, r_vec);
- 	if (err) {
- 		nfp_net_napi_del(&nn->dp, r_vec);
- 		nn_err(nn, "Error requesting IRQ %d\n", r_vec->irq_vector);
- 		return err;
- 	}
--	disable_irq(r_vec->irq_vector);
+-	if (write(power_state_fd, "mem", strlen("mem")) != strlen("mem"))
++	system("(echo mem > /sys/power/state) 2> /dev/null");
++
++	timerfd_gettime(timerfd, &spec);
++	if (spec.it_value.tv_sec != 0 || spec.it_value.tv_nsec != 0)
+ 		ksft_exit_fail_msg("Failed to enter Suspend state\n");
  
- 	irq_set_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
- 
+ 	close(timerfd);
 -- 
 2.43.0
 
