@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27DF994E0E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF2199496F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80089B28A42
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79186285B8E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8EF1C9DDF;
-	Tue,  8 Oct 2024 13:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8979B1DED66;
+	Tue,  8 Oct 2024 12:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="St9+840d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLLgGXOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC3C1DE88F;
-	Tue,  8 Oct 2024 13:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BFF1DE2AE;
+	Tue,  8 Oct 2024 12:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393111; cv=none; b=TL7v9F/cHcmkj+YBzGIPPC4TOgg0AyKTHOGX1UuGrmfjXxkUBtjBRBdEdNHVSuqPxZE/cIlTRnnwPqi9GryXIuG+TYUoPkaxpB+POIEXbgY/EXWLFYjUrxRDOi8wTwT7dPBc7wwBfCY1Ak/Fc63QRmm+6XxfyGw0Xr9hPjJuri4=
+	t=1728390153; cv=none; b=albuIJr8YMTvhB12qdu2rTBeLGeb3xwdsKfv3T4E3TuG8sY9y06j0Dt+tduicHmYXz4fLPLu/xJZFIVf12ZOHo+PinbQEJLm3ZDngs605v1x4scz3ImtpsIOeYb+TGdOLWfLclrv33cIH88FhJR8xoO9PFs3HeoaKbIw1BnLAZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393111; c=relaxed/simple;
-	bh=U8rfSdoAnLF2g1JZCL0pgFCDxLH8Hph5wxz2NU86MoQ=;
+	s=arc-20240116; t=1728390153; c=relaxed/simple;
+	bh=mejW5D+UN42s+qnjx+R20RQ2Y8g+J0raN+95QOQk9/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ed/ni2FthMniQ1HW+P7nUTn5hJz42grlLm+yvifo6B/D9n1g1BCJrb5eabGzYP1C2iRL4Q7dSVosRaisNabjHK14lacnsXY1auup/nptRvtUXfLRsa6muVB7vA9u2v9yHDp/hG8EfBSyVUp3ExOKsV60ftU64RHRmeoFNCXcBnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=St9+840d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B47EC4CEC7;
-	Tue,  8 Oct 2024 13:11:50 +0000 (UTC)
+	 MIME-Version; b=klvV5lO58fK7LK0dL59r+Kge4TTq3RnLmnEyhusEbKA599bmyJ1QFSodDZSLADLUQ7+svJdSIBofCDVyi16+uR0xW255UyIE2q8ZhUgULOSTe887RCni+RBl8SD1ZGrEZxIL6L1XEpR1UWZKuGeYSXf6Fd5Mdzg01aP5XQWgfMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLLgGXOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF05C4CEC7;
+	Tue,  8 Oct 2024 12:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393110;
-	bh=U8rfSdoAnLF2g1JZCL0pgFCDxLH8Hph5wxz2NU86MoQ=;
+	s=korg; t=1728390153;
+	bh=mejW5D+UN42s+qnjx+R20RQ2Y8g+J0raN+95QOQk9/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=St9+840dfr5ubb7EziE+QwAs3SFBZtiaOO6Xc/MObXWmH+EBLHBQKD5jewzEKvJcY
-	 QEJkvVL/P/1ameqXJtZk38tZLqYVXi/VscoOBKHoLPAKj9hNC3xqIp3ZOFVGHMIeUj
-	 IRFr3DUmq+2Z/UAdANPG/QSOWZKDc897U+i1DT28=
+	b=tLLgGXOybSEUAsVH61Y4QgYY0MlP2Y3DUFXl/sYaNetfLUlTrm3QS5u7lNydpa9vA
+	 hdUzjSIWUHqVmrUjMQoczijDXhaZvcTTDmktUyzGdRRs6AqLwsBOcuzPn1uJy4zeME
+	 0zHaiEbPIXNhFNtfyAFCGXJu2fA320MKZ7KYvGvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ckath <ckath@yandex.ru>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/386] net: Add netif_get_gro_max_size helper for GRO
+Subject: [PATCH 6.10 207/482] platform/x86: touchscreen_dmi: add nanote-next quirk
 Date: Tue,  8 Oct 2024 14:04:30 +0200
-Message-ID: <20241008115630.468029453@linuxfoundation.org>
+Message-ID: <20241008115656.456512076@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Ckath <ckath@yandex.ru>
 
-[ Upstream commit e8d4d34df715133c319fabcf63fdec684be75ff8 ]
+[ Upstream commit c11619af35bae5884029bd14170c3e4b55ddf6f3 ]
 
-Add a small netif_get_gro_max_size() helper which returns the maximum IPv4
-or IPv6 GRO size of the netdevice.
+Add touschscreen info for the nanote next (UMPC-03-SR).
 
-We later add a netif_get_gso_max_size() equivalent as well for GSO, so that
-these helpers can be used consistently instead of open-coded checks.
+After checking with multiple owners the DMI info really is this generic.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240923212242.15669-1-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: e609c959a939 ("net: Fix gso_features_check to check for both dev->gso_{ipv4_,}max_size")
+Signed-off-by: Ckath <ckath@yandex.ru>
+Link: https://lore.kernel.org/r/e8dda83a-10ae-42cf-a061-5d29be0d193a@yandex.ru
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 9 +++++++++
- net/core/gro.c            | 9 ++-------
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index b8e60a20416ba..e4f02e638b9d9 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -5029,6 +5029,15 @@ void netif_set_tso_max_segs(struct net_device *dev, unsigned int segs);
- void netif_inherit_tso_max(struct net_device *to,
- 			   const struct net_device *from);
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index f74af0a689f20..0a39f68c641d1 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -840,6 +840,21 @@ static const struct ts_dmi_data rwc_nanote_p8_data = {
+ 	.properties = rwc_nanote_p8_props,
+ };
  
-+static inline unsigned int
-+netif_get_gro_max_size(const struct net_device *dev, const struct sk_buff *skb)
-+{
-+	/* pairs with WRITE_ONCE() in netif_set_gro(_ipv4)_max_size() */
-+	return skb->protocol == htons(ETH_P_IPV6) ?
-+	       READ_ONCE(dev->gro_max_size) :
-+	       READ_ONCE(dev->gro_ipv4_max_size);
-+}
++static const struct property_entry rwc_nanote_next_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 5),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 5),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1785),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1145),
++	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-rwc-nanote-next.fw"),
++	{ }
++};
 +
- static inline bool netif_is_macsec(const struct net_device *dev)
- {
- 	return dev->priv_flags & IFF_MACSEC;
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 31e40f25fdf10..85d3f686ba539 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -100,7 +100,6 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
- 	unsigned int headlen = skb_headlen(skb);
- 	unsigned int len = skb_gro_len(skb);
- 	unsigned int delta_truesize;
--	unsigned int gro_max_size;
- 	unsigned int new_truesize;
- 	struct sk_buff *lp;
- 	int segs;
-@@ -114,12 +113,8 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
- 	if (p->pp_recycle != skb->pp_recycle)
- 		return -ETOOMANYREFS;
- 
--	/* pairs with WRITE_ONCE() in netif_set_gro(_ipv4)_max_size() */
--	gro_max_size = p->protocol == htons(ETH_P_IPV6) ?
--			READ_ONCE(p->dev->gro_max_size) :
--			READ_ONCE(p->dev->gro_ipv4_max_size);
--
--	if (unlikely(p->len + len >= gro_max_size || NAPI_GRO_CB(skb)->flush))
-+	if (unlikely(p->len + len >= netif_get_gro_max_size(p->dev, p) ||
-+		     NAPI_GRO_CB(skb)->flush))
- 		return -E2BIG;
- 
- 	if (unlikely(p->len + len >= GRO_LEGACY_MAX_SIZE)) {
++static const struct ts_dmi_data rwc_nanote_next_data = {
++	.acpi_name = "MSSL1680:00",
++	.properties = rwc_nanote_next_props,
++};
++
+ static const struct property_entry schneider_sct101ctm_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1715),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1140),
+@@ -1589,6 +1604,17 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_SKU, "0001")
+ 		},
+ 	},
++	{
++		/* RWC NANOTE NEXT */
++		.driver_data = (void *)&rwc_nanote_next_data,
++		.matches = {
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_VENDOR, "To be filled by O.E.M."),
++			/* Above matches are too generic, add bios-version match */
++			DMI_MATCH(DMI_BIOS_VERSION, "S8A70R100-V005"),
++		},
++	},
+ 	{
+ 		/* Schneider SCT101CTM */
+ 		.driver_data = (void *)&schneider_sct101ctm_data,
 -- 
 2.43.0
 
