@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AD6994F0D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27826994D3C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 527921C25592
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C70AD1F23DE1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604491DF990;
-	Tue,  8 Oct 2024 13:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721361C9B99;
+	Tue,  8 Oct 2024 13:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoYm9EWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HddNDoHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0BC1DF263;
-	Tue,  8 Oct 2024 13:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F93A1DE2A5;
+	Tue,  8 Oct 2024 13:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393773; cv=none; b=bZgxUgcn6wM+aX+3/3qodCPZPPKMEpC+yBKwxHaVPqXfxNaxtECNUul8MAZaS36IRMVHSjh8kwJS/W/jgotBR0leEoEkPpmLxSF/zMokJIgMZ19krAzUL0bNvhQCYgB0Hr48dC6w5MyzsVCiAIpVQRYy5QRhphBtrIFxgY0tFds=
+	t=1728392610; cv=none; b=ZJYvzgLhQJ2Vu+ApjN98DBk44+3mDv0cJgkRiwMXGYg6WCHkLHFB+NM2cOg2NH7Wg7AiksywtUSH1P9D4tgrPcVkopug4n3zNRnsUAC/PEVwv7RU8oyedWLjvxBbM1oay6xKl49u+JVyeNI/h/P6604au0LDZdvkkZLV8Iu43Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393773; c=relaxed/simple;
-	bh=R5LsKrnWqeP2QLisL2JHkeeZQvuFyNMyNOsdBmi13Tg=;
+	s=arc-20240116; t=1728392610; c=relaxed/simple;
+	bh=DYr51f09AySUHTVIfIl4402lnhRLyzN7gSYm5HJ/LFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YC9CL3eMiL9wptOomSWW2208F9Va7Tqrm5An17IBDe+1u3thgG9efAeJXZDvx6mMFhow9MaxrcGw54w+i30la9vu7yIoXCujI3e1QZJT8pYYfLU7Ofef+25G0+9SqCMRkdOC4YCUTcCEVDuUPZtLbZz/pGi4QDgJd5wflCnBDUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoYm9EWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52146C4CEC7;
-	Tue,  8 Oct 2024 13:22:52 +0000 (UTC)
+	 MIME-Version; b=a+g/3kKBplZseP0KJg/FHKS50uBq/zHzH58cL9qPlzztWwHyUxRUGeE4cOQc3vAponzRsnDb5qtsx+VMBsrtrx8P9TCYSbcbW/dYwqoVZiXnO8NNTBzqUgajFY0l9iRDd4nfhGdSP+hOe7s+8x3mr+LqDtfWF549c0W9oYVhodY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HddNDoHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F4EC4CEC7;
+	Tue,  8 Oct 2024 13:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393772;
-	bh=R5LsKrnWqeP2QLisL2JHkeeZQvuFyNMyNOsdBmi13Tg=;
+	s=korg; t=1728392610;
+	bh=DYr51f09AySUHTVIfIl4402lnhRLyzN7gSYm5HJ/LFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoYm9EWa4PAg0GxdPuZxXHqURhaGt98ON0JXdWy9D3JSLPnzqTA1j3Y0QfHQoVjbF
-	 SNOfEOXenrhKS56x9bi6KrtNEX6nDau7g790cab/40ePOn/EggI0bxTwxyoGGoDDdj
-	 YVdLq1Mk4wbWDN5r3jtiadrlpkNneW2REaQHtEeQ=
+	b=HddNDoHjiufigUCTkJoaPEbsfa6HIY80+MWtKXRJPrhHwnfTCVk0VV5La6WL4tPu8
+	 omHgPIaiCHf83HTCwpDvP97plwbLRHJ3pPcEdR5QEC067bdnImJ/mQERYmujQ6o+pe
+	 /OYx3qXEfqLGO5Xd66tRTwK2SescHbgAlQq0v8AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.6 251/386] drm/rockchip: vop: clear DMA stop bit on RK3066
+	Ajit Pandey <quic_ajipan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 466/558] clk: qcom: clk-alpha-pll: Fix CAL_L_VAL override for LUCID EVO PLL
 Date: Tue,  8 Oct 2024 14:08:16 +0200
-Message-ID: <20241008115639.272238669@linuxfoundation.org>
+Message-ID: <20241008115720.588488488@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Ajit Pandey <quic_ajipan@quicinc.com>
 
-commit 6b44aa559d6c7f4ea591ef9d2352a7250138d62a upstream.
+commit fff617979f97c773aaa9432c31cf62444b3bdbd4 upstream.
 
-The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
-and needs the driver to acknowledge that by clearing the bit.
+In LUCID EVO PLL CAL_L_VAL and L_VAL bitfields are part of single
+PLL_L_VAL register. Update for L_VAL bitfield values in PLL_L_VAL
+register using regmap_write() API in __alpha_pll_trion_set_rate
+callback will override LUCID EVO PLL initial configuration related
+to PLL_CAL_L_VAL bit fields in PLL_L_VAL register.
 
-Unless we clear it "between" frames, the RGB output only shows noise
-instead of the picture. atomic_flush is the place for it that least
-affects other code (doing it on vblank would require converting all
-other usages of the reg_lock to spin_(un)lock_irq, which would affect
-performance for everyone).
+Observed random PLL lock failures during PLL enable due to such
+override in PLL calibration value. Use regmap_update_bits() with
+L_VAL bitfield mask instead of regmap_write() API to update only
+PLL_L_VAL bitfields in __alpha_pll_trion_set_rate callback.
 
-This seems to be a redundant synchronization mechanism that was removed
-in later iterations of the VOP hardware block.
-
-Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
+Fixes: 260e36606a03 ("clk: qcom: clk-alpha-pll: add Lucid EVO PLL configuration interfaces")
 Cc: stable@vger.kernel.org
-Signed-off-by: Val Packett <val@packett.cool>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-2-val@packett.cool
+Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20240611133752.2192401-2-quic_ajipan@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    4 ++++
- drivers/gpu/drm/rockchip/rockchip_drm_vop.h |    1 +
- drivers/gpu/drm/rockchip/rockchip_vop_reg.c |    1 +
- 3 files changed, 6 insertions(+)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -1566,6 +1566,10 @@ static void vop_crtc_atomic_flush(struct
- 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
- 	vop_cfg_done(vop);
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -1713,7 +1713,7 @@ static int __alpha_pll_trion_set_rate(st
+ 	if (ret < 0)
+ 		return ret;
  
-+	/* Ack the DMA transfer of the previous frame (RK3066). */
-+	if (VOP_HAS_REG(vop, common, dma_stop))
-+		VOP_REG_SET(vop, common, dma_stop, 0);
-+
- 	spin_unlock(&vop->reg_lock);
+-	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++	regmap_update_bits(pll->clkr.regmap, PLL_L_VAL(pll), LUCID_EVO_PLL_L_VAL_MASK,  l);
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
  
- 	/*
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-@@ -122,6 +122,7 @@ struct vop_common {
- 	struct vop_reg lut_buffer_index;
- 	struct vop_reg gate_en;
- 	struct vop_reg mmu_en;
-+	struct vop_reg dma_stop;
- 	struct vop_reg out_mode;
- 	struct vop_reg standby;
- };
---- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-@@ -435,6 +435,7 @@ static const struct vop_output rk3066_ou
- };
- 
- static const struct vop_common rk3066_common = {
-+	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
- 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
- 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
- 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
+ 	/* Latch the PLL input */
 
 
 
