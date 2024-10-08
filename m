@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311749949F0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE57994C63
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D12EE1F23837
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C5571C24F02
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E10F1DED48;
-	Tue,  8 Oct 2024 12:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125281DED43;
+	Tue,  8 Oct 2024 12:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmGWOXZv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgcIljIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB731DE890;
-	Tue,  8 Oct 2024 12:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49D31DE2CF;
+	Tue,  8 Oct 2024 12:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390453; cv=none; b=DO9//n718l6rYSkb/K6gPIoM6C3XyYwf81yozG7rvrPjRTFXONu3U5FeKp0tLHeuVbbBbr4tfivgXwSNxBsayeO3C4LrrWlUEzQoqwB8es0nnLyQiJ8pLg7SkgbYd4oLduRrO7sLiQtZIZviLwCKmOB+QQqRX4T6LYaowEGUkcQ=
+	t=1728392031; cv=none; b=Enuyu45RxEHcZAt04dOAzJ/zDh4aYEPWx43Y0TOg76vszrp9u6DnkjZYn8NNtOfy60GE6S7M/ZV5IEoN5Ql08csapsM4YxH99dy6Kjh+rvFf1Whck/vWfCMhGFLgCAvarVo6vaIcgJBr2Nhnk6XvRGacN7DG0LGWlvE6xKxf3k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390453; c=relaxed/simple;
-	bh=Zpo/wFVsDdDRRt2iNZbfxlBHi42bSvYqGPc7evHL25Y=;
+	s=arc-20240116; t=1728392031; c=relaxed/simple;
+	bh=kK6YZPXm4QUlB3hk3hwDPvrHcsEghBXhrEBrw2/fIEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/qEuXyTxtGe/P340kifHr0fB3VbMGNoLtrok2dP0ju2ZKXkN30ZAdOgKxs1RojoFzE8qB15HHYy6+9ShnIyPA7vB05ckC/4RyAg4cmfloqwqGRwZN7rbuNfld0TSdMrh9OJpfyx7xuKa/RyqSC3AOnnzUXAu9i8Terlvf1mHZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmGWOXZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8714DC4CEC7;
-	Tue,  8 Oct 2024 12:27:32 +0000 (UTC)
+	 MIME-Version; b=s9hLN98caNxIRAAY2cHhWDpPrEJfWLkhn7qXYWD5TSaKj6RtW+dv1dTV8tSYzKmlN5pX+5nVuHm53bK/10GCgiOJREhs/20k54PYH8JJKdplh43c+j/NUVNgaFIx689u4qYrwi+9gdkANZ0KQ9TiGo2slWAUjFg61ytACLcBS7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgcIljIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49749C4CEC7;
+	Tue,  8 Oct 2024 12:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390453;
-	bh=Zpo/wFVsDdDRRt2iNZbfxlBHi42bSvYqGPc7evHL25Y=;
+	s=korg; t=1728392031;
+	bh=kK6YZPXm4QUlB3hk3hwDPvrHcsEghBXhrEBrw2/fIEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmGWOXZvaLthxsBJqngrPTlTjAUGyP/62zhzZcHOobl7W9xFsrPiC8K6dki9x3LyR
-	 Ec/HBvUowgNA7tOC1T4mAHY67d/BOOk9YczRInDDc3SJ2MEqWbd+NZzpDKzOdUCPjG
-	 zpg20A9t1ttH7IxqTtC/nNSL9i2sx3DrozMqzvao=
+	b=NgcIljILhUYIpfFQXRYuIMVfp/IMAskMbNxIgKcRA+6EeXu80cZPeTcvlQVpgcrUJ
+	 IrlF/fLe7LXp394Kjtcz4aKxD7GtRGWPPJ2O6Uvb14+5poAkjOELsT10WZWksQstaK
+	 yhhFjMK2W4Zxwljzmt7vK/OkVsQkt+vqB1zimb5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yun Lu <luyun@kylinos.cn>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 262/482] selftest: hid: add missing run-hid-tools-tests.sh
+Subject: [PATCH 6.11 295/558] drm/amdgpu/gfx12: use rlc safe mode for soft recovery
 Date: Tue,  8 Oct 2024 14:05:25 +0200
-Message-ID: <20241008115658.594329875@linuxfoundation.org>
+Message-ID: <20241008115713.931327596@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 160c826b4dd0d570f0f51cf002cb49bda807e9f5 ]
+[ Upstream commit 21818f39beda2e843199e5d8d9e3f9e43c8080a3 ]
 
-HID test cases run tests using the run-hid-tools-tests.sh script.
-When installed with "make install", the run-hid-tools-tests.sh
-script will not be copied over, resulting in the following error message.
+Protect the MMIO access with safe mode.
 
-  make -C tools/testing/selftests/ TARGETS=hid install \
-  	  INSTALL_PATH=$KSFT_INSTALL_PATH
-
-  cd $KSFT_INSTALL_PATH
-  ./run_kselftest.sh -c hid
-
-selftests: hid: hid-core.sh
-bash: ./run-hid-tools-tests.sh: No such file or directory
-
-Add the run-hid-tools-tests.sh script to the TEST_FILES in the Makefile
-for it to be installed.
-
-Fixes: ffb85d5c9e80 ("selftests: hid: import hid-tools hid-core tests")
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/hid/Makefile | 2 ++
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/hid/Makefile b/tools/testing/selftests/hid/Makefile
-index 2b5ea18bde38b..346328e2295c3 100644
---- a/tools/testing/selftests/hid/Makefile
-+++ b/tools/testing/selftests/hid/Makefile
-@@ -17,6 +17,8 @@ TEST_PROGS += hid-tablet.sh
- TEST_PROGS += hid-usb_crash.sh
- TEST_PROGS += hid-wacom.sh
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+index ac671656069a3..515fc7d6f8389 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+@@ -4613,7 +4613,9 @@ static void gfx_v12_0_ring_soft_recovery(struct amdgpu_ring *ring,
+ 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
+ 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
+ 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
++	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
+ 	WREG32_SOC15(GC, 0, regSQ_CMD, value);
++	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+ }
  
-+TEST_FILES := run-hid-tools-tests.sh
-+
- CXX ?= $(CROSS_COMPILE)g++
- 
- HOSTPKG_CONFIG := pkg-config
+ static void
 -- 
 2.43.0
 
