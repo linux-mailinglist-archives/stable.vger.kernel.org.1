@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01F2994DA5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5425994FD6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFD41C220EB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EA3F1C24E27
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508581DE8A0;
-	Tue,  8 Oct 2024 13:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D7F1DEFF7;
+	Tue,  8 Oct 2024 13:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHx9/AZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ia8b4ww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9841DE88F;
-	Tue,  8 Oct 2024 13:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB3F1E04A5;
+	Tue,  8 Oct 2024 13:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392867; cv=none; b=VOfvp/FcxAhWKHkY7yiZjdGIFQUFE+yUkImmr5UmmQDAxdrK6K6wWXBtSwOBZILq1T5+46kRYJJrmfHhvTXMmJA9IHiIwNeeqKZzDe/Tm5DDP9MdpA+bHU506ZUy7vP/4q0owa350AAngf2giqYGMH6m9Ztt6zBQSaVoUbiml/g=
+	t=1728394124; cv=none; b=Jq30RUph3TTKOIVz/bLBBpExrZz9ICkQoUFfzUzrF2ZbJrdItniwCgK4TihFeNCrjHNkw6bDI4wtRSX0wxRfHNLrlRsKdoPWcphADo3eWxhY1mG0j4GaISgh+ZGiW8XW9rJdHpfRO6zYzuzNVrEKZiokjhs3SUlS/DhVvl1AIhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392867; c=relaxed/simple;
-	bh=XL9vfowvSqD07ciabQ4+zjy48i1MNf1Wn7my5RV+S8k=;
+	s=arc-20240116; t=1728394124; c=relaxed/simple;
+	bh=fXpZLfTL1khFBiS/WZHXzROhywKZsoJ5DZ6uHMat8nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfnF2m83VLAZtf+SaNEpDdksk2e9MR6SZyy4yDuJGrY4LaaXMpP+lRMD++uMCbHlNudXt/s784V8IDFyA76Yu0aUtbY4FH+zdHZGgxVrXD+6FFpVRT1s6W2QfxgPEs4HwfCKVt5atP+CcONCtkDwDTxKEjl3wVFUdJQmvbJFWqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHx9/AZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFA4C4CEC7;
-	Tue,  8 Oct 2024 13:07:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=myyHFcz1Pm6ANA3A4Li0ov5BurnZdiYmhTtL+1wcAj3fWFSq58w6UvDqn/BqLTdS6BY9lPpHsB3ZO++P/XcQqPShUc9IHHE5xrkaCEMG/Oh4P62XK2hLYRZlxUqAv/llqDU75bfTkbiG5oHDaDMmja7ggPHpPMiG6v6woQ69w/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ia8b4ww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDA0C4CEC7;
+	Tue,  8 Oct 2024 13:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392866;
-	bh=XL9vfowvSqD07ciabQ4+zjy48i1MNf1Wn7my5RV+S8k=;
+	s=korg; t=1728394124;
+	bh=fXpZLfTL1khFBiS/WZHXzROhywKZsoJ5DZ6uHMat8nM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHx9/AZAbPVDzarHP72xzSgQ6OQcz+2RkgnTHoMjLNHR7138mGk6KvLN2/OvKfii0
-	 nt2ES3i/cvSCMBfwl5kQ34w6+SHrruVSeU2IH4iWc0PSIwKrtetbcXtpopZmqxQIPq
-	 5Ui0XADINWWW8q2r9t2P7FLIV8//pZ+DKy1P/FDU=
+	b=1ia8b4wwOzEPKZngd3oxHQYf9rhYQEKbzsd7sSMWnwZ6HQEyQlejrRtUcQr1ME4s6
+	 CejMvV9u/aYM3OdT77j/Bqinr/m3CsClWPfcJb9qHvy09J0BrvMBZsOXdtOTgOJWQh
+	 Ua+JBXeIBznWjWzTF9anquQNbiur941HXfIBASLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udit Kumar <u-kumar1@ti.com>,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	xiao sheng wen <atzlinux@sina.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 541/558] remoteproc: k3-r5: Delay notification of wakeup event
-Date: Tue,  8 Oct 2024 14:09:31 +0200
-Message-ID: <20241008115723.524933855@linuxfoundation.org>
+Subject: [PATCH 6.6 327/386] cpufreq: intel_pstate: Make hwp_notify_lock a raw spinlock
+Date: Tue,  8 Oct 2024 14:09:32 +0200
+Message-ID: <20241008115642.253655718@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Udit Kumar <u-kumar1@ti.com>
+From: Uwe Kleine-König <ukleinek@debian.org>
 
-[ Upstream commit 8fa052c29e509f3e47d56d7fc2ca28094d78c60a ]
+commit 8b4865cd904650cbed7f2407e653934c621b8127 upstream.
 
-Few times, core1 was scheduled to boot first before core0, which leads
-to error:
+notify_hwp_interrupt() is called via sysvec_thermal() ->
+smp_thermal_vector() -> intel_thermal_interrupt() in hard irq context.
+For this reason it must not use a simple spin_lock that sleeps with
+PREEMPT_RT enabled. So convert it to a raw spinlock.
 
-'k3_r5_rproc_start: can not start core 1 before core 0'.
-
-This was happening due to some scheduling between prepare and start
-callback. The probe function waits for event, which is getting
-triggered by prepare callback. To avoid above condition move event
-trigger to start instead of prepare callback.
-
-Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up before powering up core1")
-Signed-off-by: Udit Kumar <u-kumar1@ti.com>
-[ Applied wakeup event trigger only for Split-Mode booted rprocs ]
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240820105004.2788327-1-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Reported-by: xiao sheng wen <atzlinux@sina.com>
+Link: https://bugs.debian.org/1076483
+Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: xiao sheng wen <atzlinux@sina.com>
+Link: https://patch.msgid.link/20240919081121.10784-2-ukleinek@debian.org
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[ukleinek: Backport to v6.6.y]
+Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-index 6424b347aa4f2..2992fd4eca648 100644
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -469,8 +469,6 @@ static int k3_r5_rproc_prepare(struct rproc *rproc)
- 			ret);
- 		return ret;
- 	}
--	core->released_from_reset = true;
--	wake_up_interruptible(&cluster->core_transition);
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 0ee3a04bb1022..8a4fdf212ce0d 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1632,7 +1632,7 @@ static void intel_pstate_notify_work(struct work_struct *work)
+ 	wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_STATUS, 0);
+ }
  
- 	/*
- 	 * Newer IP revisions like on J7200 SoCs support h/w auto-initialization
-@@ -587,6 +585,9 @@ static int k3_r5_rproc_start(struct rproc *rproc)
- 		ret = k3_r5_core_run(core);
- 		if (ret)
- 			return ret;
-+
-+		core->released_from_reset = true;
-+		wake_up_interruptible(&cluster->core_transition);
- 	}
+-static DEFINE_SPINLOCK(hwp_notify_lock);
++static DEFINE_RAW_SPINLOCK(hwp_notify_lock);
+ static cpumask_t hwp_intr_enable_mask;
  
- 	return 0;
+ void notify_hwp_interrupt(void)
+@@ -1649,7 +1649,7 @@ void notify_hwp_interrupt(void)
+ 	if (!(value & 0x01))
+ 		return;
+ 
+-	spin_lock_irqsave(&hwp_notify_lock, flags);
++	raw_spin_lock_irqsave(&hwp_notify_lock, flags);
+ 
+ 	if (!cpumask_test_cpu(this_cpu, &hwp_intr_enable_mask))
+ 		goto ack_intr;
+@@ -1673,13 +1673,13 @@ void notify_hwp_interrupt(void)
+ 
+ 	schedule_delayed_work(&cpudata->hwp_notify_work, msecs_to_jiffies(10));
+ 
+-	spin_unlock_irqrestore(&hwp_notify_lock, flags);
++	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
+ 
+ 	return;
+ 
+ ack_intr:
+ 	wrmsrl_safe(MSR_HWP_STATUS, 0);
+-	spin_unlock_irqrestore(&hwp_notify_lock, flags);
++	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
+ }
+ 
+ static void intel_pstate_disable_hwp_interrupt(struct cpudata *cpudata)
+@@ -1692,10 +1692,10 @@ static void intel_pstate_disable_hwp_interrupt(struct cpudata *cpudata)
+ 	/* wrmsrl_on_cpu has to be outside spinlock as this can result in IPC */
+ 	wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_INTERRUPT, 0x00);
+ 
+-	spin_lock_irqsave(&hwp_notify_lock, flags);
++	raw_spin_lock_irqsave(&hwp_notify_lock, flags);
+ 	if (cpumask_test_and_clear_cpu(cpudata->cpu, &hwp_intr_enable_mask))
+ 		cancel_delayed_work(&cpudata->hwp_notify_work);
+-	spin_unlock_irqrestore(&hwp_notify_lock, flags);
++	raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
+ }
+ 
+ static void intel_pstate_enable_hwp_interrupt(struct cpudata *cpudata)
+@@ -1704,10 +1704,10 @@ static void intel_pstate_enable_hwp_interrupt(struct cpudata *cpudata)
+ 	if (boot_cpu_has(X86_FEATURE_HWP_NOTIFY)) {
+ 		unsigned long flags;
+ 
+-		spin_lock_irqsave(&hwp_notify_lock, flags);
++		raw_spin_lock_irqsave(&hwp_notify_lock, flags);
+ 		INIT_DELAYED_WORK(&cpudata->hwp_notify_work, intel_pstate_notify_work);
+ 		cpumask_set_cpu(cpudata->cpu, &hwp_intr_enable_mask);
+-		spin_unlock_irqrestore(&hwp_notify_lock, flags);
++		raw_spin_unlock_irqrestore(&hwp_notify_lock, flags);
+ 
+ 		/* wrmsrl_on_cpu has to be outside spinlock as this can result in IPC */
+ 		wrmsrl_on_cpu(cpudata->cpu, MSR_HWP_INTERRUPT, 0x01);
+@@ -3136,10 +3136,10 @@ static void intel_pstate_driver_cleanup(void)
+ 			if (intel_pstate_driver == &intel_pstate)
+ 				intel_pstate_clear_update_util_hook(cpu);
+ 
+-			spin_lock(&hwp_notify_lock);
++			raw_spin_lock(&hwp_notify_lock);
+ 			kfree(all_cpu_data[cpu]);
+ 			WRITE_ONCE(all_cpu_data[cpu], NULL);
+-			spin_unlock(&hwp_notify_lock);
++			raw_spin_unlock(&hwp_notify_lock);
+ 		}
+ 	}
+ 	cpus_read_unlock();
 -- 
 2.43.0
 
