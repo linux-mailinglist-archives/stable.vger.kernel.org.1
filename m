@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B405F9949D9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F12994CB6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4352B1F21EBF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E46F285F6C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B721DE886;
-	Tue,  8 Oct 2024 12:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6FD1DF98A;
+	Tue,  8 Oct 2024 12:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSbhxGZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUCGkrC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52831DD867;
-	Tue,  8 Oct 2024 12:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962F61DF981;
+	Tue,  8 Oct 2024 12:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390402; cv=none; b=IjLrwMZ6G1FpH7bEBrlBaoEsWXbRV7FoWEaSrp1CeKCeC9dpCXn8c/A5hI6v4QZprtXX673uHiq9CIFBTxTjo8XX5zxwuRtxjkpNmFFDXxhfLjea27vCsrj3BYrrxG6GGsXJFJdHH3nCo2hJLHMwS97Jyz4EZEF44GU9HJeuGwU=
+	t=1728392190; cv=none; b=r35yTPs1dv3zg1qZFOvyW15SSJmp+RtkbPAP3TB3+KQHKkJs4NwlcGAOvyMcyj0oUC4VZq3Wkf8jB/HJH0U4ApmtIxkwC4AFYpGWD3xu4S4yzQjp7ZzYXca1GR88MuCo3DPls9vnUyH/BxkUVHtVMblbCMxsRV20kyz69aIOVTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390402; c=relaxed/simple;
-	bh=uJQfBiq6eGuMYEKGd0/6M6Jyz0giu3FUxh3PsMPaSOk=;
+	s=arc-20240116; t=1728392190; c=relaxed/simple;
+	bh=EBdHam9tX9+7/pLOhO6e4ceDl6ylOMTsnGZgMHy51s0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4IaVz9fQ3iiJiiNsNM2rAONp8gA3/XMuCboIxKX++5ADHvV7Skl2o5foVFE2LNfABLtp+pPDeZ+CqjuMqlJfMub3Mrwsstv2Lz8MpH7+DbL3Ldy1GS+jQvc7j5/XXAVHmSsOfDfjl51p18UYBRtynTtWJtkJ0qvHk2/LvO81N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSbhxGZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A473C4CEC7;
-	Tue,  8 Oct 2024 12:26:42 +0000 (UTC)
+	 MIME-Version; b=bs3nxg2Uf1dvMhboB6BOXVEhuHcwr2mQ3DQGI87X3fIVVXn/IOH+H8g2chdM0wrCYnOM0rKm4HpwbclCMiCWU/RFNynI3uG48eqnIHmW02+6GqyqJr5I5XlUKEiSd5jgMhneseFHPHOTK92mUUziqaJRfqFid8ocyWaRVijk13c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUCGkrC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAE2C4CECC;
+	Tue,  8 Oct 2024 12:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390402;
-	bh=uJQfBiq6eGuMYEKGd0/6M6Jyz0giu3FUxh3PsMPaSOk=;
+	s=korg; t=1728392190;
+	bh=EBdHam9tX9+7/pLOhO6e4ceDl6ylOMTsnGZgMHy51s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSbhxGZACoTCbVbvBizrz1b/Nn3UpQTi7tlr5UCIpltYvMBO8t8lxjAhg0Irsxzs+
-	 F96iBqbsEwG9k2w9QXzDlMF1KKaMiJixrIMeF8JG/OCfSDNgdqai5wJIGmw+KbFNFY
-	 r2qy5pyxAVIiHABi1olAT5xjpJ81khOWQCZpzc8c=
+	b=YUCGkrC6bZffrbRuG8D2txBkEUASA9sCVI5XOpj/lBG1CZ9fXpo03baqABM54l53B
+	 UB1TRKY8MqquOc0gk4aj8ZT6BsCYicKlY+7tzHsMzADTePKDNyJ5xuZPdGICtOPjj/
+	 fxans4w0nwZhr8Ku3SfDkukzm+Cpbve7XR+vgKKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Yuanhong <liaoyuanhong@vivo.com>,
-	Wu Bo <bo.wu@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 278/482] f2fs: add write priority option based on zone UFS
+Subject: [PATCH 6.11 311/558] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
 Date: Tue,  8 Oct 2024 14:05:41 +0200
-Message-ID: <20241008115659.220346105@linuxfoundation.org>
+Message-ID: <20241008115714.550716480@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,185 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Yuanhong <liaoyuanhong@vivo.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 8444ce524947daf441546b5b3a0c418706dade35 ]
+[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
 
-Currently, we are using a mix of traditional UFS and zone UFS to support
-some functionalities that cannot be achieved on zone UFS alone. However,
-there are some issues with this approach. There exists a significant
-performance difference between traditional UFS and zone UFS. Under normal
-usage, we prioritize writes to zone UFS. However, in critical conditions
-(such as when the entire UFS is almost full), we cannot determine whether
-data will be written to traditional UFS or zone UFS. This can lead to
-significant performance fluctuations, which is not conducive to
-development and testing. To address this, we have added an option
-zlu_io_enable under sys with the following three modes:
-1) zlu_io_enable == 0:Normal mode, prioritize writing to zone UFS;
-2) zlu_io_enable == 1:Zone UFS only mode, only allow writing to zone UFS;
-3) zlu_io_enable == 2:Traditional UFS priority mode, prioritize writing to
-traditional UFS.
+When direct I/O completions invalidates the page cache it holds neither the
+i_rwsem nor the invalidate_lock so it can be racing with
+iomap_write_delalloc_release.  If the search for the end of the region that
+contains data returns the start offset we hit such a race and just need to
+look for the end of the newly created hole instead.
 
-Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
-Signed-off-by: Wu Bo <bo.wu@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 65a6ce4726c2 ("f2fs: fix to don't panic system for no free segment fault injection")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 14 ++++++++++++++
- fs/f2fs/f2fs.h                          |  8 ++++++++
- fs/f2fs/segment.c                       | 25 ++++++++++++++++++++++++-
- fs/f2fs/super.c                         |  1 +
- fs/f2fs/sysfs.c                         | 11 +++++++++++
- 5 files changed, 58 insertions(+), 1 deletion(-)
+ fs/iomap/buffered-io.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index cad6c3dc1f9c1..3500920ab7ce0 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -763,3 +763,17 @@ Date:		November 2023
- Contact:	"Chao Yu" <chao@kernel.org>
- Description:	It controls to enable/disable IO aware feature for background discard.
- 		By default, the value is 1 which indicates IO aware is on.
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 389de94715b53..8e6edb6628183 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1241,7 +1241,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
+ 			error = data_end;
+ 			goto out_unlock;
+ 		}
+-		WARN_ON_ONCE(data_end <= start_byte);
 +
-+What:		/sys/fs/f2fs/<disk>/blkzone_alloc_policy
-+Date:		July 2024
-+Contact:	"Yuanhong Liao" <liaoyuanhong@vivo.com>
-+Description:	The zone UFS we are currently using consists of two parts:
-+		conventional zones and sequential zones. It can be used to control which part
-+		to prioritize for writes, with a default value of 0.
++		/*
++		 * If we race with post-direct I/O invalidation of the page cache,
++		 * there might be no data left at start_byte.
++		 */
++		if (data_end == start_byte)
++			continue;
 +
-+		========================  =========================================
-+		value					  description
-+		blkzone_alloc_policy = 0  Prioritize writing to sequential zones
-+		blkzone_alloc_policy = 1  Only allow writing to sequential zones
-+		blkzone_alloc_policy = 2  Prioritize writing to conventional zones
-+		========================  =========================================
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 9c8acb98f4dbf..140f82886837a 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -134,6 +134,12 @@ typedef u32 nid_t;
++		WARN_ON_ONCE(data_end < start_byte);
+ 		WARN_ON_ONCE(data_end > scan_end_byte);
  
- #define COMPRESS_EXT_NUM		16
- 
-+enum blkzone_allocation_policy {
-+	BLKZONE_ALLOC_PRIOR_SEQ,	/* Prioritize writing to sequential zones */
-+	BLKZONE_ALLOC_ONLY_SEQ,		/* Only allow writing to sequential zones */
-+	BLKZONE_ALLOC_PRIOR_CONV,	/* Prioritize writing to conventional zones */
-+};
-+
- /*
-  * An implementation of an rwsem that is explicitly unfair to readers. This
-  * prevents priority inversion when a low-priority reader acquires the read lock
-@@ -1563,6 +1569,8 @@ struct f2fs_sb_info {
- #ifdef CONFIG_BLK_DEV_ZONED
- 	unsigned int blocks_per_blkz;		/* F2FS blocks per zone */
- 	unsigned int max_open_zones;		/* max open zone resources of the zoned device */
-+	/* For adjust the priority writing position of data in zone UFS */
-+	unsigned int blkzone_alloc_policy;
- #endif
- 
- 	/* for node-related operations */
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 425479d769216..5646ffed70f77 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2701,17 +2701,40 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
- 			goto got_it;
- 	}
- 
-+#ifdef CONFIG_BLK_DEV_ZONED
- 	/*
- 	 * If we format f2fs on zoned storage, let's try to get pinned sections
- 	 * from beginning of the storage, which should be a conventional one.
- 	 */
- 	if (f2fs_sb_has_blkzoned(sbi)) {
--		segno = pinning ? 0 : max(first_zoned_segno(sbi), *newseg);
-+		/* Prioritize writing to conventional zones */
-+		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_PRIOR_CONV || pinning)
-+			segno = 0;
-+		else
-+			segno = max(first_zoned_segno(sbi), *newseg);
- 		hint = GET_SEC_FROM_SEG(sbi, segno);
- 	}
-+#endif
- 
- find_other_zone:
- 	secno = find_next_zero_bit(free_i->free_secmap, MAIN_SECS(sbi), hint);
-+
-+#ifdef CONFIG_BLK_DEV_ZONED
-+	if (secno >= MAIN_SECS(sbi) && f2fs_sb_has_blkzoned(sbi)) {
-+		/* Write only to sequential zones */
-+		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_ONLY_SEQ) {
-+			hint = GET_SEC_FROM_SEG(sbi, first_zoned_segno(sbi));
-+			secno = find_next_zero_bit(free_i->free_secmap, MAIN_SECS(sbi), hint);
-+		} else
-+			secno = find_first_zero_bit(free_i->free_secmap,
-+								MAIN_SECS(sbi));
-+		if (secno >= MAIN_SECS(sbi)) {
-+			ret = -ENOSPC;
-+			goto out_unlock;
-+		}
-+	}
-+#endif
-+
- 	if (secno >= MAIN_SECS(sbi)) {
- 		secno = find_first_zero_bit(free_i->free_secmap,
- 							MAIN_SECS(sbi));
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index b4c8ac6c08598..f7eeea30278ea 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4231,6 +4231,7 @@ static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
- 	sbi->aligned_blksize = true;
- #ifdef CONFIG_BLK_DEV_ZONED
- 	sbi->max_open_zones = UINT_MAX;
-+	sbi->blkzone_alloc_policy = BLKZONE_ALLOC_PRIOR_SEQ;
- #endif
- 
- 	for (i = 0; i < max_devices; i++) {
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 09d3ecfaa4f1a..15c8678581afc 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -627,6 +627,15 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 	}
- #endif
- 
-+#ifdef CONFIG_BLK_DEV_ZONED
-+	if (!strcmp(a->attr.name, "blkzone_alloc_policy")) {
-+		if (t < BLKZONE_ALLOC_PRIOR_SEQ || t > BLKZONE_ALLOC_PRIOR_CONV)
-+			return -EINVAL;
-+		sbi->blkzone_alloc_policy = t;
-+		return count;
-+	}
-+#endif
-+
- #ifdef CONFIG_F2FS_FS_COMPRESSION
- 	if (!strcmp(a->attr.name, "compr_written_block") ||
- 		!strcmp(a->attr.name, "compr_saved_block")) {
-@@ -1033,6 +1042,7 @@ F2FS_SBI_GENERAL_RW_ATTR(warm_data_age_threshold);
- F2FS_SBI_GENERAL_RW_ATTR(last_age_weight);
- #ifdef CONFIG_BLK_DEV_ZONED
- F2FS_SBI_GENERAL_RO_ATTR(unusable_blocks_per_sec);
-+F2FS_SBI_GENERAL_RW_ATTR(blkzone_alloc_policy);
- #endif
- 
- /* STAT_INFO ATTR */
-@@ -1187,6 +1197,7 @@ static struct attribute *f2fs_attrs[] = {
- #endif
- #ifdef CONFIG_BLK_DEV_ZONED
- 	ATTR_LIST(unusable_blocks_per_sec),
-+	ATTR_LIST(blkzone_alloc_policy),
- #endif
- #ifdef CONFIG_F2FS_FS_COMPRESSION
- 	ATTR_LIST(compr_written_block),
+ 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
 -- 
 2.43.0
 
