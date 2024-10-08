@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-82253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDCF994C04
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E6C994910
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56F3FB28E3F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 202D41C2175B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FE01DE4C4;
-	Tue,  8 Oct 2024 12:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3551DE3AE;
+	Tue,  8 Oct 2024 12:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7/JqnRo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOqTMutD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6958A1C9B61;
-	Tue,  8 Oct 2024 12:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC4F33981;
+	Tue,  8 Oct 2024 12:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391642; cv=none; b=O7TFSI1DJRCeYXJFnC8incOWSS8BA2I3+nExTh6qPFJTF3tohdpr8KRIUsg2EuNhFudQo1MepSdf3rin6w40C/5+UeYyuDFhU154DAgyGY1b0yN2RT+0peXjJiCA0q5HMOKFzyEj2U4HWmGmTSMEUxIdowdrmhqm0cLPRDVtTcU=
+	t=1728389961; cv=none; b=FTWLtPwjElmqohbzg+eVIDOh95x7vZg8yAzGoKnwlD4mDQAx0JFvzRenWdZ9PSQLz6ry7R6iNbczMSdqhvlauP2BVcJEKtOLsx/ytmEXzZYkqzURmCyZ5uNaKc4yjhfVtdbWmILWCW0LiIzyMrNnQSht9GHV42BNqq/+ck4u/vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391642; c=relaxed/simple;
-	bh=QZU5jsz180GfV8bE4TLV7N57bPrkG3biuHXCcWMFcJo=;
+	s=arc-20240116; t=1728389961; c=relaxed/simple;
+	bh=3xujjn0HuqAyhmggnmSdUCO8AZ2DeIifai3GP1p8Xyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tytD798Ym6rxHED+WejtzjR0C5Ja0OOMk00SynrcePTqfeynrtrAexLKHTLNoYHVfAtowSYfgTcvdA/yviMg/tsvn/87E132zqIPcZ+sFrZqCCnfgKAddYQdDu3fdEf419yg3JVAQhEGNoN8VMT2PB2N0++UQFH2iefMOwtCkik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7/JqnRo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF44C4CEC7;
-	Tue,  8 Oct 2024 12:47:21 +0000 (UTC)
+	 MIME-Version; b=kYunbbCrb251d65QT0pmklI5PT4gW6rZUCXlnpdXPNRwUzQ6bRYR3U1mXmAJsOczcn2+U5255ttFOYSjvGS8IDCssBsL5LgO5uJA1QLIPBRKk8B598fg0ISd3dk5BNdO5kVDlpEtd/PH6jf7Cvt+ZL8VGt6gVzpufxK9zRLfGxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOqTMutD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E069C4CEC7;
+	Tue,  8 Oct 2024 12:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391642;
-	bh=QZU5jsz180GfV8bE4TLV7N57bPrkG3biuHXCcWMFcJo=;
+	s=korg; t=1728389961;
+	bh=3xujjn0HuqAyhmggnmSdUCO8AZ2DeIifai3GP1p8Xyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7/JqnRoM4VpXlejZxpJ5ySXsKT/Q8tw9zSgJ9Gh77sPhhlqU9vj2GVVHebBPAxiR
-	 rGcjqvsuLc4v4ogelXI5V7maGUdJy8kVOt3JRyi7/bvK337E/joceNgpm6/XnYIH5W
-	 ZLPkjFBwwjUvp3VBR1q5EqWNR0vxx2+rJ6H63h2M=
+	b=OOqTMutDGbv77e+OKTIQmg9+CrS5BlT6iK9+ujsl7rRhX+P0eSt486B7dVC+s6oGG
+	 uZl9S+PToyFeZJXfPATgY7NAwq8xoismGHsRzZGsDvPBXW6o3RNGtKrgyF6eOULpCj
+	 Agc1R7yOy22urSoQhMuCQ3odnn25hWuxVFtlVcf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Liu <ltao@redhat.com>,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Pavin Joseph <me@pavinjoseph.com>,
-	Sarah Brofeldt <srhb@dbc.dk>,
-	Eric Hagberg <ehagberg@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 180/558] x86/kexec: Add EFI config table identity mapping for kexec kernel
-Date: Tue,  8 Oct 2024 14:03:30 +0200
-Message-ID: <20241008115709.437412339@linuxfoundation.org>
+Subject: [PATCH 6.10 148/482] ALSA: control: Take power_ref lock primarily
+Date: Tue,  8 Oct 2024 14:03:31 +0200
+Message-ID: <20241008115654.132051870@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,118 +61,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Liu <ltao@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5760929f6545c651682de3c2c6c6786816b17bb1 ]
+[ Upstream commit fcc62b19104a67b9a2941513771e09389b75bd95 ]
 
-A kexec kernel boot failure is sometimes observed on AMD CPUs due to an
-unmapped EFI config table array.  This can be seen when "nogbpages" is on
-the kernel command line, and has been observed as a full BIOS reboot rather
-than a successful kexec.
+The code path for kcontrol accesses have often nested locks of both
+card's controls_rwsem and power_ref, and applies in that order.
+However, what could take much longer is the latter, power_ref; it
+waits for the power state of the device, and it pretty much depends on
+the user's action.
 
-This was also the cause of reported regressions attributed to Commit
-7143c5f4cf20 ("x86/mm/ident_map: Use gbpages only where full GB page should
-be mapped.") which was subsequently reverted.
+This patch swaps the locking order of those locks to a more natural
+way, namely, power_ref -> controls_rwsem, in order to shorten the time
+of possible nested locks.  For consistency, power_ref is taken always
+in the top-level caller side (that is, *_user() functions and the
+ioctl handler itself).
 
-To avoid this page fault, explicitly include the EFI config table array in
-the kexec identity map.
-
-Further explanation:
-
-The following 2 commits caused the EFI config table array to be
-accessed when enabling sev at kernel startup.
-
-    commit ec1c66af3a30 ("x86/compressed/64: Detect/setup SEV/SME features
-                          earlier during boot")
-    commit c01fce9cef84 ("x86/compressed: Add SEV-SNP feature
-                          detection/setup")
-
-This is in the code that examines whether SEV should be enabled or not, so
-it can even affect systems that are not SEV capable.
-
-This may result in a page fault if the EFI config table array's address is
-unmapped. Since the page fault occurs before the new kernel establishes its
-own identity map and page fault routines, it is unrecoverable and kexec
-fails.
-
-Most often, this problem is not seen because the EFI config table array
-gets included in the map by the luck of being placed at a memory address
-close enough to other memory areas that *are* included in the map created
-by kexec.
-
-Both the "nogbpages" command line option and the "use gpbages only where
-full GB page should be mapped" change greatly reduce the chance of being
-included in the map by luck, which is why the problem appears.
-
-Signed-off-by: Tao Liu <ltao@redhat.com>
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Pavin Joseph <me@pavinjoseph.com>
-Tested-by: Sarah Brofeldt <srhb@dbc.dk>
-Tested-by: Eric Hagberg <ehagberg@gmail.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/all/20240717213121.3064030-2-steve.wahl@hpe.com
+Link: https://patch.msgid.link/20240729160659.4516-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/machine_kexec_64.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ sound/core/control.c | 54 ++++++++++++++++++++++++++++----------------
+ 1 file changed, 34 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index cc0f7f70b17ba..9c9ac606893e9 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -28,6 +28,7 @@
- #include <asm/setup.h>
- #include <asm/set_memory.h>
- #include <asm/cpu.h>
-+#include <asm/efi.h>
- 
- #ifdef CONFIG_ACPI
- /*
-@@ -87,6 +88,8 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
- {
- #ifdef CONFIG_EFI
- 	unsigned long mstart, mend;
-+	void *kaddr;
-+	int ret;
- 
- 	if (!efi_enabled(EFI_BOOT))
- 		return 0;
-@@ -102,6 +105,30 @@ map_efi_systab(struct x86_mapping_info *info, pgd_t *level4p)
- 	if (!mstart)
- 		return 0;
- 
-+	ret = kernel_ident_mapping_init(info, level4p, mstart, mend);
-+	if (ret)
-+		return ret;
-+
-+	kaddr = memremap(mstart, mend - mstart, MEMREMAP_WB);
-+	if (!kaddr) {
-+		pr_err("Could not map UEFI system table\n");
-+		return -ENOMEM;
-+	}
-+
-+	mstart = efi_config_table;
-+
-+	if (efi_enabled(EFI_64BIT)) {
-+		efi_system_table_64_t *stbl = (efi_system_table_64_t *)kaddr;
-+
-+		mend = mstart + sizeof(efi_config_table_64_t) * stbl->nr_tables;
-+	} else {
-+		efi_system_table_32_t *stbl = (efi_system_table_32_t *)kaddr;
-+
-+		mend = mstart + sizeof(efi_config_table_32_t) * stbl->nr_tables;
-+	}
-+
-+	memunmap(kaddr);
-+
- 	return kernel_ident_mapping_init(info, level4p, mstart, mend);
+diff --git a/sound/core/control.c b/sound/core/control.c
+index 1dd2337e29300..2151f19b432fd 100644
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1164,9 +1164,7 @@ static int __snd_ctl_elem_info(struct snd_card *card,
+ #ifdef CONFIG_SND_DEBUG
+ 	info->access = 0;
  #endif
- 	return 0;
+-	result = snd_power_ref_and_wait(card);
+-	if (!result)
+-		result = kctl->info(kctl, info);
++	result = kctl->info(kctl, info);
+ 	snd_power_unref(card);
+ 	if (result >= 0) {
+ 		snd_BUG_ON(info->access);
+@@ -1205,12 +1203,17 @@ static int snd_ctl_elem_info(struct snd_ctl_file *ctl,
+ static int snd_ctl_elem_info_user(struct snd_ctl_file *ctl,
+ 				  struct snd_ctl_elem_info __user *_info)
+ {
++	struct snd_card *card = ctl->card;
+ 	struct snd_ctl_elem_info info;
+ 	int result;
+ 
+ 	if (copy_from_user(&info, _info, sizeof(info)))
+ 		return -EFAULT;
++	result = snd_power_ref_and_wait(card);
++	if (result)
++		return result;
+ 	result = snd_ctl_elem_info(ctl, &info);
++	snd_power_unref(card);
+ 	if (result < 0)
+ 		return result;
+ 	/* drop internal access flags */
+@@ -1254,10 +1257,7 @@ static int snd_ctl_elem_read(struct snd_card *card,
+ 
+ 	if (!snd_ctl_skip_validation(&info))
+ 		fill_remaining_elem_value(control, &info, pattern);
+-	ret = snd_power_ref_and_wait(card);
+-	if (!ret)
+-		ret = kctl->get(kctl, control);
+-	snd_power_unref(card);
++	ret = kctl->get(kctl, control);
+ 	if (ret < 0)
+ 		return ret;
+ 	if (!snd_ctl_skip_validation(&info) &&
+@@ -1282,7 +1282,11 @@ static int snd_ctl_elem_read_user(struct snd_card *card,
+ 	if (IS_ERR(control))
+ 		return PTR_ERR(no_free_ptr(control));
+ 
++	result = snd_power_ref_and_wait(card);
++	if (result)
++		return result;
+ 	result = snd_ctl_elem_read(card, control);
++	snd_power_unref(card);
+ 	if (result < 0)
+ 		return result;
+ 
+@@ -1297,7 +1301,7 @@ static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
+ 	struct snd_kcontrol *kctl;
+ 	struct snd_kcontrol_volatile *vd;
+ 	unsigned int index_offset;
+-	int result;
++	int result = 0;
+ 
+ 	down_write(&card->controls_rwsem);
+ 	kctl = snd_ctl_find_id_locked(card, &control->id);
+@@ -1315,9 +1319,8 @@ static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
+ 	}
+ 
+ 	snd_ctl_build_ioff(&control->id, kctl, index_offset);
+-	result = snd_power_ref_and_wait(card);
+ 	/* validate input values */
+-	if (IS_ENABLED(CONFIG_SND_CTL_INPUT_VALIDATION) && !result) {
++	if (IS_ENABLED(CONFIG_SND_CTL_INPUT_VALIDATION)) {
+ 		struct snd_ctl_elem_info info;
+ 
+ 		memset(&info, 0, sizeof(info));
+@@ -1329,7 +1332,6 @@ static int snd_ctl_elem_write(struct snd_card *card, struct snd_ctl_file *file,
+ 	}
+ 	if (!result)
+ 		result = kctl->put(kctl, control);
+-	snd_power_unref(card);
+ 	if (result < 0) {
+ 		up_write(&card->controls_rwsem);
+ 		return result;
+@@ -1358,7 +1360,11 @@ static int snd_ctl_elem_write_user(struct snd_ctl_file *file,
+ 		return PTR_ERR(no_free_ptr(control));
+ 
+ 	card = file->card;
++	result = snd_power_ref_and_wait(card);
++	if (result < 0)
++		return result;
+ 	result = snd_ctl_elem_write(card, file, control);
++	snd_power_unref(card);
+ 	if (result < 0)
+ 		return result;
+ 
+@@ -1827,7 +1833,7 @@ static int call_tlv_handler(struct snd_ctl_file *file, int op_flag,
+ 		{SNDRV_CTL_TLV_OP_CMD,   SNDRV_CTL_ELEM_ACCESS_TLV_COMMAND},
+ 	};
+ 	struct snd_kcontrol_volatile *vd = &kctl->vd[snd_ctl_get_ioff(kctl, id)];
+-	int i, ret;
++	int i;
+ 
+ 	/* Check support of the request for this element. */
+ 	for (i = 0; i < ARRAY_SIZE(pairs); ++i) {
+@@ -1845,11 +1851,7 @@ static int call_tlv_handler(struct snd_ctl_file *file, int op_flag,
+ 	    vd->owner != NULL && vd->owner != file)
+ 		return -EPERM;
+ 
+-	ret = snd_power_ref_and_wait(file->card);
+-	if (!ret)
+-		ret = kctl->tlv.c(kctl, op_flag, size, buf);
+-	snd_power_unref(file->card);
+-	return ret;
++	return kctl->tlv.c(kctl, op_flag, size, buf);
+ }
+ 
+ static int read_tlv_buf(struct snd_kcontrol *kctl, struct snd_ctl_elem_id *id,
+@@ -1962,16 +1964,28 @@ static long snd_ctl_ioctl(struct file *file, unsigned int cmd, unsigned long arg
+ 	case SNDRV_CTL_IOCTL_SUBSCRIBE_EVENTS:
+ 		return snd_ctl_subscribe_events(ctl, ip);
+ 	case SNDRV_CTL_IOCTL_TLV_READ:
+-		scoped_guard(rwsem_read, &ctl->card->controls_rwsem)
++		err = snd_power_ref_and_wait(card);
++		if (err < 0)
++			return err;
++		scoped_guard(rwsem_read, &card->controls_rwsem)
+ 			err = snd_ctl_tlv_ioctl(ctl, argp, SNDRV_CTL_TLV_OP_READ);
++		snd_power_unref(card);
+ 		return err;
+ 	case SNDRV_CTL_IOCTL_TLV_WRITE:
+-		scoped_guard(rwsem_write, &ctl->card->controls_rwsem)
++		err = snd_power_ref_and_wait(card);
++		if (err < 0)
++			return err;
++		scoped_guard(rwsem_write, &card->controls_rwsem)
+ 			err = snd_ctl_tlv_ioctl(ctl, argp, SNDRV_CTL_TLV_OP_WRITE);
++		snd_power_unref(card);
+ 		return err;
+ 	case SNDRV_CTL_IOCTL_TLV_COMMAND:
+-		scoped_guard(rwsem_write, &ctl->card->controls_rwsem)
++		err = snd_power_ref_and_wait(card);
++		if (err < 0)
++			return err;
++		scoped_guard(rwsem_write, &card->controls_rwsem)
+ 			err = snd_ctl_tlv_ioctl(ctl, argp, SNDRV_CTL_TLV_OP_CMD);
++		snd_power_unref(card);
+ 		return err;
+ 	case SNDRV_CTL_IOCTL_POWER:
+ 		return -ENOPROTOOPT;
 -- 
 2.43.0
 
