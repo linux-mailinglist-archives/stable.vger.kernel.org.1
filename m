@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-82513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBEC994D21
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E178994A5C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 193181C25508
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36024289937
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50121DE89D;
-	Tue,  8 Oct 2024 13:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9583190663;
+	Tue,  8 Oct 2024 12:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGBx3z98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dDD174A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A348F1DE4CD;
-	Tue,  8 Oct 2024 13:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AE11E485;
+	Tue,  8 Oct 2024 12:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392517; cv=none; b=uv2oXgs+eaxbv0yaHxoIdMYnqLq8k6oxebNz9HuEXfRTtnGHi4RI3Z8JEOTW0saz+6vvJNu6HJ7d6L7PKxBzGImWxcixAMj6fLW+O8UfaxdGwnv/d0t1UuHMb3zQDK1vHvfLQO4niL04qtoRwuWhRcXb7K7pIzf42hPYJafHZ9Y=
+	t=1728390740; cv=none; b=oj872uCupr1yOXeSyaOWuqmFTVVBLBRXdjYX1ICHs+FDWYN7YeiHwj3Zsz4euyC/kucYOi2TYP4cdJ0HJlOiM3AL1M7GCg6yFTxEfTeccJx52FaUF7dvc5s0iOdl8Qr6MjECEMBatww+oudlYEz/l/Vqo+uIhN5pos6zAWTXErY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392517; c=relaxed/simple;
-	bh=t7CmQsUWJzOHZPU/1v156No5PKEPZiDi1twdY1QcT7Y=;
+	s=arc-20240116; t=1728390740; c=relaxed/simple;
+	bh=3rdo97jKC6YWef9NjSyAMoXOwEjFmdr+D4Y9VHgLlPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRK1iYS8KKsbdUtA6SAKw0wuC4R1bMYJgzHM4D659V3LyfYldPdCQ/w0K2qFWhAHrsjQ9PKd9du4TRrWA/enHH586UsisQL8ovktKV0fuxgqYEXQInoe1+b517NcgIy+atzS3LnqCWmBKwFJ/L5nkiqFpBVX6tBjSTK74BCL2xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGBx3z98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EADCC4CEC7;
-	Tue,  8 Oct 2024 13:01:56 +0000 (UTC)
+	 MIME-Version; b=ktbXlE5j7TWT3Rzcz0XxNebwdOHT2961EVApZbYfLO+mOQO0a1AXZrkAgdLA72HMptrmCdjCYq70/briRGOTAivo+SnuXGcRD/SPApmZCsAXIkPWn2vS+SAJDTuWbkki5gUaK6TFxqSHiivu+iB2rCUc8k+rqKIrJAIkRlggkLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dDD174A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67FFC4CEC7;
+	Tue,  8 Oct 2024 12:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392517;
-	bh=t7CmQsUWJzOHZPU/1v156No5PKEPZiDi1twdY1QcT7Y=;
+	s=korg; t=1728390740;
+	bh=3rdo97jKC6YWef9NjSyAMoXOwEjFmdr+D4Y9VHgLlPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGBx3z98rTXe0ZWqRHbPLx9GQ9sBRIFFlVC2du/SbGl8DcLsFE3e9rapmg7CGBWT0
-	 f9STAI1YwXHQVHa5H2zWzeL9jofiUGpMgiWmz2u9heTlDoNg1W9++IPyagViLkw0Zs
-	 GonagkiKoHz2EixZCp4ICloSspXiKHW+c60RqdW4=
+	b=1dDD174A+hxwZ/psaeSmSRZrqvnQVPS0+SMcO6o10BT7QVvGtNyLo0t6dB1fXosjw
+	 7iogA/yA4d1c7QZh2ranmTs3D/3i3U9bLFvUXR4VBS5v6UUDQ+IzK7Qqg6Pp/S6raG
+	 78oYDmUqvMaLeooiLKmbM0AC7WFHfwHHqAQZ4f/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Rientjes <rientjes@google.com>,
-	Christoph Lameter <cl@linux.com>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 411/558] mm: krealloc: consider spare memory for __GFP_ZERO
+	syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.10 378/482] riscv: Fix kernel stack size when KASAN is enabled
 Date: Tue,  8 Oct 2024 14:07:21 +0200
-Message-ID: <20241008115718.447737898@linuxfoundation.org>
+Message-ID: <20241008115703.293887598@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 1a83a716ec233990e1fd5b6fbb1200ade63bf450 upstream.
+commit cfb10de18538e383dbc4f3ce7f477ce49287ff3d upstream.
 
-As long as krealloc() is called with __GFP_ZERO consistently, starting
-with the initial memory allocation, __GFP_ZERO should be fully honored.
+We use Kconfig to select the kernel stack size, doubling the default
+size if KASAN is enabled.
 
-However, if for an existing allocation krealloc() is called with a
-decreased size, it is not ensured that the spare portion the allocation is
-zeroed.  Thus, if krealloc() is subsequently called with a larger size
-again, __GFP_ZERO can't be fully honored, since we don't know the previous
-size, but only the bucket size.
+But that actually only works if KASAN is selected from the beginning,
+meaning that if KASAN config is added later (for example using
+menuconfig), CONFIG_THREAD_SIZE_ORDER won't be updated, keeping the
+default size, which is not enough for KASAN as reported in [1].
 
-Example:
+So fix this by moving the logic to compute the right kernel stack into a
+header.
 
-	buf = kzalloc(64, GFP_KERNEL);
-	memset(buf, 0xff, 64);
-
-	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
-
-	/* After this call the last 16 bytes are still 0xff. */
-	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
-
-Fix this, by explicitly setting spare memory to zero, when shrinking an
-allocation with __GFP_ZERO flag set or init_on_alloc enabled.
-
-Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: David Rientjes <rientjes@google.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a7555f6b62e7 ("riscv: stack: Add config of thread stack size")
+Reported-by: syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000eb301906222aadc2@google.com/ [1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240917150328.59831-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slab_common.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/riscv/Kconfig                   |    3 +--
+ arch/riscv/include/asm/thread_info.h |    7 ++++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1273,6 +1273,13 @@ __do_krealloc(const void *p, size_t new_
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -715,8 +715,7 @@ config IRQ_STACKS
+ config THREAD_SIZE_ORDER
+ 	int "Kernel stack size (in power-of-two numbers of page size)" if VMAP_STACK && EXPERT
+ 	range 0 4
+-	default 1 if 32BIT && !KASAN
+-	default 3 if 64BIT && KASAN
++	default 1 if 32BIT
+ 	default 2
+ 	help
+ 	  Specify the Pages of thread stack size (from 4KB to 64KB), which also
+--- a/arch/riscv/include/asm/thread_info.h
++++ b/arch/riscv/include/asm/thread_info.h
+@@ -12,7 +12,12 @@
+ #include <linux/const.h>
  
- 	/* If the object still fits, repoison it precisely. */
- 	if (ks >= new_size) {
-+		/* Zero out spare memory. */
-+		if (want_init_on_alloc(flags)) {
-+			kasan_disable_current();
-+			memset((void *)p + new_size, 0, ks - new_size);
-+			kasan_enable_current();
-+		}
-+
- 		p = kasan_krealloc((void *)p, new_size, flags);
- 		return (void *)p;
- 	}
+ /* thread information allocation */
+-#define THREAD_SIZE_ORDER	CONFIG_THREAD_SIZE_ORDER
++#ifdef CONFIG_KASAN
++#define KASAN_STACK_ORDER	1
++#else
++#define KASAN_STACK_ORDER	0
++#endif
++#define THREAD_SIZE_ORDER	(CONFIG_THREAD_SIZE_ORDER + KASAN_STACK_ORDER)
+ #define THREAD_SIZE		(PAGE_SIZE << THREAD_SIZE_ORDER)
+ 
+ /*
 
 
 
