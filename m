@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-82772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EF2994E9E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA12994A0F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E573B24112
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5561F21990
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF011DE89A;
-	Tue,  8 Oct 2024 13:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEAA1DF724;
+	Tue,  8 Oct 2024 12:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPAY3NgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Xqkf+71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686CF1C5793;
-	Tue,  8 Oct 2024 13:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E081DED48;
+	Tue,  8 Oct 2024 12:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393377; cv=none; b=WnoAFBWBRDjNbJCkOHG9+lxBm6WQYqOcmILzIasHAGZnxUYnkdV8zobyTxh9q/L5tQ7KZVsTdqiYItelQ3lcipAQd2ZNv1/IQUxJQp3+itKs06gb0hiNanmC5Ta9iPRj3qV5Q4r0kvzGTZB/+WZ2PLa3erkBbrTOysd5HjrIriI=
+	t=1728390529; cv=none; b=O+TV3oooUEoKBC3mCrX1SZiUw97MnBqhCOjx/XyKo3neeUEdIkxBzrVChyxTmE8STQOvx08lRQsO2guXcd7PUaPR9bxFZ5nPM14LL6DcfqWr/nbtEiQPmthYUzErKWltUFcOpws6Z16/CZIRQmzYRTFod1ogCL8UGAhnwLq842I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393377; c=relaxed/simple;
-	bh=0+VDpalympnib673eN8SOsQ7EUwJIDBbRJ9I8O1LXE4=;
+	s=arc-20240116; t=1728390529; c=relaxed/simple;
+	bh=K2RyHokKjlMOf0xi76pfDEYYEebpA/wex9thjuDH/SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNh75jUyKVcUM55zS8wlANUTT0xIMG3HlTuFuxzSnODZ2BXijMT8VVyYx5nX6IkZ3r0fxAD2XCiCzV8pyNlZYM8m9W5cox87HovTDUV0OTeTekauPrf72zXLJ98/YtAuC/rN4X2B704tfscYH9ARjz9HRytjCh/YARm/7bkGiQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPAY3NgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A0AC4CEC7;
-	Tue,  8 Oct 2024 13:16:16 +0000 (UTC)
+	 MIME-Version; b=IwEuWlSMQy/fsKkAqLDXDAxI3RB3FNEZX5Rho4Ce98C/LoBmg72RSc6AMlBtt2gN2lXxzfQ0onfLZ7QydDYtTbvAmtt4noYMsyP2vElXLXCyLZC2fabOrAZvORWEwn+4q/pGTjLBuxdzigcvLlmjUeRhPYDWYsD4jOK8qh2YpJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Xqkf+71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC62EC4CECC;
+	Tue,  8 Oct 2024 12:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393377;
-	bh=0+VDpalympnib673eN8SOsQ7EUwJIDBbRJ9I8O1LXE4=;
+	s=korg; t=1728390529;
+	bh=K2RyHokKjlMOf0xi76pfDEYYEebpA/wex9thjuDH/SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uPAY3NgWtpiYmwsXKKF9clUNwQmCES/Pqr6wempfBo8x0lM89gZK7q/kiUqnW/YLj
-	 YPE+NLpcwVZjeqYMuXXSO3jeiTAtxL5JNZi1E4isqUdlLhm+gV6dJGCPMYnE7SLypG
-	 zgvOv/BVa0T9r9ZHPa4tTD79OTOmDKm/PVHJW4jA=
+	b=0Xqkf+71Fu/4CrzfY+7DwQrP4m1VGYbVqAQBpcgBpULJBjtEIObSmSKnJSigvvaDu
+	 iMGNJAVAG6peQMNrvjMB+vmLmoWfv+PVVl4O/b2mvmRGyMeiH5H0MP4RTk53UbiwBZ
+	 1lbm2VW3p0cMnUGnd0JWJ++stJAPb6cyi7cOmNUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/386] drm/amd/display: Add null check for top_pipe_to_program in commit_planes_for_stream
+	Lianqin Hu <hulianqin@vivo.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 316/482] ALSA: usb-audio: Add delay quirk for VIVO USB-C HEADSET
 Date: Tue,  8 Oct 2024 14:06:19 +0200
-Message-ID: <20241008115634.708131581@linuxfoundation.org>
+Message-ID: <20241008115700.868690603@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,56 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-[ Upstream commit 66d71a72539e173a9b00ca0b1852cbaa5f5bf1ad ]
+commit 73385f3e0d8088b715ae8f3f66d533c482a376ab upstream.
 
-This commit addresses a null pointer dereference issue in the
-`commit_planes_for_stream` function at line 4140. The issue could occur
-when `top_pipe_to_program` is null.
+Audio control requests that sets sampling frequency sometimes fail on
+this card. Adding delay between control messages eliminates that problem.
 
-The fix adds a check to ensure `top_pipe_to_program` is not null before
-accessing its stream_res. This prevents a null pointer dereference.
-
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc.c:4140 commit_planes_for_stream() error: we previously assumed 'top_pipe_to_program' could be null (see line 3906)
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/TYUPR06MB62177E629E9DEF2401333BF7D2692@TYUPR06MB6217.apcprd06.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 50e643bfdfbad..0b2eb2a6c8e14 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3797,7 +3797,8 @@ static void commit_planes_for_stream(struct dc *dc,
- 	}
- 
- 	if ((update_type != UPDATE_TYPE_FAST) && stream->update_flags.bits.dsc_changed)
--		if (top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
-+		if (top_pipe_to_program &&
-+		    top_pipe_to_program->stream_res.tg->funcs->lock_doublebuffer_enable) {
- 			top_pipe_to_program->stream_res.tg->funcs->wait_for_state(
- 				top_pipe_to_program->stream_res.tg,
- 				CRTC_STATE_VACTIVE);
--- 
-2.43.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2279,6 +2279,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x2d95, 0x8011, /* VIVO USB-C HEADSET */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
 
 
 
