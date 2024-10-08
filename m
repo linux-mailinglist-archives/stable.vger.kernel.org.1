@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-82856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68729994EC8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00AF994AA5
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AAF228621C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7774228B5B3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762001DF27F;
-	Tue,  8 Oct 2024 13:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF7F1C2443;
+	Tue,  8 Oct 2024 12:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsS+E3EV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKhMRqbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341CD1DE4CD;
-	Tue,  8 Oct 2024 13:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA31C1779B1;
+	Tue,  8 Oct 2024 12:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393656; cv=none; b=cD0TLf7X4b0LIZuC0jBjssEUpvbOrjk31w2G/MiaMMQfaK1Ht7soV8C84fpoaQUtWCUd0DImkHKAPD0ugz7gpSe2pATkndqNclHN/L+O2PkUMZ9lC4MyAWBkqFeax3CDdCxUlzRxPr1TVE8wjZ9nXWCZrKLhjIJnYig9nHRqImU=
+	t=1728390908; cv=none; b=Hn/hhrBOhVu3YLuGKV2imi4dCv96CqQaTQ11ZkPf8IJCSS+v2TtQuHiqseNupYX2ROr7nCW+A+BoPJEEfWpF998YsLxcK83Zn5SvKOj91ZgKms/tppSASGwvgqkeoqis+6XQnkm7AmbI80J69+ggBzSSSoUCUjAj8EMOPb2WwzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393656; c=relaxed/simple;
-	bh=5JqyM5/rqLPRl7KZVVrY+A2h/m+6Fi8mpoRe0Y1BwNo=;
+	s=arc-20240116; t=1728390908; c=relaxed/simple;
+	bh=a76k2vsF7Qu18zNuKK5eBQ7qwygnGKVMNl2uEYKSsvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nlGBUOCr9kAKHsERbRhSN+jXYh0HzKYrNFBbMHxiGrBD6xEGGCqRA9BadrZ/OO1yAqWRwz6xx+OdC3CPBhCDAl9jR/r1UsiiTn1098lCnCMpBnyUK1GuMIREjUqx/skqFyfmpX3EUTq8oDkdvIh9w00W7JXVFUM1/lSbiVSutJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsS+E3EV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F2CC4CEC7;
-	Tue,  8 Oct 2024 13:20:55 +0000 (UTC)
+	 MIME-Version; b=IHn802If86RFe07jXfoP3rvq3k0e+AmZz05oZmte0jpWTXVyHf6h06JU26IV03MthyVa2f9S9v+DIhapRM3mVLVg/EYUcZavcHcCNs85maqcF5k2Fdoa0tY+bPRwl6eSAlvuuOW92TVcSxlCxfRqaQ8csP1sGwlN9vKjo/E6VQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKhMRqbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF67C4CEC7;
+	Tue,  8 Oct 2024 12:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393655;
-	bh=5JqyM5/rqLPRl7KZVVrY+A2h/m+6Fi8mpoRe0Y1BwNo=;
+	s=korg; t=1728390908;
+	bh=a76k2vsF7Qu18zNuKK5eBQ7qwygnGKVMNl2uEYKSsvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsS+E3EVRw2+yzXqjnOOds9VHXS2SuOjBltyQRwIp1/3WNjmjEUEL0VzxOLyQaq9T
-	 SgQwpGE8ZPhQWf+yPEVsx7DhyR31zEoZTPNxIpiZKqBbEMTxE91sfdkXUiVogrcVgf
-	 rw1y3Sx4b1k91TPkL9f2dsjedMbm1p7s3blW5WcY=
+	b=EKhMRqbDrnIL5gwBirlX+XFEFnlpbt6BK3fsN2WITfYJTHdOhxLSpMQwVepj2V8re
+	 /uZhSz/DvLl6lSddq9QWGjA5EM+owltt7bl5bE0subpiYkrLoMSIYJcMUlxIsXijiL
+	 lx4DFpAkR9ErHr556zSf2uDYU9xeqTeB3JPabt+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Virag <virag.david003@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.6 216/386] dt-bindings: clock: exynos7885: Fix duplicated binding
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 398/482] clk: qcom: gcc-sc8180x: Fix the sdcc2 and sdcc4 clocks freq table
 Date: Tue,  8 Oct 2024 14:07:41 +0200
-Message-ID: <20241008115637.907869725@linuxfoundation.org>
+Message-ID: <20241008115704.071997818@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Virag <virag.david003@gmail.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit abf3a3ea9acb5c886c8729191a670744ecd42024 upstream.
+commit b8acaf2de8081371761ab4cf1e7a8ee4e7acc139 upstream.
 
-The numbering in Exynos7885's FSYS CMU bindings has 4 duplicated by
-accident, with the rest of the bindings continuing with 5.
+Update the frequency tables of gcc_sdcc2_apps_clk and gcc_sdcc4_apps_clk
+as per the latest frequency plan.
 
-Fix this by moving CLK_MOUT_FSYS_USB30DRD_USER to the end as 11.
-
-Since CLK_MOUT_FSYS_USB30DRD_USER is not used in any device tree as of
-now, and there are no other clocks affected (maybe apart from
-CLK_MOUT_FSYS_MMC_SDIO_USER which the number was shared with, also not
-used in a device tree), this is the least impactful way to solve this
-problem.
-
-Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Virag <virag.david003@gmail.com>
-Link: https://lore.kernel.org/r/20240806121157.479212-2-virag.david003@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-4-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/dt-bindings/clock/exynos7885.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sc8180x.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/include/dt-bindings/clock/exynos7885.h
-+++ b/include/dt-bindings/clock/exynos7885.h
-@@ -136,12 +136,12 @@
- #define CLK_MOUT_FSYS_MMC_CARD_USER	2
- #define CLK_MOUT_FSYS_MMC_EMBD_USER	3
- #define CLK_MOUT_FSYS_MMC_SDIO_USER	4
--#define CLK_MOUT_FSYS_USB30DRD_USER	4
- #define CLK_GOUT_MMC_CARD_ACLK		5
- #define CLK_GOUT_MMC_CARD_SDCLKIN	6
- #define CLK_GOUT_MMC_EMBD_ACLK		7
- #define CLK_GOUT_MMC_EMBD_SDCLKIN	8
- #define CLK_GOUT_MMC_SDIO_ACLK		9
- #define CLK_GOUT_MMC_SDIO_SDCLKIN	10
-+#define CLK_MOUT_FSYS_USB30DRD_USER	11
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -911,7 +911,7 @@ static const struct freq_tbl ftbl_gcc_sd
+ 	F(25000000, P_GPLL0_OUT_MAIN, 12, 1, 2),
+ 	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+ 	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+-	F(200000000, P_GPLL0_OUT_MAIN, 3, 0, 0),
++	F(202000000, P_GPLL9_OUT_MAIN, 4, 0, 0),
+ 	{ }
+ };
  
- #endif /* _DT_BINDINGS_CLOCK_EXYNOS_7885_H */
+@@ -934,9 +934,8 @@ static const struct freq_tbl ftbl_gcc_sd
+ 	F(400000, P_BI_TCXO, 12, 1, 4),
+ 	F(9600000, P_BI_TCXO, 2, 0, 0),
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+-	F(37500000, P_GPLL0_OUT_MAIN, 16, 0, 0),
+ 	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+-	F(75000000, P_GPLL0_OUT_MAIN, 8, 0, 0),
++	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+ 	{ }
+ };
+ 
 
 
 
