@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-82014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0C1994A9D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38862994D32
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD0CF1C24C4D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0656282B16
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464A21C4631;
-	Tue,  8 Oct 2024 12:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25FA1DE2AE;
+	Tue,  8 Oct 2024 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvcJe/cE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZ+di1QH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030241C2443;
-	Tue,  8 Oct 2024 12:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E49E1DFD1;
+	Tue,  8 Oct 2024 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390887; cv=none; b=lCyt5fc6C5cqFdU9KX/0Heg6duJ2q/dCYlejaVWC3DzsGoXeewD0Y/Y2Zw6KgfZ2L6ggYyzh+kx83vtLxx/2oT9D/5fKH64r2MS5NhCeFd6OoIEl2G4DL2i4zpfN8v2k32nrG+N5Jpi8nFYzxGMww9x7Hq3PyGB9gVqhmtt7W4Y=
+	t=1728392570; cv=none; b=bKi5r8djfs2/ME5NZPhnyuSD1Ylk/WZq7Pcu7vBNWRtYCSGQsDXGmP3EDpo3sPpGSkCH1cYw3ldhdoXjwbhGDcDi6Ru3mjZg4zwD6N49PODWEtKMzs7GJEzR7jv79+uGjGru84uSu2yItcXHs2aOaIVO2SJrHR0MIOMxNsJ/v/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390887; c=relaxed/simple;
-	bh=1gnKiGdpbQ5xMeOJkptLuVP4D3aLlC7SrKUgL0W2kZI=;
+	s=arc-20240116; t=1728392570; c=relaxed/simple;
+	bh=j1WVSm1LMtops5w6+Qd9hcT9Ycp8WK1U7yUVSJa149g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+kJc71PUc699mqHpb3Othh5fKUkz0PVwc5J6q3spFynYhptzAD3qB34p3popClmlB5od0uUy3lTLezLxrb6Cc6iwIMQRH/cNssniHhHe+bPt95MlU5gB6X55C6BjWxyCr5nRJqy1Cdae0C5AGQapJzZxNROaZ4jxS+PqL33eGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvcJe/cE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627BFC4CEC7;
-	Tue,  8 Oct 2024 12:34:46 +0000 (UTC)
+	 MIME-Version; b=lmky7AmRXwDlvl8V9hdZ8w724SWdEpAOaEJHvXYqldNSZYqsohSswktqwdIusiWyF60h7TOYT7UERfz7R1bM9yNaZVjT1PpGTCB22rEP/6WMbaSuVw6FYY0JUfZzSK4a38Ygl7bbJeueqA57eFt6p4KdjrDD/5xQil11ErAfofA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZ+di1QH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2FBC4CEC7;
+	Tue,  8 Oct 2024 13:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390886;
-	bh=1gnKiGdpbQ5xMeOJkptLuVP4D3aLlC7SrKUgL0W2kZI=;
+	s=korg; t=1728392570;
+	bh=j1WVSm1LMtops5w6+Qd9hcT9Ycp8WK1U7yUVSJa149g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvcJe/cEgaQG0LO6VkvvP02BxLbed0rT2jdEPoSfdW9PNGeKteflTL6AJw9UOsdpB
-	 2KR/paN2YqkQyGrnRvpb4eXXs7KtGlfCjpbnWmV7UGsWqKqt5fm98uMfQ1lpgzD5Sd
-	 PYHeMFo/QlOMEIxmEM3zE719G+bzryFAzagk+epo=
+	b=lZ+di1QHqMoGbEGUXQVVmmWpiYKz/+3rWFRb/DVmyTZXuBjLhehMgh4Xfr2TanbfA
+	 Fnvov1AZY8oAAKb3dCL7iHUcxjG1HHbGNNQCEcxoO7GEz4EaVIfNugLL7BkUTka52e
+	 Da/haDeN8VNhlsiweuPW2VVz+sW3mMJ6hsvYr4Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Keerthy <j-keerthy@ti.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.10 422/482] gpio: davinci: fix lazy disable
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 455/558] dt-bindings: clock: qcom: Add GPLL9 support on gcc-sc8180x
 Date: Tue,  8 Oct 2024 14:08:05 +0200
-Message-ID: <20241008115705.011321432@linuxfoundation.org>
+Message-ID: <20241008115720.163658956@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 3360d41f4ac490282fddc3ccc0b58679aa5c065d upstream.
+commit 648b4bde0aca2980ebc0b90cdfbb80d222370c3d upstream.
 
-On a few platforms such as TI's AM69 device, disable_irq() fails to keep
-track of the interrupts that happen between disable_irq() and
-enable_irq() and those interrupts are missed. Use the ->irq_unmask() and
-->irq_mask() methods instead of ->irq_enable() and ->irq_disable() to
-correctly keep track of edges when disable_irq is called.
+Add the missing GPLL9 which is required for the gcc sdcc2 clock.
 
-This solves the issue of disable_irq() not working as expected on such
-platforms.
-
-Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
-Acked-by: Keerthy <j-keerthy@ti.com>
+Fixes: 0fadcdfdcf57 ("dt-bindings: clock: Add SC8180x GCC binding")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240828133207.493961-1-parth105105@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-2-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-davinci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/dt-bindings/clock/qcom,gcc-sc8180x.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpio/gpio-davinci.c
-+++ b/drivers/gpio/gpio-davinci.c
-@@ -289,7 +289,7 @@ static int davinci_gpio_probe(struct pla
-  * serve as EDMA event triggers.
-  */
+--- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+@@ -248,6 +248,7 @@
+ #define GCC_USB3_SEC_CLKREF_CLK					238
+ #define GCC_UFS_MEM_CLKREF_EN					239
+ #define GCC_UFS_CARD_CLKREF_EN					240
++#define GPLL9							241
  
--static void gpio_irq_disable(struct irq_data *d)
-+static void gpio_irq_mask(struct irq_data *d)
- {
- 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
- 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
-@@ -298,7 +298,7 @@ static void gpio_irq_disable(struct irq_
- 	writel_relaxed(mask, &g->clr_rising);
- }
- 
--static void gpio_irq_enable(struct irq_data *d)
-+static void gpio_irq_unmask(struct irq_data *d)
- {
- 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
- 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
-@@ -324,8 +324,8 @@ static int gpio_irq_type(struct irq_data
- 
- static struct irq_chip gpio_irqchip = {
- 	.name		= "GPIO",
--	.irq_enable	= gpio_irq_enable,
--	.irq_disable	= gpio_irq_disable,
-+	.irq_unmask	= gpio_irq_unmask,
-+	.irq_mask	= gpio_irq_mask,
- 	.irq_set_type	= gpio_irq_type,
- 	.flags		= IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE,
- };
+ #define GCC_EMAC_BCR						0
+ #define GCC_GPU_BCR						1
 
 
 
