@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-81886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D689949F5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67AB994E95
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C9F91C23CF9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93C71B24843
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33E21DED6F;
-	Tue,  8 Oct 2024 12:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B191DF72E;
+	Tue,  8 Oct 2024 13:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTi2CAY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koMfkv9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31B31E493;
-	Tue,  8 Oct 2024 12:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5140A1DEFF7;
+	Tue,  8 Oct 2024 13:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390466; cv=none; b=Vkwq/3kpb1EBcLDr9AIQtA1+ScYlPCMU8sU0mrr/pZL3N0UP9ckjwaUUiaFIv+FxIZpZY12ZjduK3eeFTe5GOL39Zklilp62rksUgOlD2zi+CX8Cq7F5TDGWWpVTkePKV9J8juSYTkgkxT0VtB9n+mbzyZQIyFzcPsjlee0aMOo=
+	t=1728393173; cv=none; b=KKuH8UzVOL9ABKGF71dZwgxw91apazguL85XUq051Iigvpt1qFSGM7wQ9LxFvy836c0U5tDH+fje0NZI12/wOUt+7KrXJtPHon6GqT+Fqd6wncmQjUwEZ+aRD+MfuwKW22HS1Hd4W+/aaJaZqIwai0vKAzYyi6LE71yQpDT/O+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390466; c=relaxed/simple;
-	bh=YwAZwsUM/rZUsS9zJl2LC1nUqiEJzEkqVlutL1xuVh0=;
+	s=arc-20240116; t=1728393173; c=relaxed/simple;
+	bh=PFg3hwUj009zlmp8IUUrlw4X1bv+RZjrCwKhFsHsH2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFt6wY7UB9pkLgA5VU7x4IlDfArp2I111FVCKgKLoWYjGzzv3Hi9sfkgWOaF2ks5tOHy9v5CfhqQsJ/qXBKXsqQmtueTP7oeiOaBCtQEs1wXxGILsKGhy9m3DWc38F0cCeyzIOgJ7YjkgmQ9uTIwOmD7/gBKLbdbHLeVC5BDc3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTi2CAY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9553C4CEC7;
-	Tue,  8 Oct 2024 12:27:45 +0000 (UTC)
+	 MIME-Version; b=lcoMUubV6HCJ8BqYhJMsy8ja8QOMrnggZ1xLhMm1+T3CwSDVXk3akYnq8ljFrxcXbNk6MEscDqP8Tdu4lIgrT2i6GdyQnyDOZVQDdi5GX9phItaqdCsG2XcP/fYrtALL8tZ2wurJ2cjTv63mHe2h0d7s9pHe0FsF/wO3aTn0ObE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koMfkv9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4396C4CEC7;
+	Tue,  8 Oct 2024 13:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390466;
-	bh=YwAZwsUM/rZUsS9zJl2LC1nUqiEJzEkqVlutL1xuVh0=;
+	s=korg; t=1728393173;
+	bh=PFg3hwUj009zlmp8IUUrlw4X1bv+RZjrCwKhFsHsH2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTi2CAY8KOFW2agFXpjpyPmF9RzAszfnKxIiUf9Ox5uhoEXdlS/2VLssq0CHrnhdy
-	 g838KFESK9Hk/N6qz3Btdr1YOtWWD2gJk+BoCz7J9e8uY1MO1wb457JPDvHGYaAEOU
-	 Wr8eRLv76pgetY8PF1JOEzxjweolIpjpJhH5pyKQ=
+	b=koMfkv9UxFGjhsvrIogQ1esdw669WdaT+KFYDBrqwuJQEj9WBCG+NeImaEVc9ottD
+	 FbDi7JIVOFCDlfR2/+BMWadi9XRd5WqMzRg3XW583SFuFvjWfPY0bkSQc5Mqszu/Tj
+	 D7H2mPgKzJKzbSfT1rT4mVZW+tg72PgEejOb3rgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 256/482] bpftool: Fix undefined behavior in qsort(NULL, 0, ...)
+Subject: [PATCH 6.6 074/386] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
 Date: Tue,  8 Oct 2024 14:05:19 +0200
-Message-ID: <20241008115658.360726955@linuxfoundation.org>
+Message-ID: <20241008115632.373630583@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit f04e2ad394e2755d0bb2d858ecb5598718bf00d5 ]
+[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
 
-When netfilter has no entry to display, qsort is called with
-qsort(NULL, 0, ...). This results in undefined behavior, as UBSan
-reports:
+Avoids firmware race condition.
 
-net.c:827:2: runtime error: null pointer passed as argument 1, which is declared to never be null
-
-Although the C standard does not explicitly state whether calling qsort
-with a NULL pointer when the size is 0 constitutes undefined behavior,
-Section 7.1.4 of the C standard (Use of library functions) mentions:
-
-"Each of the following statements applies unless explicitly stated
-otherwise in the detailed descriptions that follow: If an argument to a
-function has an invalid value (such as a value outside the domain of
-the function, or a pointer outside the address space of the program, or
-a null pointer, or a pointer to non-modifiable storage when the
-corresponding parameter is not const-qualified) or a type (after
-promotion) not expected by a function with variable number of
-arguments, the behavior is undefined."
-
-To avoid this, add an early return when nf_link_info is NULL to prevent
-calling qsort with a NULL pointer.
-
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910150207.3179306-1-visitorckw@gmail.com
+Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/net.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index ad2ea6cf2db11..0f2106218e1f0 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -824,6 +824,9 @@ static void show_link_netfilter(void)
- 		nf_link_count++;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 272e55ef8e2d2..5fba103bfd65d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -688,13 +688,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
+ {
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
+ 	struct mt7915_vif *mvif = msta->vif;
++	int ret;
  
-+	if (!nf_link_info)
-+		return;
-+
- 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
++	mt76_worker_disable(&dev->mt76.tx_worker);
+ 	if (enable && !params->amsdu)
+ 		msta->wcid.amsdu = false;
++	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
++				     MCU_EXT_CMD(STA_REC_UPDATE),
++				     enable, true);
++	mt76_worker_enable(&dev->mt76.tx_worker);
  
- 	for (id = 0; id < nf_link_count; id++) {
+-	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
+-				      MCU_EXT_CMD(STA_REC_UPDATE),
+-				      enable, true);
++	return ret;
+ }
+ 
+ int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
 -- 
 2.43.0
 
