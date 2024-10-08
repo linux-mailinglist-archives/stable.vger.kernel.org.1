@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2F1994D39
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D85994F06
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1565F1C2535B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99DF11C2513C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A4D1DED7A;
-	Tue,  8 Oct 2024 13:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BD61DF730;
+	Tue,  8 Oct 2024 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpGI5h0v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jnqPe5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C841DED48;
-	Tue,  8 Oct 2024 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD041DF260;
+	Tue,  8 Oct 2024 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392596; cv=none; b=kY8pBhmVzOytdfS2byHORi/8FWbQE3tvqHrryfi6o+Zrkbke6zvhqtYUhRTfKJX+aMxtrbrYm/JjxU7IlnimG/F2PQENmYY4Nl23S43s0pvifXDvufXndf3wJ5dk9h5L+dq4/pTZWJpyF2tKf6xbNCo36dKnTTv8ZqPDmRkTllc=
+	t=1728393759; cv=none; b=Q3PyBmkc7nVrvBJHrqduCaNKyCr3UaSwrWpxV0mn+fZxX6HIBNo/x4f63MLvbQn6FHSo0alhPKBRTxexSS4zCqkpsh1vd2SRjWN1QekukfRXoGpD7XwEAS+FxcRmL+4/s/GP/DDiLK9tJCF0QMBRIdx6jemSxpARjzqVUs6ADNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392596; c=relaxed/simple;
-	bh=0NNK5Vp7FMW6E7f4pIPnOKu+GIHbO5Cyi+ua4m/Oyl8=;
+	s=arc-20240116; t=1728393759; c=relaxed/simple;
+	bh=fxWml+ukE4heC5KKqHLxHeW7XKzdln9Qqaj/jwU7rRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2T0ljiIRs9gB7uEqLKFKpAzVhvtwMZ9Q5pYPQ5UFU6G3U7P/QSnTQyUtQhUeUC65tTpwly0yWGBjIVlOxGOaFF+s8KcgXFlfT705VtQef/Uq8HKBh6MXIVI7xbPhIcJsQamZC3Te+PnKFZsDXfK3U0QD1dVaUvV10tKCZF0luc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpGI5h0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3536DC4CECD;
-	Tue,  8 Oct 2024 13:03:16 +0000 (UTC)
+	 MIME-Version; b=g8d1+zlQ6p8e8e6iXwezcyYYG+xshyp0vUiadcNWnM7u4SiVwIqB0b+kUvJI+qKTK0J13kmSszaZG2uq19uFp8psLgBqXGhBcoYNqLjWFyAnMIyXKdPcu5n5WiWcCgw+z/+S8P08X0hazqPAO1ogz17AKlx7NZaOGt5CSe1VaAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jnqPe5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75AFC4CEC7;
+	Tue,  8 Oct 2024 13:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392596;
-	bh=0NNK5Vp7FMW6E7f4pIPnOKu+GIHbO5Cyi+ua4m/Oyl8=;
+	s=korg; t=1728393759;
+	bh=fxWml+ukE4heC5KKqHLxHeW7XKzdln9Qqaj/jwU7rRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpGI5h0vq3uCCQhJzcI/3IwzWFN4FK7gFC2p8cMdfXwXNGS9H+glVRZ9Fa4xWlESZ
-	 X5jlnN309UqK6u5LHFA3pxssk7o3BM/0+8N92uVtCSqf7+2fUJ+b6yUZLXKrYXKyXJ
-	 NwptASLPsL1VOHE9k68SZnIMw098m1pQb78AVZW4=
+	b=0jnqPe5rACboXxnvY+mqvWD8LOZXpokoS/ay+e52wzmnxtx+GEUNOSZJI4HAp0MlA
+	 DuoQBk6KRfkerI49iitIBM/VNtpLytLwGUpxSHlaSm/NDioyMY/vWGLy+bKYB7VGi2
+	 yQqpDBDcQ3orU+rczVJqxuqAIb0caFC395EUnCtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.11 462/558] media: qcom: camss: Remove use_count guard in stop_streaming
+	Jan Kara <jack@suse.cz>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 247/386] ext4: mark fc as ineligible using an handle in ext4_xattr_set()
 Date: Tue,  8 Oct 2024 14:08:12 +0200
-Message-ID: <20241008115720.434666512@linuxfoundation.org>
+Message-ID: <20241008115639.113419966@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 25f18cb1b673220b76a86ebef8e7fb79bd303b27 upstream.
+commit 04e6ce8f06d161399e5afde3df5dcfa9455b4952 upstream.
 
-The use_count check was introduced so that multiple concurrent Raw Data
-Interfaces RDIs could be driven by different virtual channels VCs on the
-CSIPHY input driving the video pipeline.
+Calling ext4_fc_mark_ineligible() with a NULL handle is racy and may result
+in a fast-commit being done before the filesystem is effectively marked as
+ineligible.  This patch moves the call to this function so that an handle
+can be used.  If a transaction fails to start, then there's not point in
+trying to mark the filesystem as ineligible, and an error will eventually be
+returned to user-space.
 
-This is an invalid use of use_count though as use_count pertains to the
-number of times a video entity has been opened by user-space not the number
-of active streams.
-
-If use_count and stream-on count don't agree then stop_streaming() will
-break as is currently the case and has become apparent when using CAMSS
-with libcamera's released softisp 0.3.
-
-The use of use_count like this is a bit hacky and right now breaks regular
-usage of CAMSS for a single stream case. Stopping qcam results in the splat
-below, and then it cannot be started again and any attempts to do so fails
-with -EBUSY.
-
-[ 1265.509831] WARNING: CPU: 5 PID: 919 at drivers/media/common/videobuf2/videobuf2-core.c:2183 __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
-...
-[ 1265.510630] Call trace:
-[ 1265.510636]  __vb2_queue_cancel+0x230/0x2c8 [videobuf2_common]
-[ 1265.510648]  vb2_core_streamoff+0x24/0xcc [videobuf2_common]
-[ 1265.510660]  vb2_ioctl_streamoff+0x5c/0xa8 [videobuf2_v4l2]
-[ 1265.510673]  v4l_streamoff+0x24/0x30 [videodev]
-[ 1265.510707]  __video_do_ioctl+0x190/0x3f4 [videodev]
-[ 1265.510732]  video_usercopy+0x304/0x8c4 [videodev]
-[ 1265.510757]  video_ioctl2+0x18/0x34 [videodev]
-[ 1265.510782]  v4l2_ioctl+0x40/0x60 [videodev]
-...
-[ 1265.510944] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 0 in active state
-[ 1265.511175] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 1 in active state
-[ 1265.511398] videobuf2_common: driver bug: stop_streaming operation is leaving buffer 2 in active st
-
-One CAMSS specific way to handle multiple VCs on the same RDI might be:
-
-- Reference count each pipeline enable for CSIPHY, CSID, VFE and RDIx.
-- The video buffers are already associated with msm_vfeN_rdiX so
-  release video buffers when told to do so by stop_streaming.
-- Only release the power-domains for the CSIPHY, CSID and VFE when
-  their internal refcounts drop.
-
-Either way refusing to release video buffers based on use_count is
-erroneous and should be reverted. The silicon enabling code for selecting
-VCs is perfectly fine. Its a "known missing feature" that concurrent VCs
-won't work with CAMSS right now.
-
-Initial testing with this code didn't show an error but, SoftISP and "real"
-usage with Google Hangouts breaks the upstream code pretty quickly, we need
-to do a partial revert and take another pass at VCs.
-
-This commit partially reverts commit 89013969e232 ("media: camss: sm8250:
-Pipeline starting and stopping for multiple virtual channels")
-
-Fixes: 89013969e232 ("media: camss: sm8250: Pipeline starting and stopping for multiple virtual channels")
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/ZoVNHOTI0PKMNt4_@hovoldconsulting.com/
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240923104909.18342-3-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-video.c |    6 ------
- 1 file changed, 6 deletions(-)
+ fs/ext4/xattr.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/camss/camss-video.c
-+++ b/drivers/media/platform/qcom/camss/camss-video.c
-@@ -297,12 +297,6 @@ static void video_stop_streaming(struct
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -2554,6 +2554,8 @@ retry:
  
- 		ret = v4l2_subdev_call(subdev, video, s_stream, 0);
+ 		error = ext4_xattr_set_handle(handle, inode, name_index, name,
+ 					      value, value_len, flags);
++		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
++					handle);
+ 		error2 = ext4_journal_stop(handle);
+ 		if (error == -ENOSPC &&
+ 		    ext4_should_retry_alloc(sb, &retries))
+@@ -2561,7 +2563,6 @@ retry:
+ 		if (error == 0)
+ 			error = error2;
+ 	}
+-	ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR, NULL);
  
--		if (entity->use_count > 1) {
--			/* Don't stop if other instances of the pipeline are still running */
--			dev_dbg(video->camss->dev, "Video pipeline still used, don't stop streaming.\n");
--			return;
--		}
--
- 		if (ret) {
- 			dev_err(video->camss->dev, "Video pipeline stop failed: %d\n", ret);
- 			return;
+ 	return error;
+ }
 
 
 
