@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0F2994859
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:12:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E92C3994B65
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1A1B1C24F89
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:12:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87F2CB24E3E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA29C1DD54F;
-	Tue,  8 Oct 2024 12:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED661DF99C;
+	Tue,  8 Oct 2024 12:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAghNl5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNQ615xt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E371CF297;
-	Tue,  8 Oct 2024 12:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBBA1DEFEA;
+	Tue,  8 Oct 2024 12:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389525; cv=none; b=DrEh+cNZ+j24ZpxaAeRVMtrqIz44GC9hfleUOFC8F1Dws6SV1cekYOQzJykl6xaWqfWFH+wmbrBbfROWKPF/h/2II6XF8IecHBt4zCsYikZlCh9higdnwsnCn6ssqta6eQIZxxfhnEGV32JOZh9AguqgXoHthaveu6ObLOcg6Vw=
+	t=1728391296; cv=none; b=BGU1v4PNCDkWDS95BpLgxzZp1mGXD/TsMFo9tLS/lI3p9F1B4GVZ+jMHgJcuUZYqSSi1yiKyLUJJfnwzpNqk+GDVdcTRs4A7HJaeYhmt5B8fYawtA4Ob3CYdJTX55aL1TIXICGHDwgCuREwSQSIT8Ab2E2BwYGp46b4zIQN3/fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389525; c=relaxed/simple;
-	bh=ivPXaU73OMyDBRvP6MzqJB4pmctPNPUFxRPbMtFXfUI=;
+	s=arc-20240116; t=1728391296; c=relaxed/simple;
+	bh=czDl1iIxdBBDRRxRiZIE8TQAuuPxjP9pSELDOKzAqLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+IlYdfl4Fz9evkTdU+Tzg7RO2eAIPjPSCNa2CVLTMxUGOJmZhK68QSIa+sCJzO1/K68D53bgHdopmLDYrY2fM2SHHUrA+moqbE0rXOnDQEuLaxvGmxIwJZy9OWMpNHg49GTpYJC3Le51WzGafRrdQndUmT3w7QdiDDiqVtHfgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAghNl5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5B8C4CEC7;
-	Tue,  8 Oct 2024 12:12:04 +0000 (UTC)
+	 MIME-Version; b=Ny05h++qU2REV7m4EX4cDgWWDomeKVgdIWxKEcnlJTS7Vn7vRX4iAYnYq5Tl4NBDKELA7DdX7ntrRAcLB+uW3P2nY4hgXV0r/JkvxjenF0GKTQ+G3FrXyB7+iW7a21VWILFIh7slttaqSnEH9aN+CHsLtmFht/JmEfx8icloMSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNQ615xt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CA2C4CEC7;
+	Tue,  8 Oct 2024 12:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389525;
-	bh=ivPXaU73OMyDBRvP6MzqJB4pmctPNPUFxRPbMtFXfUI=;
+	s=korg; t=1728391296;
+	bh=czDl1iIxdBBDRRxRiZIE8TQAuuPxjP9pSELDOKzAqLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAghNl5f7c70w+VNX023+FE8rSsbslmWbU5Z5GiRYF+WR7Y9V6FyLJqc7LUKzVG8w
-	 Him66od5s0uJDeR/NmNOkA0iDmacm4vgscaADVP4Q2AfvrOcoEo0BL23FjhwR4J9fW
-	 7bmgSeHU++j7Harmn5UVzT/pzqE/mi1/UvmfRwBk=
+	b=XNQ615xtGoR9iRofzGlw4zGnmB6yqd+QodBRt3h8Z2x9Buy/l22vASi45ZhUaZkPb
+	 20nCDgpTsiOCx60NUNDTZcTe4jYw7n1EIGQRbzNdQdPJmoyTL69385xsRUWRAG1+Id
+	 yNXNbFz9NN7o3hR7JOM6x+tWCMDwduim7Y2YtG18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Klara Modin <klarasmodin@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 004/482] jump_label: Fix static_key_slow_dec() yet again
-Date: Tue,  8 Oct 2024 14:01:07 +0200
-Message-ID: <20241008115648.466344410@linuxfoundation.org>
+Subject: [PATCH 6.11 038/558] net: Fix gso_features_check to check for both dev->gso_{ipv4_,}max_size
+Date: Tue,  8 Oct 2024 14:01:08 +0200
+Message-ID: <20241008115703.721796911@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 1d7f856c2ca449f04a22d876e36b464b7a9d28b6 ]
+[ Upstream commit e609c959a939660c7519895f853dfa5624c6827a ]
 
-While commit 83ab38ef0a0b ("jump_label: Fix concurrency issues in
-static_key_slow_dec()") fixed one problem, it created yet another,
-notably the following is now possible:
+Commit 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
+added a dev->gso_max_size test to gso_features_check() in order to fall
+back to GSO when needed.
 
-  slow_dec
-    if (try_dec) // dec_not_one-ish, false
-    // enabled == 1
-                                slow_inc
-                                  if (inc_not_disabled) // inc_not_zero-ish
-                                  // enabled == 2
-                                    return
+This was added as it was noticed that some drivers could misbehave if TSO
+packets get too big. However, the check doesn't respect dev->gso_ipv4_max_size
+limit. For instance, a device could be configured with BIG TCP for IPv4,
+but not IPv6.
 
-    guard((mutex)(&jump_label_mutex);
-    if (atomic_cmpxchg(1,0)==1) // false, we're 2
+Therefore, add a netif_get_gso_max_size() equivalent to netif_get_gro_max_size()
+and use the helper to respect both limits before falling back to GSO engine.
 
-                                slow_dec
-                                  if (try-dec) // dec_not_one, true
-                                  // enabled == 1
-                                    return
-    else
-      try_dec() // dec_not_one, false
-      WARN
-
-Use dec_and_test instead of cmpxchg(), like it was prior to
-83ab38ef0a0b. Add a few WARNs for the paranoid.
-
-Fixes: 83ab38ef0a0b ("jump_label: Fix concurrency issues in static_key_slow_dec()")
-Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240923212242.15669-2-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/jump_label.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ include/linux/netdevice.h | 9 +++++++++
+ net/core/dev.c            | 2 +-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index 781a1298ce2c2..101572d6a9083 100644
---- a/kernel/jump_label.c
-+++ b/kernel/jump_label.c
-@@ -165,7 +165,7 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
- 		jump_label_update(key);
- 		/*
- 		 * Ensure that when static_key_fast_inc_not_disabled() or
--		 * static_key_slow_try_dec() observe the positive value,
-+		 * static_key_dec_not_one() observe the positive value,
- 		 * they must also observe all the text changes.
- 		 */
- 		atomic_set_release(&key->enabled, 1);
-@@ -247,7 +247,7 @@ void static_key_disable(struct static_key *key)
- }
- EXPORT_SYMBOL_GPL(static_key_disable);
- 
--static bool static_key_slow_try_dec(struct static_key *key)
-+static bool static_key_dec_not_one(struct static_key *key)
- {
- 	int v;
- 
-@@ -271,6 +271,14 @@ static bool static_key_slow_try_dec(struct static_key *key)
- 		 * enabled. This suggests an ordering problem on the user side.
- 		 */
- 		WARN_ON_ONCE(v < 0);
-+
-+		/*
-+		 * Warn about underflow, and lie about success in an attempt to
-+		 * not make things worse.
-+		 */
-+		if (WARN_ON_ONCE(v == 0))
-+			return true;
-+
- 		if (v <= 1)
- 			return false;
- 	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
-@@ -281,15 +289,27 @@ static bool static_key_slow_try_dec(struct static_key *key)
- static void __static_key_slow_dec_cpuslocked(struct static_key *key)
- {
- 	lockdep_assert_cpus_held();
-+	int val;
- 
--	if (static_key_slow_try_dec(key))
-+	if (static_key_dec_not_one(key))
- 		return;
- 
- 	guard(mutex)(&jump_label_mutex);
--	if (atomic_cmpxchg(&key->enabled, 1, 0) == 1)
-+	val = atomic_read(&key->enabled);
-+	/*
-+	 * It should be impossible to observe -1 with jump_label_mutex held,
-+	 * see static_key_slow_inc_cpuslocked().
-+	 */
-+	if (WARN_ON_ONCE(val == -1))
-+		return;
-+	/*
-+	 * Cannot already be 0, something went sideways.
-+	 */
-+	if (WARN_ON_ONCE(val == 0))
-+		return;
-+
-+	if (atomic_dec_and_test(&key->enabled))
- 		jump_label_update(key);
--	else
--		WARN_ON_ONCE(!static_key_slow_try_dec(key));
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 23d90c7e915f0..59fb3cb8538fd 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5035,6 +5035,15 @@ netif_get_gro_max_size(const struct net_device *dev, const struct sk_buff *skb)
+ 	       READ_ONCE(dev->gro_ipv4_max_size);
  }
  
- static void __static_key_slow_dec(struct static_key *key)
-@@ -326,7 +346,7 @@ void __static_key_slow_dec_deferred(struct static_key *key,
++static inline unsigned int
++netif_get_gso_max_size(const struct net_device *dev, const struct sk_buff *skb)
++{
++	/* pairs with WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
++	return skb->protocol == htons(ETH_P_IPV6) ?
++	       READ_ONCE(dev->gso_max_size) :
++	       READ_ONCE(dev->gso_ipv4_max_size);
++}
++
+ static inline bool netif_is_macsec(const struct net_device *dev)
  {
- 	STATIC_KEY_CHECK_USE(key);
+ 	return dev->priv_flags & IFF_MACSEC;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index f66e614078832..03fb8ae459c0e 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3504,7 +3504,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 	if (gso_segs > READ_ONCE(dev->gso_max_segs))
+ 		return features & ~NETIF_F_GSO_MASK;
  
--	if (static_key_slow_try_dec(key))
-+	if (static_key_dec_not_one(key))
- 		return;
+-	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
++	if (unlikely(skb->len >= netif_get_gso_max_size(dev, skb)))
+ 		return features & ~NETIF_F_GSO_MASK;
  
- 	schedule_delayed_work(work, timeout);
+ 	if (!skb_shinfo(skb)->gso_type) {
 -- 
 2.43.0
 
