@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-82018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6CD994AA2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB10994D34
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4581C24A65
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA7371C25816
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FF91C4631;
-	Tue,  8 Oct 2024 12:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581EE18F2FA;
+	Tue,  8 Oct 2024 13:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHyWd5B0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpgE04Ri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9771779B1;
-	Tue,  8 Oct 2024 12:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175BF1DE4CC;
+	Tue,  8 Oct 2024 13:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390899; cv=none; b=Y+UlRlQ6qp5xSyN6M+OekIC3D4ZCZuwJiwQngcldsDQmpRFQvA9mq3Xay9Fa9mNC0QPqq6Fabm+0vtkKMVgk0h7YMeCKCJZ97WmqSB3ySlICcasLDUsUaMTcN3nTAJsBbYgNoffZhUEZe/QhD/SdjQm/SN5+G3Fdg2UMtlxyEaE=
+	t=1728392583; cv=none; b=KBP7BAd9SgF6Dz2rJVRdkwLQ5wUXnFKqTP6EmJvTxG/3yr6xZyCHIVCbogxUuwqXrHYrA0kvqI3YhGtnMewK97I5QBb5Sm89oSQhiZ1ijhoPpdiA6kvxGTG2hdv77cpbUoqg3gjNt8SWq3zmrqED0crhDy0jvXmPezUYOckOgeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390899; c=relaxed/simple;
-	bh=CElowgiTdofJCKzIGSUcOxc8Vrx6ugb5b0B/6Je/3OQ=;
+	s=arc-20240116; t=1728392583; c=relaxed/simple;
+	bh=rkllO0wDJ9K4bKCqTzNZDCaDSNuEdw7Ma0Yv3Yz2awM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfnXxmSlBpPpaQEYC3rbhcODWHCT9fR1VIvTuyX9J66tIqE5vmokRsc6slhKajWKED++IMYYvFNvb9Jf8sMXSrCCClHyaf9SjIqqhP6wPTVTgZ7F6lK7hSCk1pA4t1xfVwCzqUhTnQwYgyNYs+QvVyoryiv4v1VbSJ6O6J/cIbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHyWd5B0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA92C4CEC7;
-	Tue,  8 Oct 2024 12:34:59 +0000 (UTC)
+	 MIME-Version; b=Eg5lzqXC3VFc4Yx23AmJYxuTzSSkW8jIgXVxuzVlicodUGb0Zkh6wpUTySH62tlJcSCA4Lz8+bLUSTN0Pe4/pDerFbcVeTGP6kZU4Dfjnu4NrfpfBYyLfT8XjemhSDE3i+7K84JOmwFaNbek574caXAFtDoCnvKiGww0IyjBlO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpgE04Ri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B36C4CEC7;
+	Tue,  8 Oct 2024 13:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390899;
-	bh=CElowgiTdofJCKzIGSUcOxc8Vrx6ugb5b0B/6Je/3OQ=;
+	s=korg; t=1728392582;
+	bh=rkllO0wDJ9K4bKCqTzNZDCaDSNuEdw7Ma0Yv3Yz2awM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HHyWd5B0M5mboTssflg2941nDiooNpat418cMNL9pc6LrWWy0PL5QjvA1J4KgPeR2
-	 Q3WyqQlWu1YKVtc+6/Zfxb2TPXFF6aXA5QUqzo7OaE1sJML6P3o58d9cGiEp85bmSh
-	 ru0G00zsMISwAF2KIJT9JXIrFdko7Tb0rnB6Bz7E=
+	b=FpgE04RiRgcGHDniuxEhseSlqbTm0XS/NDoVx+pNdA+4SsSy6gSRw1jKboGTVa6LD
+	 BnPu5VhuVUPzzr3p9YQNHceoKPiYKLALOA5X5urmoOh2zx9s1EJyKjUw+UiKXeiqxt
+	 ATQybl47clk13CRUC+0Ln5N+iy7iAN47xnMgOVeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 426/482] io_uring/net: harden multishot termination case for recv
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.11 459/558] clk: qcom: gcc-sm8150: De-register gcc_cpuss_ahb_clk_src
 Date: Tue,  8 Oct 2024 14:08:09 +0200
-Message-ID: <20241008115705.166207740@linuxfoundation.org>
+Message-ID: <20241008115720.318128397@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit c314094cb4cfa6fc5a17f4881ead2dfebfa717a7 upstream.
+commit bab0c7a0bc586e736b7cd2aac8e6391709a70ef2 upstream.
 
-If the recv returns zero, or an error, then it doesn't matter if more
-data has already been received for this buffer. A condition like that
-should terminate the multishot receive. Rather than pass in the
-collected return value, pass in whether to terminate or keep the recv
-going separately.
+The branch clocks of gcc_cpuss_ahb_clk_src are marked critical
+and hence these clocks vote on XO blocking the suspend.
+De-register these clocks and its source as there is no rate
+setting happening on them.
 
-Note that this isn't a bug right now, as the only way to get there is
-via setting MSG_WAITALL with multishot receive. And if an application
-does that, then -EINVAL is returned anyway. But it seems like an easy
-bug to introduce, so let's make it a bit more explicit.
-
-Link: https://github.com/axboe/liburing/issues/1246
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
 Cc: stable@vger.kernel.org
-Fixes: b3fdea6ecb55 ("io_uring: multishot recv")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-5-8b3eaa5fb856@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sc8180x.c |   63 -----------------------------------------
+ 1 file changed, 63 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1116,6 +1116,7 @@ int io_recv(struct io_kiocb *req, unsign
- 	int ret, min_ret = 0;
- 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
- 	size_t len = sr->len;
-+	bool mshot_finished;
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -260,28 +260,6 @@ static const struct clk_parent_data gcc_
+ 	{ .hw = &gpll0_out_even.clkr.hw },
+ };
  
- 	if (!(req->flags & REQ_F_POLLED) &&
- 	    (sr->flags & IORING_RECVSEND_POLL_FIRST))
-@@ -1170,6 +1171,7 @@ out_free:
- 		req_set_fail(req);
- 	}
+-static const struct freq_tbl ftbl_gcc_cpuss_ahb_clk_src[] = {
+-	F(19200000, P_BI_TCXO, 1, 0, 0),
+-	F(50000000, P_GPLL0_OUT_MAIN, 12, 0, 0),
+-	F(100000000, P_GPLL0_OUT_MAIN, 6, 0, 0),
+-	{ }
+-};
+-
+-static struct clk_rcg2 gcc_cpuss_ahb_clk_src = {
+-	.cmd_rcgr = 0x48014,
+-	.mnd_width = 0,
+-	.hid_width = 5,
+-	.parent_map = gcc_parent_map_0,
+-	.freq_tbl = ftbl_gcc_cpuss_ahb_clk_src,
+-	.clkr.hw.init = &(struct clk_init_data){
+-		.name = "gcc_cpuss_ahb_clk_src",
+-		.parent_data = gcc_parents_0,
+-		.num_parents = ARRAY_SIZE(gcc_parents_0),
+-		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
+-	},
+-};
+-
+ static const struct freq_tbl ftbl_gcc_emac_ptp_clk_src[] = {
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+ 	F(50000000, P_GPLL0_OUT_EVEN, 6, 0, 0),
+@@ -1640,25 +1618,6 @@ static struct clk_branch gcc_cfg_noc_usb
+ 	},
+ };
  
-+	mshot_finished = ret <= 0;
- 	if (ret > 0)
- 		ret += sr->done_io;
- 	else if (sr->done_io)
-@@ -1177,7 +1179,7 @@ out_free:
- 	else
- 		io_kbuf_recycle(req, issue_flags);
+-/* For CPUSS functionality the AHB clock needs to be left enabled */
+-static struct clk_branch gcc_cpuss_ahb_clk = {
+-	.halt_reg = 0x48000,
+-	.halt_check = BRANCH_HALT_VOTED,
+-	.clkr = {
+-		.enable_reg = 0x52004,
+-		.enable_mask = BIT(21),
+-		.hw.init = &(struct clk_init_data){
+-			.name = "gcc_cpuss_ahb_clk",
+-			.parent_hws = (const struct clk_hw *[]){
+-				      &gcc_cpuss_ahb_clk_src.clkr.hw
+-			},
+-			.num_parents = 1,
+-			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch gcc_cpuss_rbcpr_clk = {
+ 	.halt_reg = 0x48008,
+ 	.halt_check = BRANCH_HALT,
+@@ -3191,25 +3150,6 @@ static struct clk_branch gcc_sdcc4_apps_
+ 	},
+ };
  
--	if (!io_recv_finish(req, &ret, kmsg, ret <= 0, issue_flags))
-+	if (!io_recv_finish(req, &ret, kmsg, mshot_finished, issue_flags))
- 		goto retry_multishot;
- 
- 	return ret;
+-/* For CPUSS functionality the SYS NOC clock needs to be left enabled */
+-static struct clk_branch gcc_sys_noc_cpuss_ahb_clk = {
+-	.halt_reg = 0x4819c,
+-	.halt_check = BRANCH_HALT_VOTED,
+-	.clkr = {
+-		.enable_reg = 0x52004,
+-		.enable_mask = BIT(0),
+-		.hw.init = &(struct clk_init_data){
+-			.name = "gcc_sys_noc_cpuss_ahb_clk",
+-			.parent_hws = (const struct clk_hw *[]){
+-				      &gcc_cpuss_ahb_clk_src.clkr.hw
+-			},
+-			.num_parents = 1,
+-			.flags = CLK_IS_CRITICAL | CLK_SET_RATE_PARENT,
+-			.ops = &clk_branch2_ops,
+-		},
+-	},
+-};
+-
+ static struct clk_branch gcc_tsif_ahb_clk = {
+ 	.halt_reg = 0x36004,
+ 	.halt_check = BRANCH_HALT,
+@@ -4325,8 +4265,6 @@ static struct clk_regmap *gcc_sc8180x_cl
+ 	[GCC_CFG_NOC_USB3_MP_AXI_CLK] = &gcc_cfg_noc_usb3_mp_axi_clk.clkr,
+ 	[GCC_CFG_NOC_USB3_PRIM_AXI_CLK] = &gcc_cfg_noc_usb3_prim_axi_clk.clkr,
+ 	[GCC_CFG_NOC_USB3_SEC_AXI_CLK] = &gcc_cfg_noc_usb3_sec_axi_clk.clkr,
+-	[GCC_CPUSS_AHB_CLK] = &gcc_cpuss_ahb_clk.clkr,
+-	[GCC_CPUSS_AHB_CLK_SRC] = &gcc_cpuss_ahb_clk_src.clkr,
+ 	[GCC_CPUSS_RBCPR_CLK] = &gcc_cpuss_rbcpr_clk.clkr,
+ 	[GCC_DDRSS_GPU_AXI_CLK] = &gcc_ddrss_gpu_axi_clk.clkr,
+ 	[GCC_DISP_HF_AXI_CLK] = &gcc_disp_hf_axi_clk.clkr,
+@@ -4463,7 +4401,6 @@ static struct clk_regmap *gcc_sc8180x_cl
+ 	[GCC_SDCC4_AHB_CLK] = &gcc_sdcc4_ahb_clk.clkr,
+ 	[GCC_SDCC4_APPS_CLK] = &gcc_sdcc4_apps_clk.clkr,
+ 	[GCC_SDCC4_APPS_CLK_SRC] = &gcc_sdcc4_apps_clk_src.clkr,
+-	[GCC_SYS_NOC_CPUSS_AHB_CLK] = &gcc_sys_noc_cpuss_ahb_clk.clkr,
+ 	[GCC_TSIF_AHB_CLK] = &gcc_tsif_ahb_clk.clkr,
+ 	[GCC_TSIF_INACTIVITY_TIMERS_CLK] = &gcc_tsif_inactivity_timers_clk.clkr,
+ 	[GCC_TSIF_REF_CLK] = &gcc_tsif_ref_clk.clkr,
 
 
 
