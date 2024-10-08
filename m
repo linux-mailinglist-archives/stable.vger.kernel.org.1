@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-81995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5681994A88
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31D6994F35
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 196031C24B56
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A0A1F24B82
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF34B1DEFC8;
-	Tue,  8 Oct 2024 12:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1B51E04BF;
+	Tue,  8 Oct 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1lQwWOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0XZSJ8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0671DDA36;
-	Tue,  8 Oct 2024 12:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B791E04B2;
+	Tue,  8 Oct 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390824; cv=none; b=mbbqIZQuYakokIj+mnor8Nzu9ZB2+KOM0FpMEq8PMJHY8LkJw2HB8OMihcX987+Eo8k3W+fbzUImP9MCIYofChbq/k5r1yOpW+tsLwW441CaqVR8xGOB6aKY4hNYKEUtFa8N2wx8ovXvOQnGldRiCgOurfpdxz5EJ4WtNg4OW80=
+	t=1728393818; cv=none; b=Ng18htr/XwuUfUtZy6dt9zRuAzGkRNgup/obsoUAORk9AvylQlho9MYS1nU9XcE46N4rkqoNCz1lbAPFKYL1banfDLTA2Y40Ks3FZATV2OVklZzu1TOs+RsBiwPpzqvqskkzbd8hoUNsSy26UEwiD/BZO4j+b0rJyVhgs+2wbOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390824; c=relaxed/simple;
-	bh=1/OsEsxvJyuJ/hTQz7SvWnUVJjAjIPL5QZA6DG7DcM4=;
+	s=arc-20240116; t=1728393818; c=relaxed/simple;
+	bh=UMrVL9HNWrPPU1dYG23VI6f9/yBNxXk9XmMftg87bJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oguEiOMofDYHthpcE7bvvCINjzZU/PkLBZFj/tAfuRLYYvhjPWA/8vC5dNx6jpgeDcGVNLGDhCl1ErZ1+9fl5Rv8yBnYOdz8P0l0gpB1jeJZ5lzzKdUktqhJwNNvXjGJ3hb+qq4p1RFHFRb4Ua/q2yvLfIVGegoolC1ix+FHVvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1lQwWOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6A0C4CECD;
-	Tue,  8 Oct 2024 12:33:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lvkR3iU/+p3/akiLwNeOtGaDGSsVdJtM6z26/1YULwoRr0dlSMnlCTAofcVJcizIZO3GoSrUd6gM1ajkad/TlFCkBxWhd4MCK0upG/ArS++MuzHcAn+yhGV3tC6t30bBYgBA802RwQmyEKMHIQEdD5jt/iWcqxAojA19eqEp73s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0XZSJ8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EABC4CECE;
+	Tue,  8 Oct 2024 13:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390824;
-	bh=1/OsEsxvJyuJ/hTQz7SvWnUVJjAjIPL5QZA6DG7DcM4=;
+	s=korg; t=1728393817;
+	bh=UMrVL9HNWrPPU1dYG23VI6f9/yBNxXk9XmMftg87bJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1lQwWOt5y/Oc6QOsk3K8PUrWzF61tXGagQW4k8MBSkDDQNSFqOMCuVDlagm+w4bE
-	 fplZKl4mAHc2MuLVu4AL9DhYJGLVwWr620KW1PBEh8/Z+TKbuuaFidx62ST/3bq9Yv
-	 CvWwpBtsKqpCtKvXtgzwFTuEPdhjDNWuPWU25ZIU=
+	b=G0XZSJ8KLIfvnRlC0LcB8To8KUplE37/bafQUBLhWf+3ljvIHnlBQUPN6HhmpO/MO
+	 zG71wbgJIy3puAMd3+kH0E0RGKrTGWGSrT6GsN2qZpesZcdU/sS4tDpq34la0frh5T
+	 bx5mWOtPoImGGQ66TLjQkZqG7fS+nguY748GWxAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 405/482] gso: fix udp gso fraglist segmentation after pull from frag_list
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>,
+	Deepak Rawat <drawat@vmware.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Thomas Hellstrom <thellstrom@vmware.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.6 223/386] drm: Consistently use struct drm_mode_rect for FB_DAMAGE_CLIPS
 Date: Tue,  8 Oct 2024 14:07:48 +0200
-Message-ID: <20241008115704.348340548@linuxfoundation.org>
+Message-ID: <20241008115638.180401853@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,79 +69,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit a1e40ac5b5e9077fe1f7ae0eb88034db0f9ae1ab upstream.
+commit 8b0d2f61545545ab5eef923ed6e59fc3be2385e0 upstream.
 
-Detect gso fraglist skbs with corrupted geometry (see below) and
-pass these to skb_segment instead of skb_segment_list, as the first
-can segment them correctly.
+FB_DAMAGE_CLIPS is a plane property for damage handling. Its UAPI
+should only use UAPI types. Hence replace struct drm_rect with
+struct drm_mode_rect in drm_atomic_plane_set_property(). Both types
+are identical in practice, so there's no change in behavior.
 
-Valid SKB_GSO_FRAGLIST skbs
-- consist of two or more segments
-- the head_skb holds the protocol headers plus first gso_size
-- one or more frag_list skbs hold exactly one segment
-- all but the last must be gso_size
-
-Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
-modify these skbs, breaking these invariants.
-
-In extreme cases they pull all data into skb linear. For UDP, this
-causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
-udp_hdr(seg->next)->dest.
-
-Detect invalid geometry due to pull, by checking head_skb size.
-Don't just drop, as this may blackhole a destination. Convert to be
-able to pass to regular skb_segment.
-
-Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20241001171752.107580-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Closes: https://lore.kernel.org/dri-devel/Zu1Ke1TuThbtz15E@intel.com/
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: d3b21767821e ("drm: Add a new plane property to send damage during plane update")
+Cc: Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>
+Cc: Deepak Rawat <drawat@vmware.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Thomas Hellstrom <thellstrom@vmware.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.0+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923075841.16231-1-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_atomic_uapi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -290,8 +290,26 @@ struct sk_buff *__udp_gso_segment(struct
- 		return NULL;
- 	}
- 
--	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
--		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-+	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
-+		 /* Detect modified geometry and pass those to skb_segment. */
-+		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
-+			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-+
-+		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
-+		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
-+		gso_skb->csum_offset = offsetof(struct udphdr, check);
-+		gso_skb->ip_summed = CHECKSUM_PARTIAL;
-+
-+		uh = udp_hdr(gso_skb);
-+		if (is_ipv6)
-+			uh->check = ~udp_v6_check(gso_skb->len,
-+						  &ipv6_hdr(gso_skb)->saddr,
-+						  &ipv6_hdr(gso_skb)->daddr, 0);
-+		else
-+			uh->check = ~udp_v4_check(gso_skb->len,
-+						  ip_hdr(gso_skb)->saddr,
-+						  ip_hdr(gso_skb)->daddr, 0);
-+	}
- 
- 	skb_pull(gso_skb, sizeof(*uh));
- 
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -585,7 +585,7 @@ static int drm_atomic_plane_set_property
+ 					&state->fb_damage_clips,
+ 					val,
+ 					-1,
+-					sizeof(struct drm_rect),
++					sizeof(struct drm_mode_rect),
+ 					&replaced);
+ 		return ret;
+ 	} else if (property == plane->scaling_filter_property) {
 
 
 
