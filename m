@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-82444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A04994CD6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F01994A2D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67821284520
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459B01C24B43
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878B41DF964;
-	Tue,  8 Oct 2024 12:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5914A18BC16;
+	Tue,  8 Oct 2024 12:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYI/10Lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjT8nUm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454CF1DE88B;
-	Tue,  8 Oct 2024 12:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124711DEFC9;
+	Tue,  8 Oct 2024 12:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392282; cv=none; b=tV2OAldNXRIKQNlxwvmGFADnOmpZR/egb512nR5sTCF8f4BNe64ySMycWMSOP2f10Npu3ESgPmgl9V9bi3R4ZsY9fA87KS7BUkKkdkbL0K0YR4i/fIKvQ3FVgVgTRa8A5hlM1syRVbQLo5GpNeP3tSvZ/Xs6LKdafGxIc8vY88s=
+	t=1728390601; cv=none; b=eHxzVTk7dtpQ18H0x3v/wj3eYaJFIq6SfZz7Ajt+zoNzqvU0rkPhMzZAkJnnYujqFdUtnctXQr9YNcrSRoj+moMsjbap7SwYbET+Wu6q0JonrJQho19crtRa2WgsowML7IiFDNEfd3AMHM2QD07tRGvq1EDLUWk8C8KoGhvuhNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392282; c=relaxed/simple;
-	bh=gDhI59Exww4vjO4vD07sxN8NMGCuqss7QgYeNpWnkA0=;
+	s=arc-20240116; t=1728390601; c=relaxed/simple;
+	bh=2m0HS+mrZjJmqb6XLkxHJtaHEYh5i2geRu9CEIBJcEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMd2MwzmRHgwOC1AimuIGi0BSS84784lbTQut023Iovh9Nyw9KxCQydwRp3VUuYRpfAsMSkFdFvfKn+JtXPRRphx+1jRsr+vzun2HmC3B0vH+LV6ezR28xq8JLdcX0DNg5FJ6qA5FMdiiuAXV1qBQdLuJDMq2FO/uJjOp2fvUlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYI/10Lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D486C4CEC7;
-	Tue,  8 Oct 2024 12:58:01 +0000 (UTC)
+	 MIME-Version; b=u6YZG9V7q/3v5LK1tMsKO8nLP5SNHZuz8ZuRUdKw7xX0XTppW1mHw7bH46nLYGdlW6FZDCjxNmi4dTDCKQZ5uzYyPtQNNcPCeNwVfT3pd14GJgdIhoaDFug6gtYmI40chB50l0oNRzQWbuC+GVZDU4QhAQ8QVxx9+a3wAdEWz94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjT8nUm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEA1C4CEC7;
+	Tue,  8 Oct 2024 12:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392282;
-	bh=gDhI59Exww4vjO4vD07sxN8NMGCuqss7QgYeNpWnkA0=;
+	s=korg; t=1728390600;
+	bh=2m0HS+mrZjJmqb6XLkxHJtaHEYh5i2geRu9CEIBJcEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYI/10LhmCsqQC314rUuD6at6AD1ontzAl//K2gbf1NlkGeTTuzOcV4lDzBEJIEeD
-	 dQK2D1XqW+0+8kNwWogaZEgKSKA3BkTdQLVoBwpY9fTygjq4kaqOUqfFpOyb9C25/Q
-	 GpGtDT1Z9/+mdVVzDSbnkVGMivXwqbehNfYVsp+s=
+	b=PjT8nUm+1re7B+2PDJIpkWF3gZ6OE22x1YRLtimGfAjmu9DGTKx96Dm/XH5hC7FlF
+	 iMwMkbA4Ow3/cOxEDw6vZ9n1Mm/XFYHOpKyMQ7gylVjANIN2kqHng2Mi8GY+Us03+h
+	 sLYMpPgyYOwOI3o8Us4I0TDmby9FxiGldLg1diQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.11 369/558] parisc: Fix itlb miss handler for 64-bit programs
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.10 336/482] ext4: fix incorrect tid assumption in jbd2_journal_shrink_checkpoint_list()
 Date: Tue,  8 Oct 2024 14:06:39 +0200
-Message-ID: <20241008115716.816022704@linuxfoundation.org>
+Message-ID: <20241008115701.648223343@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 9542130937e9dc707dd7c6b7af73326437da2d50 upstream.
+commit 7a6443e1dad70281f99f0bd394d7fd342481a632 upstream.
 
-For an itlb miss when executing code above 4 Gb on ILP64 adjust the
-iasq/iaoq in the same way isr/ior was adjusted.  This fixes signal
-delivery for the 64-bit static test program from
-http://ftp.parisc-linux.org/src/64bit.tar.gz.  Note that signals are
-handled by the signal trampoline code in the 64-bit VDSO which is mapped
-into high userspace memory region above 4GB for 64-bit processes.
+Function jbd2_journal_shrink_checkpoint_list() assumes that '0' is not a
+valid value for transaction IDs, which is incorrect.  Don't assume that and
+use two extra boolean variables to control the loop iterations and keep
+track of the first and last tid.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org	# v4.19+
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240724161119.13448-4-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/entry.S |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/jbd2/checkpoint.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -1051,8 +1051,7 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
- 	STREG           %r16, PT_ISR(%r29)
- 	STREG           %r17, PT_IOR(%r29)
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -410,6 +410,7 @@ unsigned long jbd2_journal_shrink_checkp
+ 	tid_t tid = 0;
+ 	unsigned long nr_freed = 0;
+ 	unsigned long freed;
++	bool first_set = false;
  
--#if 0 && defined(CONFIG_64BIT)
--	/* Revisit when we have 64-bit code above 4Gb */
-+#if defined(CONFIG_64BIT)
- 	b,n		intr_save2
+ again:
+ 	spin_lock(&journal->j_list_lock);
+@@ -429,8 +430,10 @@ again:
+ 	else
+ 		transaction = journal->j_checkpoint_transactions;
  
- skip_save_ior:
-@@ -1060,8 +1059,7 @@ skip_save_ior:
- 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
- 	 * above.
- 	 */
--	extrd,u,*	%r8,PSW_W_BIT,1,%r1
--	cmpib,COND(=),n	1,%r1,intr_save2
-+	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
- 	LDREG		PT_IASQ0(%r29), %r16
- 	LDREG		PT_IAOQ0(%r29), %r17
- 	/* adjust iasq/iaoq */
+-	if (!first_tid)
++	if (!first_set) {
+ 		first_tid = transaction->t_tid;
++		first_set = true;
++	}
+ 	last_transaction = journal->j_checkpoint_transactions->t_cpprev;
+ 	next_transaction = transaction;
+ 	last_tid = last_transaction->t_tid;
+@@ -460,7 +463,7 @@ again:
+ 	spin_unlock(&journal->j_list_lock);
+ 	cond_resched();
+ 
+-	if (*nr_to_scan && next_tid)
++	if (*nr_to_scan && journal->j_shrink_transaction)
+ 		goto again;
+ out:
+ 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
 
 
 
