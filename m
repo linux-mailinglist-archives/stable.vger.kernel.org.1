@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-81875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7809949E3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A715E994C61
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3917B214EF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A28281832
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646951DF263;
-	Tue,  8 Oct 2024 12:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DA71DED4B;
+	Tue,  8 Oct 2024 12:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEvmBpQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhV9jSug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221C9165F08;
-	Tue,  8 Oct 2024 12:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34C71DE4CC;
+	Tue,  8 Oct 2024 12:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390430; cv=none; b=cONf82nA0SjhBeHKVZsRiBC5z/2/HYnyfOcANuqwH4mNhT+vzvQllfcirhe0WJz91nFiZDuU1X8djiaz9W+dneM55DwCxeACr3Tjtxv1z4lCxjI16wT1VYdZ73heBi4S3uMc3Vv4xAuIYx8ra+Xb86vFVJJ5d4OAwaJianNhxnI=
+	t=1728392018; cv=none; b=VWdkIo66YYSWmt+srxGbLZCq+MRM9+BCw4A0yoikuhgO5VEbp5cTf1c6JIQccAyknQHnm9vR1jCd/v3i8+DyZmJqDenHRWu+xqVzDrdm7K9+FZuuxNXSL+ryxN4DEhOqo7IEyqoQRyYFMfGuOZsQw/8Vv8SvDyKEXVrmn+fJRfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390430; c=relaxed/simple;
-	bh=5x1g4UHHWb2icSBDwi3edTOpwV5XSyxudVoixeWYh0A=;
+	s=arc-20240116; t=1728392018; c=relaxed/simple;
+	bh=K5iRI8sBmPog/67WUZJpNUNIURUGjsr0iI8mcRk6PMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVArY8bwMzpLR8A5Efx+CGahhu7+NlCq6X13q7Z/RVmD6ojvGFKqrMGyJ/xMhj0RWJfFfBtdlq6IXTvQM6FjzGW7kO0Xb/SF80DYjndWtJavZtFAHjgr9i2wUiZIGykI+MkMEUrPeFlyZj4RgCnHop733LJ3gl9mY6sYPV80Pqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEvmBpQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D0AC4CEC7;
-	Tue,  8 Oct 2024 12:27:08 +0000 (UTC)
+	 MIME-Version; b=IhM5E78NG15u9RaIyr1QYRHfeR0JheqnYqtGflYk5lyrE4SLdAstQ+jhGieFMis66pisRGiHTcG2/859VIa7TIAc0qWAlCDfxwpSHGakJHMmKBW6m1gXXTxbGrCa6Tu4j1v+8UOtm6IQ9FIhiM5q15IPzZOTmmBRsu+5MDbwMDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhV9jSug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53049C4CEC7;
+	Tue,  8 Oct 2024 12:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390429;
-	bh=5x1g4UHHWb2icSBDwi3edTOpwV5XSyxudVoixeWYh0A=;
+	s=korg; t=1728392018;
+	bh=K5iRI8sBmPog/67WUZJpNUNIURUGjsr0iI8mcRk6PMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEvmBpQiCBJd+YNXv8hkk+rvM4UE/JQT0xBaRH7Tw9LuwP6xVq7tK1pF64EoDI5z3
-	 28qG2Q/QiVWm8QEUDgVCXOCJmqloP2HP3khy7Ftc93Bi9GF+KHwh/KRcBUfDs60mJh
-	 c4fxuU3Sfu/mVNbcmOmpRz+l+WeCyrqaQMGTKkvI=
+	b=fhV9jSugScOHMUVZQIyrN4rKEKXxEgmxDeTl0lqm9nYJ8NxW0bX+8w/DdIQWdMTDR
+	 4EoVGYG6hCTgFJ+ulLyJ+yKpL0Mc0CWgLDc5KIiYZC1IsehZgOGbM55szyAWccf3q0
+	 9Xb32nxEGNqLreCLv3bvFUCE6HP5TOGZhOZCe6Og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Charlene Liu <charlene.liu@amd.com>,
+	"Ahmed, Muhammad" <Ahmed.Ahmed@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 259/482] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
+Subject: [PATCH 6.11 292/558] drm/amd/display: guard write a 0 post_divider value to HW
 Date: Tue,  8 Oct 2024 14:05:22 +0200
-Message-ID: <20241008115658.478422734@linuxfoundation.org>
+Message-ID: <20241008115713.814380363@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Ahmed, Muhammad <Ahmed.Ahmed@amd.com>
 
-[ Upstream commit b6e05ba0844139dde138625906015c974c86aa93 ]
+[ Upstream commit 5d666496c24129edeb2bcb500498b87cc64e7f07 ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+[why]
+post_divider_value should not be 0.
 
-Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240923040015.3009329-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Ahmed, Muhammad <Ahmed.Ahmed@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 1439883326cfe..4c041ad39dc5d 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1870,8 +1870,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		spi_imx_sdma_exit(spi_imx);
- out_runtime_pm_put:
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(spi_imx->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
+diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
+index 68cd3258f4a97..a64d8f3ec93a3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
+@@ -47,7 +47,8 @@ static void dccg35_trigger_dio_fifo_resync(struct dccg *dccg)
+ 	uint32_t dispclk_rdivider_value = 0;
  
- 	clk_disable_unprepare(spi_imx->clk_ipg);
- out_put_per:
+ 	REG_GET(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_RDIVIDER, &dispclk_rdivider_value);
+-	REG_UPDATE(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, dispclk_rdivider_value);
++	if (dispclk_rdivider_value != 0)
++		REG_UPDATE(DENTIST_DISPCLK_CNTL, DENTIST_DISPCLK_WDIVIDER, dispclk_rdivider_value);
+ }
+ 
+ static void dcn35_set_dppclk_enable(struct dccg *dccg,
 -- 
 2.43.0
 
