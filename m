@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CAA994BFC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F65994909
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28AFF1C24EAD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9323C1F21E5A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C241DE4C4;
-	Tue,  8 Oct 2024 12:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9421DED65;
+	Tue,  8 Oct 2024 12:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bf6zUWCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPY9nP/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5321C2420;
-	Tue,  8 Oct 2024 12:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99871DE8AA;
+	Tue,  8 Oct 2024 12:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391737; cv=none; b=eY/uqDtc+kEuUTKZoHWmpNWXpIjXTCaND7mYE27AjsWc1c5n4glYtd2sY+xjtLeoOvbEZA4OQn8QD5ZbIqLOiZJEEVtaVFE7NKaATkrF+SAkB/Upn3PUyijAm+jN1I0dMxm39DjEHDUvV5TjOshM2V20OsMugBMs4XrQspfNAKQ=
+	t=1728389940; cv=none; b=XmX1f6PYXDPrbmrPqJnh7XEu03TCiiixit5gR9PI19tIWKuYC4UiYYdeC+H+G9IK0cuyeTSP2oivuC6+IEPV7s2igKwvqNvOncOLN9orFmdLtja1x/oh47GlIwwECaHDMBJlKtGtweKga30J3fIvt2X62qYBiiZgzX38mxqduOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391737; c=relaxed/simple;
-	bh=O/s29OPWvDazfpSdt16G1G+2fuI6mdaJV7y1WLr0GOY=;
+	s=arc-20240116; t=1728389940; c=relaxed/simple;
+	bh=dKbp9/B2MOCepbjUfGe5tgjWnQP+qkJrFoX2iDUpgMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgg3QmwI5XNIGCweZJcuf/j9tFfqelPoz1Jvk7aZoe7jmvGOpUTbZ7kwZtoxntOWR5s5680uTVzjsz4485oxq3KcQHOsykzQPlb03+sPpWG2ZUWISYd2RB0fahDxuwNN7q6gDaooO/QtHlGOYZYDJszHq06IKaWIXqrYpn9enN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bf6zUWCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88345C4CEC7;
-	Tue,  8 Oct 2024 12:48:56 +0000 (UTC)
+	 MIME-Version; b=LBcWWm8woyEIxzMAr984nWSLfHU7Q5dzSbs29eZ65thkFDnaCv7s2qeOBSIJRAdXOfCBXEiRHN6K8kStBfwYeH38+Ex8OV2QgFznP8YHOQbtKGNGQhjI2rk7hmV8YK6BAw+DS6+xZB/ulpIMGmmaM1SYin1LmrJM/cAellmO1ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPY9nP/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3993AC4CECC;
+	Tue,  8 Oct 2024 12:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391737;
-	bh=O/s29OPWvDazfpSdt16G1G+2fuI6mdaJV7y1WLr0GOY=;
+	s=korg; t=1728389940;
+	bh=dKbp9/B2MOCepbjUfGe5tgjWnQP+qkJrFoX2iDUpgMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bf6zUWCqa5Ljf0LrWmIxkH4zGlD0rf9uM58UlUAu7G5uRlKbJ9q7/3mp9be4KQfT3
-	 qi4iOP8UcAPNwFW7gRBk57eH72q81nXXJX6smWXS4gwcLOQznhizkD42kPcSLysmPe
-	 OvvdUKOZsXVF7kX0TwLV6nfp05kAOgdmghfol+HI=
+	b=wPY9nP/VsIbc/GCoWnekwlGi53Nd2WJcdxnnHc4xyIn1/tMt6LZtz4NxY9eS+M++5
+	 rUF8ZY2ZxbKp8cJArpCghqG7gTbfa9fx+fpgfe2+hH2xZp/gcxaI66V5tqJq0DnnZP
+	 XcIQ8LBLKuTyx1ZOdLYH0HjMRozGR919dtlMe28I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 175/558] ASoC: codecs: wsa883x: Handle reading version failure
+Subject: [PATCH 6.10 142/482] ALSA: usb-audio: Define macros for quirk table entries
 Date: Tue,  8 Oct 2024 14:03:25 +0200
-Message-ID: <20241008115709.242873098@linuxfoundation.org>
+Message-ID: <20241008115653.892484861@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 2fbf16992e5aa14acf0441320033a01a32309ded ]
+[ Upstream commit 0c3ad39b791c2ecf718afcaca30e5ceafa939d5c ]
 
-If reading version and variant from registers fails (which is unlikely
-but possible, because it is a read over bus), the driver will proceed
-and perform device configuration based on uninitialized stack variables.
-Handle it a bit better - bail out without doing any init and failing the
-update status Soundwire callback.
+Many entries in the USB-audio quirk tables have relatively complex
+expressions.  For improving the readability, introduce a few macros.
+Those are applied in the following patch.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240710-asoc-wsa88xx-version-v1-2-f1c54966ccde@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20240814134844.2726-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa883x.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ sound/usb/quirks-table.h | 77 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index 3e4fdaa3f44fb..53f6de4340548 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -997,15 +997,19 @@ static const struct reg_sequence reg_init[] = {
- 	{WSA883X_GMAMP_SUP1, 0xE2},
- };
+diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
+index aaa6a515d0f8a..e3a25f4f68792 100644
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -35,6 +35,83 @@
+ 	.bInterfaceClass = USB_CLASS_AUDIO, \
+ 	.bInterfaceSubClass = USB_SUBCLASS_AUDIOCONTROL
  
--static void wsa883x_init(struct wsa883x_priv *wsa883x)
-+static int wsa883x_init(struct wsa883x_priv *wsa883x)
- {
- 	struct regmap *regmap = wsa883x->regmap;
--	int variant, version;
-+	int variant, version, ret;
- 
--	regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
-+	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
-+	if (ret)
-+		return ret;
- 	wsa883x->variant = variant & WSA883X_ID_MASK;
- 
--	regmap_read(regmap, WSA883X_CHIP_ID0, &version);
-+	ret = regmap_read(regmap, WSA883X_CHIP_ID0, &version);
-+	if (ret)
-+		return ret;
- 	wsa883x->version = version;
- 
- 	switch (wsa883x->variant) {
-@@ -1040,6 +1044,8 @@ static void wsa883x_init(struct wsa883x_priv *wsa883x)
- 				   WSA883X_DRE_OFFSET_MASK,
- 				   wsa883x->comp_offset);
- 	}
++/* Quirk .driver_info, followed by the definition of the quirk entry;
++ * put like QUIRK_DRIVER_INFO { ... } in each entry of the quirk table
++ */
++#define QUIRK_DRIVER_INFO \
++	.driver_info = (unsigned long)&(const struct snd_usb_audio_quirk)
 +
-+	return 0;
- }
- 
- static int wsa883x_update_status(struct sdw_slave *slave,
-@@ -1048,7 +1054,7 @@ static int wsa883x_update_status(struct sdw_slave *slave,
- 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
- 
- 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
--		wsa883x_init(wsa883x);
-+		return wsa883x_init(wsa883x);
- 
- 	return 0;
- }
++/*
++ * Macros for quirk data entries
++ */
++
++/* Quirk data entry for ignoring the interface */
++#define QUIRK_DATA_IGNORE(_ifno) \
++	.ifnum = (_ifno), .type = QUIRK_IGNORE_INTERFACE
++/* Quirk data entry for a standard audio interface */
++#define QUIRK_DATA_STANDARD_AUDIO(_ifno) \
++	.ifnum = (_ifno), .type = QUIRK_AUDIO_STANDARD_INTERFACE
++/* Quirk data entry for a standard MIDI interface */
++#define QUIRK_DATA_STANDARD_MIDI(_ifno) \
++	.ifnum = (_ifno), .type = QUIRK_MIDI_STANDARD_INTERFACE
++/* Quirk data entry for a standard mixer interface */
++#define QUIRK_DATA_STANDARD_MIXER(_ifno) \
++	.ifnum = (_ifno), .type = QUIRK_AUDIO_STANDARD_MIXER
++
++/* Quirk data entry for Yamaha MIDI */
++#define QUIRK_DATA_MIDI_YAMAHA(_ifno) \
++	.ifnum = (_ifno), .type = QUIRK_MIDI_YAMAHA
++/* Quirk data entry for Edirol UAxx */
++#define QUIRK_DATA_EDIROL_UAXX(_ifno) \
++	.ifnum = (_ifno), .type = QUIRK_AUDIO_EDIROL_UAXX
++/* Quirk data entry for raw bytes interface */
++#define QUIRK_DATA_RAW_BYTES(_ifno) \
++	.ifnum = (_ifno), .type = QUIRK_MIDI_RAW_BYTES
++
++/* Quirk composite array terminator */
++#define QUIRK_COMPOSITE_END	{ .ifnum = -1 }
++
++/* Quirk data entry for composite quirks;
++ * followed by the quirk array that is terminated with QUIRK_COMPOSITE_END
++ * e.g. QUIRK_DATA_COMPOSITE { { quirk1 }, { quirk2 },..., QUIRK_COMPOSITE_END }
++ */
++#define QUIRK_DATA_COMPOSITE \
++	.ifnum = QUIRK_ANY_INTERFACE, \
++	.type = QUIRK_COMPOSITE, \
++	.data = &(const struct snd_usb_audio_quirk[])
++
++/* Quirk data entry for a fixed audio endpoint;
++ * followed by audioformat definition
++ * e.g. QUIRK_DATA_AUDIOFORMAT(n) { .formats = xxx, ... }
++ */
++#define QUIRK_DATA_AUDIOFORMAT(_ifno)	    \
++	.ifnum = (_ifno),		    \
++	.type = QUIRK_AUDIO_FIXED_ENDPOINT, \
++	.data = &(const struct audioformat)
++
++/* Quirk data entry for a fixed MIDI endpoint;
++ * followed by snd_usb_midi_endpoint_info definition
++ * e.g. QUIRK_DATA_MIDI_FIXED_ENDPOINT(n) { .out_cables = x, .in_cables = y }
++ */
++#define QUIRK_DATA_MIDI_FIXED_ENDPOINT(_ifno) \
++	.ifnum = (_ifno),		      \
++	.type = QUIRK_MIDI_FIXED_ENDPOINT,    \
++	.data = &(const struct snd_usb_midi_endpoint_info)
++/* Quirk data entry for a MIDIMAN MIDI endpoint */
++#define QUIRK_DATA_MIDI_MIDIMAN(_ifno) \
++	.ifnum = (_ifno),	       \
++	.type = QUIRK_MIDI_MIDIMAN,    \
++	.data = &(const struct snd_usb_midi_endpoint_info)
++/* Quirk data entry for a EMAGIC MIDI endpoint */
++#define QUIRK_DATA_MIDI_EMAGIC(_ifno) \
++	.ifnum = (_ifno),	      \
++	.type = QUIRK_MIDI_EMAGIC,    \
++	.data = &(const struct snd_usb_midi_endpoint_info)
++
++/*
++ * Here we go... the quirk table definition begins:
++ */
++
+ /* FTDI devices */
+ {
+ 	USB_DEVICE(0x0403, 0xb8d8),
 -- 
 2.43.0
 
