@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-82670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB2E994DE2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B3C994979
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D1781C24C9F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B82B1C23DB0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4121DED7A;
-	Tue,  8 Oct 2024 13:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B294B1DEFED;
+	Tue,  8 Oct 2024 12:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlECEP+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3sp40QR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBF51DE8B1;
-	Tue,  8 Oct 2024 13:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7089A1DE886;
+	Tue,  8 Oct 2024 12:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393030; cv=none; b=rMOwK5A9Ri8cagYJ2ELAEx8ELyUmUrWuyPk/BRn4rru/l3e1WrwwvQkbSsHABMSO2J07lHknTIvK3eqd2T7N68VbVAu3n47SlYn5YgY2CrjepXjDkUf6hQhRqmXRmWp5Ii2SlQ+WLozR9DH0j4rlKxigMthEh6nTeU9w5UcNqiU=
+	t=1728390181; cv=none; b=pFJxLFO98Iu9HDZIF2z8y/DBhYsRSdd47FD5YbLxIjGCXP053S2hEmaLAjErwwvBuL622ptJSphNphZtfTDF0aHbR8i01Rv3sGUm59opMMXeHbVtuQE9yVD7M8cm9XOXnFl0ByPmZZc2XevX3f8IkMa4hbunWCX5pbDUl0TdKdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393030; c=relaxed/simple;
-	bh=iuzi7DFBQX8sn3+DQqYvoMjBGaax5bMsPq+Ap8JQrWQ=;
+	s=arc-20240116; t=1728390181; c=relaxed/simple;
+	bh=GN3aHf1CyWm0x1f6Xn281KuzwWql582bWHHZ4OcPWDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kk2LDWvSQqkFRxPmJK3XqKVZnR4Z70DxaXdOXqiG9KkH/xmBwBm7tlc5fK0GUVuT11ls8twH26af1JJIFdjgXFLdsY8Jf6DM45rx036uHDiY8JpWVkKkWib5l8+kFCgmbbjgWVApE71KL1Zllh7JGp7rt55xppZ/M2jVEOAJUVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlECEP+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C70FC4CEC7;
-	Tue,  8 Oct 2024 13:10:29 +0000 (UTC)
+	 MIME-Version; b=ryYHDgdYEfaFs46O29HRn18CdvuH7/eoKe/FGsL+4uQ8kfxSj/jxALUh12XojcpAB4yXPa/0HRgZz3CM7VCTxgVM+7E3sE92bPuTUCEAdaUv/N0xvxy+nybjuo58K8PMVxGAeCGZLmkQg4+eTgt5YpLmWbVJEhOXNGGK3isIuJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3sp40QR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415FBC4CEC7;
+	Tue,  8 Oct 2024 12:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393029;
-	bh=iuzi7DFBQX8sn3+DQqYvoMjBGaax5bMsPq+Ap8JQrWQ=;
+	s=korg; t=1728390180;
+	bh=GN3aHf1CyWm0x1f6Xn281KuzwWql582bWHHZ4OcPWDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TlECEP+io6QwyldV0xnDPG8uAQl2op00EstFiPQ1sqfXp7rhlajeq9lMEf1LLfZXH
-	 QT0VDNGcjpO1jO+1HF2WEYiDOL70oblS39HTKyFXT46obRJTKdt26q9amjyebd9+LG
-	 in3jPaTIwgNob0iFYXpAOj5+zCjSht3dOjEnY7jo=
+	b=d3sp40QRchQE+WOne58ZYw2HQFTdfkE9AvqZ1y/oGLo/Cx4YyJ0pd3nFFZGrcDzXe
+	 haA7q2Gfnbx7pDoDu5KbMzgRQb/YeOohpusB2Hl9jjT37+hmoz2Zrg264Km1iSlFvy
+	 s1FJThnWO1wKQFCg72oWeaixkOaTkZ07H6XzoGZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/386] net: stmmac: dwmac4: extend timeout for VLAN Tag register busy bit check
+Subject: [PATCH 6.10 214/482] drm/amd/display: Fix index out of bounds in DCN30 degamma hardware format translation
 Date: Tue,  8 Oct 2024 14:04:37 +0200
-Message-ID: <20241008115630.743320144@linuxfoundation.org>
+Message-ID: <20241008115656.733415424@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +67,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 4c1b56671b68ffcbe6b78308bfdda6bcce6491ae ]
+[ Upstream commit bc50b614d59990747dd5aeced9ec22f9258991ff ]
 
-Increase the timeout for checking the busy bit of the VLAN Tag register
-from 10µs to 500ms. This change is necessary to accommodate scenarios
-where Energy Efficient Ethernet (EEE) is enabled.
+This commit addresses a potential index out of bounds issue in the
+`cm3_helper_translate_curve_to_degamma_hw_format` function in the DCN30
+color  management module. The issue could occur when the index 'i'
+exceeds the  number of transfer function points (TRANSFER_FUNC_POINTS).
 
-Overnight testing revealed that when EEE is active, the busy bit can
-remain set for up to approximately 300ms. The new 500ms timeout provides
-a safety margin.
+The fix adds a check to ensure 'i' is within bounds before accessing the
+transfer function points. If 'i' is out of bounds, the function returns
+false to indicate an error.
 
-Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://patch.msgid.link/20240924205424.573913-1-shenwei.wang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:338 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:339 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
+drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:340 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c  | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index bf99495b51a9c..a9837985a483d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -14,6 +14,7 @@
- #include <linux/slab.h>
- #include <linux/ethtool.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include "stmmac.h"
- #include "stmmac_pcs.h"
- #include "dwmac4.h"
-@@ -475,7 +476,7 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
- 				    u8 index, u32 data)
- {
- 	void __iomem *ioaddr = (void __iomem *)dev->base_addr;
--	int i, timeout = 10;
-+	int ret;
- 	u32 val;
- 
- 	if (index >= hw->num_vlan)
-@@ -491,16 +492,15 @@ static int dwmac4_write_vlan_filter(struct net_device *dev,
- 
- 	writel(val, ioaddr + GMAC_VLAN_TAG);
- 
--	for (i = 0; i < timeout; i++) {
--		val = readl(ioaddr + GMAC_VLAN_TAG);
--		if (!(val & GMAC_VLAN_TAG_CTRL_OB))
--			return 0;
--		udelay(1);
-+	ret = readl_poll_timeout(ioaddr + GMAC_VLAN_TAG, val,
-+				 !(val & GMAC_VLAN_TAG_CTRL_OB),
-+				 1000, 500000);
-+	if (ret) {
-+		netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
-+		return -EBUSY;
- 	}
- 
--	netdev_err(dev, "Timeout accessing MAC_VLAN_Tag_Filter\n");
--
--	return -EBUSY;
-+	return 0;
- }
- 
- static int dwmac4_add_hw_vlan_rx_fltr(struct net_device *dev,
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+index b8327237ed441..edc77615d0973 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
+@@ -335,6 +335,8 @@ bool cm3_helper_translate_curve_to_degamma_hw_format(
+ 				i += increment) {
+ 			if (j == hw_points - 1)
+ 				break;
++			if (i >= TRANSFER_FUNC_POINTS)
++				return false;
+ 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
+ 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
+ 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
 -- 
 2.43.0
 
