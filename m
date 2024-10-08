@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E52994C40
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59ED994973
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE6D283E48
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03D001C23C11
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244121DE88F;
-	Tue,  8 Oct 2024 12:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91361DED7D;
+	Tue,  8 Oct 2024 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PASDTLLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMSwLYbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BE61DED60;
-	Tue,  8 Oct 2024 12:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968291DE2AE;
+	Tue,  8 Oct 2024 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391940; cv=none; b=WtMMSExsAAz7UBVVmEL1IR7HTl+4n7g2QuwcIJA47L6cbpigeJYqZ5bsGsEq0MYpAVS99ePXwVQBTTVVKTKFh+K1kWwejLFixoAID1yuMMDsWCEQVimUJQ+5HMCZJff5WicR5eRhw5z5sBB6EQgqqLnDmQrJlXhpAUveIZx4H9E=
+	t=1728390160; cv=none; b=brBm5KMb4inxE8OkL+9ac2PfPEWmOEEmtNYQpGnlMCbnKiQRT1trfvn35zvNzEKXTTX9u6iehpdErQeyQXvJsCefJx5VrJuFRDEV80C2hepgqFifjznV8v7NTuTj7Fqh2h1DGuoRbKqS3F3D3pdTYWIOw8InVwICOs6Tk3ScBbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391940; c=relaxed/simple;
-	bh=B1rcXRWWW5oYjg4Woj6i2U1Nfk0U8/3jyaA1pk4tkk4=;
+	s=arc-20240116; t=1728390160; c=relaxed/simple;
+	bh=MmJaeCKN3AYDM/J7+BgW4kxAbBHsBQoWhOIaqhpCyEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKlWm7uYWRYUz3k/nRoeWHGZ90Hohd5sO3POAoAqg04T1h0PsEoWe4sTEFJeWPoKh0PNyWIlKUw3zqrdGvGtLEVcQY9qOnx4C2YecSUoQ/s/U5K2EjLrfj5SSQpff+cSbW5191ig6AxhbiIwIBdQ4xxC1ihjNSrxA/LLeX6QNFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PASDTLLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549EFC4CEC7;
-	Tue,  8 Oct 2024 12:52:20 +0000 (UTC)
+	 MIME-Version; b=BSLoD9kjTjexJ0u9zNrQop7NL4tAOhhDyZfDGcWPuGzctEzuo/FzwSGRgZoiNAFxQsS626es8mjq2TJyN97BWdksqyxAguSLDAzzzgqvEMaygytlIawKbJB1OSLcuFJHua/d9+PmaMtTfm722RTV2Oh1xGXlCc8B52ZSVZhyxdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMSwLYbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0EFC4CEC7;
+	Tue,  8 Oct 2024 12:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391940;
-	bh=B1rcXRWWW5oYjg4Woj6i2U1Nfk0U8/3jyaA1pk4tkk4=;
+	s=korg; t=1728390160;
+	bh=MmJaeCKN3AYDM/J7+BgW4kxAbBHsBQoWhOIaqhpCyEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PASDTLLwCq9vTX+B0M1ASzbT1liXoTSRf/hGFg1rNd2Z1KEQ//Cnp92DiKanjzRm9
-	 f5JIwyIecfxulvdW1klvA7xwEYY0pvswch+V7lFETm7XocGxWmD5X93FFVGVLuxSBX
-	 /UarTD78ppqnS9t4oT/2JZneuJ65wtxrsGOecx+0=
+	b=mMSwLYbO+gZHqQu63GGgILAqtBJWH2FTl3Pk3tbpVbsRJ/H+Bu82AQDDPqF5IAeRE
+	 VJjYQJbbGKB7U6qvBBRRod+sfNTlYnzR12Y4EOa2tR5rNFqX2haVXDM/FVrFnfXa45
+	 VPJkDoUu6cmZbqqHL5IvDJQYyQIzTWoqj4Leivag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	aln8 <aln8un@gmail.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 241/558] drm/msm/adreno: Assign msm_gpu->pdev earlier to avoid nullptrs
+Subject: [PATCH 6.10 208/482] platform/x86/amd: pmf: Add quirk for TUF Gaming A14
 Date: Tue,  8 Oct 2024 14:04:31 +0200
-Message-ID: <20241008115711.825191852@linuxfoundation.org>
+Message-ID: <20241008115656.496309398@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: aln8 <aln8un@gmail.com>
 
-[ Upstream commit 16007768551d5bfe53426645401435ca8d2ef54f ]
+[ Upstream commit 06369503d644068abd9e90918c6611274d94c126 ]
 
-There are some cases, such as the one uncovered by Commit 46d4efcccc68
-("drm/msm/a6xx: Avoid a nullptr dereference when speedbin setting fails")
-where
+The ASUS TUF Gaming A14 has the same issue as the ROG Zephyrus G14
+where it advertises SPS support but doesn't use it.
 
-msm_gpu_cleanup() : platform_set_drvdata(gpu->pdev, NULL);
-
-is called on gpu->pdev == NULL, as the GPU device has not been fully
-initialized yet.
-
-Turns out that there's more than just the aforementioned path that
-causes this to happen (e.g. the case when there's speedbin data in the
-catalog, but opp-supported-hw is missing in DT).
-
-Assigning msm_gpu->pdev earlier seems like the least painful solution
-to this, therefore do so.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/602742/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: aln8 <aln8un@gmail.com>
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20240912073601.65656-1-aln8un@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 1 +
- drivers/gpu/drm/msm/msm_gpu.c           | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmf/pmf-quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index 3896123ec51c9..83caca2c4026a 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -1083,6 +1083,7 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
- 	adreno_gpu->chip_id = config->chip_id;
+diff --git a/drivers/platform/x86/amd/pmf/pmf-quirks.c b/drivers/platform/x86/amd/pmf/pmf-quirks.c
+index 48870ca52b413..7cde5733b9cac 100644
+--- a/drivers/platform/x86/amd/pmf/pmf-quirks.c
++++ b/drivers/platform/x86/amd/pmf/pmf-quirks.c
+@@ -37,6 +37,14 @@ static const struct dmi_system_id fwbug_list[] = {
+ 		},
+ 		.driver_data = &quirk_no_sps_bug,
+ 	},
++	{
++		.ident = "ASUS TUF Gaming A14",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "FA401W"),
++		},
++		.driver_data = &quirk_no_sps_bug,
++	},
+ 	{}
+ };
  
- 	gpu->allow_relocs = config->info->family < ADRENO_6XX_GEN1;
-+	gpu->pdev = pdev;
- 
- 	/* Only handle the core clock when GMU is not in use (or is absent). */
- 	if (adreno_has_gmu_wrapper(adreno_gpu) ||
-diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
-index 3666b42b4ecd7..a274b84664237 100644
---- a/drivers/gpu/drm/msm/msm_gpu.c
-+++ b/drivers/gpu/drm/msm/msm_gpu.c
-@@ -931,7 +931,6 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
- 	if (IS_ERR(gpu->gpu_cx))
- 		gpu->gpu_cx = NULL;
- 
--	gpu->pdev = pdev;
- 	platform_set_drvdata(pdev, &gpu->adreno_smmu);
- 
- 	msm_devfreq_init(gpu);
 -- 
 2.43.0
 
