@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D914E994E09
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3618C994C4D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177971C24757
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE7F61F24828
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB341DEFC9;
-	Tue,  8 Oct 2024 13:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030721DED7A;
+	Tue,  8 Oct 2024 12:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xuu5rTTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlchapaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964551DF25C;
-	Tue,  8 Oct 2024 13:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62211DED69;
+	Tue,  8 Oct 2024 12:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393120; cv=none; b=Po5gX39gMuLZoas0PA+Sg5GK3bk+8Nx7p/A2r07llbcSN3kVwPbivOHaQct8V30u0mO4EO06ZcMNaWzZMJpxfuymU4wMS6AfTdBIGA+f/lOsR5ZOmrvA/6di31anjJSFilzeTUTkv1Hs4PIcWw/XYamDwSe4XLVqcsNyrhfRwfU=
+	t=1728391960; cv=none; b=TTKHXwJot07bxnrvqn0VwSvgxMJTmp/ARBmsp34gwhmYVf17HmwsQRhjW3oMhXVny9kGZ+mCTcd9w7MP18CzSoibpVMkBwUESwWLaUPToHUNiSD0CzDan9Jbci8xaYjzU27QiCFpryNBhTJdM33cx6+hpR0Nf0fxqOy9dyt0iUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393120; c=relaxed/simple;
-	bh=Bc7VrqV10FBkZ+HoOdXOtPKTrDO3ylGSiaoR4VFbBLs=;
+	s=arc-20240116; t=1728391960; c=relaxed/simple;
+	bh=xsTxAIasgCzVdNh5cglxfTYREQh+D/S0NbL1LlwXa20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cLWVG3LJt2t/IiMOLiLoyVKE8+NnN+lC4nkZJebVD00PgTu/i0nmkyLzxlWoCAopd22tdF6QyPDHzAouTqQeZsPE15bP7OKbLIKee/pzDXGG/uOpCQB4+jskNlR+LXbEqFTUpA+XQfjMtuDXF9UDTaPO/YJ2fmcza2BpD2FFJ7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xuu5rTTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F8AC4CEC7;
-	Tue,  8 Oct 2024 13:11:59 +0000 (UTC)
+	 MIME-Version; b=mil5XaHZ66quP7UM7Hr8UccADZg97Ldo/sRqU2cCabpOc69HAiZslCFFD44sj41gvZT2NzY5wyi1D91/JhYbNn26C3Sv79BddbDPpb78D/2rNKy97+W2ZCg5uP4EHltWCekHJpifEj7Kl9qL3vkRkFV7Oy6u4XNN+TPFPN55+yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlchapaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA65DC4CEC7;
+	Tue,  8 Oct 2024 12:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393120;
-	bh=Bc7VrqV10FBkZ+HoOdXOtPKTrDO3ylGSiaoR4VFbBLs=;
+	s=korg; t=1728391960;
+	bh=xsTxAIasgCzVdNh5cglxfTYREQh+D/S0NbL1LlwXa20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xuu5rTTrE2u3hqe02TasJuSUSnIANikHHdlqjfizROkiOxqfZFcSOK5Mm/zaQXcGd
-	 skphyLctIs6SxKC13UHOStMWTBXmWtVuEoga67y7H3feyVmckUoZDo5nN5viWj6Rgr
-	 s6F1LPYAbauKyrpCgAKZ3l5S3lLCCVFtx64oCx3s=
+	b=ZlchapaIP+RglzEdxwgeg6qONx3nmeZ2L+4l31i+Iut5sS3+ym2sen+F6dywAASpo
+	 s9LZ8n6WzgPolkRfqo64GkjIcabZRtuOBEgIpT9swe7wDKzqsXWX6MG9zdM4kKI701
+	 F0jRmlZW1lk/ppfyEBy5M4TjorpCZTsoRikdMAKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>,
+	Peng Liu <liupeng01@kylinos.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/386] net: fec: Restart PPS after link state change
+Subject: [PATCH 6.11 243/558] drm/amdgpu: add raven1 gfxoff quirk
 Date: Tue,  8 Oct 2024 14:04:33 +0200
-Message-ID: <20241008115630.584472371@linuxfoundation.org>
+Message-ID: <20241008115711.902585231@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,138 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Peng Liu <liupeng01@kylinos.cn>
 
-[ Upstream commit a1477dc87dc4996dcf65a4893d4e2c3a6b593002 ]
+[ Upstream commit 0126c0ae11e8b52ecfde9d1b174ee2f32d6c3a5d ]
 
-On link state change, the controller gets reset,
-causing PPS to drop out. Re-enable PPS if it was
-enabled before the controller reset.
+Fix screen corruption with openkylin.
 
-Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20240924093705.2897329-1-csokas.bence@prolan.hu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://bbs.openkylin.top/t/topic/171497
+Signed-off-by: Peng Liu <liupeng01@kylinos.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec.h      |  6 +++++
- drivers/net/ethernet/freescale/fec_main.c | 11 ++++++++-
- drivers/net/ethernet/freescale/fec_ptp.c  | 30 +++++++++++++++++++++++
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index a8fbcada6b01f..cb58696ec03b2 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -691,10 +691,16 @@ struct fec_enet_private {
- 	/* XDP BPF Program */
- 	struct bpf_prog *xdp_prog;
- 
-+	struct {
-+		int pps_enable;
-+	} ptp_saved_state;
-+
- 	u64 ethtool_stats[];
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 2929c8972ea73..9360a4425c4ae 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -1301,6 +1301,8 @@ static const struct amdgpu_gfxoff_quirk amdgpu_gfxoff_quirk_list[] = {
+ 	{ 0x1002, 0x15dd, 0x1002, 0x15dd, 0xc6 },
+ 	/* Apple MacBook Pro (15-inch, 2019) Radeon Pro Vega 20 4 GB */
+ 	{ 0x1002, 0x69af, 0x106b, 0x019a, 0xc0 },
++	/* https://bbs.openkylin.top/t/topic/171497 */
++	{ 0x1002, 0x15d8, 0x19e5, 0x3e14, 0xc2 },
+ 	{ 0, 0, 0, 0, 0 },
  };
  
- void fec_ptp_init(struct platform_device *pdev, int irq_idx);
-+void fec_ptp_restore_state(struct fec_enet_private *fep);
-+void fec_ptp_save_state(struct fec_enet_private *fep);
- void fec_ptp_stop(struct platform_device *pdev);
- void fec_ptp_start_cyclecounter(struct net_device *ndev);
- int fec_ptp_set(struct net_device *ndev, struct kernel_hwtstamp_config *config,
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 5604a47b35b2a..81e3173521589 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1058,6 +1058,8 @@ fec_restart(struct net_device *ndev)
- 	u32 rcntl = OPT_FRAME_SIZE | 0x04;
- 	u32 ecntl = FEC_ECR_ETHEREN;
- 
-+	fec_ptp_save_state(fep);
-+
- 	/* Whack a reset.  We should wait for this.
- 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
- 	 * instead of reset MAC itself.
-@@ -1225,8 +1227,10 @@ fec_restart(struct net_device *ndev)
- 	writel(ecntl, fep->hwp + FEC_ECNTRL);
- 	fec_enet_active_rxring(ndev);
- 
--	if (fep->bufdesc_ex)
-+	if (fep->bufdesc_ex) {
- 		fec_ptp_start_cyclecounter(ndev);
-+		fec_ptp_restore_state(fep);
-+	}
- 
- 	/* Enable interrupts we wish to service */
- 	if (fep->link)
-@@ -1317,6 +1321,8 @@ fec_stop(struct net_device *ndev)
- 			netdev_err(ndev, "Graceful transmit stop did not complete!\n");
- 	}
- 
-+	fec_ptp_save_state(fep);
-+
- 	/* Whack a reset.  We should wait for this.
- 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
- 	 * instead of reset MAC itself.
-@@ -1347,6 +1353,9 @@ fec_stop(struct net_device *ndev)
- 		val = readl(fep->hwp + FEC_ECNTRL);
- 		val |= FEC_ECR_EN1588;
- 		writel(val, fep->hwp + FEC_ECNTRL);
-+
-+		fec_ptp_start_cyclecounter(ndev);
-+		fec_ptp_restore_state(fep);
- 	}
- }
- 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 2e4f3e1782a25..8027b532de078 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -770,6 +770,36 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- 	schedule_delayed_work(&fep->time_keep, HZ);
- }
- 
-+void fec_ptp_save_state(struct fec_enet_private *fep)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&fep->tmreg_lock, flags);
-+
-+	fep->ptp_saved_state.pps_enable = fep->pps_enable;
-+
-+	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+}
-+
-+/* Restore PTP functionality after a reset */
-+void fec_ptp_restore_state(struct fec_enet_private *fep)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&fep->tmreg_lock, flags);
-+
-+	/* Reset turned it off, so adjust our status flag */
-+	fep->pps_enable = 0;
-+
-+	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+
-+	/* Restart PPS if needed */
-+	if (fep->ptp_saved_state.pps_enable) {
-+		/* Re-enable PPS */
-+		fec_ptp_enable_pps(fep, 1);
-+	}
-+}
-+
- void fec_ptp_stop(struct platform_device *pdev)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
 -- 
 2.43.0
 
