@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-82234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9B8994BC5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9816994924
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FFBD1C24B43
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534741F21B79
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CB91DE88B;
-	Tue,  8 Oct 2024 12:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1612E1DE3A2;
+	Tue,  8 Oct 2024 12:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha8GDDcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igei3m+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AE21DE2CF;
-	Tue,  8 Oct 2024 12:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E601D26F2;
+	Tue,  8 Oct 2024 12:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391585; cv=none; b=FNGWDkOOligiDRb6ngYrlmxmGmjA/7YUmDXm7cp1gUTHDDiXd+/O24yDDRfg/gbfIpNnTIL4rrKq/P2IMyNauNX4BaLAvL0hxJrX+luLIO0486yh6yEIcrLjFCPLdgoIVZ3mKK5ULIYBI2c2FmXMFyZ8VquOrOxjh8TlIknrvpU=
+	t=1728389994; cv=none; b=M83meJ6GkhBIEMACVFiFQ87FDscfWLbuq3nxT/k9Xayx6EK07uHzuxNI8NjMifJ6tCbzPDV7EWZnq/LDD/u+32LH6UNt9eOSmfYH3HrwaqFbEhRYOmTIyQinTt5DYF2BafgGsYaJRekk+ofGVInpo+WVJU1b/vqV2yt3PWqZLc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391585; c=relaxed/simple;
-	bh=bOIwAZsZbk19DyaUiFaJk+mnD0Z3dTrDV1Kf9hv0mj0=;
+	s=arc-20240116; t=1728389994; c=relaxed/simple;
+	bh=rAAFVVoI0mUr4qS62z7cZZZgVqbh6vTWg3igY38gPqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaWa9YFCixTIbGLsvcytNdgx4lSotpeJq2K361Ba9dht0bgIDrSelHF5XiGo9iI4U8xacxu3VOENygB1808QwOLFtySzqzWuxQXjjFDq0ZEOAyJbgjN56vihkSR8a47+yo7Sp4gboV5DwEGRGGQHeTOzqMsi3PlhGGzBPj7B6Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha8GDDcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A86C4CEC7;
-	Tue,  8 Oct 2024 12:46:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C8RJQo5fVQx/8busVg43dt0fPL4RzqU7bIW7tx9AGsobrqoJRcot1d11P15pt67c3257hfTn1ynX0Q4xJtbx7cqLMM5snJH5bBtuJpBmWPRG8T/NLMpsIcRbcgD9K/e2PbSw4NO5C53R1NkyqJMaoz5GuwJbtEOqJVN1kdiuzjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igei3m+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BCAC4CEC7;
+	Tue,  8 Oct 2024 12:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391585;
-	bh=bOIwAZsZbk19DyaUiFaJk+mnD0Z3dTrDV1Kf9hv0mj0=;
+	s=korg; t=1728389994;
+	bh=rAAFVVoI0mUr4qS62z7cZZZgVqbh6vTWg3igY38gPqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ha8GDDcsUhCdCYq/RjxlNF38a+MGhWVm3Hsj3IqnnGPp4Rt47hm+049HXTLvkhzjd
-	 k3TKm+b9DhT62az0bvsnPF92O1CyRjTMsSDVUZMX24dvWXKA41qCuMP7+1dJbi7n92
-	 nAHXQYJWlnOhd2ESnIiWYrrDfpeDpZ57iYrgm4x4=
+	b=igei3m+SaXAr0Wp+tRyR1M83qwXrWJ5x5fgMn4D2fubgxNqoPY8GgsYpbhjRsUkah
+	 7OwoyodqS3yvh89xsiF29tGMlmZj8maglPtadKMxJq8mSQ8dS9KyNLOy6bt1fyXudR
+	 P+5cGgAa1Nr4AJjI15x4QcixrZBFNlfCubE3nDU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 160/558] wifi: mt76: mt7915: add dummy HW offload of IEEE 802.11 fragmentation
+Subject: [PATCH 6.10 127/482] net: phy: Check for read errors in SIOCGMIIREG
 Date: Tue,  8 Oct 2024 14:03:10 +0200
-Message-ID: <20241008115708.656660189@linuxfoundation.org>
+Message-ID: <20241008115653.302928313@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit f2cc859149240d910fdc6405717673e0b84bfda8 ]
+[ Upstream commit 569bf6d481b0b823c3c9c3b8be77908fd7caf66b ]
 
-Currently, CONNAC2 series do not support encryption for fragmented Tx frames.
-Therefore, add dummy function mt7915_set_frag_threshold() to prevent SW
-IEEE 802.11 fragmentation.
+When reading registers from the PHY using the SIOCGMIIREG IOCTL any
+errors returned from either mdiobus_read() or mdiobus_c45_read() are
+ignored, and parts of the returned error is passed as the register value
+back to user-space.
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Link: https://patch.msgid.link/20240827093011.18621-16-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+For example, if mdiobus_c45_read() is used with a bus that do not
+implement the read_c45() callback -EOPNOTSUPP is returned. This is
+however directly stored in mii_data->val_out and returned as the
+registers content. As val_out is a u16 the error code is truncated and
+returned as a plausible register value.
+
+Fix this by first checking the return value for errors before returning
+it as the register content.
+
+Before this patch,
+
+    # phytool read eth0/0:1/0
+    0xffa1
+
+After this change,
+
+    $ phytool read eth0/0:1/0
+    error: phy_read (-95)
+
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20240903171536.628930-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+ drivers/net/phy/phy.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 7bc3b4cd35925..6bef96e3d2a3d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -400,6 +400,7 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
- 	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
- 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
- 	ieee80211_hw_set(hw, WANT_MONITOR_VIF);
-+	ieee80211_hw_set(hw, SUPPORTS_TX_FRAG);
- 
- 	hw->max_tx_fragments = 4;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index efbb8b23e4719..e094358005799 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1577,6 +1577,12 @@ mt7915_twt_teardown_request(struct ieee80211_hw *hw,
- 	mutex_unlock(&dev->mt76.mutex);
- }
- 
-+static int
-+mt7915_set_frag_threshold(struct ieee80211_hw *hw, u32 val)
-+{
-+	return 0;
-+}
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index c4236564c1cd0..8495b111a524a 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -342,14 +342,19 @@ int phy_mii_ioctl(struct phy_device *phydev, struct ifreq *ifr, int cmd)
+ 		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
+ 			prtad = mdio_phy_id_prtad(mii_data->phy_id);
+ 			devad = mdio_phy_id_devad(mii_data->phy_id);
+-			mii_data->val_out = mdiobus_c45_read(
+-				phydev->mdio.bus, prtad, devad,
+-				mii_data->reg_num);
++			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
++					       mii_data->reg_num);
 +
- static int
- mt7915_set_radar_background(struct ieee80211_hw *hw,
- 			    struct cfg80211_chan_def *chandef)
-@@ -1707,6 +1713,7 @@ const struct ieee80211_ops mt7915_ops = {
- 	.sta_set_decap_offload = mt7915_sta_set_decap_offload,
- 	.add_twt_setup = mt7915_mac_add_twt_setup,
- 	.twt_teardown_request = mt7915_twt_teardown_request,
-+	.set_frag_threshold = mt7915_set_frag_threshold,
- 	CFG80211_TESTMODE_CMD(mt76_testmode_cmd)
- 	CFG80211_TESTMODE_DUMP(mt76_testmode_dump)
- #ifdef CONFIG_MAC80211_DEBUGFS
+ 		} else {
+-			mii_data->val_out = mdiobus_read(
+-				phydev->mdio.bus, mii_data->phy_id,
+-				mii_data->reg_num);
++			ret = mdiobus_read(phydev->mdio.bus, mii_data->phy_id,
++					   mii_data->reg_num);
+ 		}
++
++		if (ret < 0)
++			return ret;
++
++		mii_data->val_out = ret;
++
+ 		return 0;
+ 
+ 	case SIOCSMIIREG:
 -- 
 2.43.0
 
