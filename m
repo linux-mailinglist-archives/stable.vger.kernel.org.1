@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-82502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA52994D15
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12235994EDD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D908D1F22153
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC2A28501C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC1C1DED47;
-	Tue,  8 Oct 2024 13:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1EE1DEFE3;
+	Tue,  8 Oct 2024 13:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrdeGkIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cz9eJOR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBE51DDC35;
-	Tue,  8 Oct 2024 13:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C66E1DED4E;
+	Tue,  8 Oct 2024 13:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392481; cv=none; b=OfnGOkoSrbPcs/aSwnhisYHuFU3MX+5owKxBWxmeSTH7j0QmJluc34GeMaBs24tt1wzTeShbkP97W4lcthR3PmM0pdOxX1PDtas/XitCOkjQYZeLlHaaqKh6rknrEhnSmDu0P3cQcme9wSDkBFGfUNti1d5lDywUcjgZzz+ExT8=
+	t=1728393692; cv=none; b=a6FWL2xHMe+h5OsYC06KfZeZTTs9K3hMefBR1VJSXpM73hZwCR6KVvqT71BAfy0mkVHuTVZWlcFw9ZdeXxtEebTLHnaFP0shvqSErAEmaXyK5P9ZqzF4hVfg2ABat6VlK58Br8Dr30AKDSvTx9gNXDKl410m3vwotw2uebHt9FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392481; c=relaxed/simple;
-	bh=cfkT/kRYYCjTbkjlVZIJudfeILrwye0BwzmxLeH7R4Q=;
+	s=arc-20240116; t=1728393692; c=relaxed/simple;
+	bh=42FEqSaFp6AYmmP74VC3ZJYQqwYA7XQOWl0mTDjaKV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYJsHrbyB5rc8gdvDZSdKLgakQeVW+2xdGOk9oTfnCzw8tK0q83yMREEOq7BdbS6DpvFe95kpDLBPURzBb3vSuX6Np5f+3PCnpC/692AcH8wplGNJVnRl5fOkKmABJnldd1jZLnBhpG2rcWNeaXgHUHoFAAYTOCNYovD5z8icM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrdeGkIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48720C4CEC7;
-	Tue,  8 Oct 2024 13:01:20 +0000 (UTC)
+	 MIME-Version; b=DJ1HhjWqXhx+n6k/crbmuDFFNfVPMrSnc+eB0Z9DJDUSXv6Bl4LvXx/0dIn7k4fNL0DoyiGzTvXIyBCWB+gcBlpg76nRsEt1534z3S3rTOcfqYx9zD/LQOniyW2U/93qhRfSux+EuorS7fCiFZzcl3EKZ+hqe/JBmW0VeBeTArw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cz9eJOR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038D7C4CEC7;
+	Tue,  8 Oct 2024 13:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392480;
-	bh=cfkT/kRYYCjTbkjlVZIJudfeILrwye0BwzmxLeH7R4Q=;
+	s=korg; t=1728393692;
+	bh=42FEqSaFp6AYmmP74VC3ZJYQqwYA7XQOWl0mTDjaKV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrdeGkIaP1nO3HjMKgei7v8nlVwlO68aJjRsAUvsDlaponMeUAmBHKV/HGeczGslK
-	 JfKjqtwqJxt1dZRJpVzswZg/pV9oFCcZhNL7V+zo7M4T5OMg8gagbW3V2J35qX1kn6
-	 b44VdDSl8/vgHgbV66xKePOzgm79D+K9VWEY3qUc=
+	b=cz9eJOR58uJYrHKmt5HSkKNsdD5azy7ukd/bR4N48Ahma+X3tE6Yzmscg7v0f2qJV
+	 w9lPCV4N8SRncOo/I2g1kl7ghD0WczimMw6w4YPuDfFsBTmst0HCQsuGqB5M6M2ksF
+	 KFT5jvmUJdbmKsDQCzwZpCwqZMx+n5odBYvx3CQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.11 410/558] jbd2: correctly compare tids with tid_geq function in jbd2_fc_begin_commit
-Date: Tue,  8 Oct 2024 14:07:20 +0200
-Message-ID: <20241008115718.409091788@linuxfoundation.org>
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 196/386] perf: Really fix event_function_call() locking
+Date: Tue,  8 Oct 2024 14:07:21 +0200
+Message-ID: <20241008115637.119920158@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit f0e3c14802515f60a47e6ef347ea59c2733402aa upstream.
+[ Upstream commit fe826cc2654e8561b64246325e6a51b62bf2488c ]
 
-Use tid_geq to compare tids to work over sequence number wraps.
+Commit 558abc7e3f89 ("perf: Fix event_function_call() locking") lost
+IRQ disabling by mistake.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20240801013815.2393869-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 558abc7e3f89 ("perf: Fix event_function_call() locking")
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/journal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -710,7 +710,7 @@ int jbd2_fc_begin_commit(journal_t *jour
- 		return -EINVAL;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 18eab7f50ecce..0ff381fa2f588 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -263,8 +263,8 @@ static int event_function(void *info)
+ static void event_function_call(struct perf_event *event, event_f func, void *data)
+ {
+ 	struct perf_event_context *ctx = event->ctx;
+-	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
++	struct perf_cpu_context *cpuctx;
+ 	struct event_function_struct efs = {
+ 		.event = event,
+ 		.func = func,
+@@ -292,22 +292,25 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
+ 	if (!task_function_call(task, event_function, &efs))
+ 		return;
  
- 	write_lock(&journal->j_state_lock);
--	if (tid <= journal->j_commit_sequence) {
-+	if (tid_geq(journal->j_commit_sequence, tid)) {
- 		write_unlock(&journal->j_state_lock);
- 		return -EALREADY;
++	local_irq_disable();
++	cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	perf_ctx_lock(cpuctx, ctx);
+ 	/*
+ 	 * Reload the task pointer, it might have been changed by
+ 	 * a concurrent perf_event_context_sched_out().
+ 	 */
+ 	task = ctx->task;
+-	if (task == TASK_TOMBSTONE) {
+-		perf_ctx_unlock(cpuctx, ctx);
+-		return;
+-	}
++	if (task == TASK_TOMBSTONE)
++		goto unlock;
+ 	if (ctx->is_active) {
+ 		perf_ctx_unlock(cpuctx, ctx);
++		local_irq_enable();
+ 		goto again;
  	}
+ 	func(event, NULL, ctx, data);
++unlock:
+ 	perf_ctx_unlock(cpuctx, ctx);
++	local_irq_enable();
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
