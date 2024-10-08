@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-82275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F029994C0A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F85994932
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AB0DB25FD4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DD27B22085
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9298D1DE2AE;
-	Tue,  8 Oct 2024 12:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B371DEFE5;
+	Tue,  8 Oct 2024 12:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15OQZYaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+BOaboj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517C21C2420;
-	Tue,  8 Oct 2024 12:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CCD1DDA36;
+	Tue,  8 Oct 2024 12:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391717; cv=none; b=VgRwbUvK2PNxJCZDnUAKH/to3djBJEbxRiEWAv6QCFA/ep75fUWM64N5jQW/JZ2mU6GfJRnWJdT4H2jjB0cZ6sSCzdM7aspOkS+sm5JeuNlfv+ewT/BLe9XQhoOlhCg9WCkuLh6s7UGyN1AlRMHyYdW1dBlaF6L0ImQ/rWqBrtM=
+	t=1728390025; cv=none; b=kdPqszfmHOA74B2KSRHn+FcTyqOP/ryOwHP7KThB6TMyHV0b9xP9twyvpc0e0UZcs9/por2gN5yhdVNRPFYCgkbXWLuFJqam36ns2GjGv0ZSfdGTTXGG7rvKYjmuc6qkYoEYNnKFgizTh22n9cu4zZacrocM2UgTHrgjAad64xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391717; c=relaxed/simple;
-	bh=B2GmBiJfAOfwIPmGFwnTRN0tEWlmW8hvYQAqGbYxhl4=;
+	s=arc-20240116; t=1728390025; c=relaxed/simple;
+	bh=sW5xyTa+G1f/0FRJyvGGWVMqY6bam11DHc9bkpFcLDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwsIm8dry4C9RrOied2LO2Zad+Pcjqx1KqR+7bwpyKLIpuVTAGbG0YkHHfGqu6sZPbFcqt/Kp5PaFC63HehEru9fi7IjEyin3hrsINoyak6t7PvwO0QhUPlUasdwVGzRKrOeTsvj2R11RmcTmo6r7ZxDFjEHgav1nMTk1grvR9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15OQZYaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC35C4CEC7;
-	Tue,  8 Oct 2024 12:48:36 +0000 (UTC)
+	 MIME-Version; b=ZNjmxP0o+DXsRlr+0RWGMAtEKc/0OKX6kmRoN9gIgF/wnPpsi0Y0Kbr9uGbfzMzgaB/3YHnSg2CQMQdW8fUGE3a1kT+ClZNALCRkEFzT3d+/mlZki0s5CPuv7LEugnSf/cFepMaCtTw+7o8inQvNxQ0gGIp9rfytUXAAY7wpoUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+BOaboj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2D8C4CEC7;
+	Tue,  8 Oct 2024 12:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391717;
-	bh=B2GmBiJfAOfwIPmGFwnTRN0tEWlmW8hvYQAqGbYxhl4=;
+	s=korg; t=1728390025;
+	bh=sW5xyTa+G1f/0FRJyvGGWVMqY6bam11DHc9bkpFcLDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15OQZYafrvEzTnYZv1mqkmNnBczZLVmGSLyAtb7tJI58RmG/tyuRZeNWvSdre+4fy
-	 dh3ZcUPSQNTzObgs1pRA6+o9L9fmwZrNde8+jyluRZCl1eK9iH64lUr2moAgXWjgrN
-	 T3HVP+307ZEQxU+3BHz5ZkopMhdkWHKE/Ieoz9fs=
+	b=y+BOaboj3rIrTNs5JrPE1LQFtMdy0VEEtT37nRAVtH8fInQMfes2fPBDDIZ3wg7Md
+	 m55SNE9SdmhAsyb614ghdA++P4+aaYyus6mMsseFqCfxveHnF4EbFDwtXPppSkIoYP
+	 pftcCP+7ZGqOrgMhyqDRf7IsVw/stc8+d3f1105Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 200/558] iommu/arm-smmu-v3: Do not use devm for the cd table allocations
-Date: Tue,  8 Oct 2024 14:03:50 +0200
-Message-ID: <20241008115710.218531256@linuxfoundation.org>
+Subject: [PATCH 6.10 168/482] iommu/vt-d: Always reserve a domain ID for identity setup
+Date: Tue,  8 Oct 2024 14:03:51 +0200
+Message-ID: <20241008115654.917202632@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 47b2de35cab2b683f69d03515c2658c2d8515323 ]
+[ Upstream commit 2c13012e09190174614fd6901857a1b8c199e17d ]
 
-The master->cd_table is entirely contained within the struct
-arm_smmu_master which is guaranteed to be freed by the core code under
-arm_smmu_release_device().
+We will use a global static identity domain. Reserve a static domain ID
+for it.
 
-There is no reason to use devm here, arm_smmu_free_cd_tables() is reliably
-called to free the CD related memory. Remove it and save some memory.
-
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/5-v4-6416877274e1+1af-smmuv3_tidy_jgg@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/20240809055431.36513-4-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 29 +++++++++------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/iommu/intel/iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index d271525fa3917..473eb772ea210 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1185,8 +1185,8 @@ static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
- {
- 	size_t size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index e9bea0305c268..eed67326976d3 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1462,10 +1462,10 @@ static int iommu_init_domains(struct intel_iommu *iommu)
+ 	 * entry for first-level or pass-through translation modes should
+ 	 * be programmed with a domain id different from those used for
+ 	 * second-level or nested translation. We reserve a domain id for
+-	 * this purpose.
++	 * this purpose. This domain id is also used for identity domain
++	 * in legacy mode.
+ 	 */
+-	if (sm_supported(iommu))
+-		set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
++	set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
  
--	l1_desc->l2ptr = dmam_alloc_coherent(smmu->dev, size,
--					     &l1_desc->l2ptr_dma, GFP_KERNEL);
-+	l1_desc->l2ptr = dma_alloc_coherent(smmu->dev, size,
-+					    &l1_desc->l2ptr_dma, GFP_KERNEL);
- 	if (!l1_desc->l2ptr) {
- 		dev_warn(smmu->dev,
- 			 "failed to allocate context descriptor table\n");
-@@ -1400,17 +1400,17 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
- 		cd_table->num_l1_ents = DIV_ROUND_UP(max_contexts,
- 						  CTXDESC_L2_ENTRIES);
- 
--		cd_table->l1_desc = devm_kcalloc(smmu->dev, cd_table->num_l1_ents,
--					      sizeof(*cd_table->l1_desc),
--					      GFP_KERNEL);
-+		cd_table->l1_desc = kcalloc(cd_table->num_l1_ents,
-+					    sizeof(*cd_table->l1_desc),
-+					    GFP_KERNEL);
- 		if (!cd_table->l1_desc)
- 			return -ENOMEM;
- 
- 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
- 	}
- 
--	cd_table->cdtab = dmam_alloc_coherent(smmu->dev, l1size, &cd_table->cdtab_dma,
--					   GFP_KERNEL);
-+	cd_table->cdtab = dma_alloc_coherent(smmu->dev, l1size,
-+					     &cd_table->cdtab_dma, GFP_KERNEL);
- 	if (!cd_table->cdtab) {
- 		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
- 		ret = -ENOMEM;
-@@ -1421,7 +1421,7 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
- 
- err_free_l1:
- 	if (cd_table->l1_desc) {
--		devm_kfree(smmu->dev, cd_table->l1_desc);
-+		kfree(cd_table->l1_desc);
- 		cd_table->l1_desc = NULL;
- 	}
- 	return ret;
-@@ -1441,21 +1441,18 @@ static void arm_smmu_free_cd_tables(struct arm_smmu_master *master)
- 			if (!cd_table->l1_desc[i].l2ptr)
- 				continue;
- 
--			dmam_free_coherent(smmu->dev, size,
--					   cd_table->l1_desc[i].l2ptr,
--					   cd_table->l1_desc[i].l2ptr_dma);
-+			dma_free_coherent(smmu->dev, size,
-+					  cd_table->l1_desc[i].l2ptr,
-+					  cd_table->l1_desc[i].l2ptr_dma);
- 		}
--		devm_kfree(smmu->dev, cd_table->l1_desc);
--		cd_table->l1_desc = NULL;
-+		kfree(cd_table->l1_desc);
- 
- 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
- 	} else {
- 		l1size = cd_table->num_l1_ents * (CTXDESC_CD_DWORDS << 3);
- 	}
- 
--	dmam_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
--	cd_table->cdtab_dma = 0;
--	cd_table->cdtab = NULL;
-+	dma_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
+ 	return 0;
  }
- 
- /* Stream table manipulation functions */
 -- 
 2.43.0
 
