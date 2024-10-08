@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-82125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D19994B29
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AF9994878
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977671C24CE2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 794981C24C79
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15FC1DE3AE;
-	Tue,  8 Oct 2024 12:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838D21DE4DC;
+	Tue,  8 Oct 2024 12:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2WKF7nA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZeliX2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FC61DE2A5;
-	Tue,  8 Oct 2024 12:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3301DD867;
+	Tue,  8 Oct 2024 12:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391239; cv=none; b=eKBk+ooYOhY5jx7C/1FBthxKYOWGW6yQmu9/fhjPjiCJbbsFcgE1k5fMMWy789HJtb89CAsF510RGhUdu6YlfLhK/6GRMcOtrQD9KdjhnzExzyl08mGXXr1cfKgMHZhHakxgjrDXdv6cnbwAXDDS/uo1MloElD7eiBW15hbBQU4=
+	t=1728389588; cv=none; b=nw4oZOrtHAXpNtUeQrwrF9dcFZiA89wCEtHSF7LaDYomWEw2LT6MaFO/AfxywQxI1Q4TTNy4Ay4UARwcNBbn4kDeY9GUcB4jKIDVDFsfYhEtOEuGUvh3MApNRJPCQNvidaQyo2plZzmfpdWXIlYte4UZr13FdfXNRZnHQmwMFpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391239; c=relaxed/simple;
-	bh=WE5TWBchW2WYi+88TcHXaBIgarP95du5gDDegbMn2go=;
+	s=arc-20240116; t=1728389588; c=relaxed/simple;
+	bh=pqhw2J8BHKcmH9nITdOrVXtpWK4t03/ZXU2u9cI0duw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMgUwa29+cR7Yc1whyW8fe5AIuqcn0titR2DFHzzS6rowiHRNtE7MjMBMo9NPaCWn94HGDVD3dOkM2dg6heWtSl/4+OSKCFR4JdyoS+LBZ8DHwKOo1LvqbzTEjWupvsmXpyXxqN0uBl4tou/Oy0Eio1OnqCNb9SabF9aGvzdcfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2WKF7nA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F282EC4CECC;
-	Tue,  8 Oct 2024 12:40:38 +0000 (UTC)
+	 MIME-Version; b=YdVz/v/otM84BMbZnZ5uaQbF3EKdbhIcoZBtEyQ96qH/EzDo6CH9sYxOBKl+YmUYHVEWr2+s22aahiQ6lbO8BV8eyXEAjXqrauW7txbjC3ZoTiFaJSnp+JO+LxEL2ZHwHgTWZNZSxdhxnshuTkfOarhBGKzfbnLUqANuRxnwRYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZeliX2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC5BC4CEC7;
+	Tue,  8 Oct 2024 12:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391239;
-	bh=WE5TWBchW2WYi+88TcHXaBIgarP95du5gDDegbMn2go=;
+	s=korg; t=1728389587;
+	bh=pqhw2J8BHKcmH9nITdOrVXtpWK4t03/ZXU2u9cI0duw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2WKF7nAqdOIxoIEmMInvD7MibdRv+62Q2PIeO1LKwjMV4bTnNenaV5vO4vvDDu3i
-	 fmb+fET0X0Wk3eXei9uAuYdwM6zNW+TfJkqbGciWoy17QYJKje9kVG+nQ0aZFMc7Lj
-	 14aVxt6NJ4pmoDNbpksTHgdbPy4SNaLIaafGnZzk=
+	b=yZeliX2NGG5u9/z6dFXotdmvoh6whcI0NdNvquxtDdraqQEHBwQNpKCKTk/uuuuv6
+	 s8tAns1+Rs33TQcYWt+cirlBYvrk+u3sEpdWgFT6C3SV9/tqppIgGZfEpWWoR0Aip9
+	 WfoUAV671zWj5kz+mI8SCZONHbvdf28wItZTBwVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Brian Foster <bfoster@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Elena Salomatkina <esalomatkina@ispras.ru>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 052/558] iomap: constrain the file range passed to iomap_file_unshare
-Date: Tue,  8 Oct 2024 14:01:22 +0200
-Message-ID: <20241008115704.269748768@linuxfoundation.org>
+Subject: [PATCH 6.10 020/482] net/mlx5e: Fix NULL deref in mlx5e_tir_builder_alloc()
+Date: Tue,  8 Oct 2024 14:01:23 +0200
+Message-ID: <20241008115649.094383468@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +66,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Elena Salomatkina <esalomatkina@ispras.ru>
 
-[ Upstream commit a311a08a4237241fb5b9d219d3e33346de6e83e0 ]
+[ Upstream commit f25389e779500cf4a59ef9804534237841bce536 ]
 
-File contents can only be shared (i.e. reflinked) below EOF, so it makes
-no sense to try to unshare ranges beyond EOF.  Constrain the file range
-parameters here so that we don't have to do that in the callers.
+In mlx5e_tir_builder_alloc() kvzalloc() may return NULL
+which is dereferenced on the next line in a reference
+to the modify field.
 
-Fixes: 5f4e5752a8a3 ("fs: add iomap_file_dirty")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/20241002150213.GC21853@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: a6696735d694 ("net/mlx5e: Convert TIR to a dedicated object")
+Signed-off-by: Elena Salomatkina <esalomatkina@ispras.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dax.c               | 6 +++++-
- fs/iomap/buffered-io.c | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tir.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index becb4a6920c6a..c62acd2812f8d 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1305,11 +1305,15 @@ int dax_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 	struct iomap_iter iter = {
- 		.inode		= inode,
- 		.pos		= pos,
--		.len		= len,
- 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE | IOMAP_DAX,
- 	};
-+	loff_t size = i_size_read(inode);
- 	int ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
+index d4239e3b3c88e..11f724ad90dbf 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
+@@ -23,6 +23,9 @@ struct mlx5e_tir_builder *mlx5e_tir_builder_alloc(bool modify)
+ 	struct mlx5e_tir_builder *builder;
  
-+	if (pos < 0 || pos >= size)
-+		return 0;
+ 	builder = kvzalloc(sizeof(*builder), GFP_KERNEL);
++	if (!builder)
++		return NULL;
 +
-+	iter.len = min(len, size - pos);
- 	while ((ret = iomap_iter(&iter, ops)) > 0)
- 		iter.processed = dax_unshare_iter(&iter);
- 	return ret;
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index f420c53d86acc..389de94715b53 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1382,11 +1382,15 @@ iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
- 	struct iomap_iter iter = {
- 		.inode		= inode,
- 		.pos		= pos,
--		.len		= len,
- 		.flags		= IOMAP_WRITE | IOMAP_UNSHARE,
- 	};
-+	loff_t size = i_size_read(inode);
- 	int ret;
+ 	builder->modify = modify;
  
-+	if (pos < 0 || pos >= size)
-+		return 0;
-+
-+	iter.len = min(len, size - pos);
- 	while ((ret = iomap_iter(&iter, ops)) > 0)
- 		iter.processed = iomap_unshare_iter(&iter);
- 	return ret;
+ 	return builder;
 -- 
 2.43.0
 
