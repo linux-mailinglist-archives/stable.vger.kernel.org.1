@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89B5994DF1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238C8994AE7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27703B29DB0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9B85283A4E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DC81DE88F;
-	Tue,  8 Oct 2024 13:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46441DEFC8;
+	Tue,  8 Oct 2024 12:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8r9gKSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwWGntsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4105318F2FA;
-	Tue,  8 Oct 2024 13:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B891DE4DF;
+	Tue,  8 Oct 2024 12:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392859; cv=none; b=R+JQWeQvlVR0PlGr6YKgCSJln4dB4QaH4SauJvUvatIhlGoUKFox0lA+emcN9bBP/Wl5Dn5VSZvd8rjlNQzzNvl4+EGzgJr7KCoOeOA/86lR1VDurh3wSY+F6u44p2qZgPDVsAG3isHTPsFn/F2eetUgNlPxhJUmMhz+a5GWwR4=
+	t=1728391067; cv=none; b=VnJQzTDv2/yK2BfHoBVJ2pUt0PG0kmgAK5DrLFuStz5bYGe9fzIhyiBo3QkDaMoRz6jMfRYNO1tpkMz4JQpYXK8H54L4QQH30HbNda9Z7bKG5Tq92PcV8PD7LeyE1f4WGpMBCGhNYacaWaW71hTK0gDNPSFw+hosRAI3L8+wrJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392859; c=relaxed/simple;
-	bh=pEkUtq/bJQO5b6grvo+KhmNk+u/MooK698AgnnK1280=;
+	s=arc-20240116; t=1728391067; c=relaxed/simple;
+	bh=0ja6nYbnuy6y1WJSX+0bTqWriYvsCj74a78pvKx6je8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLgK3FlAC5mAwPvbEPUgXAlRUjC3+w+4t+MidY2GWqypMqhhzRtyMMo5jf+7Wx82Uv/V3v4548DyhwMsCD2ClJC3VxnmnpRrEEh5o2JXXbTgl0dN2bjfQH90bAV2O0+25U7omw2a5b0WrF+sFQkx4we2mpiwQyZBLLexRUAF/Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8r9gKSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B857DC4CEC7;
-	Tue,  8 Oct 2024 13:07:38 +0000 (UTC)
+	 MIME-Version; b=SHIvPL94cHx+0WIDdI16Lpb41AEnwHm1VnYyZ7NYL2AUUaPpoVWYjxwzSSfqS1iKGJoT1B7Bxvl923ixZPcwFrLhLfyC97fCNqcnk+cm4PdcWFpjFY6CchdqPVJ5nlbZdnZ+ZhznrKYfjqt1eD+UcgchTOHb29nt2OWy//7NwNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwWGntsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275E8C4CECD;
+	Tue,  8 Oct 2024 12:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392859;
-	bh=pEkUtq/bJQO5b6grvo+KhmNk+u/MooK698AgnnK1280=;
+	s=korg; t=1728391067;
+	bh=0ja6nYbnuy6y1WJSX+0bTqWriYvsCj74a78pvKx6je8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I8r9gKSpRvgkNVLH0lCz8lLGag8vtDPksKVdkA6UJEkYc50/x8uONyF0Vbv1m7/ho
-	 LUTRh5c3ak9K5SwYmJerj2Nwj51ERowqojiFslbGpvb5F64xJnb4btsDYy+Xe4GX5Z
-	 eSec/q7pGkXpQytEorMgHkaxbSuoeeOqA3qyVnDQ=
+	b=kwWGntslL6nQsoKWVigVLSmq8s80ENT0fvVPykSh4PjQuQaUvMV0aOLjmBAjOQlEO
+	 HAHWM5UESAALLXpbKuHUb5apnfuCrWTTvgoz3tsvyTFCm7tYlBmLpucvAY/Qgk3nQ5
+	 VMwBBihXifzdMMtXoKIsf2XqTQspQl7V/D7uW3cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Glozar <tglozar@redhat.com>,
-	Eder Zulian <ezulian@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.11 513/558] rtla: Fix the help text in osnoise and timerlat top tools
+	Alex Hung <alex.hung@amd.com>,
+	Gabe Teeger <Gabe.Teeger@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 480/482] drm/amd/display: Revert Avoid overflow assignment
 Date: Tue,  8 Oct 2024 14:09:03 +0200
-Message-ID: <20241008115722.414885312@linuxfoundation.org>
+Message-ID: <20241008115707.398531209@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eder Zulian <ezulian@redhat.com>
+From: Gabe Teeger <Gabe.Teeger@amd.com>
 
-commit 3d7b8ea7a8a20a45d019382c4dc6ed79e8bb95cf upstream.
+commit e80f8f491df873ea2e07c941c747831234814612 upstream.
 
-The help text in osnoise top and timerlat top had some minor errors
-and omissions. The -d option was missing the 's' (second) abbreviation and
-the error message for '-d' used '-D'.
+This reverts commit a15268787b79 ("drm/amd/display: Avoid overflow assignment in link_dp_cts")
+Due to regression causing DPMS hang.
 
-Cc: stable@vger.kernel.org
-Fixes: 1eceb2fc2ca54 ("rtla/osnoise: Add osnoise top mode")
-Fixes: a828cd18bc4ad ("rtla: Add timerlat tool and timelart top mode")
-Link: https://lore.kernel.org/20240813155831.384446-1-ezulian@redhat.com
-Suggested-by: Tomas Glozar <tglozar@redhat.com>
-Reviewed-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Eder Zulian <ezulian@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Gabe Teeger <Gabe.Teeger@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/osnoise_top.c  |    2 +-
- tools/tracing/rtla/src/timerlat_top.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dp_types.h                  |    2 +-
+ drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c |    3 +--
+ drivers/gpu/drm/amd/display/include/dpcd_defs.h               |    1 -
+ 3 files changed, 2 insertions(+), 4 deletions(-)
 
---- a/tools/tracing/rtla/src/osnoise_top.c
-+++ b/tools/tracing/rtla/src/osnoise_top.c
-@@ -442,7 +442,7 @@ struct osnoise_top_params *osnoise_top_p
- 		case 'd':
- 			params->duration = parse_seconds_duration(optarg);
- 			if (!params->duration)
--				osnoise_top_usage(params, "Invalid -D duration\n");
-+				osnoise_top_usage(params, "Invalid -d duration\n");
- 			break;
- 		case 'e':
- 			tevent = trace_event_alloc(optarg);
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -459,7 +459,7 @@ static void timerlat_top_usage(char *usa
- 		"	  -c/--cpus cpus: run the tracer only on the given cpus",
- 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
- 		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
--		"	  -d/--duration time[m|h|d]: duration of the session in seconds",
-+		"	  -d/--duration time[s|m|h|d]: duration of the session",
- 		"	  -D/--debug: print debug info",
- 		"	     --dump-tasks: prints the task running on all CPUs if stop conditions are met (depends on !--no-aa)",
- 		"	  -t/--trace[file]: save the stopped trace to [file|timerlat_trace.txt]",
-@@ -613,7 +613,7 @@ static struct timerlat_top_params
- 		case 'd':
- 			params->duration = parse_seconds_duration(optarg);
- 			if (!params->duration)
--				timerlat_top_usage("Invalid -D duration\n");
-+				timerlat_top_usage("Invalid -d duration\n");
- 			break;
- 		case 'e':
- 			tevent = trace_event_alloc(optarg);
+--- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+@@ -727,7 +727,7 @@ struct dp_audio_test_data_flags {
+ struct dp_audio_test_data {
+ 
+ 	struct dp_audio_test_data_flags flags;
+-	uint32_t sampling_rate;
++	uint8_t sampling_rate;
+ 	uint8_t channel_count;
+ 	uint8_t pattern_type;
+ 	uint8_t pattern_period[8];
+--- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
++++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+@@ -775,8 +775,7 @@ bool dp_set_test_pattern(
+ 			core_link_read_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					    &training_pattern.raw,
+ 					    sizeof(training_pattern));
+-			if (pattern <= PHY_TEST_PATTERN_END_DP11)
+-				training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
++			training_pattern.v1_3.LINK_QUAL_PATTERN_SET = pattern;
+ 			core_link_write_dpcd(link, DP_TRAINING_PATTERN_SET,
+ 					     &training_pattern.raw,
+ 					     sizeof(training_pattern));
+--- a/drivers/gpu/drm/amd/display/include/dpcd_defs.h
++++ b/drivers/gpu/drm/amd/display/include/dpcd_defs.h
+@@ -76,7 +76,6 @@ enum dpcd_phy_test_patterns {
+ 	PHY_TEST_PATTERN_D10_2,
+ 	PHY_TEST_PATTERN_SYMBOL_ERROR,
+ 	PHY_TEST_PATTERN_PRBS7,
+-	PHY_TEST_PATTERN_END_DP11 = PHY_TEST_PATTERN_PRBS7,
+ 	PHY_TEST_PATTERN_80BIT_CUSTOM,/* For DP1.2 only */
+ 	PHY_TEST_PATTERN_CP2520_1,
+ 	PHY_TEST_PATTERN_CP2520_2,
 
 
 
