@@ -1,191 +1,117 @@
-Return-Path: <stable+bounces-83066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A83A9953F3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 18:00:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985A9995400
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 18:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEA7D284E0D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 16:00:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8A081C23BFE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 16:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E22D1E0DBD;
-	Tue,  8 Oct 2024 16:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B2318CC15;
+	Tue,  8 Oct 2024 16:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZdBBzgNk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YHfLCFcj"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="LwhcxvxC"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955E04C62B;
-	Tue,  8 Oct 2024 16:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD7E224F0;
+	Tue,  8 Oct 2024 16:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728403236; cv=none; b=VesFYt7yFFf5KLOjdLIM0baRh2SCh6xCZtDTwj9mKej9DyJEAcZadlps2/u46VRStGdAF/6h37CmguFTpUTrd0JoNpeCxrkG8Z+qUU2caP8O8DL9+/vhHBj1NIh4ITVnurT+7g/MFy+GhH+uaUJFLazzK5Gk9SeRAgJts+CS1nQ=
+	t=1728403526; cv=none; b=DHDu8gqZQOaOLyxlwKvKbg0SUD3AIemT0ef4voFtGf7l913Q50L59lVlMFtNtvT3frvAl9YWBiG+nOmDGBjkdMDXrd5qoaPWDrMUFKaSu5jeNQrCFxyztWQ2cT4qWqcaP4gKI6S0opI4i2uE+b2032sBHk6t5HS9P7j4sbD3hPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728403236; c=relaxed/simple;
-	bh=crha7KbcBHq2QFdZjF/n3wxVMQu0q6ok+Vkg/tSm5NQ=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SfCe7+x2/U35yR0Icp9o9CI/2PzYSfO40dvUHzvlaqwgmRfIZTUsZBFMPkHx2qPFgYfhz2XHN0CvdMAHQvWAWAYnWzDSWyG7HCSUmjHhx/oIUvI7SMdlGNaGIEwu5wqrin7SxKDwhOQq/FQ2dbbFjVZc8j4Bw8F3DSuoqB1TPTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZdBBzgNk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YHfLCFcj; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 08 Oct 2024 16:00:32 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1728403233;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAq+88YDfpZ9tT11XN0jVkuu680sFNkXTJbj/wfu4PY=;
-	b=ZdBBzgNk4WBs4IjLx55a1H2nUdO5U2I1dAuNJtPAJldCoqPTkU6OWYDviKAJ70kd3S09fM
-	grNe5L8rrspiVjXVTzn9W0JHuW4w3kWJidc5Pg8WhWuqdD1ICR1k7sAk3vV9GLrGyHaq6D
-	PPHqpYv/NBFGdhlCItoktHEhyyo2j4yjF4ej8HWVrIy83iCh5ERJ5iqVp9+yGJHDinEF0y
-	IPqnzwhOZs3vev0tKbjiZo3JB7NRr1msuC6DlHLh+kzGZPST7lU1BAD+zgXN/WAXWt+d7d
-	gJ5ciVTdY1l97V+Ogghmto95iloYiVKaMWLgYxcCss6lCY9UEqzFWZtJx74lcA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1728403233;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAq+88YDfpZ9tT11XN0jVkuu680sFNkXTJbj/wfu4PY=;
-	b=YHfLCFcjk0bctRrdHlcebfjCd1kDjTv8qGHEPdRO6nOfH3EYPW8yg1+q8nnWNgEpy5EJDi
-	Mawugp0JYFko8rBg==
-From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v4: Don't allow a VMOVP on a dying VPE
-Cc: Kunkun Jiang <jiangkunkun@huawei.com>, Marc Zyngier <maz@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <c182ece6-2ba0-ce4f-3404-dba7a3ab6c52@huawei.com>
-References: <c182ece6-2ba0-ce4f-3404-dba7a3ab6c52@huawei.com>
+	s=arc-20240116; t=1728403526; c=relaxed/simple;
+	bh=W66HPaI7vCTTXRg0sHOI+UJgtuGeaYK/rqCGihZVcsI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rO/nWgaM6TcAo7xEFycP0GfCRg2zmEUQpFa+hCdtiBzd2QnQj0x3cIlvwNePOqPaHrF1AVP/G0nwYw5eF5B9087tncKTkJRGmk0/oeaaIK8Oz9kln73yHgDyys0CiA6nS3KYnHgvBzxW69lCoRFJOh6poQhTnOO7iA9PEfi0GJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=LwhcxvxC; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42ca6ba750eso37006535e9.0;
+        Tue, 08 Oct 2024 09:05:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1728403523; x=1729008323; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uyg5938XUdbci+Id2jSlJ3QKaymXAYrdG/rjhrWuEI8=;
+        b=LwhcxvxC5sMbd/k1VRshfwpJNoD63Na1G8wJXsXtkTedlG9LrDK4npmpNK2jW9kn9s
+         fspvB/TQfDx1abpEeplNgD7AUBjFnP2W4U/oIuaahlT7pbCjptil0UcTsr9z3MPYYj8K
+         3vJ+R+JUmul/NzRckwbYYXcv3T2NoHLOgz4a2qlUek96WoltuG5LwbRxD4b4MgJBcAjg
+         Q545SckHpijt0+zi6mox2RqDTNzceciVhUVDnANvhdUABATC38i0rxk6ShNjhiap5D49
+         /GuU8AzM60mOnkNkiv1+cC9LgbZmGkQx2JCvwFfn8kcGK3ajIqLCs7myLZwyJpUqaSXV
+         18Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728403523; x=1729008323;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uyg5938XUdbci+Id2jSlJ3QKaymXAYrdG/rjhrWuEI8=;
+        b=CQG7Ti7L10hVy2ECEXgNDSBkjVIlAqtdWa/LXj9rEJCjLMy5mIgFYNBbfPhcwc+jMc
+         wsbTI7Xyn1KUBqAXyrUV0CBnLJIWXrhVnDyilAAFFACXezd8N7z16xkChdUQ/Wf5/j/z
+         JcGSHDU0ZJBp7xwrZANr3b/6NPMdNJCvRpQ3ddCd147vYJ6Ict83PcBDuPexaEweDPeH
+         xMJthF1sbbucye4uKf/lAQcrCEA3h+vAIYiXAPIQvJ/asdA8T8sRtzbEPo23mLoVzBrD
+         VTvPiFvKv9Gz5V1TMVsvN//AMSua90EUMRc+cHUCfdcyvg6oxPTMRWT2pJcHYgiXY2aB
+         A1xg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJlzt1I2vA3ulbuOEmSTps9Ph/NnQd3lhZyM6xEhYpvBFbGXuklpqnjIhHExELkUTUjnhFuKY3@vger.kernel.org, AJvYcCXJn3KaXAupa621k3jAsBt2iGmKZeTWIbmbhxoR8SvPChOJq+bYd9ML8E7C8GaNvgwwUvan7FYZG0sMSnw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLU+Auj5CMfQrTKrLMsXJb2pUzgKVXGiHPzV5XjzMJ2HOjrWyw
+	bSq9xj2Ux9UceQ66vkblVGJFJndoonp8LjEHxSm378KtJ0kBX+8=
+X-Google-Smtp-Source: AGHT+IHI3HNkUhkt+2Et79RsDlbHBNOOu28DFhEn8C0r9PruI3pYmDHi7Vz5GxFuYkTpi1aT6S9+/g==
+X-Received: by 2002:a05:600c:1391:b0:42c:bd5a:9471 with SMTP id 5b1f17b1804b1-42f94c18e42mr24494485e9.16.1728403522574;
+        Tue, 08 Oct 2024 09:05:22 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4723.dip0.t-ipconnect.de. [91.43.71.35])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4304efc442esm19349255e9.1.2024.10.08.09.05.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Oct 2024 09:05:21 -0700 (PDT)
+Message-ID: <62aeeca9-ab16-48e2-b529-1587556bf19d@googlemail.com>
+Date: Tue, 8 Oct 2024 18:05:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172840323235.1442.15816504613853040169.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.10 000/482] 6.10.14-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20241008115648.280954295@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the irq/urgent branch of tip:
+Am 08.10.2024 um 14:01 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.10.14 release.
+> There are 482 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Commit-ID:     1442ee0011983f0c5c4b92380e6853afb513841a
-Gitweb:        https://git.kernel.org/tip/1442ee0011983f0c5c4b92380e6853afb513841a
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Wed, 02 Oct 2024 21:49:59 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 08 Oct 2024 17:44:27 +02:00
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-irqchip/gic-v4: Don't allow a VMOVP on a dying VPE
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Kunkun Jiang reported that there is a small window of opportunity for
-userspace to force a change of affinity for a VPE while the VPE has already
-been unmapped, but the corresponding doorbell interrupt still visible in
-/proc/irq/.
+Beste Grüße,
+Peter Schneider
 
-Plug the race by checking the value of vmapp_count, which tracks whether
-the VPE is mapped ot not, and returning an error in this case.
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-This involves making vmapp_count common to both GICv4.1 and its v4.0
-ancestor.
-
-Fixes: 64edfaa9a234 ("irqchip/gic-v4.1: Implement the v4.1 flavour of VMAPP")
-Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/c182ece6-2ba0-ce4f-3404-dba7a3ab6c52@huawei.com
-Link: https://lore.kernel.org/all/20241002204959.2051709-1-maz@kernel.org
----
- drivers/irqchip/irq-gic-v3-its.c   | 18 ++++++++++++------
- include/linux/irqchip/arm-gic-v4.h |  4 +++-
- 2 files changed, 15 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index fdec478..ab597e7 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -797,8 +797,8 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_node *its,
- 	its_encode_valid(cmd, desc->its_vmapp_cmd.valid);
- 
- 	if (!desc->its_vmapp_cmd.valid) {
-+		alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
- 		if (is_v4_1(its)) {
--			alloc = !atomic_dec_return(&desc->its_vmapp_cmd.vpe->vmapp_count);
- 			its_encode_alloc(cmd, alloc);
- 			/*
- 			 * Unmapping a VPE is self-synchronizing on GICv4.1,
-@@ -817,13 +817,13 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_node *its,
- 	its_encode_vpt_addr(cmd, vpt_addr);
- 	its_encode_vpt_size(cmd, LPI_NRBITS - 1);
- 
-+	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
-+
- 	if (!is_v4_1(its))
- 		goto out;
- 
- 	vconf_addr = virt_to_phys(page_address(desc->its_vmapp_cmd.vpe->its_vm->vprop_page));
- 
--	alloc = !atomic_fetch_inc(&desc->its_vmapp_cmd.vpe->vmapp_count);
--
- 	its_encode_alloc(cmd, alloc);
- 
- 	/*
-@@ -3807,6 +3807,13 @@ static int its_vpe_set_affinity(struct irq_data *d,
- 	unsigned long flags;
- 
- 	/*
-+	 * Check if we're racing against a VPE being destroyed, for
-+	 * which we don't want to allow a VMOVP.
-+	 */
-+	if (!atomic_read(&vpe->vmapp_count))
-+		return -EINVAL;
-+
-+	/*
- 	 * Changing affinity is mega expensive, so let's be as lazy as
- 	 * we can and only do it if we really have to. Also, if mapped
- 	 * into the proxy device, we need to move the doorbell
-@@ -4463,9 +4470,8 @@ static int its_vpe_init(struct its_vpe *vpe)
- 	raw_spin_lock_init(&vpe->vpe_lock);
- 	vpe->vpe_id = vpe_id;
- 	vpe->vpt_page = vpt_page;
--	if (gic_rdists->has_rvpeid)
--		atomic_set(&vpe->vmapp_count, 0);
--	else
-+	atomic_set(&vpe->vmapp_count, 0);
-+	if (!gic_rdists->has_rvpeid)
- 		vpe->vpe_proxy_event = -1;
- 
- 	return 0;
-diff --git a/include/linux/irqchip/arm-gic-v4.h b/include/linux/irqchip/arm-gic-v4.h
-index ecabed6..7f1f11a 100644
---- a/include/linux/irqchip/arm-gic-v4.h
-+++ b/include/linux/irqchip/arm-gic-v4.h
-@@ -66,10 +66,12 @@ struct its_vpe {
- 				bool	enabled;
- 				bool	group;
- 			}			sgi_config[16];
--			atomic_t vmapp_count;
- 		};
- 	};
- 
-+	/* Track the VPE being mapped */
-+	atomic_t vmapp_count;
-+
- 	/*
- 	 * Ensures mutual exclusion between affinity setting of the
- 	 * vPE and vLPI operations using vpe->col_idx.
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
