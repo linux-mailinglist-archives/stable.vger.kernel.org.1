@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BFE9948A6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A55A994BAE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2FEAB2670C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3171A283C4A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C0533981;
-	Tue,  8 Oct 2024 12:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBB41DE89A;
+	Tue,  8 Oct 2024 12:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1d1y1La"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWEmMeG4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4574D1D26F2;
-	Tue,  8 Oct 2024 12:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEFF1CCB32;
+	Tue,  8 Oct 2024 12:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389714; cv=none; b=UOyVx7iyOK2F/YvMyrIMR8P3QtUJPB04Cc+4TTjPjrdRngDcx7uKPEpl+Y4cfXqSiJxJ2nIHbPS7N5DIjEYEkVagqP271CR0mEGchglNfF70mL8vQMOHbP9IPKtRKxrg2Ts+dVhuQmS7zlrQeZGoq4+7dE4uDLXqf827RxLwW1Q=
+	t=1728391518; cv=none; b=rtzAnFWW6uQi/VbCI4TBLJrN26+CvL2kjald1huO6X79QGdHLL0uCeiIkGbxxV63hzgc+JTwAZSC0guWmyWwb/VpzqQgIM5dURTJV6qbC/QFXAIr9dFX5K7Xkk5cU4LIcTCDLUhNvrfuuuutLkqEuL81AHzpVRxEsUDOAqJ/bxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389714; c=relaxed/simple;
-	bh=qPWUANz9h+JMnckvKzA7K3FJmYzYxWJKUi+i3MbMS0Y=;
+	s=arc-20240116; t=1728391518; c=relaxed/simple;
+	bh=OT7c79mdBNPrPQCO08MxxG5HH4GuOXV6lAdL/tDvi50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVKOramAzAPt6gaZmZwS2HQLjj2r5+9BPUc4ajyANvNoSKgguga5vNDxfuja9UNChZdmqmX2xHwpIj7NOo9yDH4JTMmgXi1JYYNma9wbdg78DoRmbexkxvMa09M40dr4cTs+OxcOGHq6ZFNIWbblxe1wINyOsZ3+SsgAZr/I+K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1d1y1La; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F513C4CEC7;
-	Tue,  8 Oct 2024 12:15:13 +0000 (UTC)
+	 MIME-Version; b=gtXy4cW7U8Lq+tUEC9cxoVvQWfn1HcQfHMydgUlcZsELlgXHU/lSgSmhydHs8pBpSK1JSSQpeBVbrBvKB7IjRjPGPF5ot3aGb83OOm5fcNBgTKQ/9JCMauPSBsAaiYlicAbUkB7716IMcUoIfw6Y98IkeQV/UnjADZoqG1/B+eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWEmMeG4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3415AC4CECD;
+	Tue,  8 Oct 2024 12:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389713;
-	bh=qPWUANz9h+JMnckvKzA7K3FJmYzYxWJKUi+i3MbMS0Y=;
+	s=korg; t=1728391517;
+	bh=OT7c79mdBNPrPQCO08MxxG5HH4GuOXV6lAdL/tDvi50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1d1y1LaHruZeC56dP4LfPRQFw0lHdIcc2B6Y3AJRh2rKBmhvosqpUiOB+lPYRRsM
-	 V/qhoAQ1jlYaS3/PKBs0nCo5sv6SCkSGTWQhQQCXuMC8jgsAysMVxvoEyJa8u8MyTq
-	 hrmWBIBC4Y6zjszUPeMeNnMFmZdmidIwIYhapvPw=
+	b=EWEmMeG40l4kiaHqR6i+TVDkV7SznQ4EsqAUA4b9kXI8zmxaSiIrPSAvH5gEdJBiz
+	 yXqUBDriAqGmnaVlGBOHxZ8TxMRslcMTwj071dnud7PhAtyxglQxuhihyZf4p3jV4C
+	 v1XZuer2fBYVTqu14Pp9PbO/C9uya9rJDhjHLN5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangrui Song <maskray@google.com>,
-	Jan Beulich <jbeulich@suse.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 074/482] crypto: x86/sha256 - Add parentheses around macros single arguments
+Subject: [PATCH 6.11 107/558] net: sched: consistently use rcu_replace_pointer() in taprio_change()
 Date: Tue,  8 Oct 2024 14:02:17 +0200
-Message-ID: <20241008115651.218337564@linuxfoundation.org>
+Message-ID: <20241008115706.579246599@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangrui Song <maskray@google.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 3363c460ef726ba693704dbcd73b7e7214ccc788 ]
+[ Upstream commit d5c4546062fd6f5dbce575c7ea52ad66d1968678 ]
 
-The macros FOUR_ROUNDS_AND_SCHED and DO_4ROUNDS rely on an
-unexpected/undocumented behavior of the GNU assembler, which might
-change in the future
-(https://sourceware.org/bugzilla/show_bug.cgi?id=32073).
+According to Vinicius (and carefully looking through the whole
+https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+once again), txtime branch of 'taprio_change()' is not going to
+race against 'advance_sched()'. But using 'rcu_replace_pointer()'
+in the former may be a good idea as well.
 
-    M (1) (2) // 1 arg !? Future: 2 args
-    M 1 + 2   // 1 arg !? Future: 3 args
-
-    M 1 2     // 2 args
-
-Add parentheses around the single arguments to support future GNU
-assembler and LLVM integrated assembler (when the IsOperator hack from
-the following link is dropped).
-
-Link: https://github.com/llvm/llvm-project/commit/055006475e22014b28a070db1bff41ca15f322f0
-Signed-off-by: Fangrui Song <maskray@google.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha256-avx2-asm.S | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/sched/sch_taprio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
-index 0ffb072be9561..0bbec1c75cd0b 100644
---- a/arch/x86/crypto/sha256-avx2-asm.S
-+++ b/arch/x86/crypto/sha256-avx2-asm.S
-@@ -592,22 +592,22 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
- 	leaq	K256+0*32(%rip), INP		## reuse INP as scratch reg
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 0*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 0*32)
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index cc2df9f8c14a6..8498d0606b248 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1952,7 +1952,9 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 			goto unlock;
+ 		}
  
- 	leaq	K256+1*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 1*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 1*32)
- 
- 	leaq	K256+2*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 2*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 2*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 2*32)
- 
- 	leaq	K256+3*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 3*32+_XFER(%rsp, SRND)
--	FOUR_ROUNDS_AND_SCHED	_XFER + 3*32
-+	FOUR_ROUNDS_AND_SCHED	(_XFER + 3*32)
- 
- 	add	$4*32, SRND
- 	cmp	$3*4*32, SRND
-@@ -618,12 +618,12 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
- 	leaq	K256+0*32(%rip), INP
- 	vpaddd	(INP, SRND), X0, XFER
- 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
--	DO_4ROUNDS	_XFER + 0*32
-+	DO_4ROUNDS	(_XFER + 0*32)
- 
- 	leaq	K256+1*32(%rip), INP
- 	vpaddd	(INP, SRND), X1, XFER
- 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
--	DO_4ROUNDS	_XFER + 1*32
-+	DO_4ROUNDS	(_XFER + 1*32)
- 	add	$2*32, SRND
- 
- 	vmovdqa	X2, X0
-@@ -651,8 +651,8 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
- 	xor	SRND, SRND
- .align 16
- .Lloop3:
--	DO_4ROUNDS	 _XFER + 0*32 + 16
--	DO_4ROUNDS	 _XFER + 1*32 + 16
-+	DO_4ROUNDS	(_XFER + 0*32 + 16)
-+	DO_4ROUNDS	(_XFER + 1*32 + 16)
- 	add	$2*32, SRND
- 	cmp	$4*4*32, SRND
- 	jb	.Lloop3
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		/* Not going to race against advance_sched(), but still */
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 	} else {
 -- 
 2.43.0
 
