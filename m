@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-81986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54720994A7C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB24994D59
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3AE81F23358
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F71B2BD77
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD421DEFC9;
-	Tue,  8 Oct 2024 12:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CFE1DE8AA;
+	Tue,  8 Oct 2024 12:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A44f/Go6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2Pwacgn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6561DE2CF;
-	Tue,  8 Oct 2024 12:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70D0189910;
+	Tue,  8 Oct 2024 12:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390799; cv=none; b=dmflDmwZoMYzSlGMS+WTmrG5+cqkUXDw7CPFhe+ypu9StIozOdSZq64eV6CLzMqyX+kz8ThVslqlZGwQ+La9FHbctO+V5AYlsQIjxX7phJ9pmq6UrVcyKovE1HZmwWKCZ1c8LV5QubbfO+dow7M7Q6RPGiF5PtJhjSEj3c/77Kk=
+	t=1728392383; cv=none; b=u5mawIC+9UptY2ttREMQPTYL7qBgvDIu8EW0+vYddhiPpIvufT10OjLEzQceODgzABnyJCgais/WtcBC1uGGWyh+FulPiZFmlqjGxf1jXjzOkvNQeVI01cD3afDR5TraGOwkYRFAllPd+Y76ZbKVAiUS58+Ie31qhLwM/UN/EeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390799; c=relaxed/simple;
-	bh=R4ehnuvZNoDtCDP7PEtVDXF9mPANOXBu3J8orJJgJ1A=;
+	s=arc-20240116; t=1728392383; c=relaxed/simple;
+	bh=YsLlpCnLZ4WjKfSh24XEgYtwZHqPtz4HbRIO2dFWn8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVcSJ7fbS6i14fQidwEO+0bwtTazi8Wr+b45o0V3hpnxEbo5/AkwiVfpn8TUPk8mIgbmgxmJ1T/FZdYF0wRwIhEoGZefCd0JAGLOuVq+RmojdUqigl82CoeQjj6tyND45PHb5Nb1fiQrEhFH9SXi8kidxqJjvj+j8RnhdbZOz5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A44f/Go6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70533C4CEC7;
-	Tue,  8 Oct 2024 12:33:18 +0000 (UTC)
+	 MIME-Version; b=GuI2gP+TtNkFTEQdPm2Yj58E8puuLBrVcuWlnK6JiAnL4G2TWx3dNBg+UWrf0uOfb2/21VJ5JKdUyjx8g3udY/aaEcI5MZamIYGfj4uFUhrf4AGehQszgrEgP0KJrADiTw49SFYrmk6iaVdazoqlpfEu7Y2bSpHK/we1WSpMWmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2Pwacgn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362E7C4CEC7;
+	Tue,  8 Oct 2024 12:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390798;
-	bh=R4ehnuvZNoDtCDP7PEtVDXF9mPANOXBu3J8orJJgJ1A=;
+	s=korg; t=1728392383;
+	bh=YsLlpCnLZ4WjKfSh24XEgYtwZHqPtz4HbRIO2dFWn8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A44f/Go63M2lUNs/5zqT7yKU86j0ZRHGymTUj5oBTXAAsg95zROZ94uy2YsBevxPw
-	 gbghp1rqXuXihd/8t7nMzBNtuZkmHMgrMMpuvbp+s5ETG6+swQKl8Xc+OctBVXDCY9
-	 p451pB4XFBaceOL7fZbe9dTtRg185+2qENeMJ7qA=
+	b=d2Pwacgngljzmv9vvHBneViSsWOnN1flN/b1AnE2T7RZsDBgnsSju1m8Fcq5mh95t
+	 lxQUzPub0MVTqPwwkdYYc+blh9uhjwpQTPmvqEF5MOwyhAMmMUWE9ImnKcan6VkU57
+	 ujTjCRFKCeD5F9lKUKuit2Jlt5zFgZQkZmU+rwYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>
-Subject: [PATCH 6.10 365/482] sched/core: Add clearing of ->dl_server in put_prev_task_balance()
-Date: Tue,  8 Oct 2024 14:07:08 +0200
-Message-ID: <20241008115702.786460051@linuxfoundation.org>
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.11 399/558] drm/xe: Generate oob before compiling anything
+Date: Tue,  8 Oct 2024 14:07:09 +0200
+Message-ID: <20241008115717.980993978@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit c245910049d04fbfa85bb2f5acd591c24e9907c7 upstream.
+commit ea74bf9ccba9ae80fc0766c07c4abaef927e9e63 upstream.
 
-Paths using put_prev_task_balance() need to do a pick shortly
-after. Make sure they also clear the ->dl_server on prev as a
-part of that.
+Instead of keep adding more dependencies as WAs are needed in different
+places of the driver, just add a rule with all the objects so the code
+generation happens before anything else.
 
-Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
-Signed-off-by: "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/d184d554434bedbad0581cb34656582d78655150.1716811044.git.bristot@kernel.org
+While at it, group lines related to wa_oob in the Makefile.
+
+v2: Prefix $(obj) when declaring dependency
+
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708213041.1734028-1-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/Makefile |   24 ++++--------------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6005,6 +6005,14 @@ static void put_prev_task_balance(struct
- #endif
+--- a/drivers/gpu/drm/xe/Makefile
++++ b/drivers/gpu/drm/xe/Makefile
+@@ -12,34 +12,15 @@ subdir-ccflags-$(CONFIG_DRM_XE_WERROR) +
+ subdir-ccflags-y += -I$(obj) -I$(src)
  
- 	put_prev_task(rq, prev);
-+
-+	/*
-+	 * We've updated @prev and no longer need the server link, clear it.
-+	 * Must be done before ->pick_next_task() because that can (re)set
-+	 * ->dl_server.
-+	 */
-+	if (prev->dl_server)
-+		prev->dl_server = NULL;
- }
+ # generated sources
+-hostprogs := xe_gen_wa_oob
  
- /*
-@@ -6048,14 +6056,6 @@ __pick_next_task(struct rq *rq, struct t
- restart:
- 	put_prev_task_balance(rq, prev, rf);
- 
--	/*
--	 * We've updated @prev and no longer need the server link, clear it.
--	 * Must be done before ->pick_next_task() because that can (re)set
--	 * ->dl_server.
--	 */
--	if (prev->dl_server)
--		prev->dl_server = NULL;
++hostprogs := xe_gen_wa_oob
+ generated_oob := $(obj)/generated/xe_wa_oob.c $(obj)/generated/xe_wa_oob.h
 -
- 	for_each_class(class) {
- 		p = class->pick_next_task(rq);
- 		if (p)
+ quiet_cmd_wa_oob = GEN     $(notdir $(generated_oob))
+       cmd_wa_oob = mkdir -p $(@D); $^ $(generated_oob)
+-
+ $(obj)/generated/%_wa_oob.c $(obj)/generated/%_wa_oob.h: $(obj)/xe_gen_wa_oob \
+ 		 $(src)/xe_wa_oob.rules
+ 	$(call cmd,wa_oob)
+ 
+-uses_generated_oob := \
+-	$(obj)/xe_ggtt.o \
+-	$(obj)/xe_device.o \
+-	$(obj)/xe_gsc.o \
+-	$(obj)/xe_gt.o \
+-	$(obj)/xe_guc.o \
+-	$(obj)/xe_guc_ads.o \
+-	$(obj)/xe_guc_pc.o \
+-	$(obj)/xe_migrate.o \
+-	$(obj)/xe_pat.o \
+-	$(obj)/xe_ring_ops.o \
+-	$(obj)/xe_vm.o \
+-	$(obj)/xe_wa.o \
+-	$(obj)/xe_ttm_stolen_mgr.o
+-
+-$(uses_generated_oob): $(generated_oob)
+-
+ # Please keep these build lists sorted!
+ 
+ # core driver code
+@@ -322,3 +303,6 @@ quiet_cmd_hdrtest = HDRTEST $(patsubst %
+ 
+ $(obj)/%.hdrtest: $(src)/%.h FORCE
+ 	$(call if_changed_dep,hdrtest)
++
++uses_generated_oob := $(addprefix $(obj)/, $(xe-y))
++$(uses_generated_oob): $(obj)/generated/xe_wa_oob.h
 
 
 
