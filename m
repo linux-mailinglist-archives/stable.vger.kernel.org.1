@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-82860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9301994ED3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6ED994AA8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154EA1C255AF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9C211F2116C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8549D1DF243;
-	Tue,  8 Oct 2024 13:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE891B81CC;
+	Tue,  8 Oct 2024 12:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsBE1c6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6j/15NP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F671DF272;
-	Tue,  8 Oct 2024 13:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D832190663;
+	Tue,  8 Oct 2024 12:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393670; cv=none; b=BswPsh/duWDoAKl3crFZ8iP/xfv6iYfSaSSBtogbpjB05/6MaHIlAMYuHu8LFkSzDcEA0qMRGOvP8rhsAII9YN0O0S0C9ykHyLfo8KuByHgBQN90ZLuUNgCniEnGYy0csTeialEcKi83NOIY/3g47LKo73nrzjEuYwBfYeSBM3Y=
+	t=1728390918; cv=none; b=LUj5JHMN7BacO48xk+lWWbLEqPzUqkaHwWaHCa9KytXyfagVHTfEj5uBrYF6l1pf+3FdWPHAt34qk9kiDOeOPNp2kyeWnWaM/UGAPw5/weCeSMBJ1egusVav0csqHegxQLyDhH9DpshJNY5jdiGsdMa8e041a58ETrwmF5VJYjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393670; c=relaxed/simple;
-	bh=dlWOYLuZ1nNlrUmq8nhz4UuNAZtPazbpxI/6neD3VPU=;
+	s=arc-20240116; t=1728390918; c=relaxed/simple;
+	bh=Fuw844+Qb7EUaV1QCjj9aLrOMzboOlm73EEkV6DbOPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NoLrOGB0i5GrauafTL7bfcNvWoqDcmaBRpBg+v3o2sD3CEb4ECUkI8v4KjIhf0wGqfbu2jScp6NuUA8/DwFC+FxGaaCRz/eRhVXml8xiyl/e8wOOa8HvQOYm72Ohyo5gEgpoPvzJU5g+9I5+d87F1m7S3LtBy0JO52f32l5k/aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsBE1c6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D09C4CEC7;
-	Tue,  8 Oct 2024 13:21:09 +0000 (UTC)
+	 MIME-Version; b=if+uy2ShwqXu/syMXe3a5BDhPFzSPWKoZvvVSQjZne70+JyD8VfWMAqDOa5nkiQuZnjn4Wt8POcMh1a6WsbfMBe/1fPswLwGZ5gQVg/MCaiXCSSOVCURkoNottzQc6aCn6DqQGATJv83zBK7OHhT7n1NZdIclHXNFpyDekIwfSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6j/15NP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74810C4CEC7;
+	Tue,  8 Oct 2024 12:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393669;
-	bh=dlWOYLuZ1nNlrUmq8nhz4UuNAZtPazbpxI/6neD3VPU=;
+	s=korg; t=1728390917;
+	bh=Fuw844+Qb7EUaV1QCjj9aLrOMzboOlm73EEkV6DbOPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsBE1c6lvTN4Eo3uFXf52WzDizpOamAvMk4nqWCS3CXUlPifTVTG6k+iBWKIpAGfP
-	 4OShiQ6t9+2f7nU9vsGk59rW0YWb0imsOOzfdHa9cbm31x7hZ+0NJm0Wn8T4qgJgrm
-	 +rddzKWzsyi8AqixE99Fe4X/lkUg9lc5rACgjIQY=
+	b=y6j/15NPKFWDg65EkAuOSWE8FISmlZqJFLX3JKRImGkvTqZs4gscDx18QQ5/n+u6t
+	 Doru7TZ1S471GmVS63r7KHjlxO9ctBzKw3MZPiOub0Wq8/FuF1x1akmHIqIB2ebElU
+	 uXQqzt4ihjcbLVmtFayIjrtAeTpJ980cWDniD2Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 6.6 219/386] power: supply: hwmon: Fix missing temp1_max_alarm attribute
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.10 401/482] smb3: fix incorrect mode displayed for read-only files
 Date: Tue,  8 Oct 2024 14:07:44 +0200
-Message-ID: <20241008115638.025674764@linuxfoundation.org>
+Message-ID: <20241008115704.189550706@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit e50a57d16f897e45de1112eb6478577b197fab52 upstream.
+commit 2f3017e7cc7515e0110a3733d8dca84de2a1d23d upstream.
 
-Temp channel 0 aka temp1 can have a temp1_max_alarm attribute for
-power_supply devices which have a POWER_SUPPLY_PROP_TEMP_ALERT_MAX
-property.
+Commands like "chmod 0444" mark a file readonly via the attribute flag
+(when mapping of mode bits into the ACL are not set, or POSIX extensions
+are not negotiated), but they were not reported correctly for stat of
+directories (they were reported ok for files and for "ls").  See example
+below:
 
-HWMON_T_MAX_ALARM was missing from power_supply_hwmon_info for
-temp channel 0, causing the hwmon temp1_max_alarm attribute to be
-missing from such power_supply devices.
+    root:~# ls /mnt2 -l
+    total 12
+    drwxr-xr-x 2 root root         0 Sep 21 18:03 normaldir
+    -rwxr-xr-x 1 root root         0 Sep 21 23:24 normalfile
+    dr-xr-xr-x 2 root root         0 Sep 21 17:55 readonly-dir
+    -r-xr-xr-x 1 root root 209716224 Sep 21 18:15 readonly-file
+    root:~# stat -c %a /mnt2/readonly-dir
+    755
+    root:~# stat -c %a /mnt2/readonly-file
+    555
 
-Add this to power_supply_hwmon_info to fix this.
+This fixes the stat of directories when ATTR_READONLY is set
+(in cases where the mode can not be obtained other ways).
 
-Fixes: f1d33ae806ec ("power: supply: remove duplicated argument in power_supply_hwmon_info")
+    root:~# stat -c %a /mnt2/readonly-dir
+    555
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240908185337.103696-2-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/power_supply_hwmon.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/inode.c |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/drivers/power/supply/power_supply_hwmon.c
-+++ b/drivers/power/supply/power_supply_hwmon.c
-@@ -299,7 +299,8 @@ static const struct hwmon_channel_info *
- 			   HWMON_T_INPUT     |
- 			   HWMON_T_MAX       |
- 			   HWMON_T_MIN       |
--			   HWMON_T_MIN_ALARM,
-+			   HWMON_T_MIN_ALARM |
-+			   HWMON_T_MAX_ALARM,
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -800,10 +800,6 @@ static void cifs_open_info_to_fattr(stru
+ 		fattr->cf_mode = S_IFREG | cifs_sb->ctx->file_mode;
+ 		fattr->cf_dtype = DT_REG;
  
- 			   HWMON_T_LABEL     |
- 			   HWMON_T_INPUT     |
+-		/* clear write bits if ATTR_READONLY is set */
+-		if (fattr->cf_cifsattrs & ATTR_READONLY)
+-			fattr->cf_mode &= ~(S_IWUGO);
+-
+ 		/*
+ 		 * Don't accept zero nlink from non-unix servers unless
+ 		 * delete is pending.  Instead mark it as unknown.
+@@ -816,6 +812,10 @@ static void cifs_open_info_to_fattr(stru
+ 		}
+ 	}
+ 
++	/* clear write bits if ATTR_READONLY is set */
++	if (fattr->cf_cifsattrs & ATTR_READONLY)
++		fattr->cf_mode &= ~(S_IWUGO);
++
+ out_reparse:
+ 	if (S_ISLNK(fattr->cf_mode)) {
+ 		if (likely(data->symlink_target))
+@@ -1233,11 +1233,14 @@ handle_mnt_opt:
+ 				 __func__, rc);
+ 			goto out;
+ 		}
+-	}
+-
+-	/* fill in remaining high mode bits e.g. SUID, VTX */
+-	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
++	} else if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
++		/* fill in remaining high mode bits e.g. SUID, VTX */
+ 		cifs_sfu_mode(fattr, full_path, cifs_sb, xid);
++	else if (!(tcon->posix_extensions))
++		/* clear write bits if ATTR_READONLY is set */
++		if (fattr->cf_cifsattrs & ATTR_READONLY)
++			fattr->cf_mode &= ~(S_IWUGO);
++
+ 
+ 	/* check for Minshall+French symlinks */
+ 	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MF_SYMLINKS) {
 
 
 
