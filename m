@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1307F99490D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBCA994BFE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A870B26F9A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A22F31C23F58
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9011DACBE;
-	Tue,  8 Oct 2024 12:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1063F1DE2A5;
+	Tue,  8 Oct 2024 12:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRdVMoaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6p3ap98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B1B33981;
-	Tue,  8 Oct 2024 12:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B921C2420;
+	Tue,  8 Oct 2024 12:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389948; cv=none; b=EO+vlZIq4lDsOoVi4nZy837BIDgQ/pDtNjM/x8LACigrlqpUwMwRtW8NSA1Tv9/iUC08QLuAlxOoqPzDdlEHpS22gIlFFZT7FgfGREy98fiUZWyNCEyRepklDOwJd2WOGYVkX44PnD2mdSEzOG+PQQcoQ+FBJCFdUb8jKd/6mp8=
+	t=1728391747; cv=none; b=oxdNG2SfIQl99iFclXFPiKVY6BTW7psplLkxEJ4sa+F7lFKO6KHAhnq8PsQombiCYCTMgaIVWslaGGmmfKdB9nAFk++lv+vBI6pJm65UhH+55h94pxkeyPunkXco0DAnXUGDx515c46hEmA6MNRWS08TIGg1BC5KDAMgYsDFD48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389948; c=relaxed/simple;
-	bh=mLJihGDp68w2H/IQlVkx0Mf4Y2Tbpdw1iCNjH5WaIxw=;
+	s=arc-20240116; t=1728391747; c=relaxed/simple;
+	bh=2dLDO4ja0YOBFSmyYhxWBpRtCQFD5BPAWfTy0CmJ7ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBrkmvkXOfSyqdRK7uR+5iVIhQP8JOvCktvvQQ4gRRXGhbuNxWByXIm5G2P6OELpv1PUOcpmGaWOTjnExibvNxa+ifPqyaVcXloqzARL/wpHtO8Qi9IXGcfAwpqYAyyUPDYy5cpiYfB392GapRNtbt8vZkDiXmN9znBpAQ37U68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRdVMoaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EA9C4CEC7;
-	Tue,  8 Oct 2024 12:19:07 +0000 (UTC)
+	 MIME-Version; b=T0Izn9SplwzmBiWTdpdkl5XUaxoopLJNlu1ahIfM5Gt1QwOSA5RrlMz0bDQZHHW8qKAp5a3kAFG8oggO2X3tGETOX4hOJ6GsOHRO995Jq031h2oUfYc976YhWevZAWv0li/F04p0zkqponegMwnCrYWDlsFbO7qDCB5zGjAux5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6p3ap98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E0DC4CEC7;
+	Tue,  8 Oct 2024 12:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389948;
-	bh=mLJihGDp68w2H/IQlVkx0Mf4Y2Tbpdw1iCNjH5WaIxw=;
+	s=korg; t=1728391747;
+	bh=2dLDO4ja0YOBFSmyYhxWBpRtCQFD5BPAWfTy0CmJ7ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yRdVMoaPsZCP/tQJAr50DqbjrVgD8gsj348nbhnpN7qoI4ffDXG3olPZhF8FZ5pcU
-	 gskIaSEW1y4DwcWjNx6tIrmlNkkAerAkPvcCkmpqmrenCsj14devJ+yHnrOXVi0Scs
-	 ls3WkEb7I8UN1p5ixnNQju6+y9zOKtfmOgU0Lqms=
+	b=O6p3ap9866Aexs8MZW0x12lKXMyCSGAuBrqxrfE1y2hvQbaueq3z8Dp6Pj7H3hA7I
+	 UnBSYgyddYxMszBkjFJzK7iVRg90b/ZO6U5fq1C1JS6+oni4GXmYSd6gaQXm0UK8Gm
+	 UejUXoS2iVA7arsUK2VJH8zen5tzqowQc3yWBZYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyan Nyan <cyan.vtb@gmail.com>,
-	Asahi Lina <lina@asahilina.net>,
-	Takashi Iwai <tiwai@suse.de>,
+	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 144/482] ALSA: usb-audio: Add quirk for RME Digiface USB
-Date: Tue,  8 Oct 2024 14:03:27 +0200
-Message-ID: <20241008115653.974549658@linuxfoundation.org>
+Subject: [PATCH 6.11 178/558] x86/pkeys: Add PKRU as a parameter in signal handling functions
+Date: Tue,  8 Oct 2024 14:03:28 +0200
+Message-ID: <20241008115709.359047056@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,301 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyan Nyan <cyan.vtb@gmail.com>
+From: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
 
-[ Upstream commit c032044e9672408c534d64a6df2b1ba14449e948 ]
+[ Upstream commit 24cf2bc982ffe02aeffb4a3885c71751a2c7023b ]
 
-Add trivial support for audio streaming on the RME Digiface USB. Binds
-only to the first interface to allow userspace to directly drive the
-complex I/O and matrix mixer controls.
+Assume there's a multithreaded application that runs untrusted user
+code. Each thread has its stack/code protected by a non-zero PKEY, and the
+PKRU register is set up such that only that particular non-zero PKEY is
+enabled. Each thread also sets up an alternate signal stack to handle
+signals, which is protected by PKEY zero. The PKEYs man page documents that
+the PKRU will be reset to init_pkru when the signal handler is invoked,
+which means that PKEY zero access will be enabled.  But this reset happens
+after the kernel attempts to push fpu state to the alternate stack, which
+is not (yet) accessible by the kernel, which leads to a new SIGSEGV being
+sent to the application, terminating it.
 
-Signed-off-by: Cyan Nyan <cyan.vtb@gmail.com>
-[Lina: Added 2x/4x sample rate support & boot/format quirks]
-Co-developed-by: Asahi Lina <lina@asahilina.net>
-Signed-off-by: Asahi Lina <lina@asahilina.net>
-Link: https://patch.msgid.link/20240903-rme-digiface-v2-1-71b06c912e97@asahilina.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Enabling both the non-zero PKEY (for the thread) and PKEY zero in
+userspace will not work for this use case. It cannot have the alt stack
+writeable by all - the rationale here is that the code running in that
+thread (using a non-zero PKEY) is untrusted and should not have access
+to the alternate signal stack (that uses PKEY zero), to prevent the
+return address of a function from being changed. The expectation is that
+kernel should be able to set up the alternate signal stack and deliver
+the signal to the application even if PKEY zero is explicitly disabled
+by the application. The signal handler accessibility should not be
+dictated by whatever PKRU value the thread sets up.
+
+The PKRU register is managed by XSAVE, which means the sigframe contents
+must match the register contents - which is not the case here. It's
+required that the signal frame contains the user-defined PKRU value (so
+that it is restored correctly from sigcontext) but the actual register must
+be reset to init_pkru so that the alt stack is accessible and the signal
+can be delivered to the application. It seems that the proper fix here
+would be to remove PKRU from the XSAVE framework and manage it separately,
+which is quite complicated. As a workaround, do this:
+
+        orig_pkru = rdpkru();
+        wrpkru(orig_pkru & init_pkru_value);
+        xsave_to_user_sigframe();
+        put_user(pkru_sigframe_addr, orig_pkru)
+
+In preparation for writing PKRU to sigframe, pass PKRU as an additional
+parameter down the call chain from get_sigframe().
+
+No functional change.
+
+Signed-off-by: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240802061318.2140081-2-aruna.ramakrishna@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 171 ++++++++++++++++++++++++++++++++++++++-
- sound/usb/quirks.c       |  58 +++++++++++++
- 2 files changed, 228 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/fpu/signal.h | 2 +-
+ arch/x86/kernel/fpu/signal.c      | 6 +++---
+ arch/x86/kernel/signal.c          | 3 ++-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 8d22de8bc2a96..631b9ab80f6cd 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -3604,6 +3604,175 @@ YAMAHA_DEVICE(0x7010, "UB99"),
- 		}
- 	}
- },
--
-+{
-+	/* Only claim interface 0 */
-+	.match_flags = USB_DEVICE_ID_MATCH_VENDOR |
-+		       USB_DEVICE_ID_MATCH_PRODUCT |
-+		       USB_DEVICE_ID_MATCH_INT_CLASS |
-+		       USB_DEVICE_ID_MATCH_INT_NUMBER,
-+	.idVendor = 0x2a39,
-+	.idProduct = 0x3f8c,
-+	.bInterfaceClass = USB_CLASS_VENDOR_SPEC,
-+	.bInterfaceNumber = 0,
-+	QUIRK_DRIVER_INFO {
-+		QUIRK_DATA_COMPOSITE {
-+			/*
-+			 * Three modes depending on sample rate band,
-+			 * with different channel counts for in/out
-+			 */
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 34, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_32000 |
-+						SNDRV_PCM_RATE_44100 |
-+						SNDRV_PCM_RATE_48000,
-+					.rate_min = 32000,
-+					.rate_max = 48000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						32000, 44100, 48000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 18, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_64000 |
-+						SNDRV_PCM_RATE_88200 |
-+						SNDRV_PCM_RATE_96000,
-+					.rate_min = 64000,
-+					.rate_max = 96000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						64000, 88200, 96000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 10, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_KNOT |
-+						SNDRV_PCM_RATE_176400 |
-+						SNDRV_PCM_RATE_192000,
-+					.rate_min = 128000,
-+					.rate_max = 192000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						128000, 176400, 192000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 32, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_32000 |
-+						SNDRV_PCM_RATE_44100 |
-+						SNDRV_PCM_RATE_48000,
-+					.rate_min = 32000,
-+					.rate_max = 48000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						32000, 44100, 48000,
-+					}
-+				}
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 16, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_64000 |
-+						SNDRV_PCM_RATE_88200 |
-+						SNDRV_PCM_RATE_96000,
-+					.rate_min = 64000,
-+					.rate_max = 96000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						64000, 88200, 96000,
-+					}
-+				}
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 8, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_KNOT |
-+						SNDRV_PCM_RATE_176400 |
-+						SNDRV_PCM_RATE_192000,
-+					.rate_min = 128000,
-+					.rate_max = 192000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						128000, 176400, 192000,
-+					}
-+				}
-+			},
-+			QUIRK_COMPOSITE_END
-+		}
-+	}
-+},
- #undef USB_DEVICE_VENDOR_SPEC
- #undef USB_AUDIO_DEVICE
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index e7b68c67852e9..73da862a012c6 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1389,6 +1389,27 @@ static int snd_usb_motu_m_series_boot_quirk(struct usb_device *dev)
- 	return 0;
+diff --git a/arch/x86/include/asm/fpu/signal.h b/arch/x86/include/asm/fpu/signal.h
+index 611fa41711aff..eccc75bc9c4f3 100644
+--- a/arch/x86/include/asm/fpu/signal.h
++++ b/arch/x86/include/asm/fpu/signal.h
+@@ -29,7 +29,7 @@ fpu__alloc_mathframe(unsigned long sp, int ia32_frame,
+ 
+ unsigned long fpu__get_fpstate_size(void);
+ 
+-extern bool copy_fpstate_to_sigframe(void __user *buf, void __user *fp, int size);
++extern bool copy_fpstate_to_sigframe(void __user *buf, void __user *fp, int size, u32 pkru);
+ extern void fpu__clear_user_states(struct fpu *fpu);
+ extern bool fpu__restore_sig(void __user *buf, int ia32_frame);
+ 
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 247f2225aa9f3..2b3b9e140dd41 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -156,7 +156,7 @@ static inline bool save_xstate_epilog(void __user *buf, int ia32_frame,
+ 	return !err;
  }
  
-+static int snd_usb_rme_digiface_boot_quirk(struct usb_device *dev)
-+{
-+	/* Disable mixer, internal clock, all outputs ADAT, 48kHz, TMS off */
-+	snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+			16, 0x40, 0x2410, 0x7fff, NULL, 0);
-+	snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+			18, 0x40, 0x0104, 0xffff, NULL, 0);
-+
-+	/* Disable loopback for all inputs */
-+	for (int ch = 0; ch < 32; ch++)
-+		snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+				22, 0x40, 0x400, ch, NULL, 0);
-+
-+	/* Unity gain for all outputs */
-+	for (int ch = 0; ch < 34; ch++)
-+		snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+				21, 0x40, 0x9000, 0x100 + ch, NULL, 0);
-+
-+	return 0;
-+}
-+
- /*
-  * Setup quirks
-  */
-@@ -1616,6 +1637,8 @@ int snd_usb_apply_boot_quirk(struct usb_device *dev,
- 		    get_iface_desc(intf->altsetting)->bInterfaceNumber < 3)
- 			return snd_usb_motu_microbookii_boot_quirk(dev);
- 		break;
-+	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+		return snd_usb_rme_digiface_boot_quirk(dev);
- 	}
- 
- 	return 0;
-@@ -1771,6 +1794,38 @@ static void mbox3_set_format_quirk(struct snd_usb_substream *subs,
- 		dev_warn(&subs->dev->dev, "MBOX3: Couldn't set the sample rate");
- }
- 
-+static const int rme_digiface_rate_table[] = {
-+	32000, 44100, 48000, 0,
-+	64000, 88200, 96000, 0,
-+	128000, 176400, 192000, 0,
-+};
-+
-+static int rme_digiface_set_format_quirk(struct snd_usb_substream *subs)
-+{
-+	unsigned int cur_rate = subs->data_endpoint->cur_rate;
-+	u16 val;
-+	int speed_mode;
-+	int id;
-+
-+	for (id = 0; id < ARRAY_SIZE(rme_digiface_rate_table); id++) {
-+		if (rme_digiface_rate_table[id] == cur_rate)
-+			break;
-+	}
-+
-+	if (id >= ARRAY_SIZE(rme_digiface_rate_table))
-+		return -EINVAL;
-+
-+	/* 2, 3, 4 for 1x, 2x, 4x */
-+	speed_mode = (id >> 2) + 2;
-+	val = (id << 3) | (speed_mode << 12);
-+
-+	/* Set the sample rate */
-+	snd_usb_ctl_msg(subs->stream->chip->dev,
-+		usb_sndctrlpipe(subs->stream->chip->dev, 0),
-+		16, 0x40, val, 0x7078, NULL, 0);
-+	return 0;
-+}
-+
- void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
- 			      const struct audioformat *fmt)
+-static inline int copy_fpregs_to_sigframe(struct xregs_state __user *buf)
++static inline int copy_fpregs_to_sigframe(struct xregs_state __user *buf, u32 pkru)
  {
-@@ -1795,6 +1850,9 @@ void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
- 	case USB_ID(0x0dba, 0x5000):
- 		mbox3_set_format_quirk(subs, fmt); /* Digidesign Mbox 3 */
- 		break;
-+	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+		rme_digiface_set_format_quirk(subs);
-+		break;
- 	}
- }
+ 	if (use_xsave())
+ 		return xsave_to_user_sigframe(buf);
+@@ -185,7 +185,7 @@ static inline int copy_fpregs_to_sigframe(struct xregs_state __user *buf)
+  * For [f]xsave state, update the SW reserved fields in the [f]xsave frame
+  * indicating the absence/presence of the extended state to the user.
+  */
+-bool copy_fpstate_to_sigframe(void __user *buf, void __user *buf_fx, int size)
++bool copy_fpstate_to_sigframe(void __user *buf, void __user *buf_fx, int size, u32 pkru)
+ {
+ 	struct task_struct *tsk = current;
+ 	struct fpstate *fpstate = tsk->thread.fpu.fpstate;
+@@ -228,7 +228,7 @@ bool copy_fpstate_to_sigframe(void __user *buf, void __user *buf_fx, int size)
+ 		fpregs_restore_userregs();
  
+ 	pagefault_disable();
+-	ret = copy_fpregs_to_sigframe(buf_fx);
++	ret = copy_fpregs_to_sigframe(buf_fx, pkru);
+ 	pagefault_enable();
+ 	fpregs_unlock();
+ 
+diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
+index 31b6f5dddfc27..1f1e8e0ac5a34 100644
+--- a/arch/x86/kernel/signal.c
++++ b/arch/x86/kernel/signal.c
+@@ -84,6 +84,7 @@ get_sigframe(struct ksignal *ksig, struct pt_regs *regs, size_t frame_size,
+ 	unsigned long math_size = 0;
+ 	unsigned long sp = regs->sp;
+ 	unsigned long buf_fx = 0;
++	u32 pkru = read_pkru();
+ 
+ 	/* redzone */
+ 	if (!ia32_frame)
+@@ -139,7 +140,7 @@ get_sigframe(struct ksignal *ksig, struct pt_regs *regs, size_t frame_size,
+ 	}
+ 
+ 	/* save i387 and extended state */
+-	if (!copy_fpstate_to_sigframe(*fpstate, (void __user *)buf_fx, math_size))
++	if (!copy_fpstate_to_sigframe(*fpstate, (void __user *)buf_fx, math_size, pkru))
+ 		return (void __user *)-1L;
+ 
+ 	return (void __user *)sp;
 -- 
 2.43.0
 
