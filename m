@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53855994999
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C7A994C42
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07E681F26D45
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1229E1F22A74
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69911DED4D;
-	Tue,  8 Oct 2024 12:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13051DE8BE;
+	Tue,  8 Oct 2024 12:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2Qg9Rli"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBvjgYMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849251DD54F;
-	Tue,  8 Oct 2024 12:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1951DE898;
+	Tue,  8 Oct 2024 12:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390252; cv=none; b=GM0USWICgj3rN16YUZZoNYVah8DfvoEgublguZ0Ynt1wupqb/K577BgB9zAfHUAfbF1Q4GAPNdAZ5vq8B03dZiq9M7FSLoj5ozYRbOfRhk/74BnNukSwqxRsb4BYNhC5tEWYrs2nLNOREP6zEpRfFAAd3utbIx7qFzyEwfsl1Jc=
+	t=1728391947; cv=none; b=lXnKM6wDNX26IXs9xIj4R62LOzriIXoL7spc2hxM/J4+2Ap4eh12HQKjFGGAmM8vKLka1yHNkzbRCy8wCQrldSf/uuCXXgw8kEvwntzCe2BlxxnjpdP8tHh5UZujohIBQDkCL5Z7Fi7jDZnwhr9PvyPGG3SXDbN42T8cqjbc5yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390252; c=relaxed/simple;
-	bh=2A3waWSOUg94SEYwMuuII9392tJwkTW7H8Lq+pfq6rs=;
+	s=arc-20240116; t=1728391947; c=relaxed/simple;
+	bh=uVvxOWy4E/qDGgdhueR46nNI+WmESs+Qx/36yzW8dXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XR9wDmzIuKGGoc5fz+QohCbYpZkV+YpSAZYUbC34/KXNJvWsjpOFwfL3pYSJg8JE2NFeBvcwYcKqavuSan+4GXGx0VjuQ96PQqtApzGU0jlD7LqCIYXMcrnS+4+xMz+lH5Se8h9/n3RYos2fJC2jpPbqYgUnpzWY2N0aTvP5NoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2Qg9Rli; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7190C4CEC7;
-	Tue,  8 Oct 2024 12:24:11 +0000 (UTC)
+	 MIME-Version; b=aGAOxU1J3f/qpd/jc+Xndh5iM6IYBA5ftQ0NCUXe6zHQry+gepzip7jd8oieylr6mAseGU83n+eAy+t4umbT1sh79kzisUPi+tAJw4uiZ8YupQmw/KHlwJ9mwNEuY0pnfg3BIRR3ias9NHdC2DsPL5JyjHAhJe8zJlfZjg8AJ5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBvjgYMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2661C4CECC;
+	Tue,  8 Oct 2024 12:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390252;
-	bh=2A3waWSOUg94SEYwMuuII9392tJwkTW7H8Lq+pfq6rs=;
+	s=korg; t=1728391947;
+	bh=uVvxOWy4E/qDGgdhueR46nNI+WmESs+Qx/36yzW8dXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2Qg9RliA4vOpVKz+Dfn91HSC7gd0tf7ZoqvLYIFa3TNO5ImudRmrcbcQpyQ4owZV
-	 XOwyB2MmrxAEGKR/2Mbm4F6hiiH3S2IpyOH9c6yFJilmtU9klUZ93YazvM1eGdmYhA
-	 qa8w8BOvhyQp7G5CN8sAfpxYaeKH5VqoVzuAV0p8=
+	b=pBvjgYMuGd3+houu3eDDgS0uUyXqSbcwmMNNXCMB44DOerR5aY7XpeR32aTw3ppwH
+	 V/TCqi6ULV21xrP3hbbEkFLx0jWR1IM84ex22vJCYGRMiKuGBCRAICdc6SzaLYExX6
+	 afPGn5RMEa1xsKTGdtOC9eTfBwGGgmYAJF7MqGn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 236/482] drm/amdkfd: Check int source id for utcl2 poison event
+Subject: [PATCH 6.11 269/558] perf,x86: avoid missing caller address in stack traces captured in uprobe
 Date: Tue,  8 Oct 2024 14:04:59 +0200
-Message-ID: <20241008115657.586215281@linuxfoundation.org>
+Message-ID: <20241008115712.916873010@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hawking Zhang <Hawking.Zhang@amd.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit db6341a9168d2a24ded526277eeab29724d76e9d ]
+[ Upstream commit cfa7f3d2c526c224a6271cc78a4a27a0de06f4f0 ]
 
-Traditional utcl2 fault_status polling does not
-work in SRIOV environment. The polling of fault
-status register from guest side will be dropped
-by hardware.
+When tracing user functions with uprobe functionality, it's common to
+install the probe (e.g., a BPF program) at the first instruction of the
+function. This is often going to be `push %rbp` instruction in function
+preamble, which means that within that function frame pointer hasn't
+been established yet. This leads to consistently missing an actual
+caller of the traced function, because perf_callchain_user() only
+records current IP (capturing traced function) and then following frame
+pointer chain (which would be caller's frame, containing the address of
+caller's caller).
 
-Driver should switch to check utcl2 interrupt
-source id to identify utcl2 poison event. It is
-set to 1 when poisoned data interrupts are
-signaled.
+So when we have target_1 -> target_2 -> target_3 call chain and we are
+tracing an entry to target_3, captured stack trace will report
+target_1 -> target_3 call chain, which is wrong and confusing.
 
-v2: drop the unused local variable (Tao)
+This patch proposes a x86-64-specific heuristic to detect `push %rbp`
+(`push %ebp` on 32-bit architecture) instruction being traced. Given
+entire kernel implementation of user space stack trace capturing works
+under assumption that user space code was compiled with frame pointer
+register (%rbp/%ebp) preservation, it seems pretty reasonable to use
+this instruction as a strong indicator that this is the entry to the
+function. In that case, return address is still pointed to by %rsp/%esp,
+so we fetch it and add to stack trace before proceeding to unwind the
+rest using frame pointer-based logic.
 
-Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+We also check for `endbr64` (for 64-bit modes) as another common pattern
+for function entry, as suggested by Josh Poimboeuf. Even if we get this
+wrong sometimes for uprobes attached not at the function entry, it's OK
+because stack trace will still be overall meaningful, just with one
+extra bogus entry. If we don't detect this, we end up with guaranteed to
+be missing caller function entry in the stack trace, which is worse
+overall.
+
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240729175223.23914-1-andrii@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/amdkfd/kfd_int_process_v9.c    | 18 +-----------------
- drivers/gpu/drm/amd/amdkfd/soc15_int.h         |  1 +
- 2 files changed, 2 insertions(+), 17 deletions(-)
+ arch/x86/events/core.c  | 63 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/uprobes.h |  2 ++
+ kernel/events/uprobes.c |  2 ++
+ 3 files changed, 67 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-index 78dde62fb04ad..c282f5253c445 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-@@ -414,25 +414,9 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
- 		   client_id == SOC15_IH_CLIENTID_UTCL2) {
- 		struct kfd_vm_fault_info info = {0};
- 		uint16_t ring_id = SOC15_RING_ID_FROM_IH_ENTRY(ih_ring_entry);
--		uint32_t node_id = SOC15_NODEID_FROM_IH_ENTRY(ih_ring_entry);
--		uint32_t vmid_type = SOC15_VMID_TYPE_FROM_IH_ENTRY(ih_ring_entry);
--		int hub_inst = 0;
- 		struct kfd_hsa_memory_exception_data exception_data;
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index be01823b1bb45..65ab6460aed4d 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -41,6 +41,8 @@
+ #include <asm/desc.h>
+ #include <asm/ldt.h>
+ #include <asm/unwind.h>
++#include <asm/uprobes.h>
++#include <asm/ibt.h>
  
--		/* gfxhub */
--		if (!vmid_type && dev->adev->gfx.funcs->ih_node_to_logical_xcc) {
--			hub_inst = dev->adev->gfx.funcs->ih_node_to_logical_xcc(dev->adev,
--				node_id);
--			if (hub_inst < 0)
--				hub_inst = 0;
--		}
--
--		/* mmhub */
--		if (vmid_type && client_id == SOC15_IH_CLIENTID_VMC)
--			hub_inst = node_id / 4;
--
--		if (amdgpu_amdkfd_ras_query_utcl2_poison_status(dev->adev,
--					hub_inst, vmid_type)) {
-+		if (source_id == SOC15_INTSRC_VMC_UTCL2_POISON) {
- 			event_interrupt_poison_consumption_v9(dev, pasid, client_id);
- 			return;
- 		}
-diff --git a/drivers/gpu/drm/amd/amdkfd/soc15_int.h b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-index 10138676f27fd..e5c0205f26181 100644
---- a/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-+++ b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-@@ -29,6 +29,7 @@
- #define SOC15_INTSRC_CP_BAD_OPCODE	183
- #define SOC15_INTSRC_SQ_INTERRUPT_MSG	239
- #define SOC15_INTSRC_VMC_FAULT		0
-+#define SOC15_INTSRC_VMC_UTCL2_POISON	1
- #define SOC15_INTSRC_SDMA_TRAP		224
- #define SOC15_INTSRC_SDMA_ECC		220
- #define SOC21_INTSRC_SDMA_TRAP		49
+ #include "perf_event.h"
+ 
+@@ -2816,6 +2818,46 @@ static unsigned long get_segment_base(unsigned int segment)
+ 	return get_desc_base(desc);
+ }
+ 
++#ifdef CONFIG_UPROBES
++/*
++ * Heuristic-based check if uprobe is installed at the function entry.
++ *
++ * Under assumption of user code being compiled with frame pointers,
++ * `push %rbp/%ebp` is a good indicator that we indeed are.
++ *
++ * Similarly, `endbr64` (assuming 64-bit mode) is also a common pattern.
++ * If we get this wrong, captured stack trace might have one extra bogus
++ * entry, but the rest of stack trace will still be meaningful.
++ */
++static bool is_uprobe_at_func_entry(struct pt_regs *regs)
++{
++	struct arch_uprobe *auprobe;
++
++	if (!current->utask)
++		return false;
++
++	auprobe = current->utask->auprobe;
++	if (!auprobe)
++		return false;
++
++	/* push %rbp/%ebp */
++	if (auprobe->insn[0] == 0x55)
++		return true;
++
++	/* endbr64 (64-bit only) */
++	if (user_64bit_mode(regs) && is_endbr(*(u32 *)auprobe->insn))
++		return true;
++
++	return false;
++}
++
++#else
++static bool is_uprobe_at_func_entry(struct pt_regs *regs)
++{
++	return false;
++}
++#endif /* CONFIG_UPROBES */
++
+ #ifdef CONFIG_IA32_EMULATION
+ 
+ #include <linux/compat.h>
+@@ -2827,6 +2869,7 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
+ 	unsigned long ss_base, cs_base;
+ 	struct stack_frame_ia32 frame;
+ 	const struct stack_frame_ia32 __user *fp;
++	u32 ret_addr;
+ 
+ 	if (user_64bit_mode(regs))
+ 		return 0;
+@@ -2836,6 +2879,12 @@ perf_callchain_user32(struct pt_regs *regs, struct perf_callchain_entry_ctx *ent
+ 
+ 	fp = compat_ptr(ss_base + regs->bp);
+ 	pagefault_disable();
++
++	/* see perf_callchain_user() below for why we do this */
++	if (is_uprobe_at_func_entry(regs) &&
++	    !get_user(ret_addr, (const u32 __user *)regs->sp))
++		perf_callchain_store(entry, ret_addr);
++
+ 	while (entry->nr < entry->max_stack) {
+ 		if (!valid_user_frame(fp, sizeof(frame)))
+ 			break;
+@@ -2864,6 +2913,7 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
+ {
+ 	struct stack_frame frame;
+ 	const struct stack_frame __user *fp;
++	unsigned long ret_addr;
+ 
+ 	if (perf_guest_state()) {
+ 		/* TODO: We don't support guest os callchain now */
+@@ -2887,6 +2937,19 @@ perf_callchain_user(struct perf_callchain_entry_ctx *entry, struct pt_regs *regs
+ 		return;
+ 
+ 	pagefault_disable();
++
++	/*
++	 * If we are called from uprobe handler, and we are indeed at the very
++	 * entry to user function (which is normally a `push %rbp` instruction,
++	 * under assumption of application being compiled with frame pointers),
++	 * we should read return address from *regs->sp before proceeding
++	 * to follow frame pointers, otherwise we'll skip immediate caller
++	 * as %rbp is not yet setup.
++	 */
++	if (is_uprobe_at_func_entry(regs) &&
++	    !get_user(ret_addr, (const unsigned long __user *)regs->sp))
++		perf_callchain_store(entry, ret_addr);
++
+ 	while (entry->nr < entry->max_stack) {
+ 		if (!valid_user_frame(fp, sizeof(frame)))
+ 			break;
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index b503fafb7fb3e..a270a5892ab4f 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -76,6 +76,8 @@ struct uprobe_task {
+ 	struct uprobe			*active_uprobe;
+ 	unsigned long			xol_vaddr;
+ 
++	struct arch_uprobe              *auprobe;
++
+ 	struct return_instance		*return_instances;
+ 	unsigned int			depth;
+ };
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 50d7949be2b17..333c44f2ce55d 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -2081,6 +2081,7 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
+ 	bool need_prep = false; /* prepare return uprobe, when needed */
+ 
+ 	down_read(&uprobe->register_rwsem);
++	current->utask->auprobe = &uprobe->arch;
+ 	for (uc = uprobe->consumers; uc; uc = uc->next) {
+ 		int rc = 0;
+ 
+@@ -2095,6 +2096,7 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
+ 
+ 		remove &= rc;
+ 	}
++	current->utask->auprobe = NULL;
+ 
+ 	if (need_prep && !remove)
+ 		prepare_uretprobe(uprobe, regs); /* put bp at return */
 -- 
 2.43.0
 
