@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4DF994CFE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A929994EA6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35B23286D4C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF732834EC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5BE1DED4E;
-	Tue,  8 Oct 2024 12:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E65D1DEFCE;
+	Tue,  8 Oct 2024 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c55CbBMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="047F3gpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB3D189910;
-	Tue,  8 Oct 2024 12:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4721DE4CD;
+	Tue,  8 Oct 2024 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392397; cv=none; b=dk3TRBAoccyj+AVpJ6MKMQXxgmC3wliK11rR2u2Hz7GcZ6AeEwG3nopVcFDY7mLCdhRKtSXHGq8u8r1iXlNTMo/8GrQSj3O0Y4bxyqFx8TJde0NykOje0tNuurlqKqQ+bjvJCcR3PKjVK7ewzB5S9Lav9TyJemBJ6xUcy7mvA+w=
+	t=1728393565; cv=none; b=ekwwLJLOrG0ccRSPBTMHxjxCMlg778WznQvM+eC3sHzE4YmuxaSDdSQfs/pTWrSmPRL192kRuTJgdLCNxe0jTxQutQDAGJ4axXEkRK3O3CXT3mI6Bz6mSGUwsPCjwyEbd6NqhJyg8uzTGJSf+nUjlWdehFZonPiP2t8+a8n1lHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392397; c=relaxed/simple;
-	bh=f20q/1ItGkV2tGgE8XkqMvf3/GY0MyiW4ERGEX5EfpQ=;
+	s=arc-20240116; t=1728393565; c=relaxed/simple;
+	bh=914+aOZ4B8g+5sXHzfee8MlAoPHg/vAdN09lF4nfxnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/dAmExMlFmLrEgAvxnwvEZdGB2IYXZolaqJ2sK9HrCDahBqvQsLJycb8pLDg4x+5ZU0DPHi9S4GyAbxOnW3D5FvP1HTtI+18EjC+A6rkRkEFueXJzZTHQzX/8Lcro9mQ1FuZc8LHxYNWUwkKVEb5ub+Tf/a6x64zp5HuAyQ1Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c55CbBMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD55CC4CEC7;
-	Tue,  8 Oct 2024 12:59:56 +0000 (UTC)
+	 MIME-Version; b=sGWAtfXy3YueG0OXOUeua+vl3v5iBfKvS0alZ/JYmJ453cIXBhOy5Q9UPP/oI8p+qep5uErl7j/sQo015piTzViY7A1X0SUkA0OY9NYtdlYyZw6/8T9LmduAf8GDssBzmV0+CLggoCd76mLFVhziF7rnwhXKCfaVeMoxagdeGA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=047F3gpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44B7C4CEC7;
+	Tue,  8 Oct 2024 13:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392397;
-	bh=f20q/1ItGkV2tGgE8XkqMvf3/GY0MyiW4ERGEX5EfpQ=;
+	s=korg; t=1728393565;
+	bh=914+aOZ4B8g+5sXHzfee8MlAoPHg/vAdN09lF4nfxnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c55CbBMgP32pDOk/8kKmOWUa+nMEvm+F0VudYVT7rNNNwWrQEXiatCrSJCzN6dMJP
-	 jqNEts0+j6EjTvLZvGinwkLneU+O0IPnxgUSbswO2bWDvNbLEItxEPxzlWNZzU4zCC
-	 FNgvaJssB0mLpB+7aUKpinScVY+ZjwT9HVbTm5s0=
+	b=047F3gpqiao/W080Y/brScRZ+IlV4XZ/7rToMMf6/Rme+Hj2BpEON6bNt5kR99HhD
+	 hQtw/degUbNb/3oroVdkp0GxGHVj45HI6cJ77W3hK70AOtZDdEvOsdcvhbDowRdzIg
+	 Kf9ar9C5843BKQuEqBPXqAbVAB5gDStoTBGeWHCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.11 403/558] drm/rockchip: vop: clear DMA stop bit on RK3066
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 188/386] spi: spi-cadence: Fix pm_runtime_set_suspended() with runtime pm enabled
 Date: Tue,  8 Oct 2024 14:07:13 +0200
-Message-ID: <20241008115718.138088741@linuxfoundation.org>
+Message-ID: <20241008115636.809384185@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 6b44aa559d6c7f4ea591ef9d2352a7250138d62a upstream.
+[ Upstream commit 67d4a70faa662df07451e83db1546d3ca0695e08 ]
 
-The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
-and needs the driver to acknowledge that by clearing the bit.
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-Unless we clear it "between" frames, the RGB output only shows noise
-instead of the picture. atomic_flush is the place for it that least
-affects other code (doing it on vblank would require converting all
-other usages of the reg_lock to spin_(un)lock_irq, which would affect
-performance for everyone).
-
-This seems to be a redundant synchronization mechanism that was removed
-in later iterations of the VOP hardware block.
-
-Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Val Packett <val@packett.cool>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-2-val@packett.cool
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240923040015.3009329-3-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c |    4 ++++
- drivers/gpu/drm/rockchip/rockchip_drm_vop.h |    1 +
- drivers/gpu/drm/rockchip/rockchip_vop_reg.c |    1 +
- 3 files changed, 6 insertions(+)
+ drivers/spi/spi-cadence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -1583,6 +1583,10 @@ static void vop_crtc_atomic_flush(struct
- 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
- 	vop_cfg_done(vop);
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index e5140532071d2..316da99f798c8 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -665,8 +665,8 @@ static int cdns_spi_probe(struct platform_device *pdev)
  
-+	/* Ack the DMA transfer of the previous frame (RK3066). */
-+	if (VOP_HAS_REG(vop, common, dma_stop))
-+		VOP_REG_SET(vop, common, dma_stop, 0);
-+
- 	spin_unlock(&vop->reg_lock);
+ clk_dis_all:
+ 	if (!spi_controller_is_target(ctlr)) {
+-		pm_runtime_set_suspended(&pdev->dev);
+ 		pm_runtime_disable(&pdev->dev);
++		pm_runtime_set_suspended(&pdev->dev);
+ 	}
+ remove_ctlr:
+ 	spi_controller_put(ctlr);
+@@ -688,8 +688,8 @@ static void cdns_spi_remove(struct platform_device *pdev)
  
- 	/*
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-@@ -122,6 +122,7 @@ struct vop_common {
- 	struct vop_reg lut_buffer_index;
- 	struct vop_reg gate_en;
- 	struct vop_reg mmu_en;
-+	struct vop_reg dma_stop;
- 	struct vop_reg out_mode;
- 	struct vop_reg standby;
- };
---- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-@@ -466,6 +466,7 @@ static const struct vop_output rk3066_ou
- };
+ 	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
  
- static const struct vop_common rk3066_common = {
-+	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
- 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
- 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
- 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 
+ 	spi_unregister_controller(ctlr);
+ }
+-- 
+2.43.0
+
 
 
 
