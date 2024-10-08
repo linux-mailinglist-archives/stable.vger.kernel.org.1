@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-82802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69EA6994E85
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8427994CD9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE661C25191
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98D1E2869D1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115151DEFEA;
-	Tue,  8 Oct 2024 13:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1E31DF96E;
+	Tue,  8 Oct 2024 12:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irJthOYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0eUNB/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F3C1DEFCE;
-	Tue,  8 Oct 2024 13:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD561DE89D;
+	Tue,  8 Oct 2024 12:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393476; cv=none; b=kV8JkzwM2e7jDYNdmb8CBeZtEJuBKOKMh32dbGOsge3oQpFRtDNZZvLWyr0dhyIWCG0tYT4vJzLggE6g3iW1KhG6Syd78w11/qv3VYOBiBdIRjZthgQtvUC6xjHYmqSlcRZWzttZOx113fKZ3kXBiLH7JaYHOhupJSz1qCVFWmo=
+	t=1728392292; cv=none; b=p9piP+5N040MQAwOf/iJ3pmFaID/EI1i2TlycGy+SO8IAH/SAbu4beRzPxu2hF5MfVLK7R+Hr/2fuA6XAaQbBtuBuBdhLdtrvj1xhV03+KCpIrEtLEEIvbGV8yeV3JBn9q/vnYcSb+YGiafEYMRat2Zo86X4NfrgfHEatSRI2gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393476; c=relaxed/simple;
-	bh=BwW18ttrt2DrD++7UQhYNkwWfyAhvlNm4BEwXMmHic8=;
+	s=arc-20240116; t=1728392292; c=relaxed/simple;
+	bh=6lVGrxcUjZcOyMDe9MmGtWsyGRN06TU3Ii7/52lpRdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlJoHBvE4L0PKZfWhoXwWBhIOoQBK9+Lcsnv1UlyyZaS+TIjTmnkXqEc8efT5UO57miFh1arimQpPxBvIAHl0aqvdSAuzxyjr3uJTpvxdI4kSiYqO6zcfX/M8WlxTbfEBYhi/us5qOrKSChZ6sxs1JBFMthIo/8EkYH2sN8z0zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irJthOYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65DEC4CEC7;
-	Tue,  8 Oct 2024 13:17:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bp31YIgHXut+i4rrHpGg716BVuBXjMfDbbQPTGrx8YSRnV/8z4oGjwciZjZQ4TEOEovOq4s854YSU0IhFYuhUOoJ7dWfokCi5y3Rf+tWxN00GgyRzIOqvDyUASlZhWMJ61RNIS0nQVM2kvBZYzUPNBg8WEP7reQJTkKsogd1I6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0eUNB/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D2EC4CEC7;
+	Tue,  8 Oct 2024 12:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393476;
-	bh=BwW18ttrt2DrD++7UQhYNkwWfyAhvlNm4BEwXMmHic8=;
+	s=korg; t=1728392292;
+	bh=6lVGrxcUjZcOyMDe9MmGtWsyGRN06TU3Ii7/52lpRdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irJthOYbdEXiFyt0OozPsyTY59MRX+LtuPtmQr7Bkdiw0acpPN5s8V7/goKtsNMt3
-	 D/QToMIWV5tSE1YUnFz7OgHGSw1JaoGeQ/q9EABOyCU0iplHQ4p5Mak0GucayRdQ1q
-	 wE+7b3Uc/gxbfu5Rh34aFbZJMISljuYZkBKexAS8=
+	b=Z0eUNB/y3fmDB2PVqc1cdXA8DjyDO/eJYD6UbZHE81CiGF39jNjsQ2Hx10wzS1J2p
+	 r3HKLUwcPmfaDKzGNch6qHXWHepyeJwmI5JPx0z0S/hZWpKwosmflLGpgUIW/59aeG
+	 WEguoJONJssScSOrmMPhBhCKBGJdwYbUQqBilMEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/386] drm/amd/display: Fix index out of bounds in DCN30 degamma hardware format translation
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>,
+	Deepak Rawat <drawat@vmware.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Thomas Hellstrom <thellstrom@vmware.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.11 371/558] drm: Consistently use struct drm_mode_rect for FB_DAMAGE_CLIPS
 Date: Tue,  8 Oct 2024 14:06:41 +0200
-Message-ID: <20241008115635.565112674@linuxfoundation.org>
+Message-ID: <20241008115716.894470016@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +69,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit bc50b614d59990747dd5aeced9ec22f9258991ff ]
+commit 8b0d2f61545545ab5eef923ed6e59fc3be2385e0 upstream.
 
-This commit addresses a potential index out of bounds issue in the
-`cm3_helper_translate_curve_to_degamma_hw_format` function in the DCN30
-color  management module. The issue could occur when the index 'i'
-exceeds the  number of transfer function points (TRANSFER_FUNC_POINTS).
+FB_DAMAGE_CLIPS is a plane property for damage handling. Its UAPI
+should only use UAPI types. Hence replace struct drm_rect with
+struct drm_mode_rect in drm_atomic_plane_set_property(). Both types
+are identical in practice, so there's no change in behavior.
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, the function returns
-false to indicate an error.
-
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:338 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:339 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:340 cm3_helper_translate_curve_to_degamma_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Closes: https://lore.kernel.org/dri-devel/Zu1Ke1TuThbtz15E@intel.com/
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: d3b21767821e ("drm: Add a new plane property to send damage during plane update")
+Cc: Lukasz Spintzyk <lukasz.spintzyk@displaylink.com>
+Cc: Deepak Rawat <drawat@vmware.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Thomas Hellstrom <thellstrom@vmware.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.0+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923075841.16231-1-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_atomic_uapi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-index e0df9b0065f9c..e0b1fc92ed186 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-@@ -355,6 +355,8 @@ bool cm3_helper_translate_curve_to_degamma_hw_format(
- 				i += increment) {
- 			if (j == hw_points - 1)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS)
-+				return false;
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -543,7 +543,7 @@ static int drm_atomic_plane_set_property
+ 					&state->fb_damage_clips,
+ 					val,
+ 					-1,
+-					sizeof(struct drm_rect),
++					sizeof(struct drm_mode_rect),
+ 					&replaced);
+ 		return ret;
+ 	} else if (property == plane->scaling_filter_property) {
 
 
 
