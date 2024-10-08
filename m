@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946F1994D07
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A1E994E88
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2D32875BA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99252281C80
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0AE1DEFC8;
-	Tue,  8 Oct 2024 13:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B098E1DEFF8;
+	Tue,  8 Oct 2024 13:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUWrqvsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+f5zPrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CB71DF24B;
-	Tue,  8 Oct 2024 13:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7D91DF243;
+	Tue,  8 Oct 2024 13:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392428; cv=none; b=sA5dJCiBknutuUKzMxhkXrfZe69mxLjWv2a3vEkoZGE81hsC4vILoi8PpxmMq3HGml05FQsjl+vjqbs0tQnQV2xVJd+N6NxE1+iGWG1I/CH66XDmGJYP1UOaq3cXPuT+DiydpH2F1E2+nDx3yN2+dU3wi1+pVr+gv5CjXRsTQzk=
+	t=1728393483; cv=none; b=Eo+7IS5zOEVAuLUxiL8/pAyV3SnoSI86jilVkLdvAZ/VS1g10hacHCrALy/Q13P8PTBAT27msK0gDvEPqE0Bwnh3kp8vS5VQmVDtnaBOWVQX9+9yea//lFfle/nAh8z4CjyedOe63bdhHULhuDxLI+BK8L5tocrDVlmEX6WeQes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392428; c=relaxed/simple;
-	bh=S1EDAclqtgrnUijiYl0KOxMjYbCgcNOAMjRmQRxJ0lM=;
+	s=arc-20240116; t=1728393483; c=relaxed/simple;
+	bh=scDzsqFOAVSRABNHo7i6z6UaQQqGQoSpBJNP4jVVNTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ov5Vh5XsUzDEAiYIxcIBL9QEHCbw15HM9uPpcHm3BQKAxvZOsRWODHxebUdGRnbmvRLxoAcfjEwV99rJEgHqZ4gIjGhrUEjzkP/et14gylloLIIimzgC4VepHM6dunznm6jSvnXkiExSYfxJH36LHdCHtRr618jvIWXHoid1W8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUWrqvsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF923C4CECC;
-	Tue,  8 Oct 2024 13:00:27 +0000 (UTC)
+	 MIME-Version; b=LEvXQsb/2whJwxntQtlDVO59u1SdvxwsTopsj7ujpSf4yyWeovocmx4SViRHjeH2cuQLRMDMbXdZ6drT84sillraF4xqcPgjPuY6mH9lOjKhmnj80TvHbBIcp9p9yBMwepcQm3+4yeHj1/I/mTDm1MQc+0OOXctihuODmdsnOGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+f5zPrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932BCC4CEC7;
+	Tue,  8 Oct 2024 13:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392428;
-	bh=S1EDAclqtgrnUijiYl0KOxMjYbCgcNOAMjRmQRxJ0lM=;
+	s=korg; t=1728393483;
+	bh=scDzsqFOAVSRABNHo7i6z6UaQQqGQoSpBJNP4jVVNTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUWrqvsMpl76j8wzxDJPEFArH3SqmcKGIL2nrdEp+Scuax4UzLvafb0gkaqmi8TJx
-	 YnYn1Js1UjeyGR/7I1PnRRb7yGnqh0aiSE/ajKE5aAnYUS3x5iPeDUIvBAO0ae6izS
-	 xuGbiKcAV9IWMFn/3CqwyYprvyHGvPm00Gu5GjAE=
+	b=T+f5zPrrgJwZlFhjEjUSrAQJKA3Li5wCloWZyadSR4W8CsFZNGyxyse3UB4p6jQrR
+	 i1sRN5sAaDHCbM20J5sZx6lw1WhEmQ8vz6aIWxxWMIrjvb3aho/coE/N6nOYZ9NylO
+	 eLKmJ3DT1TI0tiBTolMnribU1Z035j18qoek49jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"yao.ly" <yao.ly@linux.alibaba.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.11 381/558] ext4: correct encrypted dentry name hash when not casefolded
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 166/386] perf: Fix event_function_call() locking
 Date: Tue,  8 Oct 2024 14:06:51 +0200
-Message-ID: <20241008115717.282173679@linuxfoundation.org>
+Message-ID: <20241008115635.955577950@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yao.ly <yao.ly@linux.alibaba.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 70dd7b573afeba9b8f8a33f2ae1e4a9a2ec8c1ec upstream.
+[ Upstream commit 558abc7e3f895049faa46b08656be4c60dc6e9fd ]
 
-EXT4_DIRENT_HASH and EXT4_DIRENT_MINOR_HASH will access struct
-ext4_dir_entry_hash followed ext4_dir_entry. But there is no ext4_dir_entry_hash
-followed when inode is encrypted and not casefolded
+All the event_function/@func call context already uses perf_ctx_lock()
+except for the !ctx->is_active case. Make it all consistent.
 
-Signed-off-by: yao.ly <yao.ly@linux.alibaba.com>
-Link: https://patch.msgid.link/1719816219-128287-1-git-send-email-yao.ly@linux.alibaba.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240807115550.138301094@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/dir.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/events/core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/dir.c
-+++ b/fs/ext4/dir.c
-@@ -279,12 +279,20 @@ static int ext4_readdir(struct file *fil
- 					struct fscrypt_str de_name =
- 							FSTR_INIT(de->name,
- 								de->name_len);
-+					u32 hash;
-+					u32 minor_hash;
-+
-+					if (IS_CASEFOLDED(inode)) {
-+						hash = EXT4_DIRENT_HASH(de);
-+						minor_hash = EXT4_DIRENT_MINOR_HASH(de);
-+					} else {
-+						hash = 0;
-+						minor_hash = 0;
-+					}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d40809bdf4b30..18eab7f50ecce 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -263,6 +263,7 @@ static int event_function(void *info)
+ static void event_function_call(struct perf_event *event, event_f func, void *data)
+ {
+ 	struct perf_event_context *ctx = event->ctx;
++	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
+ 	struct event_function_struct efs = {
+ 		.event = event,
+@@ -291,22 +292,22 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
+ 	if (!task_function_call(task, event_function, &efs))
+ 		return;
  
- 					/* Directory is encrypted */
- 					err = fscrypt_fname_disk_to_usr(inode,
--						EXT4_DIRENT_HASH(de),
--						EXT4_DIRENT_MINOR_HASH(de),
--						&de_name, &fstr);
-+						hash, minor_hash, &de_name, &fstr);
- 					de_name = fstr;
- 					fstr.len = save_len;
- 					if (err)
+-	raw_spin_lock_irq(&ctx->lock);
++	perf_ctx_lock(cpuctx, ctx);
+ 	/*
+ 	 * Reload the task pointer, it might have been changed by
+ 	 * a concurrent perf_event_context_sched_out().
+ 	 */
+ 	task = ctx->task;
+ 	if (task == TASK_TOMBSTONE) {
+-		raw_spin_unlock_irq(&ctx->lock);
++		perf_ctx_unlock(cpuctx, ctx);
+ 		return;
+ 	}
+ 	if (ctx->is_active) {
+-		raw_spin_unlock_irq(&ctx->lock);
++		perf_ctx_unlock(cpuctx, ctx);
+ 		goto again;
+ 	}
+ 	func(event, NULL, ctx, data);
+-	raw_spin_unlock_irq(&ctx->lock);
++	perf_ctx_unlock(cpuctx, ctx);
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
