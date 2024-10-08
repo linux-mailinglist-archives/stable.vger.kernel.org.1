@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-82933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DD7994F79
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BC8994D7B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BF31F2387D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7332B1C248D9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BD21E00BD;
-	Tue,  8 Oct 2024 13:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415A31DED4B;
+	Tue,  8 Oct 2024 13:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ga5mk+k8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arxjsw1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68C21DF722;
-	Tue,  8 Oct 2024 13:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38181DE4CD;
+	Tue,  8 Oct 2024 13:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393920; cv=none; b=UPFnI+iJEa+naSDpQl7qMNaeAQIlLs6ARVLVMtK06V2YQ7OzMghWE74b3L6mC9PlF4acpvYZcAg351J82sf58kaRVP1Vo4l7DBAEwdQX7w+9uz045TyCmgZ0kpaevfbgFmxAaVcuBH0y0QFlXADdI3+n9fXsjOoc1fNMIbT+c2w=
+	t=1728392746; cv=none; b=Extam6fBxdtg4qQ7GGVaFlZPOCUR8b+wIkCy8XuIIGRMNL0t5oO7wD3uJSeH+84uTwXwLw1YEAeUILqZwLzgvREDwm9Nb8om6Hpz0steWkN1yez8NXvQNO0QlH8FDkixZxlE8EaNFoKZlDYJ1NCtSCchWDV3gIs14bAR+3xbwq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393920; c=relaxed/simple;
-	bh=JT7Zj7vf/sAMBI/xptZdjDujO4IhQb6Bdu8ijBtjoEs=;
+	s=arc-20240116; t=1728392746; c=relaxed/simple;
+	bh=ZWgyS9HVX4I8XwE/Z7LTC5dTNEFG2Ia6r4p/AiQbFXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=In2RYmKj+kxavHyxam6BH9dsE6sNikaGMLR9fSq6zy3Is7cd1NB9zD4Z9xovEhQUs8ZXvbu/NuPUtYBu/o6rXiqB3XQMRBYzv6ESnvj+s7kq6RnjBu0Qk9ZpfsXH4XGpDuQFJEvKFjSfbaJlgluoEm1dBM4d5/SkyrEsvKnYjSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ga5mk+k8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86AEC4CECC;
-	Tue,  8 Oct 2024 13:25:19 +0000 (UTC)
+	 MIME-Version; b=DydOiMH/qlGSPOvUInZw7kNClXAf+OYg7jTp3QMgHo1NcAdJu+d2smYqRRhS4FT/NY+pS5ghNTnWHSj/Bvhdh1ZFjXgSKX4h/sNA1Z19swiPtb1V37pdumTLClW6HvW6ZE/rLOTWGYFn7Z3PDQxvcVQNpbobO66ZCb411VQpspA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arxjsw1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6588AC4CEC7;
+	Tue,  8 Oct 2024 13:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393920;
-	bh=JT7Zj7vf/sAMBI/xptZdjDujO4IhQb6Bdu8ijBtjoEs=;
+	s=korg; t=1728392745;
+	bh=ZWgyS9HVX4I8XwE/Z7LTC5dTNEFG2Ia6r4p/AiQbFXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ga5mk+k8jPwHVE5HF0azPyCluo9w+Fknw29urHUIAmMC2Ri+HvZdNZb3nK1S+oSa+
-	 IFSNp51i8adR0PLSs1SI2cq9CtFTPOV2pzDh+x9z+kpKuo/yq8A91ffJg7y5L/AW1U
-	 ul5EmQanbfCEwZyp9esKC5SrwX99mxelu8egEN+4=
+	b=arxjsw1JO+5MpZdwiyHNDFBJFtM001AmZJalcBifu+Tg7nOJAN+MNiHw7JAaNX4CD
+	 FYGXYvMElmNtKdn3B5xSRT9V5LlaaOywj1Fmjo7hn0Pt8nZnuI20JSQJRUmiTi5XSy
+	 3B2BM7Nv+d2Kj8jAprElkekLmDX1rpmrHHonH5Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 263/386] ocfs2: remove unreasonable unlock in ocfs2_read_blocks
-Date: Tue,  8 Oct 2024 14:08:28 +0200
-Message-ID: <20241008115639.740079005@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.11 479/558] rtc: at91sam9: fix OF node leak in probe() error path
+Date: Tue,  8 Oct 2024 14:08:29 +0200
+Message-ID: <20241008115721.087802019@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,59 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c03a82b4a0c935774afa01fd6d128b444fd930a1 upstream.
+commit 73580e2ee6adfb40276bd420da3bb1abae204e10 upstream.
 
-Patch series "Misc fixes for ocfs2_read_blocks", v5.
+Driver is leaking an OF node reference obtained from
+of_parse_phandle_with_fixed_args().
 
-This series contains 2 fixes for ocfs2_read_blocks().  The first patch fix
-the issue reported by syzbot, which detects bad unlock balance in
-ocfs2_read_blocks().  The second patch fixes an issue reported by Heming
-Zhao when reviewing above fix.
-
-
-This patch (of 2):
-
-There was a lock release before exiting, so remove the unreasonable unlock.
-
-Link: https://lkml.kernel.org/r/20240902023636.1843422-1-joseph.qi@linux.alibaba.com
-Link: https://lkml.kernel.org/r/20240902023636.1843422-2-joseph.qi@linux.alibaba.com
-Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ab134185af9ef88dfed5
-Tested-by: syzbot+ab134185af9ef88dfed5@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>	[4.20+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 43e112bb3dea ("rtc: at91sam9: make use of syscon/regmap to access GPBR registers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240825183103.102904-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/buffer_head_io.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/rtc/rtc-at91sam9.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ocfs2/buffer_head_io.c
-+++ b/fs/ocfs2/buffer_head_io.c
-@@ -235,7 +235,6 @@ int ocfs2_read_blocks(struct ocfs2_cachi
- 		if (bhs[i] == NULL) {
- 			bhs[i] = sb_getblk(sb, block++);
- 			if (bhs[i] == NULL) {
--				ocfs2_metadata_cache_io_unlock(ci);
- 				status = -ENOMEM;
- 				mlog_errno(status);
- 				/* Don't forget to put previous bh! */
+--- a/drivers/rtc/rtc-at91sam9.c
++++ b/drivers/rtc/rtc-at91sam9.c
+@@ -368,6 +368,7 @@ static int at91_rtc_probe(struct platfor
+ 		return ret;
+ 
+ 	rtc->gpbr = syscon_node_to_regmap(args.np);
++	of_node_put(args.np);
+ 	rtc->gpbr_offset = args.args[0];
+ 	if (IS_ERR(rtc->gpbr)) {
+ 		dev_err(&pdev->dev, "failed to retrieve gpbr regmap, aborting.\n");
 
 
 
