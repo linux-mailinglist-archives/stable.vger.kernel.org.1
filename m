@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A738994EC5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B0A994A66
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1440DB2871D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 855181F22598
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294CC1DED7D;
-	Tue,  8 Oct 2024 13:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A781CCB32;
+	Tue,  8 Oct 2024 12:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/8pfA+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boT+X6qE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA79718C333;
-	Tue,  8 Oct 2024 13:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03539178384;
+	Tue,  8 Oct 2024 12:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393608; cv=none; b=rx/T3mt3nrGXW2oS5STa2I6K14zYRBE3vWWEoL/pRvVLFl5y9VXHAHxgAyQRjON721KfUwF/8hRxRAo+M90qzd8MD6i0RhM5LbTcWl4sTK6PRVFrg8oKkwzLJuh35CuEdVE8wBpy+dYDe3Re5uhAj5m/1kOsBwgi2vkAqU9RqzU=
+	t=1728390763; cv=none; b=rqae0kCV+eTsnq9FIWEQJK5o7oHjVM1jILpKSRotn9EeKtpplXBdTI2iwjE+BgEPR9SW/kCDUE923lgrJMncSG/xLflIYkqyBxdM+SfAyfF/GYyJCIERfraiQJVoZ3K9K+jxI7gfaNQ8syrVRJ5jHouU3eYuk07rzLgzbjh7qz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393608; c=relaxed/simple;
-	bh=odu0cmUwUdgUo9c8DK1/hEEuOLFjL3uqSMPUHe2Splk=;
+	s=arc-20240116; t=1728390763; c=relaxed/simple;
+	bh=6aNnBKhRvPZpL2Pa1t1HpLM7a2XSzwCEUksa6LJvA1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KcJw3t/uD9Y6Ukw8XCXnwlKvpdH0GclZG7LvAuApmp9zkp5w/zIe3USHdQGXNT8n3t2gay+eYH4z1NzhyBLFvS/yf7o1eOZvUW5g0wWJt+1ObMuLD2QHp+m1SzrgJeMc2ksKDdU6HfcTDXUl0qusZaT5oeznUf7pbILY+U/YS1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/8pfA+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6210FC4CEC7;
-	Tue,  8 Oct 2024 13:20:08 +0000 (UTC)
+	 MIME-Version; b=u9buP9BRUzn+XXWkRtguXOIHV/UuRYxHa9n6A4FB+Q83XRLSRqoUuD5yKxp/eRMcnh8j9EHvgDMh6NKzPjnhspN/VqhpALTYJDgso/NCtDUyA/Ng6JjH+qvO+/YGOF4HgomehNYfuBNYHJhLkj5ciYnZKfnyBVWo9LlBhYQ0Qpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boT+X6qE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65134C4CEC7;
+	Tue,  8 Oct 2024 12:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393608;
-	bh=odu0cmUwUdgUo9c8DK1/hEEuOLFjL3uqSMPUHe2Splk=;
+	s=korg; t=1728390762;
+	bh=6aNnBKhRvPZpL2Pa1t1HpLM7a2XSzwCEUksa6LJvA1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/8pfA+hPKqBj15bavsxZTXNoBI7Ph4aRv+NhtTHg2j+2znI0r0SM8pqLNsGdgk7X
-	 +3MvwUO+uOjIyeUxTH0etc97Ff4qYUMQppbt5hqIu+xIXZLPhIqXqmngPqKttBToRJ
-	 A1/Lcb4IRigC1TYYfhVjofWfK9xqdJm8AvmG8BnE=
+	b=boT+X6qEY1Jb77nZAdQsbicbuvXh7tklMg6ol+yp2tkJ8la0yWaUrZjgeAzNN47j/
+	 o4QSlUkFS+zOHVNqTiCkdV9x1J1NryuHNQUXlNVlTIs10RNbNnrJRlDnSyZGirYpr6
+	 +JXtO5w4MHlb4pTJJSlI1bhehHgItLQwag1JLTPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/386] selftests: vDSO: fix vdso_config for s390
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 385/482] clk: qcom: dispcc-sm8250: use CLK_SET_RATE_PARENT for branch clocks
 Date: Tue,  8 Oct 2024 14:07:28 +0200
-Message-ID: <20241008115637.395631706@linuxfoundation.org>
+Message-ID: <20241008115703.565371943@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a6e23fb8d3c0e3904da70beaf5d7e840a983c97f ]
+commit 0e93c6320ecde0583de09f3fe801ce8822886fec upstream.
 
-Running vdso_test_correctness on s390x (aka s390 64 bit) emits a warning:
+Add CLK_SET_RATE_PARENT for several branch clocks. Such clocks don't
+have a way to change the rate, so set the parent rate instead.
 
-Warning: failed to find clock_gettime64 in vDSO
-
-This is caused by the "#elif defined (__s390__)" check in vdso_config.h
-which the defines VDSO_32BIT.
-
-If __s390x__ is defined also __s390__ is defined. Therefore the correct
-check must make sure that only __s390__ is defined.
-
-Therefore add the missing !defined(__s390x__). Also use common
-__s390x__ define instead of __s390X__.
-
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Fixes: 693f5ca08ca0 ("kselftest: Extend vDSO selftest")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-1-1149dd8399fe@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vDSO/vdso_config.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/dispcc-sm8250.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_config.h b/tools/testing/selftests/vDSO/vdso_config.h
-index f9890584f6fb4..72de45f587b2c 100644
---- a/tools/testing/selftests/vDSO/vdso_config.h
-+++ b/tools/testing/selftests/vDSO/vdso_config.h
-@@ -25,11 +25,11 @@
- #define VDSO_VERSION		1
- #define VDSO_NAMES		0
- #define VDSO_32BIT		1
--#elif defined (__s390__)
-+#elif defined (__s390__) && !defined(__s390x__)
- #define VDSO_VERSION		2
- #define VDSO_NAMES		0
- #define VDSO_32BIT		1
--#elif defined (__s390X__)
-+#elif defined (__s390x__)
- #define VDSO_VERSION		2
- #define VDSO_NAMES		0
- #elif defined(__mips__)
--- 
-2.43.0
-
+--- a/drivers/clk/qcom/dispcc-sm8250.c
++++ b/drivers/clk/qcom/dispcc-sm8250.c
+@@ -849,6 +849,7 @@ static struct clk_branch disp_cc_mdss_dp
+ 				&disp_cc_mdss_dp_link1_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -884,6 +885,7 @@ static struct clk_branch disp_cc_mdss_dp
+ 				&disp_cc_mdss_dp_link_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -1009,6 +1011,7 @@ static struct clk_branch disp_cc_mdss_md
+ 				&disp_cc_mdss_mdp_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
 
 
 
