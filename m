@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36ACC994931
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F029994C0A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D138AB21F13
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AB0DB25FD4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA0A1DEFE4;
-	Tue,  8 Oct 2024 12:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9298D1DE2AE;
+	Tue,  8 Oct 2024 12:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhEcOrmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15OQZYaf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8A4178CC5;
-	Tue,  8 Oct 2024 12:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517C21C2420;
+	Tue,  8 Oct 2024 12:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390022; cv=none; b=RBnRrCLsoCvFB1N1ttPMx35SbQixoPUzJIig7vGpGHVxv20u89KP+fvjJQXHMaPFJeUOnBmDBFSTDlbME+DA6ZT0RQNlvXTL9XNDunAbZnu/qIIsz8S/6fqpM0yqtYZkzQzT/i0RTugmIVPJ3aM3kxsMLXtr8eUDr01mGAuC0Uk=
+	t=1728391717; cv=none; b=VgRwbUvK2PNxJCZDnUAKH/to3djBJEbxRiEWAv6QCFA/ep75fUWM64N5jQW/JZ2mU6GfJRnWJdT4H2jjB0cZ6sSCzdM7aspOkS+sm5JeuNlfv+ewT/BLe9XQhoOlhCg9WCkuLh6s7UGyN1AlRMHyYdW1dBlaF6L0ImQ/rWqBrtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390022; c=relaxed/simple;
-	bh=0dhRxr0+U46uJx8Q6KG4lb40GhHwZXY6TYePgM01DVk=;
+	s=arc-20240116; t=1728391717; c=relaxed/simple;
+	bh=B2GmBiJfAOfwIPmGFwnTRN0tEWlmW8hvYQAqGbYxhl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PX5ME35kRxP3QwoUMrAPe0Vmj2HYuhhGOduReU9Jc8U1KGZXuqfKtdc9sxj2RZH6Un84Z7Qietpq3QzgWft0v6XBIB6B7GabdW2eJB7bvrdGn9/EITUK8y3egPGWeLPTNDS0VQH9zwvfbYo2UTUQa7CveapQBCIvVeXHGBO4/h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhEcOrmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDA3C4CEC7;
-	Tue,  8 Oct 2024 12:20:20 +0000 (UTC)
+	 MIME-Version; b=DwsIm8dry4C9RrOied2LO2Zad+Pcjqx1KqR+7bwpyKLIpuVTAGbG0YkHHfGqu6sZPbFcqt/Kp5PaFC63HehEru9fi7IjEyin3hrsINoyak6t7PvwO0QhUPlUasdwVGzRKrOeTsvj2R11RmcTmo6r7ZxDFjEHgav1nMTk1grvR9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15OQZYaf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC35C4CEC7;
+	Tue,  8 Oct 2024 12:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390021;
-	bh=0dhRxr0+U46uJx8Q6KG4lb40GhHwZXY6TYePgM01DVk=;
+	s=korg; t=1728391717;
+	bh=B2GmBiJfAOfwIPmGFwnTRN0tEWlmW8hvYQAqGbYxhl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhEcOrmEfgSPJlwt9U7BgfTWBxtAZbarWnrFfVMGfJ1LePsu+5oNKeHXkhDeWdP7H
-	 BDpSUL4aDJjHGDJJtasgiKj0gBNqihTwtNfOJZMffIp4xEkOAGiV/eCIeCKbM+W3Bx
-	 uAF+qa+nHDVJeJY980tK6HOxdvVEnsEip3OUthxk=
+	b=15OQZYafrvEzTnYZv1mqkmNnBczZLVmGSLyAtb7tJI58RmG/tyuRZeNWvSdre+4fy
+	 dh3ZcUPSQNTzObgs1pRA6+o9L9fmwZrNde8+jyluRZCl1eK9iH64lUr2moAgXWjgrN
+	 T3HVP+307ZEQxU+3BHz5ZkopMhdkWHKE/Ieoz9fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 167/482] iommu/arm-smmu-v3: Match Stall behaviour for S2
+Subject: [PATCH 6.11 200/558] iommu/arm-smmu-v3: Do not use devm for the cd table allocations
 Date: Tue,  8 Oct 2024 14:03:50 +0200
-Message-ID: <20241008115654.877585249@linuxfoundation.org>
+Message-ID: <20241008115710.218531256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit ce7cb08e22e09f43649b025c849a3ae3b80833c4 ]
+[ Upstream commit 47b2de35cab2b683f69d03515c2658c2d8515323 ]
 
-According to the spec (ARM IHI 0070 F.b), in
-"5.5 Fault configuration (A, R, S bits)":
-    A STE with stage 2 translation enabled and STE.S2S == 0 is
-    considered ILLEGAL if SMMU_IDR0.STALL_MODEL == 0b10.
+The master->cd_table is entirely contained within the struct
+arm_smmu_master which is guaranteed to be freed by the core code under
+arm_smmu_release_device().
 
-Also described in the pseudocode “SteIllegal()”
-    if STE.Config == '11x' then
-        [..]
-        if eff_idr0_stall_model == '10' && STE.S2S == '0' then
-            // stall_model forcing stall, but S2S == 0
-            return TRUE;
+There is no reason to use devm here, arm_smmu_free_cd_tables() is reliably
+called to free the CD related memory. Remove it and save some memory.
 
-Which means, S2S must be set when stall model is
-"ARM_SMMU_FEAT_STALL_FORCE", but currently the driver ignores that.
-
-Although, the driver can do the minimum and only set S2S for
-“ARM_SMMU_FEAT_STALL_FORCE”, it is more consistent to match S1
-behaviour, which also sets it for “ARM_SMMU_FEAT_STALL” if the
-master has requested stalls.
-
-Also, since S2 stalls are enabled now, report them to the IOMMU layer
-and for VFIO devices it will fail anyway as VFIO doesn’t register an
-iopf handler.
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20240830110349.797399-2-smostafa@google.com
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/5-v4-6416877274e1+1af-smmuv3_tidy_jgg@nvidia.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 8 +++-----
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h | 1 +
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 29 +++++++++------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index f456bcf1890ba..1f38669b711d3 100644
+index d271525fa3917..473eb772ea210 100644
 --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
 +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1000,7 +1000,8 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
- 		used_bits[2] |=
- 			cpu_to_le64(STRTAB_STE_2_S2VMID | STRTAB_STE_2_VTCR |
- 				    STRTAB_STE_2_S2AA64 | STRTAB_STE_2_S2ENDI |
--				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2R);
-+				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2S |
-+				    STRTAB_STE_2_S2R);
- 		used_bits[3] |= cpu_to_le64(STRTAB_STE_3_S2TTB_MASK);
+@@ -1185,8 +1185,8 @@ static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
+ {
+ 	size_t size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
+ 
+-	l1_desc->l2ptr = dmam_alloc_coherent(smmu->dev, size,
+-					     &l1_desc->l2ptr_dma, GFP_KERNEL);
++	l1_desc->l2ptr = dma_alloc_coherent(smmu->dev, size,
++					    &l1_desc->l2ptr_dma, GFP_KERNEL);
+ 	if (!l1_desc->l2ptr) {
+ 		dev_warn(smmu->dev,
+ 			 "failed to allocate context descriptor table\n");
+@@ -1400,17 +1400,17 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
+ 		cd_table->num_l1_ents = DIV_ROUND_UP(max_contexts,
+ 						  CTXDESC_L2_ENTRIES);
+ 
+-		cd_table->l1_desc = devm_kcalloc(smmu->dev, cd_table->num_l1_ents,
+-					      sizeof(*cd_table->l1_desc),
+-					      GFP_KERNEL);
++		cd_table->l1_desc = kcalloc(cd_table->num_l1_ents,
++					    sizeof(*cd_table->l1_desc),
++					    GFP_KERNEL);
+ 		if (!cd_table->l1_desc)
+ 			return -ENOMEM;
+ 
+ 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
  	}
  
-@@ -1629,6 +1630,7 @@ void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
- 		STRTAB_STE_2_S2ENDI |
- #endif
- 		STRTAB_STE_2_S2PTW |
-+		(master->stall_enabled ? STRTAB_STE_2_S2S : 0) |
- 		STRTAB_STE_2_S2R);
+-	cd_table->cdtab = dmam_alloc_coherent(smmu->dev, l1size, &cd_table->cdtab_dma,
+-					   GFP_KERNEL);
++	cd_table->cdtab = dma_alloc_coherent(smmu->dev, l1size,
++					     &cd_table->cdtab_dma, GFP_KERNEL);
+ 	if (!cd_table->cdtab) {
+ 		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
+ 		ret = -ENOMEM;
+@@ -1421,7 +1421,7 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
  
- 	target->data[3] = cpu_to_le64(pgtbl_cfg->arm_lpae_s2_cfg.vttbr &
-@@ -1722,10 +1724,6 @@ static int arm_smmu_handle_evt(struct arm_smmu_device *smmu, u64 *evt)
- 		return -EOPNOTSUPP;
+ err_free_l1:
+ 	if (cd_table->l1_desc) {
+-		devm_kfree(smmu->dev, cd_table->l1_desc);
++		kfree(cd_table->l1_desc);
+ 		cd_table->l1_desc = NULL;
+ 	}
+ 	return ret;
+@@ -1441,21 +1441,18 @@ static void arm_smmu_free_cd_tables(struct arm_smmu_master *master)
+ 			if (!cd_table->l1_desc[i].l2ptr)
+ 				continue;
+ 
+-			dmam_free_coherent(smmu->dev, size,
+-					   cd_table->l1_desc[i].l2ptr,
+-					   cd_table->l1_desc[i].l2ptr_dma);
++			dma_free_coherent(smmu->dev, size,
++					  cd_table->l1_desc[i].l2ptr,
++					  cd_table->l1_desc[i].l2ptr_dma);
+ 		}
+-		devm_kfree(smmu->dev, cd_table->l1_desc);
+-		cd_table->l1_desc = NULL;
++		kfree(cd_table->l1_desc);
+ 
+ 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
+ 	} else {
+ 		l1size = cd_table->num_l1_ents * (CTXDESC_CD_DWORDS << 3);
  	}
  
--	/* Stage-2 is always pinned at the moment */
--	if (evt[1] & EVTQ_1_S2)
--		return -EFAULT;
--
- 	if (!(evt[1] & EVTQ_1_STALL))
- 		return -EOPNOTSUPP;
+-	dmam_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
+-	cd_table->cdtab_dma = 0;
+-	cd_table->cdtab = NULL;
++	dma_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
+ }
  
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-index 1242a086c9f94..d9c2f763eaba4 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -264,6 +264,7 @@ struct arm_smmu_ste {
- #define STRTAB_STE_2_S2AA64		(1UL << 51)
- #define STRTAB_STE_2_S2ENDI		(1UL << 52)
- #define STRTAB_STE_2_S2PTW		(1UL << 54)
-+#define STRTAB_STE_2_S2S		(1UL << 57)
- #define STRTAB_STE_2_S2R		(1UL << 58)
- 
- #define STRTAB_STE_3_S2TTB_MASK		GENMASK_ULL(51, 4)
+ /* Stream table manipulation functions */
 -- 
 2.43.0
 
