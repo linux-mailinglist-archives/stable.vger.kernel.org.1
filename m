@@ -1,195 +1,94 @@
-Return-Path: <stable+bounces-81493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13087993BCF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 02:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B30993BD0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 02:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87C3F1F251A4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 00:30:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D715B1F2545C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 00:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE750847C;
-	Tue,  8 Oct 2024 00:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247CCAD24;
+	Tue,  8 Oct 2024 00:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FemlL7VG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZCYfcPY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E804EC4;
-	Tue,  8 Oct 2024 00:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF375CB8;
+	Tue,  8 Oct 2024 00:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728347418; cv=none; b=auj86ZjoUBs0YYyP4bN7im1wLqxsbm7KSVoHVcFWSATlsUiWWSUTbsM3pOKlMsVNfqQ5uTln/riwjDzZPSeJ9LWQXG/510WaVs8OTSbtTC/9jL6nmQPzgxh7TGAJ9J5sa4fut4iTbcGD94rBUUFkcJE4HsgiFGOvk1UmPi1RVj0=
+	t=1728347429; cv=none; b=CdcPcFAd/TUEAkz6V6SxAJeKbjdRtNgXFcmC0GeMhuapP9MWFaQ8CYhDKuwV2MjvrS4sKuFuIS6kI4teQ4LFBKZDd5PCJCTknZ2+6C6Y3Y/CjM09DA6cayXaQhHhMJPAnHVXHM0nrVIt4wxb4FFgzmDQG611pHsjo1/By99onrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728347418; c=relaxed/simple;
-	bh=0kLb0bq4Rj/Dx9UVhwpykR/7kCxf0Ra4uInKApu8MVA=;
-	h=Date:To:From:Subject:Message-Id; b=hotgxJFdjmPtGtpVhGfNT5aVpyhX4FGuzoA8G9yp2mNBq7GjOJTfUXowK6LWITAj7+3wjgpl+oYvuA/7P8M2Ch7QAWX1wTQ6A1/LcecWhk6AvLWBtB9I/y8D0vEs47Tk/mHP5Rg8H73OfQGidPTyA9tM65vIqbdWeVCp4GT6XkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FemlL7VG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12574C4CEC6;
-	Tue,  8 Oct 2024 00:30:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1728347418;
-	bh=0kLb0bq4Rj/Dx9UVhwpykR/7kCxf0Ra4uInKApu8MVA=;
-	h=Date:To:From:Subject:From;
-	b=FemlL7VG179nJRYRKRJRfCscJ0+KEpVq3rS2awQ9QAqnySodH9mDPCRQkdNGF2mnB
-	 1K9MSs6g17eUgl6ZoJ8ad765N2uKBZqWfvSzwnMiVHAYOKDPgKb14eYtvLNSFOnwLp
-	 Y6pAELvma7tukL2k/WAjntu2oz1HsPiWuI2WNAF4=
-Date: Mon, 07 Oct 2024 17:30:17 -0700
-To: mm-commits@vger.kernel.org,w@1wt.eu,vbabka@suse.cz,stable@vger.kernel.org,riel@redhat.com,oleg@redhat.com,mhocko@suse.com,hughd@google.com,deller@gmx.de,ben@decadent.org.uk,jannh@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241008003018.12574C4CEC6@smtp.kernel.org>
+	s=arc-20240116; t=1728347429; c=relaxed/simple;
+	bh=LR+66PIZDCLRM9rIeo+eZuTI1N9M2wiWvawCZUyRVvo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=lRRTz7RIfKLGsN+1W2Q/8kEfUqqmdE5dJDl5DabUv881rvNwge1bm4usHiqrEmm5JYYgZC6C60dpKTp3X4xKiiA4z4TodChFPcjxzQDV704bP85F9UYuWqlofMutkgsZFexzeDvnZPTiRdnObhBxx3076C2dU1pGh4DfeW57svg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZCYfcPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDD6C4CEC6;
+	Tue,  8 Oct 2024 00:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728347429;
+	bh=LR+66PIZDCLRM9rIeo+eZuTI1N9M2wiWvawCZUyRVvo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=aZCYfcPYTPlav7rxbuArNx8Rs3VfcEJnQ2fum9Pt9bb4YDyiw6SSy+B7Gn516Y1H3
+	 Dup/6aJvKdm66qQdt4SM+q9G7K6UtmrSH6tUv20ALAhCWYJGLpMbZOGomXcVojiX48
+	 mngSfTaCRNkc1HvwK2Aobl0T6uyY3pJA83CXwoWxdRGctppAonFoWq1LAPez5NDz1d
+	 eiEyJeEJCgCEYFAkOq8QDhBvciK8ZNGyinDPMlg8M9tWAIjpkqEsdnCggRztdF3unI
+	 1mJUGbJQVts1QFZPy7vE8xnZZKBj+REFquzSyIGOsKvPaU8hLCFLBf/M43piqUuDHM
+	 FFSMeFfPxcUPg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADDCC3803262;
+	Tue,  8 Oct 2024 00:30:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [net PATCH v2] net: phy: Remove LED entry from LEDs list on
+ unregister
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172834743352.29256.16908590160234613489.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Oct 2024 00:30:33 +0000
+References: <20241004182759.14032-1-ansuelsmth@gmail.com>
+In-Reply-To: <20241004182759.14032-1-ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, daniel@makrotopia.org,
+ stable@vger.kernel.org
 
+Hello:
 
-The patch titled
-     Subject: mm: enforce a minimal stack gap even against inaccessible VMAs
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch
+On Fri,  4 Oct 2024 20:27:58 +0200 you wrote:
+> Commit c938ab4da0eb ("net: phy: Manual remove LEDs to ensure correct
+> ordering") correctly fixed a problem with using devm_ but missed
+> removing the LED entry from the LEDs list.
+> 
+> This cause kernel panic on specific scenario where the port for the PHY
+> is torn down and up and the kmod for the PHY is removed.
+> 
+> [...]
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Here is the summary with links:
+  - [net,v2] net: phy: Remove LED entry from LEDs list on unregister
+    https://git.kernel.org/netdev/net/c/f50b5d74c68e
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jann Horn <jannh@google.com>
-Subject: mm: enforce a minimal stack gap even against inaccessible VMAs
-Date: Tue, 08 Oct 2024 00:55:39 +0200
-
-As explained in the comment block this change adds, we can't tell what
-userspace's intent is when the stack grows towards an inaccessible VMA.
-
-I have a (highly contrived) C testcase for 32-bit x86 userspace with glibc
-that mixes malloc(), pthread creation, and recursion in just the right way
-such that the main stack overflows into malloc() arena memory.
-
-I don't know of any specific scenario where this is actually exploitable,
-but it seems like it could be a security problem for sufficiently unlucky
-userspace.
-
-I believe we should ensure that, as long as code is compiled with
-something like -fstack-check, a stack overflow in it can never cause the
-main stack to overflow into adjacent heap memory.
-
-My fix effectively reverts the behavior for !vma_is_accessible() VMAs to
-the behavior before commit 1be7107fbe18 ("mm: larger stack guard gap,
-between vmas"), so I think it should be a fairly safe change even in case
-A.
-
-Link: https://lkml.kernel.org/r/20241008-stack-gap-inaccessible-v1-1-848d4d891f21@google.com
-Fixes: 561b5e0709e4 ("mm/mmap.c: do not blow on PROT_NONE MAP_FIXED holes in the stack")
-Signed-off-by: Jann Horn <jannh@google.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Rik van Riel <riel@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Willy Tarreau <w@1wt.eu>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mmap.c |   53 +++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 46 insertions(+), 7 deletions(-)
-
---- a/mm/mmap.c~mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas
-+++ a/mm/mmap.c
-@@ -1064,10 +1064,12 @@ static int expand_upwards(struct vm_area
- 		gap_addr = TASK_SIZE;
- 
- 	next = find_vma_intersection(mm, vma->vm_end, gap_addr);
--	if (next && vma_is_accessible(next)) {
--		if (!(next->vm_flags & VM_GROWSUP))
-+	if (next && !(next->vm_flags & VM_GROWSUP)) {
-+		/* see comments in expand_downwards() */
-+		if (vma_is_accessible(prev))
-+			return -ENOMEM;
-+		if (address == next->vm_start)
- 			return -ENOMEM;
--		/* Check that both stack segments have the same anon_vma? */
- 	}
- 
- 	if (next)
-@@ -1155,10 +1157,47 @@ int expand_downwards(struct vm_area_stru
- 	/* Enforce stack_guard_gap */
- 	prev = vma_prev(&vmi);
- 	/* Check that both stack segments have the same anon_vma? */
--	if (prev) {
--		if (!(prev->vm_flags & VM_GROWSDOWN) &&
--		    vma_is_accessible(prev) &&
--		    (address - prev->vm_end < stack_guard_gap))
-+	if (prev && !(prev->vm_flags & VM_GROWSDOWN) &&
-+	    (address - prev->vm_end < stack_guard_gap)) {
-+		/*
-+		 * If the previous VMA is accessible, this is the normal case
-+		 * where the main stack is growing down towards some unrelated
-+		 * VMA. Enforce the full stack guard gap.
-+		 */
-+		if (vma_is_accessible(prev))
-+			return -ENOMEM;
-+
-+		/*
-+		 * If the previous VMA is not accessible, we have a problem:
-+		 * We can't tell what userspace's intent is.
-+		 *
-+		 * Case A:
-+		 * Maybe userspace wants to use the previous VMA as a
-+		 * "guard region" at the bottom of the main stack, in which case
-+		 * userspace wants us to grow the stack until it is adjacent to
-+		 * the guard region. Apparently some Java runtime environments
-+		 * and Rust do that?
-+		 * That is kind of ugly, and in that case userspace really ought
-+		 * to ensure that the stack is fully expanded immediately, but
-+		 * we have to handle this case.
-+		 *
-+		 * Case B:
-+		 * But maybe the previous VMA is entirely unrelated to the stack
-+		 * and is only *temporarily* PROT_NONE. For example, glibc
-+		 * malloc arenas create a big PROT_NONE region and then
-+		 * progressively mark parts of it as writable.
-+		 * In that case, we must not let the stack become adjacent to
-+		 * the previous VMA. Otherwise, after the region later becomes
-+		 * writable, a stack overflow will cause the stack to grow into
-+		 * the previous VMA, and we won't have any stack gap to protect
-+		 * against this.
-+		 *
-+		 * As an ugly tradeoff, enforce a single-page gap.
-+		 * A single page will hopefully be small enough to not be
-+		 * noticed in case A, while providing the same level of
-+		 * protection in case B that normal userspace threads get.
-+		 */
-+		if (address == prev->vm_end)
- 			return -ENOMEM;
- 	}
- 
-_
-
-Patches currently in -mm which might be from jannh@google.com are
-
-mm-mremap-prevent-racing-change-of-old-pmd-type.patch
-mm-enforce-a-minimal-stack-gap-even-against-inaccessible-vmas.patch
 
 
