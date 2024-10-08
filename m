@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FCE7994B5B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:43:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39083994874
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26ADA1F26E33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:43:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B3091C24D31
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9D51DEFF6;
-	Tue,  8 Oct 2024 12:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A7A1DE3C1;
+	Tue,  8 Oct 2024 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO93xbgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gI0mpK4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5AF1DE4CD;
-	Tue,  8 Oct 2024 12:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EBF1DE2C4;
+	Tue,  8 Oct 2024 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391290; cv=none; b=n/aGKG9mQuF0KgBN53bYL4yrjsso8flOBDgk6ggBU6fMb7VO0BBGEdhkP2LoYKsczVkE4LPIrR3ukR9FSvyZJijR/n8f+MykGbQs0gpPZEncFJebzdFOwuvnKNiKut2GhNqwJRhM29O4nMeVMgGNyjRwML+/kouTbSjK/bkYrIU=
+	t=1728389574; cv=none; b=gUXuBti3I4kI5yEffA4mP/QmY9frilQhPP52BEW9sNnU+seZftEBfPc/pZHnusBi68I+5VX8D9Gofkgr2zBOha2kCaLo1WyHteXME7Cx1bgcJoU/vC1535QPq/Lh2t9Zsfb+WUDfDzLhJJdZpEsyrr8wWUbfvR3YgQ8MjQ+au88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391290; c=relaxed/simple;
-	bh=2+1PGwTS0VnnL3YCC4GDgstNj2raFViRMBg78Pausrg=;
+	s=arc-20240116; t=1728389574; c=relaxed/simple;
+	bh=0Suqf0+K+TmsSk6wr04Oo2ehgvyLTey7pd5VwwFYAuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k4RSnUzOBXO1NEAcohYetuAhALpLWWTQB/dsf8eS88DzERehC1nsjOBNEOsFPilOWVYTRKS2fZI+tir6Py9cGWSaAb1iS1PaFw1/pIHaEjZnvWAUVESQvARSMxGl+M/eUQQUnUs8cguIRXZOmt3UOndOPBrIeS33t4ZOc3tkBVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO93xbgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B867CC4CEC7;
-	Tue,  8 Oct 2024 12:41:29 +0000 (UTC)
+	 MIME-Version; b=WOj7yOMpv04Fp6aZEwWUH+ksGTzrE72PCacJG/R0E4YEn7M1+aZ/ZctHN6Vp969zBz2k/fhk3r3iKJxT1KgPvTGOJBFKx2TAcatdEm+vZxkuPohnPEiTYIccsMQjVX7wPw16ibEDd7dc6ecblLGH92bbmbhChr4DE0Oto0XOSTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gI0mpK4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC44C4CEC7;
+	Tue,  8 Oct 2024 12:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391290;
-	bh=2+1PGwTS0VnnL3YCC4GDgstNj2raFViRMBg78Pausrg=;
+	s=korg; t=1728389574;
+	bh=0Suqf0+K+TmsSk6wr04Oo2ehgvyLTey7pd5VwwFYAuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SO93xbgF6k/eUEqWXlZJkHFC5LjT7A2OT2iGfQ3EeWn2v6dMKb7yeWGqfjlppSpB4
-	 oZLmdH4G7VsTP8dEqVsfQgSYTx/Lo674orasTcUJ95nBKkstpgC53ewFV8XZsAAzrP
-	 +Zmkhfmtal0I0cFGr+niLY7+cN5GcSjmiz9SU4JE=
+	b=gI0mpK4INP2VujGZ2yOI5zMDn9NiNnyGLg29hy0ZIhX9pVPSANZixMmK8LuIUnRdz
+	 2IisC6WnzQyLydlQzLhTn9Vv7VpBarC0IIsV+yD4aRa8012AKOWBLZJwv7tpYE7ByB
+	 TLUOiYvAK8f+XkV4FExzc4xZ3vHbHaTi6l7LpUMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 066/558] ASoC: Intel: soc-acpi-intel-rpl-match: add missing empty item
-Date: Tue,  8 Oct 2024 14:01:36 +0200
-Message-ID: <20241008115704.814478505@linuxfoundation.org>
+Subject: [PATCH 6.10 034/482] net: Add netif_get_gro_max_size helper for GRO
+Date: Tue,  8 Oct 2024 14:01:37 +0200
+Message-ID: <20241008115649.641824359@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 5afc29ba44fdd1bcbad4e07246c395d946301580 ]
+[ Upstream commit e8d4d34df715133c319fabcf63fdec684be75ff8 ]
 
-There is no links_num in struct snd_soc_acpi_mach {}, and we test
-!link->num_adr as a condition to end the loop in hda_sdw_machine_select().
-So an empty item in struct snd_soc_acpi_link_adr array is required.
+Add a small netif_get_gro_max_size() helper which returns the maximum IPv4
+or IPv6 GRO size of the netdevice.
 
-Fixes: 65ab45b90656 ("ASoC: Intel: soc-acpi: Add match entries for some cs42l43 laptops")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20241001061738.34854-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+We later add a netif_get_gso_max_size() equivalent as well for GSO, so that
+these helpers can be used consistently instead of open-coded checks.
+
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240923212242.15669-1-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: e609c959a939 ("net: Fix gso_features_check to check for both dev->gso_{ipv4_,}max_size")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-rpl-match.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/netdevice.h | 9 +++++++++
+ net/core/gro.c            | 9 ++-------
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-rpl-match.c b/sound/soc/intel/common/soc-acpi-intel-rpl-match.c
-index bc8817633b81b..b83ac2e6337cf 100644
---- a/sound/soc/intel/common/soc-acpi-intel-rpl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-rpl-match.c
-@@ -198,6 +198,7 @@ static const struct snd_soc_acpi_link_adr rpl_cs42l43_l0[] = {
- 		.num_adr = ARRAY_SIZE(cs42l43_0_adr),
- 		.adr_d = cs42l43_0_adr,
- 	},
-+	{}
- };
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index d20c6c99eb887..84a445ca4749a 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5000,6 +5000,15 @@ void netif_set_tso_max_segs(struct net_device *dev, unsigned int segs);
+ void netif_inherit_tso_max(struct net_device *to,
+ 			   const struct net_device *from);
  
- static const struct snd_soc_acpi_link_adr rpl_sdca_3_in_1[] = {
++static inline unsigned int
++netif_get_gro_max_size(const struct net_device *dev, const struct sk_buff *skb)
++{
++	/* pairs with WRITE_ONCE() in netif_set_gro(_ipv4)_max_size() */
++	return skb->protocol == htons(ETH_P_IPV6) ?
++	       READ_ONCE(dev->gro_max_size) :
++	       READ_ONCE(dev->gro_ipv4_max_size);
++}
++
+ static inline bool netif_is_macsec(const struct net_device *dev)
+ {
+ 	return dev->priv_flags & IFF_MACSEC;
+diff --git a/net/core/gro.c b/net/core/gro.c
+index b3b43de1a6502..87708483a5f46 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -98,7 +98,6 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+ 	unsigned int headlen = skb_headlen(skb);
+ 	unsigned int len = skb_gro_len(skb);
+ 	unsigned int delta_truesize;
+-	unsigned int gro_max_size;
+ 	unsigned int new_truesize;
+ 	struct sk_buff *lp;
+ 	int segs;
+@@ -112,12 +111,8 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+ 	if (p->pp_recycle != skb->pp_recycle)
+ 		return -ETOOMANYREFS;
+ 
+-	/* pairs with WRITE_ONCE() in netif_set_gro(_ipv4)_max_size() */
+-	gro_max_size = p->protocol == htons(ETH_P_IPV6) ?
+-			READ_ONCE(p->dev->gro_max_size) :
+-			READ_ONCE(p->dev->gro_ipv4_max_size);
+-
+-	if (unlikely(p->len + len >= gro_max_size || NAPI_GRO_CB(skb)->flush))
++	if (unlikely(p->len + len >= netif_get_gro_max_size(p->dev, p) ||
++		     NAPI_GRO_CB(skb)->flush))
+ 		return -E2BIG;
+ 
+ 	if (unlikely(p->len + len >= GRO_LEGACY_MAX_SIZE)) {
 -- 
 2.43.0
 
