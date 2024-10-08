@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-82635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56746994DB9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D31994FC6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D76491F23F04
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:08:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C79F2881A3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1A31DEFC6;
-	Tue,  8 Oct 2024 13:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1500A1DF753;
+	Tue,  8 Oct 2024 13:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9OQEYv7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZI4t7I+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D7A1DE4CD;
-	Tue,  8 Oct 2024 13:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F311DEFED;
+	Tue,  8 Oct 2024 13:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392914; cv=none; b=u3amHcjgh93ifngspRqnAooI6TxhPIX1fVyqVq9l5w0uheWF9LDyIk3w1StfHTujrbJ3cI4YfaBru34RweUXpjIOUqo5VL3ja+Y5vp+yZIhC5XEK/ckRo5Bl6BPEiLA865o9cYH+Qey9WRHP/zQTFrXUxh1XQXZ9j0lYPAb6PIg=
+	t=1728394080; cv=none; b=EvKnLyWCNUzIWm2DTJPUDskA9kk8u4id2viTAa5kl+97ZI3Guaeo0E05krcY7UcoPG4u1EZkmHkWMe6xcJU4aZu4+WsOE19yMSgBcdeiBwaMEhH4zwenuMaqpzHzG1Tq6DgpdXaAf3/jtLRv5F7FnApetP2hNuZ8tNNdd6rynRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392914; c=relaxed/simple;
-	bh=S3Ufw2b6YTC8P0fFhVIgVSAaJBXGtRuC3SJ8pWxZnHw=;
+	s=arc-20240116; t=1728394080; c=relaxed/simple;
+	bh=nO0AtGeNoaPNV0QkhPjw5l2DaZTTxx93l62RvcqqGmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjLc85Nxwz73xLj8wPnpusJRWMdaoBgALaDkx5F+tDTAo1Hk7A4LnFZqtGLsPVQIsWSgkAhJZQM2aTVasw75Q5rugz9XctDH415YiQh/SkN9s+7VLVCIrlLQUDkNdEZvj2mWXJQaQEfWNnTj4/b8Xo8AgJTjUShlc7xbwr2W2mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9OQEYv7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57296C4CEC7;
-	Tue,  8 Oct 2024 13:08:33 +0000 (UTC)
+	 MIME-Version; b=ntaQGCbyuNjraJtXWhiCXtqBklCLf/mu6PYrN5iIgh92wxHRjqZmCl/hg51eHrsxg+TNKph1rHHntbZzVSH6X6v2JLRqbSy5zsbBj7BDH5GC/b7WGo7HOHIA9u+Q5PldAiQW4vdM8OpX1XdsddZb2SZBsldQ2mk/WnptwSl+FNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZI4t7I+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AF8C4CEC7;
+	Tue,  8 Oct 2024 13:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392914;
-	bh=S3Ufw2b6YTC8P0fFhVIgVSAaJBXGtRuC3SJ8pWxZnHw=;
+	s=korg; t=1728394080;
+	bh=nO0AtGeNoaPNV0QkhPjw5l2DaZTTxx93l62RvcqqGmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9OQEYv7fECctq5UScuGPCJXeZx8iIhYqHe2WD+SNbfhlPCn0rKHsoWSK+B5JHxeP
-	 b9YMyjq6TGzhuHfEyoSDkWVUJI6MEq0iBaQhEe7gGjRb/87PetwryDlg8zBgDW1eYl
-	 XDa6XaYK7rOP3Du/zd05FxNYO1YS+63Kvj0XlS2s=
+	b=AZI4t7I+r+Zk3iN6KS1gepJR+r0rAcf+RG2dMnCfrPYGLjH5O9i8dDYboc/yrRNhl
+	 giHDbaK3uyiGebT2dcKHsI04sF17jHsgiYP14oZkdb4NFJftuJzQ5nPVUtKHZx+Gsf
+	 JbPxRhxIY1L4cps6BVPDSpLdYatW4Z1zovbYqPDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Matt Fleming <matt@readmodwrite.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Stephane Eranian <eranian@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.11 557/558] perf report: Fix segfault when sym sort key is not used
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Jann Horn <jannh@google.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 342/386] lib/buildid: harden build ID parsing logic
 Date: Tue,  8 Oct 2024 14:09:47 +0200
-Message-ID: <20241008115724.150641144@linuxfoundation.org>
+Message-ID: <20241008115642.841117649@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +65,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 9af2efee41b27a0f386fb5aa95d8d0b4b5d9fede upstream.
+[ Upstream commit 905415ff3ffb1d7e5afa62bacabd79776bd24606 ]
 
-The fields in the hist_entry are filled on-demand which means they only
-have meaningful values when relevant sort keys are used.
+Harden build ID parsing logic, adding explicit READ_ONCE() where it's
+important to have a consistent value read and validated just once.
 
-So if neither of 'dso' nor 'sym' sort keys are used, the map/symbols in
-the hist entry can be garbage.  So it shouldn't access it
-unconditionally.
+Also, as pointed out by Andi Kleen, we need to make sure that entire ELF
+note is within a page bounds, so move the overflow check up and add an
+extra note_size boundaries validation.
 
-I got a segfault, when I wanted to see cgroup profiles.
+Fixes tag below points to the code that moved this code into
+lib/buildid.c, and then subsequently was used in perf subsystem, making
+this code exposed to perf_event_open() users in v5.12+.
 
-  $ sudo perf record -a --all-cgroups --synth=cgroup true
-
-  $ sudo perf report -s cgroup
-
-  Program received signal SIGSEGV, Segmentation fault.
-  0x00005555557a8d90 in map__dso (map=0x0) at util/map.h:48
-  48		return RC_CHK_ACCESS(map)->dso;
-  (gdb) bt
-  #0  0x00005555557a8d90 in map__dso (map=0x0) at util/map.h:48
-  #1  0x00005555557aa39b in map__load (map=0x0) at util/map.c:344
-  #2  0x00005555557aa592 in map__find_symbol (map=0x0, addr=140736115941088) at util/map.c:385
-  #3  0x00005555557ef000 in hists__findnew_entry (hists=0x555556039d60, entry=0x7fffffffa4c0, al=0x7fffffffa8c0, sample_self=true)
-      at util/hist.c:644
-  #4  0x00005555557ef61c in __hists__add_entry (hists=0x555556039d60, al=0x7fffffffa8c0, sym_parent=0x0, bi=0x0, mi=0x0, ki=0x0,
-      block_info=0x0, sample=0x7fffffffaa90, sample_self=true, ops=0x0) at util/hist.c:761
-  #5  0x00005555557ef71f in hists__add_entry (hists=0x555556039d60, al=0x7fffffffa8c0, sym_parent=0x0, bi=0x0, mi=0x0, ki=0x0,
-      sample=0x7fffffffaa90, sample_self=true) at util/hist.c:779
-  #6  0x00005555557f00fb in iter_add_single_normal_entry (iter=0x7fffffffa900, al=0x7fffffffa8c0) at util/hist.c:1015
-  #7  0x00005555557f09a7 in hist_entry_iter__add (iter=0x7fffffffa900, al=0x7fffffffa8c0, max_stack_depth=127, arg=0x7fffffffbce0)
-      at util/hist.c:1260
-  #8  0x00005555555ba7ce in process_sample_event (tool=0x7fffffffbce0, event=0x7ffff7c14128, sample=0x7fffffffaa90, evsel=0x555556039ad0,
-      machine=0x5555560388e8) at builtin-report.c:334
-  #9  0x00005555557b30c8 in evlist__deliver_sample (evlist=0x555556039010, tool=0x7fffffffbce0, event=0x7ffff7c14128,
-      sample=0x7fffffffaa90, evsel=0x555556039ad0, machine=0x5555560388e8) at util/session.c:1232
-  #10 0x00005555557b32bc in machines__deliver_event (machines=0x5555560388e8, evlist=0x555556039010, event=0x7ffff7c14128,
-      sample=0x7fffffffaa90, tool=0x7fffffffbce0, file_offset=110888, file_path=0x555556038ff0 "perf.data") at util/session.c:1271
-  #11 0x00005555557b3848 in perf_session__deliver_event (session=0x5555560386d0, event=0x7ffff7c14128, tool=0x7fffffffbce0,
-      file_offset=110888, file_path=0x555556038ff0 "perf.data") at util/session.c:1354
-  #12 0x00005555557affaf in ordered_events__deliver_event (oe=0x555556038e60, event=0x555556135aa0) at util/session.c:132
-  #13 0x00005555557bb605 in do_flush (oe=0x555556038e60, show_progress=false) at util/ordered-events.c:245
-  #14 0x00005555557bb95c in __ordered_events__flush (oe=0x555556038e60, how=OE_FLUSH__ROUND, timestamp=0) at util/ordered-events.c:324
-  #15 0x00005555557bba46 in ordered_events__flush (oe=0x555556038e60, how=OE_FLUSH__ROUND) at util/ordered-events.c:342
-  #16 0x00005555557b1b3b in perf_event__process_finished_round (tool=0x7fffffffbce0, event=0x7ffff7c15bb8, oe=0x555556038e60)
-      at util/session.c:780
-  #17 0x00005555557b3b27 in perf_session__process_user_event (session=0x5555560386d0, event=0x7ffff7c15bb8, file_offset=117688,
-      file_path=0x555556038ff0 "perf.data") at util/session.c:1406
-
-As you can see the entry->ms.map was NULL even if he->ms.map has a
-value.  This is because 'sym' sort key is not given, so it cannot assume
-whether he->ms.sym and entry->ms.sym is the same.  I only checked the
-'sym' sort key here as it implies 'dso' behavior (so maps are the same).
-
-Fixes: ac01c8c4246546fd ("perf hist: Update hist symbol when updating maps")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Matt Fleming <matt@readmodwrite.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: https://lore.kernel.org/r/20240826221045.1202305-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
+Reviewed-by: Jann Horn <jannh@google.com>
+Suggested-by: Andi Kleen <ak@linux.intel.com>
+Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20240829174232.3133883-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hist.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/buildid.c | 76 +++++++++++++++++++++++++++++----------------------
+ 1 file changed, 44 insertions(+), 32 deletions(-)
 
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -636,7 +636,7 @@ static struct hist_entry *hists__findnew
- 			 * mis-adjust symbol addresses when computing
- 			 * the history counter to increment.
- 			 */
--			if (he->ms.map != entry->ms.map) {
-+			if (hists__has(hists, sym) && he->ms.map != entry->ms.map) {
- 				if (he->ms.sym) {
- 					u64 addr = he->ms.sym->start;
- 					he->ms.sym = map__find_symbol(entry->ms.map, addr);
+diff --git a/lib/buildid.c b/lib/buildid.c
+index cdc0950f73843..d3bc3d0528d5c 100644
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_id,
+ 			      const void *note_start,
+ 			      Elf32_Word note_size)
+ {
+-	Elf32_Word note_offs = 0, new_offs;
+-
+-	while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
+-		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_offs);
++	const char note_name[] = "GNU";
++	const size_t note_name_sz = sizeof(note_name);
++	u64 note_off = 0, new_off, name_sz, desc_sz;
++	const char *data;
++
++	while (note_off + sizeof(Elf32_Nhdr) < note_size &&
++	       note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
++		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_off);
++
++		name_sz = READ_ONCE(nhdr->n_namesz);
++		desc_sz = READ_ONCE(nhdr->n_descsz);
++
++		new_off = note_off + sizeof(Elf32_Nhdr);
++		if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_off) ||
++		    check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_off) ||
++		    new_off > note_size)
++			break;
+ 
+ 		if (nhdr->n_type == BUILD_ID &&
+-		    nhdr->n_namesz == sizeof("GNU") &&
+-		    !strcmp((char *)(nhdr + 1), "GNU") &&
+-		    nhdr->n_descsz > 0 &&
+-		    nhdr->n_descsz <= BUILD_ID_SIZE_MAX) {
+-			memcpy(build_id,
+-			       note_start + note_offs +
+-			       ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhdr),
+-			       nhdr->n_descsz);
+-			memset(build_id + nhdr->n_descsz, 0,
+-			       BUILD_ID_SIZE_MAX - nhdr->n_descsz);
++		    name_sz == note_name_sz &&
++		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
++		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
++			data = note_start + note_off + ALIGN(note_name_sz, 4);
++			memcpy(build_id, data, desc_sz);
++			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
+ 			if (size)
+-				*size = nhdr->n_descsz;
++				*size = desc_sz;
+ 			return 0;
+ 		}
+-		new_offs = note_offs + sizeof(Elf32_Nhdr) +
+-			ALIGN(nhdr->n_namesz, 4) + ALIGN(nhdr->n_descsz, 4);
+-		if (new_offs <= note_offs)  /* overflow */
+-			break;
+-		note_offs = new_offs;
++
++		note_off = new_off;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -71,7 +77,7 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
+ {
+ 	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)page_addr;
+ 	Elf32_Phdr *phdr;
+-	int i;
++	__u32 i, phnum;
+ 
+ 	/*
+ 	 * FIXME
+@@ -80,18 +86,19 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
+ 	 */
+ 	if (ehdr->e_phoff != sizeof(Elf32_Ehdr))
+ 		return -EINVAL;
++
++	phnum = READ_ONCE(ehdr->e_phnum);
+ 	/* only supports phdr that fits in one page */
+-	if (ehdr->e_phnum >
+-	    (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
++	if (phnum > (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
+ 		return -EINVAL;
+ 
+ 	phdr = (Elf32_Phdr *)(page_addr + sizeof(Elf32_Ehdr));
+ 
+-	for (i = 0; i < ehdr->e_phnum; ++i) {
++	for (i = 0; i < phnum; ++i) {
+ 		if (phdr[i].p_type == PT_NOTE &&
+ 		    !parse_build_id(page_addr, build_id, size,
+-				    page_addr + phdr[i].p_offset,
+-				    phdr[i].p_filesz))
++				    page_addr + READ_ONCE(phdr[i].p_offset),
++				    READ_ONCE(phdr[i].p_filesz)))
+ 			return 0;
+ 	}
+ 	return -EINVAL;
+@@ -103,7 +110,7 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
+ {
+ 	Elf64_Ehdr *ehdr = (Elf64_Ehdr *)page_addr;
+ 	Elf64_Phdr *phdr;
+-	int i;
++	__u32 i, phnum;
+ 
+ 	/*
+ 	 * FIXME
+@@ -112,18 +119,19 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
+ 	 */
+ 	if (ehdr->e_phoff != sizeof(Elf64_Ehdr))
+ 		return -EINVAL;
++
++	phnum = READ_ONCE(ehdr->e_phnum);
+ 	/* only supports phdr that fits in one page */
+-	if (ehdr->e_phnum >
+-	    (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
++	if (phnum > (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
+ 		return -EINVAL;
+ 
+ 	phdr = (Elf64_Phdr *)(page_addr + sizeof(Elf64_Ehdr));
+ 
+-	for (i = 0; i < ehdr->e_phnum; ++i) {
++	for (i = 0; i < phnum; ++i) {
+ 		if (phdr[i].p_type == PT_NOTE &&
+ 		    !parse_build_id(page_addr, build_id, size,
+-				    page_addr + phdr[i].p_offset,
+-				    phdr[i].p_filesz))
++				    page_addr + READ_ONCE(phdr[i].p_offset),
++				    READ_ONCE(phdr[i].p_filesz)))
+ 			return 0;
+ 	}
+ 	return -EINVAL;
+@@ -152,6 +160,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
+ 	page = find_get_page(vma->vm_file->f_mapping, 0);
+ 	if (!page)
+ 		return -EFAULT;	/* page not mapped */
++	if (!PageUptodate(page)) {
++		put_page(page);
++		return -EFAULT;
++	}
+ 
+ 	ret = -EINVAL;
+ 	page_addr = kmap_atomic(page);
+-- 
+2.43.0
+
 
 
 
