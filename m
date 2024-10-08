@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6AC99493B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97FF994BE2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274F41F25E91
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD921F289C0
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4831DF25A;
-	Tue,  8 Oct 2024 12:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B430183CB8;
+	Tue,  8 Oct 2024 12:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhPafhr6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQoZ+FfR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1002A1DEFE1;
-	Tue,  8 Oct 2024 12:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4841DE2A5;
+	Tue,  8 Oct 2024 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390045; cv=none; b=SnJKOT6a5KFIYbG4VQ9Gx5ujRcpw5hIqgGwRGfrpDonYXk+GMII3mxdT5omlJl8CnE439kmvhpCv5A08MqeLnDI3ERIo4hwW3dnZiUp1EzzxoWY5d/QcYGbr/cbj+R5325uhnebWkg43uD7ItBq7cFkPNt40SE3RcQzkAcwOgs0=
+	t=1728391672; cv=none; b=t6y61ak8iRiuOXXwbwOvvR0NtXCeU/YLttyvdMrFElRZjxV0sV/JrzLrcbKjo+WdVgJpAIsPLwmqKRml5481uGZnwl+cfdorxAdFgRlI3PMjvQcRcuTe1iVLvkvLMA98g86/04rjPPY+bv290smfoy55JhfAImz+nSBL5lip2MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390045; c=relaxed/simple;
-	bh=EXOodgjms/EJcfQ4a4It5WHraUhcfnTODOj4DRl+4z0=;
+	s=arc-20240116; t=1728391672; c=relaxed/simple;
+	bh=15+HR1J95+WhQA+1Tg2FaXec+gu/sOBh5CNHVU+3jZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sPKc/YfzcCd+wmDVEcg0at7lbxz394LgHdiUT5RFAR9s0RfDwxgN8AmBZvOUtYUdoeigbtN6g9Y/KR7k6WLRrUDqg+9TMmlsmcDu37gf686S5+eMiBAbOBi+Sig1txQmjLjChKB1Bpc4RsJ38M6DQq+QBPPxYF9ak/Lz6/kC4CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhPafhr6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7566AC4CEC7;
-	Tue,  8 Oct 2024 12:20:44 +0000 (UTC)
+	 MIME-Version; b=f6ZnK1DIS5k/H/6G2rFvAC7ICa1jZ3azL8vvxJq691RFRaPWKCKFQ0w1uDFtnnz3ty+/qYvOdbsVfTa0QfmQobtHf3FbV7Ty3w3FYauSXLDesrtUo9yBpQ1mzT1t6/cyKjsvGhYQpNObNYqsUi1ltBJddPLAg8Khbc+OdVZzjVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQoZ+FfR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D611C4CEC7;
+	Tue,  8 Oct 2024 12:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390044;
-	bh=EXOodgjms/EJcfQ4a4It5WHraUhcfnTODOj4DRl+4z0=;
+	s=korg; t=1728391672;
+	bh=15+HR1J95+WhQA+1Tg2FaXec+gu/sOBh5CNHVU+3jZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhPafhr6ZtrZ817IJg/+TnP/T285KItXNTrKa0AbBCpyHeNvRrUdW/e9iHzh9D0na
-	 cd26/O8TowB3k4LzwlDue0/ryFUW/gs8tE+fi/lYee9xxOmdImrm8ayqKY/sxftdE9
-	 VMr5qAYG3n4Bl5S1e+aoTMfwB4QdAUsGGfpBUsOI=
+	b=GQoZ+FfR9sS3puCQpdyKBLFsqHMaLOJw1yaH44PT1ue0o0gibRyyZA6Pi/UiXTdZi
+	 X1W4MNgydrsOdobNf65h8k8ZIFjRRLMZmbTKeEpPAS/FbGNQwhEcA1hvr31xv7AMW5
+	 k0mo7VyyzFTEpICqiq2OJV0ubKFxwE+oLcRmgqdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willy Tarreau <w@1wt.eu>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Denis Pauk <pauk.denis@gmail.com>,
+	Attila <attila@fulop.one>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 156/482] tools/nolibc: powerpc: limit stack-protector workaround to GCC
+Subject: [PATCH 6.11 189/558] hwmon: (nct6775) add G15CF to ASUS WMI monitoring list
 Date: Tue,  8 Oct 2024 14:03:39 +0200
-Message-ID: <20241008115654.445934050@linuxfoundation.org>
+Message-ID: <20241008115709.787480035@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Denis Pauk <pauk.denis@gmail.com>
 
-[ Upstream commit 1daea158d0aae0770371f3079305a29fdb66829e ]
+[ Upstream commit 1f432e4cf1dd3ecfec5ed80051b4611632a0fd51 ]
 
-As mentioned in the comment, the workaround for
-__attribute__((no_stack_protector)) is only necessary on GCC.
-Avoid applying the workaround on clang, as clang does not recognize
-__attribute__((__optimize__)) and would fail.
+Boards G15CF has got a nct6775 chip, but by default there's no use of it
+because of resource conflict with WMI method.
 
-Acked-by: Willy Tarreau <w@1wt.eu>
-Link: https://lore.kernel.org/r/20240807-nolibc-llvm-v2-3-c20f2f5fc7c2@weissschuh.net
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Add the board to the WMI monitoring list.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
+Signed-off-by: Denis Pauk <pauk.denis@gmail.com>
+Tested-by: Attila <attila@fulop.one>
+Message-ID: <20240812152652.1303-1-pauk.denis@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/arch-powerpc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/nct6775-platform.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/include/nolibc/arch-powerpc.h b/tools/include/nolibc/arch-powerpc.h
-index ac212e6185b26..41ebd394b90c7 100644
---- a/tools/include/nolibc/arch-powerpc.h
-+++ b/tools/include/nolibc/arch-powerpc.h
-@@ -172,7 +172,7 @@
- 	_ret;                                                                \
- })
- 
--#ifndef __powerpc64__
-+#if !defined(__powerpc64__) && !defined(__clang__)
- /* FIXME: For 32-bit PowerPC, with newer gcc compilers (e.g. gcc 13.1.0),
-  * "omit-frame-pointer" fails with __attribute__((no_stack_protector)) but
-  * works with __attribute__((__optimize__("-fno-stack-protector")))
+diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
+index 9aa4dcf4a6f33..096f1daa8f2bc 100644
+--- a/drivers/hwmon/nct6775-platform.c
++++ b/drivers/hwmon/nct6775-platform.c
+@@ -1269,6 +1269,7 @@ static const char * const asus_msi_boards[] = {
+ 	"EX-B760M-V5 D4",
+ 	"EX-H510M-V3",
+ 	"EX-H610M-V3 D4",
++	"G15CF",
+ 	"PRIME A620M-A",
+ 	"PRIME B560-PLUS",
+ 	"PRIME B560-PLUS AC-HES",
 -- 
 2.43.0
 
