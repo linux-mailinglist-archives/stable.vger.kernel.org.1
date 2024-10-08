@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EBE994DDA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:10:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F19994ADA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51E8EB231B8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80631281258
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184D91DED47;
-	Tue,  8 Oct 2024 13:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D221DE890;
+	Tue,  8 Oct 2024 12:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4NHuFrn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXY3A3rC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47B81DE4CD;
-	Tue,  8 Oct 2024 13:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4591D27B3;
+	Tue,  8 Oct 2024 12:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392735; cv=none; b=ArdGJ2j/6NkFbd+yV4qkAd/5gRm3F8pNWRkETkNwJqp4GuMpztB9s52s4OLSBZSQC6tL9DedPkZ7h4BJuo+sa2kfjQLx0xNK0g7XIz40aB4TEghxt+2sdH77uEJwaZ2ET7FC+1hX2tsoybzc03LlW0/B4iUUJvFh3LIsmA/0pjo=
+	t=1728391034; cv=none; b=LvJwnkmSYWVwf3mIiphK8Q4BO+aKgPI+L0XOTSJsEQergLl5q1aMjhlu4GX5v6sl6PaUMpD3d0YJwmwN/VP1zioYSoPCfOtZXoBHM0TtMor9Mm3nl+9+KnOiV2rpwcsQHkwnMeRa4TkdDfdcxw8BtlNUm+seyCUoXjhGftQYwEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392735; c=relaxed/simple;
-	bh=hp1VfcAkFHtnpgBbsopyMJ2f1zrwropBUS9WIlYs4CE=;
+	s=arc-20240116; t=1728391034; c=relaxed/simple;
+	bh=QwMg0mFjOhLGhKCztMeYLRN9v/MzOxMpLKzj3VpWu8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkRDt0gvjEuldOJv1/VsPBLhBp661VeR3ABguOqkd88owxUD99omx5h/1Yn1nX6As+Kcnw7vNDqy+aP61MdO45Nl4u23PpDPNVHaDeHMa+j6lut6Lg1kJnvSsf63AR06lUwUuX+TpBKsMfnAZ4mnF0vJMsFyjkbwab3R8qKpKgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4NHuFrn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3F7C4CEC7;
-	Tue,  8 Oct 2024 13:05:34 +0000 (UTC)
+	 MIME-Version; b=BiZqQ2KsvPhDsKftL4kAGMb3Bn8oqtkdxYxuh5f2UA3ovF8jJf8QjixS8PUIRyjcaRnrKOvuiLrAAcOF+8KFA8XalNsybN/HEU8TLMN0DTPzBHxy70EgCCgh3IuC+eYxNm9y6MbUVEXRP7ZFyM6UJR7gE9Ks92PMnc5RrFhJhX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXY3A3rC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73032C4CEC7;
+	Tue,  8 Oct 2024 12:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392735;
-	bh=hp1VfcAkFHtnpgBbsopyMJ2f1zrwropBUS9WIlYs4CE=;
+	s=korg; t=1728391033;
+	bh=QwMg0mFjOhLGhKCztMeYLRN9v/MzOxMpLKzj3VpWu8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4NHuFrneGNPVJAE8RAGZjlThUsmt2vRn5Q8f/2Z8PAGmm7jv/rBzysDla4LBrnpO
-	 R6uCPU+Q4mWZrCYtovsIn1EnguFovMAfcucE8wUjpfX5rb7hl3bsLEaWf9Xe9Fpf8M
-	 0ebemtTZoxZeOWD/47zok9POPi3jpv86zOYRSYMY=
+	b=PXY3A3rCubp+BeaLIz/nfJzUMRGf2lcY3Gi5MVolnxwNWL6ndF5Khzf2NMkF4caBd
+	 T2cVKp48YsOaXwXQPg4OtY+di7kCM2DurSQkNOLLP06EL0QFUoNVvihhJILYxGxf3Y
+	 Ub0f7u1TP7LJL/3CqOPeyOj3jMm8U7Q1uAhK1xeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Keerthy <j-keerthy@ti.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.11 503/558] gpio: davinci: fix lazy disable
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 470/482] r8169: add tally counter fields added with RTL8125
 Date: Tue,  8 Oct 2024 14:08:53 +0200
-Message-ID: <20241008115722.026749883@linuxfoundation.org>
+Message-ID: <20241008115707.009222098@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 3360d41f4ac490282fddc3ccc0b58679aa5c065d upstream.
+[ Upstream commit ced8e8b8f40accfcce4a2bbd8b150aa76d5eff9a ]
 
-On a few platforms such as TI's AM69 device, disable_irq() fails to keep
-track of the interrupts that happen between disable_irq() and
-enable_irq() and those interrupts are missed. Use the ->irq_unmask() and
-->irq_mask() methods instead of ->irq_enable() and ->irq_disable() to
-correctly keep track of edges when disable_irq is called.
+RTL8125 added fields to the tally counter, what may result in the chip
+dma'ing these new fields to unallocated memory. Therefore make sure
+that the allocated memory area is big enough to hold all of the
+tally counter values, even if we use only parts of it.
 
-This solves the issue of disable_irq() not working as expected on such
-platforms.
-
-Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
-Acked-by: Keerthy <j-keerthy@ti.com>
+Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240828133207.493961-1-parth105105@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/741d26a9-2b2b-485d-91d9-ecb302e345b5@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-davinci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 27 +++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/gpio/gpio-davinci.c
-+++ b/drivers/gpio/gpio-davinci.c
-@@ -289,7 +289,7 @@ static int davinci_gpio_probe(struct pla
-  * serve as EDMA event triggers.
-  */
- 
--static void gpio_irq_disable(struct irq_data *d)
-+static void gpio_irq_mask(struct irq_data *d)
- {
- 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
- 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
-@@ -298,7 +298,7 @@ static void gpio_irq_disable(struct irq_
- 	writel_relaxed(mask, &g->clr_rising);
- }
- 
--static void gpio_irq_enable(struct irq_data *d)
-+static void gpio_irq_unmask(struct irq_data *d)
- {
- 	struct davinci_gpio_regs __iomem *g = irq2regs(d);
- 	uintptr_t mask = (uintptr_t)irq_data_get_irq_handler_data(d);
-@@ -324,8 +324,8 @@ static int gpio_irq_type(struct irq_data
- 
- static struct irq_chip gpio_irqchip = {
- 	.name		= "GPIO",
--	.irq_enable	= gpio_irq_enable,
--	.irq_disable	= gpio_irq_disable,
-+	.irq_unmask	= gpio_irq_unmask,
-+	.irq_mask	= gpio_irq_mask,
- 	.irq_set_type	= gpio_irq_type,
- 	.flags		= IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE,
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index aa6a73882f914..f5396aafe9ab6 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -577,6 +577,33 @@ struct rtl8169_counters {
+ 	__le32	rx_multicast;
+ 	__le16	tx_aborted;
+ 	__le16	tx_underrun;
++	/* new since RTL8125 */
++	__le64 tx_octets;
++	__le64 rx_octets;
++	__le64 rx_multicast64;
++	__le64 tx_unicast64;
++	__le64 tx_broadcast64;
++	__le64 tx_multicast64;
++	__le32 tx_pause_on;
++	__le32 tx_pause_off;
++	__le32 tx_pause_all;
++	__le32 tx_deferred;
++	__le32 tx_late_collision;
++	__le32 tx_all_collision;
++	__le32 tx_aborted32;
++	__le32 align_errors32;
++	__le32 rx_frame_too_long;
++	__le32 rx_runt;
++	__le32 rx_pause_on;
++	__le32 rx_pause_off;
++	__le32 rx_pause_all;
++	__le32 rx_unknown_opcode;
++	__le32 rx_mac_error;
++	__le32 tx_underrun32;
++	__le32 rx_mac_missed;
++	__le32 rx_tcam_dropped;
++	__le32 tdu;
++	__le32 rdu;
  };
+ 
+ struct rtl8169_tc_offsets {
+-- 
+2.43.0
+
 
 
 
