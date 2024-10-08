@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-81879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8249949ED
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB53994E46
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7941F1F256CD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E18DF1C251DD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CCA1DF96C;
-	Tue,  8 Oct 2024 12:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9751DF25B;
+	Tue,  8 Oct 2024 13:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fvv21FzU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fy+OKvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3C81DF756;
-	Tue,  8 Oct 2024 12:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB321DFD1;
+	Tue,  8 Oct 2024 13:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390443; cv=none; b=QA8042rqLNOznCrn+HFOoskBPc2ga6xhYWuE+TgS1B4lXxpzt2a/DakHfKiKDixaA0OyH0+QnJSOy2vLmoNj3O0eP3UGrRtPLuDNOZYvm882E9BXQB6JCSrV2RlhVfDp2GxB+M9WILVi2kBB+MYExGWtF9ocdxIkP7Z9l4FzMVw=
+	t=1728393290; cv=none; b=gaDUdW9PZJc2ua1HIp82PVZqVd5cxhmiLEVTwelrpF62iQZoCJ5qAdC6XSUEncT7LtApkq6TGQTUGY3SKTAiaPxAHASv95A8ZlmJWqDIdA6Jsf2fPnZyx1uO1qAFWcC5HFZODDPQTnmXsdstA2Ev49WohXrsuSgXhPsXIQRoPPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390443; c=relaxed/simple;
-	bh=eAmXXCWeNK6vyitEk9YLt4udp+KBflTywJ7G5KZp3vE=;
+	s=arc-20240116; t=1728393290; c=relaxed/simple;
+	bh=VwLXGnTasct4wEBMuTusf4lkOJ7WC7+2/bap9Bzf58A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riW01pX0yUPRUb44nVeSLLKuh0N+IqQEnGxvbDhZjOD+6QReuRqNrxZZV4lSKce+AWk2EFcMe2EPwfCy9q6tuDcHNw1CwJJF8KloYO/d+aNFC+NATPslVqUWJfP24wrbDv4MgmQc0gqMWOurqCHEegobIcbMVwKCQU13+kAcnyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fvv21FzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D1EC4CEC7;
-	Tue,  8 Oct 2024 12:27:23 +0000 (UTC)
+	 MIME-Version; b=n9fG/LT7uHjnPXQs8eHj6EprLJUfm5UYT0iTn4bb8iUNoBJh1N22uqcQkKnLauaSsQgDFy76OaihvGoyOwTD1/hAqF89aNRN/tKw8SgwyT/Q6VITNqMJmnAsCxCX0w4zdiMLgqi3e8mERNq0AnXngnJaOUUrUxoUwEFIhhGt4Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fy+OKvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2B5C4CEC7;
+	Tue,  8 Oct 2024 13:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390443;
-	bh=eAmXXCWeNK6vyitEk9YLt4udp+KBflTywJ7G5KZp3vE=;
+	s=korg; t=1728393290;
+	bh=VwLXGnTasct4wEBMuTusf4lkOJ7WC7+2/bap9Bzf58A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fvv21FzUG76DG+I2P5MYTmBtNdGremObOeWz99AmtriKAzgE9IQijAqW2C4ieMuLT
-	 Q9H+D/+VdtsJbv0Y1FSo4Jo39UGy+nmzQB+ocbhW6J9nZemJU64++B55DDj+UDqzq9
-	 3WZcOuxqyMLk31BcQLZyExL0GCrDKblafxrWxY2A=
+	b=0fy+OKvp0ols211CrMVrjz7f7I4b/yWW7BNK2c2XYgxedfs3zQqXMsxwajjOT88xl
+	 BjqsiYeNcInaDw5PWnrCfrapGVpujJQSSl39aVCT4wZogEGimTz2Wyqe9TXUzBz1xI
+	 WuVPczH06yLbFWvzyEP4fTk7C3XOGyBWe92bb5TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.10 289/482] platform/x86: x86-android-tablets: Fix use after free on platform_device_register() errors
-Date: Tue,  8 Oct 2024 14:05:52 +0200
-Message-ID: <20241008115659.651635125@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 108/386] x86/ioapic: Handle allocation failures gracefully
+Date: Tue,  8 Oct 2024 14:05:53 +0200
+Message-ID: <20241008115633.692296926@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 2fae3129c0c08e72b1fe93e61fd8fd203252094a upstream.
+[ Upstream commit 830802a0fea8fb39d3dc9fb7d6b5581e1343eb1f ]
 
-x86_android_tablet_remove() frees the pdevs[] array, so it should not
-be used after calling x86_android_tablet_remove().
+Breno observed panics when using failslab under certain conditions during
+runtime:
 
-When platform_device_register() fails, store the pdevs[x] PTR_ERR() value
-into the local ret variable before calling x86_android_tablet_remove()
-to avoid using pdevs[] after it has been freed.
+   can not alloc irq_pin_list (-1,0,20)
+   Kernel panic - not syncing: IO-APIC: failed to add irq-pin. Can not proceed
 
-Fixes: 5eba0141206e ("platform/x86: x86-android-tablets: Add support for instantiating platform-devs")
-Fixes: e2200d3f26da ("platform/x86: x86-android-tablets: Add gpio_keys support to x86_android_tablet_init()")
-Cc: stable@vger.kernel.org
-Reported-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Closes: https://lore.kernel.org/platform-driver-x86/20240917120458.7300-1-a.burakov@rosalinux.ru/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241005130545.64136-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   panic+0x4e9/0x590
+   mp_irqdomain_alloc+0x9ab/0xa80
+   irq_domain_alloc_irqs_locked+0x25d/0x8d0
+   __irq_domain_alloc_irqs+0x80/0x110
+   mp_map_pin_to_irq+0x645/0x890
+   acpi_register_gsi_ioapic+0xe6/0x150
+   hpet_open+0x313/0x480
+
+That's a pointless panic which is a leftover of the historic IO/APIC code
+which panic'ed during early boot when the interrupt allocation failed.
+
+The only place which might justify panic is the PIT/HPET timer_check() code
+which tries to figure out whether the timer interrupt is delivered through
+the IO/APIC. But that code does not require to handle interrupt allocation
+failures. If the interrupt cannot be allocated then timer delivery fails
+and it either panics due to that or falls back to legacy mode.
+
+Cure this by removing the panic wrapper around __add_pin_to_irq_node() and
+making mp_irqdomain_alloc() aware of the failure condition and handle it as
+any other failure in this function gracefully.
+
+Reported-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Breno Leitao <leitao@debian.org>
+Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Link: https://lore.kernel.org/all/ZqfJmUF8sXIyuSHN@gmail.com
+Link: https://lore.kernel.org/all/20240802155440.275200843@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kernel/apic/io_apic.c | 46 ++++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 24 deletions(-)
 
---- a/drivers/platform/x86/x86-android-tablets/core.c
-+++ b/drivers/platform/x86/x86-android-tablets/core.c
-@@ -390,8 +390,9 @@ static __init int x86_android_tablet_pro
- 	for (i = 0; i < pdev_count; i++) {
- 		pdevs[i] = platform_device_register_full(&dev_info->pdev_info[i]);
- 		if (IS_ERR(pdevs[i])) {
-+			ret = PTR_ERR(pdevs[i]);
- 			x86_android_tablet_remove(pdev);
--			return PTR_ERR(pdevs[i]);
-+			return ret;
- 		}
- 	}
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 00da6cf6b07dc..d0c5325d17510 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -352,27 +352,26 @@ static void ioapic_mask_entry(int apic, int pin)
+  * shared ISA-space IRQs, so we have to support them. We are super
+  * fast in the common case, and fast for shared ISA-space IRQs.
+  */
+-static int __add_pin_to_irq_node(struct mp_chip_data *data,
+-				 int node, int apic, int pin)
++static bool add_pin_to_irq_node(struct mp_chip_data *data, int node, int apic, int pin)
+ {
+ 	struct irq_pin_list *entry;
  
-@@ -443,8 +444,9 @@ static __init int x86_android_tablet_pro
- 								  PLATFORM_DEVID_AUTO,
- 								  &pdata, sizeof(pdata));
- 		if (IS_ERR(pdevs[pdev_count])) {
-+			ret = PTR_ERR(pdevs[pdev_count]);
- 			x86_android_tablet_remove(pdev);
--			return PTR_ERR(pdevs[pdev_count]);
-+			return ret;
- 		}
- 		pdev_count++;
+-	/* don't allow duplicates */
+-	for_each_irq_pin(entry, data->irq_2_pin)
++	/* Don't allow duplicates */
++	for_each_irq_pin(entry, data->irq_2_pin) {
+ 		if (entry->apic == apic && entry->pin == pin)
+-			return 0;
++			return true;
++	}
+ 
+ 	entry = kzalloc_node(sizeof(struct irq_pin_list), GFP_ATOMIC, node);
+ 	if (!entry) {
+-		pr_err("can not alloc irq_pin_list (%d,%d,%d)\n",
+-		       node, apic, pin);
+-		return -ENOMEM;
++		pr_err("Cannot allocate irq_pin_list (%d,%d,%d)\n", node, apic, pin);
++		return false;
  	}
++
+ 	entry->apic = apic;
+ 	entry->pin = pin;
+ 	list_add_tail(&entry->list, &data->irq_2_pin);
+-
+-	return 0;
++	return true;
+ }
+ 
+ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
+@@ -387,13 +386,6 @@ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
+ 		}
+ }
+ 
+-static void add_pin_to_irq_node(struct mp_chip_data *data,
+-				int node, int apic, int pin)
+-{
+-	if (__add_pin_to_irq_node(data, node, apic, pin))
+-		panic("IO-APIC: failed to add irq-pin. Can not proceed\n");
+-}
+-
+ /*
+  * Reroute an IRQ to a different pin.
+  */
+@@ -1002,8 +994,7 @@ static int alloc_isa_irq_from_domain(struct irq_domain *domain,
+ 	if (irq_data && irq_data->parent_data) {
+ 		if (!mp_check_pin_attr(irq, info))
+ 			return -EBUSY;
+-		if (__add_pin_to_irq_node(irq_data->chip_data, node, ioapic,
+-					  info->ioapic.pin))
++		if (!add_pin_to_irq_node(irq_data->chip_data, node, ioapic, info->ioapic.pin))
+ 			return -ENOMEM;
+ 	} else {
+ 		info->flags |= X86_IRQ_ALLOC_LEGACY;
+@@ -3037,10 +3028,8 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 		return -ENOMEM;
+ 
+ 	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, info);
+-	if (ret < 0) {
+-		kfree(data);
+-		return ret;
+-	}
++	if (ret < 0)
++		goto free_data;
+ 
+ 	INIT_LIST_HEAD(&data->irq_2_pin);
+ 	irq_data->hwirq = info->ioapic.pin;
+@@ -3049,7 +3038,10 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 	irq_data->chip_data = data;
+ 	mp_irqdomain_get_attr(mp_pin_to_gsi(ioapic, pin), data, info);
+ 
+-	add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin);
++	if (!add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin)) {
++		ret = -ENOMEM;
++		goto free_irqs;
++	}
+ 
+ 	mp_preconfigure_entry(data);
+ 	mp_register_handler(virq, data->is_level);
+@@ -3064,6 +3056,12 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
+ 		    ioapic, mpc_ioapic_id(ioapic), pin, virq,
+ 		    data->is_level, data->active_low);
+ 	return 0;
++
++free_irqs:
++	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
++free_data:
++	kfree(data);
++	return ret;
+ }
+ 
+ void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
+-- 
+2.43.0
+
 
 
 
