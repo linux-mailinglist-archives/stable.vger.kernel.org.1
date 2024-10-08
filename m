@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-81737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4CDE994911
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D87994BDA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4FC1F2604A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE21028162F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7BE1DE4C9;
-	Tue,  8 Oct 2024 12:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED911DE88F;
+	Tue,  8 Oct 2024 12:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3u0mu53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzp20hQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FA33981;
-	Tue,  8 Oct 2024 12:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039D5183CB8;
+	Tue,  8 Oct 2024 12:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389965; cv=none; b=XUaDHTw78ENj1PlnfNtH+HyNPFzZ5i4oNQNLEXQBY04a+EsNW5Hn4KxRCQ5ECkzXnwprxE7SmBTzhNNuqNy0SDpj5hzWWevF1CDC5mcOls1gAUwKNfnwwKj0zkepmNv6jsyOJrbNAVIXLLkdSid3swICVB9ODRcqnCnsTth7PrQ=
+	t=1728391653; cv=none; b=cnvWUPI9EDxRneQwzROQk9qpTWxkrJZSt/aV5gOIi8xiTBYBptHUh90AXCfC9XFdgCGyKozseufjiZWej3lbZk/FLgjAJ14U0wOB6IdIsmeab8OSOtfLHaXovwSGNHUssjI3SSi3vIANAsRXqOl1KhCDDnedOjGdG1TthadFKcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389965; c=relaxed/simple;
-	bh=Ki2sKAeyOpHKrlrmeJKYOjj+5I2kpL0wMIRAe3ltauk=;
+	s=arc-20240116; t=1728391653; c=relaxed/simple;
+	bh=mQbgBMbYAWFIVABc6JkLAIBqopHHEcRBiFSIhplp+5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DyEZCZZYBKRcw2JCgWHq6YpDxWJ7wLVvqz5vtJERK1da7sNWDAQWGkR7AZ/pollm1h61lLcK/qNcP29GTh5RR1R/gRkX0/gmpaz7ExFrP2/AS8o5u6qAdj3LRSHXJ2e0bS/hB1h8/eK9RZqKrBOaVQgElrLhiYq3HYsszoI6qw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3u0mu53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E08C4CEC7;
-	Tue,  8 Oct 2024 12:19:24 +0000 (UTC)
+	 MIME-Version; b=olxVz0sg0wxxOwwZpwuAehb6iQc97bAfU4WvI9CWBuKCuKqPgA9sJEolT7OPG7n14k2AcnJXy+TMM1wKcDpRFzfnUI03q93farQ9itTxO+s2jtQaoeR3e/AXk+QmjeI3qq6XgkdlvzgD8FiSGpU2WTlmj6edBfk7aiYCPy9SH1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzp20hQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60155C4CEC7;
+	Tue,  8 Oct 2024 12:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389964;
-	bh=Ki2sKAeyOpHKrlrmeJKYOjj+5I2kpL0wMIRAe3ltauk=;
+	s=korg; t=1728391652;
+	bh=mQbgBMbYAWFIVABc6JkLAIBqopHHEcRBiFSIhplp+5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3u0mu53EiJ2mTWxQ8lHqqhrBuQRoPEOjGDVEvU6fKqkI5FqWnPNNgc+tyJHQz9bA
-	 fCFXYAfx2bPVIaK2hZm+4QPf1ByoNWq++nwHpsjdmHm+LRzDiFYwkOLbX28gedt1Vl
-	 TlQKkYLgpMmeeFaA5mMgbZhPO4eLNQzA761b1gLo=
+	b=lzp20hQzSNob8sfvu9LNrCAN96x2Ge/InAbHstqfhtAclOwxl2LbxyJjtf4l0Dt0L
+	 P/uu0cKPuhjSIrzB+qgMns2Kg0+owQ4gbSkDCltFkLD0asyT33FzpJ5WDJN/11Te5h
+	 WRF1eNXlnbF4ByOIfrUNhX9x8eFvXX3legQFvZR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 149/482] tools/x86/kcpuid: Protect against faulty "max subleaf" values
-Date: Tue,  8 Oct 2024 14:03:32 +0200
-Message-ID: <20241008115654.171041758@linuxfoundation.org>
+Subject: [PATCH 6.11 183/558] ALSA: hdsp: Break infinite MIDI input flush loop
+Date: Tue,  8 Oct 2024 14:03:33 +0200
+Message-ID: <20241008115709.554753519@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit cf96ab1a966b87b09fdd9e8cc8357d2d00776a3a ]
+[ Upstream commit c01f3815453e2d5f699ccd8c8c1f93a5b8669e59 ]
 
-Protect against the kcpuid code parsing faulty max subleaf numbers
-through a min() expression.  Thus, ensuring that max_subleaf will always
-be ≤ MAX_SUBLEAF_NUM.
+The current MIDI input flush on HDSP and HDSPM drivers relies on the
+hardware reporting the right value.  If the hardware doesn't give the
+proper value but returns -1, it may be stuck at an infinite loop.
 
-Use "u32" for the subleaf numbers since kcpuid is compiled with -Wextra,
-which includes signed/unsigned comparisons warnings.
+Add a counter and break if the loop is unexpectedly too long.
 
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20240718134755.378115-5-darwi@linutronix.de
+Link: https://patch.msgid.link/20240808091513.31380-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/arch/x86/kcpuid/kcpuid.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ sound/pci/rme9652/hdsp.c  | 6 ++++--
+ sound/pci/rme9652/hdspm.c | 6 ++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/tools/arch/x86/kcpuid/kcpuid.c b/tools/arch/x86/kcpuid/kcpuid.c
-index 24b7d017ec2c1..b7965dfff33a9 100644
---- a/tools/arch/x86/kcpuid/kcpuid.c
-+++ b/tools/arch/x86/kcpuid/kcpuid.c
-@@ -7,7 +7,8 @@
- #include <string.h>
- #include <getopt.h>
+diff --git a/sound/pci/rme9652/hdsp.c b/sound/pci/rme9652/hdsp.c
+index e7d1b43471a29..713ca262a0e97 100644
+--- a/sound/pci/rme9652/hdsp.c
++++ b/sound/pci/rme9652/hdsp.c
+@@ -1298,8 +1298,10 @@ static int snd_hdsp_midi_output_possible (struct hdsp *hdsp, int id)
  
--#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-+#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
-+#define min(a, b)	(((a) < (b)) ? (a) : (b))
- 
- typedef unsigned int u32;
- typedef unsigned long long u64;
-@@ -207,12 +208,9 @@ static void raw_dump_range(struct cpuid_range *range)
- #define MAX_SUBLEAF_NUM		32
- struct cpuid_range *setup_cpuid_range(u32 input_eax)
+ static void snd_hdsp_flush_midi_input (struct hdsp *hdsp, int id)
  {
--	u32 max_func, idx_func;
--	int subleaf;
-+	u32 max_func, idx_func, subleaf, max_subleaf;
-+	u32 eax, ebx, ecx, edx, f = input_eax;
- 	struct cpuid_range *range;
--	u32 eax, ebx, ecx, edx;
--	u32 f = input_eax;
--	int max_subleaf;
- 	bool allzero;
+-	while (snd_hdsp_midi_input_available (hdsp, id))
+-		snd_hdsp_midi_read_byte (hdsp, id);
++	int count = 256;
++
++	while (snd_hdsp_midi_input_available(hdsp, id) && --count)
++		snd_hdsp_midi_read_byte(hdsp, id);
+ }
  
- 	eax = input_eax;
-@@ -258,7 +256,7 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
- 		 * others have to be tried (0xf)
- 		 */
- 		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18)
--			max_subleaf = (eax & 0xff) + 1;
-+			max_subleaf = min((eax & 0xff) + 1, max_subleaf);
+ static int snd_hdsp_midi_output_write (struct hdsp_midi *hmidi)
+diff --git a/sound/pci/rme9652/hdspm.c b/sound/pci/rme9652/hdspm.c
+index 267c7848974ae..74215f57f4fc9 100644
+--- a/sound/pci/rme9652/hdspm.c
++++ b/sound/pci/rme9652/hdspm.c
+@@ -1838,8 +1838,10 @@ static inline int snd_hdspm_midi_output_possible (struct hdspm *hdspm, int id)
  
- 		if (f == 0xb)
- 			max_subleaf = 2;
+ static void snd_hdspm_flush_midi_input(struct hdspm *hdspm, int id)
+ {
+-	while (snd_hdspm_midi_input_available (hdspm, id))
+-		snd_hdspm_midi_read_byte (hdspm, id);
++	int count = 256;
++
++	while (snd_hdspm_midi_input_available(hdspm, id) && --count)
++		snd_hdspm_midi_read_byte(hdspm, id);
+ }
+ 
+ static int snd_hdspm_midi_output_write (struct hdspm_midi *hmidi)
 -- 
 2.43.0
 
