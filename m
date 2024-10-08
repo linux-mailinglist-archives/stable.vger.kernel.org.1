@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086B5994C3C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9104E9949C4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2017283266
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494DF283733
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932C71DE898;
-	Tue,  8 Oct 2024 12:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AA01DE8AA;
+	Tue,  8 Oct 2024 12:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjftAfl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow2lfwo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DC11CCB32;
-	Tue,  8 Oct 2024 12:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DF51E485;
+	Tue,  8 Oct 2024 12:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391924; cv=none; b=CzcufMQAgZ2lSeDh5l8CUZpf3f8Y5S4bFSJYWGle2IINtRrqXck3xfJQBCND0dhxSiMSELuufSNBzn+9jKDbRXfvi4bpcLp3PDiqPulK5pZkdxNY03nNFTwdSPpNXsIws4B2efVCSmdUogYC7In2lIlEqCRwHVrV4mVNehlB35g=
+	t=1728390346; cv=none; b=lBsxEQiyj5p5sN65b7DfFq36iYuRcF9IHivIYYaFabGSlqocDC3T28fWPXINoSYDX5mCRcpaIQI2zEuKaM4nuOnXMyQTTUb/ePNklfomgdrQ5WOEM8c51CJxhCItbxZ/zwwM/utO7yfhepKz4iHB2PtAK9AnFTKx9BKCQW44aVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391924; c=relaxed/simple;
-	bh=+MUYPQFIRAQHdsHFI2e5Ew+cZ2zMh9j5QGdtR8oI8Yg=;
+	s=arc-20240116; t=1728390346; c=relaxed/simple;
+	bh=7y4qNc7zTS9uzbpa+3/egFh4VFSXlYrsIP8kttxDYU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AYfRjFv0mpDNXo4CRfjL0tgye81CCS2aSs/b/94Rib5xG+D1kunh/0qUshpRtg5376sGmyNw+riJe9+eZhcjWfbduEZU735gqGrDa9/EcNAOzYYW8GNuVV+Xp3Iaxi6BQ6hPy/UgpVi+IheEX2GILArBqlQZ5CmElWqa5h0/k48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjftAfl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4EFC4CEC7;
-	Tue,  8 Oct 2024 12:52:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=caYw4m5o+RRZ9f4zOHkDHgSemI3CMWWjU8lZTl1bNy5Xoe37jRzo4umtq46o7ea4DmAMKF1ACfOHGEyxQyteS/sggu3IwYE2y6ZoYV1Zw+JesVtGTYzh5rDUkLdHqT2t3DcDuKRQsWOPL9sYW8Deqd1AWCe3rRPTzxhSE4fndMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow2lfwo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66894C4CECE;
+	Tue,  8 Oct 2024 12:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391924;
-	bh=+MUYPQFIRAQHdsHFI2e5Ew+cZ2zMh9j5QGdtR8oI8Yg=;
+	s=korg; t=1728390345;
+	bh=7y4qNc7zTS9uzbpa+3/egFh4VFSXlYrsIP8kttxDYU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjftAfl45FPhtAeQNfbtwZYGl7/7sGD14AmVhLy+G7flUTiyuhxSSjE6UCBGIohwD
-	 xjtYWm+lJkirYLbak90NroyB/KEAN1l59XKF1G+UMiwiIEf/RHEwG7RKnSekZV5fhA
-	 Nhy1vZYut7oeng5lZTH7JdlKU/bR7nP7Lf9Es7Hg=
+	b=Ow2lfwo8cPTufRAmG5HIaCud5YEkWuNBQHcCvvulYlVcyyT7sR1K99sE+AnF18Lc+
+	 JmvZJy8+3vqLHRtVd8I2IoFNImbQRxsWuN7Pe2zfuk4MGGHUTZ5VjNrUr2fWkh7G3a
+	 HfJ7Zd1TtSCBCkRSrJWEJZPTOLNErs8OGwnmoDlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 263/558] drm/amdgpu/gfx9: properly handle error ints on all pipes
+Subject: [PATCH 6.10 230/482] drm/radeon/r100: Handle unknown family in r100_cp_init_microcode()
 Date: Tue,  8 Oct 2024 14:04:53 +0200
-Message-ID: <20241008115712.683479469@linuxfoundation.org>
+Message-ID: <20241008115657.354224421@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +63,139 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 48695573d2feaf42812c1ad54e01caff0d1c2d71 ]
+[ Upstream commit c6dbab46324b1742b50dc2fb5c1fee2c28129439 ]
 
-Need to handle the interrupt enables for all pipes.
+With -Werror:
 
-Acked-by: Christian König <christian.koenig@amd.com>
+    In function ‘r100_cp_init_microcode’,
+	inlined from ‘r100_cp_init’ at drivers/gpu/drm/radeon/r100.c:1136:7:
+    include/linux/printk.h:465:44: error: ‘%s’ directive argument is null [-Werror=format-overflow=]
+      465 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+	  |                                            ^
+    include/linux/printk.h:437:17: note: in definition of macro ‘printk_index_wrap’
+      437 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+	  |                 ^~~~~~~
+    include/linux/printk.h:508:9: note: in expansion of macro ‘printk’
+      508 |         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
+	  |         ^~~~~~
+    drivers/gpu/drm/radeon/r100.c:1062:17: note: in expansion of macro ‘pr_err’
+     1062 |                 pr_err("radeon_cp: Failed to load firmware \"%s\"\n", fw_name);
+	  |                 ^~~~~~
+
+Fix this by converting the if/else if/... construct into a proper
+switch() statement with a default to handle the error case.
+
+As a bonus, the generated code is ca. 100 bytes smaller (with gcc 11.4.0
+targeting arm32).
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c   | 44 +++++++++++++++++++++-
- drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c | 50 +++++++++++++++++++++++--
- 2 files changed, 89 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/radeon/r100.c | 70 ++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index fc4153a87f947..7d517c94c3efb 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -2638,7 +2638,7 @@ static void gfx_v9_0_enable_gui_idle_interrupt(struct amdgpu_device *adev,
- 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CNTX_BUSY_INT_ENABLE, enable ? 1 : 0);
- 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CNTX_EMPTY_INT_ENABLE, enable ? 1 : 0);
- 	tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, CMP_BUSY_INT_ENABLE, enable ? 1 : 0);
--	if(adev->gfx.num_gfx_rings)
-+	if (adev->gfx.num_gfx_rings)
- 		tmp = REG_SET_FIELD(tmp, CP_INT_CNTL_RING0, GFX_IDLE_INT_ENABLE, enable ? 1 : 0);
+diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
+index 0b1e19345f43a..bfd42e3e161e9 100644
+--- a/drivers/gpu/drm/radeon/r100.c
++++ b/drivers/gpu/drm/radeon/r100.c
+@@ -1016,45 +1016,65 @@ static int r100_cp_init_microcode(struct radeon_device *rdev)
  
- 	WREG32_SOC15(GC, 0, mmCP_INT_CNTL_RING0, tmp);
-@@ -5933,17 +5933,59 @@ static void gfx_v9_0_set_compute_eop_interrupt_state(struct amdgpu_device *adev,
- 	}
- }
+ 	DRM_DEBUG_KMS("\n");
  
-+static u32 gfx_v9_0_get_cpc_int_cntl(struct amdgpu_device *adev,
-+				     int me, int pipe)
-+{
-+	/*
-+	 * amdgpu controls only the first MEC. That's why this function only
-+	 * handles the setting of interrupts for this specific MEC. All other
-+	 * pipes' interrupts are set by amdkfd.
-+	 */
-+	if (me != 1)
-+		return 0;
+-	if ((rdev->family == CHIP_R100) || (rdev->family == CHIP_RV100) ||
+-	    (rdev->family == CHIP_RV200) || (rdev->family == CHIP_RS100) ||
+-	    (rdev->family == CHIP_RS200)) {
++	switch (rdev->family) {
++	case CHIP_R100:
++	case CHIP_RV100:
++	case CHIP_RV200:
++	case CHIP_RS100:
++	case CHIP_RS200:
+ 		DRM_INFO("Loading R100 Microcode\n");
+ 		fw_name = FIRMWARE_R100;
+-	} else if ((rdev->family == CHIP_R200) ||
+-		   (rdev->family == CHIP_RV250) ||
+-		   (rdev->family == CHIP_RV280) ||
+-		   (rdev->family == CHIP_RS300)) {
++		break;
 +
-+	switch (pipe) {
-+	case 0:
-+		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE0_INT_CNTL);
-+	case 1:
-+		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE1_INT_CNTL);
-+	case 2:
-+		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE2_INT_CNTL);
-+	case 3:
-+		return SOC15_REG_OFFSET(GC, 0, mmCP_ME1_PIPE3_INT_CNTL);
++	case CHIP_R200:
++	case CHIP_RV250:
++	case CHIP_RV280:
++	case CHIP_RS300:
+ 		DRM_INFO("Loading R200 Microcode\n");
+ 		fw_name = FIRMWARE_R200;
+-	} else if ((rdev->family == CHIP_R300) ||
+-		   (rdev->family == CHIP_R350) ||
+-		   (rdev->family == CHIP_RV350) ||
+-		   (rdev->family == CHIP_RV380) ||
+-		   (rdev->family == CHIP_RS400) ||
+-		   (rdev->family == CHIP_RS480)) {
++		break;
++
++	case CHIP_R300:
++	case CHIP_R350:
++	case CHIP_RV350:
++	case CHIP_RV380:
++	case CHIP_RS400:
++	case CHIP_RS480:
+ 		DRM_INFO("Loading R300 Microcode\n");
+ 		fw_name = FIRMWARE_R300;
+-	} else if ((rdev->family == CHIP_R420) ||
+-		   (rdev->family == CHIP_R423) ||
+-		   (rdev->family == CHIP_RV410)) {
++		break;
++
++	case CHIP_R420:
++	case CHIP_R423:
++	case CHIP_RV410:
+ 		DRM_INFO("Loading R400 Microcode\n");
+ 		fw_name = FIRMWARE_R420;
+-	} else if ((rdev->family == CHIP_RS690) ||
+-		   (rdev->family == CHIP_RS740)) {
++		break;
++
++	case CHIP_RS690:
++	case CHIP_RS740:
+ 		DRM_INFO("Loading RS690/RS740 Microcode\n");
+ 		fw_name = FIRMWARE_RS690;
+-	} else if (rdev->family == CHIP_RS600) {
++		break;
++
++	case CHIP_RS600:
+ 		DRM_INFO("Loading RS600 Microcode\n");
+ 		fw_name = FIRMWARE_RS600;
+-	} else if ((rdev->family == CHIP_RV515) ||
+-		   (rdev->family == CHIP_R520) ||
+-		   (rdev->family == CHIP_RV530) ||
+-		   (rdev->family == CHIP_R580) ||
+-		   (rdev->family == CHIP_RV560) ||
+-		   (rdev->family == CHIP_RV570)) {
++		break;
++
++	case CHIP_RV515:
++	case CHIP_R520:
++	case CHIP_RV530:
++	case CHIP_R580:
++	case CHIP_RV560:
++	case CHIP_RV570:
+ 		DRM_INFO("Loading R500 Microcode\n");
+ 		fw_name = FIRMWARE_R520;
++		break;
++
 +	default:
-+		return 0;
-+	}
-+}
-+
- static int gfx_v9_0_set_priv_reg_fault_state(struct amdgpu_device *adev,
- 					     struct amdgpu_irq_src *source,
- 					     unsigned type,
- 					     enum amdgpu_interrupt_state state)
- {
-+	u32 cp_int_cntl_reg, cp_int_cntl;
-+	int i, j;
-+
- 	switch (state) {
- 	case AMDGPU_IRQ_STATE_DISABLE:
- 	case AMDGPU_IRQ_STATE_ENABLE:
- 		WREG32_FIELD15(GC, 0, CP_INT_CNTL_RING0,
- 			       PRIV_REG_INT_ENABLE,
- 			       state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
-+		for (i = 0; i < adev->gfx.mec.num_mec; i++) {
-+			for (j = 0; j < adev->gfx.mec.num_pipe_per_mec; j++) {
-+				/* MECs start at 1 */
-+				cp_int_cntl_reg = gfx_v9_0_get_cpc_int_cntl(adev, i + 1, j);
-+
-+				if (cp_int_cntl_reg) {
-+					cp_int_cntl = RREG32_SOC15_IP(GC, cp_int_cntl_reg);
-+					cp_int_cntl = REG_SET_FIELD(cp_int_cntl, CP_ME1_PIPE0_INT_CNTL,
-+								    PRIV_REG_INT_ENABLE,
-+								    state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
-+					WREG32_SOC15_IP(GC, cp_int_cntl_reg, cp_int_cntl);
-+				}
-+			}
-+		}
- 		break;
- 	default:
- 		break;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-index 20ea6cb01edfd..d95f9a84f97b4 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
-@@ -2886,21 +2886,63 @@ static void gfx_v9_4_3_xcc_set_compute_eop_interrupt_state(
++		DRM_ERROR("Unsupported Radeon family %u\n", rdev->family);
++		return -EINVAL;
  	}
- }
  
-+static u32 gfx_v9_4_3_get_cpc_int_cntl(struct amdgpu_device *adev,
-+				     int xcc_id, int me, int pipe)
-+{
-+	/*
-+	 * amdgpu controls only the first MEC. That's why this function only
-+	 * handles the setting of interrupts for this specific MEC. All other
-+	 * pipes' interrupts are set by amdkfd.
-+	 */
-+	if (me != 1)
-+		return 0;
-+
-+	switch (pipe) {
-+	case 0:
-+		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE0_INT_CNTL);
-+	case 1:
-+		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE1_INT_CNTL);
-+	case 2:
-+		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE2_INT_CNTL);
-+	case 3:
-+		return SOC15_REG_OFFSET(GC, GET_INST(GC, xcc_id), regCP_ME1_PIPE3_INT_CNTL);
-+	default:
-+		return 0;
-+	}
-+}
-+
- static int gfx_v9_4_3_set_priv_reg_fault_state(struct amdgpu_device *adev,
- 					     struct amdgpu_irq_src *source,
- 					     unsigned type,
- 					     enum amdgpu_interrupt_state state)
- {
--	int i, num_xcc;
-+	u32 mec_int_cntl_reg, mec_int_cntl;
-+	int i, j, k, num_xcc;
- 
- 	num_xcc = NUM_XCC(adev->gfx.xcc_mask);
- 	switch (state) {
- 	case AMDGPU_IRQ_STATE_DISABLE:
- 	case AMDGPU_IRQ_STATE_ENABLE:
--		for (i = 0; i < num_xcc; i++)
-+		for (i = 0; i < num_xcc; i++) {
- 			WREG32_FIELD15_PREREG(GC, GET_INST(GC, i), CP_INT_CNTL_RING0,
--				PRIV_REG_INT_ENABLE,
--				state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
-+					      PRIV_REG_INT_ENABLE,
-+					      state == AMDGPU_IRQ_STATE_ENABLE ? 1 : 0);
-+			for (j = 0; j < adev->gfx.mec.num_mec; j++) {
-+				for (k = 0; k < adev->gfx.mec.num_pipe_per_mec; k++) {
-+					/* MECs start at 1 */
-+					mec_int_cntl_reg = gfx_v9_4_3_get_cpc_int_cntl(adev, i, j + 1, k);
-+
-+					if (mec_int_cntl_reg) {
-+						mec_int_cntl = RREG32_XCC(mec_int_cntl_reg, i);
-+						mec_int_cntl = REG_SET_FIELD(mec_int_cntl, CP_ME1_PIPE0_INT_CNTL,
-+									     PRIV_REG_INT_ENABLE,
-+									     state == AMDGPU_IRQ_STATE_ENABLE ?
-+									     1 : 0);
-+						WREG32_XCC(mec_int_cntl_reg, mec_int_cntl, i);
-+					}
-+				}
-+			}
-+		}
- 		break;
- 	default:
- 		break;
+ 	err = request_firmware(&rdev->me_fw, fw_name, rdev->dev);
 -- 
 2.43.0
 
