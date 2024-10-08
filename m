@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-82299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44B5994C12
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FA1994DC8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E98D1B22101
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1738D1F227B2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D781DE2A5;
-	Tue,  8 Oct 2024 12:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7C91DEFF0;
+	Tue,  8 Oct 2024 13:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgKthbsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khHXL3ue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048561D54D1;
-	Tue,  8 Oct 2024 12:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F0D1DEFE6;
+	Tue,  8 Oct 2024 13:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391799; cv=none; b=qXQ7+eEVfTPYN+9wlKn3qRgLgMvquJ1JClDE+e5vw85vzo3lv9CpJL3m/zJAZfG332ielyO0NN/YFUqq2miFSI6oJPrq+1pplg4ttGinTUwg+ApasZikzzitZ56Y+LyPXgVwMURuy7cUnJVCmhJuSf4i+eNekr4xbTWaB21m8y0=
+	t=1728392955; cv=none; b=OOGr8uY7aXt5Xg0qPfCP078MXB+Qb+AQAvMyP8Uxw3F9fmEhafHbsPr3ga60wqugP4DGORAIkexSiXNbsyUKNuiA8wMddVxBGeAwxsY8OeUOBfQvHICyTHBUrQptMB5iHfUG1m8/bUKG5jvTyXspKJcfHRDGV6LTTKF5et/PUl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391799; c=relaxed/simple;
-	bh=DqxbZeaQr/xE09Kauy446jvnKPS7JKFfM+oo9GjT7Os=;
+	s=arc-20240116; t=1728392955; c=relaxed/simple;
+	bh=Bn2zsm23XRWE3P36Goww0AXpkT3vfGVLhD+uoJJ9jAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ol/E1oF/UNOR9CYILGW4k+WxUk8J+GG3ykkhaSmCAR572ynZQu1g38eB3utO5apwKlZ2DOdG6LcqsBB8whnOu6jSiwSe2BJPQDKBfA7d5hpHXV0GkL81GJzQw450NyjLI4nNd1jHPZYNxOsMiV2AEdExj4sLMdBDImV16bv6vcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgKthbsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BD6C4CECD;
-	Tue,  8 Oct 2024 12:49:58 +0000 (UTC)
+	 MIME-Version; b=Tc7R1hNZJuZUR+3II1IQvoC+146REiR2uC6Dg47sZZLnVee46FoXGQFsHZAf6Ej5mO9Q3fzimLH9BdXdSmdBL+c/VJdzGaMz3wP3CQ10lJXgcu8YcbIuaKFLLA/Sxurh1L/1WPXHR1icwofQapetX42zqtfH6z/Soy8Sd2hq0lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khHXL3ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF25C4CEC7;
+	Tue,  8 Oct 2024 13:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391798;
-	bh=DqxbZeaQr/xE09Kauy446jvnKPS7JKFfM+oo9GjT7Os=;
+	s=korg; t=1728392954;
+	bh=Bn2zsm23XRWE3P36Goww0AXpkT3vfGVLhD+uoJJ9jAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgKthbsJFMUHElze8RCQOnsQ30xWhjeZcdPdzSNjTgjJMq1dqEXy4OLfppGgzwn5B
-	 JCrDS7Q5QfOlrxe6LNy7BKnIgoIB63kf/09ykMBNBrbh2RhXnC44Vt/Zx0oj56dsDn
-	 x6BUp4ReGh8HYudlSQluWVV7CsvaJ3yQej0pwCOA=
+	b=khHXL3uesGbZYsfxwys2hkkSbTIMnUUQT4gDUxbb+p461QGR2C86TftR4fBkPuFjk
+	 FKI/9tZVydvo5ydaAJEEN0pB+uv3F0z3VMc9kVvlzY3w/PKjZwmdYt3S1xhjaepjsH
+	 TbTS+zGmkUPbGlYGsfWzT9xG95EOp7m8BGUluqC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Patrick Donnelly <pdonnell@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 225/558] drm/amd/display: Add NULL check for function pointer in dcn20_set_output_transfer_func
+Subject: [PATCH 6.6 010/386] ceph: remove the incorrect Fw reference check when dirtying pages
 Date: Tue,  8 Oct 2024 14:04:15 +0200
-Message-ID: <20241008115711.196383250@linuxfoundation.org>
+Message-ID: <20241008115629.726540993@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,54 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 62ed6f0f198da04e884062264df308277628004f ]
+[ Upstream commit c08dfb1b49492c09cf13838c71897493ea3b424e ]
 
-This commit adds a null check for the set_output_gamma function pointer
-in the dcn20_set_output_transfer_func function. Previously,
-set_output_gamma was being checked for null at line 1030, but then it
-was being dereferenced without any null check at line 1048. This could
-potentially lead to a null pointer dereference error if set_output_gamma
-is null.
+When doing the direct-io reads it will also try to mark pages dirty,
+but for the read path it won't hold the Fw caps and there is case
+will it get the Fw reference.
 
-To fix this, we now ensure that set_output_gamma is not null before
-dereferencing it. We do this by adding a null check for set_output_gamma
-before the call to set_output_gamma at line 1048.
-
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 5dda377cf0a6 ("ceph: set i_head_snapc when getting CEPH_CAP_FILE_WR reference")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Patrick Donnelly <pdonnell@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ceph/addr.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index 17d1c195663a0..7ca0da88290af 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -1044,7 +1044,8 @@ bool dcn20_set_output_transfer_func(struct dc *dc, struct pipe_ctx *pipe_ctx,
- 	/*
- 	 * if above if is not executed then 'params' equal to 0 and set in bypass
- 	 */
--	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-+	if (mpc->funcs->set_output_gamma)
-+		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index da64bb7325dbc..7549e2b07b6af 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -95,7 +95,6 @@ static bool ceph_dirty_folio(struct address_space *mapping, struct folio *folio)
  
- 	return true;
- }
+ 	/* dirty the head */
+ 	spin_lock(&ci->i_ceph_lock);
+-	BUG_ON(ci->i_wr_ref == 0); // caller should hold Fw reference
+ 	if (__ceph_have_pending_cap_snap(ci)) {
+ 		struct ceph_cap_snap *capsnap =
+ 				list_last_entry(&ci->i_cap_snaps,
 -- 
 2.43.0
 
