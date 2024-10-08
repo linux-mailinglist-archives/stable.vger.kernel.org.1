@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-81809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9152F994982
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:24:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6C8994C31
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC6F41C22BB1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 471CE2867FC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEB61DF73B;
-	Tue,  8 Oct 2024 12:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADDF1CCB32;
+	Tue,  8 Oct 2024 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcYQ7MNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcLMps4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF781DE898;
-	Tue,  8 Oct 2024 12:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0EC1DE2AD;
+	Tue,  8 Oct 2024 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390205; cv=none; b=eVZuRSq2WyC21rzmLeRW0Z3hsIE3Gop6t2rLdaspyCYHmTLC3D3h8yJdF0Aoj4YkvjmdE8hds5eEB8KH73V0w3+z5v/xTlHgTcHDdgr42S257c/MsgHmdNyPhb0Yd8HU0Ktqrv5cft6NzZ8Jttp9IvobGrDfGHhtsna81MpBSjg=
+	t=1728391891; cv=none; b=aKZlXrj1pvRQjnokPzHdNp9V9Rrte4qtwrl5qs4ujXqzoqK0DwYij2SwJv8ymGDrs12mfpUis5aDnyoAXcwApEwwQEOdT8F8UdlL1S0UcrarGbBay0cboqrq437qaiJ0sPBqXz4edU/RA7VCp2gAsTEc3m+Juueiqii7fvm4nPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390205; c=relaxed/simple;
-	bh=VABxeYWoqtmAf+gpcuStEh8OduNwO3XVfZ+SUu7SzXs=;
+	s=arc-20240116; t=1728391891; c=relaxed/simple;
+	bh=IjEe64gCEK0g4CeHTTzVzGL2bpUcjzHKdO/2NX3rA3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=so4qMVUsAApTDr+oe3xO+OYtf9LImInEWkBxttjbZ0kPYVVhjr/tHlUMgDKJD++6pd7F3gAh4El3+rt/cfBi58+hq610zMsm5qWNDut0Otcc9rFh8ujkLv2HL//f+18gcQ4VnoKQeVz87IEqbjeKX/5estVMOMcWD2+wFaJS4lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcYQ7MNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A468C4CEC7;
-	Tue,  8 Oct 2024 12:23:25 +0000 (UTC)
+	 MIME-Version; b=pcrhSqoi2JCZqkWzNjPrUvA9wp4vXUOd4xj0fLhBRDYH8jSEWCSOI9gMRPrmj7fBEuTU7wF1dRL3pGogExUz7EtE0GZLcsxs6H1XieIZq1SwHPzvc8LFYkFpo6GrDcNcobwdKizD798kCxSlptUn98e4PUF6mWkM1gvMvzXMMAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcLMps4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C364BC4CECD;
+	Tue,  8 Oct 2024 12:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390205;
-	bh=VABxeYWoqtmAf+gpcuStEh8OduNwO3XVfZ+SUu7SzXs=;
+	s=korg; t=1728391891;
+	bh=IjEe64gCEK0g4CeHTTzVzGL2bpUcjzHKdO/2NX3rA3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcYQ7MNV+tbk7JAiqD7D+nEsDE/F25JRlSWdDL1ije8tEq1DfL0Hc6HCy3ueg6VzI
-	 Bkc7qsiBHk0mdX+5Ju6ii04gHzgGoWruljgrlR/ZlOddH28UrOSKnPTNKzcqb6gT+A
-	 PlUstx4+nS69TKbAhYlMIOGoR+7qExuEzuU298AA=
+	b=vcLMps4NZEwRQrwD5bCNW6BfEs4EuWlWnn2kJ21DtYHlJzz5jENy8viD1T1f1Ajb9
+	 i0vAP+HdjTvL3jDamOUFNZUF9TQlfF3eqhATWuCBppdr6OKx/psd912d+bvAlNwMav
+	 9k5R4EoLbCmxW5fKHaMavdcDf3bTmXJ6mERx3eAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 220/482] drm/printer: Allow NULL data in devcoredump printer
-Date: Tue,  8 Oct 2024 14:04:43 +0200
-Message-ID: <20241008115656.968395005@linuxfoundation.org>
+Subject: [PATCH 6.11 254/558] drm/amd/display: Check phantom_stream before it is used
+Date: Tue,  8 Oct 2024 14:04:44 +0200
+Message-ID: <20241008115712.331619326@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 53369581dc0c68a5700ed51e1660f44c4b2bb524 ]
+[ Upstream commit 3718a619a8c0a53152e76bb6769b6c414e1e83f4 ]
 
-We want to determine the size of the devcoredump before writing it out.
-To that end, we will run the devcoredump printer with NULL data to get
-the size, alloc data based on the generated offset, then run the
-devcorecump again with a valid data pointer to print.  This necessitates
-not writing data to the data pointer on the initial pass, when it is
-NULL.
+dcn32_enable_phantom_stream can return null, so returned value
+must be checked before used.
 
-v5:
- - Better commit message (Jonathan)
- - Add kerenl doc with examples (Jani)
+This fixes 1 NULL_RETURNS issue reported by Coverity.
 
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Acked-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240801154118.2547543-3-matthew.brost@intel.com
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_print.c | 13 +++++----
- include/drm/drm_print.h     | 54 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 61 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_print.c b/drivers/gpu/drm/drm_print.c
-index cf2efb44722c9..1d122d4de70ec 100644
---- a/drivers/gpu/drm/drm_print.c
-+++ b/drivers/gpu/drm/drm_print.c
-@@ -100,8 +100,9 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
- 			copy = iterator->remain;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+index 6e2a08a9572b8..8bacff23c3563 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+@@ -1720,6 +1720,9 @@ void dcn32_add_phantom_pipes(struct dc *dc, struct dc_state *context,
+ 	// be a valid candidate for SubVP (i.e. has a plane, stream, doesn't
+ 	// already have phantom pipe assigned, etc.) by previous checks.
+ 	phantom_stream = dcn32_enable_phantom_stream(dc, context, pipes, pipe_cnt, index);
++	if (!phantom_stream)
++		return;
++
+ 	dcn32_enable_phantom_plane(dc, context, phantom_stream, index);
  
- 		/* Copy out the bit of the string that we need */
--		memcpy(iterator->data,
--			str + (iterator->start - iterator->offset), copy);
-+		if (iterator->data)
-+			memcpy(iterator->data,
-+			       str + (iterator->start - iterator->offset), copy);
- 
- 		iterator->offset = iterator->start + copy;
- 		iterator->remain -= copy;
-@@ -110,7 +111,8 @@ void __drm_puts_coredump(struct drm_printer *p, const char *str)
- 
- 		len = min_t(ssize_t, strlen(str), iterator->remain);
- 
--		memcpy(iterator->data + pos, str, len);
-+		if (iterator->data)
-+			memcpy(iterator->data + pos, str, len);
- 
- 		iterator->offset += len;
- 		iterator->remain -= len;
-@@ -140,8 +142,9 @@ void __drm_printfn_coredump(struct drm_printer *p, struct va_format *vaf)
- 	if ((iterator->offset >= iterator->start) && (len < iterator->remain)) {
- 		ssize_t pos = iterator->offset - iterator->start;
- 
--		snprintf(((char *) iterator->data) + pos,
--			iterator->remain, "%pV", vaf);
-+		if (iterator->data)
-+			snprintf(((char *) iterator->data) + pos,
-+				 iterator->remain, "%pV", vaf);
- 
- 		iterator->offset += len;
- 		iterator->remain -= len;
-diff --git a/include/drm/drm_print.h b/include/drm/drm_print.h
-index 089950ad8681a..8fad7d09bedae 100644
---- a/include/drm/drm_print.h
-+++ b/include/drm/drm_print.h
-@@ -220,7 +220,8 @@ drm_vprintf(struct drm_printer *p, const char *fmt, va_list *va)
- 
- /**
-  * struct drm_print_iterator - local struct used with drm_printer_coredump
-- * @data: Pointer to the devcoredump output buffer
-+ * @data: Pointer to the devcoredump output buffer, can be NULL if using
-+ * drm_printer_coredump to determine size of devcoredump
-  * @start: The offset within the buffer to start writing
-  * @remain: The number of bytes to write for this iteration
-  */
-@@ -265,6 +266,57 @@ struct drm_print_iterator {
-  *			coredump_read, ...)
-  *	}
-  *
-+ * The above example has a time complexity of O(N^2), where N is the size of the
-+ * devcoredump. This is acceptable for small devcoredumps but scales poorly for
-+ * larger ones.
-+ *
-+ * Another use case for drm_coredump_printer is to capture the devcoredump into
-+ * a saved buffer before the dev_coredump() callback. This involves two passes:
-+ * one to determine the size of the devcoredump and another to print it to a
-+ * buffer. Then, in dev_coredump(), copy from the saved buffer into the
-+ * devcoredump read buffer.
-+ *
-+ * For example::
-+ *
-+ *	char *devcoredump_saved_buffer;
-+ *
-+ *	ssize_t __coredump_print(char *buffer, ssize_t count, ...)
-+ *	{
-+ *		struct drm_print_iterator iter;
-+ *		struct drm_printer p;
-+ *
-+ *		iter.data = buffer;
-+ *		iter.start = 0;
-+ *		iter.remain = count;
-+ *
-+ *		p = drm_coredump_printer(&iter);
-+ *
-+ *		drm_printf(p, "foo=%d\n", foo);
-+ *		...
-+ *		return count - iter.remain;
-+ *	}
-+ *
-+ *	void coredump_print(...)
-+ *	{
-+ *		ssize_t count;
-+ *
-+ *		count = __coredump_print(NULL, INT_MAX, ...);
-+ *		devcoredump_saved_buffer = kvmalloc(count, GFP_KERNEL);
-+ *		__coredump_print(devcoredump_saved_buffer, count, ...);
-+ *	}
-+ *
-+ *	void coredump_read(char *buffer, loff_t offset, size_t count,
-+ *			   void *data, size_t datalen)
-+ *	{
-+ *		...
-+ *		memcpy(buffer, devcoredump_saved_buffer + offset, count);
-+ *		...
-+ *	}
-+ *
-+ * The above example has a time complexity of O(N*2), where N is the size of the
-+ * devcoredump. This scales better than the previous example for larger
-+ * devcoredumps.
-+ *
-  * RETURNS:
-  * The &drm_printer object
-  */
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
 -- 
 2.43.0
 
