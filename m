@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-82315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDDA994C20
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8181B994940
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4351284982
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A0A11F25599
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636EC1DE4CD;
-	Tue,  8 Oct 2024 12:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CFE1DE8A3;
+	Tue,  8 Oct 2024 12:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeDz1mhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUrrCJ5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216D9183CB8;
-	Tue,  8 Oct 2024 12:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B57165F08;
+	Tue,  8 Oct 2024 12:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391851; cv=none; b=nh14LQLgzCiNn0nNKNi2VoW1kfu/MSltdmEIJznRVM7Mq+UmEKOHpvMZ0cj0tp4H5yFKr7Iscl9dq+UCuM1W7/GyGBTVpmRuMlXXxdO30Jmwu0amY0ev09ma/NaHZuIPzKLqDr3FAOvdEAaOClNVwgXTtL3BRLwWG2fMLUp44m8=
+	t=1728390061; cv=none; b=jIWa6E9k2h+rRbma+SPVxHWorkXn66mER8h2XlpGja0Xq/uvmAZVmJfK1+TZg+huTSEjqfbeE6vjScI+E2LCtoyN63ruU7cUkZsRtPjJGhucijTinSVtt7ygAEM5LaVMVeRolNGszPqb7OKjSh0KjATbwE7rLeadu1TXGWB1278=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391851; c=relaxed/simple;
-	bh=eMUXOzwtscyl6UpMjWEuTmzJp2AsgOzCF5dSYLAh5sk=;
+	s=arc-20240116; t=1728390061; c=relaxed/simple;
+	bh=NGHoaPTQbH+8clhTeOaNCdUg7eyT8L94HbfP0k1QLlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q4wlB6VMIyy5zZqITdq2S05MRw49AkIJHsFTN4TgZZVOWfICkqH4ls2YrnFyqAnGQHIf9+7Rb/LTXLBETJ/gci/f0A/avnwtk5q/md5wNUBNyQsD1gcsXCw7v+nZQ6EZAs62EuD8StJsp7rpGoYUtHLU5HnQr/bxhRPN6jx/FM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeDz1mhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8F2C4CEC7;
-	Tue,  8 Oct 2024 12:50:50 +0000 (UTC)
+	 MIME-Version; b=XCtyVVRLXzRHA00RCLdSFUe52qZkUi/8Yl+PYEt+t66k9aUB5vhqNhj1RFMkKHq2f/nl6kpinH77cwO1yGePaH++RW0FWDwk5d+S96zg93TyWr0Bp0+IVKAfsXbDZzC7vCTcu3dRJEymSK4HnI+OFv3vX/hNcDdC14mvSUHa138=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUrrCJ5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3101CC4CEC7;
+	Tue,  8 Oct 2024 12:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391851;
-	bh=eMUXOzwtscyl6UpMjWEuTmzJp2AsgOzCF5dSYLAh5sk=;
+	s=korg; t=1728390060;
+	bh=NGHoaPTQbH+8clhTeOaNCdUg7eyT8L94HbfP0k1QLlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeDz1mhHhEitYd0VboJWsL6VApxbwDOB4LJwIquh5zw6PR6B24bAUNICOYuwJq4bq
-	 MHXjuXoMnWg6PM5Fg1833sfoxUnk7gioO4OTw/rEbHa2skmZm63QVPdU9C+0YQpUZu
-	 eAueQxnm6IwxmPBuE9JY2UoSEuqsfPRbS+vrzmds=
+	b=kUrrCJ5J3H4Yben3YtDmQOgaTnmhFlJzgA8WOSpj3NDNqW++RDiEAZhpYmH3T4QZs
+	 a8UVcYL8COc0NiADGKjfkS3t1IhQZOhOMNKs+aED0IBTxWsozS01CbvRKT2U/zY4Yc
+	 AoYowsRqinJP2JlgPj9NKxx9ZgYTTcpb4LSLAz6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,12 +52,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 211/558] drm/amd/display: Add NULL check for clk_mgr and clk_mgr->funcs in dcn30_init_hw
+Subject: [PATCH 6.10 178/482] drm/amd/display: Add null check for head_pipe in dcn201_acquire_free_pipe_for_layer
 Date: Tue,  8 Oct 2024 14:04:01 +0200
-Message-ID: <20241008115710.649815076@linuxfoundation.org>
+Message-ID: <20241008115655.309718313@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,24 +69,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit cba7fec864172dadd953daefdd26e01742b71a6a ]
+[ Upstream commit f22f4754aaa47d8c59f166ba3042182859e5dff7 ]
 
 This commit addresses a potential null pointer dereference issue in the
-`dcn30_init_hw` function. The issue could occur when `dc->clk_mgr` or
-`dc->clk_mgr->funcs` is null.
+`dcn201_acquire_free_pipe_for_layer` function. The issue could occur
+when `head_pipe` is null.
 
-The fix adds a check to ensure `dc->clk_mgr` and `dc->clk_mgr->funcs` is
-not null before accessing its functions. This prevents a potential null
-pointer dereference.
+The fix adds a check to ensure `head_pipe` is not null before asserting
+it. If `head_pipe` is null, the function returns NULL to prevent a
+potential null pointer dereference.
 
 Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:789 dcn30_init_hw() error: we previously assumed 'dc->clk_mgr' could be null (see line 628)
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn201/dcn201_resource.c:1016 dcn201_acquire_free_pipe_for_layer() error: we previously assumed 'head_pipe' could be null (see line 1010)
 
 Cc: Tom Chung <chiahsuan.chung@amd.com>
 Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
@@ -96,41 +96,29 @@ Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c  | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-index 2b4dae2d4b0c1..6f5c6f7b19db6 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-@@ -629,7 +629,7 @@ void dcn30_init_hw(struct dc *dc)
- 	uint32_t backlight = MAX_BACKLIGHT_LEVEL;
- 	uint32_t user_level = MAX_BACKLIGHT_LEVEL;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c
+index 070a4efb308bd..1aeede348bd39 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c
+@@ -1005,8 +1005,10 @@ static struct pipe_ctx *dcn201_acquire_free_pipe_for_layer(
+ 	struct pipe_ctx *head_pipe = resource_get_otg_master_for_stream(res_ctx, opp_head_pipe->stream);
+ 	struct pipe_ctx *idle_pipe = resource_find_free_secondary_pipe_legacy(res_ctx, pool, head_pipe);
  
--	if (dc->clk_mgr && dc->clk_mgr->funcs->init_clocks)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->init_clocks)
- 		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
+-	if (!head_pipe)
++	if (!head_pipe) {
+ 		ASSERT(0);
++		return NULL;
++	}
  
- 	// Initialize the dccg
-@@ -790,11 +790,12 @@ void dcn30_init_hw(struct dc *dc)
- 	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
- 		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
- 
--	if (dc->clk_mgr->funcs->notify_wm_ranges)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->notify_wm_ranges)
- 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
- 
- 	//if softmax is enabled then hardmax will be set by a different call
--	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
-+	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->set_hard_max_memclk &&
-+	    !dc->clk_mgr->dc_mode_softmax_enabled)
- 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
- 
- 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
+ 	if (!idle_pipe)
+ 		return NULL;
 -- 
 2.43.0
 
