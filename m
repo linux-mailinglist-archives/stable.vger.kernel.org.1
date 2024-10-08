@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-81623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B28F994875
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1EC994B84
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1975C280EEA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 277A5B26FC3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776231DE2CF;
-	Tue,  8 Oct 2024 12:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BEE1DF744;
+	Tue,  8 Oct 2024 12:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuTO1vJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnXqz51K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3679D18CC12;
-	Tue,  8 Oct 2024 12:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0CB1DC759;
+	Tue,  8 Oct 2024 12:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389581; cv=none; b=jGDw6ZkAEvQb5UGeIBBzz/TXCO9feP+rJdUWvufl2IXKbsWZ+5yD3ktFRVpHXPTT127zU78hbBDwL2/I1twfZAoyoOqYxm6jSY6R+Zt+fQYMXF8cU0giReX6iN2zc75nR+HnXSL7S5gdZEwb8OFiHl40iM5SrKG/1Ok5TV3yQuE=
+	t=1728391353; cv=none; b=XZqYY7g1Rt7lfPntGTQ5iWeGSE1Lf+pXdk6rmAspnTkWQbz9mKlc4vbnTeF5xo5qoFSacczJvSFSKCWRBrfjVI+2j8BbPGvXV/Lto96b2x2JsyHNOqJqger+KCupgu7qKGiZh3kJydz07/ljgorgSV74fwUfDbo8gZgxXqL2N8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389581; c=relaxed/simple;
-	bh=oJKKKb8ofbsJQmoCdWL/zMDxs7Yq2rCelYarDKKy4Wk=;
+	s=arc-20240116; t=1728391353; c=relaxed/simple;
+	bh=MCwbHyMnBR/U+EuvHddpR8nBgSh3HiTPxuQ8KvDuA9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyC10DSyYMybk1pRblK/YgESlUv8pgAsfhai94JtZ+763byOy7c3KwsrCmkacIQY8uA/DyHDxGVEqsgalRLy8SaTJ9ghDRQo/1WAS1ZUze8W9HK8l5rYW0DCgV5FOrayUmNWpN5XsmJvDWhK7tsOhVZWVHjPjQGxW7QsMTK/7bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuTO1vJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935B8C4CEC7;
-	Tue,  8 Oct 2024 12:13:00 +0000 (UTC)
+	 MIME-Version; b=oxGyVT1lLrdTWHgF3NlobHULSEBX1rMzjAfNtQ3KbGTb2Fuh/yPDNUE8GLslPONav8SpN1ROwy8lqZqsrtKt2CXIoCu4fxs+23RIKYzDLjeN8bA06UwdpaHLkxFT+FnfqfnHG8nePlITGH2f56AMFW8o50bWhMJUMi/QB9yIq8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnXqz51K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115CCC4CECD;
+	Tue,  8 Oct 2024 12:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389581;
-	bh=oJKKKb8ofbsJQmoCdWL/zMDxs7Yq2rCelYarDKKy4Wk=;
+	s=korg; t=1728391353;
+	bh=MCwbHyMnBR/U+EuvHddpR8nBgSh3HiTPxuQ8KvDuA9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuTO1vJFOdVyXj4OsA9iJ5SNcEEC68S39yoDRH+DFRxt6YUiXhO85y77+lK5e12wK
-	 nVFn0qrKVX2fK0NpWBQgB5gJIurGrRuZE+Hods3eIismywHqFxaYxXzQVgCWxLXD2h
-	 Z8jBM4gUMQTXPoTrRWz1JbAkm1/221gawVJnkQpU=
+	b=GnXqz51KffTqfyN/pbDO/ZVinTNKTXZ2an2EL6KUJE0lo62LO3K63cymc0hiXMzf+
+	 kedMOe7ldFb1OKEQ3m4lbw2nXUrgBWMuZn0Is7BqoXeuPacrBLCXoDAXx08tA5cdba
+	 QFTV/fOVKDd4gWtHu8pVQ88/An14egnhVwknYyr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 036/482] net: ethernet: lantiq_etop: fix memory disclosure
-Date: Tue,  8 Oct 2024 14:01:39 +0200
-Message-ID: <20241008115649.720896808@linuxfoundation.org>
+Subject: [PATCH 6.11 070/558] drm/xe: Restore pci state upon resume
+Date: Tue,  8 Oct 2024 14:01:40 +0200
+Message-ID: <20241008115704.970542256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-[ Upstream commit 45c0de18ff2dc9af01236380404bbd6a46502c69 ]
+[ Upstream commit cffa8e83df9fe525afad1e1099097413f9174f57 ]
 
-When applying padding, the buffer is not zeroed, which results in memory
-disclosure. The mentioned data is observed on the wire. This patch uses
-skb_put_padto() to pad Ethernet frames properly. The mentioned function
-zeroes the expanded buffer.
+The pci state was saved, but not restored. Restore
+right after the power state transition request like
+every other driver.
 
-In case the packet cannot be padded it is silently dropped. Statistics
-are also not incremented. This driver does not support statistics in the
-old 32-bit format or the new 64-bit format. These will be added in the
-future. In its current form, the patch should be easily backported to
-stable versions.
+v2: Use right fixes tag, since this was there initialy, but
+    accidentally removed.
 
-Ethernet MACs on Amazon-SE and Danube cannot do padding of the packets
-in hardware, so software padding must be applied.
-
-Fixes: 504d4721ee8e ("MIPS: Lantiq: Add ethernet driver")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240923214949.231511-2-olek2@wp.pl
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: f6761c68c0ac ("drm/xe/display: Improve s2idle handling.")
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240912214507.456897-1-rodrigo.vivi@intel.com
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+(cherry picked from commit ec2d1539e159f53eae708e194c449cfefa004994)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/lantiq_etop.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-index 0b99828043708..57e3dabf3a809 100644
---- a/drivers/net/ethernet/lantiq_etop.c
-+++ b/drivers/net/ethernet/lantiq_etop.c
-@@ -482,7 +482,9 @@ ltq_etop_tx(struct sk_buff *skb, struct net_device *dev)
- 	unsigned long flags;
- 	u32 byte_offset;
+diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
+index 732ee0d02124f..5929ac61dbe0a 100644
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -924,6 +924,8 @@ static int xe_pci_resume(struct device *dev)
+ 	if (err)
+ 		return err;
  
--	len = skb->len < ETH_ZLEN ? ETH_ZLEN : skb->len;
-+	if (skb_put_padto(skb, ETH_ZLEN))
-+		return NETDEV_TX_OK;
-+	len = skb->len;
- 
- 	if ((desc->ctl & (LTQ_DMA_OWN | LTQ_DMA_C)) || ch->skb[ch->dma.desc]) {
- 		netdev_err(dev, "tx ring full\n");
++	pci_restore_state(pdev);
++
+ 	err = pci_enable_device(pdev);
+ 	if (err)
+ 		return err;
 -- 
 2.43.0
 
