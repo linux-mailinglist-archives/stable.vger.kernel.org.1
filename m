@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-82262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97FF994BE2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B6994BE4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD921F289C0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C02121C24DA6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B430183CB8;
-	Tue,  8 Oct 2024 12:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB79183CB8;
+	Tue,  8 Oct 2024 12:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQoZ+FfR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiJgN3l6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4841DE2A5;
-	Tue,  8 Oct 2024 12:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E167B1D54D1;
+	Tue,  8 Oct 2024 12:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391672; cv=none; b=t6y61ak8iRiuOXXwbwOvvR0NtXCeU/YLttyvdMrFElRZjxV0sV/JrzLrcbKjo+WdVgJpAIsPLwmqKRml5481uGZnwl+cfdorxAdFgRlI3PMjvQcRcuTe1iVLvkvLMA98g86/04rjPPY+bv290smfoy55JhfAImz+nSBL5lip2MM=
+	t=1728391680; cv=none; b=MiFCYGsq1Jeqz3yQ35NymdTVJ7StQCnIDQxMPTOXp8jakf3jAOowNkJzTCjuMda6Y7xkCskkbZVNVgg08kyHXpyRknsVLIXMyjxZNAdRzLifUBIfx2Hp9P2ON2xyrhW7sOZt8fcnDWV8UsrldYtLcWih7evPPzSDSBZg/dTjMVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391672; c=relaxed/simple;
-	bh=15+HR1J95+WhQA+1Tg2FaXec+gu/sOBh5CNHVU+3jZQ=;
+	s=arc-20240116; t=1728391680; c=relaxed/simple;
+	bh=y+ZSUq5wDfJQd6EIA8yCjoQQBAVimKB07uiF2rdjYTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6ZnK1DIS5k/H/6G2rFvAC7ICa1jZ3azL8vvxJq691RFRaPWKCKFQ0w1uDFtnnz3ty+/qYvOdbsVfTa0QfmQobtHf3FbV7Ty3w3FYauSXLDesrtUo9yBpQ1mzT1t6/cyKjsvGhYQpNObNYqsUi1ltBJddPLAg8Khbc+OdVZzjVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQoZ+FfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D611C4CEC7;
-	Tue,  8 Oct 2024 12:47:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aImdXLNejcvKlSBq1gjWcrVM0giabKRtlt+zk1C3p0h6O3GWF+Zsj2S8KNyBqHjRS2yiXpITbRymKX2J5/Rn+ygeyDsCLF2D1BzS55OLY2UCE7StNgiBeeBnxJuKYWtHVg1y4WC17DTWqz46C2Rgra13ZltFi/nbD3ubB27tbpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiJgN3l6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E06AC4CEC7;
+	Tue,  8 Oct 2024 12:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391672;
-	bh=15+HR1J95+WhQA+1Tg2FaXec+gu/sOBh5CNHVU+3jZQ=;
+	s=korg; t=1728391679;
+	bh=y+ZSUq5wDfJQd6EIA8yCjoQQBAVimKB07uiF2rdjYTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQoZ+FfR9sS3puCQpdyKBLFsqHMaLOJw1yaH44PT1ue0o0gibRyyZA6Pi/UiXTdZi
-	 X1W4MNgydrsOdobNf65h8k8ZIFjRRLMZmbTKeEpPAS/FbGNQwhEcA1hvr31xv7AMW5
-	 k0mo7VyyzFTEpICqiq2OJV0ubKFxwE+oLcRmgqdo=
+	b=ZiJgN3l6Yp5c4LS5EZBhKKCnj09HdxgnN1gW7vhCxXtk6I6VHECy87cveLCf254/x
+	 fEowBS9fHJS2unhbrekcOLpfugHfj9DHV9FRMdq1QKU1G/ghk8dMUj9+QMksjB1qda
+	 T1GIuYVBbz7qykLrjNG8WchAwZjStjSdzi9H+eTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Pauk <pauk.denis@gmail.com>,
-	Attila <attila@fulop.one>,
-	Guenter Roeck <linux@roeck-us.net>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 189/558] hwmon: (nct6775) add G15CF to ASUS WMI monitoring list
-Date: Tue,  8 Oct 2024 14:03:39 +0200
-Message-ID: <20241008115709.787480035@linuxfoundation.org>
+Subject: [PATCH 6.11 190/558] fbdev: efifb: Register sysfs groups through driver core
+Date: Tue,  8 Oct 2024 14:03:40 +0200
+Message-ID: <20241008115709.825874787@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
 References: <20241008115702.214071228@linuxfoundation.org>
@@ -61,43 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Pauk <pauk.denis@gmail.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 1f432e4cf1dd3ecfec5ed80051b4611632a0fd51 ]
+[ Upstream commit 95cdd538e0e5677efbdf8aade04ec098ab98f457 ]
 
-Boards G15CF has got a nct6775 chip, but by default there's no use of it
-because of resource conflict with WMI method.
+The driver core can register and cleanup sysfs groups already.
+Make use of that functionality to simplify the error handling and
+cleanup.
 
-Add the board to the WMI monitoring list.
+Also avoid a UAF race during unregistering where the sysctl attributes
+were usable after the info struct was freed.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
-Signed-off-by: Denis Pauk <pauk.denis@gmail.com>
-Tested-by: Attila <attila@fulop.one>
-Message-ID: <20240812152652.1303-1-pauk.denis@gmail.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-platform.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/efifb.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
-index 9aa4dcf4a6f33..096f1daa8f2bc 100644
---- a/drivers/hwmon/nct6775-platform.c
-+++ b/drivers/hwmon/nct6775-platform.c
-@@ -1269,6 +1269,7 @@ static const char * const asus_msi_boards[] = {
- 	"EX-B760M-V5 D4",
- 	"EX-H510M-V3",
- 	"EX-H610M-V3 D4",
-+	"G15CF",
- 	"PRIME A620M-A",
- 	"PRIME B560-PLUS",
- 	"PRIME B560-PLUS AC-HES",
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index 8dd82afb3452b..595b8e27bea66 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -561,15 +561,10 @@ static int efifb_probe(struct platform_device *dev)
+ 		break;
+ 	}
+ 
+-	err = sysfs_create_groups(&dev->dev.kobj, efifb_groups);
+-	if (err) {
+-		pr_err("efifb: cannot add sysfs attrs\n");
+-		goto err_unmap;
+-	}
+ 	err = fb_alloc_cmap(&info->cmap, 256, 0);
+ 	if (err < 0) {
+ 		pr_err("efifb: cannot allocate colormap\n");
+-		goto err_groups;
++		goto err_unmap;
+ 	}
+ 
+ 	err = devm_aperture_acquire_for_platform_device(dev, par->base, par->size);
+@@ -587,8 +582,6 @@ static int efifb_probe(struct platform_device *dev)
+ 
+ err_fb_dealloc_cmap:
+ 	fb_dealloc_cmap(&info->cmap);
+-err_groups:
+-	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
+ err_unmap:
+ 	if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
+ 		iounmap(info->screen_base);
+@@ -608,12 +601,12 @@ static void efifb_remove(struct platform_device *pdev)
+ 
+ 	/* efifb_destroy takes care of info cleanup */
+ 	unregister_framebuffer(info);
+-	sysfs_remove_groups(&pdev->dev.kobj, efifb_groups);
+ }
+ 
+ static struct platform_driver efifb_driver = {
+ 	.driver = {
+ 		.name = "efi-framebuffer",
++		.dev_groups = efifb_groups,
+ 	},
+ 	.probe = efifb_probe,
+ 	.remove_new = efifb_remove,
 -- 
 2.43.0
 
