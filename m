@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0470994E12
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80232994968
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42B71C24AAC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35ACF1F243D1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E2D1DF73A;
-	Tue,  8 Oct 2024 13:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4491DD867;
+	Tue,  8 Oct 2024 12:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5IWvp0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YD/ff5LI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AAE1DF72E;
-	Tue,  8 Oct 2024 13:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC54C1DACBE;
+	Tue,  8 Oct 2024 12:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393127; cv=none; b=BwelO6c0WehmdND3OAEDDooR8FbKytJI1bp1BysK8frogTwWgMDiv8Eog8Aj9UptrPnSd1xqe6h3bQd2DejT8A4PHad3yE9BXYUkbHwtJavOhLN0H1wtsmtXai66nk9yvVYiZkthR/BKAOcVCAlTTNVcUoQF/XZaKVStudQEqKA=
+	t=1728390137; cv=none; b=NTyXT7lAPelc1W1gDmFRITFFpYY0x6UyiETFiG6ia0dNfOxwUH7CG/NW9YaJacUkhwhQz3LuroZfMuepOVmN8I3AOK4CY2XwocRkTbws8O6xLxk8RYzZt0+FGICsOhYn/rVtQt/c0cyUG7yWgI38/2uGPygM6Z1n3xdY9fjAT3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393127; c=relaxed/simple;
-	bh=5F8crIyGLy7jEN3SXjCGziNt2lut2zNA8iopRPYL+Pg=;
+	s=arc-20240116; t=1728390137; c=relaxed/simple;
+	bh=cRjF2fsCo/PvRbdkv9hFGzzEs6yNxaURhZ6a8udZGwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgG9PLPqU/mbbj2lwMz26OrO0Rq6Kmogh7MavCIIBRISq9RpReoWvM7ObkYKmzZq9f23imb+hrdNbVdYJZBaFvmwuiTFSoi+eFWp0nlF0u4iqZVbt+Dqp5wfcGqzflqGzog6vkRkZHJB4Usfn87SdBrvmouX0hb1W/WirYCTxkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5IWvp0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD45C4CEC7;
-	Tue,  8 Oct 2024 13:12:06 +0000 (UTC)
+	 MIME-Version; b=NIAat+AWLCOXgyNzjbZwz7col6aTHG8dVOnM3ytyzOKxB+tn+TsqhB2w/pcvt3OzEwUSdSMYvsH2rfCotUfOgmDhIVEddQXJectvybdgziWD8ZTepQtFvsXGpJAqkZij2JuEVTqXxZFrKhHFbZMaSyvsaD9OB7WRdC1yl/mMRiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YD/ff5LI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269ABC4CEC7;
+	Tue,  8 Oct 2024 12:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393127;
-	bh=5F8crIyGLy7jEN3SXjCGziNt2lut2zNA8iopRPYL+Pg=;
+	s=korg; t=1728390137;
+	bh=cRjF2fsCo/PvRbdkv9hFGzzEs6yNxaURhZ6a8udZGwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5IWvp0YAVl8xwPsUOIz5w7Rqsw1L6P7gDkHK/X90Z3bim17eK7m1TnFaSVFOlVyv
-	 9KWZ3A8lOXfEasGyv42WhN5MjiJ80YvgFlvCJYt4JGcW6jR5RvDfbYw94uZptgEJ2/
-	 KCGO0Rdq8TJUjFN6kdUHPfnDX+QcqKPnY1Ga4v9s=
+	b=YD/ff5LIqEC4yLVaCyRKH33SO7nA25yoyxAdcs3QfO1N3eaV1MPOAOnUS5+HTqPnM
+	 24gPyK41U09KAtq+xC+5f+peUy5yDH1bNc9vNfAbOdtgLp8aPiu3QcI0+QDvWghG5E
+	 xHBDih/LnSKuzjnAsmzh2G0JmDxZNELQz9nhzbog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com,
+	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/386] selftests: netfilter: Fix nft_audit.sh for newer nft binaries
+Subject: [PATCH 6.10 202/482] jfs: Fix uninit-value access of new_ea in ea_buffer
 Date: Tue,  8 Oct 2024 14:04:25 +0200
-Message-ID: <20241008115630.271035865@linuxfoundation.org>
+Message-ID: <20241008115656.260046206@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
 
-[ Upstream commit 8a89015644513ef69193a037eb966f2d55fe385a ]
+[ Upstream commit 2b59ffad47db1c46af25ccad157bb3b25147c35c ]
 
-As a side-effect of nftables' commit dbff26bfba833 ("cache: consolidate
-reset command"), audit logs changed when more objects were reset than
-fit into a single netlink message.
+syzbot reports that lzo1x_1_do_compress is using uninit-value:
 
-Since the objects' distribution in netlink messages is not relevant,
-implement a summarizing function which combines repeated audit logs into
-a single one with summed up 'entries=' value.
+=====================================================
+BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178
 
-Fixes: 203bb9d39866 ("selftests: netfilter: Extend nft_audit.sh")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+...
+
+Uninit was stored to memory at:
+ ea_put fs/jfs/xattr.c:639 [inline]
+
+...
+
+Local variable ea_buf created at:
+ __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662
+ __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934
+
+=====================================================
+
+The reason is ea_buf->new_ea is not initialized properly.
+
+Fix this by using memset to empty its content at the beginning
+in ea_get().
+
+Reported-by: syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=02341e0daa42a15ce130
+Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/netfilter/nft_audit.sh  | 57 ++++++++++---------
- 1 file changed, 29 insertions(+), 28 deletions(-)
+ fs/jfs/xattr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/netfilter/nft_audit.sh b/tools/testing/selftests/netfilter/nft_audit.sh
-index 99ed5bd6e8402..e4717444d38e7 100755
---- a/tools/testing/selftests/netfilter/nft_audit.sh
-+++ b/tools/testing/selftests/netfilter/nft_audit.sh
-@@ -25,12 +25,31 @@ logread_pid=$!
- trap 'kill $logread_pid; rm -f $logfile $rulefile' EXIT
- exec 3<"$logfile"
+diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
+index 2999ed5d83f5e..0fb05e314edf6 100644
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -434,6 +434,8 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
+ 	int rc;
+ 	int quota_allocation = 0;
  
-+lsplit='s/^\(.*\) entries=\([^ ]*\) \(.*\)$/pfx="\1"\nval="\2"\nsfx="\3"/'
-+summarize_logs() {
-+	sum=0
-+	while read line; do
-+		eval $(sed "$lsplit" <<< "$line")
-+		[[ $sum -gt 0 ]] && {
-+			[[ "$pfx $sfx" == "$tpfx $tsfx" ]] && {
-+				let "sum += val"
-+				continue
-+			}
-+			echo "$tpfx entries=$sum $tsfx"
-+		}
-+		tpfx="$pfx"
-+		tsfx="$sfx"
-+		sum=$val
-+	done
-+	echo "$tpfx entries=$sum $tsfx"
-+}
++	memset(&ea_buf->new_ea, 0, sizeof(ea_buf->new_ea));
 +
- do_test() { # (cmd, log)
- 	echo -n "testing for cmd: $1 ... "
- 	cat <&3 >/dev/null
- 	$1 >/dev/null || exit 1
- 	sleep 0.1
--	res=$(diff -a -u <(echo "$2") - <&3)
-+	res=$(diff -a -u <(echo "$2") <(summarize_logs <&3))
- 	[ $? -eq 0 ] && { echo "OK"; return; }
- 	echo "FAIL"
- 	grep -v '^\(---\|+++\|@@\)' <<< "$res"
-@@ -129,31 +148,17 @@ do_test 'nft reset rules t1 c2' \
- 'table=t1 family=2 entries=3 op=nft_reset_rule'
- 
- do_test 'nft reset rules table t1' \
--'table=t1 family=2 entries=3 op=nft_reset_rule
--table=t1 family=2 entries=3 op=nft_reset_rule
--table=t1 family=2 entries=3 op=nft_reset_rule'
-+'table=t1 family=2 entries=9 op=nft_reset_rule'
- 
- do_test 'nft reset rules t2 c3' \
--'table=t2 family=2 entries=189 op=nft_reset_rule
--table=t2 family=2 entries=188 op=nft_reset_rule
--table=t2 family=2 entries=126 op=nft_reset_rule'
-+'table=t2 family=2 entries=503 op=nft_reset_rule'
- 
- do_test 'nft reset rules t2' \
--'table=t2 family=2 entries=3 op=nft_reset_rule
--table=t2 family=2 entries=3 op=nft_reset_rule
--table=t2 family=2 entries=186 op=nft_reset_rule
--table=t2 family=2 entries=188 op=nft_reset_rule
--table=t2 family=2 entries=129 op=nft_reset_rule'
-+'table=t2 family=2 entries=509 op=nft_reset_rule'
- 
- do_test 'nft reset rules' \
--'table=t1 family=2 entries=3 op=nft_reset_rule
--table=t1 family=2 entries=3 op=nft_reset_rule
--table=t1 family=2 entries=3 op=nft_reset_rule
--table=t2 family=2 entries=3 op=nft_reset_rule
--table=t2 family=2 entries=3 op=nft_reset_rule
--table=t2 family=2 entries=180 op=nft_reset_rule
--table=t2 family=2 entries=188 op=nft_reset_rule
--table=t2 family=2 entries=135 op=nft_reset_rule'
-+'table=t1 family=2 entries=9 op=nft_reset_rule
-+table=t2 family=2 entries=509 op=nft_reset_rule'
- 
- # resetting sets and elements
- 
-@@ -177,13 +182,11 @@ do_test 'nft reset counters t1' \
- 'table=t1 family=2 entries=1 op=nft_reset_obj'
- 
- do_test 'nft reset counters t2' \
--'table=t2 family=2 entries=342 op=nft_reset_obj
--table=t2 family=2 entries=158 op=nft_reset_obj'
-+'table=t2 family=2 entries=500 op=nft_reset_obj'
- 
- do_test 'nft reset counters' \
- 'table=t1 family=2 entries=1 op=nft_reset_obj
--table=t2 family=2 entries=341 op=nft_reset_obj
--table=t2 family=2 entries=159 op=nft_reset_obj'
-+table=t2 family=2 entries=500 op=nft_reset_obj'
- 
- # resetting quotas
- 
-@@ -194,13 +197,11 @@ do_test 'nft reset quotas t1' \
- 'table=t1 family=2 entries=1 op=nft_reset_obj'
- 
- do_test 'nft reset quotas t2' \
--'table=t2 family=2 entries=315 op=nft_reset_obj
--table=t2 family=2 entries=185 op=nft_reset_obj'
-+'table=t2 family=2 entries=500 op=nft_reset_obj'
- 
- do_test 'nft reset quotas' \
- 'table=t1 family=2 entries=1 op=nft_reset_obj
--table=t2 family=2 entries=314 op=nft_reset_obj
--table=t2 family=2 entries=186 op=nft_reset_obj'
-+table=t2 family=2 entries=500 op=nft_reset_obj'
- 
- # deleting rules
- 
+ 	/* When fsck.jfs clears a bad ea, it doesn't clear the size */
+ 	if (ji->ea.flag == 0)
+ 		ea_size = 0;
 -- 
 2.43.0
 
