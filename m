@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-82660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3729994DD4
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021FA99494A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78DBA1F258FA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD36284042
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2681DED4E;
-	Tue,  8 Oct 2024 13:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD611DA60C;
+	Tue,  8 Oct 2024 12:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxU60R4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9Vc0KqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1C81C32EB;
-	Tue,  8 Oct 2024 13:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C901D540;
+	Tue,  8 Oct 2024 12:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392996; cv=none; b=pF6XYMAToLDhjPHHH3R4lLpKUEeOusrUPxR3QxOH/xAMB2Q2YxnBxVGmQfqCPDOOMdJQDzCRNNlnRPS0Qr8SdlF4Amy6WZWz3XMQT9sTM8Lrw+Av0fGJHX5X08QdMgHhANygj4z61Cl3mSnOF67y0P8Kkp5oyUY6CzvZ2Iuccnc=
+	t=1728390092; cv=none; b=k+XmB07YbVJEA/0iFOjIclx2OSoc/O99XFzzNCZq2w2Am4esh6/cMY9PpMNo4ZAC12Rw1Zu3zNeeZS1evLeG+1y2ezfoOUcyawyB8cWWKxGZMYTcCW8JmfBlSzxCTqj7pTrDJsYHM5sKlrWRCNBOh38mLDGukevdAB/bAZ7xXJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392996; c=relaxed/simple;
-	bh=5XOGS/ta4dt1Jzl0e+xcYqideMmGXiv9SFOQLAj25Rc=;
+	s=arc-20240116; t=1728390092; c=relaxed/simple;
+	bh=yVbtUbt0pUjXlNTJnc+5ZGke2T43D9l9r2yxEocErGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tudRQB5y9/WM0RhNDINcwaao2+DCIFuVjH3Zpg3uxSPItJyZBcSoidSMBXdGCmzo+YaH4HNaTE60+XrExyWpw8rnJ2653khOHUKlLAJofJACRFBZfGCzxBxNxQEbc7rDLMrPnSoluA7miZsI1mn8pMZQxGsPoR5FiELjC2sMfTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxU60R4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1119DC4CEC7;
-	Tue,  8 Oct 2024 13:09:54 +0000 (UTC)
+	 MIME-Version; b=H1o0r7Glr9jkjq2sCNkPZw86mUPRyXd3sCxSsm6m5JXG0p01nCZmkZdZzNwZGVCuyzd7K+qpEswjxzJCKcSEw9txb5u9MJWP3UMZ2OltXFP4tuuLoMrybMdeuC4MRkCVb47O9MQMe6W0MSGNbOlC8rSNmko+y6llJo7yR1OayLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9Vc0KqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30379C4CEC7;
+	Tue,  8 Oct 2024 12:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392995;
-	bh=5XOGS/ta4dt1Jzl0e+xcYqideMmGXiv9SFOQLAj25Rc=;
+	s=korg; t=1728390092;
+	bh=yVbtUbt0pUjXlNTJnc+5ZGke2T43D9l9r2yxEocErGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxU60R4qIJhcvhgzA9Hv1gevFLw5upBZC2wrfiKMyom/rzOyPOEg8C8f3Mk8zqqeZ
-	 pz207QCrZOwtq0xleB9b/we2Me+xGK1PBPqsosofLwiuzLcrxv4B/6hLROcmscOMEf
-	 0EH4c0oIBlDUXyPf0Sk6blRJWGbvC44LfZvK1LGc=
+	b=R9Vc0KqWkOLwhIbCz1DV9c4trBMK656ghBdw35yJBOzqioz9TA2hsxWFekNuBXafO
+	 6XTiNU6Xrm61SS3CZIGk5461gwPnrzq1kwcLegi2QNYVTeARVbtnO/EmP1fhor/s7Y
+	 V/hcWBizPH5ye3Cq4ql9rgsKn0Cj7S+Ubh2X/WOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Klara Modin <klarasmodin@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	David Strahan <David.Strahan@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/386] jump_label: Fix static_key_slow_dec() yet again
-Date: Tue,  8 Oct 2024 14:04:09 +0200
-Message-ID: <20241008115629.490288429@linuxfoundation.org>
+Subject: [PATCH 6.10 187/482] scsi: smartpqi: Add new controller PCI IDs
+Date: Tue,  8 Oct 2024 14:04:10 +0200
+Message-ID: <20241008115655.662317354@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +66,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: David Strahan <David.Strahan@microchip.com>
 
-[ Upstream commit 1d7f856c2ca449f04a22d876e36b464b7a9d28b6 ]
+[ Upstream commit 0e21e73384d324f75ea16f3d622cfc433fa6209b ]
 
-While commit 83ab38ef0a0b ("jump_label: Fix concurrency issues in
-static_key_slow_dec()") fixed one problem, it created yet another,
-notably the following is now possible:
+All PCI ID entries in hex.
 
-  slow_dec
-    if (try_dec) // dec_not_one-ish, false
-    // enabled == 1
-                                slow_inc
-                                  if (inc_not_disabled) // inc_not_zero-ish
-                                  // enabled == 2
-                                    return
+Add new inagile PCI IDs:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            SMART-HBA 8242-24i               9005 / 028f / 1ff9 / 0045
+            RAID 8236-16i                    9005 / 028f / 1ff9 / 0046
+            RAID 8240-24i                    9005 / 028f / 1ff9 / 0047
+            SMART-HBA 8238-16i               9005 / 028f / 1ff9 / 0048
+            PM8222-SHBA                      9005 / 028f / 1ff9 / 004a
+            RAID PM8204-2GB                  9005 / 028f / 1ff9 / 004b
+            RAID PM8204-4GB                  9005 / 028f / 1ff9 / 004c
+            PM8222-HBA                       9005 / 028f / 1ff9 / 004f
+            MT0804M6R                        9005 / 028f / 1ff9 / 0051
+            MT0801M6E                        9005 / 028f / 1ff9 / 0052
+            MT0808M6R                        9005 / 028f / 1ff9 / 0053
+            MT0800M6H                        9005 / 028f / 1ff9 / 0054
+            RS0800M5H24i                     9005 / 028f / 1ff9 / 006b
+            RS0800M5E8i                      9005 / 028f / 1ff9 / 006c
+            RS0800M5H8i                      9005 / 028f / 1ff9 / 006d
+            RS0804M5R16i                     9005 / 028f / 1ff9 / 006f
+            RS0800M5E24i                     9005 / 028f / 1ff9 / 0070
+            RS0800M5H16i                     9005 / 028f / 1ff9 / 0071
+            RS0800M5E16i                     9005 / 028f / 1ff9 / 0072
+            RT0800M7E                        9005 / 028f / 1ff9 / 0086
+            RT0800M7H                        9005 / 028f / 1ff9 / 0087
+            RT0804M7R                        9005 / 028f / 1ff9 / 0088
+            RT0808M7R                        9005 / 028f / 1ff9 / 0089
+            RT1608M6R16i                     9005 / 028f / 1ff9 / 00a1
 
-    guard((mutex)(&jump_label_mutex);
-    if (atomic_cmpxchg(1,0)==1) // false, we're 2
+Add new h3c pci_id:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            UN RAID P4408-Mr-2               9005 / 028f / 193d / 1110
 
-                                slow_dec
-                                  if (try-dec) // dec_not_one, true
-                                  // enabled == 1
-                                    return
-    else
-      try_dec() // dec_not_one, false
-      WARN
+Add new powerleader pci ids:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            PL SmartROC PM8204               9005 / 028f / 1f3a / 0104
 
-Use dec_and_test instead of cmpxchg(), like it was prior to
-83ab38ef0a0b. Add a few WARNs for the paranoid.
-
-Fixes: 83ab38ef0a0b ("jump_label: Fix concurrency issues in static_key_slow_dec()")
-Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: David Strahan <David.Strahan@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20240711194704.982400-2-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/jump_label.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 104 ++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
-diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index 7374053bbe049..554e04b25b13a 100644
---- a/kernel/jump_label.c
-+++ b/kernel/jump_label.c
-@@ -165,7 +165,7 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
- 		jump_label_update(key);
- 		/*
- 		 * Ensure that when static_key_fast_inc_not_disabled() or
--		 * static_key_slow_try_dec() observe the positive value,
-+		 * static_key_dec_not_one() observe the positive value,
- 		 * they must also observe all the text changes.
- 		 */
- 		atomic_set_release(&key->enabled, 1);
-@@ -247,7 +247,7 @@ void static_key_disable(struct static_key *key)
- }
- EXPORT_SYMBOL_GPL(static_key_disable);
- 
--static bool static_key_slow_try_dec(struct static_key *key)
-+static bool static_key_dec_not_one(struct static_key *key)
- {
- 	int v;
- 
-@@ -271,6 +271,14 @@ static bool static_key_slow_try_dec(struct static_key *key)
- 		 * enabled. This suggests an ordering problem on the user side.
- 		 */
- 		WARN_ON_ONCE(v < 0);
-+
-+		/*
-+		 * Warn about underflow, and lie about success in an attempt to
-+		 * not make things worse.
-+		 */
-+		if (WARN_ON_ONCE(v == 0))
-+			return true;
-+
- 		if (v <= 1)
- 			return false;
- 	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
-@@ -281,15 +289,27 @@ static bool static_key_slow_try_dec(struct static_key *key)
- static void __static_key_slow_dec_cpuslocked(struct static_key *key)
- {
- 	lockdep_assert_cpus_held();
-+	int val;
- 
--	if (static_key_slow_try_dec(key))
-+	if (static_key_dec_not_one(key))
- 		return;
- 
- 	guard(mutex)(&jump_label_mutex);
--	if (atomic_cmpxchg(&key->enabled, 1, 0) == 1)
-+	val = atomic_read(&key->enabled);
-+	/*
-+	 * It should be impossible to observe -1 with jump_label_mutex held,
-+	 * see static_key_slow_inc_cpuslocked().
-+	 */
-+	if (WARN_ON_ONCE(val == -1))
-+		return;
-+	/*
-+	 * Cannot already be 0, something went sideways.
-+	 */
-+	if (WARN_ON_ONCE(val == 0))
-+		return;
-+
-+	if (atomic_dec_and_test(&key->enabled))
- 		jump_label_update(key);
--	else
--		WARN_ON_ONCE(!static_key_slow_try_dec(key));
- }
- 
- static void __static_key_slow_dec(struct static_key *key)
-@@ -326,7 +346,7 @@ void __static_key_slow_dec_deferred(struct static_key *key,
- {
- 	STATIC_KEY_CHECK_USE(key);
- 
--	if (static_key_slow_try_dec(key))
-+	if (static_key_dec_not_one(key))
- 		return;
- 
- 	schedule_delayed_work(work, timeout);
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index c1524fb334eb5..02d16fddd3123 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -9456,6 +9456,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x110b)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x193d, 0x1110)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x8460)
+@@ -9572,6 +9576,14 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1bd4, 0x0089)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x00a1)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f3a, 0x0104)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x19e5, 0xd227)
+@@ -10164,6 +10176,98 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1137, 0x02fa)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0045)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0046)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0047)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0048)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004a)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004b)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004c)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004f)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0051)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0052)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0053)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0054)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006b)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006c)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006d)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006f)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0070)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0071)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0072)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0086)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0087)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0088)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0089)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 				0x1e93, 0x1000)
 -- 
 2.43.0
 
