@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2E8994FA1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1A2994DA2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90134284FF2
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41378B27AC2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292BD1DF99F;
-	Tue,  8 Oct 2024 13:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7D81DF279;
+	Tue,  8 Oct 2024 13:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdDVtVVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZg2XIrL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAC61DF25B;
-	Tue,  8 Oct 2024 13:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5908B1DE88F;
+	Tue,  8 Oct 2024 13:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393981; cv=none; b=sP6SzhmgKGHkSx9fcNrzXdOIANO7WN33Lgz+SSl9fHlZpNqQAZ7VOpV0Gz37ZpZrU69ha8ovdmU4qCcOzoe1cFEqM98GffyRrJNLqxJK3AwzYZNVbjv84Guw3ztdkGnEBWnQmi9nLuCFkEKOpRDPRifbNQ10uFPdAf4O29ej+KE=
+	t=1728392810; cv=none; b=V+AANtnAuTmlGCO2o8j85eWa/yI83crbApJQkYeEHYwgw5H4vZdafHccvBoMWKi+E40bvZUO9pEC6hQl7yCABf+7YptsmwMLsUC0i6wbTfr2qcAu1fK2IXMXesljpBR8+SvMm6kKLhRtjemiEvVptelItEvuafW46EaU9TLm9c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393981; c=relaxed/simple;
-	bh=zGFYyyBUK3JjOv4plps//pgi+FEGJuTuxsWcGs863Xk=;
+	s=arc-20240116; t=1728392810; c=relaxed/simple;
+	bh=9FzyiAPmfy21hB91tHMPTtgeLRaHd0R468nB5CwsoLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gBMZZ24oPP1Mfec9jCB4isy32df7Uc3fpKyaLHlvlYZXLzP749gVeumqkGKbMFJ3+ThQ+7BOM8QK3fkebfFCAk4el1SOXFp3Af9J5Y39YcP19LKYvJgRqBQRDg6r+eSPyWDtVtZ67ZGraImVUO8cAfmdIN6vxv+F+VRPmLOj7IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdDVtVVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F659C4CECC;
-	Tue,  8 Oct 2024 13:26:20 +0000 (UTC)
+	 MIME-Version; b=Z1Um65Ik4iH1c/l2uEhypFZ+3uoXxerShkcO+WY0oh+jfBj+K4/xNoqxFm9EgzGWn70ytST0ptLsN3TFHRDtPaBUAmeT/mw+eKyWHo067nakQewX0YmGIuDlORzhI37T2wvPT/hcrG8b+NEYhaIK/LsxCgYLLbbe7OBOBCjUH4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZg2XIrL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46D1C4CEC7;
+	Tue,  8 Oct 2024 13:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393981;
-	bh=zGFYyyBUK3JjOv4plps//pgi+FEGJuTuxsWcGs863Xk=;
+	s=korg; t=1728392810;
+	bh=9FzyiAPmfy21hB91tHMPTtgeLRaHd0R468nB5CwsoLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdDVtVVQ4ch1Yu3q/sSwOnJfyk4MALfiCmxCc0lxhetSoEw6Hu1pdPIcEy0GDqhTf
-	 3ECfgiHusEKS0wYogTzU89BX+3Z79ivCGgjHTjvHqHEcE12Sqdp+OEN2x2IllFEzRg
-	 lNEbmOFFIq8HLnK3zvkCdTUXGgJ0LounuX2mQpEs=
+	b=YZg2XIrLcP8koxyZ/PZTH29GemgnNRIRwiIsPanynZfE43c62lU0HRISlFNH3go2X
+	 u4JkXM2VO6OTUnARbxrMdhwV9FZlZtzQl6RBT4pLCImFuhALYI+k6Glp0fZTs5fWO0
+	 MJnSQU35iJODv5G6xSv3LpkgPc8udMDHrwN/UZ4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Miquel=20Sabat=C3=A9=20Sol=C3=A0?= <mikisabate@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 311/386] cpufreq: Avoid a bad reference count on CPU node
+	Leo Li <sunpeng.li@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.11 526/558] drm/amd/display: Enable idle workqueue for more IPS modes
 Date: Tue,  8 Oct 2024 14:09:16 +0200
-Message-ID: <20241008115641.624481764@linuxfoundation.org>
+Message-ID: <20241008115722.928620306@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Sabaté Solà <mikisabate@gmail.com>
+From: Leo Li <sunpeng.li@amd.com>
 
-commit c0f02536fffbbec71aced36d52a765f8c4493dc2 upstream.
+commit ef785ca7f7c80891580cafd36c8dd86375684310 upstream.
 
-In the parse_perf_domain function, if the call to
-of_parse_phandle_with_args returns an error, then the reference to the
-CPU device node that was acquired at the start of the function would not
-be properly decremented.
+[Why]
 
-Address this by declaring the variable with the __free(device_node)
-cleanup attribute.
+There are more IPS modes other than DMUB_IPS_ENABLE that enables IPS. We
+need to enable the hotplug detect idle workqueue for those modes as
+well.
 
-Signed-off-by: Miquel Sabaté Solà <mikisabate@gmail.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20240917134246.584026-1-mikisabate@gmail.com
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[How]
+
+Modify the if condition to initialize the workqueue in all IPS modes
+except for DMUB_IPS_DISABLE_ALL.
+
+Fixes: 65444581a4ae ("drm/amd/display: Determine IPS mode by ASIC and PMFW versions")
+Signed-off-by: Leo Li <sunpeng.li@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 181db30bcfed097ecc680539b1eabe935c11f57f)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cpufreq.h |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -1124,10 +1124,9 @@ static inline int parse_perf_domain(int
- 				    const char *cell_name,
- 				    struct of_phandle_args *args)
- {
--	struct device_node *cpu_np;
- 	int ret;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2005,7 +2005,8 @@ static int amdgpu_dm_init(struct amdgpu_
+ 			DRM_ERROR("amdgpu: failed to initialize vblank_workqueue.\n");
+ 	}
  
--	cpu_np = of_cpu_device_node_get(cpu);
-+	struct device_node *cpu_np __free(device_node) = of_cpu_device_node_get(cpu);
- 	if (!cpu_np)
- 		return -ENODEV;
+-	if (adev->dm.dc->caps.ips_support && adev->dm.dc->config.disable_ips == DMUB_IPS_ENABLE)
++	if (adev->dm.dc->caps.ips_support &&
++	    adev->dm.dc->config.disable_ips != DMUB_IPS_DISABLE_ALL)
+ 		adev->dm.idle_workqueue = idle_create_workqueue(adev);
  
-@@ -1135,9 +1134,6 @@ static inline int parse_perf_domain(int
- 					 args);
- 	if (ret < 0)
- 		return ret;
--
--	of_node_put(cpu_np);
--
- 	return 0;
- }
- 
+ 	if (adev->dm.dc->caps.max_links > 0 && adev->family >= AMDGPU_FAMILY_RV) {
 
 
 
