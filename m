@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206379949C7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:27:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD318994DFE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 864FCB21A55
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:27:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3E2F284428
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1271E485;
-	Tue,  8 Oct 2024 12:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB8E1DF27E;
+	Tue,  8 Oct 2024 13:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REXRDPRa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OF9/qdCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878D41DF971;
-	Tue,  8 Oct 2024 12:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89B91DED7A;
+	Tue,  8 Oct 2024 13:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390349; cv=none; b=DqgffeGT3nxineuMggNfCKAeQ+CMcQd9ldEnQA9w6KAIowLzyqxhbeiUcEvJdN1hIlMghLtDOCX5Uh8D2818prqqrnS7qwq4hmDe4S8ui2qEqCVlhRU/yo7jT9yt/U3DIb4BIt9vvsA/DogRmBYrSS68Gtngsu4MVzsDWnnUqak=
+	t=1728393090; cv=none; b=c+PsH9PMxG6RAhe44rMW63zr8oTFIf1bsK28EwluiV/awmDW8eWbOzqElHUdyo+dBOkZRkP3KXQ4P/28ND/XnQ2d7PXHFu/eyxYV6FZBp0+mB5JMSzcJ+DsQhkQNPOEzAXmyxIV0Z2CVka2KH9Wjac37K7/bytHOqmrRmvyQ4t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390349; c=relaxed/simple;
-	bh=/mWlIHLj3gAZbb5NZADs2IK9CTUtValK064cbOpeQvY=;
+	s=arc-20240116; t=1728393090; c=relaxed/simple;
+	bh=KBqTOXtwWGBQoUM9RuKBurANIr6+EFvf/4KGiwmlTXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brvH7Wty6pcpNYXTgwEkd8w3ABRV8JOsY/yciX9uawpthF4g1GWpYWF5h/TiJDE954exhABNJctofh4RB6fpgJxiKgrJjX9PUapfRssuAqnKKxQ2dAxyMIZc4Byxb12aY4pqz9YesoqpUkzq3N6CkRSraRuYgyWiFIKJp28DgAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REXRDPRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938F4C4CEC7;
-	Tue,  8 Oct 2024 12:25:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hv96uLL7i2xGKr2f0XHuZAJCQ7rAxDXo4nIDtrazFHQwWGZv9TPHfF6wuZKAiHlJznT3rEnsgzm2w8I3A7boGxvlK52wVZUAoGsOdpZ9e3NEtCSJy/y/GmZB65XZcO3ybVnRXrdvwx1zkVLWTfbgqIR5Si7lWs8Yle9/pyDqFSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OF9/qdCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15098C4CEC7;
+	Tue,  8 Oct 2024 13:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390349;
-	bh=/mWlIHLj3gAZbb5NZADs2IK9CTUtValK064cbOpeQvY=;
+	s=korg; t=1728393090;
+	bh=KBqTOXtwWGBQoUM9RuKBurANIr6+EFvf/4KGiwmlTXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REXRDPRaEkakXB74Y4iHb36pd9e5v+Mf9fCRbwrGjsOoJz2R7JrXKvsjPxG2e2Apf
-	 vZCsBxVM/7t/a4HE5xQrK4fPG1KzcXlNkKnTu4puPN/Bq8LVbKlplwDfokV8jNlmmA
-	 3DW643YyETrkaJD4lq0ybhEixqM2YZufn+vHkC6Q=
+	b=OF9/qdCIqR6AZUvKW+NrkyujkLtNX9IttORVOFteF9H3mnbPL0PR0JDPPmJcQgOfc
+	 v6gWOXE0L6tbc02VgzocKIx6VpdYjhYlxZxRDQ7iXR3aScANj24I8rhOH46mYyexnl
+	 FtiRKn717tmtlzbtsRQhKef0GhO+f+y5sGCWe2/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Skvortsov <victor.skvortsov@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 231/482] drm/amdgpu: Block MMR_READ IOCTL in reset
+Subject: [PATCH 6.6 049/386] cifs: Remove intermediate object of failed create reparse call
 Date: Tue,  8 Oct 2024 14:04:54 +0200
-Message-ID: <20241008115657.393224259@linuxfoundation.org>
+Message-ID: <20241008115631.401631462@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,115 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Skvortsov <victor.skvortsov@amd.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 9e823f307074c0f82b5f6044943b0086e3079bed ]
+[ Upstream commit c9432ad5e32f066875b1bf95939c363bc46d6a45 ]
 
-Register access from userspace should be blocked until
-reset is complete.
+If CREATE was successful but SMB2_OP_SET_REPARSE failed then remove the
+intermediate object created by CREATE. Otherwise empty object stay on the
+server when reparse call failed.
 
-Signed-off-by: Victor Skvortsov <victor.skvortsov@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This ensures that if the creating of special files is unsupported by the
+server then no empty file stay on the server as a result of unsupported
+operation.
+
+Fixes: 102466f303ff ("smb: client: allow creating special files via reparse points")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 43 ++++++++++++++++++-------
- 1 file changed, 31 insertions(+), 12 deletions(-)
+ fs/smb/client/smb2inode.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index 977cde6d13626..6d4e774b6cedc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -43,6 +43,7 @@
- #include "amdgpu_gem.h"
- #include "amdgpu_display.h"
- #include "amdgpu_ras.h"
-+#include "amdgpu_reset.h"
- #include "amd_pcie.h"
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index dd8acd2077521..8010b3ed4b3fe 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -1205,9 +1205,12 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct cifsFileInfo *cfile;
+ 	struct inode *new = NULL;
++	int out_buftype[4] = {};
++	struct kvec out_iov[4] = {};
+ 	struct kvec in_iov[2];
+ 	int cmds[2];
+ 	int rc;
++	int i;
  
- void amdgpu_unregister_gpu_instance(struct amdgpu_device *adev)
-@@ -778,6 +779,7 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 				    ? -EFAULT : 0;
- 	}
- 	case AMDGPU_INFO_READ_MMR_REG: {
-+		int ret = 0;
- 		unsigned int n, alloc_size;
- 		uint32_t *regs;
- 		unsigned int se_num = (info->read_mmr_reg.instance >>
-@@ -787,24 +789,37 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
- 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
- 
-+		if (!down_read_trylock(&adev->reset_domain->sem))
-+			return -ENOENT;
-+
- 		/* set full masks if the userspace set all bits
- 		 * in the bitfields
- 		 */
--		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
-+		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
- 			se_num = 0xffffffff;
--		else if (se_num >= AMDGPU_GFX_MAX_SE)
--			return -EINVAL;
--		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
-+		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
- 			sh_num = 0xffffffff;
--		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
--			return -EINVAL;
-+		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
--		if (info->read_mmr_reg.count > 128)
--			return -EINVAL;
-+		if (info->read_mmr_reg.count > 128) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
- 		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
--		if (!regs)
--			return -ENOMEM;
-+		if (!regs) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+
- 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
- 
- 		amdgpu_gfx_off_ctrl(adev, false);
-@@ -816,13 +831,17 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 					      info->read_mmr_reg.dword_offset + i);
- 				kfree(regs);
- 				amdgpu_gfx_off_ctrl(adev, true);
--				return -EFAULT;
-+				ret = -EFAULT;
-+				goto out;
- 			}
+ 	oparms = CIFS_OPARMS(cifs_sb, tcon, full_path,
+ 			     SYNCHRONIZE | DELETE |
+@@ -1228,7 +1231,7 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cmds[1] = SMB2_OP_POSIX_QUERY_INFO;
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
+-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
++				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
+ 		if (!rc) {
+ 			rc = smb311_posix_get_inode_info(&new, full_path,
+ 							 data, sb, xid);
+@@ -1237,12 +1240,29 @@ struct inode *smb2_get_reparse_inode(struct cifs_open_info_data *data,
+ 		cmds[1] = SMB2_OP_QUERY_INFO;
+ 		cifs_get_writable_path(tcon, full_path, FIND_WR_ANY, &cfile);
+ 		rc = smb2_compound_op(xid, tcon, cifs_sb, full_path, &oparms,
+-				      in_iov, cmds, 2, cfile, NULL, NULL, NULL);
++				      in_iov, cmds, 2, cfile, out_iov, out_buftype, NULL);
+ 		if (!rc) {
+ 			rc = cifs_get_inode_info(&new, full_path,
+ 						 data, sb, xid, NULL);
  		}
- 		amdgpu_gfx_off_ctrl(adev, true);
- 		n = copy_to_user(out, regs, min(size, alloc_size));
- 		kfree(regs);
--		return n ? -EFAULT : 0;
-+		ret = (n ? -EFAULT : 0);
-+out:
-+		up_read(&adev->reset_domain->sem);
-+		return ret;
  	}
- 	case AMDGPU_INFO_DEV_INFO: {
- 		struct drm_amdgpu_info_device *dev_info;
++
++
++	/*
++	 * If CREATE was successful but SMB2_OP_SET_REPARSE failed then
++	 * remove the intermediate object created by CREATE. Otherwise
++	 * empty object stay on the server when reparse call failed.
++	 */
++	if (rc &&
++	    out_iov[0].iov_base != NULL && out_buftype[0] != CIFS_NO_BUFFER &&
++	    ((struct smb2_hdr *)out_iov[0].iov_base)->Status == STATUS_SUCCESS &&
++	    (out_iov[1].iov_base == NULL || out_buftype[1] == CIFS_NO_BUFFER ||
++	     ((struct smb2_hdr *)out_iov[1].iov_base)->Status != STATUS_SUCCESS))
++		smb2_unlink(xid, tcon, full_path, cifs_sb, NULL);
++
++	for (i = 0; i < ARRAY_SIZE(out_buftype); i++)
++		free_rsp_buf(out_buftype[i], out_iov[i].iov_base);
++
+ 	return rc ? ERR_PTR(rc) : new;
+ }
+ 
 -- 
 2.43.0
 
