@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-81624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F481994876
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6984B994879
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3966D28197E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28910281F49
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E251DE3CB;
-	Tue,  8 Oct 2024 12:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916A61DE4F8;
+	Tue,  8 Oct 2024 12:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+zfR7G6"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH5/Ea7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74211DD867;
-	Tue,  8 Oct 2024 12:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5097B1DE3AF;
+	Tue,  8 Oct 2024 12:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389584; cv=none; b=n+/xuPHkZZh6qvrcKFsF5wxWwkM+yMrKoFfrQ27tAFagJNxeX1yNAewCAoYa257yyQG80cJVUKhdlsLTmZYoyBNYUeTF+nuYGXMSmhkqP7U/kBlnQbHoTQf6+kv2RCthEzPuMBjUSYyD0+JMLdCyvqtnzKyut3JHeoA/5YaBTnU=
+	t=1728389591; cv=none; b=ocqp5PltQFmlUCMs6e3v9C3DUyX1duUv3W73oAisN8C5Ry0yHwNin/juGJ1AFagaQv58rQPkIEEaE9Pkz/qyLk4cA5vCcpMXU25liQZ35DboNCLbQ7Oxaa7xqL4fbgsiEWSXNb2uNNDoCSF+AOOMhT0PtrxNlnlTRbUq3OuPPBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389584; c=relaxed/simple;
-	bh=M+cPJcc0kECLOR/Lt5VoiXXfvXVx4K8fBmGOk5XrNFs=;
+	s=arc-20240116; t=1728389591; c=relaxed/simple;
+	bh=OX22ILeTOzDLJvsWRlVyMs+MannIPgKaQ1pI2zmPpp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CJIJvED5Vc/2jXcqnkhuXZBZ+mhHGhlHqQZc6L5xy379BdQoJXMg8x/8ZEsRzL7IZLZUNria+7H7vf7khB6+TWqUo2UNDGNjZuMWsXNKDZ7E2WVP56YGLuEkqlKy+M/ghxJDdYArUbwjnQunoXmtnhqcp9urzjhI8ANYJCwr1aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+zfR7G6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFCBC4CEC7;
-	Tue,  8 Oct 2024 12:13:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tethW63QnwoYcsd/QHPCybTjCGqAygXsdX/+GzzZDRpBvu5s2xvJ1Vp6l3J0O3t0M5g4/qQnRJ3eQyrTEvyTaNiF403PsFc9ATC7T1SufErGFV8MIggEdwl2F/XrW0L8lXMxXpRa6juc0f7RcRNG4wlnDUA2cNyofrG7JHtHH24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xH5/Ea7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47BBC4CECC;
+	Tue,  8 Oct 2024 12:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389584;
-	bh=M+cPJcc0kECLOR/Lt5VoiXXfvXVx4K8fBmGOk5XrNFs=;
+	s=korg; t=1728389591;
+	bh=OX22ILeTOzDLJvsWRlVyMs+MannIPgKaQ1pI2zmPpp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+zfR7G6zVfy9+VfFOgaO+o9bfsaFJKE+F+60NI+//IytVzc9k48BCHyy092xNxdb
-	 zRZPuLrXYijbTjDHVcv/7Nw4OTz2M/wgRwBKLDSZfj1nWw2mINJcBpuNz/RVFcYuCb
-	 pbrLvc9mtzKIzUOzwjrVCSpuLW1t5eEyjnD6T8hA=
+	b=xH5/Ea7Q54gBsBz9oHvcx006Ka1GfQLnCyRFzRX+ggxxgQedoSGVoC1kRkQUOYX1e
+	 rJ/j1hD0ou2u3Cmn13Amj47uB2jdi/fvwiPSNBYZBQbV1S0KnH/bX5/42gVxVK1cVb
+	 mw92Xv9J5WOaiIpVosgZ5oJoWjwZU8gsqt0cRQng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 037/482] net: fec: Restart PPS after link state change
-Date: Tue,  8 Oct 2024 14:01:40 +0200
-Message-ID: <20241008115649.761851002@linuxfoundation.org>
+	=20Bence?= <csokas.bence@prolan.hu>, Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 038/482] net: fec: Reload PTP registers after link-state change
+Date: Tue,  8 Oct 2024 14:01:41 +0200
+Message-ID: <20241008115649.802831648@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
 References: <20241008115648.280954295@linuxfoundation.org>
@@ -69,129 +69,88 @@ Content-Transfer-Encoding: 8bit
 
 From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit a1477dc87dc4996dcf65a4893d4e2c3a6b593002 ]
+[ Upstream commit d9335d0232d2da605585eea1518ac6733518f938 ]
 
-On link state change, the controller gets reset,
-causing PPS to drop out. Re-enable PPS if it was
-enabled before the controller reset.
+On link-state change, the controller gets reset,
+which clears all PTP registers, including PHC time,
+calibrated clock correction values etc. For correct
+IEEE 1588 operation we need to restore these after
+the reset.
 
 Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
 Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://patch.msgid.link/20240924093705.2897329-1-csokas.bence@prolan.hu
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20240924093705.2897329-2-csokas.bence@prolan.hu
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec.h      |  6 +++++
- drivers/net/ethernet/freescale/fec_main.c | 11 ++++++++-
- drivers/net/ethernet/freescale/fec_ptp.c  | 30 +++++++++++++++++++++++
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec.h     |  3 +++
+ drivers/net/ethernet/freescale/fec_ptp.c | 20 ++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
 diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index a19cb2a786fd2..0552317a2554b 100644
+index 0552317a2554b..1cca0425d4939 100644
 --- a/drivers/net/ethernet/freescale/fec.h
 +++ b/drivers/net/ethernet/freescale/fec.h
-@@ -691,10 +691,16 @@ struct fec_enet_private {
- 	/* XDP BPF Program */
- 	struct bpf_prog *xdp_prog;
+@@ -693,6 +693,9 @@ struct fec_enet_private {
  
-+	struct {
-+		int pps_enable;
-+	} ptp_saved_state;
-+
+ 	struct {
+ 		int pps_enable;
++		u64 ns_sys, ns_phc;
++		u32 at_corr;
++		u8 at_inc_corr;
+ 	} ptp_saved_state;
+ 
  	u64 ethtool_stats[];
- };
- 
- void fec_ptp_init(struct platform_device *pdev, int irq_idx);
-+void fec_ptp_restore_state(struct fec_enet_private *fep);
-+void fec_ptp_save_state(struct fec_enet_private *fep);
- void fec_ptp_stop(struct platform_device *pdev);
- void fec_ptp_start_cyclecounter(struct net_device *ndev);
- int fec_ptp_set(struct net_device *ndev, struct kernel_hwtstamp_config *config,
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index fb19295529a21..8004f12352b6b 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1077,6 +1077,8 @@ fec_restart(struct net_device *ndev)
- 	u32 rcntl = OPT_FRAME_SIZE | 0x04;
- 	u32 ecntl = FEC_ECR_ETHEREN;
- 
-+	fec_ptp_save_state(fep);
-+
- 	/* Whack a reset.  We should wait for this.
- 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
- 	 * instead of reset MAC itself.
-@@ -1244,8 +1246,10 @@ fec_restart(struct net_device *ndev)
- 	writel(ecntl, fep->hwp + FEC_ECNTRL);
- 	fec_enet_active_rxring(ndev);
- 
--	if (fep->bufdesc_ex)
-+	if (fep->bufdesc_ex) {
- 		fec_ptp_start_cyclecounter(ndev);
-+		fec_ptp_restore_state(fep);
-+	}
- 
- 	/* Enable interrupts we wish to service */
- 	if (fep->link)
-@@ -1336,6 +1340,8 @@ fec_stop(struct net_device *ndev)
- 			netdev_err(ndev, "Graceful transmit stop did not complete!\n");
- 	}
- 
-+	fec_ptp_save_state(fep);
-+
- 	/* Whack a reset.  We should wait for this.
- 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
- 	 * instead of reset MAC itself.
-@@ -1366,6 +1372,9 @@ fec_stop(struct net_device *ndev)
- 		val = readl(fep->hwp + FEC_ECNTRL);
- 		val |= FEC_ECR_EN1588;
- 		writel(val, fep->hwp + FEC_ECNTRL);
-+
-+		fec_ptp_start_cyclecounter(ndev);
-+		fec_ptp_restore_state(fep);
- 	}
- }
- 
 diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 2e4f3e1782a25..8027b532de078 100644
+index 8027b532de078..5e8fac50f945d 100644
 --- a/drivers/net/ethernet/freescale/fec_ptp.c
 +++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -770,6 +770,36 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- 	schedule_delayed_work(&fep->time_keep, HZ);
+@@ -773,24 +773,44 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+ void fec_ptp_save_state(struct fec_enet_private *fep)
+ {
+ 	unsigned long flags;
++	u32 atime_inc_corr;
+ 
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 
+ 	fep->ptp_saved_state.pps_enable = fep->pps_enable;
+ 
++	fep->ptp_saved_state.ns_phc = timecounter_read(&fep->tc);
++	fep->ptp_saved_state.ns_sys = ktime_get_ns();
++
++	fep->ptp_saved_state.at_corr = readl(fep->hwp + FEC_ATIME_CORR);
++	atime_inc_corr = readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_CORR_MASK;
++	fep->ptp_saved_state.at_inc_corr = (u8)(atime_inc_corr >> FEC_T_INC_CORR_OFFSET);
++
+ 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
  }
  
-+void fec_ptp_save_state(struct fec_enet_private *fep)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&fep->tmreg_lock, flags);
-+
-+	fep->ptp_saved_state.pps_enable = fep->pps_enable;
-+
-+	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+}
-+
-+/* Restore PTP functionality after a reset */
-+void fec_ptp_restore_state(struct fec_enet_private *fep)
-+{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&fep->tmreg_lock, flags);
-+
-+	/* Reset turned it off, so adjust our status flag */
-+	fep->pps_enable = 0;
-+
-+	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+
-+	/* Restart PPS if needed */
-+	if (fep->ptp_saved_state.pps_enable) {
-+		/* Re-enable PPS */
-+		fec_ptp_enable_pps(fep, 1);
-+	}
-+}
-+
- void fec_ptp_stop(struct platform_device *pdev)
+ /* Restore PTP functionality after a reset */
+ void fec_ptp_restore_state(struct fec_enet_private *fep)
  {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
++	u32 atime_inc = readl(fep->hwp + FEC_ATIME_INC) & FEC_T_INC_MASK;
+ 	unsigned long flags;
++	u32 counter;
++	u64 ns;
+ 
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 
+ 	/* Reset turned it off, so adjust our status flag */
+ 	fep->pps_enable = 0;
+ 
++	writel(fep->ptp_saved_state.at_corr, fep->hwp + FEC_ATIME_CORR);
++	atime_inc |= ((u32)fep->ptp_saved_state.at_inc_corr) << FEC_T_INC_CORR_OFFSET;
++	writel(atime_inc, fep->hwp + FEC_ATIME_INC);
++
++	ns = ktime_get_ns() - fep->ptp_saved_state.ns_sys + fep->ptp_saved_state.ns_phc;
++	counter = ns & fep->cc.mask;
++	writel(counter, fep->hwp + FEC_ATIME);
++	timecounter_init(&fep->tc, &fep->cc, ns);
++
+ 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+ 
+ 	/* Restart PPS if needed */
 -- 
 2.43.0
 
