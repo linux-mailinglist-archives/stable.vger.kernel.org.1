@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-82580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9496E994D79
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86161994F75
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C67DA1C20FBD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7371C212DF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A222D1DF251;
-	Tue,  8 Oct 2024 13:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324A61DFE02;
+	Tue,  8 Oct 2024 13:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2UfB+mS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osDFSe3F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF871DFD1;
-	Tue,  8 Oct 2024 13:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E081DFE1D;
+	Tue,  8 Oct 2024 13:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392739; cv=none; b=azC+r2dGv/01pO+g+KOw6uR0SbvZMgJyn1ewKjwIF9pPDyMnhfdriKuWPfiYmfy4yDtVD7UqLHy/bHb3wSskjlMirjW0DtwRl0dKt36F3N8ZJPJy8SbvPJgwPPZIoMyDb/6uCf92jxim1KiClL6fFP2f+AZQ9Eu90elZxtRRGBY=
+	t=1728393911; cv=none; b=rNCocw/MhIRSuqotq/vPBCJwDU4+IMZSJpe2963s1Hln+PZYJqxQIM7pEsr3IfNXAIRBFTQGfDJ16cYUAZAaEzkiC8Xm5/3q6UYw5pY4bxFJJfWP0sAMrbZwP+8fzFadHTBUfz1tba0Smlh1SK4YCaGbHpU1dM/3unuAR8e4SMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392739; c=relaxed/simple;
-	bh=QGCNvcpl7uDXQF/ZECf3gRf3uGbeBwI6hr8Vb5XLNSQ=;
+	s=arc-20240116; t=1728393911; c=relaxed/simple;
+	bh=2G6GXZ56OeyJSDKRzoQMWs7gpauEYqhxsU93t5BCXfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EV8ootNsG6+7altAHmXkDd/P43K9lrgdau4qkkdXfJevKtef9+SjbdCpeSX15g9bl8rntVQusV97Gds2u1eOHe5JOVvLCHC2wyV9Fo5C+D8H6QGAGqmrctPkJu01zzvl9QZFmLrFX/gTypM5v/8nl0Y80SbjAh3KScmJnYvPdag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2UfB+mS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE18C4CEC7;
-	Tue,  8 Oct 2024 13:05:38 +0000 (UTC)
+	 MIME-Version; b=NceSI4v2krDL8HZFcJfDXsZVit5eWY9cQCkc2f1U25qpMKVlYZAxyDCL8E/S7bsqE3d9m7DPeXHNtZB3qM/oxtfhndqECgVI3+L5U624rzoIpwawei8h2rH0BFro891riVIFkeqtqxG8CGEngztx/8YO9jmAS/RAO1iGsQ8nrpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osDFSe3F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E95C4CECC;
+	Tue,  8 Oct 2024 13:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392738;
-	bh=QGCNvcpl7uDXQF/ZECf3gRf3uGbeBwI6hr8Vb5XLNSQ=;
+	s=korg; t=1728393910;
+	bh=2G6GXZ56OeyJSDKRzoQMWs7gpauEYqhxsU93t5BCXfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2UfB+mSvc4V5o4Y9LkaOYaPowrBhp5qR/XoFjuLZh8soA5wqs3OIKbBTAp0vkdoz
-	 1mK6RnIRolWKEVG7lV51yyVEstTD4SQyjg66EtJSOlC9fOVNkOk8rCQES9rViul+Xg
-	 kv/5v7hp3U4AQKvPs4PtLNNIbLAXFZRYvuiX3w3o=
+	b=osDFSe3FmbmN77zbAPRkwiqjzXKveiJnAJzlT104Vv6b/2UunKlpgeAzYjg4tzvWQ
+	 P7xxD9pGXITljfnJW33SHC41N9nrjzEcQCUdlIG3Tb04qNi6njo08X2ssl4aJCrx8h
+	 oY6UjEhuSPMqd8DtvCx/QxgjGgnUXrAXlObkH++U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.11 504/558] net: pcs: xpcs: fix the wrong register that was written back
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 289/386] media: venus: fix use after free bug in venus_remove due to race condition
 Date: Tue,  8 Oct 2024 14:08:54 +0200
-Message-ID: <20241008115722.064772397@linuxfoundation.org>
+Message-ID: <20241008115640.758681542@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-commit 93ef6ee5c20e9330477930ec6347672c9e0cf5a6 upstream.
+commit c5a85ed88e043474161bbfe54002c89c1cb50ee2 upstream.
 
-The value is read from the register TXGBE_RX_GEN_CTL3, and it should be
-written back to TXGBE_RX_GEN_CTL3 when it changes some fields.
+in venus_probe, core->work is bound with venus_sys_error_handler, which is
+used to handle error. The code use core->sys_err_done to make sync work.
+The core->work is started in venus_event_notify.
+
+If we call venus_remove, there might be an unfished work. The possible
+sequence is as follows:
+
+CPU0                  CPU1
+
+                     |venus_sys_error_handler
+venus_remove         |
+hfi_destroy	 		 |
+venus_hfi_destroy	 |
+kfree(hdev);	     |
+                     |hfi_reinit
+					 |venus_hfi_queues_reinit
+                     |//use hdev
+
+Fix it by canceling the work in venus_remove.
 
 Cc: stable@vger.kernel.org
-Fixes: f629acc6f210 ("net: pcs: xpcs: support to switch mode for Wangxun NICs")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20240924022857.865422-1-jiawenwu@trustnetic.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/pcs/pcs-xpcs-wx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/pcs/pcs-xpcs-wx.c
-+++ b/drivers/net/pcs/pcs-xpcs-wx.c
-@@ -109,7 +109,7 @@ static void txgbe_pma_config_1g(struct d
- 	txgbe_write_pma(xpcs, TXGBE_DFE_TAP_CTL0, 0);
- 	val = txgbe_read_pma(xpcs, TXGBE_RX_GEN_CTL3);
- 	val = u16_replace_bits(val, 0x4, TXGBE_RX_GEN_CTL3_LOS_TRSHLD0);
--	txgbe_write_pma(xpcs, TXGBE_RX_EQ_ATTN_CTL, val);
-+	txgbe_write_pma(xpcs, TXGBE_RX_GEN_CTL3, val);
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -424,6 +424,7 @@ static void venus_remove(struct platform
+ 	struct device *dev = core->dev;
+ 	int ret;
  
- 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL0, 0x20);
- 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL3, 0x46);
++	cancel_delayed_work_sync(&core->work);
+ 	ret = pm_runtime_get_sync(dev);
+ 	WARN_ON(ret < 0);
+ 
 
 
 
