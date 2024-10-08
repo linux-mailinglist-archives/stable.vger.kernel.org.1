@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-82818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288AE994EBA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE0F994A5B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A5C5B26749
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B0DC1C20AE6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C971DEFC8;
-	Tue,  8 Oct 2024 13:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF5717DFF7;
+	Tue,  8 Oct 2024 12:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MT7M+Zr4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xzuz+4vG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29D51DDA36;
-	Tue,  8 Oct 2024 13:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497811E485;
+	Tue,  8 Oct 2024 12:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393527; cv=none; b=Qn2kbb0V8A6xYiuRxz7trX9NEzpzqSH8lZ9BXfvCU6BnyyG3NQ2/02cXlptRut6i3rWTswLIs+EST/B3py/630lI3vsPuIC6a39jZiAhEXhTPNGXWx6YDgf5W306uVY3g4fYbinNpElhOqkaW73eXuL5eKDN6yQs8JQbhNsxXX8=
+	t=1728390737; cv=none; b=oo3zTmwDOO0hOw/vCQg6zhr5Nht8ynKZH9RncS5DBr4ROjp3IJwu1aybc6iu3gNT4WwPe0AoG8DM2r/B08xrEaBiN6ZKSUSlHzbxq03yPIpfmzC+Q448Y5CJtHH6mY8fMztQJHrbelVho6Tai+p3fLmMR5jUjQ6vf0VMtgrBFxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393527; c=relaxed/simple;
-	bh=XqYmYSerTssG/jj7DWUWO9TZzS6hzZkp9eD/FrMGgro=;
+	s=arc-20240116; t=1728390737; c=relaxed/simple;
+	bh=hBD7rkl2FzGDJYFLNMvBmpw7LuIIOyQ8r7W1I/1ZKZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFXMGKFaMFmVV7lTdlJmG87NZ+8hIh+pvqrmmPddyN4n317JERjVUnz+XvQRiLEFWqzAvrTsxlgdQdunAHD0PTHPD72vmTQnXmji3i9xnOKo9bHcwmY9jYrSzmwQ1EyPAbsT1k3HaEMLwMUVT7LC2XTSntM2ZlX5wADA85OqcdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MT7M+Zr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E629BC4CEC7;
-	Tue,  8 Oct 2024 13:18:46 +0000 (UTC)
+	 MIME-Version; b=eBQPwsfaUNNYyNUingc+HfzIF0rBMnLLVfTn09Ns2y2bhGXwWg/mY5Zu/CAeX+7OfkDrVeAvZDDTr6DeifumIH6fRo8Jn1J2KgnjSq9MdwPP1xhc1sw/vRoiMmaRPd9Oz5B7o8hbbEWyV9fzSEYaRTjdhBjHh/91cm5LRidZeR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xzuz+4vG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5766C4CEC7;
+	Tue,  8 Oct 2024 12:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393527;
-	bh=XqYmYSerTssG/jj7DWUWO9TZzS6hzZkp9eD/FrMGgro=;
+	s=korg; t=1728390737;
+	bh=hBD7rkl2FzGDJYFLNMvBmpw7LuIIOyQ8r7W1I/1ZKZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MT7M+Zr4dF1nSYBomoUNRVjkCqwub+k7Zc0j5i5gvi+QLF0aB55/X6iKZAKYm5/9+
-	 HOpufSGJkgEhQAFQliKVqCcMlzHeS0qxaqDfjotk09PT7oWXiUsb0XjMyjhGXauaWR
-	 qJSUHjtd3bKEt3ay56x3ss9pL+AzFRTGRPBEjT9c=
+	b=Xzuz+4vGB+sURg3EzCVnfMpy/TFwuQL6TgZOR1MQKvnF7T0c5LuNqdvrGSxVaaBJM
+	 ZRFj50d19lqM01H0S//OqtWvDWt9KJoQ71yZVaXgvTmgyQ7LKPHyRuzSbefQJtnTC8
+	 n0FGzFgF7H8jaOc3N+yAnmFL0q4uCuKThwQzXhss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/386] ext4: dont set SB_RDONLY after filesystem errors
+	Kuan-Ying Lee <kuan-ying.lee@canonical.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 360/482] scripts/gdb: add iteration function for rbtree
 Date: Tue,  8 Oct 2024 14:07:03 +0200
-Message-ID: <20241008115636.420517677@linuxfoundation.org>
+Message-ID: <20241008115702.589707243@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
 
-[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
+commit 0c77e103c45fa1b119f5d3bb4625eee081c1a6cf upstream.
 
-When the filesystem is mounted with errors=remount-ro, we were setting
-SB_RDONLY flag to stop all filesystem modifications. We knew this misses
-proper locking (sb->s_umount) and does not go through proper filesystem
-remount procedure but it has been the way this worked since early ext2
-days and it was good enough for catastrophic situation damage
-mitigation. Recently, syzbot has found a way (see link) to trigger
-warnings in filesystem freezing because the code got confused by
-SB_RDONLY changing under its hands. Since these days we set
-EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
-filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
-stop doing that.
+Add inorder iteration function for rbtree usage.
 
-Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
-Reported-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is a preparation patch for the next patch to fix the gdb mounts
+issue.
+
+Link: https://lkml.kernel.org/r/20240723064902.124154-3-kuan-ying.lee@canonical.com
+Fixes: 2eea9ce4310d ("mounts: keep list of mounts in an rbtree")
+Signed-off-by: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ scripts/gdb/linux/rbtree.py | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 46c4f75049791..53ead0650fc8a 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -744,11 +744,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
+diff --git a/scripts/gdb/linux/rbtree.py b/scripts/gdb/linux/rbtree.py
+index fe462855eefd..fcbcc5f4153c 100644
+--- a/scripts/gdb/linux/rbtree.py
++++ b/scripts/gdb/linux/rbtree.py
+@@ -9,6 +9,18 @@ from linux import utils
+ rb_root_type = utils.CachedType("struct rb_root")
+ rb_node_type = utils.CachedType("struct rb_node")
  
- 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
- 	/*
--	 * Make sure updated value of ->s_mount_flags will be visible before
--	 * ->s_flags update
-+	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
-+	 * modifications. We don't set SB_RDONLY because that requires
-+	 * sb->s_umount semaphore and setting it without proper remount
-+	 * procedure is confusing code such as freeze_super() leading to
-+	 * deadlocks and other problems.
- 	 */
--	smp_wmb();
--	sb->s_flags |= SB_RDONLY;
- }
++def rb_inorder_for_each(root):
++    def inorder(node):
++        if node:
++            yield from inorder(node['rb_left'])
++            yield node
++            yield from inorder(node['rb_right'])
++
++    yield from inorder(root['rb_node'])
++
++def rb_inorder_for_each_entry(root, gdbtype, member):
++    for node in rb_inorder_for_each(root):
++        yield utils.container_of(node, gdbtype, member)
  
- static void update_super_work(struct work_struct *work)
+ def rb_first(root):
+     if root.type == rb_root_type.get_type():
 -- 
-2.43.0
+2.46.2
 
 
 
