@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-82206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40BBF994BA7
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A34CB9948D2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3DC0283D83
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9A51F29103
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9831DEFC9;
-	Tue,  8 Oct 2024 12:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCA21DF26C;
+	Tue,  8 Oct 2024 12:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydCW+zzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+5ExkgL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186E21DE2A5;
-	Tue,  8 Oct 2024 12:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C95E1DF251;
+	Tue,  8 Oct 2024 12:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391495; cv=none; b=YfqdFaxXS8sad1m1Vq0vNrtXl1HMwsbCsAwaKjY52RD7qOHg68MKiwikUqzkQVUdv9NlwrCgqCZ9/DMJYkHdrryeZ9gqauusdsAvmxgoTMq7+8898TABq0tvLDnORVTbBrRFYzb8oQm9UfLuGyRsiMWPbK+FpEw7/mOuh8wdmFk=
+	t=1728389797; cv=none; b=WNr1nXSGytOmben8S/Gk0FcFKvBhFElb5t3cEHpYwi4Ka/tZQQYOVKg97z6No/n1xFE4UvjpKOTDXER9jEfENfQrH25oB14aDMWM2r9djWt+9JeJDaamMLzbpzUG1cGZzuj3JJrgRX3uwP5pj5qQhgB+4MU4T23DfFK3H+SscWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391495; c=relaxed/simple;
-	bh=JsxPb9A0gGaqYFMCy8wJENYQCk7vMpWiAIY5wkU8l90=;
+	s=arc-20240116; t=1728389797; c=relaxed/simple;
+	bh=APOlS0HOEBcDo2UR7IgB2/MGLBNAP4bPXpgdaEOpEpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GozOtylZmCL40HUTO7UW2OZjgfXacz6ji81tIPwSgo8uXEc4DnVvf/8JX5vVpqQ7XzxKs1Ag17WSe6/V4RRhSHIykMLhQI8IQHmtuXbHFUJn8FQkDRpjyDWjEJ7AB69i08pTNwEISjPgPCPGpGdmBG80I2h0hHEaHi1YI/aepyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydCW+zzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93181C4CEC7;
-	Tue,  8 Oct 2024 12:44:54 +0000 (UTC)
+	 MIME-Version; b=MTWtNsUBQQ/WeVAVdcDf6i+DTMtmzOUHIwBpNIQkseDqYKCXyDk8bG9fqqJVmjEtlBs7HJxlU7yRowhizdISDIBDLiRsH+5cv4OVHWTWqxxSnDQazqDMmcqrta+/NIfdmL2pjC4C2iih5BBk6nWCEqyqkUYI2n47WX5WNOazM64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+5ExkgL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E100C4CEC7;
+	Tue,  8 Oct 2024 12:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391495;
-	bh=JsxPb9A0gGaqYFMCy8wJENYQCk7vMpWiAIY5wkU8l90=;
+	s=korg; t=1728389796;
+	bh=APOlS0HOEBcDo2UR7IgB2/MGLBNAP4bPXpgdaEOpEpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydCW+zzT1A9iV29wZ5EzLmvfNkWLXlA4uQY98mRJ5HjzBlD9UepbgWvGIHTjXbaLe
-	 PH5eQqqIQgC6EhJ7QlHbkhfdOs76IttlSgdtCoyoP6PkW0fnhsxDxtxlriw7/wpsoj
-	 51MmsLQcd0GIWNm6exEpqMuXPCNRxR2ehwP+TljU=
+	b=n+5ExkgL7v+1jwcmNGVk1igAWvQ2j2GYJly0bjdEKaMnKz7aj7HEJUOvhpwhTv+WO
+	 v2KJXs2OBwZzxLGEw3Era//a5WH2Qjma2gmEvRPKbXX0JZSmDzwk5ZKYWgyqGqDlQY
+	 zPQQPI+2YINB41q7zmjW8S3HDGE+FcBip2PPFhqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 132/558] nvme-tcp: check for invalidated or revoked key
+Subject: [PATCH 6.10 099/482] wifi: ath11k: fix array out-of-bound access in SoC stats
 Date: Tue,  8 Oct 2024 14:02:42 +0200
-Message-ID: <20241008115707.559151299@linuxfoundation.org>
+Message-ID: <20241008115652.205702448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 5bc46b49c828a6dfaab80b71ecb63fe76a1096d2 ]
+[ Upstream commit 69f253e46af98af17e3efa3e5dfa72fcb7d1983d ]
 
-key_lookup() will always return a key, even if that key is revoked
-or invalidated. So check for invalid keys before continuing.
+Currently, the ath11k_soc_dp_stats::hal_reo_error array is defined with a
+maximum size of DP_REO_DST_RING_MAX. However, the ath11k_dp_process_rx()
+function access ath11k_soc_dp_stats::hal_reo_error using the REO
+destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
+normal ring ID, and this usage leads to out-of-bounds array access. To fix
+this issue, modify ath11k_dp_process_rx() to use the normal ring ID
+directly instead of the SRNG ring ID to avoid out-of-bounds array access.
 
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240704070811.4186543-3-quic_periyasa@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/common/keyring.c | 22 ++++++++++++++++++++++
- drivers/nvme/host/Kconfig     |  1 +
- drivers/nvme/host/fabrics.c   |  2 +-
- drivers/nvme/host/tcp.c       |  2 +-
- include/linux/nvme-keyring.h  |  6 +++++-
- 5 files changed, 30 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/common/keyring.c b/drivers/nvme/common/keyring.c
-index 05e89307c8aa3..ed5167f942d89 100644
---- a/drivers/nvme/common/keyring.c
-+++ b/drivers/nvme/common/keyring.c
-@@ -20,6 +20,28 @@ key_serial_t nvme_keyring_id(void)
- }
- EXPORT_SYMBOL_GPL(nvme_keyring_id);
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index aabde24d87632..88c7a7289d06e 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2697,7 +2697,7 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+ 		if (unlikely(push_reason !=
+ 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
+ 			dev_kfree_skb_any(msdu);
+-			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
++			ab->soc_stats.hal_reo_error[ring_id]++;
+ 			continue;
+ 		}
  
-+static bool nvme_tls_psk_revoked(struct key *psk)
-+{
-+	return test_bit(KEY_FLAG_REVOKED, &psk->flags) ||
-+		test_bit(KEY_FLAG_INVALIDATED, &psk->flags);
-+}
-+
-+struct key *nvme_tls_key_lookup(key_serial_t key_id)
-+{
-+	struct key *key = key_lookup(key_id);
-+
-+	if (IS_ERR(key)) {
-+		pr_err("key id %08x not found\n", key_id);
-+		return key;
-+	}
-+	if (nvme_tls_psk_revoked(key)) {
-+		pr_err("key id %08x revoked\n", key_id);
-+		return ERR_PTR(-EKEYREVOKED);
-+	}
-+	return key;
-+}
-+EXPORT_SYMBOL_GPL(nvme_tls_key_lookup);
-+
- static void nvme_tls_psk_describe(const struct key *key, struct seq_file *m)
- {
- 	seq_puts(m, key->description);
-diff --git a/drivers/nvme/host/Kconfig b/drivers/nvme/host/Kconfig
-index a3caef75aa0a8..883aaab2d83e3 100644
---- a/drivers/nvme/host/Kconfig
-+++ b/drivers/nvme/host/Kconfig
-@@ -109,6 +109,7 @@ config NVME_HOST_AUTH
- 	bool "NVMe over Fabrics In-Band Authentication in host side"
- 	depends on NVME_CORE
- 	select NVME_AUTH
-+	select NVME_KEYRING if NVME_TCP_TLS
- 	help
- 	  This provides support for NVMe over Fabrics In-Band Authentication in
- 	  host side.
-diff --git a/drivers/nvme/host/fabrics.c b/drivers/nvme/host/fabrics.c
-index f5f545fa01035..432efcbf9e2f5 100644
---- a/drivers/nvme/host/fabrics.c
-+++ b/drivers/nvme/host/fabrics.c
-@@ -665,7 +665,7 @@ static struct key *nvmf_parse_key(int key_id)
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	key = key_lookup(key_id);
-+	key = nvme_tls_key_lookup(key_id);
- 	if (IS_ERR(key))
- 		pr_err("key id %08x not found\n", key_id);
- 	else
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index b305873e588e6..e3d82e91151af 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1596,7 +1596,7 @@ static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
- 		goto out_complete;
- 	}
- 
--	tls_key = key_lookup(pskid);
-+	tls_key = nvme_tls_key_lookup(pskid);
- 	if (IS_ERR(tls_key)) {
- 		dev_warn(ctrl->ctrl.device, "queue %d: Invalid key %x\n",
- 			 qid, pskid);
-diff --git a/include/linux/nvme-keyring.h b/include/linux/nvme-keyring.h
-index e10333d78dbbe..19d2b256180fd 100644
---- a/include/linux/nvme-keyring.h
-+++ b/include/linux/nvme-keyring.h
-@@ -12,7 +12,7 @@ key_serial_t nvme_tls_psk_default(struct key *keyring,
- 		const char *hostnqn, const char *subnqn);
- 
- key_serial_t nvme_keyring_id(void);
--
-+struct key *nvme_tls_key_lookup(key_serial_t key_id);
- #else
- 
- static inline key_serial_t nvme_tls_psk_default(struct key *keyring,
-@@ -24,5 +24,9 @@ static inline key_serial_t nvme_keyring_id(void)
- {
- 	return 0;
- }
-+static inline struct key *nvme_tls_key_lookup(key_serial_t key_id)
-+{
-+	return ERR_PTR(-ENOTSUPP);
-+}
- #endif /* !CONFIG_NVME_KEYRING */
- #endif /* _NVME_KEYRING_H */
 -- 
 2.43.0
 
