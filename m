@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47481994A73
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56299994CF2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC5E28A134
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D0B71F2217F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6801CCB32;
-	Tue,  8 Oct 2024 12:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4491DED6F;
+	Tue,  8 Oct 2024 12:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAhyuy4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aviYthq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B89F1DE4CB;
-	Tue,  8 Oct 2024 12:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4B31DF251;
+	Tue,  8 Oct 2024 12:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390789; cv=none; b=K7ncFQwZHN/fBeoHJ1REHFKbepiNWH6/r6Ou3uOzSTw8wvPnC3nRTRcpem1L6e9Okm8tcU0j7kPX6ElsgvQ5VAZzaOIHZxrQNWwb4ulTNYEVBixguV3yNyKl+LhdlUQLxB5nbGHaumGQ7nsDP/9BJs7UPTwyRmHa2g5mMeqfe6k=
+	t=1728392370; cv=none; b=aPKmc8GKxypCMiQ9Nnop7Br649mzLCqLjN6DzfExxKGMUZCJ9WkuppbEMDDDDE+H6RzJWfp2+2uMVBfWdFk1WlywYilhgvMunGMtTBJ6aZpXxqETikVp6c7MbUwU/Vh04SOkTxrwF6nS9+FzSd7vnC8MGDPw/SOI3k7Z2L3Me04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390789; c=relaxed/simple;
-	bh=UrskRZ24CRtoSfWEwUOeB2o29E6buFO5i1659SRTT98=;
+	s=arc-20240116; t=1728392370; c=relaxed/simple;
+	bh=eMqGbh6zAgFhslnqdtnbR6OiODAcxApfiPje8QOb/PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9o3Y8fkssp+uLtxZSt8UGMb4JlU0V1GR0ebEueAlwxS8oKHDHruOOoB3A4jmfqVAx2wPD3iVF2k1nWLMJZDXjLWOlTXYu30qq80SXzpqdPjym/ERH/eWMMlazZvIZMwvz0LZUOUemCqML6Nq/I4pZc35i+HdQihu6+v738Qjbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAhyuy4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663AFC4CECD;
-	Tue,  8 Oct 2024 12:33:08 +0000 (UTC)
+	 MIME-Version; b=UkziZJpAofGgZA9DJOBD7TEJbDmhhhn0t9b5VwGB5eR0SaNCdQgysIlc3fWJwvNeZIiCLiyaR5+DavAG70NNqxxTCCuYZ2X9eqesXEwg1nDUVoPbJpPWhkVQnVXCr7izoYgnqOy5gUhBp2s0BWeScOFMHQ7y8Fd2EKlyLk7QKw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aviYthq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931F1C4CEC7;
+	Tue,  8 Oct 2024 12:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390788;
-	bh=UrskRZ24CRtoSfWEwUOeB2o29E6buFO5i1659SRTT98=;
+	s=korg; t=1728392370;
+	bh=eMqGbh6zAgFhslnqdtnbR6OiODAcxApfiPje8QOb/PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAhyuy4VGxpsjTpHtbxvyKo9966B5EY/1hkzWiCAG4dSoJvGqa8UoKEmvGeIkE/nb
-	 3NfDyo9pJTOXAva2E4T3NbV3rgkvFW+ETSOa2QCJKNUmOu3H2QMIe9bWomyckvgEoX
-	 DHspavJtnPcNiNL7aj4t4HaV4QaALltHwAJCDhSE=
+	b=aviYthq+MxHndUrCqEYluX2wM5acNeGQ/DRpyt9rYIRItiAeKmo+gkwMIIn8N2qCY
+	 Mz0ldNb+Zt+EoPCPBBxbWv/v5LRe7mweHr87GCSo34ytdo8Yjyjq921jHK0GOW1Zli
+	 LLTPu0UtRlOIqMZJnfNIE7D17lvrOKZpzhqrV4mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.10 362/482] arm64: fix selection of HAVE_DYNAMIC_FTRACE_WITH_ARGS
+	Jan Kara <jack@suse.cz>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.11 395/558] ext4: fix fast commit inode enqueueing during a full journal commit
 Date: Tue,  8 Oct 2024 14:07:05 +0200
-Message-ID: <20241008115702.668277655@linuxfoundation.org>
+Message-ID: <20241008115717.826235340@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit b3d6121eaeb22aee8a02f46706745b1968cc0292 upstream.
+commit 6db3c1575a750fd417a70e0178bdf6efa0dd5037 upstream.
 
-The Kconfig logic to select HAVE_DYNAMIC_FTRACE_WITH_ARGS is incorrect,
-and HAVE_DYNAMIC_FTRACE_WITH_ARGS may be selected when it is not
-supported by the combination of clang and GNU LD, resulting in link-time
-errors:
+When a full journal commit is on-going, any fast commit has to be enqueued
+into a different queue: FC_Q_STAGING instead of FC_Q_MAIN.  This enqueueing
+is done only once, i.e. if an inode is already queued in a previous fast
+commit entry it won't be enqueued again.  However, if a full commit starts
+_after_ the inode is enqueued into FC_Q_MAIN, the next fast commit needs to
+be done into FC_Q_STAGING.  And this is not being done in function
+ext4_fc_track_template().
 
-  aarch64-linux-gnu-ld: .init.data has both ordered [`__patchable_function_entries' in init/main.o] and unordered [`.meminit.data' in mm/sparse.o] sections
-  aarch64-linux-gnu-ld: final link failed: bad value
+This patch fixes the issue by re-enqueuing an inode into the STAGING queue
+during the fast commit clean-up callback when doing a full commit.  However,
+to prevent a race with a fast-commit, the clean-up callback has to be called
+with the journal locked.
 
-... which can be seen when building with CC=clang using a binutils
-version older than 2.36.
+This bug was found using fstest generic/047.  This test creates several 32k
+bytes files, sync'ing each of them after it's creation, and then shutting
+down the filesystem.  Some data may be loss in this operation; for example a
+file may have it's size truncated to zero.
 
-We originally fixed that in commit:
-
-  45bd8951806eb5e8 ("arm64: Improve HAVE_DYNAMIC_FTRACE_WITH_REGS selection for clang")
-
-... by splitting the "select HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement
-into separete CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS and
-GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS options which individually select
-HAVE_DYNAMIC_FTRACE_WITH_ARGS.
-
-Subsequently we accidentally re-introduced the common "select
-HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement in commit:
-
-  26299b3f6ba26bfc ("ftrace: arm64: move from REGS to ARGS")
-
-... then we removed it again in commit:
-
-  68a63a412d18bd2e ("arm64: Fix build with CC=clang, CONFIG_FTRACE=y and CONFIG_STACK_TRACER=y")
-
-... then we accidentally re-introduced it again in commit:
-
-  2aa6ac03516d078c ("arm64: ftrace: Add direct call support")
-
-Fix this for the third time by keeping the unified select statement and
-making this depend onf either GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS or
-CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS. This is more consistent with
-usual style and less likely to go wrong in future.
-
-Fixes: 2aa6ac03516d ("arm64: ftrace: Add direct call support")
-Cc: <stable@vger.kernel.org> # 6.4.x
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240930120448.3352564-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240717172220.14201-1-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/Kconfig |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/ext4/fast_commit.c |   15 ++++++++++++++-
+ fs/jbd2/journal.c     |    2 +-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -195,7 +195,8 @@ config ARM64
- 	select HAVE_DMA_CONTIGUOUS
- 	select HAVE_DYNAMIC_FTRACE
- 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
--		if $(cc-option,-fpatchable-function-entry=2)
-+		if (GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS || \
-+		    CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS)
- 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS \
- 		if DYNAMIC_FTRACE_WITH_ARGS && DYNAMIC_FTRACE_WITH_CALL_OPS
- 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
-@@ -268,12 +269,10 @@ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WIT
- 	def_bool CC_IS_CLANG
- 	# https://github.com/ClangBuiltLinux/linux/issues/1507
- 	depends on AS_IS_GNU || (AS_IS_LLVM && (LD_IS_LLD || LD_VERSION >= 23600))
--	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
- 
- config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
- 	def_bool CC_IS_GCC
- 	depends on $(cc-option,-fpatchable-function-entry=2)
--	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
- 
- config 64BIT
- 	def_bool y
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -1295,8 +1295,21 @@ static void ext4_fc_cleanup(journal_t *j
+ 		list_del_init(&iter->i_fc_list);
+ 		ext4_clear_inode_state(&iter->vfs_inode,
+ 				       EXT4_STATE_FC_COMMITTING);
+-		if (tid_geq(tid, iter->i_sync_tid))
++		if (tid_geq(tid, iter->i_sync_tid)) {
+ 			ext4_fc_reset_inode(&iter->vfs_inode);
++		} else if (full) {
++			/*
++			 * We are called after a full commit, inode has been
++			 * modified while the commit was running. Re-enqueue
++			 * the inode into STAGING, which will then be splice
++			 * back into MAIN. This cannot happen during
++			 * fastcommit because the journal is locked all the
++			 * time in that case (and tid doesn't increase so
++			 * tid check above isn't reliable).
++			 */
++			list_add_tail(&EXT4_I(&iter->vfs_inode)->i_fc_list,
++				      &sbi->s_fc_q[FC_Q_STAGING]);
++		}
+ 		/* Make sure EXT4_STATE_FC_COMMITTING bit is clear */
+ 		smp_mb();
+ #if (BITS_PER_LONG < 64)
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -740,9 +740,9 @@ EXPORT_SYMBOL(jbd2_fc_begin_commit);
+  */
+ static int __jbd2_fc_end_commit(journal_t *journal, tid_t tid, bool fallback)
+ {
+-	jbd2_journal_unlock_updates(journal);
+ 	if (journal->j_fc_cleanup_callback)
+ 		journal->j_fc_cleanup_callback(journal, 0, tid);
++	jbd2_journal_unlock_updates(journal);
+ 	write_lock(&journal->j_state_lock);
+ 	journal->j_flags &= ~JBD2_FAST_COMMIT_ONGOING;
+ 	if (fallback)
 
 
 
