@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F5C994A6D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD17994D0E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47711B2310E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83B77287AE6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5757E1B81CC;
-	Tue,  8 Oct 2024 12:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F26F1DE4DB;
+	Tue,  8 Oct 2024 13:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Svqi9zDE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrBj0jFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D7E178384;
-	Tue,  8 Oct 2024 12:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C284C192D9E;
+	Tue,  8 Oct 2024 13:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390779; cv=none; b=at+89G6uYZ4+1FS91rl379BbdjWeVSDrIZ5/l7pwLqdJZVJ9mbYixUW9/UZSvtuoaH32AbUmnh1ZLe4NgNLl7RXherL0nAHW5YDZLiOzjhkTQYs7SFq9PW9AyBuhnd5ALItGsvtu+fvzoQnUzlgAnNxSCVM6jDJAXdEBU6h+Nhg=
+	t=1728392459; cv=none; b=HIYRk4TiKNy16Qwj/9Ud5x9ecyaGXlzOFL8lz7b6q43+d3+XGp1flV7JBu3zPn+ms9/EUAopImF6yRDKPwyMcCjlvexnqk5S/ACf6nsnYZMzE03N+VW7uHDf6uXNh4zaH3cdaIKsfS7zkI6fBfbu8M2jGRF2932sYN3ZGygtQkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390779; c=relaxed/simple;
-	bh=gP1ZBdtIYs/YAbwxXhvtswtwgVLSsVT/1ywKa9AhNHw=;
+	s=arc-20240116; t=1728392459; c=relaxed/simple;
+	bh=KrNAGsFu2XtlZCNwdVUEyb2CSePpiW7xUXeZ7V1H1L4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCLUr/WslteSoQhQ+gE27jcLt5egWDhqgKniL5Sa0ouMpomTXb87gazPlaihTI3FMNeMTAvVF1x44ZhciEmplkEOQhDikZ6qNksqDg98JPuaY+bvfEXoCWONwlBnJRztXOcOYz9x6h1SSBcWpC50A6sCQoccarSrNEGpJd41iUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Svqi9zDE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E44C4CEC7;
-	Tue,  8 Oct 2024 12:32:58 +0000 (UTC)
+	 MIME-Version; b=gOhQS7w4rqYykldSUUzUdWa5xlt57vb4pUUqMVVOCDyxYJZsBztkflwV87lTsJqt/ehgZWtuc55iE2Y+NUG6ooOCDg7Ne5kS0KFu9oPG0KwQeFvhu6fHAoM7FLd/ikk2RNm9m4yAPm4nYqrfo2kpcbZMIqmsJ9okQky/cKwajKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrBj0jFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3293EC4CEC7;
+	Tue,  8 Oct 2024 13:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390779;
-	bh=gP1ZBdtIYs/YAbwxXhvtswtwgVLSsVT/1ywKa9AhNHw=;
+	s=korg; t=1728392459;
+	bh=KrNAGsFu2XtlZCNwdVUEyb2CSePpiW7xUXeZ7V1H1L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Svqi9zDEJaFISxpEiN8yJvwrx5sEaLBWn+HwFHxN5JRgLrsNenYvMgpDCz4arI1Wk
-	 +0RVFvEtAkFZEKIcMZPV36FUUS9oEWSw28vp+95FHkn3oG/N8FvqMdPtwjapXc1gUR
-	 5kyeUZIuTV5MDJ5upuc4fgA4a8j16kHaePPZzfHs=
+	b=MrBj0jFh5ahPGsb1Wfc/9O4mHqP4QRdHmUwlTGaGPfh2ClsRe8Va3bzLmzRporENC
+	 CnV0DhRIQrBLQEYyu8WTB/6R1RvEqNzYOhDc4qyAEAvDkRUs0w38xK02I2MY25PAa5
+	 ptMMg0jSSiaZaUQu7baZUNKYrymTo3pG4S0pdt+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.10 389/482] dt-bindings: clock: qcom: Add GPLL9 support on gcc-sc8180x
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.11 422/558] arm64: fix selection of HAVE_DYNAMIC_FTRACE_WITH_ARGS
 Date: Tue,  8 Oct 2024 14:07:32 +0200
-Message-ID: <20241008115703.721985670@linuxfoundation.org>
+Message-ID: <20241008115718.878299563@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 648b4bde0aca2980ebc0b90cdfbb80d222370c3d upstream.
+commit b3d6121eaeb22aee8a02f46706745b1968cc0292 upstream.
 
-Add the missing GPLL9 which is required for the gcc sdcc2 clock.
+The Kconfig logic to select HAVE_DYNAMIC_FTRACE_WITH_ARGS is incorrect,
+and HAVE_DYNAMIC_FTRACE_WITH_ARGS may be selected when it is not
+supported by the combination of clang and GNU LD, resulting in link-time
+errors:
 
-Fixes: 0fadcdfdcf57 ("dt-bindings: clock: Add SC8180x GCC binding")
-Cc: stable@vger.kernel.org
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240812-gcc-sc8180x-fixes-v2-2-8b3eaa5fb856@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  aarch64-linux-gnu-ld: .init.data has both ordered [`__patchable_function_entries' in init/main.o] and unordered [`.meminit.data' in mm/sparse.o] sections
+  aarch64-linux-gnu-ld: final link failed: bad value
+
+... which can be seen when building with CC=clang using a binutils
+version older than 2.36.
+
+We originally fixed that in commit:
+
+  45bd8951806eb5e8 ("arm64: Improve HAVE_DYNAMIC_FTRACE_WITH_REGS selection for clang")
+
+... by splitting the "select HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement
+into separete CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS and
+GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS options which individually select
+HAVE_DYNAMIC_FTRACE_WITH_ARGS.
+
+Subsequently we accidentally re-introduced the common "select
+HAVE_DYNAMIC_FTRACE_WITH_ARGS" statement in commit:
+
+  26299b3f6ba26bfc ("ftrace: arm64: move from REGS to ARGS")
+
+... then we removed it again in commit:
+
+  68a63a412d18bd2e ("arm64: Fix build with CC=clang, CONFIG_FTRACE=y and CONFIG_STACK_TRACER=y")
+
+... then we accidentally re-introduced it again in commit:
+
+  2aa6ac03516d078c ("arm64: ftrace: Add direct call support")
+
+Fix this for the third time by keeping the unified select statement and
+making this depend onf either GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS or
+CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS. This is more consistent with
+usual style and less likely to go wrong in future.
+
+Fixes: 2aa6ac03516d ("arm64: ftrace: Add direct call support")
+Cc: <stable@vger.kernel.org> # 6.4.x
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240930120448.3352564-1-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/dt-bindings/clock/qcom,gcc-sc8180x.h |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/Kconfig |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-+++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-@@ -248,6 +248,7 @@
- #define GCC_USB3_SEC_CLKREF_CLK					238
- #define GCC_UFS_MEM_CLKREF_EN					239
- #define GCC_UFS_CARD_CLKREF_EN					240
-+#define GPLL9							241
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -196,7 +196,8 @@ config ARM64
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_ARGS \
+-		if $(cc-option,-fpatchable-function-entry=2)
++		if (GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS || \
++		    CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS)
+ 	select HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS \
+ 		if DYNAMIC_FTRACE_WITH_ARGS && DYNAMIC_FTRACE_WITH_CALL_OPS
+ 	select HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS \
+@@ -269,12 +270,10 @@ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WIT
+ 	def_bool CC_IS_CLANG
+ 	# https://github.com/ClangBuiltLinux/linux/issues/1507
+ 	depends on AS_IS_GNU || (AS_IS_LLVM && (LD_IS_LLD || LD_VERSION >= 23600))
+-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
  
- #define GCC_EMAC_BCR						0
- #define GCC_GPU_BCR						1
+ config GCC_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
+ 	def_bool CC_IS_GCC
+ 	depends on $(cc-option,-fpatchable-function-entry=2)
+-	select HAVE_DYNAMIC_FTRACE_WITH_ARGS
+ 
+ config 64BIT
+ 	def_bool y
 
 
 
