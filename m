@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE85994D64
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958CF994F5B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41ABB1F26061
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5B41F21780
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477921DED47;
-	Tue,  8 Oct 2024 13:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC841DF98F;
+	Tue,  8 Oct 2024 13:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZgwk+8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExpmM5n5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C231DE2AE;
-	Tue,  8 Oct 2024 13:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6EA1DF75D;
+	Tue,  8 Oct 2024 13:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392695; cv=none; b=Kw/mfYC1z3nDIWTSBHzT/pbjs/FKJ2HppE1XhIsnRRGUB9mKQ9S4+0DFmn1hBB5Lcpe+5lz3fyRCEVUNOfxVDs1zS/PNV6MpkC7WM5YzC56Ealsf1GTx6mM7UuSOiqdVzHKl56jBg1wM11gDLNANCsygf90p6FsZSvNH2idC3+0=
+	t=1728393866; cv=none; b=RettmrdIqjl3c8txnESKoKQa/44LxRB4S45SfeEVAhDt7EtpWhA+VobnY3LLML6n7Qre8VFnK60h1kpxDBkDrDv5IaaG7IHcEapB1LLeprlk/qg/hNUKwZwkfNF8g6mWwXYo29u5Eig+weSBoQ4Vljtqn24zEqVxLpLlS1OW8E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392695; c=relaxed/simple;
-	bh=HFA/C0L8jQe6tIIkFBoagGRLEkrBmKM7yUQuMMMNO9k=;
+	s=arc-20240116; t=1728393866; c=relaxed/simple;
+	bh=2FKR13EhCNlanyq0N1AWqiOQUjEVzB7IYffecqAexbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LG8G14twFP7Vx7uV1eaVLjtAFQ/H1EVlfnVGiB5sq1vJ8Bn462JDSprkl3VLa5Bfn7MHO/yDCiKkT0rkU3O6zptvH55/M1woAb6xb8iBRO6bqKXyNIcmajJxePMurZFKFMz24GrmtM1u7faDcCMSGxeLm/OF1JBC5gxNtKQD8Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZgwk+8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670E8C4CECC;
-	Tue,  8 Oct 2024 13:04:54 +0000 (UTC)
+	 MIME-Version; b=AwmpNgevEHSDZ6+B96RU2SVRJkibJWp2rYqITyrPOATCp6W0Y6Ry7itVOGCVeys/lClmCDG+oLh4TSBaFVfAVYatFRVC+SA4PKDULy158PLeHiqyRBNzXjNsv7U8gf3KsWDI25x+wZRdh/DXk0jvWre37PrD2yCuRWLxRF1nS+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExpmM5n5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76128C4CEC7;
+	Tue,  8 Oct 2024 13:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392694;
-	bh=HFA/C0L8jQe6tIIkFBoagGRLEkrBmKM7yUQuMMMNO9k=;
+	s=korg; t=1728393865;
+	bh=2FKR13EhCNlanyq0N1AWqiOQUjEVzB7IYffecqAexbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZgwk+8e+Oyr77810PmpR7H3PPhvzPdTJMWgtUDINq3R6qxDMHpe+ligC6y+5SGSX
-	 ITNEV56rrWIkdRVULXdPQwXhxEb2UMXYM3gQtfWcd4t+sQLt29U9Ze8EMgJq7P8PpR
-	 aS1OkS+NS6tcmAyxyM0mOp0u1sm90DjNBuFDmI2g=
+	b=ExpmM5n57fel0PjHVpalv2NMKhcI72rM92KYFjVyXqjgjGKugPdxQeXu1LU+3uiCX
+	 myvY1lacHy26hpglB3ZMSsQ+9FK2QX06qAIp/UvmQo+ZujETuWRJ/UYQQhZYu85o7d
+	 pzud4OCjTnX58YJFBgeV/8ftGrqtiEnMhfSRW/Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 492/558] ACPI: resource: Remove duplicate Asus E1504GAB IRQ override
-Date: Tue,  8 Oct 2024 14:08:42 +0200
-Message-ID: <20241008115721.593800335@linuxfoundation.org>
+	Nicolai Stange <nstange@suse.com>,
+	Chun-Yi Lee <jlee@suse.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 278/386] aoe: fix the potential use-after-free problem in more places
+Date: Tue,  8 Oct 2024 14:08:43 +0200
+Message-ID: <20241008115640.327670347@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Chun-Yi Lee <joeyli.kernel@gmail.com>
 
-commit 65bdebf38e5fac7c56a9e05d3479a707e6dc783c upstream.
+commit 6d6e54fc71ad1ab0a87047fd9c211e75d86084a3 upstream.
 
-Commit d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook
-E1504GA and E1504GAB") does exactly what the subject says, adding DMI
-matches for both the E1504GA and E1504GAB.
+For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
+use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
+instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
+into use-after-free.
 
-But DMI_MATCH() does a substring match, so checking for E1504GA will also
-match E1504GAB.
+Then Nicolai Stange found more places in aoe have potential use-after-free
+problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
+and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
+packet to tx queue. So they should also use dev_hold() to increase the
+refcnt of skb->dev.
 
-Drop the unnecessary E1504GAB entry since that is covered already by
-the E1504GA entry.
+On the other hand, moving dev_put() to tx() causes that the refcnt of
+skb->dev be reduced to a negative value, because corresponding
+dev_hold() are not called in revalidate(), aoecmd_ata_rw(), resend(),
+probe(), and aoecmd_cfg_rsp(). This patch fixed this issue.
 
-Fixes: d2aaf1996504 ("ACPI: resource: Add DMI quirks for ASUS Vivobook E1504GA and E1504GAB")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240927141606.66826-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
+Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
+Reported-by: Nicolai Stange <nstange@suse.com>
+Signed-off-by: Chun-Yi Lee <jlee@suse.com>
+Link: https://lore.kernel.org/stable/20240624064418.27043-1-jlee%40suse.com
+Link: https://lore.kernel.org/r/20241002035458.24401-1-jlee@suse.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/block/aoe/aoecmd.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -511,20 +511,13 @@ static const struct dmi_system_id irq1_l
- 		},
- 	},
- 	{
--		/* Asus Vivobook E1504GA */
-+		/* Asus Vivobook E1504GA* */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_MATCH(DMI_BOARD_NAME, "E1504GA"),
- 		},
- 	},
- 	{
--		/* Asus Vivobook E1504GAB */
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
--		},
--	},
--	{
- 		/* Asus Vivobook Pro N6506MV */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+--- a/drivers/block/aoe/aoecmd.c
++++ b/drivers/block/aoe/aoecmd.c
+@@ -361,6 +361,7 @@ ata_rw_frameinit(struct frame *f)
+ 	}
+ 
+ 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ }
+ 
+@@ -401,6 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
+ 		__skb_queue_head_init(&queue);
+ 		__skb_queue_tail(&queue, skb);
+ 		aoenet_xmit(&queue);
++	} else {
++		dev_put(f->t->ifp->nd);
+ 	}
+ 	return 1;
+ }
+@@ -483,10 +486,13 @@ resend(struct aoedev *d, struct frame *f
+ 	memcpy(h->dst, t->addr, sizeof h->dst);
+ 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
+ 
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ 	skb = skb_clone(skb, GFP_ATOMIC);
+-	if (skb == NULL)
++	if (skb == NULL) {
++		dev_put(t->ifp->nd);
+ 		return;
++	}
+ 	f->sent = ktime_get();
+ 	__skb_queue_head_init(&queue);
+ 	__skb_queue_tail(&queue, skb);
+@@ -617,6 +623,8 @@ probe(struct aoetgt *t)
+ 		__skb_queue_head_init(&queue);
+ 		__skb_queue_tail(&queue, skb);
+ 		aoenet_xmit(&queue);
++	} else {
++		dev_put(f->t->ifp->nd);
+ 	}
+ }
+ 
+@@ -1395,6 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
+ 	ah->cmdstat = ATA_CMD_ID_ATA;
+ 	ah->lba3 = 0xa0;
+ 
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ 
+ 	d->rttavg = RTTAVG_INIT;
+@@ -1404,6 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
+ 	skb = skb_clone(skb, GFP_ATOMIC);
+ 	if (skb)
+ 		f->sent = ktime_get();
++	else
++		dev_put(t->ifp->nd);
+ 
+ 	return skb;
+ }
 
 
 
