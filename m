@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D56994A03
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:29:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E8E994E73
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0B00B25D82
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:29:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EC21C24739
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F8C1DE2CF;
-	Tue,  8 Oct 2024 12:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261D21DEFF6;
+	Tue,  8 Oct 2024 13:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzix+9zQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sspZznBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CA41D0BAA;
-	Tue,  8 Oct 2024 12:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D885A1DEFE0;
+	Tue,  8 Oct 2024 13:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390489; cv=none; b=ewOrnGzBtdXcsdOJQXqqO+D5/TVYRyU+tF+C/1z9aDWnEIZuFCR3cPqcjRrnmf9ZbjcC2/8ny+Icz7f26orEdo/6M9nfnhmq1R0OgAqMbeKIeubQI5LRB5P7zh7TwNKfLhY3uS+kw6lAuQ7A3vIEzlW2KAf5+0BmQiWqUhM5xFg=
+	t=1728393435; cv=none; b=CLigGaZ4/4kU0Gwr2lJc4G8S0xN2brfvHrULY3HTlz1mKN4xUH8ubaLJ3OST+5IqEQBkwlNaNpcgyrXhjvoO0PKEFQ3c9hxqLrt3h2iYTJTAN/uL/hwKYh93hEEVTiYoHN0EqV071YIpG/8ShuNjWsQtqQPot1K47Td8uWBE4r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390489; c=relaxed/simple;
-	bh=4CLSQHKh9QopS/WvDbUFgtRJodppadkMZJkPOo6hFSo=;
+	s=arc-20240116; t=1728393435; c=relaxed/simple;
+	bh=kAjB9ZP45U9VMyCrRHJVDZD8riw+f/vGKGMr43ypEZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=io/2kNzdZheo9RkQzEvvX1EdQf8LF6LmiT+GfXT/SQatAP7lhlRqKKauM1LgLdrfi17HokPQ+XF1l81jmsRAiSR1RR/o82O3pEL8ESWm07j879qH9RALOxhkVZApfOyow6xUM77kOSl3EcUXkm/1Dvin0BRFtbqqG8R6SWBSz58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzix+9zQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF37C4CEC7;
-	Tue,  8 Oct 2024 12:28:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wq5ExJQfITR1PUjZazYVYkJUYXusSf32xTUREVjOU37z473+gjwk6bapj7xPvg0ZzCIX7MIxxH1GmELoems+DrMgPsaK+UG5pidOyyFF9BLhjq3QhkIf7uDq5zuqxxlHaBbuBkmEbjGNeh2fyJGYcnMhHgbVrPwZQxQ0FMG9shs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sspZznBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475F4C4CEC7;
+	Tue,  8 Oct 2024 13:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390489;
-	bh=4CLSQHKh9QopS/WvDbUFgtRJodppadkMZJkPOo6hFSo=;
+	s=korg; t=1728393435;
+	bh=kAjB9ZP45U9VMyCrRHJVDZD8riw+f/vGKGMr43ypEZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzix+9zQGNKep7ImBrqeD5d3baTqXiiSi+mo/A7SJ+R8m/1vZbAmTmgrr51BdVmQ+
-	 O5ASjPGLNQAFWqY7kNf4Ij9xZnpIKGdo9wvzXhPdmJM8+2aYGTRh1Vc1hUH0JfDLB/
-	 Hd9v8FqotIxX54HgqdklVBWiaZm/Qqms7YJTduhM=
+	b=sspZznBVb2OV5rvioEoAkI7yQvVQD8KlG4OJ33OytoxILEfm/tTNB5SQjtfbCsQER
+	 Wdqeke9JdiALde3PJtgMsBx9Tn9MpXPxysnB945AfnEYxFQL0pgAwYNtDy9gBcRzZV
+	 3i8qKIi/+InS/3+TTVk7Dj70oymQfp8Q80fWIvwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.10 305/482] spi: bcm63xx: Fix module autoloading
-Date: Tue,  8 Oct 2024 14:06:08 +0200
-Message-ID: <20241008115700.438625505@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/386] fbdev: efifb: Register sysfs groups through driver core
+Date: Tue,  8 Oct 2024 14:06:09 +0200
+Message-ID: <20241008115634.316716051@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 909f34f2462a99bf876f64c5c61c653213e32fce upstream.
+[ Upstream commit 95cdd538e0e5677efbdf8aade04ec098ab98f457 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from platform_device_id table.
+The driver core can register and cleanup sysfs groups already.
+Make use of that functionality to simplify the error handling and
+cleanup.
 
-Fixes: 44d8fb30941d ("spi/bcm63xx: move register definitions into the driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20240819123349.4020472-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also avoid a UAF race during unregistering where the sysctl attributes
+were usable after the info struct was freed.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/efifb.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -466,6 +466,7 @@ static const struct platform_device_id b
- 	{
- 	},
- };
-+MODULE_DEVICE_TABLE(platform, bcm63xx_spi_dev_match);
+diff --git a/drivers/video/fbdev/efifb.c b/drivers/video/fbdev/efifb.c
+index f9b4ddd592ce4..88ac24202a1ff 100644
+--- a/drivers/video/fbdev/efifb.c
++++ b/drivers/video/fbdev/efifb.c
+@@ -571,15 +571,10 @@ static int efifb_probe(struct platform_device *dev)
+ 		break;
+ 	}
  
- static const struct of_device_id bcm63xx_spi_of_match[] = {
- 	{ .compatible = "brcm,bcm6348-spi", .data = &bcm6348_spi_reg_offsets },
+-	err = sysfs_create_groups(&dev->dev.kobj, efifb_groups);
+-	if (err) {
+-		pr_err("efifb: cannot add sysfs attrs\n");
+-		goto err_unmap;
+-	}
+ 	err = fb_alloc_cmap(&info->cmap, 256, 0);
+ 	if (err < 0) {
+ 		pr_err("efifb: cannot allocate colormap\n");
+-		goto err_groups;
++		goto err_unmap;
+ 	}
+ 
+ 	if (efifb_pci_dev)
+@@ -603,8 +598,6 @@ static int efifb_probe(struct platform_device *dev)
+ 		pm_runtime_put(&efifb_pci_dev->dev);
+ 
+ 	fb_dealloc_cmap(&info->cmap);
+-err_groups:
+-	sysfs_remove_groups(&dev->dev.kobj, efifb_groups);
+ err_unmap:
+ 	if (mem_flags & (EFI_MEMORY_UC | EFI_MEMORY_WC))
+ 		iounmap(info->screen_base);
+@@ -624,12 +617,12 @@ static void efifb_remove(struct platform_device *pdev)
+ 
+ 	/* efifb_destroy takes care of info cleanup */
+ 	unregister_framebuffer(info);
+-	sysfs_remove_groups(&pdev->dev.kobj, efifb_groups);
+ }
+ 
+ static struct platform_driver efifb_driver = {
+ 	.driver = {
+ 		.name = "efi-framebuffer",
++		.dev_groups = efifb_groups,
+ 	},
+ 	.probe = efifb_probe,
+ 	.remove_new = efifb_remove,
+-- 
+2.43.0
+
 
 
 
