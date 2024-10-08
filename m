@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-81764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9B099493E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21AD4994C1D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5219B1F24ED9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEADA28445A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9621DED77;
-	Tue,  8 Oct 2024 12:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0A5183CB8;
+	Tue,  8 Oct 2024 12:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7fo/yhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kl2w2pr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC90165F08;
-	Tue,  8 Oct 2024 12:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CA01DE4D7;
+	Tue,  8 Oct 2024 12:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390054; cv=none; b=Hba5J3ghtLpzuCSkOGQ5LsCjho2sMWgQk+Zfo6AB4JIYCt5U7bgWpwwM/zjX3QYR1cEzRqOd5fkp7ie06XUEKiN5knP5vOUcmw2+6/tB/GZ+Mi2DauH4RYtHvt+BU/ZZrdmp6J1jqpNidlOw09R5xXDhz4WszE947ZkUIgWX17w=
+	t=1728391843; cv=none; b=uDMudv/S8iUwOGoYOZzvcmg/kdtFrM4hbsOUeqeGcmNAYhKlAp3OKqsH3sL3tc4PusOFE1SUbjNJkvu4pK9hV1frUnvkX3PyLplaqmbaXUu09vxnOMatDVbDOKxyZ7cmvC34Jegl44honQ4hC6FeacNIVm0MtXbXVnpJaEmgmpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390054; c=relaxed/simple;
-	bh=UOtSLWpmkz17EmWORPRH1QpKlWs5lysYCAAGCNnV6lk=;
+	s=arc-20240116; t=1728391843; c=relaxed/simple;
+	bh=BA/CRZpKRoYW37RfppFQPvN2LOsf6h3ffWxJ5rKlstQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Na/h8vB3WpPYRaoWaxSk2xDLk2QaBG7BHc3vs/ipRPJXC4UcinhjjCTj86GY3zmZjPgl72MKe2wzHPlDCtcm7wVyJ67+2WTI0KE91rx2KY4+ztSIUZ54WNNJ2hMGe25oVz7bQX3/Wf5TTijCYg8La6ficXgJTsAK9gwwbsr/ocY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7fo/yhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37E8C4CECC;
-	Tue,  8 Oct 2024 12:20:53 +0000 (UTC)
+	 MIME-Version; b=DDwbap3BPNy5ZYIlsXIeNk5mi0o4kKmNQG6TSl6mH10PrPKZJL0N3VZNbu3EzlFWsuDEH5cjcY/RLYK4259Ofo5ptKzLNa1A9VDGgY9ou9/diD7wWr1DcGjVshooIE7193Fu1tplw6j4jnE7cXVEr5ZhurcgySerAN9cIf7pcM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kl2w2pr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5896C4CEC7;
+	Tue,  8 Oct 2024 12:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390054;
-	bh=UOtSLWpmkz17EmWORPRH1QpKlWs5lysYCAAGCNnV6lk=;
+	s=korg; t=1728391843;
+	bh=BA/CRZpKRoYW37RfppFQPvN2LOsf6h3ffWxJ5rKlstQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7fo/yhE61qnlpBEVb04BobjLpCLJHDs3pDT22uY7xcmx8Y4c5Ot9Ag0lBSwMDcvl
-	 xQPhEFIFlsF8BlQjwMbWYzUzowQ+BvUTVHnJQGahs8D/LZ/aWcwiB+Y53FSPoSO/H8
-	 uF91C+jzyIRl0GfBPtfoUdvMSyNV8f9He/IoUroc=
+	b=Kl2w2pr99rTc86G/1If9AF+x6/zyynVXjdTgvEAqwlKcbzYTm5SC2O9CfgXGPIFp1
+	 igURWjr5HrdiRO5lmh49ySKURuvfW5PUxI0zy+HoIQKaDyi1lnoewlHD5a7xR9Vn1y
+	 Q0F9S3pJBt3MO241aR1BbXkTAG1C6/6qKDC5qiJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 176/482] drm/amdgpu: disallow multiple BO_HANDLES chunks in one submit
+Subject: [PATCH 6.11 209/558] drm/amd/display: Add null check for head_pipe in dcn201_acquire_free_pipe_for_layer
 Date: Tue,  8 Oct 2024 14:03:59 +0200
-Message-ID: <20241008115655.231719529@linuxfoundation.org>
+Message-ID: <20241008115710.567460059@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +67,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit fec5f8e8c6bcf83ed7a392801d7b44c5ecfc1e82 ]
+[ Upstream commit f22f4754aaa47d8c59f166ba3042182859e5dff7 ]
 
-Before this commit, only submits with both a BO_HANDLES chunk and a
-'bo_list_handle' would be rejected (by amdgpu_cs_parser_bos).
+This commit addresses a potential null pointer dereference issue in the
+`dcn201_acquire_free_pipe_for_layer` function. The issue could occur
+when `head_pipe` is null.
 
-But if UMD sent multiple BO_HANDLES, what would happen is:
-* only the last one would be really used
-* all the others would leak memory as amdgpu_cs_p1_bo_handles would
-  overwrite the previous p->bo_list value
+The fix adds a check to ensure `head_pipe` is not null before asserting
+it. If `head_pipe` is null, the function returns NULL to prevent a
+potential null pointer dereference.
 
-This commit rejects submissions with multiple BO_HANDLES chunks to
-match the implementation of the parser.
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn201/dcn201_resource.c:1016 dcn201_acquire_free_pipe_for_layer() error: we previously assumed 'head_pipe' could be null (see line 1010)
 
-Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c  | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 6dfdff58bffd1..78b3c067fea7e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -263,6 +263,10 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
- 			if (size < sizeof(struct drm_amdgpu_bo_list_in))
- 				goto free_partial_kdata;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c
+index 131d98025bd47..fc54483b91047 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn201/dcn201_resource.c
+@@ -1007,8 +1007,10 @@ static struct pipe_ctx *dcn201_acquire_free_pipe_for_layer(
+ 	struct pipe_ctx *head_pipe = resource_get_otg_master_for_stream(res_ctx, opp_head_pipe->stream);
+ 	struct pipe_ctx *idle_pipe = resource_find_free_secondary_pipe_legacy(res_ctx, pool, head_pipe);
  
-+			/* Only a single BO list is allowed to simplify handling. */
-+			if (p->bo_list)
-+				ret = -EINVAL;
-+
- 			ret = amdgpu_cs_p1_bo_handles(p, p->chunks[i].kdata);
- 			if (ret)
- 				goto free_partial_kdata;
+-	if (!head_pipe)
++	if (!head_pipe) {
+ 		ASSERT(0);
++		return NULL;
++	}
+ 
+ 	if (!idle_pipe)
+ 		return NULL;
 -- 
 2.43.0
 
