@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C05B994D03
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798E4994EBB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8BCB1F20EE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942161C2548A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7CA71DDC35;
-	Tue,  8 Oct 2024 13:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F571DE8BE;
+	Tue,  8 Oct 2024 13:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4GjLPb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWySGQrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F9917F4FF;
-	Tue,  8 Oct 2024 13:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B471DEFF8;
+	Tue,  8 Oct 2024 13:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392411; cv=none; b=snxgfWBGCFGOcegVKoy1qLOOPNIFaPnINKMWs8hGgr1iU4/nxXZNAVxL4wmDDIEWyCIrRzcWuZX3Sde9hqC5OzX4wEccbtlZxYJEbBHB3iBlOqHlr0XP1KGDgihNGjtJeGREZZyXEDs1JEnq/QP7IBYTCL39CUF5gfqIWMHpFLk=
+	t=1728393629; cv=none; b=OgnAvdlmEUf6lLxTdk9fkDIgXOXUznIgGtaSWd4OpgQJPkBajvrjY0Ipr8EvkcdyChMZXz2CeCg9WqwkCFf9eWWR4gBZjpVuav8BaQ442tD/JDkREDV+kL1dEKq0Q5XwXLVENku82m6G3Eey4XmjPslaVGbX2SylZmWlOThXxmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392411; c=relaxed/simple;
-	bh=aase+ZI3eOf0ARkNZwxwAxT6gHvSDS9I70q1NeKUnuo=;
+	s=arc-20240116; t=1728393629; c=relaxed/simple;
+	bh=7pUEaIfD4D0MihuQoUdtgo6E1pnm7FXtn/h2ECwnW7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaiBG5hy2ZPGiEpodjQYYn9UOvbKO1louMArL89UJ3Amu23mpGha2d3mceH6yvZ+2DeaF/ie3U4CDFGIqW5W/VWtT1UOKJ/qvoah5WUE4VuC4MwEtqjFZ4xle17iwCSeckVP/410GYsP3BiOtEKJAmvNsGcUBVueWWGJuD5sQJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4GjLPb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88ED9C4CEC7;
-	Tue,  8 Oct 2024 13:00:10 +0000 (UTC)
+	 MIME-Version; b=aWkDw5ksLO3YRP/NprTp6r7L58I5pfezhRtSN8XX1MxqT8zjco4Fwep6xMwqNEUvV8czT8pAK0upCPqiRQVyHCnzuVzHOUaL7qeXKLJ2DqIanBrDFL7tzMFtkNqTk5R/rSwGvE4WbxWfRYXsYpg2N85HGwFs8kslcMysdVRHhek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWySGQrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805D5C4CECC;
+	Tue,  8 Oct 2024 13:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392411;
-	bh=aase+ZI3eOf0ARkNZwxwAxT6gHvSDS9I70q1NeKUnuo=;
+	s=korg; t=1728393629;
+	bh=7pUEaIfD4D0MihuQoUdtgo6E1pnm7FXtn/h2ECwnW7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4GjLPb8D7e/zUcxoN0fpGsjoDlVvcSP9e1S+Kl0dPiZk+vtxLg/5GtRVdL5T2tuG
-	 wJ8Xk5fFjaLvAbHHBivnMxcAK2KEuJbizajsGUAJh7TBNveITopKT8pnwB/FfGLhCt
-	 AcodoUtbAA1Y/0QKrHJrznsllHVTDBtDR+FtzEn4=
+	b=CWySGQrTJFGFIuSiRuzmEgx5Cjp4Br6Q0fl79bopRmVWRlvsQtDZE8/ranhXO9kCz
+	 CCVcelBrj+hwbxiHuhASJa0SjoY+vK0L7W9iPuV4tt5x6xm8FIFHqW/2GL3RHXgz4S
+	 eBV4NtUOXzhuJvbWu9cG+NjDpF11vBV0LgaSM1kM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.11 406/558] drm: omapdrm: Add missing check for alloc_ordered_workqueue
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 191/386] spi: s3c64xx: fix timeout counters in flush_fifo
 Date: Tue,  8 Oct 2024 14:07:16 +0200
-Message-ID: <20241008115718.255009876@linuxfoundation.org>
+Message-ID: <20241008115636.925753463@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
 
-commit e794b7b9b92977365c693760a259f8eef940c536 upstream.
+[ Upstream commit 68a16708d2503b6303d67abd43801e2ca40c208d ]
 
-As it may return NULL pointer and cause NULL pointer dereference. Add check
-for the return value of alloc_ordered_workqueue.
+In the s3c64xx_flush_fifo() code, the loops counter is post-decremented
+in the do { } while(test && loops--) condition. This means the loops is
+left at the unsigned equivalent of -1 if the loop times out. The test
+after will never pass as if tests for loops == 0.
 
-Cc: stable@vger.kernel.org
-Fixes: 2f95bc6d324a ("drm: omapdrm: Perform initialization/cleanup at probe/remove time")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240808061336.2796729-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Fixes: 230d42d422e7 ("spi: Add s3c64xx SPI Controller driver")
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://patch.msgid.link/20240924134009.116247-2-ben.dooks@codethink.co.uk
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/omapdrm/omap_drv.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-s3c64xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/omapdrm/omap_drv.c
-+++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-@@ -695,6 +695,10 @@ static int omapdrm_init(struct omap_drm_
- 	soc = soc_device_match(omapdrm_soc_devices);
- 	priv->omaprev = soc ? (uintptr_t)soc->data : 0;
- 	priv->wq = alloc_ordered_workqueue("omapdrm", 0);
-+	if (!priv->wq) {
-+		ret = -ENOMEM;
-+		goto err_alloc_workqueue;
-+	}
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 652eadbefe24c..f699ce1b40253 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -239,7 +239,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 	loops = msecs_to_loops(1);
+ 	do {
+ 		val = readl(regs + S3C64XX_SPI_STATUS);
+-	} while (TX_FIFO_LVL(val, sdd) && loops--);
++	} while (TX_FIFO_LVL(val, sdd) && --loops);
  
- 	mutex_init(&priv->list_lock);
- 	INIT_LIST_HEAD(&priv->obj_list);
-@@ -753,6 +757,7 @@ err_gem_deinit:
- 	drm_mode_config_cleanup(ddev);
- 	omap_gem_deinit(ddev);
- 	destroy_workqueue(priv->wq);
-+err_alloc_workqueue:
- 	omap_disconnect_pipelines(ddev);
- 	drm_dev_put(ddev);
- 	return ret;
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing TX FIFO\n");
+@@ -252,7 +252,7 @@ static void s3c64xx_flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+ 			readl(regs + S3C64XX_SPI_RX_DATA);
+ 		else
+ 			break;
+-	} while (loops--);
++	} while (--loops);
+ 
+ 	if (loops == 0)
+ 		dev_warn(&sdd->pdev->dev, "Timed out flushing RX FIFO\n");
+-- 
+2.43.0
+
 
 
 
