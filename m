@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D923994DB3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14996994F8F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F443281CE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:08:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF109287563
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E461DE4CC;
-	Tue,  8 Oct 2024 13:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C08C1E0B79;
+	Tue,  8 Oct 2024 13:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFsy0UWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFtevrUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C011D1DE88F;
-	Tue,  8 Oct 2024 13:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B41DF74A;
+	Tue,  8 Oct 2024 13:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392893; cv=none; b=gXVUH15d2fI9j/gJFe8gJ5g/7TLhryGYd6v9U2xMTWyl/2knART5l63M91HIMVbC/hn/bscWSC37PxpBvD2h/j1/MHAYrtAbm68F/VVWXTpGrp9nkx0euEuzKJfhAhkf3UB7NEUd8xz7EpEZoi+BrJ+lnfgOf3her26jKzTZXlY=
+	t=1728393955; cv=none; b=Uw2bjOO0wMsghprSRBX4Dxxb6fsir+kkGFQLDtu6Uu3oQ76RAAt93bRT07/xjlKSa+ngGWyuxvaMj4y3LEW/l4eC2nMFMN0q6TlsVpYJ/3ktwUiUjWY7npPLimgrUmDRauTrOplwLrhedvJk0sghoJ1osvUTsGHQw3idIdiRroY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392893; c=relaxed/simple;
-	bh=pa/xgXjA+C706/AdFU6IWnv55KeiKSRUZKcDO4kb7EA=;
+	s=arc-20240116; t=1728393955; c=relaxed/simple;
+	bh=25faNqIoSk+uWA3aun5N2FoqGqSibm+5cF4IeExAz8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jat/wbT7zx9k2BBn8bW6E/Hj6so0JCFDHkSEuLCUOATTETlD+Ovt86h/a4tEpowWNUySsKf3uRJmF36Ywt1ks32gqZ2mYczoeYbi5BLp0nRBQb/TiKmDVL0NEj8NdPvZ/9zlUXhwyQRhdV71GafPOgZEQiQpL7PWZ6JFgAfPcq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFsy0UWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4609AC4CEC7;
-	Tue,  8 Oct 2024 13:08:13 +0000 (UTC)
+	 MIME-Version; b=PkCCqPdXL0zW6GiFF8UOBrY9t2f8sRuNbB25LhP9mflcUMmg4KXtOPL5cE2CGbsX7oKKbYrGGW5r6QVhBsli8GGuvoC+g9rJ8dURnsoPjykSgC7u9v6h5qbLJ1uO2sjVhxjqL0EHXNitLVa3ntl+kMYPWOpuRre6KDHc23dj3Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFtevrUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06A0C4CECD;
+	Tue,  8 Oct 2024 13:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392893;
-	bh=pa/xgXjA+C706/AdFU6IWnv55KeiKSRUZKcDO4kb7EA=;
+	s=korg; t=1728393954;
+	bh=25faNqIoSk+uWA3aun5N2FoqGqSibm+5cF4IeExAz8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFsy0UWXQix1TWM6wvtG7EwHK2g6tV3m2x7dAAAp2SSYgYuB0ysUk7fOt4BakBrb+
-	 fMU0Fjxa9JY/5NDDSRLGE5/ssfbQH8hRQKq/JYWgLUxEOK8HkdD/QY9PcoGQhCf5JC
-	 K7WLXKT9kY23LGYksCpEGxgKBb3iOodDVjaU1y5I=
+	b=lFtevrUnl9QapNmU4zEeYfvxEmctbPfU+pb6Sod7svBWBiRqSTIZTvI4ZyCZ8I4Rb
+	 8EY9y/i+nWBn1FEyzKhZ2JVN+z7hNNZ9jx+ppn+GHw+rMzxb2o1audSTsoZ90Pgq6j
+	 rEn+QG8cLo8NrxCncV4U6MtMAJQTCo6iGzrUm+Cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>
-Subject: [PATCH 6.11 519/558] drm/panthor: Dont declare a queue blocked if deferred operations are pending
+	Nuno Sa <nuno.sa@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 304/386] Input: adp5589-keys - fix adp5589_gpio_get_value()
 Date: Tue,  8 Oct 2024 14:09:09 +0200
-Message-ID: <20241008115722.651950567@linuxfoundation.org>
+Message-ID: <20241008115641.349413623@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 7a1f30afe97294281a2ba05977688385744f9844 upstream.
+commit c684771630e64bc39bddffeb65dd8a6612a6b249 upstream.
 
-If deferred operations are pending, we want to wait for those to
-land before declaring the queue blocked on a SYNC_WAIT. We need
-this to deal with the case where the sync object is signalled through
-a deferred SYNC_{ADD,SET} from the same queue. If we don't do that
-and the group gets scheduled out before the deferred SYNC_{SET,ADD}
-is executed, we'll end up with a timeout, because no external
-SYNC_{SET,ADD} will make the scheduler reconsider the group for
-execution.
+The adp5589 seems to have the same behavior as similar devices as
+explained in commit 910a9f5636f5 ("Input: adp5588-keys - get value from
+data out when dir is out").
 
-Fixes: de8548813824 ("drm/panthor: Add the scheduler logical block")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240905071914.3278599-1-boris.brezillon@collabora.com
+Basically, when the gpio is set as output we need to get the value from
+ADP5589_GPO_DATA_OUT_A register instead of ADP5589_GPI_STATUS_A.
+
+Fixes: 9d2e173644bb ("Input: ADP5589 - new driver for I2C Keypad Decoder and I/O Expander")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241001-b4-dev-adp5589-fw-conversion-v1-2-fca0149dfc47@analog.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panthor/panthor_sched.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/input/keyboard/adp5589-keys.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/panthor/panthor_sched.c
-+++ b/drivers/gpu/drm/panthor/panthor_sched.c
-@@ -1103,7 +1103,13 @@ cs_slot_sync_queue_state_locked(struct p
- 			list_move_tail(&group->wait_node,
- 				       &group->ptdev->scheduler->groups.waiting);
- 		}
--		group->blocked_queues |= BIT(cs_id);
+--- a/drivers/input/keyboard/adp5589-keys.c
++++ b/drivers/input/keyboard/adp5589-keys.c
+@@ -391,10 +391,17 @@ static int adp5589_gpio_get_value(struct
+ 	struct adp5589_kpad *kpad = gpiochip_get_data(chip);
+ 	unsigned int bank = kpad->var->bank(kpad->gpiomap[off]);
+ 	unsigned int bit = kpad->var->bit(kpad->gpiomap[off]);
++	int val;
+ 
+-	return !!(adp5589_read(kpad->client,
+-			       kpad->var->reg(ADP5589_GPI_STATUS_A) + bank) &
+-			       bit);
++	mutex_lock(&kpad->gpio_lock);
++	if (kpad->dir[bank] & bit)
++		val = kpad->dat_out[bank];
++	else
++		val = adp5589_read(kpad->client,
++				   kpad->var->reg(ADP5589_GPI_STATUS_A) + bank);
++	mutex_unlock(&kpad->gpio_lock);
 +
-+		/* The queue is only blocked if there's no deferred operation
-+		 * pending, which can be checked through the scoreboard status.
-+		 */
-+		if (!cs_iface->output->status_scoreboards)
-+			group->blocked_queues |= BIT(cs_id);
-+
- 		queue->syncwait.gpu_va = cs_iface->output->status_wait_sync_ptr;
- 		queue->syncwait.ref = cs_iface->output->status_wait_sync_value;
- 		status_wait_cond = cs_iface->output->status_wait & CS_STATUS_WAIT_SYNC_COND_MASK;
++	return !!(val & bit);
+ }
+ 
+ static void adp5589_gpio_set_value(struct gpio_chip *chip,
 
 
 
