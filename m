@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-81915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4203B994A1B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:30:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE093994CCA
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65E081C24BBD
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:30:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A74E1F2434E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D30A1DDA15;
-	Tue,  8 Oct 2024 12:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503891DF25C;
+	Tue,  8 Oct 2024 12:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5ec9AYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsXmvp7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098B71CF297;
-	Tue,  8 Oct 2024 12:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF951DF246;
+	Tue,  8 Oct 2024 12:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390564; cv=none; b=g8WN1sOOPQ96rI8VwmHPvf8zI97B3mRLq7ZoegsAwCBMPSWJk7TLZIk0paoOz0pKRrTga2IJFAYDPcMT8mMk7cOhJjD6EYd8+c2Yyge3cbP7S98m21OptwctGoqcy04rOZziwdyLJLy+cccnQcHlX2zD1Ec2//e3LGV2qaR134c=
+	t=1728392242; cv=none; b=rnAahJZgGtbE0FfmsDeTTaNeFuOZq7Krv/+ylp6W1WYA8zKkksr3r8UMIg2e+nOPRCZh+TBUJyXnIDj82FwvLrBhzvAW2N4Wu+Sk/ezY8l1Zk6MVp8//xqa9/zv/P0NZAya4tU0ldHnzfUWSXZxe4mC50aXpAD96RiHGu/2tlKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390564; c=relaxed/simple;
-	bh=5gcultbOprj8jAfM9IxOhRi5k8GliqwUSg3XnypZfpU=;
+	s=arc-20240116; t=1728392242; c=relaxed/simple;
+	bh=LYODPKdu9BIcv4HJSj7cYceG/3P+/CkvN8IZ7sFQPJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfYB63AwzimxerItaeCJeTp6Z7cmpzuY05Jpg2z0EmyRn3KRyB8BbDE0RNgalDp1EuNC7DPNspWnrOxNyimNI7yivsiiSIpWj606n1TLLIAaudbr0IDXrieZtg2wR9zIyQXo79Xr7WnOl0cynBeTUwcWHS5T+bg7ybs58HhG9Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5ec9AYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB7BC4CEC7;
-	Tue,  8 Oct 2024 12:29:23 +0000 (UTC)
+	 MIME-Version; b=dfO869EHm+0wAfb4S7PXcap8bLpcLoGBddRarFaTiVxjFDj0VmXUiIzCJNdXqCECSkAtvPTLMf3xq4Shwb7kbqIf5fRAflAFFECsjvykf3DQf+/SKamRRp40rgfPN7sLqtIskSyFJgeNCnd5y4rcQhZ5TaBSYmWpamwU4ocVqz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsXmvp7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60197C4CEC7;
+	Tue,  8 Oct 2024 12:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390563;
-	bh=5gcultbOprj8jAfM9IxOhRi5k8GliqwUSg3XnypZfpU=;
+	s=korg; t=1728392241;
+	bh=LYODPKdu9BIcv4HJSj7cYceG/3P+/CkvN8IZ7sFQPJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5ec9AYJKRY2jRAe1PMi31/AMiZL+JipNWur0TMzp3gmZJ0vx5z/NPq5DWxku9y0X
-	 tMoRWFZ00UByBryVXQdiOff9dGHsvxcj3UySuXcIykW1QDb+p1yaCmY0O4yDFN4fgd
-	 nzaMVNgj6k8pqbUOnYF/18z2lsNON7P1VOlgD0g0=
+	b=FsXmvp7+Jl2aEYFEDB2rRVQgtYqoi2epf7nkNS5BqRAkMyaN31O6R8EX68R9DL+J8
+	 JA3RGoF0w06Web1aboMj1FdVtrHjLMK3uRHwzeiCMjbhb4VRIq1Gbd0Ado82WEZHgZ
+	 OEwfbDU+3jGnok6ofZvDhNllTCJyBT3yOZoSC1mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.10 324/482] ext4: fix slab-use-after-free in ext4_split_extent_at()
-Date: Tue,  8 Oct 2024 14:06:27 +0200
-Message-ID: <20241008115701.178007055@linuxfoundation.org>
+	Mike Baynton <mike@mbaynton.com>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.11 358/558] ovl: fail if trusted xattrs are needed but caller lacks permission
+Date: Tue,  8 Oct 2024 14:06:28 +0200
+Message-ID: <20241008115716.387428227@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Mike Baynton <mike@mbaynton.com>
 
-commit c26ab35702f8cd0cdc78f96aa5856bfb77be798f upstream.
+commit 6c4a5f96450415735c31ed70ff354f0ee5cbf67b upstream.
 
-We hit the following use-after-free:
+Some overlayfs features require permission to read/write trusted.*
+xattrs. These include redirect_dir, verity, metacopy, and data-only
+layers. This patch adds additional validations at mount time to stop
+overlays from mounting in certain cases where the resulting mount would
+not function according to the user's expectations because they lack
+permission to access trusted.* xattrs (for example, not global root.)
 
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
-Read of size 2 at addr ffff88810548ed08 by task kworker/u20:0/40
-CPU: 0 PID: 40 Comm: kworker/u20:0 Not tainted 6.9.0-dirty #724
-Call Trace:
- <TASK>
- kasan_report+0x93/0xc0
- ext4_split_extent_at+0xba8/0xcc0
- ext4_split_extent.isra.0+0x18f/0x500
- ext4_split_convert_extents+0x275/0x750
- ext4_ext_handle_unwritten_extents+0x73e/0x1580
- ext4_ext_map_blocks+0xe20/0x2dc0
- ext4_map_blocks+0x724/0x1700
- ext4_do_writepages+0x12d6/0x2a70
-[...]
+Similar checks in ovl_make_workdir() that disable features instead of
+failing are still relevant and used in cases where the resulting mount
+can still work "reasonably well." Generally, if the feature was enabled
+through kernel config or module option, any mount that worked before
+will still work the same; this applies to redirect_dir and metacopy. The
+user must explicitly request these features in order to generate a mount
+failure. Verity and data-only layers on the other hand must be explictly
+requested and have no "reasonable" disabled or degraded alternative, so
+mounts attempting either always fail.
 
-Allocated by task 40:
- __kmalloc_noprof+0x1ac/0x480
- ext4_find_extent+0xf3b/0x1e70
- ext4_ext_map_blocks+0x188/0x2dc0
- ext4_map_blocks+0x724/0x1700
- ext4_do_writepages+0x12d6/0x2a70
-[...]
+"lower data-only dirs require metacopy support" moved down in case
+userxattr is set, which disables metacopy.
 
-Freed by task 40:
- kfree+0xf1/0x2b0
- ext4_find_extent+0xa71/0x1e70
- ext4_ext_insert_extent+0xa22/0x3260
- ext4_split_extent_at+0x3ef/0xcc0
- ext4_split_extent.isra.0+0x18f/0x500
- ext4_split_convert_extents+0x275/0x750
- ext4_ext_handle_unwritten_extents+0x73e/0x1580
- ext4_ext_map_blocks+0xe20/0x2dc0
- ext4_map_blocks+0x724/0x1700
- ext4_do_writepages+0x12d6/0x2a70
-[...]
-==================================================================
-
-The flow of issue triggering is as follows:
-
-ext4_split_extent_at
-  path = *ppath
-  ext4_ext_insert_extent(ppath)
-    ext4_ext_create_new_leaf(ppath)
-      ext4_find_extent(orig_path)
-        path = *orig_path
-        read_extent_tree_block
-          // return -ENOMEM or -EIO
-        ext4_free_ext_path(path)
-          kfree(path)
-        *orig_path = NULL
-  a. If err is -ENOMEM:
-  ext4_ext_dirty(path + path->p_depth)
-  // path use-after-free !!!
-  b. If err is -EIO and we have EXT_DEBUG defined:
-  ext4_ext_show_leaf(path)
-    eh = path[depth].p_hdr
-    // path also use-after-free !!!
-
-So when trying to zeroout or fix the extent length, call ext4_find_extent()
-to update the path.
-
-In addition we use *ppath directly as an ext4_ext_show_leaf() input to
-avoid possible use-after-free when EXT_DEBUG is defined, and to avoid
-unnecessary path updates.
-
-Fixes: dfe5080939ea ("ext4: drop EXT4_EX_NOFREE_ON_ERR from rest of extents handling code")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-4-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Mike Baynton <mike@mbaynton.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ fs/overlayfs/params.c |   38 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3230,6 +3230,25 @@ static int ext4_split_extent_at(handle_t
- 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
- 		goto out;
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -755,11 +755,6 @@ int ovl_fs_params_verify(const struct ov
+ {
+ 	struct ovl_opt_set set = ctx->set;
+ 
+-	if (ctx->nr_data > 0 && !config->metacopy) {
+-		pr_err("lower data-only dirs require metacopy support.\n");
+-		return -EINVAL;
+-	}
+-
+ 	/* Workdir/index are useless in non-upper mount */
+ 	if (!config->upperdir) {
+ 		if (config->workdir) {
+@@ -911,6 +906,39 @@ int ovl_fs_params_verify(const struct ov
+ 		config->metacopy = false;
+ 	}
  
 +	/*
-+	 * Update path is required because previous ext4_ext_insert_extent()
-+	 * may have freed or reallocated the path. Using EXT4_EX_NOFAIL
-+	 * guarantees that ext4_find_extent() will not return -ENOMEM,
-+	 * otherwise -ENOMEM will cause a retry in do_writepages(), and a
-+	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
-+	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
++	 * Fail if we don't have trusted xattr capability and a feature was
++	 * explicitly requested that requires them.
 +	 */
-+	path = ext4_find_extent(inode, ee_block, ppath,
-+				flags | EXT4_EX_NOFAIL);
-+	if (IS_ERR(path)) {
-+		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
-+				 split, PTR_ERR(path));
-+		return PTR_ERR(path);
++	if (!config->userxattr && !capable(CAP_SYS_ADMIN)) {
++		if (set.redirect &&
++		    config->redirect_mode != OVL_REDIRECT_NOFOLLOW) {
++			pr_err("redirect_dir requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (config->metacopy && set.metacopy) {
++			pr_err("metacopy requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (config->verity_mode) {
++			pr_err("verity requires permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		if (ctx->nr_data > 0) {
++			pr_err("lower data-only dirs require permission to access trusted xattrs\n");
++			return -EPERM;
++		}
++		/*
++		 * Other xattr-dependent features should be disabled without
++		 * great disturbance to the user in ovl_make_workdir().
++		 */
 +	}
-+	depth = ext_depth(inode);
-+	ex = path[depth].p_ext;
-+	*ppath = path;
 +
- 	if (EXT4_EXT_MAY_ZEROOUT & split_flag) {
- 		if (split_flag & (EXT4_EXT_DATA_VALID1|EXT4_EXT_DATA_VALID2)) {
- 			if (split_flag & EXT4_EXT_DATA_VALID1) {
-@@ -3282,7 +3301,7 @@ fix_extent_len:
- 	ext4_ext_dirty(handle, inode, path + path->p_depth);
- 	return err;
- out:
--	ext4_ext_show_leaf(inode, path);
-+	ext4_ext_show_leaf(inode, *ppath);
- 	return err;
++	if (ctx->nr_data > 0 && !config->metacopy) {
++		pr_err("lower data-only dirs require metacopy support.\n");
++		return -EINVAL;
++	}
++
+ 	return 0;
  }
  
 
