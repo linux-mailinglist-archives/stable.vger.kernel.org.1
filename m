@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-82336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13DE994C44
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:52:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89701994E6D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34320B2946E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:52:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEFA2B27EB6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343261CCB32;
-	Tue,  8 Oct 2024 12:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9F61DF266;
+	Tue,  8 Oct 2024 13:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juUh8Fx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6L/q7dK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70071DE2CF;
-	Tue,  8 Oct 2024 12:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB841C9DDF;
+	Tue,  8 Oct 2024 13:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391918; cv=none; b=H6cjw50xGpDN2pdpUIdKws/s3f0YVpbm3bt8OPsSJlTY0O0WPDUHJFYH1d4KDPFD29WS8KAGEw1Lp/JQ5/F0sNfdpkwooR542tkjq+V7qt/b2tFkXs2V0HXjFtpmWyLQDx/qk7dM1+TEQyTYS4tS9frErUMUUu7qhxrRg9WmTLI=
+	t=1728393084; cv=none; b=HeFLuWO5vQCimHOkp1QN+qWORPKOw9d+pFQu49CGd74RJyazauqKBvKZt1RoAM21SlXicEsJ1J3xvpgOgvf8hqMayPI5Zxvx99rSfaDnmWs/uoQcfFBQOoLL4ZkIQyUhXqWD0nXEl64u7RGGVkkWkpOrBtMkIxcnjiXDu99l7Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391918; c=relaxed/simple;
-	bh=N7fTB46qGK0SOmRqfpC9vF/zCFqPccOblkrJctjeqtE=;
+	s=arc-20240116; t=1728393084; c=relaxed/simple;
+	bh=LXibOquvE2NBCpgTG20BcxJ/NanMZeQQPfqqfSIgsUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ga6l7Z4PZUHpulG1EqzGriVSs17jvaxD3OVpThB2WFlkQA6zWDyEqseYQHaA61FsrHgfWE6o+noMlykPZF3Ccpd/tkHGLGGwZfTRQuOQd4RoY8C+hnWBP2KxHsQtkR0W/5bkzxyMgRMAg4Pf1aXR7KfpnV18DHMJ1/qh8s0G/kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juUh8Fx3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0C1C4CECE;
-	Tue,  8 Oct 2024 12:51:56 +0000 (UTC)
+	 MIME-Version; b=Zc5M/M5wD+2rsptVlZbxVoED+SPPoGXAIqE9akzYXdQGlOpxFPtfLqUyXAMlW9tObhZoN7z+3mMLkUAsqMB6BLc7vK/QYVdTifIRzgZhTAKUNDDzKf+q2/um1T6ayBLEpEcFPMza/KzpVL7OGISGM/R3aLdbWrjMVrBymRk7+O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6L/q7dK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86112C4CEC7;
+	Tue,  8 Oct 2024 13:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391917;
-	bh=N7fTB46qGK0SOmRqfpC9vF/zCFqPccOblkrJctjeqtE=;
+	s=korg; t=1728393084;
+	bh=LXibOquvE2NBCpgTG20BcxJ/NanMZeQQPfqqfSIgsUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=juUh8Fx3G/dyVwVQUJpUEsDxwLesFMnnVhvza4QqDsohUygf1/V3QTOR7mmjnf7zM
-	 U/KiJs2BXttW66KXXgbofjEUvOsATjLPr3gzNdshIq3aDymARwHcgq/LTrV2wUIzVn
-	 kU2pe5pGIDWEdN+Wf402v8gzS/U4DI49eWGNvW+A=
+	b=m6L/q7dKiMYxVmJi9KjVGzFsnDUkAE5P5qUKrfE2VokCd2hmCdnEjHzbbIcvbDchE
+	 eZX1x/0tC9+KMN/hyQBjEF35637I/HB6PmLKsfjXMMvnOir86MWL2OZynxpAfn1/qp
+	 cPwVBcmCgmMjq3pUwjw2VMgweZgQ8GLZz4T72WhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 261/558] drm/amd/display: Fix index out of bounds in DCN30 color transformation
-Date: Tue,  8 Oct 2024 14:04:51 +0200
-Message-ID: <20241008115712.603936594@linuxfoundation.org>
+Subject: [PATCH 6.6 047/386] ALSA: mixer_oss: Remove some incorrect kfree_const() usages
+Date: Tue,  8 Oct 2024 14:04:52 +0200
+Message-ID: <20241008115631.322946400@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,55 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit d81873f9e715b72d4f8d391c8eb243946f784dfc ]
+[ Upstream commit 368e4663c557de4a33f321b44e7eeec0a21b2e4e ]
 
-This commit addresses a potential index out of bounds issue in the
-`cm3_helper_translate_curve_to_hw_format` function in the DCN30 color
-management module. The issue could occur when the index 'i' exceeds the
-number of transfer function points (TRANSFER_FUNC_POINTS).
+"assigned" and "assigned->name" are allocated in snd_mixer_oss_proc_write()
+using kmalloc() and kstrdup(), so there is no point in using kfree_const()
+to free these resources.
 
-The fix adds a check to ensure 'i' is within bounds before accessing the
-transfer function points. If 'i' is out of bounds, the function returns
-false to indicate an error.
+Switch to the more standard kfree() to free these resources.
 
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:180 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.red' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:181 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.green' 1025 <= s32max
-drivers/gpu/drm/amd/amdgpu/../display/dc/dcn30/dcn30_cm_common.c:182 cm3_helper_translate_curve_to_hw_format() error: buffer overflow 'output_tf->tf_pts.blue' 1025 <= s32max
+This could avoid a memory leak.
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 454f5ec1d2b7 ("ALSA: mixer: oss: Constify snd_mixer_oss_assign_table definition")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/63ac20f64234b7c9ea87a7fa9baf41e8255852f7.1727374631.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/core/oss/mixer_oss.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-index edc77615d0973..0433f6b5dac78 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_cm_common.c
-@@ -177,6 +177,8 @@ bool cm3_helper_translate_curve_to_hw_format(
- 				i += increment) {
- 			if (j == hw_points)
- 				break;
-+			if (i >= TRANSFER_FUNC_POINTS)
-+				return false;
- 			rgb_resulted[j].red = output_tf->tf_pts.red[i];
- 			rgb_resulted[j].green = output_tf->tf_pts.green[i];
- 			rgb_resulted[j].blue = output_tf->tf_pts.blue[i];
+diff --git a/sound/core/oss/mixer_oss.c b/sound/core/oss/mixer_oss.c
+index dae2da3808351..abc99ae333282 100644
+--- a/sound/core/oss/mixer_oss.c
++++ b/sound/core/oss/mixer_oss.c
+@@ -967,8 +967,8 @@ static void snd_mixer_oss_slot_free(struct snd_mixer_oss_slot *chn)
+ 	struct slot *p = chn->private_data;
+ 	if (p) {
+ 		if (p->allocated && p->assigned) {
+-			kfree_const(p->assigned->name);
+-			kfree_const(p->assigned);
++			kfree(p->assigned->name);
++			kfree(p->assigned);
+ 		}
+ 		kfree(p);
+ 	}
 -- 
 2.43.0
 
