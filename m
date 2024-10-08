@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-82265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270DB994BE5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C99399494B
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6584281585
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325F71F21D12
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E431DE2CF;
-	Tue,  8 Oct 2024 12:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DB91DD54F;
+	Tue,  8 Oct 2024 12:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAaWxP7g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipFpXxZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305C11C2420;
-	Tue,  8 Oct 2024 12:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372021D540;
+	Tue,  8 Oct 2024 12:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391683; cv=none; b=s57+mNB/AXgC9miRWnP3sH7wKdSToGg1YicjMGbjxSM14N8OBh52Lw850XixAH+nBnuchUBb1YwXkNvx52imwKh2GXlrJupffqoNPtyWy9ewg+Q4H0NSH0HpEV09+Xw1SZpHL/miAx4g0Kn7YDFX7hQgmhyV8JCVU94aeLyz7ys=
+	t=1728390096; cv=none; b=Zguz0jcssDdODJ8nPfKFU/ebrE3EZBfs+npXptjdHUsQVWPatk0et/c9WyXs5WkDMwUZZFk2+VAlah5EPUYHsbVDhbgY1OK8ljhiTH2Dj+KXX0alBPTG53TOpnE3oBaG11Fuw5pUJ9vAUEnMp9qaCWeIvVo2cC3YN765ujZgfdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391683; c=relaxed/simple;
-	bh=xmoQqGPpq2ZP/UeY4zWh2Uuo4c3wDmzGozHojtuIT/E=;
+	s=arc-20240116; t=1728390096; c=relaxed/simple;
+	bh=oIVNNYqcchgyfSZOeqBz5oAoIXrJNShS8tbg3emRPi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7ckVI032NAeKYhKJZWM8aTW0CUSGpwUnnT7kKR8acNsJ0OOSXgqYOqHLzQhVWFPJCryl7Be5t11WZ8wgPTTVfQwnUMAMby9L2VdCer8Xwq0847gTccxNyHO5w3o9ucB7cpVuipF7qMQN7t+Txzl9V+RvG9psFdxXU+SZ6NYm7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAaWxP7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A2EC4CEC7;
-	Tue,  8 Oct 2024 12:48:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YwjQWBxNXJyFRWXQxfHEypWNjikR77t0Ir9qAfKE2bNnqVQzhIlnbmDRlomaRc+fpTalEOrodW1jFPKu2GjUbrVGhOCXNTvy1Vw5ooInMDUjkWLtXM8gF/UelQK0Rt0vmMuFDFqIHgYXOmmF4z5A30/WUrPGudHKBUHGPw+gIn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipFpXxZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB3AC4CEC7;
+	Tue,  8 Oct 2024 12:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391683;
-	bh=xmoQqGPpq2ZP/UeY4zWh2Uuo4c3wDmzGozHojtuIT/E=;
+	s=korg; t=1728390095;
+	bh=oIVNNYqcchgyfSZOeqBz5oAoIXrJNShS8tbg3emRPi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VAaWxP7gWud6tZEQEec64VKovQLVVOTDFE3spDr+FQLduC/BELQtfe05S50pzCcEu
-	 yTm2hVrhO3n9uklmeC7EgEVxmNpJpXU7sChKko7bwdLdVwC+NRfA/uy/6iG4/jpv6Y
-	 /QCvJIy6Po8w0FQVQR/DA5En5gOlHCA2YjXXqw1g=
+	b=ipFpXxZoc0sAn3TiJYFh262sjM5ryrrdmEK8jBT/uUo5F7ROeXgqoNtqL4smpp3d/
+	 qjiTZ4/KSuchPmd8SI1OpVsiVkfh3sQ9EPBIcRV9legG5pFCU/rSwl+5Xniae25Etl
+	 qHhVgqkTv9a7YKi91nQbk29iAsEA7SDzUzwiCZJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Helge Deller <deller@gmx.de>,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 191/558] fbdev: pxafb: Fix possible use after free in pxafb_task()
+Subject: [PATCH 6.10 158/482] x86/syscall: Avoid memcpy() for ia32 syscall_get_arguments()
 Date: Tue,  8 Oct 2024 14:03:41 +0200
-Message-ID: <20241008115709.865359561@linuxfoundation.org>
+Message-ID: <20241008115654.524435502@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +62,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 4a6921095eb04a900e0000da83d9475eb958e61e ]
+[ Upstream commit d19d638b1e6cf746263ef60b7d0dee0204d8216a ]
 
-In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
-after which &fbi->task is associated with pxafb_task. Moreover,
-within this pxafb_init_fbinfo function, the pxafb_blank function
-within the &pxafb_ops struct is capable of scheduling work.
+Modern (fortified) memcpy() prefers to avoid writing (or reading) beyond
+the end of the addressed destination (or source) struct member:
 
-If we remove the module which will call pxafb_remove to make cleanup,
-it will call unregister_framebuffer function which can call
-do_unregister_framebuffer to free fbi->fb through
-put_fb_info(fb_info), while the work mentioned above will be used.
-The sequence of operations that may lead to a UAF bug is as follows:
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘syscall_get_arguments’ at ./arch/x86/include/asm/syscall.h:85:2,
+    inlined from ‘populate_seccomp_data’ at kernel/seccomp.c:258:2,
+    inlined from ‘__seccomp_filter’ at kernel/seccomp.c:1231:3:
+./include/linux/fortify-string.h:580:25: error: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  580 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-CPU0                                                CPU1
+As already done for x86_64 and compat mode, do not use memcpy() to
+extract syscall arguments from struct pt_regs but rather just perform
+direct assignments. Binary output differences are negligible, and actually
+ends up using less stack space:
 
-                                   | pxafb_task
-pxafb_remove                       |
-unregister_framebuffer(info)       |
-do_unregister_framebuffer(fb_info) |
-put_fb_info(fb_info)               |
-// free fbi->fb                    | set_ctrlr_state(fbi, state)
-                                   | __pxafb_lcd_power(fbi, 0)
-                                   | fbi->lcd_power(on, &fbi->fb.var)
-                                   | //use fbi->fb
+-       sub    $0x84,%esp
++       sub    $0x6c,%esp
 
-Fix it by ensuring that the work is canceled before proceeding
-with the cleanup in pxafb_remove.
+and less text size:
 
-Note that only root user can remove the driver at runtime.
+   text    data     bss     dec     hex filename
+  10794     252       0   11046    2b26 gcc-32b/kernel/seccomp.o.stock
+  10714     252       0   10966    2ad6 gcc-32b/kernel/seccomp.o.after
 
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Closes: https://lore.kernel.org/lkml/9b69fb14-df89-4677-9c82-056ea9e706f5@gmail.com/
+Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Link: https://lore.kernel.org/all/20240708202202.work.477-kees%40kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pxafb.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/syscall.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index 2ef56fa28aff3..5ce02495cda63 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2403,6 +2403,7 @@ static void pxafb_remove(struct platform_device *dev)
- 	info = &fbi->fb;
+diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
+index 2fc7bc3863ff6..7c488ff0c7641 100644
+--- a/arch/x86/include/asm/syscall.h
++++ b/arch/x86/include/asm/syscall.h
+@@ -82,7 +82,12 @@ static inline void syscall_get_arguments(struct task_struct *task,
+ 					 struct pt_regs *regs,
+ 					 unsigned long *args)
+ {
+-	memcpy(args, &regs->bx, 6 * sizeof(args[0]));
++	args[0] = regs->bx;
++	args[1] = regs->cx;
++	args[2] = regs->dx;
++	args[3] = regs->si;
++	args[4] = regs->di;
++	args[5] = regs->bp;
+ }
  
- 	pxafb_overlay_exit(fbi);
-+	cancel_work_sync(&fbi->task);
- 	unregister_framebuffer(info);
- 
- 	pxafb_disable_controller(fbi);
+ static inline int syscall_get_arch(struct task_struct *task)
 -- 
 2.43.0
 
