@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-82783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1337994E65
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09652994CDC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2D9A1C24EA8
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:16:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37DE3B2B252
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E33192594;
-	Tue,  8 Oct 2024 13:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B431DFD8B;
+	Tue,  8 Oct 2024 12:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTEsmlkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpeoXH0X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4931D3653;
-	Tue,  8 Oct 2024 13:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820471DF72E;
+	Tue,  8 Oct 2024 12:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393413; cv=none; b=Pk+GPkSio/4iI82jzlJhfqd0vO1zR4VnK2f5I1dZsnWfYjycCBzjX/XSburXNR/DKs595khBQlSXU5psm/FyBBvtJNiEDNKUldF7ziDOW1IufiojUA8/D7bYV9QqqSzNdWJFtQDtGefqxyYfwQasqgGiiqW8WojGgDRk3GsPG9I=
+	t=1728392245; cv=none; b=FR2cUkncXss/hI3EAhIXWSfqE4wZ33PcizA3bQoigW/R7tYJY3JdsW2EGqlGxbJimry1BaGszCDqvqk/C46Qum8n6irprNg+9rO/qdq3x+U1qZG4mKf1NiVtIhDmXiUjUE9q6up5BjtnOFDiFMFgrOE5Tw90zqDpa7+grC8d4Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393413; c=relaxed/simple;
-	bh=M5smAU+IPKkeP//UPjVTvtmMz6UaV9stjmdvmtGpBzQ=;
+	s=arc-20240116; t=1728392245; c=relaxed/simple;
+	bh=qZm5zj/GT7SOZdjNDFXHZ1F3IlnjWokg8cmDBeOJAtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUG+lVqieLjz4Two2oROhn/ZCO/lgym9NtcVI6ynkvgJxVTbL64Jrq9KmyXH9GC+uLyvQ6dQfBzMP9glOvf0kIo7G9C6R7MuHjoEEYwLzUTwicR4VR/NJM/Qb428MUlmKa/ZnsZvQhG2H77K8Brvf2lq824/tQNYSYuTA3UCfPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTEsmlkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700F2C4CECC;
-	Tue,  8 Oct 2024 13:16:52 +0000 (UTC)
+	 MIME-Version; b=AhKdreTPtzrn6fxB5CILjWcW3otwdo4msZ9WXdAUpikqz1n0MIo6g6xfjXuMj95eW88/lu+Ds7yx0aEqToAspS8bIINb9EthSwoAAPlFf60+vrawpFjHx5iA7dOyFOStPVo0o0l83jEnn5dSWK5Z5wGG+Ll018wFkP7kOZmNLOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpeoXH0X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A096AC4CECD;
+	Tue,  8 Oct 2024 12:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393412;
-	bh=M5smAU+IPKkeP//UPjVTvtmMz6UaV9stjmdvmtGpBzQ=;
+	s=korg; t=1728392245;
+	bh=qZm5zj/GT7SOZdjNDFXHZ1F3IlnjWokg8cmDBeOJAtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTEsmlkUk/I80GccAJ/kQYUJe9MGfQciCa78F5OPhmCHep19rpBMZ/TJ5nU/Xvfo9
-	 WcsGsWT9G/3rWVFQP/FrJM/mXE24sfsXoNGfdloKcX6qpf6A5q8ctB/wKL5gJrU8ec
-	 DIsZh3z2ZyxJLjFDNtD6cUF3M4gyEEOAK3Q4TxZI=
+	b=EpeoXH0X7WUSHMnD1PBF00TirtCuzFT2WaGyiTmptred/MyziLx+lSbZEdCYLClea
+	 qploRGFxYKSSZAQ82d47LbvDy3Hbcf0vxpkeVfVf6xj4D4E5tF9Hoh8YrFOkqwg6ww
+	 ziAYKfo86gGirRMBXhurCAqPYbD1+0TuOPjT6DI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+dca05492eff41f604890@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 144/386] jfs: check if leafidx greater than num leaves per dmap tree
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.11 359/558] firmware: tegra: bpmp: Drop unused mbox_client_to_bpmp()
 Date: Tue,  8 Oct 2024 14:06:29 +0200
-Message-ID: <20241008115635.096827980@linuxfoundation.org>
+Message-ID: <20241008115716.427500128@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d64ff0d2306713ff084d4b09f84ed1a8c75ecc32 ]
+commit 9c3a62c20f7fb00294a4237e287254456ba8a48b upstream.
 
-syzbot report a out of bounds in dbSplit, it because dmt_leafidx greater
-than num leaves per dmap tree, add a checking for dmt_leafidx in dbFindLeaf.
+mbox_client_to_bpmp() is not used, W=1 builds:
 
-Shaggy:
-Modified sanity check to apply to control pages as well as leaf pages.
+  drivers/firmware/tegra/bpmp.c:28:1: error: unused function 'mbox_client_to_bpmp' [-Werror,-Wunused-function]
 
-Reported-and-tested-by: syzbot+dca05492eff41f604890@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=dca05492eff41f604890
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cdfa358b248e ("firmware: tegra: Refactor BPMP driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/tegra/bpmp.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 8847e8c5d5b45..974ecf5e0d952 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2944,9 +2944,10 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
+--- a/drivers/firmware/tegra/bpmp.c
++++ b/drivers/firmware/tegra/bpmp.c
+@@ -24,12 +24,6 @@
+ #define MSG_RING	BIT(1)
+ #define TAG_SZ		32
+ 
+-static inline struct tegra_bpmp *
+-mbox_client_to_bpmp(struct mbox_client *client)
+-{
+-	return container_of(client, struct tegra_bpmp, mbox.client);
+-}
+-
+ static inline const struct tegra_bpmp_ops *
+ channel_to_ops(struct tegra_bpmp_channel *channel)
  {
- 	int ti, n = 0, k, x = 0;
--	int max_size;
-+	int max_size, max_idx;
- 
- 	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
-+	max_idx = is_ctl ? LPERCTL : LPERDMAP;
- 
- 	/* first check the root of the tree to see if there is
- 	 * sufficient free space.
-@@ -2978,6 +2979,8 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
- 		 */
- 		assert(n < 4);
- 	}
-+	if (le32_to_cpu(tp->dmt_leafidx) >= max_idx)
-+		return -ENOSPC;
- 
- 	/* set the return to the leftmost leaf describing sufficient
- 	 * free space.
--- 
-2.43.0
-
 
 
 
