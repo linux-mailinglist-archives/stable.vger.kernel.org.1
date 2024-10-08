@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-82273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19375994BF0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125DB994930
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41C891C24DEE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79394B21F18
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEED1DE3AE;
-	Tue,  8 Oct 2024 12:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2DB1DEFCF;
+	Tue,  8 Oct 2024 12:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8D1OnVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9YeAA6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFA71C4613;
-	Tue,  8 Oct 2024 12:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C25C1DDA36;
+	Tue,  8 Oct 2024 12:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391710; cv=none; b=UNk7cnCZgH5pv/2ESDBvk+FQIPLdH2BBfbp/CW/WBByHq+vi2LKmW7xd6TBuhZMc7sKLYAW1WUEOQ/42lR1+PAA9KEuAmif6cdo5/MW2L4vs39mtmYtvrdgB+sXZZr3qevCbfZxbadoV9yxuwH9VzMxNs7I9zXRt4odbHQikdCk=
+	t=1728390018; cv=none; b=CF7jnf1F2Do1IAOIC0Oe31RqtwXX1h9HZtJiFHPbF8nB1Y27DY9c2NvCIRe/IdHFRdctUFTjMvrcGhD0SXQD7h8KxcwAfwYIQ6sruGxZNsW42m3pTWFPcHW8F7mk77hsBCd6tDhHl0H04/pTkKTw2VhTE8+iOgYQ3eTaRX47WCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391710; c=relaxed/simple;
-	bh=80W4X3c5pJ1ZcEkz04XqagF8s65vfRafQ/8UpMnTfSA=;
+	s=arc-20240116; t=1728390018; c=relaxed/simple;
+	bh=XN+pdgmGMafgB3EtJ+xOotz2nws1wAXuY3hSZ9X0mJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6yc1wkHXeHIWYAk05b2NFVAMY7g5SB4wAoGI4XS+V843YNooBUzRxh2UUeD72Vt7U9boPQqsHzLV9l2ATvqoerrXmnxzOeh+TjOiKorD7C5+TjThmQtHcDZ9jpqXZPHaqisUCg9E3yAsO7X8Hkq2Us8Lr1JqiI94ziLOA9ujss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8D1OnVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F12C4CEC7;
-	Tue,  8 Oct 2024 12:48:29 +0000 (UTC)
+	 MIME-Version; b=jshhKawNNCczAIA0byw6jxN6EPmcVLPXuNjid9rE8p6S9jOml4Q51bNzz92LTPSOI7osHyyffDLa00LmzcEcupJl3jmBgz4hRKfIPDZkS7Bl4FjJWYtveg/KrAtoQMi7xYp3tNGpf2ViLHwJiWX3SGk5i4ud7YSvz1qSwbRfUmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9YeAA6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3033C4CEC7;
+	Tue,  8 Oct 2024 12:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391710;
-	bh=80W4X3c5pJ1ZcEkz04XqagF8s65vfRafQ/8UpMnTfSA=;
+	s=korg; t=1728390018;
+	bh=XN+pdgmGMafgB3EtJ+xOotz2nws1wAXuY3hSZ9X0mJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8D1OnVeuMaJrPbYdgTgv+N9QqoycfYLaCDbbgJL6gQ51yoJopa+aNDA2s3Im1SmF
-	 mXxEGJVvYjbuRUDtPGQrr++1QUZ9jBh8Ed+v/ooczD9vXXSK1uadB4V1/GFqyEM+It
-	 BrUgNTKqW82xrXEvFT/WiMMWuQ1bzn070zs8f11Y=
+	b=G9YeAA6LK6dHHdg4Dlw6zZKx1gZqlBHbOD1DDn53D8rVuWnSGBpEIQMWdBUTvjUgM
+	 r/7UpNV65Yb3W/ck3MUHkmxSuvzl4gETXit2vSbThwGDU6Mhb3C803W53NNdFw2huI
+	 2c3HeCkSux+6Ff8pKE3Z8X29k1nsOX4W3fR4iOkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Andrew Davis <afd@ti.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 199/558] iommu/vt-d: Unconditionally flush device TLB for pasid table updates
+Subject: [PATCH 6.10 166/482] power: reset: brcmstb: Do not go into infinite loop if reset fails
 Date: Tue,  8 Oct 2024 14:03:49 +0200
-Message-ID: <20241008115710.179551908@linuxfoundation.org>
+Message-ID: <20241008115654.838017454@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 1f5e307ca16c0c19186cbd56ac460a687e6daba0 ]
+[ Upstream commit cf8c39b00e982fa506b16f9d76657838c09150cb ]
 
-The caching mode of an IOMMU is irrelevant to the behavior of the device
-TLB. Previously, commit <304b3bde24b5> ("iommu/vt-d: Remove caching mode
-check before device TLB flush") removed this redundant check in the
-domain unmap path.
+There may be other backup reset methods available, do not halt
+here so that other reset methods can be tried.
 
-Checking the caching mode before flushing the device TLB after a pasid
-table entry is updated is unnecessary and can lead to inconsistent
-behavior.
-
-Extends this consistency by removing the caching mode check in the pasid
-table update path.
-
-Suggested-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240820030208.20020-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20240610142836.168603-5-afd@ti.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/pasid.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/power/reset/brcmstb-reboot.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index b51fc268dc845..2e5fa0a232999 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -264,9 +264,7 @@ void intel_pasid_tear_down_entry(struct intel_iommu *iommu, struct device *dev,
- 	else
- 		iommu->flush.flush_iotlb(iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);
+diff --git a/drivers/power/reset/brcmstb-reboot.c b/drivers/power/reset/brcmstb-reboot.c
+index 0f2944dc93551..a04713f191a11 100644
+--- a/drivers/power/reset/brcmstb-reboot.c
++++ b/drivers/power/reset/brcmstb-reboot.c
+@@ -62,9 +62,6 @@ static int brcmstb_restart_handler(struct notifier_block *this,
+ 		return NOTIFY_DONE;
+ 	}
  
--	/* Device IOTLB doesn't need to be flushed in caching mode. */
--	if (!cap_caching_mode(iommu->cap))
--		devtlb_invalidation_with_pasid(iommu, dev, pasid);
-+	devtlb_invalidation_with_pasid(iommu, dev, pasid);
+-	while (1)
+-		;
+-
+ 	return NOTIFY_DONE;
  }
  
- /*
-@@ -493,9 +491,7 @@ int intel_pasid_setup_dirty_tracking(struct intel_iommu *iommu,
- 
- 	iommu->flush.flush_iotlb(iommu, did, 0, 0, DMA_TLB_DSI_FLUSH);
- 
--	/* Device IOTLB doesn't need to be flushed in caching mode. */
--	if (!cap_caching_mode(iommu->cap))
--		devtlb_invalidation_with_pasid(iommu, dev, pasid);
-+	devtlb_invalidation_with_pasid(iommu, dev, pasid);
- 
- 	return 0;
- }
-@@ -572,9 +568,7 @@ void intel_pasid_setup_page_snoop_control(struct intel_iommu *iommu,
- 	pasid_cache_invalidation_with_pasid(iommu, did, pasid);
- 	qi_flush_piotlb(iommu, did, pasid, 0, -1, 0);
- 
--	/* Device IOTLB doesn't need to be flushed in caching mode. */
--	if (!cap_caching_mode(iommu->cap))
--		devtlb_invalidation_with_pasid(iommu, dev, pasid);
-+	devtlb_invalidation_with_pasid(iommu, dev, pasid);
- }
- 
- /**
 -- 
 2.43.0
 
