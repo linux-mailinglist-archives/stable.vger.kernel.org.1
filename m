@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59643994DBF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A83B994ACC
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B733B27C6E
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1466E282B33
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D061DE8BE;
-	Tue,  8 Oct 2024 13:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C4F1DDC24;
+	Tue,  8 Oct 2024 12:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnZnhyxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEVsXTBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B7E1DE2AE;
-	Tue,  8 Oct 2024 13:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EFB192594;
+	Tue,  8 Oct 2024 12:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392691; cv=none; b=ZntMfoEqeUjmW+iswM0DuZ5cMDaJiOGnQayWoKrkWM0iPOJhPjm5kt2NDSfQV3kVAoaNBjrz64LPWlj6d4JCfho5f/e6ZQDy1frRi65ZqjvyYReERm60u40ZwmcJJqz2/AKt/PUg8Yh+53GME0YHuR2FXAAbQSq+5B+Cyr2daiY=
+	t=1728390999; cv=none; b=ZN25HK105tq6+9BKVYoLY6oY6BbaS2IoCKlgLT8geAA4fEhbxx2yShsp9VJdEWn5/S3qVX9EtHpxETF+TDFwfHKVBuJa+tz4wdiOiMBve8JwKVGpu2jMon7vNK852xR7QETqtwWlZHWjsQsyRTLU0BBb5AM3ZoI0HJm6lrt3cgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392691; c=relaxed/simple;
-	bh=nuD1LVts31aq1YgfjNRvV8t8YOp/ElGz6XjH8tE4Eb4=;
+	s=arc-20240116; t=1728390999; c=relaxed/simple;
+	bh=WMofMWMtjfCeJGcrayBGUx2SWJWxnc/WOo5gmakumMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/McmYIfnm8SQciOGKTEMFFfgndE+xR2U0TzQrtZ4wO+N4bNizQaWc/0xKrD0WQxYVH3iegreaknD94eSg8E7oJNewIsrKdgZ7S5R5dWKxqzEiFExvXM1prfJjJjVYCop7+hZKPsUDHmHUXA454cjPtkpJ0NTCZU/4J9spNMuZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnZnhyxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5374C4CEC7;
-	Tue,  8 Oct 2024 13:04:50 +0000 (UTC)
+	 MIME-Version; b=q2/4wYVc6Lad6BfUb/Umq9yuBxNq12wmOnTA+oY1ENViGJZAD+wuyYsgyGukpfTM52I9cmkkSEUZZfwPxp3APmtmxaxBIf3o3VmfHR2dVbt1/KvVybkUYwFaSFtEhLaX1Etnc3O/hRPRTOQq5OTyoT7EeOJbtJz9w2i3NvKv8x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEVsXTBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303D0C4CECD;
+	Tue,  8 Oct 2024 12:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392691;
-	bh=nuD1LVts31aq1YgfjNRvV8t8YOp/ElGz6XjH8tE4Eb4=;
+	s=korg; t=1728390998;
+	bh=WMofMWMtjfCeJGcrayBGUx2SWJWxnc/WOo5gmakumMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnZnhyxaO3Zy6KjCtElI5mvPEJW7277PfyuD8v+neunalvwDwRwzCraeoz8PAe60G
-	 mJGVfbV6w/6Kq2Zhc6KjuSE0fovWMw+UITLFeae+p++x618pXw8iCe+GBeyyiuRpDo
-	 DzVTNnzJyuftfSV3KkKSVo1ou5v9hRVcqnSmoN0I=
+	b=OEVsXTBWQ0KoBSrkjXHQEZwnYSG1dOYB0Uv3AwlodozfscF5F1zXTrW1EOPL2XJwc
+	 znezC3KKLvk8UwpLLL1X9urElGtI6xBQTx5wIKHuY6C7OmQtMD4gUTab9j5BUCxWX/
+	 8I8ITR6vtIPz/C3rwx2HqrJntL8Gp07ofY3mYfLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.11 491/558] ACPI: video: Add backlight=native quirk for Dell OptiPlex 5480 AIO
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 458/482] sunrpc: change sp_nrthreads from atomic_t to unsigned int.
 Date: Tue,  8 Oct 2024 14:08:41 +0200
-Message-ID: <20241008115721.554622029@linuxfoundation.org>
+Message-ID: <20241008115706.539649865@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: NeilBrown <neilb@suse.de>
 
-commit ac78288fe062b64e45a479eaae74aaaafcc8ecdd upstream.
+[ Upstream commit 60749cbe3d8ae572a6c7dda675de3e8b25797a18 ]
 
-Dell All In One (AIO) models released after 2017 may use a backlight
-controller board connected to an UART.
+sp_nrthreads is only ever accessed under the service mutex
+  nlmsvc_mutex nfs_callback_mutex nfsd_mutex
+so these is no need for it to be an atomic_t.
 
-In DSDT this uart port will be defined as:
+The fact that all code using it is single-threaded means that we can
+simplify svc_pool_victim and remove the temporary elevation of
+sp_nrthreads.
 
-   Name (_HID, "DELL0501")
-   Name (_CID, EisaId ("PNP0501")
-
-The Dell OptiPlex 5480 AIO has an ACPI device for one of its UARTs with
-the above _HID + _CID. Loading the dell-uart-backlight driver fails with
-the following errors:
-
-[   18.261353] dell_uart_backlight serial0-0: Timed out waiting for response.
-[   18.261356] dell_uart_backlight serial0-0: error -ETIMEDOUT: getting firmware version
-[   18.261359] dell_uart_backlight serial0-0: probe with driver dell_uart_backlight failed with error -110
-
-Indicating that there is no backlight controller board attached to
-the UART, while the GPU's native backlight control method does work.
-
-Add a quirk to use the GPU's native backlight control method on this model.
-
-Fixes: cd8e468efb4f ("ACPI: video: Add Dell UART backlight controller detection")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20240918153849.37221-1-hdegoede@redhat.com
-[ rjw: Changelog edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/nfsd/nfsctl.c           |  2 +-
+ fs/nfsd/nfssvc.c           |  2 +-
+ include/linux/sunrpc/svc.h |  4 ++--
+ net/sunrpc/svc.c           | 31 +++++++++++--------------------
+ 4 files changed, 15 insertions(+), 24 deletions(-)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -845,6 +845,15 @@ static const struct dmi_system_id video_
- 	 * which need native backlight control nevertheless.
- 	 */
- 	{
-+	 /* https://github.com/zabbly/linux/issues/26 */
-+	 .callback = video_detect_force_native,
-+	 /* Dell OptiPlex 5480 AIO */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 5480 AIO"),
-+		},
-+	},
-+	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=2303936 */
- 	 .callback = video_detect_force_native,
- 	 /* Dell OptiPlex 7760 AIO */
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 0f9b4f7b56cd8..37f619ccafce0 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1746,7 +1746,7 @@ int nfsd_nl_threads_get_doit(struct sk_buff *skb, struct genl_info *info)
+ 			struct svc_pool *sp = &nn->nfsd_serv->sv_pools[i];
+ 
+ 			err = nla_put_u32(skb, NFSD_A_SERVER_THREADS,
+-					  atomic_read(&sp->sp_nrthreads));
++					  sp->sp_nrthreads);
+ 			if (err)
+ 				goto err_unlock;
+ 		}
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 89d7918de7b1a..877f926356549 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -705,7 +705,7 @@ int nfsd_get_nrthreads(int n, int *nthreads, struct net *net)
+ 
+ 	if (serv)
+ 		for (i = 0; i < serv->sv_nrpools && i < n; i++)
+-			nthreads[i] = atomic_read(&serv->sv_pools[i].sp_nrthreads);
++			nthreads[i] = serv->sv_pools[i].sp_nrthreads;
+ 	return 0;
+ }
+ 
+diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
+index 23617da0e565e..38a4fdf784e9a 100644
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -33,9 +33,9 @@
+  * node traffic on multi-node NUMA NFS servers.
+  */
+ struct svc_pool {
+-	unsigned int		sp_id;	    	/* pool id; also node id on NUMA */
++	unsigned int		sp_id;		/* pool id; also node id on NUMA */
+ 	struct lwq		sp_xprts;	/* pending transports */
+-	atomic_t		sp_nrthreads;	/* # of threads in pool */
++	unsigned int		sp_nrthreads;	/* # of threads in pool */
+ 	struct list_head	sp_all_threads;	/* all server threads */
+ 	struct llist_head	sp_idle_threads; /* idle server threads */
+ 
+diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
+index d9cda1e53a017..6a15b831589c0 100644
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -682,7 +682,7 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
+ 	serv->sv_nrthreads += 1;
+ 	spin_unlock_bh(&serv->sv_lock);
+ 
+-	atomic_inc(&pool->sp_nrthreads);
++	pool->sp_nrthreads += 1;
+ 
+ 	/* Protected by whatever lock the service uses when calling
+ 	 * svc_set_num_threads()
+@@ -737,31 +737,22 @@ svc_pool_victim(struct svc_serv *serv, struct svc_pool *target_pool,
+ 	struct svc_pool *pool;
+ 	unsigned int i;
+ 
+-retry:
+ 	pool = target_pool;
+ 
+-	if (pool != NULL) {
+-		if (atomic_inc_not_zero(&pool->sp_nrthreads))
+-			goto found_pool;
+-		return NULL;
+-	} else {
++	if (!pool) {
+ 		for (i = 0; i < serv->sv_nrpools; i++) {
+ 			pool = &serv->sv_pools[--(*state) % serv->sv_nrpools];
+-			if (atomic_inc_not_zero(&pool->sp_nrthreads))
+-				goto found_pool;
++			if (pool->sp_nrthreads)
++				break;
+ 		}
+-		return NULL;
+ 	}
+ 
+-found_pool:
+-	set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
+-	set_bit(SP_NEED_VICTIM, &pool->sp_flags);
+-	if (!atomic_dec_and_test(&pool->sp_nrthreads))
++	if (pool && pool->sp_nrthreads) {
++		set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
++		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
+ 		return pool;
+-	/* Nothing left in this pool any more */
+-	clear_bit(SP_NEED_VICTIM, &pool->sp_flags);
+-	clear_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
+-	goto retry;
++	}
++	return NULL;
+ }
+ 
+ static int
+@@ -840,7 +831,7 @@ svc_set_num_threads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
+ 	if (!pool)
+ 		nrservs -= serv->sv_nrthreads;
+ 	else
+-		nrservs -= atomic_read(&pool->sp_nrthreads);
++		nrservs -= pool->sp_nrthreads;
+ 
+ 	if (nrservs > 0)
+ 		return svc_start_kthreads(serv, pool, nrservs);
+@@ -928,7 +919,7 @@ svc_exit_thread(struct svc_rqst *rqstp)
+ 
+ 	list_del_rcu(&rqstp->rq_all);
+ 
+-	atomic_dec(&pool->sp_nrthreads);
++	pool->sp_nrthreads -= 1;
+ 
+ 	spin_lock_bh(&serv->sv_lock);
+ 	serv->sv_nrthreads -= 1;
+-- 
+2.43.0
+
 
 
 
