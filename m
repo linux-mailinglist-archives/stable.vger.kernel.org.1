@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-82050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A83B994ACC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A517D994F54
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1466E282B33
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64E2C2858DD
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C4F1DDC24;
-	Tue,  8 Oct 2024 12:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312671DFD93;
+	Tue,  8 Oct 2024 13:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEVsXTBW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAbO+1VA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EFB192594;
-	Tue,  8 Oct 2024 12:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33A11DF979;
+	Tue,  8 Oct 2024 13:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390999; cv=none; b=ZN25HK105tq6+9BKVYoLY6oY6BbaS2IoCKlgLT8geAA4fEhbxx2yShsp9VJdEWn5/S3qVX9EtHpxETF+TDFwfHKVBuJa+tz4wdiOiMBve8JwKVGpu2jMon7vNK852xR7QETqtwWlZHWjsQsyRTLU0BBb5AM3ZoI0HJm6lrt3cgw=
+	t=1728393856; cv=none; b=L4pqGyoAVwH3t6G228s6C3gaNGVp9vhlLyIyLQ13vNohQ5AU42HfebT4YvwUCIfeIpCzFc9TeCScBV+xHrdt/9Xo+ICPwqmEO3evs3QZnkxwaFp4AFgr4/IWs/7K/z2HlXGGyU4ueO/yOulDHN2vn/PP/v9nU9xt9RFzQFtjN14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390999; c=relaxed/simple;
-	bh=WMofMWMtjfCeJGcrayBGUx2SWJWxnc/WOo5gmakumMI=;
+	s=arc-20240116; t=1728393856; c=relaxed/simple;
+	bh=0RnWVrhgbDqr7uLn/mqwQYPNDl7uIGJoSJJb4Zaegf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2/4wYVc6Lad6BfUb/Umq9yuBxNq12wmOnTA+oY1ENViGJZAD+wuyYsgyGukpfTM52I9cmkkSEUZZfwPxp3APmtmxaxBIf3o3VmfHR2dVbt1/KvVybkUYwFaSFtEhLaX1Etnc3O/hRPRTOQq5OTyoT7EeOJbtJz9w2i3NvKv8x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEVsXTBW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303D0C4CECD;
-	Tue,  8 Oct 2024 12:36:38 +0000 (UTC)
+	 MIME-Version; b=AKPN14RCjhXlP/QdhSfqsVmkFb9sSi8lv9er2uYLRHvOdvRW7kCO4mIatYQvC8giWJXX+yx+eTuUEdimeJ+z0NQX0j/Q50PJuYLkcrG1hJKr5Te6J8uKxkbA3aOD4kUbIec7HoF5NAoNlAzSuVR7wZLfpFbotIKJyoociWeAppE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAbO+1VA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533A2C4CEC7;
+	Tue,  8 Oct 2024 13:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390998;
-	bh=WMofMWMtjfCeJGcrayBGUx2SWJWxnc/WOo5gmakumMI=;
+	s=korg; t=1728393855;
+	bh=0RnWVrhgbDqr7uLn/mqwQYPNDl7uIGJoSJJb4Zaegf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEVsXTBWQ0KoBSrkjXHQEZwnYSG1dOYB0Uv3AwlodozfscF5F1zXTrW1EOPL2XJwc
-	 znezC3KKLvk8UwpLLL1X9urElGtI6xBQTx5wIKHuY6C7OmQtMD4gUTab9j5BUCxWX/
-	 8I8ITR6vtIPz/C3rwx2HqrJntL8Gp07ofY3mYfLM=
+	b=fAbO+1VALGclRxdYAsFUnhvTc90FkZbo2BHRtVFC6x1tIqW5YGqQb+t83nliY78x2
+	 aJfIZ5O2SVVUOew1tHYq10RTxEqDQnE1cqJTbC76byrjPxYYDI+VnlwfpyBl/XTenl
+	 X4Eh8PBFscxj1qlRTOLZIFg0X84K/O+RIsu1heMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 458/482] sunrpc: change sp_nrthreads from atomic_t to unsigned int.
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.6 276/386] RDMA/mana_ib: use the correct page size for mapping user-mode doorbell page
 Date: Tue,  8 Oct 2024 14:08:41 +0200
-Message-ID: <20241008115706.539649865@linuxfoundation.org>
+Message-ID: <20241008115640.250640155@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit 60749cbe3d8ae572a6c7dda675de3e8b25797a18 ]
+commit 4a3b99bc04e501b816db78f70064e26a01257910 upstream.
 
-sp_nrthreads is only ever accessed under the service mutex
-  nlmsvc_mutex nfs_callback_mutex nfsd_mutex
-so these is no need for it to be an atomic_t.
+When mapping doorbell page from user-mode, the driver should use the system
+page size as this memory is allocated via mmap() from user-mode.
 
-The fact that all code using it is single-threaded means that we can
-simplify svc_pool_victim and remove the temporary elevation of
-sp_nrthreads.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/1725030993-16213-2-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c           |  2 +-
- fs/nfsd/nfssvc.c           |  2 +-
- include/linux/sunrpc/svc.h |  4 ++--
- net/sunrpc/svc.c           | 31 +++++++++++--------------------
- 4 files changed, 15 insertions(+), 24 deletions(-)
+ drivers/infiniband/hw/mana/main.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 0f9b4f7b56cd8..37f619ccafce0 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1746,7 +1746,7 @@ int nfsd_nl_threads_get_doit(struct sk_buff *skb, struct genl_info *info)
- 			struct svc_pool *sp = &nn->nfsd_serv->sv_pools[i];
+--- a/drivers/infiniband/hw/mana/main.c
++++ b/drivers/infiniband/hw/mana/main.c
+@@ -460,13 +460,13 @@ int mana_ib_mmap(struct ib_ucontext *ibc
+ 	      PAGE_SHIFT;
+ 	prot = pgprot_writecombine(vma->vm_page_prot);
  
- 			err = nla_put_u32(skb, NFSD_A_SERVER_THREADS,
--					  atomic_read(&sp->sp_nrthreads));
-+					  sp->sp_nrthreads);
- 			if (err)
- 				goto err_unlock;
- 		}
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 89d7918de7b1a..877f926356549 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -705,7 +705,7 @@ int nfsd_get_nrthreads(int n, int *nthreads, struct net *net)
- 
- 	if (serv)
- 		for (i = 0; i < serv->sv_nrpools && i < n; i++)
--			nthreads[i] = atomic_read(&serv->sv_pools[i].sp_nrthreads);
-+			nthreads[i] = serv->sv_pools[i].sp_nrthreads;
- 	return 0;
- }
- 
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index 23617da0e565e..38a4fdf784e9a 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -33,9 +33,9 @@
-  * node traffic on multi-node NUMA NFS servers.
-  */
- struct svc_pool {
--	unsigned int		sp_id;	    	/* pool id; also node id on NUMA */
-+	unsigned int		sp_id;		/* pool id; also node id on NUMA */
- 	struct lwq		sp_xprts;	/* pending transports */
--	atomic_t		sp_nrthreads;	/* # of threads in pool */
-+	unsigned int		sp_nrthreads;	/* # of threads in pool */
- 	struct list_head	sp_all_threads;	/* all server threads */
- 	struct llist_head	sp_idle_threads; /* idle server threads */
- 
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index d9cda1e53a017..6a15b831589c0 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -682,7 +682,7 @@ svc_prepare_thread(struct svc_serv *serv, struct svc_pool *pool, int node)
- 	serv->sv_nrthreads += 1;
- 	spin_unlock_bh(&serv->sv_lock);
- 
--	atomic_inc(&pool->sp_nrthreads);
-+	pool->sp_nrthreads += 1;
- 
- 	/* Protected by whatever lock the service uses when calling
- 	 * svc_set_num_threads()
-@@ -737,31 +737,22 @@ svc_pool_victim(struct svc_serv *serv, struct svc_pool *target_pool,
- 	struct svc_pool *pool;
- 	unsigned int i;
- 
--retry:
- 	pool = target_pool;
- 
--	if (pool != NULL) {
--		if (atomic_inc_not_zero(&pool->sp_nrthreads))
--			goto found_pool;
--		return NULL;
--	} else {
-+	if (!pool) {
- 		for (i = 0; i < serv->sv_nrpools; i++) {
- 			pool = &serv->sv_pools[--(*state) % serv->sv_nrpools];
--			if (atomic_inc_not_zero(&pool->sp_nrthreads))
--				goto found_pool;
-+			if (pool->sp_nrthreads)
-+				break;
- 		}
--		return NULL;
- 	}
- 
--found_pool:
--	set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
--	set_bit(SP_NEED_VICTIM, &pool->sp_flags);
--	if (!atomic_dec_and_test(&pool->sp_nrthreads))
-+	if (pool && pool->sp_nrthreads) {
-+		set_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
-+		set_bit(SP_NEED_VICTIM, &pool->sp_flags);
- 		return pool;
--	/* Nothing left in this pool any more */
--	clear_bit(SP_NEED_VICTIM, &pool->sp_flags);
--	clear_bit(SP_VICTIM_REMAINS, &pool->sp_flags);
--	goto retry;
-+	}
-+	return NULL;
- }
- 
- static int
-@@ -840,7 +831,7 @@ svc_set_num_threads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
- 	if (!pool)
- 		nrservs -= serv->sv_nrthreads;
+-	ret = rdma_user_mmap_io(ibcontext, vma, pfn, gc->db_page_size, prot,
++	ret = rdma_user_mmap_io(ibcontext, vma, pfn, PAGE_SIZE, prot,
+ 				NULL);
+ 	if (ret)
+ 		ibdev_dbg(ibdev, "can't rdma_user_mmap_io ret %d\n", ret);
  	else
--		nrservs -= atomic_read(&pool->sp_nrthreads);
-+		nrservs -= pool->sp_nrthreads;
+-		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %u, ret %d\n",
+-			  pfn, gc->db_page_size, ret);
++		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %lu, ret %d\n",
++			  pfn, PAGE_SIZE, ret);
  
- 	if (nrservs > 0)
- 		return svc_start_kthreads(serv, pool, nrservs);
-@@ -928,7 +919,7 @@ svc_exit_thread(struct svc_rqst *rqstp)
- 
- 	list_del_rcu(&rqstp->rq_all);
- 
--	atomic_dec(&pool->sp_nrthreads);
-+	pool->sp_nrthreads -= 1;
- 
- 	spin_lock_bh(&serv->sv_lock);
- 	serv->sv_nrthreads -= 1;
--- 
-2.43.0
-
+ 	return ret;
+ }
 
 
 
