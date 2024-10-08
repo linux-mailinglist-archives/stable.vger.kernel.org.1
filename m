@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-82935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E48D994F7B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:28:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631C3994ABB
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:36:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0F1D287814
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:28:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 952E11C24CE9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8531DF72B;
-	Tue,  8 Oct 2024 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8961DDA15;
+	Tue,  8 Oct 2024 12:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlLZeODY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTLldsrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18521DEFF8;
-	Tue,  8 Oct 2024 13:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1B11B81CC;
+	Tue,  8 Oct 2024 12:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393927; cv=none; b=dI1Yuap6ZtiEfD/88nRigvarXiCxa7Np3EAx1FsYaA0mmR/42Z1Ydq86lckgfzE9JMlJ9Cbj+jMy+/HdiHK2EwZDieXblK2GNsgYVH4DCZnGkKoNIeh6L7DEdG799+9bc46ALw/a0MBe9Jfz2asTqvBtlz/SeeBZ658FMVCnnB0=
+	t=1728390962; cv=none; b=ApIRhxGxZz8BHQZRT1Y7Ojb6uxM9FrUX7RsNGzHhkRHun0VQZYM36sfbH6txmST1GQO0iOWzr44f8VkmG0z3fYZZY3KDZEEbL6IzuVlMZDPxDy0Okbdl4xIDT0Qf9+mvSbveUdpI7bofxKoR3k5+CvjDAb0We6LM/i2Z9wpeGGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393927; c=relaxed/simple;
-	bh=mfLOdDSViSMs7bYiGHPYWRB3YoVav00L1uwS2EYrS3U=;
+	s=arc-20240116; t=1728390962; c=relaxed/simple;
+	bh=UhgENZiIs/mKFaHyoyLQtepFnXxZkzopPy7MYylNsn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ltt7uBMwAlDED7WcBZXH2FRg90ChlGkFf0xqRX8VnJO3t6IfUsjheAmBSIAgGgtCMG49eJx5X9I+ZW6decz0irmF1TWPS55f+bc47Q3ViBZBKPwfvtVqbChbYp/jU99v9sPzYicIto1NLxI9rXy8R98DGMuYg3kfPtATDUwZKqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlLZeODY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8BEC4CEC7;
-	Tue,  8 Oct 2024 13:25:26 +0000 (UTC)
+	 MIME-Version; b=PLKlYp09B0NFYu91xcEOS5f55e+P80CU1GpljFn++WUjW6Lkh0QBd4dNqMyzaywS4xnn1z2Ep+UBcvbGZVQykpJyKfVLqPFlehlP0c6gxNaJwB6ePUM1TJ5BgL8nBWYoDCGZTJmX+Ln5dQF+oUn0y4WDFa255LZ35HKgKanQois=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTLldsrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F224CC4CEC7;
+	Tue,  8 Oct 2024 12:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393927;
-	bh=mfLOdDSViSMs7bYiGHPYWRB3YoVav00L1uwS2EYrS3U=;
+	s=korg; t=1728390962;
+	bh=UhgENZiIs/mKFaHyoyLQtepFnXxZkzopPy7MYylNsn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlLZeODYow3cPr7/XXnQOxxdj/n/skJcJAtWd10sWMaBh5NTZWH0eEmrt5N4lld4L
-	 5xTC054kMhXOSr65KVf9Q/RAJZaZ9YneDrZTLcTKBHQ08TXx/b3zYRxVCg0MATCJ70
-	 yPogWnsR6ChdNRm/njo8r/DMkb+Lf1Lv5+AXaRCw=
+	b=LTLldsrNS3r9R7BytNYDrPJ56uCQKOeAp02e7+XhLTOytGjg9K8omkpY/k5YJEzck
+	 9jQXhIitd+/jMmwaMiNcRr2onEWqLeegnvOpVkgWoGcZmCJMF3pojgSEu8K4/uyu45
+	 1JRBD/1989X6zbTRG96verbXt6uQwzV7CSOPyqJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Jun Piao <piaojun@huawei.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 265/386] ocfs2: fix possible null-ptr-deref in ocfs2_set_buffer_uptodate
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 447/482] kconfig: qconf: fix buffer overflow in debug links
 Date: Tue,  8 Oct 2024 14:08:30 +0200
-Message-ID: <20241008115639.818656287@linuxfoundation.org>
+Message-ID: <20241008115706.112401488@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,50 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 33b525cef4cff49e216e4133cc48452e11c0391e upstream.
+[ Upstream commit 984ed20ece1c6c20789ece040cbff3eb1a388fa9 ]
 
-When doing cleanup, if flags without OCFS2_BH_READAHEAD, it may trigger
-NULL pointer dereference in the following ocfs2_set_buffer_uptodate() if
-bh is NULL.
+If you enable "Option -> Show Debug Info" and click a link, the program
+terminates with the following error:
 
-Link: https://lkml.kernel.org/r/20240902023636.1843422-3-joseph.qi@linux.alibaba.com
-Fixes: cf76c78595ca ("ocfs2: don't put and assigning null to bh allocated outside")
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: Heming Zhao <heming.zhao@suse.com>
-Suggested-by: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>	[4.20+]
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    *** buffer overflow detected ***: terminated
+
+The buffer overflow is caused by the following line:
+
+    strcat(data, "$");
+
+The buffer needs one more byte to accommodate the additional character.
+
+Fixes: c4f7398bee9c ("kconfig: qconf: make debug links work again")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/buffer_head_io.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/kconfig/qconf.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ocfs2/buffer_head_io.c
-+++ b/fs/ocfs2/buffer_head_io.c
-@@ -388,7 +388,8 @@ read_failure:
- 		/* Always set the buffer in the cache, even if it was
- 		 * a forced read, or read-ahead which hasn't yet
- 		 * completed. */
--		ocfs2_set_buffer_uptodate(ci, bh);
-+		if (bh)
-+			ocfs2_set_buffer_uptodate(ci, bh);
- 	}
- 	ocfs2_metadata_cache_io_unlock(ci);
+diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
+index c6c42c0f4e5d5..b7fc5aeb78cc0 100644
+--- a/scripts/kconfig/qconf.cc
++++ b/scripts/kconfig/qconf.cc
+@@ -1174,7 +1174,7 @@ void ConfigInfoView::clicked(const QUrl &url)
+ {
+ 	QByteArray str = url.toEncoded();
+ 	const std::size_t count = str.size();
+-	char *data = new char[count + 1];
++	char *data = new char[count + 2];  // '$' + '\0'
+ 	struct symbol **result;
+ 	struct menu *m = NULL;
  
+-- 
+2.43.0
+
 
 
 
