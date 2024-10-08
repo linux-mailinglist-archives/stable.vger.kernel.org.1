@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-81822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDFF994998
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DBA994E58
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD0791C24A11
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EBA7B2B0D1
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E1A1DF989;
-	Tue,  8 Oct 2024 12:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C56D1DF964;
+	Tue,  8 Oct 2024 13:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzVKH5N7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBrPpi2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7C11DED48;
-	Tue,  8 Oct 2024 12:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396361DE8BE;
+	Tue,  8 Oct 2024 13:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390249; cv=none; b=Gb+T8zmPNOqfoOp3xLQJer23EpsPo4ZF7ztq6X+u0E/3rpJPDqZUmG0rcOWKHlSmqNFdqTqSU2hHa3oYqLhaWyZpDqmDaZKipWlm6lkUoS2eANYaqs5MjBjWTXQO5vFC9FJvnKwk1u2C6djvdNFl/hAD7CMZvz6ok+xqoNyzqE8=
+	t=1728393242; cv=none; b=jEz72FvBIpq8LUErdFgaYFsa8hDRnz6I20Tub0Ybwguo8Y99PuSha3dzizVkFywtmyM6iQKjNzK0Jo8nzhVNsLZnhnQRyh39X54iMB6eHUKIkjgM4lEMXLtlgATmoxtSPgedC3dNBzbYCA1OxFl8cyqZ2kcEeuLnknSnDUT81pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390249; c=relaxed/simple;
-	bh=jOM8plu4yiXwlhcSumQS2t9GU8Ja3zcdA+yMYcqbECM=;
+	s=arc-20240116; t=1728393242; c=relaxed/simple;
+	bh=Pd9D6yZz41ULcAujBI3PeLcpFjFGXDQwqgORpX5zzak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4GmMRGPydTJEulFGYkoCIM6RH9YmE6ZzcjA6kF7lwmFFCgZo0WUZ3NuPn7jEzkOrloQJqpoeW90V2/SLM9s9U3hz4+K1cXs5m2l5hrZQQkuqFoicuHN9rJ0sBN4847jqEFxDnW3B2tXqkUBAQTb9XioFQvNFuvIC9RGo2Mvbzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzVKH5N7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA9BC4CECD;
-	Tue,  8 Oct 2024 12:24:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rHXEvpNXB/X2Em8NLC75FbfuQ+vgGBh5jHduwcA92OQ4eHsNEnsXlNNRB510xh5IvsCiA70FrXmBi57aew8B6dvUYzndgaJ4Z8jKbW1mpqLeELbtWHe6h9NCyreuEf4iz9H3xxfjo7WSR5jdSjAsNDBa1s3DqqVRNfaDVDQocW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBrPpi2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A022BC4CEC7;
+	Tue,  8 Oct 2024 13:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390248;
-	bh=jOM8plu4yiXwlhcSumQS2t9GU8Ja3zcdA+yMYcqbECM=;
+	s=korg; t=1728393242;
+	bh=Pd9D6yZz41ULcAujBI3PeLcpFjFGXDQwqgORpX5zzak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzVKH5N70TqBKS99Q1NwMb8/3toneUOvjeoQLqgDHmpt0jbquAE5rkozfxnwBJFn8
-	 MRuiY/jr0Zk1blZ4gxN5N7tkJ8Wdu3ZPARyNcs5+E7m9U/aLPq+lZZGLOankItVoKz
-	 qPe/OjVfiWlcLyhTrNG7RFFkBy18K6l/gOWYZTuQ=
+	b=sBrPpi2DliPxOH3MkiRMouMUQCLadFCO2nYkyQCf5EtvZ7OWopEjzBZOQ531w6PRh
+	 agpLL0tn92UazhoLfx89ydcymu1HRHBk9uhLWIg1UOIGoU6Ip72WZRVI2EtfLIcwRj
+	 6NOgc3P8tFiel90a+wcIsRXsK1oeRO1DJnANV9n8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <tim.huang@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 235/482] drm/amd/pm: ensure the fw_info is not null before using it
+Subject: [PATCH 6.6 053/386] cifs: Do not convert delimiter when parsing NFS-style symlinks
 Date: Tue,  8 Oct 2024 14:04:58 +0200
-Message-ID: <20241008115657.547003045@linuxfoundation.org>
+Message-ID: <20241008115631.557162317@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <tim.huang@amd.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 186fb12e7a7b038c2710ceb2fb74068f1b5d55a4 ]
+[ Upstream commit d3a49f60917323228f8fdeee313260ef14f94df7 ]
 
-This resolves the dereference null return value warning
-reported by Coverity.
+NFS-style symlinks have target location always stored in NFS/UNIX form
+where backslash means the real UNIX backslash and not the SMB path
+separator.
 
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+So do not mangle slash and backslash content of NFS-style symlink during
+readlink() syscall as it is already in the correct Linux form.
+
+This fixes interoperability of NFS-style symlinks with backslashes created
+by Linux NFS3 client throw Windows NFS server and retrieved by Linux SMB
+client throw Windows SMB server, where both Windows servers exports the
+same directory.
+
+Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/reparse.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-index 5794b64507bf9..56a2257525806 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-@@ -1185,6 +1185,8 @@ static int init_overdrive_limits(struct pp_hwmgr *hwmgr,
- 	fw_info = smu_atom_get_data_table(hwmgr->adev,
- 			 GetIndexIntoMasterTable(DATA, FirmwareInfo),
- 			 &size, &frev, &crev);
-+	PP_ASSERT_WITH_CODE(fw_info != NULL,
-+			    "Missing firmware info!", return -EINVAL);
- 
- 	if ((fw_info->ucTableFormatRevision == 1)
- 	    && (le16_to_cpu(fw_info->usStructureSize) >= sizeof(ATOM_FIRMWARE_INFO_V1_4)))
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index cfa03c166de8c..ad0e0de9a165d 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -335,7 +335,6 @@ static int parse_reparse_posix(struct reparse_posix_data *buf,
+ 							       cifs_sb->local_nls);
+ 		if (!data->symlink_target)
+ 			return -ENOMEM;
+-		convert_delimiter(data->symlink_target, '/');
+ 		cifs_dbg(FYI, "%s: target path: %s\n",
+ 			 __func__, data->symlink_target);
+ 		break;
 -- 
 2.43.0
 
