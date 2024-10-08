@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-81603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A43F994852
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:11:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 003BD994B22
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C83911F26117
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:11:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA542868C7
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537EA1DE3BB;
-	Tue,  8 Oct 2024 12:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F141CCB32;
+	Tue,  8 Oct 2024 12:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G44cDD0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYxhrSOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC191DA60C;
-	Tue,  8 Oct 2024 12:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F101DA60C;
+	Tue,  8 Oct 2024 12:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389512; cv=none; b=htnPif/KRG07c9ovF7M9Q+3oPmuOBxpwcqsyQmzXkNnoj6w2eQ147r5PZCmjNbsWq3OX8zv9bhRzKenu86BMeR5G7WzvAIdF7zX/wJqxSVPkyfeDsgyWSEBtK1wC7hPd3V9uEBJXWrio0zMGmsVrL8dG4xb6QPaLYvk+jADY5MU=
+	t=1728391229; cv=none; b=N6mYnmauoiqXztjjd2yWdzX1KeHBs4zJOKj66b5xIR8tua8gDVkB2o97d4k3P2bhWbfMszqFDT/K9Fs8r8P6EePj/h+1H/kf5oOjLObjCi3GLu9BEBNVNye05GkKK+yM9Sn8WOX05HDUSfyBq/fj2s2QT1V3KbaCu5DuiXuZQuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389512; c=relaxed/simple;
-	bh=AlY2eLlx1DCNC+XpP6L7Yh7y9eaAp1vXOPuO6Zl1zBQ=;
+	s=arc-20240116; t=1728391229; c=relaxed/simple;
+	bh=+bUgJT24KUAuYtPVxZxrg+YEXnkEm7O8det3n077/IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWc846aXcQYMpXZMWpisJhucKsvPRxqwF9m4RxLMcV4wk3JINg8270FA1DVjbvmM5xj12D+qRdqNOEwbfAe9cTzn8bKc6G9w2YAEw7BbzrqOoyZ8j4B3H2GQgANW5qUVKIc5wav10D9be6/bJ8N1F5OHXmYT5Qzda+OULZ/q5x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G44cDD0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C58EC4CEC7;
-	Tue,  8 Oct 2024 12:11:51 +0000 (UTC)
+	 MIME-Version; b=A1Qqc6/rPn9wYREOh5d8lUa7n/sn5lSjKBlSEL4gzrAGSx2t07VW+wyO0W5AP1JvQWzLrwKFo4OwtwG3vvbdHKYF5GSmpTBaQe1GxWiUbEex51dl4R8QgFfN2vVZb/9DeFhAiJeA8NFeA/JcrjpTpouqVljO8CQohAYVCAmAJkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYxhrSOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33294C4CED4;
+	Tue,  8 Oct 2024 12:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389511;
-	bh=AlY2eLlx1DCNC+XpP6L7Yh7y9eaAp1vXOPuO6Zl1zBQ=;
+	s=korg; t=1728391229;
+	bh=+bUgJT24KUAuYtPVxZxrg+YEXnkEm7O8det3n077/IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G44cDD0+zmA1grugn5M8Pt+bT3VQlVwMJrRtt+3EWEVaKiH3f3w80stOGRA2GumRL
-	 uK7MU4kWhN6HgGbmsfQM3yq2XAUEbZRi0r54L16Sb174MCZYF4VTkvXJvzVv8s14VJ
-	 UCPU7/ng+dUXKqk2ic4xqlPXgHXCsRCI7K7cc65U=
+	b=uYxhrSOlj1HivL9Z4dK3bcLYiiPKh9kjYJWc0I97s7SztAmD3pQgRVdeDToK7Rp+A
+	 DPq91FH9aQPDGjk2LWB7IryScilUJSRmweeg9/uz7oW4pI7FUNtXZQO635R545P6K2
+	 90O/zVcHOo4Rn1jn9FH1op3lkDBGau52gTNh/Kr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Hui Wang <hui.wang@canonical.com>,
+	Marek Vasut <marex@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 016/482] ieee802154: Fix build error
+Subject: [PATCH 6.11 049/558] net: phy: realtek: Check the index value in led_hw_control_get
 Date: Tue,  8 Oct 2024 14:01:19 +0200
-Message-ID: <20241008115648.937802051@linuxfoundation.org>
+Message-ID: <20241008115704.151688631@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Hui Wang <hui.wang@canonical.com>
 
-[ Upstream commit addf89774e48c992316449ffab4f29c2309ebefb ]
+[ Upstream commit c283782fc5d60c4d8169137c6f955aa3553d3b3d ]
 
-If REGMAP_SPI is m and IEEE802154_MCR20A is y,
+Just like rtl8211f_led_hw_is_supported() and
+rtl8211f_led_hw_control_set(), the rtl8211f_led_hw_control_get() also
+needs to check the index value, otherwise the caller is likely to get
+an incorrect rules.
 
-	mcr20a.c:(.text+0x3ed6c5b): undefined reference to `__devm_regmap_init_spi'
-	ld: mcr20a.c:(.text+0x3ed6cb5): undefined reference to `__devm_regmap_init_spi'
-
-Select REGMAP_SPI for IEEE802154_MCR20A to fix it.
-
-Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/20240909131740.1296608-1-ruanjinjie@huawei.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Fixes: 17784801d888 ("net: phy: realtek: Add support for PHY LEDs on RTL8211F")
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Link: https://patch.msgid.link/20240927114610.1278935-1-hui.wang@canonical.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/realtek.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ieee802154/Kconfig b/drivers/net/ieee802154/Kconfig
-index 95da876c56138..1075e24b11def 100644
---- a/drivers/net/ieee802154/Kconfig
-+++ b/drivers/net/ieee802154/Kconfig
-@@ -101,6 +101,7 @@ config IEEE802154_CA8210_DEBUGFS
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 25e5bfbb6f89b..c15d2f66ef0dc 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -527,6 +527,9 @@ static int rtl8211f_led_hw_control_get(struct phy_device *phydev, u8 index,
+ {
+ 	int val;
  
- config IEEE802154_MCR20A
- 	tristate "MCR20A transceiver driver"
-+	select REGMAP_SPI
- 	depends on IEEE802154_DRIVERS && MAC802154
- 	depends on SPI
- 	help
++	if (index >= RTL8211F_LED_COUNT)
++		return -EINVAL;
++
+ 	val = phy_read_paged(phydev, 0xd04, RTL8211F_LEDCR);
+ 	if (val < 0)
+ 		return val;
 -- 
 2.43.0
 
