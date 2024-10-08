@@ -1,85 +1,196 @@
-Return-Path: <stable+bounces-83055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081B199536B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:32:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0593995395
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13C41F23301
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:32:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6D1FB23B25
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7186374C4;
-	Tue,  8 Oct 2024 15:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8E41E0B95;
+	Tue,  8 Oct 2024 15:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhwuSztq"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eMut9mXw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E76249E5
-	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 15:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8C91E00AE
+	for <stable@vger.kernel.org>; Tue,  8 Oct 2024 15:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728401521; cv=none; b=nXEuoq78vJIWEXVDiUxIPPXH+GFg1WU/zse2SpHtjcKE+3vyRWlaPv8kAFqBQM/guD5ugJ75HbjV8IJtzRoJ6PBPrxMYZrfyb75frear8LvwtaWvsx18QdGXIJqAfxIfMWi9y5hJKb3kFiiAs/KKdkldX0B8rCysu3/HPu8d2vU=
+	t=1728402303; cv=none; b=q/ROiIqEm5yxQC1bSxpxmrELftT/zHYX6LT7zstrU9dz2ZdcVTGxhMd38AKEna1Q8PZdesrry/SuvzFx95/C7M3SGgyQdaL4OVeQj4C+X+mgPQ4aT5zujVUBB6dR0LOkyUa3vCtKxrPeidC/qo3Cvn8nmi/HwqwiEA0Qfai5Au0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728401521; c=relaxed/simple;
-	bh=04VuZOC+W1mCyp7RNhImM05elvsMud4AYc16CxH00ow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KZzJmWUi60qcvLnVmRT50yyCG0TyvL1jMBDzg7XQYlvTmtcqtpZSvHfXyOg32pDYxyqQL++z/RxccwXMyGkaTLKdAafaTGbHxSvAWUihmcjng5zBC0+F+cGEFjn2azOUth1+fMXTToeTq5tlGREhwHmsQODW+rZqNX0Zi89FAOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhwuSztq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B3AC4CEC7;
-	Tue,  8 Oct 2024 15:32:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728401521;
-	bh=04VuZOC+W1mCyp7RNhImM05elvsMud4AYc16CxH00ow=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JhwuSztqzyf7XyXs01J/Mo0SUWmOaATNfn0QFbf1RpIFPc7tRiweVwkwI/sBua1i4
-	 6x4cYdg/0VZRNfUoMlbQE3mmegL9DTx5xeM/CuFs7EkIJJil8Krnxq05aZYlsayiK1
-	 j0Cc7rQdPkizPz84LYQoEiEdiUB1aQA2f2v8Ml5g=
-Date: Tue, 8 Oct 2024 17:31:57 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: matthew.auld@intel.com, matthew.brost@intel.com, nirmoy.das@intel.com,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] drm/xe/vm: move xa_alloc to prevent UAF"
- failed to apply to 6.11-stable tree
-Message-ID: <2024100817-quarrel-retread-b7a3@gregkh>
-References: <2024100727-compacted-armored-bbce@gregkh>
- <au2yg6xpydfomljjfmll6j6h6mwpzm73kojc5zjck3im6grson@e3ajgznra66s>
+	s=arc-20240116; t=1728402303; c=relaxed/simple;
+	bh=RnRiLvQZKZfvJRnRy+rTXTfSyB5Kni1K1+NCZ/9Ax68=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jPLoPSRl6sFXe9CrVnu9/Rp2OPhOXdFgWqgcSRHZ2mdGA+AT18WEMpuAhBeXz7zO4U/rcEp4WCpRPgL9otUN9uyK1TZoLXdk+ERRUE4er2JZyZdp0sMX/tCEuJs2B1L6M1Yk0mai6EvWQrSgvWHumP7qRm1fUmf+epVZBhFXgwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eMut9mXw; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42cae102702so46875335e9.0
+        for <stable@vger.kernel.org>; Tue, 08 Oct 2024 08:45:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1728402299; x=1729007099; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vSAg388iyowQSiF9vFdBp03eOks5liaKiRuZRS3VSgo=;
+        b=eMut9mXwC27+tloN8Uc2vD6PxeZV9mF7GW+M8kayR3HlMlFumDPJA9mWSwPPNgLmOk
+         sUvI2ejxbLvFLt6lGjY6lZ4dS4NdClGF4+7oTDwRYXgRAz31V7eHYjMjBw6zAH4btLOf
+         Nlc0FVcOk7mc0Flb8fFyOF4fySO0AJlw7w/KxNQ1ge0/01aapBgLsDt+O+8d3aPKTeN+
+         8sRe5LiUzjMgpqU6I071stZkn5qYQSpx/ytMM8jW5MDxpF4+K9chudw1SjpoyUofzg3J
+         X0sPsLspYX8JDHb6SyQagPDEzvt08m7+oy14jN6giujuFcvG0bV/6kOv808bDIfo6+l2
+         r+EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728402299; x=1729007099;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vSAg388iyowQSiF9vFdBp03eOks5liaKiRuZRS3VSgo=;
+        b=YtUgOkmLnJCbRXhZVzNR57rHNI9ug9g7AF52kVvSAtKpRIR7wnP1WGBh7ssG9mtFqz
+         5B4rbnsDvbHUtrT6MaznTYl9TM6h2NDvqzO8d3PAPATWL3Yb8ibhNZyno7Ce+uFN4aJK
+         XX4LzGNuri19qPBJYp+/S+RxsMmq75ZJVZpejHgl/ly1vD6tzNhwwAHV/9DgW13cCeCL
+         t2G6QfFxZGv5hBap6fjKCDKZD9MurvoJWreSksVVjppHVnP4+R+D6IwPGxx5JgOu/Kn6
+         TDjGxFVPiWNUQIsMxHzQ52MZAI8J65ZgJ5LOqVKyHNIGaw6xJPnWRm/o1wdmSS3g2FFV
+         Vs/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVDaWaHwYMJcDyuIkxstMlruL/mL1kh7zzlSYRx3Z4jbCysvhJ5gGRe9CKQRRBHKbe7AxN8TcI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6086/KWRjEgytJt11i2CsW3I1rY8ECRxmDXpnglrS0sxMotk/
+	XNaIs4DCNp0WWl1oPnJ/r9XqH/ssoznX5Q4UedtPV/1Pvu4KySznT83wEeyCxNA=
+X-Google-Smtp-Source: AGHT+IF9OAOBnQbL91yQ3PAwKSMQxVqIuNhddIeWZgxSomQ3XhzKzEmh04oBqRljaOft4K1cRmG2hg==
+X-Received: by 2002:a05:600c:1907:b0:426:6326:4cec with SMTP id 5b1f17b1804b1-42f85af412bmr114058905e9.29.1728402299141;
+        Tue, 08 Oct 2024 08:44:59 -0700 (PDT)
+Received: from [127.0.1.1] (host-79-54-25-3.retail.telecomitalia.it. [79.54.25.3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86b1d826sm129591215e9.26.2024.10.08.08.44.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Oct 2024 08:44:57 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v5 00/10] iio: add support for the ad3552r AXI DAC IP
+Date: Tue, 08 Oct 2024 17:43:32 +0200
+Message-Id: <20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-0-3d410944a63d@baylibre.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <au2yg6xpydfomljjfmll6j6h6mwpzm73kojc5zjck3im6grson@e3ajgznra66s>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACRTBWcC/x3NQQrCMBBG4auUWTswSRxQryIu0masP0haktIWS
+ u9ucPlt3juoWoFVenQHFVtRMeUGvXQ0fGIejZGayYu/OpEbb5i5/3JMQdUXjjt4FQYmXqwuyCO
+ H5NTuYs56pdaZi72x/x/P13n+AFnG4ydzAAAA
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, dletchner@baylibre.com, 
+ Mark Brown <broonie@kernel.org>, 
+ Angelo Dureghello <adureghello@baylibre.com>, stable@vger.kernel.org, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.1
 
-On Tue, Oct 08, 2024 at 09:29:49AM -0500, Lucas De Marchi wrote:
-> On Mon, Oct 07, 2024 at 07:45:27PM +0200, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.11-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 74231870cf4976f69e83aa24f48edb16619f652f
-> 
-> did this change for sending patches to stable?  Is this an alternative
-> only for using --in-reply-to to a failed patch or can
-> `git cherry-pick -x` be used as alternative to the
-> "commit 74231870cf4976f69e83aa24f48edb16619f652f upstream." in the body?
+Purpose is to add ad3552r AXI DAC (fpga-based) support.
 
-I'll take either/any/some kind of hint as to what the commit id is.  If
-you want to hand-write it, wonderful, if you want to use git to
-automatically include it like here, even better, it's your choice.
+The "ad3552r" AXI IP, a variant of the generic "DAC" AXI IP,
+has been created to reach the maximum speed (33MUPS) supported
+from the ad3552r. To obtain the maximum transfer rate, a custom
+IP core module has been implemented with a QSPI interface with
+DDR (Double Data Rate) mode.
 
-greg k-h
+The design is actually using the DAC backend since the register
+map is the same of the generic DAC IP, except for some customized
+bitfields. For this reason, a new "compatible" has been added
+in adi-axi-dac.c.
+
+Also, backend has been extended with all the needed functions
+for this use case, keeping the names gneric.
+
+The following patch is actually applying to linux-iio/testing.
+
+---
+Changes in v2:
+- use unsigned int on bus_reg_read/write
+- add a compatible in axi-dac backend for the ad3552r DAC IP
+- minor code alignment fixes
+- fix a return value not checked
+- change devicetree structure setting ad3552r-axi as a backend
+  subnode
+- add synchronous_mode_available in the ABI doc
+
+Changes in v3:
+- changing AXI backend approach using a dac ip compatible
+- fdt bindings updates accordingly
+- fdt, ad3552r device must be a subnode of the backend
+- allow probe of child devices
+- passing QSPI bus access function by platform data
+- move synchronous mode as a fdt parameter
+- reorganizing defines in proper patches
+- fix make dt_binding_check errors
+- fix ad3552r maximum SPI speed
+- fix samplerate calulcation
+- minor code style fixes
+
+Changes in v4:
+- fix Kconfig
+- fix backend documentation
+- driver renamed to a more gneric "high speed" (ad3552r-hs)
+- restyled axi-dac register names
+- removed synchronous support, dead code
+  (could be added in the future with David sugestions if needed)
+- renaming backend buffer enable/disable calls
+- using model_data in common code
+- using devm_add_action_or_reset
+- minor code style fixes
+
+Changes in v5:
+- patch 2/11 set before fix of ADI_DAC_R1_MODE patch
+- fix dt binding check error
+- patch 4/11 removed
+- fix stream enable/disable call names
+- fix axi-dac clock names
+- fix axi-dac platform device unregistering
+- minor code style fixes
+
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+
+---
+Angelo Dureghello (10):
+      iio: dac: adi-axi-dac: fix wrong register bitfield
+      iio: dac: adi-axi-dac: update register names
+      dt-bindings: iio: dac: ad3552r: add iio backend support
+      dt-bindings: iio: dac: adi-axi-dac: add ad3552r axi variant
+      iio: backend: extend features
+      iio: dac: adi-axi-dac: extend features
+      iio: dac: ad3552r: changes to use FIELD_PREP
+      iio: dac: ad3552r: extract common code (no changes in behavior intended)
+      iio: dac: ad3552r: add high-speed platform driver
+      iio: dac: adi-axi-dac: add registering of child fdt node
+
+ .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   |   7 +
+ .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |  56 ++-
+ drivers/iio/dac/Kconfig                            |  14 +
+ drivers/iio/dac/Makefile                           |   3 +-
+ drivers/iio/dac/ad3552r-common.c                   | 170 +++++++
+ drivers/iio/dac/ad3552r-hs.c                       | 526 +++++++++++++++++++++
+ drivers/iio/dac/ad3552r.c                          | 461 +++---------------
+ drivers/iio/dac/ad3552r.h                          | 207 ++++++++
+ drivers/iio/dac/adi-axi-dac.c                      | 483 ++++++++++++++++---
+ drivers/iio/industrialio-backend.c                 |  78 +++
+ include/linux/iio/backend.h                        |  17 +
+ include/linux/platform_data/ad3552r-hs.h           |  18 +
+ 12 files changed, 1573 insertions(+), 467 deletions(-)
+---
+base-commit: a620cae575523a8c922ad0842647ca38fc6ccd3c
+change-id: 20241008-wip-bl-ad3552r-axi-v0-iio-testing-3d15e90e1eb5
+
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
+
 
