@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-82894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DE1994F11
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:24:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6105994D3F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B51D285E87
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:24:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0241F23340
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508341DF989;
-	Tue,  8 Oct 2024 13:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFBD1DE4CD;
+	Tue,  8 Oct 2024 13:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khBbTbRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK5PzoJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCD71DF96C;
-	Tue,  8 Oct 2024 13:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5441DFD1;
+	Tue,  8 Oct 2024 13:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393784; cv=none; b=fhGj7B2DadxIaQW/fE3xUP4sGZmxQHx3Bd6GoNAKgrKspg0KbusbmZuRTNYEl9CfmN0F9nH7j2Tb/WtmaPCAUBUWkjP5vZrfhw6Uxv2vYAQwv9w8imi/JO2gqqeoaCVX/3DuPpSiks22/xKpfwNVqJrkkWoeBtaSgl0Q0QC6VlQ=
+	t=1728392620; cv=none; b=JEjkJdaOmIbqfUdtS/Fupfy/ktb/zdymBRb9VGQc6pRgYeQ2vvCNOQ/2h/2Uu3hJCnFhwgLus6/gXQt9L4Eg8pFs2o9I2WmMLspjsPoUfn6jK9DHGHy1lAwq6c8vbEnIFXwyi7LKcYENJ4OGbck6Q1Y4HoyCcfUt18zqa0gGnRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393784; c=relaxed/simple;
-	bh=IXbSzyHPh7fE+mb4K87sbM05g3M4oWQBEJmDEzA7Pr8=;
+	s=arc-20240116; t=1728392620; c=relaxed/simple;
+	bh=2p7sQ6uvgbWcU+/4Qa7zM9A0dAnlrs2VbidPHiIiWmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3b7DbmkAHP7jmtoxbpH775euvyyapyB/CECvurrk2qvUPLdBuN3WCLc5RB5gd1SjFkznWoevJdpDivBBzIjHuD8axJdSrGt+fRjK+Zma3H38C67ALbTefTKE2L4Nq2Gks7seR/m8IzD1vTewLw5U5giM6oI3Xh58oDURuv9wHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khBbTbRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC9DC4CEC7;
-	Tue,  8 Oct 2024 13:23:02 +0000 (UTC)
+	 MIME-Version; b=TA+wrDQYXx9qvpRuQSNem6j77aJg/DCAchgom9qPcEi4XVSbX6fHda65EhAUNZszC9jhVykOprKTyuSCjOK6gV1Pr2HQPmdFdG3WC7BVgPKJYUwbeIQg4cpDbxViQ+5OPa4FHiUvxB9yfG68YOuXeLWpVBoxC1Qta/y26zvBx0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK5PzoJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC271C4CEC7;
+	Tue,  8 Oct 2024 13:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393783;
-	bh=IXbSzyHPh7fE+mb4K87sbM05g3M4oWQBEJmDEzA7Pr8=;
+	s=korg; t=1728392620;
+	bh=2p7sQ6uvgbWcU+/4Qa7zM9A0dAnlrs2VbidPHiIiWmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khBbTbRwFoTqQ5IvTqawpQx3DI50bR9ewy5fbyFtqi0E+C4Y5OjBG0Yh9Em6iiXiA
-	 YVC0zY6Dj6vWKcuCsmJcIbC6Obq7bPT0OSpsFcoLHzIHyKCkcaeF+JtS0UawgMl++f
-	 dwVcQAAc2AyxZL4J9dOnpZIs1cD8qTEsXEfE4lHE=
+	b=LK5PzoJfsh8ORUM7K9L4fQ1LCHTxAe4huG2TmPs4iV021C9gQf+FNd0ZlTief38KY
+	 bprOftmQswjt24v6JLsP+jDTNeZ4S/osBynylBIV+LZzPrn/qV+jrK3CZzI2/4bsZJ
+	 khAPEtAc/BCGRoghSFLgNN84mg/gN3RNaVL2+ABo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.6 253/386] of/irq: Support #msi-cells=<0> in of_msi_get_domain
-Date: Tue,  8 Oct 2024 14:08:18 +0200
-Message-ID: <20241008115639.349761987@linuxfoundation.org>
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.11 469/558] smb3: fix incorrect mode displayed for read-only files
+Date: Tue,  8 Oct 2024 14:08:19 +0200
+Message-ID: <20241008115720.703603124@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit db8e81132cf051843c9a59b46fa5a071c45baeb3 upstream.
+commit 2f3017e7cc7515e0110a3733d8dca84de2a1d23d upstream.
 
-An 'msi-parent' property with a single entry and no accompanying
-'#msi-cells' property is considered the legacy definition as opposed
-to its definition after being expanded with commit 126b16e2ad98
-("Docs: dt: add generic MSI bindings"). However, the legacy
-definition is completely compatible with the current definition and,
-since of_phandle_iterator_next() tolerates missing and present-but-
-zero *cells properties since commit e42ee61017f5 ("of: Let
-of_for_each_phandle fallback to non-negative cell_count"), there's no
-need anymore to special case the legacy definition in
-of_msi_get_domain().
+Commands like "chmod 0444" mark a file readonly via the attribute flag
+(when mapping of mode bits into the ACL are not set, or POSIX extensions
+are not negotiated), but they were not reported correctly for stat of
+directories (they were reported ok for files and for "ls").  See example
+below:
 
-Indeed, special casing has turned out to be harmful, because, as of
-commit 7c025238b47a ("dt-bindings: irqchip: Describe the IMX MU block
-as a MSI controller"), MSI controller DT bindings have started
-specifying '#msi-cells' as a required property (even when the value
-must be zero) as an effort to make the bindings more explicit. But,
-since the special casing of 'msi-parent' only uses the existence of
-'#msi-cells' for its heuristic, and not whether or not it's also
-nonzero, the legacy path is not taken. Furthermore, the path to
-support the new, broader definition isn't taken either since that
-path has been restricted to the platform-msi bus.
+    root:~# ls /mnt2 -l
+    total 12
+    drwxr-xr-x 2 root root         0 Sep 21 18:03 normaldir
+    -rwxr-xr-x 1 root root         0 Sep 21 23:24 normalfile
+    dr-xr-xr-x 2 root root         0 Sep 21 17:55 readonly-dir
+    -r-xr-xr-x 1 root root 209716224 Sep 21 18:15 readonly-file
+    root:~# stat -c %a /mnt2/readonly-dir
+    755
+    root:~# stat -c %a /mnt2/readonly-file
+    555
 
-But, neither the definition of 'msi-parent' nor the definition of
-'#msi-cells' is platform-msi-specific (the platform-msi bus was just
-the first bus that needed '#msi-cells'), so remove both the special
-casing and the restriction. The code removal also requires changing
-to of_parse_phandle_with_optional_args() in order to ensure the
-legacy (but compatible) use of 'msi-parent' remains supported. This
-not only simplifies the code but also resolves an issue with PCI
-devices finding their MSI controllers on riscv, as the riscv,imsics
-binding requires '#msi-cells=<0>'.
+This fixes the stat of directories when ATTR_READONLY is set
+(in cases where the mode can not be obtained other ways).
 
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240817074107.31153-2-ajones@ventanamicro.com
+    root:~# stat -c %a /mnt2/readonly-dir
+    555
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |   34 +++++++---------------------------
- 1 file changed, 7 insertions(+), 27 deletions(-)
+ fs/smb/client/inode.c |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -716,8 +716,7 @@ struct irq_domain *of_msi_map_get_device
-  * @np: device node for @dev
-  * @token: bus type for this domain
-  *
-- * Parse the msi-parent property (both the simple and the complex
-- * versions), and returns the corresponding MSI domain.
-+ * Parse the msi-parent property and returns the corresponding MSI domain.
-  *
-  * Returns: the MSI domain for this device (or NULL on failure).
-  */
-@@ -725,33 +724,14 @@ struct irq_domain *of_msi_get_domain(str
- 				     struct device_node *np,
- 				     enum irq_domain_bus_token token)
- {
--	struct device_node *msi_np;
-+	struct of_phandle_iterator it;
- 	struct irq_domain *d;
-+	int err;
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -800,10 +800,6 @@ static void cifs_open_info_to_fattr(stru
+ 		fattr->cf_mode = S_IFREG | cifs_sb->ctx->file_mode;
+ 		fattr->cf_dtype = DT_REG;
  
--	/* Check for a single msi-parent property */
--	msi_np = of_parse_phandle(np, "msi-parent", 0);
--	if (msi_np && !of_property_read_bool(msi_np, "#msi-cells")) {
--		d = irq_find_matching_host(msi_np, token);
--		if (!d)
--			of_node_put(msi_np);
--		return d;
--	}
+-		/* clear write bits if ATTR_READONLY is set */
+-		if (fattr->cf_cifsattrs & ATTR_READONLY)
+-			fattr->cf_mode &= ~(S_IWUGO);
 -
--	if (token == DOMAIN_BUS_PLATFORM_MSI) {
--		/* Check for the complex msi-parent version */
--		struct of_phandle_args args;
--		int index = 0;
--
--		while (!of_parse_phandle_with_args(np, "msi-parent",
--						   "#msi-cells",
--						   index, &args)) {
--			d = irq_find_matching_host(args.np, token);
--			if (d)
--				return d;
--
--			of_node_put(args.np);
--			index++;
--		}
-+	of_for_each_phandle(&it, err, np, "msi-parent", "#msi-cells", 0) {
-+		d = irq_find_matching_host(it.node, token);
-+		if (d)
-+			return d;
+ 		/*
+ 		 * Don't accept zero nlink from non-unix servers unless
+ 		 * delete is pending.  Instead mark it as unknown.
+@@ -816,6 +812,10 @@ static void cifs_open_info_to_fattr(stru
+ 		}
  	}
  
- 	return NULL;
++	/* clear write bits if ATTR_READONLY is set */
++	if (fattr->cf_cifsattrs & ATTR_READONLY)
++		fattr->cf_mode &= ~(S_IWUGO);
++
+ out_reparse:
+ 	if (S_ISLNK(fattr->cf_mode)) {
+ 		if (likely(data->symlink_target))
+@@ -1233,11 +1233,14 @@ handle_mnt_opt:
+ 				 __func__, rc);
+ 			goto out;
+ 		}
+-	}
+-
+-	/* fill in remaining high mode bits e.g. SUID, VTX */
+-	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
++	} else if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_UNX_EMUL)
++		/* fill in remaining high mode bits e.g. SUID, VTX */
+ 		cifs_sfu_mode(fattr, full_path, cifs_sb, xid);
++	else if (!(tcon->posix_extensions))
++		/* clear write bits if ATTR_READONLY is set */
++		if (fattr->cf_cifsattrs & ATTR_READONLY)
++			fattr->cf_mode &= ~(S_IWUGO);
++
+ 
+ 	/* check for Minshall+French symlinks */
+ 	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_MF_SYMLINKS) {
 
 
 
