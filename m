@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF94994AE3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96958994D7D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D031B273FA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 603702870F6
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EE11DE8B1;
-	Tue,  8 Oct 2024 12:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB17C1DE4CD;
+	Tue,  8 Oct 2024 13:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2k/fvXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxZ+1zU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72691D27B3;
-	Tue,  8 Oct 2024 12:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9EC1C9B99;
+	Tue,  8 Oct 2024 13:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391042; cv=none; b=A8MPf5br7xb4duiH8CgOhYUgHYBzwNFjwYq3VfIeD0HxZMviTpw/yXq9IE8MzBFkLyzqhmn1f5J6GRatkfh2FDunzjX4QOtU3tDEuPEHcN57pkBQCAEnRH5mvVbFfCPsp7gJQFYX7NRlwl9T2cz4eIR7de1M1ozraacRB/XU8AU=
+	t=1728392749; cv=none; b=dgsw1g5mzC0QqT9mmSQ7BH07SWR+kUShc/OGgoiuJpaUSp0IH/aFwJ+nOvF0xISMk212SbtwztbAZnnUZuz2nOIC+qeo7uo75O3daWiFqlvRTFjMQ7zEZc0H8+uKTOAxQOyhygvOmWMU19+nuLqYmejvP55bAHVO7DMDqLtHeFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391042; c=relaxed/simple;
-	bh=0euepMjmnXtsj4A37n3imijBzaH4sJYnnp1NUhiErjU=;
+	s=arc-20240116; t=1728392749; c=relaxed/simple;
+	bh=NilTKBFxrD2lk05NIW9a44Z4hL/MCoimxog0y2TsgX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+Kh7Al6LrZEfvtBULQ4qWodw++SM9XHtt78eBO4SCSuaAeLBYj+8I7VgQH9WUqhQoNzgbyLtR4FKwci4o//j+zywY6if4Lf4fu15Mrr9gbTZQtzv1NZvCdLABEzWyHXMOeAtKl0Xy2f16Z0SlczMGsOVxqxvRqEaTDUPMIFNas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2k/fvXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D38EC4CEC7;
-	Tue,  8 Oct 2024 12:37:22 +0000 (UTC)
+	 MIME-Version; b=QklHUGJqioGnMVGkUjF5MJD8/R7sA2eW5+sDbBeg7BWwdHQc/0BJkFzG9zxxeRPtzOur5mmhZALTL/McqcklFeukByPj8il20n6S5pARy//SeaYUcJ+8+nxDnmGoedxcSGcgOvvM7jChT2zv8eCC45IT1SxxMBwUlcvG0oOYzLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxZ+1zU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA74CC4CEC7;
+	Tue,  8 Oct 2024 13:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391042;
-	bh=0euepMjmnXtsj4A37n3imijBzaH4sJYnnp1NUhiErjU=;
+	s=korg; t=1728392749;
+	bh=NilTKBFxrD2lk05NIW9a44Z4hL/MCoimxog0y2TsgX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2k/fvXnhuIp8jtOIR4SzXa0UcUB1cw/cGwvt9dbsW9PF6cahZDCE4vUqg7VHF6kW
-	 WXFKg9mC4JRCcJ89BmyzlEwsKZpDQX5+EMp5WW20xSHK4Zk8hN0SXjob3L2q6sXvsW
-	 ZwrGZ2r2pwYhQcw/IQbepKsyuPyZqdhyGI8q5Bhw=
+	b=OxZ+1zU5LjSpqZ3tz4P5ETK3TBiJAp4RtBhUvyz3zRV6yrnJHswJ1vnLlx5pZkXOa
+	 xM9DedsWJtB8x4ROIJO4usjo4xKa0kvg/LUTgLl3G4jEvkfnl7lpSdPKE5oORjyNiv
+	 /w4CBtlmQmcXHvH42r4Jv1p39t0V+XH3zrAfQu6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.10 473/482] drm/rockchip: vop: enable VOP_FEATURE_INTERNAL_RGB on RK3066
+	Jiawei Ye <jiawei.ye@foxmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>
+Subject: [PATCH 6.11 506/558] mac802154: Fix potential RCU dereference issue in mac802154_scan_worker
 Date: Tue,  8 Oct 2024 14:08:56 +0200
-Message-ID: <20241008115707.126094371@linuxfoundation.org>
+Message-ID: <20241008115722.143116041@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Jiawei Ye <jiawei.ye@foxmail.com>
 
-commit 6ed51ba95e27221ce87979bd2ad5926033b9e1b9 upstream.
+commit bff1709b3980bd7f80be6786f64cc9a9ee9e56da upstream.
 
-The RK3066 does have RGB display output, so it should be marked as such.
+In the `mac802154_scan_worker` function, the `scan_req->type` field was
+accessed after the RCU read-side critical section was unlocked. According
+to RCU usage rules, this is illegal and can lead to unpredictable
+behavior, such as accessing memory that has been updated or causing
+use-after-free issues.
 
-Fixes: f4a6de855eae ("drm: rockchip: vop: add rk3066 vop definitions")
+This possible bug was identified using a static analysis tool developed
+by myself, specifically designed to detect RCU-related issues.
+
+To address this, the `scan_req->type` value is now stored in a local
+variable `scan_req_type` while still within the RCU read-side critical
+section. The `scan_req_type` is then used after the RCU lock is released,
+ensuring that the type value is safely accessed without violating RCU
+rules.
+
+Fixes: e2c3e6f53a7a ("mac802154: Handle active scanning")
 Cc: stable@vger.kernel.org
-Signed-off-by: Val Packett <val@packett.cool>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240624204054.5524-3-val@packett.cool
+Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://lore.kernel.org/tencent_3B2F4F2B4DA30FAE2F51A9634A16B3AD4908@qq.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_vop_reg.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac802154/scan.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
-@@ -515,6 +515,7 @@ static const struct vop_data rk3066_vop
- 	.output = &rk3066_output,
- 	.win = rk3066_vop_win_data,
- 	.win_size = ARRAY_SIZE(rk3066_vop_win_data),
-+	.feature = VOP_FEATURE_INTERNAL_RGB,
- 	.max_output = { 1920, 1080 },
- };
+--- a/net/mac802154/scan.c
++++ b/net/mac802154/scan.c
+@@ -176,6 +176,7 @@ void mac802154_scan_worker(struct work_s
+ 	struct ieee802154_local *local =
+ 		container_of(work, struct ieee802154_local, scan_work.work);
+ 	struct cfg802154_scan_request *scan_req;
++	enum nl802154_scan_types scan_req_type;
+ 	struct ieee802154_sub_if_data *sdata;
+ 	unsigned int scan_duration = 0;
+ 	struct wpan_phy *wpan_phy;
+@@ -209,6 +210,7 @@ void mac802154_scan_worker(struct work_s
+ 	}
  
+ 	wpan_phy = scan_req->wpan_phy;
++	scan_req_type = scan_req->type;
+ 	scan_req_duration = scan_req->duration;
+ 
+ 	/* Look for the next valid chan */
+@@ -246,7 +248,7 @@ void mac802154_scan_worker(struct work_s
+ 		goto end_scan;
+ 	}
+ 
+-	if (scan_req->type == NL802154_SCAN_ACTIVE) {
++	if (scan_req_type == NL802154_SCAN_ACTIVE) {
+ 		ret = mac802154_transmit_beacon_req(local, sdata);
+ 		if (ret)
+ 			dev_err(&sdata->dev->dev,
 
 
 
