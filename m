@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3B8994BC6
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332AA994929
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 097612879FF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF5A71F25D54
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B271DE2AD;
-	Tue,  8 Oct 2024 12:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AC91DED53;
+	Tue,  8 Oct 2024 12:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJ5z2RwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9Tlql9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22007183CB8;
-	Tue,  8 Oct 2024 12:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548251DED48;
+	Tue,  8 Oct 2024 12:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391591; cv=none; b=L7lO8T59mm2FYaXOrs506+T72p3nF5bGSGVvGDUowKmCWlw7FxCkmX45+t5XlxaeYd8sPc4PnCBqtNlwd5Cxu4Bl9MUl1odzhMl8Zl3Vd9PxE3zrV86ZUQmWF7Ynl2Nca4qsE9yq47DHID18e4D8E4LH6WaVJqTktiPNPq7PizU=
+	t=1728390001; cv=none; b=n2uvZN5zKoywwA4YcoPGFI+LHsLMZor52uqgLUjIhlcx4UPnKPWhkTovbU8b2ri/sh/LCwjbcBeLviUum+RINapaGdxmxKc9DSrrpvbW6pIyhGt8+0NzRCjTf/fFBxFf3cFVpHH14sTJSt2VPVcihc7LhQvaKcZ6uqgNs81/9KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391591; c=relaxed/simple;
-	bh=Swu7QgD1kg94dD/yv6MJxeXo9KoOFWY14FaXZBXtr/0=;
+	s=arc-20240116; t=1728390001; c=relaxed/simple;
+	bh=xV5qLbihn0Rhhsa+AbXH36Sd+NVZz2JzvHYAmq2UwWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTm+wRun4vnhWzWYXxP9BrDKm+kd2T2WyjgV2dqQF8rx1FJReF0H65LQjXqPd9n5hpVUzbYGKcQGvlDZWD4zDsj9qOJWN2fnRDLy6wmVNC1/kGhDadwY8NwgVk+ks0owc1aJfG5yXSJ55IAXlKfOgoiPd1hnDM9ouKWs0pm37NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJ5z2RwK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970E0C4CEC7;
-	Tue,  8 Oct 2024 12:46:30 +0000 (UTC)
+	 MIME-Version; b=ePJliCBNZahC4bhEush7QjGkS/YDV4Voh/wjZAtTnJQU/xs2DSrKQYyYZWMIcBuXHdFUK6HOq4pDkWy/Q3zcFKxXdZIxe50+ltjb2jjDO9Q91mWg3Ckp/p1GiGRzsdPV99KY3R1Mggi59s+YjUoe3w5WjL3F8AQMz5Ug9xRt1Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9Tlql9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D64C4CECC;
+	Tue,  8 Oct 2024 12:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391591;
-	bh=Swu7QgD1kg94dD/yv6MJxeXo9KoOFWY14FaXZBXtr/0=;
+	s=korg; t=1728390001;
+	bh=xV5qLbihn0Rhhsa+AbXH36Sd+NVZz2JzvHYAmq2UwWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJ5z2RwKiTo1Ps40S7WxfR3yEwKUzA1EomL/0OTfTWaSP5LKDkHM+iuhy6Ry5mHQH
-	 rqDEvMmrv5R3crvY8rETq7Ja2zGYDOK3SczGgLGLL45TVksstcxKbkoakuXL+0qLYj
-	 QvIjgoca+Dj41wwJq8Set3yv65nTmOXx0Ar1tmVs=
+	b=v9Tlql9FL0GPv8Fxx8qExM5cMmsAoIPUW3GKL/+zZZjIhvswvOG6R0bE7l8tqO0tp
+	 py02GsbuhcAbzFJXBlAoHq+CKKckmeEHyFq1aFOdKgDjHlEBK1W0Z9VgzwNAHFGpTi
+	 RFrHeHNbNhkXFS+UMRQm0xVqIvM6HJGwxpM1tsjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	"Shanavas.K.S" <shanavasks@gmail.com>,
+	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 162/558] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_cmd_802_11_scan_ext()
+Subject: [PATCH 6.10 129/482] x86/bugs: Add missing NO_SSB flag
 Date: Tue,  8 Oct 2024 14:03:12 +0200
-Message-ID: <20241008115708.734221168@linuxfoundation.org>
+Message-ID: <20241008115653.381359295@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 
-[ Upstream commit 498365e52bebcbc36a93279fe7e9d6aec8479cee ]
+[ Upstream commit 23e12b54acf621f4f03381dca91cc5f1334f21fd ]
 
-Replace one-element array with a flexible-array member in
-`struct host_cmd_ds_802_11_scan_ext`.
+The Moorefield and Lightning Mountain Atom processors are
+missing the NO_SSB flag in the vulnerabilities whitelist.
+This will cause unaffected parts to incorrectly be reported
+as vulnerable. Add the missing flag.
 
-With this, fix the following warning:
+These parts are currently out of service and were verified
+internally with archived documentation that they need the
+NO_SSB flag.
 
-elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
-
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/ZsZa5xRcsLq9D+RX@elsanto
+Closes: https://lore.kernel.org/lkml/CAEJ9NQdhh+4GxrtG1DuYgqYhvc0hi-sKZh-2niukJ-MyFLntAA@mail.gmail.com/
+Reported-by: Shanavas.K.S <shanavasks@gmail.com>
+Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240829192437.4074196-1-daniel.sneddon@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
- drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 3adc447b715f6..5b072120e3f21 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -1587,7 +1587,7 @@ struct host_cmd_ds_802_11_scan_rsp {
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index d4e539d4e158c..be307c9ef263d 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1165,8 +1165,8 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
  
- struct host_cmd_ds_802_11_scan_ext {
- 	u32   reserved;
--	u8    tlv_buffer[1];
-+	u8    tlv_buffer[];
- } __packed;
+ 	VULNWL_INTEL(INTEL_CORE_YONAH,		NO_SSB),
  
- struct mwifiex_ie_types_bss_mode {
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 0326b121747cb..17ce84f5207e3 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2530,8 +2530,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
- 	ext_scan_resp = &resp->params.ext_scan;
+-	VULNWL_INTEL(INTEL_ATOM_AIRMONT_MID,	NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(INTEL_ATOM_AIRMONT_NP,	NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_AIRMONT_MID,	NO_SSB | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | MSBDS_ONLY),
++	VULNWL_INTEL(INTEL_ATOM_AIRMONT_NP,	NO_SSB | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
  
- 	tlv = (void *)ext_scan_resp->tlv_buffer;
--	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
--					      - 1);
-+	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
- 
- 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
- 		type = le16_to_cpu(tlv->type);
+ 	VULNWL_INTEL(INTEL_ATOM_GOLDMONT,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
+ 	VULNWL_INTEL(INTEL_ATOM_GOLDMONT_D,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
 -- 
 2.43.0
 
