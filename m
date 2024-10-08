@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-82518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB40994D6B
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:05:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 165FE994A5E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3C47B29C4A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7ABFB2522F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766D01C9B99;
-	Tue,  8 Oct 2024 13:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A91E485;
+	Tue,  8 Oct 2024 12:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thrWx/Df"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ijly4KJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349651C32EB;
-	Tue,  8 Oct 2024 13:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8A717DFF7;
+	Tue,  8 Oct 2024 12:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392534; cv=none; b=sCfhXkfM/4vXj+fpd46/sAuwofD645kiPf1VYwq25WDMnMtLTxLjc88t1fYrk4zFXhURnGpzbiPqke+mid+Bi8V+U0F8QGcv4mT1l18pex0Proe7aRPbIO+g2dba0wWeRWn+1m6f7V0pE+XT4qf9tS5jsLlbBrwM8NHarsQA6VQ=
+	t=1728390747; cv=none; b=gcX2RF3p9A/mVsVgKgSRMVDPUvlzrzM7cz94OgAsIViRIVxE+cIk/2MvTelKf/ihbydxB7uJQkqUqIPyg+tk89EGNMqdvt1nczCoRWzwfrZXESOwpsOSNDB4p156lEUsolT1swcRHi6zhbMqOwffufGfKiYdRKHikJqRiHfhNEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392534; c=relaxed/simple;
-	bh=8pVTSQmzLtfV3UsTf+YP/gEaT2j+UkNxX9I8Iro6h3w=;
+	s=arc-20240116; t=1728390747; c=relaxed/simple;
+	bh=PaxanUK4eX3EIl4P8asE7/zQ9uo80iraqPd5fBRRqME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffT7rdcXQK6IpGKHHZuCoLf2Q621tnq9HJaVB4IUmmrxqwS1xDDSBuonvi1kmFzF28k/3nkvaLcqY0lfaUaaplAQQT8UFDo+UM9QSUHpU7+WyqkPNN9RaOtyMClGdFTnNmFnMDJcNQel42Gv+82w+9PcewRFafTibb+CJEeT+g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thrWx/Df; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F152C4CEC7;
-	Tue,  8 Oct 2024 13:02:13 +0000 (UTC)
+	 MIME-Version; b=AGfT2HCrEWjTCiJGZ9XAjz1D9ZwmhSYxZuKAQOUjlnjArmNUDc4l2ggpYn1xLibsdNbOb+dt/orvd10eTJqUuRDC8O4H5xOwtnXs8Zj+i2dAljADxgYLLvsueDqUKDfPyuWH5tXzX6Y7tx5JertWHj1z9UDClHdJNe0QEky1BO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ijly4KJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B19EC4CEC7;
+	Tue,  8 Oct 2024 12:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392533;
-	bh=8pVTSQmzLtfV3UsTf+YP/gEaT2j+UkNxX9I8Iro6h3w=;
+	s=korg; t=1728390746;
+	bh=PaxanUK4eX3EIl4P8asE7/zQ9uo80iraqPd5fBRRqME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=thrWx/DfOM+P6+RrcJm9+FRLUy3XlvA2FEpqiRghVYxxSiAaqki+QVRdCGBAXvFeT
-	 CnWN4/CYCjqTzaGRz8dZAhyI0Yc3X9CBilzI7oAquu8jCrPFZWwvVsjIVHLhhOWMEe
-	 YiKIk+dyq+niEie/J3B0I/BNBbwWBjKFFYlyg5SY=
+	b=Ijly4KJRO7oFYLWgxctgLVZ+OCeBSloRVGA/3v6JrHrq1pmZGhtD7iJ2Emj4fsRdL
+	 jPH8HYCpuZQm0vWOdkFofZXaXFaaL74gaVxS7irJd36yd7pQm7j331Xd5ziZx31TKt
+	 PQu1jClLNQ6prILDDBEpNkDjMO99LinKt/6UN4s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 412/558] ocfs2: fix the la space leak when unmounting an ocfs2 volume
-Date: Tue,  8 Oct 2024 14:07:22 +0200
-Message-ID: <20241008115718.487567321@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 380/482] media: imx335: Fix reset-gpio handling
+Date: Tue,  8 Oct 2024 14:07:23 +0200
+Message-ID: <20241008115703.371735186@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,65 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Umang Jain <umang.jain@ideasonboard.com>
 
-commit dfe6c5692fb525e5e90cefe306ee0dffae13d35f upstream.
+commit 99d30e2fdea4086be4e66e2deb10de854b547ab8 upstream.
 
-This bug has existed since the initial OCFS2 code.  The code logic in
-ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
-free bits, which causes an OCFS2 volume to lose the last free clusters of
-LA window on each umount command.
+Rectify the logical value of reset-gpio so that it is set to
+0 (disabled) during power-on and to 1 (enabled) during power-off.
 
-Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Set the reset-gpio to GPIO_OUT_HIGH at initialization time to make
+sure it starts off in reset. Also drop the "Set XCLR" comment which
+is not-so-informative.
+
+The existing usage of imx335 had reset-gpios polarity inverted
+(GPIO_ACTIVE_HIGH) in their device-tree sources. With this patch
+included, those DTS will not be able to stream imx335 anymore. The
+reset-gpio polarity will need to be rectified in the device-tree
+sources as shown in [1] example, in order to get imx335 functional
+again (as it remains in reset prior to this fix).
+
+Cc: stable@vger.kernel.org
+Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/media/i2c/imx335.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/ocfs2/localalloc.c
-+++ b/fs/ocfs2/localalloc.c
-@@ -1002,6 +1002,25 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
- 	}
+--- a/drivers/media/i2c/imx335.c
++++ b/drivers/media/i2c/imx335.c
+@@ -997,7 +997,7 @@ static int imx335_parse_hw_config(struct
  
-+	/* clear the contiguous bits until the end boundary */
-+	if (count) {
-+		blkno = la_start_blk +
-+			ocfs2_clusters_to_blocks(osb->sb,
-+					start - count);
-+
-+		trace_ocfs2_sync_local_to_main_free(
-+				count, start - count,
-+				(unsigned long long)la_start_blk,
-+				(unsigned long long)blkno);
-+
-+		status = ocfs2_release_clusters(handle,
-+				main_bm_inode,
-+				main_bm_bh, blkno,
-+				count);
-+		if (status < 0)
-+			mlog_errno(status);
-+	}
-+
- bail:
- 	if (status)
- 		mlog_errno(status);
+ 	/* Request optional reset pin */
+ 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
+-						     GPIOD_OUT_LOW);
++						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(imx335->reset_gpio)) {
+ 		dev_err(imx335->dev, "failed to get reset gpio %ld\n",
+ 			PTR_ERR(imx335->reset_gpio));
+@@ -1110,8 +1110,7 @@ static int imx335_power_on(struct device
+ 
+ 	usleep_range(500, 550); /* Tlow */
+ 
+-	/* Set XCLR */
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
+ 
+ 	ret = clk_prepare_enable(imx335->inclk);
+ 	if (ret) {
+@@ -1124,7 +1123,7 @@ static int imx335_power_on(struct device
+ 	return 0;
+ 
+ error_reset:
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
+ 	return ret;
+@@ -1141,7 +1140,7 @@ static int imx335_power_off(struct devic
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct imx335 *imx335 = to_imx335(sd);
+ 
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	clk_disable_unprepare(imx335->inclk);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
 
 
 
