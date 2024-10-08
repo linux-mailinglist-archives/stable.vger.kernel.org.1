@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5AF994DBB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:09:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCEC994FC8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B716C1C233DC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:09:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5CB228793D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FAA1DE4CD;
-	Tue,  8 Oct 2024 13:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B150E1DF99C;
+	Tue,  8 Oct 2024 13:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCWjdp62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lez8TvlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FA91DEFF7;
-	Tue,  8 Oct 2024 13:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1B61DE88F;
+	Tue,  8 Oct 2024 13:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392917; cv=none; b=HrPkUef9XsM3oGGo0EcH31pe7aRt/yUUM27lYlNUDgsvLaKA6IY5b5P9XnLYaiLv75IYi0GOWxGo7l01X6/N+/vqlLqpURl7xUkiprMeGUOtyJ0HgUHPz5hgLnOByqA1aJATDBw+qMWswzxbKPNMxiFdbP2ZFAwHl4mewwxzq6g=
+	t=1728394090; cv=none; b=GlEkA4LpNrwmKIwIIXwfIxlvGird149zHxARvCR2jx/wACFi93rrG/QY6VI9Fg6XNpb9sLSfIRPG+RC6bJ0lJIWqVKZuxUHwKV8U10VicwZxKsZyJJTwcJxAd+2fpXpGhQwo4GBMWLnltbziDCuHb7mSEmGnmxUUhb9cClpJA6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392917; c=relaxed/simple;
-	bh=DbJUlqVE7BbUxFv141qubAf0WD/NgKtlMfAL9aU8sOY=;
+	s=arc-20240116; t=1728394090; c=relaxed/simple;
+	bh=x0m+zElJd9CY696EFmmYq0VzQ4gphOgvdxNzfDg2dP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYJYatQsUlk9aEfjcJdGGOXvRuxRLhhvfJgdWAoU8w/ltXJaBSWZlbVSztcj/9wNH9/82kyeca/7CoQnH21dMTG6tOxH0GU2pgXd0wS5VU93A5aEQ4TptD2A6q4v6o5SbwZ/s7XlrBkRhrbri0sZ7VZqoQXKu9ta6tsFTOTU8kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCWjdp62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA31C4CECC;
-	Tue,  8 Oct 2024 13:08:36 +0000 (UTC)
+	 MIME-Version; b=hfZaJtovGQW/aBHzW+4kWtgXsfEPW0DwuSsiL9aAqBYdTrA5vxe1ugQhJXRN/EEEDYyT3eLLhM99h1IAg3qFWBkLcb70KxyY36925GG3eSfkDKYi+ODuVAvcOd4TwH7NWpkCj88iOnddIuuxgZDngHf3J992F9p0VS3DXTF393g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lez8TvlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB256C4CECD;
+	Tue,  8 Oct 2024 13:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392917;
-	bh=DbJUlqVE7BbUxFv141qubAf0WD/NgKtlMfAL9aU8sOY=;
+	s=korg; t=1728394090;
+	bh=x0m+zElJd9CY696EFmmYq0VzQ4gphOgvdxNzfDg2dP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SCWjdp62q88wJb2ICkOO38kOQRjh5SREfNXMIjAboOfEhAo62j4ximg7Vbkotaic4
-	 6IzgR6aWQMiTDqbg7/TJbvW8CEPlwX73Hw4H4TuFbbqFF3+4TtmqS7d97kyT1TaAWe
-	 coN4DpwYgeV7P4clkd5ziqlUg5UcQK53pIJ8QvRE=
+	b=Lez8TvlG5ft255oqmxtYVBi+jql0OYRyJOj0eqdcF6QZqvKZ5csCDBo5msk6BIYDb
+	 CwS6jdmUmJVjcIKOMMMWosY5R6SwESqLzLZ4hwmJt2SdDFOrpBJYDipx1xvjWNuTo4
+	 GZwJ7+y0TJxXf/evi0nPqlkbti0mNNWdjJ8ufbSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.11 558/558] pmdomain: core: Reduce debug summary table width
-Date: Tue,  8 Oct 2024 14:09:48 +0200
-Message-ID: <20241008115724.189586572@linuxfoundation.org>
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 344/386] net: mana: Enable MANA driver on ARM64 with 4K page size
+Date: Tue,  8 Oct 2024 14:09:49 +0200
+Message-ID: <20241008115642.920578856@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit c6ccb691d484544636bc4a097574c5c135ccccda upstream.
+[ Upstream commit 40a1d11fc670ac03c5dc2e5a9724b330e74f38b0 ]
 
-Commit 9094e53ff5c86ebe ("pmdomain: core: Use dev_name() instead of
-kobject_get_path() in debugfs") severely shortened the names of devices
-in a PM Domain.  Now the most common format[1] consists of a 32-bit
-unit-address (8 characters), followed by a dot and a node name (20
-characters for "air-pollution-sensor" and "interrupt-controller", which
-are the longest generic node names documented in the Devicetree
-Specification), for a typical maximum of 29 characters.
+Change the Kconfig dependency, so this driver can be built and run on ARM64
+with 4K page size.
+16/64K page sizes are not supported yet.
 
-This offers a good opportunity to reduce the table width of the debug
-summary:
-  - Reduce the device name field width from 50 to 30 characters, which
-    matches the PM Domain name width,
-  - Reduce the large inter-column space between the "performance" and
-    "managed by" columns.
-
-Visual impact:
-  - The "performance" column now starts at a position that is a
-    multiple of 16, just like the "status" and "children" columns,
-  - All of the "/device", "runtime status", and "managed by" columns are
-    now indented 4 characters more than the columns right above them,
-  - Everything fits in (one less than) 80 characters again ;-)
-
-[1] Note that some device names (e.g. TI AM335x interconnect target
-    modules) do not follow this convention, and may be much longer, but
-    these didn't fit in the old 50-character column width either.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/f8e1821364b6d5d11350447c128f6d2b470f33fe.1725459707.git.geert+renesas@glider.be
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://lore.kernel.org/r/1715632141-8089-1-git-send-email-haiyangz@microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 9e517a8e9d9a ("RDMA/mana_ib: use the correct page table index based on hardware page size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/core.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/microsoft/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -3182,7 +3182,7 @@ static void rtpm_status_str(struct seq_f
- 	else
- 		WARN_ON(1);
+diff --git a/drivers/net/ethernet/microsoft/Kconfig b/drivers/net/ethernet/microsoft/Kconfig
+index 01eb7445ead95..286f0d5697a16 100644
+--- a/drivers/net/ethernet/microsoft/Kconfig
++++ b/drivers/net/ethernet/microsoft/Kconfig
+@@ -17,7 +17,8 @@ if NET_VENDOR_MICROSOFT
  
--	seq_printf(s, "%-25s  ", p);
-+	seq_printf(s, "%-26s  ", p);
- }
- 
- static void mode_status_str(struct seq_file *s, struct device *dev)
-@@ -3191,7 +3191,7 @@ static void mode_status_str(struct seq_f
- 
- 	gpd_data = to_gpd_data(dev->power.subsys_data->domain_data);
- 
--	seq_printf(s, "%9s", gpd_data->hw_mode ? "HW" : "SW");
-+	seq_printf(s, "%2s", gpd_data->hw_mode ? "HW" : "SW");
- }
- 
- static void perf_status_str(struct seq_file *s, struct device *dev)
-@@ -3226,7 +3226,7 @@ static int genpd_summary_one(struct seq_
- 	else
- 		snprintf(state, sizeof(state), "%s",
- 			 status_lookup[genpd->status]);
--	seq_printf(s, "%-30s  %-49s  %u", genpd->name, state, genpd->performance_state);
-+	seq_printf(s, "%-30s  %-30s  %u", genpd->name, state, genpd->performance_state);
- 
- 	/*
- 	 * Modifications on the list require holding locks on both
-@@ -3242,7 +3242,7 @@ static int genpd_summary_one(struct seq_
- 	}
- 
- 	list_for_each_entry(pm_data, &genpd->dev_list, list_node) {
--		seq_printf(s, "\n    %-50s  ", dev_name(pm_data->dev));
-+		seq_printf(s, "\n    %-30s  ", dev_name(pm_data->dev));
- 		rtpm_status_str(s, pm_data->dev);
- 		perf_status_str(s, pm_data->dev);
- 		mode_status_str(s, pm_data->dev);
-@@ -3260,9 +3260,9 @@ static int summary_show(struct seq_file
- 	struct generic_pm_domain *genpd;
- 	int ret = 0;
- 
--	seq_puts(s, "domain                          status          children                           performance\n");
--	seq_puts(s, "    /device                                             runtime status                           managed by\n");
--	seq_puts(s, "------------------------------------------------------------------------------------------------------------\n");
-+	seq_puts(s, "domain                          status          children        performance\n");
-+	seq_puts(s, "    /device                         runtime status                  managed by\n");
-+	seq_puts(s, "------------------------------------------------------------------------------\n");
- 
- 	ret = mutex_lock_interruptible(&gpd_list_lock);
- 	if (ret)
+ config MICROSOFT_MANA
+ 	tristate "Microsoft Azure Network Adapter (MANA) support"
+-	depends on PCI_MSI && X86_64
++	depends on PCI_MSI
++	depends on X86_64 || (ARM64 && !CPU_BIG_ENDIAN && ARM64_4K_PAGES)
+ 	depends on PCI_HYPERV
+ 	select AUXILIARY_BUS
+ 	select PAGE_POOL
+-- 
+2.43.0
+
 
 
 
