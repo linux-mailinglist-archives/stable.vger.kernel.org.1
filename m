@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EB6994E29
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:13:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7809949E3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C82501C233B1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:13:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3917B214EF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001B81DED6F;
-	Tue,  8 Oct 2024 13:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646951DF263;
+	Tue,  8 Oct 2024 12:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWDS/S3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEvmBpQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CD61DE8A0;
-	Tue,  8 Oct 2024 13:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221C9165F08;
+	Tue,  8 Oct 2024 12:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393183; cv=none; b=VcTtLhIWNzVLh0D7iMS4s0HO/KV/6CYjQmyiYlcBC8ExLjzMbdv2A2biYe0FhdMvHk1bWoKP2ueSIXvuEnwi4sUGqKfII5JKVZsVraFveDNzsRN1Po8OxTw764Pp1uvERXSfGmVBxtwEJdjk9SEnhGoZoawWLW8xGfFIERy7zMc=
+	t=1728390430; cv=none; b=cONf82nA0SjhBeHKVZsRiBC5z/2/HYnyfOcANuqwH4mNhT+vzvQllfcirhe0WJz91nFiZDuU1X8djiaz9W+dneM55DwCxeACr3Tjtxv1z4lCxjI16wT1VYdZ73heBi4S3uMc3Vv4xAuIYx8ra+Xb86vFVJJ5d4OAwaJianNhxnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393183; c=relaxed/simple;
-	bh=S9QkYLLq9OrlNWFhEXnLmthxDvhP/5CxAWQzIkCkoxk=;
+	s=arc-20240116; t=1728390430; c=relaxed/simple;
+	bh=5x1g4UHHWb2icSBDwi3edTOpwV5XSyxudVoixeWYh0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqKTn6dODhamddjB7PwZe621V9zVU4UxqVEhmo9uKPnO39OOpbhZ1gfxD8uLVDrTXGqvmFQbN6Uq8FS9enhrZmgf5WJEjZ+GESt6mlCF7HQhF8VAZ/HwIbabrdkNkpW3/vawHKS50amu8/0mdDNwUz6eWGiXwG8UGUEuc+R7jLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWDS/S3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F57C4CECC;
-	Tue,  8 Oct 2024 13:13:02 +0000 (UTC)
+	 MIME-Version; b=VVArY8bwMzpLR8A5Efx+CGahhu7+NlCq6X13q7Z/RVmD6ojvGFKqrMGyJ/xMhj0RWJfFfBtdlq6IXTvQM6FjzGW7kO0Xb/SF80DYjndWtJavZtFAHjgr9i2wUiZIGykI+MkMEUrPeFlyZj4RgCnHop733LJ3gl9mY6sYPV80Pqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEvmBpQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D0AC4CEC7;
+	Tue,  8 Oct 2024 12:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393183;
-	bh=S9QkYLLq9OrlNWFhEXnLmthxDvhP/5CxAWQzIkCkoxk=;
+	s=korg; t=1728390429;
+	bh=5x1g4UHHWb2icSBDwi3edTOpwV5XSyxudVoixeWYh0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWDS/S3hK9iFItuIeRssafEgYA6eHw34EAGPM7WdrNHX42QOfR4FvaYqoerO+QL9V
-	 upmlMM8VCJQJyRLeS7q3i015Mbdwzw6Urg/eG6yIBGKtIKTfRCwuwAZu28tyvvPBvx
-	 tvMm+/IQgz1zhGtyA9WNDKg7R1v5tz5U/3eI5Y1o=
+	b=jEvmBpQiCBJd+YNXv8hkk+rvM4UE/JQT0xBaRH7Tw9LuwP6xVq7tK1pF64EoDI5z3
+	 28qG2Q/QiVWm8QEUDgVCXOCJmqloP2HP3khy7Ftc93Bi9GF+KHwh/KRcBUfDs60mJh
+	 c4fxuU3Sfu/mVNbcmOmpRz+l+WeCyrqaQMGTKkvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/386] Bluetooth: btrtl: Set msft ext address filter quirk for RTL8852B
+Subject: [PATCH 6.10 259/482] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
 Date: Tue,  8 Oct 2024 14:05:22 +0200
-Message-ID: <20241008115632.492051227@linuxfoundation.org>
+Message-ID: <20241008115658.478422734@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 9a0570948c5def5c59e588dc0e009ed850a1f5a1 ]
+[ Upstream commit b6e05ba0844139dde138625906015c974c86aa93 ]
 
-For tracking multiple devices concurrently with a condition.
-The patch enables the HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER quirk
-on RTL8852B controller.
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-The quirk setting is based on commit 9e14606d8f38 ("Bluetooth: msft:
-Extended monitor tracking by address filter")
-
-With this setting, when a pattern monitor detects a device, this
-feature issues an address monitor for tracking that device. Let the
-original pattern monitor keep monitor new devices.
-
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240923040015.3009329-2-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 277d039ecbb42..1e7c1f9db9e4b 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -1285,6 +1285,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
- 			btrealtek_set_flag(hdev, REALTEK_ALT6_CONTINUOUS_TX_CHIP);
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 1439883326cfe..4c041ad39dc5d 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1870,8 +1870,8 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		spi_imx_sdma_exit(spi_imx);
+ out_runtime_pm_put:
+ 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(spi_imx->dev);
++	pm_runtime_set_suspended(&pdev->dev);
  
- 		if (btrtl_dev->project_id == CHIP_ID_8852A ||
-+		    btrtl_dev->project_id == CHIP_ID_8852B ||
- 		    btrtl_dev->project_id == CHIP_ID_8852C)
- 			set_bit(HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER, &hdev->quirks);
- 
+ 	clk_disable_unprepare(spi_imx->clk_ipg);
+ out_put_per:
 -- 
 2.43.0
 
