@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5654B994E34
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B11D6994C7C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A4221C2483F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:14:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D58BA1C24F32
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F95F1DED60;
-	Tue,  8 Oct 2024 13:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BC31DE88F;
+	Tue,  8 Oct 2024 12:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPRPOUul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JN2qDP97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EFB1C9DDF;
-	Tue,  8 Oct 2024 13:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9506F1CCB32;
+	Tue,  8 Oct 2024 12:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393220; cv=none; b=qhWiOMhK1aiiCz2MtrtDktzzN0rGVsMA5FwlaATaB030ZrDb114k2SWfYh/g57nI/B6V9kphhG0Vlng7y7pptf2viGGYoX4KaVraPQVVms3vL9qAtz+oIJH7qX9XTU6Fyylh1Yu3mSt37ZfgBydQ7BC8JLnbWCTrlIKKIipUIak=
+	t=1728392092; cv=none; b=IcbqBcUnfrxmJv2+Wod0X8O/Tc+eC5p6BK0TddJyD+fRMYRDAqbWxLl2I3RvhDppbEZj0Q54sLgEzy+ufH3XTCNqn8kzX0Dq+yYWYQQ1wYLyJr6kmklz4s8jKHgEAq1omd7bcG833fTFYGhPdohyDT25uxhDfuLdIAR9JEtXrDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393220; c=relaxed/simple;
-	bh=q+Um6UmALkgSOCvU3UIZVwrmN6lxVcgh/FKqwuDUOHw=;
+	s=arc-20240116; t=1728392092; c=relaxed/simple;
+	bh=Hp8LTuxyAZ3/6nJoKGNev/4cWQmZNaeVchLaZoQtTRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZP4ueBVXs8QUy8OwUuKtQIWkVFI2cE8rTbrMUKLQC8P6VuqcAJ3whaMs46QBuh5TLGJXdnK19ABSC1nei6YeTRtZu3YaJNnVsjgOF5ZE+pFqRhLGMY4RWbZ/J9a81UkW6bUAN8NcqAix9QouQR/ZanAhfPm5UHD1/CZR4Nrcd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPRPOUul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69FBC4CEC7;
-	Tue,  8 Oct 2024 13:13:39 +0000 (UTC)
+	 MIME-Version; b=aF8b2UUCq5Aayuog5m03lymG7af4BH1oFfassRXm1EBJldbupqr0NnwvdXOwJ4zOgyuscJY6v0GmN6SNEIxp3B3tEZPwGGLM9lWGOv655lxC2UnPcDzuokFLSqQCaMjKvt8GFGgAR5BnTL99E9xErU4FopWOW0JftR19zFRuhIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JN2qDP97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F255CC4CECF;
+	Tue,  8 Oct 2024 12:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393220;
-	bh=q+Um6UmALkgSOCvU3UIZVwrmN6lxVcgh/FKqwuDUOHw=;
+	s=korg; t=1728392092;
+	bh=Hp8LTuxyAZ3/6nJoKGNev/4cWQmZNaeVchLaZoQtTRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPRPOUulDv00QbUyNlNFyILBZbs/B7ELPTqgy9t3N4t7KouQfgdKzY7Q6uxr+v5AO
-	 3ek82QlmPLENx18D235HP54U1uonuUcb+QFPOs4JJUhtPZ63VKTMMrMHc9kq0qNj3/
-	 l6h48pC+xsN5CLCwBtD85PxD7gXIeJ5yhdruKGDU=
+	b=JN2qDP970Poray05ji/hGV45QOHmPeSqedhxHjZ1LJHBoil0dz0JG9PhosJ7m1WXG
+	 0qThYsUsg1duqcoxgXgs9QhvScowngPcCm6ZG+rUZAViDSxfsZ9XVaiJHot/n20/xc
+	 a8OX0MW/QXaNaqY+EYUVeW+LeqPJXxO5ZEK6YYa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/386] wifi: rtw89: avoid to add interface to list twice when SER
+Subject: [PATCH 6.11 272/558] scsi: lpfc: Fix unsolicited FLOGI kref imbalance when in direct attached topology
 Date: Tue,  8 Oct 2024 14:05:02 +0200
-Message-ID: <20241008115631.713461398@linuxfoundation.org>
+Message-ID: <20241008115713.034908195@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +62,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 7dd5d2514a8ea58f12096e888b0bd050d7eae20a ]
+[ Upstream commit b5c18c9dd138733c16893613345af44deadcf05e ]
 
-If SER L2 occurs during the WoWLAN resume flow, the add interface flow
-is triggered by ieee80211_reconfig(). However, due to
-rtw89_wow_resume() return failure, it will cause the add interface flow
-to be executed again, resulting in a double add list and causing a kernel
-panic. Therefore, we have added a check to prevent double adding of the
-list.
+In direct attached topology, certain target vendors that are quick to issue
+FLOGI followed by a cable pull for more than dev_loss_tmo may result in a
+kref imbalance for the remote port ndlp object.
 
-list_add double add: new=ffff99d6992e2010, prev=ffff99d6992e2010, next=ffff99d695302628.
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:37!
-invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W  O       6.6.30-02659-gc18865c4dfbd #1 770df2933251a0e3c888ba69d1053a817a6376a7
-Hardware name: HP Grunt/Grunt, BIOS Google_Grunt.11031.169.0 06/24/2021
-Workqueue: events_freezable ieee80211_restart_work [mac80211]
-RIP: 0010:__list_add_valid_or_report+0x5e/0xb0
-Code: c7 74 18 48 39 ce 74 13 b0 01 59 5a 5e 5f 41 58 41 59 41 5a 5d e9 e2 d6 03 00 cc 48 c7 c7 8d 4f 17 83 48 89 c2 e8 02 c0 00 00 <0f> 0b 48 c7 c7 aa 8c 1c 83 e8 f4 bf 00 00 0f 0b 48 c7 c7 c8 bc 12
-RSP: 0018:ffffa91b8007bc50 EFLAGS: 00010246
-RAX: 0000000000000058 RBX: ffff99d6992e0900 RCX: a014d76c70ef3900
-RDX: ffffa91b8007bae8 RSI: 00000000ffffdfff RDI: 0000000000000001
-RBP: ffffa91b8007bc88 R08: 0000000000000000 R09: ffffa91b8007bae0
-R10: 00000000ffffdfff R11: ffffffff83a79800 R12: ffff99d695302060
-R13: ffff99d695300900 R14: ffff99d6992e1be0 R15: ffff99d6992e2010
-FS:  0000000000000000(0000) GS:ffff99d6aac00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000078fbdba43480 CR3: 000000010e464000 CR4: 00000000001506f0
-Call Trace:
- <TASK>
- ? __die_body+0x1f/0x70
- ? die+0x3d/0x60
- ? do_trap+0xa4/0x110
- ? __list_add_valid_or_report+0x5e/0xb0
- ? do_error_trap+0x6d/0x90
- ? __list_add_valid_or_report+0x5e/0xb0
- ? handle_invalid_op+0x30/0x40
- ? __list_add_valid_or_report+0x5e/0xb0
- ? exc_invalid_op+0x3c/0x50
- ? asm_exc_invalid_op+0x16/0x20
- ? __list_add_valid_or_report+0x5e/0xb0
- rtw89_ops_add_interface+0x309/0x310 [rtw89_core 7c32b1ee6854761c0321027c8a58c5160e41f48f]
- drv_add_interface+0x5c/0x130 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
- ieee80211_reconfig+0x241/0x13d0 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
- ? finish_wait+0x3e/0x90
- ? synchronize_rcu_expedited+0x174/0x260
- ? sync_rcu_exp_done_unlocked+0x50/0x50
- ? wake_bit_function+0x40/0x40
- ieee80211_restart_work+0xf0/0x140 [mac80211 83e989e6e616bd5b4b8a2b0a9f9352a2c385a3bc]
- process_scheduled_works+0x1e5/0x480
- worker_thread+0xea/0x1e0
- kthread+0xdb/0x110
- ? move_linked_works+0x90/0x90
- ? kthread_associate_blkcg+0xa0/0xa0
- ret_from_fork+0x3b/0x50
- ? kthread_associate_blkcg+0xa0/0xa0
- ret_from_fork_asm+0x11/0x20
- </TASK>
-Modules linked in: dm_integrity async_xor xor async_tx lz4 lz4_compress zstd zstd_compress zram zsmalloc rfcomm cmac uinput algif_hash algif_skcipher af_alg btusb btrtl iio_trig_hrtimer industrialio_sw_trigger btmtk industrialio_configfs btbcm btintel uvcvideo videobuf2_vmalloc iio_trig_sysfs videobuf2_memops videobuf2_v4l2 videobuf2_common uvc snd_hda_codec_hdmi veth snd_hda_intel snd_intel_dspcfg acpi_als snd_hda_codec industrialio_triggered_buffer kfifo_buf snd_hwdep industrialio i2c_piix4 snd_hda_core designware_i2s ip6table_nat snd_soc_max98357a xt_MASQUERADE xt_cgroup snd_soc_acp_rt5682_mach fuse rtw89_8922ae(O) rtw89_8922a(O) rtw89_pci(O) rtw89_core(O) 8021q mac80211(O) bluetooth ecdh_generic ecc cfg80211 r8152 mii joydev
-gsmi: Log Shutdown Reason 0x03
----[ end trace 0000000000000000 ]---
+Add an nlp_get when the defer_flogi_acc flag is set.  This is expected to
+balance the nlp_put in the defer_flogi_acc clause in the
+lpfc_issue_els_flogi() routine.  Because we need to retain the ndlp ptr,
+reorganize all of the defer_flogi_acc information into one
+lpfc_defer_flogi_acc struct.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240731070506.46100-4-pkshih@realtek.com
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240726231512.92867-6-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c |  4 +++-
- drivers/net/wireless/realtek/rtw89/util.h     | 18 ++++++++++++++++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc.h         | 12 ++++++---
+ drivers/scsi/lpfc/lpfc_els.c     | 46 +++++++++++++++++++-------------
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 11 ++++++--
+ 3 files changed, 46 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 487d79938bc71..5b9de1f41dc78 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -126,7 +126,9 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
- 	rtwvif->rtwdev = rtwdev;
- 	rtwvif->roc.state = RTW89_ROC_IDLE;
- 	rtwvif->offchan = false;
--	list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
-+	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif))
-+		list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
-+
- 	INIT_WORK(&rtwvif->update_beacon_work, rtw89_core_update_beacon_work);
- 	INIT_DELAYED_WORK(&rtwvif->roc.roc_work, rtw89_roc_work);
- 	rtw89_leave_ps_mode(rtwdev);
-diff --git a/drivers/net/wireless/realtek/rtw89/util.h b/drivers/net/wireless/realtek/rtw89/util.h
-index e2ed4565025dd..d4ee9078a4f48 100644
---- a/drivers/net/wireless/realtek/rtw89/util.h
-+++ b/drivers/net/wireless/realtek/rtw89/util.h
-@@ -14,6 +14,24 @@
- #define rtw89_for_each_rtwvif(rtwdev, rtwvif)				       \
- 	list_for_each_entry(rtwvif, &(rtwdev)->rtwvifs_list, list)
+diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
+index 7c147d6ea8a8f..e5a9c5a323f8b 100644
+--- a/drivers/scsi/lpfc/lpfc.h
++++ b/drivers/scsi/lpfc/lpfc.h
+@@ -306,6 +306,14 @@ struct lpfc_stats {
  
-+/* Before adding rtwvif to list, we need to check if it already exist, beacase
-+ * in some case such as SER L2 happen during WoWLAN flow, calling reconfig
-+ * twice cause the list to be added twice.
-+ */
-+static inline bool rtw89_rtwvif_in_list(struct rtw89_dev *rtwdev,
-+					struct rtw89_vif *new)
-+{
-+	struct rtw89_vif *rtwvif;
+ struct lpfc_hba;
+ 
++/* Data structure to keep withheld FLOGI_ACC information */
++struct lpfc_defer_flogi_acc {
++	bool flag;
++	u16 rx_id;
++	u16 ox_id;
++	struct lpfc_nodelist *ndlp;
 +
-+	lockdep_assert_held(&rtwdev->mutex);
++};
+ 
+ #define LPFC_VMID_TIMER   300	/* timer interval in seconds */
+ 
+@@ -1430,9 +1438,7 @@ struct lpfc_hba {
+ 	uint16_t vlan_id;
+ 	struct list_head fcf_conn_rec_list;
+ 
+-	bool defer_flogi_acc_flag;
+-	uint16_t defer_flogi_acc_rx_id;
+-	uint16_t defer_flogi_acc_ox_id;
++	struct lpfc_defer_flogi_acc defer_flogi_acc;
+ 
+ 	spinlock_t ct_ev_lock; /* synchronize access to ct_ev_waiters */
+ 	struct list_head ct_ev_waiters;
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 929cbfc95163b..8c0926ffee1bf 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -1390,7 +1390,7 @@ lpfc_issue_els_flogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
+ 	phba->link_flag &= ~LS_EXTERNAL_LOOPBACK;
+ 
+ 	/* Check for a deferred FLOGI ACC condition */
+-	if (phba->defer_flogi_acc_flag) {
++	if (phba->defer_flogi_acc.flag) {
+ 		/* lookup ndlp for received FLOGI */
+ 		ndlp = lpfc_findnode_did(vport, 0);
+ 		if (!ndlp)
+@@ -1404,34 +1404,38 @@ lpfc_issue_els_flogi(struct lpfc_vport *vport, struct lpfc_nodelist *ndlp,
+ 		if (phba->sli_rev == LPFC_SLI_REV4) {
+ 			bf_set(wqe_ctxt_tag,
+ 			       &defer_flogi_acc.wqe.xmit_els_rsp.wqe_com,
+-			       phba->defer_flogi_acc_rx_id);
++			       phba->defer_flogi_acc.rx_id);
+ 			bf_set(wqe_rcvoxid,
+ 			       &defer_flogi_acc.wqe.xmit_els_rsp.wqe_com,
+-			       phba->defer_flogi_acc_ox_id);
++			       phba->defer_flogi_acc.ox_id);
+ 		} else {
+ 			icmd = &defer_flogi_acc.iocb;
+-			icmd->ulpContext = phba->defer_flogi_acc_rx_id;
++			icmd->ulpContext = phba->defer_flogi_acc.rx_id;
+ 			icmd->unsli3.rcvsli3.ox_id =
+-				phba->defer_flogi_acc_ox_id;
++				phba->defer_flogi_acc.ox_id;
+ 		}
+ 
+ 		lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
+ 				 "3354 Xmit deferred FLOGI ACC: rx_id: x%x,"
+ 				 " ox_id: x%x, hba_flag x%lx\n",
+-				 phba->defer_flogi_acc_rx_id,
+-				 phba->defer_flogi_acc_ox_id, phba->hba_flag);
++				 phba->defer_flogi_acc.rx_id,
++				 phba->defer_flogi_acc.ox_id, phba->hba_flag);
+ 
+ 		/* Send deferred FLOGI ACC */
+ 		lpfc_els_rsp_acc(vport, ELS_CMD_FLOGI, &defer_flogi_acc,
+ 				 ndlp, NULL);
+ 
+-		phba->defer_flogi_acc_flag = false;
+-		vport->fc_myDID = did;
++		phba->defer_flogi_acc.flag = false;
+ 
+-		/* Decrement ndlp reference count to indicate the node can be
+-		 * released when other references are removed.
++		/* Decrement the held ndlp that was incremented when the
++		 * deferred flogi acc flag was set.
+ 		 */
+-		lpfc_nlp_put(ndlp);
++		if (phba->defer_flogi_acc.ndlp) {
++			lpfc_nlp_put(phba->defer_flogi_acc.ndlp);
++			phba->defer_flogi_acc.ndlp = NULL;
++		}
 +
-+	rtw89_for_each_rtwvif(rtwdev, rtwvif)
-+		if (rtwvif == new)
-+			return true;
-+
-+	return false;
-+}
-+
- /* The result of negative dividend and positive divisor is undefined, but it
-  * should be one case of round-down or round-up. So, make it round-down if the
-  * result is round-up.
++		vport->fc_myDID = did;
+ 	}
+ 
+ 	return 0;
+@@ -8454,9 +8458,9 @@ lpfc_els_rcv_flogi(struct lpfc_vport *vport, struct lpfc_iocbq *cmdiocb,
+ 
+ 	/* Defer ACC response until AFTER we issue a FLOGI */
+ 	if (!test_bit(HBA_FLOGI_ISSUED, &phba->hba_flag)) {
+-		phba->defer_flogi_acc_rx_id = bf_get(wqe_ctxt_tag,
++		phba->defer_flogi_acc.rx_id = bf_get(wqe_ctxt_tag,
+ 						     &wqe->xmit_els_rsp.wqe_com);
+-		phba->defer_flogi_acc_ox_id = bf_get(wqe_rcvoxid,
++		phba->defer_flogi_acc.ox_id = bf_get(wqe_rcvoxid,
+ 						     &wqe->xmit_els_rsp.wqe_com);
+ 
+ 		vport->fc_myDID = did;
+@@ -8464,11 +8468,17 @@ lpfc_els_rcv_flogi(struct lpfc_vport *vport, struct lpfc_iocbq *cmdiocb,
+ 		lpfc_printf_vlog(vport, KERN_INFO, LOG_ELS,
+ 				 "3344 Deferring FLOGI ACC: rx_id: x%x,"
+ 				 " ox_id: x%x, hba_flag x%lx\n",
+-				 phba->defer_flogi_acc_rx_id,
+-				 phba->defer_flogi_acc_ox_id, phba->hba_flag);
++				 phba->defer_flogi_acc.rx_id,
++				 phba->defer_flogi_acc.ox_id, phba->hba_flag);
+ 
+-		phba->defer_flogi_acc_flag = true;
++		phba->defer_flogi_acc.flag = true;
+ 
++		/* This nlp_get is paired with nlp_puts that reset the
++		 * defer_flogi_acc.flag back to false.  We need to retain
++		 * a kref on the ndlp until the deferred FLOGI ACC is
++		 * processed or cancelled.
++		 */
++		phba->defer_flogi_acc.ndlp = lpfc_nlp_get(ndlp);
+ 		return 0;
+ 	}
+ 
+@@ -10504,7 +10514,7 @@ lpfc_els_unsol_buffer(struct lpfc_hba *phba, struct lpfc_sli_ring *pring,
+ 
+ 		lpfc_els_rcv_flogi(vport, elsiocb, ndlp);
+ 		/* retain node if our response is deferred */
+-		if (phba->defer_flogi_acc_flag)
++		if (phba->defer_flogi_acc.flag)
+ 			break;
+ 		if (newnode)
+ 			lpfc_disc_state_machine(vport, ndlp, NULL,
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index f21c5993e8d72..35c9181c6608a 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -1255,7 +1255,14 @@ lpfc_linkdown(struct lpfc_hba *phba)
+ 	lpfc_scsi_dev_block(phba);
+ 	offline = pci_channel_offline(phba->pcidev);
+ 
+-	phba->defer_flogi_acc_flag = false;
++	/* Decrement the held ndlp if there is a deferred flogi acc */
++	if (phba->defer_flogi_acc.flag) {
++		if (phba->defer_flogi_acc.ndlp) {
++			lpfc_nlp_put(phba->defer_flogi_acc.ndlp);
++			phba->defer_flogi_acc.ndlp = NULL;
++		}
++	}
++	phba->defer_flogi_acc.flag = false;
+ 
+ 	/* Clear external loopback plug detected flag */
+ 	phba->link_flag &= ~LS_EXTERNAL_LOOPBACK;
+@@ -1377,7 +1384,7 @@ lpfc_linkup_port(struct lpfc_vport *vport)
+ 		(vport != phba->pport))
+ 		return;
+ 
+-	if (phba->defer_flogi_acc_flag) {
++	if (phba->defer_flogi_acc.flag) {
+ 		clear_bit(FC_ABORT_DISCOVERY, &vport->fc_flag);
+ 		clear_bit(FC_RSCN_MODE, &vport->fc_flag);
+ 		clear_bit(FC_NLP_MORE, &vport->fc_flag);
 -- 
 2.43.0
 
