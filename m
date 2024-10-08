@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-82516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB811994DAC
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:08:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DA9994A8E
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 114EFB2C7DB
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:02:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 340A6B21C43
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D5817F4FF;
-	Tue,  8 Oct 2024 13:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A411DED74;
+	Tue,  8 Oct 2024 12:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIU7sM9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsVDr99E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E211DDC35;
-	Tue,  8 Oct 2024 13:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DDF178384;
+	Tue,  8 Oct 2024 12:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392527; cv=none; b=e6p7N1uTnsmn3GrEaDjjbmCjz1r25WVPHnGQL0IdqR7FJIAf6/1GQ9nTKxUW+b3tVAhJQRvYBFnN17Px54nSAkr4TfUBXlBudWZX/C/TPO0MIjPjXrifOVHo2rRr7M4eQVQnnQCs5uT+p82BZQhUnB9NtMM0E9xOVZ2EvofKBts=
+	t=1728390831; cv=none; b=M1Ah4YZOpiGmdQFR5EBG4Kbl1QxP9xPD24qfVpXdS9QNVfWoN5UrLfgRoKgLRtHjz+4YgRx6HykU+GqiDzrz4d7TK6VpuZTkyVtZ+0UaAt1Fxv8GVjKBVLDiH/6RmYkbWC5ho7m8liednWKsHY0hzp2qwCrB3zjkJtxxifB8Q3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392527; c=relaxed/simple;
-	bh=5s3Q29K6AHPcxmakH2OrZwNdg8a8FudDWZ1/VdyDFQU=;
+	s=arc-20240116; t=1728390831; c=relaxed/simple;
+	bh=6z+SW5Ou73mvoU7Z6qwtXazVO/IZl1s0j3WDXLZHwxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKduEzVsuRYmizthvCCiVQRUSNqv6JnrYaAH2//JbQDKxL3qsRQufci41ssxx9/ROVUo6+7AjATBm+KcAAJw3ZWtTtFg0CsQZEhgglYVw5aq5fSR7WuNUQwndGbNICPGT78+FwSpmq0+WKAjwM0+WYjcLCR6DPt78qR87OPrmYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIU7sM9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9684C4CEC7;
-	Tue,  8 Oct 2024 13:02:06 +0000 (UTC)
+	 MIME-Version; b=IRj1F441RpJw76VnTko5Y4XfJRKE66Nis4Msgpow2Hx+oY4oQn3bN4bbXoQ759qEjTG14nUqGery0iD0UPTNhMA1g83c8fwA5jdwEXcNSKszwwdfwJsz74+HqqRS0MO4iJFN03uPOoIBv9cGLNxgNR9K01DKBuI8yW5KpZwFUAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsVDr99E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A9EC4CECE;
+	Tue,  8 Oct 2024 12:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392527;
-	bh=5s3Q29K6AHPcxmakH2OrZwNdg8a8FudDWZ1/VdyDFQU=;
+	s=korg; t=1728390831;
+	bh=6z+SW5Ou73mvoU7Z6qwtXazVO/IZl1s0j3WDXLZHwxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIU7sM9vnHz5fTMF5ijb7qlQAdq+4oW6GcfmPIJb2bDvJRHYD6hYL+SHBn1fwSy/V
-	 XWlUuBeh90h8baPryFqInjfJhgr1WywA0IBaWcbPM1DwM4c0gUZq9khpdDN4iJaibt
-	 kr62DDTNmNQuBwYzPQt/jO/vGYQo+N24SSxFD9Fo=
+	b=bsVDr99EGbXCngTCXzXXar+h1YPUF1ue82N8TD04pkCHzoILI5hxrf4JLOt3haIX1
+	 atmr6DIcZDUxTaOCyvSe2aMtvnjf4M351MG452T0dgVw17Mkx3LJUyWpD0r87Zihj6
+	 D14s6onbeh/e5n0Lj+tnxTmS+ibp9rBgaYkbg6KY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.11 440/558] RDMA/mana_ib: use the correct page size for mapping user-mode doorbell page
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	KhaiWenTan <khai.wen.tan@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 407/482] net: stmmac: Fix zero-division error when disabling tc cbs
 Date: Tue,  8 Oct 2024 14:07:50 +0200
-Message-ID: <20241008115719.583600038@linuxfoundation.org>
+Message-ID: <20241008115704.426426644@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: KhaiWenTan <khai.wen.tan@linux.intel.com>
 
-commit 4a3b99bc04e501b816db78f70064e26a01257910 upstream.
+commit 675faf5a14c14a2be0b870db30a70764df81e2df upstream.
 
-When mapping doorbell page from user-mode, the driver should use the system
-page size as this memory is allocated via mmap() from user-mode.
+The commit b8c43360f6e4 ("net: stmmac: No need to calculate speed divider
+when offload is disabled") allows the "port_transmit_rate_kbps" to be
+set to a value of 0, which is then passed to the "div_s64" function when
+tc-cbs is disabled. This leads to a zero-division error.
 
-Cc: stable@vger.kernel.org
-Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/1725030993-16213-2-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+When tc-cbs is disabled, the idleslope, sendslope, and credit values the
+credit values are not required to be configured. Therefore, adding a return
+statement after setting the txQ mode to DCB when tc-cbs is disabled would
+prevent a zero-division error.
+
+Fixes: b8c43360f6e4 ("net: stmmac: No need to calculate speed divider when offload is disabled")
+Cc: <stable@vger.kernel.org>
+Co-developed-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Signed-off-by: KhaiWenTan <khai.wen.tan@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240918061422.1589662-1-khai.wen.tan@linux.intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/main.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -511,13 +511,13 @@ int mana_ib_mmap(struct ib_ucontext *ibc
- 	      PAGE_SHIFT;
- 	prot = pgprot_writecombine(vma->vm_page_prot);
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -396,6 +396,7 @@ static int tc_setup_cbs(struct stmmac_pr
+ 			return ret;
  
--	ret = rdma_user_mmap_io(ibcontext, vma, pfn, gc->db_page_size, prot,
-+	ret = rdma_user_mmap_io(ibcontext, vma, pfn, PAGE_SIZE, prot,
- 				NULL);
- 	if (ret)
- 		ibdev_dbg(ibdev, "can't rdma_user_mmap_io ret %d\n", ret);
- 	else
--		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %u, ret %d\n",
--			  pfn, gc->db_page_size, ret);
-+		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %lu, ret %d\n",
-+			  pfn, PAGE_SIZE, ret);
+ 		priv->plat->tx_queues_cfg[queue].mode_to_use = MTL_QUEUE_DCB;
++		return 0;
+ 	}
  
- 	return ret;
- }
+ 	/* Final adjustments for HW */
 
 
 
