@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062FE9948EE
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:18:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73216994BA4
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B92E8283630
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:18:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE264B213FE
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190DB18FC70;
-	Tue,  8 Oct 2024 12:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CC61DF273;
+	Tue,  8 Oct 2024 12:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et4WTK43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgIKD5IR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B2C165F08;
-	Tue,  8 Oct 2024 12:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55CD1DC759;
+	Tue,  8 Oct 2024 12:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389881; cv=none; b=nkpSCmoRw9ItyiTqBkL+v0cR9kF5X0JjJXdJASlMeMnCfo3V/YoyMvpR9o9CUFOSo/WKlQSPUWIuh+4XFtmzd3CGpw038x64vCNzAaa8zRroOJsX8pCuVIadjwiL33A8dYWNhNbEb879wAfvcrc6GHFYEssmrFZIkm3LWJrIIa8=
+	t=1728391476; cv=none; b=OqgeFygb6oR4QSLfSMxsUrGRjrq/uATuhdxDpcJ3Q/kjJ8nUoJhKIXLrX9h3TCfZ7+vaKmh72oAUitB0K2dNtRNyy/bz8Y6UPQIoAuoZV0RWPTZKhJvliiGpnct9wdE+f/xwqa3/hHGgVipY+UWKiKHsB6CwJJuaEpclZDmiU5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389881; c=relaxed/simple;
-	bh=42WujRfWVzw+zU+uIfEDEuNCLCxt1pW4o3FsmmdqH2I=;
+	s=arc-20240116; t=1728391476; c=relaxed/simple;
+	bh=7hZOdFkkecq9Fr0W2I5jDwX+VYRGhxBNJCGDzs6MNBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PD33ApCX3v3yxk6Tf1lCaH7Ice+pzZpeJeNZ3N1V7CTmPh/EpCbZ5FIJklioXjuCgTsEV+dC0GlT5NvCoT+6ubl1LE2Dzlyj+Q5n47US74rySTFUql66DIjTalf/VyGrfX+nQYAGpBuqlz0+87CkSNT8EcKpAytSLZGQJ97UDkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et4WTK43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D888C4CEC7;
-	Tue,  8 Oct 2024 12:18:00 +0000 (UTC)
+	 MIME-Version; b=PMKnQI0/AysnDEtbcY0ZrZ1J/395VkttZFSD+2dDseuiv0LgOIhgLY5ndDNcXdhac1SOc+gErte8R0Nq3T/kWBqTchEioyhgYkGLGznfff7UHeUjPlSizTypBSJ/k/KR2DnSt+6G0RDILOAK7qmfhPy4roQrwPLF+wUd4CCntuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgIKD5IR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528AFC4CECD;
+	Tue,  8 Oct 2024 12:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389881;
-	bh=42WujRfWVzw+zU+uIfEDEuNCLCxt1pW4o3FsmmdqH2I=;
+	s=korg; t=1728391475;
+	bh=7hZOdFkkecq9Fr0W2I5jDwX+VYRGhxBNJCGDzs6MNBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et4WTK43r94WunYQpatU5uU3X/s2Ial+PIo4hGokJ5xfNjm0/qpHwV6Ag1P3EFqII
-	 ikDK5whZb0cqB4Yhm9hvAY16zBxr3na9tp2Io/XjIWEbMs0qiZ3qxNxn6Z3CW43THJ
-	 5i8buOIkElJcl+O9qauNe2XVGC/3Kzz1g3BRtO1o=
+	b=EgIKD5IRsEXpZm6DcoGOkHdk6eIN3lUq3flEBG7cYJol67Werwz+Rq/1xu3/g3aYl
+	 f3x20vFnJAZijxjYsWWpXZXGS85NSfQ3zL+IfvhvPP8PU9egQiPgft1r4uVoayXYWV
+	 whmw7NnvmcnioC+O3naibL89qwSU+MJ8Zh6DNFG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 093/482] Bluetooth: btusb: Add Realtek RTL8852C support ID 0x0489:0xe122
+Subject: [PATCH 6.11 126/558] ipv4: Check !in_dev earlier for ioctl(SIOCSIFADDR).
 Date: Tue,  8 Oct 2024 14:02:36 +0200
-Message-ID: <20241008115651.971199864@linuxfoundation.org>
+Message-ID: <20241008115707.323205806@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit bdf9557f70e7512bb2f754abf90d9e9958745316 ]
+[ Upstream commit e3af3d3c5b26c33a7950e34e137584f6056c4319 ]
 
-Add the support ID (0x0489, 0xe122) to usb_device_id table for
-Realtek RTL8852C.
+dev->ip_ptr could be NULL if we set an invalid MTU.
 
-The device info from /sys/kernel/debug/usb/devices as below.
+Even then, if we issue ioctl(SIOCSIFADDR) for a new IPv4 address,
+devinet_ioctl() allocates struct in_ifaddr and fails later in
+inet_set_ifa() because in_dev is NULL.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e122 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+Let's move the check earlier.
 
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240809235406.50187-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/devinet.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index c41b86608ba86..dd7d9b7fd1c42 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -539,6 +539,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3592), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe122), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index d96f3e452fef6..ddab151164542 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -574,10 +574,6 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
  
- 	/* Realtek 8852BE Bluetooth devices */
- 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 	ASSERT_RTNL();
+ 
+-	if (!in_dev) {
+-		inet_free_ifa(ifa);
+-		return -ENOBUFS;
+-	}
+ 	ipv4_devconf_setall(in_dev);
+ 	neigh_parms_data_state_setall(in_dev->arp_parms);
+ 	if (ifa->ifa_dev != in_dev) {
+@@ -1184,6 +1180,8 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 
+ 		if (!ifa) {
+ 			ret = -ENOBUFS;
++			if (!in_dev)
++				break;
+ 			ifa = inet_alloc_ifa();
+ 			if (!ifa)
+ 				break;
 -- 
 2.43.0
 
