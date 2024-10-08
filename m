@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BA5994AE5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:37:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C60994FD9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A248D1C25146
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:37:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA8FB23290
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B441DED7E;
-	Tue,  8 Oct 2024 12:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A691DF72C;
+	Tue,  8 Oct 2024 13:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gM0GIVX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zClReO3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDC01DED79;
-	Tue,  8 Oct 2024 12:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE1D1DF256;
+	Tue,  8 Oct 2024 13:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391061; cv=none; b=Rok9MwNtQIk/G2lJ8DxWQuxMfdESL49G7HIYKq71sdltXxrjjodny40IQLKBM0oJrepP3IS2Gvbq6Ovs9gzCTng3bmLV7bhiN1dc2UHbGyaa9wAQw+3uxLQSe8kRrCFi49AH4SHeiM9KdpDu6C0wDdpBOcNZ1znyuLLw5EAtcqE=
+	t=1728394037; cv=none; b=Gud8Y6AZMBvMouFaVqBZoqkHc78G3YFuiARvkDiVd19UlAY1yZBpHXl0er8JbzpIUNlRfJ+LSqwdSo+qBFOTL4YWHzfDMriI3t7PtOiMN1COOkNTW5C6vUwXGcn8gwHj28JT/g8zDYVOx6eau+X+BBHwRumkPQTNMAMvtKZhNRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391061; c=relaxed/simple;
-	bh=9JJxbPhhY5hVq3ndOT+LP5l0WFhKDhSlGy9hAHcko9I=;
+	s=arc-20240116; t=1728394037; c=relaxed/simple;
+	bh=JOqUPGXyinpEs9zvaPT5Iely1I/nsCvlAnSaa9YdtV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnJxPTxn+IQrKj/VfmcYQX3x4J93tO6xT0PjTuac39v+9+fGkCY7KN0Q0/MIgezVPWJrJvZi4vvSMw+DtF6I8FyXBpUe3tk0NPh721IxIiYrVnY8JkUgaBJ4P6sx0YYeShNYoxy9ty1DzSLPH3oz6Ov4M8/nMAZoCGcwM+evTFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gM0GIVX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF879C4CECC;
-	Tue,  8 Oct 2024 12:37:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XSwlwBI1ydYgC40zDJtWQuAkElccCCd1TGMJ2DPkJG+/T1xvg4rlVnDOJlBdAgLp36H04gov0jqvnS2q3t0ak8t3fLAeJp9GQgPmNnFP5jNhjQKm/L9h1BIKjt1swIQkUZZU8TujYVEc1rr3ug1dZHwgcaHizjfC/gCQXZe3KLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zClReO3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDC1C4CEC7;
+	Tue,  8 Oct 2024 13:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391061;
-	bh=9JJxbPhhY5hVq3ndOT+LP5l0WFhKDhSlGy9hAHcko9I=;
+	s=korg; t=1728394037;
+	bh=JOqUPGXyinpEs9zvaPT5Iely1I/nsCvlAnSaa9YdtV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gM0GIVX5Em3Z8zbefzgbAMWwaA6l7Alvhal3cb6KksoQUqePxAEDK//vEeD8E4LFx
-	 y65FDxeobFu8/klivzZI6R1UVMnUol6ClifbKpXbh/zoAuNjA0PE+ai3upYGjCrIK/
-	 6i57nytsE0aVDHCZNZR8z3xEmQgYRHoGB2KE6qAY=
+	b=zClReO3k9UVoih2ik9UCraeN+kuTAJEVwSr3yyFLpSen6yxHA48cpG58RSCn/NnkY
+	 Hs5h0wJiIkmhUQDxa6Js25VEmK04FFY8/QTb702xv/oBbQHKfvq+jVCnoinyic6w4L
+	 WzM/tTuj/52MBySiuXNNejPA6NutPsEb6Sysxdq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.10 479/482] crypto: octeontx* - Select CRYPTO_AUTHENC
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 297/386] iio: magnetometer: ak8975: Fix reading for ak099xx sensors
 Date: Tue,  8 Oct 2024 14:09:02 +0200
-Message-ID: <20241008115707.359587482@linuxfoundation.org>
+Message-ID: <20241008115641.074481070@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-commit c398cb8eb0a263a1b7a18892d9f244751689675c upstream.
+commit 129464e86c7445a858b790ac2d28d35f58256bbe upstream.
 
-Select CRYPTO_AUTHENC as the function crypto_authenec_extractkeys
-may not be available without it.
+Move ST2 reading with overflow handling after measurement data
+reading.
+ST2 register read have to be read after read measurment data,
+because it means end of the reading and realease the lock on the data.
+Remove ST2 read skip on interrupt based waiting because ST2 required to
+be read out at and of the axis read.
 
-Fixes: 311eea7e37c4 ("crypto: octeontx - Fix authenc setkey")
-Fixes: 7ccb750dcac8 ("crypto: octeontx2 - Fix authenc setkey")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202409042013.gT2ZI4wR-lkp@intel.com/
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 57e73a423b1e ("iio: ak8975: add ak09911 and ak09912 support")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://patch.msgid.link/20240819-ak09918-v4-2-f0734d14cfb9@mainlining.org
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/marvell/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/magnetometer/ak8975.c |   32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/crypto/marvell/Kconfig
-+++ b/drivers/crypto/marvell/Kconfig
-@@ -28,6 +28,7 @@ config CRYPTO_DEV_OCTEONTX_CPT
- 	select CRYPTO_SKCIPHER
- 	select CRYPTO_HASH
- 	select CRYPTO_AEAD
-+	select CRYPTO_AUTHENC
- 	select CRYPTO_DEV_MARVELL
- 	help
- 		This driver allows you to utilize the Marvell Cryptographic
-@@ -47,6 +48,7 @@ config CRYPTO_DEV_OCTEONTX2_CPT
- 	select CRYPTO_SKCIPHER
- 	select CRYPTO_HASH
- 	select CRYPTO_AEAD
-+	select CRYPTO_AUTHENC
- 	select NET_DEVLINK
- 	help
- 		This driver allows you to utilize the Marvell Cryptographic
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -692,22 +692,8 @@ static int ak8975_start_read_axis(struct
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	/* This will be executed only for non-interrupt based waiting case */
+-	if (ret & data->def->ctrl_masks[ST1_DRDY]) {
+-		ret = i2c_smbus_read_byte_data(client,
+-					       data->def->ctrl_regs[ST2]);
+-		if (ret < 0) {
+-			dev_err(&client->dev, "Error in reading ST2\n");
+-			return ret;
+-		}
+-		if (ret & (data->def->ctrl_masks[ST2_DERR] |
+-			   data->def->ctrl_masks[ST2_HOFL])) {
+-			dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return 0;
++	/* Return with zero if the data is ready. */
++	return !data->def->ctrl_regs[ST1_DRDY];
+ }
+ 
+ /* Retrieve raw flux value for one of the x, y, or z axis.  */
+@@ -734,6 +720,20 @@ static int ak8975_read_axis(struct iio_d
+ 	if (ret < 0)
+ 		goto exit;
+ 
++	/* Read out ST2 for release lock on measurment data. */
++	ret = i2c_smbus_read_byte_data(client, data->def->ctrl_regs[ST2]);
++	if (ret < 0) {
++		dev_err(&client->dev, "Error in reading ST2\n");
++		goto exit;
++	}
++
++	if (ret & (data->def->ctrl_masks[ST2_DERR] |
++		   data->def->ctrl_masks[ST2_HOFL])) {
++		dev_err(&client->dev, "ST2 status error 0x%x\n", ret);
++		ret = -EINVAL;
++		goto exit;
++	}
++
+ 	mutex_unlock(&data->lock);
+ 
+ 	pm_runtime_mark_last_busy(&data->client->dev);
 
 
 
