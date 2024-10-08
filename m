@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-81819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04178994991
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:25:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10336994E01
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D73EB25603
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:25:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B83081F2207D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDCD1DDC24;
-	Tue,  8 Oct 2024 12:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8AE1DED65;
+	Tue,  8 Oct 2024 13:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYKlsiIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POI93PK8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2811D27B3;
-	Tue,  8 Oct 2024 12:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4391DE8B1;
+	Tue,  8 Oct 2024 13:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390239; cv=none; b=iz0LmUGnL8L7GGr9h1T0mhHjvryk+esoOcklBmmAUaZj8DaYEMqQT3GKErPyvStacxKiGOyRZ22PLafoiukFhz2QM62Ws0nIOaksCjZQnr6qQEUdYbobL0Qs0eplEt7pJCzfEl7JRculgBZmENQtUON2cBDZxV6GHk8N8UHcZMg=
+	t=1728393101; cv=none; b=U9cfy2P1li2+Rb2RxPiBum/lThFgmOigjz912LKLYjqDPYzFnxkp7kn1ziYglrzz+PM3aU4OVtXiBgMyd7EzKABDGPF//PcQJoQ92w2WqKh6vY0oU9e1yovi9yopwqLfAcYPGl6XpItO21JDbI8+WK1tlt9hgPcsEX5lEJy/E/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390239; c=relaxed/simple;
-	bh=lU0vmN1yUuplXu4/fS8WLPq/fLuDnAL1gE8jCC3j0YE=;
+	s=arc-20240116; t=1728393101; c=relaxed/simple;
+	bh=v4GO/fFmt90bZ1OXHb0c7H9GxeuGH8IM1LviQ0MKtQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3tqIYKHHIcsHHSFWT0gHM541ojl3t1TmHVIcWJ2GvyGd0zwvbXI019hX1N9CBSnkB3Lz3QpawJ31/OZcMR9N3HJqh21m7jW25CJRyCHkp0hkDDgNgcI8KQNEpRQIiQKXDAaLGB8zZ64S95VzlLJEAMayy/tawKopEZUgQvwF8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYKlsiIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23EFC4CEC7;
-	Tue,  8 Oct 2024 12:23:58 +0000 (UTC)
+	 MIME-Version; b=Tm6xpdHI+6ZK44+Z0E3LG1ZbM3PnT/eNeCcUL7fMC0g4TQ6whmU2jFUSY7jneVnAaeQbfZ10pAu8j2W5S5eNMSYddQwtAgcqcXnhlIvqftQ4NRGmVyghtHpxaU/D3XsnSd1gEuJFKF1Sd/38yaeMeUB1i5deZUL7IXvauqMvRz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POI93PK8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E5DC4CECC;
+	Tue,  8 Oct 2024 13:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390239;
-	bh=lU0vmN1yUuplXu4/fS8WLPq/fLuDnAL1gE8jCC3j0YE=;
+	s=korg; t=1728393101;
+	bh=v4GO/fFmt90bZ1OXHb0c7H9GxeuGH8IM1LviQ0MKtQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYKlsiIuErCwgHRA9ILXMmZkq9+EWimNsj4AJPLTYPWRvQZ0fTUlMae1Yt0jcKlaF
-	 tmBnvLHAIIq6muSvifD4nw7YjSOWtftDvZYMNus/rRSgZ/Rx605yAqQgKuzxthR0Ft
-	 bUOS55G/oigwTMYDbagensRfjgamtRmBU8ZyJ4RQ=
+	b=POI93PK88ERxhq1ldYlKrxFsrtF5LTTciPX2jhKMgt5+/VHE84ZTn4NF0TT2v8ToM
+	 HXTw7OQMjfjuu9jNdSCBCWkVL1Mkc60d/pcBu4Lp3RW3nSeXEQQduPbBGDs8PRDEXe
+	 /A5Yk9KpHnC+zrk0awyHT108YN5ikMepi4Pspczg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hui Wang <hui.wang@canonical.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 232/482] drm/amdgpu/gfx9: use rlc safe mode for soft recovery
-Date: Tue,  8 Oct 2024 14:04:55 +0200
-Message-ID: <20241008115657.431146143@linuxfoundation.org>
+Subject: [PATCH 6.6 051/386] ASoC: imx-card: Set card.owner to avoid a warning calltrace if SND=m
+Date: Tue,  8 Oct 2024 14:04:56 +0200
+Message-ID: <20241008115631.479304920@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Hui Wang <hui.wang@canonical.com>
 
-[ Upstream commit 3ec2ad7c34c412bd9264cd1ff235d0812be90e82 ]
+[ Upstream commit 47d7d3fd72afc7dcd548806291793ee6f3848215 ]
 
-Protect the MMIO access with safe mode.
+In most Linux distribution kernels, the SND is set to m, in such a
+case, when booting the kernel on i.MX8MP EVK board, there is a
+warning calltrace like below:
+ Call trace:
+ snd_card_init+0x484/0x4cc [snd]
+ snd_card_new+0x70/0xa8 [snd]
+ snd_soc_bind_card+0x310/0xbd0 [snd_soc_core]
+ snd_soc_register_card+0xf0/0x108 [snd_soc_core]
+ devm_snd_soc_register_card+0x4c/0xa4 [snd_soc_core]
 
-Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+That is because the card.owner is not set, a warning calltrace is
+raised in the snd_card_init() due to it.
+
+Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Link: https://patch.msgid.link/20241002025659.723544-1-hui.wang@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/fsl/imx-card.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index b278453cad6d4..d8d3d2c93d8ee 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -5701,7 +5701,9 @@ static void gfx_v9_0_ring_soft_recovery(struct amdgpu_ring *ring, unsigned vmid)
- 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
- 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
- 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
-+	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
- 	WREG32_SOC15(GC, 0, mmSQ_CMD, value);
-+	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
- }
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 356a0bc3b126b..f8144bf4c90d3 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -714,6 +714,7 @@ static int imx_card_probe(struct platform_device *pdev)
  
- static void gfx_v9_0_set_gfx_eop_interrupt_state(struct amdgpu_device *adev,
+ 	data->plat_data = plat_data;
+ 	data->card.dev = &pdev->dev;
++	data->card.owner = THIS_MODULE;
+ 
+ 	dev_set_drvdata(&pdev->dev, &data->card);
+ 	snd_soc_card_set_drvdata(&data->card, data);
 -- 
 2.43.0
 
