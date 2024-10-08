@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22671994BB3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:46:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544579948A9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AC301F285D5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:46:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63F4D1C20E46
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DFF1DF275;
-	Tue,  8 Oct 2024 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C360F16EB42;
+	Tue,  8 Oct 2024 12:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bJrQh55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWh9t+vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CA41DF24D;
-	Tue,  8 Oct 2024 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E2333981;
+	Tue,  8 Oct 2024 12:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391529; cv=none; b=sB9y5f8jCy/V7rTtKeBvLCU4nAOmdGXfNQJk4XANqLnOVHgFviq+yfsXjWVUgdeXq20x36kzmnanfSTXmJuOiFXnoDqi1yLUevCiut2slH1rj+9B7Oujg6CdGBOmu42F/iMowIVaywWk5xH5GGoRxp4KJMdqQbx9BtsQOVYMdnk=
+	t=1728389727; cv=none; b=AFtkRPf/t0TrJSQnxF81ZT+iiWvXZPaI9mO/Bob7kuSToGMCeVNQJ0RbttDXJZl6HKucuWbrmgHHHY1DYkRdzvzvJ7TQx5p2LvXC21a9De1xpcyKxISu1H5LwV+IrlleOmQ+BMTdpFf4WCjFcsbdcZFYNn4yIaIF28YdGZCd9Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391529; c=relaxed/simple;
-	bh=9fEPEru50mLT8462UNS/tvxwkc5z5YuEo/hmAPwpWCk=;
+	s=arc-20240116; t=1728389727; c=relaxed/simple;
+	bh=baAnRgF5QraSWKXFcKMkTXg59UlvKXi/YeXta0EOsb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BUUbYnYVkLpbGR9iKi564OPrK8/lB8CPqqkHvcGnfCZ7nOX0poBKFB+kXnln5iUQObSjPnk5c9tmm+V1IQDMXqc6XDiM/uk75LqT30B7peYG2CXGgbl0XQ8l83U8kU1a3GFUB7GL561FbrZxeA2pCn6CIrjsYQHCuCggqW0hUJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bJrQh55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3DCDC4CEC7;
-	Tue,  8 Oct 2024 12:45:28 +0000 (UTC)
+	 MIME-Version; b=BKVrIvT88UVbZv+RhEFePZimaag8ZtRyK/UQvEesLb3c5S6au5DcUC3w6r8R0U4T/WlPjqeshhNxBJ2KnZHBrzq9gz658BSzS7yGEqT2XIKoxyjo5N+Pzmr6AadlBOgAWCgmykEFw8KGbaXitnazllTMc/W9MX2zo7uGUrOpe9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWh9t+vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05348C4CEC7;
+	Tue,  8 Oct 2024 12:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391529;
-	bh=9fEPEru50mLT8462UNS/tvxwkc5z5YuEo/hmAPwpWCk=;
+	s=korg; t=1728389727;
+	bh=baAnRgF5QraSWKXFcKMkTXg59UlvKXi/YeXta0EOsb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bJrQh55Nz1slRWFWLNwDhS7FosacCFAucBQK8d/etUhzD9ZsbJx2rbs3h28SpcMv
-	 fz19+fT2DbLG52oD2ALNYT8qjKk3Ru8MAZFB6NKob9rqq0rmDJLCVe1OO9NhZ/mHfY
-	 TDIfsH9T9N95xyNmtW99QD1jMaelFtWsPS4OLcvE=
+	b=rWh9t+vmVGl8atHfi2DsGiuX3VaaIYtxWwEGMbNOW6vrWcSUNiltzUMIlfR4LZEJJ
+	 /cEn8rZmUAeC0Bl77M8F3NbLMwCOLLaeIqnxRLIZZtjODZ8mwX6sPiCbz4fEus6Hr7
+	 4QeuZDFVzxY3N3iJA/GDRDBh2mZvY+E6NrueOJoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	al0uette@outlook.com,
-	vderp@icloud.com,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 111/558] ACPI: CPPC: Add support for setting EPP register in FFH
+Subject: [PATCH 6.10 078/482] wifi: iwlwifi: mvm: Fix a race in scan abort flow
 Date: Tue,  8 Oct 2024 14:02:21 +0200
-Message-ID: <20241008115706.734247056@linuxfoundation.org>
+Message-ID: <20241008115651.375997154@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit aaf21ac93909e08a12931173336bdb52ac8499f1 ]
+[ Upstream commit 87c1c28a9aa149489e1667f5754fc24f4973d2d0 ]
 
-Some Asus AMD systems are reported to not be able to change EPP values
-because the BIOS doesn't advertise support for the CPPC MSR and the PCC
-region is not configured.
+When the upper layer requests to cancel an ongoing scan, a race
+is possible in which by the time the driver starts to handle the
+upper layers scan cancel flow, the FW already completed handling
+the scan request and the driver received the scan complete
+notification but still did not handle the notification. In such a
+case the FW will simply ignore the scan abort request coming from
+the driver, no notification would arrive from the FW and the entire
+abort flow would be considered a failure.
 
-However the ACPI 6.2 specification allows CPC registers to be declared
-in FFH:
-```
-Starting with ACPI Specification 6.2, all _CPC registers can be in
-PCC, System Memory, System IO, or Functional Fixed Hardware address
-spaces. OSPM support for this more flexible register space scheme
-is indicated by the “Flexible Address Space for CPPC Registers” _OSC
-bit.
-```
+To better handle this, check the status code returned by the FW for
+the scan abort command. In case the status indicates that
+no scan was aborted, complete the scan abort flow with success, i.e.,
+the scan was aborted, as the flow is expected to consume the scan
+complete notification.
 
-If this _OSC has been set allow using FFH to configure EPP.
-
-Reported-by: al0uette@outlook.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218686
-Suggested-by: al0uette@outlook.com
-Tested-by: vderp@icloud.com
-Tested-by: al0uette@outlook.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20240910031524.106387-1-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825085558.483989d3baef.I3340556a222388504c6330b333360bf77d10f9e2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 13 ++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 42 +++++++++++++++----
+ 2 files changed, 47 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 28adea68e1cd6..5b06e236aabef 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -103,6 +103,11 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_ptr);
- 				(cpc)->cpc_entry.reg.space_id ==	\
- 				ACPI_ADR_SPACE_PLATFORM_COMM)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
+index 6684506f4fc48..6cf237850ea0c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
+@@ -1132,6 +1132,19 @@ struct iwl_umac_scan_abort {
+ 	__le32 flags;
+ } __packed; /* SCAN_ABORT_CMD_UMAC_API_S_VER_1 */
  
-+/* Check if a CPC register is in FFH */
-+#define CPC_IN_FFH(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&		\
-+				(cpc)->cpc_entry.reg.space_id ==	\
-+				ACPI_ADR_SPACE_FIXED_HARDWARE)
++/**
++ * enum iwl_umac_scan_abort_status
++ *
++ * @IWL_UMAC_SCAN_ABORT_STATUS_SUCCESS: scan was successfully aborted
++ * @IWL_UMAC_SCAN_ABORT_STATUS_IN_PROGRESS: scan abort is in progress
++ * @IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND: nothing to abort
++ */
++enum iwl_umac_scan_abort_status {
++	IWL_UMAC_SCAN_ABORT_STATUS_SUCCESS = 0,
++	IWL_UMAC_SCAN_ABORT_STATUS_IN_PROGRESS,
++	IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND,
++};
 +
- /* Check if a CPC register is in SystemMemory */
- #define CPC_IN_SYSTEM_MEMORY(cpc) ((cpc)->type == ACPI_TYPE_BUFFER &&	\
- 				(cpc)->cpc_entry.reg.space_id ==	\
-@@ -1521,9 +1526,12 @@ int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
- 		/* after writing CPC, transfer the ownership of PCC to platform */
- 		ret = send_pcc_cmd(pcc_ss_id, CMD_WRITE);
- 		up_write(&pcc_ss_data->pcc_lock);
-+	} else if (osc_cpc_flexible_adr_space_confirmed &&
-+		   CPC_SUPPORTED(epp_set_reg) && CPC_IN_FFH(epp_set_reg)) {
-+		ret = cpc_write(cpu, epp_set_reg, perf_ctrls->energy_perf);
- 	} else {
- 		ret = -ENOTSUPP;
--		pr_debug("_CPC in PCC is not supported\n");
-+		pr_debug("_CPC in PCC and _CPC in FFH are not supported\n");
+ /**
+  * struct iwl_umac_scan_complete
+  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index d7c276237c74e..d8a3d47f5c072 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -3313,13 +3313,23 @@ void iwl_mvm_rx_umac_scan_iter_complete_notif(struct iwl_mvm *mvm,
+ 		       mvm->scan_start);
+ }
+ 
+-static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
++static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type, bool *wait)
+ {
+-	struct iwl_umac_scan_abort cmd = {};
++	struct iwl_umac_scan_abort abort_cmd = {};
++	struct iwl_host_cmd cmd = {
++		.id = WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
++		.len = { sizeof(abort_cmd), },
++		.data = { &abort_cmd, },
++		.flags = CMD_SEND_IN_RFKILL,
++	};
++
+ 	int uid, ret;
++	u32 status = IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
++	*wait = true;
++
+ 	/* We should always get a valid index here, because we already
+ 	 * checked that this type of scan was running in the generic
+ 	 * code.
+@@ -3328,17 +3338,28 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
+ 	if (WARN_ON_ONCE(uid < 0))
+ 		return uid;
+ 
+-	cmd.uid = cpu_to_le32(uid);
++	abort_cmd.uid = cpu_to_le32(uid);
+ 
+ 	IWL_DEBUG_SCAN(mvm, "Sending scan abort, uid %u\n", uid);
+ 
+-	ret = iwl_mvm_send_cmd_pdu(mvm,
+-				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
+-				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
++	ret = iwl_mvm_send_cmd_status(mvm, &cmd, &status);
++
++	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d, status=%u\n", ret, status);
+ 	if (!ret)
+ 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
+ 
+-	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
++	/* Handle the case that the FW is no longer familiar with the scan that
++	 * is to be stopped. In such a case, it is expected that the scan
++	 * complete notification was already received but not yet processed.
++	 * In such a case, there is no need to wait for a scan complete
++	 * notification and the flow should continue similar to the case that
++	 * the scan was really aborted.
++	 */
++	if (status == IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND) {
++		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
++		*wait = false;
++	}
++
+ 	return ret;
+ }
+ 
+@@ -3348,6 +3369,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
+ 	static const u16 scan_done_notif[] = { SCAN_COMPLETE_UMAC,
+ 					      SCAN_OFFLOAD_COMPLETE, };
+ 	int ret;
++	bool wait = true;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+@@ -3359,7 +3381,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
+ 	IWL_DEBUG_SCAN(mvm, "Preparing to stop scan, type %x\n", type);
+ 
+ 	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_UMAC_SCAN))
+-		ret = iwl_mvm_umac_scan_abort(mvm, type);
++		ret = iwl_mvm_umac_scan_abort(mvm, type, &wait);
+ 	else
+ 		ret = iwl_mvm_lmac_scan_abort(mvm);
+ 
+@@ -3367,6 +3389,10 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
+ 		IWL_DEBUG_SCAN(mvm, "couldn't stop scan type %d\n", type);
+ 		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
+ 		return ret;
++	} else if (!wait) {
++		IWL_DEBUG_SCAN(mvm, "no need to wait for scan type %d\n", type);
++		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
++		return 0;
  	}
  
- 	return ret;
+ 	return iwl_wait_notification(&mvm->notif_wait, &wait_scan_done,
 -- 
 2.43.0
 
