@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-82475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6D2994CFA
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:00:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A523994EA2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CCF71C2519D
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9D072841B9
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891D81DED4B;
-	Tue,  8 Oct 2024 12:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6581DE4CC;
+	Tue,  8 Oct 2024 13:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhsuMt4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dApZnxtL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E88189910;
-	Tue,  8 Oct 2024 12:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA531DED4E;
+	Tue,  8 Oct 2024 13:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392387; cv=none; b=eB67GFDgjK8maYqj4bjQBLeOoskfIPEQMKUdaXUD8RLqPoAXPbghQwHQrtxLWKtm7S/0wpLOyqSnDHRFk8TkzuqQHz1hC6rc9JMrMCeOcfokkfrWmmy70vwqNo5F5HQjlN6LskouAkZCA+2mEBhQV3lXNJ/UsoXW/HBwWr1XBPg=
+	t=1728393555; cv=none; b=pm3pBGUyL2QmD7zXedjS/qntAUaNM9CU+pZ/n4B0VWywNS8krJyIrxB3lduyDZ/o2S5sMSXJLKlMCXxm+qkdgdAc8XezQRo8N7/sSJSxRdCIg4rFP+Pfr2DcfH5I7GdbmVsJGthcN02kowBWJT/uKs0k3SzOGy+vRkC3ls8KamE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392387; c=relaxed/simple;
-	bh=iXrjQlVD7jqYBGx9qpSndlJxpIabyxxDPGBuTB7SWDQ=;
+	s=arc-20240116; t=1728393555; c=relaxed/simple;
+	bh=YC9E3bvTJ7hN49WtkAHje9Qk2NVVPjrS7COHf2H/ZGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0UGGpbfhJAl2LyApLejHmdBQyEKMC3R/fa2+vRagP//EQpXIVfLJFDHqr5FuIZ1rVQMQMGCAYbufLJNDbVzVyfsRyyY1koZ8iViN8cy+9FVdmVQeuojMEft7BekE09Y+VmZ49A3uau2w9OUfSQLmhSc2JcqWLD58A4xSoVKV5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhsuMt4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC25CC4CEC7;
-	Tue,  8 Oct 2024 12:59:46 +0000 (UTC)
+	 MIME-Version; b=dd0X+ZgN0vgHxOr/iogi8FaPGgJJZsYDj8AOdfxFvzIk0nndKx/8iSFlgj72i1prmgceQTCHwTgBOVXtEtB3YU9pfolXZ6nNcBw9T138Rird66SEjP47aWlnJYVmM5hbTo09xvk84NRIfbq0NILJs5bDI7by5t+zwWeoML0jtZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dApZnxtL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD3FC4CEC7;
+	Tue,  8 Oct 2024 13:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392387;
-	bh=iXrjQlVD7jqYBGx9qpSndlJxpIabyxxDPGBuTB7SWDQ=;
+	s=korg; t=1728393555;
+	bh=YC9E3bvTJ7hN49WtkAHje9Qk2NVVPjrS7COHf2H/ZGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhsuMt4xnYpwyBxAWwW8NrR4Hb5Im1mkXkw7rH4txiBjtC0NS0xBi7A6NcAhFtuI1
-	 GIbmM9k8TYz6S6iXUDcQ3p1DCL3rB9l7LNk89Ij7LSFHHNQt6mk2bDcrIF/seKBGze
-	 qCpxvw/9ScULkUixLIdNdVYhzBgIfm/ZEQoujwnI=
+	b=dApZnxtLMnt0YgJcB+w4GBmBp9WOvkLo1W6qPFwelPIAHcHNT3SvK7jBVFCmHG0mx
+	 mpV4w9wkHJ22kfYuzs0eGB2GQ5435bV6cQVyDKslAeQfghmXuA8dYwkUj/nrDvdUUg
+	 p0hkK7YRysPmvbhWM/u6afVMZRQQwbV/cfCFVJlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.11 400/558] parisc: Fix 64-bit userspace syscall path
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 185/386] bpftool: Fix undefined behavior in qsort(NULL, 0, ...)
 Date: Tue,  8 Oct 2024 14:07:10 +0200
-Message-ID: <20241008115718.018919122@linuxfoundation.org>
+Message-ID: <20241008115636.692458161@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit d24449864da5838936669618356b0e30ca2999c3 upstream.
+[ Upstream commit f04e2ad394e2755d0bb2d858ecb5598718bf00d5 ]
 
-Currently the glibc isn't yet ported to 64-bit for hppa, so
-there is no usable userspace available yet.
-But it's possible to manually build a static 64-bit binary
-and run that for testing. One such 64-bit test program is
-available at http://ftp.parisc-linux.org/src/64bit.tar.gz
-and it shows various issues with the existing 64-bit syscall
-path in the kernel.
-This patch fixes those issues.
+When netfilter has no entry to display, qsort is called with
+qsort(NULL, 0, ...). This results in undefined behavior, as UBSan
+reports:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org      # v4.19+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+net.c:827:2: runtime error: null pointer passed as argument 1, which is declared to never be null
+
+Although the C standard does not explicitly state whether calling qsort
+with a NULL pointer when the size is 0 constitutes undefined behavior,
+Section 7.1.4 of the C standard (Use of library functions) mentions:
+
+"Each of the following statements applies unless explicitly stated
+otherwise in the detailed descriptions that follow: If an argument to a
+function has an invalid value (such as a value outside the domain of
+the function, or a pointer outside the address space of the program, or
+a null pointer, or a pointer to non-modifiable storage when the
+corresponding parameter is not const-qualified) or a type (after
+promotion) not expected by a function with variable number of
+arguments, the behavior is undefined."
+
+To avoid this, add an early return when nf_link_info is NULL to prevent
+calling qsort with a NULL pointer.
+
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20240910150207.3179306-1-visitorckw@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/syscall.S |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ tools/bpf/bpftool/net.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/parisc/kernel/syscall.S
-+++ b/arch/parisc/kernel/syscall.S
-@@ -243,10 +243,10 @@ linux_gateway_entry:
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index fd54ff436493f..28e9417a5c2e3 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -819,6 +819,9 @@ static void show_link_netfilter(void)
+ 		nf_link_count++;
+ 	}
  
- #ifdef CONFIG_64BIT
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -379,10 +379,10 @@ tracesys_next:
- 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
++	if (!nf_link_info)
++		return;
++
+ 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
  
- 	ldil	L%sys_call_table, %r1
--	or,=	%r2,%r2,%r2
--	addil	L%(sys_call_table64-sys_call_table), %r1
-+	or,ev	%r2,%r2,%r2
-+	ldil	L%sys_call_table64, %r1
- 	ldo	R%sys_call_table(%r1), %r19
--	or,=	%r2,%r2,%r2
-+	or,ev	%r2,%r2,%r2
- 	ldo	R%sys_call_table64(%r1), %r19
- #else
- 	load32	sys_call_table, %r19
-@@ -1327,6 +1327,8 @@ ENTRY(sys_call_table)
- END(sys_call_table)
- 
- #ifdef CONFIG_64BIT
-+#undef __SYSCALL_WITH_COMPAT
-+#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
- 	.align 8
- ENTRY(sys_call_table64)
- #include <asm/syscall_table_64.h>    /* 64-bit syscalls */
+ 	for (id = 0; id < nf_link_count; id++) {
+-- 
+2.43.0
+
 
 
 
