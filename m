@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-81616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA91E99486A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:13:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895FF994B52
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DBCF1F26FE5
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:13:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB51A1C24341
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F22D1DED7D;
-	Tue,  8 Oct 2024 12:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294E81DF96E;
+	Tue,  8 Oct 2024 12:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dA7oL5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS7cNKsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6B61DE898;
-	Tue,  8 Oct 2024 12:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7031DE2A5;
+	Tue,  8 Oct 2024 12:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389557; cv=none; b=jZdfkuHxUYxjBsbSO5IcqSjc0Rk/97ir/SwLAsGwbnQPGfVHuJbgKxCl4HH50T+kLrsAwnN4oswrwXl4I6W9Safhx2qSUjosyO4LiE2f7KrUpuVXxfja8WiEJzuk0l2wJS6T8LzAT4sOZM2riEebvvZ6fKc5vzsTSB+013lJtkQ=
+	t=1728391273; cv=none; b=KWHkAxEMFQNH11h7r8A0xXQ35c1mwanuuBIvP9ZQ2nT4MiYvWtS53U3Gip0yXJ9fOhG4nOp37Z3WSp/AtccFMdJMzzAXUj85BUWRHJhnY34G5d1q1BKzA0Q20vbQfwOEwtm7wB97TLXqdVjya2G/mm2/fMeBLg2RNM5GJGzkJ+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389557; c=relaxed/simple;
-	bh=lwmb/MXbtYyjQ6npDUyQHirZ4ffL//nwKyNp4/WD/LY=;
+	s=arc-20240116; t=1728391273; c=relaxed/simple;
+	bh=4eem9MSPD6F8tdC8p1lHZZ8Yjl66EbDZD5M7lx+FOXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIt7N0b+3P8rJ0SG8whanqp1VcP6mFF3r9IjL7M1HNFluJunIEa+m/CKLuxxjAPYjdAlOBcS74NrSgm3V6+LSk9eGE/3jTranPz0bcS4s/OHQH8sMyqhOFUHd3KWqWfVdgaLtT5gNmMUDFfxICIx8Rq/Uk8AMbJ4Q6rEnfOH0WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dA7oL5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD44C4CECD;
-	Tue,  8 Oct 2024 12:12:36 +0000 (UTC)
+	 MIME-Version; b=Z7R3IDLysYutYacU9XBv5o8rrnTG8/6jf9lgKaWJ4b/0FDrwAGDbHe9eXcWlZOKPbcIn7Hzg2CUmZfar7zvn35vR7ohzLgkBw/L0gnnl/e4Vxd3f7q72ZSL7kZejhoGyRvbhIs+4MH/LflWj54u3piAtvBu07npl9MWc+2i3uEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS7cNKsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483B9C4CEC7;
+	Tue,  8 Oct 2024 12:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389557;
-	bh=lwmb/MXbtYyjQ6npDUyQHirZ4ffL//nwKyNp4/WD/LY=;
+	s=korg; t=1728391273;
+	bh=4eem9MSPD6F8tdC8p1lHZZ8Yjl66EbDZD5M7lx+FOXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dA7oL5j9VKSrOLSg2Y0mP6t6uPBjwWBAjq3ptvG73fNeQkNIbygjz4bjT8JzBkVt
-	 5R65Nx32I8hB3KKvxLaCrRoD79mTqJn8VFQH3e745VG6a5XwGeuY07YJGwtgPLxEs8
-	 DQtJPZTlryxiCHCMNcr0pXond9MRwpc+7V0C9GCc=
+	b=HS7cNKsJ0bacLXmkxMjD3++ffATAOlC+ZV14hTfBeNjE/njth45hkgzlP1d0wphY5
+	 KLGWtzR1zGRdnQHgpSyD6onXLIccQOuFUZu6yH8ZqjlhlxmVXjUkSqNYRHeggK8my7
+	 UAqkm/w6Eoz6qAJm6GokVSUbweFVMY1I/kgfpvWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c12e2f941af1feb5632c@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Conor Dooley <conor@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 029/482] Bluetooth: L2CAP: Fix uaf in l2cap_connect
+Subject: [PATCH 6.11 062/558] rust: mutex: fix __mutex_init() usage in case of PREEMPT_RT
 Date: Tue,  8 Oct 2024 14:01:32 +0200
-Message-ID: <20241008115649.446633341@linuxfoundation.org>
+Message-ID: <20241008115704.660244172@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-[ Upstream commit 333b4fd11e89b29c84c269123f871883a30be586 ]
+[ Upstream commit d065cc76054d21e48a839a2a19ba99dbc51a4d11 ]
 
-[Syzbot reported]
-BUG: KASAN: slab-use-after-free in l2cap_connect.constprop.0+0x10d8/0x1270 net/bluetooth/l2cap_core.c:3949
-Read of size 8 at addr ffff8880241e9800 by task kworker/u9:0/54
+In case CONFIG_PREEMPT_RT is enabled __mutex_init() becomes a macro
+instead of an extern function (simplified from
+include/linux/mutex.h):
 
-CPU: 0 UID: 0 PID: 54 Comm: kworker/u9:0 Not tainted 6.11.0-rc6-syzkaller-00268-g788220eee30d #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Workqueue: hci2 hci_rx_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:93 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:119
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- l2cap_connect.constprop.0+0x10d8/0x1270 net/bluetooth/l2cap_core.c:3949
- l2cap_connect_req net/bluetooth/l2cap_core.c:4080 [inline]
- l2cap_bredr_sig_cmd net/bluetooth/l2cap_core.c:4772 [inline]
- l2cap_sig_channel net/bluetooth/l2cap_core.c:5543 [inline]
- l2cap_recv_frame+0xf0b/0x8eb0 net/bluetooth/l2cap_core.c:6825
- l2cap_recv_acldata+0x9b4/0xb70 net/bluetooth/l2cap_core.c:7514
- hci_acldata_packet net/bluetooth/hci_core.c:3791 [inline]
- hci_rx_work+0xaab/0x1610 net/bluetooth/hci_core.c:4028
- process_one_work+0x9c5/0x1b40 kernel/workqueue.c:3231
- process_scheduled_works kernel/workqueue.c:3312 [inline]
- worker_thread+0x6c8/0xed0 kernel/workqueue.c:3389
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-...
+    #ifndef CONFIG_PREEMPT_RT
+    extern void __mutex_init(struct mutex *lock, const char *name,
+    			 struct lock_class_key *key);
+    #else
+    #define __mutex_init(mutex, name, key)		\
+    do {						\
+	rt_mutex_base_init(&(mutex)->rtmutex);		\
+    	__mutex_rt_init((mutex), name, key);		\
+    } while (0)
+    #endif
 
-Freed by task 5245:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:579
- poison_slab_object+0xf7/0x160 mm/kasan/common.c:240
- __kasan_slab_free+0x32/0x50 mm/kasan/common.c:256
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2256 [inline]
- slab_free mm/slub.c:4477 [inline]
- kfree+0x12a/0x3b0 mm/slub.c:4598
- l2cap_conn_free net/bluetooth/l2cap_core.c:1810 [inline]
- kref_put include/linux/kref.h:65 [inline]
- l2cap_conn_put net/bluetooth/l2cap_core.c:1822 [inline]
- l2cap_conn_del+0x59d/0x730 net/bluetooth/l2cap_core.c:1802
- l2cap_connect_cfm+0x9e6/0xf80 net/bluetooth/l2cap_core.c:7241
- hci_connect_cfm include/net/bluetooth/hci_core.h:1960 [inline]
- hci_conn_failed+0x1c3/0x370 net/bluetooth/hci_conn.c:1265
- hci_abort_conn_sync+0x75a/0xb50 net/bluetooth/hci_sync.c:5583
- abort_conn_sync+0x197/0x360 net/bluetooth/hci_conn.c:2917
- hci_cmd_sync_work+0x1a4/0x410 net/bluetooth/hci_sync.c:328
- process_one_work+0x9c5/0x1b40 kernel/workqueue.c:3231
- process_scheduled_works kernel/workqueue.c:3312 [inline]
- worker_thread+0x6c8/0xed0 kernel/workqueue.c:3389
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+The macro isn't resolved by bindgen, then. What results in a build
+error:
 
-Reported-by: syzbot+c12e2f941af1feb5632c@syzkaller.appspotmail.com
-Tested-by: syzbot+c12e2f941af1feb5632c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c12e2f941af1feb5632c
-Fixes: 7b064edae38d ("Bluetooth: Fix authentication if acl data comes before remote feature evt")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+error[E0425]: cannot find function `__mutex_init` in crate `bindings`
+     --> rust/kernel/sync/lock/mutex.rs:104:28
+      |
+104   |           unsafe { bindings::__mutex_init(ptr, name, key) }
+      |                              ^^^^^^^^^^^^ help: a function with a similar name exists: `__mutex_rt_init`
+      |
+     ::: rust/bindings/bindings_generated.rs:23722:5
+      |
+23722 | /     pub fn __mutex_rt_init(
+23723 | |         lock: *mut mutex,
+23724 | |         name: *const core::ffi::c_char,
+23725 | |         key: *mut lock_class_key,
+23726 | |     );
+      | |_____- similarly named function `__mutex_rt_init` defined here
+
+Fix this by adding a helper.
+
+As explained by Gary Guo in [1] no #ifdef CONFIG_PREEMPT_RT
+is needed here as rust/bindings/lib.rs prefers externed function to
+helpers if an externed function exists.
+
+Reported-by: Conor Dooley <conor@kernel.org>
+Link: https://lore.kernel.org/rust-for-linux/20240913-shack-estate-b376a65921b1@spud/
+Link: https://lore.kernel.org/rust-for-linux/20240915123626.1a170103.gary@garyguo.net/ [1]
+Fixes: 6d20d629c6d8 ("rust: lock: introduce `Mutex`")
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/r/20240916073752.3123484-1-dirk.behme@de.bosch.com
+[ Reworded to include the proper example by Dirk. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c   | 2 ++
- net/bluetooth/hci_event.c  | 2 +-
- net/bluetooth/l2cap_core.c | 8 --------
- 3 files changed, 3 insertions(+), 9 deletions(-)
+ rust/helpers/mutex.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 9493966cf389f..a9feb323c7d29 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3792,6 +3792,8 @@ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
- 
- 	hci_dev_lock(hdev);
- 	conn = hci_conn_hash_lookup_handle(hdev, handle);
-+	if (conn && hci_dev_test_flag(hdev, HCI_MGMT))
-+		mgmt_device_connected(hdev, conn, NULL, 0);
- 	hci_dev_unlock(hdev);
- 
- 	if (conn) {
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 59d9086db75fe..b2053bbe226c8 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3707,7 +3707,7 @@ static void hci_remote_features_evt(struct hci_dev *hdev, void *data,
- 		goto unlock;
- 	}
- 
--	if (!ev->status && !test_bit(HCI_CONN_MGMT_CONNECTED, &conn->flags)) {
-+	if (!ev->status) {
- 		struct hci_cp_remote_name_req cp;
- 		memset(&cp, 0, sizeof(cp));
- 		bacpy(&cp.bdaddr, &conn->dst);
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 9988ba382b686..6544c1ed71434 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4066,17 +4066,9 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
- static int l2cap_connect_req(struct l2cap_conn *conn,
- 			     struct l2cap_cmd_hdr *cmd, u16 cmd_len, u8 *data)
+diff --git a/rust/helpers/mutex.c b/rust/helpers/mutex.c
+index 200db7e6279f0..a17ca8cdb50ca 100644
+--- a/rust/helpers/mutex.c
++++ b/rust/helpers/mutex.c
+@@ -7,3 +7,9 @@ void rust_helper_mutex_lock(struct mutex *lock)
  {
--	struct hci_dev *hdev = conn->hcon->hdev;
--	struct hci_conn *hcon = conn->hcon;
--
- 	if (cmd_len < sizeof(struct l2cap_conn_req))
- 		return -EPROTO;
- 
--	hci_dev_lock(hdev);
--	if (hci_dev_test_flag(hdev, HCI_MGMT))
--		mgmt_device_connected(hdev, hcon, NULL, 0);
--	hci_dev_unlock(hdev);
--
- 	l2cap_connect(conn, cmd, data, L2CAP_CONN_RSP);
- 	return 0;
+ 	mutex_lock(lock);
  }
++
++void rust_helper___mutex_init(struct mutex *mutex, const char *name,
++			      struct lock_class_key *key)
++{
++	__mutex_init(mutex, name, key);
++}
 -- 
 2.43.0
 
