@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-82603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A52994D98
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:07:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAD8994FA2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA517283A45
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:07:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5DBE288451
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7E81DF27E;
-	Tue,  8 Oct 2024 13:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C71DF998;
+	Tue,  8 Oct 2024 13:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+uiH3k+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9RH2l7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3471DED47;
-	Tue,  8 Oct 2024 13:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543D71DEFF6;
+	Tue,  8 Oct 2024 13:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392814; cv=none; b=XUmZhRDcehwz5czJ4qpkNo1QtlQr75iy7pnzylYP17mjeEXX/9VZAR5ZCnz6xbW64NqVSrNZTmCMDqQdVmphJNWECoa6B7r+qBrMk9ZXmb7AjsFbjzHDUWilZ8lXLLiEHM/Nq+kL4xmyfFv1qcpEIlTtrffLg/hvrayjk7i0Eig=
+	t=1728393988; cv=none; b=SAYiR0IvnneZ/L3kc0D9N73Q/9KG+Mh8zc5yg+C/wM/0DXc3l5uHbWL2yGPCIVpxoSoOySS57kZH77kIg7qlraC+GXPI8zzJztrWF8nZc3ppPGhajT6eu1Z8/DF3aa8ER65XIuA2fRqAgxTo+UwvD1JzRWQaQAmuaaFlNkFDOHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392814; c=relaxed/simple;
-	bh=ipgYlM12fLo7XqoVCNqqFxVK7MFvodUh+bU+C8XWQ5s=;
+	s=arc-20240116; t=1728393988; c=relaxed/simple;
+	bh=ChNaHVYvRoy+NfFohQdGILbtHFHzY/K9ygs3UKcXGnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bT2nhy/a4XsroqcxL0vvTDkMdHi+c3jK+9+vBYGAI6frg/Gmn+1g8wFwLllfjdXHymHIbEWVPBxa30XHfF8Hz92+hVTkLiCqlDpTHru9u5hqjLZ25/hdv8t2F87o7p19YjKF2VrUccyxrZ8OZHWKR1MlkGn516wWzZ3hduzGRao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+uiH3k+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A6DC4CEC7;
-	Tue,  8 Oct 2024 13:06:53 +0000 (UTC)
+	 MIME-Version; b=K0FVktbCqb9JCGoe8ynu4LZ309zBLkTa3c2W6I8i7sMWZVJe11UUHgrq5rTrYlFWER1TPLlzB0FPEAv3gikGe0KhVfq98l0q2dx3Qd9cqafzCz5MhswYyk3q/mwZBPhb9p2JwWmovWEEFwr7JirHzNilognMnd2w6arlCUrJZ3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9RH2l7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A39C4CECD;
+	Tue,  8 Oct 2024 13:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392813;
-	bh=ipgYlM12fLo7XqoVCNqqFxVK7MFvodUh+bU+C8XWQ5s=;
+	s=korg; t=1728393988;
+	bh=ChNaHVYvRoy+NfFohQdGILbtHFHzY/K9ygs3UKcXGnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+uiH3k+qX2E4W04mpGObPb1WMGn59iRV2sg5DtvSfiHPmP5Pu9dIz1FlasvGTLo7
-	 mucBqfsH28FZXNqDEdCCkrdWpJhKaFvDT6hC25OcOUPH2pUgRJBIC7+zQj3vjcJWeI
-	 69zn1u7GGn6241nJ77i6nyQO/4KQaZRgB2hM/85g=
+	b=N9RH2l7xbsNBLXsXiANjIYZmp8lxcS6dKK2qPs+tZuQ0zJw9okJ7EKSPrdzELHFqb
+	 PN8qVLAY1QhQBLbvI6p3JvLWyYcyFYxviHQqTOSTLmN1kNv9YnaliyKie2+nkTrdBq
+	 f41yuElD2o8n9LJ0hXE9fgYEJy/4s6uLuz/4SG8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.11 527/558] drm/amd/display: update DML2 policy EnhancedPrefetchScheduleAccelerationFinal DCN35
-Date: Tue,  8 Oct 2024 14:09:17 +0200
-Message-ID: <20241008115722.966598310@linuxfoundation.org>
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 313/386] net: pcs: xpcs: fix the wrong register that was written back
+Date: Tue,  8 Oct 2024 14:09:18 +0200
+Message-ID: <20241008115641.702995037@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-commit 0d5e5e8a0aa49ea2163abf128da3b509a6c58286 upstream.
+commit 93ef6ee5c20e9330477930ec6347672c9e0cf5a6 upstream.
 
-[WHY & HOW]
-Mismatch in DCN35 DML2 cause bw validation failed to acquire unexpected DPP pipe to cause
-grey screen and system hang. Remove EnhancedPrefetchScheduleAccelerationFinal value override
-to match HW spec.
+The value is read from the register TXGBE_RX_GEN_CTL3, and it should be
+written back to TXGBE_RX_GEN_CTL3 when it changes some fields.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9dad21f910fcea2bdcff4af46159101d7f9cd8ba)
 Cc: stable@vger.kernel.org
+Fixes: f629acc6f210 ("net: pcs: xpcs: support to switch mode for Wangxun NICs")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20240924022857.865422-1-jiawenwu@trustnetic.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/pcs/pcs-xpcs-wx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_policy.c
-@@ -303,7 +303,6 @@ void build_unoptimized_policy_settings(e
- 	if (project == dml_project_dcn35 ||
- 		project == dml_project_dcn351) {
- 		policy->DCCProgrammingAssumesScanDirectionUnknownFinal = false;
--		policy->EnhancedPrefetchScheduleAccelerationFinal = 0;
- 		policy->AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter_if_possible; /*new*/
- 		policy->UseOnlyMaxPrefetchModes = 1;
- 	}
+diff --git a/drivers/net/pcs/pcs-xpcs-wx.c b/drivers/net/pcs/pcs-xpcs-wx.c
+index 19c75886f070..5f5cd3596cb8 100644
+--- a/drivers/net/pcs/pcs-xpcs-wx.c
++++ b/drivers/net/pcs/pcs-xpcs-wx.c
+@@ -109,7 +109,7 @@ static void txgbe_pma_config_1g(struct dw_xpcs *xpcs)
+ 	txgbe_write_pma(xpcs, TXGBE_DFE_TAP_CTL0, 0);
+ 	val = txgbe_read_pma(xpcs, TXGBE_RX_GEN_CTL3);
+ 	val = u16_replace_bits(val, 0x4, TXGBE_RX_GEN_CTL3_LOS_TRSHLD0);
+-	txgbe_write_pma(xpcs, TXGBE_RX_EQ_ATTN_CTL, val);
++	txgbe_write_pma(xpcs, TXGBE_RX_GEN_CTL3, val);
+ 
+ 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL0, 0x20);
+ 	txgbe_write_pma(xpcs, TXGBE_MPLLA_CTL3, 0x46);
+-- 
+2.46.2
+
 
 
 
