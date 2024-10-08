@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-81942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD24994A3C
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CEB994E8C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB2F1F21B25
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD821F2593A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE9E1CCB32;
-	Tue,  8 Oct 2024 12:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048001DF27C;
+	Tue,  8 Oct 2024 13:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqwpHkO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbXIL10f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE71E17DFF7;
-	Tue,  8 Oct 2024 12:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37251DEFF6;
+	Tue,  8 Oct 2024 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390656; cv=none; b=ZBSjFBv8Nau5S9C5/NTjsWQDnUUy9hOqAWDyA5g9uZUAdUkxnWaX0gG8fDVuBq21i/QjTLJ8L20fHooBJJrso+7PG3kbEDvlapUJIqYFuJt2OBbZNsZZn2JznZJ7y1QoEX9asXJf3jEe6cnGfhxd9QFPYQewEXkYJ38/dLRI8pw=
+	t=1728393496; cv=none; b=TQ+W7MX3IDIqLxXMCW0jOrHLuvUEfkrfhR50/khruUI/YYAUvsRqr3drnSu+BKkbAW0YVPoQF1XozFKPfA7NrAq2VVUUb9kGwzvXsg3nVo1Z0P7JVa0Oqlzv81BYqbdDxdFXI5MY5ubDMPlxlzXXQha6Hm/CnZwu3IKMgkDOf9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390656; c=relaxed/simple;
-	bh=H/mDiq290s2QWgx254iFE6Te5G8p0nvuk14RuDowFFQ=;
+	s=arc-20240116; t=1728393496; c=relaxed/simple;
+	bh=DnzhjDEeo7QJZZ7eXc5jw4H9gTLCA8olWFEWhaxGVws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTSX4Jcz9rhWqS4gD8B8n11uyj19yum26LotgbvqsoC/MrSsdEEsagr7ao404zr9aY5WG6prrgWhBLdZfnhZzbPzIlLJB8P92ZMtYPgSjYXT66GpQa0HtQLqdP5x/9ZhaaZE+JiDQDWk4KnT36WubMkpGVnFp0HU3BWr1ryylBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqwpHkO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52401C4CEC7;
-	Tue,  8 Oct 2024 12:30:55 +0000 (UTC)
+	 MIME-Version; b=FI1qjW1WbPnMD4krdVokA09gk76O1R/85yN4aRddOqvWkXEY2duuLU9ge+gNrNrkwcp/eqPFzqGuwl1AIhiGicRdF2phbzEO2DVm4DawYStFIH1cajXgrHB2LppNIwCI1au6f4Wd06bVgeLmSQ7wSMcKyuniVMB/TDdG8M4BOrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbXIL10f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11EDC4CEC7;
+	Tue,  8 Oct 2024 13:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390655;
-	bh=H/mDiq290s2QWgx254iFE6Te5G8p0nvuk14RuDowFFQ=;
+	s=korg; t=1728393496;
+	bh=DnzhjDEeo7QJZZ7eXc5jw4H9gTLCA8olWFEWhaxGVws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqwpHkO4l5h/aOMqD7W1SYMZWV8/FrGEgDNQg6C7W+95RnoKRDUlmZGkyNtfmTewS
-	 xNBu8EHHj6fekXSsKpy583rwVQwa7ubCMChNUzO7vzcDRrH0BWs21QtixExltKrpiV
-	 ZwphZ8d7asLHo9U3M4eNCQM/aYq1JSH0rdwO8D8M=
+	b=VbXIL10fBqfbcdgZABfmZEI0AMkVrMFCxmfzkxBtyHLGk0Q0onTAxupmy3dBzchhV
+	 PB65Z55riiz3/Tk0jq5JIT8NzD/58qnZ611jIHE8DxCkKNOxMxHpzmQdkzorE731pF
+	 4FYit+xBKV5QwAo29z/nBo0+YdYDXdl68ivNsmrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 352/482] ocfs2: fix the la space leak when unmounting an ocfs2 volume
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 170/386] drm/amdgpu/gfx9: use rlc safe mode for soft recovery
 Date: Tue,  8 Oct 2024 14:06:55 +0200
-Message-ID: <20241008115702.276963006@linuxfoundation.org>
+Message-ID: <20241008115636.112781065@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,65 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit dfe6c5692fb525e5e90cefe306ee0dffae13d35f upstream.
+[ Upstream commit 3ec2ad7c34c412bd9264cd1ff235d0812be90e82 ]
 
-This bug has existed since the initial OCFS2 code.  The code logic in
-ocfs2_sync_local_to_main() is wrong, as it ignores the last contiguous
-free bits, which causes an OCFS2 volume to lose the last free clusters of
-LA window on each umount command.
+Protect the MMIO access with safe mode.
 
-Link: https://lkml.kernel.org/r/20240719114310.14245-1-heming.zhao@suse.com
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/localalloc.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ocfs2/localalloc.c
-+++ b/fs/ocfs2/localalloc.c
-@@ -1002,6 +1002,25 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 00e693c47f3cc..895060f6948f3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -5709,7 +5709,9 @@ static void gfx_v9_0_ring_soft_recovery(struct amdgpu_ring *ring, unsigned vmid)
+ 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
+ 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
+ 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
++	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
+ 	WREG32_SOC15(GC, 0, mmSQ_CMD, value);
++	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+ }
  
-+	/* clear the contiguous bits until the end boundary */
-+	if (count) {
-+		blkno = la_start_blk +
-+			ocfs2_clusters_to_blocks(osb->sb,
-+					start - count);
-+
-+		trace_ocfs2_sync_local_to_main_free(
-+				count, start - count,
-+				(unsigned long long)la_start_blk,
-+				(unsigned long long)blkno);
-+
-+		status = ocfs2_release_clusters(handle,
-+				main_bm_inode,
-+				main_bm_bh, blkno,
-+				count);
-+		if (status < 0)
-+			mlog_errno(status);
-+	}
-+
- bail:
- 	if (status)
- 		mlog_errno(status);
+ static void gfx_v9_0_set_gfx_eop_interrupt_state(struct amdgpu_device *adev,
+-- 
+2.43.0
+
 
 
 
