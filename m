@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22FF799487F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46BF994B90
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFD0282E28
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6341DB2669A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3DB1DEFCF;
-	Tue,  8 Oct 2024 12:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587C71DEFE4;
+	Tue,  8 Oct 2024 12:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gjkhqZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P129DCDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9F31DE8BB;
-	Tue,  8 Oct 2024 12:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166D11DE4DF;
+	Tue,  8 Oct 2024 12:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389605; cv=none; b=G790oPasqs5zSMAUQK46Q3HElo8deSQ+ijyaI4El3CCGfzGNmEmZcNijl915xrFMzFOUru8yVXM6BF69QlRMwxVvzcSqwKhohELVCz8xYBMqlnmcDpgAyFzv0F3XBMGN6g5AM/44IbVNCBsqgzYxhHAYuqZdnhSxbj+BFYULsj8=
+	t=1728391419; cv=none; b=b5XNxELoF/jr39jLAgWz/LOLnUWQ5RB1RxlzXg+In4w6Mm8OtKM9i5l8AY4Dfxspu54y5vXKDCH6p+QwrdQi1h0ev06JLW0NXcZGgfJNM/hGve6bjVVecvCEWQQ0hMQFbbbPcoOCTLhLCbrzHhHDwYYzjgYhFnRW3cvyFSDxA2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389605; c=relaxed/simple;
-	bh=DTwwwkBDuTSBQn2tywHCfy0Eiz4pbWIb2FkuGytQfoM=;
+	s=arc-20240116; t=1728391419; c=relaxed/simple;
+	bh=7ceSUahmg8s+NJcaao4TJAgW8rN+U5ghrC6hAIsYLV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HArvYtXr2paC9QcT3B4hgmsv997t79xN4ZYMeCUXRN/M4zJPt3LTdo8L823CzQBQbKK9vbCpKneMNnJ9gzXSdQ47O75Iu0D4rMQDQeMXuFXbOWLPqpDONZSSeQjp90d1Yz7kbJJ89R27GG3G46ry8bnWMnMBQa10rCw0T4IIyqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gjkhqZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5262C4CEC7;
-	Tue,  8 Oct 2024 12:13:24 +0000 (UTC)
+	 MIME-Version; b=BFpjKrKbHIHKtRo+AHggu6eESDah/il8i3Rdq2JmL59EnldcEJCErYuySr0xPsygH4OoWadtHTskHSwuO8T23E1lSj9wHJigt0GSIOxTV4SHZWKH3ITXAiTDmBdvadS8ud9102gyUAtkGEmR7qYDmCPee3AlBRuxfmJnI6xcQU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P129DCDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B54C4CEC7;
+	Tue,  8 Oct 2024 12:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389605;
-	bh=DTwwwkBDuTSBQn2tywHCfy0Eiz4pbWIb2FkuGytQfoM=;
+	s=korg; t=1728391419;
+	bh=7ceSUahmg8s+NJcaao4TJAgW8rN+U5ghrC6hAIsYLV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gjkhqZYEwqhugk4ZvvyGkoHosgNHgGXjcpaFnAI3Zviv0LMhUa+ukwxcuc/M26Uv
-	 YXhNrvix5KrW8Hur7zdVUpWtTkoCC7vt2B/jLRT7YB9DrfABWMfleITO0Gt79z9pwy
-	 UeZ2obCWXeyQWcVVobUr+SPg6N54Zduo6H59F5G0=
+	b=P129DCDx6aOGIhh4hW4F0h2wPWO5gLG3zS6CKT7IDqQGLxZQrGhMQzOrnF3k4HYcw
+	 3Nu+P9REz00Pp4GLrBaqjnv+4xYYXwhnUq4sj+f7bMEdrd2wF52TtmkrBJeOw9zTtW
+	 kYjT+bkoyCmcjan8cJpSDHDCYGn4Pu4iUaxYmQHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Danilov <littlesmilingcloud@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 042/482] ipv4: ip_gre: Fix drops of small packets in ipgre_xmit
-Date: Tue,  8 Oct 2024 14:01:45 +0200
-Message-ID: <20241008115649.960328259@linuxfoundation.org>
+Subject: [PATCH 6.11 076/558] gpiolib: Fix potential NULL pointer dereference in gpiod_get_label()
+Date: Tue,  8 Oct 2024 14:01:46 +0200
+Message-ID: <20241008115705.366612602@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Danilov <littlesmilingcloud@gmail.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit c4a14f6d9d17ad1e41a36182dd3b8a5fd91efbd7 ]
+[ Upstream commit 7b99b5ab885993bff010ebcd93be5e511c56e28a ]
 
-Regression Description:
+In `gpiod_get_label()`, it is possible that `srcu_dereference_check()` may
+return a NULL pointer, leading to a scenario where `label->str` is accessed
+without verifying if `label` itself is NULL.
 
-Depending on the options specified for the GRE tunnel device, small
-packets may be dropped. This occurs because the pskb_network_may_pull
-function fails due to the packet's insufficient length.
+This patch adds a proper NULL check for `label` before accessing
+`label->str`. The check for `label->str != NULL` is removed because
+`label->str` can never be NULL if `label` is not NULL.
 
-For example, if only the okey option is specified for the tunnel device,
-original (before encapsulation) packets smaller than 28 bytes (including
-the IPv4 header) will be dropped. This happens because the required
-length is calculated relative to the network header, not the skb->head.
+This fixes the issue where the label name was being printed as `(efault)`
+when dumping the sysfs GPIO file when `label == NULL`.
 
-Here is how the required length is computed and checked:
-
-* The pull_len variable is set to 28 bytes, consisting of:
-  * IPv4 header: 20 bytes
-  * GRE header with Key field: 8 bytes
-
-* The pskb_network_may_pull function adds the network offset, shifting
-the checkable space further to the beginning of the network header and
-extending it to the beginning of the packet. As a result, the end of
-the checkable space occurs beyond the actual end of the packet.
-
-Instead of ensuring that 28 bytes are present in skb->head, the function
-is requesting these 28 bytes starting from the network header. For small
-packets, this requested length exceeds the actual packet size, causing
-the check to fail and the packets to be dropped.
-
-This issue affects both locally originated and forwarded packets in
-DMVPN-like setups.
-
-How to reproduce (for local originated packets):
-
-  ip link add dev gre1 type gre ikey 1.9.8.4 okey 1.9.8.4 \
-          local <your-ip> remote 0.0.0.0
-
-  ip link set mtu 1400 dev gre1
-  ip link set up dev gre1
-  ip address add 192.168.13.1/24 dev gre1
-  ip neighbor add 192.168.13.2 lladdr <remote-ip> dev gre1
-  ping -s 1374 -c 10 192.168.13.2
-  tcpdump -vni gre1
-  tcpdump -vni <your-ext-iface> 'ip proto 47'
-  ip -s -s -d link show dev gre1
-
-Solution:
-
-Use the pskb_may_pull function instead the pskb_network_may_pull.
-
-Fixes: 80d875cfc9d3 ("ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()")
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240924235158.106062-1-littlesmilingcloud@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5a646e03e956 ("gpiolib: Return label, if set, for IRQ only line")
+Fixes: a86d27693066 ("gpiolib: fix the speed of descriptor label setting with SRCU")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20241003131351.472015-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpio/gpiolib.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index ba205473522e4..868ef18ad656c 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -661,11 +661,11 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 		if (skb_cow_head(skb, 0))
- 			goto free_skb;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 3a9668cc100df..148bcfbf98e02 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -115,12 +115,12 @@ const char *gpiod_get_label(struct gpio_desc *desc)
+ 				srcu_read_lock_held(&desc->gdev->desc_srcu));
  
--		tnl_params = (const struct iphdr *)skb->data;
--
--		if (!pskb_network_may_pull(skb, pull_len))
-+		if (!pskb_may_pull(skb, pull_len))
- 			goto free_skb;
+ 	if (test_bit(FLAG_USED_AS_IRQ, &flags))
+-		return label->str ?: "interrupt";
++		return label ? label->str : "interrupt";
  
-+		tnl_params = (const struct iphdr *)skb->data;
-+
- 		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
- 		skb_pull(skb, pull_len);
- 		skb_reset_mac_header(skb);
+ 	if (!test_bit(FLAG_REQUESTED, &flags))
+ 		return NULL;
+ 
+-	return label->str;
++	return label ? label->str : NULL;
+ }
+ 
+ static void desc_free_label(struct rcu_head *rh)
 -- 
 2.43.0
 
