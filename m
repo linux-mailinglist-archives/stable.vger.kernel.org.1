@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BDB3994BF1
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:48:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C438994908
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00DF1C24DA0
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:48:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9DF2283927
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC391C4613;
-	Tue,  8 Oct 2024 12:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310A71DED5B;
+	Tue,  8 Oct 2024 12:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Etif2SoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHvchwh/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05391C2420;
-	Tue,  8 Oct 2024 12:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22FE1DDA36;
+	Tue,  8 Oct 2024 12:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391714; cv=none; b=duD9VVIP/et7V1W/D4XZJVUEcYcHOVDKqwMg3H8BAeYEm2prNTJkKv09V+EwzG3ih8pBNQ6Z8IqOXHiIjh7EupOOnrOZ94V8+Z0x9PZRXuBKdlE37QobW6DXtraeEN17ia6hEbC3oqE9zLyKJF8wLNKpvqUvxPvFC69/6/IAquM=
+	t=1728389938; cv=none; b=pKhFNOEbHgK8JrlXvtCWB+wq5HofZQHvZU9x/21xCkin3NIo+BuqoVkjtHTrfbZzB7d8gkuZysRAhGTOvG9jBCYJAhf80WpaTj3Z3l/8sPPn3/Q6ZJchY/v8agY5v6y17jCCQYlGUHVyJoT2m0JhZ20GSYjd7/gs0da8M47Y65A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391714; c=relaxed/simple;
-	bh=bgX8yJr5lIJYxWl1QXZlEvxNmjpRAdjUqvFZg/rnoco=;
+	s=arc-20240116; t=1728389938; c=relaxed/simple;
+	bh=Ymn9ED94vjnGXU1w4BpdskVmtyKYHQkpplfqFzcxTF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IL4Qu5aIALnnUoTI85DhwSGbIcQO3bQQO4oBcJTFjMNHKWnh3kLfIfE2E0XmimUVGqU1JBkuX+TBcfigj6BqJzo9T+GBMYPl5gciFl8XyxoTHZ3n3SQGXCViTrPCOwovsfVG6RCVORI/mmaNRjTyOW6n+o2gtXe22JvgCxW8KEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Etif2SoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2E4C4CEC7;
-	Tue,  8 Oct 2024 12:48:32 +0000 (UTC)
+	 MIME-Version; b=KUXafnhZX5GOqs47Mbrqnp6Si14ShLDGucmX+Xqb3QuLoD/+sF76NEbo2A4OceCGkUVvz5FVfgzA92HtOVqKzcjQMzQAzgF7JpCNxbzxd397+vmFzvAFOZ3UV5qBwjKDPI09WASxTB9qnMSiYALUXzblAt7ddQO470+Bi11AWqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHvchwh/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D084BC4CECD;
+	Tue,  8 Oct 2024 12:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391713;
-	bh=bgX8yJr5lIJYxWl1QXZlEvxNmjpRAdjUqvFZg/rnoco=;
+	s=korg; t=1728389937;
+	bh=Ymn9ED94vjnGXU1w4BpdskVmtyKYHQkpplfqFzcxTF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Etif2SoLWEd7LKVhMP6/8w12A2Os7DgGzorH+9PDITaII+XJ6vOd623DdrOFKNUi5
-	 rM836dBYUxpxyv9Ze9LvH1Pn5bSAu+YDGSGxvR/MSD4hUEPRLr1wg5mwffJoiRL5Ma
-	 Qf76z5IhU/0rn78gojLgIwHSBi19kibAY/2m7vWw=
+	b=LHvchwh/TYf+ytnXw/oWwH8yHx5EF/k0uoM8L/elYhSNVztu6eYHfMpQkd7l0MhKT
+	 SL4UA2VYxi8hllBqm+oegn0ot5XNPgvfIQY2M77UyXuM0f6asP0ebkNqsa3rhgwDHJ
+	 il1nsmygBF7E2Qjh7SWSd8ZQnvQgzcBPe574QSzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Grisham <josh@joshuagrisham.com>,
+	Karol Kosik <k.kosik@outlook.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 173/558] ALSA: hda/realtek: Refactor and simplify Samsung Galaxy Book init
-Date: Tue,  8 Oct 2024 14:03:23 +0200
-Message-ID: <20241008115709.164707023@linuxfoundation.org>
+Subject: [PATCH 6.10 141/482] ALSA: usb-audio: Support multiple control interfaces
+Date: Tue,  8 Oct 2024 14:03:24 +0200
+Message-ID: <20241008115653.852742957@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,583 +62,661 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Grisham <josh@joshuagrisham.com>
+From: Karol Kosik <k.kosik@outlook.com>
 
-[ Upstream commit 7e4d4b32ab9532bd1babcd5d0763d727ebb04be0 ]
+[ Upstream commit 6aa8700150f7dc62f60b4cf5b1624e2e3d9ed78e ]
 
-I have done a lot of analysis for these type of devices and collaborated
-quite a bit with Nick Weihs (author of the first patch submitted for this
-including adding samsung_helper.c). More information can be found in the
-issue on Github [1] including additional rationale and testing.
+Registering Numark Party Mix II fails with error 'bogus bTerminalLink 1'.
+The problem stems from the driver not being able to find input/output
+terminals required to configure audio streaming. The information about
+those terminals is stored in AudioControl Interface. Numark device
+contains 2 AudioControl Interfaces and the driver checks only one of them.
 
-The existing implementation includes a large number of equalizer coef
-values that are not necessary to actually init and enable the speaker
-amps, as well as create a somewhat worse sound profile. Users have
-reported "muffled" or "muddy" sound; more information about this including
-my analysis of the differences can be found in the linked Github issue.
+According to the USB standard, a device can have multiple audio functions,
+each represented by Audio Interface Collection. Every audio function is
+considered to be closed box and will contain unique AudioControl Interface
+and zero or more AudioStreaming and MIDIStreaming Interfaces.
 
-This patch refactors the "v2" version of ALC298_FIXUP_SAMSUNG_AMP to a much
-simpler implementation which removes the new samsung_helper.c, reuses more
-of the existing patch_realtek.c, and sends significantly fewer unnecessary
-coef values (including removing all of these EQ-specific coef values).
+The Numark device adheres to the standard and defines two audio functions:
+- MIDIStreaming function
+- AudioStreaming function
+It starts with MIDI function, followed by the audio function. The driver
+saves the first AudioControl Interface in `snd_usb_audio` structure
+associated with the entire device. It then attempts to use this interface
+to query for terminals and clocks. However, this fails because the correct
+information is stored in the second AudioControl Interface, defined in the
+second Audio Interface Collection.
 
-A pcm_playback_hook is used to dynamically enable and disable the speaker
-amps only when there will be audio playback; this is to match the behavior
-of how the driver for these devices is working in Windows, and is
-suspected but not yet tested or confirmed to help with power consumption.
+This patch introduces a structure holding association between each
+MIDI/Audio Interface and its corresponding AudioControl Interface,
+instead of relying on AudioControl Interface defined for the entire
+device. This structure is populated during usb probing phase and leveraged
+later when querying for terminals and when sending USB requests.
 
-Support for models with 2 speaker amps vs 4 speaker amps is controlled by
-a specific quirk name for both types. A new int num_speaker_amps has been
-added to alc_spec so that the hooks can know how many speaker amps to
-enable or disable. This design was chosen to limit the number of places
-that subsystem ids will need to be maintained: like this, they can be
-maintained only once in the quirk table and there will not be another
-separate list of subsystem ids to maintain elsewhere in the code.
+Alternative solutions considered include:
+- defining a quirk for Numark where the order of interface is manually
+changed, or terminals are hardcoded in the driver. This solution would
+have fixed only this model, though it seems that device is USB compliant,
+and it also seems that other devices from this company may be affected.
+What's more, it looks like products from other manufacturers have similar
+problems, i.e. Rane One DJ console
+- keeping a list of all AudioControl Interfaces and querying all of them
+to find required information. That would have solved my problem and have
+low probability of breaking other devices, as we would always start with
+the same logic of querying first AudioControl Interface. This solution
+would not have followed the standard though.
 
-Also updated the quirk name from ALC298_FIXUP_SAMSUNG_AMP2 to
-ALC298_FIXUP_SAMSUNG_AMP_V2_.. as this is not a quirk for "Amp #2" on
-ALC298 but is instead a different version of how to handle it.
+This patch preserves the `snd_usb_audio.ctrl_intf` variable, which holds
+the first AudioControl Interface, and uses it as a fallback when some
+interfaces are not parsed correctly and lack an associated AudioControl
+Interface, i.e., when configured via quirks.
 
-More devices have been added (see Github issue for testing confirmation),
-as well as a small cleanup to existing names.
-
-[1]: https://github.com/thesofproject/linux/issues/4055#issuecomment-2323411911
-
-Signed-off-by: Joshua Grisham <josh@joshuagrisham.com>
-Link: https://patch.msgid.link/20240909193000.838815-1-josh@joshuagrisham.com
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217865
+Signed-off-by: Karol Kosik <k.kosik@outlook.com>
+Link: https://patch.msgid.link/AS8P190MB1285893F4735C8B32AD3886BEC852@AS8P190MB1285.EURP190.PROD.OUTLOOK.COM
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c  | 151 +++++++++++++++-
- sound/pci/hda/samsung_helper.c | 310 ---------------------------------
- 2 files changed, 144 insertions(+), 317 deletions(-)
- delete mode 100644 sound/pci/hda/samsung_helper.c
+ sound/usb/card.c           |  2 ++
+ sound/usb/clock.c          | 62 ++++++++++++++++++++++++--------------
+ sound/usb/format.c         |  6 ++--
+ sound/usb/helper.c         | 34 +++++++++++++++++++++
+ sound/usb/helper.h         | 10 ++++--
+ sound/usb/mixer.c          |  2 +-
+ sound/usb/mixer_quirks.c   | 17 ++++++-----
+ sound/usb/mixer_scarlett.c |  4 +--
+ sound/usb/power.c          |  3 +-
+ sound/usb/power.h          |  1 +
+ sound/usb/stream.c         | 21 ++++++++-----
+ sound/usb/usbaudio.h       | 12 ++++++++
+ 12 files changed, 127 insertions(+), 47 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 4035ec31e1baf..b1bf061b3edbe 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -125,6 +125,7 @@ struct alc_spec {
- 	unsigned int has_hs_key:1;
- 	unsigned int no_internal_mic_pin:1;
- 	unsigned int en_3kpull_low:1;
-+	int num_speaker_amps;
- 
- 	/* for PLL fix */
- 	hda_nid_t pll_nid;
-@@ -4803,7 +4804,133 @@ static void alc298_fixup_samsung_amp(struct hda_codec *codec,
+diff --git a/sound/usb/card.c b/sound/usb/card.c
+index bdb04fa37a71d..778de9244f1e7 100644
+--- a/sound/usb/card.c
++++ b/sound/usb/card.c
+@@ -206,6 +206,8 @@ static int snd_usb_create_stream(struct snd_usb_audio *chip, int ctrlif, int int
+ 		return -EINVAL;
  	}
+ 
++	snd_usb_add_ctrl_interface_link(chip, interface, ctrlif);
++
+ 	if (! snd_usb_parse_audio_interface(chip, interface)) {
+ 		usb_set_interface(dev, interface, 0); /* reset the current interface */
+ 		return usb_driver_claim_interface(&usb_audio_driver, iface,
+diff --git a/sound/usb/clock.c b/sound/usb/clock.c
+index 60fcb872a80b6..8f85200292f3f 100644
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -76,11 +76,14 @@ static bool validate_clock_multiplier(void *p, int id, int proto)
  }
  
--#include "samsung_helper.c"
-+struct alc298_samsung_v2_amp_desc {
-+	unsigned short nid;
-+	int init_seq_size;
-+	unsigned short init_seq[18][2];
-+};
-+
-+static const struct alc298_samsung_v2_amp_desc
-+alc298_samsung_v2_amp_desc_tbl[] = {
-+	{ 0x38, 18, {
-+		{ 0x23e1, 0x0000 }, { 0x2012, 0x006f }, { 0x2014, 0x0000 },
-+		{ 0x201b, 0x0001 }, { 0x201d, 0x0001 }, { 0x201f, 0x00fe },
-+		{ 0x2021, 0x0000 }, { 0x2022, 0x0010 }, { 0x203d, 0x0005 },
-+		{ 0x203f, 0x0003 }, { 0x2050, 0x002c }, { 0x2076, 0x000e },
-+		{ 0x207c, 0x004a }, { 0x2081, 0x0003 }, { 0x2399, 0x0003 },
-+		{ 0x23a4, 0x00b5 }, { 0x23a5, 0x0001 }, { 0x23ba, 0x0094 }
-+	}},
-+	{ 0x39, 18, {
-+		{ 0x23e1, 0x0000 }, { 0x2012, 0x006f }, { 0x2014, 0x0000 },
-+		{ 0x201b, 0x0002 }, { 0x201d, 0x0002 }, { 0x201f, 0x00fd },
-+		{ 0x2021, 0x0001 }, { 0x2022, 0x0010 }, { 0x203d, 0x0005 },
-+		{ 0x203f, 0x0003 }, { 0x2050, 0x002c }, { 0x2076, 0x000e },
-+		{ 0x207c, 0x004a }, { 0x2081, 0x0003 }, { 0x2399, 0x0003 },
-+		{ 0x23a4, 0x00b5 }, { 0x23a5, 0x0001 }, { 0x23ba, 0x0094 }
-+	}},
-+	{ 0x3c, 15, {
-+		{ 0x23e1, 0x0000 }, { 0x2012, 0x006f }, { 0x2014, 0x0000 },
-+		{ 0x201b, 0x0001 }, { 0x201d, 0x0001 }, { 0x201f, 0x00fe },
-+		{ 0x2021, 0x0000 }, { 0x2022, 0x0010 }, { 0x203d, 0x0005 },
-+		{ 0x203f, 0x0003 }, { 0x2050, 0x002c }, { 0x2076, 0x000e },
-+		{ 0x207c, 0x004a }, { 0x2081, 0x0003 }, { 0x23ba, 0x008d }
-+	}},
-+	{ 0x3d, 15, {
-+		{ 0x23e1, 0x0000 }, { 0x2012, 0x006f }, { 0x2014, 0x0000 },
-+		{ 0x201b, 0x0002 }, { 0x201d, 0x0002 }, { 0x201f, 0x00fd },
-+		{ 0x2021, 0x0001 }, { 0x2022, 0x0010 }, { 0x203d, 0x0005 },
-+		{ 0x203f, 0x0003 }, { 0x2050, 0x002c }, { 0x2076, 0x000e },
-+		{ 0x207c, 0x004a }, { 0x2081, 0x0003 }, { 0x23ba, 0x008d }
-+	}}
-+};
-+
-+static void alc298_samsung_v2_enable_amps(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const unsigned short enable_seq[][2] = {
-+		{ 0x203a, 0x0081 }, { 0x23ff, 0x0001 },
-+	};
-+	int i, j;
-+
-+	for (i = 0; i < spec->num_speaker_amps; i++) {
-+		alc_write_coef_idx(codec, 0x22, alc298_samsung_v2_amp_desc_tbl[i].nid);
-+		for (j = 0; j < ARRAY_SIZE(enable_seq); j++)
-+			alc298_samsung_write_coef_pack(codec, enable_seq[j]);
-+		codec_dbg(codec, "alc298_samsung_v2: Enabled speaker amp 0x%02x\n",
-+				alc298_samsung_v2_amp_desc_tbl[i].nid);
-+	}
-+}
-+
-+static void alc298_samsung_v2_disable_amps(struct hda_codec *codec)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const unsigned short disable_seq[][2] = {
-+		{ 0x23ff, 0x0000 }, { 0x203a, 0x0080 },
-+	};
-+	int i, j;
-+
-+	for (i = 0; i < spec->num_speaker_amps; i++) {
-+		alc_write_coef_idx(codec, 0x22, alc298_samsung_v2_amp_desc_tbl[i].nid);
-+		for (j = 0; j < ARRAY_SIZE(disable_seq); j++)
-+			alc298_samsung_write_coef_pack(codec, disable_seq[j]);
-+		codec_dbg(codec, "alc298_samsung_v2: Disabled speaker amp 0x%02x\n",
-+				alc298_samsung_v2_amp_desc_tbl[i].nid);
-+	}
-+}
-+
-+static void alc298_samsung_v2_playback_hook(struct hda_pcm_stream *hinfo,
-+				struct hda_codec *codec,
-+				struct snd_pcm_substream *substream,
-+				int action)
-+{
-+	/* Dynamically enable/disable speaker amps before and after playback */
-+	if (action == HDA_GEN_PCM_ACT_OPEN)
-+		alc298_samsung_v2_enable_amps(codec);
-+	if (action == HDA_GEN_PCM_ACT_CLOSE)
-+		alc298_samsung_v2_disable_amps(codec);
-+}
-+
-+static void alc298_samsung_v2_init_amps(struct hda_codec *codec,
-+				int num_speaker_amps)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	int i, j;
-+
-+	/* Set spec's num_speaker_amps before doing anything else */
-+	spec->num_speaker_amps = num_speaker_amps;
-+
-+	/* Disable speaker amps before init to prevent any physical damage */
-+	alc298_samsung_v2_disable_amps(codec);
-+
-+	/* Initialize the speaker amps */
-+	for (i = 0; i < spec->num_speaker_amps; i++) {
-+		alc_write_coef_idx(codec, 0x22, alc298_samsung_v2_amp_desc_tbl[i].nid);
-+		for (j = 0; j < alc298_samsung_v2_amp_desc_tbl[i].init_seq_size; j++) {
-+			alc298_samsung_write_coef_pack(codec,
-+					alc298_samsung_v2_amp_desc_tbl[i].init_seq[j]);
-+		}
-+		alc_write_coef_idx(codec, 0x89, 0x0);
-+		codec_dbg(codec, "alc298_samsung_v2: Initialized speaker amp 0x%02x\n",
-+				alc298_samsung_v2_amp_desc_tbl[i].nid);
-+	}
-+
-+	/* register hook to enable speaker amps only when they are needed */
-+	spec->gen.pcm_playback_hook = alc298_samsung_v2_playback_hook;
-+}
-+
-+static void alc298_fixup_samsung_amp_v2_2_amps(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PROBE)
-+		alc298_samsung_v2_init_amps(codec, 2);
-+}
-+
-+static void alc298_fixup_samsung_amp_v2_4_amps(struct hda_codec *codec,
-+				const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PROBE)
-+		alc298_samsung_v2_init_amps(codec, 4);
-+}
+ #define DEFINE_FIND_HELPER(name, obj, validator, type2, type3)		\
+-static obj *name(struct snd_usb_audio *chip, int id, int proto)	\
++static obj *name(struct snd_usb_audio *chip, int id,	\
++				const struct audioformat *fmt)	\
+ {									\
+-	return find_uac_clock_desc(chip->ctrl_intf, id, validator,	\
+-				   proto == UAC_VERSION_3 ? (type3) : (type2), \
+-				   proto);				\
++	struct usb_host_interface *ctrl_intf =	\
++		snd_usb_find_ctrl_interface(chip, fmt->iface); \
++	return find_uac_clock_desc(ctrl_intf, id, validator,	\
++				   fmt->protocol == UAC_VERSION_3 ? (type3) : (type2), \
++				   fmt->protocol);				\
+ }
  
- #if IS_REACHABLE(CONFIG_INPUT)
- static void gpio2_mic_hotkey_event(struct hda_codec *codec,
-@@ -7541,7 +7668,8 @@ enum {
- 	ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF,
- 	ALC236_FIXUP_LENOVO_INV_DMIC,
- 	ALC298_FIXUP_SAMSUNG_AMP,
--	ALC298_FIXUP_SAMSUNG_AMP2,
-+	ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS,
-+	ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS,
- 	ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
- 	ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET,
- 	ALC295_FIXUP_ASUS_MIC_NO_PRESENCE,
-@@ -9176,9 +9304,13 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET
- 	},
--	[ALC298_FIXUP_SAMSUNG_AMP2] = {
-+	[ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc298_fixup_samsung_amp_v2_2_amps
-+	},
-+	[ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS] = {
- 		.type = HDA_FIXUP_FUNC,
--		.v.func = alc298_fixup_samsung_amp2
-+		.v.func = alc298_fixup_samsung_amp_v2_4_amps
- 	},
- 	[ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET] = {
- 		.type = HDA_FIXUP_VERBS,
-@@ -10558,8 +10690,10 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
- 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
--	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG-KB1US)", ALC298_FIXUP_SAMSUNG_AMP2),
--	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH-XD92G))", ALC298_FIXUP_SAMSUNG_AMP2),
-+	SND_PCI_QUIRK(0x144d, 0xc870, "Samsung Galaxy Book2 Pro (NP950XED)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
-+	SND_PCI_QUIRK(0x144d, 0xc886, "Samsung Galaxy Book3 Pro (NP964XFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1462, 0xb171, "Cubi N 8GL (MS-B171)", ALC283_FIXUP_HEADSET_MIC),
-@@ -10790,6 +10924,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1849, 0xa233, "Positivo Master C6300", ALC269_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1854, 0x0440, "LG CQ6", ALC256_FIXUP_HEADPHONE_AMP_VOL),
- 	SND_PCI_QUIRK(0x1854, 0x0441, "LG CQ6 AIO", ALC256_FIXUP_HEADPHONE_AMP_VOL),
-+	SND_PCI_QUIRK(0x1854, 0x0488, "LG gram 16 (16Z90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x1854, 0x048a, "LG gram 17 (17ZD90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
- 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1b35, 0x1235, "CZC B20", ALC269_FIXUP_CZC_B20),
-@@ -11000,7 +11136,8 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC298_FIXUP_HUAWEI_MBX_STEREO, .name = "huawei-mbx-stereo"},
- 	{.id = ALC256_FIXUP_MEDION_HEADSET_NO_PRESENCE, .name = "alc256-medion-headset"},
- 	{.id = ALC298_FIXUP_SAMSUNG_AMP, .name = "alc298-samsung-amp"},
--	{.id = ALC298_FIXUP_SAMSUNG_AMP2, .name = "alc298-samsung-amp2"},
-+	{.id = ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS, .name = "alc298-samsung-amp-v2-2-amps"},
-+	{.id = ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS, .name = "alc298-samsung-amp-v2-4-amps"},
- 	{.id = ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET, .name = "alc256-samsung-headphone"},
- 	{.id = ALC255_FIXUP_XIAOMI_HEADSET_MIC, .name = "alc255-xiaomi-headset"},
- 	{.id = ALC274_FIXUP_HP_MIC, .name = "alc274-hp-mic-detect"},
-diff --git a/sound/pci/hda/samsung_helper.c b/sound/pci/hda/samsung_helper.c
-deleted file mode 100644
-index a40175b690157..0000000000000
---- a/sound/pci/hda/samsung_helper.c
-+++ /dev/null
-@@ -1,310 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/* Helper functions for Samsung Galaxy Book3 audio initialization */
--
--struct alc298_samsung_coeff_fixup_desc {
--	unsigned char coeff_idx;
--	unsigned short coeff_value;
--};
--
--struct alc298_samsung_coeff_seq_desc {
--	unsigned short coeff_0x23;
--	unsigned short coeff_0x24;
--	unsigned short coeff_0x25;
--	unsigned short coeff_0x26;
--};
--
--
--static inline void alc298_samsung_write_coef_pack2(struct hda_codec *codec,
--						   const struct alc298_samsung_coeff_seq_desc *seq)
--{
--	int i;
--
--	for (i = 0; i < 100; i++) {
--		if ((alc_read_coef_idx(codec, 0x26) & 0x0010) == 0)
--			break;
--
--		usleep_range(500, 1000);
--	}
--
--	alc_write_coef_idx(codec, 0x23, seq->coeff_0x23);
--	alc_write_coef_idx(codec, 0x24, seq->coeff_0x24);
--	alc_write_coef_idx(codec, 0x25, seq->coeff_0x25);
--	alc_write_coef_idx(codec, 0x26, seq->coeff_0x26);
--}
--
--static inline void alc298_samsung_write_coef_pack_seq(
--						struct hda_codec *codec,
--						unsigned char target,
--						const struct alc298_samsung_coeff_seq_desc seq[],
--						int count)
--{
--	alc_write_coef_idx(codec, 0x22, target);
--	for (int i = 0; i < count; i++)
--		alc298_samsung_write_coef_pack2(codec, &seq[i]);
--}
--
--static void alc298_fixup_samsung_amp2(struct hda_codec *codec,
--				      const struct hda_fixup *fix, int action)
--{
--	int i;
--	static const struct alc298_samsung_coeff_fixup_desc fixups1[] = {
--		{ 0x99, 0x8000 }, { 0x82, 0x4408 }, { 0x32, 0x3f00 }, { 0x0e, 0x6f80 },
--		{ 0x10, 0x0e21 }, { 0x55, 0x8000 }, { 0x08, 0x2fcf }, { 0x08, 0x2fcf },
--		{ 0x2d, 0xc020 }, { 0x19, 0x0017 }, { 0x50, 0x1000 }, { 0x0e, 0x6f80 },
--		{ 0x08, 0x2fcf }, { 0x80, 0x0011 }, { 0x2b, 0x0c10 }, { 0x2d, 0xc020 },
--		{ 0x03, 0x0042 }, { 0x0f, 0x0062 }, { 0x08, 0x2fcf },
--	};
--
--	static const struct alc298_samsung_coeff_seq_desc amp_0x38[] = {
--		{ 0x2000, 0x0000, 0x0001, 0xb011 }, { 0x23ff, 0x0000, 0x0000, 0xb011 },
--		{ 0x203a, 0x0000, 0x0080, 0xb011 }, { 0x23e1, 0x0000, 0x0000, 0xb011 },
--		{ 0x2012, 0x0000, 0x006f, 0xb011 }, { 0x2014, 0x0000, 0x0000, 0xb011 },
--		{ 0x201b, 0x0000, 0x0001, 0xb011 }, { 0x201d, 0x0000, 0x0001, 0xb011 },
--		{ 0x201f, 0x0000, 0x00fe, 0xb011 }, { 0x2021, 0x0000, 0x0000, 0xb011 },
--		{ 0x2022, 0x0000, 0x0010, 0xb011 }, { 0x203d, 0x0000, 0x0005, 0xb011 },
--		{ 0x203f, 0x0000, 0x0003, 0xb011 }, { 0x2050, 0x0000, 0x002c, 0xb011 },
--		{ 0x2076, 0x0000, 0x000e, 0xb011 }, { 0x207c, 0x0000, 0x004a, 0xb011 },
--		{ 0x2081, 0x0000, 0x0003, 0xb011 }, { 0x2399, 0x0000, 0x0003, 0xb011 },
--		{ 0x23a4, 0x0000, 0x00b5, 0xb011 }, { 0x23a5, 0x0000, 0x0001, 0xb011 },
--		{ 0x23ba, 0x0000, 0x0094, 0xb011 }, { 0x2100, 0x00d0, 0x950e, 0xb017 },
--		{ 0x2104, 0x0061, 0xd4e2, 0xb017 }, { 0x2108, 0x00d0, 0x950e, 0xb017 },
--		{ 0x210c, 0x0075, 0xf4e2, 0xb017 }, { 0x2110, 0x00b4, 0x4b0d, 0xb017 },
--		{ 0x2114, 0x000a, 0x1000, 0xb017 }, { 0x2118, 0x0015, 0x2000, 0xb017 },
--		{ 0x211c, 0x000a, 0x1000, 0xb017 }, { 0x2120, 0x0075, 0xf4e2, 0xb017 },
--		{ 0x2124, 0x00b4, 0x4b0d, 0xb017 }, { 0x2128, 0x0000, 0x0010, 0xb017 },
--		{ 0x212c, 0x0000, 0x0000, 0xb017 }, { 0x2130, 0x0000, 0x0000, 0xb017 },
--		{ 0x2134, 0x0000, 0x0000, 0xb017 }, { 0x2138, 0x0000, 0x0000, 0xb017 },
--		{ 0x213c, 0x0000, 0x0010, 0xb017 }, { 0x2140, 0x0000, 0x0000, 0xb017 },
--		{ 0x2144, 0x0000, 0x0000, 0xb017 }, { 0x2148, 0x0000, 0x0000, 0xb017 },
--		{ 0x214c, 0x0000, 0x0000, 0xb017 }, { 0x2150, 0x0000, 0x0010, 0xb017 },
--		{ 0x2154, 0x0000, 0x0000, 0xb017 }, { 0x2158, 0x0000, 0x0000, 0xb017 },
--		{ 0x215c, 0x0000, 0x0000, 0xb017 }, { 0x2160, 0x0000, 0x0000, 0xb017 },
--		{ 0x2164, 0x0000, 0x0010, 0xb017 }, { 0x2168, 0x0000, 0x0000, 0xb017 },
--		{ 0x216c, 0x0000, 0x0000, 0xb017 }, { 0x2170, 0x0000, 0x0000, 0xb017 },
--		{ 0x2174, 0x0000, 0x0000, 0xb017 }, { 0x2178, 0x0000, 0x0010, 0xb017 },
--		{ 0x217c, 0x0000, 0x0000, 0xb017 }, { 0x2180, 0x0000, 0x0000, 0xb017 },
--		{ 0x2184, 0x0000, 0x0000, 0xb017 }, { 0x2188, 0x0000, 0x0000, 0xb017 },
--		{ 0x218c, 0x0064, 0x5800, 0xb017 }, { 0x2190, 0x00c8, 0xb000, 0xb017 },
--		{ 0x2194, 0x0064, 0x5800, 0xb017 }, { 0x2198, 0x003d, 0x5be7, 0xb017 },
--		{ 0x219c, 0x0054, 0x060a, 0xb017 }, { 0x21a0, 0x00c8, 0xa310, 0xb017 },
--		{ 0x21a4, 0x0029, 0x4de5, 0xb017 }, { 0x21a8, 0x0032, 0x420c, 0xb017 },
--		{ 0x21ac, 0x0029, 0x4de5, 0xb017 }, { 0x21b0, 0x00fa, 0xe50c, 0xb017 },
--		{ 0x21b4, 0x0000, 0x0010, 0xb017 }, { 0x21b8, 0x0000, 0x0000, 0xb017 },
--		{ 0x21bc, 0x0000, 0x0000, 0xb017 }, { 0x21c0, 0x0000, 0x0000, 0xb017 },
--		{ 0x21c4, 0x0000, 0x0000, 0xb017 }, { 0x21c8, 0x0056, 0xc50f, 0xb017 },
--		{ 0x21cc, 0x007b, 0xd7e1, 0xb017 }, { 0x21d0, 0x0077, 0xa70e, 0xb017 },
--		{ 0x21d4, 0x00e0, 0xbde1, 0xb017 }, { 0x21d8, 0x0032, 0x530e, 0xb017 },
--		{ 0x2204, 0x00fb, 0x7e0f, 0xb017 }, { 0x2208, 0x000b, 0x02e1, 0xb017 },
--		{ 0x220c, 0x00fb, 0x7e0f, 0xb017 }, { 0x2210, 0x00d5, 0x17e1, 0xb017 },
--		{ 0x2214, 0x00c0, 0x130f, 0xb017 }, { 0x2218, 0x00e5, 0x0a00, 0xb017 },
--		{ 0x221c, 0x00cb, 0x1500, 0xb017 }, { 0x2220, 0x00e5, 0x0a00, 0xb017 },
--		{ 0x2224, 0x00d5, 0x17e1, 0xb017 }, { 0x2228, 0x00c0, 0x130f, 0xb017 },
--		{ 0x222c, 0x00f5, 0xdb0e, 0xb017 }, { 0x2230, 0x0017, 0x48e2, 0xb017 },
--		{ 0x2234, 0x00f5, 0xdb0e, 0xb017 }, { 0x2238, 0x00ef, 0x5ce2, 0xb017 },
--		{ 0x223c, 0x00c1, 0xcc0d, 0xb017 }, { 0x2240, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x2244, 0x0017, 0x48e2, 0xb017 }, { 0x2248, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x224c, 0x00ef, 0x5ce2, 0xb017 }, { 0x2250, 0x00c1, 0xcc0d, 0xb017 },
--		{ 0x2254, 0x00f5, 0xdb0e, 0xb017 }, { 0x2258, 0x0017, 0x48e2, 0xb017 },
--		{ 0x225c, 0x00f5, 0xdb0e, 0xb017 }, { 0x2260, 0x00ef, 0x5ce2, 0xb017 },
--		{ 0x2264, 0x00c1, 0xcc0d, 0xb017 }, { 0x2268, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x226c, 0x0017, 0x48e2, 0xb017 }, { 0x2270, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x2274, 0x00ef, 0x5ce2, 0xb017 }, { 0x2278, 0x00c1, 0xcc0d, 0xb017 },
--		{ 0x227c, 0x00f5, 0xdb0e, 0xb017 }, { 0x2280, 0x0017, 0x48e2, 0xb017 },
--		{ 0x2284, 0x00f5, 0xdb0e, 0xb017 }, { 0x2288, 0x00ef, 0x5ce2, 0xb017 },
--		{ 0x228c, 0x00c1, 0xcc0d, 0xb017 }, { 0x22cc, 0x00e8, 0x8d00, 0xb017 },
--		{ 0x22d0, 0x0000, 0x0000, 0xb017 }, { 0x22d4, 0x0018, 0x72ff, 0xb017 },
--		{ 0x22d8, 0x00ce, 0x25e1, 0xb017 }, { 0x22dc, 0x002f, 0xe40e, 0xb017 },
--		{ 0x238e, 0x0000, 0x0099, 0xb011 }, { 0x238f, 0x0000, 0x0011, 0xb011 },
--		{ 0x2390, 0x0000, 0x0056, 0xb011 }, { 0x2391, 0x0000, 0x0004, 0xb011 },
--		{ 0x2392, 0x0000, 0x00bb, 0xb011 }, { 0x2393, 0x0000, 0x006d, 0xb011 },
--		{ 0x2394, 0x0000, 0x0010, 0xb011 }, { 0x2395, 0x0000, 0x0064, 0xb011 },
--		{ 0x2396, 0x0000, 0x00b6, 0xb011 }, { 0x2397, 0x0000, 0x0028, 0xb011 },
--		{ 0x2398, 0x0000, 0x000b, 0xb011 }, { 0x239a, 0x0000, 0x0099, 0xb011 },
--		{ 0x239b, 0x0000, 0x000d, 0xb011 }, { 0x23a6, 0x0000, 0x0064, 0xb011 },
--		{ 0x23a7, 0x0000, 0x0078, 0xb011 }, { 0x23b9, 0x0000, 0x0000, 0xb011 },
--		{ 0x23e0, 0x0000, 0x0021, 0xb011 }, { 0x23e1, 0x0000, 0x0001, 0xb011 },
--	};
--
--	static const struct alc298_samsung_coeff_seq_desc amp_0x39[] = {
--		{ 0x2000, 0x0000, 0x0001, 0xb011 }, { 0x23ff, 0x0000, 0x0000, 0xb011 },
--		{ 0x203a, 0x0000, 0x0080, 0xb011 }, { 0x23e1, 0x0000, 0x0000, 0xb011 },
--		{ 0x2012, 0x0000, 0x006f, 0xb011 }, { 0x2014, 0x0000, 0x0000, 0xb011 },
--		{ 0x201b, 0x0000, 0x0002, 0xb011 }, { 0x201d, 0x0000, 0x0002, 0xb011 },
--		{ 0x201f, 0x0000, 0x00fd, 0xb011 }, { 0x2021, 0x0000, 0x0001, 0xb011 },
--		{ 0x2022, 0x0000, 0x0010, 0xb011 }, { 0x203d, 0x0000, 0x0005, 0xb011 },
--		{ 0x203f, 0x0000, 0x0003, 0xb011 }, { 0x2050, 0x0000, 0x002c, 0xb011 },
--		{ 0x2076, 0x0000, 0x000e, 0xb011 }, { 0x207c, 0x0000, 0x004a, 0xb011 },
--		{ 0x2081, 0x0000, 0x0003, 0xb011 }, { 0x2399, 0x0000, 0x0003, 0xb011 },
--		{ 0x23a4, 0x0000, 0x00b5, 0xb011 }, { 0x23a5, 0x0000, 0x0001, 0xb011 },
--		{ 0x23ba, 0x0000, 0x0094, 0xb011 }, { 0x2100, 0x00d0, 0x950e, 0xb017 },
--		{ 0x2104, 0x0061, 0xd4e2, 0xb017 }, { 0x2108, 0x00d0, 0x950e, 0xb017 },
--		{ 0x210c, 0x0075, 0xf4e2, 0xb017 }, { 0x2110, 0x00b4, 0x4b0d, 0xb017 },
--		{ 0x2114, 0x000a, 0x1000, 0xb017 }, { 0x2118, 0x0015, 0x2000, 0xb017 },
--		{ 0x211c, 0x000a, 0x1000, 0xb017 }, { 0x2120, 0x0075, 0xf4e2, 0xb017 },
--		{ 0x2124, 0x00b4, 0x4b0d, 0xb017 }, { 0x2128, 0x0000, 0x0010, 0xb017 },
--		{ 0x212c, 0x0000, 0x0000, 0xb017 }, { 0x2130, 0x0000, 0x0000, 0xb017 },
--		{ 0x2134, 0x0000, 0x0000, 0xb017 }, { 0x2138, 0x0000, 0x0000, 0xb017 },
--		{ 0x213c, 0x0000, 0x0010, 0xb017 }, { 0x2140, 0x0000, 0x0000, 0xb017 },
--		{ 0x2144, 0x0000, 0x0000, 0xb017 }, { 0x2148, 0x0000, 0x0000, 0xb017 },
--		{ 0x214c, 0x0000, 0x0000, 0xb017 }, { 0x2150, 0x0000, 0x0010, 0xb017 },
--		{ 0x2154, 0x0000, 0x0000, 0xb017 }, { 0x2158, 0x0000, 0x0000, 0xb017 },
--		{ 0x215c, 0x0000, 0x0000, 0xb017 }, { 0x2160, 0x0000, 0x0000, 0xb017 },
--		{ 0x2164, 0x0000, 0x0010, 0xb017 }, { 0x2168, 0x0000, 0x0000, 0xb017 },
--		{ 0x216c, 0x0000, 0x0000, 0xb017 }, { 0x2170, 0x0000, 0x0000, 0xb017 },
--		{ 0x2174, 0x0000, 0x0000, 0xb017 }, { 0x2178, 0x0000, 0x0010, 0xb017 },
--		{ 0x217c, 0x0000, 0x0000, 0xb017 }, { 0x2180, 0x0000, 0x0000, 0xb017 },
--		{ 0x2184, 0x0000, 0x0000, 0xb017 }, { 0x2188, 0x0000, 0x0000, 0xb017 },
--		{ 0x218c, 0x0064, 0x5800, 0xb017 }, { 0x2190, 0x00c8, 0xb000, 0xb017 },
--		{ 0x2194, 0x0064, 0x5800, 0xb017 }, { 0x2198, 0x003d, 0x5be7, 0xb017 },
--		{ 0x219c, 0x0054, 0x060a, 0xb017 }, { 0x21a0, 0x00c8, 0xa310, 0xb017 },
--		{ 0x21a4, 0x0029, 0x4de5, 0xb017 }, { 0x21a8, 0x0032, 0x420c, 0xb017 },
--		{ 0x21ac, 0x0029, 0x4de5, 0xb017 }, { 0x21b0, 0x00fa, 0xe50c, 0xb017 },
--		{ 0x21b4, 0x0000, 0x0010, 0xb017 }, { 0x21b8, 0x0000, 0x0000, 0xb017 },
--		{ 0x21bc, 0x0000, 0x0000, 0xb017 }, { 0x21c0, 0x0000, 0x0000, 0xb017 },
--		{ 0x21c4, 0x0000, 0x0000, 0xb017 }, { 0x21c8, 0x0056, 0xc50f, 0xb017 },
--		{ 0x21cc, 0x007b, 0xd7e1, 0xb017 }, { 0x21d0, 0x0077, 0xa70e, 0xb017 },
--		{ 0x21d4, 0x00e0, 0xbde1, 0xb017 }, { 0x21d8, 0x0032, 0x530e, 0xb017 },
--		{ 0x2204, 0x00fb, 0x7e0f, 0xb017 }, { 0x2208, 0x000b, 0x02e1, 0xb017 },
--		{ 0x220c, 0x00fb, 0x7e0f, 0xb017 }, { 0x2210, 0x00d5, 0x17e1, 0xb017 },
--		{ 0x2214, 0x00c0, 0x130f, 0xb017 }, { 0x2218, 0x00e5, 0x0a00, 0xb017 },
--		{ 0x221c, 0x00cb, 0x1500, 0xb017 }, { 0x2220, 0x00e5, 0x0a00, 0xb017 },
--		{ 0x2224, 0x00d5, 0x17e1, 0xb017 }, { 0x2228, 0x00c0, 0x130f, 0xb017 },
--		{ 0x222c, 0x00f5, 0xdb0e, 0xb017 }, { 0x2230, 0x0017, 0x48e2, 0xb017 },
--		{ 0x2234, 0x00f5, 0xdb0e, 0xb017 }, { 0x2238, 0x00ef, 0x5ce2, 0xb017 },
--		{ 0x223c, 0x00c1, 0xcc0d, 0xb017 }, { 0x2240, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x2244, 0x0017, 0x48e2, 0xb017 }, { 0x2248, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x224c, 0x00ef, 0x5ce2, 0xb017 }, { 0x2250, 0x00c1, 0xcc0d, 0xb017 },
--		{ 0x2254, 0x00f5, 0xdb0e, 0xb017 }, { 0x2258, 0x0017, 0x48e2, 0xb017 },
--		{ 0x225c, 0x00f5, 0xdb0e, 0xb017 }, { 0x2260, 0x00ef, 0x5ce2, 0xb017 },
--		{ 0x2264, 0x00c1, 0xcc0d, 0xb017 }, { 0x2268, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x226c, 0x0017, 0x48e2, 0xb017 }, { 0x2270, 0x00f5, 0xdb0e, 0xb017 },
--		{ 0x2274, 0x00ef, 0x5ce2, 0xb017 }, { 0x2278, 0x00c1, 0xcc0d, 0xb017 },
--		{ 0x227c, 0x00f5, 0xdb0e, 0xb017 }, { 0x2280, 0x0017, 0x48e2, 0xb017 },
--		{ 0x2284, 0x00f5, 0xdb0e, 0xb017 }, { 0x2288, 0x00ef, 0x5ce2, 0xb017 },
--		{ 0x228c, 0x00c1, 0xcc0d, 0xb017 }, { 0x22cc, 0x00e8, 0x8d00, 0xb017 },
--		{ 0x22d0, 0x0000, 0x0000, 0xb017 }, { 0x22d4, 0x0018, 0x72ff, 0xb017 },
--		{ 0x22d8, 0x00ce, 0x25e1, 0xb017 }, { 0x22dc, 0x002f, 0xe40e, 0xb017 },
--		{ 0x238e, 0x0000, 0x0099, 0xb011 }, { 0x238f, 0x0000, 0x0011, 0xb011 },
--		{ 0x2390, 0x0000, 0x0056, 0xb011 }, { 0x2391, 0x0000, 0x0004, 0xb011 },
--		{ 0x2392, 0x0000, 0x00bb, 0xb011 }, { 0x2393, 0x0000, 0x006d, 0xb011 },
--		{ 0x2394, 0x0000, 0x0010, 0xb011 }, { 0x2395, 0x0000, 0x0064, 0xb011 },
--		{ 0x2396, 0x0000, 0x00b6, 0xb011 }, { 0x2397, 0x0000, 0x0028, 0xb011 },
--		{ 0x2398, 0x0000, 0x000b, 0xb011 }, { 0x239a, 0x0000, 0x0099, 0xb011 },
--		{ 0x239b, 0x0000, 0x000d, 0xb011 }, { 0x23a6, 0x0000, 0x0064, 0xb011 },
--		{ 0x23a7, 0x0000, 0x0078, 0xb011 }, { 0x23b9, 0x0000, 0x0000, 0xb011 },
--		{ 0x23e0, 0x0000, 0x0021, 0xb011 }, { 0x23e1, 0x0000, 0x0001, 0xb011 },
--	};
--
--	static const struct alc298_samsung_coeff_seq_desc amp_0x3c[] = {
--		{ 0x2000, 0x0000, 0x0001, 0xb011 }, { 0x23ff, 0x0000, 0x0000, 0xb011 },
--		{ 0x203a, 0x0000, 0x0080, 0xb011 }, { 0x23e1, 0x0000, 0x0000, 0xb011 },
--		{ 0x2012, 0x0000, 0x006f, 0xb011 }, { 0x2014, 0x0000, 0x0000, 0xb011 },
--		{ 0x201b, 0x0000, 0x0001, 0xb011 }, { 0x201d, 0x0000, 0x0001, 0xb011 },
--		{ 0x201f, 0x0000, 0x00fe, 0xb011 }, { 0x2021, 0x0000, 0x0000, 0xb011 },
--		{ 0x2022, 0x0000, 0x0010, 0xb011 }, { 0x203d, 0x0000, 0x0005, 0xb011 },
--		{ 0x203f, 0x0000, 0x0003, 0xb011 }, { 0x2050, 0x0000, 0x002c, 0xb011 },
--		{ 0x2076, 0x0000, 0x000e, 0xb011 }, { 0x207c, 0x0000, 0x004a, 0xb011 },
--		{ 0x2081, 0x0000, 0x0003, 0xb011 }, { 0x23ba, 0x0000, 0x008d, 0xb011 },
--		{ 0x2128, 0x0005, 0x460d, 0xb017 }, { 0x212c, 0x00f6, 0x73e5, 0xb017 },
--		{ 0x2130, 0x0005, 0x460d, 0xb017 }, { 0x2134, 0x00c0, 0xe9e5, 0xb017 },
--		{ 0x2138, 0x00d5, 0x010b, 0xb017 }, { 0x213c, 0x009d, 0x7809, 0xb017 },
--		{ 0x2140, 0x00c5, 0x0eed, 0xb017 }, { 0x2144, 0x009d, 0x7809, 0xb017 },
--		{ 0x2148, 0x00c4, 0x4ef0, 0xb017 }, { 0x214c, 0x003a, 0x3106, 0xb017 },
--		{ 0x2150, 0x00af, 0x750e, 0xb017 }, { 0x2154, 0x008c, 0x1ff1, 0xb017 },
--		{ 0x2158, 0x009e, 0x360c, 0xb017 }, { 0x215c, 0x008c, 0x1ff1, 0xb017 },
--		{ 0x2160, 0x004d, 0xac0a, 0xb017 }, { 0x2164, 0x007d, 0xa00f, 0xb017 },
--		{ 0x2168, 0x00e1, 0x9ce3, 0xb017 }, { 0x216c, 0x00e8, 0x590e, 0xb017 },
--		{ 0x2170, 0x00e1, 0x9ce3, 0xb017 }, { 0x2174, 0x0066, 0xfa0d, 0xb017 },
--		{ 0x2178, 0x0000, 0x0010, 0xb017 }, { 0x217c, 0x0000, 0x0000, 0xb017 },
--		{ 0x2180, 0x0000, 0x0000, 0xb017 }, { 0x2184, 0x0000, 0x0000, 0xb017 },
--		{ 0x2188, 0x0000, 0x0000, 0xb017 }, { 0x218c, 0x0000, 0x0010, 0xb017 },
--		{ 0x2190, 0x0000, 0x0000, 0xb017 }, { 0x2194, 0x0000, 0x0000, 0xb017 },
--		{ 0x2198, 0x0000, 0x0000, 0xb017 }, { 0x219c, 0x0000, 0x0000, 0xb017 },
--		{ 0x21a0, 0x0000, 0x0010, 0xb017 }, { 0x21a4, 0x0000, 0x0000, 0xb017 },
--		{ 0x21a8, 0x0000, 0x0000, 0xb017 }, { 0x21ac, 0x0000, 0x0000, 0xb017 },
--		{ 0x21b0, 0x0000, 0x0000, 0xb017 }, { 0x21b4, 0x0000, 0x0010, 0xb017 },
--		{ 0x21b8, 0x0000, 0x0000, 0xb017 }, { 0x21bc, 0x0000, 0x0000, 0xb017 },
--		{ 0x21c0, 0x0000, 0x0000, 0xb017 }, { 0x21c4, 0x0000, 0x0000, 0xb017 },
--		{ 0x23b9, 0x0000, 0x0000, 0xb011 }, { 0x23e0, 0x0000, 0x0020, 0xb011 },
--		{ 0x23e1, 0x0000, 0x0001, 0xb011 },
--	};
--
--	static const struct alc298_samsung_coeff_seq_desc amp_0x3d[] = {
--		{ 0x2000, 0x0000, 0x0001, 0xb011 }, { 0x23ff, 0x0000, 0x0000, 0xb011 },
--		{ 0x203a, 0x0000, 0x0080, 0xb011 }, { 0x23e1, 0x0000, 0x0000, 0xb011 },
--		{ 0x2012, 0x0000, 0x006f, 0xb011 }, { 0x2014, 0x0000, 0x0000, 0xb011 },
--		{ 0x201b, 0x0000, 0x0002, 0xb011 }, { 0x201d, 0x0000, 0x0002, 0xb011 },
--		{ 0x201f, 0x0000, 0x00fd, 0xb011 }, { 0x2021, 0x0000, 0x0001, 0xb011 },
--		{ 0x2022, 0x0000, 0x0010, 0xb011 }, { 0x203d, 0x0000, 0x0005, 0xb011 },
--		{ 0x203f, 0x0000, 0x0003, 0xb011 }, { 0x2050, 0x0000, 0x002c, 0xb011 },
--		{ 0x2076, 0x0000, 0x000e, 0xb011 }, { 0x207c, 0x0000, 0x004a, 0xb011 },
--		{ 0x2081, 0x0000, 0x0003, 0xb011 }, { 0x23ba, 0x0000, 0x008d, 0xb011 },
--		{ 0x2128, 0x0005, 0x460d, 0xb017 }, { 0x212c, 0x00f6, 0x73e5, 0xb017 },
--		{ 0x2130, 0x0005, 0x460d, 0xb017 }, { 0x2134, 0x00c0, 0xe9e5, 0xb017 },
--		{ 0x2138, 0x00d5, 0x010b, 0xb017 }, { 0x213c, 0x009d, 0x7809, 0xb017 },
--		{ 0x2140, 0x00c5, 0x0eed, 0xb017 }, { 0x2144, 0x009d, 0x7809, 0xb017 },
--		{ 0x2148, 0x00c4, 0x4ef0, 0xb017 }, { 0x214c, 0x003a, 0x3106, 0xb017 },
--		{ 0x2150, 0x00af, 0x750e, 0xb017 }, { 0x2154, 0x008c, 0x1ff1, 0xb017 },
--		{ 0x2158, 0x009e, 0x360c, 0xb017 }, { 0x215c, 0x008c, 0x1ff1, 0xb017 },
--		{ 0x2160, 0x004d, 0xac0a, 0xb017 }, { 0x2164, 0x007d, 0xa00f, 0xb017 },
--		{ 0x2168, 0x00e1, 0x9ce3, 0xb017 }, { 0x216c, 0x00e8, 0x590e, 0xb017 },
--		{ 0x2170, 0x00e1, 0x9ce3, 0xb017 }, { 0x2174, 0x0066, 0xfa0d, 0xb017 },
--		{ 0x2178, 0x0000, 0x0010, 0xb017 }, { 0x217c, 0x0000, 0x0000, 0xb017 },
--		{ 0x2180, 0x0000, 0x0000, 0xb017 }, { 0x2184, 0x0000, 0x0000, 0xb017 },
--		{ 0x2188, 0x0000, 0x0000, 0xb017 }, { 0x218c, 0x0000, 0x0010, 0xb017 },
--		{ 0x2190, 0x0000, 0x0000, 0xb017 }, { 0x2194, 0x0000, 0x0000, 0xb017 },
--		{ 0x2198, 0x0000, 0x0000, 0xb017 }, { 0x219c, 0x0000, 0x0000, 0xb017 },
--		{ 0x21a0, 0x0000, 0x0010, 0xb017 }, { 0x21a4, 0x0000, 0x0000, 0xb017 },
--		{ 0x21a8, 0x0000, 0x0000, 0xb017 }, { 0x21ac, 0x0000, 0x0000, 0xb017 },
--		{ 0x21b0, 0x0000, 0x0000, 0xb017 }, { 0x21b4, 0x0000, 0x0010, 0xb017 },
--		{ 0x21b8, 0x0000, 0x0000, 0xb017 }, { 0x21bc, 0x0000, 0x0000, 0xb017 },
--		{ 0x21c0, 0x0000, 0x0000, 0xb017 }, { 0x21c4, 0x0000, 0x0000, 0xb017 },
--		{ 0x23b9, 0x0000, 0x0000, 0xb011 }, { 0x23e0, 0x0000, 0x0020, 0xb011 },
--		{ 0x23e1, 0x0000, 0x0001, 0xb011 },
--	};
--
--	static const struct alc298_samsung_coeff_seq_desc amp_seq1[] = {
--		{ 0x23ff, 0x0000, 0x0000, 0xb011 }, { 0x203a, 0x0000, 0x0080, 0xb011 },
--	};
--
--	static const struct alc298_samsung_coeff_fixup_desc fixups2[] = {
--		{ 0x4f, 0xb029 }, { 0x05, 0x2be0 }, { 0x30, 0x2421 },
--	};
--
--
--	static const struct alc298_samsung_coeff_seq_desc amp_seq2[] = {
--		{ 0x203a, 0x0000, 0x0081, 0xb011 }, { 0x23ff, 0x0000, 0x0001, 0xb011 },
--	};
--
--	if (action != HDA_FIXUP_ACT_INIT)
--		return;
--
--	// First set of fixups
--	for (i = 0; i < ARRAY_SIZE(fixups1); i++)
--		alc_write_coef_idx(codec, fixups1[i].coeff_idx, fixups1[i].coeff_value);
--
--	// First set of writes
--	alc298_samsung_write_coef_pack_seq(codec, 0x38, amp_0x38, ARRAY_SIZE(amp_0x38));
--	alc298_samsung_write_coef_pack_seq(codec, 0x39, amp_0x39, ARRAY_SIZE(amp_0x39));
--	alc298_samsung_write_coef_pack_seq(codec, 0x3c, amp_0x3c, ARRAY_SIZE(amp_0x3c));
--	alc298_samsung_write_coef_pack_seq(codec, 0x3d, amp_0x3d, ARRAY_SIZE(amp_0x3d));
--
--	// Second set of writes
--	alc298_samsung_write_coef_pack_seq(codec, 0x38, amp_seq1, ARRAY_SIZE(amp_seq1));
--	alc298_samsung_write_coef_pack_seq(codec, 0x39, amp_seq1, ARRAY_SIZE(amp_seq1));
--	alc298_samsung_write_coef_pack_seq(codec, 0x3c, amp_seq1, ARRAY_SIZE(amp_seq1));
--	alc298_samsung_write_coef_pack_seq(codec, 0x3d, amp_seq1, ARRAY_SIZE(amp_seq1));
--
--	// Second set of fixups
--	for (i = 0; i < ARRAY_SIZE(fixups2); i++)
--		alc_write_coef_idx(codec, fixups2[i].coeff_idx, fixups2[i].coeff_value);
--
--	// Third set of writes
--	alc298_samsung_write_coef_pack_seq(codec, 0x38, amp_seq2, ARRAY_SIZE(amp_seq2));
--	alc298_samsung_write_coef_pack_seq(codec, 0x39, amp_seq2, ARRAY_SIZE(amp_seq2));
--	alc298_samsung_write_coef_pack_seq(codec, 0x3c, amp_seq2, ARRAY_SIZE(amp_seq2));
--	alc298_samsung_write_coef_pack_seq(codec, 0x3d, amp_seq2, ARRAY_SIZE(amp_seq2));
--
--	// Final fixup
--	alc_write_coef_idx(codec, 0x10, 0x0F21);
--}
+ DEFINE_FIND_HELPER(snd_usb_find_clock_source,
+@@ -93,16 +96,19 @@ DEFINE_FIND_HELPER(snd_usb_find_clock_multiplier,
+ 		   union uac23_clock_multiplier_desc, validate_clock_multiplier,
+ 		   UAC2_CLOCK_MULTIPLIER, UAC3_CLOCK_MULTIPLIER);
+ 
+-static int uac_clock_selector_get_val(struct snd_usb_audio *chip, int selector_id)
++static int uac_clock_selector_get_val(struct snd_usb_audio *chip,
++				int selector_id, int iface_no)
+ {
++	struct usb_host_interface *ctrl_intf;
+ 	unsigned char buf;
+ 	int ret;
+ 
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, iface_no);
+ 	ret = snd_usb_ctl_msg(chip->dev, usb_rcvctrlpipe(chip->dev, 0),
+ 			      UAC2_CS_CUR,
+ 			      USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_IN,
+ 			      UAC2_CX_CLOCK_SELECTOR << 8,
+-			      snd_usb_ctrl_intf(chip) | (selector_id << 8),
++			      snd_usb_ctrl_intf(ctrl_intf) | (selector_id << 8),
+ 			      &buf, sizeof(buf));
+ 
+ 	if (ret < 0)
+@@ -111,16 +117,18 @@ static int uac_clock_selector_get_val(struct snd_usb_audio *chip, int selector_i
+ 	return buf;
+ }
+ 
+-static int uac_clock_selector_set_val(struct snd_usb_audio *chip, int selector_id,
+-					unsigned char pin)
++static int uac_clock_selector_set_val(struct snd_usb_audio *chip,
++					int selector_id, unsigned char pin, int iface_no)
+ {
++	struct usb_host_interface *ctrl_intf;
+ 	int ret;
+ 
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, iface_no);
+ 	ret = snd_usb_ctl_msg(chip->dev, usb_sndctrlpipe(chip->dev, 0),
+ 			      UAC2_CS_CUR,
+ 			      USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_OUT,
+ 			      UAC2_CX_CLOCK_SELECTOR << 8,
+-			      snd_usb_ctrl_intf(chip) | (selector_id << 8),
++			      snd_usb_ctrl_intf(ctrl_intf) | (selector_id << 8),
+ 			      &pin, sizeof(pin));
+ 	if (ret < 0)
+ 		return ret;
+@@ -132,7 +140,7 @@ static int uac_clock_selector_set_val(struct snd_usb_audio *chip, int selector_i
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = uac_clock_selector_get_val(chip, selector_id);
++	ret = uac_clock_selector_get_val(chip, selector_id, iface_no);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -155,8 +163,10 @@ static bool uac_clock_source_is_valid_quirk(struct snd_usb_audio *chip,
+ 	unsigned char data;
+ 	struct usb_device *dev = chip->dev;
+ 	union uac23_clock_source_desc *cs_desc;
++	struct usb_host_interface *ctrl_intf;
+ 
+-	cs_desc = snd_usb_find_clock_source(chip, source_id, fmt->protocol);
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, fmt->iface);
++	cs_desc = snd_usb_find_clock_source(chip, source_id, fmt);
+ 	if (!cs_desc)
+ 		return false;
+ 
+@@ -191,7 +201,7 @@ static bool uac_clock_source_is_valid_quirk(struct snd_usb_audio *chip,
+ 			err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), UAC2_CS_CUR,
+ 					      USB_TYPE_CLASS | USB_RECIP_INTERFACE | USB_DIR_IN,
+ 					      UAC2_CS_CONTROL_CLOCK_VALID << 8,
+-					      snd_usb_ctrl_intf(chip) | (source_id << 8),
++					      snd_usb_ctrl_intf(ctrl_intf) | (source_id << 8),
+ 					      &data, sizeof(data));
+ 			if (err < 0) {
+ 				dev_warn(&dev->dev,
+@@ -217,8 +227,10 @@ static bool uac_clock_source_is_valid(struct snd_usb_audio *chip,
+ 	struct usb_device *dev = chip->dev;
+ 	u32 bmControls;
+ 	union uac23_clock_source_desc *cs_desc;
++	struct usb_host_interface *ctrl_intf;
+ 
+-	cs_desc = snd_usb_find_clock_source(chip, source_id, fmt->protocol);
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, fmt->iface);
++	cs_desc = snd_usb_find_clock_source(chip, source_id, fmt);
+ 	if (!cs_desc)
+ 		return false;
+ 
+@@ -235,7 +247,7 @@ static bool uac_clock_source_is_valid(struct snd_usb_audio *chip,
+ 	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), UAC2_CS_CUR,
+ 			      USB_TYPE_CLASS | USB_RECIP_INTERFACE | USB_DIR_IN,
+ 			      UAC2_CS_CONTROL_CLOCK_VALID << 8,
+-			      snd_usb_ctrl_intf(chip) | (source_id << 8),
++			      snd_usb_ctrl_intf(ctrl_intf) | (source_id << 8),
+ 			      &data, sizeof(data));
+ 
+ 	if (err < 0) {
+@@ -274,7 +286,7 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
+ 	}
+ 
+ 	/* first, see if the ID we're looking at is a clock source already */
+-	source = snd_usb_find_clock_source(chip, entity_id, proto);
++	source = snd_usb_find_clock_source(chip, entity_id, fmt);
+ 	if (source) {
+ 		entity_id = GET_VAL(source, proto, bClockID);
+ 		if (validate && !uac_clock_source_is_valid(chip, fmt,
+@@ -287,7 +299,7 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
+ 		return entity_id;
+ 	}
+ 
+-	selector = snd_usb_find_clock_selector(chip, entity_id, proto);
++	selector = snd_usb_find_clock_selector(chip, entity_id, fmt);
+ 	if (selector) {
+ 		pins = GET_VAL(selector, proto, bNrInPins);
+ 		clock_id = GET_VAL(selector, proto, bClockID);
+@@ -317,7 +329,7 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
+ 
+ 		/* the entity ID we are looking at is a selector.
+ 		 * find out what it currently selects */
+-		ret = uac_clock_selector_get_val(chip, clock_id);
++		ret = uac_clock_selector_get_val(chip, clock_id, fmt->iface);
+ 		if (ret < 0) {
+ 			if (!chip->autoclock)
+ 				return ret;
+@@ -346,7 +358,7 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
+ 			if (chip->quirk_flags & QUIRK_FLAG_SKIP_CLOCK_SELECTOR ||
+ 			    !writeable)
+ 				return ret;
+-			err = uac_clock_selector_set_val(chip, entity_id, cur);
++			err = uac_clock_selector_set_val(chip, entity_id, cur, fmt->iface);
+ 			if (err < 0) {
+ 				if (pins == 1) {
+ 					usb_audio_dbg(chip,
+@@ -377,7 +389,7 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
+ 			if (ret < 0)
+ 				continue;
+ 
+-			err = uac_clock_selector_set_val(chip, entity_id, i);
++			err = uac_clock_selector_set_val(chip, entity_id, i, fmt->iface);
+ 			if (err < 0)
+ 				continue;
+ 
+@@ -391,7 +403,7 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
+ 	}
+ 
+ 	/* FIXME: multipliers only act as pass-thru element for now */
+-	multiplier = snd_usb_find_clock_multiplier(chip, entity_id, proto);
++	multiplier = snd_usb_find_clock_multiplier(chip, entity_id, fmt);
+ 	if (multiplier)
+ 		return __uac_clock_find_source(chip, fmt,
+ 					       GET_VAL(multiplier, proto, bCSourceID),
+@@ -491,11 +503,13 @@ static int get_sample_rate_v2v3(struct snd_usb_audio *chip, int iface,
+ 	struct usb_device *dev = chip->dev;
+ 	__le32 data;
+ 	int err;
++	struct usb_host_interface *ctrl_intf;
+ 
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, iface);
+ 	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), UAC2_CS_CUR,
+ 			      USB_TYPE_CLASS | USB_RECIP_INTERFACE | USB_DIR_IN,
+ 			      UAC2_CS_CONTROL_SAM_FREQ << 8,
+-			      snd_usb_ctrl_intf(chip) | (clock << 8),
++			      snd_usb_ctrl_intf(ctrl_intf) | (clock << 8),
+ 			      &data, sizeof(data));
+ 	if (err < 0) {
+ 		dev_warn(&dev->dev, "%d:%d: cannot get freq (v2/v3): err %d\n",
+@@ -524,8 +538,10 @@ int snd_usb_set_sample_rate_v2v3(struct snd_usb_audio *chip,
+ 	__le32 data;
+ 	int err;
+ 	union uac23_clock_source_desc *cs_desc;
++	struct usb_host_interface *ctrl_intf;
+ 
+-	cs_desc = snd_usb_find_clock_source(chip, clock, fmt->protocol);
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, fmt->iface);
++	cs_desc = snd_usb_find_clock_source(chip, clock, fmt);
+ 
+ 	if (!cs_desc)
+ 		return 0;
+@@ -544,7 +560,7 @@ int snd_usb_set_sample_rate_v2v3(struct snd_usb_audio *chip,
+ 	err = snd_usb_ctl_msg(chip->dev, usb_sndctrlpipe(chip->dev, 0), UAC2_CS_CUR,
+ 			      USB_TYPE_CLASS | USB_RECIP_INTERFACE | USB_DIR_OUT,
+ 			      UAC2_CS_CONTROL_SAM_FREQ << 8,
+-			      snd_usb_ctrl_intf(chip) | (clock << 8),
++			      snd_usb_ctrl_intf(ctrl_intf) | (clock << 8),
+ 			      &data, sizeof(data));
+ 	if (err < 0)
+ 		return err;
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 3b45d0ee76938..61c4aca8be09e 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -548,7 +548,9 @@ static int parse_audio_format_rates_v2v3(struct snd_usb_audio *chip,
+ 	unsigned char tmp[2], *data;
+ 	int nr_triplets, data_size, ret = 0, ret_l6;
+ 	int clock = snd_usb_clock_find_source(chip, fp, false);
++	struct usb_host_interface *ctrl_intf;
+ 
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, fp->iface);
+ 	if (clock < 0) {
+ 		dev_err(&dev->dev,
+ 			"%s(): unable to find clock source (clock %d)\n",
+@@ -560,7 +562,7 @@ static int parse_audio_format_rates_v2v3(struct snd_usb_audio *chip,
+ 	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), UAC2_CS_RANGE,
+ 			      USB_TYPE_CLASS | USB_RECIP_INTERFACE | USB_DIR_IN,
+ 			      UAC2_CS_CONTROL_SAM_FREQ << 8,
+-			      snd_usb_ctrl_intf(chip) | (clock << 8),
++			      snd_usb_ctrl_intf(ctrl_intf) | (clock << 8),
+ 			      tmp, sizeof(tmp));
+ 
+ 	if (ret < 0) {
+@@ -595,7 +597,7 @@ static int parse_audio_format_rates_v2v3(struct snd_usb_audio *chip,
+ 	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), UAC2_CS_RANGE,
+ 			      USB_TYPE_CLASS | USB_RECIP_INTERFACE | USB_DIR_IN,
+ 			      UAC2_CS_CONTROL_SAM_FREQ << 8,
+-			      snd_usb_ctrl_intf(chip) | (clock << 8),
++			      snd_usb_ctrl_intf(ctrl_intf) | (clock << 8),
+ 			      data, data_size);
+ 
+ 	if (ret < 0) {
+diff --git a/sound/usb/helper.c b/sound/usb/helper.c
+index bf80e55d013a8..72b671fb2c84c 100644
+--- a/sound/usb/helper.c
++++ b/sound/usb/helper.c
+@@ -130,3 +130,37 @@ snd_usb_get_host_interface(struct snd_usb_audio *chip, int ifnum, int altsetting
+ 		return NULL;
+ 	return usb_altnum_to_altsetting(iface, altsetting);
+ }
++
++int snd_usb_add_ctrl_interface_link(struct snd_usb_audio *chip, int ifnum,
++		int ctrlif)
++{
++	struct usb_device *dev = chip->dev;
++	struct usb_host_interface *host_iface;
++
++	if (chip->num_intf_to_ctrl >= MAX_CARD_INTERFACES) {
++		dev_info(&dev->dev, "Too many interfaces assigned to the single USB-audio card\n");
++		return -EINVAL;
++	}
++
++	/* find audiocontrol interface */
++	host_iface = &usb_ifnum_to_if(dev, ctrlif)->altsetting[0];
++
++	chip->intf_to_ctrl[chip->num_intf_to_ctrl].interface = ifnum;
++	chip->intf_to_ctrl[chip->num_intf_to_ctrl].ctrl_intf = host_iface;
++	chip->num_intf_to_ctrl++;
++
++	return 0;
++}
++
++struct usb_host_interface *snd_usb_find_ctrl_interface(struct snd_usb_audio *chip,
++							int ifnum)
++{
++	int i;
++
++	for (i = 0; i < chip->num_intf_to_ctrl; ++i)
++		if (chip->intf_to_ctrl[i].interface == ifnum)
++			return chip->intf_to_ctrl[i].ctrl_intf;
++
++	/* Fallback to first audiocontrol interface */
++	return chip->ctrl_intf;
++}
+diff --git a/sound/usb/helper.h b/sound/usb/helper.h
+index e2b51ec96ec62..0372e050b3dc4 100644
+--- a/sound/usb/helper.h
++++ b/sound/usb/helper.h
+@@ -17,6 +17,12 @@ unsigned char snd_usb_parse_datainterval(struct snd_usb_audio *chip,
+ struct usb_host_interface *
+ snd_usb_get_host_interface(struct snd_usb_audio *chip, int ifnum, int altsetting);
+ 
++int snd_usb_add_ctrl_interface_link(struct snd_usb_audio *chip, int ifnum,
++		int ctrlif);
++
++struct usb_host_interface *snd_usb_find_ctrl_interface(struct snd_usb_audio *chip,
++								int ifnum);
++
+ /*
+  * retrieve usb_interface descriptor from the host interface
+  * (conditional for compatibility with the older API)
+@@ -28,9 +34,9 @@ snd_usb_get_host_interface(struct snd_usb_audio *chip, int ifnum, int altsetting
+ 
+ #define snd_usb_get_speed(dev) ((dev)->speed)
+ 
+-static inline int snd_usb_ctrl_intf(struct snd_usb_audio *chip)
++static inline int snd_usb_ctrl_intf(struct usb_host_interface *ctrl_intf)
+ {
+-	return get_iface_desc(chip->ctrl_intf)->bInterfaceNumber;
++	return get_iface_desc(ctrl_intf)->bInterfaceNumber;
+ }
+ 
+ /* in validate.c */
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 197fd07e69edd..017b50322d88f 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -728,7 +728,7 @@ static int get_cluster_channels_v3(struct mixer_build *state, unsigned int clust
+ 			UAC3_CS_REQ_HIGH_CAPABILITY_DESCRIPTOR,
+ 			USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_IN,
+ 			cluster_id,
+-			snd_usb_ctrl_intf(state->chip),
++			snd_usb_ctrl_intf(state->mixer->hostif),
+ 			&c_header, sizeof(c_header));
+ 	if (err < 0)
+ 		goto error;
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 212b5e6443d88..1d8bf1ecfed44 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -1043,7 +1043,7 @@ static int snd_ftu_eff_switch_init(struct usb_mixer_interface *mixer,
+ 	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0), UAC_GET_CUR,
+ 			      USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_IN,
+ 			      pval & 0xff00,
+-			      snd_usb_ctrl_intf(mixer->chip) | ((pval & 0xff) << 8),
++			      snd_usb_ctrl_intf(mixer->hostif) | ((pval & 0xff) << 8),
+ 			      value, 2);
+ 	if (err < 0)
+ 		return err;
+@@ -1077,7 +1077,7 @@ static int snd_ftu_eff_switch_update(struct usb_mixer_elem_list *list)
+ 			      UAC_SET_CUR,
+ 			      USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_OUT,
+ 			      pval & 0xff00,
+-			      snd_usb_ctrl_intf(chip) | ((pval & 0xff) << 8),
++			      snd_usb_ctrl_intf(list->mixer->hostif) | ((pval & 0xff) << 8),
+ 			      value, 2);
+ 	snd_usb_unlock_shutdown(chip);
+ 	return err;
+@@ -2115,24 +2115,25 @@ static int dell_dock_mixer_create(struct usb_mixer_interface *mixer)
+ 	return 0;
+ }
+ 
+-static void dell_dock_init_vol(struct snd_usb_audio *chip, int ch, int id)
++static void dell_dock_init_vol(struct usb_mixer_interface *mixer, int ch, int id)
+ {
++	struct snd_usb_audio *chip = mixer->chip;
+ 	u16 buf = 0;
+ 
+ 	snd_usb_ctl_msg(chip->dev, usb_sndctrlpipe(chip->dev, 0), UAC_SET_CUR,
+ 			USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_OUT,
+ 			(UAC_FU_VOLUME << 8) | ch,
+-			snd_usb_ctrl_intf(chip) | (id << 8),
++			snd_usb_ctrl_intf(mixer->hostif) | (id << 8),
+ 			&buf, 2);
+ }
+ 
+ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
+ {
+ 	/* fix to 0dB playback volumes */
+-	dell_dock_init_vol(mixer->chip, 1, 16);
+-	dell_dock_init_vol(mixer->chip, 2, 16);
+-	dell_dock_init_vol(mixer->chip, 1, 19);
+-	dell_dock_init_vol(mixer->chip, 2, 19);
++	dell_dock_init_vol(mixer, 1, 16);
++	dell_dock_init_vol(mixer, 2, 16);
++	dell_dock_init_vol(mixer, 1, 19);
++	dell_dock_init_vol(mixer, 2, 19);
+ 	return 0;
+ }
+ 
+diff --git a/sound/usb/mixer_scarlett.c b/sound/usb/mixer_scarlett.c
+index 0d6e4f15bf77c..ff548041679bb 100644
+--- a/sound/usb/mixer_scarlett.c
++++ b/sound/usb/mixer_scarlett.c
+@@ -460,7 +460,7 @@ static int scarlett_ctl_meter_get(struct snd_kcontrol *kctl,
+ 	struct snd_usb_audio *chip = elem->head.mixer->chip;
+ 	unsigned char buf[2 * MAX_CHANNELS] = {0, };
+ 	int wValue = (elem->control << 8) | elem->idx_off;
+-	int idx = snd_usb_ctrl_intf(chip) | (elem->head.id << 8);
++	int idx = snd_usb_ctrl_intf(elem->head.mixer->hostif) | (elem->head.id << 8);
+ 	int err;
+ 
+ 	err = snd_usb_ctl_msg(chip->dev,
+@@ -1002,7 +1002,7 @@ int snd_scarlett_controls_create(struct usb_mixer_interface *mixer)
+ 	err = snd_usb_ctl_msg(mixer->chip->dev,
+ 		usb_sndctrlpipe(mixer->chip->dev, 0), UAC2_CS_CUR,
+ 		USB_RECIP_INTERFACE | USB_TYPE_CLASS |
+-		USB_DIR_OUT, 0x0100, snd_usb_ctrl_intf(mixer->chip) |
++		USB_DIR_OUT, 0x0100, snd_usb_ctrl_intf(mixer->hostif) |
+ 		(0x29 << 8), sample_rate_buffer, 4);
+ 	if (err < 0)
+ 		return err;
+diff --git a/sound/usb/power.c b/sound/usb/power.c
+index 606a2cb23eab6..66bd4daa68fd5 100644
+--- a/sound/usb/power.c
++++ b/sound/usb/power.c
+@@ -40,6 +40,7 @@ snd_usb_find_power_domain(struct usb_host_interface *ctrl_iface,
+ 					le16_to_cpu(pd_desc->waRecoveryTime1);
+ 				pd->pd_d2d0_rec =
+ 					le16_to_cpu(pd_desc->waRecoveryTime2);
++				pd->ctrl_iface = ctrl_iface;
+ 				return pd;
+ 			}
+ 		}
+@@ -57,7 +58,7 @@ int snd_usb_power_domain_set(struct snd_usb_audio *chip,
+ 	unsigned char current_state;
+ 	int err, idx;
+ 
+-	idx = snd_usb_ctrl_intf(chip) | (pd->pd_id << 8);
++	idx = snd_usb_ctrl_intf(pd->ctrl_iface) | (pd->pd_id << 8);
+ 
+ 	err = snd_usb_ctl_msg(chip->dev, usb_rcvctrlpipe(chip->dev, 0),
+ 			      UAC2_CS_CUR,
+diff --git a/sound/usb/power.h b/sound/usb/power.h
+index 396e3e51440a7..1fa92ad0ca925 100644
+--- a/sound/usb/power.h
++++ b/sound/usb/power.h
+@@ -6,6 +6,7 @@ struct snd_usb_power_domain {
+ 	int pd_id;              /* UAC3 Power Domain ID */
+ 	int pd_d1d0_rec;        /* D1 to D0 recovery time */
+ 	int pd_d2d0_rec;        /* D2 to D0 recovery time */
++	struct usb_host_interface *ctrl_iface; /* Control interface */
+ };
+ 
+ enum {
+diff --git a/sound/usb/stream.c b/sound/usb/stream.c
+index e14c725acebf2..d70c140813d68 100644
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -713,10 +713,13 @@ snd_usb_get_audioformat_uac12(struct snd_usb_audio *chip,
+ 	struct usb_device *dev = chip->dev;
+ 	struct uac_format_type_i_continuous_descriptor *fmt;
+ 	unsigned int num_channels = 0, chconfig = 0;
++	struct usb_host_interface *ctrl_intf;
+ 	struct audioformat *fp;
+ 	int clock = 0;
+ 	u64 format;
+ 
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, iface_no);
++
+ 	/* get audio formats */
+ 	if (protocol == UAC_VERSION_1) {
+ 		struct uac1_as_header_descriptor *as =
+@@ -740,7 +743,7 @@ snd_usb_get_audioformat_uac12(struct snd_usb_audio *chip,
+ 
+ 		format = le16_to_cpu(as->wFormatTag); /* remember the format value */
+ 
+-		iterm = snd_usb_find_input_terminal_descriptor(chip->ctrl_intf,
++		iterm = snd_usb_find_input_terminal_descriptor(ctrl_intf,
+ 							       as->bTerminalLink,
+ 							       protocol);
+ 		if (iterm) {
+@@ -776,7 +779,7 @@ snd_usb_get_audioformat_uac12(struct snd_usb_audio *chip,
+ 		 * lookup the terminal associated to this interface
+ 		 * to extract the clock
+ 		 */
+-		input_term = snd_usb_find_input_terminal_descriptor(chip->ctrl_intf,
++		input_term = snd_usb_find_input_terminal_descriptor(ctrl_intf,
+ 								    as->bTerminalLink,
+ 								    protocol);
+ 		if (input_term) {
+@@ -786,7 +789,7 @@ snd_usb_get_audioformat_uac12(struct snd_usb_audio *chip,
+ 			goto found_clock;
+ 		}
+ 
+-		output_term = snd_usb_find_output_terminal_descriptor(chip->ctrl_intf,
++		output_term = snd_usb_find_output_terminal_descriptor(ctrl_intf,
+ 								      as->bTerminalLink,
+ 								      protocol);
+ 		if (output_term) {
+@@ -870,6 +873,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 	struct uac3_cluster_header_descriptor *cluster;
+ 	struct uac3_as_header_descriptor *as = NULL;
+ 	struct uac3_hc_descriptor_header hc_header;
++	struct usb_host_interface *ctrl_intf;
+ 	struct snd_pcm_chmap_elem *chmap;
+ 	struct snd_usb_power_domain *pd;
+ 	unsigned char badd_profile;
+@@ -881,6 +885,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 	int err;
+ 
+ 	badd_profile = chip->badd_profile;
++	ctrl_intf = snd_usb_find_ctrl_interface(chip, iface_no);
+ 
+ 	if (badd_profile >= UAC3_FUNCTION_SUBCLASS_GENERIC_IO) {
+ 		unsigned int maxpacksize =
+@@ -966,7 +971,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 			UAC3_CS_REQ_HIGH_CAPABILITY_DESCRIPTOR,
+ 			USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_IN,
+ 			cluster_id,
+-			snd_usb_ctrl_intf(chip),
++			snd_usb_ctrl_intf(ctrl_intf),
+ 			&hc_header, sizeof(hc_header));
+ 	if (err < 0)
+ 		return ERR_PTR(err);
+@@ -990,7 +995,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 			UAC3_CS_REQ_HIGH_CAPABILITY_DESCRIPTOR,
+ 			USB_RECIP_INTERFACE | USB_TYPE_CLASS | USB_DIR_IN,
+ 			cluster_id,
+-			snd_usb_ctrl_intf(chip),
++			snd_usb_ctrl_intf(ctrl_intf),
+ 			cluster, wLength);
+ 	if (err < 0) {
+ 		kfree(cluster);
+@@ -1011,7 +1016,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 	 * lookup the terminal associated to this interface
+ 	 * to extract the clock
+ 	 */
+-	input_term = snd_usb_find_input_terminal_descriptor(chip->ctrl_intf,
++	input_term = snd_usb_find_input_terminal_descriptor(ctrl_intf,
+ 							    as->bTerminalLink,
+ 							    UAC_VERSION_3);
+ 	if (input_term) {
+@@ -1019,7 +1024,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 		goto found_clock;
+ 	}
+ 
+-	output_term = snd_usb_find_output_terminal_descriptor(chip->ctrl_intf,
++	output_term = snd_usb_find_output_terminal_descriptor(ctrl_intf,
+ 							      as->bTerminalLink,
+ 							      UAC_VERSION_3);
+ 	if (output_term) {
+@@ -1068,7 +1073,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
+ 							       UAC_VERSION_3,
+ 							       iface_no);
+ 
+-		pd = snd_usb_find_power_domain(chip->ctrl_intf,
++		pd = snd_usb_find_power_domain(ctrl_intf,
+ 					       as->bTerminalLink);
+ 
+ 		/* ok, let's parse further... */
+diff --git a/sound/usb/usbaudio.h b/sound/usb/usbaudio.h
+index 43d4029edab46..b0f042c996087 100644
+--- a/sound/usb/usbaudio.h
++++ b/sound/usb/usbaudio.h
+@@ -21,6 +21,15 @@ struct media_intf_devnode;
+ 
+ #define MAX_CARD_INTERFACES	16
+ 
++/*
++ * Structure holding assosiation between Audio Control Interface
++ * and given Streaming or Midi Interface.
++ */
++struct snd_intf_to_ctrl {
++	u8 interface;
++	struct usb_host_interface *ctrl_intf;
++};
++
+ struct snd_usb_audio {
+ 	int index;
+ 	struct usb_device *dev;
+@@ -63,6 +72,9 @@ struct snd_usb_audio {
+ 	struct usb_host_interface *ctrl_intf;	/* the audio control interface */
+ 	struct media_device *media_dev;
+ 	struct media_intf_devnode *ctl_intf_media_devnode;
++
++	unsigned int num_intf_to_ctrl;
++	struct snd_intf_to_ctrl intf_to_ctrl[MAX_CARD_INTERFACES];
+ };
+ 
+ #define USB_AUDIO_IFACE_UNUSED	((void *)-1L)
 -- 
 2.43.0
 
