@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-82827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F30994EA3
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28202994A4F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1AD1F24EDF
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86582895B8
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F13D1DED4E;
-	Tue,  8 Oct 2024 13:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABB41CEE8E;
+	Tue,  8 Oct 2024 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15otroy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRaCPGdZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EE61DE4CC;
-	Tue,  8 Oct 2024 13:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D6D1D0BAA;
+	Tue,  8 Oct 2024 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728393558; cv=none; b=gMjCQ1Vk0MepTAKBwB9Tjyc7BMjx2pP5jpHC65nm+UUiUH29kx/ZlxLXDxUXnFYYKThsprxNFykk3pl8X4gC1hSOuSXSfGDzvD8RLD0GKwDue0W/5bMekrfK82dIG+1Oacif9UlHvJC1LWDp6+hKkwa7WPOIcJPmmvkGByHh9l0=
+	t=1728390705; cv=none; b=pjqM1HM7OreOIutlI+smIcuk9WMildkoDgPnIyncjz9tK/VVCHpDVFAvWBoEH7Ay/wIbYP6KwjDdN+JANJfHsJzuBbk1ZwgZiW0fpJTkUF5kIJ8LGDg31IXYJsRzcjw7oN6qXgUaMIoQsSkruIBBvMtJhoNWktULLb6ZyhskpNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728393558; c=relaxed/simple;
-	bh=jUt4FhE8ABsXGWI4pAukQvaBvZRutWcFwk3f5GILmok=;
+	s=arc-20240116; t=1728390705; c=relaxed/simple;
+	bh=G/zPPQhr3ZX9CvkZ4LwOZokjTrPw+Wk8NVJQgJmZk/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jrxu9+WYeJ7YM6S7s/fVTyn//39GG738qyPtqpn3+HdlpSUfoEuCexH2ZmnOmK5tpjAwYe+xCJgFCtB3td+ajV/cFkYaKv9crf1VAkFHaKiV+sOOQ6QmvnQ6bzbfwx8D4Tc6X6ZmmJQv69h4OShStjZDeU2Cn6kTv5bl3mKeYBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15otroy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38EFC4CECC;
-	Tue,  8 Oct 2024 13:19:17 +0000 (UTC)
+	 MIME-Version; b=KmrKlnbOQU+zrV+9y0cXvNeDx2iW3CzGlLBOVREm6kAhCQC2QUZpg3S+F3hnOJ5wEJyeYm2YyoS24zQimbtPpA5X3z7Mq0vnKUO1Uc9dZqruzSZ7kXAaQbYV0YSsKTVEBHvN4366SNs2tvlDIQUFH0zuTse+upDRgbj+fsyQ45I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRaCPGdZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5246C4CEC7;
+	Tue,  8 Oct 2024 12:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728393558;
-	bh=jUt4FhE8ABsXGWI4pAukQvaBvZRutWcFwk3f5GILmok=;
+	s=korg; t=1728390705;
+	bh=G/zPPQhr3ZX9CvkZ4LwOZokjTrPw+Wk8NVJQgJmZk/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15otroy4UEM3Mw4QVD6lgcWBRg6Eq0t1bXpVp5t/OViO+PhcMMDW7u83cz9fA6cFT
-	 WkoxTlVdd2cQ7Djjyags/zRzd+hdj42j1jAVVZ86F+N+BWmmbo5QhS5lIptt1il2y0
-	 /NsmBGR9lZA3xe9EVLKh00n+1q5OkzFChdZo4mjk=
+	b=cRaCPGdZSQ73vHBnNqw0SJUYwec0dcxlVc5JOLSlW6ufUm3ziSZavrKc4LM1xwo+d
+	 nnMUrhh21CbgLu5zl8/bl/rc5IPO2uL3e+30ogqQe2tPsNYH2gwLngtyOHN8s4soT0
+	 Zd+7CDKNXmyiC+2Cs7qNivx1Nuft2oaiQsiw1oNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/386] spi: spi-imx: Fix pm_runtime_set_suspended() with runtime pm enabled
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Aoyama Wataru <wataru.aoyama@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.10 368/482] exfat: fix memory leak in exfat_load_bitmap()
 Date: Tue,  8 Oct 2024 14:07:11 +0200
-Message-ID: <20241008115636.731001721@linuxfoundation.org>
+Message-ID: <20241008115702.904414408@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
-References: <20241008115629.309157387@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit b6e05ba0844139dde138625906015c974c86aa93 ]
+commit d2b537b3e533f28e0d97293fe9293161fe8cd137 upstream.
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+If the first directory entry in the root directory is not a bitmap
+directory entry, 'bh' will not be released and reassigned, which
+will cause a memory leak.
 
-Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240923040015.3009329-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1e49a94cf707 ("exfat: add bitmap operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Aoyama Wataru <wataru.aoyama@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/balloc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 006860ee03ca0..daa32bde61556 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1870,8 +1870,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		spi_imx_sdma_exit(spi_imx);
- out_runtime_pm_put:
- 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(spi_imx->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
+--- a/fs/exfat/balloc.c
++++ b/fs/exfat/balloc.c
+@@ -91,11 +91,8 @@ int exfat_load_bitmap(struct super_block
+ 				return -EIO;
  
- 	clk_disable_unprepare(spi_imx->clk_ipg);
- out_put_per:
--- 
-2.43.0
-
+ 			type = exfat_get_entry_type(ep);
+-			if (type == TYPE_UNUSED)
+-				break;
+-			if (type != TYPE_BITMAP)
+-				continue;
+-			if (ep->dentry.bitmap.flags == 0x0) {
++			if (type == TYPE_BITMAP &&
++			    ep->dentry.bitmap.flags == 0x0) {
+ 				int err;
+ 
+ 				err = exfat_allocate_bitmap(sb, ep);
+@@ -103,6 +100,9 @@ int exfat_load_bitmap(struct super_block
+ 				return err;
+ 			}
+ 			brelse(bh);
++
++			if (type == TYPE_UNUSED)
++				return -EINVAL;
+ 		}
+ 
+ 		if (exfat_get_next_cluster(sb, &clu.dir))
 
 
 
