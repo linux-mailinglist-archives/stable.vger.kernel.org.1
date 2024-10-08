@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-82255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD89994BD9
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:47:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CDE994911
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AF3B28326F
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:47:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4FC1F2604A
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22791DE88B;
-	Tue,  8 Oct 2024 12:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7BE1DE4C9;
+	Tue,  8 Oct 2024 12:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpfPZu7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3u0mu53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9561D54D1;
-	Tue,  8 Oct 2024 12:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FA33981;
+	Tue,  8 Oct 2024 12:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391649; cv=none; b=Yjko8jxY+jvuTnwIVcLoktViFkqiIEbu+NZ8kXYTslhpJOiWS8VpAYC3OJRPliIOL0kis1N2hE7x09ogH2l1h2tcH0Zh7B6XS9HTDJULk0gRrLhagJ+fwH6B16EWuq/SbhdnGdVvlbyzgbpNeOCLEjyrSwp1cgCzq3lIDECSVRU=
+	t=1728389965; cv=none; b=XUaDHTw78ENj1PlnfNtH+HyNPFzZ5i4oNQNLEXQBY04a+EsNW5Hn4KxRCQ5ECkzXnwprxE7SmBTzhNNuqNy0SDpj5hzWWevF1CDC5mcOls1gAUwKNfnwwKj0zkepmNv6jsyOJrbNAVIXLLkdSid3swICVB9ODRcqnCnsTth7PrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391649; c=relaxed/simple;
-	bh=Cj8BgoiRbmTTQ9ELnIv9RWfuyVEC3YlL+um/nf6giCY=;
+	s=arc-20240116; t=1728389965; c=relaxed/simple;
+	bh=Ki2sKAeyOpHKrlrmeJKYOjj+5I2kpL0wMIRAe3ltauk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEv0nFBfmjbo3BwVLd5vXGB+/Yx6rIcSxpHVpwDvzQMziv7dmhcoMsdVLcTDSg/CHCODoasJo//6fMoRaUXG0zRH8FOl6a5/cfIDtAWdfQONKjNomV/lzl/7zg7DrJc37koGIKDjRL+dOuV7YMcfLQMrGeSCSngX5wIz8s6VhDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpfPZu7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12957C4CEC7;
-	Tue,  8 Oct 2024 12:47:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DyEZCZZYBKRcw2JCgWHq6YpDxWJ7wLVvqz5vtJERK1da7sNWDAQWGkR7AZ/pollm1h61lLcK/qNcP29GTh5RR1R/gRkX0/gmpaz7ExFrP2/AS8o5u6qAdj3LRSHXJ2e0bS/hB1h8/eK9RZqKrBOaVQgElrLhiYq3HYsszoI6qw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3u0mu53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E08C4CEC7;
+	Tue,  8 Oct 2024 12:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391649;
-	bh=Cj8BgoiRbmTTQ9ELnIv9RWfuyVEC3YlL+um/nf6giCY=;
+	s=korg; t=1728389964;
+	bh=Ki2sKAeyOpHKrlrmeJKYOjj+5I2kpL0wMIRAe3ltauk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpfPZu7Xto7xhJ2PJBftg4hcebHizera4Ju7LDZYcbX8U6fp96sN8ORgDnCP0CzCZ
-	 UtMX/RQwNR1uZArUtX3afxENs3oNOmlMe1URPNlX3/QndTjTyi44dAoIOnuu9xBTdS
-	 mf2WacWZdaQ422SBGmmDLJ6a/kutC3vmS57lJe7Q=
+	b=P3u0mu53EiJ2mTWxQ8lHqqhrBuQRoPEOjGDVEvU6fKqkI5FqWnPNNgc+tyJHQz9bA
+	 fCFXYAfx2bPVIaK2hZm+4QPf1ByoNWq++nwHpsjdmHm+LRzDiFYwkOLbX28gedt1Vl
+	 TlQKkYLgpMmeeFaA5mMgbZhPO4eLNQzA761b1gLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 182/558] ALSA: asihpi: Fix potential OOB array access
+Subject: [PATCH 6.10 149/482] tools/x86/kcpuid: Protect against faulty "max subleaf" values
 Date: Tue,  8 Oct 2024 14:03:32 +0200
-Message-ID: <20241008115709.516303168@linuxfoundation.org>
+Message-ID: <20241008115654.171041758@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit 7b986c7430a6bb68d523dac7bfc74cbd5b44ef96 ]
+[ Upstream commit cf96ab1a966b87b09fdd9e8cc8357d2d00776a3a ]
 
-ASIHPI driver stores some values in the static array upon a response
-from the driver, and its index depends on the firmware.  We shouldn't
-trust it blindly.
+Protect against the kcpuid code parsing faulty max subleaf numbers
+through a min() expression.  Thus, ensuring that max_subleaf will always
+be ≤ MAX_SUBLEAF_NUM.
 
-This patch adds a sanity check of the array index to fit in the array
-size.
+Use "u32" for the subleaf numbers since kcpuid is compiled with -Wextra,
+which includes signed/unsigned comparisons warnings.
 
-Link: https://patch.msgid.link/20240808091454.30846-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20240718134755.378115-5-darwi@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/asihpi/hpimsgx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/arch/x86/kcpuid/kcpuid.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
-index d0caef2994818..b68e6bfbbfbab 100644
---- a/sound/pci/asihpi/hpimsgx.c
-+++ b/sound/pci/asihpi/hpimsgx.c
-@@ -708,7 +708,7 @@ static u16 HPIMSGX__init(struct hpi_message *phm,
- 		phr->error = HPI_ERROR_PROCESSING_MESSAGE;
- 		return phr->error;
- 	}
--	if (hr.error == 0) {
-+	if (hr.error == 0 && hr.u.s.adapter_index < HPI_MAX_ADAPTERS) {
- 		/* the adapter was created successfully
- 		   save the mapping for future use */
- 		hpi_entry_points[hr.u.s.adapter_index] = entry_point_func;
+diff --git a/tools/arch/x86/kcpuid/kcpuid.c b/tools/arch/x86/kcpuid/kcpuid.c
+index 24b7d017ec2c1..b7965dfff33a9 100644
+--- a/tools/arch/x86/kcpuid/kcpuid.c
++++ b/tools/arch/x86/kcpuid/kcpuid.c
+@@ -7,7 +7,8 @@
+ #include <string.h>
+ #include <getopt.h>
+ 
+-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
++#define ARRAY_SIZE(x)	(sizeof(x) / sizeof((x)[0]))
++#define min(a, b)	(((a) < (b)) ? (a) : (b))
+ 
+ typedef unsigned int u32;
+ typedef unsigned long long u64;
+@@ -207,12 +208,9 @@ static void raw_dump_range(struct cpuid_range *range)
+ #define MAX_SUBLEAF_NUM		32
+ struct cpuid_range *setup_cpuid_range(u32 input_eax)
+ {
+-	u32 max_func, idx_func;
+-	int subleaf;
++	u32 max_func, idx_func, subleaf, max_subleaf;
++	u32 eax, ebx, ecx, edx, f = input_eax;
+ 	struct cpuid_range *range;
+-	u32 eax, ebx, ecx, edx;
+-	u32 f = input_eax;
+-	int max_subleaf;
+ 	bool allzero;
+ 
+ 	eax = input_eax;
+@@ -258,7 +256,7 @@ struct cpuid_range *setup_cpuid_range(u32 input_eax)
+ 		 * others have to be tried (0xf)
+ 		 */
+ 		if (f == 0x7 || f == 0x14 || f == 0x17 || f == 0x18)
+-			max_subleaf = (eax & 0xff) + 1;
++			max_subleaf = min((eax & 0xff) + 1, max_subleaf);
+ 
+ 		if (f == 0xb)
+ 			max_subleaf = 2;
 -- 
 2.43.0
 
