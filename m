@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-82123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-81604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DC4994B28
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:40:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08165994853
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:12:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 955E2B27F32
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:40:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB0C828415D
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5A21DED69;
-	Tue,  8 Oct 2024 12:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36391DDA36;
+	Tue,  8 Oct 2024 12:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfwX5UH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhmUgHzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDA31DED55;
-	Tue,  8 Oct 2024 12:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D04E1DACBE;
+	Tue,  8 Oct 2024 12:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391232; cv=none; b=u6fQIQ+jASaoJ1vF5gYoaQZaao7FxP1TqsRUQXoW8nwh5QwqyFTs2CHWSzig/Hpxa8B6hXflIDii91BC8wJVAjoZBznq6oXnOOrdNNqZLSJ3M67kV8IeRBMd3vQDgdca2It7MOuGf0OwxLzZAW/yyPXphBCyRkMh1RCjNurONZs=
+	t=1728389515; cv=none; b=L5RhW7gBpyNQ79FoN1DILPsFUnEmvXs97ZBWGktMnwfpj2BWtSoC2EQxVv2VRY2v9NP717ntyy80O7Z6/rvGylSh7fN1C9rLxrsyjmkmOOoA0j4uN8cY9s2Nj4Tw9CVJQ7xbRgNoTZNfKn0TAiaFEqLWNfrPgb/AOyiLNMHhBkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391232; c=relaxed/simple;
-	bh=c/4XrmI8cZBAao6FUwmJOJ9WR3L3IhVG0xWlmpWJsMk=;
+	s=arc-20240116; t=1728389515; c=relaxed/simple;
+	bh=h0FdP+4uDD+DGlzdqAc3LQaAU2+NbNCfQitaIc/ggXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYP3p3SQez59YPwa7qcqHkB7WWJxb7GaT1u4JwdbbHAEwXV/M6Exa5OtWO2QHl+sLQyUp0YuWggZKbEsaR4NqH8hs0t1ni8SQ5FRQsaEPNCGZUvn3Cix1+O04UdT59ovMoMc/7L7Yp5xl79GWJykw9N19u141v4PZR165DsRgvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfwX5UH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4241EC4CECC;
-	Tue,  8 Oct 2024 12:40:32 +0000 (UTC)
+	 MIME-Version; b=EXVYitWDWS9vimotzt3jS6xNGTXXBM3UXky3GXrG5/l1/kObpe8AfB0zi7OHt1yadUVPhxjtyuMeGqfsjoJDzVnOAiamJVAVBmfAiNZ7CMdbPr4PAkif7T/UpEIgqMo+c3ayIIHVhJckr/e870C8KTmZLwVOPnGuKLdEdDdDEqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhmUgHzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2296C4CEC7;
+	Tue,  8 Oct 2024 12:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391232;
-	bh=c/4XrmI8cZBAao6FUwmJOJ9WR3L3IhVG0xWlmpWJsMk=;
+	s=korg; t=1728389515;
+	bh=h0FdP+4uDD+DGlzdqAc3LQaAU2+NbNCfQitaIc/ggXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfwX5UH3H/gtFnY68JQy1JlYxjOXmCi1QlTNj760SYF2uRNzqkpT85+z7dqP6bqYk
-	 vvfW7T34BvwXN+Sg3mFO86uKOnZuac7hHuvpkf7+0XCQKuVJCkxaOfZMOI0uG1LKY3
-	 fQCeRAgb+z6Ytl6UUGltZMB5VrvfLZT2COQ6mhss=
+	b=lhmUgHzl/130dxjpdDMYZOBNkVtQlDb7oC60r4WBnauR5Ay/b/qIuWKkjt1EOyCOH
+	 5kQ/3YKtSdW68MlZyKvqz/7oqtEqb4lD6l0rIBPmtoSn1LzZOipl6deAQbhnV2Pi82
+	 p7RGGk5hMae1vgtZzQEoqOKWRdtmUQpz33vJUXdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aakash Menon <aakash.menon@protempis.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 050/558] bridge: mcast: Fail MDB get request on empty entry
+Subject: [PATCH 6.10 017/482] net: sparx5: Fix invalid timestamps
 Date: Tue,  8 Oct 2024 14:01:20 +0200
-Message-ID: <20241008115704.190833058@linuxfoundation.org>
+Message-ID: <20241008115648.976939447@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Aakash Menon <aakash.r.menon@gmail.com>
 
-[ Upstream commit 555f45d24ba7cd5527716553031641cdebbe76c7 ]
+[ Upstream commit 151ac45348afc5b56baa584c7cd4876addf461ff ]
 
-When user space deletes a port from an MDB entry, the port is removed
-synchronously. If this was the last port in the entry and the entry is
-not joined by the host itself, then the entry is scheduled for deletion
-via a timer.
+Bit 270-271 are occasionally unexpectedly set by the hardware. This issue
+was observed with 10G SFPs causing huge time errors (> 30ms) in PTP. Only
+30 bits are needed for the nanosecond part of the timestamp, clear 2 most
+significant bits before extracting timestamp from the internal frame
+header.
 
-The above means that it is possible for the MDB get netlink request to
-retrieve an empty entry which is scheduled for deletion. This is
-problematic as after deleting the last port in an entry, user space
-cannot rely on a non-zero return code from the MDB get request as an
-indication that the port was successfully removed.
-
-Fix by returning an error when the entry's port list is empty and the
-entry is not joined by the host.
-
-Fixes: 68b380a395a7 ("bridge: mcast: Add MDB get support")
-Reported-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/netdev/c92569919307749f879b9482b0f3e125b7d9d2e3.1726480066.git.jamie.bainbridge@gmail.com/
-Tested-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20240929123640.558525-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 70dfe25cd866 ("net: sparx5: Update extraction/injection for timestamping")
+Signed-off-by: Aakash Menon <aakash.menon@protempis.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_mdb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_packet.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
-index bc37e47ad8299..1a52a0bca086d 100644
---- a/net/bridge/br_mdb.c
-+++ b/net/bridge/br_mdb.c
-@@ -1674,7 +1674,7 @@ int br_mdb_get(struct net_device *dev, struct nlattr *tb[], u32 portid, u32 seq,
- 	spin_lock_bh(&br->multicast_lock);
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+index f3f5fb4204689..70427643f777c 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+@@ -45,8 +45,12 @@ void sparx5_ifh_parse(u32 *ifh, struct frame_info *info)
+ 	fwd = (fwd >> 5);
+ 	info->src_port = FIELD_GET(GENMASK(7, 1), fwd);
  
- 	mp = br_mdb_ip_get(br, &group);
--	if (!mp) {
-+	if (!mp || (!mp->ports && !mp->host_joined)) {
- 		NL_SET_ERR_MSG_MOD(extack, "MDB entry not found");
- 		err = -ENOENT;
- 		goto unlock;
++	/*
++	 * Bit 270-271 are occasionally unexpectedly set by the hardware,
++	 * clear bits before extracting timestamp
++	 */
+ 	info->timestamp =
+-		((u64)xtr_hdr[2] << 24) |
++		((u64)(xtr_hdr[2] & GENMASK(5, 0)) << 24) |
+ 		((u64)xtr_hdr[3] << 16) |
+ 		((u64)xtr_hdr[4] <<  8) |
+ 		((u64)xtr_hdr[5] <<  0);
 -- 
 2.43.0
 
