@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-81633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAAD994882
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:14:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C2B994B6F
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EBBE1C22619
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:14:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F04D287DC2
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5841DED4B;
-	Tue,  8 Oct 2024 12:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6881DF743;
+	Tue,  8 Oct 2024 12:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02j0DBJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cipek/lg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8231DE2AE;
-	Tue,  8 Oct 2024 12:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BBB1DF727;
+	Tue,  8 Oct 2024 12:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389616; cv=none; b=D94s+U4LDRd0UPQVPk0PH0jlUwcsAXQ4JoWZsVpQSsvhWIxqpSbhJmGOggXnmvDTW+FF31sjwT+/kFK4G8KOvzWUebR45KiEDz7FBILoXxob8g3sBq8ALzlWqFRfL+FcDixPGy2dQHyDb0BnAHlPuRTKIMNK+RVdSxsvNHBIRY4=
+	t=1728391325; cv=none; b=XTotnP8uGAaNM7DXjA/oLwvVaz6fY5YZbL9Avl+cx3TES8BcXnanPWzKcQgeTNzcBVSmGhZNan+uJLVVEHD85XesDmT2UqAM8qXAEd+4TAybWdv3YcXlVjVeivN38yhnCCYDD3xnLynoBIM4FkFjaGIK5TGqflMErWcW3R+Soo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389616; c=relaxed/simple;
-	bh=783+hWHknDZ9UB2OxHzlYPi4vJ0DKnVYf+JhQx/A3uc=;
+	s=arc-20240116; t=1728391325; c=relaxed/simple;
+	bh=mi17jRozsgfsuRwFZ714CSPSzpQJGFxcTbH6O/qHrWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eeWSxf1haT0ueqIl7d80SqzVUg5CQ1Hgae8oIFgnO8rDrC45DXFiH7uvkE7cGE1DrHWOB5zRVU16RXb7We3l96vPxkmgUtVLRN/3oaf7kOWCJrDX6JjZYkorJP/rRjUBfQbf2fvYJ2FSR2Jtvol3oXqQRScK5P6NZb2oW4xCCYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02j0DBJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3E2C4CEC7;
-	Tue,  8 Oct 2024 12:13:34 +0000 (UTC)
+	 MIME-Version; b=PwLZAJYvx8fUMmrIjzLNJija9lZhSA2cocuo2sEE4KlDOIxKbhqn7seWVGqxNnjqeMkQ4fKPvzktVh2L/VK32j5IBKxP1gwJ3+c+xtAMaR9DkRDqR1XwO1AdgHCrFHEpb80IkfzYHbEp73TpEcoN6KC6l+dJT3FUfUAf0Hz9Xug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cipek/lg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD12CC4CEC7;
+	Tue,  8 Oct 2024 12:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389615;
-	bh=783+hWHknDZ9UB2OxHzlYPi4vJ0DKnVYf+JhQx/A3uc=;
+	s=korg; t=1728391325;
+	bh=mi17jRozsgfsuRwFZ714CSPSzpQJGFxcTbH6O/qHrWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=02j0DBJB9eAUXDAmHWqDIfVYLc2hpGI0ApRkZqzw+HtDSsN/lhHUOP4MS3qbqbB84
-	 JXmJI4UIwF+whTGSHldTHsdbyp3qpbho8OC4rs0K+IUiVY0y1gP4azvhC0fAZ9neBP
-	 Enqx6TYDImAhawvZoRh+ffJmgSFGAByzXD5wk4Hc=
+	b=Cipek/lg964sL/oNw6J3hCTjy5Zh/7wv1CeirgGqpjklS1gRKHhgiC0XmzL18CtQs
+	 YxlbrMlxyHedLrpLcnTtScduIrQjsuV7OanJPen3UHtZFX/7K77DUgxnQy2RklyKRh
+	 nlQ6jlb9MqHQrcZzUqtgj4hDho/ss/s/mfUYlguA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Heusel <christian@heusel.eu>,
+	Jerry <jerryluo225@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 045/482] bridge: mcast: Fail MDB get request on empty entry
-Date: Tue,  8 Oct 2024 14:01:48 +0200
-Message-ID: <20241008115650.078422565@linuxfoundation.org>
+Subject: [PATCH 6.11 079/558] ALSA: hda/conexant: Fix conflicting quirk for System76 Pangolin
+Date: Tue,  8 Oct 2024 14:01:49 +0200
+Message-ID: <20241008115705.485194065@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 555f45d24ba7cd5527716553031641cdebbe76c7 ]
+[ Upstream commit b3ebb007060f89d5a45c9b99f06a55e36a1945b5 ]
 
-When user space deletes a port from an MDB entry, the port is removed
-synchronously. If this was the last port in the entry and the entry is
-not joined by the host itself, then the entry is scheduled for deletion
-via a timer.
+We received a regression report for System76 Pangolin (pang14) due to
+the recent fix for Tuxedo Sirius devices to support the top speaker.
+The reason was the conflicting PCI SSID, as often seen.
 
-The above means that it is possible for the MDB get netlink request to
-retrieve an empty entry which is scheduled for deletion. This is
-problematic as after deleting the last port in an entry, user space
-cannot rely on a non-zero return code from the MDB get request as an
-indication that the port was successfully removed.
+As a workaround, now the codec SSID is checked and the quirk is
+applied conditionally only to Sirius devices.
 
-Fix by returning an error when the entry's port list is empty and the
-entry is not joined by the host.
-
-Fixes: 68b380a395a7 ("bridge: mcast: Add MDB get support")
-Reported-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/netdev/c92569919307749f879b9482b0f3e125b7d9d2e3.1726480066.git.jamie.bainbridge@gmail.com/
-Tested-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20240929123640.558525-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4178d78cd7a8 ("ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices")
+Reported-by: Christian Heusel <christian@heusel.eu>
+Reported-by: Jerry <jerryluo225@gmail.com>
+Closes: https://lore.kernel.org/c930b6a6-64e5-498f-b65a-1cd5e0a1d733@heusel.eu
+Link: https://patch.msgid.link/20241004082602.29016-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_mdb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_conexant.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
-index bc37e47ad8299..1a52a0bca086d 100644
---- a/net/bridge/br_mdb.c
-+++ b/net/bridge/br_mdb.c
-@@ -1674,7 +1674,7 @@ int br_mdb_get(struct net_device *dev, struct nlattr *tb[], u32 portid, u32 seq,
- 	spin_lock_bh(&br->multicast_lock);
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index e851785ff0581..4a2c8274c3df7 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -816,6 +816,23 @@ static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
+ 	{}
+ };
  
- 	mp = br_mdb_ip_get(br, &group);
--	if (!mp) {
-+	if (!mp || (!mp->ports && !mp->host_joined)) {
- 		NL_SET_ERR_MSG_MOD(extack, "MDB entry not found");
- 		err = -ENOENT;
- 		goto unlock;
++/* pincfg quirk for Tuxedo Sirius;
++ * unfortunately the (PCI) SSID conflicts with System76 Pangolin pang14,
++ * which has incompatible pin setup, so we check the codec SSID (luckily
++ * different one!) and conditionally apply the quirk here
++ */
++static void cxt_fixup_sirius_top_speaker(struct hda_codec *codec,
++					 const struct hda_fixup *fix,
++					 int action)
++{
++	/* ignore for incorrectly picked-up pang14 */
++	if (codec->core.subsystem_id == 0x278212b3)
++		return;
++	/* set up the top speaker pin */
++	if (action == HDA_FIXUP_ACT_PRE_PROBE)
++		snd_hda_codec_set_pincfg(codec, 0x1d, 0x82170111);
++}
++
+ static const struct hda_fixup cxt_fixups[] = {
+ 	[CXT_PINCFG_LENOVO_X200] = {
+ 		.type = HDA_FIXUP_PINS,
+@@ -976,11 +993,8 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.v.pins = cxt_pincfg_sws_js201d,
+ 	},
+ 	[CXT_PINCFG_TOP_SPEAKER] = {
+-		.type = HDA_FIXUP_PINS,
+-		.v.pins = (const struct hda_pintbl[]) {
+-			{ 0x1d, 0x82170111 },
+-			{ }
+-		},
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cxt_fixup_sirius_top_speaker,
+ 	},
+ };
+ 
 -- 
 2.43.0
 
