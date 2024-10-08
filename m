@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-82509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDD5994D1A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:01:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9301994ED3
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 583C5282140
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:01:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154EA1C255AF
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4EA17F4FF;
-	Tue,  8 Oct 2024 13:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8549D1DF243;
+	Tue,  8 Oct 2024 13:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylvR6+Yw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsBE1c6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3511DFD1;
-	Tue,  8 Oct 2024 13:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F671DF272;
+	Tue,  8 Oct 2024 13:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728392504; cv=none; b=JVf60hV3R8eyqE6By876mYpVSLyQ67AXjfeaIdfFbtcUETylJCgPJMKMZ7+kRjOCN3x8VZj+1uatSWCIQpTVee4EIdsALhHBPgOlpBeqBKnbCAqUZOTa+q6eTz+mTHPnSaMiEbo3IU6paqgzJzl7BzV7ua26NZlUibl46O5T1h8=
+	t=1728393670; cv=none; b=BswPsh/duWDoAKl3crFZ8iP/xfv6iYfSaSSBtogbpjB05/6MaHIlAMYuHu8LFkSzDcEA0qMRGOvP8rhsAII9YN0O0S0C9ykHyLfo8KuByHgBQN90ZLuUNgCniEnGYy0csTeialEcKi83NOIY/3g47LKo73nrzjEuYwBfYeSBM3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728392504; c=relaxed/simple;
-	bh=jXio0QFYstpGcfXTxJTzWztQSHojrimJlYha2/bHZRo=;
+	s=arc-20240116; t=1728393670; c=relaxed/simple;
+	bh=dlWOYLuZ1nNlrUmq8nhz4UuNAZtPazbpxI/6neD3VPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMwqH9z+IHQuKweDZMFZC/FmnFtGCa6sZhxFFpQG7sevu22mthMw7WH2GLbsZE9yS4dBStz4ZHiitAG6+BnuRq9hjvYtpKe5ROjkqCOKIQ78JbOTZTWbWEPEAf+CHban2485hC7D7QjJIUPEk66GVzQTdFnB0KwxnWI1hCU6ojw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylvR6+Yw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD7BC4CEC7;
-	Tue,  8 Oct 2024 13:01:43 +0000 (UTC)
+	 MIME-Version; b=NoLrOGB0i5GrauafTL7bfcNvWoqDcmaBRpBg+v3o2sD3CEb4ECUkI8v4KjIhf0wGqfbu2jScp6NuUA8/DwFC+FxGaaCRz/eRhVXml8xiyl/e8wOOa8HvQOYm72Ohyo5gEgpoPvzJU5g+9I5+d87F1m7S3LtBy0JO52f32l5k/aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsBE1c6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D09C4CEC7;
+	Tue,  8 Oct 2024 13:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728392504;
-	bh=jXio0QFYstpGcfXTxJTzWztQSHojrimJlYha2/bHZRo=;
+	s=korg; t=1728393669;
+	bh=dlWOYLuZ1nNlrUmq8nhz4UuNAZtPazbpxI/6neD3VPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylvR6+YwC7nhpGBSkA4x32PmNN8qn9iKDMSkTOsyza8GtcozEJFeO/GBRd2Flc/Cq
-	 f+ZzsT4BlGwc1WPwuTNPnZGHSM8XJZoXreEFBRJmqzO7PCFKrHgwfh26FayRzfABlu
-	 sFoJ7PuBqdyEgXF8qwoiA16NCbBj5nvpz5fR3zEw=
+	b=HsBE1c6lvTN4Eo3uFXf52WzDizpOamAvMk4nqWCS3CXUlPifTVTG6k+iBWKIpAGfP
+	 4OShiQ6t9+2f7nU9vsGk59rW0YWb0imsOOzfdHa9cbm31x7hZ+0NJm0Wn8T4qgJgrm
+	 +rddzKWzsyi8AqixE99Fe4X/lkUg9lc5rACgjIQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	NeilBrown <neilb@suse.de>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.11 434/558] nfsd: fix delegation_blocked() to block correctly for at least 30 seconds
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.6 219/386] power: supply: hwmon: Fix missing temp1_max_alarm attribute
 Date: Tue,  8 Oct 2024 14:07:44 +0200
-Message-ID: <20241008115719.352906920@linuxfoundation.org>
+Message-ID: <20241008115638.025674764@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 45bb63ed20e02ae146336412889fe5450316a84f upstream.
+commit e50a57d16f897e45de1112eb6478577b197fab52 upstream.
 
-The pair of bloom filtered used by delegation_blocked() was intended to
-block delegations on given filehandles for between 30 and 60 seconds.  A
-new filehandle would be recorded in the "new" bit set.  That would then
-be switch to the "old" bit set between 0 and 30 seconds later, and it
-would remain as the "old" bit set for 30 seconds.
+Temp channel 0 aka temp1 can have a temp1_max_alarm attribute for
+power_supply devices which have a POWER_SUPPLY_PROP_TEMP_ALERT_MAX
+property.
 
-Unfortunately the code intended to clear the old bit set once it reached
-30 seconds old, preparing it to be the next new bit set, instead cleared
-the *new* bit set before switching it to be the old bit set.  This means
-that the "old" bit set is always empty and delegations are blocked
-between 0 and 30 seconds.
+HWMON_T_MAX_ALARM was missing from power_supply_hwmon_info for
+temp channel 0, causing the hwmon temp1_max_alarm attribute to be
+missing from such power_supply devices.
 
-This patch updates bd->new before clearing the set with that index,
-instead of afterwards.
+Add this to power_supply_hwmon_info to fix this.
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Fixes: f1d33ae806ec ("power: supply: remove duplicated argument in power_supply_hwmon_info")
 Cc: stable@vger.kernel.org
-Fixes: 6282cd565553 ("NFSD: Don't hand out delegations for 30 seconds after recalling them.")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240908185337.103696-2-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/power/supply/power_supply_hwmon.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1077,7 +1077,8 @@ static void nfs4_free_deleg(struct nfs4_
-  * When a delegation is recalled, the filehandle is stored in the "new"
-  * filter.
-  * Every 30 seconds we swap the filters and clear the "new" one,
-- * unless both are empty of course.
-+ * unless both are empty of course.  This results in delegations for a
-+ * given filehandle being blocked for between 30 and 60 seconds.
-  *
-  * Each filter is 256 bits.  We hash the filehandle to 32bit and use the
-  * low 3 bytes as hash-table indices.
-@@ -1106,9 +1107,9 @@ static int delegation_blocked(struct knf
- 		if (ktime_get_seconds() - bd->swap_time > 30) {
- 			bd->entries -= bd->old_entries;
- 			bd->old_entries = bd->entries;
-+			bd->new = 1-bd->new;
- 			memset(bd->set[bd->new], 0,
- 			       sizeof(bd->set[0]));
--			bd->new = 1-bd->new;
- 			bd->swap_time = ktime_get_seconds();
- 		}
- 		spin_unlock(&blocked_delegations_lock);
+--- a/drivers/power/supply/power_supply_hwmon.c
++++ b/drivers/power/supply/power_supply_hwmon.c
+@@ -299,7 +299,8 @@ static const struct hwmon_channel_info *
+ 			   HWMON_T_INPUT     |
+ 			   HWMON_T_MAX       |
+ 			   HWMON_T_MIN       |
+-			   HWMON_T_MIN_ALARM,
++			   HWMON_T_MIN_ALARM |
++			   HWMON_T_MAX_ALARM,
+ 
+ 			   HWMON_T_LABEL     |
+ 			   HWMON_T_INPUT     |
 
 
 
