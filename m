@@ -1,91 +1,98 @@
-Return-Path: <stable+bounces-83083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-83084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61327995590
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 19:23:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77908995596
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 19:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2A4FB27A07
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:23:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8DDB1C24F04
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 17:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C864F1FA258;
-	Tue,  8 Oct 2024 17:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8E31FA24E;
+	Tue,  8 Oct 2024 17:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Okmxnov0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6IspTDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776C91FA244;
-	Tue,  8 Oct 2024 17:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A5A224CC;
+	Tue,  8 Oct 2024 17:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728408204; cv=none; b=iwu6Cz+EL6Jls8xAZgkx9TFqQrxf+0HV84blPQvPusXgCUFqZS5ShjNGHsxEJzPMm0Kfdg6ViDUtvcPKxtviMQoEK8B+ReGJkcnXAuXk/lcxPGY5yLErErVTYiGUaZJbJJam2T7NEIMRLidyHOkJMRVuoyjkFc6yR8l3vqKjfRg=
+	t=1728408357; cv=none; b=d36tT4fDUHoybT/80jeWIUjpZx2N8L8lfRJSHLhIOE1fGSm8dC2hJMcekLt5RyOWd1uQEPeN/TrvQqRu2h2qF71H9yPCl5tGcmMix+7odB3yH/cS0VyXXT+r0BryZpgcC481VHU0/au5Sj50D3LLbRrzaf90XwtfTYqGLusUnCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728408204; c=relaxed/simple;
-	bh=DuHTSfJlmC1hp6ca5DIHmFBllQ1ImR0t39fiVgQb/dI=;
+	s=arc-20240116; t=1728408357; c=relaxed/simple;
+	bh=Hjz6XkiNgCb1MenPzZFmfFhE1r1HWM7T4N5G0KbzeCs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pl92zFXYKifT3if+3aqxyVoz2RD19eTNiKqV+QNZlHlPi8fCMfxJK7tS85DGEpJ+5wWfx/GWyUpndzFa3MEPejtQ16YQq/VLdq+2lVFNpwkZrCFTZk2obPlaWPPiwTOh/a7jdUpN9UxX0pDPVWkGDjN0t3Xe7p0C6yIHmtevQk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Okmxnov0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CFC4CEC7;
-	Tue,  8 Oct 2024 17:23:24 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=I/lNHsgex+UwmknxH2zSN+M84KCOU+dPf1ZHwx4BaEuOJtTWy3kC9xJXCz1r8qig6hIL9qs8FTIkxQHM5CEDs+EcyhUB+8c0Y4XALxj6XR/LqsUeuC3lDsH42JK6fcrG6uvWh+bD9jPMFnxgKxOQjfh5qiwPNYxuQifEYf4Xg4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6IspTDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AD1C4CEC7;
+	Tue,  8 Oct 2024 17:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728408204;
-	bh=DuHTSfJlmC1hp6ca5DIHmFBllQ1ImR0t39fiVgQb/dI=;
+	s=k20201202; t=1728408356;
+	bh=Hjz6XkiNgCb1MenPzZFmfFhE1r1HWM7T4N5G0KbzeCs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Okmxnov0uc+NFjHx21W6Gujd1idTmAlVJsKNZ5flBTKyg3e6SCKt1bkihvDSzgj0g
-	 X9vT0yttzVHPH8W+np1B28njjElN7rMLqW25WzUELP+/G1cZhbKWA/8lyoPpZY5bO1
-	 pLGtxTDRnsX6Aeh5rZGPrASWKvFdamVVTVQXSrQNzMuov3n/MtMzLk2R6hbpjXoN52
-	 /2bkkwOe9Gc1y0MNxAtVpKzpALeXqyNBRyu12jyVcb0AmO3g47ZZ1VBnvR6aG6iqUD
-	 5im0/YICPqJ0WfUZN5qAvIRAx935V4w75fnN2E1Ol1f6lCsNQgH47WzzGg51v1hDgA
-	 1SXsDVOpQjx0Q==
-Date: Tue, 8 Oct 2024 10:23:20 -0700
-From: Kees Cook <kees@kernel.org>
-To: Zach Wade <zachwade.k@gmail.com>
-Cc: tony.luck@intel.com, gpiccoli@igalia.com,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, lixingyang1@qq.com
-Subject: Re: [PATCH] pstore: Fix uaf when backend is unregistered
-Message-ID: <202410081019.0E9DE76A@keescook>
-References: <2bf30957-ad04-473a-a72e-8baab648fb56@gmail.com>
+	b=C6IspTDWSxAImvLYaSzeJQnFJXH8eEZOfjMbLiY2gjujSPyHZ/wFoPEsK86l3Ke+n
+	 5DYzneZMXandf/2loyeMIjyVrK+5eGn9Zp5GhhK0RweUe8s5BgNgktY3z5m2q/dHtn
+	 /byC0AKe15lldQKdwFnAem47TXXwsfETQFN/3qFOkhq89xFm+iAAKwTHoXlY63/FjG
+	 xFKB9odB7h9frlTen2QPU+nMdBCTM6R9jNd3I8uPPb/BD3dFY3+NZPaxu4Vdxnv6GH
+	 Cu2VfAAan6RzbfCAhQrzy1HIfrZd0TsqpsdgYgU3/pYTjmBk5SYqDhEEmzSb2+IOQP
+	 IkI5k8aB0n4NQ==
+Date: Tue, 8 Oct 2024 18:25:53 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.10 000/482] 6.10.14-rc1 review
+Message-ID: <ZwVrIReWuOEFZ4_T@finisterre.sirena.org.uk>
+References: <20241008115648.280954295@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cdywWs774iHWwz0i"
+Content-Disposition: inline
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+X-Cookie: Editing is a rewording activity.
+
+
+--cdywWs774iHWwz0i
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2bf30957-ad04-473a-a72e-8baab648fb56@gmail.com>
 
-On Wed, Oct 09, 2024 at 01:10:14AM +0800, Zach Wade wrote:
-> when unload pstore_blk, we will unlink the pstore file and
-> set pos->dentry to NULL, but simple_unlink(d_inode(root), pos->dentry)
-> may free inode of pos->dentry and free pos by free_pstore_private,
-> this may trigger uaf. kasan report:
+On Tue, Oct 08, 2024 at 02:01:03PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.14 release.
+> There are 482 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks for this! I need to double check what happening here a bit more
-closely, as maybe some ordering changed after a43e0fc5e913 ("pstore:
-inode: Only d_invalidate() is needed")
+Tested-by: Mark Brown <broonie@kernel.org>
 
-> @@ -316,9 +316,10 @@ int pstore_put_backend_records(struct pstore_info *psi)
->  		list_for_each_entry_safe(pos, tmp, &records_list, list) {
->  			if (pos->record->psi == psi) {
->  				list_del_init(&pos->list);
-> -				d_invalidate(pos->dentry);
-> -				simple_unlink(d_inode(root), pos->dentry);
-> +				unlink_dentry = pos->dentry;
->  				pos->dentry = NULL;
-> +				d_invalidate(unlink_dentry);
-> +				simple_unlink(d_inode(root), unlink_dentry);
+--cdywWs774iHWwz0i
+Content-Type: application/pgp-signature; name="signature.asc"
 
-But on the face of it, this does solve the UAF. I'll double-check that
-this isn't a result of the mentioned commit.
+-----BEGIN PGP SIGNATURE-----
 
--Kees
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmcFayEACgkQJNaLcl1U
+h9CZUwf+I8l2eNJ+T7YdESoYLD0mqEgefYYc+GOuAgx5EwNR1cwnwzYz+Bmh1yHZ
+9ZDRa7t0A3v6863i3hzceggGCD1eUHzxgCdRilM6YmglMieQFpTMfT22+g3ihHgb
+AkJtI2VnP6LJiyyXSsKMj5TTQNYhzBFFsxw6mOh15SM8Y3btwsS7Rs4xRMa9J8nF
+Q8EsPy+fxLe5DROEgI4ILx0cTM1/okAUwN9AOemUTY/r9bJZ85XyjyunNvU/9JRW
+N9AjgY3B+V9YRaX1MKBlja41TsRMIoy0lYQfZnJR2HsK/dksC5DmjM/roSVa+lSw
+Q2jZhGvziY+FNw22lPhm4u0WIzQZTw==
+=GuWI
+-----END PGP SIGNATURE-----
 
--- 
-Kees Cook
+--cdywWs774iHWwz0i--
 
