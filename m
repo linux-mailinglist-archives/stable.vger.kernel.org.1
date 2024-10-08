@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-81978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-82819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CAC994A6A
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 14:33:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDAF994E98
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 15:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B733928A010
-	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 12:33:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC5A01F2348C
+	for <lists+stable@lfdr.de>; Tue,  8 Oct 2024 13:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27661D618C;
-	Tue,  8 Oct 2024 12:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBE21DDA36;
+	Tue,  8 Oct 2024 13:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+c7EruF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smyUjg5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DC0178384;
-	Tue,  8 Oct 2024 12:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08711DE89F;
+	Tue,  8 Oct 2024 13:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728390772; cv=none; b=UmBrXP0iBZXLQdt/hUmVEV9faZOPYPZCq9oCQoL9zeYuUIzzVLMxE54/OfQkHvTlMkR0EIqH7LmVKNzdMKhOItAt1uqyEJvuskDHdtv9G+rGKs7rA3zglRb8wWk+oD8gb0Sz9g9Hp4EgFfkkooEj8quKkWsML5TO2KMMola1eks=
+	t=1728393531; cv=none; b=Dnc5zzEedIseILQbpk15ovCKlkwSbUCMo2GM/IlXH1ttj9Yrs/oufZ+6haA9j6wD8sAtQKS4tDCSB9quXcWhQXtjLnyLdNM7ON+3PjUeho/m9bkvJcfm7Yqcnp8vnmBTVJ21htDNe4u0Vg33ggH6rddywqOyF4KfciNTOS5eZwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728390772; c=relaxed/simple;
-	bh=LID3IWvpf/ORg9+x9bgOJSVtGccnPizKjiMMWM4qnaE=;
+	s=arc-20240116; t=1728393531; c=relaxed/simple;
+	bh=lswdiBtnkrtm0VMtUFHh1CAe5e6OOAF+WeI+lIOlwiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hz186w25Fowa+vcZqB1m51tmaOF2wXSueqlrRnnQiPy2ZwFU2px+Jv8tJ/uKo9CbN3Rdh1GZyOq2HhAgKYVN2UrGQ7Y4bHVRk42h063tl1RnKTK7MeGaB0ELjEzqqRHIBBH9kVCnkaWERruaKElAJTljkVBSJ735YyX3Q9u+Ckk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+c7EruF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01280C4CEC7;
-	Tue,  8 Oct 2024 12:32:51 +0000 (UTC)
+	 MIME-Version; b=qMk5dGX9DE8+V6niACXi7wmOwo7z7FJVUKiCoh/ly7HChCr7dHyTH+77t+1mEiaLsBWIxNW3BSrJ81DJQVpmRO8FfbizyVkT6VAVT747wNie4j527lASUZASxJEF7H/EBDgq1tA32JwP92VwVt5EWKm1s4AGvf70opZ8WXzM4qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smyUjg5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E34BC4CEC7;
+	Tue,  8 Oct 2024 13:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728390772;
-	bh=LID3IWvpf/ORg9+x9bgOJSVtGccnPizKjiMMWM4qnaE=;
+	s=korg; t=1728393530;
+	bh=lswdiBtnkrtm0VMtUFHh1CAe5e6OOAF+WeI+lIOlwiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+c7EruFiFDED4bdM3LZ/raFgshXal891MWzStsa6w1M0cATze/8l5hKmSlL/dCMj
-	 E39Xf3KISmQienmvhK7AAtqAaWkcbp1OFn46RZ1ZMrdj0OWaUk7i26boUP8LfKlv7z
-	 1xal9yaRjtO2LtebCiSzhjdaqVlciwh47PDHd6gA=
+	b=smyUjg5OMv8tG+YFRMLsazuzcaFEFiTtYaFp0Dnr07oTWauLIWjE8uiV1XvmDGLXd
+	 vilAqFzebSI7UAXevV2E7q/Oa4w/1K9htVoTHIZfFWumBFjHWUamSHPGIqYQ/Y35yA
+	 /Rcfi8EaK9h+zAOchHEinlzgrl4vlHyg29MVr0Ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Ying Lee <kuan-ying.lee@canonical.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 361/482] scripts/gdb: fix lx-mounts command error
+	Juntong Deng <juntong.deng@outlook.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 179/386] bpf: Make the pointer returned by iter next method valid
 Date: Tue,  8 Oct 2024 14:07:04 +0200
-Message-ID: <20241008115702.629204778@linuxfoundation.org>
+Message-ID: <20241008115636.458735990@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115629.309157387@linuxfoundation.org>
+References: <20241008115629.309157387@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-commit 4b183f613924ad536be2f8bd12b307e9c5a96bf6 upstream.
+[ Upstream commit 4cc8c50c9abcb2646a7a4fcef3cea5dcb30c06cf ]
 
-(gdb) lx-mounts
-      mount          super_block     devname pathname fstype options
-Python Exception <class 'gdb.error'>: There is no member named list.
-Error occurred in Python: There is no member named list.
+Currently we cannot pass the pointer returned by iter next method as
+argument to KF_TRUSTED_ARGS or KF_RCU kfuncs, because the pointer
+returned by iter next method is not "valid".
 
-We encounter the above issue after commit 2eea9ce4310d ("mounts: keep
-list of mounts in an rbtree"). The commit move a mount from list into
-rbtree.
+This patch sets the pointer returned by iter next method to be valid.
 
-So we can instead use rbtree to iterate all mounts information.
+This is based on the fact that if the iterator is implemented correctly,
+then the pointer returned from the iter next method should be valid.
 
-Link: https://lkml.kernel.org/r/20240723064902.124154-4-kuan-ying.lee@canonical.com
-Fixes: 2eea9ce4310d ("mounts: keep list of mounts in an rbtree")
-Signed-off-by: Kuan-Ying Lee <kuan-ying.lee@canonical.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This does not make NULL pointer valid. If the iter next method has
+KF_RET_NULL flag, then the verifier will ask the ebpf program to
+check NULL pointer.
+
+KF_RCU_PROTECTED iterator is a special case, the pointer returned by
+iter next method should only be valid within RCU critical section,
+so it should be with MEM_RCU, not PTR_TRUSTED.
+
+Another special case is bpf_iter_num_next, which returns a pointer with
+base type PTR_TO_MEM. PTR_TO_MEM should not be combined with type flag
+PTR_TRUSTED (PTR_TO_MEM already means the pointer is valid).
+
+The pointer returned by iter next method of other types of iterators
+is with PTR_TRUSTED.
+
+In addition, this patch adds get_iter_from_state to help us get the
+current iterator from the current state.
+
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Link: https://lore.kernel.org/r/AM6PR03MB584869F8B448EA1C87B7CDA399962@AM6PR03MB5848.eurprd03.prod.outlook.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/proc.py |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
---- a/scripts/gdb/linux/proc.py
-+++ b/scripts/gdb/linux/proc.py
-@@ -18,6 +18,7 @@ from linux import utils
- from linux import tasks
- from linux import lists
- from linux import vfs
-+from linux import rbtree
- from struct import *
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 834394faf2af3..3032a464d31bb 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7846,6 +7846,15 @@ static int widen_imprecise_scalars(struct bpf_verifier_env *env,
+ 	return 0;
+ }
  
++static struct bpf_reg_state *get_iter_from_state(struct bpf_verifier_state *cur_st,
++						 struct bpf_kfunc_call_arg_meta *meta)
++{
++	int iter_frameno = meta->iter.frameno;
++	int iter_spi = meta->iter.spi;
++
++	return &cur_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++}
++
+ /* process_iter_next_call() is called when verifier gets to iterator's next
+  * "method" (e.g., bpf_iter_num_next() for numbers iterator) call. We'll refer
+  * to it as just "iter_next()" in comments below.
+@@ -7930,12 +7939,10 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 	struct bpf_verifier_state *cur_st = env->cur_state, *queued_st, *prev_st;
+ 	struct bpf_func_state *cur_fr = cur_st->frame[cur_st->curframe], *queued_fr;
+ 	struct bpf_reg_state *cur_iter, *queued_iter;
+-	int iter_frameno = meta->iter.frameno;
+-	int iter_spi = meta->iter.spi;
  
-@@ -172,8 +173,7 @@ values of that process namespace"""
-         gdb.write("{:^18} {:^15} {:>9} {} {} options\n".format(
-                   "mount", "super_block", "devname", "pathname", "fstype"))
+ 	BTF_TYPE_EMIT(struct bpf_iter);
  
--        for mnt in lists.list_for_each_entry(namespace['list'],
--                                             mount_ptr_type, "mnt_list"):
-+        for mnt in rbtree.rb_inorder_for_each_entry(namespace['mounts'], mount_ptr_type, "mnt_node"):
-             devname = mnt['mnt_devname'].string()
-             devname = devname if devname else "none"
+-	cur_iter = &env->cur_state->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++	cur_iter = get_iter_from_state(cur_st, meta);
  
+ 	if (cur_iter->iter.state != BPF_ITER_STATE_ACTIVE &&
+ 	    cur_iter->iter.state != BPF_ITER_STATE_DRAINED) {
+@@ -7963,7 +7970,7 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 		if (!queued_st)
+ 			return -ENOMEM;
+ 
+-		queued_iter = &queued_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++		queued_iter = get_iter_from_state(queued_st, meta);
+ 		queued_iter->iter.state = BPF_ITER_STATE_ACTIVE;
+ 		queued_iter->iter.depth++;
+ 		if (prev_st)
+@@ -11995,6 +12002,17 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+ 			regs[BPF_REG_0].btf = desc_btf;
+ 			regs[BPF_REG_0].type = PTR_TO_BTF_ID;
+ 			regs[BPF_REG_0].btf_id = ptr_type_id;
++
++			if (is_iter_next_kfunc(&meta)) {
++				struct bpf_reg_state *cur_iter;
++
++				cur_iter = get_iter_from_state(env->cur_state, &meta);
++
++				if (cur_iter->type & MEM_RCU) /* KF_RCU_PROTECTED */
++					regs[BPF_REG_0].type |= MEM_RCU;
++				else
++					regs[BPF_REG_0].type |= PTR_TRUSTED;
++			}
+ 		}
+ 
+ 		if (is_kfunc_ret_null(&meta)) {
+-- 
+2.43.0
+
 
 
 
